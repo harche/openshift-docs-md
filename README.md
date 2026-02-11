@@ -8,6 +8,18 @@ OpenShift documentation at `docs.redhat.com` is JavaScript-rendered — when any
 
 Neither format is usable by AI agents.
 
+## Usage with AI Agents
+
+Point your agent to the hosted docs index and ask your question:
+
+```
+Based on OpenShift docs hosted here
+https://github.com/harche/openshift-docs-md/blob/main/docs/AGENTS.md,
+can you find out the CLI options for the opm command in OpenShift 4.21?
+```
+
+The agent will read `AGENTS.md`, navigate to the right version and topic file, and answer from the actual documentation.
+
 ## What This Does
 
 1. Clones the [openshift/openshift-docs](https://github.com/openshift/openshift-docs) source repo
