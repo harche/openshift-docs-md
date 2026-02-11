@@ -25,11 +25,14 @@ import yaml
 def sanitize_docbook_xml(xml_path: str) -> None:
     """Fix invalid XML in DocBook output before passing to pandoc.
 
-    Asciidoctor sometimes emits bare '<' or '>' characters inside text
-    content (e.g. from inline pass-through or code snippets) that are
-    not proper XML.  We attempt a stdlib parse first; if that succeeds
-    the file is already valid and we leave it alone.  Otherwise we
-    escape stray '<' characters that don't look like real XML tags.
+    Asciidoctor's DocBook 5 backend has bugs that produce malformed XML:
+      1. Entity references missing their semicolons — e.g. &gt" instead
+         of &gt;" (the semicolon of &gt; is dropped when followed by a
+         quote character).
+      2. Doubled quote characters in attribute values — e.g.
+         xml:id="some-id""> instead of xml:id="some-id">.
+    We attempt a stdlib parse first; if it succeeds the file is already
+    valid and we skip all fixups.
     """
     raw = Path(xml_path).read_text(encoding="utf-8", errors="replace")
 
@@ -40,33 +43,15 @@ def sanitize_docbook_xml(xml_path: str) -> None:
     except ET.ParseError:
         pass
 
-    # Escape '<' that is NOT part of a valid XML tag or declaration.
-    # Valid patterns: <tagname, </tagname, <?, <!, <![CDATA[
-    # Anything else (e.g. "x < y", "vector<int>") is a stray '<'.
-    fixed = re.sub(
-        r'<(?![a-zA-Z_/!?])',
-        '&lt;',
-        raw,
-    )
+    fixed = raw
 
-    # Also fix bare '>' that appear outside tags (less common but possible).
-    # This is trickier — we only fix '>' that are NOT preceded by a tag-close
-    # or CDATA pattern.  A simple heuristic: replace '>'' that is preceded by
-    # a word char or digit (e.g. "x > 0", "vector<int>").
-    fixed = re.sub(
-        r'(?<=[\w\d"])>(?=[^<]*(?:<[a-zA-Z_/!?]|$))',
-        '&gt;',
-        fixed,
-    )
+    # Fix 1: Entity references missing their trailing semicolon.
+    # Matches &lt, &gt, &amp, &quot, &apos NOT followed by ';'.
+    fixed = re.sub(r'&(lt|gt|amp|quot|apos)(?!;)', r'&\1;', fixed)
 
-    # Verify the fix actually produces valid XML; if not, just write back
-    # the '<' fix which handles the most common case.
-    try:
-        ET.fromstring(fixed)
-    except ET.ParseError:
-        # The '>' regex may have been too aggressive; fall back to only
-        # fixing '<'.
-        fixed = re.sub(r'<(?![a-zA-Z_/!?])', '&lt;', raw)
+    # Fix 2: Doubled quotes closing an attribute — e.g. id="value"">
+    # Remove the extra quote so it becomes id="value">.
+    fixed = re.sub(r'("")(?=>)', '"', fixed)
 
     Path(xml_path).write_text(fixed, encoding="utf-8")
 
