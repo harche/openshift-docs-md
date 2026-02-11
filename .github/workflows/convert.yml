@@ -99,5 +99,6 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "docs: update multi-version openshift-docs conversion"
+            git pull --rebase origin main
             git push
           fi
