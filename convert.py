@@ -15,10 +15,60 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import xml.etree.ElementTree as ET
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 
 import yaml
+
+
+def sanitize_docbook_xml(xml_path: str) -> None:
+    """Fix invalid XML in DocBook output before passing to pandoc.
+
+    Asciidoctor sometimes emits bare '<' or '>' characters inside text
+    content (e.g. from inline pass-through or code snippets) that are
+    not proper XML.  We attempt a stdlib parse first; if that succeeds
+    the file is already valid and we leave it alone.  Otherwise we
+    escape stray '<' characters that don't look like real XML tags.
+    """
+    raw = Path(xml_path).read_text(encoding="utf-8", errors="replace")
+
+    # Fast path: if the XML parses cleanly, nothing to fix.
+    try:
+        ET.fromstring(raw)
+        return
+    except ET.ParseError:
+        pass
+
+    # Escape '<' that is NOT part of a valid XML tag or declaration.
+    # Valid patterns: <tagname, </tagname, <?, <!, <![CDATA[
+    # Anything else (e.g. "x < y", "vector<int>") is a stray '<'.
+    fixed = re.sub(
+        r'<(?![a-zA-Z_/!?])',
+        '&lt;',
+        raw,
+    )
+
+    # Also fix bare '>' that appear outside tags (less common but possible).
+    # This is trickier — we only fix '>' that are NOT preceded by a tag-close
+    # or CDATA pattern.  A simple heuristic: replace '>'' that is preceded by
+    # a word char or digit (e.g. "x > 0", "vector<int>").
+    fixed = re.sub(
+        r'(?<=[\w\d"])>(?=[^<]*(?:<[a-zA-Z_/!?]|$))',
+        '&gt;',
+        fixed,
+    )
+
+    # Verify the fix actually produces valid XML; if not, just write back
+    # the '<' fix which handles the most common case.
+    try:
+        ET.fromstring(fixed)
+    except ET.ParseError:
+        # The '>' regex may have been too aggressive; fall back to only
+        # fixing '<'.
+        fixed = re.sub(r'<(?![a-zA-Z_/!?])', '&lt;', raw)
+
+    Path(xml_path).write_text(fixed, encoding="utf-8")
 
 
 def parse_distro_map(source_dir: str) -> dict:
@@ -102,6 +152,9 @@ def convert_file(
 
         if result.returncode != 0:
             return False, str(source_path), f"asciidoctor error: {result.stderr}"
+
+        # Step 1.5: Sanitize the DocBook XML (fix stray '<'/'>' in text)
+        sanitize_docbook_xml(tmp_xml)
 
         # Step 2: DocBook → GFM Markdown via pandoc
         cmd_pandoc = [
