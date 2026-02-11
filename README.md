@@ -11,13 +11,35 @@ Neither format is usable by AI agents.
 ## What This Does
 
 1. Clones the [openshift/openshift-docs](https://github.com/openshift/openshift-docs) source repo
-2. Converts AsciiDoc → DocBook XML (asciidoctor) → GitHub-Flavored Markdown (pandoc)
-3. Generates navigation indexes for both humans and AI agents
-4. Publishes to GitHub Pages — updated weekly via GitHub Actions
+2. Auto-discovers the latest N version branches from `_distro_map.yml`
+3. Converts each version: AsciiDoc → DocBook XML (asciidoctor) → GitHub-Flavored Markdown (pandoc)
+4. Generates per-version and top-level navigation indexes for both humans and AI agents
+5. Publishes all versions to GitHub Pages — updated weekly via GitHub Actions
 
 ## Output
 
-The conversion produces four navigation aids alongside the markdown files:
+The pipeline converts multiple versions and organizes them under a single `docs/` directory:
+
+```
+docs/
+├── index.md              # Top-level version selector
+├── index.html            # HTML version selector
+├── AGENTS.md             # Points to version-specific AGENTS.md files
+├── viewer.html           # Shared markdown viewer
+├── 4.22/
+│   ├── index.md          # Version-specific table of contents
+│   ├── index.html        # Version-specific HTML navigation
+│   ├── AGENTS.md         # Version-specific compressed index
+│   ├── viewer.html       # Version-specific markdown viewer
+│   └── <topic_dir>/
+│       └── <file>.md
+├── 4.21/
+│   └── ...
+└── 4.20/
+    └── ...
+```
+
+Each version directory contains the same four navigation aids:
 
 | File | Purpose |
 |------|---------|
@@ -58,39 +80,59 @@ This approach is based on Vercel's research showing that [AGENTS.md outperforms 
 - [asciidoctor](https://asciidoctor.org/) (Ruby)
 - [pandoc](https://pandoc.org/)
 
-### Run
+### Run — Full Multi-Version Conversion
+
+Convert the latest 3 versions in one go (same as CI):
 
 ```bash
 pip install -r requirements.txt
 git clone --depth 1 https://github.com/openshift/openshift-docs.git
 
-# Convert all topics
-python convert.py --source-dir ./openshift-docs --output-dir ./docs
+# Discover versions, convert each, generate top-level index
+VERSIONS=$(python convert.py --source-dir ./openshift-docs --discover-versions 3)
+rm -rf ./docs && mkdir -p ./docs
+for row in $(echo "$VERSIONS" | jq -c '.[]'); do
+  VERSION=$(echo "$row" | jq -r '.version')
+  BRANCH=$(echo "$row" | jq -r '.branch')
+  cd openshift-docs && git fetch --depth 1 origin "$BRANCH" && git checkout FETCH_HEAD && cd ..
+  python convert.py --source-dir ./openshift-docs --output-dir "./docs/$VERSION" \
+    --distro openshift-enterprise --branch "$BRANCH" --workers 4
+done
+python convert.py --output-dir ./docs --generate-top-index
+```
 
-# Convert specific topics
-python convert.py --source-dir ./openshift-docs --output-dir ./docs \
-  --topics welcome,installing,networking
+### Run — Single Version
 
-# Target a different distro or branch
-python convert.py --source-dir ./openshift-docs --output-dir ./docs \
-  --distro openshift-origin --branch enterprise-4.18
+```bash
+pip install -r requirements.txt
+git clone --depth 1 --branch enterprise-4.22 \
+  https://github.com/openshift/openshift-docs.git
+
+python convert.py --source-dir ./openshift-docs --output-dir ./docs/4.22 \
+  --branch enterprise-4.22
+
+# Convert specific topics only
+python convert.py --source-dir ./openshift-docs --output-dir ./docs/4.22 \
+  --branch enterprise-4.22 --topics welcome,installing,networking
 ```
 
 ### CLI Options
 
 | Flag | Default | Description |
 |------|---------|-------------|
-| `--source-dir` | *(required)* | Path to cloned openshift-docs repo |
+| `--source-dir` | *(required for conversion)* | Path to cloned openshift-docs repo |
 | `--output-dir` | `./docs` | Output directory for markdown files |
 | `--distro` | `openshift-enterprise` | Target distro |
 | `--branch` | `main` | Source branch for version attributes |
 | `--topic-map` | `_topic_map.yml` | Topic map file name |
 | `--topics` | *(all)* | Comma-separated topic dirs to convert |
 | `--workers` | `4` | Number of parallel workers |
+| `--discover-versions` | | Print latest N version branches as JSON and exit |
+| `--generate-top-index` | | Generate top-level index from version subdirectories and exit |
 
 ## CI/CD
 
-A GitHub Actions workflow runs every Monday at 6:00 AM UTC, converting the latest docs and deploying to GitHub Pages. It can also be triggered manually with custom branch, distro, and topic parameters.
+A GitHub Actions workflow runs every Monday at 6:00 AM UTC. It auto-discovers the latest 3 versions from `_distro_map.yml`, converts each version into its own subdirectory, generates a top-level version selector, and deploys everything to GitHub Pages. It can also be triggered manually with custom distro, version count, and topic parameters.
 
 ## How It Works
 

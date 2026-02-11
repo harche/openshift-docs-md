@@ -6,14 +6,14 @@ on:
     - cron: '0 6 * * 1'
   workflow_dispatch:
     inputs:
-      branch:
-        description: 'Branch of openshift/openshift-docs to convert'
-        required: false
-        default: 'main'
       distro:
         description: 'Target distro'
         required: false
         default: 'openshift-enterprise'
+      version_count:
+        description: 'Number of latest versions to convert'
+        required: false
+        default: '3'
       topics:
         description: 'Comma-separated topic dirs (empty = all)'
         required: false
@@ -27,7 +27,7 @@ permissions:
 jobs:
   convert:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
 
     steps:
       - name: Checkout this repo
@@ -36,7 +36,6 @@ jobs:
       - name: Clone openshift-docs
         run: |
           git clone --depth 1 \
-            --branch ${{ github.event.inputs.branch || 'main' }} \
             https://github.com/openshift/openshift-docs.git
 
       - name: Set up Ruby
@@ -58,19 +57,44 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r requirements.txt
 
-      - name: Run conversion
+      - name: Discover versions
+        id: versions
         run: |
-          python convert.py \
+          VERSIONS=$(python convert.py \
             --source-dir ./openshift-docs \
-            --output-dir ./docs \
             --distro ${{ github.event.inputs.distro || 'openshift-enterprise' }} \
-            --branch ${{ github.event.inputs.branch || 'main' }} \
-            --topics "${{ github.event.inputs.topics || '' }}" \
-            --workers 4
+            --discover-versions ${{ github.event.inputs.version_count || '3' }})
+          echo "versions=$VERSIONS" >> $GITHUB_OUTPUT
+          echo "Discovered versions: $VERSIONS"
+
+      - name: Clean output directory
+        run: rm -rf ./docs && mkdir -p ./docs
+
+      - name: Convert all versions
+        run: |
+          DISTRO="${{ github.event.inputs.distro || 'openshift-enterprise' }}"
+          TOPICS="${{ github.event.inputs.topics || '' }}"
+          for row in $(echo '${{ steps.versions.outputs.versions }}' | jq -c '.[]'); do
+            VERSION=$(echo "$row" | jq -r '.version')
+            BRANCH=$(echo "$row" | jq -r '.branch')
+            echo "::group::Converting version $VERSION (branch: $BRANCH)"
+            cd openshift-docs && git fetch --depth 1 origin "$BRANCH" && git checkout FETCH_HEAD && cd ..
+            python convert.py \
+              --source-dir ./openshift-docs \
+              --output-dir "./docs/$VERSION" \
+              --distro "$DISTRO" \
+              --branch "$BRANCH" \
+              --topics "$TOPICS" \
+              --workers 4
+            echo "::endgroup::"
+          done
+
+      - name: Generate top-level index
+        run: python convert.py --output-dir ./docs --generate-top-index
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
-          commit_message: "docs: update from openshift-docs (${{ github.event.inputs.branch || 'main' }})"
+          commit_message: "docs: update multi-version openshift-docs conversion"

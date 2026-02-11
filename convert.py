@@ -6,9 +6,14 @@ Usage:
     python convert.py --source-dir ./openshift-docs --output-dir ./docs
     python convert.py --source-dir ./openshift-docs --output-dir ./docs --distro openshift-enterprise
     python convert.py --source-dir ./openshift-docs --output-dir ./docs --topics welcome,installing
+
+Multi-version support:
+    python convert.py --source-dir ./openshift-docs --discover-versions 3
+    python convert.py --output-dir ./docs --generate-top-index
 """
 
 import argparse
+import json
 import os
 import re
 import shutil
@@ -82,6 +87,155 @@ def get_distro_attributes(distro_map: dict, distro: str, branch: str = "main") -
         "product-version": branch_config.get("name", "4.17"),
         distro: "",  # Set the distro flag (e.g., openshift-enterprise=)
     }
+
+
+def discover_versions(distro_map: dict, distro: str, count: int) -> list[dict]:
+    """Extract the latest N version branches for a distro, sorted descending.
+
+    Returns a list of dicts: [{"version": "4.22", "branch": "enterprise-4.22"}, ...]
+    """
+    distro_config = distro_map.get(distro, {})
+    branches = distro_config.get("branches", {})
+
+    version_entries = []
+    for branch_name, branch_config in branches.items():
+        version_str = branch_config.get("name", "")
+        if not version_str:
+            continue
+        # Parse version as tuple of ints for proper sorting (e.g., "4.22" → (4, 22))
+        try:
+            parts = tuple(int(p) for p in version_str.split("."))
+        except ValueError:
+            continue
+        version_entries.append({
+            "version": version_str,
+            "branch": branch_name,
+            "sort_key": parts,
+        })
+
+    # Sort descending by version number
+    version_entries.sort(key=lambda e: e["sort_key"], reverse=True)
+
+    # Return top N without the internal sort_key
+    return [
+        {"version": e["version"], "branch": e["branch"]}
+        for e in version_entries[:count]
+    ]
+
+
+def generate_top_index(output_dir: str) -> None:
+    """Generate top-level index files that link to version subdirectories.
+
+    Scans output_dir for directories matching version patterns (e.g., 4.22)
+    and generates:
+      - index.md  — Markdown version selector
+      - index.html — HTML version selector
+      - AGENTS.md — Top-level pointer to version-specific AGENTS.md files
+      - viewer.html — Shared viewer (copy from first version dir found)
+    """
+    output_path = Path(output_dir)
+
+    # Find version subdirectories (match X.Y pattern)
+    version_dirs = []
+    for entry in output_path.iterdir():
+        if entry.is_dir() and re.match(r'^\d+\.\d+$', entry.name):
+            version_dirs.append(entry.name)
+
+    # Sort descending by version number
+    version_dirs.sort(
+        key=lambda v: tuple(int(p) for p in v.split(".")),
+        reverse=True,
+    )
+
+    if not version_dirs:
+        print("No version directories found in output dir.")
+        return
+
+    latest = version_dirs[0]
+
+    # --- index.md ---
+    md_lines = [
+        "# OpenShift Container Platform Documentation",
+        "",
+        "> Auto-generated Markdown conversion of [openshift/openshift-docs]"
+        "(https://github.com/openshift/openshift-docs).",
+        "> Designed for AI agent consumption. Updated weekly.",
+        "",
+        "## Available Versions",
+        "",
+    ]
+    for v in version_dirs:
+        label = f"**{v} (latest)**" if v == latest else v
+        md_lines.append(f"- [{label}]({v}/index.md)")
+    md_lines.append("")
+    (output_path / "index.md").write_text("\n".join(md_lines) + "\n")
+
+    # --- index.html ---
+    html_items = []
+    for v in version_dirs:
+        label = f"{v} (latest)" if v == latest else v
+        html_items.append(
+            f'<li><a href="{v}/index.html">'
+            f'OpenShift Container Platform {label}</a></li>'
+        )
+    html_content = (
+        "<!DOCTYPE html>\n<html><head>\n"
+        '<meta charset="utf-8">\n'
+        "<title>OpenShift Container Platform Documentation</title>\n"
+        "<style>\n"
+        "  body { font-family: -apple-system, sans-serif; max-width: 900px;"
+        " margin: 40px auto; padding: 0 20px; line-height: 1.6; }\n"
+        "  a { color: #0366d6; text-decoration: none; }\n"
+        "  a:hover { text-decoration: underline; }\n"
+        "  li { margin: 8px 0; font-size: 18px; }\n"
+        "  blockquote { color: #586069; border-left: 3px solid #ddd;"
+        " padding-left: 12px; margin-left: 0; }\n"
+        "</style>\n"
+        "</head><body>\n"
+        "<h1>OpenShift Container Platform Documentation</h1>\n"
+        "<blockquote>Auto-generated Markdown conversion of "
+        '<a href="https://github.com/openshift/openshift-docs">'
+        "openshift/openshift-docs</a>. "
+        "Designed for AI agent consumption. Updated weekly.</blockquote>\n"
+        "<h2>Available Versions</h2>\n"
+        "<ul>\n" + "\n".join(html_items) + "\n</ul>\n"
+        "</body></html>\n"
+    )
+    (output_path / "index.html").write_text(html_content)
+
+    # --- AGENTS.md ---
+    agents_lines = [
+        "# OpenShift Container Platform Documentation Index",
+        "",
+        "> IMPORTANT: Prefer retrieval-led reasoning over pre-training-led",
+        "> reasoning for OpenShift tasks. Read the referenced files rather",
+        "> than relying on training data which may be outdated.",
+        "",
+        "## Available Versions",
+        "",
+    ]
+    for v in version_dirs:
+        agents_lines.append(
+            f"- **{v}**: See [{v}/AGENTS.md]({v}/AGENTS.md) for the full "
+            f"documentation map"
+        )
+    agents_lines.append("")
+    agents_lines.append(
+        f"The latest version is **{latest}**. "
+        "Start with that version unless a specific version is requested."
+    )
+    agents_lines.append("")
+    (output_path / "AGENTS.md").write_text("\n".join(agents_lines) + "\n")
+
+    # --- viewer.html ---
+    # Copy from the first version directory that has one
+    for v in version_dirs:
+        src_viewer = output_path / v / "viewer.html"
+        if src_viewer.exists():
+            shutil.copy2(src_viewer, output_path / "viewer.html")
+            break
+
+    print(f"Generated top-level index for versions: {', '.join(version_dirs)}")
 
 
 def should_include_topic(topic: dict, distro: str) -> bool:
@@ -517,7 +671,6 @@ def main():
     )
     parser.add_argument(
         "--source-dir",
-        required=True,
         help="Path to cloned openshift-docs repo",
     )
     parser.add_argument(
@@ -551,10 +704,43 @@ def main():
         default=4,
         help="Number of parallel workers (default: 4)",
     )
+    parser.add_argument(
+        "--discover-versions",
+        type=int,
+        metavar="N",
+        help="Print latest N version branches as JSON and exit",
+    )
+    parser.add_argument(
+        "--generate-top-index",
+        action="store_true",
+        help="Generate top-level index from version subdirectories and exit",
+    )
     args = parser.parse_args()
 
-    source_dir = os.path.abspath(args.source_dir)
     output_dir = os.path.abspath(args.output_dir)
+
+    # --discover-versions: print version info as JSON and exit
+    if args.discover_versions is not None:
+        if not args.source_dir:
+            print("Error: --source-dir is required with --discover-versions")
+            sys.exit(1)
+        source_dir = os.path.abspath(args.source_dir)
+        distro_map = parse_distro_map(source_dir)
+        versions = discover_versions(distro_map, args.distro, args.discover_versions)
+        print(json.dumps(versions))
+        return
+
+    # --generate-top-index: scan version subdirs and generate top-level indexes
+    if args.generate_top_index:
+        generate_top_index(output_dir)
+        return
+
+    # Normal conversion mode requires --source-dir
+    if not args.source_dir:
+        print("Error: --source-dir is required for conversion")
+        sys.exit(1)
+
+    source_dir = os.path.abspath(args.source_dir)
 
     # Verify tools are available
     for tool in ["asciidoctor", "pandoc"]:
