@@ -253,16 +253,16 @@ def generate_index(topic_groups: list, output_dir: str, distro: str) -> None:
     index_path.parent.mkdir(parents=True, exist_ok=True)
     index_path.write_text("\n".join(lines) + "\n")
 
-    # Also generate index.html so GitHub Pages serves a landing page
-    # without requiring Jekyll (which times out on 2000+ files)
+    # Generate index.html with links pointing to viewer.html for human browsing.
+    # Raw .md URLs remain unchanged for AI agents.
     html_lines = []
     for line in lines:
         import html as html_mod
         text = html_mod.escape(line)
-        # Convert markdown links: [text](url) → <a href="url">text</a>
+        # Convert markdown links: [text](path.md) → <a href="viewer.html?doc=path.md">text</a>
         text = re.sub(
             r'\[([^\]]+)\]\(([^)]+)\)',
-            r'<a href="\2">\1</a>',
+            r'<a href="viewer.html?doc=\2">\1</a>',
             text,
         )
         if text.startswith("# "):
@@ -276,7 +276,6 @@ def generate_index(topic_groups: list, output_dir: str, distro: str) -> None:
         elif text.strip().startswith("- "):
             indent_level = (len(text) - len(text.lstrip())) // 2
             content = text.strip()[2:]
-            # Bold items (section headers in TOC)
             content = re.sub(
                 r'\*\*([^*]+)\*\*',
                 r'<strong>\1</strong>',
@@ -307,6 +306,57 @@ def generate_index(topic_groups: list, output_dir: str, distro: str) -> None:
         "</head><body>\n"
         + "\n".join(html_lines)
         + "\n</body></html>\n"
+    )
+
+    # Generate viewer.html — renders a .md file for human browsing.
+    # Uses marked.js (CDN) to convert markdown to HTML client-side.
+    # The raw .md files are untouched and still served as text/markdown.
+    viewer_path = Path(output_dir) / "viewer.html"
+    viewer_path.write_text(
+        '<!DOCTYPE html>\n<html><head>\n'
+        '<meta charset="utf-8">\n'
+        '<title>OpenShift Docs</title>\n'
+        '<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>\n'
+        '<style>\n'
+        '  body { font-family: -apple-system, sans-serif; max-width: 900px;'
+        ' margin: 40px auto; padding: 0 20px; line-height: 1.6; color: #24292e; }\n'
+        '  a { color: #0366d6; }\n'
+        '  pre { background: #f6f8fa; padding: 16px; border-radius: 6px;'
+        ' overflow-x: auto; }\n'
+        '  code { background: #f6f8fa; padding: 2px 6px; border-radius: 3px;'
+        ' font-size: 85%; }\n'
+        '  pre code { background: none; padding: 0; }\n'
+        '  blockquote { color: #586069; border-left: 3px solid #ddd;'
+        ' padding-left: 12px; margin-left: 0; }\n'
+        '  table { border-collapse: collapse; width: 100%; }\n'
+        '  th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }\n'
+        '  th { background: #f6f8fa; }\n'
+        '  #nav { margin-bottom: 20px; font-size: 14px; }\n'
+        '  #error { color: #cb2431; }\n'
+        '</style>\n'
+        '</head><body>\n'
+        '<div id="nav"><a href="index.html">← Table of Contents</a>'
+        ' | <span id="filepath"></span></div>\n'
+        '<div id="content">Loading...</div>\n'
+        '<div id="error"></div>\n'
+        '<script>\n'
+        '  const params = new URLSearchParams(window.location.search);\n'
+        '  const doc = params.get("doc");\n'
+        '  document.getElementById("filepath").textContent = doc || "";\n'
+        '  if (doc) {\n'
+        '    document.title = doc.split("/").pop().replace(".md","") + " — OpenShift Docs";\n'
+        '    fetch(doc)\n'
+        '      .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })\n'
+        '      .then(md => { document.getElementById("content").innerHTML = marked.parse(md); })\n'
+        '      .catch(e => {\n'
+        '        document.getElementById("content").textContent = "";\n'
+        '        document.getElementById("error").textContent = "Failed to load: " + doc;\n'
+        '      });\n'
+        '  } else {\n'
+        '    document.getElementById("content").textContent = "No document specified.";\n'
+        '  }\n'
+        '</script>\n'
+        '</body></html>\n'
     )
 
 
