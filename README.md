@@ -1,4 +1,4 @@
-# OpenShift Docs → Markdown
+# OpenShift Docs for AI Agents
 
 Automated pipeline that converts [Red Hat OpenShift](https://docs.redhat.com/en/documentation/openshift_container_platform/) documentation into clean, AI-agent-friendly GitHub-Flavored Markdown.
 
