@@ -232,6 +232,115 @@ def collect_topics(
     return result
 
 
+def generate_agents_md(topic_groups: list, output_dir: str, distro: str) -> None:
+    """Generate a compressed pipe-delimited AGENTS.md index for AI agents.
+
+    Follows the Vercel AGENTS.md pattern: a minimal, pointer-based index
+    that tells agents exactly which files to retrieve for each topic,
+    without embedding full documentation content.
+    """
+    agents_path = Path(output_dir) / "AGENTS.md"
+    lines = [
+        "# OpenShift Container Platform Documentation Index",
+        "",
+        "> IMPORTANT: Prefer retrieval-led reasoning over pre-training-led",
+        "> reasoning for OpenShift tasks. Read the referenced files rather",
+        "> than relying on training data which may be outdated.",
+        "",
+        "## How to Use This Index",
+        "",
+        "This is a compressed documentation map. Each section lists topic",
+        "files using pipe-delimited format: `section/subsection:{file1.md,file2.md}`.",
+        "Retrieve the specific file you need rather than reading everything.",
+        "",
+        "Root: ./",
+        "",
+        "## Documentation Map",
+        "",
+    ]
+
+    for group in topic_groups:
+        if group is None:
+            continue
+        if not should_include_topic(group, distro):
+            continue
+
+        name = group.get("Name", "Untitled")
+        group_dir = group.get("Dir", "")
+        sub_topics = group.get("Topics", [])
+
+        if not sub_topics:
+            continue
+
+        lines.append(f"### {name}")
+        lines.append("")
+
+        # Collect files at the group level and in sub-directories
+        before = len(lines)
+        _render_agents_section(sub_topics, group_dir, distro, lines, output_dir)
+
+        if len(lines) == before:
+            # No files existed for this section — remove the heading
+            lines.pop()  # blank line after heading
+            lines.pop()  # heading itself
+        else:
+            lines.append("")
+
+    agents_path.write_text("\n".join(lines) + "\n")
+
+
+def _render_agents_section(
+    topics: list, base_path: str, distro: str, lines: list,
+    output_dir: str,
+) -> None:
+    """Recursively render compressed pipe-delimited topic entries.
+
+    Only includes files that actually exist in output_dir so the index
+    never references missing documentation.
+    """
+    # Group files by their directory path
+    dir_files: dict[str, list[str]] = {}
+    sub_groups: list[tuple[str, str, list]] = []
+
+    for topic in topics:
+        if topic is None:
+            continue
+        if not should_include_topic(topic, distro):
+            continue
+
+        topic_dir = topic.get("Dir", "")
+        topic_file = topic.get("File", "")
+        sub_topics = topic.get("Topics", [])
+
+        current_path = f"{base_path}/{topic_dir}" if topic_dir else base_path
+
+        if topic_file:
+            md_name = f"{topic_file}.md"
+            full_path = Path(output_dir) / base_path / md_name
+            if full_path.exists():
+                dir_files.setdefault(base_path, []).append(md_name)
+
+        if sub_topics:
+            if topic_dir:
+                sub_groups.append((topic.get("Name", ""), current_path, sub_topics))
+            else:
+                # Inline sub-topics at the same directory level
+                _render_agents_section(
+                    sub_topics, base_path, distro, lines, output_dir
+                )
+
+    # Emit the current directory's files in compressed format
+    if base_path in dir_files:
+        files_str = ",".join(dir_files[base_path])
+        lines.append(f"|{base_path}:{{{files_str}}}")
+
+    # Recurse into sub-directories
+    for sub_name, sub_path, sub_topics in sub_groups:
+        _render_agents_section(
+            sub_topics, sub_path, distro, lines, output_dir
+        )
+
+
 def generate_index(topic_groups: list, output_dir: str, distro: str) -> None:
     """Generate a navigation index.md from the topic map."""
     index_path = Path(output_dir) / "index.md"
@@ -290,6 +399,10 @@ def generate_index(topic_groups: list, output_dir: str, distro: str) -> None:
 
     index_path.parent.mkdir(parents=True, exist_ok=True)
     index_path.write_text("\n".join(lines) + "\n")
+
+    # Generate AGENTS.md — compressed pipe-delimited documentation index
+    # for AI agent consumption (inspired by Vercel's AGENTS.md approach).
+    generate_agents_md(topic_groups, output_dir, distro)
 
     # Generate index.html with links pointing to viewer.html for human browsing.
     # Raw .md URLs remain unchanged for AI agents.
