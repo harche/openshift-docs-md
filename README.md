@@ -18,6 +18,9 @@ https://github.com/harche/openshift-docs-md/blob/main/docs/AGENTS.md,
 can you find out the CLI options for the opm command in OpenShift 4.21?
 ```
 
+<img width="3466" height="1502" alt="image" src="https://github.com/user-attachments/assets/8246301a-9097-4ba4-a01c-c1cd9cb9afdc" />
+
+
 The agent will read `AGENTS.md`, navigate to the right version and topic file, and answer from the actual documentation.
 
 ## What This Does
