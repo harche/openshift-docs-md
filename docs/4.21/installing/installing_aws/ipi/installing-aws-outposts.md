@@ -154,7 +154,7 @@ To extend your VPC cluster into an Outpost, you must complete the following netw
 
 ## Changing the cluster network MTU to support AWS Outposts
 
-During installation, the maximum transmission unit (MTU) for the cluster network is detected automatically based on the MTU of the primary network interface of nodes in the cluster. You might need to decrease the MTU value for the cluster network to support an AWS Outposts subnet.
+You might need to decrease the maximum transmission unit (MTU) value for the cluster network to support an AWS Outposts subnet. During installation, the MTU for the cluster network is detected automatically based on the MTU of the primary network interface of nodes in the cluster.
 
 <div class="important">
 
@@ -178,7 +178,7 @@ For more details about the migration process, including important service interr
 
 ### Checking the current cluster MTU value
 
-Use the following procedure to obtain the current maximum transmission unit (MTU) for the cluster network.
+To ensure network stability and performance in a hybrid environment where part of your cluster is in the cloud and part is an on-premise environment, you can obtain the current maximum transmission unit (MTU) for the cluster network.
 
 - To obtain the current MTU for the cluster network, enter the following command:
 
@@ -207,7 +207,7 @@ Use the following procedure to obtain the current maximum transmission unit (MTU
 
 ### Beginning the MTU migration
 
-Use the following procedure to start the MTU migration.
+Start the maximum transmission unit (MTU) migration by specifying the migration configuration for the cluster network and machine interfaces. The Machine Config Operator performs a rolling reboot of the nodes to prepare the cluster for the MTU change.
 
 1.  To begin the MTU migration, specify the migration configuration by entering the following command. The Machine Config Operator performs a rolling reboot of the nodes in the cluster in preparation for the MTU change.
 
@@ -248,7 +248,7 @@ Use the following procedure to start the MTU migration.
 
 ### Verifying the machine configuration
 
-Use the following procedure to verify the machine configuration.
+Verify the machine configuration on your hosts to confirm that the maximum transmission unit (MTU) migration applied successfully. Checking the configuration state and system settings help ensures that the nodes use the correct migration script.
 
 - Confirm the status of the new machine configuration on the hosts:
 
@@ -297,7 +297,7 @@ Use the following procedure to verify the machine configuration.
 
 ### Finalizing the MTU migration
 
-Use the following procedure to finalize the MTU migration.
+Finalize the MTU migration to apply the new maximum transmission unit (MTU) settings to the OVN-Kubernetes network plugin. This updates the cluster configuration and triggers a rolling reboot of the nodes to complete the process.
 
 1.  To finalize the MTU migration, enter the following command for the OVN-Kubernetes network plugin:
 
@@ -331,7 +331,7 @@ Use the following procedure to finalize the MTU migration.
 
 ## Creating subnets for AWS edge compute services
 
-Before you configure a machine set for edge compute nodes in your OpenShift Container Platform cluster, you must create a subnet in AWS Outposts.
+You can automate creating subnets, route tables, and Carrier Gateways in AWS AWS Outposts to extend clusters into ultra-low-latency edge locations for edge workloads. Before you configure a machine set for edge compute nodes in your OpenShift Container Platform cluster, you must create a subnet in AWS Outposts.
 
 You can use the provided CloudFormation template and create a CloudFormation stack. You can then use this stack to custom provision a subnet.
 
@@ -368,35 +368,47 @@ If you do not use the provided CloudFormation template to create your AWS infras
         ParameterKey=OutpostArn,ParameterValue="${OUTPOST_ARN}"
     ```
 
-    - `<stack_name>` is the name for the CloudFormation stack, such as `cluster-<outpost_name>`.
+    where
 
-    - `<template>` is the relative path and the name of the CloudFormation template YAML file that you saved.
+    `<stack_name>`
+    Specifies the name for the CloudFormation stack, such as `cluster-<outpost_name>`.
 
-    - `${VPC_ID}` is the VPC ID, which is the value `VpcID` in the output of the CloudFormation template for the VPC.
+    `<template>`
+    Specifies the relative path and the name of the CloudFormation template YAML file that you saved.
 
-    - `${CLUSTER_NAME}` is the value of **ClusterName** to be used as a prefix of the new AWS resource names.
+    `${VPC_ID}`
+    Specifies the VPC ID, which is the value `VpcID` in the output of the CloudFormation template for the VPC.
 
-    - `${ZONE_NAME}` is the value of AWS Outposts name to create the subnets.
+    `${CLUSTER_NAME}`
+    Specifies the value of **ClusterName** to be used as a prefix of the new AWS resource names.
 
-    - `${ROUTE_TABLE_PUB}` is the Public Route Table ID created in the `${VPC_ID}` used to associate the public subnets on Outposts. Specify the public route table to associate the Outpost subnet created by this stack.
+    `${ZONE_NAME}`
+    Specifies the value of AWS Outposts name to create the subnets.
 
-    - `${SUBNET_CIDR_PUB}` is a valid CIDR block that is used to create the public subnet. This block must be part of the VPC CIDR block `VpcCidr`.
+    `${ROUTE_TABLE_PUB}`
+    Specifies the Public Route Table ID created in the `${VPC_ID}` used to associate the public subnets on Outposts. Specify the public route table to associate the Outpost subnet created by this stack.
 
-    - `${ROUTE_TABLE_PVT}` is the Private Route Table ID created in the `${VPC_ID}` used to associate the private subnets on Outposts. Specify the private route table to associate the Outpost subnet created by this stack.
+    `${SUBNET_CIDR_PUB}`
+    Specifies a valid CIDR block that is used to create the public subnet. This block must be part of the VPC CIDR block `VpcCidr`.
 
-    - `${SUBNET_CIDR_PVT}` is a valid CIDR block that is used to create the private subnet. This block must be part of the VPC CIDR block `VpcCidr`.
+    `${OUTPOST_ARN}`
+    Specifies the Amazon Resource Name (ARN) for the Outpost.
 
-    - `${OUTPOST_ARN}` is the Amazon Resource Name (ARN) for the Outpost.
+    `${SUBNET_CIDR_PVT}`
+    Specifies a valid CIDR block that is used to create the private subnet. This block must be part of the VPC CIDR block `VpcCidr`.
 
-      <div class="formalpara-title">
+    `${ROUTE_TABLE_PVT}`
+    Specifies the Private Route Table ID created in the `${VPC_ID}` used to associate the private subnets on Outposts. Specify the private route table to associate the Outpost subnet created by this stack.
 
-      **Example output**
+    <div class="formalpara-title">
 
-      </div>
+    **Example output**
 
-      ``` text
-      arn:aws:cloudformation:us-east-1:123456789012:stack/<stack_name>/dbedae40-820e-11eb-2fd3-12a48460849f
-      ```
+    </div>
+
+    ``` text
+    arn:aws:cloudformation:us-east-1:123456789012:stack/<stack_name>/dbedae40-820e-11eb-2fd3-12a48460849f
+    ```
 
 - Confirm that the template components exist by running the following command:
 
@@ -415,7 +427,7 @@ If you do not use the provided CloudFormation template to create your AWS infras
 
 ## CloudFormation template for the VPC subnet
 
-You can use the following CloudFormation template to deploy the Outpost subnet.
+Use the CloudFormation template to deploy the private and public subnets in a zone on AWS Outposts infrastructure. The template provisions an `AWS::EC2::Subnet` and associates it with a specific AWS Outposts and VPC route table to reduce latency.
 
 ``` yaml
 AWSTemplateFormatVersion: 2010-09-09
@@ -526,9 +538,13 @@ Outputs:
       !Join ["", [!Ref PrivateSubnet]]
 ```
 
-- You must include the `kubernetes.io/cluster/unmanaged` tag in the public subnet configuration for AWS Outposts.
+where:
 
-- You must include the `kubernetes.io/cluster/unmanaged` tag in the private subnet configuration for AWS Outposts.
+`kubernetes.io/cluster/unmanaged`
+You must include the `kubernetes.io/cluster/unmanaged` tag in the public subnet configuration for AWS Outposts.
+
+`kubernetes.io/cluster/unmanaged`
+You must include the `kubernetes.io/cluster/unmanaged` tag in the private subnet configuration for AWS Outposts.
 
 # Creating a compute machine set that deploys edge compute machines on an Outpost
 

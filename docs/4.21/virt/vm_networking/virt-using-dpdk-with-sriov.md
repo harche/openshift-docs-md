@@ -220,7 +220,7 @@ You can configure the project to run DPDK workloads on SR-IOV hardware.
 
 - [Working with projects](../../applications/projects/working-with-projects.xml#working-with-projects)
 
-- [Virtual machine latency checkup](../../virt/monitoring/virt-running-cluster-checkups.xml#virt-measuring-latency-vm-secondary-network_virt-running-cluster-checkups)
+- [Virtual machine latency checkup](../../virt/monitoring/virt-latency-checkups.xml#virt-measuring-latency-vm-secondary-network_virt-latency-checkups)
 
 # Configuring a virtual machine for DPDK workloads
 

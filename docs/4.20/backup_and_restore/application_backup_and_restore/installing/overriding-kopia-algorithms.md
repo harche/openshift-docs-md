@@ -1,20 +1,8 @@
-You can override the default values of Kopia hashing, encryption, and splitter algorithms by using specific environment variables in the Data Protection Application (DPA).
+Override the default values of Kopia hashing, encryption, and splitter algorithms by using specific environment variables in the Data Protection Application (DPA).
 
 # Configuring the DPA to override Kopia hashing, encryption, and splitter algorithms
 
-You can use an OpenShift API for Data Protection (OADP) option to override the default Kopia algorithms for hashing, encryption, and splitter to improve Kopia performance or to compare performance metrics. You can set the following environment variables in the `spec.configuration.velero.podConfig.env` section of the DPA:
-
-- `KOPIA_HASHING_ALGORITHM`
-
-- `KOPIA_ENCRYPTION_ALGORITHM`
-
-- `KOPIA_SPLITTER_ALGORITHM`
-
-<!-- -->
-
-- You have installed the OADP Operator.
-
-- You have created the secret by using the credentials provided by the cloud provider.
+Configure the Data Protection Application (DPA) to override the default Kopia hashing, encryption, and splitter algorithms by setting environment variables in the Velero pod configuration. This helps you improve Kopia performance and compare performance metrics for your backup operations.
 
 <div class="note">
 
@@ -24,13 +12,13 @@ To use different Kopia algorithms, ensure that the object storage does not conta
 
 </div>
 
+- You have installed the OADP Operator.
+
+- You have created the secret by using the credentials provided by the cloud provider.
+
+<!-- -->
+
 - Configure the DPA with the environment variables for hashing, encryption, and splitter as shown in the following example.
-
-  <div class="formalpara-title">
-
-  **Example DPA**
-
-  </div>
 
   ``` yaml
   apiVersion: oadp.openshift.io/v1alpha1
@@ -56,21 +44,29 @@ To use different Kopia algorithms, ensure that the object storage does not conta
             value: <splitter_algorithm_name>
   ```
 
-  - Enable the `nodeAgent`.
+  where:
 
-  - Specify the `uploaderType` as `kopia`.
+  `enable`
+  Set to `true` to enable the `nodeAgent`.
 
-  - Include the `csi` plugin.
+  `uploaderType`
+  Specifies the uploader type as `kopia`.
 
-  - Specify a hashing algorithm. For example, `BLAKE3-256`.
+  `csi`
+  Include the `csi` plugin.
 
-  - Specify an encryption algorithm. For example, `CHACHA20-POLY1305-HMAC-SHA256`.
+  `<hashing_algorithm_name>`
+  Specifies a hashing algorithm. For example, `BLAKE3-256`.
 
-  - Specify a splitter algorithm. For example, `DYNAMIC-8M-RABINKARP`.
+  `<encryption_algorithm_name>`
+  Specifies an encryption algorithm. For example, `CHACHA20-POLY1305-HMAC-SHA256`.
+
+  `<splitter_algorithm_name>`
+  Specifies a splitter algorithm. For example, `DYNAMIC-8M-RABINKARP`.
 
 # Use case for overriding Kopia hashing, encryption, and splitter algorithms
 
-The use case example demonstrates taking a backup of an application by using Kopia environment variables for hashing, encryption, and splitter. You store the backup in an AWS S3 bucket. You then verify the environment variables by connecting to the Kopia repository.
+Back up an application by using Kopia environment variables for hashing, encryption, and splitter. Store the backup in an AWS S3 bucket and verify the environment variables by connecting to the Kopia repository.
 
 - You have installed the OADP Operator.
 
@@ -125,21 +121,31 @@ The use case example demonstrates taking a backup of an application by using Kop
               value: DYNAMIC-8M-RABINKARP
     ```
 
-    - Specify a name for the DPA.
+    where:
 
-    - Specify the region for the backup storage location.
+    `<dpa_name>`
+    Specifies a name for the DPA.
 
-    - Specify the name of the default `Secret` object.
+    `<region_name>`
+    Specifies the region for the backup storage location.
 
-    - Specify the AWS S3 bucket name.
+    `cloud-credentials`
+    Specifies the name of the default `Secret` object.
 
-    - Include the `csi` plugin.
+    `<bucket_name>`
+    Specifies the AWS S3 bucket name.
 
-    - Specify the hashing algorithm as `BLAKE3-256`.
+    `csi`
+    Include the `csi` plugin.
 
-    - Specify the encryption algorithm as `CHACHA20-POLY1305-HMAC-SHA256`.
+    `BLAKE3-256`
+    Specifies the hashing algorithm as `BLAKE3-256`.
 
-    - Specify the splitter algorithm as `DYNAMIC-8M-RABINKARP`.
+    `CHACHA20-POLY1305-HMAC-SHA256`
+    Specifies the encryption algorithm as `CHACHA20-POLY1305-HMAC-SHA256`.
+
+    `DYNAMIC-8M-RABINKARP`
+    Specifies the splitter algorithm as `DYNAMIC-8M-RABINKARP`.
 
 2.  Create the DPA by running the following command:
 
@@ -147,7 +153,7 @@ The use case example demonstrates taking a backup of an application by using Kop
     $ oc create -f <dpa_file_name>
     ```
 
-    - Specify the file name of the DPA you configured.
+    Replace `<dpa_file_name>` with the file name of the DPA you configured.
 
 3.  Verify that the DPA has reconciled by running the following command:
 
@@ -156,12 +162,6 @@ The use case example demonstrates taking a backup of an application by using Kop
     ```
 
 4.  Create a backup CR as shown in the following example:
-
-    <div class="formalpara-title">
-
-    **Example backup CR**
-
-    </div>
 
     ``` yaml
     apiVersion: velero.io/v1
@@ -175,7 +175,7 @@ The use case example demonstrates taking a backup of an application by using Kop
       defaultVolumesToFsBackup: true
     ```
 
-    - Specify the namespace for the application installed in the cluster.
+    Replace `<application_namespace>` with the namespace for the application installed in the cluster.
 
 5.  Create a backup by running the following command:
 
@@ -183,7 +183,7 @@ The use case example demonstrates taking a backup of an application by using Kop
     $ oc apply -f <backup_file_name>
     ```
 
-    - Specify the name of the backup CR file.
+    Replace `<backup_file_name>` with the name of the backup CR file.
 
 6.  Verify that the backup completed by running the following command:
 
@@ -191,7 +191,7 @@ The use case example demonstrates taking a backup of an application by using Kop
     $ oc get backups.velero.io <backup_name> -o yaml
     ```
 
-    - Specify the name of the backup.
+    Replace `<backup_name>` with the name of the backup.
 
 <!-- -->
 
@@ -203,24 +203,27 @@ The use case example demonstrates taking a backup of an application by using Kop
       --prefix=velero/kopia/<application_namespace> \
       --password=static-passw0rd \
       --access-key="<aws_s3_access_key>" \
-      --secret-access-key="<aws_s3_secret_access_key>" \
+      --secret-access-key="<aws_s3_secret_access_key>"
     ```
 
-    - Specify the AWS S3 bucket name.
+    where:
 
-    - Specify the namespace for the application.
+    `<bucket_name>`
+    Specifies the AWS S3 bucket name.
 
-    - This is the Kopia password to connect to the repository.
+    `<application_namespace>`
+    Specifies the namespace for the application.
 
-    - Specify the AWS S3 access key.
+    `static-passw0rd`
+    This is the Kopia password to connect to the repository.
 
-    - Specify the AWS S3 storage provider secret access key.
+    `<aws_s3_access_key>`
+    Specifies the AWS S3 access key.
 
-      <div class="note">
+    `<aws_s3_secret_access_key>`
+    Specifies the AWS S3 storage provider secret access key.
 
-      If you are using a storage provider other than AWS S3, you will need to add `--endpoint`, the bucket endpoint URL parameter, to the command.
-
-      </div>
+    If you are using a storage provider other than AWS S3, you will need to add `--endpoint`, the bucket endpoint URL parameter, to the command.
 
 2.  Verify that Kopia uses the environment variables that are configured in the DPA for the backup by running the following command:
 
@@ -235,39 +238,15 @@ The use case example demonstrates taking a backup of an application by using Kop
     </div>
 
     ``` terminal
-    Config file:         /../.config/kopia/repository.config
-
-    Description:         Repository in S3: s3.amazonaws.com <bucket_name>
-    # ...
-
-    Storage type:        s3
-    Storage capacity:    unbounded
-    Storage config:      {
-                           "bucket": <bucket_name>,
-                           "prefix": "velero/kopia/<application_namespace>/",
-                           "endpoint": "s3.amazonaws.com",
-                           "accessKeyID": <access_key>,
-                           "secretAccessKey": "****************************************",
-                           "sessionToken": ""
-                         }
-
-    Unique ID:           58....aeb0
     Hash:                BLAKE3-256
     Encryption:          CHACHA20-POLY1305-HMAC-SHA256
     Splitter:            DYNAMIC-8M-RABINKARP
     Format version:      3
-    # ...
     ```
 
 # Benchmarking Kopia hashing, encryption, and splitter algorithms
 
-You can run Kopia commands to benchmark the hashing, encryption, and splitter algorithms. Based on the benchmarking results, you can select the most suitable algorithm for your workload. In this procedure, you run the Kopia benchmarking commands from a pod on the cluster. The benchmarking results can vary depending on CPU speed, available RAM, disk speed, current I/O load, and so on.
-
-- You have installed the OADP Operator.
-
-- You have an application with persistent volumes running in a separate namespace.
-
-- You have run a backup of the application with Container Storage Interface (CSI) snapshots.
+Run Kopia commands to benchmark the hashing, encryption, and splitter algorithms. Based on the benchmarking results, you can select the most suitable algorithm for your workload. You run the Kopia benchmarking commands from a pod on the cluster. The benchmarking results can vary depending on CPU speed, available RAM, disk speed, current I/O load, and so on.
 
 <div class="note">
 
@@ -276,6 +255,12 @@ The configuration of the Kopia algorithms for splitting, hashing, and encryption
 To use different Kopia algorithms, ensure that the object storage does not contain any previous Kopia repositories of backups. Configure a new object storage in the Backup Storage Location (BSL) or specify a unique prefix for the object storage in the BSL configuration.
 
 </div>
+
+- You have installed the OADP Operator.
+
+- You have an application with persistent volumes running in a separate namespace.
+
+- You have run a backup of the application with Container Storage Interface (CSI) snapshots.
 
 1.  Configure the `must-gather` pod as shown in the following example. Make sure you are using the `oadp-mustgather` image for OADP version 1.3 and later.
 
@@ -300,11 +285,7 @@ To use different Kopia algorithms, ensure that the object storage does not conta
         args: ["infinity"]
     ```
 
-    <div class="note">
-
     The Kopia client is available in the `oadp-mustgather` image.
-
-    </div>
 
 2.  Create the pod by running the following command:
 
@@ -312,7 +293,7 @@ To use different Kopia algorithms, ensure that the object storage does not conta
     $ oc apply -f <pod_config_file_name>
     ```
 
-    - Specify the name of the YAML file for the pod configuration.
+    Replace `<pod_config_file_name>` with the name of the YAML file for the pod configuration.
 
 3.  Verify that the Security Context Constraints (SCC) on the pod is `anyuid`, so that Kopia can connect to the repository.
 
@@ -345,26 +326,30 @@ To use different Kopia algorithms, ensure that the object storage does not conta
       --password=static-passw0rd \
       --access-key="<access_key>" \
       --secret-access-key="<secret_access_key>" \
-      --endpoint=<bucket_endpoint> \
+      --endpoint=<bucket_endpoint>
     ```
 
-    - Specify the object storage provider bucket name.
+    where:
 
-    - Specify the namespace for the application.
+    `<bucket_name>`
+    Specifies the object storage provider bucket name.
 
-    - This is the Kopia password to connect to the repository.
+    `<application_namespace>`
+    Specifies the namespace for the application.
 
-    - Specify the object storage provider access key.
+    `static-passw0rd`
+    This is the Kopia password to connect to the repository.
 
-    - Specify the object storage provider secret access key.
+    `<access_key>`
+    Specifies the object storage provider access key.
 
-    - Specify the bucket endpoint. You do not need to specify the bucket endpoint, if you are using AWS S3 as the storage provider.
+    `<secret_access_key>`
+    Specifies the object storage provider secret access key.
 
-      <div class="note">
+    `<bucket_endpoint>`
+    Specifies the bucket endpoint. You do not need to specify the bucket endpoint, if you are using AWS S3 as the storage provider.
 
-      This is an example command. The command can vary based on the object storage provider.
-
-      </div>
+    This is an example command. The command can vary based on the object storage provider.
 
 6.  To benchmark the hashing algorithm, run the following command:
 
@@ -381,29 +366,7 @@ To use different Kopia algorithms, ensure that the object storage does not conta
     ``` terminal
     Benchmarking hash 'BLAKE2B-256' (100 x 1048576 bytes, parallelism 1)
     Benchmarking hash 'BLAKE2B-256-128' (100 x 1048576 bytes, parallelism 1)
-    Benchmarking hash 'BLAKE2S-128' (100 x 1048576 bytes, parallelism 1)
-    Benchmarking hash 'BLAKE2S-256' (100 x 1048576 bytes, parallelism 1)
-    Benchmarking hash 'BLAKE3-256' (100 x 1048576 bytes, parallelism 1)
-    Benchmarking hash 'BLAKE3-256-128' (100 x 1048576 bytes, parallelism 1)
-    Benchmarking hash 'HMAC-SHA224' (100 x 1048576 bytes, parallelism 1)
-    Benchmarking hash 'HMAC-SHA256' (100 x 1048576 bytes, parallelism 1)
-    Benchmarking hash 'HMAC-SHA256-128' (100 x 1048576 bytes, parallelism 1)
-    Benchmarking hash 'HMAC-SHA3-224' (100 x 1048576 bytes, parallelism 1)
-    Benchmarking hash 'HMAC-SHA3-256' (100 x 1048576 bytes, parallelism 1)
-         Hash                 Throughput
-    -----------------------------------------------------------------
-      0. BLAKE3-256           15.3 GB / second
-      1. BLAKE3-256-128       15.2 GB / second
-      2. HMAC-SHA256-128      6.4 GB / second
-      3. HMAC-SHA256          6.4 GB / second
-      4. HMAC-SHA224          6.4 GB / second
-      5. BLAKE2B-256-128      4.2 GB / second
-      6. BLAKE2B-256          4.1 GB / second
-      7. BLAKE2S-256          2.9 GB / second
-      8. BLAKE2S-128          2.9 GB / second
-      9. HMAC-SHA3-224        1.6 GB / second
-     10. HMAC-SHA3-256        1.5 GB / second
-    -----------------------------------------------------------------
+
     Fastest option for this machine is: --block-hash=BLAKE3-256
     ```
 
@@ -420,13 +383,9 @@ To use different Kopia algorithms, ensure that the object storage does not conta
     </div>
 
     ``` terminal
-    Benchmarking encryption 'AES256-GCM-HMAC-SHA256'... (1000 x 1048576 bytes, parallelism 1)
-    Benchmarking encryption 'CHACHA20-POLY1305-HMAC-SHA256'... (1000 x 1048576 bytes, parallelism 1)
-         Encryption                     Throughput
-    -----------------------------------------------------------------
-      0. AES256-GCM-HMAC-SHA256         2.2 GB / second
-      1. CHACHA20-POLY1305-HMAC-SHA256  1.8 GB / second
-    -----------------------------------------------------------------
+    Benchmarking encryption 'AES256-GCM-HMAC-SHA256'
+    Benchmarking encryption 'CHACHA20-POLY1305-HMAC-SHA256'
+
     Fastest option for this machine is: --encryption=AES256-GCM-HMAC-SHA256
     ```
 
@@ -447,12 +406,4 @@ To use different Kopia algorithms, ensure that the object storage does not conta
     DYNAMIC                     747.6 MB/s count:107 min:9467 10th:2277562 25th:2971794 50th:4747177 75th:7603998 90th:8388608 max:8388608
     DYNAMIC-128K-BUZHASH        718.5 MB/s count:3183 min:3076 10th:80896 25th:104312 50th:157621 75th:249115 90th:262144 max:262144
     DYNAMIC-128K-RABINKARP      164.4 MB/s count:3160 min:9667 10th:80098 25th:106626 50th:162269 75th:250655 90th:262144 max:262144
-    # ...
-    FIXED-512K                  102.9 TB/s count:1024 min:524288 10th:524288 25th:524288 50th:524288 75th:524288 90th:524288 max:524288
-    FIXED-8M                    566.3 TB/s count:64 min:8388608 10th:8388608 25th:8388608 50th:8388608 75th:8388608 90th:8388608 max:8388608
-    -----------------------------------------------------------------
-      0. FIXED-8M                  566.3 TB/s   count:64 min:8388608 10th:8388608 25th:8388608 50th:8388608 75th:8388608 90th:8388608 max:8388608
-      1. FIXED-4M                  425.8 TB/s   count:128 min:4194304 10th:4194304 25th:4194304 50th:4194304 75th:4194304 90th:4194304 max:4194304
-      # ...
-     22. DYNAMIC-128K-RABINKARP    164.4 MB/s   count:3160 min:9667 10th:80098 25th:106626 50th:162269 75th:250655 90th:262144 max:262144
     ```

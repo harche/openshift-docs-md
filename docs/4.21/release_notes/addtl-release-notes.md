@@ -10,7 +10,7 @@ A
 [AWS Load Balancer Operator](../networking/networking_operators/aws_load_balancer_operator/aws-load-balancer-operator-release-notes.xml#aws-load-balancer-operator-release-notes)
 
 B
-[Builds for Red Hat OpenShift](https://docs.redhat.com/en/documentation/builds_for_red_hat_openshift/1.1/html/about_builds/ob-release-notes#ob-release-notes)
+[Builds for Red Hat OpenShift](https://docs.redhat.com/en/documentation/builds_for_red_hat_openshift/1.7/html/release_notes/release-notes#release-notes)
 
 C
 [cert-manager Operator for Red Hat OpenShift](../security/cert_manager_operator/cert-manager-operator-release-notes.xml#cert-manager-operator-release-notes)

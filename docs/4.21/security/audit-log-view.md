@@ -35,14 +35,6 @@ Example output for the Kubernetes API server:
 
 You can view the logs for the OpenShift API server, Kubernetes API server, OpenShift OAuth API server, and OpenShift OAuth server for each control plane node.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To view the audit logs:
-
 - View the OpenShift API server audit logs:
 
   1.  List the OpenShift API server audit logs that are available for each control plane node:
@@ -299,7 +291,7 @@ You can use the must-gather tool to collect the audit logs for debugging your cl
     $ tar cvaf must-gather.tar.gz must-gather.local.472290403699006248
     ```
 
-    - Replace `must-gather-local.472290403699006248` with the actual directory name.
+    Replace `must-gather.local.472290403699006248` with the actual directory name.
 
 3.  Attach the compressed file to your support case on the [the **Customer Support** page](https://access.redhat.com/support/cases/#/case/list) of the Red Hat Customer Portal.
 

@@ -1,0 +1,91 @@
+With this release, hosted control planes for OpenShift Container Platform 4.21 is available. Hosted control planes for OpenShift Container Platform 4.21 supports multicluster engine for Kubernetes Operator version 2.11.
+
+# New features and enhancements
+
+This release adds improvements related to the following components and concepts:
+
+# Fixed issues
+
+The following issues are fixed for this release:
+
+# Technology Preview features status
+
+Some features in this release are currently in Technology Preview. These experimental features are not intended for production use. Note the following scope of support on the Red Hat Customer Portal for these features:
+
+[Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview)
+
+In the following table, features are marked with the following statuses:
+
+- *Not Available*
+
+- *Technology Preview*
+
+- *General Availability*
+
+- *Deprecated*
+
+- *Removed*
+
+<div class="important">
+
+For IBM Power and IBM Z, the following exceptions apply:
+
+- For version 4.20 and later, you must run the control plane on machine types that are based on 64-bit x86 architecture or s390x architecture, and node pools on IBM Power or IBM Z.
+
+- For version 4.19 and earlier, you must run the control plane on machine types that are based on 64-bit x86 architecture, and node pools on IBM Power or IBM Z.
+
+</div>
+
+| Feature                                                                                    | 4.19               | 4.20                 | 4.21                 |
+|--------------------------------------------------------------------------------------------|--------------------|----------------------|----------------------|
+| Hosted control planes for OpenShift Container Platform using non-bare-metal agent machines | Technology Preview | Technology Preview   | Technology Preview   |
+| Hosted control planes for OpenShift Container Platform on RHOSP                            | Technology Preview | Technology Preview   | Technology Preview   |
+| Custom taints and tolerations                                                              | Technology Preview | Technology Preview   | Technology Preview   |
+| NVIDIA GPU devices on hosted control planes for OpenShift Virtualization                   | Technology Preview | Technology Preview   | Technology Preview   |
+| Hosted control planes on IBM Z in a disconnected environment                               | Technology Preview | General Availability | General Availability |
+
+Hosted control planes GA and TP tracker
+
+# Known issues
+
+This section includes several known issues for OpenShift Container Platform 4.17.
+
+- If the annotation and the `ManagedCluster` resource name do not match, the multicluster engine for Kubernetes Operator console displays the cluster as `Pending import`. The cluster cannot be used by the multicluster engine Operator. The same issue happens when there is no annotation and the `ManagedCluster` name does not match the `Infra-ID` value of the `HostedCluster` resource.
+
+- When you use the multicluster engine for Kubernetes Operator console to add a new node pool to an existing hosted cluster, the same version of OpenShift Container Platform might appear more than once in the list of options. You can select any instance in the list for the version that you want.
+
+- When a node pool is scaled down to 0 workers, the list of hosts in the console still shows nodes in a `Ready` state. You can verify the number of nodes in two ways:
+
+  - In the console, go to the node pool and verify that it has 0 nodes.
+
+  - On the command-line interface, run the following commands:
+
+    - Verify that 0 nodes are in the node pool by running the following command:
+
+      ``` terminal
+      $ oc get nodepool -A
+      ```
+
+    - Verify that 0 nodes are in the cluster by running the following command:
+
+      ``` terminal
+      $ oc get nodes --kubeconfig
+      ```
+
+    - Verify that 0 agents are reported as bound to the cluster by running the following command:
+
+      ``` terminal
+      $ oc get agents -A
+      ```
+
+- When you create a hosted cluster in an environment that uses the dual-stack network, you might encounter pods stuck in the `ContainerCreating` state. This issue occurs because the `openshift-service-ca-operator` resource cannot generate the `metrics-tls` secret that the DNS pods need for DNS resolution. As a result, the pods cannot resolve the Kubernetes API server. To resolve this issue, configure the DNS server settings for a dual stack network.
+
+- If you created a hosted cluster in the same namespace as its managed cluster, detaching the managed hosted cluster deletes everything in the managed cluster namespace including the hosted cluster. The following situations can create a hosted cluster in the same namespace as its managed cluster:
+
+  - You created a hosted cluster on the Agent platform through the multicluster engine for Kubernetes Operator console by using the default hosted cluster cluster namespace.
+
+  - You created a hosted cluster through the command-line interface or API by specifying the hosted cluster namespace to be the same as the hosted cluster name.
+
+- When you use the console or API to specify an IPv6 address for the `spec.services.servicePublishingStrategy.nodePort.address` field of a hosted cluster, a full IPv6 address with 8 hextets is required. For example, instead of specifying `2620:52:0:1306::30`, you need to specify `2620:52:0:1306:0:0:0:30`.
+
+- In hosted control planes on OpenShift Virtualization, if you store all hosted cluster information in a shared namespace and then back up and restore a hosted cluster, you might unintentionally change other hosted clusters. To avoid this issue, back up and restore only hosted clusters that use labels, or avoid storing all hosted cluster information in a shared namespace.

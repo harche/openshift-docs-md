@@ -64,6 +64,48 @@ You can create an isolated primary network in your project namespace by creating
 
 5.  Click **Create**. The user-defined network serves as the default primary network for pods and virtual machines that you create in this namespace.
 
+## Creating a cluster-scoped network to connect pods directly to an external network
+
+You can connect one or more projects to a physical network for direct layer 2 access to data center resources through a `ClusterUserDefinedNetwork` custom resource in the OpenShift Container Platform web console.
+
+- You have access to the OpenShift Container Platform web console as a user with `cluster-admin` permissions.
+
+1.  In the OpenShift Container Platform web console, go to **Virtualization** → **Networking**.
+
+2.  Click **Virtual machine networks** in the navigation pane.
+
+3.  Click **Create**. The **Create virtual machine network** wizard is displayed.
+
+4.  Give details about the network on the **Network definition** page:
+
+    1.  Enter a name for the network in the **Name** field.
+
+    2.  Select a physical network through an `OpenvSwitch` bridge from the **Select physical network** list.
+
+    3.  Enter the maximum transmission unit (MTU).
+
+        <div class="note">
+
+        An MTU, measured in bytes, is the largest allowable size of a data packet. Ensure that all underlying physical network equipment supports this MTU, or higher.
+
+        </div>
+
+    4.  Optional: Select the **VLAN ID** checkbox to enter VLAN tagging information. If you tag traffic with a VLAN ID, you must configure your physical switch with a VLAN trunk that includes the VLAN ID that you choose.
+
+5.  Click **Next**.
+
+6.  Select the projects that the network should be made available to on the **Project mapping** page. By default, all projects have access to the network.
+
+7.  Click **Create**.
+
+<!-- -->
+
+1.  Navigate to the **Virtualization** → **Virtual machine networks** page.
+
+2.  Click the **OVN localnet** tab.
+
+3.  Verify that your new network is displayed in the list.
+
 ## Creating a primary cluster-scoped user-defined network by using the web console
 
 You can connect multiple namespaces to the same primary user-defined network (UDN) by creating a `ClusterUserDefinedNetwork` custom resource in the OpenShift Container Platform web console.
@@ -141,8 +183,8 @@ You can create an isolated primary network in your project namespace by using th
         subnets:
           - "10.0.0.0/24"
           - "2001:db8::/60"
-      ipam:
-        lifecycle: Persistent
+        ipam:
+          lifecycle: Persistent
     ```
 
     - Specifies the name of the `UserDefinedNetwork` custom resource.

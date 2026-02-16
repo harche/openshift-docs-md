@@ -80,6 +80,11 @@ Root: ./
 
 |post_installation_configuration:{index.md,configuring-private-cluster.md,cluster-tasks.md,node-tasks.md,post-install-network-configuration.md,post-install-image-config.md,post-install-storage-configuration.md,preparing-for-users.md,changing-cloud-credentials-configuration.md,configuring-alert-notifications.md,converting-to-disconnected.md}
 |post_installation_configuration/configuring-multi-arch-compute-machines:{multi-architecture-configuration.md,creating-multi-arch-compute-nodes-azure.md,creating-multi-arch-compute-nodes-aws.md,creating-multi-arch-compute-nodes-gcp.md,creating-multi-arch-compute-nodes-bare-metal.md,creating-multi-arch-compute-nodes-ibm-z.md,creating-multi-arch-compute-nodes-ibm-z-lpar.md,creating-multi-arch-compute-nodes-ibm-z-kvm.md,creating-multi-arch-compute-nodes-ibm-power.md,multi-architecture-compute-managing.md,multiarch-tuning-operator.md,multi-arch-tuning-operator-release-notes.md}
+|post_installation_configuration/day_2_core_cnf_clusters:{telco-day-2-welcome.md}
+|post_installation_configuration/day_2_core_cnf_clusters/updating:{update-welcome.md,update-api.md,update-ocp-update-prep.md,update-cnf-update-prep.md,update-before-the-update.md,update-completing-the-control-plane-only-update.md,update-completing-the-y-stream-update.md,update-completing-the-z-stream-update.md}
+|post_installation_configuration/day_2_core_cnf_clusters/troubleshooting:{troubleshooting-intro.md,troubleshooting-general-troubleshooting.md,troubleshooting-cluster-maintenance.md,troubleshooting-security.md,troubleshooting-cert-maintenance.md,troubleshooting-mco.md,troubleshooting-bmn-maintenance.md}
+|post_installation_configuration/day_2_core_cnf_clusters/observability:{observability.md}
+|post_installation_configuration/day_2_core_cnf_clusters/security:{security-basics.md,security-host-sec.md,security-sec-context-constraints.md}
 
 ### Updating clusters
 
@@ -297,7 +302,7 @@ Root: ./
 |ai_workloads:{index.md}
 |ai_workloads/kueue:{about-kueue.md,release-notes.md,install-kueue.md,install-disconnected.md,rbac-permissions.md,configuring-quotas.md,managing-workloads.md,monitoring-pending-workloads.md,using-cohorts.md,configuring-fairsharing.md,gangscheduling.md,running-kueue-jobs.md,getting-support.md}
 |ai_workloads/leader_worker_set:{index.md,lws-release-notes.md,lws-managing.md,lws-uninstalling.md}
-|ai_workloads/jobset_operator:{index.md,jobset-install.md,jobset-release-notes.md}
+|ai_workloads/jobset_operator:{index.md,jobset-release-notes.md,jobset-install.md,managing-jobset.md,jobset-uninstall.md}
 
 ### Edge computing
 
@@ -308,11 +313,6 @@ Root: ./
 |edge_computing/image_based_upgrade/preparing_for_image_based_upgrade:{cnf-image-based-upgrade-shared-container-partition.md,cnf-image-based-upgrade-install-operators.md,cnf-image-based-upgrade-generate-seed.md,cnf-image-based-upgrade-prep-resources.md,ztp-image-based-upgrade-prep-resources.md,cnf-image-based-upgrade-auto-image-cleanup.md}
 |edge_computing/image_base_install:{ibi-understanding-image-based-install.md,ibi-preparing-for-image-based-install.md,ibi-factory-image-based-install.md}
 |edge_computing/image_base_install/ibi_deploying_sno_clusters:{ibi-edge-image-based-install.md,ibi-edge-image-based-install-standalone.md}
-|edge_computing/day_2_core_cnf_clusters:{telco-day-2-welcome.md}
-|edge_computing/day_2_core_cnf_clusters/updating:{update-welcome.md,update-api.md,update-ocp-update-prep.md,update-cnf-update-prep.md,update-before-the-update.md,update-completing-the-control-plane-only-update.md,update-completing-the-y-stream-update.md,update-completing-the-z-stream-update.md}
-|edge_computing/day_2_core_cnf_clusters/troubleshooting:{troubleshooting-intro.md,troubleshooting-general-troubleshooting.md,troubleshooting-cluster-maintenance.md,troubleshooting-security.md,troubleshooting-cert-maintenance.md,troubleshooting-mco.md,troubleshooting-bmn-maintenance.md}
-|edge_computing/day_2_core_cnf_clusters/observability:{observability.md}
-|edge_computing/day_2_core_cnf_clusters/security:{security-basics.md,security-host-sec.md,security-sec-context-constraints.md}
 
 ### Specialized hardware and driver enablement
 
@@ -406,7 +406,7 @@ Root: ./
 |virt/release_notes:{virt-4-21-release-notes.md}
 |virt/getting_started:{virt-getting-started.md,virt-using-the-cli-tools.md}
 |virt/install:{preparing-cluster-for-virt.md,installing-virt.md,uninstalling-virt.md,virt-install-ibm-cloud-bm-nodes.md}
-|virt/post_installation_configuration:{virt-post-install-config.md,virt-node-placement-virt-components.md,virt-post-install-network-config.md,virt-post-install-storage-config.md,virt-perf-optimization.md,virt-configuring-higher-vm-workload-density.md,virt-configuring-certificate-rotation.md}
+|virt/post_installation_configuration:{virt-post-install-config.md,virt-node-placement-virt-components.md,virt-post-install-network-config.md,virt-post-install-storage-config.md,virt-self-validation-checkups.md,virt-perf-optimization.md,virt-configuring-higher-vm-workload-density.md,virt-configuring-certificate-rotation.md}
 |virt/updating:{upgrading-virt.md}
 |virt/creating_vm:{virt-creating-vms-from-instance-types.md,virt-creating-vms-from-templates.md,virt-configuring-ibm-secure-execution-vms-ibm-z.md,virt-creating-vms-aws-li-windows.md}
 |virt/creating_vms_advanced/creating_vms_advanced_web:{virt-creating-vms-from-rh-images-overview.md,virt-golden-image-heterogeneous-clusters.md}
@@ -415,11 +415,11 @@ Root: ./
 |virt/managing_vms:{virt-list-vms.md,virt-installing-qemu-guest-agent.md,virt-accessing-vm-consoles.md,virt-accessing-vm-ssh.md,virt-edit-vms.md,virt-edit-boot-order.md,virt-delete-vms.md,virt-enabling-disabling-vm-delete-protection.md,virt-exporting-vms.md,virt-manage-vmis.md,virt-controlling-vm-states.md,virt-using-vtpm-devices.md,virt-managing-vms-openshift-pipelines.md,virt-migrating-vms-in-single-cluster-to-different-storage-class.md}
 |virt/managing_vms/advanced_vm_management:{virt-working-with-resource-quotas-for-vms.md,virt-understanding-aaq-operator.md,virt-specifying-nodes-for-vms.md,virt-configuring-default-cpu-model.md,virt-uefi-mode-for-vms.md,virt-configuring-pxe-booting.md,virt-using-huge-pages-with-vms.md,virt-dedicated-resources-vm.md,virt-schedule-vms.md,virt-configuring-pci-passthrough.md,virt-configuring-virtual-gpus.md,virt-configuring-usb-host-passthrough.md,virt-enabling-descheduler-evictions.md,virt-high-availability-for-vms.md,virt-vm-control-plane-tuning.md,virt-assigning-compute-resources.md,virt-about-multi-queue.md,virt-managing-virtual-machines-by-using-openshift-gitops.md,virt-NUMA-topology.md}
 |virt/managing_vms/virtual_disks:{virt-hot-plugging-virtual-disks.md,virt-expanding-vm-disks.md,virt-configuring-shared-volumes-for-vms.md,virt-migrating-storage-class.md,virt-inserting-cd-roms-in-virtual-machines.md}
-|virt/vm_networking:{virt-networking-overview.md,virt-connecting-vm-to-default-pod-network.md,virt-connecting-vm-to-primary-udn.md,virt-connecting-vm-to-secondary-udn.md,virt-exposing-vm-with-service.md,virt-accessing-vm-internal-fqdn.md,virt-connecting-vm-to-linux-bridge.md,virt-connecting-vm-to-sriov.md,virt-using-dpdk-with-sriov.md,virt-connecting-vm-to-ovn-secondary-network.md,virt-hot-plugging-network-interfaces.md,virt-setting-interface-link-state.md,virt-connecting-vm-to-service-mesh.md,virt-dedicated-network-live-migration.md,virt-configuring-viewing-ips-for-vms.md,virt-accessing-vm-secondary-network-fqdn.md,virt-using-mac-address-pool-for-vms.md}
+|virt/vm_networking:{virt-networking-overview.md,virt-connecting-vm-to-default-pod-network.md,virt-connecting-vm-to-primary-udn.md,virt-connecting-vm-to-secondary-udn.md,virt-exposing-vm-with-service.md,virt-accessing-vm-internal-fqdn.md,virt-connecting-vm-to-linux-bridge.md,virt-connecting-vm-to-sriov.md,virt-using-dpdk-with-sriov.md,virt-connecting-vm-to-ovn-secondary-network.md,virt-hot-plugging-network-interfaces.md,virt-setting-interface-link-state.md,virt-connecting-vm-to-service-mesh.md,virt-configuring-physical-networks.md,virt-dedicated-network-live-migration.md,virt-configuring-viewing-ips-for-vms.md,virt-accessing-vm-secondary-network-fqdn.md,virt-using-mac-address-pool-for-vms.md}
 |virt/storage:{virt-storage-config-overview.md,virt-configuring-storage-profile.md,virt-automatic-bootsource-updates.md,virt-reserving-pvc-space-fs-overhead.md,virt-configuring-local-storage-with-hpp.md,virt-enabling-user-permissions-to-clone-datavolumes.md,virt-configuring-cdi-for-namespace-resourcequota.md,virt-preparing-cdi-scratch-space.md,virt-using-preallocation-for-datavolumes.md,virt-managing-data-volume-annotations.md,virt-storage-with-csi-paradigm.md,install-configure-fusion-access-san.md}
 |virt/live_migration:{virt-about-live-migration.md,virt-configuring-live-migration.md,virt-initiating-live-migration.md,virt-enabling-cclm-for-vms.md,virt-configuring-cross-cluster-live-migration-network.md,virt-about-mtv-providers.md}
 |virt/nodes:{virt-node-maintenance.md,virt-managing-node-labeling-obsolete-cpu-models.md,virt-preventing-node-reconciliation.md,virt-triggering-vm-failover-resolving-failed-node.md,virt-activating-ksm.md}
-|virt/monitoring:{virt-monitoring-overview.md,virt-running-cluster-checkups.md,virt-prometheus-queries.md,virt-exposing-custom-metrics-for-vms.md,virt-exposing-downward-metrics.md,virt-monitoring-vm-health.md,virt-runbooks.md}
+|virt/monitoring:{virt-monitoring-overview.md,virt-running-cluster-checkups.md,virt-latency-checkups.md,virt-storage-checkups.md,virt-prometheus-queries.md,virt-exposing-custom-metrics-for-vms.md,virt-exposing-downward-metrics.md,virt-monitoring-vm-health.md,virt-runbooks.md}
 |virt/support:{virt-support-overview.md,virt-collecting-virt-data.md,virt-troubleshooting.md}
 |virt/backup_restore:{virt-backup-restore-snapshots.md,virt-backup-restore-overview.md,virt-disaster-recovery.md}
 

@@ -1,11 +1,5 @@
 Install the JobSet Operator on OpenShift Container Platform to enable management of large-scale, coordinated computing workloads, giving your applications a unified API and failure recovery.
 
-<div class="important">
-
-The JobSet Operator is not currently available for OpenShift Container Platform 4.17. The Operator is planned to be released in the near future.
-
-</div>
-
 # Installing the JobSet Operator
 
 Install the JobSet Operator on OpenShift Container Platform using the web console to begin managing large-scale, coordinated computing workloads.
@@ -32,7 +26,7 @@ Install the JobSet Operator on OpenShift Container Platform using the web consol
 
     5.  On the **Install Operator** page:
 
-        1.  The **Update channel** is set to **tech-preview-v0.1**, which installs the latest stable release of JobSet Operator 0.1.
+        1.  The **Update channel** is set to **stable-v1.0**, which installs the latest stable release of JobSet Operator.
 
         2.  Under **Installation mode**, select **A specific namespace on the cluster**.
 

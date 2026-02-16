@@ -95,13 +95,13 @@ The following configuration limitation applies when you set the installation pro
 
 ## About edge compute pools
 
-Edge compute nodes are tainted compute nodes that run in AWS Wavelength Zones locations.
+The edge compute pool configuration is common between Amazon Web Services (AWS) Wavelength Zones locations. You can use the edge compute pool to create new labels to deploy applications onto Amazon Web Services (AWS) Wavelength Zones nodes. Edge compute nodes are tainted compute nodes that run in AWS Wavelength Zones locations.
 
 When deploying a cluster that uses Wavelength Zones, consider the following points:
 
 - Amazon EC2 instances in the Wavelength Zones are more expensive than Amazon EC2 instances in the Availability Zones.
 
-- The latency is lower between the applications running in AWS Wavelength Zones and the end user. A latency impact exists for some workloads if, for example, ingress traffic is mixed between Wavelength Zones and Availability Zones.
+- The latency is lower between the applications running in AWS Wavelength Zones and the user. A latency impact exists for some workloads if, for example, ingress traffic is mixed between Wavelength Zones and Availability Zones.
 
 <div class="important">
 
@@ -113,7 +113,7 @@ For more information, see [How AWS Wavelength work](https://docs.aws.amazon.com/
 
 </div>
 
-OpenShift Container Platform 4.12 introduced a new compute pool, *edge*, that is designed for use in remote zones. The edge compute pool configuration is common between AWS Wavelength Zones locations. Because of the type and size limitations of resources like EC2 and EBS on Wavelength Zones resources, the default instance type can vary from the traditional compute pool.
+OpenShift Container Platform 4.12 introduced a new compute pool, *edge*, that is designed for use in remote zones. The edge compute pool configuration is common between Amazon Web Services (AWS) Wavelength Zones locations. Because of the type and size limitations of resources like EC2 and EBS on Wavelength Zones resources, the default instance type can vary from the traditional compute pool.
 
 The default Elastic Block Store (EBS) for Wavelength Zones locations is `gp2`, which differs from the non-edge compute pool. The instance type used for each Wavelength Zones on an edge compute pool also might differ from other compute pools, depending on the instance offerings on the zone.
 
@@ -143,7 +143,7 @@ Before you install a cluster in an AWS Wavelength Zones environment, you must co
 
 ## Opting in to an AWS Wavelength Zones
 
-If you plan to create subnets in AWS Wavelength Zones, you must opt in to each zone group separately.
+Create a subnet in an Amazon Web Services (AWS) Wavelength Zones when you need workloads to run physically closer to users or data sources than a standard AWS Wavelength Zones. If you plan to create subnets in AWS Wavelength Zones, you must opt in to each zone group separately.
 
 - You have installed the AWS CLI.
 
@@ -185,7 +185,8 @@ If you plan to create subnets in AWS Wavelength Zones, you must opt in to each z
         --opt-in-status opted-in
     ```
 
-    - Replace `<value_of_GroupName>` with the name of the group of the Wavelength Zones where you want to create subnets. As an example for Wavelength Zones, specify `us-east-1-wl1` to use the zone `us-east-1-wl1-nyc-wlz-1` (US East New York).
+    `<value_of_GroupName>`
+    Replace with the name of the group of the Wavelength Zones where you want to create subnets. As an example for Wavelength Zones, specify `us-east-1-wl1` to use the zone `us-east-1-wl1-nyc-wlz-1` (US East New York).
 
 ## Obtaining an AWS Marketplace image
 
@@ -992,23 +993,29 @@ If you do not use the provided CloudFormation template to create your AWS infras
         ParameterKey=ClusterName,ParameterValue="${ClusterName}"
     ```
 
-    - `<stack_name>` is the name for the CloudFormation stack, such as `clusterName-vpc-carrier-gw`. You need the name of this stack if you remove the cluster.
+    where
 
-    - `<template>` is the relative path and the name of the CloudFormation template YAML file that you saved.
+    `<stack_name>`
+    The name for the CloudFormation stack, such as `clusterName-vpc-carrier-gw`. You need the name of this stack if you remove the cluster.
 
-    - `<VpcId>` is the VPC ID extracted from the CloudFormation stack output created in the section named "Creating a VPC in AWS".
+    `<template>`
+    The relative path and the name of the CloudFormation template YAML file that you saved.
 
-    - `<ClusterName>` is a custom value that prefixes to resources that the CloudFormation stack creates. You can use the same name that is defined in the `metadata.name` section of the `install-config.yaml` configuration file.
+    `<VpcId>`
+    The VPC ID extracted from the CloudFormation stack output created in the section named "Creating a VPC in AWS".
 
-      <div class="formalpara-title">
+    `<ClusterName>`
+    A custom value that prefixes to resources that the CloudFormation stack creates. You can use the same name that is defined in the `metadata.name` section of the `install-config.yaml` configuration file.
 
-      **Example output**
+    <div class="formalpara-title">
 
-      </div>
+    **Example output**
 
-      ``` terminal
-      arn:aws:cloudformation:us-east-1:123456789012:stack/<stack_name>/dbedae40-2fd3-11eb-820e-12a48460849f
-      ```
+    </div>
+
+    ``` terminal
+    arn:aws:cloudformation:us-east-1:123456789012:stack/<stack_name>/dbedae40-2fd3-11eb-820e-12a48460849f
+    ```
 
 - Confirm that the CloudFormation template components exist by running the following command:
 
@@ -1028,7 +1035,13 @@ If you do not use the provided CloudFormation template to create your AWS infras
 
 ## CloudFormation template for the VPC Carrier Gateway
 
-You can use the following CloudFormation template to deploy the Carrier Gateway on AWS Wavelength infrastructure.
+Use the CloudFormation template to deploy the Carrier Gateway on Amazon Web Services (AWS) Wavelength infrastructure. The template automates the creation of an AWS Carrier Gateway for OpenShift Container Platform. The template provisions an `AWS::EC2::CarrierGateway` and associates it with the cluster VPC to enable traffic routing to provide direct internet connectivity for resources in Wavelength Zones that use carrier networks.
+
+<div class="formalpara-title">
+
+**CloudFormation template for VPC Carrier Gateway**
+
+</div>
 
 ``` yaml
 AWSTemplateFormatVersion: 2010-09-09
@@ -1177,7 +1190,7 @@ arn:aws:cloudformation:us-east-1:123456789012:stack/<stack_name>/dbedae40-820e-1
 
 ## CloudFormation template for the VPC subnet
 
-You can use the following CloudFormation template to deploy the private and public subnets in a zone on Wavelength Zones infrastructure.
+Use the CloudFormation template to deploy the private and public subnets in a zone on Wavelength Zones infrastructure. The template provisions an `AWS::EC2::Subnet` and associates it with a specific Wavelength Zones and VPC route table to reduce latency.
 
 ``` yaml
 AWSTemplateFormatVersion: 2010-09-09

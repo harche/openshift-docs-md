@@ -67,7 +67,7 @@ Image mode for OpenShift allows you to use the following types of images to crea
                       https://example.com/files/systemd-udev-252-46.el9_4.x86_64.rpm \
                       https://example.com/files/systemd-rpm-macros-252-46.el9_4.noarch.rpm && \
         dnf clean all && \
-        ostree container commit
+        bootc container lint
   ```
 
   <div class="formalpara-title">
@@ -86,7 +86,7 @@ Image mode for OpenShift allows you to use the following types of images to crea
                     https://example.com/files/systemd-udev-252-46.el9_4.x86_64.rpm \
                     https://example.com/files/systemd-rpm-macros-252-46.el9_4.noarch.rpm && \
       dnf clean all && \
-      ostree container commit
+      bootc container lint
   ```
 
 - **RHEL packages**. You can download Red Hat Enterprise Linux (RHEL) packages from the [Red Hat Customer Portal](https://access.redhat.com/downloads/content/479/ver=/rhel---9/9.1/x86_64/packages), such as chrony, firewalld, and iputils.
@@ -102,7 +102,7 @@ Image mode for OpenShift allows you to use the following types of images to crea
   FROM quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256...
   # Install rsyslog package
   RUN dnf install -y rsyslog && \
-      ostree container commit
+      bootc container lint
   # Copy your custom configuration in
   ADD remote.conf /etc/rsyslog.d/remote.conf
   ```
@@ -132,7 +132,7 @@ Image mode for OpenShift allows you to use the following types of images to crea
   RUN dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm && \
       dnf install -y htop && \
       dnf clean all && \
-      ostree container commit
+      bootc container lint
   ```
 
   <div class="formalpara-title">
@@ -149,7 +149,7 @@ Image mode for OpenShift allows you to use the following types of images to crea
   RUN dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm && \
       dnf install -y htop && \
       dnf clean all && \
-      ostree container commit
+      bootc container lint
   ```
 
   This Containerfile installs the RHEL fish program. Because fish requires additional RHEL packages, the image must be built on an entitled RHEL host. For RHEL entitlements to work, you must copy the `etc-pki-entitlement` secret into the `openshift-machine-config-operator` namespace.
@@ -167,7 +167,7 @@ Image mode for OpenShift allows you to use the following types of images to crea
   # Install fish as third party package from EPEL
   RUN dnf install -y https://dl.fedoraproject.org/pub/epel/9/Everything/x86_64/Packages/f/fish-3.3.1-3.el9.x86_64.rpm && \
       dnf clean all && \
-      ostree container commit
+      bootc container lint
   ```
 
   <div class="formalpara-title">
@@ -184,7 +184,7 @@ Image mode for OpenShift allows you to use the following types of images to crea
   # Install fish as third party package from EPEL
   RUN dnf install -y https://dl.fedoraproject.org/pub/epel/9/Everything/x86_64/Packages/f/fish-3.3.1-3.el9.x86_64.rpm && \
       dnf clean all && \
-      ostree container commit
+      bootc container lint
   ```
 
 After you create the machine config, the Machine Config Operator (MCO) performs the following steps:
@@ -406,7 +406,7 @@ You can create only one `MachineOSConfig` CR for each machine config pool.
               FROM configs AS final
               RUN dnf install -y cowsay && \
                 dnf clean all && \
-                ostree container commit
+                bootc container lint
           imageBuilder:
             imageBuilderType: Job
           baseImagePullSecret:
@@ -726,10 +726,10 @@ After the changes have been rolled out, you can unpause the machine config pool.
             RUN rpm-ostree install rng-tools && \
                 systemctl enable rngd && \
                 rpm-ostree cleanup -m && \
-                ostree container commit
+                bootc container lint
 
             RUN rpm-ostree install tree && \
-                ostree container commit
+                bootc container lint
         imageBuilder:
           imageBuilderType: PodImageBuilder
         baseImagePullSecret:
@@ -1066,7 +1066,7 @@ As soon as you apply an out-of-cluster custom image to your cluster, you effecti
   #Install hotfix rpm
   RUN rpm-ostree override replace http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/Packages/kernel-{,core-,modules-,modules-core-,modules-extra-}5.14.0-295.el9.x86_64.rpm && \
       rpm-ostree cleanup -m && \
-      ostree container commit
+      bootc container lint
   ```
 
   - Specifies the RHCOS base image of your cluster.

@@ -4,6 +4,20 @@ The Kube Descheduler Operator allows you to evict pods so that they can be resch
 
 For more information, see [About the descheduler](../../../nodes/scheduling/descheduler/index.xml#nodes-descheduler-about_nodes-descheduler-about).
 
+# Release notes for Kube Descheduler Operator 5.3.2
+
+Review the release notes for Kube Descheduler Operator 5.3.2 to learn what is new and updated with this release.
+
+Issued: 12 February 2026
+
+The following advisory is available for the Kube Descheduler Operator 5.3.2:
+
+- [RHBA-2026:2641](https://access.redhat.com/errata/RHBA-2026:2641)
+
+## New features and enhancements
+
+- This release of the Kube Descheduler Operator updates the Kubernetes version to 1.34.
+
 # Release notes for Kube Descheduler Operator 5.3.1
 
 Review the release notes for Kube Descheduler Operator 5.3.1 to learn what is new and updated with this release.

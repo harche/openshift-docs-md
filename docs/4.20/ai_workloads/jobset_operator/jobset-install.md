@@ -1,13 +1,5 @@
 Install the JobSet Operator on OpenShift Container Platform to enable management of large-scale, coordinated computing workloads, giving your applications a unified API and failure recovery.
 
-<div class="important">
-
-JobSet Operator is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
 # Installing the JobSet Operator
 
 Install the JobSet Operator on OpenShift Container Platform using the web console to begin managing large-scale, coordinated computing workloads.
@@ -34,7 +26,7 @@ Install the JobSet Operator on OpenShift Container Platform using the web consol
 
     5.  On the **Install Operator** page:
 
-        1.  The **Update channel** is set to **tech-preview-v0.1**, which installs the latest stable release of JobSet Operator 0.1.
+        1.  The **Update channel** is set to **stable-v1.0**, which installs the latest stable release of JobSet Operator.
 
         2.  Under **Installation mode**, select **A specific namespace on the cluster**.
 

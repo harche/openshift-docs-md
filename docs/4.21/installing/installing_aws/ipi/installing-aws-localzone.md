@@ -81,13 +81,13 @@ The following configuration limitation applies when you set the installation pro
 
 ## About edge compute pools
 
-Edge compute nodes are tainted compute nodes that run in AWS Local Zones locations.
+The edge compute pool configuration is common between Amazon Web Services (AWS) Local Zones locations. You can use the edge compute pool to create new labels to deploy applications onto Amazon Web Services (AWS) Local Zones nodes. Edge compute nodes are tainted compute nodes that run in AWS Local Zones locations.
 
 When deploying a cluster that uses Local Zones, consider the following points:
 
 - Amazon EC2 instances in the Local Zones are more expensive than Amazon EC2 instances in the Availability Zones.
 
-- The latency is lower between the applications running in AWS Local Zones and the end user. A latency impact exists for some workloads if, for example, ingress traffic is mixed between Local Zones and Availability Zones.
+- The latency is lower between the applications running in AWS Local Zones and the user. A latency impact exists for some workloads if, for example, ingress traffic is mixed between Local Zones and Availability Zones.
 
 <div class="important">
 
@@ -99,7 +99,7 @@ For more information, see [How Local Zones work](https://docs.aws.amazon.com/loc
 
 </div>
 
-OpenShift Container Platform 4.12 introduced a new compute pool, *edge*, that is designed for use in remote zones. The edge compute pool configuration is common between AWS Local Zones locations. Because of the type and size limitations of resources like EC2 and EBS on Local Zones resources, the default instance type can vary from the traditional compute pool.
+OpenShift Container Platform 4.12 introduced a new compute pool, *edge*, that is designed for use in remote zones. The edge compute pool configuration is common between Amazon Web Services (AWS) Local Zones locations. Because of the type and size limitations of resources like EC2 and EBS on Local Zones resources, the default instance type can vary from the traditional compute pool.
 
 The default Elastic Block Store (EBS) for Local Zones locations is `gp2`, which differs from the non-edge compute pool. The instance type used for each Local Zones on an edge compute pool also might differ from other compute pools, depending on the instance offerings on the zone.
 
@@ -129,7 +129,7 @@ Before you install a cluster in an AWS Local Zones environment, you must configu
 
 ## Opting in to an AWS Local Zones
 
-If you plan to create subnets in AWS Local Zones, you must opt in to each zone group separately.
+Create a subnet in an Amazon Web Services (AWS) Local Zones when you need workloads to run physically closer to users or data sources than a standard AWS Local Zones. If you plan to create subnets in AWS Local Zones, you must opt in to each zone group separately.
 
 - You have installed the AWS CLI.
 
@@ -171,7 +171,8 @@ If you plan to create subnets in AWS Local Zones, you must opt in to each zone g
         --opt-in-status opted-in
     ```
 
-    - Replace `<value_of_GroupName>` with the name of the group of the Local Zones where you want to create subnets. For example, specify `us-east-1-nyc-1` to use the zone `us-east-1-nyc-1a` (US East New York).
+    `<value_of_GroupName>`
+    Replace with the name of the group of the Local Zones where you want to create subnets. For example, specify `us-east-1-nyc-1` to use the zone `us-east-1-nyc-1a` (US East New York).
 
 ## Obtaining an AWS Marketplace image
 
@@ -1091,7 +1092,7 @@ arn:aws:cloudformation:us-east-1:123456789012:stack/<stack_name>/dbedae40-820e-1
 
 ## CloudFormation template for the VPC subnet
 
-You can use the following CloudFormation template to deploy the private and public subnets in a zone on Local Zones infrastructure.
+Use the CloudFormation template to deploy the private and public subnets in a zone on Local Zones infrastructure. The template provisions an `AWS::EC2::Subnet` and associates it with a specific Local Zones and VPC route table to reduce latency.
 
 ``` yaml
 AWSTemplateFormatVersion: 2010-09-09

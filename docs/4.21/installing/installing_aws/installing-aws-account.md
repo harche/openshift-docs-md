@@ -1,4 +1,4 @@
-Before you can install OpenShift Container Platform, you must configure an Amazon Web Services (AWS) account.
+To ensure OpenShift Container Platform can successfully install and run the cluster in Amazon Web Services (AWS), you must configure an AWS account with the correct identity and permissions before you start the installation.
 
 # Configuring Route 53
 
@@ -824,8 +824,6 @@ Instead of allowing the installation program to create IAM instance profiles wit
     To change or update an IAM account after the cluster has been installed, see [RHOCP 4 AWS cloud-credentials access key is expired](https://access.redhat.com/solutions/4284011) (Red Hat Knowledgebase).
 
     </div>
-
-- [Deploying the cluster](../../installing/installing_aws/ipi/installing-aws-customizations.xml#installation-launching-installer_installing-aws-customizations)
 
 ## Using AWS IAM Analyzer to create policy templates
 

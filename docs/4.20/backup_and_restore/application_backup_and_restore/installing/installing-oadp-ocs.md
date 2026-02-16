@@ -1,4 +1,4 @@
-You install the OpenShift API for Data Protection (OADP) with OpenShift Data Foundation by installing the OADP Operator and configuring a backup location and a snapshot location. Then, you install the Data Protection Application.
+Install the OpenShift API for Data Protection (OADP) with OpenShift Data Foundation by installing the OADP Operator and configuring a backup location and a snapshot location. You then install the Data Protection Application.
 
 <div class="note">
 
@@ -57,8 +57,6 @@ The Data Protection Application requires a default `Secret`. Otherwise, the inst
 If you do not want to specify backup or snapshot locations during the installation, you can create a default `Secret` with an empty `credentials-velero` file.
 
 </div>
-
-- [Creating an Object Bucket Claim using the OpenShift Web Console](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/4.13/html/managing_hybrid_and_multicloud_resources/object-bucket-claim#creating-an-object-bucket-claim-using-the-openshift-web-console_rhodf).
 
 ## Creating a default Secret
 
@@ -143,10 +141,6 @@ Create separate `Secret` objects when your backup and snapshot locations require
     `custom_secret`
     Specifies the backup location `Secret` with custom name.
 
-# Configuring the Data Protection Application
-
-You can configure the Data Protection Application by setting Velero resource allocations or enabling self-signed CA certificates.
-
 ## Setting Velero CPU and memory resource allocations
 
 You set the CPU and memory resource allocations for the `Velero` pod by editing the `DataProtectionApplication` custom resource (CR) manifest.
@@ -194,8 +188,6 @@ You set the CPU and memory resource allocations for the `Velero` pod by editing 
   </div>
 
 Use the `nodeSelector` field to select which nodes can run the node agent. The `nodeSelector` field is the simplest recommended form of node selection constraint. Any label specified must match the labels on each node.
-
-For more details, see [Configuring node agents and node labels](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-ocs.xml#oadp-configuring-node-agents_installing-oadp-ocs).
 
 ### Adjusting Ceph CPU and memory requirements based on collected data
 
@@ -1114,6 +1106,10 @@ If you are not using `Restic`, `Kopia`, or `DataMover` for your backups, you can
 
 - [Installing the Data Protection Application with the `kubevirt` and `openshift` plugins](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-kubevirt.xml#oadp-installing-dpa_installing-oadp-kubevirt)
 
-- [Running tasks in pods using jobs](../../../nodes/jobs/nodes-nodes-jobs.xml#nodes-nodes-jobs).
+- [Running tasks in pods using jobs](../../../nodes/jobs/nodes-nodes-jobs.xml#nodes-nodes-jobs)
 
 - [Configuring the OpenShift API for Data Protection (OADP) with multiple backup storage locations](../../../backup_and_restore/application_backup_and_restore/installing/configuring-oadp-multiple-bsl.xml#configuring-oadp-multiple-bsl)
+
+- [Creating an Object Bucket Claim using the OpenShift Web Console](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/4.13/html/managing_hybrid_and_multicloud_resources/object-bucket-claim#creating-an-object-bucket-claim-using-the-openshift-web-console_rhodf)
+
+- [Configuring node agents and node labels](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-ocs.xml#oadp-configuring-node-agents_installing-oadp-ocs)

@@ -233,4 +233,6 @@ You can deploy the OpenShift Virtualization Operator by using the `oc` CLI.
 
 # Next steps
 
+- As a cluster administrator, you can run a [self validation checkup](../../virt/post_installation_configuration/virt-self-validation-checkups.xml#virt-self-validation-checkups) to verify that the environment is fully functional and self-sustained before you deploy production workloads.
+
 - The [hostpath provisioner](../../virt/storage/virt-configuring-local-storage-with-hpp.xml#virt-creating-hpp-basic-storage-pool_virt-configuring-local-storage-with-hpp) is a local storage provisioner designed for OpenShift Virtualization. If you want to configure local storage for virtual machines, you must enable the hostpath provisioner first.

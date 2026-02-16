@@ -1,4 +1,6 @@
-Multicloud Object Gateway (MCG) is a component of OpenShift Data Foundation, and you can configure it as a backup location in the `DataProtectionApplication` custom resource (CR). You can install the OpenShift API for Data Protection (OADP) with MCG by installing the OADP Operator. The Operator installs [Velero 1.16](https://velero.io/docs/v1.16/).
+Configure OpenShift API for Data Protection (OADP) to use Multicloud Object Gateway (MCG), a component of OpenShift Data Foundation, as a backup storage location by setting up credentials, secrets, and the Data Protection Application.
+
+You can install the OpenShift API for Data Protection (OADP) with MCG by installing the OADP Operator. The Operator installs [Velero 1.16](https://velero.io/docs/v1.16/).
 
 <div class="note">
 
@@ -12,7 +14,7 @@ To install the OADP Operator in a restricted network environment, you must first
 
 # Retrieving Multicloud Object Gateway credentials
 
-You must retrieve the Multicloud Object Gateway (MCG) bucket credentials to create a `Secret` custom resource (CR) for OpenShift API for Data Protection (OADP).
+Retrieve the Multicloud Object Gateway (MCG) bucket credentials to create a `Secret` custom resource (CR) for OpenShift API for Data Protection (OADP).
 
 <div class="note">
 
@@ -176,10 +178,6 @@ Create separate `Secret` objects when your backup and snapshot locations require
     `custom_secret`
     Specifies the backup location `Secret` with custom name.
 
-# Configuring the Data Protection Application
-
-You can configure the Data Protection Application by setting Velero resource allocations or enabling self-signed CA certificates.
-
 ## Setting Velero CPU and memory resource allocations
 
 You set the CPU and memory resource allocations for the `Velero` pod by editing the `DataProtectionApplication` custom resource (CR) manifest.
@@ -227,8 +225,6 @@ You set the CPU and memory resource allocations for the `Velero` pod by editing 
   </div>
 
 Use the `nodeSelector` field to select which nodes can run the node agent. The `nodeSelector` field is the simplest recommended form of node selection constraint. Any label specified must match the labels on each node.
-
-For more details, see [Configuring node agents and node labels](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-mcg.xml#oadp-configuring-node-agents_installing-oadp-mcg).
 
 ## Enabling self-signed CA certificates
 
@@ -1113,10 +1109,12 @@ If you are not using `Restic`, `Kopia`, or `DataMover` for your backups, you can
 
     You can set up a job to enable and disable the `nodeAgent` field in the `DataProtectionApplication` CR. For more information, see "Running tasks in pods using jobs".
 
-- [Performance tuning guide for Multicloud Object Gateway](https://access.redhat.com/solutions/6719951).
+- [Performance tuning guide for Multicloud Object Gateway](https://access.redhat.com/solutions/6719951)
 
 - [Installing the Data Protection Application with the `kubevirt` and `openshift` plugins](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-kubevirt.xml#oadp-installing-dpa_installing-oadp-kubevirt)
 
-- [Running tasks in pods using jobs](../../../nodes/jobs/nodes-nodes-jobs.xml#nodes-nodes-jobs).
+- [Running tasks in pods using jobs](../../../nodes/jobs/nodes-nodes-jobs.xml#nodes-nodes-jobs)
 
 - [Configuring the OpenShift API for Data Protection (OADP) with multiple backup storage locations](../../../backup_and_restore/application_backup_and_restore/installing/configuring-oadp-multiple-bsl.xml#configuring-oadp-multiple-bsl)
+
+- [Configuring node agents and node labels](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-mcg.xml#oadp-configuring-node-agents_installing-oadp-mcg)

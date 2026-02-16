@@ -53,6 +53,7 @@ OADP provides the following APIs:
 <td style="text-align: left;"><p>1.5</p></td>
 <td style="text-align: left;"><ul>
 <li><p>4.19</p></li>
+<li><p>4.20</p></li>
 </ul></td>
 <td style="text-align: left;"><p>17 June 2025</p></td>
 <td style="text-align: left;"><p>Release of 1.6</p></td>

@@ -78,6 +78,11 @@ Root: ./
 
 |post_installation_configuration:{index.md,configuring-private-cluster.md,cluster-tasks.md,node-tasks.md,post-install-network-configuration.md,post-install-image-config.md,post-install-storage-configuration.md,preparing-for-users.md,changing-cloud-credentials-configuration.md,configuring-alert-notifications.md,converting-to-disconnected.md}
 |post_installation_configuration/configuring-multi-arch-compute-machines:{multi-architecture-configuration.md,creating-multi-arch-compute-nodes-azure.md,creating-multi-arch-compute-nodes-aws.md,creating-multi-arch-compute-nodes-gcp.md,creating-multi-arch-compute-nodes-bare-metal.md,creating-multi-arch-compute-nodes-ibm-z.md,creating-multi-arch-compute-nodes-ibm-z-lpar.md,creating-multi-arch-compute-nodes-ibm-z-kvm.md,creating-multi-arch-compute-nodes-ibm-power.md,multi-architecture-compute-managing.md,multiarch-tuning-operator.md,multi-arch-tuning-operator-release-notes.md}
+|post_installation_configuration/day_2_core_cnf_clusters:{telco-day-2-welcome.md}
+|post_installation_configuration/day_2_core_cnf_clusters/updating:{update-welcome.md,update-api.md,update-ocp-update-prep.md,update-cnf-update-prep.md,update-before-the-update.md,update-completing-the-control-plane-only-update.md,update-completing-the-y-stream-update.md,update-completing-the-z-stream-update.md}
+|post_installation_configuration/day_2_core_cnf_clusters/troubleshooting:{troubleshooting-intro.md,troubleshooting-general-troubleshooting.md,troubleshooting-cluster-maintenance.md,troubleshooting-security.md,troubleshooting-cert-maintenance.md,troubleshooting-mco.md,troubleshooting-bmn-maintenance.md}
+|post_installation_configuration/day_2_core_cnf_clusters/observability:{observability.md}
+|post_installation_configuration/day_2_core_cnf_clusters/security:{security-basics.md,security-host-sec.md,security-sec-context-constraints.md}
 
 ### Updating clusters
 
@@ -300,7 +305,7 @@ Root: ./
 |ai_workloads:{index.md}
 |ai_workloads/kueue:{about-kueue.md,release-notes.md,install-kueue.md,install-disconnected.md,rbac-permissions.md,configuring-quotas.md,managing-workloads.md,monitoring-pending-workloads.md,using-cohorts.md,configuring-fairsharing.md,gangscheduling.md,running-kueue-jobs.md,getting-support.md}
 |ai_workloads/leader_worker_set:{index.md,lws-release-notes.md,lws-managing.md,lws-uninstalling.md}
-|ai_workloads/jobset_operator:{index.md,jobset-install.md,jobset-release-notes.md}
+|ai_workloads/jobset_operator:{index.md,jobset-release-notes.md,jobset-install.md,managing-jobset.md,jobset-uninstall.md}
 
 ### Edge computing
 
@@ -311,11 +316,6 @@ Root: ./
 |edge_computing/image_based_upgrade/preparing_for_image_based_upgrade:{cnf-image-based-upgrade-shared-container-partition.md,cnf-image-based-upgrade-install-operators.md,cnf-image-based-upgrade-generate-seed.md,cnf-image-based-upgrade-prep-resources.md,ztp-image-based-upgrade-prep-resources.md,cnf-image-based-upgrade-auto-image-cleanup.md}
 |edge_computing/image_base_install:{ibi-understanding-image-based-install.md,ibi-preparing-for-image-based-install.md,ibi-factory-image-based-install.md}
 |edge_computing/image_base_install/ibi_deploying_sno_clusters:{ibi-edge-image-based-install.md,ibi-edge-image-based-install-standalone.md}
-|edge_computing/day_2_core_cnf_clusters:{telco-day-2-welcome.md}
-|edge_computing/day_2_core_cnf_clusters/updating:{update-welcome.md,update-api.md,update-ocp-update-prep.md,update-cnf-update-prep.md,update-before-the-update.md,update-completing-the-control-plane-only-update.md,update-completing-the-y-stream-update.md,update-completing-the-z-stream-update.md}
-|edge_computing/day_2_core_cnf_clusters/troubleshooting:{troubleshooting-intro.md,troubleshooting-general-troubleshooting.md,troubleshooting-cluster-maintenance.md,troubleshooting-security.md,troubleshooting-cert-maintenance.md,troubleshooting-mco.md,troubleshooting-bmn-maintenance.md}
-|edge_computing/day_2_core_cnf_clusters/observability:{observability.md}
-|edge_computing/day_2_core_cnf_clusters/security:{security-basics.md,security-host-sec.md,security-sec-context-constraints.md}
 
 ### Specialized hardware and driver enablement
 

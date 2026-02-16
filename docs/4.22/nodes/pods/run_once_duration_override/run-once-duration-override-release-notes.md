@@ -6,8 +6,22 @@ These release notes track the development of the Run Once Duration Override Oper
 
 For an overview of the Run Once Duration Override Operator, see [About the Run Once Duration Override Operator](../../../nodes/pods/run_once_duration_override/index.xml#run-once-about_run-once-duration-override-about).
 
-<div class="important">
+# Run Once Duration Override Operator 1.4.0
 
-The Run Once Duration Override Operator is not currently available for OpenShift Container Platform 4.17. The Operator is planned to be released in the near future.
+Review the features, enhancements, and advisory for the release of Run Once Duration Override Operator 1.4.0.
 
-</div>
+Issued: 12 February 2026
+
+The following advisory is available for the Run Once Duration Override Operator 1.4.0:
+
+- [RHBA-2026:2649](https://access.redhat.com/errata/RHBA-2026:2649)
+
+## New features and enhancements
+
+- This release of the Run Once Duration Override Operator updates the Kubernetes version to 1.34.
+
+- Users should set `.spec.managementState: Managed` in Run Once Duration Override Operator 1.4.0 custom resources (CR). In a future release, the `spec.managementState` field in the Run Once Duration Override Operator CR will be required to be set to `Managed`.
+
+## Bug fixes
+
+- This release of the Run Once Duration Override Operator addresses several Common Vulnerabilities and Exposures (CVEs).

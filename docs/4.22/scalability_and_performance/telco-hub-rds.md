@@ -80,7 +80,7 @@ The hub cluster provides managed cluster installation, configuration, observabil
 
   - [Updating managed clusters with the Topology Aware Lifecycle Manager](../edge_computing/cnf-talm-for-cluster-upgrades.xml#cnf-talm-for-cluster-updates)
 
-  - [Upgrading a telco core CNF cluster](../edge_computing/day_2_core_cnf_clusters/telco-day-2-welcome.xml#telco-day-2-welcome)
+  - [Upgrading a telco core CNF cluster](../post_installation_configuration/day_2_core_cnf_clusters/telco-day-2-welcome.xml#telco-day-2-welcome)
 
 - For more information about declarative cluster provisioning with GitOps ZTP see:
 

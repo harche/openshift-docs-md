@@ -1836,6 +1836,42 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHSA-2026:2119 - OpenShift Container Platform 4.17.14 fixed issues advisory
+
+Issued: 11 February 2026
+
+OpenShift Container Platform release 4.17.14 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026-2119](https://access.redhat.com/errata/RHSA-2026:2119) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:2076](https://access.redhat.com/errata/RHBA-2026:2076) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.20.14 --pullspecs
+```
+
+### Fixed issues
+
+The following issues are fixed for this release:
+
+- Before this update, Operator deployment templates with `hostUsers: false` values were not selected by Cluster Version Operator (CVO), and caused deployments to block user access configuration. As a consequence, deployments without `hostUsers: false` affected user access. With this release, the `hostUsers` issue in Operator deployment templates is fixed, and ensures that they are selected by CVO. As a result, Operator deployment templates with `hostUsers: false` are correctly applied, ensuring consistent user access configurations. ([OCPBUGS-64828](https://issues.redhat.com/browse/OCPBUGS-64828))
+
+- Before this update, an invalid `installConfig Override` message caused a registration failure, leading to skipped re-registration in the `assisted-service` component. As a consequence, the installation failed. With this release, the issue with the invalid `installConfig Override` messages is fixed. As a result, `assisted-service` installations do not fail due to invalid `installConfig Override` messages. ([OCPBUGS-65901](https://issues.redhat.com/browse/OCPBUGS-65901))
+
+- Before this update, the software catalog in the **Developer** view encountered an issue due to missing `Devfiles` data when a disconnected OpenShift Container Platform cluster had the `Cluster Samples` Operator removed. As a consequence, users navigating to the **+Add** page encountered an empty software catalog with an error message. With this release, the `Devfiles` data lookup in the software catalog is disabled, avoiding the error on the **+Add** page and resolving the `Error loading Catalog items` message. ([OCPBUGS-74158](https://issues.redhat.com/browse/OCPBUGS-74158))
+
+- Before this update, the upgrade to OpenShift Container Platform 4.18 caused a loss of network connectivity for virtual machine (VM) pods using `ovn-k8s-cni-overlay` `localnet` network address translations (NAD). As a consequence, VM pod network connectivity was lost during the upgrade. With this release, the fix maintains network connectivity during cluster upgrades to OpenShift Container Platform 4.18 for VMs using `ovn-k8s-cni-overlay` `localnet` NADs. As a result, the upgrade does not cause a loss of network connectivity. ([OCPBUGS-74268](https://issues.redhat.com/browse/OCPBUGS-74268))
+
+- Before this update, static pods were terminated prematurely because the kubelet agent did not recognize the `priorityClassName` field. As a consequence, premature termination of static pods led to long shutdown times and storage layer issues in single-node OpenShift environments. With this release, static pods acknowledge the `priorityClassName` field for shutdown order in single-node OpenShift environments. As a result, static pods follow shutdown order, reducing long shutdown times and storage layer issues. ([OCPBUGS-74624](https://issues.redhat.com/browse/OCPBUGS-74624))
+
+- Before this update, Google Cloud installations failed due to unspecified zones in `install-config` file for regions with AI zones. With this release, the installation program supports AI zones in the `us-south1` and `us-central1` regions, and prevents installation failures. ([OCPBUGS-74674](https://issues.redhat.com/browse/OCPBUGS-74674))
+
+- Before this update, the `Jobset-controller-manager` pod lacked the necessary permissions to list pods in the cluster scope, and prevented users from accessing the required pods. With this release, the `Jobset-controller-manager` pod is granted full access to the required resources, resolving the pod readiness issue and improving user experience. ([OCPBUGS-75881](https://issues.redhat.com/browse/OCPBUGS-75881))
+
+### Updating
+
+To update an OpenShift Container Platform 4.20 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHSA-2026:1555 - OpenShift Container Platform 4.17.13 bug fix and security update advisory
 
 Issued: 4 February 2026

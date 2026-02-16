@@ -312,6 +312,31 @@
 - [Changing the cloud provider credentials configuration](post_installation_configuration/changing-cloud-credentials-configuration.md)
 - [Configuring alert notifications](post_installation_configuration/configuring-alert-notifications.md)
 - [Converting a connected cluster to a disconnected cluster](post_installation_configuration/converting-to-disconnected.md)
+- **Day 2 operations for OpenShift Container Platform clusters**
+  - [Day 2 operations for OpenShift Container Platform clusters](post_installation_configuration/day_2_core_cnf_clusters/telco-day-2-welcome.md)
+  - **Upgrading OpenShift Container Platform clusters**
+    - [Upgrading OpenShift Container Platform clusters](post_installation_configuration/day_2_core_cnf_clusters/updating/update-welcome.md)
+    - [OpenShift Container Platform API compatibility](post_installation_configuration/day_2_core_cnf_clusters/updating/update-api.md)
+    - [Preparing for the cluster update](post_installation_configuration/day_2_core_cnf_clusters/updating/update-ocp-update-prep.md)
+    - [Managing application pods during the cluster update](post_installation_configuration/day_2_core_cnf_clusters/updating/update-cnf-update-prep.md)
+    - [Before you update the cluster](post_installation_configuration/day_2_core_cnf_clusters/updating/update-before-the-update.md)
+    - [Completing the Control Plane Only update](post_installation_configuration/day_2_core_cnf_clusters/updating/update-completing-the-control-plane-only-update.md)
+    - [Completing the y-stream update](post_installation_configuration/day_2_core_cnf_clusters/updating/update-completing-the-y-stream-update.md)
+    - [Completing the z-stream update](post_installation_configuration/day_2_core_cnf_clusters/updating/update-completing-the-z-stream-update.md)
+  - **Troubleshooting and maintaining OpenShift Container Platform clusters**
+    - [Troubleshooting and maintaining OpenShift Container Platform clusters](post_installation_configuration/day_2_core_cnf_clusters/troubleshooting/troubleshooting-intro.md)
+    - [General troubleshooting](post_installation_configuration/day_2_core_cnf_clusters/troubleshooting/troubleshooting-general-troubleshooting.md)
+    - [Cluster maintenance](post_installation_configuration/day_2_core_cnf_clusters/troubleshooting/troubleshooting-cluster-maintenance.md)
+    - [Security](post_installation_configuration/day_2_core_cnf_clusters/troubleshooting/troubleshooting-security.md)
+    - [Certificate maintenance](post_installation_configuration/day_2_core_cnf_clusters/troubleshooting/troubleshooting-cert-maintenance.md)
+    - [Machine Config Operator](post_installation_configuration/day_2_core_cnf_clusters/troubleshooting/troubleshooting-mco.md)
+    - [Bare-metal node maintenance](post_installation_configuration/day_2_core_cnf_clusters/troubleshooting/troubleshooting-bmn-maintenance.md)
+  - **Observability**
+    - [Observability in OpenShift Container Platform](post_installation_configuration/day_2_core_cnf_clusters/observability/observability.md)
+  - **Security**
+    - [Security basics](post_installation_configuration/day_2_core_cnf_clusters/security/security-basics.md)
+    - [Host security](post_installation_configuration/day_2_core_cnf_clusters/security/security-host-sec.md)
+    - [Security context constraints](post_installation_configuration/day_2_core_cnf_clusters/security/security-sec-context-constraints.md)
 
 ### Updating clusters
 
@@ -1380,8 +1405,10 @@
   - [Uninstalling the Leader Worker Set Operator](ai_workloads/leader_worker_set/lws-uninstalling.md)
 - **JobSet Operator**
   - [Jobset Operator overview](ai_workloads/jobset_operator/index.md)
-  - [Installing the JobSet Operator](ai_workloads/jobset_operator/jobset-install.md)
   - [JobSet Operator release notes](ai_workloads/jobset_operator/jobset-release-notes.md)
+  - [Installing the JobSet Operator](ai_workloads/jobset_operator/jobset-install.md)
+  - [Managing workloads with the JobSet Operator](ai_workloads/jobset_operator/managing-jobset.md)
+  - [Uninstalling the JobSet Operator](ai_workloads/jobset_operator/jobset-uninstall.md)
 
 ### Edge computing
 
@@ -1424,31 +1451,6 @@
   - **Deploying single-node OpenShift clusters**
     - [Deploying managed single-node OpenShift using the IBI Operator](edge_computing/image_base_install/ibi_deploying_sno_clusters/ibi-edge-image-based-install.md)
     - [Deploying single-node OpenShift using the installation program](edge_computing/image_base_install/ibi_deploying_sno_clusters/ibi-edge-image-based-install-standalone.md)
-- **Day 2 operations for OpenShift Container Platform clusters**
-  - [Day 2 operations for OpenShift Container Platform clusters](edge_computing/day_2_core_cnf_clusters/telco-day-2-welcome.md)
-  - **Upgrading OpenShift Container Platform clusters**
-    - [Upgrading OpenShift Container Platform clusters](edge_computing/day_2_core_cnf_clusters/updating/update-welcome.md)
-    - [OpenShift Container Platform API compatibility](edge_computing/day_2_core_cnf_clusters/updating/update-api.md)
-    - [Preparing for the cluster update](edge_computing/day_2_core_cnf_clusters/updating/update-ocp-update-prep.md)
-    - [Managing application pods during the cluster update](edge_computing/day_2_core_cnf_clusters/updating/update-cnf-update-prep.md)
-    - [Before you update the cluster](edge_computing/day_2_core_cnf_clusters/updating/update-before-the-update.md)
-    - [Completing the Control Plane Only update](edge_computing/day_2_core_cnf_clusters/updating/update-completing-the-control-plane-only-update.md)
-    - [Completing the y-stream update](edge_computing/day_2_core_cnf_clusters/updating/update-completing-the-y-stream-update.md)
-    - [Completing the z-stream update](edge_computing/day_2_core_cnf_clusters/updating/update-completing-the-z-stream-update.md)
-  - **Troubleshooting and maintaining OpenShift Container Platform clusters**
-    - [Troubleshooting and maintaining OpenShift Container Platform clusters](edge_computing/day_2_core_cnf_clusters/troubleshooting/troubleshooting-intro.md)
-    - [General troubleshooting](edge_computing/day_2_core_cnf_clusters/troubleshooting/troubleshooting-general-troubleshooting.md)
-    - [Cluster maintenance](edge_computing/day_2_core_cnf_clusters/troubleshooting/troubleshooting-cluster-maintenance.md)
-    - [Security](edge_computing/day_2_core_cnf_clusters/troubleshooting/troubleshooting-security.md)
-    - [Certificate maintenance](edge_computing/day_2_core_cnf_clusters/troubleshooting/troubleshooting-cert-maintenance.md)
-    - [Machine Config Operator](edge_computing/day_2_core_cnf_clusters/troubleshooting/troubleshooting-mco.md)
-    - [Bare-metal node maintenance](edge_computing/day_2_core_cnf_clusters/troubleshooting/troubleshooting-bmn-maintenance.md)
-  - **Observability**
-    - [Observability in OpenShift Container Platform](edge_computing/day_2_core_cnf_clusters/observability/observability.md)
-  - **Security**
-    - [Security basics](edge_computing/day_2_core_cnf_clusters/security/security-basics.md)
-    - [Host security](edge_computing/day_2_core_cnf_clusters/security/security-host-sec.md)
-    - [Security context constraints](edge_computing/day_2_core_cnf_clusters/security/security-sec-context-constraints.md)
 
 ### Specialized hardware and driver enablement
 
@@ -1991,6 +1993,7 @@
   - [Node placement rules](virt/post_installation_configuration/virt-node-placement-virt-components.md)
   - [Network configuration](virt/post_installation_configuration/virt-post-install-network-config.md)
   - [Storage configuration](virt/post_installation_configuration/virt-post-install-storage-config.md)
+  - [Self validation checkups](virt/post_installation_configuration/virt-self-validation-checkups.md)
   - [Performance optimization](virt/post_installation_configuration/virt-perf-optimization.md)
   - [Configuring higher VM workload density](virt/post_installation_configuration/virt-configuring-higher-vm-workload-density.md)
   - [Configuring certificate rotation](virt/post_installation_configuration/virt-configuring-certificate-rotation.md)
@@ -2068,6 +2071,7 @@
   - [Hot plugging secondary network interfaces](virt/vm_networking/virt-hot-plugging-network-interfaces.md)
   - [Setting VM interface link state](virt/vm_networking/virt-setting-interface-link-state.md)
   - [Connecting a VM to a service mesh](virt/vm_networking/virt-connecting-vm-to-service-mesh.md)
+  - [Configuring physical networks](virt/vm_networking/virt-configuring-physical-networks.md)
   - [Configuring a dedicated network for live migration](virt/vm_networking/virt-dedicated-network-live-migration.md)
   - [Configuring and viewing IP addresses](virt/vm_networking/virt-configuring-viewing-ips-for-vms.md)
   - [Accessing a VM by using its external FQDN](virt/vm_networking/virt-accessing-vm-secondary-network-fqdn.md)
@@ -2101,6 +2105,8 @@
 - **Monitoring**
   - [Monitoring overview](virt/monitoring/virt-monitoring-overview.md)
   - [Cluster checkup framework](virt/monitoring/virt-running-cluster-checkups.md)
+  - [Latency checkups](virt/monitoring/virt-latency-checkups.md)
+  - [Storage checkups](virt/monitoring/virt-storage-checkups.md)
   - [Prometheus queries for virtual resources](virt/monitoring/virt-prometheus-queries.md)
   - [Virtual machine custom metrics](virt/monitoring/virt-exposing-custom-metrics-for-vms.md)
   - [Virtual machine downward metrics](virt/monitoring/virt-exposing-downward-metrics.md)
