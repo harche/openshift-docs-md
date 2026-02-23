@@ -36,6 +36,12 @@ The Container Storage Interface (CSI) Volume Admission plugin allows you to rest
 
 To use the CSI Volume Admission plugin, administrators add the `security.openshift.io/csi-ephemeral-volume-profile` label to a `CSIDriver` object, which declares the CSI driver’s effective pod security profile when it is used to provide CSI ephemeral volumes, as shown in the following example:
 
+<div class="formalpara-title">
+
+**Example CSIDriver YAML file enabling using of the CSI Admission plugin**
+
+</div>
+
 ``` yaml
 kind: CSIDriver
 metadata:
@@ -44,7 +50,7 @@ metadata:
     security.openshift.io/csi-ephemeral-volume-profile: restricted
 ```
 
-- CSI driver object YAML file with the `csi-ephemeral-volume-profile` label set to "restricted"
+- `metadata.labels.security.openshift.io/csi-ephemeral-volume-profile`: Setting the `csi-ephemeral-volume-profile` label to "restricted" enables use of the CSI Admission plugin.
 
 This “effective profile” communicates that a pod can use the CSI driver to mount CSI ephemeral volumes when the pod’s namespace is governed by a pod security standard.
 
@@ -94,7 +100,7 @@ The CSI drivers that ship with OpenShift Container Platform and support ephemera
 
 - Azure File CSI driver: privileged
 
-An admin can change the default value of the label if desired.
+If desired, an admin can change the default value of the label.
 
 # Embedding a CSI inline ephemeral volume in the pod specification
 
@@ -102,11 +108,11 @@ You can embed a CSI inline ephemeral volume in the `Pod` specification in OpenSh
 
 1.  Create the `Pod` object definition and save it to a file.
 
-2.  Embed the CSI inline ephemeral volume in the file.
+2.  Embed the CSI inline ephemeral volume in the file as in the following pod YAML file:
 
     <div class="formalpara-title">
 
-    **my-csi-app.yaml**
+    **Example pod YAML file with embedded ephemeral volume**
 
     </div>
 
@@ -131,9 +137,9 @@ You can embed a CSI inline ephemeral volume in the `Pod` specification in OpenSh
               foo: bar
     ```
 
-    - The name of the volume that is used by pods.
+    - `spec.volumes.name`: The name of the volume that is used by pods.
 
-3.  Create the object definition file that you saved in the previous step.
+3.  Create the object definition file that you saved in the previous step by running the following command.
 
     ``` terminal
     $ oc create -f my-csi-app.yaml

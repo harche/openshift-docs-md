@@ -1,47 +1,6 @@
-To create an AWS cluster with multi-architecture compute machines, you must first create a single-architecture AWS installer-provisioned cluster with the multi-architecture installer binary. For more information on AWS installations, see [Installing a cluster on AWS with customizations](../../installing/installing_aws/ipi/installing-aws-customizations.xml#installing-aws-customizations).
+To deploy a cluster on Amazon Web Services (AWS) with multi-architecture compute machines, you must first create a single-architecture installer-provisioned cluster that uses the multi-architecture installer binary.
 
-You can also migrate your current cluster with single-architecture compute machines to a cluster with multi-architecture compute machines. For more information, see [Migrating to a cluster with multi-architecture compute machines](../../updating/updating_a_cluster/migrating-to-multi-payload.xml#migrating-to-multi-payload).
-
-After creating a multi-architecture cluster, you can add nodes with different architectures to the cluster.
-
-# Verifying cluster compatibility
-
-Before you can start adding compute nodes of different architectures to your cluster, you must verify that your cluster is multi-architecture compatible.
-
-- You installed the OpenShift CLI (`oc`).
-
-1.  Log in to the OpenShift CLI (`oc`).
-
-2.  You can check that your cluster uses the architecture payload by running the following command:
-
-    ``` terminal
-    $ oc adm release info -o jsonpath="{ .metadata.metadata}"
-    ```
-
-- If you see the following output, your cluster is using the multi-architecture payload:
-
-  ``` terminal
-  {
-   "release.openshift.io/architecture": "multi",
-   "url": "https://access.redhat.com/errata/<errata_version>"
-  }
-  ```
-
-  You can then begin adding multi-arch compute nodes to your cluster.
-
-- If you see the following output, your cluster is not using the multi-architecture payload:
-
-  ``` terminal
-  {
-   "url": "https://access.redhat.com/errata/<errata_version>"
-  }
-  ```
-
-  <div class="important">
-
-  To migrate your cluster so the cluster supports multi-architecture compute machines, follow the procedure in [Migrating to a cluster with multi-architecture compute machines](../../updating/updating_a_cluster/migrating-to-multi-payload.xml#migrating-to-multi-payload).
-
-  </div>
+You can also migrate your current cluster with single-architecture compute machines to a cluster with multi-architecture compute machines. After creating a multi-architecture cluster, you can add nodes with different architectures to the cluster.
 
 # Adding a multi-architecture compute machine set to your AWS cluster
 
@@ -61,11 +20,11 @@ Before adding a secondary architecture node to your cluster, it is recommended t
 
 - You installed the OpenShift CLI (`oc`).
 
-- You used the installation program to create an 64-bit ARM or 64-bit x86 single-architecture AWS cluster with the multi-architecture installer binary.
+- You used the installation program to create a 64-bit ARM or 64-bit x86 single-architecture cluster with the multi-architecture installer binary.
 
 1.  Log in to the OpenShift CLI (`oc`).
 
-2.  Create a YAML file, and add the configuration to create a compute machine set to control the 64-bit ARM or 64-bit x86 compute nodes in your cluster.
+2.  Create a YAML file and add the configuration to create a compute machine set to control the 64-bit ARM or 64-bit x86 compute nodes in your cluster.
 
     <div class="formalpara-title">
 
@@ -137,30 +96,39 @@ Before adding a secondary architecture node to your cluster, it is recommended t
                 name: worker-user-data
     ```
 
-    - Specify the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI (`oc`) installed, you can obtain the infrastructure ID by running the following command:
+    where:
 
-      ``` terminal
-      $ oc get -o jsonpath="{.status.infrastructureName}{'\n'}" infrastructure cluster
-      ```
+    `<infrastructure_id>`
+    Specifies the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI (`oc`) installed, you can obtain the infrastructure ID by running the following command:
 
-    - Specify the infrastructure ID, role node label, and zone.
+    ``` terminal
+    $ oc get -o jsonpath="{.status.infrastructureName}{'\n'}" infrastructure cluster
+    ```
 
-    - Specify the role node label to add.
+    `<role>-<zone>`
+    Specifies the infrastructure ID, role node label, and zone.
 
-    - Specify a Red Hat Enterprise Linux CoreOS (RHCOS) Amazon Machine Image (AMI) for your AWS region for the nodes. The RHCOS AMI must be compatible with the machine architecture.
+    `<role>`
+    Specifies the role node label to add.
 
-      ``` terminal
-      $ oc get configmap/coreos-bootimages \
-            -n openshift-machine-config-operator \
-            -o jsonpath='{.data.stream}' | jq \
-            -r '.architectures.<arch>.images.aws.regions."<region>".image'
-      ```
+    `ami.id`
+    Specifies a Red Hat Enterprise Linux CoreOS (RHCOS) Amazon Machine Image (AMI) for your AWS region for the nodes. The RHCOS AMI must be compatible with the machine architecture.
 
-    - Specify a machine type that aligns with the CPU architecture of the chosen AMI. For more information, see "Tested instance types for AWS 64-bit ARM"
+    ``` terminal
+    $ oc get configmap/coreos-bootimages \
+          -n openshift-machine-config-operator \
+          -o jsonpath='{.data.stream}' | jq \
+          -r '.architectures.<arch>.images.aws.regions."<region>".image'
+    ```
 
-    - Specify the zone. For example, `us-east-1a`. Ensure that the zone you select has machines with the required architecture.
+    `instanceType`
+    Specifies a machine type that aligns with the CPU architecture of the chosen AMI. For more information, see "Tested instance types for AWS 64-bit ARM".
 
-    - Specify the region. For example, `us-east-1`. Ensure that the zone you select has machines with the required architecture.
+    `availabilityZone`
+    Specifies the zone. For example, `us-east-1a`. Ensure that the zone you select has machines with the required architecture.
+
+    `region`
+    Specifies the region. For example, `us-east-1`. Ensure that the zone you select has machines with the required architecture.
 
 3.  Create the compute machine set by running the following command:
 
@@ -172,7 +140,7 @@ Before adding a secondary architecture node to your cluster, it is recommended t
 
 <!-- -->
 
-1.  View the list of compute machine sets by running the following command:
+1.  Verify that the new machines are running by running the following command:
 
     ``` terminal
     $ oc get machineset -n openshift-machine-api
@@ -196,6 +164,12 @@ Before adding a secondary architecture node to your cluster, it is recommended t
     ``` terminal
     $ oc get nodes
     ```
+
+# Additional resources
+
+- [Installing a cluster on AWS with customizations](../../installing/installing_aws/ipi/installing-aws-customizations.xml#installing-aws-customizations)
+
+- [Migrating to a cluster with multi-architecture compute machines](../../updating/updating_a_cluster/migrating-to-multi-payload.xml#migrating-to-multi-payload)
 
 - [Tested instance types for AWS 64-bit ARM](../../installing/installing_aws/ipi/installing-aws-customizations.xml#installation-aws-arm-tested-machine-types_installing-aws-customizations)
 

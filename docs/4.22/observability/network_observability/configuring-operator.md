@@ -382,34 +382,31 @@ The following settings can be used to fine-tune performance after the Network Ob
 
 ## Resource considerations
 
-Review the resource considerations table, which provides baseline examples for configuration settings, such as eBPF memory limits and LokiStack size, tailored to various cluster workload sizes.
-
-The following table outlines examples of resource considerations for clusters with certain workload sizes.
-
-<div class="important">
+The Network Observability Operator configuration can be adjusted based on the cluster workload size. Use the following baseline examples to determine the appropriate resource limits and configuration settings for the environment.
 
 The examples outlined in the table demonstrate scenarios that are tailored to specific workloads. Consider each example only as a baseline from which adjustments can be made to accommodate your workload needs.
 
-</div>
+The test beds used for these recommendations are:
 
-|                                                   | Extra small (10 nodes)               | Small (25 nodes)                      | Large (250 nodes) <sup>\[2\]</sup>    |
-|---------------------------------------------------|--------------------------------------|---------------------------------------|---------------------------------------|
-| **Worker Node vCPU and memory**                   | 4 vCPUs\| 16GiB mem <sup>\[1\]</sup> | 16 vCPUs\| 64GiB mem <sup>\[1\]</sup> | 16 vCPUs\| 64GiB Mem <sup>\[1\]</sup> |
-| **LokiStack size**                                | `1x.extra-small`                     | `1x.small`                            | `1x.medium`                           |
-| **Network Observability controller memory limit** | 400Mi (default)                      | 400Mi (default)                       | 400Mi (default)                       |
-| **eBPF sampling interval**                        | 50 (default)                         | 50 (default)                          | 50 (default)                          |
-| **eBPF memory limit**                             | 800Mi (default)                      | 800Mi (default)                       | 1600Mi                                |
-| **cacheMaxSize**                                  | 50,000                               | 100,000 (default)                     | 100,000 (default)                     |
-| **FLP memory limit**                              | 800Mi (default)                      | 800Mi (default)                       | 800Mi (default)                       |
-| **FLP Kafka partitions**                          | –                                    | 48                                    | 48                                    |
-| **Kafka consumer replicas**                       | –                                    | 6                                     | 18                                    |
-| **Kafka brokers**                                 | –                                    | 3 (default)                           | 3 (default)                           |
+- Extra small: 10-node cluster, 4 vCPUs and 16 GiB memory per worker, `LokiStack` size `1x.extra-small`, tested on AWS M6i instances.
 
-Resource recommendations
+- Small: 25-node cluster, 16 vCPUs and 64 GiB memory per worker, `LokiStack` size `1x.small`, tested on AWS M6i instances.
 
-1.  Tested with AWS M6i instances.
+- Large: 250-node cluster, 16 vCPUs and 64 GiB memory per worker, `LokiStack` size `1x.medium`, tested on AWS M6i instances. In addition to the worker and controller nodes, three infrastructure nodes (size `M6i.12xlarge`) and one workload node (size `M6i.8xlarge`) were tested.
 
-2.  In addition to this worker and its controller, 3 infra nodes (size `M6i.12xlarge`) and 1 workload node (size `M6i.8xlarge`) were tested.
+| Criterion                                                                    | Extra small (10 nodes) | Small (25 nodes)    | Large (250 nodes)   |
+|------------------------------------------------------------------------------|------------------------|---------------------|---------------------|
+| **Operator memory limit: `Subscription` `spec.config.resources`**            | `400Mi` (default)      | `400Mi` (default)   | `400Mi` (default)   |
+| **eBPF agent sampling interval: `FlowCollector` `spec.agent.ebpf.sampling`** | `50` (default)         | `50` (default)      | `50` (default)      |
+| **eBPF agent memory limit: `FlowCollector` `spec.agent.ebpf.resources`**     | `800Mi` (default)      | `800Mi` (default)   | `1600Mi`            |
+| **eBPF agent cache size: `FlowCollector` `spec.agent.ebpf.cacheMaxSize`**    | `50,000`               | `120,000` (default) | `120,000` (default) |
+| **Processor memory limit: `FlowCollector` `spec.processor.resources`**       | `800Mi` (default)      | `800Mi` (default)   | `800Mi` (default)   |
+| **Processor replicas: `FlowCollector` `spec.processor.consumerReplicas`**    | `3` (default)          | `6`                 | `18`                |
+| **Deployment model: `FlowCollector` `spec.deploymentModel`**                 | `Service` (default)    | `Kafka`             | `Kafka`             |
+| **Kafka partitions: Kafka installation**                                     | N/A                    | `48`                | `48`                |
+| **Kafka brokers: Kafka installation**                                        | N/A                    | `3` (default)       | `3` (default)       |
+
+Resource recommendations for cluster sizes
 
 ## Total average memory and CPU usage
 

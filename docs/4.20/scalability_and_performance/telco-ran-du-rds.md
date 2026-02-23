@@ -72,7 +72,7 @@ The RAN DU use model configures an OpenShift Container Platform cluster running 
 
 <div class="note">
 
-For details of the telco RAN DU RDS KPI test results, see the [telco RAN DU 4.17 reference design specification KPI test results](https://access.redhat.com/articles/7107302). This information is only available to customers and partners.
+For details of the telco RAN DU RDS KPI test results, see the [telco RAN DU 4.17 reference design specification KPI test results](https://access.redhat.com/articles/7137863). This information is only available to customers and partners.
 
 </div>
 

@@ -1,4 +1,6 @@
-Single-node OpenShift clusters reduce the host prerequisites for deployment to a single host. This is useful for deployments in constrained environments or at the network edge. However, sometimes you need to add additional capacity to your cluster, for example, in telecommunications and network edge scenarios. In these scenarios, you can add worker nodes to the single-node cluster.
+You can add worker nodes to single-node OpenShift clusters in case you need additional capacity in your cluster.
+
+Single-node clusters reduce the host prerequisites for deployment to a single host. This is useful for deployments in constrained environments or at the network edge. However, sometimes you need to add additional capacity to your cluster, for example, in telecommunications and network edge scenarios. In these scenarios, you can add worker nodes to the single-node cluster.
 
 <div class="note">
 
@@ -21,6 +23,8 @@ To add worker nodes, you must have access to the OpenShift Cluster Manager. This
 </div>
 
 # Requirements for installing single-node OpenShift worker nodes
+
+You can review the following information to understand the requirements that you must meet before you install a single-node OpenShift worker node.
 
 To install a single-node OpenShift worker node, you must address the following requirements:
 
@@ -56,23 +60,9 @@ To install a single-node OpenShift worker node, you must address the following r
 
   Without persistent IP addresses, communications between the `apiserver` and `etcd` might fail.
 
-<!-- -->
-
-- [Minimum resource requirements for cluster installation](../../installing/installing_bare_metal/upi/installing-restricted-networks-bare-metal.xml#installation-minimum-resource-requirements_installing-restricted-networks-bare-metal)
-
-- [Recommended practices for scaling the cluster](../../scalability_and_performance/recommended-performance-scale-practices/recommended-control-plane-practices.xml#recommended-scale-practices_cluster-scaling)
-
-- [User-provisioned DNS requirements](../../installing/installing_bare_metal/upi/installing-bare-metal-network-customizations.xml#installation-dns-user-infra_installing-bare-metal-network-customizations)
-
-- [Creating a bootable ISO image on a USB drive](../../installing/installing_sno/install-sno-installing-sno.xml#installing-with-usb-media_install-sno-installing-sno-with-the-assisted-installer)
-
-- [Booting from an ISO image served over HTTP using the Redfish API](../../installing/installing_sno/install-sno-installing-sno.xml#install-booting-from-an-iso-over-http-redfish_install-sno-installing-sno-with-the-assisted-installer)
-
-- [Deleting nodes from a cluster](../../nodes/nodes/nodes-nodes-working.xml#nodes-nodes-working-deleting_nodes-nodes-working)
-
 # Adding worker nodes using the Assisted Installer and OpenShift Cluster Manager
 
-You can add worker nodes to single-node OpenShift clusters that were created on [Red Hat OpenShift Cluster Manager](https://console.redhat.com) using the [Assisted Installer](https://console.redhat.com/openshift/assisted-installer/clusters/~new).
+You can add worker nodes to single-node OpenShift clusters that were created on the [OpenShift Cluster Manager](https://console.redhat.com/openshift) by using the [Assisted Installer](https://console.redhat.com/openshift/assisted-installer/clusters/~new). This method provides and alternative to using command-line commands.
 
 <div class="important">
 
@@ -88,7 +78,7 @@ Adding worker nodes to single-node OpenShift clusters is only supported for clus
 
 - Ensure that all the required DNS records exist for the cluster that you are adding the worker node to.
 
-1.  Log in to [OpenShift Cluster Manager](https://console.redhat.com/openshift) and click the single-node cluster that you want to add a worker node to.
+1.  Log in to the [OpenShift Cluster Manager](https://console.redhat.com/openshift) and click the single-node cluster that you want to add a worker node to.
 
 2.  Click **Add hosts**, and download the discovery ISO for the new worker node, adding SSH public key and configuring cluster-wide proxy settings as required.
 
@@ -98,19 +88,17 @@ Adding worker nodes to single-node OpenShift clusters is only supported for clus
 
     When the worker node is sucessfully installed, it is listed as a worker node in the cluster web console.
 
-<div class="important">
+    <div class="important">
 
-New worker nodes will be encrypted using the same method as the original cluster.
+    New worker nodes are encrypted using the same method as the original cluster.
 
-</div>
-
-- [User-provisioned DNS requirements](../../installing/installing_bare_metal/upi/installing-bare-metal-network-customizations.xml#installation-dns-user-infra_installing-bare-metal-network-customizations)
-
-- [Approving the certificate signing requests for your machines](../../nodes/nodes/nodes-sno-worker-nodes.xml#installation-approve-csrs_add-workers)
+    </div>
 
 # Adding worker nodes using the Assisted Installer API
 
-You can add worker nodes to single-node OpenShift clusters using the Assisted Installer REST API. Before you add worker nodes, you must log in to [OpenShift Cluster Manager](https://console.redhat.com/openshift/token/show) and authenticate against the API.
+You can add worker nodes to clusters by writing command-line commands against the Assisted Installer REST API. This method provides an alternative to using the web console.
+
+Before you add worker nodes, you must log in to [OpenShift Cluster Manager](https://console.redhat.com/openshift/token/show) and authenticate against the API. After you authenticate, you can use the Assisted Installer REST API to add the nodes.
 
 ## Authenticating against the Assisted Installer REST API
 
@@ -177,11 +165,11 @@ Before you can use the Assisted Installer REST API, you must authenticate agains
 
 ## Adding worker nodes using the Assisted Installer REST API
 
-You can add worker nodes to clusters using the Assisted Installer REST API.
+You can add worker nodes to clusters by writing command-line commands against the Assisted Installer REST API. This method provides an alternative to using the web console.
 
 - Install the OpenShift Cluster Manager CLI (`ocm`).
 
-- Log in to [OpenShift Cluster Manager](https://console.redhat.com/openshift/assisted-installer/clusters) as a user with cluster creation privileges.
+- Log in to [OpenShift Cluster Manager](https://console.redhat.com/openshift) as a user with cluster creation privileges.
 
 - Install `jq`.
 
@@ -195,7 +183,7 @@ You can add worker nodes to clusters using the Assisted Installer REST API.
     $ export API_URL=<api_url>
     ```
 
-    - Replace `<api_url>` with the Assisted Installer API URL, for example, `https://api.openshift.com`
+    Replace `<api_url>` with the Assisted Installer API URL, for example, `https://api.openshift.com`
 
 3.  Import the single-node OpenShift cluster by running the following commands:
 
@@ -215,9 +203,13 @@ You can add worker nodes to clusters using the Assisted Installer REST API.
         }')
         ```
 
-        - Replace `<api_vip>` with the hostname for the cluster’s API server. This can be the DNS domain for the API server or the IP address of the single node which the worker node can reach. For example, `api.compute-1.example.com`.
+        where:
 
-        - Replace `<openshift_cluster_name>` with the plain text name for the cluster. The cluster name should match the cluster name that was set during the Day 1 cluster installation.
+        `<api_vip>`
+        Specifies the hostname for the cluster’s API server. This can be the DNS domain for the API server or the IP address of the single node which the worker node can reach. For example, `api.compute-1.example.com`.
+
+        `<openshift_cluster_name>`
+        Specifies the plain text name for the cluster. The cluster name should match the cluster name that was set during the Day 1 cluster installation.
 
     3.  Import the cluster and set the `$CLUSTER_ID` variable. Run the following command:
 
@@ -228,14 +220,14 @@ You can add worker nodes to clusters using the Assisted Installer REST API.
 
 4.  Generate the `InfraEnv` resource for the cluster and set the `$INFRA_ENV_ID` variable by running the following commands:
 
-    1.  Download the pull secret file from Red Hat OpenShift Cluster Manager at [console.redhat.com](console.redhat.com/openshift/install/pull-secret).
+    1.  Download the [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret).
 
     2.  Set the `$INFRA_ENV_REQUEST` variable:
 
         ``` terminal
         export INFRA_ENV_REQUEST=$(jq --null-input \
-            --slurpfile pull_secret <path_to_pull_secret_file> \
-            --arg ssh_pub_key "$(cat <path_to_ssh_pub_key>)" \
+            --slurpfile pull_secret <path_to_pull_secret_file> \//
+            --arg ssh_pub_key "$(cat <path_to_ssh_pub_key>)" \//
             --arg cluster_id "$CLUSTER_ID" '{
           "name": "<infraenv_name>",
           "pull_secret": $pull_secret[0] | tojson,
@@ -245,13 +237,19 @@ You can add worker nodes to clusters using the Assisted Installer REST API.
         }')
         ```
 
-        - Replace `<path_to_pull_secret_file>` with the path to the local file containing the downloaded pull secret from Red Hat OpenShift Cluster Manager at [console.redhat.com](console.redhat.com/openshift/install/pull-secret).
+        where:
 
-        - Replace `<path_to_ssh_pub_key>` with the path to the public SSH key required to access the host. If you do not set this value, you cannot access the host while in discovery mode.
+        `<path_to_pull_secret_file>`
+        Specifies the path to the local file containing the downloaded [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret).
 
-        - Replace `<infraenv_name>` with the plain text name for the `InfraEnv` resource.
+        `<path_to_ssh_pub_key>`
+        Specifies the path to the public SSH key required to access the host. If you do not set this value, you cannot access the host while in discovery mode.
 
-        - Replace `<iso_image_type>` with the ISO image type, either `full-iso` or `minimal-iso`.
+        `<infraenv_name>`
+        Specifies the plain text name for the `InfraEnv` resource.
+
+        `<iso_image_type>`
+        Specifies the ISO image type, either `full-iso` or `minimal-iso`.
 
     3.  Post the `$INFRA_ENV_REQUEST` to the [/v2/infra-envs](https://api.openshift.com/?urls.primaryName=assisted-service%20service#/installer/RegisterInfraEnv) API and set the `$INFRA_ENV_ID` variable:
 
@@ -281,7 +279,7 @@ You can add worker nodes to clusters using the Assisted Installer REST API.
     $ curl -L -s '<iso_url>' --output rhcos-live-minimal.iso
     ```
 
-    - Replace `<iso_url>` with the URL for the ISO from the previous step.
+    Replace `<iso_url>` with the URL for the ISO from the previous step.
 
 7.  Boot the new worker host from the downloaded `rhcos-live-minimal.iso`.
 
@@ -307,7 +305,7 @@ You can add worker nodes to clusters using the Assisted Installer REST API.
     $ HOST_ID=<host_id>
     ```
 
-    - Replace `<host_id>` with the host ID from the previous step.
+    Replace `<host_id>` with the host ID from the previous step.
 
 10. Check that the host is ready to install by running the following command:
 
@@ -504,12 +502,6 @@ You can add worker nodes to clusters using the Assisted Installer REST API.
   compute-1.example.com          Ready    worker          11m   v1.33.4
   ```
 
-<!-- -->
-
-- [User-provisioned DNS requirements](../../installing/installing_bare_metal/upi/installing-bare-metal-network-customizations.xml#installation-dns-user-infra_installing-bare-metal-network-customizations)
-
-- [Approving the certificate signing requests for your machines](../../nodes/nodes/nodes-sno-worker-nodes.xml#installation-approve-csrs_add-workers)
-
 # Adding worker nodes to single-node OpenShift clusters manually
 
 You can add a worker node to a single-node OpenShift cluster manually by booting the worker node from Red Hat Enterprise Linux CoreOS (RHCOS) ISO and by using the cluster `worker.ign` file to join the new worker node to the cluster.
@@ -528,7 +520,7 @@ You can add a worker node to a single-node OpenShift cluster manually by booting
     $ OCP_VERSION=<ocp_version>
     ```
 
-    - Replace `<ocp_version>` with the current version, for example, `latest-4.17`
+    Replace `<ocp_version>` with the current version, for example, `latest-4.17`
 
 2.  Set the host architecture:
 
@@ -536,7 +528,7 @@ You can add a worker node to a single-node OpenShift cluster manually by booting
     $ ARCH=<architecture>
     ```
 
-    - Replace `<architecture>` with the target host architecture, for example, `aarch64` or `x86_64`.
+    Replace `<architecture>` with the target host architecture, for example, `aarch64` or `x86_64`.
 
 3.  Get the `worker.ign` data from the running single-node cluster by running the following command:
 
@@ -591,10 +583,10 @@ You can add a worker node to a single-node OpenShift cluster manually by booting
             where:
 
             \<static_ip\>
-            Is the host static IP address and CIDR, for example, `10.1.101.50/24`
+            Specifies the host static IP address and CIDR, for example, `10.1.101.50/24`.
 
             \<network_gateway\>
-            Is the network gateway, for example, `10.1.101.1`
+            Specifies the network gateway, for example, `10.1.101.1`.
 
         2.  Activate the modified network interface:
 
@@ -632,9 +624,13 @@ You can add a worker node to a single-node OpenShift cluster manually by booting
             }
             ```
 
-            - `<hosted_worker_ign_file>` is the locally accessible URL for the original `worker.ign` file. For example, `http://webserver.example.com/worker.ign`
+            where:
 
-            - `<new_fqdn>` is the new FQDN that you set for the worker node. For example, `new-worker.example.com`.
+            `<hosted_worker_ign_file>`
+            Specifies the locally accessible URL for the original `worker.ign` file. For example, `http://webserver.example.com/worker.ign`.
+
+            `<new_fqdn>`
+            Specifies the new FQDN that you set for the worker node. For example, `new-worker.example.com`.
 
         4.  Host the `new-worker.ign` file on a web server accessible from your network.
 
@@ -648,10 +644,10 @@ You can add a worker node to a single-node OpenShift cluster manually by booting
             where:
 
             \<new_worker_ign_file\>
-            is the locally accessible URL for the hosted `new-worker.ign` file, for example, `http://webserver.example.com/new-worker.ign`
+            Specifies the locally accessible URL for the hosted `new-worker.ign` file, for example, `http://webserver.example.com/new-worker.ign`.
 
             \<hard_disk\>
-            Is the hard disk where you install RHCOS, for example, `/dev/sda`
+            Specifies the hard disk where you install RHCOS, for example, `/dev/sda`.
 
     4.  For networks that have DHCP enabled, you do not need to set a static IP. Run the following `coreos-installer` command from the target host console to install the system:
 
@@ -687,13 +683,13 @@ You can add a worker node to a single-node OpenShift cluster manually by booting
 
         <div class="important">
 
-        The `NMStateConfig` CR is required for successful deployments of worker nodes with static IP addresses and for adding a worker node with a dynamic IP address if the single-node OpenShift was deployed with a static IP address. The cluster network DHCP does not automatically set these network settings for the new worker node.
+        The `NMStateConfig` CR is required for successful deployment of worker nodes with static IP addresses and for adding a worker node with a dynamic IP address if the single-node OpenShift was deployed with a static IP address. The cluster network DHCP does not automatically set these network settings for the new worker node.
 
         </div>
 
 9.  As the installation proceeds, the installation generates pending certificate signing requests (CSRs) for the worker node. When prompted, approve the pending CSRs to complete the installation.
 
-10. When the install is complete, reboot the host. The host joins the cluster as a new worker node.
+10. When the installation is complete, reboot the host. The host joins the cluster as a new worker node.
 
 - Check that the new worker node was successfully added to the cluster with a status of `Ready`:
 
@@ -712,12 +708,6 @@ You can add a worker node to a single-node OpenShift cluster manually by booting
   control-plane-1.example.com    Ready    master,worker   56m   v1.33.4
   compute-1.example.com          Ready    worker          11m   v1.33.4
   ```
-
-<!-- -->
-
-- [User-provisioned DNS requirements](../../installing/installing_bare_metal/upi/installing-bare-metal-network-customizations.xml#installation-dns-user-infra_installing-bare-metal-network-customizations)
-
-- [Approving the certificate signing requests for your machines](../../nodes/nodes/nodes-sno-worker-nodes.xml#installation-approve-csrs_add-workers)
 
 # Approving the certificate signing requests for your machines
 
@@ -874,3 +864,17 @@ To add machines to a cluster, verify the status of the certificate signing reque
     It can take a few minutes after approval of the server CSRs for the machines to transition to the `Ready` status.
 
     </div>
+
+- [Minimum resource requirements for cluster installation](../../installing/installing_bare_metal/upi/installing-restricted-networks-bare-metal.xml#installation-minimum-resource-requirements_installing-restricted-networks-bare-metal)
+
+- [Recommended practices for scaling the cluster](../../scalability_and_performance/recommended-performance-scale-practices/recommended-control-plane-practices.xml#recommended-scale-practices_cluster-scaling)
+
+- [Creating a bootable ISO image on a USB drive](../../installing/installing_sno/install-sno-installing-sno.xml#installing-with-usb-media_install-sno-installing-sno-with-the-assisted-installer)
+
+- [Booting from an ISO image served over HTTP using the Redfish API](../../installing/installing_sno/install-sno-installing-sno.xml#install-booting-from-an-iso-over-http-redfish_install-sno-installing-sno-with-the-assisted-installer)
+
+- [Deleting nodes from a cluster](../../nodes/nodes/nodes-nodes-working.xml#nodes-nodes-working-deleting_nodes-nodes-working)
+
+- [User-provisioned DNS requirements](../../installing/installing_bare_metal/upi/installing-bare-metal-network-customizations.xml#installation-dns-user-infra_installing-bare-metal-network-customizations)
+
+- [Approving the certificate signing requests for your machines](../../nodes/nodes/nodes-sno-worker-nodes.xml#installation-approve-csrs_add-workers)

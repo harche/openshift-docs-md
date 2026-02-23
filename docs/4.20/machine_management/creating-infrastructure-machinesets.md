@@ -16,6 +16,8 @@ You can use infrastructure machine sets to create machines that host only infras
 
 # OpenShift Container Platform infrastructure components
 
+You can review the following information to understand which components you can move to an infrastructure node. Components that you move to an infrastructure node do not need to be accounted for during sizing.
+
 Each self-managed Red Hat OpenShift subscription includes entitlements for OpenShift Container Platform and other OpenShift-related components. These entitlements are included for running OpenShift Container Platform control plane and infrastructure workloads and do not need to be accounted for during sizing.
 
 To qualify as an infrastructure node and use the included entitlement, only components that are supporting the cluster, and not part of an end-user application, can run on those instances. Examples include the following components:
@@ -47,6 +49,8 @@ To qualify as an infrastructure node and use the included entitlement, only comp
 - Red Hat OpenShift Service Mesh
 
 Any node that runs any other container, pod, or component is a worker node that your subscription must cover.
+
+For information about infrastructure nodes and which components can run on infrastructure nodes, see the "Red Hat OpenShift control plane and infrastructure nodes" section in the [OpenShift sizing and subscription guide for enterprise Kubernetes](https://www.redhat.com/en/resources/openshift-subscription-sizing-guide) document.
 
 For information about infrastructure nodes and which components can run on infrastructure nodes, see the "Red Hat OpenShift control plane and infrastructure nodes" section in the [OpenShift sizing and subscription guide for enterprise Kubernetes](https://www.redhat.com/en/resources/openshift-subscription-sizing-guide) document.
 
@@ -120,7 +124,7 @@ spec:
             filters:
               - name: tag:Name
                 values:
-                  - <infrastructure_id>-private-<zone>
+                  - <infrastructure_id>-subnet-private-<zone>
           tags:
             - name: kubernetes.io/cluster/<infrastructure_id>
               value: owned
@@ -649,9 +653,13 @@ Machine sets running on Google Cloud support non-guaranteed [preemptible VM inst
 
 ### Sample YAML for a compute machine set custom resource on Nutanix
 
-This sample YAML defines a Nutanix compute machine set that creates nodes that are labeled with `node-role.kubernetes.io/infra: ""`.
+You can use a YAML file to automate node provisioning and ensure workloads are scheduled correctly based on role and infrastructure requirements.
 
-In this sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<infra>` is the node label to add.
+The sample YAML shows how to define a Nutanix compute MachineSet for your cluster. It explains how to configure roles, labels, sizing, networking, and boot settings so new nodes are created consistently.
+
+The sample YAML defines a Nutanix compute machine set that creates nodes that are labeled with `node-role.kubernetes.io/infra: ""`.
+
+In the sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<infra>` is the node label to add.
 
 #### Values obtained by using the OpenShift CLI
 
@@ -727,49 +735,67 @@ spec:
         effect: NoSchedule
 ```
 
-- For `<infrastructure_id>`, specify the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster.
+where:
 
-- Specify the `<infra>` node label.
+`<infrastructure_id>`
+Specifies the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster.
 
-- Specify the infrastructure ID, `<infra>` node label, and zone.
+`<infra>`
+Specifies the `<infra>` node label.
 
-- Annotations for the cluster autoscaler.
+`<infrastructure_id>-<role>-<zone>`
+Specifies the infrastructure ID, `<infra>` node label, and zone.
 
-- Specifies the boot type that the compute machines use. For more information about boot types, see [Understanding UEFI, Secure Boot, and TPM in the Virtualized Environment](https://portal.nutanix.com/page/documents/kbs/details?targetId=kA07V000000H3K9SAK). Valid values are `Legacy`, `SecureBoot`, or `UEFI`. The default is `Legacy`.
+`annotations`
+Specifies annotations for the cluster autoscaler.
 
-  <div class="note">
+`bootType`
+Specifies the boot type that the compute machines use. For more information about boot types, see [Understanding UEFI, Secure Boot, and TPM in the Virtualized Environment](https://portal.nutanix.com/page/documents/kbs/details?targetId=kA07V000000H3K9SAK). Valid values are `Legacy`, `SecureBoot`, or `UEFI`. The default is `Legacy`.
 
-  You must use the `Legacy` boot type in OpenShift Container Platform 4.17.
+<div class="note">
 
-  </div>
+You must use the `Legacy` boot type in OpenShift Container Platform 4.17.
 
-- Specify one or more Nutanix Prism categories to apply to compute machines. This stanza requires `key` and `value` parameters for a category key-value pair that exists in Prism Central. For more information about categories, see [Category management](https://portal.nutanix.com/page/documents/details?targetId=Prism-Central-Guide-vpc_2022_6:ssp-ssp-categories-manage-pc-c.html).
+</div>
 
-- Specify a Nutanix Prism Element cluster configuration. In this example, the cluster type is `uuid`, so there is a `uuid` stanza.
+`<categories>`
+Specifies one or more Nutanix Prism categories to apply to compute machines. This stanza requires `key` and `value` parameters for a category key-value pair that exists in Prism Central. For more information about categories, see [Category management](https://portal.nutanix.com/page/documents/details?targetId=Prism-Central-Guide-vpc_2022_6:ssp-ssp-categories-manage-pc-c.html).
 
-- Specify the image to use. Use an image from an existing default compute machine set for the cluster.
+`<cluster>`
+Specifies a Nutanix Prism Element cluster configuration. In this example, the cluster type is `uuid`, so there is a `uuid` stanza.
 
-- Specify the amount of memory for the cluster in Gi.
+`<infrastructure_id>-rhcos`
+Specifies the image to use. Use an image from an existing default compute machine set for the cluster.
 
-- Specify the Nutanix project that you use for your cluster. In this example, the project type is `name`, so there is a `name` stanza.
+`16Gi`
+Specifies the amount of memory for the cluster in Gi.
 
-- Specify one or more UUID for the Prism Element subnet object. The CIDR IP address prefix for one of the specified subnets must contain the virtual IP addresses that the OpenShift Container Platform cluster uses. A maximum of 32 subnets for each Prism Element failure domain in the cluster is supported. All subnet UUID values must be unique.
+`project`
+Specifies the Nutanix project that you use for your cluster. In this example, the project type is `name`, so there is a `name` stanza.
 
-- Specify the size of the system disk in Gi.
+`subnets`
+Specifies one or more UUID for the Prism Element subnet object. The CIDR IP address prefix for one of the specified subnets must contain the virtual IP addresses that the OpenShift Container Platform cluster uses. A maximum of 32 subnets for each Prism Element failure domain in the cluster is supported. All subnet UUID values must be unique.
 
-- Specify the name of the secret in the user data YAML file that is in the `openshift-machine-api` namespace. Use the value that installation program populates in the default compute machine set.
+`120Gi`
+Specifies the size of the system disk in Gi.
 
-- Specify the number of vCPU sockets.
+`<user_data_secret>`
+Specifies the name of the secret in the user data YAML file that is in the `openshift-machine-api` namespace. Use the value that installation program populates in the default compute machine set.
 
-- Specify the number of vCPUs per socket.
+`4`
+Specifies the number of vCPU sockets.
 
-- Specify a taint to prevent user workloads from being scheduled on infra nodes.
+`1`
+Specifies the number of vCPUs per socket.
 
-  <div class="note">
+taints
+Specifies a taint to prevent user workloads from being scheduled on infra nodes.
 
-  After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
+<div class="note">
 
-  </div>
+After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
+
+</div>
 
 ### Sample YAML for a compute machine set custom resource on RHOSP
 
@@ -866,7 +892,9 @@ spec:
 
 ### Sample YAML for a compute machine set custom resource on vSphere
 
-This sample YAML defines a compute machine set that runs on VMware vSphere and creates nodes that are labeled with `node-role.kubernetes.io/infra: ""`.
+To enable the Machine API to automate node provisioning on VMware vSphere infrastructure, define a `MachineSet` resource with parameters that are specific to VMware vSphere, for example data center, resource pool, and template.
+
+The sample YAML file defines a compute machine set that runs on VMware vSphere and creates nodes that are labeled with `node-role.kubernetes.io/infra: ""`.
 
 In this sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `infra` is the node label to add.
 
@@ -932,39 +960,55 @@ spec:
         effect: NoSchedule
 ```
 
-- Specify the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI (`oc`) installed, you can obtain the infrastructure ID by running the following command:
+where
 
-  ``` terminal
-  $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
-  ```
+`<infrastructure_id>`
+Specifies the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI (`oc`) installed, you can obtain the infrastructure ID by running the following command:
 
-- Specify the infrastructure ID and `infra` node label.
+``` terminal
+$ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
+```
 
-- Specify the `infra` node label.
+`<infrastructure_id>-infra`
+Specifies the infrastructure ID and `infra` node label.
 
-- Specify one or more data disk definitions. For more information, see "Configuring data disks by using machine sets".
+`infra`
+Specifies the `infra` node label.
 
-- Specify the vSphere VM network to deploy the compute machine set to. This VM network must be where other compute machines reside in the cluster.
+`<disk_name>`
+Specifies one or more data disk definitions. For more information, see "Configuring data disks by using machine sets".
 
-- Specify the vSphere VM template to use, such as `user-5ddjd-rhcos`.
+`<vm_network_name>`
+Specifies the vSphere VM network to deploy the compute machine set to. This VM network must be where other compute machines reside in the cluster.
 
-- Specify the vCenter datacenter to deploy the compute machine set on.
+`<vm_template_name>`
+Specifies the vSphere VM template to use, such as `user-5ddjd-rhcos`.
 
-- Specify the vCenter datastore to deploy the compute machine set on.
+`<vcenter_data_center_name>`
+Specifies the vCenter datacenter to deploy the compute machine set on.
 
-- Specify the path to the vSphere VM folder in vCenter, such as `/dc1/vm/user-inst-5ddjd`.
+`<vcenter_datastore_name>`
+Specifies the vCenter datastore to deploy the compute machine set on.
 
-- Specify the vSphere resource pool for your VMs.
+`<vcenter_vm_folder_path>`
+Specifies the path to the vSphere VM folder in vCenter, such as `/dc1/vm/user-inst-5ddjd`.
 
-- Specify the vCenter server IP or fully qualified domain name.
+`<vsphere_resource_pool>`
+Specifies the vSphere resource pool for your VMs.
 
-- Specify a taint to prevent user workloads from being scheduled on infra nodes.
+`<vcenter_server_ip>`
+Specifies the vCenter server IP or fully qualified domain name.
 
-  <div class="note">
+`taints`
+Specifies a taint to prevent user workloads from being scheduled on infra nodes.
 
-  After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
+<div class="note">
 
-  </div>
+After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
+
+</div>
+
+\+ :!infra:
 
 ## Creating a compute machine set
 
@@ -1090,11 +1134,13 @@ In addition to the compute machine sets created by the installation program, you
 
 <div class="important">
 
-See Creating infrastructure machine sets for installer-provisioned infrastructure environments or for any cluster where the control plane nodes are managed by the machine API.
+See "Creating infrastructure machine sets" for installer-provisioned infrastructure environments or for any cluster where the control plane nodes are managed by the machine API.
 
 </div>
 
-Requirements of the cluster dictate that infrastructure (infra) nodes, be provisioned. The installation program provisions only control plane and worker nodes. Worker nodes can be designated as infrastructure nodes through labeling. You can then use taints and tolerations to move appropriate workloads to the infrastructure nodes. For more information, see "Moving resources to infrastructure machine sets".
+You can use labels to configure worker nodes as infrastructure nodes, where you can move infrastructure resources.
+
+After you create the infrastructure nodes, you can move appropriate workloads to those nodes by using taints and tolerations.
 
 You can optionally create a default cluster-wide node selector. The default node selector is applied to pods created in all namespaces and creates an intersection with any existing node selectors on a pod, which additionally constrains the pod’s selector.
 
@@ -1140,11 +1186,11 @@ You can alternatively use a project node selector to avoid cluster-wide node sel
         # ...
         ```
 
-        - This example node selector deploys pods on infrastructure nodes by default.
+        This example node selector deploys pods on infrastructure nodes by default.
 
     3.  Save the file to apply the changes.
 
-You can now move infrastructure resources to the new infrastructure nodes. Also, remove any workloads that you do not want, or that do not belong, on the new infrastructure node. See the list of workloads supported for use on infrastructure nodes in "OpenShift Container Platform infrastructure components".
+    You can now move infrastructure resources to the new infrastructure nodes. Also, remove any workloads that you do not want, or that do not belong, on the new infrastructure node. See the list of workloads supported for use on infrastructure nodes in "OpenShift Container Platform infrastructure components".
 
 - [Moving resources to infrastructure machine sets](#moving-resources-to-infrastructure-machinesets)
 

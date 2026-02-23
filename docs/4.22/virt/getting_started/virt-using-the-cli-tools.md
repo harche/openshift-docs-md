@@ -388,7 +388,11 @@ You can use the `virtctl guestfs` command to deploy an interactive container wit
   $ virtctl guestfs -n <namespace> <pvc_name>
   ```
 
-  - The PVC name is a required argument. If you do not include it, an error message appears.
+  <div class="important">
+
+  The `<pvc_name>` argument is required. If you do not include it, an error message appears.
+
+  </div>
 
 ## Libguestfs and virtctl guestfs commands
 

@@ -1,6 +1,12 @@
-With OpenShift Container Platform 4, you can update an OpenShift Container Platform cluster with a single operation by using the web console or the OpenShift CLI (`oc`). Platform administrators can view new update options either by going to **Administration** → **Cluster Settings** in the web console or by looking at the output of the `oc adm upgrade` command.
+With OpenShift Container Platform 4, you can update an OpenShift Container Platform cluster with a single operation by using the web console or the OpenShift CLI (`oc`).
 
-Red Hat hosts a public OpenShift Update Service (OSUS), which serves a graph of update possibilities based on the OpenShift Container Platform release images in the official registry. The graph contains update information for any public OCP release. OpenShift Container Platform clusters are configured to connect to the OSUS by default, and the OSUS responds to clusters with information about known update targets.
+Platform administrators can view new update options either by going to **Administration** → **Cluster Settings** in the web console or by looking at the output of the `oc adm upgrade` command.
+
+# Cluster update overview
+
+OpenShift Container Platform updates involve several services, Operators, and processes working in tandem to change the cluster to the desired version.
+
+Red Hat hosts a public OpenShift Update Service (OSUS), which serves a graph of update possibilities based on the OpenShift Container Platform release images in the official registry. The graph contains update information for any public release. OpenShift Container Platform clusters are configured to connect to the OSUS by default, and the OSUS responds to clusters with information about known update targets.
 
 An update begins when either a cluster administrator or an automatic update controller edits the custom resource (CR) of the Cluster Version Operator (CVO) with a new version. To reconcile the cluster with the newly specified version, the CVO retrieves the target release image from an image registry and begins to apply changes to the cluster.
 
@@ -16,7 +22,9 @@ The CVO monitors the state of each applied resource and the states reported by a
 
 # Common questions about update availability
 
-There are several factors that affect if and when an update is made available to an OpenShift Container Platform cluster. The following list provides common questions regarding the availability of an update:
+There are several factors that affect if and when an update is made available to an OpenShift Container Platform cluster.
+
+The following list provides common questions regarding the availability of an update:
 
 **What are the differences between each of the update channels?**
 
@@ -72,7 +80,9 @@ There are several factors that affect if and when an update is made available to
 
 # About the OpenShift Update Service
 
-The OpenShift Update Service (OSUS) provides update recommendations to OpenShift Container Platform, including Red Hat Enterprise Linux CoreOS (RHCOS). It provides a graph, or diagram, that contains the *vertices* of component Operators and the *edges* that connect them. The edges in the graph show which versions you can safely update to. The vertices are update payloads that specify the intended state of the managed cluster components.
+The OpenShift Update Service (OSUS) provides update recommendations to OpenShift Container Platform, including Red Hat Enterprise Linux CoreOS (RHCOS). It provides a graph, or diagram, that contains the *vertices* of component Operators and the *edges* that connect them.
+
+The edges in the graph show which versions you can safely update to. The vertices are update payloads that specify the intended state of the managed cluster components.
 
 The Cluster Version Operator (CVO) in your cluster checks with the OpenShift Update Service to see the valid updates and update paths based on current component versions and information in the graph. When you request an update, the CVO uses the corresponding release image to update your cluster. The release artifacts are hosted in Quay as container images.
 
@@ -112,7 +122,9 @@ The OpenShift Update Service is composed of an Operator and one or more applicat
 
 # Understanding cluster Operator condition types
 
-The status of cluster Operators includes their condition type, which informs you of the current state of your Operator’s health. The following definitions cover a list of some common ClusterOperator condition types. Operators that have additional condition types and use Operator-specific language have been omitted.
+The status of cluster Operators includes their condition type, which informs you of the current state of your Operator’s health.
+
+The following definitions cover a list of some common ClusterOperator condition types. Operators that have additional condition types and use Operator-specific language have been omitted.
 
 The Cluster Version Operator (CVO) is responsible for collecting the status conditions from cluster Operators so that cluster administrators can better understand the state of the OpenShift Container Platform cluster.
 
@@ -153,6 +165,8 @@ In addition to `Available`, `Progressing`, and `Upgradeable`, there are conditio
 - ImplicitlyEnabledCapabilities: The cluster version condition type `ImplicitlyEnabledCapabilities` with a `True` status indicates that there are enabled capabilities that the user is not currently requesting through `spec.capabilities`. The CVO does not support disabling capabilities if any associated resources were previously managed by the CVO.
 
 # Common terms
+
+Some terms are commonly used in the context of OpenShift Container Platform updates, which might be useful to learn.
 
 Control plane
 The *control plane*, which is composed of control plane machines, manages the OpenShift Container Platform cluster. The control plane machines manage workloads on the compute machines, which are also known as worker machines.

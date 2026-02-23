@@ -1,10 +1,10 @@
-This topic provides recommended performance and scalability practices for control planes in OpenShift Container Platform.
+To ensure optimal performance and scalability, apply the recommended practices for OpenShift Container Platform control planes. By understanding these recommended practices, you can configure your environment to handle increasing workloads while maintaining stability.
 
 # Recommended practices for scaling the cluster
 
-The guidance in this section is only relevant for installations with cloud provider integration.
+To scale your cluster effectively, apply the recommended practices for installations with cloud provider integration. By understanding this guidance, you can optimize performance and ensure stability as you increase the size of your environment.
 
-Apply the following best practices to scale the number of worker machines in your OpenShift Container Platform cluster. You scale the worker machines by increasing or decreasing the number of replicas that are defined in the worker machine set.
+Apply the following best practices to scale the number of compute machines in your OpenShift Container Platform cluster. You scale the worker machines by increasing or decreasing the number of replicas that are defined in the compute machine set.
 
 When scaling up the cluster to higher node counts:
 
@@ -12,7 +12,7 @@ When scaling up the cluster to higher node counts:
 
 - Scale up by no more than 25 to 50 machines at once.
 
-- Consider creating new compute machine sets in each available zone with alternative instance types of similar size to help mitigate any periodic provider capacity constraints. For example, on AWS, use m5.large and m5d.large.
+- Consider creating new compute machine sets in each available zone with alternative instance types of similar size to help mitigate any periodic provider capacity constraints. For example, on AWS, use `m5.large` and `m5d.large`.
 
 <div class="note">
 
@@ -20,7 +20,7 @@ Cloud providers might implement a quota for API services. Therefore, gradually s
 
 </div>
 
-The controller might not be able to create the machines if the replicas in the compute machine sets are set to higher numbers all at one time. The number of requests the cloud platform, which OpenShift Container Platform is deployed on top of, is able to handle impacts the process. The controller will start to query more while trying to create, check, and update the machines with the status. The cloud platform on which OpenShift Container Platform is deployed has API request limits; excessive queries might lead to machine creation failures due to cloud platform limitations.
+The controller might not be able to create the machines if the replicas in the compute machine sets are set to higher numbers all at one time. The number of requests the cloud platform, which OpenShift Container Platform is deployed on top of, is able to handle impacts the process. The controller starts to query more while trying to create, check, and update the machines with the status. The cloud platform on which OpenShift Container Platform is deployed has API request limits; excessive queries might lead to machine creation failures due to cloud platform limitations.
 
 Enable machine health checks when scaling to large node counts. In case of failures, the health checks monitor the condition and automatically repair unhealthy machines.
 
@@ -32,7 +32,9 @@ When scaling large and dense clusters to lower node counts, it might take large 
 
 # Control plane node sizing
 
-The control plane node resource requirements depend on the number and type of nodes and objects in the cluster. The following control plane node size recommendations are based on the results of a control plane density focused testing, or *Cluster-density*. This test creates the following objects across a given number of namespaces:
+To ensure optimal performance and stability, determine the resource requirements for control plane nodes. These sizing guidelines depend on the number and type of nodes and objects in your cluster.
+
+The following control plane node size recommendations are based on the results of a control plane density focused testing, or *Cluster-density*. This test creates the following objects across a given number of namespaces:
 
 - 1 image stream
 
@@ -48,14 +50,14 @@ The control plane node resource requirements depend on the number and type of no
 
 - 10 config maps containing 2048 random string characters
 
-| Number of worker nodes                                    | Cluster-density (namespaces) | CPU cores                                              | Memory (GB)                                             |
+| Number of compute nodes                                   | Cluster-density (namespaces) | CPU cores                                              | Memory (GB)                                             |
 |-----------------------------------------------------------|------------------------------|--------------------------------------------------------|---------------------------------------------------------|
 | 24                                                        | 500                          | 4                                                      | 16                                                      |
 | 120                                                       | 1000                         | 8                                                      | 32                                                      |
 | 252                                                       | 4000                         | 16, but 24 if using the OVN-Kubernetes network plug-in | 64, but 128 if using the OVN-Kubernetes network plug-in |
 | 501, but untested with the OVN-Kubernetes network plug-in | 4000                         | 16                                                     | 96                                                      |
 
-The data from the table above is based on an OpenShift Container Platform running on top of AWS, using r5.4xlarge instances as control-plane nodes and m5.2xlarge instances as worker nodes.
+The data from the table above is based on an OpenShift Container Platform running on top of AWS, using r5.4xlarge instances as control-plane nodes and m5.2xlarge instances as compute nodes.
 
 On a large and dense cluster with three control plane nodes, the CPU and memory usage will spike up when one of the nodes is stopped, rebooted, or fails. The failures can be due to unexpected issues with power, network, underlying infrastructure, or intentional cases where the cluster is restarted after shutting it down to save costs. The remaining two control plane nodes must handle the load in order to be highly available, which leads to increase in the resource usage. This is also expected during upgrades because the control plane nodes are cordoned, drained, and rebooted serially to apply the operating system updates, as well as the control plane Operators update. To avoid cascading failures, keep the overall CPU and memory resource usage on the control plane nodes to at most 60% of all available capacity to handle the resource usage spikes. Increase the CPU and memory on the control plane nodes accordingly to avoid potential downtime due to lack of resources.
 
@@ -101,76 +103,3 @@ For all other configurations, you must estimate your total node count and use th
 In OpenShift Container Platform 4.17, half of a CPU core (500 millicore) is now reserved by the system by default compared to OpenShift Container Platform 3.11 and previous versions. The sizes are determined taking that into consideration.
 
 </div>
-
-## Selecting a larger Amazon Web Services instance type for control plane machines
-
-If the control plane machines in an Amazon Web Services (AWS) cluster require more resources, you can select a larger AWS instance type for the control plane machines to use.
-
-<div class="note">
-
-The procedure for clusters that use a control plane machine set is different from the procedure for clusters that do not use a control plane machine set.
-
-If you are uncertain about the state of the `ControlPlaneMachineSet` CR in your cluster, you can [verify the CR status](../../machine_management/control_plane_machine_management/cpmso-getting-started.xml#cpmso-checking-status_cpmso-getting-started).
-
-</div>
-
-### Changing the Amazon Web Services instance type by using a control plane machine set
-
-You can change the Amazon Web Services (AWS) instance type that your control plane machines use by updating the specification in the control plane machine set custom resource (CR).
-
-- Your AWS cluster uses a control plane machine set.
-
-1.  Edit your control plane machine set CR by running the following command:
-
-    ``` terminal
-    $ oc --namespace openshift-machine-api edit controlplanemachineset.machine.openshift.io cluster
-    ```
-
-2.  Edit the following line under the `providerSpec` field:
-
-    ``` yaml
-    providerSpec:
-      value:
-        ...
-        instanceType: <compatible_aws_instance_type>
-    ```
-
-    - Specify a larger AWS instance type with the same base as the previous selection. For example, you can change `m6i.xlarge` to `m6i.2xlarge` or `m6i.4xlarge`.
-
-3.  Save your changes.
-
-    - For clusters that use the default `RollingUpdate` update strategy, the Operator automatically propagates the changes to your control plane configuration.
-
-    - For clusters that are configured to use the `OnDelete` update strategy, you must replace your control plane machines manually.
-
-- [Managing control plane machines with control plane machine sets](../../machine_management/control_plane_machine_management/cpmso-managing-machines.xml#cpmso-managing-machines)
-
-### Changing the Amazon Web Services instance type by using the AWS console
-
-You can change the Amazon Web Services (AWS) instance type that your control plane machines use by updating the instance type in the AWS console.
-
-- You have access to the AWS console with the permissions required to modify the EC2 Instance for your cluster.
-
-- You have access to the OpenShift Container Platform cluster as a user with the `cluster-admin` role.
-
-1.  Open the AWS console and fetch the instances for the control plane machines.
-
-2.  Choose one control plane machine instance.
-
-    1.  For the selected control plane machine, back up the etcd data by creating an etcd snapshot. For more information, see "Backing up etcd".
-
-    2.  In the AWS console, stop the control plane machine instance.
-
-    3.  Select the stopped instance, and click **Actions** → **Instance Settings** → **Change instance type**.
-
-    4.  Change the instance to a larger type, ensuring that the type is the same base as the previous selection, and apply changes. For example, you can change `m6i.xlarge` to `m6i.2xlarge` or `m6i.4xlarge`.
-
-    5.  Start the instance.
-
-    6.  If your OpenShift Container Platform cluster has a corresponding `Machine` object for the instance, update the instance type of the object to match the instance type set in the AWS console.
-
-3.  Repeat this process for each control plane machine.
-
-- [Backing up etcd](../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backing-up-etcd)
-
-- [AWS documentation about changing the instance type](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-resize.html)

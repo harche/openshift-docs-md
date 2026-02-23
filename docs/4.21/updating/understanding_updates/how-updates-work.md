@@ -1,14 +1,12 @@
+The Cluster Version Operator (CVO) is the primary component that orchestrates the OpenShift Container Platform update process. During standard cluster operation, the CVO compares manifests of cluster Operators to in-cluster resources and reconciles discrepancies between the actual state of these resources and their desired state.
+
 The following sections describe each major aspect of the OpenShift Container Platform (OCP) update process in detail. For a general overview of how updates work, see the [Introduction to OpenShift updates](../../updating/understanding_updates/intro-to-updates.xml#understanding-openshift-updates).
 
-# The Cluster Version Operator
-
-The Cluster Version Operator (CVO) is the primary component that orchestrates and facilitates the OpenShift Container Platform update process. During installation and standard cluster operation, the CVO is constantly comparing the manifests of managed cluster Operators to in-cluster resources, and reconciling discrepancies to ensure that the actual state of these resources match their desired state.
-
-## The ClusterVersion object
+# The ClusterVersion object
 
 One of the resources that the Cluster Version Operator (CVO) monitors is the `ClusterVersion` resource.
 
-Administrators and OpenShift components can communicate or interact with the CVO through the `ClusterVersion` object. The desired CVO state is declared through the `ClusterVersion` object and the current CVO state is reflected in the object’s status.
+Administrators and OpenShift Container Platform components can communicate or interact with the CVO through the `ClusterVersion` object. The desired CVO state is declared through the `ClusterVersion` object and the current CVO state is reflected in the object’s status.
 
 <div class="note">
 
@@ -18,134 +16,136 @@ Do not directly modify the `ClusterVersion` object. Instead, use interfaces such
 
 The CVO continually reconciles the cluster with the target state declared in the `spec` property of the `ClusterVersion` resource. When the desired release differs from the actual release, that reconciliation updates the cluster.
 
-### Update availability data
+## Update availability data
 
 The `ClusterVersion` resource also contains information about updates that are available to the cluster. This includes updates that are available, but not recommended due to a known risk that applies to the cluster. These updates are known as conditional updates. To learn how the CVO maintains this information about available updates in the `ClusterVersion` resource, see the "Evaluation of update availability" section.
 
-- You can inspect all available updates with the following command:
+You can inspect all available updates with the following command:
 
-  ``` terminal
-  $ oc adm upgrade --include-not-recommended
-  ```
+``` terminal
+$ oc adm upgrade --include-not-recommended
+```
 
-  <div class="note">
+<div class="note">
 
-  The additional `--include-not-recommended` parameter includes updates that are available with known issues that apply to the cluster.
+The additional `--include-not-recommended` parameter includes updates that are available with known issues that apply to the cluster.
 
-  </div>
+</div>
 
-  <div class="formalpara-title">
+<div class="formalpara-title">
 
-  **Example output**
+**Example output**
 
-  </div>
+</div>
 
-  ``` terminal
-  Cluster version is 4.13.40
+``` terminal
+Cluster version is 4.13.40
 
-  Upstream is unset, so the cluster will use an appropriate default.
-  Channel: stable-4.14 (available channels: candidate-4.13, candidate-4.14, eus-4.14, fast-4.13, fast-4.14, stable-4.13, stable-4.14)
+Upstream is unset, so the cluster will use an appropriate default.
+Channel: stable-4.14 (available channels: candidate-4.13, candidate-4.14, eus-4.14, fast-4.13, fast-4.14, stable-4.13, stable-4.14)
 
-  Recommended updates:
+Recommended updates:
 
-    VERSION     IMAGE
-    4.14.27     quay.io/openshift-release-dev/ocp-release@sha256:4d30b359aa6600a89ed49ce6a9a5fdab54092bcb821a25480fdfbc47e66af9ec
-    4.14.26     quay.io/openshift-release-dev/ocp-release@sha256:4fe7d4ccf4d967a309f83118f1a380a656a733d7fcee1dbaf4d51752a6372890
-    4.14.25     quay.io/openshift-release-dev/ocp-release@sha256:a0ef946ef8ae75aef726af1d9bbaad278559ad8cab2c1ed1088928a0087990b6
-    4.14.24     quay.io/openshift-release-dev/ocp-release@sha256:0a34eac4b834e67f1bca94493c237e307be2c0eae7b8956d4d8ef1c0c462c7b0
-    4.14.23     quay.io/openshift-release-dev/ocp-release@sha256:f8465817382128ec7c0bc676174bad0fb43204c353e49c146ddd83a5b3d58d92
-    4.13.42     quay.io/openshift-release-dev/ocp-release@sha256:dcf5c3ad7384f8bee3c275da8f886b0bc9aea7611d166d695d0cf0fff40a0b55
-    4.13.41     quay.io/openshift-release-dev/ocp-release@sha256:dbb8aa0cf53dc5ac663514e259ad2768d8c82fd1fe7181a4cfb484e3ffdbd3ba
+  VERSION     IMAGE
+  4.14.27     quay.io/openshift-release-dev/ocp-release@sha256:4d30b359aa6600a89ed49ce6a9a5fdab54092bcb821a25480fdfbc47e66af9ec
+  4.14.26     quay.io/openshift-release-dev/ocp-release@sha256:4fe7d4ccf4d967a309f83118f1a380a656a733d7fcee1dbaf4d51752a6372890
+  4.14.25     quay.io/openshift-release-dev/ocp-release@sha256:a0ef946ef8ae75aef726af1d9bbaad278559ad8cab2c1ed1088928a0087990b6
+  4.14.24     quay.io/openshift-release-dev/ocp-release@sha256:0a34eac4b834e67f1bca94493c237e307be2c0eae7b8956d4d8ef1c0c462c7b0
+  4.14.23     quay.io/openshift-release-dev/ocp-release@sha256:f8465817382128ec7c0bc676174bad0fb43204c353e49c146ddd83a5b3d58d92
+  4.13.42     quay.io/openshift-release-dev/ocp-release@sha256:dcf5c3ad7384f8bee3c275da8f886b0bc9aea7611d166d695d0cf0fff40a0b55
+  4.13.41     quay.io/openshift-release-dev/ocp-release@sha256:dbb8aa0cf53dc5ac663514e259ad2768d8c82fd1fe7181a4cfb484e3ffdbd3ba
 
-  Updates with known issues:
+Updates with known issues:
 
-    Version: 4.14.22
-    Image: quay.io/openshift-release-dev/ocp-release@sha256:7093fa606debe63820671cc92a1384e14d0b70058d4b4719d666571e1fc62190
-    Reason: MultipleReasons
-    Message: Exposure to AzureRegistryImageMigrationUserProvisioned is unknown due to an evaluation failure: client-side throttling: only 18.061µs has elapsed since the last match call completed for this cluster condition backend; this cached cluster condition request has been queued for later execution
-    In Azure clusters with the user-provisioned registry storage, the in-cluster image registry component may struggle to complete the cluster update. https://issues.redhat.com/browse/IR-468
+  Version: 4.14.22
+  Image: quay.io/openshift-release-dev/ocp-release@sha256:7093fa606debe63820671cc92a1384e14d0b70058d4b4719d666571e1fc62190
+  Reason: MultipleReasons
+  Message: Exposure to AzureRegistryImageMigrationUserProvisioned is unknown due to an evaluation failure: client-side throttling: only 18.061µs has elapsed since the last match call completed for this cluster condition backend; this cached cluster condition request has been queued for later execution
+  In Azure clusters with the user-provisioned registry storage, the in-cluster image registry component may struggle to complete the cluster update. https://issues.redhat.com/browse/IR-468
 
-    Incoming HTTP requests to services exposed by Routes may fail while routers reload their configuration, especially when made with Apache HTTPClient versions before 5.0. The problem is more likely to occur in clusters with higher number of Routes and corresponding endpoints. https://issues.redhat.com/browse/NE-1689
+  Incoming HTTP requests to services exposed by Routes may fail while routers reload their configuration, especially when made with Apache HTTPClient versions before 5.0. The problem is more likely to occur in clusters with higher number of Routes and corresponding endpoints. https://issues.redhat.com/browse/NE-1689
 
-    Version: 4.14.21
-    Image: quay.io/openshift-release-dev/ocp-release@sha256:6e3fba19a1453e61f8846c6b0ad3abf41436a3550092cbfd364ad4ce194582b7
-    Reason: MultipleReasons
-    Message: Exposure to AzureRegistryImageMigrationUserProvisioned is unknown due to an evaluation failure: client-side throttling: only 33.991µs has elapsed since the last match call completed for this cluster condition backend; this cached cluster condition request has been queued for later execution
-    In Azure clusters with the user-provisioned registry storage, the in-cluster image registry component may struggle to complete the cluster update. https://issues.redhat.com/browse/IR-468
+  Version: 4.14.21
+  Image: quay.io/openshift-release-dev/ocp-release@sha256:6e3fba19a1453e61f8846c6b0ad3abf41436a3550092cbfd364ad4ce194582b7
+  Reason: MultipleReasons
+  Message: Exposure to AzureRegistryImageMigrationUserProvisioned is unknown due to an evaluation failure: client-side throttling: only 33.991µs has elapsed since the last match call completed for this cluster condition backend; this cached cluster condition request has been queued for later execution
+  In Azure clusters with the user-provisioned registry storage, the in-cluster image registry component may struggle to complete the cluster update. https://issues.redhat.com/browse/IR-468
 
-    Incoming HTTP requests to services exposed by Routes may fail while routers reload their configuration, especially when made with Apache HTTPClient versions before 5.0. The problem is more likely to occur in clusters with higher number of Routes and corresponding endpoints. https://issues.redhat.com/browse/NE-1689
-  ```
+  Incoming HTTP requests to services exposed by Routes may fail while routers reload their configuration, especially when made with Apache HTTPClient versions before 5.0. The problem is more likely to occur in clusters with higher number of Routes and corresponding endpoints. https://issues.redhat.com/browse/NE-1689
+```
 
-  The `oc adm upgrade` command queries the `ClusterVersion` resource for information about available updates and presents it in a human-readable format.
+The `oc adm upgrade` command queries the `ClusterVersion` resource for information about available updates and presents it in a human-readable format.
 
-- One way to directly inspect the underlying availability data created by the CVO is by querying the `ClusterVersion` resource with the following command:
+One way to directly inspect the underlying availability data created by the CVO is by querying the `ClusterVersion` resource with the following command:
 
-  ``` terminal
-  $ oc get clusterversion version -o json | jq '.status.availableUpdates'
-  ```
+``` terminal
+$ oc get clusterversion version -o json | jq '.status.availableUpdates'
+```
 
-  <div class="formalpara-title">
+<div class="formalpara-title">
 
-  **Example output**
+**Example output**
 
-  </div>
+</div>
 
-  ``` terminal
-  [
-    {
-      "channels": [
-        "candidate-4.11",
-        "candidate-4.12",
-        "fast-4.11",
-        "fast-4.12"
-      ],
-      "image": "quay.io/openshift-release-dev/ocp-release@sha256:400267c7f4e61c6bfa0a59571467e8bd85c9188e442cbd820cc8263809be3775",
-      "url": "https://access.redhat.com/errata/RHBA-2023:3213",
-      "version": "4.11.41"
+``` terminal
+[
+  {
+    "channels": [
+      "candidate-4.11",
+      "candidate-4.12",
+      "fast-4.11",
+      "fast-4.12"
+    ],
+    "image": "quay.io/openshift-release-dev/ocp-release@sha256:400267c7f4e61c6bfa0a59571467e8bd85c9188e442cbd820cc8263809be3775",
+    "url": "https://access.redhat.com/errata/RHBA-2023:3213",
+    "version": "4.11.41"
+  },
+  ...
+]
+```
+
+A similar command can be used to check conditional updates:
+
+``` terminal
+$ oc get clusterversion version -o json | jq '.status.conditionalUpdates'
+```
+
+<div class="formalpara-title">
+
+**Example output**
+
+</div>
+
+``` terminal
+[
+  {
+    "conditions": [
+      {
+        "lastTransitionTime": "2023-05-30T16:28:59Z",
+        "message": "The 4.11.36 release only resolves an installation issue https://issues.redhat.com//browse/OCPBUGS-11663 , which does not affect already running clusters. 4.11.36 does not include fixes delivered in recent 4.11.z releases and therefore upgrading from these versions would cause fixed bugs to reappear. Red Hat does not recommend upgrading clusters to 4.11.36 version for this reason. https://access.redhat.com/solutions/7007136",
+        "reason": "PatchesOlderRelease",
+        "status": "False",
+        "type": "Recommended"
+      }
+    ],
+    "release": {
+      "channels": [...],
+      "image": "quay.io/openshift-release-dev/ocp-release@sha256:8c04176b771a62abd801fcda3e952633566c8b5ff177b93592e8e8d2d1f8471d",
+      "url": "https://access.redhat.com/errata/RHBA-2023:1733",
+      "version": "4.11.36"
     },
-    ...
-  ]
-  ```
+    "risks": [...]
+  },
+  ...
+]
+```
 
-- A similar command can be used to check conditional updates:
+# Evaluation of update availability
 
-  ``` terminal
-  $ oc get clusterversion version -o json | jq '.status.conditionalUpdates'
-  ```
+The Cluster Version Operator (CVO) periodically queries the OpenShift Update Service (OSUS) for the most recent data about update possibilities.
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
-
-  ``` terminal
-  [
-    {
-      "conditions": [
-        {
-          "lastTransitionTime": "2023-05-30T16:28:59Z",
-          "message": "The 4.11.36 release only resolves an installation issue https://issues.redhat.com//browse/OCPBUGS-11663 , which does not affect already running clusters. 4.11.36 does not include fixes delivered in recent 4.11.z releases and therefore upgrading from these versions would cause fixed bugs to reappear. Red Hat does not recommend upgrading clusters to 4.11.36 version for this reason. https://access.redhat.com/solutions/7007136",
-          "reason": "PatchesOlderRelease",
-          "status": "False",
-          "type": "Recommended"
-        }
-      ],
-      "release": {
-        "channels": [...],
-        "image": "quay.io/openshift-release-dev/ocp-release@sha256:8c04176b771a62abd801fcda3e952633566c8b5ff177b93592e8e8d2d1f8471d",
-        "url": "https://access.redhat.com/errata/RHBA-2023:1733",
-        "version": "4.11.36"
-      },
-      "risks": [...]
-    },
-    ...
-  ]
-  ```
-
-## Evaluation of update availability
-
-The Cluster Version Operator (CVO) periodically queries the OpenShift Update Service (OSUS) for the most recent data about update possibilities. This data is based on the cluster’s subscribed channel. The CVO then saves information about update recommendations into either the `availableUpdates` or `conditionalUpdates` field of its `ClusterVersion` resource.
+This data is based on the cluster’s subscribed channel. The CVO then saves information about update recommendations into either the `availableUpdates` or `conditionalUpdates` field of its `ClusterVersion` resource.
 
 The CVO periodically checks the conditional updates for update risks. These risks are conveyed through the data served by the OSUS, which contains information for each version about known issues that might affect a cluster updated to that version. Most risks are limited to clusters with specific characteristics, such as clusters with a certain size or clusters that are deployed in a particular cloud platform.
 
@@ -157,22 +157,47 @@ The user interface, either the web console or the OpenShift CLI (`oc`), presents
 
 # Release images
 
-A release image is the delivery mechanism for a specific OpenShift Container Platform (OCP) version. It contains the release metadata, a Cluster Version Operator (CVO) binary matching the release version, every manifest needed to deploy individual OpenShift cluster Operators, and a list of SHA digest-versioned references to all container images that make up this OpenShift version.
+A release image is the delivery mechanism for a specific OpenShift Container Platform (OCP) version.
 
-You can inspect the content of a specific release image by running the following command:
+It contains the release metadata, a Cluster Version Operator (CVO) binary matching the release version, every manifest needed to deploy individual cluster Operators, and a list of SHA digest-versioned references to all container images that make up this version.
+
+You can extract a specific release image by running the following command:
 
 ``` terminal
 $ oc adm release extract <release image>
 ```
 
+<div class="formalpara-title">
+
+**Example command**
+
+</div>
+
 ``` terminal
 $ oc adm release extract quay.io/openshift-release-dev/ocp-release:4.12.6-x86_64
+```
+
+<div class="formalpara-title">
+
+**Example output**
+
+</div>
+
+``` terminal
 Extracted release payload from digest sha256:800d1e39d145664975a3bb7cbc6e674fbf78e3c45b5dde9ff2c5a11a8690c87b created at 2023-03-01T12:46:29Z
 ```
+
+After the release image is extracted, you can inspect its contents by running the following command:
 
 ``` terminal
 $ ls
 ```
+
+<div class="formalpara-title">
+
+**Example output**
+
+</div>
 
 ``` terminal
 0000_03_authorization-openshift_01_rolebindingrestriction.crd.yaml
@@ -188,19 +213,23 @@ image-references
 release-metadata
 ```
 
-- Manifest for `ClusterResourceQuota` CRD, to be applied on Runlevel 03
+In this example output, the following contents can be seen:
 
-- Manifest for `PrometheusRoleBinding` resource for the `service-ca-operator`, to be applied on Runlevel 90
+- `0000_03_quota-openshift_01_clusterresourcequota.crd.yaml` is the manifest for the `ClusterResourceQuota` CRD, to be applied on Runlevel 03.
 
-- List of SHA digest-versioned references to all required images
+- `0000_90_service-ca-operator_02_prometheusrolebinding.yaml` is the manifest for the `PrometheusRoleBinding` resource for the `service-ca-operator`, to be applied on Runlevel 90.
+
+- `image-references` is the list of SHA digest-versioned references to all required images.
 
 # Update process workflow
 
-The following steps represent a detailed workflow of the OpenShift Container Platform (OCP) update process:
+When you initiate a cluster update, the Cluster Version Operator (CVO) begins a specific sequence of events to orchestrate the update.
+
+The following steps represent a detailed workflow of the OpenShift Container Platform update process:
 
 1.  The target version is stored in the `spec.desiredUpdate.version` field of the `ClusterVersion` resource, which may be managed through the web console or the CLI.
 
-2.  The Cluster Version Operator (CVO) detects that the `desiredUpdate` in the `ClusterVersion` resource differs from the current cluster version. Using graph data from the OpenShift Update Service, the CVO resolves the desired cluster version to a pull spec for the release image.
+2.  The CVO detects that the `desiredUpdate` field in the `ClusterVersion` resource differs from the current cluster version. Using graph data from the OpenShift Update Service, the CVO resolves the desired cluster version to a pull spec for the release image.
 
 3.  The CVO validates the integrity and authenticity of the release image. Red Hat publishes cryptographically-signed statements about published release images at predefined locations by using image SHA digests as unique and immutable release image identifiers. The CVO utilizes a list of built-in public keys to validate the presence and signatures of the statement matching the checked release image.
 
@@ -224,7 +253,9 @@ The cluster reports as updated after the control plane update is finished, usual
 
 # Understanding how manifests are applied during an update
 
-Some manifests supplied in a release image must be applied in a certain order because of the dependencies between them. For example, the `CustomResourceDefinition` resource must be created before the matching custom resources. Additionally, there is a logical order in which the individual cluster Operators must be updated to minimize disruption in the cluster. The Cluster Version Operator (CVO) implements this logical order through the concept of Runlevels.
+Some manifests supplied in a release image must be applied in a certain order because of the dependencies between them.
+
+For example, the `CustomResourceDefinition` resource must be created before the matching custom resources. Additionally, there is a logical order in which the individual cluster Operators must be updated to minimize disruption in the cluster. The Cluster Version Operator (CVO) implements this logical order through the concept of Runlevels.
 
 These dependencies are encoded in the filenames of the manifests in the release image:
 
@@ -260,8 +291,6 @@ The CVO waits until all cluster Operators in the Runlevel meet the following con
 
 - The cluster Operators have a `Degraded=False` condition.
 
-<!-- -->
-
 - The cluster Operators declare they have achieved the desired version in their ClusterOperator resource.
 
 Some actions can take significant time to finish. The CVO waits for the actions to complete in order to ensure the subsequent Runlevels can proceed safely. Initially reconciling the new release’s manifests is expected to take 60 to 120 minutes in total; see **Understanding OpenShift Container Platform update duration** for more information about factors that influence update duration.
@@ -276,7 +305,9 @@ In the previous example diagram, the CVO is waiting until all work is completed 
 
 # Understanding how the Machine Config Operator updates nodes
 
-The Machine Config Operator (MCO) applies a new machine configuration to each control plane node and compute node. During the machine configuration update, control plane nodes and compute nodes are organized into their own machine config pools, where the pools of machines are updated in parallel. The `.spec.maxUnavailable` parameter, which has a default value of `1`, determines how many nodes in a machine config pool can simultaneously undergo the update process.
+The Machine Config Operator (MCO) applies a new machine configuration to each control plane node and compute node. During the machine configuration update, control plane nodes and compute nodes are organized into their own machine config pools, where the pools of machines are updated in parallel.
+
+The `.spec.maxUnavailable` parameter, which has a default value of `1`, determines how many nodes in a machine config pool can simultaneously undergo the update process.
 
 <div class="warning">
 

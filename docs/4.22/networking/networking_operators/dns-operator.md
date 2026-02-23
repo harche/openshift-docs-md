@@ -2,15 +2,9 @@ In OpenShift Container Platform, the DNS Operator deploys and manages a CoreDNS 
 
 # Checking the status of the DNS Operator
 
+You can check the DNS Operator deployment and cluster operator status. The DNS Operator is deployed during installation with a `Deployment` object.
+
 The DNS Operator implements the `dns` API from the `operator.openshift.io` API group. The Operator deploys CoreDNS using a daemon set, creates a service for the daemon set, and configures the kubelet to instruct pods to use the CoreDNS service IP address for name resolution.
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-The DNS Operator is deployed during installation with a `Deployment` object.
 
 1.  Use the `oc get` command to view the deployment status:
 
@@ -50,6 +44,8 @@ The DNS Operator is deployed during installation with a `Deployment` object.
 
 # View the default DNS
 
+View the default DNS resource and cluster DNS settings to verify the DNS configuration or troubleshoot DNS issues.
+
 Every new OpenShift Container Platform installation has a `dns.operator` named `default`.
 
 1.  Use the `oc describe` command to view the default `dns`:
@@ -78,9 +74,13 @@ Every new OpenShift Container Platform installation has a `dns.operator` named `
     ...
     ```
 
-    - The Cluster Domain field is the base DNS domain used to construct fully qualified pod and service domain names.
+    where:
 
-    - The Cluster IP is the address pods query for name resolution. The IP is defined as the 10th address in the service CIDR range.
+    `Status.Cluster Domain`
+    Specifiecs the base DNS domain used to construct fully qualified pod and service domain names.
+
+    `Status.Cluster IP`
+    Specifies the address that pods query for name resolution. The IP is defined as the 10th address in the service CIDR range.
 
 2.  To find the service CIDR range, such as `172.30.0.0/16`, of your cluster, use the `oc get` command:
 
@@ -89,6 +89,8 @@ Every new OpenShift Container Platform installation has a `dns.operator` named `
     ```
 
 # Using DNS forwarding
+
+Configure DNS forwarding servers and upstream resolvers for the cluster.
 
 You can use DNS forwarding to override the default forwarding configuration in the `/etc/resolv.conf` file in the following ways:
 
@@ -157,35 +159,48 @@ During pod creation, Kubernetes uses the `/etc/resolv.conf` file that exists on 
   ...
   ```
 
-  - Must comply with the `rfc6335` service name syntax.
+  where:
 
-  - Must conform to the definition of a subdomain in the `rfc1123` service name syntax. The cluster domain, `cluster.local`, is an invalid subdomain for the `zones` field.
+  `spec.servers.name`
+  Must comply with the `rfc6335` service name syntax.
 
-  - Defines the policy to select upstream resolvers listed in the `forwardPlugin`. Default value is `Random`. You can also use the values `RoundRobin`, and `Sequential`.
+  `spec.servers.zones`
+  Must conform to the `rfc1123` subdomain syntax. The cluster domain `cluster.local` is invalid for `zones`.
 
-  - A maximum of 15 `upstreams` is allowed per `forwardPlugin`.
+  `spec.servers.forwardPlugin.policy`
+  Specifies the upstream selection policy. Defaults to `Random`; allowed values are `RoundRobin` and `Sequential`.
 
-  - You can use `upstreamResolvers` to override the default forwarding policy and forward DNS resolution to the specified DNS resolvers (upstream resolvers) for the default domain. If you do not provide any upstream resolvers, the DNS name queries go to the servers declared in `/etc/resolv.conf`.
+  `spec.servers.forwardPlugin.upstreams`
+  Must provide no more than 15 `upstreams` entries per `forwardPlugin`.
 
-  - Determines the order in which upstream servers listed in `upstreams` are selected for querying. You can specify one of these values: `Random`, `RoundRobin`, or `Sequential`. The default value is `Sequential`.
+  `spec.upstreamResolvers.upstreams`
+  Specifies an `upstreamResolvers` to override the default forwarding policy and forward DNS resolution to the specified DNS resolvers (upstream resolvers) for the default domain. You can use this field when you need custom upstream resolvers; otherwise queries use the servers declared in `/etc/resolv.conf`.
 
-  - When omitted, the platform chooses a default, normally the protocol of the original client request. Set to `TCP` to specify that the platform should use TCP for all upstream DNS requests, even if the client request uses UDP.
+  `spec.upstreamResolvers.policy`
+  Specifies the upstream selection order. Defaults to `Sequential`; allowed values are `Random`, `RoundRobin`, and `Sequential`.
 
-  - Used to configure the transport type, server name, and optional custom CA or CA bundle to use when forwarding DNS requests to an upstream resolver.
+  `spec.upstreamResolvers.protocolStrategy`
+  Specify `TCP` to force the protocol to use for upstream DNS requests, even if the request uses UDP. Valid values are `TCP` and omitted. When omitted, the platform chooses a default, normally the protocol of the original client request.
 
-  - You can specify two types of `upstreams`: `SystemResolvConf` or `Network`. `SystemResolvConf` configures the upstream to use `/etc/resolv.conf` and `Network` defines a `Networkresolver`. You can specify one or both.
+  `spec.upstreamResolvers.transportConfig`
+  Specifies the transport type, server name, and optional custom CA or CA bundle to use when forwarding DNS requests to an upstream resolver.
 
-  - If the specified type is `Network`, you must provide an IP address. The `address` field must be a valid IPv4 or IPv6 address.
+  `spec.upstreamResolvers.upstreams.type`
+  Specifies two types of `upstreams`: `SystemResolvConf` or `Network`. `SystemResolvConf` configures the upstream to use `/etc/resolv.conf` and `Network` defines a `Networkresolver`. You can specify one or both.
 
-  - If the specified type is `Network`, you can optionally provide a port. The `port` field must have a value between `1` and `65535`. If you do not specify a port for the upstream, the default port is 853.
+  `spec.upstreamResolvers.upstreams.address`
+  Specifies a valid IPv4 or IPv6 address when type is `Network`.
+
+  `spec.upstreamResolvers.upstreams.port`
+  Specifies an optional field to provide a port number. Valid values are between `1` and `65535`; defaults to 853 when omitted.
 
 <!-- -->
 
-- For more information on DNS forwarding, see the [CoreDNS forward documentation](https://coredns.io/plugins/forward/).
+- [CoreDNS forward documentation](https://coredns.io/plugins/forward/)
 
 # Checking DNS Operator status
 
-You can inspect the status and view the details of the DNS Operator using the `oc describe` command.
+You can inspect the status and view the details of the DNS Operator by using the `oc describe` command.
 
 - View the status of the DNS Operator:
 
@@ -221,15 +236,17 @@ You can inspect the status and view the details of the DNS Operator using the `o
 
 # Viewing DNS Operator logs
 
-You can view DNS Operator logs by using the `oc logs` command.
+You can view DNS Operator logs to troubleshoot DNS issues, verify configuration changes, and monitor activity by using the by using the `oc logs` command.
 
-- View the logs of the DNS Operator:
+- View the logs of the DNS Operator by running the following command:
 
   ``` terminal
   $ oc logs -n openshift-dns-operator deployment/dns-operator -c dns-operator
   ```
 
 # Setting the CoreDNS log level
+
+Set CoreDNS log levels to control the detail of DNS error logging.
 
 Log levels for CoreDNS and the CoreDNS Operator are set by using different methods. You can configure the CoreDNS log level to determine the amount of detail in logged error messages. The valid values for CoreDNS log level are `Normal`, `Debug`, and `Trace`. The default `logLevel` is `Normal`.
 
@@ -276,7 +293,7 @@ The CoreDNS error log level is always enabled. The following log level settings 
 
 # Viewing the CoreDNS logs
 
-You can view CoreDNS logs by using the `oc logs` command.
+You can view CoreDNS pod logs to troubleshoot DNS issues by using the `oc logs` command.
 
 - View the logs of a specific CoreDNS pod by entering the following command:
 
@@ -290,11 +307,13 @@ You can view CoreDNS logs by using the `oc logs` command.
   $ oc -n openshift-dns logs -c dns -l dns.operator.openshift.io/daemonset-dns=default -f --max-log-requests=<number>
   ```
 
-  - Specifies the number of DNS pods to stream logs from. The maximum is 6.
+  - `<number>`: Specifies the number of DNS pods to stream logs from. The maximum is 6.
 
 # Setting the CoreDNS Operator log level
 
-Log levels for CoreDNS and CoreDNS Operator are set by using different methods. Cluster administrators can configure the Operator log level to more quickly track down OpenShift DNS issues. The valid values for `operatorLogLevel` are `Normal`, `Debug`, and `Trace`. `Trace` has the most detailed information. The default `operatorlogLevel` is `Normal`. There are seven logging levels for Operator issues: Trace, Debug, Info, Warning, Error, Fatal, and Panic. After the logging level is set, log entries with that severity or anything above it will be logged.
+You can configure the Operator log level to quickly track down OpenShift DNS issues.
+
+The valid values for `operatorLogLevel` are `Normal`, `Debug`, and `Trace`. `Trace` has the most detailed information. The default `operatorlogLevel` is `Normal`. There are seven logging levels for Operator issues: Trace, Debug, Info, Warning, Error, Unrecoverable, and Panic. After the logging level is set, log entries with that severity or anything above it will be logged.
 
 - `operatorLogLevel: "Normal"` sets `logrus.SetLogLevel("Info")`.
 
@@ -337,11 +356,7 @@ Log levels for CoreDNS and CoreDNS Operator are set by using different methods. 
 
 # Tuning the CoreDNS cache
 
-To reduce the load on upstream DNS resolvers, you can tune the CoreDNS cache by adjusting the duration of positive and negative caching. This process involves modifying the time-to-live (TTL) values within the DNS Operator object to control how long query responses are stored.
-
 For CoreDNS, you can configure the maximum duration of both successful or unsuccessful caching, also known respectively as positive or negative caching. Tuning the cache duration of DNS query responses can reduce the load for any upstream DNS resolvers.
-
-You can shorten the TTL of the DNS record by setting a lower positive cache. You cannot increase the TTL on the DNS record by setting a higher positive cache. The maximum cache is the lower of the TTL of the DNS record or the positive cache.
 
 <div class="warning">
 
@@ -374,9 +389,13 @@ Setting TTL fields to low values could lead to an increased load on the cluster,
         negativeTTL: 0.5h10m
     ```
 
-    - The string value `1h` is converted to its respective number of seconds by CoreDNS. If this field is omitted, the value is assumed to be `0s` and the cluster uses the internal default value of `900s` as a fallback.
+    where:
 
-    - The string value can be a combination of units such as `0.5h10m` and is converted to its respective number of seconds by CoreDNS. If this field is omitted, the value is assumed to be `0s` and the cluster uses the internal default value of `30s` as a fallback.
+    `spec.cache.positiveTTL`
+    Specifies a string value that is converted to its respective number of seconds by CoreDNS. If this field is omitted, the value is assumed to be `0s` and the cluster uses the internal default value of `900s` as a fallback.
+
+    `spec.cache.negativeTTL`
+    Specifies a string value that is converted to its respective number of seconds by CoreDNS. If this field is omitted, the value is assumed to be `0s` and the cluster uses the internal default value of `30s` as a fallback.
 
 <!-- -->
 
@@ -394,17 +413,11 @@ Setting TTL fields to low values could lead to an increased load on the cluster,
             }
     ```
 
-<div class="formalpara-title">
-
-**Additional resources**
-
-</div>
-
-For more information on caching, see [CoreDNS cache](https://coredns.io/plugins/cache/).
-
-# Advanced tasks
+- [CoreDNS cache](https://coredns.io/plugins/cache/)
 
 ## Changing the DNS Operator managementState
+
+You can change from the default `Managed` state to `Unmanaged` to stop the DNS Operator from managing its resources in order to apply a workaround or test a configuration change.
 
 The DNS Operator manages the CoreDNS component to provide a name resolution service for pods and services in the cluster. The `managementState` of the DNS Operator is set to `Managed` by default, which means that the DNS Operator is actively managing its resources. You can change it to `Unmanaged`, which means the DNS Operator is not managing its resources.
 
@@ -414,7 +427,13 @@ The following are use cases for changing the DNS Operator `managementState`:
 
 - You are a cluster administrator and have reported an issue with CoreDNS, but need to apply a workaround until the issue is fixed. You can set the `managementState` field of the DNS Operator to `Unmanaged` to apply the workaround.
 
-1.  Change `managementState` to `Unmanaged` in the DNS Operator:
+<div class="note">
+
+You cannot upgrade while the `managementState` is set to `Unmanaged`.
+
+</div>
+
+1.  Change `managementState` to `Unmanaged` in the DNS Operator by running the following command:
 
     ``` terminal
     oc patch dns.operator.openshift.io default --type merge --patch '{"spec":{"managementState":"Unmanaged"}}'
@@ -426,13 +445,9 @@ The following are use cases for changing the DNS Operator `managementState`:
     $ oc get dns.operator.openshift.io default -ojsonpath='{.spec.managementState}'
     ```
 
-    <div class="note">
-
-    You cannot upgrade while the `managementState` is set to `Unmanaged`.
-
-    </div>
-
 ## Controlling DNS pod placement
+
+Control where CoreDNS and node-resolver pods run by using taints, tolerations, and selectors.
 
 The DNS Operator has two daemon sets: one for CoreDNS called `dns-default` and one for managing the `/etc/hosts` file called `node-resolver`.
 
@@ -475,14 +490,18 @@ As a cluster administrator, you can use a custom node selector to configure the 
   3.  Specify a taint key and a toleration for the taint. The following toleration matches the taint set on the nodes.
 
       ``` yaml
-       spec:
-         nodePlacement:
-           tolerations:
-           - effect: NoExecute
-             key: "dns-only"
-             operator: Equal
-             value: abc
-             tolerationSeconds: 3600
+      apiVersion: operator.openshift.io/v1
+      kind: DNS
+      metadata:
+        name: default
+      spec:
+        nodePlacement:
+          tolerations:
+          - effect: NoExecute
+            key: "dns-only"
+            operator: Equal
+            value: abc
+            tolerationSeconds: 3600
       ```
 
       - If the `key` field is set to `dns-only`, it can be tolerated indefinitely.
@@ -494,15 +513,21 @@ As a cluster administrator, you can use a custom node selector to configure the 
       1.  Edit the DNS Operator object named `default` to include a node selector:
 
           ``` yaml
-           spec:
-             nodePlacement:
-               nodeSelector:
-                 node-role.kubernetes.io/control-plane: ""
+          apiVersion: operator.openshift.io/v1
+          kind: DNS
+          metadata:
+            name: default
+          spec:
+            nodePlacement:
+              nodeSelector:
+                node-role.kubernetes.io/control-plane: ""
           ```
 
-          - This node selector ensures that the CoreDNS pods run only on control plane nodes.
+          - The `nodeselector` field in the example ensures that the CoreDNS pods run only on control plane nodes.
 
 ## Configuring DNS forwarding with TLS
+
+Configure DNS forwarding with TLS to secure queries to upstream resolvers.
 
 When working in a highly regulated environment, you might need the ability to secure DNS traffic when forwarding requests to upstream resolvers so that you can ensure additional DNS traffic and data privacy.
 
@@ -535,7 +560,7 @@ With large clusters, ensure that your DNS server is aware that it might get many
       name: default
     spec:
       servers:
-      - name: example-server
+      - name: example_server
         zones:
         - example.com
         forwardPlugin:
@@ -562,31 +587,40 @@ With large clusters, ensure that your DNS server is aware that it might get many
           port: 53
     ```
 
-    - Must comply with the `rfc6335` service name syntax.
+    where:
 
-    - Must conform to the definition of a subdomain in the `rfc1123` service name syntax. The cluster domain, `cluster.local`, is an invalid subdomain for the `zones` field. The cluster domain, `cluster.local`, is an invalid `subdomain` for `zones`.
+    `spec.servers.name`
+    Must comply with the `rfc6335` service name syntax.
 
-    - When configuring TLS for forwarded DNS queries, set the `transport` field to have the value `TLS`.
+    `spec.servers.zones`
+    Must conform to the `rfc1123` subdomain syntax. The cluster domain, `cluster.local`, is invalid for `zones`.
 
-    - When configuring TLS for forwarded DNS queries, this is a mandatory server name used as part of the server name indication (SNI) to validate the upstream TLS server certificate.
+    `spec.servers.forwardPlugin.transportConfig.transport`
+    Must be set to `TLS` when configuring TLS forwarding.
 
-    - Defines the policy to select upstream resolvers. Default value is `Random`. You can also use the values `RoundRobin`, and `Sequential`.
+    `spec.servers.forwardPlugin.transportConfig.tls.serverName`
+    Must be set to the server name indication (SNI) server name used to validate the upstream TLS certificate.
 
-    - Required. Use it to provide upstream resolvers. A maximum of 15 `upstreams` entries are allowed per `forwardPlugin` entry.
+    `spec.servers.forwardPlugin.policy`
+    Specifies the upstream selection policy. Defaults to `Random`; valid values are `RoundRobin` and `Sequential`.
 
-    - Optional. You can use it to override the default policy and forward DNS resolution to the specified DNS resolvers (upstream resolvers) for the default domain. If you do not provide any upstream resolvers, the DNS name queries go to the servers in `/etc/resolv.conf`.
+    `spec.servers.forwardPlugin.upstreams`
+    Must provide upstream resolvers; maximum 15 entries per `forwardPlugin`.
 
-    - Only the `Network` type is allowed when using TLS and you must provide an IP address. `Network` type indicates that this upstream resolver should handle forwarded requests separately from the upstream resolvers listed in `/etc/resolv.conf`.
+    `spec.upstreamResolvers.upstreams`
+    Specifies an optional field to override the default policy for the default domain. Use the `Network` type only when TLS is enabled and provide an IP address. If omitted, queries use `/etc/resolv.conf`.
 
-    - The `address` field must be a valid IPv4 or IPv6 address.
+    `spec.upstreamResolvers.upstreams.address`
+    Must be a valid IPv4 or IPv6 address.
 
-    - You can optionally provide a port. The `port` must have a value between `1` and `65535`. If you do not specify a port for the upstream, the default port is 853.
+    `spec.upstreamResolvers.upstreams.port`
+    Specifies an optional field to provide a port number. Valid values are between `1` and `65535`; defaults to 853 when omitted.
 
-      <div class="note">
+    <div class="note">
 
-      If `servers` is undefined or invalid, the config map only contains the default server.
+    If `servers` is undefined or invalid, the config map only contains the default server.
 
-      </div>
+    </div>
 
 <!-- -->
 
@@ -610,7 +644,7 @@ With large clusters, ensure that your DNS server is aware that it might get many
             forward . 1.1.1.1 2.2.2.2:5353
         }
         bar.com:5353 example.com:5353 {
-            forward . 3.3.3.3 4.4.4.4:5454
+          forward . 3.3.3.3 4.4.4.4:5454
         }
         .:5353 {
             errors
@@ -635,6 +669,6 @@ With large clusters, ensure that your DNS server is aware that it might get many
       namespace: openshift-dns
     ```
 
-    - Changes to the `forwardPlugin` triggers a rolling update of the CoreDNS daemon set.
+    - The `data.Corefile` key contains the Corefile configuration for the DNS server. Changes to the `forwardPlugin` triggers a rolling update of the CoreDNS daemon set.
 
-- For more information on DNS forwarding, see the [CoreDNS forward documentation](https://coredns.io/plugins/forward/).
+- [CoreDNS forward documentation](https://coredns.io/plugins/forward/)

@@ -604,13 +604,11 @@ It might take several minutes for a configuration change to apply.
 
 2.  Optional: Label the SR-IOV capable cluster nodes with `SriovNetworkNodePolicy.Spec.NodeSelector` if they are not already labeled. For more information about labeling nodes, see "Understanding how to update labels on nodes".
 
-3.  Create the `SriovNetworkNodePolicy` object:
+3.  Create the `SriovNetworkNodePolicy` object. When running the following command, replace `<name>` with the name for this configuration:
 
     ``` terminal
     $ oc create -f <name>-sriov-node-network.yaml
     ```
-
-    where `<name>` specifies the name for this configuration.
 
     After applying the configuration update, all the pods in `sriov-network-operator` namespace transition to the `Running` status.
 

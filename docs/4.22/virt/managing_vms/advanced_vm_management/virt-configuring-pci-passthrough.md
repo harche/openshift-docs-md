@@ -2,6 +2,39 @@ The Peripheral Component Interconnect (PCI) passthrough feature enables you to a
 
 Cluster administrators can expose and manage host devices that are permitted to be used in the cluster by using the `oc` command-line interface (CLI).
 
+<div class="important">
+
+For `vfio-pci` to allocate a PCI device, no other kernel driver can manage that device. If a driver already manages the device, you must add the specific kernel module to a blocklist.
+
+Adding a kernel module to a blocklist makes all devices handled by that module unavailable to the host.
+
+</div>
+
+The following example shows a `MachineConfig` CR that adds the `enic` network driver to a blocklist by creating a configuration file in `/etc/modprobe.d/` and adding kernel arguments:
+
+``` yaml
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: worker
+  name: 100-blacklist-enic
+spec:
+  config:
+    ignition:
+      version: 3.4.0
+    storage:
+      files:
+      - contents:
+          source: data:,blacklist%20enic%0A
+        mode: 420
+        overwrite: true
+        path: /etc/modprobe.d/blacklist-enic.conf
+  kernelArguments:
+    - enic.blacklist=1
+    - rd.driver.blacklist=enic
+```
+
 # Preparing nodes for GPU passthrough
 
 You can prevent GPU operands from deploying on worker nodes that you designated for GPU passthrough.
@@ -307,15 +340,15 @@ To expose PCI host devices in the cluster, add details about the PCI devices to 
     # ...
     ```
 
-    - The host devices that are permitted to be used in the cluster.
+    - `spec.permittedHostDevices` specifies the host devices that are permitted to be used in the cluster.
 
-    - The list of PCI devices available on the node.
+    - `spec.permittedHostDevices.pciHostDevices` specifies the list of PCI devices available on the node.
 
-    - The `vendor-ID` and the `device-ID` required to identify the PCI device.
+    - `spec.permittedHostDevices.pciHostDevices.pciDeviceSelector` specifies the `vendor-ID` and the `device-ID` required to identify the PCI device.
 
-    - The name of a PCI host device.
+    - `spec.permittedHostDevices.pciHostDevices.resourceName` specifies the name of a PCI host device.
 
-    - Optional: Setting this field to `true` indicates that the resource is provided by an external device plugin. OpenShift Virtualization allows the usage of this device in the cluster but leaves the allocation and monitoring to an external device plugin.
+    - `spec.permittedHostDevices.pciHostDevices.externalResourceProvider` is an optional setting. Setting this field to `true` indicates that the resource is provided by an external device plugin. OpenShift Virtualization allows the usage of this device in the cluster but leaves the allocation and monitoring to an external device plugin.
 
       <div class="note">
 

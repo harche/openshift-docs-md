@@ -112,7 +112,17 @@ With this update, the VNC console now offers access to function keys F1-F12. Thi
 
 [CNV-71884](https://issues.redhat.com/browse/CNV-71884)
 
+Integrate third-party solutions with dynamic plugins
+With this update, cluster administrators can integrate third-party solutions into OpenShift Virtualization web console pages by using dynamic plugins. You can use dynamic plugins to add custom tabs or actions, including bulk operations for VM owners.
+
+[CNV-73256](https://issues.redhat.com/browse/CNV-73256)
+
 <!-- -->
+
+New metric to list VM labels as Prometheus labels
+The `kubevirt_vm_labels` metric shows VM labels as Prometheus labels. You can configure the metric to expose and exclude specific labels by editing the `allowlist` and `ignorelist` fields in the `kubevirt-vm-labels-config` config map.
+
+[CNV-56034](https://issues.redhat.com/browse/CNV-56034)
 
 New alerts in the OpenShift Virtualization runbooks
 The following [alerts for the OpenShift Virtualization Operator](../../virt/monitoring/virt-runbooks.xml#virt-runbooks) are now included in the OpenShift Virtualization runbooks:

@@ -1,16 +1,16 @@
 As an administrator, you can perform several tasks to make your clusters more efficient.
 
-# Understanding how to evacuate pods on nodes
+# Evacuating pods on nodes
 
-Evacuating pods allows you to migrate all or selected pods from a given node or nodes.
+You can remove, or evacuate, pods from a given node or nodes. Evacuating pods allows you to migrate all or selected pods to other nodes.
 
-You can only evacuate pods backed by a replication controller. The replication controller creates new pods on other nodes and removes the existing pods from the specified node(s).
+You can evacuate only pods that are backed by a replication controller. The replication controller creates new pods on other nodes and removes the existing pods from the specified node(s).
 
-Bare pods, meaning those not backed by a replication controller, are unaffected by default. You can evacuate a subset of pods by specifying a pod-selector. Pod selectors are based on labels, so all the pods with the specified label will be evacuated.
+Bare pods, meaning those not backed by a replication controller, are unaffected by default. You can evacuate a subset of pods by specifying a pod selector. Because pod selectors are based on labels, all of the pods with the specified label are evacuated.
 
-1.  Mark the nodes unschedulable before performing the pod evacuation.
+1.  Mark the nodes as unschedulable before performing the pod evacuation.
 
-    1.  Mark the node as unschedulable:
+    1.  Mark the node as unschedulable by running the following command:
 
         ``` terminal
         $ oc adm cordon <node1>
@@ -26,7 +26,7 @@ Bare pods, meaning those not backed by a replication controller, are unaffected 
         node/<node1> cordoned
         ```
 
-    2.  Check that the node status is `Ready,SchedulingDisabled`:
+    2.  Check that the node status is `Ready,SchedulingDisabled` by running the following command:
 
         ``` terminal
         $ oc get node <node1>
@@ -43,53 +43,53 @@ Bare pods, meaning those not backed by a replication controller, are unaffected 
         <node1>     Ready,SchedulingDisabled   worker    1d        v1.33.4
         ```
 
-2.  Evacuate the pods using one of the following methods:
+2.  Evacuate the pods by using one of the following methods:
 
-    - Evacuate all or selected pods on one or more nodes:
+    - Evacuate all or selected pods on one or more nodes by running the `oc adm drain` command:
 
       ``` terminal
       $ oc adm drain <node1> <node2> [--pod-selector=<pod_selector>]
       ```
 
-    - Force the deletion of bare pods using the `--force` option. When set to `true`, deletion continues even if there are pods not managed by a replication controller, replica set, job, daemon set, or stateful set:
+    - Force the deletion of bare pods by using the `--force` option with the `oc adm drain` command. When set to `true`, deletion continues even if there are pods not managed by a replication controller, replica set, job, daemon set, or stateful set.
 
       ``` terminal
       $ oc adm drain <node1> <node2> --force=true
       ```
 
-    - Set a period of time in seconds for each pod to terminate gracefully, use `--grace-period`. If negative, the default value specified in the pod will be used:
+    - Set a period of time in seconds for each pod to terminate gracefully by using the `--grace-period` option with the `oc adm drain` command. If negative, the default value specified in the pod will be used:
 
       ``` terminal
       $ oc adm drain <node1> <node2> --grace-period=-1
       ```
 
-    - Ignore pods managed by daemon sets using the `--ignore-daemonsets` flag set to `true`:
+    - Ignore pods managed by daemon sets by using the `--ignore-daemonsets=true` option with the `oc adm drain` command:
 
       ``` terminal
       $ oc adm drain <node1> <node2> --ignore-daemonsets=true
       ```
 
-    - Set the length of time to wait before giving up using the `--timeout` flag. A value of `0` sets an infinite length of time:
+    - Set the length of time to wait before giving up using the `--timeout` option with the `oc adm drain` command. A value of `0` sets an infinite length of time.
 
       ``` terminal
       $ oc adm drain <node1> <node2> --timeout=5s
       ```
 
-    - Delete pods even if there are pods using `emptyDir` volumes by setting the `--delete-emptydir-data` flag to `true`. Local data is deleted when the node is drained:
+    - Delete pods even if there are pods using `emptyDir` volumes by setting the `--delete-emptydir-data=true` option with the `oc adm drain` command. Local data is deleted when the node is drained.
 
       ``` terminal
       $ oc adm drain <node1> <node2> --delete-emptydir-data=true
       ```
 
-    - List objects that will be migrated without actually performing the evacuation, using the `--dry-run` option set to `true`:
+    - List objects that would be migrated without actually performing the evacuation, by using the `--dry-run=true` option with the `oc adm drain` command:
 
       ``` terminal
       $ oc adm drain <node1> <node2>  --dry-run=true
       ```
 
-      Instead of specifying specific node names (for example, `<node1> <node2>`), you can use the `--selector=<node_selector>` option to evacuate pods on selected nodes.
+      Instead of specifying specific node names (for example, `<node1> <node2>`), you can use the `--selector=<node_selector>` option with the `oc adm drain` command to evacuate pods on selected nodes.
 
-3.  Mark the node as schedulable when done.
+3.  Mark the node as schedulable when done by using the following command.
 
     ``` terminal
     $ oc adm uncordon <node1>
@@ -97,7 +97,7 @@ Bare pods, meaning those not backed by a replication controller, are unaffected 
 
 # Understanding how to update labels on nodes
 
-You can update any label on a node.
+You can update any label on a node in order to adapt your cluster to evolving needs.
 
 Node labels are not persisted after a node is deleted even if the node is backed up by a Machine.
 
@@ -157,7 +157,11 @@ In OpenShift Container Platform versions earlier than 4.12, the `node-role.kuber
 
 # Understanding how to mark nodes as unschedulable or schedulable
 
-By default, healthy nodes with a `Ready` status are marked as schedulable, which means that you can place new pods on the node. Manually marking a node as unschedulable blocks any new pods from being scheduled on the node. Existing pods on the node are not affected.
+You can mark a node as unschedulable in order to block any new pods from being scheduled on the node.
+
+When you mark a node as unschedulable, existing pods on the node are not affected.
+
+By default, healthy nodes with a `Ready` status are marked as schedulable, which means that you can place new pods on the node.
 
 - The following command marks a node or nodes as unschedulable:
 
@@ -196,9 +200,11 @@ By default, healthy nodes with a `Ready` status are marked as schedulable, which
   $ oc adm uncordon <node1>
   ```
 
-  Alternatively, instead of specifying specific node names (for example, `<node>`), you can use the `--selector=<node_selector>` option to mark selected nodes as schedulable or unschedulable.
+  Instead of specifying specific node names (for example, `<node>`), you can use the `--selector=<node_selector>` option to mark selected nodes as schedulable or unschedulable.
 
 # Handling errors in single-node OpenShift clusters when the node reboots without draining application pods
+
+You can remove failed pods from a node by using the `--field-selector status.phase=Failed` flag with the `oc delete pods` command.
 
 In single-node OpenShift clusters and in OpenShift Container Platform clusters in general, a situation can arise where a node reboot occurs without first draining the node. This can occur where an application pod requesting devices fails with the `UnexpectedAdmissionError` error. `Deployment`, `ReplicaSet`, or `DaemonSet` errors are reported because the application pods that require those devices start before the pod serving those devices. You cannot control the order of pod restarts.
 
@@ -216,13 +222,9 @@ The option to drain the node is unavailable for single-node OpenShift clusters.
 
 </div>
 
-- [Understanding how to evacuate pods on nodes](../../nodes/nodes/nodes-nodes-working.xml#nodes-nodes-working-evacuating_nodes-nodes-working)
+# Deleting nodes from a cluster
 
-# Deleting nodes
-
-## Deleting nodes from a cluster
-
-To delete a node from the OpenShift Container Platform cluster, scale down the appropriate `MachineSet` object.
+You can delete a node from a OpenShift Container Platform cluster by scaling down the appropriate `MachineSet` object.
 
 <div class="important">
 
@@ -279,21 +281,18 @@ If you are running cluster on bare metal, you cannot delete a node by editing `M
         # ...
       ```
 
-      - Specify the number of replicas to scale down to.
+      where:
 
-- [Manually scaling a compute machine set](../../machine_management/manually-scaling-machineset.xml#machineset-manually-scaling-manually-scaling-machineset)
+      `spec.replicas`
+      Specifies the number of replicas to scale down to.
 
 ## Deleting nodes from a bare metal cluster
 
+You can delete a node from a OpenShift Container Platform cluster that does not use machine sets by using the `oc delete node` command and decommissioning the node.
+
 When you delete a node using the CLI, the node object is deleted in Kubernetes, but the pods that exist on the node are not deleted. Any bare pods not backed by a replication controller become inaccessible to OpenShift Container Platform. Pods backed by replication controllers are rescheduled to other available nodes. You must delete local manifest pods.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-Delete a node from an OpenShift Container Platform cluster running on bare metal by completing the following steps:
+The following procedure deletes a node from an OpenShift Container Platform cluster running on bare metal.
 
 1.  Mark the node as unschedulable:
 
@@ -307,7 +306,7 @@ Delete a node from an OpenShift Container Platform cluster running on bare metal
     $ oc adm drain <node_name> --force=true
     ```
 
-    This step might fail if the node is offline or unresponsive. Even if the node does not respond, it might still be running a workload that writes to shared storage. To avoid data corruption, power down the physical hardware before you proceed.
+    This step might fail if the node is offline or unresponsive. Even if the node does not respond, the node might still be running a workload that writes to shared storage. To avoid data corruption, power down the physical hardware before you proceed.
 
 3.  Delete the node from the cluster:
 
@@ -318,3 +317,9 @@ Delete a node from an OpenShift Container Platform cluster running on bare metal
     Although the node object is now deleted from the cluster, it can still rejoin the cluster after reboot or if the kubelet service is restarted. To permanently delete the node and all its data, you must [decommission the node](https://access.redhat.com/solutions/84663).
 
 4.  If you powered down the physical hardware, turn it back on so that the node can rejoin the cluster.
+
+# Additional resources
+
+- [Evacuating pods on nodes](../../nodes/nodes/nodes-nodes-working.xml#nodes-nodes-working-evacuating_nodes-nodes-working)
+
+- [Manually scaling a compute machine set](../../machine_management/manually-scaling-machineset.xml#machineset-manually-scaling-manually-scaling-machineset)

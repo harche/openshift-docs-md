@@ -121,6 +121,8 @@ By default, the node will report its machine capacity as fully schedulable by th
 
 # Understanding process ID limits
 
+You can review the following information to learn how to limit the number of processes running on your nodes. Configuring an appropriate number of processes can help keep the nodes in your cluster running efficiently.
+
 A process identifier (PID) is a unique identifier assigned by the Linux kernel to each process or thread currently running on a system. The number of processes that can run simultaneously on a system is limited to 4,194,304 by the Linux kernel. This number might also be affected by limited access to other system resources such as memory, CPU, and disk space.
 
 In OpenShift Container Platform, consider these two supported limits for process ID (PID) usage before you schedule work on your cluster:
@@ -159,7 +161,7 @@ When a node exceeds the allowed maximum number of PIDs per node, the node can be
 
 ## Risks of setting higher process ID limits for OpenShift Container Platform pods
 
-The `podPidsLimit` parameter for a pod controls the maximum number of processes and threads that can run simultaneously in that pod.
+You can review the following information to learn about some considerations about allowing a high maximum number of processes to run on your nodes. Configuring an appropriate number of processes can help keep the nodes in your cluster running efficiently.
 
 You can increase the value for `podPidsLimit` from the default of 4,096 to a maximum of 16,384. Changing this value might incur downtime for applications, because changing the `podPidsLimit` requires rebooting the affected node.
 

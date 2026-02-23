@@ -83,6 +83,8 @@ By default, the node will report its machine capacity as fully schedulable by th
 
 # Understanding process ID limits
 
+You can review the following information to learn how to limit the number of processes running on your nodes. Configuring an appropriate number of processes can help keep the nodes in your cluster running efficiently.
+
 A process identifier (PID) is a unique identifier assigned by the Linux kernel to each process or thread currently running on a system. The number of processes that can run simultaneously on a system is limited to 4,194,304 by the Linux kernel. This number might also be affected by limited access to other system resources such as memory, CPU, and disk space.
 
 In OpenShift Container Platform, consider these two supported limits for process ID (PID) usage before you schedule work on your cluster:
@@ -125,7 +127,7 @@ When a node exceeds the allowed maximum number of PIDs per node, the node can be
 
 ## Risks of setting higher process ID limits for OpenShift Container Platform pods
 
-The `podPidsLimit` parameter for a pod controls the maximum number of processes and threads that can run simultaneously in that pod.
+You can review the following information to learn about some considerations about allowing a high maximum number of processes to run on your nodes. Configuring an appropriate number of processes can help keep the nodes in your cluster running efficiently.
 
 You can increase the value for `podPidsLimit` from the default of 4,096 to a maximum of 16,384. Changing this value might incur downtime for applications, because changing the `podPidsLimit` requires rebooting the affected node.
 
@@ -141,53 +143,15 @@ Memory, CPU, and available storage can also limit the maximum number of pods tha
 
 # Automatically allocating resources for nodes
 
-OpenShift Container Platform can automatically determine the optimal `system-reserved` CPU and memory resources for nodes associated with a specific machine config pool and update the nodes with those values when the nodes start. By default, the `system-reserved` CPU is `500m` and `system-reserved` memory is `1Gi`.
+You can configure OpenShift Container Platform to automatically determine the optimal `system-reserved` CPU and memory resources for nodes associated with a specific machine config pool. OpenShift Container Platform then updates the nodes with those values when the nodes start.
 
 To automatically determine and allocate the `system-reserved` resources on nodes, create a `KubeletConfig` custom resource (CR) to set the `autoSizingReserved: true` parameter. A script on each node calculates the optimal values for the respective reserved resources based on the installed CPU and memory capacity on each node. The script takes into account that increased capacity requires a corresponding increase in the reserved resources.
 
-Automatically determining the optimal `system-reserved` settings ensures that your cluster is running efficiently and prevents node failure due to resource starvation of system components, such as CRI-O and kubelet, without your needing to manually calculate and update the values.
+Automatically determining the optimal `system-reserved` settings ensures that your cluster is running efficiently and prevents node failure due to resource starvation of system components, such as CRI-O and kubelet, without your needing to manually calculate and update the values. By default, the `system-reserved` CPU is `500m` and `system-reserved` memory is `1Gi`.
 
 This feature is disabled by default.
 
-1.  Obtain the label associated with the static `MachineConfigPool` object for the type of node you want to configure by entering the following command:
-
-    ``` terminal
-    $ oc edit machineconfigpool <name>
-    ```
-
-    For example:
-
-    ``` terminal
-    $ oc edit machineconfigpool worker
-    ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
-    ``` yaml
-    apiVersion: machineconfiguration.openshift.io/v1
-    kind: MachineConfigPool
-    metadata:
-      creationTimestamp: "2022-11-16T15:34:25Z"
-      generation: 4
-      labels:
-        pools.operator.machineconfiguration.openshift.io/worker: ""
-      name: worker
-    #...
-    ```
-
-    - The label appears under `Labels`.
-
-      <div class="tip">
-
-      If an appropriate label is not present, add a key/value pair such as:
-
-          $ oc label machineconfigpool worker custom-kubelet=small-pods
-
-      </div>
+1.  You have the label associated with the static `MachineConfigPool` object for the type of node you want to configure.
 
 <!-- -->
 
@@ -212,13 +176,18 @@ This feature is disabled by default.
     #...
     ```
 
-    - Assign a name to CR.
+    where:
 
-    - Add the `autoSizingReserved` parameter set to `true` to allow OpenShift Container Platform to automatically determine and allocate the `system-reserved` resources on the nodes associated with the specified label. To disable automatic allocation on those nodes, set this parameter to `false`.
+    `metadata.name`
+    Specifies a name for the CR.
 
-    - Specify the label from the machine config pool that you configured in the "Prerequisites" section. You can choose any desired labels for the machine config pool, such as `custom-kubelet: small-pods`, or the default label, `pools.operator.machineconfiguration.openshift.io/worker: ""`.
+    `spec.autoSizingReserved`
+    Specifies whether OpenShift Container Platform determines and allocates the `system-reserved` resources on the nodes associated with the specified label. Set to `true` to allow automatic allocation on those nodes. Set to `false` to disable automatic allocation on those nodes.
 
-      The previous example enables automatic resource allocation on all worker nodes. OpenShift Container Platform drains the nodes, applies the kubelet config, and restarts the nodes.
+    `spec.machineConfigPoolSelector.matchLabels`
+    Specifies the label from the machine config pool where you want to enable or disable automatic resource allocation.
+
+    The previous example enables automatic resource allocation on all worker nodes. OpenShift Container Platform drains the nodes, applies the kubelet config, and restarts the nodes.
 
 2.  Create the CR by entering the following command:
 

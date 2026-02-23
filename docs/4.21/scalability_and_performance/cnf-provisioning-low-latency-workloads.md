@@ -1,6 +1,8 @@
-Many organizations need high performance computing and low, predictable latency, especially in the financial and telecommunications industries.
+To achieve low latency and consistent response times for OpenShift Container Platform applications, use the Node Tuning Operator. This Operator implements automatic tuning to optimize your cluster for high-performance computing workloads.
 
-OpenShift Container Platform provides the Node Tuning Operator to implement automatic tuning to achieve low latency performance and consistent response time for OpenShift Container Platform applications. You use the performance profile configuration to make these changes. You can update the kernel to kernel-rt, reserve CPUs for cluster and operating system housekeeping duties, including pod infra containers, isolate CPUs for application containers to run the workloads, and disable unused CPUs to reduce power consumption.
+You use the performance profile configuration to make these changes.
+
+You can update the kernel to kernel-rt, reserve CPUs for cluster and operating system housekeeping duties, including pod infra containers, isolate CPUs for application containers to run the workloads, and disable unused CPUs to reduce power consumption.
 
 <div class="note">
 
@@ -10,13 +12,13 @@ When writing your applications, follow the general recommendations described in 
 
 - [Creating a performance profile](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-create-performance-profiles)
 
-# Scheduling a low latency workload onto a worker with real-time capabilities
+# Scheduling a low latency workload onto a compute node
 
-You can schedule low latency workloads onto a worker node where a performance profile that configures real-time capabilities is applied.
+To run low latency workloads, schedule them onto a compute node associated with a performance profile that configures real-time capabilities. This ensures that the node is tuned to meet the specific timing and performance requirements of your application.
 
 <div class="note">
 
-To schedule the workload on specific nodes, use label selectors in the `Pod` custom resource (CR). The label selectors must match the nodes that are attached to the machine config pool that was configured for low latency by the Node Tuning Operator.
+To schedule a workload on specific nodes, use label selectors in the `Pod` custom resource (CR). The label selectors must match the nodes that are attached to the machine config pool that was configured for low latency by the Node Tuning Operator.
 
 </div>
 
@@ -24,7 +26,7 @@ To schedule the workload on specific nodes, use label selectors in the `Pod` cus
 
 - You have logged in as a user with `cluster-admin` privileges.
 
-- You have applied a performance profile in the cluster that tunes worker nodes for low latency workloads.
+- You have applied a performance profile in the cluster that tunes compute nodes for low latency workloads.
 
 1.  Create a `Pod` CR for the low latency workload and apply it in the cluster, for example:
 
@@ -69,19 +71,26 @@ To schedule the workload on specific nodes, use label selectors in the `Pod` cus
     # ...
     ```
 
-    - Disables the CPU completely fair scheduler (CFS) quota at the pod run time.
+    where
 
-    - Disables CPU load balancing.
+    `metadata.annotations.cpu-quota.crio.io`
+    Disables the CPU completely fair scheduler (CFS) quota at the pod run time.
 
-    - Opts the pod out of interrupt handling on the node.
+    `metadata.annotations.cpu-load-balancing.crio.io`
+    Disables CPU load balancing.
 
-    - The `nodeSelector` label must match the label that you specify in the `Node` CR.
+    `metadata.annotations.irq-load-balancing.crio.io`
+    Opts the pod out of interrupt handling on the node.
 
-    - `runtimeClassName` must match the name of the performance profile configured in the cluster.
+    `spec.nodeSelector.node-role.kubernetes.io/worker-cnf`
+    The `nodeSelector` label must match the label that you specify in the `Node` CR.
 
-2.  Enter the pod `runtimeClassName` in the form performance-\<profile_name\>, where \<profile_name\> is the `name` from the `PerformanceProfile` YAML. In the previous example, the `name` is `performance-dynamic-low-latency-profile`.
+    `spec.runtimeClassName`
+    `runtimeClassName` must match the name of the performance profile configured in the cluster.
 
-3.  Ensure the pod is running correctly. Status should be `running`, and the correct cnf-worker node should be set:
+2.  Enter the pod `runtimeClassName` in the form performance-\<profile_name\>, where \<profile_name\> is the `name` from the `PerformanceProfile` YAML. In the previous YAML example, the `name` is `performance-dynamic-low-latency-profile`.
+
+3.  Ensure the pod is running correctly. Status should be `running`, and the correct `cnf-worker` node should be set.
 
     ``` terminal
     $ oc get pod -o wide
@@ -198,11 +207,11 @@ Ensure the node configuration is applied correctly.
     /proc/irq/30/smp_affinity_list: 0-5
     ```
 
-<div class="warning">
+    <div class="warning">
 
-When you tune nodes for low latency, the usage of execution probes in conjunction with applications that require guaranteed CPUs can cause latency spikes. Use other probes, such as a properly configured set of network probes, as an alternative.
+    When you tune nodes for low latency, the usage of execution probes in conjunction with applications that require guaranteed CPUs can cause latency spikes. Use other probes, such as a properly configured set of network probes, as an alternative.
 
-</div>
+    </div>
 
 - [Placing pods on specific nodes using node selectors](../nodes/scheduling/nodes-scheduler-node-selectors.xml#nodes-pods-node-selectors)
 
@@ -220,9 +229,9 @@ To create a pod with a QoS class of `Guaranteed`, you must apply the following s
 
 In general, a pod with a QoS class of `Guaranteed` will not be evicted from a node. One exception is during resource contention caused by system daemons exceeding reserved resources. In this scenario, the `kubelet` might evict pods to preserve node stability, starting with the lowest priority pods.
 
-- Access to the cluster as a user with the `cluster-admin` role
+- Access to the cluster as a user with the `cluster-admin` role.
 
-- The OpenShift CLI (`oc`)
+- The OpenShift CLI (`oc`).
 
 1.  Create a namespace for the pod by running the following command:
 
@@ -230,7 +239,7 @@ In general, a pod with a QoS class of `Guaranteed` will not be evicted from a no
     $ oc create namespace qos-example
     ```
 
-    - This example uses the `qos-example` namespace.
+    - qos-example: Specifies a `qos-example` example namespace.
 
       <div class="formalpara-title">
 
@@ -279,21 +288,28 @@ In general, a pod with a QoS class of `Guaranteed` will not be evicted from a no
                 drop: [ALL]
         ```
 
-        - This example uses a public `hello-openshift` image.
+        where:
 
-        - Sets the memory limit to 200 MB.
+        `spec.containers.image`
+        Specifies public image, such as the `hello-openshift` image.
 
-        - Sets the CPU limit to 1 CPU.
+        `spec.containers.resources.limits.memory`
+        Specifies a memory limit of 200 MB.
 
-        - Sets the memory request to 200 MB.
+        `spec.containers.resources.limits.cpu`
+        Specifies a CPU limit of 1 CPU.
 
-        - Sets the CPU request to 1 CPU.
+        `spec.containers.resources.requests.memory`
+        Specifies a memory request of 200 MB.
 
-          <div class="note">
+        `spec.containers.resources.requests.cpu`
+        Specifies a CPU request of 1 CPU.
 
-          If you specify a memory limit for a container, but do not specify a memory request, OpenShift Container Platform automatically assigns a memory request that matches the limit. Similarly, if you specify a CPU limit for a container, but do not specify a CPU request, OpenShift Container Platform automatically assigns a CPU request that matches the limit.
+        <div class="note">
 
-          </div>
+        If you specify a memory limit for a container, but do not specify a memory request, OpenShift Container Platform automatically assigns a memory request that matches the limit. Similarly, if you specify a CPU limit for a container, but do not specify a CPU request, OpenShift Container Platform automatically assigns a CPU request that matches the limit.
+
+        </div>
 
     2.  Create the `Pod` resource by running the following command:
 
@@ -328,6 +344,8 @@ In general, a pod with a QoS class of `Guaranteed` will not be evicted from a no
   ```
 
 # Disabling CPU load balancing in a Pod
+
+To optimize performance, disable or enable CPU load balancing for your Pods. CRI-O implements this functionality and applies the configuration only when specific requirements are met.
 
 Functionality to disable or enable CPU load balancing is implemented on the CRI-O level. The code under the CRI-O disables or enables CPU load balancing only when the following requirements are met.
 
@@ -370,9 +388,7 @@ Only disable CPU load balancing when the CPU manager static policy is enabled an
 
 # Disabling power saving mode for high priority pods
 
-You can configure pods to ensure that high priority workloads are unaffected when you configure power saving for the node that the workloads run on.
-
-When you configure a node with a power saving configuration, you must configure high priority workloads with performance configuration at the pod level, which means that the configuration applies to all the cores used by the pod.
+To protect high priority workloads when using power saving configurations on a node, apply performance settings at the pod level. This ensures that the configuration applies to all cores used by the pod, maintaining performance stability.
 
 By disabling P-states and C-states at the pod level, you can configure high priority workloads for best performance and lowest latency.
 
@@ -439,40 +455,38 @@ Configuration for high priority workloads
 
 2.  Restart the pods to apply the annotation.
 
-<div class="formalpara-title">
-
-**Additional resources**
-
-</div>
-
-[Configuring power saving for nodes that run colocated high and low priority workloads](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-configuring-power-saving-for-nodes_cnf-low-latency-perf-profile)
+- [Configuring power saving for nodes that run colocated high and low priority workloads](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-configuring-power-saving-for-nodes_cnf-low-latency-perf-profile)
 
 # Disabling CPU CFS quota
 
-To eliminate CPU throttling for pinned pods, create a pod with the `cpu-quota.crio.io: "disable"` annotation. This annotation disables the CPU completely fair scheduler (CFS) quota when the pod runs.
+To prevent CPU throttling for latency-sensitive workloads, disable the CPU CFS quota. This configuration allows pods to use unallocated CPU resources on the node, ensuring consistent application performance.
 
-<div class="formalpara-title">
+- To eliminate CPU throttling for pinned pods, create a pod with the `cpu-quota.crio.io: "disable"` annotation. This annotation disables the CPU completely fair scheduler (CFS) quota when the pod runs.
 
-**Example pod specification with `cpu-quota.crio.io` disabled**
+  <div class="formalpara-title">
 
-</div>
+  **Example pod specification with `cpu-quota.crio.io` disabled**
 
-``` yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  annotations:
-      cpu-quota.crio.io: "disable"
-spec:
-    runtimeClassName: performance-<profile_name>
-#...
-```
+  </div>
 
-<div class="note">
+  ``` yaml
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+        cpu-quota.crio.io: "disable"
+  spec:
+      runtimeClassName: performance-<profile_name>
+  #...
+  ```
 
-Only disable CPU CFS quota when the CPU manager static policy is enabled and for pods with guaranteed QoS that use whole CPUs. For example, pods that contain CPU-pinned containers. Otherwise, disabling CPU CFS quota can affect the performance of other containers in the cluster.
+  <div class="note">
 
-</div>
+  Only disable CPU CFS quota when the CPU manager static policy is enabled and for pods with guaranteed QoS that use whole CPUs. For example, pods that contain CPU-pinned containers. Otherwise, disabling CPU CFS quota can affect the performance of other containers in the cluster.
+
+  </div>
+
+<!-- -->
 
 - [Recommended firmware configuration for vDU cluster hosts](../edge_computing/ztp-vdu-validating-cluster-tuning.xml#ztp-du-firmware-config-reference_vdu-config-ref)
 
@@ -529,9 +543,9 @@ When using the `housekeeping` value, the CPUs designated for housekeeping handle
             memory: "4Gi"
     ```
 
-    - `annotations.irq-load-balancing.crio.io` defines whether device interrupts are processed on the container CPUs. Set to `disable` to prevent all container CPUs from handling IRQs, or set to `housekeeping` to allow the first allocated CPU and its thread siblings to handle IRQs while excluding the remaining CPUs from IRQ handling.
+    - `metadata.annotations.irq-load-balancing.crio.io`: Specifies if device interrupts are processed on the container CPUs. Set to `disable` to prevent all container CPUs from handling IRQs, or set to `housekeeping` to allow the first allocated CPU and its thread siblings to handle IRQs while excluding the remaining CPUs from IRQ handling.
 
-    - `spec.runtimeClassName` sets the runtime class to the performance profile. Replace `<profile_name>` with the name of your performance profile.
+    - `spec.runtimeClassName`: Specifies the runtime class for the performance profile. Replace `<profile_name>` with the name of your performance profile.
 
 2.  Apply the `Pod` resource by running the following command:
 

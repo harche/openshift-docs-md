@@ -22,6 +22,8 @@ After adding the `NoSchedule` taint on the infrastructure node, existing DNS pod
 
 # OpenShift Container Platform infrastructure components
 
+You can review the following information to understand which components you can move to an infrastructure node. Components that you move to an infrastructure node do not need to be accounted for during sizing.
+
 Each self-managed Red Hat OpenShift subscription includes entitlements for OpenShift Container Platform and other OpenShift-related components. These entitlements are included for running OpenShift Container Platform control plane and infrastructure workloads and do not need to be accounted for during sizing.
 
 To qualify as an infrastructure node and use the included entitlement, only components that are supporting the cluster, and not part of an end-user application, can run on those instances. Examples include the following components:
@@ -56,17 +58,17 @@ Any node that runs any other container, pod, or component is a worker node that 
 
 For information about infrastructure nodes and which components can run on infrastructure nodes, see the "Red Hat OpenShift control plane and infrastructure nodes" section in the [OpenShift sizing and subscription guide for enterprise Kubernetes](https://www.redhat.com/en/resources/openshift-subscription-sizing-guide) document.
 
-To create an infrastructure node, you can [use a machine set](../../machine_management/creating-infrastructure-machinesets.xml#machineset-creating_creating-infrastructure-machinesets), [label the node](../../nodes/nodes/nodes-nodes-creating-infrastructure-nodes.xml#creating-an-infra-node_creating-infrastructure-nodes), or [use a machine config pool](../../machine_management/creating-infrastructure-machinesets.xml#creating-infra-machines_creating-infrastructure-machinesets).
-
 ## Creating an infrastructure node
 
 <div class="important">
 
-See Creating infrastructure machine sets for installer-provisioned infrastructure environments or for any cluster where the control plane nodes are managed by the machine API.
+See "Creating infrastructure machine sets" for installer-provisioned infrastructure environments or for any cluster where the control plane nodes are managed by the machine API.
 
 </div>
 
-Requirements of the cluster dictate that infrastructure (infra) nodes, be provisioned. The installation program provisions only control plane and worker nodes. Worker nodes can be designated as infrastructure nodes through labeling. You can then use taints and tolerations to move appropriate workloads to the infrastructure nodes. For more information, see "Moving resources to infrastructure machine sets".
+You can use labels to configure worker nodes as infrastructure nodes, where you can move infrastructure resources.
+
+After you create the infrastructure nodes, you can move appropriate workloads to those nodes by using taints and tolerations.
 
 You can optionally create a default cluster-wide node selector. The default node selector is applied to pods created in all namespaces and creates an intersection with any existing node selectors on a pod, which additionally constrains the pod’s selector.
 
@@ -112,10 +114,20 @@ You can alternatively use a project node selector to avoid cluster-wide node sel
         # ...
         ```
 
-        - This example node selector deploys pods on infrastructure nodes by default.
+        This example node selector deploys pods on infrastructure nodes by default.
 
     3.  Save the file to apply the changes.
 
-You can now move infrastructure resources to the new infrastructure nodes. Also, remove any workloads that you do not want, or that do not belong, on the new infrastructure node. See the list of workloads supported for use on infrastructure nodes in "OpenShift Container Platform infrastructure components".
+    You can now move infrastructure resources to the new infrastructure nodes. Also, remove any workloads that you do not want, or that do not belong, on the new infrastructure node. See the list of workloads supported for use on infrastructure nodes in "OpenShift Container Platform infrastructure components".
+
+# Additional resources
 
 - [Moving resources to infrastructure machine sets](../../machine_management/creating-infrastructure-machinesets.xml#moving-resources-to-infrastructure-machinesets)
+
+- [Creating infrastructure machine sets](../../machine_management/creating-infrastructure-machinesets.xml#creating-infrastructure-machinesets)
+
+- [Creating a compute machine set](../../machine_management/creating-infrastructure-machinesets.xml#machineset-creating_creating-infrastructure-machinesets)
+
+- [Creating an infrastructure node](../../nodes/nodes/nodes-nodes-creating-infrastructure-nodes.xml#creating-an-infra-node_creating-infrastructure-nodes)
+
+- [Creating a machine config pool for infrastructure machines](../../machine_management/creating-infrastructure-machinesets.xml#creating-infra-machines_creating-infrastructure-machinesets)

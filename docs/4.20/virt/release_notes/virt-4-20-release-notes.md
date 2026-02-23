@@ -248,6 +248,16 @@ Some features in this release are currently in Technology Preview. These experim
 
   - As a workaround, use user accounts rather than service accounts because user account tokens are not bound to a specific pod.
 
+<!-- -->
+
+- When you enable the `spec.featureGates.enableMultiArchBootImageImport` feature gate after boot sources have already been imported, OpenShift Virtualization recreates the boot source import resources using architecture-suffixed names, such as `fedora-amd64` or `fedora-arm64`. The original, non-suffixed boot source resources are not automatically removed, and remain in the `openshift-virtualization-os-images` namespace. This results in duplicate boot sources appearing in the web console and CLI. These stale resources continue to consume storage space because the associated persistent volume claims (PVCs) or `VolumeSnapshot` resources are retained.
+
+  To work around this problem, manually delete the stale boot source resources by completing the following steps:
+
+  1.  Identify the currently active `DataSource` objects that resolve to the PVCs or `VolumeSnapshot` resources you want to keep.
+
+  2.  Delete the older, non-suffixed `DataSource` objects and the PVCs or `VolumeSnapshot` resources they reference. [CNV-68996](https://issues.redhat.com/browse/CNV-68996)
+
 ## IBM Z and IBM LinuxONE
 
 - VMs based on s390x architecture can only use the **IPL** boot mode. However, in the OpenShift Container Platform web console, the **Boot mode** list for s390x VMs incorrectly includes **BIOS**, **UEFI**, and **UEFI (secure)** boot modes. If you select one of these modes for an s390x-based VM, the operation fails. ([CNV-56889](https://issues.redhat.com/browse/CNV-56889))

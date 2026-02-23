@@ -10,15 +10,11 @@ If a node fails and [node health checks](https://access.redhat.com/articles/7057
 
 # Deleting nodes from a bare metal cluster
 
+You can delete a node from a OpenShift Container Platform cluster that does not use machine sets by using the `oc delete node` command and decommissioning the node.
+
 When you delete a node using the CLI, the node object is deleted in Kubernetes, but the pods that exist on the node are not deleted. Any bare pods not backed by a replication controller become inaccessible to OpenShift Container Platform. Pods backed by replication controllers are rescheduled to other available nodes. You must delete local manifest pods.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-Delete a node from an OpenShift Container Platform cluster running on bare metal by completing the following steps:
+The following procedure deletes a node from an OpenShift Container Platform cluster running on bare metal.
 
 1.  Mark the node as unschedulable:
 
@@ -32,7 +28,7 @@ Delete a node from an OpenShift Container Platform cluster running on bare metal
     $ oc adm drain <node_name> --force=true
     ```
 
-    This step might fail if the node is offline or unresponsive. Even if the node does not respond, it might still be running a workload that writes to shared storage. To avoid data corruption, power down the physical hardware before you proceed.
+    This step might fail if the node is offline or unresponsive. Even if the node does not respond, the node might still be running a workload that writes to shared storage. To avoid data corruption, power down the physical hardware before you proceed.
 
 3.  Delete the node from the cluster:
 

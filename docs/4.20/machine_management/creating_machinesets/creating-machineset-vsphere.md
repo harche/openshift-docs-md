@@ -1,4 +1,4 @@
-You can create a different compute machine set to serve a specific purpose in your OpenShift Container Platform cluster on VMware vSphere. For example, you might create infrastructure machine sets and related machines so that you can move supporting workloads to the new machines.
+You can define and create a OpenShift Container Platform compute machine set on VMware vSphere to enable the Machine API to automatically scale and manage compute nodes in vSphere. You can create a different compute machine set to serve a specific purpose in your OpenShift Container Platform cluster on vSphere. For example, you might create infrastructure machine sets and related machines so that you can move supporting workloads to the new machines.
 
 <div class="important">
 
@@ -16,7 +16,9 @@ $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
 
 # Sample YAML for a compute machine set custom resource on vSphere
 
-This sample YAML defines a compute machine set that runs on VMware vSphere and creates nodes that are labeled with `node-role.kubernetes.io/<role>: ""`.
+To enable the Machine API to automate node provisioning on VMware vSphere infrastructure, define a `MachineSet` resource with parameters that are specific to VMware vSphere, for example data center, resource pool, and template.
+
+The sample YAML file defines a compute machine set that runs on VMware vSphere and creates nodes that are labeled with `node-role.kubernetes.io/<role>: ""`.
 
 In this sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<role>` is the node label to add.
 
@@ -79,31 +81,44 @@ spec:
             server: <vcenter_server_ip>
 ```
 
-- Specify the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI (`oc`) installed, you can obtain the infrastructure ID by running the following command:
+where
 
-  ``` terminal
-  $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
-  ```
+`<infrastructure_id>`
+Specifies the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI (`oc`) installed, you can obtain the infrastructure ID by running the following command:
 
-- Specify the infrastructure ID and node label.
+``` terminal
+$ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
+```
 
-- Specify the node label to add.
+`<infrastructure_id>-<role>`
+Specifies the infrastructure ID and node label.
 
-- Specify one or more data disk definitions. For more information, see "Configuring data disks by using machine sets".
+`<role>`
+Specifies the node label to add.
 
-- Specify the vSphere VM network to deploy the compute machine set to. This VM network must be where other compute machines reside in the cluster.
+`<disk_name>`
+Specifies one or more data disk definitions. For more information, see "Configuring data disks by using machine sets".
 
-- Specify the vSphere VM template to use, such as `user-5ddjd-rhcos`.
+`<vm_network_name>`
+Specifies the vSphere VM network to deploy the compute machine set to. This VM network must be where other compute machines reside in the cluster.
 
-- Specify the vCenter datacenter to deploy the compute machine set on.
+`<vm_template_name>`
+Specifies the vSphere VM template to use, such as `user-5ddjd-rhcos`.
 
-- Specify the vCenter datastore to deploy the compute machine set on.
+`<vcenter_data_center_name>`
+Specifies the vCenter datacenter to deploy the compute machine set on.
 
-- Specify the path to the vSphere VM folder in vCenter, such as `/dc1/vm/user-inst-5ddjd`.
+`<vcenter_datastore_name>`
+Specifies the vCenter datastore to deploy the compute machine set on.
 
-- Specify the vSphere resource pool for your VMs.
+`<vcenter_vm_folder_path>`
+Specifies the path to the vSphere VM folder in vCenter, such as `/dc1/vm/user-inst-5ddjd`.
 
-- Specify the vCenter server IP or fully qualified domain name.
+`<vsphere_resource_pool>`
+Specifies the vSphere resource pool for your VMs.
+
+`<vcenter_server_ip>`
+Specifies the vCenter server IP or fully qualified domain name.
 
 # Minimum required vCenter privileges for compute machine set management
 
@@ -111,77 +126,17 @@ To manage compute machine sets in an OpenShift Container Platform cluster on vCe
 
 If you cannot use an account with global administrative privileges, you must create roles to grant the minimum required privileges. The following table lists the minimum vCenter roles and privileges that are required to create, scale, and delete compute machine sets and to delete machines in your OpenShift Container Platform cluster.
 
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">vSphere object for role</th>
-<th style="text-align: left;">When required</th>
-<th style="text-align: left;">Required privileges</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><p>vSphere vCenter</p></td>
-<td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p><code>InventoryService.Tagging.AttachTag</code><br />
-<code>InventoryService.Tagging.CreateCategory</code><br />
-<code>InventoryService.Tagging.CreateTag</code><br />
-<code>InventoryService.Tagging.DeleteCategory</code><br />
-<code>InventoryService.Tagging.DeleteTag</code><br />
-<code>InventoryService.Tagging.EditCategory</code><br />
-<code>InventoryService.Tagging.EditTag</code><br />
-<code>Sessions.ValidateSession</code><br />
-<code>StorageProfile.Update</code><sup>1</sup><br />
-<code>StorageProfile.View</code><sup>1</sup></p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p>vSphere vCenter Cluster</p></td>
-<td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p><code>Resource.AssignVMToPool</code></p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p>vSphere datastore</p></td>
-<td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p><code>Datastore.AllocateSpace</code><br />
-<code>Datastore.Browse</code></p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p>vSphere Port Group</p></td>
-<td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p><code>Network.Assign</code></p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p>Virtual Machine Folder</p></td>
-<td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p><code>VirtualMachine.Config.AddRemoveDevice</code><br />
-<code>VirtualMachine.Config.AdvancedConfig</code><br />
-<code>VirtualMachine.Config.Annotation</code><br />
-<code>VirtualMachine.Config.CPUCount</code><br />
-<code>VirtualMachine.Config.DiskExtend</code><br />
-<code>VirtualMachine.Config.Memory</code><br />
-<code>VirtualMachine.Config.Settings</code><br />
-<code>VirtualMachine.Interact.PowerOff</code><br />
-<code>VirtualMachine.Interact.PowerOn</code><br />
-<code>VirtualMachine.Inventory.CreateFromExisting</code><br />
-<code>VirtualMachine.Inventory.Delete</code><br />
-<code>VirtualMachine.Provisioning.Clone</code></p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p>vSphere vCenter data center</p></td>
-<td style="text-align: left;"><p>If the installation program creates the virtual machine folder.</p></td>
-<td style="text-align: left;"><p><code>Resource.AssignVMToPool</code><br />
-<code>VirtualMachine.Provisioning.DeployTemplate</code></p></td>
-</tr>
-<tr class="odd">
-<td colspan="3" style="text-align: left;"><p><sup>1</sup> The <code>StorageProfile.Update</code> and <code>StorageProfile.View</code> permissions are required only for storage backends that use the Container Storage Interface (CSI).</p></td>
-</tr>
-</tbody>
-</table>
+| vSphere object for role                                                                                                                                               | When required                                                   | Required privileges                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| vSphere vCenter                                                                                                                                                       | Always                                                          | `InventoryService.Tagging.AttachTag` `InventoryService.Tagging.CreateCategory` `InventoryService.Tagging.CreateTag` `InventoryService.Tagging.DeleteCategory` `InventoryService.Tagging.DeleteTag` `InventoryService.Tagging.EditCategory` `InventoryService.Tagging.EditTag` `Sessions.ValidateSession` `StorageProfile.Update`<sup>1</sup> `StorageProfile.View`<sup>1</sup>                                                                 |
+| vSphere vCenter Cluster                                                                                                                                               | Always                                                          | `Resource.AssignVMToPool`                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| vSphere datastore                                                                                                                                                     | Always                                                          | `Datastore.AllocateSpace` `Datastore.Browse`                                                                                                                                                                                                                                                                                                                                                                                                   |
+| vSphere Port Group                                                                                                                                                    | Always                                                          | `Network.Assign`                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| Virtual Machine Folder                                                                                                                                                | Always                                                          | `VirtualMachine.Config.AddRemoveDevice` `VirtualMachine.Config.AdvancedConfig` `VirtualMachine.Config.Annotation` `VirtualMachine.Config.CPUCount` `VirtualMachine.Config.DiskExtend` `VirtualMachine.Config.Memory` `VirtualMachine.Config.Settings` `VirtualMachine.Interact.PowerOff` `VirtualMachine.Interact.PowerOn` `VirtualMachine.Inventory.CreateFromExisting` `VirtualMachine.Inventory.Delete` `VirtualMachine.Provisioning.Clone` |
+| vSphere vCenter data center                                                                                                                                           | If the installation program creates the virtual machine folder. | `Resource.AssignVMToPool` `VirtualMachine.Provisioning.DeployTemplate`                                                                                                                                                                                                                                                                                                                                                                         |
+| <sup>1</sup> The `StorageProfile.Update` and `StorageProfile.View` permissions are required only for storage backends that use the Container Storage Interface (CSI). |                                                                 |                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+
+Minimum vCenter roles and privileges required for compute machine set management
 
 The following table details the permissions and propagation settings that are required for compute machine set management.
 
@@ -196,15 +151,17 @@ The following table details the permissions and propagation settings that are re
 | vSphere Port Group                      | Always          | Not required               | Listed required privileges |
 | vSphere vCenter Virtual Machine Folder  | Existing folder | Required                   | Listed required privileges |
 
+Required permissions and propagation settings
+
 For more information about creating an account with only the required privileges, see [vSphere Permissions and User Management Tasks](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-5372F580-5C23-4E9C-8A4E-EF1B4DD9033E.html) in the vSphere documentation.
 
-# Requirements for clusters with user-provisioned infrastructure to use compute machine sets
+## Requirements for clusters with user-provisioned infrastructure to use compute machine sets
 
-To use compute machine sets on clusters that have user-provisioned infrastructure, you must ensure that you cluster configuration supports using the Machine API.
+To enable the Machine API to manage and scale compute nodes on user-provisioned infrastructure, you can configure a `MachineSet` YAML file with specific vSphere parameters, for example data center and disk image. To use compute machine sets on clusters that have user-provisioned infrastructure, you must ensure that you cluster configuration supports using the Machine API.
 
-## Obtaining the infrastructure ID
+### Obtaining the infrastructure ID
 
-To create compute machine sets, you must be able to supply the infrastructure ID for your cluster.
+To ensure the Machine API correctly identifies and manages virtual machines (VMs) that belong to a specific cluster, you must add the unique infrastructure ID to the `MachineSet` YAML file to label and link resources. To create compute machine sets, you must be able to supply the infrastructure ID for your cluster.
 
 - To obtain the infrastructure ID for your cluster, run the following command:
 
@@ -212,9 +169,9 @@ To create compute machine sets, you must be able to supply the infrastructure ID
   $ oc get infrastructure cluster -o jsonpath='{.status.infrastructureName}'
   ```
 
-## Satisfying vSphere credentials requirements
+### Satisfying vSphere credentials requirements
 
-To use compute machine sets, the Machine API must be able to interact with vCenter. Credentials that authorize the Machine API components to interact with vCenter must exist in a secret in the `openshift-machine-api` namespace.
+To use compute machine sets and manage virtual machine (VM) resources, the Machine API must be able to interact with vCenter. Credentials that authorize the Machine API components to interact with vCenter must exist in a secret in the `openshift-machine-api` namespace.
 
 1.  To determine whether the required credentials exist, run the following command:
 
@@ -235,7 +192,10 @@ To use compute machine sets, the Machine API must be able to interact with vCent
     <vcenter-server>.username=<openshift-user>
     ```
 
-    where `<vcenter-server>` is the IP address or fully qualified domain name (FQDN) of the vCenter server and `<openshift-user>` and `<openshift-user-password>` are the OpenShift Container Platform administrator credentials to use.
+    where
+
+    `<vcenter_server>`
+    Specifies the IP address or fully qualified domain name (FQDN) of the vCenter server and `<openshift_user_password>` and `<openshift_user>` are the OpenShift Container Platform administrator credentials to use.
 
 2.  If the secret does not exist, create it by running the following command:
 
@@ -245,9 +205,9 @@ To use compute machine sets, the Machine API must be able to interact with vCent
       --from-literal=<vcenter-server>.username=<openshift-user> --from-literal=<vcenter-server>.password=<openshift-user-password>
     ```
 
-## Satisfying Ignition configuration requirements
+### Satisfying Ignition configuration requirements
 
-Provisioning virtual machines (VMs) requires a valid Ignition configuration. The Ignition configuration contains the `machine-config-server` address and a system trust bundle for obtaining further Ignition configurations from the Machine Config Operator.
+For the Machine API to provision virtual machines (VMs) with the correct initial configuration using Ignition, a valid Ignition configuration is required. The Ignition configuration contains the `machine-config-server` address and a system trust bundle for obtaining further Ignition configurations from the Machine Config Operator.
 
 By default, this configuration is stored in the `worker-user-data` secret in the `machine-api-operator` namespace. Compute machine sets reference the secret during the machine creation process.
 
@@ -276,7 +236,7 @@ By default, this configuration is stored in the `worker-user-data` secret in the
       }
     ```
 
-    - The full output is omitted here, but should have this format.
+    The full output is omitted here, but this is the format to use.
 
 2.  If the secret does not exist, create it by running the following command:
 
@@ -286,13 +246,13 @@ By default, this configuration is stored in the `worker-user-data` secret in the
       --from-file=<installation_directory>/worker.ign
     ```
 
-    where `<installation_directory>` is the directory that was used to store your installation assets during cluster installation.
+    Specifies the directory that was used to store your installation assets during cluster installation.
 
 - [Understanding the Machine Config Operator](../../machine_configuration/index.xml#machine-config-operator_machine-config-overview)
 
 - [Installing RHCOS and starting the OpenShift Container Platform bootstrap process](../../installing/installing_vsphere/upi/installing-vsphere.xml#installation-vsphere-machines_installing-vsphere)
 
-# Creating a compute machine set
+## Creating a compute machine set
 
 In addition to the compute machine sets created by the installation program, you can create your own to dynamically manage the machine compute resources for specific workloads of your choice.
 
@@ -476,7 +436,7 @@ Clusters that are installed with user-provisioned infrastructure have a differen
 
   When the new compute machine set is available, the `DESIRED` and `CURRENT` values match. If the compute machine set is not available, wait a few minutes and run the command again.
 
-# Labeling GPU machine sets for the cluster autoscaler
+## Labeling GPU machine sets for the cluster autoscaler
 
 You can use a machine set label to indicate which machines the cluster autoscaler can use to deploy GPU-enabled nodes.
 
@@ -514,9 +474,9 @@ You can use a machine set label to indicate which machines the cluster autoscale
 
 - [Cluster autoscaler resource definition](../../machine_management/applying-autoscaling.xml#cluster-autoscaler-cr_applying-autoscaling)
 
-# Adding tags to machines by using machine sets
+## Adding tags to machines by using machine sets
 
-OpenShift Container Platform adds a cluster-specific tag to each virtual machine (VM) that it creates. The installation program uses these tags to select the VMs to delete when uninstalling a cluster.
+To ensure that your cluster remains scalable and resilient, you can use a `MachineSet` object and machine health checks to automate the provisioning and repair of nodes. OpenShift Container Platform adds a cluster-specific tag to each virtual machine (VM) that it creates. The installation program uses these tags to select the VMs to delete when uninstalling a cluster.
 
 In addition to the cluster-specific tags assigned to VMs, you can configure a machine set to add up to 10 additional vSphere tags to the VMs it provisions.
 
@@ -576,13 +536,14 @@ In addition to the cluster-specific tags assigned to VMs, you can configure a ma
     # ...
     ```
 
-    - Specify a list of up to 10 tags to add to the machines that this machine set provisions.
+    where
 
-    - Specify the value of the tag that you want to add to your machines. For example, `urn:vmomi:InventoryServiceTag:208e713c-cae3-4b7f-918e-4051ca7d1f97:GLOBAL`.
+    `spec.template.spec.providerSpec.value.tagIDs`
+    Specifies a list of up to 10 tags to add to the machines that this machine set provisions. Replace `<tag_id_value>` with the tag that you want to add to your machines. For example, `urn:vmomi:InventoryServiceTag:208e713c-cae3-4b7f-918e-4051ca7d1f97:GLOBAL`.
 
-# Configuring multiple network interface controllers by using machine sets
+## Configuring multiple network interface controllers by using machine sets
 
-OpenShift Container Platform clusters on VMware vSphere support connecting up to 10 network interface controllers (NICs) to a node. By configuring multiple NICs, you can provide dedicated network links in the node virtual machines (VMs) for uses such as storage or databases.
+By configuring multiple network interface controllers (NICs), you can provide dedicated network links in the node virtual machines (VMs) for uses such as storage or databases. OpenShift Container Platform clusters on VMware vSphere support connecting up to 10 network NICs to a node.
 
 You can use machine sets to manage this configuration.
 
@@ -653,23 +614,32 @@ You can use machine sets to manage this configuration.
     # ...
     ```
 
-    - Specify a list of up to 10 NICs to use.
+    where:
 
-    - Specify the vSphere VM template to use, such as `user-5ddjd-rhcos`.
+    `spec.template.spec.providerSpec.value.network.devices`
+    Specifies a list of up to 10 NICs to use.
 
-    - Specify the vCenter data center to deploy the machine set on.
+    `spec.template.spec.providerSpec.value.network.template`
+    Specifies the vSphere VM template to use, such as `user-5ddjd-rhcos`.
 
-    - Specify the vCenter datastore to deploy the machine set on.
+    `spec.template.spec.providerSpec.value.network.workspace.datacenter`
+    Specifies the vCenter data center to deploy the machine set on.
 
-    - Specify the path to the vSphere VM folder in vCenter, such as `/dc1/vm/user-inst-5ddjd`.
+    `spec.template.spec.providerSpec.value.network.workspace.datastore`
+    Specifies the vCenter datastore to deploy the machine set on.
 
-    - Specify the vSphere resource pool for your VMs.
+    `spec.template.spec.providerSpec.value.network.workspace.folder`
+    Specifies the path to the vSphere VM folder in vCenter, such as `/dc1/vm/user-inst-5ddjd`.
 
-    - Specify the vCenter server IP or fully qualified domain name (FQDN).
+    `spec.template.spec.providerSpec.value.network.workspace.resourcepool`
+    Specifies the vSphere resource pool for your VMs.
 
-# Configuring data disks by using machine sets
+    `spec.template.spec.providerSpec.value.network.workspace.server`
+    Specifies the vCenter server IP or fully qualified domain name (FQDN).
 
-OpenShift Container Platform clusters on VMware vSphere support adding up to 29 disks to the virtual machine (VM) controller.
+## Configuring data disks by using machine sets
+
+To provide persistent storage beyond the root volume for specialized application workloads, define a `dataDisks` array in the `MachineSet` YAML file to specify disk size and storage policy. OpenShift Container Platform clusters on VMware vSphere support adding up to 29 disks to the virtual machine (VM) controller.
 
 <div class="important">
 
@@ -712,16 +682,22 @@ Adding data disks attaches them to the VM and mounts them to the location that R
     # ...
     ```
 
-    - Specify a collection of 1-29 data disk definitions. This sample configuration shows the formatting to include two data disk definitions.
+    where
 
-    - Specify the name of the data disk. The name must meet the following requirements:
+    `spec.template.spec.providerSpec.value.dataDisks`
+    Specifies a collection of 1-29 data disk definitions. This sample configuration shows the formatting to include two data disk definitions.
 
-      - Start and end with an alphanumeric character
+    `spec.template.spec.providerSpec.value.dataDisks.name`
+    Specifies the name of the data disk. The name must meet the following requirements:
 
-      - Consist only of alphanumeric characters, hyphens (`-`), and underscores (`_`)
+    - Start and end with an alphanumeric character
 
-      - Have a maximum length of 80 characters
+    - Consist only of alphanumeric characters, hyphens (`-`), and underscores (`_`)
 
-    - Specify the data disk provisioning method. This value defaults to the vSphere default storage policy if not set. Valid values are `Thin`, `Thick`, and `EagerlyZeroed`.
+    - Have a maximum length of 80 characters
 
-    - Specify the size of the data disk in GiB. The maximum size is 16384 GiB.
+    `spec.template.spec.providerSpec.value.dataDisks.provisioningMode`
+    Specifies the data disk provisioning method. This value defaults to the vSphere default storage policy if not set. Valid values are `Thin`, `Thick`, and `EagerlyZeroed`.
+
+    `spec.template.spec.providerSpec.value.dataDisks.sizeGiB`
+    Specifies the size of the data disk in GiB. The maximum size is 16,384 GiB.

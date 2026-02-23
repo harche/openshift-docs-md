@@ -932,11 +932,55 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHBA-2026:2637 - OpenShift Container Platform 4.17.2 fixed issues
+
+Issued: 17 February 2026
+
+OpenShift Container Platform release 4.17.2 is now available. The list of bug fixes that are included in the update is documented in the [RHBA-2026:2637](https://access.redhat.com/errata/RHBA-2026:2637) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:2630](https://access.redhat.com/errata/RHBA-2026:2630) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.2 --pullspecs
+```
+
+### Enhancements
+
+This release contains the following enhancements:
+
+- With this update, the application addresses a denial of service vulnerability in the Logrus library, specifically when handling large single-line payloads without newline characters. The new feature ensures that the Logrus library, when used in our application, does not fail to process large input data because of the `token too long` error. By implementing this fix, applications using Logrus do not experience unavailability due to this issue. This improvement is available in Logrus versions 1.8.3, 1.9.1, and 1.9.3 and later. ([OCPBUGS-74282](https://issues.redhat.com/browse/OCPBUGS-74282))
+
+### Fixed issues
+
+The following issues are fixed for this release:
+
+- Before this update, the `cluster-node-tuning-operator` object used a hard-coded client certificate authority source that failed on HyperShift. As a consequence, the `cluster-node-tuning-operator` pod failed to listen on the 60000 port. With this release, the `cluster-node-tuning-operator` object listens on the 60000 port and the inactive target is resolved. ([OCPBUGS-55399](https://issues.redhat.com/browse/OCPBUGS-55399))
+
+- Before this update, `kubevirt` object virtual machine (VM) eviction strategy was not set to `external` during a node drain process. With this release, the eviction strategy for `kubevirt` VMs is customizable. As a result, `kubevirt` VMs in hosted control planes correctly use the specified eviction strategy, ensuring smooth node draining during infrastructure cluster upgrades. ([OCPBUGS-58397](https://issues.redhat.com/browse/OCPBUGS-58397))
+
+- Before this update, the agent did not compare the physical and usable RAM sizes correctly on certain virtual machines (VM), causing discrepancies. With this release, the incorrect RAM size calculation on certain VMs is fixed and uses a consistent method for all cases. As a result, the RAM calculation accuracy is improved, ensuring correct host memory reporting for users. ([OCPBUGS-66374](https://issues.redhat.com/browse/OCPBUGS-66374))
+
+- Before this update, users attempted to access unauthorized API resources on vSphere clusters, and caused a `500` error when accessing metrics. With this release, the 8445 port issue on vSphere is fixed and returns a `401 forbidden` response, improving metrics access in vSphere environments. ([OCPBUGS-74569](https://issues.redhat.com/browse/OCPBUGS-74569))
+
+- Before this update, autoscaling imbalance occurred because of ignored labels not added to worker nodes. As a consequence, nodes in 3 pools scaled unevenly, and caused workload imbalance. With this release, the autoscaler ignores certain labels for even distribution in node pools. As a result, nodes in 3 pools scale up more evenly, improving the distribution of the workload. ([OCPBUGS-74893](https://issues.redhat.com/browse/OCPBUGS-74893))
+
+- Before this update, the **Subscription** details list page was empty because of a missing code fix in the release team build cycle. With this release, the **Subscription** details list page is populated, improving user navigation. ([OCPBUGS-74998](https://issues.redhat.com/browse/OCPBUGS-74998))
+
+- Before this update, the `collect-profiles` job was affected by maintenance difficulties, causing confusion for customers and support engineers during troubleshooting. With this release, the `collect-profiles` job is removed, improving user experience and reducing maintenance effort. ([OCPBUGS-76266](https://issues.redhat.com/browse/OCPBUGS-76266))
+
+- Before this update, the upgrade to OpenShift Container Platform 4.21.0 enforced short name mode, and caused image pull failures with multiple sources. As a consequence, end users experienced image pull failure due to enforced short name mode. With this release, short name mode is disabled in OpenShift Container Platform 4.21.0-0.nightly-2026-02-10-112229 and resolves the image pull failure issue. As a result, short name mode is disabled, preventing CRI-O failures when pulling images with an unqualified search. ([OCPBUGS-76356](https://issues.redhat.com/browse/OCPBUGS-76356))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHSA-2026:2129 - OpenShift Container Platform 4.17.1 fixed issues and security update
 
 Issued: 10 February 2026
 
-OpenShift Container Platform release 4.17.33 is now available. The list of bug fixes that are included in the update is documented in the [RHSA-2026:2129](https://access.redhat.com/errata/RHSA-2026:2129) advisory. The RPM packages that are included in the update are provided by the [RHSA-2026:2082](https://access.redhat.com/errata/RHSA-2026:2082) advisory.
+OpenShift Container Platform release 4.17.1 is now available. The list of bug fixes that are included in the update is documented in the [RHSA-2026:2129](https://access.redhat.com/errata/RHSA-2026:2129) advisory. The RPM packages that are included in the update are provided by the [RHSA-2026:2082](https://access.redhat.com/errata/RHSA-2026:2082) advisory.
 
 Space precluded documenting all of the container images for this release in the advisory.
 
@@ -1141,3 +1185,7 @@ The following issues are fixed for this release:
 - Before this update, unexpected issues occurred during the initial provisioning of a `HostedCluster` resource. With this release, the system uses the `ControlPlaneComponent` resource to ensure that the `HostedCluster` resource is available only after all control plane components have been successfully rolled out. As a result, the rollout status of each control plane component is accurately tracked, which reduces the risk of unexpected issues. ([OCPBUGS-74648](https://issues.redhat.com/browse/OCPBUGS-74648))
 
 - Before this update, Google Cloud installations failed due to unspecified zones in the `us-south1` and `us-central1` regions, which caused installation issues. With this release, the GCP installer requires that you specify zones in `install-config` for regions with AI zones. As a result, Google Cloud installations do not fail in these specified regions. ([OCPBUGS-74672](https://issues.redhat.com/browse/OCPBUGS-74672))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).

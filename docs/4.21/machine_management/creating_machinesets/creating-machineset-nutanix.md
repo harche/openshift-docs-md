@@ -1,4 +1,4 @@
-You can create a different compute machine set to serve a specific purpose in your OpenShift Container Platform cluster on Nutanix. For example, you might create infrastructure machine sets and related machines so that you can move supporting workloads to the new machines.
+You can create a different compute machine set to serve a specific purpose in your OpenShift Container Platform cluster on Nutanix. For example, you might create infrastructure machine sets and related machines so that you can move supporting workloads to the new machines, which helps ensure efficient resource allocation.
 
 <div class="important">
 
@@ -16,9 +16,13 @@ $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
 
 # Sample YAML for a compute machine set custom resource on Nutanix
 
-This sample YAML defines a Nutanix compute machine set that creates nodes that are labeled with `node-role.kubernetes.io/<role>: ""`.
+You can use a YAML file to automate node provisioning and ensure workloads are scheduled correctly based on role and infrastructure requirements.
 
-In this sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<role>` is the node label to add.
+The sample YAML shows how to define a Nutanix compute MachineSet for your cluster. It explains how to configure roles, labels, sizing, networking, and boot settings so new nodes are created consistently.
+
+The sample YAML defines a Nutanix compute machine set that creates nodes that are labeled with `node-role.kubernetes.io/<role>: ""`.
+
+In the sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<role>` is the node label to add.
 
 ## Values obtained by using the OpenShift CLI
 
@@ -91,41 +95,58 @@ spec:
           vcpusPerSocket: 1
 ```
 
-- For `<infrastructure_id>`, specify the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster.
+where:
 
-- Specify the node label to add.
+`<infrastructure_id>`
+Specifies the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster.
 
-- Specify the infrastructure ID, node label, and zone.
+`<role>`
+Specifies the node label to add.
 
-- Annotations for the cluster autoscaler.
+`<infrastructure_id>-<infra>-<region>`
+Specifies the infrastructure ID, node label, and zone.
 
-- Specifies the boot type that the compute machines use. For more information about boot types, see [Understanding UEFI, Secure Boot, and TPM in the Virtualized Environment](https://portal.nutanix.com/page/documents/kbs/details?targetId=kA07V000000H3K9SAK). Valid values are `Legacy`, `SecureBoot`, or `UEFI`. The default is `Legacy`.
+`annotations`
+Specifies annotations for the cluster autoscaler.
 
-  <div class="note">
+`bootType`
+Specifies the boot type that the compute machines use. For more information about boot types, see [Understanding UEFI, Secure Boot, and TPM in the Virtualized Environment](https://portal.nutanix.com/page/documents/kbs/details?targetId=kA07V000000H3K9SAK). Valid values are `Legacy`, `SecureBoot`, or `UEFI`. The default is `Legacy`.
 
-  You must use the `Legacy` boot type in OpenShift Container Platform 4.17.
+<div class="note">
 
-  </div>
+You must use the `Legacy` boot type in OpenShift Container Platform 4.17.
 
-- Specify one or more Nutanix Prism categories to apply to compute machines. This stanza requires `key` and `value` parameters for a category key-value pair that exists in Prism Central. For more information about categories, see [Category management](https://portal.nutanix.com/page/documents/details?targetId=Prism-Central-Guide-vpc_2022_6:ssp-ssp-categories-manage-pc-c.html).
+</div>
 
-- Specify a Nutanix Prism Element cluster configuration. In this example, the cluster type is `uuid`, so there is a `uuid` stanza.
+`<categories>`
+Specifies one or more Nutanix Prism categories to apply to compute machines. This stanza requires `key` and `value` parameters for a category key-value pair that exists in Prism Central. For more information about categories, see [Category management](https://portal.nutanix.com/page/documents/details?targetId=Prism-Central-Guide-vpc_2022_6:ssp-ssp-categories-manage-pc-c.html).
 
-- Specify the image to use. Use an image from an existing default compute machine set for the cluster.
+`<cluster>`
+Specifies a Nutanix Prism Element cluster configuration. In this example, the cluster type is `uuid`, so there is a `uuid` stanza.
 
-- Specify the amount of memory for the cluster in Gi.
+`<infrastructure_id>-rhcos`
+Specifies the image to use. Use an image from an existing default compute machine set for the cluster.
 
-- Specify the Nutanix project that you use for your cluster. In this example, the project type is `name`, so there is a `name` stanza.
+`16Gi`
+Specifies the amount of memory for the cluster in Gi.
 
-- Specify one or more UUID for the Prism Element subnet object. The CIDR IP address prefix for one of the specified subnets must contain the virtual IP addresses that the OpenShift Container Platform cluster uses. A maximum of 32 subnets for each Prism Element failure domain in the cluster is supported. All subnet UUID values must be unique.
+`project`
+Specifies the Nutanix project that you use for your cluster. In this example, the project type is `name`, so there is a `name` stanza.
 
-- Specify the size of the system disk in Gi.
+`subnets`
+Specifies one or more UUID for the Prism Element subnet object. The CIDR IP address prefix for one of the specified subnets must contain the virtual IP addresses that the OpenShift Container Platform cluster uses. A maximum of 32 subnets for each Prism Element failure domain in the cluster is supported. All subnet UUID values must be unique.
 
-- Specify the name of the secret in the user data YAML file that is in the `openshift-machine-api` namespace. Use the value that installation program populates in the default compute machine set.
+`120Gi`
+Specifies the size of the system disk in Gi.
 
-- Specify the number of vCPU sockets.
+`<user_data_secret>`
+Specifies the name of the secret in the user data YAML file that is in the `openshift-machine-api` namespace. Use the value that installation program populates in the default compute machine set.
 
-- Specify the number of vCPUs per socket.
+`4`
+Specifies the number of vCPU sockets.
+
+`1`
+Specifies the number of vCPUs per socket.
 
 # Creating a compute machine set
 
@@ -281,11 +302,9 @@ You can use a machine set label to indicate which machines the cluster autoscale
 
   </div>
 
-<!-- -->
-
-- [Cluster autoscaler resource definition](../../machine_management/applying-autoscaling.xml#cluster-autoscaler-cr_applying-autoscaling)
-
 # Failure domains for Nutanix clusters
+
+Update failure domain configurations on a Nutanix cluster by coordinating changes to specific resources. You must modify the cluster infrastructure, control plane machine set, and compute machine set custom resources (CRs) to apply the new configuration.
 
 To add or update the failure domain configuration on a Nutanix cluster, you must make coordinated changes to several resources. The following actions are required:
 
@@ -296,5 +315,35 @@ To add or update the failure domain configuration on a Nutanix cluster, you must
 3.  Modify or replace the compute machine set CRs.
 
 For more information, see "Adding failure domains to an existing Nutanix cluster" in the *Post-installation configuration* content.
+
+# Improving reliability for multiple subnet configurations on Nutanix
+
+To improve reliability and avoid common networking problems with multiple subnet configurations on Nutanix, adhere to the configuration practices that minimize networking conflicts.
+
+The following networking configuration and management practices can help your multiple subnet configuration perform more reliably:
+
+- To avoid overlapping IP address assignments, use predefined static IP addresses in the `cloud-init` metadata.
+
+- Tag all VMs, disks, and networks with a unique cluster ID.
+
+- Avoid IP address conflicts by using dedicated subnets for each OpenShift Container Platform cluster:
+
+  Nutanix uses Nutanix Acropolis Hypervisor (AHV) and Nutanix Prism networking to assign IP addresses to virtual machines (VMs). If a single subnet provides IP addresses for more than one OpenShift Container Platform cluster, AHV or Prism might assign the same IP address to a VM or pod in more than one cluster.
+
+  To avoid this issue, use dedicated subnets for each OpenShift Container Platform cluster, even when you have more than one cluster on a single Prism Central instance. You can use the Prism UI or automation tools, such as Terraform or Ansible, to create separate IP address pools for each OpenShift Container Platform cluster.
+
+- Ensure that each OpenShift Container Platform cluster uses distinct DNS zones and virtual IP address ranges.
+
+- Avoid DHCP conflicts by maintaining DHCP allocations:
+
+  If you use Nutanix to manage DHCP allocation, objects in your cluster might have duplicate leases. Duplicate leases can cause DHCP conflicts when you apply changes to the control plane machine set custom resource (CR) specification.
+
+  To avoid this issue, regularly remove stale DHCP leases.
+
+- Use automation tools, such as Terraform or Ansible, to isolate the infrastructure for each OpenShift Container Platform cluster.
+
+<!-- -->
+
+- [Cluster autoscaler resource definition](../../machine_management/applying-autoscaling.xml#cluster-autoscaler-cr_applying-autoscaling)
 
 - [Adding failure domains to an existing Nutanix cluster](../../installing/installing_nutanix/nutanix-failure-domains.xml#nutanix-failure-domains-adding-to-existing-cluster_nutanix-failure-domains)

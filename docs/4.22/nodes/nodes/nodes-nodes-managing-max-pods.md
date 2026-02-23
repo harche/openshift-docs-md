@@ -1,6 +1,6 @@
-In OpenShift Container Platform, you can configure the number of pods that can run on a node based on the number of processor cores on the node, a hard limit or both. If you use both options, the lower of the two limits the number of pods on a node.
+In OpenShift Container Platform, you can configure the number of pods that can run on a node based on the number of processor cores on the node, a hard limit, or both. If you use both options, the lower of the two limits the number of pods on a node. Setting a maximum number of pods can prevent a node from running more pods than its underlying hardware can handle.
 
-When both options are in use, the lower of the two values limits the number of pods on a node. Exceeding these values can result in:
+When both options are in use, the lower of the two values limits the number of pods on a node. Exceeding these values can result in the following conditions:
 
 - Increased CPU utilization.
 
@@ -24,7 +24,7 @@ Disk IOPS throttling from the cloud provider might have an impact on CRI-O and k
 
 </div>
 
-The `podsPerCore` parameter sets the number of pods the node can run based on the number of processor cores on the node. For example, if `podsPerCore` is set to `10` on a node with 4 processor cores, the maximum number of pods allowed on the node will be `40`.
+The `podsPerCore` parameter sets the number of pods that the node can run based on the number of processor cores on the node. For example, if `podsPerCore` is set to `10` on a node with 4 processor cores, the maximum number of pods allowed on the node is `40`.
 
 ``` yaml
 kubeletConfig:
@@ -33,7 +33,7 @@ kubeletConfig:
 
 Setting `podsPerCore` to `0` disables this limit. The default is `0`. The value of the `podsPerCore` parameter cannot exceed the value of the `maxPods` parameter.
 
-The `maxPods` parameter sets the number of pods the node can run to a fixed value, regardless of the properties of the node.
+The `maxPods` parameter sets the number of pods that the node can run to a fixed value, regardless of the properties of the node.
 
 ``` yaml
  kubeletConfig:
@@ -42,51 +42,11 @@ The `maxPods` parameter sets the number of pods the node can run to a fixed valu
 
 # Configuring the maximum number of pods per node
 
-Two parameters control the maximum number of pods that can be scheduled to a node: `podsPerCore` and `maxPods`. If you use both options, the lower of the two limits the number of pods on a node.
+You can use the `podsPerCore` and `maxPods` parameters in a kublet configuration to control the maximum number of pods that can be scheduled to a node. If you use both options, the lower of the two limits the number of pods on a node. Setting an appropriate maximum can help ensure your nodes run efficiently.
 
 For example, if `podsPerCore` is set to `10` on a node with 4 processor cores, the maximum number of pods allowed on the node will be 40.
 
-1.  Obtain the label associated with the static `MachineConfigPool` CRD for the type of node you want to configure by entering the following command:
-
-    ``` terminal
-    $ oc edit machineconfigpool <name>
-    ```
-
-    For example:
-
-    ``` terminal
-    $ oc edit machineconfigpool worker
-    ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
-    ``` yaml
-    apiVersion: machineconfiguration.openshift.io/v1
-    kind: MachineConfigPool
-    metadata:
-      creationTimestamp: "2022-11-16T15:34:25Z"
-      generation: 4
-      labels:
-        pools.operator.machineconfiguration.openshift.io/worker: ""
-      name: worker
-    #...
-    ```
-
-    - The label appears under Labels.
-
-      <div class="tip">
-
-      If the label is not present, add a key/value pair such as:
-
-          $ oc label machineconfigpool worker custom-kubelet=small-pods
-
-      </div>
-
-<!-- -->
+- You have the label associated with the static `MachineConfigPool` CRD for the type of node you want to configure.
 
 1.  Create a custom resource (CR) for your configuration change.
 
@@ -111,21 +71,27 @@ For example, if `podsPerCore` is set to `10` on a node with 4 processor cores, t
     #...
     ```
 
-    - Assign a name to CR.
+    where:
 
-    - Specify the label from the machine config pool.
+    `metadata.name`
+    Specifies a name for the CR.
 
-    - Specify the number of pods the node can run based on the number of processor cores on the node.
+    `spec.machineConfigPoolSelector.matchLabels`
+    Specifies the label from the machine config pool.
 
-    - Specify the number of pods the node can run to a fixed value, regardless of the properties of the node.
+    `spec.kubeletConfig.podsPerCore`
+    Specifies the number of pods the node can run based on the number of processor cores on the node.
 
-      <div class="note">
+    `spec.kubeletConfig.maxPods`
+    Specifies the number of pods the node can run to a fixed value, regardless of the properties of the node.
 
-      Setting `podsPerCore` to `0` disables this limit.
+    <div class="note">
 
-      </div>
+    Setting `podsPerCore` to `0` disables this limit.
 
-      In the above example, the default value for `podsPerCore` is `10` and the default value for `maxPods` is `250`. This means that unless the node has 25 cores or more, by default, `podsPerCore` will be the limiting factor.
+    </div>
+
+    In the above example, the default value for `podsPerCore` is `10` and the default value for `maxPods` is `250`. This means that unless the node has 25 cores or more, by default, `podsPerCore` will be the limiting factor.
 
 2.  Run the following command to create the CR:
 
@@ -133,40 +99,38 @@ For example, if `podsPerCore` is set to `10` on a node with 4 processor cores, t
     $ oc create -f <file_name>.yaml
     ```
 
-<!-- -->
+- List the `MachineConfigPool` CRDs to check if the change is applied. The `UPDATING` column reports `True` if the change is picked up by the Machine Config Controller:
 
-1.  List the `MachineConfigPool` CRDs to see if the change is applied. The `UPDATING` column reports `True` if the change is picked up by the Machine Config Controller:
+  ``` terminal
+  $ oc get machineconfigpools
+  ```
 
-    ``` terminal
-    $ oc get machineconfigpools
-    ```
+  <div class="formalpara-title">
 
-    <div class="formalpara-title">
+  **Example output**
 
-    **Example output**
+  </div>
 
-    </div>
+  ``` terminal
+  NAME     CONFIG                        UPDATED   UPDATING   DEGRADED
+  master   master-9cc2c72f205e103bb534   False     False      False
+  worker   worker-8cecd1236b33ee3f8a5e   False     True       False
+  ```
 
-    ``` terminal
-    NAME     CONFIG                        UPDATED   UPDATING   DEGRADED
-    master   master-9cc2c72f205e103bb534   False     False      False
-    worker   worker-8cecd1236b33ee3f8a5e   False     True       False
-    ```
+  After the change is complete, the `UPDATED` column reports `True`.
 
-    Once the change is complete, the `UPDATED` column reports `True`.
+  ``` terminal
+  $ oc get machineconfigpools
+  ```
 
-    ``` terminal
-    $ oc get machineconfigpools
-    ```
+  <div class="formalpara-title">
 
-    <div class="formalpara-title">
+  **Example output**
 
-    **Example output**
+  </div>
 
-    </div>
-
-    ``` terminal
-    NAME     CONFIG                        UPDATED   UPDATING   DEGRADED
-    master   master-9cc2c72f205e103bb534   False     True       False
-    worker   worker-8cecd1236b33ee3f8a5e   True      False      False
-    ```
+  ``` terminal
+  NAME     CONFIG                        UPDATED   UPDATING   DEGRADED
+  master   master-9cc2c72f205e103bb534   False     True       False
+  worker   worker-8cecd1236b33ee3f8a5e   True      False      False
+  ```

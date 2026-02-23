@@ -78,6 +78,8 @@ Red Hat does support the following postinstallation configurations that use the
 
 - Creating an additional OVN secondary network with a `localnet` topology network requires that you define the secondary network in a `NodeNetworkConfigurationPolicy` (NNCP) object. After you create the network, pods or virtual machines (VMs) can then attach to the network. These secondary networks give a dedicated connection to the physical network, which might or might not use VLAN tagging. You cannot access these networks from the host network of a node where the host does not have the required setup, such as the required network settings.
 
+- Defining additional VLANs in the `vlanID` parameter of the `NetworkAttachmentDefinition` (NAD) custom resource (CR). By mapping the `br-ex` bridge to a physical interface, the interface acts as a trunk port that can carry multiple VLANs. OVN-Kubernetes can then manage tagging and untagging of network packets, also known as *Ethernet frames*. To ensure strong connectivity, configure the physical switch ports as trunks.
+
 # OVN-Kubernetes IPv6 and dual-stack limitations
 
 The OVN-Kubernetes network plugin has the following limitations:

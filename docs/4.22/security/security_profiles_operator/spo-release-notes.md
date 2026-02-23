@@ -4,6 +4,24 @@ These release notes track the development of the Security Profiles Operator in O
 
 For an overview of the Security Profiles Operator, see [Security Profiles Operator Overview](../../security/security_profiles_operator/spo-overview.xml#spo-overview).
 
+# Security Profiles Operator 0.10.0
+
+The following advisory is available for the Security Profiles Operator 0.10.0: [RHSA-2026:2852 - OpenShift Security Profiles Operator update](http://access.redhat.com/errata/RHSA-2026:2852)
+
+## Bug fixes
+
+- In some instances when Security Profiles Operator (SPO) 0.9.0 was used with OpenShift Container Platform version 4.20 and above, SPO would create the `profilerecording` resource but the workload would fail. Failure of the workload prevented the creation of the needed container for running the Operator. With the 0.10.0 release of SPO. the `profilerecording` resource is reliably created, therefore the needed container for running the Operator is reliably created. [CMP-3537](https://issues.redhat.com/browse/CMP-3537).
+
+- For version 0.9.0 of Security Profiles Operator (SPO), the `spod` pods would fail to run with the error message `fsmount:fscontext:proc/: could not get mount id: operation not permitted`. With the release of version 0.10.0, the `spod` pods run reliably. [CMP-4007](https://issues.redhat.com/browse/CMP-4007).
+
+- In releases of SPO 0.9.0 and earlier, there was a bug in syntax of the `selinux` usage. With this release of SPO, the change is from `<policyName>_.process` to `<policyName>.process`. The new syntax omits the `_`. Examples in the documentation now show this updated usage. [CMP-4104](https://issues.redhat.com/browse/CMP-4104)
+
+## New features and enhancements
+
+- With the release of SPO v0.10.0, the Operator now supports Red Hat Enterprise Linux CoreOS (RHCOS) 10 containers. [CMP-4033](https://issues.redhat.com/browse/CMP-4033)
+
+- In this release of the Security Profiles Operator, the Advanced Audit Logging Framework is available as a General Availability (GA) feature. The Advanced Audit Logging Framework uses the Audit JSON Log Enricher to capture and log terminal-based command activity in Red Hat Enterprise Linux CoreOS (RHCOS) containers, including `oc rsh`, `oc exec`, and `oc debug` commands.
+
 # Security Profiles Operator 0.9.0
 
 The following advisory is available for the Security Profiles Operator 0.9.0: [RHBA-2025:15655 - OpenShift Security Profiles Operator update](http://access.redhat.com/errata/RHBA-2025:15655)
@@ -12,9 +30,9 @@ This update manages security profiles as cluster-wide resources rather than name
 
 ## Bug fixes
 
-- Before this update, the spod pods could fail to start and enter into a `CrashLoopBackOff` state due to an error in parsing the semanage configuration file. This issue is caused by a change to the RHEL 9 image naming convention beginning in OpenShift Container Platform 4.19. ([**OCPBUGS-55829**](http://issues.redhat.com/browse/OCPBUGS-55829))
+- Before this update, the spod pods could fail to start and enter into a `CrashLoopBackOff` state due to an error in parsing the semanage configuration file. This issue is caused by a change to the RHEL 9 image naming convention beginning in OpenShift Container Platform 4.19. ([OCPBUGS-55829](http://issues.redhat.com/browse/OCPBUGS-55829))
 
-- Before this update, the Security Profiles Operator would fail to apply a `RawSelinuxProfile` to newly added nodes due to a reconciler type mismatch error. With this update, the operator now correctly handles `RawSelinuxProfile` objects and policies are applied to all nodes as expected. ([**OCPBUGS-33718**](http://issues.redhat.com/browse/OCPBUGS-33718))
+- Before this update, the Security Profiles Operator would fail to apply a `RawSelinuxProfile` to newly added nodes due to a reconciler type mismatch error. With this update, the operator now correctly handles `RawSelinuxProfile` objects and policies are applied to all nodes as expected. ([OCPBUGS-33718](http://issues.redhat.com/browse/OCPBUGS-33718))
 
 # Security Profiles Operator 0.8.6
 
@@ -32,7 +50,7 @@ The following advisory is available for the Security Profiles Operator 0.8.5:
 
 ## Bug fixes
 
-- When attempting to install the Security Profile Operator from the web console, the option to enable Operator-recommended cluster monitoring was unavailable for the namespace. With this update, you can now enabled Operator-recommend cluster monitoring in the namespace. ([**OCPBUGS-37794**](http://issues.redhat.com/browse/OCPBUGS-37794))
+- When attempting to install the Security Profile Operator from the web console, the option to enable Operator-recommended cluster monitoring was unavailable for the namespace. With this update, you can now enabled Operator-recommend cluster monitoring in the namespace. ([OCPBUGS-37794](http://issues.redhat.com/browse/OCPBUGS-37794))
 
 - Previously, the Security Profiles Operator would intermittently be not visible in the OperatorHub, which caused limited access to install the Operator via the web console. With this update, the Security Profiles Operator is present in the OperatorHub.
 
@@ -56,11 +74,11 @@ The following advisory is available for the Security Profiles Operator 0.8.2:
 
 ## Bug fixes
 
-- Previously, `SELinuxProfile` objects did not inherit custom attributes from the same namespace. With this update, the issue has now been resolved and `SELinuxProfile` object attributes are inherited from the same namespace as expected. ([**OCPBUGS-17164**](http://issues.redhat.com/browse/OCPBUGS-17164))
+- Previously, `SELinuxProfile` objects did not inherit custom attributes from the same namespace. With this update, the issue has now been resolved and `SELinuxProfile` object attributes are inherited from the same namespace as expected. ([OCPBUGS-17164](http://issues.redhat.com/browse/OCPBUGS-17164))
 
 - Previously, RawSELinuxProfiles would hang during the creation process and would not reach an `Installed` state. With this update, the issue has been resolved and RawSELinuxProfiles are created successfully. ([**OCPBUGS-19744**](http://issues.redhat.com/browse/OCPBUGS-19744))
 
-- Previously, patching the `enableLogEnricher` to `true` would cause the `seccompProfile` `log-enricher-trace` pods to be stuck in a `Pending` state. With this update, `log-enricher-trace` pods reach an `Installed` state as expected. ([**OCPBUGS-22182**](http://issues.redhat.com/browse/OCPBUGS-22182))
+- Previously, patching the `enableLogEnricher` to `true` would cause the `seccompProfile` `log-enricher-trace` pods to be stuck in a `Pending` state. With this update, `log-enricher-trace` pods reach an `Installed` state as expected. ([OCPBUGS-22182](http://issues.redhat.com/browse/OCPBUGS-22182))
 
 - Previously, the Security Profiles Operator generated high cardinality metrics, causing Prometheus pods using high amounts of memory. With this update, the following metrics will no longer apply in the Security Profiles Operator namespace:
 
@@ -90,7 +108,7 @@ The following advisory is available for the Security Profiles Operator 0.7.1:
 
 ## New features and enhancements
 
-- Security Profiles Operator (SPO) now automatically selects the appropriate `selinuxd` image for RHEL 8- and 9-based RHCOS systems.
+- Security Profiles Operator (SPO) now automatically selects the appropriate `selinuxd` image for RHEL 8- and 9-based Red Hat Enterprise Linux CoreOS (RHCOS) systems.
 
   <div class="important">
 
@@ -132,7 +150,7 @@ This update addresses a CVE in an underlying dependency.
 
 ## Known issue
 
-- When uninstalling the Security Profiles Operator, the `MutatingWebhookConfiguration` object is not deleted and must be manually removed. As a workaround, delete the `MutatingWebhookConfiguration` object after uninstalling the Security Profiles Operator. These steps are defined in [Uninstalling the Security Profiles Operator](../../security/security_profiles_operator/spo-uninstalling.xml#spo-uninstalling). ([**OCPBUGS-4687**](http://issues.redhat.com/browse/OCPBUGS-4687))
+- When uninstalling the Security Profiles Operator, the `MutatingWebhookConfiguration` object is not deleted and must be manually removed. As a workaround, delete the `MutatingWebhookConfiguration` object after uninstalling the Security Profiles Operator. These steps are defined in [Uninstalling the Security Profiles Operator](../../security/security_profiles_operator/spo-uninstalling.xml#spo-uninstalling). ([OCPBUGS-4687](http://issues.redhat.com/browse/OCPBUGS-4687))
 
 # Security Profiles Operator 0.5.0
 
@@ -142,4 +160,4 @@ The following advisory is available for the Security Profiles Operator 0.5.0:
 
 ## Known issue
 
-- When uninstalling the Security Profiles Operator, the `MutatingWebhookConfiguration` object is not deleted and must be manually removed. As a workaround, delete the `MutatingWebhookConfiguration` object after uninstalling the Security Profiles Operator. These steps are defined in [Uninstalling the Security Profiles Operator](../../security/security_profiles_operator/spo-uninstalling.xml#spo-uninstalling). ([**OCPBUGS-4687**](http://issues.redhat.com/browse/OCPBUGS-4687))
+- When uninstalling the Security Profiles Operator, the `MutatingWebhookConfiguration` object is not deleted and must be manually removed. As a workaround, delete the `MutatingWebhookConfiguration` object after uninstalling the Security Profiles Operator. These steps are defined in [Uninstalling the Security Profiles Operator](../../security/security_profiles_operator/spo-uninstalling.xml#spo-uninstalling). ([OCPBUGS-4687](http://issues.redhat.com/browse/OCPBUGS-4687))

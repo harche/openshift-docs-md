@@ -532,7 +532,7 @@ The `openshift.io/sa.scc.supplemental-groups` annotation accepts a comma-delimit
 
 # Example security context constraints
 
-The following examples show the security context constraints (SCC) format and annotations:
+The following examples show how to define and use security context constraints (SCCs) in your cluster.
 
 <div class="formalpara-title">
 
@@ -584,25 +584,35 @@ volumes:
 - '*'
 ```
 
-- A list of capabilities that a pod can request. An empty list means that none of capabilities can be requested while the special symbol `*` allows any capabilities.
+where; `allowedCapabilities`
+A list of capabilities that a pod can request. An empty list means that none of capabilities can be requested while the special symbol `*` allows any capabilities.
 
-- A list of additional capabilities that are added to any pod.
+`defaultAddCapabilities`
+A list of additional capabilities that are added to any pod.
 
-- The `FSGroup` strategy, which dictates the allowable values for the security context.
+`fsGroup`
+The `FSGroup` strategy, which dictates the allowable values for the security context.
 
-- The groups that can access this SCC.
+`groups`
+The groups that can access this SCC.
 
-- A list of capabilities to drop from a pod. Or, specify `ALL` to drop all capabilities.
+`requiredDropCapabilities`
+A list of capabilities to drop from a pod. Or, specify `ALL` to drop all capabilities.
 
-- The `runAsUser` strategy type, which dictates the allowable values for the security context.
+`runAsUser`
+The `runAsUser` strategy type, which dictates the allowable values for the security context.
 
-- The `seLinuxContext` strategy type, which dictates the allowable values for the security context.
+`seLinuxContext`
+The `seLinuxContext` strategy type, which dictates the allowable values for the security context.
 
-- The `supplementalGroups` strategy, which dictates the allowable supplemental groups for the security context.
+`supplementalGroups`
+The `supplementalGroups` strategy, which dictates the allowable supplemental groups for the security context.
 
-- The users who can access this SCC.
+`users`
+The users who can access this SCC.
 
-- The allowable volume types for the security context. In the example, `*` allows the use of all volume types.
+`volumes`
+The allowable volume types for the security context. In the example, `*` allows the use of all volume types.
 
 The `users` and `groups` fields on the SCC control which users can access the SCC. By default, cluster administrators, nodes, and the build controller are granted access to the privileged SCC. All authenticated users are granted access to the `restricted-v2` SCC.
 
@@ -624,7 +634,7 @@ spec:
     image: gcr.io/google-samples/node-hello:1.0
 ```
 
-- When a container or pod does not request a user ID under which it should be run, the effective UID depends on the SCC that emits this pod. Because the `restricted-v2` SCC is granted to all authenticated users by default, it will be available to all users and service accounts and used in most cases. The `restricted-v2` SCC uses `MustRunAsRange` strategy for constraining and defaulting the possible values of the `securityContext.runAsUser` field. The admission plugin will look for the `openshift.io/sa.scc.uid-range` annotation on the current project to populate range fields, as it does not provide this range. In the end, a container will have `runAsUser` equal to the first value of the range that is hard to predict because every project has different ranges.
+When a container or pod does not request a user ID under which it should be run,the effective UID depends on the SCC that emits this pod. Because the `restricted-v2` SCC is granted to all authenticated users by default, it will be available to all users and service accounts and used in most cases. The `restricted-v2` SCC uses `MustRunAsRange` strategy for constraining and defaulting the possible values of the `securityContext.runAsUser` field. The admission plugin will look for the `openshift.io/sa.scc.uid-range` annotation on the current project to populate range fields, as it does not provide this range. In the end, a container will have `runAsUser` equal to the first value of the range that is hard to predict because every project has different ranges.
 
 <div class="formalpara-title">
 
@@ -645,7 +655,7 @@ spec:
       image: gcr.io/google-samples/node-hello:1.0
 ```
 
-- A container or pod that requests a specific user ID will be accepted by OpenShift Container Platform only when a service account or a user is granted access to a SCC that allows such a user ID. The SCC can allow arbitrary IDs, an ID that falls into a range, or the exact user ID specific to the request.
+A container or pod that requests a specific user ID will be accepted by OpenShift Container Platform only when a service account or a user is granted access to a SCC that allows such a user ID. The SCC can allow arbitrary IDs, an ID that falls into a range, or the exact user ID specific to the request.
 
 This configuration is valid for SELinux, fsGroup, and Supplemental Groups.
 
@@ -655,7 +665,7 @@ If the default security context constraints (SCCs) do not satisfy your applicati
 
 <div class="important">
 
-Creating and modifying your own SCCs are advanced operations that might cause instability to your cluster. If you have questions about using your own SCCs, contact Red Hat Support. For information about contacting Red Hat support, see *Getting support*.
+Creating and modifying your own SCCs are advanced operations that might cause instability to your cluster. If you have questions about using your own SCCs, contact Red Hat Support. For information about contacting Red Hat support, see *Getting support*.
 
 </div>
 
@@ -772,8 +782,6 @@ Do not change the `openshift.io/required-scc` annotation in the live pod’s man
     # ...
     ```
 
-    - Specify the name of the SCC to require.
-
 2.  Create the resource by running the following command:
 
     ``` terminal
@@ -782,13 +790,11 @@ Do not change the `openshift.io/required-scc` annotation in the live pod’s man
 
 - Verify that the deployment used the specified SCC:
 
-  1.  View the value of the pod’s `openshift.io/scc` annotation by running the following command:
+  1.  View the value of the pod’s `openshift.io/scc` annotation by running the following command, replacing `<pod_name>` with the name of your deployment pod:
 
       ``` terminal
       $ oc get pod <pod_name> -o jsonpath='{.metadata.annotations.openshift\.io\/scc}{"\n"}'
       ```
-
-      - Replace `<pod_name>` with the name of your deployment pod.
 
   2.  Examine the output and confirm that the displayed SCC matches the SCC that you defined in the deployment:
 
@@ -841,17 +847,23 @@ rules:
   - use
 ```
 
-- The role’s name.
+where; `name`
+The name of the role.
 
-- Namespace of the defined role. Defaults to `default` if not specified.
+`namespace`
+The namespace of the defined role. Defaults to `default` if not specified.
 
-- The API group that includes the `SecurityContextConstraints` resource. Automatically defined when `scc` is specified as a resource.
+`apiGroups`
+The API group that includes the `SecurityContextConstraints` resource. Automatically defined when `scc` is specified as a resource.
 
-- An example name for an SCC you want to have access.
+`resourceName`
+An example name for an SCC you want to have access.
 
-- Name of the resource group that allows users to specify SCC names in the `resourceNames` field.
+`resources`
+The name of the resource group that allows users to specify SCC names in the `resourceNames` field.
 
-- A list of verbs to apply to the role.
+`verbs`
+A list of verbs to apply to the role.
 
 A local or cluster role with such a rule allows the subjects that are bound to it with a role binding or a cluster role binding to use the user-defined SCC called `scc-name`.
 
@@ -953,9 +965,11 @@ Settings:
     Ranges:                            <none>
 ```
 
-- Lists which users and service accounts the SCC is applied to.
+where; `Users`
+Lists which users and service accounts the SCC is applied to.
 
-- Lists which groups the SCC is applied to.
+`Groups`
+Lists which groups the SCC is applied to.
 
 <div class="note">
 

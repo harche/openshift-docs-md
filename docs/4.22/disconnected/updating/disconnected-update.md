@@ -481,7 +481,22 @@ You can create postinstallation mirror configuration custom resources (CR) to re
             pull-from-mirror = "tag-only"
         ```
 
-        where: `[[registry]].location = "registry.access.redhat.com/ubi9/ubi-minimal"`:: The repository listed in a pull spec. `[[registry.mirror]].location = "example.io/example/ubi-minimal"`:: Indicates the mirror for that repository. `[[registry.mirror]].pull-from-mirror = "digest-only"`:: Means that the image pull from the mirror is a digest reference image. `[[registry]].blocked = true`:: Indicates that the `NeverContactSource` parameter is set for this repository. `[[registry.mirror]].pull-from-mirror = "tag-only"`:: Indicates that the image pull from the mirror is a tag reference image.
+        where:
+
+        `[[registry]].location = "registry.access.redhat.com/ubi9/ubi-minimal"`
+        The repository listed in a pull spec.
+
+        `[[registry.mirror]].location = "example.io/example/ubi-minimal"`
+        Indicates the mirror for that repository.
+
+        `[[registry.mirror]].pull-from-mirror = "digest-only"`
+        Means that the image pull from the mirror is a digest reference image.
+
+        `[[registry]].blocked = true`
+        Indicates that the `NeverContactSource` parameter is set for this repository.
+
+        `[[registry.mirror]].pull-from-mirror = "tag-only"`
+        Indicates that the image pull from the mirror is a tag reference image.
 
     5.  Pull an image to the node from the source and check if it is resolved by the mirror.
 

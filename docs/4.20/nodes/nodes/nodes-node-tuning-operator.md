@@ -1,4 +1,4 @@
-Learn about the Node Tuning Operator and how you can use it to manage node-level tuning by orchestrating the tuned daemon.
+The Node Tuning Operator in OpenShift Container Platform helps you manage node-level tuning by orchestrating the TuneD daemon. You can use this unified interface to apply custom tuning specifications and achieve low latency performance for high-performance applications.
 
 The Node Tuning Operator helps you manage node-level tuning by orchestrating the TuneD daemon and achieves low latency performance by using the Performance Profile controller. The majority of high-performance applications require some level of kernel tuning. The Node Tuning Operator provides a unified management interface to users of node-level sysctls and more flexibility to add custom tuning specified by user needs.
 

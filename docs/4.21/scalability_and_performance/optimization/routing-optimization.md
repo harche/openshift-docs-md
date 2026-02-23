@@ -1,8 +1,8 @@
-The OpenShift Container Platform HAProxy router can be scaled or configured to optimize performance.
+To optimize performance, scale or configure the OpenShift Container Platform HAProxy router. By doing this task, you can ensure efficient traffic management and accommodate specific workload requirements.
 
 # Baseline Ingress Controller (router) performance
 
-The OpenShift Container Platform Ingress Controller, or router, is the ingress point for ingress traffic for applications and services that are configured using routes and ingresses.
+To establish a performance baseline, review the role of the OpenShift Container Platform Ingress Controller. As the router for your cluster, this component serves as the entry point for ingress traffic, directing requests to applications and services configured by using routes and ingresses.
 
 When evaluating a single HAProxy router performance in terms of HTTP requests handled per second, the performance varies depending on many factors. In particular:
 
@@ -53,13 +53,21 @@ In general, HAProxy can support routes for up to 1000 applications, depending on
 
 Ingress, or router, sharding should be used to serve more routes towards applications and help horizontally scale the routing tier.
 
-For more information on Ingress sharding, see [Configuring Ingress Controller sharding by using route labels](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-ingress-controller.xml#nw-ingress-sharding-route-labels_configuring-ingress-cluster-traffic-ingress-controller) and [Configuring Ingress Controller sharding by using namespace labels](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-ingress-controller.xml#nw-ingress-sharding-namespace-labels_configuring-ingress-cluster-traffic-ingress-controller).
+# Additional resources
 
-You can modify the Ingress Controller deployment by using the information provided in [Setting Ingress Controller thread count](../../networking/networking_operators/ingress-operator.xml#nw-ingress-setting-thread-count_configuring-ingress) for threads and [Ingress Controller configuration parameters](../../networking/networking_operators/ingress-operator.xml#nw-ingress-controller-configuration-parameters_configuring-ingress) for timeouts, and other tuning configurations in the Ingress Controller specification.
+- [Configuring Ingress Controller sharding by using route labels](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-ingress-controller.xml#nw-ingress-sharding-route-labels_configuring-ingress-cluster-traffic-ingress-controller)
+
+- [Configuring Ingress Controller sharding by using namespace labels](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-ingress-controller.xml#nw-ingress-sharding-namespace-labels_configuring-ingress-cluster-traffic-ingress-controller)
+
+- [Setting Ingress Controller thread count](../../networking/networking_operators/ingress-operator.xml#nw-ingress-setting-thread-count_configuring-ingress)
+
+- [Ingress Controller configuration parameters](../../networking/networking_operators/ingress-operator.xml#nw-ingress-controller-configuration-parameters_configuring-ingress)
 
 # Configuring Ingress Controller liveness, readiness, and startup probes
 
-Cluster administrators can configure the timeout values for the kubelet’s liveness, readiness, and startup probes for router deployments that are managed by the OpenShift Container Platform Ingress Controller (router). The liveness and readiness probes of the router use the default timeout value of 1 second, which is too brief when networking or runtime performance is severely degraded. Probe timeouts can cause unwanted router restarts that interrupt application connections. The ability to set larger timeout values can reduce the risk of unnecessary and unwanted restarts.
+To ensure accurate health monitoring for your router deployments, configure the timeout values for liveness, readiness, and startup probes. By doing this task, you can adjust the default settings used by the OpenShift Container Platform Ingress Controller to better suit your environment.
+
+The liveness and readiness probes of the router use the default timeout value of 1 second, which is too brief when networking or runtime performance is severely degraded. Probe timeouts can cause unwanted router restarts that interrupt application connections. The ability to set larger timeout values can reduce the risk of unnecessary and unwanted restarts.
 
 You can update the `timeoutSeconds` value on the `livenessProbe`, `readinessProbe`, and `startupProbe` parameters of the router container.
 
@@ -71,7 +79,7 @@ You can update the `timeoutSeconds` value on the `livenessProbe`, `readinessProb
 
 <div class="important">
 
-The timeout configuration option is an advanced tuning technique that can be used to work around issues. However, these issues should eventually be diagnosed and possibly a support case or [Jira issue](https://issues.redhat.com/secure/CreateIssueDetails!init.jspa?pid=12332330&summary=Summary&issuetype=1&priority=10200&versions=12385624) opened for any issues that causes probes to time out.
+The timeout configuration option is an advanced tuning technique that can be used to work around issues. However, these issues should eventually be diagnosed and possibly a support case or [Jira issue](https://issues.redhat.com/secure/CreateIssueDetails!init.jspa?pid=12332330&summary=Summary&issuetype=1&priority=10200&versions=12385624) opened for any issues that cause probes to time out.
 
 </div>
 
@@ -95,11 +103,11 @@ $ oc -n openshift-ingress describe deploy/router-default | grep -e Liveness: -e 
 
 # Configuring HAProxy reload interval
 
-When you update a route or an endpoint associated with a route, the OpenShift Container Platform router updates the configuration for HAProxy. Then, HAProxy reloads the updated configuration for those changes to take effect. When HAProxy reloads, it generates a new process that handles new connections using the updated configuration.
+To optimize router performance, configure the HAProxy reload interval. The OpenShift Container Platform router reloads HAProxy to apply changes to routes or endpoints, generating a new process to handle connections for each update.
 
 HAProxy keeps the old process running to handle existing connections until those connections are all closed. When old processes have long-lived connections, these processes can accumulate and consume resources.
 
-The default minimum HAProxy reload interval is five seconds. You can configure an Ingress Controller using its `spec.tuningOptions.reloadInterval` field to set a longer minimum reload interval.
+The default minimum HAProxy reload interval is 5 seconds. You can configure an Ingress Controller using its `spec.tuningOptions.reloadInterval` field to set a longer minimum reload interval.
 
 <div class="warning">
 

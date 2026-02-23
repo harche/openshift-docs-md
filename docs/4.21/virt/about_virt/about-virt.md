@@ -26,6 +26,12 @@ OpenShift Virtualization adds new objects into your OpenShift Container Platform
 
 You can manage your cluster and virtualization resources by using the **Virtualization** perspective of the OpenShift Container Platform web console, and by using the OpenShift CLI (`oc`).
 
+<div class="important">
+
+For supported and unsupported OVN-Kubernetes network plugin use cases, see "OVN-Kubernetes purpose".
+
+</div>
+
 OpenShift Virtualization is designed and tested to work well with Red Hat OpenShift Data Foundation features.
 
 <div class="important">
@@ -157,6 +163,8 @@ However, you should be aware that Single-node OpenShift does not support the fol
 # Additional resources
 
 - [OpenShift Virtualization supported limits](../../virt/about_virt/virt-supported-limits.xml#virt-supported-limits)
+
+- [OVN-Kubernetes purpose](../../networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.xml#nw-ovn-kubernetes-purpose_about-ovn-kubernetes)
 
 - [Glossary of common terms for OpenShift Container Platform storage](../../storage/index.xml#openshift-storage-common-terms_storage-overview)
 

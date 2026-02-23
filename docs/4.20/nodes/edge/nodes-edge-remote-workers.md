@@ -1,4 +1,6 @@
-You can configure OpenShift Container Platform clusters with nodes located at your network edge. In this topic, they are called *remote worker nodes*. A typical cluster with remote worker nodes combines on-premise master and worker nodes with worker nodes in other locations that connect to the cluster. This topic is intended to provide guidance on best practices for using remote worker nodes and does not contain specific configuration details.
+You can configure OpenShift Container Platform clusters with nodes located at your network edge, called *remote worker nodes*. A typical cluster with remote worker nodes combines on-premise control plane and worker nodes with worker nodes in other locations that connect to the cluster.
+
+This topic is intended to provide guidance on best practices for using remote worker nodes and does not contain specific configuration details.
 
 There are multiple use cases across different industries, such as retail, manufacturing, and government, for using a deployment pattern with remote worker nodes. For example, you can separate and isolate your projects and workloads by combining the remote worker nodes into [Kubernetes zones](../../nodes/edge/nodes-edge-remote-workers.xml#nodes-edge-remote-workers-strategies-zones_nodes-edge-remote-workers).
 
@@ -22,7 +24,7 @@ Note the following limitations when planning a cluster with remote worker nodes:
 
 # Adding remote worker nodes
 
-Adding remote worker nodes to a cluster involves some additional considerations.
+You can review the following information to understand some additional considerations when adding remote worker nodes to a cluster.
 
 - You must ensure that a route or a default gateway is in place to route traffic between the control plane and every remote worker node.
 
@@ -32,41 +34,35 @@ Adding remote worker nodes to a cluster involves some additional considerations.
 
 - To add remote worker nodes to an installer-provisioned cluster at install time, specify the subnet for each worker node in the `install-config.yaml` file before installation. There are no additional settings required for the DHCP server. You must use virtual media, because the remote worker nodes will not have access to the local provisioning network.
 
-- To add remote worker nodes to an installer-provisioned cluster deployed with a provisioning network, ensure that `virtualMediaViaExternalNetwork` flag is set to `true` in the `install-config.yaml` file so that it will add the nodes using virtual media. Remote worker nodes will not have access to the local provisioning network. They must be deployed with virtual media rather than PXE. Additionally, specify each subnet for each group of remote worker nodes and the control plane nodes in the DHCP server.
-
-<!-- -->
-
-- [Establishing communications between subnets](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#ipi-install-establishing-communication-between-subnets_ipi-install-installation-workflow)
-
-- [Configuring host network interfaces for subnets](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#ipi-install-configuring-host-network-interfaces-for-subnets_ipi-install-installation-workflow)
-
-- [Configuring network components to run on the control plane](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#configure-network-components-to-run-on-the-control-plane_ipi-install-installation-workflow)
+- To add remote worker nodes to an installer-provisioned cluster deployed with a provisioning network, ensure that `virtualMediaViaExternalNetwork` flag is set to `true` in the `install-config.yaml` file so that it adds the nodes using virtual media. Remote worker nodes will not have access to the local provisioning network. They must be deployed with virtual media rather than PXE. Additionally, specify each subnet for each group of remote worker nodes and the control plane nodes in the DHCP server.
 
 # Network separation with remote worker nodes
 
-All nodes send heartbeats to the Kubernetes Controller Manager Operator (kube controller) in the OpenShift Container Platform cluster every 10 seconds. If the cluster does not receive heartbeats from a node, OpenShift Container Platform responds using several default mechanisms.
+You can review the following information to understand how OpenShift Container Platform responds to network connection loss with remote nodes and how you can mitigate problems associated with connection loss.
 
 OpenShift Container Platform is designed to be resilient to network partitions and other disruptions. You can mitigate some of the more common disruptions, such as interruptions from software upgrades, network splits, and routing issues. Mitigation strategies include ensuring that pods on remote worker nodes request the correct amount of CPU and memory resources, configuring an appropriate replication policy, using redundancy across zones, and using Pod Disruption Budgets on workloads.
+
+All nodes send heartbeats to the Kubernetes Controller Manager Operator (kube controller) in the OpenShift Container Platform cluster every 10 seconds. If the cluster does not receive heartbeats from a node, OpenShift Container Platform responds using several default mechanisms.
 
 If the kube controller loses contact with a node after a configured period, the node controller on the control plane updates the node health to `Unhealthy` and marks the node `Ready` condition as `Unknown`. In response, the scheduler stops scheduling pods to that node. The on-premise node controller adds a `node.kubernetes.io/unreachable` taint with a `NoExecute` effect to the node and schedules pods on the node for eviction after five minutes, by default.
 
 If a workload controller, such as a `Deployment` object or `StatefulSet` object, is directing traffic to pods on the unhealthy node and other nodes can reach the cluster, OpenShift Container Platform routes the traffic away from the pods on the node. Nodes that cannot reach the cluster do not get updated with the new traffic routing. As a result, the workloads on those nodes might continue to attempt to reach the unhealthy node.
 
-You can mitigate the effects of connection loss by:
+You can mitigate the effects of connection loss by using any of the following strategies:
 
-- using daemon sets to create pods that tolerate the taints
+- Using daemon sets to create pods that tolerate the taints.
 
-- using static pods that automatically restart if a node goes down
+- Using static pods that automatically restart if a node goes down.
 
-- using Kubernetes zones to control pod eviction
+- Using Kubernetes zones to control pod eviction.
 
-- configuring pod tolerations to delay or avoid pod eviction
+- Configuring pod tolerations to delay or avoid pod eviction.
 
-- configuring the kubelet to control the timing of when it marks nodes as unhealthy.
-
-For more information on using these objects in a cluster with remote worker nodes, see [About remote worker node strategies](../../nodes/edge/nodes-edge-remote-workers.xml#nodes-edge-remote-workers-strategies_nodes-edge-remote-workers).
+- Configuring the kubelet to control the timing of when it marks nodes as unhealthy.
 
 # Power loss on remote worker nodes
+
+You can review the following information to understand how OpenShift Container Platform responds to power loss on remote nodes and how you can mitigate problems associated with power loss.
 
 If a remote worker node loses power or restarts ungracefully, OpenShift Container Platform responds using several default mechanisms.
 
@@ -84,15 +80,13 @@ After the node restarts, the kubelet also restarts and attempts to restart the p
 
 You can mitigate the effects of power loss by:
 
-- using daemon sets to create pods that tolerate the taints
+- Using daemon sets to create pods that tolerate the taints.
 
-- using static pods that automatically restart with a node
+- Using static pods that automatically restart with a node.
 
-- configuring pods tolerations to delay or avoid pod eviction
+- Configuring pods tolerations to delay or avoid pod eviction.
 
-- configuring the kubelet to control the timing of when the node controller marks nodes as unhealthy.
-
-For more information on using these objects in a cluster with remote worker nodes, see [About remote worker node strategies](../../nodes/edge/nodes-edge-remote-workers.xml#nodes-edge-remote-workers-strategies_nodes-edge-remote-workers).
+- Configuring the kubelet to control the timing of when the node controller marks nodes as unhealthy.
 
 # Latency spikes or temporary reduction in throughput to remote workers
 
@@ -114,20 +108,20 @@ These worker latency profiles contain three sets of parameters that are predefin
 
 You can configure worker latency profiles when installing a cluster or at any time you notice increased latency in your cluster network.
 
-- [Improving cluster stability in high latency environments using worker latency profiles ](../../nodes/clusters/nodes-cluster-worker-latency-profiles.xml#nodes-cluster-worker-latency-profiles)
-
 # Remote worker node strategies
+
+You can review the following information to understand how to mitigate problems associated with power or connection loss with remote worker nodes.
 
 If you use remote worker nodes, consider which objects to use to run your applications.
 
-It is recommended to use daemon sets or static pods based on the behavior you want in the event of network issues or power loss. In addition, you can use Kubernetes zones and tolerations to control or avoid pod evictions if the control plane cannot reach remote worker nodes.
+You can use daemon sets or static pods based on the behavior you want if you experience network issues or power loss. In addition, you can use Kubernetes zones and tolerations to control or avoid pod evictions if the control plane cannot reach remote worker nodes.
 
 Daemon sets
 Daemon sets are the best approach to managing pods on remote worker nodes for the following reasons:
 
 - Daemon sets do not typically need rescheduling behavior. If a node disconnects from the cluster, pods on the node can continue to run. OpenShift Container Platform does not change the state of daemon set pods, and leaves the pods in the state they last reported. For example, if a daemon set pod is in the `Running` state, when a node stops communicating, the pod keeps running and is assumed to be running by OpenShift Container Platform.
 
-- Daemon set pods, by default, are created with `NoExecute` tolerations for the `node.kubernetes.io/unreachable` and `node.kubernetes.io/not-ready` taints with no `tolerationSeconds` value. These default values ensure that daemon set pods are never evicted if the control plane cannot reach a node. For example:
+- Daemon set pods, by default, are created with `NoExecute` tolerations for the `node.kubernetes.io/unreachable` and `node.kubernetes.io/not-ready` taints with no `tolerationSeconds` value, as shown in the following example. These default values ensure that daemon set pods are never evicted if the control plane cannot reach a node.
 
   <div class="formalpara-title">
 
@@ -167,8 +161,10 @@ Daemon sets do not schedule pods after a reboot of the node if OpenShift Contain
 
 </div>
 
+<!-- -->
+
 Static pods
-If you want pods restart if a node reboots, after a power loss for example, consider [static pods](https://kubernetes.io/docs/tasks/configure-pod-container/static-pod/). The kubelet on a node automatically restarts static pods as node restarts.
+If you want pods to restart if a node reboots, such as after a power loss, you might use [static pods](https://kubernetes.io/docs/tasks/configure-pod-container/static-pod/). The kubelet on a node automatically restarts static pods as the node restarts.
 
 <div class="note">
 
@@ -176,12 +172,14 @@ Static pods cannot use secrets and config maps.
 
 </div>
 
+<!-- -->
+
 Kubernetes zones
 [Kubernetes zones](https://kubernetes.io/docs/setup/best-practices/multiple-zones/) can slow down the rate or, in some cases, completely stop pod evictions.
 
 When the control plane cannot reach a node, the node controller, by default, applies `node.kubernetes.io/unreachable` taints and evicts pods at a rate of 0.1 nodes per second. However, in a cluster that uses Kubernetes zones, pod eviction behavior is altered.
 
-If a zone is fully disrupted, where all nodes in the zone have a `Ready` condition that is `False` or `Unknown`, the control plane does not apply the `node.kubernetes.io/unreachable` taint to the nodes in that zone.
+If a zone is fully disrupted, where all nodes in the zone have a `False` or `Unknown` ready condition, the control plane does not apply the `node.kubernetes.io/unreachable` taint to the nodes in that zone.
 
 For partially disrupted zones, where more than 55% of the nodes have a `False` or `Unknown` condition, the pod eviction rate is reduced to 0.01 nodes per second. Nodes in smaller clusters, with fewer than 50 nodes, are not tainted. Your cluster must have more than three zones for these behavior to take effect.
 
@@ -201,8 +199,9 @@ metadata:
     topology.kubernetes.io/region=east
 ```
 
-`KubeletConfig` objects
+<!-- -->
 
+Kubelet config objects
 You can adjust the amount of time that the kubelet checks the state of each node.
 
 To set the interval that affects the timing of when the on-premise node controller marks nodes with the `Unhealthy` or `Unreachable` condition, create a `KubeletConfig` object that contains the `node-status-update-frequency` and `node-status-report-frequency` parameters.
@@ -231,21 +230,28 @@ spec:
       - "1m"
 ```
 
-- Specify the type of node type to which this `KubeletConfig` object applies using the label from the `MachineConfig` object.
+where:
 
-- Specify the frequency that the kubelet checks the status of a node associated with this `MachineConfig` object. The default value is `10s`. If you change this default, the `node-status-report-frequency` value is changed to the same value.
+`spec.machineConfigPoolSelector.matchLabels.machineconfiguration.openshift.io/role`
+Specifies the type of node type to which this `KubeletConfig` object applies by using the label from the `MachineConfig` object.
 
-- Specify the frequency that the kubelet reports the status of a node associated with this `MachineConfig` object. The default value is `1m`.
+`spec.kubeletConfig.node-status-update-frequency`
+Specifies the frequency that the kubelet checks the status of a node associated with this `MachineConfig` object. The default value is `10s`. If you change this default, the `node-status-report-frequency` value is changed to the same value.
+
+`spec.kubeletConfig.node-status-report-frequency`
+Specifies the frequency that the kubelet reports the status of a node associated with this `MachineConfig` object. The default value is `1m`.
 
 The `node-status-update-frequency` parameter works with the `node-monitor-grace-period` parameter.
 
-- The `node-monitor-grace-period` parameter specifies how long OpenShift Container Platform waits after a node associated with a `MachineConfig` object is marked `Unhealthy` if the controller manager does not receive the node heartbeat. Workloads on the node continue to run after this time. If the remote worker node rejoins the cluster after `node-monitor-grace-period` expires, pods continue to run. New pods can be scheduled to that node. The `node-monitor-grace-period` interval is `40s`. The `node-status-update-frequency` value must be lower than the `node-monitor-grace-period` value.
+The `node-monitor-grace-period` parameter specifies how long OpenShift Container Platform waits after a node associated with a `MachineConfig` object is marked `Unhealthy` if the controller manager does not receive the node heartbeat. Workloads on the node continue to run after this time. If the remote worker node rejoins the cluster after `node-monitor-grace-period` expires, pods continue to run. New pods can be scheduled to that node. The `node-monitor-grace-period` interval is `40s`. The `node-status-update-frequency` value must be lower than the `node-monitor-grace-period` value.
 
 <div class="note">
 
 Modifying the `node-monitor-grace-period` parameter is not supported.
 
 </div>
+
+<!-- -->
 
 Tolerations
 You can use pod tolerations to mitigate the effects if the on-premise node controller adds a `node.kubernetes.io/unreachable` taint with a `NoExecute` effect to a node it cannot reach.
@@ -258,38 +264,38 @@ A taint with the `NoExecute` effect affects pods that are running on the node in
 
 - Pods that tolerate the taint with a specified `tolerationSeconds` value remain bound for the specified amount of time. After the time elapses, the pods are queued for eviction.
 
-<div class="note">
+  <div class="note">
 
-Unless tolerations are explicitly set, Kubernetes automatically adds a toleration for `node.kubernetes.io/not-ready` and `node.kubernetes.io/unreachable` with `tolerationSeconds=300`, meaning that pods remain bound for 5 minutes if either of these taints is detected.
+  Unless tolerations are explicitly set, Kubernetes automatically adds a toleration for `node.kubernetes.io/not-ready` and `node.kubernetes.io/unreachable` with `tolerationSeconds=300`, meaning that pods remain bound for 5 minutes if either of these taints is detected.
 
-</div>
+  </div>
 
-You can delay or avoid pod eviction by configuring pods tolerations with the `NoExecute` effect for the `node.kubernetes.io/unreachable` and `node.kubernetes.io/not-ready` taints.
+  You can delay or avoid pod eviction by configuring pods tolerations with the `NoExecute` effect for the `node.kubernetes.io/unreachable` and `node.kubernetes.io/not-ready` taints.
 
-<div class="formalpara-title">
+  <div class="formalpara-title">
 
-**Example toleration in a pod spec**
+  **Example toleration in a pod spec**
 
-</div>
+  </div>
 
-``` yaml
-...
-tolerations:
-- key: "node.kubernetes.io/unreachable"
-  operator: "Exists"
-  effect: "NoExecute"
-- key: "node.kubernetes.io/not-ready"
-  operator: "Exists"
-  effect: "NoExecute"
-  tolerationSeconds: 600
-...
-```
+  ``` yaml
+  ...
+  tolerations:
+  - key: "node.kubernetes.io/unreachable"
+    operator: "Exists"
+    effect: "NoExecute"
+  - key: "node.kubernetes.io/not-ready"
+    operator: "Exists"
+    effect: "NoExecute"
+    tolerationSeconds: 600
+  ...
+  ```
 
-- The `NoExecute` effect without `tolerationSeconds` lets pods remain forever if the control plane cannot reach the node.
+  - In the first example, the `NoExecute` effect without `tolerationSeconds` lets pods remain forever if the control plane cannot reach the node.
 
-- The `NoExecute` effect with `tolerationSeconds`: 600 lets pods remain for 10 minutes if the control plane marks the node as `Unhealthy`.
+  - In the second example, the `NoExecute` effect with `tolerationSeconds`: 600 lets pods remain for 10 minutes if the control plane marks the node as `Unhealthy`. You can specify your own `tolerationSeconds` value.
 
-- You can specify your own `tolerationSeconds` value.
+<!-- -->
 
 Other types of OpenShift Container Platform objects
 You can use replica sets, deployments, and replication controllers. The scheduler can reschedule these pods onto other nodes after the node is disconnected for five minutes. Rescheduling onto other nodes can be beneficial for some workloads, such as REST APIs, where an administrator can guarantee a specific number of pods are running and accessible.
@@ -304,16 +310,28 @@ When working with remote worker nodes, rescheduling pods on different nodes migh
 
 To avoid scheduling a to a node that does not have access to the same type of persistent storage, OpenShift Container Platform cannot migrate pods that require persistent volumes to other zones in the case of network separation.
 
-- For more information on Daemonesets, see [DaemonSets](../../nodes/jobs/nodes-pods-daemonsets.xml#nodes-pods-daemonsets).
+# Additional resources
 
-- For more information on taints and tolerations, see [Controlling pod placement using node taints](../../nodes/scheduling/nodes-scheduler-taints-tolerations.xml#nodes-scheduler-taints-tolerations-about_nodes-scheduler-taints-tolerations).
+- [Establishing communications between subnets](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#ipi-install-establishing-communication-between-subnets_ipi-install-installation-workflow)
 
-- For more information on configuring `KubeletConfig` objects, see [Creating a KubeletConfig CRD](../../post_installation_configuration/node-tasks.xml#create-a-kubeletconfig-crd-to-edit-kubelet-parameters_post-install-node-tasks).
+- [Configuring host network interfaces for subnets](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#ipi-install-configuring-host-network-interfaces-for-subnets_ipi-install-installation-workflow)
 
-- For more information on replica sets, see [ReplicaSets](../../applications/deployments/what-deployments-are.xml#deployments-repliasets_what-deployments-are).
+- [Configuring network components to run on the control plane](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#configure-network-components-to-run-on-the-control-plane_ipi-install-installation-workflow)
 
-- For more information on deployments, see [Deployments](../../applications/deployments/what-deployments-are.xml#deployments-kube-deployments_what-deployments-are).
+- [About remote worker node strategies](../../nodes/edge/nodes-edge-remote-workers.xml#nodes-edge-remote-workers-strategies_nodes-edge-remote-workers)
 
-- For more information on replication controllers, see [Replication controllers](../../applications/deployments/what-deployments-are.xml#deployments-replicationcontrollers_what-deployments-are).
+- [Improving cluster stability in high latency environments using worker latency profiles](../../nodes/clusters/nodes-cluster-worker-latency-profiles.xml#nodes-cluster-worker-latency-profiles)
 
-- For more information on the controller manager, see [Kubernetes Controller Manager Operator](../../operators/operator-reference.xml#kube-controller-manager-operator_operator-reference).
+- [DaemonSets](../../nodes/jobs/nodes-pods-daemonsets.xml#nodes-pods-daemonsets)
+
+- [Controlling pod placement using node taints](../../nodes/scheduling/nodes-scheduler-taints-tolerations.xml#nodes-scheduler-taints-tolerations-about_nodes-scheduler-taints-tolerations)
+
+- [Creating a KubeletConfig CRD](../../post_installation_configuration/node-tasks.xml#create-a-kubeletconfig-crd-to-edit-kubelet-parameters_post-install-node-tasks)
+
+- [ReplicaSets](../../applications/deployments/what-deployments-are.xml#deployments-repliasets_what-deployments-are)
+
+- [Deployments](../../applications/deployments/what-deployments-are.xml#deployments-kube-deployments_what-deployments-are)
+
+- [Replication controllers](../../applications/deployments/what-deployments-are.xml#deployments-replicationcontrollers_what-deployments-are)
+
+- [Kubernetes Controller Manager Operator](../../operators/operator-reference.xml#kube-controller-manager-operator_operator-reference)

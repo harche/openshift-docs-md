@@ -72,7 +72,7 @@ For more information, see [Persistent storage using FlexVolume](../storage/persi
 
 ### Container Storage Interface (CSI) persistent storage
 
-Persistent storage using the Container Storage Interface (CSI) was [Technology Preview](https://access.redhat.com/support/offerings/techpreview) in OpenShift Container Platform 3.11. OpenShift Container Platform 4.17 ships with [several CSI drivers](../storage/container_storage_interface/persistent-storage-csi.xml#csi-drivers-supported_persistent-storage-csi). You can also install your own driver.
+Persistent storage using the Container Storage Interface (CSI) was [Technology Preview](https://access.redhat.com/support/offerings/techpreview) in OpenShift Container Platform 3.11. OpenShift Container Platform 4.17 includes with [several CSI drivers](../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi-drivers-supported_persistent-storage-csi). You can also install your own driver.
 
 For more information, see [Persistent storage using the Container Storage Interface (CSI)](../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-using-csi).
 

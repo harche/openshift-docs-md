@@ -145,76 +145,76 @@ The `containerRuntimeSearchRegistries` parameter works only with the Podman and 
 
 You can configure image registry settings by editing the `image.config.openshift.io/cluster` custom resource (CR).
 
-1.  Edit the `image.config.openshift.io/cluster` CR by running the following command:
+- Edit the `image.config.openshift.io/cluster` CR by running the following command:
 
-    ``` terminal
-    $ oc edit image.config.openshift.io/cluster
-    ```
+  ``` terminal
+  $ oc edit image.config.openshift.io/cluster
+  ```
 
-    The following is an example `image.config.openshift.io/cluster` CR:
+  The following is an example `image.config.openshift.io/cluster` CR:
 
-    ``` yaml
-    apiVersion: config.openshift.io/v1
-    kind: Image
-    metadata:
-      annotations:
-        release.openshift.io/create-only: "true"
-      creationTimestamp: "2019-05-17T13:44:26Z"
-      generation: 1
-      name: cluster
-      resourceVersion: "8302"
-      selfLink: /apis/config.openshift.io/v1/images/cluster
-      uid: e34555da-78a9-11e9-b92b-06d6c7da38dc
-    spec:
-      allowedRegistriesForImport:
-        - domainName: quay.io
-          insecure: false
-      additionalTrustedCA:
-        name: myconfigmap
-      registrySources:
-        allowedRegistries:
-        - example.com
-        - quay.io
-        - registry.redhat.io
-        - image-registry.openshift-image-registry.svc:5000
-        - reg1.io/myrepo/myapp:latest
-        insecureRegistries:
-        - insecure.com
-    status:
-      internalRegistryHostname: image-registry.openshift-image-registry.svc:5000
-    ```
+  ``` yaml
+  apiVersion: config.openshift.io/v1
+  kind: Image
+  metadata:
+    annotations:
+      release.openshift.io/create-only: "true"
+    creationTimestamp: "2019-05-17T13:44:26Z"
+    generation: 1
+    name: cluster
+    resourceVersion: "8302"
+    selfLink: /apis/config.openshift.io/v1/images/cluster
+    uid: e34555da-78a9-11e9-b92b-06d6c7da38dc
+  spec:
+    allowedRegistriesForImport:
+      - domainName: quay.io
+        insecure: false
+    additionalTrustedCA:
+      name: myconfigmap
+    registrySources:
+      allowedRegistries:
+      - example.com
+      - quay.io
+      - registry.redhat.io
+      - image-registry.openshift-image-registry.svc:5000
+      - reg1.io/myrepo/myapp:latest
+      insecureRegistries:
+      - insecure.com
+  status:
+    internalRegistryHostname: image-registry.openshift-image-registry.svc:5000
+  ```
 
-    <div class="note">
+  <div class="note">
 
-    When you use the `allowedRegistries`, `blockedRegistries`, or `insecureRegistries` parameter, you can specify an individual repository within a registry. For example: `reg1.io/myrepo/myapp:latest`.
+  When you use the `allowedRegistries`, `blockedRegistries`, or `insecureRegistries` parameter, you can specify an individual repository within a registry. For example: `reg1.io/myrepo/myapp:latest`.
 
-    Avoid insecure external registries to reduce possible security risks.
+  Avoid insecure external registries to reduce possible security risks.
 
-    </div>
+  </div>
 
 <!-- -->
 
-1.  To verify your changes, list your nodes by running the following command:
+- To verify your changes, list your nodes by running the following command:
 
-    ``` terminal
-    $ oc get nodes
-    ```
+  ``` terminal
+  $ oc get nodes
+  ```
 
-    <div class="formalpara-title">
+  <div class="formalpara-title">
 
-    **Example output**
+  **Example output**
 
-    </div>
+  </div>
 
-    ``` terminal
-    NAME                                         STATUS                     ROLES                  AGE   VERSION
-    ip-10-0-137-182.us-east-2.compute.internal   Ready,SchedulingDisabled   worker                 65m   v1.34.2
-    ip-10-0-139-120.us-east-2.compute.internal   Ready,SchedulingDisabled   control-plane          74m   v1.34.2
-    ip-10-0-176-102.us-east-2.compute.internal   Ready                      control-plane          75m   v1.34.2
-    ip-10-0-188-96.us-east-2.compute.internal    Ready                      worker                 65m   v1.34.2
-    ip-10-0-200-59.us-east-2.compute.internal    Ready                      worker                 63m   v1.34.2
-    ip-10-0-223-123.us-east-2.compute.internal   Ready                      control-plane          73m   v1.34.2
-    ```
+  ``` terminal
+  NAME                                         STATUS                     ROLES                  AGE   VERSION
+  ip-10-0-137-182.us-east-2.compute.internal   Ready,SchedulingDisabled   worker                 65m   v1.34.2
+  ip-10-0-139-120.us-east-2.compute.internal   Ready,SchedulingDisabled   control-plane          74m   v1.34.2
+  ip-10-0-176-102.us-east-2.compute.internal   Ready                      control-plane          75m   v1.34.2
+  ip-10-0-188-96.us-east-2.compute.internal    Ready                      worker                 65m   v1.34.2
+  ip-10-0-200-59.us-east-2.compute.internal    Ready                      worker                 63m   v1.34.2
+  ip-10-0-223-123.us-east-2.compute.internal   Ready                      control-plane          73m   v1.34.2
+  ```
 
 ## Adding specific registries to an allowlist
 
@@ -583,8 +583,6 @@ OpenShift Container Platform applies the changes to this CR to all nodes in the 
 Avoid insecure external registries to reduce possible security risks.
 
 </div>
-
-\+ :leveloffset: +1
 
 <div class="warning">
 
@@ -1139,7 +1137,22 @@ You can create postinstallation mirror configuration custom resources (CR) to re
             pull-from-mirror = "tag-only"
         ```
 
-        where: `[[registry]].location = "registry.access.redhat.com/ubi9/ubi-minimal"`:: The repository listed in a pull spec. `[[registry.mirror]].location = "example.io/example/ubi-minimal"`:: Indicates the mirror for that repository. `[[registry.mirror]].pull-from-mirror = "digest-only"`:: Means that the image pull from the mirror is a digest reference image. `[[registry]].blocked = true`:: Indicates that the `NeverContactSource` parameter is set for this repository. `[[registry.mirror]].pull-from-mirror = "tag-only"`:: Indicates that the image pull from the mirror is a tag reference image.
+        where:
+
+        `[[registry]].location = "registry.access.redhat.com/ubi9/ubi-minimal"`
+        The repository listed in a pull spec.
+
+        `[[registry.mirror]].location = "example.io/example/ubi-minimal"`
+        Indicates the mirror for that repository.
+
+        `[[registry.mirror]].pull-from-mirror = "digest-only"`
+        Means that the image pull from the mirror is a digest reference image.
+
+        `[[registry]].blocked = true`
+        Indicates that the `NeverContactSource` parameter is set for this repository.
+
+        `[[registry.mirror]].pull-from-mirror = "tag-only"`
+        Indicates that the image pull from the mirror is a tag reference image.
 
     5.  Pull an image to the node from the source and check if it is resolved by the mirror.
 

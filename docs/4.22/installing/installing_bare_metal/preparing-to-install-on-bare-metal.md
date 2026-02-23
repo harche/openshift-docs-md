@@ -4,6 +4,8 @@
 
 - You have read the documentation on [selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing).
 
+- You have read the documentation for supported and unsupported OVN-Kubernetes network plugin use cases on [OVN-Kubernetes purpose](../../networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.xml#nw-ovn-kubernetes-purpose_about-ovn-kubernetes).
+
 # Bare-metal cluster installation requirements for OpenShift Virtualization
 
 If you plan to use OpenShift Virtualization on a bare-metal cluster, you must ensure that your cluster is configured correctly during installation. This is because OpenShift Virtualization requires certain settings that cannot be changed after a cluster is installed.

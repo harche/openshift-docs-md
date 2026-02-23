@@ -1,16 +1,20 @@
+To optimize memory management for specific workloads, configure huge pages. By using these Linux-based system page sizes, you can maintain manual control over memory allocation and override automatic system behaviors.
+
 # What huge pages do
 
-Memory is managed in blocks known as pages. On most systems, a page is 4Ki. 1Mi of memory is equal to 256 pages; 1Gi of memory is 256,000 pages, and so on. CPUs have a built-in memory management unit that manages a list of these pages in hardware. The Translation Lookaside Buffer (TLB) is a small hardware cache of virtual-to-physical page mappings. If the virtual address passed in a hardware instruction can be found in the TLB, the mapping can be determined quickly. If not, a TLB miss occurs, and the system falls back to slower, software-based address translation, resulting in performance issues. Since the size of the TLB is fixed, the only way to reduce the chance of a TLB miss is to increase the page size.
+To optimize memory mapping efficiency, understand the function of huge pages. Unlike standard 4Ki blocks, huge pages are larger memory segments that reduce the tracking load on the translation lookaside buffer (TLB) hardware cache.
 
-A huge page is a memory page that is larger than 4Ki. On x86_64 architectures, there are two common huge page sizes: 2Mi and 1Gi. Sizes vary on other architectures. To use huge pages, code must be written so that applications are aware of them. Transparent Huge Pages (THP) attempt to automate the management of huge pages without application knowledge, but they have limitations. In particular, they are limited to 2Mi page sizes. THP can lead to performance degradation on nodes with high memory utilization or fragmentation due to defragmenting efforts of THP, which can lock memory pages. For this reason, some applications may be designed to (or recommend) usage of pre-allocated huge pages instead of THP.
+Memory is managed in blocks known as pages. On most systems, a page is 4Ki; 1Mi of memory is equal to 256 pages; 1Gi of memory is 256,000 pages, and so on. CPUs have a built-in memory management unit that manages a list of these pages in hardware. The translation lookaside buffer (TLB) is a small hardware cache of virtual-to-physical page mappings. If the virtual address passed in a hardware instruction can be found in the TLB, the mapping can be determined quickly. If not, a TLB miss occurs, and the system falls back to slower, software-based address translation, resulting in performance issues. Since the size of the TLB is fixed, the only way to reduce the chance of a TLB miss is to increase the page size.
+
+A huge page is a memory page that is larger than 4Ki. On x86_64 architectures, there are two common huge page sizes: 2Mi and 1Gi. Sizes vary on other architectures. To use huge pages, code must be written so that applications are aware of them. Transparent huge pages (THP) attempt to automate the management of huge pages without application knowledge, but they have limitations. In particular, they are limited to 2Mi page sizes. THP can lead to performance degradation on nodes with high memory utilization or fragmentation because of defragmenting efforts of THP, which can lock memory pages. For this reason, some applications might be designed to or recommend usage of pre-allocated huge pages instead of THP.
 
 In OpenShift Container Platform, applications in a pod can allocate and consume pre-allocated huge pages.
 
 # How huge pages are consumed by apps
 
-Nodes must pre-allocate huge pages in order for the node to report its huge page capacity. A node can only pre-allocate huge pages for a single size.
+To enable applications to consume huge pages, nodes must pre-allocate these memory segments to report capacity. Because a node can only pre-allocate huge pages for a single size, you must align this configuration with your specific workload requirements.
 
-Huge pages can be consumed through container-level resource requirements using the resource name `hugepages-<size>`, where size is the most compact binary notation using integer values supported on a particular node. For example, if a node supports 2048KiB page sizes, it exposes a schedulable resource `hugepages-2Mi`. Unlike CPU or memory, huge pages do not support over-commitment.
+Huge pages can be consumed through container-level resource requirements by using the resource name `hugepages-<size>`, where size is the most compact binary notation by using integer values supported on a particular node. For example, if a node supports 2048 KiB page sizes, the node exposes a schedulable resource `hugepages-2Mi`. Unlike CPU or memory, huge pages do not support over-commitment.
 
 ``` yaml
 apiVersion: v1
@@ -40,13 +44,19 @@ spec:
       medium: HugePages
 ```
 
-- Specify the amount of memory for `hugepages` as the exact amount to be allocated. Do not specify this value as the amount of memory for `hugepages` multiplied by the size of the page. For example, given a huge page size of 2MB, if you want to use 100MB of huge-page-backed RAM for your application, then you would allocate 50 huge pages. OpenShift Container Platform handles the math for you. As in the above example, you can specify `100MB` directly.
+- `spec.containers.resources.limits.hugepages-2Mi`: Specifies the amount of memory for `hugepages` as the exact amount to be allocated.
 
-**Allocating huge pages of a specific size**
+  <div class="important">
+
+  Do not specify this value as the amount of memory for `hugepages` multiplied by the size of the page. For example, given a huge page size of 2 MB, if you want to use 100 MB of huge-page-backed RAM for your application, then you would allocate 50 huge pages. OpenShift Container Platform handles the math for you. As in the above example, you can specify `100MB` directly.
+
+  </div>
+
+## Allocating huge pages of a specific size
 
 Some platforms support multiple huge page sizes. To allocate huge pages of a specific size, precede the huge pages boot command parameters with a huge page size selection parameter `hugepagesz=<size>`. The `<size>` value must be specified in bytes with an optional scale suffix \[`kKmMgG`\]. The default huge page size can be defined with the `default_hugepagesz=<size>` boot parameter.
 
-**Huge page requirements**
+## Huge page requirements
 
 - Huge page requests must equal the limits. This is the default if limits are specified, but requests are not.
 
@@ -58,7 +68,7 @@ Some platforms support multiple huge page sizes. To allocate huge pages of a spe
 
 # Consuming huge pages resources using the Downward API
 
-You can use the Downward API to inject information about the huge pages resources that are consumed by a container.
+To inject information about the huge pages resources consumed by a container, use the Downward API. This configuration enables applications to retrieve and use their own memory usage data directly.
 
 You can inject the resource allocation as environment variables, a volume plugin, or both. Applications that you develop and run in the container can determine the resources that are available by reading the environment variables or files in the specified volumes.
 
@@ -94,7 +104,7 @@ You can inject the resource allocation as environment variables, a volume plugin
           requests:
             hugepages-1Gi: 2Gi
         env:
-        - name: REQUESTS_HUGEPAGES_1GI \
+        - name: REQUESTS_HUGEPAGES_1GI
           valueFrom:
             resourceFieldRef:
               containerName: example
@@ -106,18 +116,22 @@ You can inject the resource allocation as environment variables, a volume plugin
       - name: podinfo
         downwardAPI:
           items:
-            - path: "hugepages_1G_request" \
+            - path: "hugepages_1G_request"
               resourceFieldRef:
                 containerName: example
                 resource: requests.hugepages-1Gi
                 divisor: 1Gi
     ```
 
-    - Specifies to read the resource use from `requests.hugepages-1Gi` and expose the value as the `REQUESTS_HUGEPAGES_1GI` environment variable.
+    where:
 
-    - Specifies to read the resource use from `requests.hugepages-1Gi` and expose the value as the file `/etc/podinfo/hugepages_1G_request`.
+    `spec.containers.securityContext.env.name`
+    Specifies what resource to read and use from `requests.hugepages-1Gi` and expose the value as the `REQUESTS_HUGEPAGES_1GI` environment variable.
 
-2.  Create the pod from the `hugepages-volume-pod.yaml` file:
+    `spec.volumes.name.items.path`
+    Specifies what resource to read and use from `requests.hugepages-1Gi` and expose the value as the file `/etc/podinfo/hugepages_1G_request`.
+
+2.  Create the pod from the `hugepages-volume-pod.yaml` file by entering the following command:
 
     ``` terminal
     $ oc create -f hugepages-volume-pod.yaml
@@ -163,17 +177,17 @@ You can inject the resource allocation as environment variables, a volume plugin
 
 # Configuring huge pages at boot time
 
-Nodes must pre-allocate huge pages used in an OpenShift Container Platform cluster. There are two ways of reserving huge pages: at boot time and at run time. Reserving at boot time increases the possibility of success because the memory has not yet been significantly fragmented. The Node Tuning Operator currently supports boot time allocation of huge pages on specific nodes.
+To ensure nodes in your OpenShift Container Platform cluster pre-allocate memory for specific workloads, reserve huge pages at boot time. This configuration sets aside memory resources during system startup, offering a distinct alternative to run-time allocation.
 
-<div class="formalpara-title">
+There are two ways of reserving huge pages: at boot time and at run time. Reserving at boot time increases the possibility of success because the memory has not yet been significantly fragmented. The Node Tuning Operator currently supports boot-time allocation of huge pages on specific nodes.
 
-**Procedure**
+<div class="note">
+
+The TuneD boot-loader plugin only supports Red Hat Enterprise Linux CoreOS (RHCOS) compute nodes.
 
 </div>
 
-To minimize node reboots, the order of the steps below needs to be followed:
-
-1.  Label all nodes that need the same huge pages setting by a label.
+1.  Label all nodes that need the same huge pages setting by a label by entering the following command:
 
     ``` terminal
     $ oc label node <node_using_hugepages> node-role.kubernetes.io/worker-hp=
@@ -202,17 +216,24 @@ To minimize node reboots, the order of the steps below needs to be followed:
           machineconfiguration.openshift.io/role: "worker-hp"
         priority: 30
         profile: openshift-node-hugepages
+    # ...
     ```
 
-    - Set the `name` of the Tuned resource to `hugepages`.
+    where:
 
-    - Set the `profile` section to allocate huge pages.
+    `metadata.name`
+    Specifies the `name` of the Tuned resource to `hugepages`.
 
-    - Note the order of parameters is important as some platforms support huge pages of various sizes.
+    `spec.profile`
+    Specifies the `profile` section to allocate huge pages.
 
-    - Enable machine config pool based matching.
+    `spec.profile.data`
+    Specifies the order of parameters. The order is important as some platforms support huge pages of various sizes.
 
-3.  Create the Tuned `hugepages` object
+    `spec.recommend.machineConfigLabels`
+    Specifies the enablement of a machine config pool based matching.
+
+3.  Create the Tuned `hugepages` object by entering the following command:
 
     ``` terminal
     $ oc create -f hugepages-tuned-boottime.yaml
@@ -236,28 +257,24 @@ To minimize node reboots, the order of the steps below needs to be followed:
           node-role.kubernetes.io/worker-hp: ""
     ```
 
-5.  Create the machine config pool:
+5.  Create the machine config pool by entering the following command:
 
     ``` terminal
     $ oc create -f hugepages-mcp.yaml
     ```
 
-Given enough non-fragmented memory, all the nodes in the `worker-hp` machine config pool should now have 50 2Mi huge pages allocated.
+- To check that enough non-fragmented memory exists and that all the nodes in the `worker-hp` machine config pool now have 50 2Mi huge pages allocated, enter the following command:
 
-``` terminal
-$ oc get node <node_using_hugepages> -o jsonpath="{.status.allocatable.hugepages-2Mi}"
-100Mi
-```
+  ``` terminal
+  $ oc get node <node_using_hugepages> -o jsonpath="{.status.allocatable.hugepages-2Mi}"
+  100Mi
+  ```
 
-<div class="note">
+# Disabling transparent huge pages
 
-The TuneD bootloader plugin only supports Red Hat Enterprise Linux CoreOS (RHCOS) worker nodes.
+If your application can handle huge pages on its own, you can disable transparent huge pages (THP) to optimally handle huge pages for all types of workloads and avoid the performance regressions that THP can cause.
 
-</div>
-
-# Disabling Transparent Huge Pages
-
-Transparent Huge Pages (THP) attempt to automate most aspects of creating, managing, and using huge pages. Since THP automatically manages the huge pages, this is not always handled optimally for all types of workloads. THP can lead to performance regressions, since many applications handle huge pages on their own. Therefore, consider disabling THP. The following steps describe how to disable THP using the Node Tuning Operator (NTO).
+Disabling THP prevents them from attempting to automate most aspects of creating, managing, and using huge pages. You can disable THP by using the Node Tuning Operator (NTO).
 
 1.  Create a file with the following content and name it `thp-disable-tuned.yaml`:
 
@@ -283,15 +300,16 @@ Transparent Huge Pages (THP) attempt to automate most aspects of creating, manag
         - label: node-role.kubernetes.io/worker
         priority: 25
         profile: openshift-thp-never-worker
+    # ...
     ```
 
-2.  Create the Tuned object:
+2.  Create the Tuned object by entering the following command:
 
     ``` terminal
     $ oc create -f thp-disable-tuned.yaml
     ```
 
-3.  Check the list of active profiles:
+3.  Check the list of active profiles by entering the following command::
 
     ``` terminal
     $ oc get profile -n openshift-cluster-node-tuning-operator

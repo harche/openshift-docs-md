@@ -78,7 +78,7 @@ spec:
             filters:
               - name: tag:Name
                 values:
-                  - <infrastructure_id>-private-<zone>
+                  - <infrastructure_id>-subnet-private-<zone>
           tags:
             - name: kubernetes.io/cluster/<infrastructure_id>
               value: owned

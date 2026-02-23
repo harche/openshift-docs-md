@@ -248,13 +248,13 @@ Isolating ports in this way can provide enhanced security for VM workloads that 
     # ...
     ```
 
-    - The name for the configuration. The name must match the value in the `metadata.name` of the NAD.
+    - `spec.config.name` specifies the name for the configuration. The name must match the value in the `metadata.name` of the NAD.
 
-    - The actual name of the Container Network Interface (CNI) plugin that provides the network for this network attachment definition. Do not change this field unless you want to use a different CNI.
+    - `spec.config.type` specifies the actual name of the Container Network Interface (CNI) plugin that provides the network for this network attachment definition. Do not change this field unless you want to use a different CNI.
 
-    - The name of the Linux bridge that is configured on the node. The name must match the interface bridge name defined in the NodeNetworkConfigurationPolicy manifest.
+    - `spec.config.bridge` specifies the name of the Linux bridge that is configured on the node. The name must match the interface bridge name defined in the `NodeNetworkConfigurationPolicy` manifest.
 
-    - Enables or disables port isolation on the virtual bridge. Default value is `false`. When set to `true`, each VM or pod is assigned to an isolated port. The virtual bridge prevents traffic from one isolated port from reaching another isolated port.
+    - `spec.config.portIsolation` specifies whether port isolation on the virtual bridge is enabled or disabled. The default value is `false`. When set to `true`, each VM or pod is assigned to an isolated port. The virtual bridge prevents traffic from one isolated port from reaching another isolated port.
 
 2.  Apply the configuration:
 

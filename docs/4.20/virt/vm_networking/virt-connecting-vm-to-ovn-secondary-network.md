@@ -132,13 +132,13 @@ You can connect a virtual machine (VM) to the OVN-Kubernetes secondary network b
     # ...
     ```
 
-    - The name of the OVN-Kubernetes secondary interface.
+    - `spec.template.spec.domain.devices.interfaces.name` specifies the name of the OVN-Kubernetes secondary interface.
 
-    - The name of the network. This must match the value of the `spec.template.spec.domain.devices.interfaces.name` field.
+    - `spec.template.spec.networks.name` specifies the name of the network. This must match the value of the `spec.template.spec.domain.devices.interfaces.name` field.
 
-    - The name of the `NetworkAttachmentDefinition` object.
+    - `spec.template.spec.networks.multus.networkName` specifies the name of the `NetworkAttachmentDefinition` object.
 
-    - Specifies the nodes on which the VM can be scheduled. The recommended node selector value is `node-role.kubernetes.io/worker: ''`.
+    - `spec.template.spec.nodeSelector` specifies the nodes on which the VM can be scheduled. The recommended node selector value is `node-role.kubernetes.io/worker: ''`.
 
 2.  Apply the `VirtualMachine` manifest:
 

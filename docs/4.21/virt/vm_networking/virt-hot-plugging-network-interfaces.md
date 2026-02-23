@@ -55,11 +55,11 @@ You can hot plug a secondary network interface to a virtual machine (VM) while t
     # ...
     ```
 
-    - Specifies the name of the new network interface.
+    - `spec.template.spec.domain.devices.interfaces.name` specifies the name of the new network interface.
 
-    - Specifies the name of the network. This must be the same as the `name` of the new network interface that you defined in the `template.spec.domain.devices.interfaces` list.
+    - `spec.template.spec.networks.name` specifies the name of the network. This must be the same as the `name` of the new network interface that you defined in the `template.spec.domain.devices.interfaces` list.
 
-    - Specifies the name of the `NetworkAttachmentDefinition` object.
+    - `spec.template.spec.networks.multus.networkName` specifies the name of the `NetworkAttachmentDefinition` object.
 
 2.  Save your changes and exit the editor.
 
@@ -126,7 +126,7 @@ You can hot plug a secondary network interface to a virtual machine (VM) while t
     ]
     ```
 
-    - The hot plugged interface appears in the VMI status.
+    The hot plugged interface appears in the VMI status.
 
 # Hot unplugging a secondary network interface by using the CLI
 
@@ -175,7 +175,7 @@ Hot unplugging is not supported for Single Root I/O Virtualization (SR-IOV) inte
     # ...
     ```
 
-    - Set the interface state to `absent` to detach it from the running VM. Removing the interface details from the VM specification does not hot unplug the secondary network interface.
+    Set the interface state to `absent` to detach it from the running VM. Removing the interface details from the VM specification does not hot unplug the secondary network interface.
 
 2.  Save your changes and exit the editor.
 

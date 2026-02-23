@@ -30,7 +30,11 @@ Before you can expand persistent volumes, the `StorageClass` object must have th
 
 You can use the Container Storage Interface (CSI) to expand storage volumes after they have already been created.
 
+<div class="important">
+
 Shrinking persistent volumes (PVs) is *not* supported.
+
+</div>
 
 - The underlying CSI driver supports resize. See "CSI drivers supported by OpenShift Container Platform" in the "Additional resources" section.
 
@@ -82,11 +86,11 @@ You can manually expand persistent volumes (PVs) and persistent volume claims (P
 
 2.  Update the corresponding PV objects to match the new device sizes by editing the `.spec.capacity` field of the PV.
 
-3.  For the storage class that is used for binding the PVC to PVet, set `allowVolumeExpansion:true`.
+3.  For the storage class that is used for binding the PVC to PV, set the `allowVolumeExpansion` field to `true`.
 
-4.  For the PVC, set `.spec.resources.requests.storage` to match the new size.
+4.  For the PVC, set the `.spec.resources.requests.storage` field to match the new size.
 
-Kubelet should automatically expand the underlying file system on the volume, if necessary, and update the status field of the PVC to reflect the new size.
+    Kubelet automatically expands the underlying file system on the volume, if necessary, and updates the status field of the PVC to reflect the new size.
 
 # Expanding persistent volume claims (PVCs) with a file system
 
@@ -112,7 +116,7 @@ Expanding the file system on the node only happens when a new pod is started wit
           storage: 8Gi
     ```
 
-    - Updating `spec.resources.requests` to a larger amount expands the PVC.
+    - `requests.storage`: Specifies the size for the PVC.
 
 2.  After the cloud provider object has finished resizing, the PVC is set to `FileSystemResizePending`. Check the condition by entering the following command:
 
@@ -120,29 +124,21 @@ Expanding the file system on the node only happens when a new pod is started wit
     $ oc describe pvc <pvc_name>
     ```
 
-3.  When the cloud provider object has finished resizing, the `PersistentVolume` object reflects the newly requested size in `PersistentVolume.Spec.Capacity`. At this point, you can create or recreate a new pod from the PVC to finish the file system resizing. Once the pod is running, the newly requested size is available and the `FileSystemResizePending` condition is removed from the PVC.
+3.  When the cloud provider object has finished resizing, the `PersistentVolume` object reflects the newly requested size in `PersistentVolume.Spec.Capacity`. At this point, you can create or re-create a pod from the PVC to finish the file system resizing. Once the pod is running, the newly requested size is available and the `FileSystemResizePending` condition is removed from the PVC.
 
 # Recovering from failure when expanding volumes
 
-If a resize request fails or remains in a pending state, you can try again by entering a different resize value in `.spec.resources.requests.storage` for the persistent volume claim (PVC). The new value must be larger than the original volume size.
+To retry a failed or pending resize request, update the `spec.resources.requests.storage` field in the persistent volume claim (PVC). You must specify a value larger than the original volume size to successfully retrigger the operation.
 
-If you are still having issues, use the following procedure to recover.
+Entering a smaller resize value in the `.spec.resources.requests.storage` field for the existing PVC does not work.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-If entering another smaller resize value in `.spec.resources.requests.storage` for the PVC does not work, do the following:
-
-1.  Mark the persistent volume (PV) that is bound to the PVC with the `Retain` reclaim policy. Change `persistentVolumeReclaimPolicy` to `Retain`.
+1.  Mark the persistent volume (PV) that is bound to the PVC with the `Retain` reclaim policy. Change the `persistentVolumeReclaimPolicy` field to `Retain`.
 
 2.  Delete the PVC.
 
-3.  Manually edit the PV and delete the `claimRef` entry from the PV specs to ensure that the newly created PVC can bind to the PV marked `Retain`. This marks the PV as `Available`.
+3.  Manually edit the PV and delete the `claimRef` entry from the PV specification to ensure that the newly created PVC can bind to the PV marked `Retain`. This marks the PV as `Available`.
 
-4.  Re-create the PVC in a smaller size, or a size that can be allocated by the underlying storage provider.
+4.  Recreate the PVC in a smaller size, or a size that can be allocated by the underlying storage provider.
 
 5.  Set the `volumeName` field of the PVC to the name of the PV. This binds the PVC to the provisioned PV only.
 
@@ -166,6 +162,4 @@ For a typical block volume, the field transitions between `ControllerResizeInPro
 
 # Additional resources
 
-- [Enabling volume expansion support](../storage/expanding-persistent-volumes.xml#add-volume-expansion_expanding-persistent-volumes)
-
-- [CSI drivers supported by OpenShift Container Platform](../storage/container_storage_interface/persistent-storage-csi.xml#csi-drivers-supported_persistent-storage-csi)
+- [CSI drivers supported by OpenShift Container Platform](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/storage/using-container-storage-interface-csi#csi-drivers-supported_persistent-storage-csi)

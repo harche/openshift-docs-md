@@ -16,7 +16,7 @@ Azure File CSI Driver Operator does not support:
 
 - Running on nodes with Federal Information Processing Standard (FIPS) mode enabled for Server Message Block (SMB) file share. However, Network File System (NFS) does support FIPS mode.
 
-For more information about supported features, see [Supported CSI drivers and features](../../storage/container_storage_interface/persistent-storage-csi.xml#csi-drivers-supported_persistent-storage-csi).
+For more information about supported features, see [Supported CSI drivers and features](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi-drivers-supported_persistent-storage-csi).
 
 # About CSI
 

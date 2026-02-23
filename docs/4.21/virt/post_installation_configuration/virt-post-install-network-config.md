@@ -154,19 +154,13 @@ To configure a dedicated secondary network for live migration, you must first cr
       }'
     ```
 
-    where:
+    - `metadata.name` specifies the name of the `NetworkAttachmentDefinition` object.
 
-    `metadata.name`
-    Specify the name of the `NetworkAttachmentDefinition` object.
+    - `config.master` specifies the name of the NIC to be used for live migration.
 
-    `config.master`
-    Specify the name of the NIC to use for live migration.
+    - `config.type` specifies the name of the CNI plugin that provides the network for the NAD.
 
-    `config.type`
-    Specify the name of the CNI plugin that provides the network for the NAD.
-
-    `config.range`
-    Specify an IP address range for the secondary network. This range must not overlap the IP addresses of the main network.
+    - `config.range` specifies an IP address range for the secondary network. This range must not overlap the IP addresses of the main network.
 
 2.  Open the `HyperConverged` CR in your default editor by running the following command:
 
@@ -194,10 +188,7 @@ To configure a dedicated secondary network for live migration, you must first cr
     # ...
     ```
 
-    where:
-
-    `network`
-    Specify the name of the Multus `NetworkAttachmentDefinition` object to use for live migrations.
+    - `spec.liveMigrationConfig.network` specifies the name of the Multus `NetworkAttachmentDefinition` object to be used for live migrations.
 
 4.  Save your changes and exit the editor. The `virt-handler` pods restart and connect to the secondary network.
 
@@ -275,71 +266,55 @@ It might take several minutes for a configuration change to apply.
       isRdma: false
     ```
 
-    `metadata.name`
-    Specify a name for the `SriovNetworkNodePolicy` object.
+    - `metadata.name` specifies a name for the `SriovNetworkNodePolicy` object.
 
-    `metadata.namespace`
-    Specify the namespace where the SR-IOV Network Operator is installed.
+    - `metadata.namespace` specifies the namespace where the SR-IOV Network Operator is installed.
 
-    `spec.resourceName`
-    Specify the resource name of the SR-IOV device plugin. You can create multiple `SriovNetworkNodePolicy` objects for a resource name.
+    - `spec.resourceName` specifies the resource name of the SR-IOV device plugin. You can create multiple `SriovNetworkNodePolicy` objects for a resource name.
 
-    `spec.nodeSelector.feature.node.kubernetes.io/network-sriov.capable`
-    Specify the node selector to select which nodes are configured. Only SR-IOV network devices on selected nodes are configured. The SR-IOV Container Network Interface (CNI) plugin and device plugin are deployed only on selected nodes.
+    - `spec.nodeSelector.feature.node.kubernetes.io/network-sriov.capable` specifies the node selector to select which nodes are configured. Only SR-IOV network devices on selected nodes are configured. The SR-IOV Container Network Interface (CNI) plugin and device plugin are deployed only on selected nodes.
 
-    `spec.priority`
-    Optional: Specify an integer value between `0` and `99`. A smaller number gets higher priority, so a priority of `10` is higher than a priority of `99`. The default value is `99`.
+    - `spec.priority` is an optional field that specifies an integer value between `0` and `99`. A smaller number gets higher priority, so a priority of `10` is higher than a priority of `99`. The default value is `99`.
 
-    `spec.mtu`
-    Optional: Specify a value for the maximum transmission unit (MTU) of the virtual function. The maximum MTU value can vary for different NIC models.
+    - `spec.mtu` is an optional field that specifies a value for the maximum transmission unit (MTU) of the virtual function. The maximum MTU value can vary for different NIC models.
 
-    `spec.numVfs`
-    Specify the number of the virtual functions (VF) to create for the SR-IOV physical network device. For an Intel network interface controller (NIC), the number of VFs cannot be larger than the total VFs supported by the device. For a Mellanox NIC, the number of VFs cannot be larger than `127`.
+    - `spec.numVfs` specifies the number of the virtual functions (VF) to create for the SR-IOV physical network device. For an Intel network interface controller (NIC), the number of VFs cannot be larger than the total VFs supported by the device. For a Mellanox NIC, the number of VFs cannot be larger than `127`.
 
-    `spec.nicSelector`
-    The `nicSelector` mapping selects the Ethernet device for the Operator to configure. You do not need to specify values for all the parameters.
+    - `spec.nicSelector` selects the Ethernet device for the Operator to configure. You do not need to specify values for all the parameters.
 
-    <div class="note">
+      <div class="note">
 
-    It is recommended to identify the Ethernet adapter with enough precision to minimize the possibility of selecting an Ethernet device unintentionally. If you specify `rootDevices`, you must also specify a value for `vendor`, `deviceID`, or `pfNames`.
+      It is recommended to identify the Ethernet adapter with enough precision to minimize the possibility of selecting an Ethernet device unintentionally. If you specify `rootDevices`, you must also specify a value for `vendor`, `deviceID`, or `pfNames`.
 
-    </div>
+      </div>
 
-    If you specify both `pfNames` and `rootDevices` at the same time, ensure that they point to an identical device.
+      If you specify both `pfNames` and `rootDevices` at the same time, ensure that they point to an identical device.
 
-    `spec.nicSelector.vendor`
-    Optional: Specify the vendor hex code of the SR-IOV network device. The only allowed values are either `8086` or `15b3`.
+    - `spec.nicSelector.vendor` is an optional field that specifies the vendor hex code of the SR-IOV network device. The only allowed values are either `8086` or `15b3`.
 
-    `spec.nicSelector.deviceID`
-    Optional: Specify the device hex code of SR-IOV network device. The only allowed values are `158b`, `1015`, `1017`.
+    - `spec.nicSelector.deviceID` is an optional field that specifies the device hex code of SR-IOV network device. The only allowed values are `158b`, `1015`, `1017`.
 
-    `spec.nicSelector.pfNames`
-    Optional: The parameter accepts an array of one or more physical function (PF) names for the Ethernet device.
+    - `spec.nicSelector.pfNames` is an optional field that specifies an array of one or more physical function (PF) names for the Ethernet device.
 
-    `spec.nicSelector.rootDevices`
-    The parameter accepts an array of one or more PCI bus addresses for the physical function of the Ethernet device. Provide the address in the following format: `0000:02:00.1`.
+    - `spec.nicSelector.rootDevices` is an optional field that specifies an array of one or more PCI bus addresses for the physical function of the Ethernet device. Provide the address in the following format: `0000:02:00.1`.
 
-    `spec.deviceType`
-    The `vfio-pci` driver type is required for virtual functions in OpenShift Virtualization.
+    - `spec.deviceType` specifies the driver type. The `vfio-pci` driver type is required for virtual functions in OpenShift Virtualization.
 
-    `spec.isRdma`
-    Optional: Specify whether to enable remote direct memory access (RDMA) mode. For a Mellanox card, set `isRdma` to `false`. The default value is `false`.
+    - `spec.isRdma` is an optional field that specifies whether to enable remote direct memory access (RDMA) mode. For a Mellanox card, set `isRdma` to `false`. The default value is `false`.
 
-    <div class="note">
+      <div class="note">
 
-    If `isRDMA` flag is set to `true`, you can continue to use the RDMA enabled VF as a normal network device. A device can be used in either mode.
+      If `isRDMA` flag is set to `true`, you can continue to use the RDMA enabled VF as a normal network device. A device can be used in either mode.
 
-    </div>
+      </div>
 
 2.  Optional: Label the SR-IOV capable cluster nodes with `SriovNetworkNodePolicy.Spec.NodeSelector` if they are not already labeled. For more information about labeling nodes, see "Understanding how to update labels on nodes".
 
-3.  Create the `SriovNetworkNodePolicy` object:
+3.  Create the `SriovNetworkNodePolicy` object. When running the following command, replace `<name>` with the name for this configuration:
 
     ``` terminal
     $ oc create -f <name>-sriov-node-network.yaml
     ```
-
-    where `<name>` specifies the name for this configuration.
 
     After applying the configuration update, all the pods in `sriov-network-operator` namespace transition to the `Running` status.
 

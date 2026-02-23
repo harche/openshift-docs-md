@@ -78,7 +78,7 @@ The `SelinuxProfile` object has several features that allow for better security 
 1.  View the file contents with `cat` by running the following command:
 
     ``` terminal
-    $ cat /etc/selinux.d/nginx-secure_.cil
+    $ cat /etc/selinux.d/nginx-secure.cil
     ```
 
     <div class="formalpara-title">
@@ -88,9 +88,9 @@ The `SelinuxProfile` object has several features that allow for better security 
     </div>
 
     ``` terminal
-    (block nginx-secure_
+    (block nginx-secure
     (blockinherit container)
-    (allow process nginx-secure_.process ( tcp_socket ( listen )))
+    (allow process nginx-secure.process ( tcp_socket ( listen )))
     (allow process http_cache_port_t ( tcp_socket ( name_bind )))
     (allow process node_t ( tcp_socket ( node_bind )))
     )
@@ -109,7 +109,7 @@ The `SelinuxProfile` object has several features that allow for better security 
     </div>
 
     ``` terminal
-    nginx-secure_
+    nginx-secure
     ```
 
 # Applying SELinux profiles to a pod
@@ -143,7 +143,7 @@ For SELinux profiles, the namespace must be labelled to allow [privileged](https
     </div>
 
     ``` terminal
-    nginx-secure_.process
+    nginx-secure.process
     ```
 
 4.  Apply the output string in the workload manifest in the `.spec.containers[].securityContext.seLinuxOptions` attribute:
@@ -168,7 +168,7 @@ For SELinux profiles, the namespace must be labelled to allow [privileged](https
               drop: [ALL]
             seLinuxOptions:
               # NOTE: This uses an appropriate SELinux type
-              type: nginx-secure_.process
+              type: nginx-secure.process
     ```
 
     <div class="important">
@@ -273,7 +273,7 @@ You can use the `ProfileBinding` resource to bind a security profile to the `Sec
   </div>
 
   ``` terminal
-  profile_.process
+  profile.process
   ```
 
 ## Replicating controllers and SecurityContextConstraints
@@ -358,7 +358,7 @@ When you deploy SELinux policies for replicating controllers, such as deployment
           serviceAccountName: spo-deploy-test
           securityContext:
             seLinuxOptions:
-              type: nginx-secure_.process
+              type: nginx-secure.process
           containers:
           - name: nginx-unpriv
             image: quay.io/security-profiles-operator/test-nginx-unprivileged:1.21
@@ -502,9 +502,9 @@ A container with `privileged: true` security context restraints prevents log-bas
     </div>
 
     ``` terminal
-    NAME                   USAGE                                       STATE
-    test-recording-nginx   test-recording-nginx_.process   Installed
-    test-recording-redis   test-recording-redis_.process   Installed
+    NAME                   USAGE                                 STATE
+    test-recording-nginx   test-recording-nginx.process   Installed
+    test-recording-redis   test-recording-redis.process   Installed
     ```
 
 ## Merging per-container profile instances
@@ -587,8 +587,8 @@ By default, each container instance records into a separate profile. The Securit
     </div>
 
     ``` terminal
-    NAME                          USAGE                                  STATE
-    test-recording-nginx-record   test-recording-nginx-record_.process   Installed
+    NAME                          USAGE                            STATE
+    test-recording-nginx-record   test-recording-nginx-record.process   Installed
     ```
 
 7.  To view the permissions used by any of the containers, run the following command:

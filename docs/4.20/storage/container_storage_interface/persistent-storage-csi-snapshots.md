@@ -272,7 +272,7 @@ You can configure how OpenShift Container Platform deletes volume snapshots.
 
     <div class="formalpara-title">
 
-    **volumesnapshotclass.yaml**
+    **Example volumesnapshotclass.yaml file**
 
     </div>
 
@@ -283,18 +283,24 @@ You can configure how OpenShift Container Platform deletes volume snapshots.
       name: csi-hostpath-snap
     driver: hostpath.csi.k8s.io
     deletionPolicy: Delete
+    # ...
     ```
 
-    - When deleting the volume snapshot, if the `Delete` value is set, the underlying snapshot is deleted along with the `VolumeSnapshotContent` object. If the `Retain` value is set, both the underlying snapshot and `VolumeSnapshotContent` object remain.
+    - `deletionPolicy`: When deleting the volume snapshot, if the `Delete` value is set, the underlying snapshot is deleted along with the `VolumeSnapshotContent` object. If the `Retain` value is set, both the underlying snapshot and `VolumeSnapshotContent` object remain.
+
+      <div class="note">
+
       If the `Retain` value is set and the `VolumeSnapshot` object is deleted without deleting the corresponding `VolumeSnapshotContent` object, the content remains. The snapshot itself is also retained in the storage back end.
+
+      </div>
 
 2.  Delete the volume snapshot by entering the following command:
 
     ``` terminal
-    $ oc delete volumesnapshot <volumesnapshot_name>
+    $ oc delete volumesnapshot _<volumesnapshot_name>_
     ```
 
-    - Replace *\<volumesnapshot_name\>* with the name of the volume snapshot you want to delete.
+    - Replace `<volumesnapshot_name>` with the name of the volume snapshot you want to delete.
 
       <div class="formalpara-title">
 
@@ -309,10 +315,10 @@ You can configure how OpenShift Container Platform deletes volume snapshots.
 3.  If the deletion policy is set to `Retain`, delete the volume snapshot content by entering the following command:
 
     ``` terminal
-    $ oc delete volumesnapshotcontent <volumesnapshotcontent_name>
+    $ oc delete volumesnapshotcontent _<volumesnapshotcontent_name>_
     ```
 
-    - Replace *\<volumesnapshotcontent_name\>* with the content you want to delete.
+    - Replace `<volumesnapshotcontent_name>` with the content you want to delete.
 
 4.  Optional: If the `VolumeSnapshot` object is not successfully deleted, enter the following command to remove any finalizers for the leftover resource so that the delete operation can continue:
 

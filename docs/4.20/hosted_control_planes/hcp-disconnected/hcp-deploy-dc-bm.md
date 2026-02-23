@@ -792,7 +792,7 @@ A hosted cluster is an OpenShift Container Platform cluster with its control pla
 
 ## Deploying hosted cluster objects
 
-Typically, the HyperShift Operator creates the `HostedControlPlane` namespace. However, in this case, you want to include all the objects before the HyperShift Operator begins to reconcile the `HostedCluster` object. Then, when the Operator starts the reconciliation process, it can find all of the objects in place.
+Typically, the HyperShift Operator creates the `HostedControlPlane` namespace. However, you might want to include all the objects before the HyperShift Operator begins to reconcile the `HostedCluster` object. Then, when the Operator starts the reconciliation process, it can find all of the objects in place.
 
 1.  Create a YAML file with the following information about the namespaces:
 
@@ -815,9 +815,9 @@ Typically, the HyperShift Operator creates the `HostedControlPlane` namespace. H
     status: {}
     ```
 
-    - Replace `<hosted_cluster_name>` with your hosted cluster.
+    - `<hosted_cluster_name>` is the name of your hosted cluster.
 
-    - Replace `<hosted_cluster_namespace>` with the name of your hosted cluster namespace.
+    - `<hosted_cluster_namespace>` is the name of your hosted cluster namespace.
 
 2.  Create a YAML file with the following information about the config maps and secrets to include in the `HostedCluster` deployment:
 
@@ -861,9 +861,9 @@ Typically, the HyperShift Operator creates the `HostedControlPlane` namespace. H
     type: Opaque
     ```
 
-    - Replace `<hosted_cluster_namespace>` with the name of your hosted cluster namespace.
+    - `<hosted_cluster_namespace>` is the name of your hosted cluster namespace.
 
-    - Replace `<hosted_cluster_name>` with your hosted cluster.
+    - `<hosted_cluster_name>` is the name of your hosted cluster.
 
 3.  Create a YAML file that contains the RBAC roles so that Assisted Service agents can be in the same `HostedControlPlane` namespace as the hosted control plane and still be managed by the cluster API:
 
@@ -883,9 +883,9 @@ Typically, the HyperShift Operator creates the `HostedControlPlane` namespace. H
       - '*'
     ```
 
-    - Replace `<hosted_cluster_namespace>` with the name of your hosted cluster namespace.
+    - `<hosted_cluster_namespace>` is the name of your hosted cluster namespace.
 
-    - Replace `<hosted_cluster_name>` with your hosted cluster.
+    - `<hosted_cluster_name>` is the name of your hosted cluster.
 
 4.  Create a YAML file with information about the `HostedCluster` object, replacing values as necessary:
 
@@ -938,7 +938,7 @@ Typically, the HyperShift Operator creates the `HostedControlPlane` namespace. H
         - cidr: fd02::/112
       platform:
         agent:
-          agentNamespace: <hosted_cluster_namespace>-<hosted_cluster_name>
+          agentNamespace: <bmh_infraenv_namespace>
         type: Agent
       pullSecret:
         name: <hosted_cluster_name>-pull-secret
@@ -973,17 +973,19 @@ Typically, the HyperShift Operator creates the `HostedControlPlane` namespace. H
         port: 0
     ```
 
-    - Replace `<hosted_cluster_name>` with your hosted cluster.
+    - `<hosted_cluster_name>` is the name of your hosted cluster.
 
-    - Replace `<hosted_cluster_namespace>` with the name of your hosted cluster namespace.
+    - `<hosted_cluster_namespace>` is the name of your hosted cluster namespace.
 
-    - For the `disableAllDefaultSources` parameter, specify `true` if you want to disable all default OLM catalog resources. The default value is `false`, which enables all default OLM catalog resources.
+    - `disableAllDefaultSources` is `true` if you want to disable all default OLM catalog resources. The default value is `false`, which enables all default OLM catalog resources.
 
-    - The `imageContentSources` section contains mirror references for user workloads within the hosted cluster.
+    - `imageContentSources` contains mirror references for user workloads within the hosted cluster.
 
-    - Replace `<dns.base.domain.name>` with the DNS base domain name.
+    - `<dns.base.domain.name>` is the DNS base domain name.
 
-    - Replace `<4.x.y>` with the supported OpenShift Container Platform version you want to use.
+    - `<bhm_infraenv_namespace>` is the namespace where the Bare Metal Host (BMH) and `InfraEnv` resources are created.
+
+    - `<4.x.y>` is the supported OpenShift Container Platform version you want to use.
 
 5.  Create all of the objects that you defined in the YAML files by concatenating them into a file and applying them against the management cluster. To do so, enter the following command:
 
@@ -991,11 +993,7 @@ Typically, the HyperShift Operator creates the `HostedControlPlane` namespace. H
     $ oc apply -f 01-4.14-hosted_cluster-nodeport.yaml
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following example shows the output of the command:
 
     ``` terminal
     NAME                                                  READY   STATUS    RESTARTS   AGE
@@ -1033,13 +1031,7 @@ Typically, the HyperShift Operator creates the `HostedControlPlane` namespace. H
     packageserver-67c87d4d4f-kl7qh                        2/2     Running   0          93s
     ```
 
-    When the hosted cluster is available, the output looks like the following example.
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    When the hosted cluster is available, the output looks like the following example:
 
     ``` terminal
     NAMESPACE   NAME         VERSION   KUBECONFIG                PROGRESS   AVAILABLE   PROGRESSING   MESSAGE

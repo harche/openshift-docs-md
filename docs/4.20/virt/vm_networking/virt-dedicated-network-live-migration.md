@@ -34,19 +34,13 @@ To configure a dedicated secondary network for live migration, you must first cr
       }'
     ```
 
-    where:
+    - `metadata.name` specifies the name of the `NetworkAttachmentDefinition` object.
 
-    `metadata.name`
-    Specify the name of the `NetworkAttachmentDefinition` object.
+    - `config.master` specifies the name of the NIC to be used for live migration.
 
-    `config.master`
-    Specify the name of the NIC to use for live migration.
+    - `config.type` specifies the name of the CNI plugin that provides the network for the NAD.
 
-    `config.type`
-    Specify the name of the CNI plugin that provides the network for the NAD.
-
-    `config.range`
-    Specify an IP address range for the secondary network. This range must not overlap the IP addresses of the main network.
+    - `config.range` specifies an IP address range for the secondary network. This range must not overlap the IP addresses of the main network.
 
 2.  Open the `HyperConverged` CR in your default editor by running the following command:
 
@@ -74,10 +68,7 @@ To configure a dedicated secondary network for live migration, you must first cr
     # ...
     ```
 
-    where:
-
-    `network`
-    Specify the name of the Multus `NetworkAttachmentDefinition` object to use for live migrations.
+    - `spec.liveMigrationConfig.network` specifies the name of the Multus `NetworkAttachmentDefinition` object to be used for live migrations.
 
 4.  Save your changes and exit the editor. The `virt-handler` pods restart and connect to the secondary network.
 

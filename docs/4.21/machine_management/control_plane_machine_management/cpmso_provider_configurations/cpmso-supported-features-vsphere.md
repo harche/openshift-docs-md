@@ -4,7 +4,7 @@ When you save an update to the control plane machine set, the Control Plane Mach
 
 # Adding tags to machines by using machine sets
 
-OpenShift Container Platform adds a cluster-specific tag to each virtual machine (VM) that it creates. The installation program uses these tags to select the VMs to delete when uninstalling a cluster.
+To ensure that your cluster remains scalable and resilient, you can use a `MachineSet` object and machine health checks to automate the provisioning and repair of nodes. OpenShift Container Platform adds a cluster-specific tag to each virtual machine (VM) that it creates. The installation program uses these tags to select the VMs to delete when uninstalling a cluster.
 
 In addition to the cluster-specific tags assigned to VMs, you can configure a machine set to add up to 10 additional vSphere tags to the VMs it provisions.
 
@@ -64,13 +64,14 @@ In addition to the cluster-specific tags assigned to VMs, you can configure a ma
     # ...
     ```
 
-    - Specify a list of up to 10 tags to add to the machines that this machine set provisions.
+    where
 
-    - Specify the value of the tag that you want to add to your machines. For example, `urn:vmomi:InventoryServiceTag:208e713c-cae3-4b7f-918e-4051ca7d1f97:GLOBAL`.
+    `spec.template.spec.providerSpec.value.tagIDs`
+    Specifies a list of up to 10 tags to add to the machines that this machine set provisions. Replace `<tag_id_value>` with the tag that you want to add to your machines. For example, `urn:vmomi:InventoryServiceTag:208e713c-cae3-4b7f-918e-4051ca7d1f97:GLOBAL`.
 
 # Configuring data disks by using machine sets
 
-OpenShift Container Platform clusters on VMware vSphere support adding up to 29 disks to the virtual machine (VM) controller.
+To provide persistent storage beyond the root volume for specialized application workloads, define a `dataDisks` array in the `MachineSet` YAML file to specify disk size and storage policy. OpenShift Container Platform clusters on VMware vSphere support adding up to 29 disks to the virtual machine (VM) controller.
 
 <div class="important">
 
@@ -114,19 +115,25 @@ Adding data disks attaches them to the VM and mounts them to the location that R
     # ...
     ```
 
-    - Specify a collection of 1-29 data disk definitions. This sample configuration shows the formatting to include two data disk definitions.
+    where
 
-    - Specify the name of the data disk. The name must meet the following requirements:
+    `spec.template.machines_v1beta1_machine_openshift_io.spec.providerSpec.value.dataDisks`
+    Specifies a collection of 1-29 data disk definitions. This sample configuration shows the formatting to include two data disk definitions.
 
-      - Start and end with an alphanumeric character
+    `spec.template.machines_v1beta1_machine_openshift_io.spec.providerSpec.value.dataDisks.name`
+    Specifies the name of the data disk. The name must meet the following requirements:
 
-      - Consist only of alphanumeric characters, hyphens (`-`), and underscores (`_`)
+    - Start and end with an alphanumeric character
 
-      - Have a maximum length of 80 characters
+    - Consist only of alphanumeric characters, hyphens (`-`), and underscores (`_`)
 
-    - Specify the data disk provisioning method. This value defaults to the vSphere default storage policy if not set. Valid values are `Thin`, `Thick`, and `EagerlyZeroed`.
+    - Have a maximum length of 80 characters
 
-    - Specify the size of the data disk in GiB. The maximum size is 16384 GiB.
+    `spec.template.machines_v1beta1_machine_openshift_io.spec.providerSpec.value.dataDisks.provisioningMode`
+    Specifies the data disk provisioning method. This value defaults to the vSphere default storage policy if not set. Valid values are `Thin`, `Thick`, and `EagerlyZeroed`.
+
+    `spec.template.machines_v1beta1_machine_openshift_io.spec.providerSpec.value.dataDisks.sizeGiB`
+    Specifies the size of the data disk in GiB. The maximum size is 16,384 GiB.
 
 # Additional resources
 

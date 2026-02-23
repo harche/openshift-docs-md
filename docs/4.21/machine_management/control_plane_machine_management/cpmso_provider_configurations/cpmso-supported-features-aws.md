@@ -54,7 +54,7 @@ You can change the Amazon Web Services (AWS) instance type that your control pla
         instanceType: <compatible_aws_instance_type>
     ```
 
-    - Specify a larger AWS instance type with the same base as the previous selection. For example, you can change `m6i.xlarge` to `m6i.2xlarge` or `m6i.4xlarge`.
+    - `<compatible_aws_instance_type>`: Specifies a larger AWS instance type with the same base as the previous selection. For example, you can change `m6i.xlarge` to `m6i.2xlarge` or `m6i.4xlarge`.
 
 2.  Save your changes.
 

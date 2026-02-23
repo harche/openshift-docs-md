@@ -396,11 +396,11 @@ Virtual machine memory overhead
                   + 16 MiB × (number of graphics devices) \
                   + (additional memory overhead)
 
-- Required for the processes that run in the `virt-launcher` pod.
+- `218 MiB` is required for the processes that run in the `virt-launcher` pod.
 
-- Number of virtual CPUs requested by the virtual machine.
+- `8 MiB × (number of vCPUs)` refers to the number of virtual CPUs requested by the virtual machine.
 
-- Number of virtual graphics cards requested by the virtual machine.
+- `16 MiB × (number of graphics devices)` refers to the number of virtual graphics cards requested by the virtual machine.
 
 - Additional memory overhead:
 

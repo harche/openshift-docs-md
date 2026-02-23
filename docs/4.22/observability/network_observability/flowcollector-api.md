@@ -96,11 +96,15 @@ Type
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>deploymentModel</code> defines the desired type of deployment for flow processing. Possible values are:<br />
 </p>
-<p>- <code>Direct</code> (default) to make the flow processor listen directly from the agents. Only recommended on small clusters, below 15 nodes.<br />
+<p>- <code>Service</code> (default) to make the flow processor listen as a Kubernetes Service, backed by a scalable Deployment.<br />
 </p>
 <p>- <code>Kafka</code> to make flows sent to a Kafka pipeline before consumption by the processor.<br />
 </p>
-<p>Kafka can provide better scalability, resiliency, and high availability (for more details, see <a href="https://www.redhat.com/en/topics/integration/what-is-apache-kafka">https://www.redhat.com/en/topics/integration/what-is-apache-kafka</a>).</p></td>
+<p>- <code>Direct</code> to make the flow processor listen directly from the agents using the host network, backed by a DaemonSet. Only recommended on small clusters, below 15 nodes.<br />
+</p>
+<p>Kafka can provide better scalability, resiliency, and high availability (for more details, see <a href="https://www.redhat.com/en/topics/integration/what-is-apache-kafka">https://www.redhat.com/en/topics/integration/what-is-apache-kafka</a>).<br />
+</p>
+<p><code>Direct</code> is not recommended on large clusters as it is less memory efficient.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>exporters</code></p></td>
@@ -183,12 +187,12 @@ Type
 <tr class="even">
 <td style="text-align: left;"><p><code>cacheActiveTimeout</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p><code>cacheActiveTimeout</code> is the max period during which the reporter aggregates flows before sending. Increasing <code>cacheMaxFlows</code> and <code>cacheActiveTimeout</code> can decrease the network traffic overhead and the CPU load, however you can expect higher memory consumption and an increased latency in the flow collection.</p></td>
+<td style="text-align: left;"><p><code>cacheActiveTimeout</code> is the period during which the agent aggregates flows before sending. Increasing <code>cacheMaxFlows</code> and <code>cacheActiveTimeout</code> can decrease the network traffic overhead and the CPU load, however you can expect higher memory consumption and an increased latency in the flow collection.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>cacheMaxFlows</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
-<td style="text-align: left;"><p><code>cacheMaxFlows</code> is the max number of flows in an aggregate; when reached, the reporter sends the flows. Increasing <code>cacheMaxFlows</code> and <code>cacheActiveTimeout</code> can decrease the network traffic overhead and the CPU load, however you can expect higher memory consumption and an increased latency in the flow collection.</p></td>
+<td style="text-align: left;"><p><code>cacheMaxFlows</code> is the maximum number of flows in an aggregate; when reached, the reporter sends the flows. Increasing <code>cacheMaxFlows</code> and <code>cacheActiveTimeout</code> can decrease the network traffic overhead and the CPU load, however you can expect higher memory consumption and an increased latency in the flow collection.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>excludeInterfaces</code></p></td>
@@ -530,17 +534,19 @@ Description
 Type
 `object`
 
-| Property          | Type      | Description                                                                                                                                                                                                                                                                  |
-|-------------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `advanced`        | `object`  | `advanced` allows setting some aspects of the internal configuration of the console plugin. This section is aimed mostly for debugging and fine-grained performance optimizations, such as `GOGC` and `GOMAXPROCS` environment variables. Set these values at your own risk. |
-| `autoscaler`      | `object`  | `autoscaler` spec of a horizontal pod autoscaler to set up for the plugin Deployment. Refer to HorizontalPodAutoscaler documentation (autoscaling/v2).                                                                                                                       |
-| `enable`          | `boolean` | Enables the console plugin deployment.                                                                                                                                                                                                                                       |
-| `imagePullPolicy` | `string`  | `imagePullPolicy` is the Kubernetes pull policy for the image defined above                                                                                                                                                                                                  |
-| `logLevel`        | `string`  | `logLevel` for the console plugin backend                                                                                                                                                                                                                                    |
-| `portNaming`      | `object`  | `portNaming` defines the configuration of the port-to-service name translation                                                                                                                                                                                               |
-| `quickFilters`    | `array`   | `quickFilters` configures quick filter presets for the Console plugin                                                                                                                                                                                                        |
-| `replicas`        | `integer` | `replicas` defines the number of replicas (pods) to start.                                                                                                                                                                                                                   |
-| `resources`       | `object`  | `resources`, in terms of compute resources, required by this container. For more information, see <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/>                                                                                           |
+| Property            | Type      | Description                                                                                                                                                                                                                                                                                                                                                                |
+|---------------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `advanced`          | `object`  | `advanced` allows setting some aspects of the internal configuration of the console plugin. This section is aimed mostly for debugging and fine-grained performance optimizations, such as `GOGC` and `GOMAXPROCS` environment variables. Set these values at your own risk.                                                                                               |
+| `autoscaler`        | `object`  | `autoscaler` \[deprecated (\*)\] spec of a horizontal pod autoscaler to set up for the plugin Deployment. Deprecation notice: managed autoscaler will be removed in a future version. You might configure instead an autoscaler of your choice, and set `spec.consolePlugin.unmanagedReplicas` to `true`. Refer to HorizontalPodAutoscaler documentation (autoscaling/v2). |
+| `enable`            | `boolean` | Enables the console plugin deployment.                                                                                                                                                                                                                                                                                                                                     |
+| `imagePullPolicy`   | `string`  | `imagePullPolicy` is the Kubernetes pull policy for the image defined above.                                                                                                                                                                                                                                                                                               |
+| `logLevel`          | `string`  | `logLevel` for the console plugin backend.                                                                                                                                                                                                                                                                                                                                 |
+| `portNaming`        | `object`  | `portNaming` defines the configuration of the port-to-service name translation.                                                                                                                                                                                                                                                                                            |
+| `quickFilters`      | `array`   | `quickFilters` configures quick filter presets for the Console plugin. Filters for external traffic assume the subnet labels are configured to distinguish internal and external traffic (see `spec.processor.subnetLabels`).                                                                                                                                              |
+| `replicas`          | `integer` | `replicas` defines the number of replicas (pods) to start.                                                                                                                                                                                                                                                                                                                 |
+| `resources`         | `object`  | `resources`, in terms of compute resources, required by this container. For more information, see <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/>.                                                                                                                                                                                        |
+| `standalone`        | `boolean` | Deploy as a standalone console, instead of a plugin of the OpenShift Container Platform Console. This is not recommended when using with OpenShift Container Platform, as it doesn’t provide an integrated experience. \[Unsupported (\*)\].                                                                                                                               |
+| `unmanagedReplicas` | `boolean` | If `unmanagedReplicas` is `true`, the operator will not reconcile `replicas`. This is useful when using a pod autoscaler.                                                                                                                                                                                                                                                  |
 
 ## .spec.consolePlugin.advanced
 
@@ -592,7 +598,7 @@ Type
 ## .spec.consolePlugin.autoscaler
 
 Description
-`autoscaler` spec of a horizontal pod autoscaler to set up for the plugin Deployment. Refer to HorizontalPodAutoscaler documentation (autoscaling/v2).
+`autoscaler` \[deprecated (\*)\] spec of a horizontal pod autoscaler to set up for the plugin Deployment. Deprecation notice: managed autoscaler will be removed in a future version. You might configure instead an autoscaler of your choice, and set `spec.consolePlugin.unmanagedReplicas` to `true`. Refer to HorizontalPodAutoscaler documentation (autoscaling/v2).
 
 Type
 `object`
@@ -600,7 +606,7 @@ Type
 ## .spec.consolePlugin.portNaming
 
 Description
-`portNaming` defines the configuration of the port-to-service name translation
+`portNaming` defines the configuration of the port-to-service name translation.
 
 Type
 `object`
@@ -613,7 +619,7 @@ Type
 ## .spec.consolePlugin.quickFilters
 
 Description
-`quickFilters` configures quick filter presets for the Console plugin
+`quickFilters` configures quick filter presets for the Console plugin. Filters for external traffic assume the subnet labels are configured to distinguish internal and external traffic (see `spec.processor.subnetLabels`).
 
 Type
 `array`
@@ -640,7 +646,7 @@ Required
 ## .spec.consolePlugin.resources
 
 Description
-`resources`, in terms of compute resources, required by this container. For more information, see <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/>
+`resources`, in terms of compute resources, required by this container. For more information, see <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/>.
 
 Type
 `object`
@@ -685,15 +691,18 @@ Type
 `object`
 
 Required
+- `enterpriseID`
+
 - `targetHost`
 
 - `targetPort`
 
-| Property     | Type      | Description                                                                                 |
-|--------------|-----------|---------------------------------------------------------------------------------------------|
-| `targetHost` | `string`  | Address of the IPFIX external receiver.                                                     |
-| `targetPort` | `integer` | Port for the IPFIX external receiver.                                                       |
-| `transport`  | `string`  | Transport protocol (`TCP` or `UDP`) to be used for the IPFIX connection, defaults to `TCP`. |
+| Property       | Type      | Description                                                                                                                                                                                                                                 |
+|----------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `enterpriseID` | `integer` | EnterpriseID, or Private Enterprise Number (PEN). To date, Network Observability does not own an assigned number, so it is left open for configuration. The PEN is needed to collect non standard data, such as Kubernetes names, RTT, etc. |
+| `targetHost`   | `string`  | Address of the IPFIX external receiver.                                                                                                                                                                                                     |
+| `targetPort`   | `integer` | Port for the IPFIX external receiver.                                                                                                                                                                                                       |
+| `transport`    | `string`  | Transport protocol (`TCP` or `UDP`) to be used for the IPFIX connection, defaults to `TCP`.                                                                                                                                                 |
 
 ## .spec.exporters\[\].kafka
 
@@ -1390,11 +1399,12 @@ Loki configuration for `Monolithic` mode. Use this option when Loki is installed
 Type
 `object`
 
-| Property   | Type     | Description                                                                                               |
-|------------|----------|-----------------------------------------------------------------------------------------------------------|
-| `tenantID` | `string` | `tenantID` is the Loki `X-Scope-OrgID` header that identifies the tenant for each request.                |
-| `tls`      | `object` | TLS client configuration for Loki URL.                                                                    |
-| `url`      | `string` | `url` is the unique address of an existing Loki service that points to both the ingester and the querier. |
+| Property          | Type      | Description                                                                                                                                                                                        |
+|-------------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `installDemoLoki` | `boolean` | Set `installDemoLoki` to `true` to automatically create Loki deployment, service and storage. This is useful for development and demo purposes. Do not use it in production. \[Unsupported (\*)\]. |
+| `tenantID`        | `string`  | `tenantID` is the Loki `X-Scope-OrgID` header that identifies the tenant for each request.                                                                                                         |
+| `tls`             | `object`  | TLS client configuration for Loki URL.                                                                                                                                                             |
+| `url`             | `string`  | `url` is the unique address of an existing Loki service that points to both the ingester and the querier.                                                                                          |
 
 ## .spec.loki.monolithic.tls
 
@@ -1481,7 +1491,7 @@ Type
 <tr class="odd">
 <td style="text-align: left;"><p><code>addZone</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
-<td style="text-align: left;"><p><code>addZone</code> allows availability zone awareness by labelling flows with their source and destination zones. This feature requires the "topology.kubernetes.io/zone" label to be set on nodes.</p></td>
+<td style="text-align: left;"><p><code>addZone</code> allows availability zone awareness by labeling flows with their source and destination zones. This feature requires the "topology.kubernetes.io/zone" label to be set on nodes.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>advanced</code></p></td>
@@ -1494,46 +1504,51 @@ Type
 <td style="text-align: left;"><p><code>clusterName</code> is the name of the cluster to appear in the flows data. This is useful in a multi-cluster context. When using OpenShift Container Platform, leave empty to make it automatically determined.</p></td>
 </tr>
 <tr class="even">
+<td style="text-align: left;"><p><code>consumerReplicas</code></p></td>
+<td style="text-align: left;"><p><code>integer</code></p></td>
+<td style="text-align: left;"><p><code>consumerReplicas</code> defines the number of replicas (pods) to start for <code>flowlogs-pipeline</code>, default is 3. This setting is ignored when <code>spec.deploymentModel</code> is <code>Direct</code> or when <code>spec.processor.unmanagedReplicas</code> is <code>true</code>.</p></td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>deduper</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>deduper</code> allows you to sample or drop flows identified as duplicates, in order to save on resource usage.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>filters</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p><code>filters</code> lets you define custom filters to limit the amount of generated flows. These filters provide more flexibility than the eBPF Agent filters (in <code>spec.agent.ebpf.flowFilter</code>), such as allowing to filter by Kubernetes namespace, but with a lesser improvement in performance.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>imagePullPolicy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>imagePullPolicy</code> is the Kubernetes pull policy for the image defined above</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>kafkaConsumerAutoscaler</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p><code>kafkaConsumerAutoscaler</code> is the spec of a horizontal pod autoscaler to set up for <code>flowlogs-pipeline-transformer</code>, which consumes Kafka messages. This setting is ignored when Kafka is disabled. Refer to HorizontalPodAutoscaler documentation (autoscaling/v2).</p></td>
+<td style="text-align: left;"><p><code>kafkaConsumerAutoscaler</code> [deprecated (*)] is the spec of a horizontal pod autoscaler to set up for <code>flowlogs-pipeline-transformer</code>, which consumes Kafka messages. This setting is ignored when Kafka is disabled. Deprecation notice: managed autoscaler will be removed in a future version. You might configure instead an autoscaler of your choice, and set <code>spec.processor.unmanagedReplicas</code> to <code>true</code>. Refer to HorizontalPodAutoscaler documentation (autoscaling/v2).</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>kafkaConsumerBatchSize</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p><code>kafkaConsumerBatchSize</code> indicates to the broker the maximum batch size, in bytes, that the consumer accepts. Ignored when not using Kafka. Default: 10MB.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>kafkaConsumerQueueCapacity</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p><code>kafkaConsumerQueueCapacity</code> defines the capacity of the internal message queue used in the Kafka consumer client. Ignored when not using Kafka.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>kafkaConsumerReplicas</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
-<td style="text-align: left;"><p><code>kafkaConsumerReplicas</code> defines the number of replicas (pods) to start for <code>flowlogs-pipeline-transformer</code>, which consumes Kafka messages. This setting is ignored when Kafka is disabled.</p></td>
+<td style="text-align: left;"><p><code>kafkaConsumerReplicas</code> [deprecated (*)] defines the number of replicas (pods) to start for <code>flowlogs-pipeline-transformer</code>, which consumes Kafka messages. This setting is ignored when Kafka is disabled. Deprecation notice: use <code>spec.processor.consumerReplicas</code> instead.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>logLevel</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>logLevel</code> of the processor runtime</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>logTypes</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>logTypes</code> defines the desired record types to generate. Possible values are:<br />
@@ -1547,25 +1562,35 @@ Type
 <p>- <code>All</code> to generate both network flows and all conversations events. It is not recommended due to the impact on resources footprint.<br />
 </p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>metrics</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>Metrics</code> define the processor configuration regarding metrics</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>multiClusterDeployment</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>Set <code>multiClusterDeployment</code> to <code>true</code> to enable multi clusters feature. This adds <code>clusterName</code> label to flows data</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>resources</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>resources</code> are the compute resources required by this container. For more information, see <a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/</a></p></td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>slicesConfig</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>Global configuration managing FlowCollectorSlices custom resources.</p></td>
+</tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>subnetLabels</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p><code>subnetLabels</code> allows to define custom labels on subnets and IPs or to enable automatic labelling of recognized subnets in OpenShift Container Platform, which is used to identify cluster external traffic. When a subnet matches the source or destination IP of a flow, a corresponding field is added: <code>SrcSubnetLabel</code> or <code>DstSubnetLabel</code>.</p></td>
+<td style="text-align: left;"><p><code>subnetLabels</code> allows to define custom labels on subnets and IPs or to enable automatic labeling of recognized subnets in OpenShift Container Platform, which is used to identify cluster external traffic. When a subnet matches the source or destination IP of a flow, a corresponding field is added: <code>SrcSubnetLabel</code> or <code>DstSubnetLabel</code>.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>unmanagedReplicas</code></p></td>
+<td style="text-align: left;"><p><code>boolean</code></p></td>
+<td style="text-align: left;"><p>If <code>unmanagedReplicas</code> is <code>true</code>, the operator will not reconcile <code>consumerReplicas</code>. This is useful when using a pod autoscaler.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1715,7 +1740,7 @@ Type
 ## .spec.processor.kafkaConsumerAutoscaler
 
 Description
-`kafkaConsumerAutoscaler` is the spec of a horizontal pod autoscaler to set up for `flowlogs-pipeline-transformer`, which consumes Kafka messages. This setting is ignored when Kafka is disabled. Refer to HorizontalPodAutoscaler documentation (autoscaling/v2).
+`kafkaConsumerAutoscaler` \[deprecated (\*)\] is the spec of a horizontal pod autoscaler to set up for `flowlogs-pipeline-transformer`, which consumes Kafka messages. This setting is ignored when Kafka is disabled. Deprecation notice: managed autoscaler will be removed in a future version. You might configure instead an autoscaler of your choice, and set `spec.processor.unmanagedReplicas` to `true`. Refer to HorizontalPodAutoscaler documentation (autoscaling/v2).
 
 Type
 `object`
@@ -1730,20 +1755,20 @@ Type
 
 | Property        | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 |-----------------|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `alerts`        | `array`          | `alerts` is a list of alerts to be created for Prometheus AlertManager, organized by templates and variants \[Unsupported (\*)\]. This is currently an experimental feature behind a feature gate. To enable, edit `spec.processor.advanced.env` by adding `EXPERIMENTAL_ALERTS_HEALTH` set to `true`. More information on alerts: <https://github.com/netobserv/network-observability-operator/blob/main/docs/Alerts.md>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `disableAlerts` | `array (string)` | `disableAlerts` is a list of alert groups that should be disabled from the default set of alerts. Possible values are: `NetObservNoFlows`, `NetObservLokiError`, `PacketDropsByKernel`, `PacketDropsByDevice`, `IPsecErrors`, `NetpolDenied`, `LatencyHighTrend`, `DNSErrors`, `ExternalEgressHighTrend`, `ExternalIngressHighTrend`, `CrossAZ`. More information on alerts: <https://github.com/netobserv/network-observability-operator/blob/main/docs/Alerts.md>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `disableAlerts` | `array (string)` | `disableAlerts` is a list of alert groups that should be disabled from the default set of alerts. Possible values are: `NetObservNoFlows`, `NetObservLokiError`, `PacketDropsByKernel`, `PacketDropsByDevice`, `IPsecErrors`, `NetpolDenied`, `LatencyHighTrend`, `DNSErrors`, `DNSNxDomain`, `ExternalEgressHighTrend`, `ExternalIngressHighTrend`, `Ingress5xxErrors`, `IngressHTTPLatencyTrend`. More information on alerts: <https://github.com/netobserv/network-observability-operator/blob/main/docs/HealthRules.md>                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `healthRules`   | `array`          | `healthRules` is a list of health rules to be created for Prometheus, organized by templates and variants. Each health rule can be configured to generate either alerts or recording rules based on the mode field. More information on health rules: <https://github.com/netobserv/network-observability-operator/blob/main/docs/HealthRules.md>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `includeList`   | `array (string)` | `includeList` is a list of metric names to specify which ones to generate. The names correspond to the names in Prometheus without the prefix. For example, `namespace_egress_packets_total` shows up as `netobserv_namespace_egress_packets_total` in Prometheus. Note that the more metrics you add, the bigger is the impact on Prometheus workload resources. Metrics enabled by default are: `namespace_flows_total`, `node_ingress_bytes_total`, `node_egress_bytes_total`, `workload_ingress_bytes_total`, `workload_egress_bytes_total`, `namespace_drop_packets_total` (when `PacketDrop` feature is enabled), `namespace_rtt_seconds` (when `FlowRTT` feature is enabled), `namespace_dns_latency_seconds` (when `DNSTracking` feature is enabled), `namespace_network_policy_events_total` (when `NetworkEvents` feature is enabled). More information, with full list of available metrics: <https://github.com/netobserv/network-observability-operator/blob/main/docs/Metrics.md> |
 | `server`        | `object`         | Metrics server endpoint configuration for Prometheus scraper                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 
-## .spec.processor.metrics.alerts
+## .spec.processor.metrics.healthRules
 
 Description
-`alerts` is a list of alerts to be created for Prometheus AlertManager, organized by templates and variants \[Unsupported (\*)\]. This is currently an experimental feature behind a feature gate. To enable, edit `spec.processor.advanced.env` by adding `EXPERIMENTAL_ALERTS_HEALTH` set to `true`. More information on alerts: <https://github.com/netobserv/network-observability-operator/blob/main/docs/Alerts.md>
+`healthRules` is a list of health rules to be created for Prometheus, organized by templates and variants. Each health rule can be configured to generate either alerts or recording rules based on the mode field. More information on health rules: <https://github.com/netobserv/network-observability-operator/blob/main/docs/HealthRules.md>
 
 Type
 `array`
 
-## .spec.processor.metrics.alerts\[\]
+## .spec.processor.metrics.healthRules\[\]
 
 Description
 
@@ -1755,12 +1780,13 @@ Required
 
 - `variants`
 
-| Property   | Type     | Description                                                                                                                                                                                                                                                                                                                                  |
-|------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `template` | `string` | Alert template name. Possible values are: `PacketDropsByKernel`, `PacketDropsByDevice`, `IPsecErrors`, `NetpolDenied`, `LatencyHighTrend`, `DNSErrors`, `ExternalEgressHighTrend`, `ExternalIngressHighTrend`, `CrossAZ`. More information on alerts: <https://github.com/netobserv/network-observability-operator/blob/main/docs/Alerts.md> |
-| `variants` | `array`  | A list of variants for this template                                                                                                                                                                                                                                                                                                         |
+| Property   | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `mode`     | `string` | Mode defines whether this health rule should be generated as an alert or a recording rule. Possible values are: `Alert` (default), `Recording`. Recording rules violations are visible in the Network Health dashboard without generating any Prometheus alert. This provides an alternative way of getting Health information for SRE and cluster admins who might find many new alerts burdensome.                                                                                                                  |
+| `template` | `string` | Health rule template name. Possible values are: `PacketDropsByKernel`, `PacketDropsByDevice`, `IPsecErrors`, `NetpolDenied`, `LatencyHighTrend`, `DNSErrors`, `DNSNxDomain`, `ExternalEgressHighTrend`, `ExternalIngressHighTrend`, `Ingress5xxErrors`, `IngressHTTPLatencyTrend`. Note: `NetObservNoFlows` and `NetObservLokiError` are alert-only and cannot be used as health rules. More information on health rules: <https://github.com/netobserv/network-observability-operator/blob/main/docs/HealthRules.md> |
+| `variants` | `array`  | A list of variants for this template                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 
-## .spec.processor.metrics.alerts\[\].variants
+## .spec.processor.metrics.healthRules\[\].variants
 
 Description
 A list of variants for this template
@@ -1768,7 +1794,7 @@ A list of variants for this template
 Type
 `array`
 
-## .spec.processor.metrics.alerts\[\].variants\[\]
+## .spec.processor.metrics.healthRules\[\].variants\[\]
 
 Description
 
@@ -1782,14 +1808,15 @@ Required
 |----------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `groupBy`            | `string` | Optional grouping criteria, possible values are: `Node`, `Namespace`, `Workload`.                                                                                                                                                                                              |
 | `lowVolumeThreshold` | `string` | The low volume threshold allows to ignore metrics with a too low volume of traffic, in order to improve signal-to-noise. It is provided as an absolute rate (bytes per second or packets per second, depending on the context). When provided, it must be parsable as a float. |
-| `thresholds`         | `object` | Thresholds of the alert per severity. They are expressed as a percentage of errors above which the alert is triggered. They must be parsable as floats.                                                                                                                        |
-| `trendDuration`      | `string` | For trending alerts, the duration interval for baseline comparison. For example, "2h" means comparing against a 2-hours average. Defaults to 2h.                                                                                                                               |
-| `trendOffset`        | `string` | For trending alerts, the time offset for baseline comparison. For example, "1d" means comparing against yesterday. Defaults to 1d.                                                                                                                                             |
+| `mode`               | `string` | Mode overrides the health rule mode for this specific variant. If not specified, inherits from the parent health rule’s mode. Possible values are: `Alert`, `Recording`.                                                                                                       |
+| `thresholds`         | `object` | Thresholds of the health rule per severity. They are expressed as a percentage of errors above which the alert is triggered. They must be parsable as floats. Required for both alert and recording modes                                                                      |
+| `trendDuration`      | `string` | For trending health rules, the duration interval for baseline comparison. For example, "2h" means comparing against a 2-hours average. Defaults to 2h.                                                                                                                         |
+| `trendOffset`        | `string` | For trending health rules, the time offset for baseline comparison. For example, "1d" means comparing against yesterday. Defaults to 1d.                                                                                                                                       |
 
-## .spec.processor.metrics.alerts\[\].variants\[\].thresholds
+## .spec.processor.metrics.healthRules\[\].variants\[\].thresholds
 
 Description
-Thresholds of the alert per severity. They are expressed as a percentage of errors above which the alert is triggered. They must be parsable as floats.
+Thresholds of the health rule per severity. They are expressed as a percentage of errors above which the alert is triggered. They must be parsable as floats. Required for both alert and recording modes
 
 Type
 `object`
@@ -1907,23 +1934,102 @@ Type
 | `limits`   | `integer-or-string` | Limits describes the maximum amount of compute resources allowed. More info: <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/>                                                                                                                                                                                |
 | `requests` | `integer-or-string` | Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/> |
 
-## .spec.processor.subnetLabels
+## .spec.processor.slicesConfig
 
 Description
-`subnetLabels` allows to define custom labels on subnets and IPs or to enable automatic labelling of recognized subnets in OpenShift Container Platform, which is used to identify cluster external traffic. When a subnet matches the source or destination IP of a flow, a corresponding field is added: `SrcSubnetLabel` or `DstSubnetLabel`.
+Global configuration managing FlowCollectorSlices custom resources.
 
 Type
 `object`
 
-| Property              | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                      |
-|-----------------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `customLabels`        | `array`   | `customLabels` allows to customize subnets and IPs labelling, such as to identify cluster-external workloads or web services. If you enable `openShiftAutoDetect`, `customLabels` can override the detected subnets in case they overlap.                                                                                                                                                                                        |
-| `openShiftAutoDetect` | `boolean` | `openShiftAutoDetect` allows, when set to `true`, to detect automatically the machines, pods and services subnets based on the OpenShift Container Platform install configuration and the Cluster Network Operator configuration. Indirectly, this is a way to accurately detect external traffic: flows that are not labeled for those subnets are external to the cluster. Enabled by default on OpenShift Container Platform. |
+Required
+- `enable`
+
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>collectionMode</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p><code>collectionMode</code> determines how the FlowCollectorSlice custom resources impacts the flow collection process:<br />
+</p>
+<p>- When set to <code>AlwaysCollect</code>, all flows are collected regardless of the presence of FlowCollectorSlice.<br />
+</p>
+<p>- When set to <code>AllowList</code>, only the flows related to namespaces where a FlowCollectorSlice resource is present, or configured via the global <code>namespacesAllowList</code>, are collected.<br />
+</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>enable</code></p></td>
+<td style="text-align: left;"><p><code>boolean</code></p></td>
+<td style="text-align: left;"><p><code>enable</code> determines if the FlowCollectorSlice feature is enabled. If not, all resources of kind FlowCollectorSlice are simply ignored.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>namespacesAllowList</code></p></td>
+<td style="text-align: left;"><p><code>array (string)</code></p></td>
+<td style="text-align: left;"><p><code>namespacesAllowList</code> is a list of namespaces for which flows are always collected, regardless of the presence of FlowCollectorSlice in those namespaces. An entry enclosed by slashes, such as <code>/openshift-.*/</code>, is matched as a regular expression. This setting is ignored if <code>collectionMode</code> is different from <code>AllowList</code>.</p></td>
+</tr>
+</tbody>
+</table>
+
+## .spec.processor.subnetLabels
+
+Description
+`subnetLabels` allows to define custom labels on subnets and IPs or to enable automatic labeling of recognized subnets in OpenShift Container Platform, which is used to identify cluster external traffic. When a subnet matches the source or destination IP of a flow, a corresponding field is added: `SrcSubnetLabel` or `DstSubnetLabel`.
+
+Type
+`object`
+
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>customLabels</code></p></td>
+<td style="text-align: left;"><p><code>array</code></p></td>
+<td style="text-align: left;"><p><code>customLabels</code> allows you to customize subnets and IPs labeling, such as to identify cluster external workloads or web services. External subnets must be labeled with the prefix <code>EXT:</code>, or not labeled at all, in order to work with default quick filters and some metrics examples provided.<br />
+</p>
+<p>If <code>openShiftAutoDetect</code> is disabled or you are not using OpenShift Container Platform, it is recommended to manually configure labels for the cluster subnets, to distinguish internal traffic from external traffic.<br />
+</p>
+<p>If <code>openShiftAutoDetect</code> is enabled, <code>customLabels</code> overrides the detected subnets when they overlap.<br />
+</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>openShiftAutoDetect</code></p></td>
+<td style="text-align: left;"><p><code>boolean</code></p></td>
+<td style="text-align: left;"><p><code>openShiftAutoDetect</code> allows, when set to <code>true</code>, to detect automatically the machines, pods and services subnets based on the OpenShift Container Platform install configuration and the Cluster Network Operator configuration. Indirectly, this is a way to accurately detect external traffic: flows that are not labeled for those subnets are external to the cluster. Enabled by default on OpenShift Container Platform.</p></td>
+</tr>
+</tbody>
+</table>
 
 ## .spec.processor.subnetLabels.customLabels
 
 Description
-`customLabels` allows to customize subnets and IPs labelling, such as to identify cluster-external workloads or web services. If you enable `openShiftAutoDetect`, `customLabels` can override the detected subnets in case they overlap.
+`customLabels` allows you to customize subnets and IPs labeling, such as to identify cluster external workloads or web services. External subnets must be labeled with the prefix `EXT:`, or not labeled at all, in order to work with default quick filters and some metrics examples provided.
+
+If `openShiftAutoDetect` is disabled or you are not using OpenShift Container Platform, it is recommended to manually configure labels for the cluster subnets, to distinguish internal traffic from external traffic.
+
+If `openShiftAutoDetect` is enabled, `customLabels` overrides the detected subnets when they overlap.
 
 Type
 `array`
@@ -1941,10 +2047,33 @@ Required
 
 - `name`
 
-| Property | Type             | Description                              |
-|----------|------------------|------------------------------------------|
-| `cidrs`  | `array (string)` | List of CIDRs, such as `["1.2.3.4/32"]`. |
-| `name`   | `string`         | Label name, used to flag matching flows. |
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>cidrs</code></p></td>
+<td style="text-align: left;"><p><code>array (string)</code></p></td>
+<td style="text-align: left;"><p>List of CIDRs, such as <code>["1.2.3.4/32"]</code>.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>name</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>Label name, used to flag matching flows. External subnets must be labeled with the prefix <code>EXT:</code>, or not labeled at all, in order to work with default quick filters and some metrics examples provided.<br />
+</p></td>
+</tr>
+</tbody>
+</table>
 
 ## .spec.prometheus
 
@@ -1998,9 +2127,9 @@ Required
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p><code>mode</code> must be set according to the type of Prometheus installation that stores Network Observability metrics:<br />
 </p>
-<p>- Use <code>Auto</code> to try configuring automatically. In OpenShift Container Platform, it uses the Thanos querier from OpenShift Container Platform Cluster Monitoring<br />
+<p>- Use <code>Auto</code> to try configuring automatically. In OpenShift Container Platform, it uses the Thanos querier from OpenShift Container Platform Cluster Monitoring.<br />
 </p>
-<p>- Use <code>Manual</code> for a manual setup<br />
+<p>- Use <code>Manual</code> for a manual setup.<br />
 </p></td>
 </tr>
 <tr class="even">
@@ -2019,11 +2148,72 @@ Prometheus configuration for `Manual` mode.
 Type
 `object`
 
-| Property           | Type      | Description                                                                         |
-|--------------------|-----------|-------------------------------------------------------------------------------------|
-| `forwardUserToken` | `boolean` | Set `true` to forward logged in user token in queries to Prometheus                 |
-| `tls`              | `object`  | TLS client configuration for Prometheus URL.                                        |
-| `url`              | `string`  | `url` is the address of an existing Prometheus service to use for querying metrics. |
+| Property           | Type      | Description                                                                                                                                                                                                                               |
+|--------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `alertManager`     | `object`  | AlertManager configuration. This is used in the console to query silenced alerts, for displaying health information. When used in OpenShift Container Platform it can be left empty to use the Console API instead. \[Unsupported (\*)\]. |
+| `forwardUserToken` | `boolean` | Set `true` to forward logged in user token in queries to Prometheus                                                                                                                                                                       |
+| `tls`              | `object`  | TLS client configuration for Prometheus URL.                                                                                                                                                                                              |
+| `url`              | `string`  | `url` is the address of an existing Prometheus service to use for querying metrics.                                                                                                                                                       |
+
+## .spec.prometheus.querier.manual.alertManager
+
+Description
+AlertManager configuration. This is used in the console to query silenced alerts, for displaying health information. When used in OpenShift Container Platform it can be left empty to use the Console API instead. \[Unsupported (\*)\].
+
+Type
+`object`
+
+| Property | Type     | Description                                                                                     |
+|----------|----------|-------------------------------------------------------------------------------------------------|
+| `tls`    | `object` | TLS client configuration for Prometheus AlertManager URL.                                       |
+| `url`    | `string` | `url` is the address of an existing Prometheus AlertManager service to use for querying alerts. |
+
+## .spec.prometheus.querier.manual.alertManager.tls
+
+Description
+TLS client configuration for Prometheus AlertManager URL.
+
+Type
+`object`
+
+| Property             | Type      | Description                                                                                                                               |
+|----------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| `caCert`             | `object`  | `caCert` defines the reference of the certificate for the Certificate Authority.                                                          |
+| `enable`             | `boolean` | Enable TLS                                                                                                                                |
+| `insecureSkipVerify` | `boolean` | `insecureSkipVerify` allows skipping client-side verification of the server certificate. If set to `true`, the `caCert` field is ignored. |
+| `userCert`           | `object`  | `userCert` defines the user certificate reference and is used for mTLS. When you use one-way TLS, you can ignore this property.           |
+
+## .spec.prometheus.querier.manual.alertManager.tls.caCert
+
+Description
+`caCert` defines the reference of the certificate for the Certificate Authority.
+
+Type
+`object`
+
+| Property    | Type     | Description                                                                                                                                                                                                                                                                  |
+|-------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `certFile`  | `string` | `certFile` defines the path to the certificate file name within the config map or secret.                                                                                                                                                                                    |
+| `certKey`   | `string` | `certKey` defines the path to the certificate private key file name within the config map or secret. Omit when the key is not necessary.                                                                                                                                     |
+| `name`      | `string` | Name of the config map or secret containing certificates.                                                                                                                                                                                                                    |
+| `namespace` | `string` | Namespace of the config map or secret containing certificates. If omitted, the default is to use the same namespace as where Network Observability is deployed. If the namespace is different, the config map or the secret is copied so that it can be mounted as required. |
+| `type`      | `string` | Type for the certificate reference: `configmap` or `secret`.                                                                                                                                                                                                                 |
+
+## .spec.prometheus.querier.manual.alertManager.tls.userCert
+
+Description
+`userCert` defines the user certificate reference and is used for mTLS. When you use one-way TLS, you can ignore this property.
+
+Type
+`object`
+
+| Property    | Type     | Description                                                                                                                                                                                                                                                                  |
+|-------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `certFile`  | `string` | `certFile` defines the path to the certificate file name within the config map or secret.                                                                                                                                                                                    |
+| `certKey`   | `string` | `certKey` defines the path to the certificate private key file name within the config map or secret. Omit when the key is not necessary.                                                                                                                                     |
+| `name`      | `string` | Name of the config map or secret containing certificates.                                                                                                                                                                                                                    |
+| `namespace` | `string` | Namespace of the config map or secret containing certificates. If omitted, the default is to use the same namespace as where Network Observability is deployed. If the namespace is different, the config map or the secret is copied so that it can be mounted as required. |
+| `type`      | `string` | Type for the certificate reference: `configmap` or `secret`.                                                                                                                                                                                                                 |
 
 ## .spec.prometheus.querier.manual.tls
 

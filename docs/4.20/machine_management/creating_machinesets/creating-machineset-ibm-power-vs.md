@@ -1,4 +1,4 @@
-You can create a different compute machine set to serve a specific purpose in your OpenShift Container Platform cluster on IBM Power® Virtual Server. For example, you might create infrastructure machine sets and related machines so that you can move supporting workloads to the new machines.
+Create compute machine sets in your OpenShift Container Platform cluster on IBM Power® Virtual Server to perform specific tasks. For example, you might create infrastructure machine sets and related machines so that you can move supporting workloads to the new machines. Moving supporting workloads to dedicated machines helps ensure that your cluster resources are allocated efficiently.
 
 <div class="important">
 
@@ -16,9 +16,9 @@ $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
 
 # Sample YAML for a compute machine set custom resource on IBM Power Virtual Server
 
-This sample YAML file defines a compute machine set that runs in a specified IBM Power® Virtual Server zone in a region and creates nodes that are labeled with `node-role.kubernetes.io/<role>: ""`.
+You can use the sample YAML file to help automate provisioning and to ensure scaling and scheduling work, as required. The sample YAML file defines a compute machine set that runs in a specified IBM Power® Virtual Server zone in a region and creates nodes that are labeled with `node-role.kubernetes.io/<role>: ""`.
 
-In this sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<role>` is the node label to add.
+In the sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<role>` is the node label to add.
 
 ``` yaml
 apiVersion: machine.openshift.io/v1beta1
@@ -71,19 +71,26 @@ spec:
             name: <role>-user-data
 ```
 
-- The infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI installed, you can obtain the infrastructure ID by running the following command:
+where:
 
-  ``` terminal
-  $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
-  ```
+`<infrastructure_id>`
+Specifies the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI installed, you can obtain the infrastructure ID by running the following command:
 
-- The node label to add.
+``` terminal
+$ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
+```
 
-- The infrastructure ID, node label, and region.
+`<role>`
+Specifies the node label to add.
 
-- The custom Red Hat Enterprise Linux CoreOS (RHCOS) image that was used for cluster installation.
+`<infrastructure_id>-<role>-<region>`
+Specifies the infrastructure ID, node label, and region.
 
-- The infrastructure ID within your region to place machines on.
+`rhcos-<infrastructure_id>`
+Specifies the custom Red Hat Enterprise Linux CoreOS (RHCOS) image that was used for cluster installation.
+
+`<ibm_power_vs_service_instance_id>`
+Specifies the infrastructure ID within your region to place machines on.
 
 # Creating a compute machine set
 

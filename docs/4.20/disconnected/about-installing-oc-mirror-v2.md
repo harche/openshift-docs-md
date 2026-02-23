@@ -1392,7 +1392,9 @@ Use the following table to see what bundle versions are included in different sc
 
 # ImageSet configuration parameters for oc-mirror plugin v2
 
-The oc-mirror plugin v2 requires an image set configuration file that defines what images to mirror. The following table lists the available parameters for the `ImageSetConfiguration` resource.
+The oc-mirror plugin v2 requires an image set configuration file that defines what images to mirror.
+
+The following table lists the available parameters for the \`ImageSetConfiguration resource.
 
 <div class="note">
 
@@ -1595,7 +1597,7 @@ The oc-mirror plugin v2 requires an image set configuration file that defines wh
 <tr class="odd">
 <td style="text-align: left;"><p><code>mirror.operators.packages.channels.name</code></p></td>
 <td style="text-align: left;"><p>The Operator channel name, unique within a package, to include in the image set.</p></td>
-<td style="text-align: left;"><p>String Eample: <code>fast</code> or <code>stable-v4.15</code></p></td>
+<td style="text-align: left;"><p>String Example: <code>fast</code> or <code>stable-v4.15</code></p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>mirror.operators.packages.channels.maxVersion</code></p></td>
@@ -1723,7 +1725,7 @@ The oc-mirror plugin v2 requires an image set configuration file that defines wh
 
 ## DeleteImageSetConfiguration parameters
 
-To use remove images with the oc-mirror plugin v2, you must use a `DeleteImageSetConfiguration.yaml` configuration file that defines which images to delete from the mirror registry. The following table lists the available parameters for the `DeleteImageSetConfiguration` resource.
+To remove images with the oc-mirror plugin v2, you must use a `DeleteImageSetConfiguration.yaml` configuration file that defines which images to delete from the mirror registry. The following table lists the available parameters for the `DeleteImageSetConfiguration` resource.
 
 <table>
 <caption><code>DeleteImageSetConfiguration</code> parameters</caption>

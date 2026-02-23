@@ -1183,11 +1183,13 @@ In addition to the compute machine sets created by the installation program, you
 
 <div class="important">
 
-See Creating infrastructure machine sets for installer-provisioned infrastructure environments or for any cluster where the control plane nodes are managed by the machine API.
+See "Creating infrastructure machine sets" for installer-provisioned infrastructure environments or for any cluster where the control plane nodes are managed by the machine API.
 
 </div>
 
-Requirements of the cluster dictate that infrastructure (infra) nodes, be provisioned. The installation program provisions only control plane and worker nodes. Worker nodes can be designated as infrastructure nodes through labeling. You can then use taints and tolerations to move appropriate workloads to the infrastructure nodes. For more information, see "Moving resources to infrastructure machine sets".
+You can use labels to configure worker nodes as infrastructure nodes, where you can move infrastructure resources.
+
+After you create the infrastructure nodes, you can move appropriate workloads to those nodes by using taints and tolerations.
 
 You can optionally create a default cluster-wide node selector. The default node selector is applied to pods created in all namespaces and creates an intersection with any existing node selectors on a pod, which additionally constrains the pod’s selector.
 
@@ -1233,11 +1235,11 @@ You can alternatively use a project node selector to avoid cluster-wide node sel
         # ...
         ```
 
-        - This example node selector deploys pods on infrastructure nodes by default.
+        This example node selector deploys pods on infrastructure nodes by default.
 
     3.  Save the file to apply the changes.
 
-You can now move infrastructure resources to the new infrastructure nodes. Also, remove any workloads that you do not want, or that do not belong, on the new infrastructure node. See the list of workloads supported for use on infrastructure nodes in "OpenShift Container Platform infrastructure components".
+    You can now move infrastructure resources to the new infrastructure nodes. Also, remove any workloads that you do not want, or that do not belong, on the new infrastructure node. See the list of workloads supported for use on infrastructure nodes in "OpenShift Container Platform infrastructure components".
 
 - For information on how to configure project node selectors to avoid cluster-wide node selector key conflicts, see [Project node selectors](../nodes/scheduling/nodes-scheduler-node-selectors.xml#project-node-selectors_nodes-scheduler-node-selectors).
 

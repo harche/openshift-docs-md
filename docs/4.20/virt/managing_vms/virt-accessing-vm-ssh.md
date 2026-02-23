@@ -314,11 +314,11 @@ The key is added to the VM as a cloud-init data source. This method separates th
       key: c3NoLXJzYSB...
     ```
 
-    - Specify the `cloudInitNoCloud` data source.
+    - `spec.template.spec.volumes.cloudInitNoCloud` specifies the `cloudInitNoCloud` data source.
 
-    - Specify the `Secret` object name.
+    - `spec.template.spec.accessCredentials.sshPublicKey.source.secret.secretName` specifies the `Secret` object name.
 
-    - Paste the public SSH key.
+    - `data.key` specifies the public SSH key.
 
 2.  Create the `VirtualMachine` and `Secret` objects by running the following command:
 

@@ -24,9 +24,9 @@ To create a cluster with multi-architecture compute machines with different inst
 
 | Documentation section                                                                                                                                                                                                                                                              | Platform                  | User-provisioned installation | Installer-provisioned installation | Control Plane         | Compute node        |
 |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------|-------------------------------|------------------------------------|-----------------------|---------------------|
-| [Creating a cluster with multi-architecture compute machines on Azure](../../post_installation_configuration/configuring-multi-arch-compute-machines/creating-multi-arch-compute-nodes-azure.xml#creating-multi-arch-compute-nodes-azure)                                          | Microsoft Azure           | ✓                             | ✓                                  | `aarch64` or `x86_64` | `aarch64`, `x86_64` |
-| [Creating a cluster with multi-architecture compute machines on AWS](../../post_installation_configuration/configuring-multi-arch-compute-machines/creating-multi-arch-compute-nodes-aws.xml#creating-multi-arch-compute-nodes-aws)                                                | Amazon Web Services (AWS) | ✓                             | ✓                                  | `aarch64` or `x86_64` | `aarch64`, `x86_64` |
-| [Creating a cluster with multi-architecture compute machines on Google Cloud](../../post_installation_configuration/configuring-multi-arch-compute-machines/creating-multi-arch-compute-nodes-gcp.xml#creating-multi-arch-compute-nodes-gcp)                                       | Google Cloud              |                               | ✓                                  | `aarch64` or `x86_64` | `aarch64`, `x86_64` |
+| ../../post_installation_configuration/configuring-multi-arch-compute-machines/creating-multi-arch-compute-nodes-azure.adoc#creating-multi-arch-compute-nodes-azure\[Creating a cluster with multi-architecture compute machines on Azure\]                                         | Microsoft Azure           | ✓                             | ✓                                  | `aarch64` or `x86_64` | `aarch64`, `x86_64` |
+| ../../post_installation_configuration/configuring-multi-arch-compute-machines/creating-multi-arch-compute-nodes-aws.adoc#creating-multi-arch-compute-nodes-aws\[Creating a cluster with multi-architecture compute machines on AWS\]                                               | Amazon Web Services (AWS) | ✓                             | ✓                                  | `aarch64` or `x86_64` | `aarch64`, `x86_64` |
+| ../../post_installation_configuration/configuring-multi-arch-compute-machines/creating-multi-arch-compute-nodes-gcp.adoc#creating-multi-arch-compute-nodes-gcp\[Creating a cluster with multi-architecture compute machines on Google Cloud\]                                      | Google Cloud              |                               | ✓                                  | `aarch64` or `x86_64` | `aarch64`, `x86_64` |
 | [Creating a cluster with multi-architecture compute machines on bare metal, IBM Power, or IBM Z](../../post_installation_configuration/configuring-multi-arch-compute-machines/creating-multi-arch-compute-nodes-bare-metal.xml#creating-multi-arch-compute-nodes-bare-metal)      | Bare metal                | ✓                             | ✓                                  | `aarch64` or `x86_64` | `aarch64`, `x86_64` |
 | IBM Power                                                                                                                                                                                                                                                                          | ✓                         |                               | `x86_64` or `ppc64le`              | `x86_64`, `ppc64le`   |                     |
 | IBM Z                                                                                                                                                                                                                                                                              | ✓                         |                               | `x86_64` or `s390x`                | `x86_64`, `s390x`     |                     |
@@ -41,3 +41,48 @@ Cluster with multi-architecture compute machine installation options
 Autoscaling from zero is currently not supported on Google Cloud.
 
 </div>
+
+# Verifying cluster compatibility
+
+Before you can start adding compute nodes of different architectures to your cluster, you must verify that your cluster is multi-architecture compatible.
+
+- You installed the OpenShift CLI (`oc`).
+
+- IBM Power only: Ensure that you meet the following prerequisites:
+
+  - When using multiple architectures, hosts for OpenShift Container Platform nodes must share the same storage layer. If they do not have the same storage layer, use a storage provider such as `nfs-provisioner`.
+
+  - You should limit the number of network hops between the compute and control plane as much as possible.
+
+1.  Log in to the OpenShift CLI (`oc`).
+
+2.  You can check that your cluster uses the architecture payload by running the following command:
+
+    ``` terminal
+    $ oc adm release info -o jsonpath="{ .metadata.metadata}"
+    ```
+
+- If you see the following output, your cluster is using the multi-architecture payload:
+
+  ``` terminal
+  {
+   "release.openshift.io/architecture": "multi",
+   "url": "https://access.redhat.com/errata/<errata_version>"
+  }
+  ```
+
+  You can then begin adding multi-arch compute nodes to your cluster.
+
+- If you see the following output, your cluster is not using the multi-architecture payload:
+
+  ``` terminal
+  {
+   "url": "https://access.redhat.com/errata/<errata_version>"
+  }
+  ```
+
+  <div class="important">
+
+  To migrate your cluster so the cluster supports multi-architecture compute machines, follow the procedure in [Migrating to a cluster with multi-architecture compute machines](../../updating/updating_a_cluster/migrating-to-multi-payload.xml#migrating-to-multi-payload).
+
+  </div>
