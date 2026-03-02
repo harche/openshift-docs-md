@@ -10,7 +10,7 @@ When writing your applications, follow the general recommendations described in 
 
 </div>
 
-- [Creating a performance profile](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-create-performance-profiles)
+- [Creating a performance profile](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-create-performance-profiles_cnf-tuning-low-latency-nodes-with-perf-profile)
 
 # Scheduling a low latency workload onto a compute node
 
@@ -455,7 +455,7 @@ Configuration for high priority workloads
 
 2.  Restart the pods to apply the annotation.
 
-- [Configuring power saving for nodes that run colocated high and low priority workloads](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-configuring-power-saving-for-nodes_cnf-low-latency-perf-profile)
+- [Configuring power saving for nodes that run colocated high and low priority workloads](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-configuring-power-saving-for-nodes_cnf-tuning-low-latency-nodes-with-perf-profile)
 
 # Disabling CPU CFS quota
 
@@ -577,4 +577,4 @@ When using the `housekeeping` value, the CPUs designated for housekeeping handle
 
     The output is a hexadecimal bitmask representing the CPUs excluded from IRQ handling.
 
-- [Managing device interrupt processing for guaranteed pod isolated CPUs](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#managing-device-interrupt-processing-for-guaranteed-pod-isolated-cpus_cnf-low-latency-perf-profile)
+- [Managing device interrupt processing for guaranteed pod isolated CPUs](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#managing-device-interrupt-processing-for-guaranteed-pod-isolated-cpus_cnf-tuning-low-latency-nodes-with-perf-profile)

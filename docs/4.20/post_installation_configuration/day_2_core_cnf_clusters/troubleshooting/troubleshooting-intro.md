@@ -24,7 +24,7 @@ To identify issues with your deployment, you can use the debugging tool or check
 
 ## About the Red Hat Knowledgebase
 
-The [Red Hat Knowledgebase](https://access.redhat.com/knowledgebase) provides rich content aimed at helping you make the most of Red Hat’s products and technologies. The Red Hat Knowledgebase consists of articles, product documentation, and videos outlining best practices on installing, configuring, and using Red Hat products. In addition, you can search for solutions to known issues, each providing concise root cause descriptions and remedial steps.
+The [Red Hat Knowledgebase](https://access.redhat.com/knowledgebase) provides rich content aimed at helping you make the most of Red Hat’s products and technologies. The Red Hat Knowledgebase consists of articles, product documentation, and videos outlining best practices on installing, configuring, and using Red Hat products. In addition, you can search for solutions to known issues, each providing concise root cause descriptions and remedial steps.
 
 ## Searching the Red Hat Knowledgebase
 

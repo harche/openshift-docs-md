@@ -1,11 +1,5 @@
 You can use the Run Once Duration Override Operator to specify a maximum time limit that run-once pods can be active for. By enabling the run-once duration override on a namespace, all future run-once pods created or updated in that namespace have their `activeDeadlineSeconds` field set to the value specified by the Run Once Duration Override Operator.
 
-<div class="important">
-
-The Run Once Duration Override Operator is not currently available for OpenShift Container Platform 4.17. The Operator is planned to be released in the near future.
-
-</div>
-
 <div class="note">
 
 If both the run-once pod and the Run Once Duration Override Operator have their `activeDeadlineSeconds` value set, the lower of the two values is used.

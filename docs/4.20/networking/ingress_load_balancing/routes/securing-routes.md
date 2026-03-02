@@ -94,13 +94,7 @@ To allow unencrypted connections or troubleshoot access issues, disable HTTP Str
 
   <div class="tip">
 
-  You can alternatively apply the following YAML to create the config map:
-
-  <div class="formalpara-title">
-
-  **Example of disabling HSTS per-route**
-
-  </div>
+  You can alternatively apply the following YAML to create the config map for disabling HSTS per-route:
 
   ``` yaml
   kind: Route

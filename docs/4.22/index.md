@@ -219,7 +219,7 @@
   - [Installing a cluster on IBM Power in a disconnected environment](installing/installing_ibm_power/installing-restricted-networks-ibm-power.md)
   - [Installation configuration parameters for IBM Power](installing/installing_ibm_power/installation-config-parameters-ibm-power.md)
 - **Installing on IBM PowerVC**
-  - [Preparing to install on IBM PowerVC](installing/installing_ibm_powervc/preparing-to-install-on-ibm-powervc.md)
+  - [Installation methods](installing/installing_ibm_powervc/installation-methods-ibm-powervc.md)
   - [Installing a cluster on IBM PowerVC with customizations](installing/installing_ibm_powervc/installing-ibm-powervc-installer-custom.md)
   - [Installation configuration parameters for IBM PowerVC](installing/installing_ibm_powervc/installation-config-parameters-ibm-powervc.md)
   - [Uninstalling a cluster on IBM PowerVC](installing/installing_ibm_powervc/uninstalling-cluster-powervc.md)
@@ -521,6 +521,7 @@
   - [Managing seccomp profiles](security/security_profiles_operator/spo-seccomp.md)
   - [Managing SELinux profiles](security/security_profiles_operator/spo-selinux.md)
   - [Advanced Security Profiles Operator tasks](security/security_profiles_operator/spo-advanced.md)
+  - [Advanced Audit Logging Framework](security/security_profiles_operator/spo-logging.md)
   - [Troubleshooting the Security Profiles Operator](security/security_profiles_operator/spo-troubleshooting.md)
   - [Uninstalling the Security Profiles Operator](security/security_profiles_operator/spo-uninstalling.md)
 - **NBDE Tang Server Operator**

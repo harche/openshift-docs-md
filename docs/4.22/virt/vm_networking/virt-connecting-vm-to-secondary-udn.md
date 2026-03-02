@@ -40,15 +40,15 @@ You can create a secondary cluster-scoped user-defined-network (CUDN) for the lo
             state: present
     ```
 
-    - The name of the configuration object.
+    - `metadata.name` specifies the name of the configuration object.
 
-    - Specifies the nodes to which the node network configuration policy is applied. The recommended node selector value is `node-role.kubernetes.io/worker: ''`.
+    - `spec.nodeSelector` specifies the nodes to which the node network configuration policy is applied. The recommended node selector value is `node-role.kubernetes.io/worker: ''`.
 
-    - The name of the additional network from which traffic is forwarded to the OVS bridge. This attribute must match the value of the `spec.network.localnet.physicalNetworkName` field of the `ClusterUserDefinedNetwork` object that defines the OVN-Kubernetes additional network. This example uses the name `localnet1`.
+    - `spec.desiredState.ovn.bridge-mappings.localnet` specifies the name of the additional network from which traffic is forwarded to the OVS bridge. This attribute must match the value of the `spec.network.localnet.physicalNetworkName` field of the `ClusterUserDefinedNetwork` object that defines the OVN-Kubernetes additional network. This example uses the name `localnet1`.
 
-    - The name of the OVS bridge on the node. This value is required if the `state` attribute is `present` or not specified.
+    - `spec.desiredState.ovn.bridge-mappings.bridge` specifies name of the OVS bridge on the node. This value is required if the `state` attribute is `present` or not specified.
 
-    - The state of the mapping. Must be either `present` to add the mapping or `absent` to remove the mapping. The default value is `present`.
+    - `spec.desiredState.ovn.bridge-mappings.state` specifies the state of the mapping. Must be either `present` to add the mapping or `absent` to remove the mapping. The default value is `present`.
 
       <div class="important">
 
@@ -64,7 +64,7 @@ You can create a secondary cluster-scoped user-defined-network (CUDN) for the lo
 
     where:
 
-    \<filename\>
+    `<filename>`
     Specifies the name of your `NodeNetworkConfigurationPolicy` manifest YAML file.
 
 3.  Create a `ClusterUserDefinedNetwork` object to create a localnet secondary network.
@@ -92,21 +92,21 @@ You can create a secondary cluster-scoped user-defined-network (CUDN) for the lo
     # ...
     ```
 
-    - The name of the `ClusterUserDefinedNetwork` custom resource.
+    - `metadata.name` specifies the name of the `ClusterUserDefinedNetwork` custom resource.
 
-    - The set of namespaces that the cluster UDN applies to. The namespace selector must not point to the following values: `default`; an `openshift-*` namespace; or any global namespaces that are defined by the Cluster Network Operator (CNO).
+    - `spec.namespaceSelector` specifies a set of namespaces that the cluster UDN applies to. The namespace selector must not point to the following values: `default`; an `openshift-*` namespace; or any global namespaces that are defined by the Cluster Network Operator (CNO).
 
-    - The type of selector. In this example, the `matchExpressions` selector selects objects that have the label `kubernetes.io/metadata.name` with the value `red` or `blue`.
+    - `spec.namespaceSelector.matchExpressions` specifies the type of selector. In this example, the `matchExpressions` selector selects objects that have the label `kubernetes.io/metadata.name` with the value `red` or `blue`.
 
-    - The type of operator. Possible values are `In`, `NotIn`, and `Exists`.
+    - `spec.namespaceSelector.matchExpressions.operator` specifies the type of operator. Possible values are `In`, `NotIn`, and `Exists`.
 
-    - The topological configuration of the network. A `Localnet` topology connects the logical network to the physical underlay.
+    - `spec.network.topology` specifies the topological configuration of the network. A `Localnet` topology connects the logical network to the physical underlay.
 
-    - Specifies whether the UDN is primary or secondary. The required value is `Secondary` for `topology: Localnet`.
+    - `spec.network.localnet.role` specifies whether the UDN is primary or secondary. The required value is `Secondary` for `topology: Localnet`.
 
-    - The name of the OVN-Kubernetes bridge mapping that is configured on the node. This value must match the `spec.desiredState.ovn.bridge-mappings.localnet` field in the `NodeNetworkConfigurationPolicy` manifest that you previously created. This ensures that you are bridging to the intended segment of your physical network.
+    - `spec.network.localnet.physicalNetworkName` specifies the name of the OVN-Kubernetes bridge mapping that is configured on the node. This value must match the `spec.desiredState.ovn.bridge-mappings.localnet` field in the `NodeNetworkConfigurationPolicy` manifest that you previously created. This ensures that you are bridging to the intended segment of your physical network.
 
-    - Specifies whether IP address management (IPAM) is enabled or disabled. The required value is `Disabled`. OpenShift Virtualization does not support configuring IPAM for virtual machines.
+    - `spec.network.localnet.ipam.mode` specifies whether IP address management (IPAM) is enabled or disabled. The required value is `Disabled`. OpenShift Virtualization does not support configuring IPAM for virtual machines.
 
 4.  Apply the `ClusterUserDefinedNetwork` manifest by running the following command:
 
@@ -116,7 +116,7 @@ You can create a secondary cluster-scoped user-defined-network (CUDN) for the lo
 
     where:
 
-    \<filename\>
+    `<filename>`
     Specifies the name of your `ClusterUserDefinedNetwork` manifest YAML file.
 
 # Creating a namespace for secondary user-defined networks by using the CLI
@@ -145,7 +145,7 @@ You can create a namespace to be used with an existing secondary cluster-scoped 
 
     where:
 
-    \<filename\>
+    `<filename>`
     Specifies the name of your `Namespace` manifest YAML file.
 
 # Attaching a virtual machine to secondary user-defined networks by using the CLI
@@ -181,19 +181,13 @@ You can connect a virtual machine (VM) to multiple secondary cluster-scoped user
               networkName: <localnet_cudn_name>
     ```
 
-    where:
+    - `metadata.namespace` specifies the namespace in which the VM is located. This value must match a namespace that is associated with the secondary CUDN.
 
-    `metadata.namespace`
-    Specifies the namespace in which the VM is located. This value must match a namespace that is associated with the secondary CUDN.
+    - `spec.template.spec.domain.devices.interfaces.name` specifies the name of the secondary user-defined network interface.
 
-    `spec.template.spec.domain.devices.interfaces.name`
-    Specifies the name of the secondary user-defined network interface.
+    - `spec.template.spec.networks.name` specifies the name of the network. This value must match the value of the `spec.template.spec.domain.devices.interfaces.name` field.
 
-    `spec.template.spec.networks.name`
-    Specifies the name of the network. This value must match the value of the `spec.template.spec.domain.devices.interfaces.name` field.
-
-    `spec.template.spec.networks.multus.networkName`
-    Specifies the name of the localnet `ClusterUserDefinedNetwork` object that you previously created.
+    - `spec.template.spec.networks.multus.networkName` specifies the name of the localnet `ClusterUserDefinedNetwork` object that you previously created.
 
 2.  Apply the `VirtualMachine` manifest by running the following command:
 
@@ -203,7 +197,7 @@ You can connect a virtual machine (VM) to multiple secondary cluster-scoped user
 
     where:
 
-    \<filename\>
+    `<filename>`
     Specifies the name of your `VirtualMachine` manifest YAML file.
 
     <div class="note">

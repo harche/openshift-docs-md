@@ -476,7 +476,7 @@ The following common prerequisites apply to configuring all three power states.
 
 <!-- -->
 
-- [Configuring node power consumption and realtime processing with workload hints](../../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#configuring-workload-hints_cnf-low-latency-perf-profile)
+- [Configuring node power consumption and realtime processing with workload hints](../../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#configuring-workload-hints_cnf-tuning-low-latency-nodes-with-perf-profile)
 
 ## Configuring performance mode using PolicyGenTemplate CRs
 
@@ -593,7 +593,7 @@ The power saving mode balances reduced power consumption with increased latency.
 
 <!-- -->
 
-- [Configuring power saving for nodes that run colocated high and low priority workloads](../../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-configuring-power-saving-for-nodes_cnf-low-latency-perf-profile)
+- [Configuring power saving for nodes that run colocated high and low priority workloads](../../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-configuring-power-saving-for-nodes_cnf-tuning-low-latency-nodes-with-perf-profile)
 
 - [Configuring host firmware for low latency and high performance](../../edge_computing/ztp-reference-cluster-configuration-for-vdu.xml#ztp-du-configuring-host-firmware-requirements_sno-configure-for-vdu)
 

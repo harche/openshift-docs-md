@@ -219,7 +219,7 @@
   - [Installing a cluster on IBM Power in a disconnected environment](installing/installing_ibm_power/installing-restricted-networks-ibm-power.md)
   - [Installation configuration parameters for IBM Power](installing/installing_ibm_power/installation-config-parameters-ibm-power.md)
 - **Installing on IBM PowerVC**
-  - [Preparing to install on IBM PowerVC](installing/installing_ibm_powervc/preparing-to-install-on-ibm-powervc.md)
+  - [Installation methods](installing/installing_ibm_powervc/installation-methods-ibm-powervc.md)
   - [Installing a cluster on IBM PowerVC with customizations](installing/installing_ibm_powervc/installing-ibm-powervc-installer-custom.md)
   - [Installation configuration parameters for IBM PowerVC](installing/installing_ibm_powervc/installation-config-parameters-ibm-powervc.md)
   - [Uninstalling a cluster on IBM PowerVC](installing/installing_ibm_powervc/uninstalling-cluster-powervc.md)
@@ -521,6 +521,7 @@
   - [Managing seccomp profiles](security/security_profiles_operator/spo-seccomp.md)
   - [Managing SELinux profiles](security/security_profiles_operator/spo-selinux.md)
   - [Advanced Security Profiles Operator tasks](security/security_profiles_operator/spo-advanced.md)
+  - [Advanced Audit Logging Framework](security/security_profiles_operator/spo-logging.md)
   - [Troubleshooting the Security Profiles Operator](security/security_profiles_operator/spo-troubleshooting.md)
   - [Uninstalling the Security Profiles Operator](security/security_profiles_operator/spo-uninstalling.md)
 - **NBDE Tang Server Operator**
@@ -1288,26 +1289,7 @@
   - [Upgrading the Distributed Tracing Platform](observability/distr_tracing/distr-tracing-tempo-updating.md)
   - [Removing the Distributed Tracing Platform](observability/distr_tracing/distr-tracing-tempo-removing.md)
 - **Red Hat build of OpenTelemetry**
-  - [Release notes for the Red Hat build of OpenTelemetry](observability/otel/otel-rn.md)
   - [About the Red Hat build of OpenTelemetry](observability/otel/otel-architecture.md)
-  - [Installing the Red Hat build of OpenTelemetry](observability/otel/otel-installing.md)
-  - **Configuring the Collector**
-    - [Collector options](observability/otel/otel-collector/otel-collector-configuration-intro.md)
-    - [Receivers](observability/otel/otel-collector/otel-collector-receivers.md)
-    - [Processors](observability/otel/otel-collector/otel-collector-processors.md)
-    - [Exporters](observability/otel/otel-collector/otel-collector-exporters.md)
-    - [Connectors](observability/otel/otel-collector/otel-collector-connectors.md)
-    - [Extensions](observability/otel/otel-collector/otel-collector-extensions.md)
-  - [Configuring the instrumentation](observability/otel/otel-configuration-of-instrumentation.md)
-  - [Sending traces, logs, and metrics to the Collector](observability/otel/otel-sending-traces-logs-and-metrics-to-otel-collector.md)
-  - [Configuring metrics for the monitoring stack](observability/otel/otel-configuring-metrics-for-monitoring-stack.md)
-  - [Forwarding telemetry data](observability/otel/otel-forwarding-telemetry-data.md)
-  - [Configuring the Collector metrics](observability/otel/otel-configuring-otelcol-metrics.md)
-  - [Receiving telemetry data](observability/otel/otel-receiving-telemetry-data.md)
-  - [Troubleshooting the Red Hat build of OpenTelemetry](observability/otel/otel-troubleshooting.md)
-  - [Migrating to the Red Hat build of OpenTelemetry](observability/otel/otel-migrating.md)
-  - [Upgrading the Red Hat build of OpenTelemetry](observability/otel/otel-updating.md)
-  - [Removing the Red Hat build of OpenTelemetry](observability/otel/otel-removing.md)
 - **Network Observability**
   - [Network Observability Operator release notes](observability/network_observability/network-observability-operator-release-notes.md)
   - **Network Observability Operator release notes archive**

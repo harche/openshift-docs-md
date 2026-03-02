@@ -146,34 +146,7 @@ Because the boot image management feature for worker nodes is default for the Go
 
 Enabling the feature updates the boot image to the Red Hat Enterprise Linux CoreOS (RHCOS) boot image version appropriate for your cluster. If the cluster is again updated to a new OpenShift Container Platform version in the future, the boot image is updated again. New nodes created after enabling the feature use the updated boot image. This feature has no effect on existing nodes.
 
-- If you are enabling boot image management for control plane machine sets, you enabled the required Technology Preview features for your cluster by editing the `FeatureGate` CR named `cluster`:
-
-  ``` terminal
-  $ oc edit featuregate cluster
-  ```
-
-  <div class="formalpara-title">
-
-  **Example `FeatureGate` CR**
-
-  </div>
-
-  ``` yaml
-  apiVersion: config.openshift.io/v1
-  kind: FeatureGate
-  metadata:
-    name: cluster
-  spec:
-    featureSet: TechPreviewNoUpgrade
-  ```
-
-  - Enables the required `ManagedBootImagesCPMS` feature gate.
-
-    <div class="warning">
-
-    Do not enable this feature set on production clusters. Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. This feature set allows you to enable these Technology Preview features on test clusters, where you can fully test them. Do not enable this feature set on production clusters.
-
-    </div>
+- If you are enabling boot image management for control plane machine sets, you enabled the required Technology Preview features for your cluster by editing the `FeatureGate` CR named `cluster`.
 
 1.  Edit the `MachineConfiguration` object, named `cluster`, by using the following command:
 

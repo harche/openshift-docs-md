@@ -97,7 +97,7 @@ As a cluster administrator, you can install the Operator using the CLI.
 
 # Installing the eBPF Manager Operator using the web console
 
-As a cluster administrator, you can install the eBPF Manager Operator using the web console.
+To manage eBPF programs across your cluster nodes, you can install the eBPF Manager Operator by using the OpenShift Container Platform web console. You can use the eBPF Manager Operator to enable node-level networking and observability tools through the OperatorHub interface.
 
 - You have installed the OpenShift CLI (`oc`).
 

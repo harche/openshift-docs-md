@@ -29,7 +29,7 @@ When a secondary network is removed from the cluster, it is not removed from any
 
     where:
 
-    `additionalNetworks`
+    `spec.additionalNetworks`
     Specifies the secondary network attachment definition that you want to remove from the `additionalNetworks` collection. If you are removing the configuration mapping for the only secondary network attachment definition in the `additionalNetworks` collection, you must specify an empty collection.
 
 3.  Remove the `NetworkAttachmentDefinition` CR from the network of your cluster by entering the following command:

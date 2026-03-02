@@ -120,9 +120,9 @@ The following table compares rule modes based on the expected outcome:
 
 Health rules in the Network Observability Operator are defined using rule templates and variants in the `spec.processor.metrics.healthRules` object of the `FlowCollector` custom resource (CR). You can customize the default templates and variants for flexible, fine-grained alerting.
 
-For each template, you can define a list of variants, each with their own thresholds and grouping configurations. For more information, see the "List of default alert templates".
+For each template, you can define a list of variants, each with their own thresholds and grouping configurations. For more information, see "List of default alert templates".
 
-Here is an example:
+The following example shows an alert:
 
 ``` yaml
 apiVersion: flows.netobserv.io/v1beta1
@@ -280,8 +280,8 @@ The `netobserv_io_network_health` annotation is a JSON string consisting of the 
 |-------------------|-----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `namespaceLabels` | List of strings | One or more labels that hold namespaces. When provided, the alert appears under the **Namespaces** tab.                                                              |
 | `nodeLabels`      | List of strings | One or more labels that hold node names. When provided, the alert appears under the **Nodes** tab.                                                                   |
-| `workloadLabels`: | List of strings | One or more labels that hold owner/workload names. When provided alongside with `kindLabels`, the alert will show up under the "Owners" tab.                         |
-| `kindLabels`:     | List of strings | One or more labels that hold owner/workload kinds. When provided alongside with `workloadLabels`, the alert will show up under the "Owners" tab.                     |
+| `workloadLabels`  | List of strings | One or more labels that hold owner/workload names. When provided alongside with `kindLabels`, the alert will show up under the "Owners" tab.                         |
+| `kindLabels`      | List of strings | One or more labels that hold owner/workload kinds. When provided alongside with `workloadLabels`, the alert will show up under the "Owners" tab.                     |
 | `threshold`       | String          | The alert threshold, expected to match the threshold defined in the `PromQL` expression.                                                                             |
 | `unit`            | String          | The data unit, used only for display purposes.                                                                                                                       |
 | `upperBound`      | String          | An upper bound value used to compute the score on a closed scale. Metric values exceeding this bound are clamped.                                                    |
@@ -290,6 +290,8 @@ The `netobserv_io_network_health` annotation is a JSON string consisting of the 
 
 Fields for the netobserv_io_network_health annotation
 
+The `namespaceLabels` and `nodeLabels` are mutually exclusive. If neither is provided, the alert appears under the **Global** tab.
+
 | Field               | Description                                                                                                |
 |---------------------|------------------------------------------------------------------------------------------------------------|
 | `extraFilter`       | Additional filter to inject (for example, a DNS response code for DNS-related alerts).                     |
@@ -297,8 +299,6 @@ Fields for the netobserv_io_network_health annotation
 | `filterDestination` | Whether the filter should target the destination of the traffic instead of the source (`true` or `false`). |
 
 `trafficLink` fields
-
-The `namespaceLabels` and `nodeLabels` are mutually exclusive. If neither is provided, the alert appears under the **Global** tab.
 
 ## Custom health rule configuration
 
@@ -334,9 +334,11 @@ Use the Prometheus Query Language (`PromQL`) to define a custom `AlertingRule` r
 
 # Disable predefined rules
 
-Rule templates can be disabled in the `spec.processor.metrics.disableAlerts` field of the `FlowCollector` custom resource (CR). This setting accepts a list of rule template names. For a list of alert template names, see: "List of default rules".
+Rule templates can be disabled in the `spec.processor.metrics.disableAlerts` field of the `FlowCollector` custom resource (CR). This setting accepts a list of rule template names. For a list of alert template names, see "List of default rules".
 
 If a template is disabled and overridden in the `spec.processor.metrics.healthRules` field, the disable setting takes precedence and the alert rule is not created.
+
+# Additional resources
 
 - [List of default rules](../../observability/network_observability/network-observability-health-rules.xml#network-observability-default-rules_network-observability-health-rules)
 

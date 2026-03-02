@@ -1,8 +1,12 @@
+To learn how to implement a route reflection setup on bare-metal infrastructure, you can follow this sample configuration. This example demonstrates how to enable the necessary feature gates and configure objects to advertise pod and egress IP routes.
+
 As a cluster administrator, you can configure the following example route advertisements setup for your cluster. This configuration is intended as a sample that demonstrates how to configure route advertisements.
 
 # Sample route advertisements setup
 
-As a cluster administrator, you can enable Border Gateway Protocol (BGP) routing support for your cluster. This configuration is intended as a sample that demonstrates how to configure route advertisements. The configuration uses route reflection rather than a full mesh setup.
+You can implement Border Gateway Protocol (BGP) routing by using a sample configuration to set up route advertisements for your cluster. This configuration demonstrates how to configure route reflection on bare-metal infrastructure to share pod and egress IP routes.
+
+As a cluster administrator, you can enable Border Gateway Protocol (BGP) routing support for your cluster. The configuration uses route reflection rather than a full mesh setup.
 
 <div class="note">
 

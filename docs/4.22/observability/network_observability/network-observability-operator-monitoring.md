@@ -132,22 +132,20 @@ Increasing the `cacheMaxFlows` might increase the memory usage of the eBPF agent
 
 4.  Increase the `spec.agent.ebpf.cacheMaxFlows` value, as shown in the following YAML sample:
 
-<!-- -->
-
+    ``` yaml
     apiVersion: flows.netobserv.io/v1beta2
     kind: FlowCollector
     metadata:
       name: cluster
     spec:
       namespace: netobserv
-      deploymentModel: Direct
+      deploymentModel: Service
       agent:
         type: eBPF
         ebpf:
           cacheMaxFlows: 200000
+    ```
 
-- Increase the `cacheMaxFlows` value from its value at the time of the `NetObservAgentFlowsDropped` alert.
-
-<!-- -->
+    - Increase the `cacheMaxFlows` value from its value at the time of the `NetObservAgentFlowsDropped` alert.
 
 - [Creating alerting rules for user-defined projects](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/managing_alerts/managing-alerts-as-a-developer#creating-alerting-rules-for-user-defined-projects_managing-alerts-as-a-developer)

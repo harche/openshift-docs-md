@@ -335,7 +335,7 @@ Configure a priority expander to control which machine set expands when the clus
 
 ## Labeling GPU machine sets for the cluster autoscaler
 
-You can use a machine set label to indicate which machines the cluster autoscaler can use to deploy GPU-enabled nodes.
+Label your machine sets to indicate which machines the cluster autoscaler can use for GPU-enabled nodes. Applying the accelerator label helps ensure that the autoscaler deploys the correct resources for your GPU workloads.
 
 - Your cluster uses a cluster autoscaler.
 
@@ -358,7 +358,7 @@ You can use a machine set label to indicate which machines the cluster autoscale
 
   where:
 
-  \<accelerator_name\>
+  `<accelerator_name>`
   Specifies a label of your choice that consists of alphanumeric characters, `-`, `_`, or `.` and starts and ends with an alphanumeric character. For example, you might use `nvidia-t4` to represent Nvidia T4 GPUs, or `nvidia-a10g` for A10G GPUs.
 
   <div class="note">

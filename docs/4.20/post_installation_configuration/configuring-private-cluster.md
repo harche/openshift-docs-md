@@ -166,62 +166,85 @@ After you deploy a cluster, you can modify its Ingress Controller to use only a 
 
     The public DNS entry is removed, and the private zone entry is updated.
 
-# Restricting the API server to private
+# Restricting the API server to private for an Amazon Web Services cluster
 
-After you deploy a cluster to Amazon Web Services (AWS) or Microsoft Azure, you can reconfigure the API server to use only the private zone.
+If the security posture of your organization does not allow clusters to use an open API endpoint, you can restrict the API server to use only internal load balancers. To implement this API server restriction, use the Amazon Web Services (AWS) console and OpenShift CLI (`oc`) to delete the external load balancer components.
 
-- Install the OpenShift CLI (`oc`).
+<div class="important">
 
-- Have access to the web console as a user with `admin` privileges.
+The OpenShift CLI (`oc`) steps that remove the external load balancers require the Machine API. For clusters that cannot use the Machine API, you must manually remove the external load balancers.
 
-1.  In the web portal or console for your cloud provider, take the following actions:
+Clusters with the infrastructure platform type `none` cannot use the Machine API. To view the platform type for your cluster, run the following command:
 
-    1.  Locate and delete the appropriate load balancer component:
+``` terminal
+$ oc get infrastructure cluster -o jsonpath='{.status.platform}'
+```
 
-        - AWS clusters: Delete the external load balancer. The API DNS entry in the private zone already points to the internal load balancer, which uses an identical configuration, so you do not need to modify the internal load balancer.
+</div>
 
-        - Azure: Delete the following resources:
+- You have installed an OpenShift Container Platform cluster on AWS.
 
-          - The `api-v4` rule for the public load balancer.
+- You have access to the AWS console as a user with administrator privileges.
 
-          - The `frontendIPConfiguration` parameter that is associated with the `api-v4` rule for the public load balancer.
+- You have access to the OpenShift CLI (`oc`) as a user with administrator privileges.
 
-          - The public IP that is specified in the `frontendIPConfiguration` parameter.
+1.  Log in to the AWS console as a user with administrator privileges.
 
-    2.  Azure clusters: Configure the Ingress Controller endpoint publishing scope to `Internal`. For more information, see "Configuring the Ingress Controller endpoint publishing scope to Internal".
+2.  Delete the external load balancer.
 
-    3.  Delete the `api.$clustername.$yourdomain` or `api.$clustername` DNS entry in the public zone.
+    <div class="note">
 
-2.  AWS clusters: Remove the external load balancers:
-
-    <div class="important">
-
-    You can run the following steps only for an installer-provisioned infrastructure (IPI) cluster. For a user-provisioned infrastructure (UPI) cluster, you must manually remove or disable the external load balancers.
+    The API DNS entry in the private zone already points to the internal load balancer, which uses an identical configuration, so you do not need to modify the internal load balancer.
 
     </div>
 
-    - If your cluster uses a control plane machine set, delete the lines in the control plane machine set custom resource that configure your public or external load balancer:
+3.  Delete the `api.<cluster_name>.<domain_name>` DNS entry in the public zone.
 
-      ``` yaml
-      # ...
-      providerSpec:
-        value:
-      # ...
-          loadBalancers:
-          - name: lk4pj-ext
-            type: network
-          - name: lk4pj-int
-            type: network
-      # ...
-      ```
+    where `<cluster_name>` is the name of the cluster and `<domain_name>` is the base domain for the cluster.
 
-      - Delete the `name` value for the external load balancer, which ends in `-ext`.
+4.  To remove the external load balancers, log in to the OpenShift CLI (`oc`) as a user with administrator privileges.
 
-      - Delete the `type` value for the external load balancer.
+    - If your cluster uses a control plane machine set, remove the external load balancers by editing the `ControlPlaneMachineSet` custom resource (CR).
+
+      1.  Edit the `ControlPlaneMachineSet` CR by running the following command:
+
+          ``` terminal
+          $ oc edit controlplanemachineset.machine.openshift.io cluster \
+            -n openshift-machine-api
+          ```
+
+      2.  Remove the external load balancers by deleting the corresponding lines in the control plane machine set custom resource (CR).
+
+          In the `spec.template.spec.providerSpec.value.loadBalancers` section of the CR, the `name` value for the external load balancer ends in `-ext`. Delete the line with the external load balancer `name` value and the the line with the external load balancer `type` value that accompanies it.
+
+          ``` yaml
+          apiVersion: machine.openshift.io/v1
+          kind: ControlPlaneMachineSet
+          metadata:
+            name: cluster
+            namespace: openshift-machine-api
+          spec:
+          # ...
+            template:
+          # ...
+                spec:
+                  providerSpec:
+                    value:
+                      loadBalancers:
+                      - name: <cluster_id>-ext
+                        type: network
+                      - name: <cluster_id>-int
+                        type: network
+          # ...
+          ```
+
+      3.  Save your changes and exit the object specification.
+
+          When you save an update to the control plane machine set, the Control Plane Machine Set Operator updates the control plane machines according to your configured update strategy. For more information, see "Updating the control plane configuration".
 
     - If your cluster does not use a control plane machine set, you must delete the external load balancers from each control plane machine.
 
-      1.  From your terminal, list the cluster machines by running the following command:
+      1.  List the cluster machines by running the following command:
 
           ``` terminal
           $ oc get machine -n openshift-machine-api
@@ -233,50 +256,78 @@ After you deploy a cluster to Amazon Web Services (AWS) or Microsoft Azure, you 
 
           </div>
 
-          ``` terminal
-          NAME                            STATE     TYPE        REGION      ZONE         AGE
-          lk4pj-master-0                  running   m4.xlarge   us-east-1   us-east-1a   17m
-          lk4pj-master-1                  running   m4.xlarge   us-east-1   us-east-1b   17m
-          lk4pj-master-2                  running   m4.xlarge   us-east-1   us-east-1a   17m
-          lk4pj-worker-us-east-1a-5fzfj   running   m4.xlarge   us-east-1   us-east-1a   15m
-          lk4pj-worker-us-east-1a-vbghs   running   m4.xlarge   us-east-1   us-east-1a   15m
-          lk4pj-worker-us-east-1b-zgpzg   running   m4.xlarge   us-east-1   us-east-1b   15m
+          ``` text
+          NAME                                        STATE     TYPE        REGION      ZONE         AGE
+          <cluster_id>-master-0                       running   m4.xlarge   us-east-1   us-east-1a   17m
+          <cluster_id>-master-1                       running   m4.xlarge   us-east-1   us-east-1b   17m
+          <cluster_id>-master-2                       running   m4.xlarge   us-east-1   us-east-1a   17m
+          <cluster_id>-worker-us-east-1a-<zone_tag>   running   m4.xlarge   us-east-1   us-east-1a   15m
+          <cluster_id>-worker-us-east-1a-<zone_tag>   running   m4.xlarge   us-east-1   us-east-1a   15m
+          <cluster_id>-worker-us-east-1b-<zone_tag>   running   m4.xlarge   us-east-1   us-east-1b   15m
           ```
 
-          The control plane machines contain `master` in the name.
+          The control plane machines contain the `master` string in their names.
 
       2.  Remove the external load balancer from each control plane machine:
 
           1.  Edit a control plane machine object to by running the following command:
 
               ``` terminal
-              $ oc edit machines -n openshift-machine-api <control_plane_name>
+              $ oc edit machines -n openshift-machine-api <control_plane_machine_name>
               ```
 
-              - Specify the name of the control plane machine object to modify.
+              where `<control_plane_machine_name>` is the name of the control plane machine object to modify.
 
-          2.  Remove the lines that describe the external load balancer, which are marked in the following example:
+          2.  Remove the lines that describe the external load balancer.
+
+              In the `spec.providerSpec.value.loadBalancers` section of the CR, the `name` value for the external load balancer ends in `-ext`. Delete the line with the external load balancer `name` value and the the line with the external load balancer `type` value that accompanies it.
 
               ``` yaml
-              # ...
-              providerSpec:
-                value:
-              # ...
-                  loadBalancers:
-                  - name: lk4pj-ext
-                    type: network
-                  - name: lk4pj-int
-                    type: network
+              apiVersion: machine.openshift.io/v1beta1
+              kind: Machine
+              metadata:
+                name: <control_plane_machine_name>
+                namespace: openshift-machine-api
+              spec:
+                providerSpec:
+                  value:
+                    loadBalancers:
+                    - name: <cluster_id>-ext
+                      type: network
+                    - name: <cluster_id>-int
+                      type: network
               # ...
               ```
-
-              - Delete the `name` value for the external load balancer, which ends in `-ext`.
-
-              - Delete the `type` value for the external load balancer.
 
           3.  Save your changes and exit the object specification.
 
-          4.  Repeat this process for each of the control plane machines.
+          4.  Repeat this process for each control plane machine.
+
+- [Updating the control plane configuration](../machine_management/control_plane_machine_management/cpmso-managing-machines.xml#cpmso-feat-config-update_cpmso-managing-machines)
+
+# Restricting the API server to private for an Microsoft Azure cluster
+
+If the security posture of your organization does not allow clusters to use an open API endpoint, you can restrict the API server to use only internal load balancers. To implement this API server restriction, use the Microsoft Azure console to delete the external load balancer component.
+
+- You have installed an OpenShift Container Platform cluster on Azure.
+
+- You have access to the Azure console as a user with administrator privileges.
+
+1.  Log in to the Azure console as a user with administrator privileges.
+
+2.  Delete the following resources:
+
+    - The `api-v4` rule for the public load balancer.
+
+    - The `frontendIPConfiguration` parameter that is associated with the `api-v4` rule for the public load balancer.
+
+    - The public IP address that is specified in the `frontendIPConfiguration` parameter.
+
+3.  Configure the Ingress Controller endpoint publishing scope to `Internal`. For more information, see "Configuring the Ingress Controller endpoint publishing scope to Internal".
+
+4.  Delete the `api.<cluster_name>` DNS entry in the public zone.
+
+    where `<cluster_name>` is the name of the cluster.
 
 - [Configuring the Ingress Controller endpoint publishing scope to Internal](../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/nw-configuring-ingress-controller-endpoint-publishing-strategy.xml#nw-ingresscontroller-change-internal_nw-configuring-ingress-controller-endpoint-publishing-strategy)
 

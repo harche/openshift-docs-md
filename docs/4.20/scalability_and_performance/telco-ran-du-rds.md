@@ -416,7 +416,7 @@ Engineering considerations
 
   - For additional information on the Node Tuning Operator, see "Using the Node Tuning Operator".
 
-- [Finding the effective IRQ affinity setting for a node](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#about_irq_affinity_setting_cnf-low-latency-perf-profile)
+- [Finding the effective IRQ affinity setting for a node](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#about_irq_affinity_setting_cnf-tuning-low-latency-nodes-with-perf-profile)
 
 - [Tuning nodes for low latency with the performance profile](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-tuning-low-latency-nodes-with-perf-profile)
 

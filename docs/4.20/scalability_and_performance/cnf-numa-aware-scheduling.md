@@ -371,7 +371,7 @@ Verify the status of the NUMA-aware scheduler to ensure it is running with the e
 
 - [Configuring image registry repository mirroring](../disconnected/updating/disconnected-update.xml#images-configuration-registry-mirror-configuring_updating-disconnected-cluster)
 
-- [About the Performance Profile Creator](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-about-the-profile-creator-tool_cnf-low-latency-perf-profile)
+- [About the Performance Profile Creator](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-about-the-profile-creator-tool_cnf-tuning-low-latency-nodes-with-perf-profile)
 
 ## Sample performance profile
 
@@ -726,7 +726,7 @@ For more information about the support scope of Red Hat Technology Preview featu
     pod/numaresourcesoperator-democluster-jp9mw             2/2     Running   0          97s
     ```
 
-- [Creating a performance profile for hosted control planes](../scalability_and_performance/cnf-tuning-low-latency-hosted-cp-nodes-with-perf-profile.xml#cnf-create-performance-profiles-hosted-cp)
+- [Creating a performance profile](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-create-performance-profiles_cnf-tuning-low-latency-nodes-with-perf-profile)
 
 ## Deploying the NUMA-aware secondary pod scheduler
 

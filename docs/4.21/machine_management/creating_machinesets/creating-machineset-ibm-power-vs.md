@@ -94,7 +94,7 @@ Specifies the infrastructure ID within your region to place machines on.
 
 # Creating a compute machine set
 
-In addition to the compute machine sets created by the installation program, you can create your own to dynamically manage the machine compute resources for specific workloads of your choice.
+In addition to the compute machine sets created by the installation program, you can create your own compute machine sets to dynamically manage the machine compute resources for specific workloads of your choice. Use the OpenShift Container Platform CLI to automate node provisioning.
 
 - Deploy an OpenShift Container Platform cluster.
 
@@ -169,17 +169,22 @@ In addition to the compute machine sets created by the installation program, you
                 ...
         ```
 
-        - The cluster infrastructure ID.
+        where:
 
-        - A default node label.
+        `metadata.labels.machine.openshift.io/cluster-api-cluster`
+        Specifies the cluster infrastructure ID.
 
-          <div class="note">
+        `metadata.labels.name`
+        Specifies a default node label.
 
-          For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
+        <div class="note">
 
-          </div>
+        For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
 
-        - The values in the `<providerSpec>` section of the compute machine set CR are platform-specific. For more information about `<providerSpec>` parameters in the CR, see the sample compute machine set CR configuration for your provider.
+        </div>
+
+        `spec.template.metadata.spec.providerSpec`
+        Specifies the values of the compute machine set CR. The values are platform-specific. For more information about `<providerSpec>` parameters in the CR, see the sample compute machine set CR configuration for your provider.
 
 3.  Create a `MachineSet` CR by running the following command:
 
@@ -214,7 +219,7 @@ In addition to the compute machine sets created by the installation program, you
 
 # Labeling GPU machine sets for the cluster autoscaler
 
-You can use a machine set label to indicate which machines the cluster autoscaler can use to deploy GPU-enabled nodes.
+Label your machine sets to indicate which machines the cluster autoscaler can use for GPU-enabled nodes. Applying the accelerator label helps ensure that the autoscaler deploys the correct resources for your GPU workloads.
 
 - Your cluster uses a cluster autoscaler.
 
@@ -237,7 +242,7 @@ You can use a machine set label to indicate which machines the cluster autoscale
 
   where:
 
-  \<accelerator_name\>
+  `<accelerator_name>`
   Specifies a label of your choice that consists of alphanumeric characters, `-`, `_`, or `.` and starts and ends with an alphanumeric character. For example, you might use `nvidia-t4` to represent Nvidia T4 GPUs, or `nvidia-a10g` for A10G GPUs.
 
   <div class="note">

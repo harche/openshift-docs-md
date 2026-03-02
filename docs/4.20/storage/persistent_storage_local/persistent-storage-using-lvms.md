@@ -658,7 +658,9 @@ The `LVMCluster` CR fields are described in the following table:
 
 ## Limitations to configure the size of the devices used in LVM Storage
 
-The limitations to configure the size of the devices that you can use to provision storage using LVM Storage are as follows:
+To ensure your devices are compatible with storage operations, review the size configuration limitations in LVM Storage. Adhering to these constraints prevents provisioning failures by ensuring selected devices meet the required capacity specifications.
+
+When provisioning storage by using LVM Storage, the following factors limit device size:
 
 - The total storage size that you can provision is limited by the size of the underlying Logical Volume Manager (LVM) thin pool and the over-provisioning factor.
 
@@ -666,7 +668,7 @@ The limitations to configure the size of the devices that you can use to provisi
 
   - You can define the size of PE and LE during the physical and logical device creation.
 
-  - The default PE and LE size is 4 MB.
+  - The default PE and LE size is 4 MiB.
 
   - If the size of the PE is increased, the maximum size of the LVM is determined by the kernel limits and your disk space.
 
@@ -686,11 +688,11 @@ Tested configuration
 
 Theoretical size limits for static configuration
 
-| Parameter           | Value                                                                                                      |
-|---------------------|------------------------------------------------------------------------------------------------------------|
-| Chunk size          | This value is based on the configuration in the `lvm.conf` file. By default, this value is set to 128 KiB. |
-| Maximum volume size | Equal to the maximum volume size of the underlying RHCOS system.                                           |
-| Minimum volume size | Equal to the minimum volume size of the underlying RHCOS system.                                           |
+| Parameter           | Value                                                                                                                       |
+|---------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| Chunk size          | This value is based on the configuration in the `lvm.conf` file. By default, the configuration sets the value to `128` KiB. |
+| Maximum volume size | Equal to the maximum volume size of the underlying RHCOS system.                                                            |
+| Minimum volume size | Equal to the minimum volume size of the underlying RHCOS system.                                                            |
 
 Theoretical size limits for a host configuration
 

@@ -391,7 +391,10 @@ Do not modify or delete an `SriovNetwork` object if it is attached to any pods i
     $ oc create -f <name>.yaml
     ```
 
-    where `<name>` specifies the name of the additional network.
+    where:
+
+    `<name>`
+    Specifies the name of the additional network.
 
 3.  Optional: To confirm that the `NetworkAttachmentDefinition` object that is associated with the `SriovNetwork` object that you created in the previous step exists, enter the following command. Replace `<namespace>` with the `networkNamespace` value you specified in the `SriovNetwork` object.
 
@@ -595,13 +598,13 @@ The pod must be in the same namespace as the secondary network.
 
         where:
 
-        `name`
+        `<network>`
         Specifies the name of the secondary network defined by a `NetworkAttachmentDefinition` object.
 
-        `namespace`
+        `<namespace>`
         Specifies the namespace where the `NetworkAttachmentDefinition` object is defined.
 
-        `default-route`
+        `<default-route>`
         Optional parameter. Specifies an override for the default route, such as `192.168.17.1`.
 
 2.  Create the pod by entering the following command.

@@ -568,7 +568,11 @@ When deploying a `UserDefinedNetwork` custom resource (CR) on IBM Power® Virtua
 
 </div>
 
-- You have logged in with `cluster-admin` privileges, or you have `view` and `edit` role-based access control (RBAC).
+- As a cluster administrator, you have created a namespace.
+
+  - During namespace creation, ensure you also applied the `k8s.ovn.org/primary-user-defined-network` label to the namespace.
+
+  - After you create the namespace, a user that has `view` and `edit` role-based access control (RBAC) permissions can create a `UserDefinedNetwork` CR in the namespace.
 
 1.  Optional: For a `UserDefinedNetwork` CR that uses a primary network, create a namespace with the `k8s.ovn.org/primary-user-defined-network` label by entering the following command:
 
@@ -732,9 +736,11 @@ Currently, creation of a `UserDefinedNetwork` CR with a `Layer3` topology or a `
 
 </div>
 
-- You have access to the OpenShift Container Platform web console as a user with `cluster-admin` permissions.
+- As a cluster administrator, you have created a namespace.
 
-- You have created a namespace and applied the `k8s.ovn.org/primary-user-defined-network` label.
+  - During namespace creation, ensure you also applied the `k8s.ovn.org/primary-user-defined-network` label to the namespace.
+
+  - After you create the namespace, a user that has `view` and `edit` role-based access control (RBAC) permissions can create a `UserDefinedNetwork` CR in the namespace.
 
 1.  From the **Administrator** perspective, click **Networking** → **UserDefinedNetworks**.
 

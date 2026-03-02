@@ -42,37 +42,13 @@ Runbooks for the OpenShift Virtualization Operator are maintained in the [opensh
 
 - [View the runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/CnaoNmstateMigration.md) for the `CnaoNMstateMigration` alert.
 
-# DeprecatedMachineType
-
-- [View the runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/DeprecatedMachineType.md) for the `DeprecatedMachineType` alert.
-
 # DuplicateWaspAgentDSDetected
 
 - The `DuplicateWaspAgentDSDetected` alert is [deprecated](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/DuplicateWaspAgentDSDetected.md).
 
-# GuestFilesystemAlmostOutOfSpace
-
-- [View the runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/GuestFilesystemAlmostOutOfSpace.md) for the `GuestFilesystemAlmostOutOfSpace` alert.
-
-# GuestVCPUQueueHighCritical
-
-- [View the runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/GuestVCPUQueueHighCritical.md) for the `GuestVCPUQueueHighCritical` alert.
-
-# GuestVCPUQueueHighWarning
-
-- [View the runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/GuestVCPUQueueHighWarning.md) for the `GuestVCPUQueueHighWarning` alert.
-
 # HAControlPlaneDown
 
 - [View the runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/HAControlPlaneDown.md) for the `HAControlPlaneDown` alert.
-
-# HCOGoldenImageWithNoArchitectureAnnotation
-
-- [View the runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/HCOGoldenImageWithNoArchitectureAnnotation.md) for the `HCOGoldenImageWithNoArchitectureAnnotation` alert.
-
-# HCOGoldenImageWithNoSupportedArchitecture
-
-- [View the runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/HCOGoldenImageWithNoSupportedArchitecture.md) for the `HCOGoldenImageWithNoSupportedArchitecture` alert.
 
 # HCOInstallationIncomplete
 
@@ -81,18 +57,6 @@ Runbooks for the OpenShift Virtualization Operator are maintained in the [opensh
 # HCOMisconfiguredDescheduler
 
 - [View the runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/HCOMisconfiguredDescheduler.md) for the `HCOMisconfiguredDescheduler` alert.
-
-# HCOMultiArchGoldenImagesDisabled
-
-- [View the runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/HCOMultiArchGoldenImagesDisabled.md) for the `HCOMultiArchGoldenImagesDisabled` alert.
-
-# HCOOperatorConditionsUnhealthy
-
-- [View the runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/HCOOperatorConditionsUnhealthy.md) for the `HCOOperatorConditionsUnhealthy` alert.
-
-# HighNodeCPUFrequency
-
-- [View the runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/HighNodeCPUFrequency.md) for the `HighNodeCPUFrequency` alert.
 
 # HPPNotReady
 
@@ -116,7 +80,7 @@ Runbooks for the OpenShift Virtualization Operator are maintained in the [opensh
 
 # KubeMacPoolDuplicateMacsFound
 
-\*The `KubeMacPoolDuplicateMacsFound` alert is [deprecated](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/KubeMacPoolDuplicateMacsFound.md).
+- The `KubeMacPoolDuplicateMacsFound` alert is [deprecated](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/KubeMacPoolDuplicateMacsFound.md).
 
 # KubeVirtComponentExceedsRequestedCPU
 
@@ -133,14 +97,6 @@ Runbooks for the OpenShift Virtualization Operator are maintained in the [opensh
 # KubeVirtDeprecatedAPIRequested
 
 - [View the runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/KubeVirtDeprecatedAPIRequested.md) for the `KubeVirtDeprecatedAPIRequested` alert.
-
-# KubeVirtVMGuestMemoryAvailableLow
-
-- [View the runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/KubeVirtVMGuestMemoryAvailableLow.md) for the `KubeVirtVMGuestMemoryAvailableLow` alert.
-
-# KubeVirtVMGuestMemoryPressure
-
-- [View the runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/KubeVirtVMGuestMemoryPressure.md) for the `KubeVirtVMGuestMemoryPressure` alert.
 
 # KubeVirtNoAvailableNodesToRunVMs
 
@@ -210,10 +166,6 @@ Runbooks for the OpenShift Virtualization Operator are maintained in the [opensh
 
 - [View the runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/OutdatedVirtualMachineInstanceWorkloads.md) for the `OutdatedVirtualMachineInstanceWorkloads` alert.
 
-# PersistentVolumeFillingUp
-
-- [View the runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/PersistentVolumeFillingUp.md) for the `PersistentVolumeFillingUp` alert.
-
 # SingleStackIPv6Unsupported
 
 - The `SingleStackIPv6Unsupported` alert is [deprecated](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/SingleStackIPv6Unsupported.md).
@@ -282,10 +234,6 @@ Runbooks for the OpenShift Virtualization Operator are maintained in the [opensh
 
 - The `VirtHandlerRESTErrorsHigh` alert is [deprecated](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/VirtHandlerRESTErrorsHigh.md).
 
-# VirtLauncherPodsStuckFailed
-
-- [View the runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/VirtLauncherPodsStuckFailed.md) for the `VirtLauncherPodsStuckFailed` alert.
-
 # VirtOperatorDown
 
 - [View the runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/VirtOperatorDown.md) for the `VirtOperatorDown` alert.
@@ -303,18 +251,6 @@ Runbooks for the OpenShift Virtualization Operator are maintained in the [opensh
 - The `VirtualMachineCRCErrors` alert is [deprecated](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/VirtualMachineCRCErrors.md).
 
   The alert is now called `VMStorageClassWarning`.
-
-# VirtualMachineInstanceHasEphemeralHotplugVolume
-
-- [View the runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/VirtualMachineInstanceHasEphemeralHotplugVolume.md) for the `VirtualMachineInstanceHasEphemeralHotplugVolume` alert.
-
-# VirtualMachineStuckInUnhealthyState
-
-- [View the runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/VirtualMachineStuckInUnhealthyState.md) for the `VirtualMachineStuckInUnhealthyState` alert.
-
-# VirtualMachineStuckOnNode
-
-- [View the runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/VirtualMachineStuckOnNode.md) for the `VirtualMachineStuckOnNode` alert.
 
 # VMCannotBeEvicted
 

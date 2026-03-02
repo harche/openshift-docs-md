@@ -1,8 +1,10 @@
-You can configure your pods with the `/dev/fuse` device to enable faster and more efficient container image builds, particularly for unprivileged users. This device allows unprivileged pods to mount overlay filesystems, which can be leveraged by tools like Podman.
+You can configure your pods with the `/dev/fuse` device to enable faster and more efficient container image builds, particularly for unprivileged users. This device allows unprivileged pods to mount overlay filesystems, which can be leveraged by tools such as Podman.
 
 # Configuring /dev/fuse for unprivileged builds in pods
 
-By exposing the `/dev/fuse` device to an unprivileged pod, you grant it the capability to perform Filesystem in Userspace (FUSE) mounts. This is achieved by adding the `io.kubernetes.cri-o.Devices: "/dev/fuse"` annotation to your pod definition. This setup allows an unprivileged user within the pod to use tools like `podman` with storage drivers such as `fuse-overlayfs` by mimicking privileged build capabilities in a secure and efficient manner without granting full privileged access to the pod.
+You can grant an unprivileged pod the capability to perform Filesystem in Userspace (FUSE) mounts by exposing the `/dev/fuse` device. With this setup, an unprivileged user within the pod can use tools such as `podman` with storage drivers such as `fuse-overlayfs` by mimicking privileged build capabilities in a secure and efficient manner without granting full privileged access to the pod.
+
+You expose the `/dev/fuse` device by adding the `io.kubernetes.cri-o.Devices: "/dev/fuse"` annotation to your pod definition.
 
 1.  Define the pod with `/dev/fuse` access:
 
@@ -27,17 +29,17 @@ By exposing the `/dev/fuse` device to an unprivileged pod, you grant it the capa
 
         where:
 
-        `io.kubernetes.cri-o.Devices`
-        The `io.kubernetes.cri-o.Devices: "/dev/fuse"` annotation makes the FUSE device available.
+        `metadata.annotations`
+        Specifies that the `io.kubernetes.cri-o.Devices: "/dev/fuse"` annotation makes the FUSE device available.
 
-        `image`
-        This annotation specifies a container that uses an image that includes `podman` (for example, `quay.io/podman/stable`).
+        `spec.containers.image`
+        Specifies a container that uses an image that includes `podman` (for example, `quay.io/podman/stable`).
 
-        `args`
-        This command keeps the container running so you can `exec` into it.
+        `spec.containers.args`
+        Specifies a command to keep the container running so you can `exec` into it.
 
-        `securityContext`
-        This annotation specifies a `securityContext` that runs the container as an unprivileged user (for example, `runAsUser: 1000`).
+        `spec.containers.securityContext`
+        Specifies a `securityContext` that runs the container as an unprivileged user (for example, `runAsUser: 1000`).
 
         <div class="note">
 
@@ -51,7 +53,7 @@ By exposing the `/dev/fuse` device to an unprivileged pod, you grant it the capa
         $ oc apply -f fuse-builder-pod.yaml
         ```
 
-2.  Verify that the pod is running:
+2.  Verify that the pod is running by running the following command:
 
     ``` terminal
     $ oc get pods fuse-builder-pod
@@ -59,27 +61,29 @@ By exposing the `/dev/fuse` device to an unprivileged pod, you grant it the capa
 
 3.  Access the pod and prepare the build environment:
 
-    After the `fuse-builder-pod` pod is in the `Running` state, open a shell session into the `build-container` environment:
+    1.  After the `fuse-builder-pod` pod is in the `Running` state, open a shell session into the `build-container` environment by running the following command:
 
-    ``` terminal
-    $ oc exec -ti fuse-builder-pod -- /bin/bash
-    ```
+        ``` terminal
+        $ oc exec -ti fuse-builder-pod -- /bin/bash
+        ```
 
-    You are now inside the container. Because the default working directory might not be writable by the unprivileged user, change to a writable directory like `/tmp`:
+        You are now inside the container.
 
-    ``` terminal
-    $ cd /tmp
-    ```
+    2.  Because the default working directory might not be writable by an unprivileged user, change to a writable directory such as `/tmp` by running the following commands:
 
-    ``` terminal
-    $ pwd
-    ```
+        ``` terminal
+        $ cd /tmp
+        ```
 
-    ``` terminal
-    /tmp
-    ```
+        ``` terminal
+        $ pwd
+        ```
 
-4.  Create a dockerfile and build an image using Podman:
+        ``` terminal
+        /tmp
+        ```
+
+4.  Create a dockerfile and build an image by using Podman:
 
     Inside the pod’s shell and within the `/tmp` directory, you can now create a `Dockerfile` and use `podman` to build a container image. If `fuse-overlayfs` is the default or configured storage driver, Podman is able to leverage `fuse-overlayfs` because of the available `/dev/fuse` device.
 
@@ -96,7 +100,7 @@ By exposing the `/dev/fuse` device to an unprivileged pod, you grant it the capa
         EOF
         ```
 
-    2.  Build the image using `podman`. The `-t` flag tags the image:
+    2.  Build the image by running the following command. The `-t` flag tags the image.
 
         ``` terminal
         $ podman build -t my-fuse-built-image:latest .
@@ -106,7 +110,7 @@ By exposing the `/dev/fuse` device to an unprivileged pod, you grant it the capa
 
 5.  Optional: Test the built image:
 
-    Still inside the `fuse-builder-pod`, you can run a container from the image you just built to test it:
+    Still inside the `fuse-builder-pod`, you can run a container from the image you just built to test it by running the following command:
 
     ``` terminal
     $ podman run --rm my-fuse-built-image:latest
@@ -116,19 +120,19 @@ By exposing the `/dev/fuse` device to an unprivileged pod, you grant it the capa
 
 6.  Exit the pod and clean up:
 
-    1.  After you are done, exit the shell session in the pod:
+    1.  After you are done, exit the shell session in the pod by running the following command:
 
         ``` terminal
         $ exit
         ```
 
-    2.  Delete the pod if it’s no longer needed:
+    2.  Delete the pod if it is no longer needed by running the following command:
 
         ``` terminal
         $ oc delete pod fuse-builder-pod
         ```
 
-    3.  Remove the local YAML file:
+    3.  Remove the local YAML file by running the following command:
 
         ``` terminal
         $ rm fuse-builder-pod.yaml

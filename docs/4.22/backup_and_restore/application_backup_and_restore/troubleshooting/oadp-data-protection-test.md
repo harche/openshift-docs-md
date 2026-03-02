@@ -1,16 +1,10 @@
-The `DataProtectionTest` (DPT) is a custom resource (CR) that provides a framework to validate your OADP configuration. The DPT CR checks and reports information for the following parameters:
+Validate your OADP configuration by using the `DataProtectionTest` (DPT) custom resource (CR). This helps you ensure your data protection environment is properly configured and performing according to your requirements before performing backups.
 
-- The upload performance of the backups to the object storage.
-
-- The CSI snapshot readiness for persistent volume claims.
-
-- The storage bucket configuration, such as encryption and versioning.
-
-Using this information in the DPT CR, you can ensure that your data protection environment is properly configured and performing according to the set configuration.
+The DPT checks the upload performance of backups to object storage, CSI snapshot readiness for persistent volume claims, and storage bucket configuration such as encryption and versioning.
 
 # OADP DataProtectionTest CR specification fields
 
-You can configure the following specification fields in the `DataProtectionTest` (DPT) custom resource (CR).
+Review the specification fields available in the `DataProtectionTest` (DPT) custom resource (CR) to configure backup location, upload speed tests, CSI volume snapshot tests, and other options. This helps you customize the DPT CR to validate your specific OADP configuration requirements.
 
 | Field                          | Type    | Description                                                                                    |
 |--------------------------------|---------|------------------------------------------------------------------------------------------------|
@@ -25,7 +19,7 @@ DPT CR spec fields
 
 # OADP DataProtectionTest CR status fields
 
-You can review the status of the `DataProtectionTest` (DPT) custom resource (CR) by using the following status fields:
+Review the status fields in the `DataProtectionTest` (DPT) custom resource (CR) to monitor test progress, upload speed results, bucket metadata, and snapshot test outcomes. This helps you interpret the DPT CR results and identify any issues with your OADP configuration.
 
 | Field             | Type      | Description                                                                    |
 |-------------------|-----------|--------------------------------------------------------------------------------|
@@ -42,7 +36,7 @@ DPT CR status fields
 
 # Using the DataProtectionTest custom resource
 
-You can configure the `DataProtectionTest` (DPT) custom resource (CR) and then run the DPT CR to verify the Container Storage Initiative (CSI) snapshot readiness and the data upload performance to the storage bucket.
+Configure and run the `DataProtectionTest` (DPT) custom resource (CR) to verify Container Storage Interface (CSI) snapshot readiness and data upload performance to your storage bucket. This helps you validate your OADP environment before performing backup and restore operations.
 
 - You have logged in to the OpenShift Container Platform cluster as a user with the `cluster-admin` role.
 
@@ -83,19 +77,28 @@ You can configure the `DataProtectionTest` (DPT) custom resource (CR) and then r
         timeout: 120s
     ```
 
-    - Specify the name of the BSL.
+    where:
 
-    - Specify a list for `csiVolumeSnapshotTestConfigs`. In this example, two PVCs are being tested.
+    `<bsl_name>`
+    Specifies the name of the BSL.
 
-    - Specify the name of the first PVC.
+    `csiVolumeSnapshotTestConfigs`
+    Specifies a list for `csiVolumeSnapshotTestConfigs`. In this example, two PVCs are being tested.
 
-    - Specify the namespace of the PVC.
+    `<pvc1_name>`
+    Specifies the name of the first PVC.
 
-    - Specify the name of the second PVC.
+    `<pvc_namespace>`
+    Specifies the namespace of the PVC.
 
-    - Set the `forceRun` flag to `false` if you want to make the OADP controller skip re-running tests.
+    `<pvc2_name>`
+    Specifies the name of the second PVC.
 
-    - Configure the `uploadSpeedTestConfig` object by setting the `fileSize` and `timeout` fields.
+    `forceRun`
+    Set to `false` if you want to make the OADP controller skip re-running tests.
+
+    `uploadSpeedTestConfig`
+    Configures the upload speed test by setting the `fileSize` and `timeout` fields.
 
 2.  Create the DPT CR by running the following command:
 
@@ -103,7 +106,7 @@ You can configure the `DataProtectionTest` (DPT) custom resource (CR) and then r
     $ oc create -f <dpt_file_name>
     ```
 
-    - Specify the file name of the DPT manifest.
+    Replace `<dpt_file_name>` with the file name of the DPT manifest.
 
 <!-- -->
 
@@ -155,17 +158,23 @@ You can configure the `DataProtectionTest` (DPT) custom resource (CR) and then r
         success: true
     ```
 
-    - The bucket metadata information.
+    where:
 
-    - The S3 bucket vendor.
+    `bucketMetadata`
+    Specifies the bucket metadata information.
 
-    - Summary of the CSI snapshot tests.
+    `s3Vendor`
+    Specifies the S3 bucket vendor.
 
-    - The upload test details.
+    `snapshotSummary`
+    Specifies the summary of the CSI snapshot tests.
+
+    `uploadTest`
+    Specifies the upload test details.
 
 # Running a data protection test by configuring a backup storage location specification
 
-You can configure the `DataProtectionTest` (DPT) custom resource (CR) by specifying the backup storage location (BSL) specification instead of a BSL name. You then run the DPT CR to verify the Container Storage Initiative (CSI) snapshot readiness and the data upload performance to the storage bucket.
+Configure and run the `DataProtectionTest` (DPT) custom resource (CR) by specifying an inline backup storage location (BSL) specification instead of referencing an existing BSL name. This helps you test data upload performance and CSI snapshot readiness without creating a separate BSL resource.
 
 - You have logged in to the OpenShift Container Platform cluster as a user with the `cluster-admin` role.
 
@@ -217,19 +226,28 @@ You can configure the `DataProtectionTest` (DPT) custom resource (CR) by specify
       skipTLSVerify: true
     ```
 
-    - Configure the BSL spec by specifying details such as the cloud provider.
+    where:
 
-    - Specify the bucket name. In this example, the bucket name is `sample-bucket`.
+    `backupLocationSpec`
+    Configures the BSL spec by specifying details such as the cloud provider.
 
-    - Specify the cloud provider region.
+    `sample-bucket`
+    Specifies the bucket name. In this example, the bucket name is `sample-bucket`.
 
-    - Specify the cloud credentials for the storage bucket.
+    `us-east-1`
+    Specifies the cloud provider region.
 
-    - (Optional) Configure the `uploadSpeedTestConfig` object by setting the `fileSize` and `timeout` fields.
+    `credential`
+    Specifies the cloud credentials for the storage bucket.
 
-    - Configure the `csiVolumeSnapshotTestConfigs` object.
+    `uploadSpeedTestConfig`
+    (Optional) Configures the upload speed test by setting the `fileSize` and `timeout` fields.
 
-    - Set to `true` to skip the TLS certificate validation during the DPT CR run.
+    `csiVolumeSnapshotTestConfigs`
+    Configures the CSI volume snapshot test.
+
+    `skipTLSVerify`
+    Set to `true` to skip the TLS certificate validation during the DPT CR run.
 
 2.  Create the DPT CR by running the following command:
 
@@ -237,7 +255,7 @@ You can configure the `DataProtectionTest` (DPT) custom resource (CR) by specify
     $ oc create -f <dpt_file_name>
     ```
 
-    - Specify the file name of the DPT manifest.
+    Replace `<dpt_file_name>` with the file name of the DPT manifest.
 
 <!-- -->
 
@@ -256,7 +274,7 @@ You can configure the `DataProtectionTest` (DPT) custom resource (CR) by specify
 
 # Running a data protection test on an Azure object storage
 
-If you are using OADP on an Azure object storage, you need to specify the Azure `STORAGE_ACCOUNT_ID` as part of the secret object. Use the following procedure to run a `DataProtectionTest` (DPT) custom resource (CR) on an Azure cluster.
+Run the `DataProtectionTest` (DPT) custom resource (CR) on Azure object storage by configuring the required Azure credentials, including the `STORAGE_ACCOUNT_ID` parameter in the secret object. This helps you validate your OADP configuration and verify CSI snapshot readiness on Azure clusters.
 
 - You have logged in to the Azure cluster as a user with the `cluster-admin` role.
 
@@ -282,12 +300,12 @@ If you are using OADP on an Azure object storage, you need to specify the Azure 
     To run the DPT CR on Azure, you need to specify the `STORAGE_ACCOUNT_ID` parameter in the secret credentials file.
 
     ``` terminal
-    AZURE_SUBSCRIPTION_ID=<subscription-id>
-    AZURE_TENANT_ID=<tenant-id>
-    AZURE_CLIENT_ID=<client-id>
-    AZURE_CLIENT_SECRET=<client-secret>
-    AZURE_RESOURCE_GROUP=<resource-group>
-    AZURE_STORAGE_ACCOUNT_ID=<storage-account>
+    AZURE_SUBSCRIPTION_ID=<subscription_id>
+    AZURE_TENANT_ID=<tenant_id>
+    AZURE_CLIENT_ID=<client_id>
+    AZURE_CLIENT_SECRET=<client_secret>
+    AZURE_RESOURCE_GROUP=<resource_group>
+    AZURE_STORAGE_ACCOUNT_ID=<storage_account>
     ```
 
 3.  Create the `Secret` CR as shown in the following example:
@@ -326,7 +344,7 @@ If you are using OADP on an Azure object storage, you need to specify the Azure 
               prefix: velero
     ```
 
-    - Specify the name of the `Secret` object. In this example, the name is `cloud-credentials-azure`.
+    Replace `name` with the name of the `Secret` object. In this example, the name is `cloud-credentials-azure`.
 
 5.  Create the DPT CR by specifying the name of backup storage location (BSL), `VolumeSnapshotClass` object, and the persistent volume claim details as shown in the following example:
 
@@ -354,19 +372,25 @@ If you are using OADP on an Azure object storage, you need to specify the Azure 
             persistentVolumeClaimNamespace: ocp-mysql
     ```
 
-    - Specify the name of the BSL.
+    where:
 
-    - The Azure snapshot class name.
+    `<bsl_name>`
+    Specifies the name of the BSL.
 
-    - The name of the persistent volume claim.
+    `csi-azuredisk-vsc`
+    Specifies the Azure snapshot class name.
 
-    - The name of the persistent volume claim namespace.
+    `mysql-data`
+    Specifies the name of the persistent volume claim.
+
+    `ocp-mysql`
+    Specifies the name of the persistent volume claim namespace.
 
 6.  Run the DPT CR to verify the snapshot readiness.
 
 # Troubleshooting the DataProtectionTest custom resource
 
-Use the following table to troubleshoot common issues when running the `DataProtectionTest` (DPT) custom resource (CR).
+Troubleshoot common `DataProtectionTest` (DPT) custom resource (CR) issues, such as stuck progress states, upload test failures, and snapshot test failures. This helps you identify and resolve problems with your DPT configuration.
 
 | Error                                         | Reason                                             | Solution                                                                     |
 |-----------------------------------------------|----------------------------------------------------|------------------------------------------------------------------------------|

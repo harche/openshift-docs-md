@@ -49,16 +49,11 @@ To enable the IOMMU driver in the kernel, create the `MachineConfig` object and 
     # ...
     ```
 
-    where:
+    - `metadata.labels.machineconfiguration.openshift.io/role` specifies that the new kernel argument is applied only to worker nodes.
 
-    \<apiversion\>
-    Applies the new kernel argument only to worker nodes.
+    - `metadata.name` specifies the ranking of this kernel argument (100) among the machine configs and its purpose. If you have an AMD CPU, specify the kernel argument as `amd_iommu=on`.
 
-    \<name\>
-    Indicates the ranking of this kernel argument (100) among the machine configs and its purpose. If you have an AMD CPU, specify the kernel argument as `amd_iommu=on`.
-
-    \<intel_iommu=o\>
-    Identifies the kernel argument as `intel_iommu` for an Intel CPU.
+    - `spec.kernelArguments` specifies the kernel argument as `intel_iommu` for an Intel CPU.
 
 2.  Create the new `MachineConfig` object:
 

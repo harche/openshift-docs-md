@@ -1,18 +1,16 @@
-You might encounter issues caused by using invalid directories or incorrect credentials when you install the Data Protection Application (DPA).
+Resolve common installation issues with the Data Protection Application (DPA), such as invalid backup storage directories and incorrect cloud provider credentials. This helps you successfully install and configure OADP in your environment.
 
 # Resolving invalid directories in backup storage
 
-The object storage contains top-level directories that are not Velero directories. The `Velero` pod log displays the following error message:
-
-``` text
-Backup storage contains invalid top-level directories.
-```
+Resolve the `Backup storage contains invalid top-level directories` error that occurs when object storage contains non-Velero directories. This helps you configure the correct bucket prefix for shared object storage.
 
 - If the object storage is not dedicated to Velero, you must specify a prefix for the bucket by setting the `spec.backupLocations.velero.objectStorage.prefix` parameter in the `DataProtectionApplication` manifest.
 
 # Resolving incorrect AWS credentials
 
-If the `credentials-velero` file that is used to create the `Secret` object is incorrectly formatted, multiple errors might occur, including the following examples:
+Resolve credential errors such as `InvalidAccessKeyId` or `NoCredentialProviders` that occur when the `credentials-velero` file is incorrectly formatted. This helps you configure valid AWS credentials for OADP backup operations.
+
+If you incorrectly format the `credentials-velero` file used for creating the `Secret` object, multiple errors might occur, including the following examples:
 
 - The `oadp-aws-registry` pod log displays the following error message:
 
@@ -30,16 +28,14 @@ If the `credentials-velero` file that is used to create the `Secret` object is i
 
 - Ensure that the `credentials-velero` file is correctly formatted, as shown in the following example:
 
-  <div class="formalpara-title">
-
-  **Example `credentials-velero` file**
-
-  </div>
-
       [default]
       aws_access_key_id=AKIAIOSFODNN7EXAMPLE
       aws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 
-  - AWS default profile.
+  where:
 
-  - Do not enclose the values with quotation marks (`"`, `'`).
+  `[default]`
+  Specifies the AWS default profile.
+
+  `aws_access_key_id`
+  Do not enclose the values with quotation marks (`"`, `'`).

@@ -45,7 +45,7 @@ You can use `podman` or `docker` to run the installation commands. This procedur
 2.  Extract the `oc-netobserv` file from the image by running the following commands:
 
     ``` terminal
-    $ podman create --name netobserv-cli registry.redhat.io/network-observability/network-observability-cli-rhel9:1.10
+    $ podman create --name netobserv-cli registry.redhat.io/network-observability/network-observability-cli-rhel9:1.11
     $ podman cp netobserv-cli:/oc-netobserv .
     $ podman rm netobserv-cli
     ```

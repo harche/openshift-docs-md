@@ -1,6 +1,8 @@
-# Overview
+To manage temporary data that exists only for the duration of a workload, review the properties of ephemeral storage.
 
-Pods and containers are ephemeral or transient in nature and designed for stateless applications. Ephemeral storage allows administrators and developers to better manage the local storage for some of their operations.
+# Overview of ephemeral storage
+
+To manage local storage for stateless applications, use ephemeral storage. Ephemeral storage is designed for the transient nature of pods and containers. You can use this feature to handle operations that require storage only for the duration of the lifecycle for the workload. Both developers and administrators can use the feature.
 
 In addition to persistent storage, pods and containers can require ephemeral or transient local storage for their operation. The lifetime of this ephemeral storage does not extend beyond the life of the individual pod, and this ephemeral storage cannot be shared across pods.
 
@@ -20,7 +22,7 @@ While the ephemeral storage framework allows administrators and developers to be
 
 # Types of ephemeral storage
 
-Ephemeral local storage is always made available in the primary partition. There are two basic ways of creating the primary partition: root and runtime.
+To provision ephemeral local storage, you can create the primary partition by using either root or runtime methods. This storage is always made available in the primary partition, providing temporary space for your workloads.
 
 ## Root
 
@@ -116,11 +118,15 @@ The settings in the pod spec affect both how the scheduler makes a decision abou
 
 - Second, at the container level, because the first container sets a resource limit, kubelet eviction manager measures the disk usage of this container and evicts the pod if the storage usage of the container exceeds its limit (4GiB). The kubelet eviction manager also marks the pod for eviction if the total usage exceeds the overall pod storage limit (8GiB).
 
-For information about defining quotas for projects, see [Quota setting per project](../applications/quotas/quotas-setting-per-project.xml).
+# Additional resources
+
+- [Resources managed by quotas](../applications/quotas/quotas-setting-per-project.xml#quotas-setting-per-project_quotas-setting-per-project)
 
 # Monitoring ephemeral storage
 
-You can use `/bin/df` as a tool to monitor ephemeral storage usage on the volume where ephemeral container data is located, which is `/var/lib/kubelet` and `/var/lib/containers`. The available space for only `/var/lib/kubelet` is shown when you use the `df` command if `/var/lib/containers` is placed on a separate disk by the cluster administrator.
+To monitor ephemeral storage usage, use the `/bin/df` utility. By using this tool, you can track disk space consumption on the volumes where ephemeral container data resides, specifically `/var/lib/kubelet` and `/var/lib/containers`.
+
+When you use the `df` command, the available space for only `/var/lib/kubelet` is shown if `/var/lib/containers` is placed on a separate disk by the cluster administrator.
 
 - To show the human-readable values of used and available space in `/var/lib`, enter the following command:
 

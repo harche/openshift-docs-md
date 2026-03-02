@@ -108,7 +108,7 @@ You can create a namespace to be used with primary user-defined networks (UDNs) 
     # ...
     ```
 
-    - This label is required for the namespace to be associated with a UDN. If the namespace is to be used with an existing cluster UDN, you must also add the appropriate labels that are defined in the `spec.namespaceSelector` field of the `ClusterUserDefinedNetwork` custom resource.
+    The `k8s.ovn.org/primary-user-defined-network` label is required for the namespace to be associated with a UDN. If the namespace is to be used with an existing cluster UDN, you must also add the appropriate labels that are defined in the `spec.namespaceSelector` field of the `ClusterUserDefinedNetwork` custom resource.
 
 2.  Apply the `Namespace` manifest by running the following command:
 
@@ -141,19 +141,19 @@ You can create an isolated primary network in your project namespace by using th
         subnets:
           - "10.0.0.0/24"
           - "2001:db8::/60"
-      ipam:
-        lifecycle: Persistent
+        ipam:
+          lifecycle: Persistent
     ```
 
-    - Specifies the name of the `UserDefinedNetwork` custom resource.
+    - `metadata.name` specifies the name of the `UserDefinedNetwork` custom resource.
 
-    - Specifies the namespace in which the VM is located. The namespace must have the `k8s.ovn.org/primary-user-defined-network` label. The namespace must not be `default`, an `openshift-*` namespace, or match any global namespaces that are defined by the Cluster Network Operator (CNO).
+    - `metadata.namespace` specifies the namespace in which the VM is located. The namespace must have the `k8s.ovn.org/primary-user-defined-network` label. The namespace must not be `default`, an `openshift-*` namespace, or match any global namespaces that are defined by the Cluster Network Operator (CNO).
 
-    - Specifies the topological configuration of the network. The required value is `Layer2`. A `Layer2` topology creates a logical switch that is shared by all nodes.
+    - `spec.topology` specifies the topological configuration of the network. The required value is `Layer2`. A `Layer2` topology creates a logical switch that is shared by all nodes.
 
-    - Specifies whether the UDN is primary or secondary. The `Primary` role means that the UDN acts as the primary network for the VM and all default traffic passes through this network.
+    - `spec.layer2.role` specifies whether the UDN is primary or secondary. The `Primary` role means that the UDN acts as the primary network for the VM and all default traffic passes through this network.
 
-    - Specifies that virtual workloads have consistent IP addresses across reboots and migration. The `spec.layer2.subnets` field is required when `ipam.lifecycle: Persistent` is specified.
+    - `spec.layer2.ipam.lifecycle` specifies that virtual workloads have consistent IP addresses across reboots and migration. The `spec.layer2.subnets` field is required when `ipam.lifecycle: Persistent` is specified.
 
 2.  Apply the `UserDefinedNetwork` manifest by running the following command:
 
@@ -194,17 +194,17 @@ You can connect multiple namespaces to the same primary user-defined network (UD
             - 203.203.0.0/16
     ```
 
-    - Specifies the name of the `ClusterUserDefinedNetwork` custom resource.
+    - `metadata.name` specifies the name of the `ClusterUserDefinedNetwork` custom resource.
 
-    - Specifies the set of namespaces that the cluster UDN applies to. The namespace selector must not point to `default`, an `openshift-*` namespace, or any global namespaces that are defined by the Cluster Network Operator (CNO).
+    - `spec.namespaceSelector` specifies the set of namespaces that the cluster UDN applies to. The namespace selector must not point to `default`, an `openshift-*` namespace, or any global namespaces that are defined by the Cluster Network Operator (CNO).
 
-    - Specifies the type of selector. In this example, the `matchExpressions` selector selects objects that have the label `kubernetes.io/metadata.name` with the value `red-namespace` or `blue-namespace`.
+    - `spec.namespaceSelector.matchExpressions` specifies the type of selector. In this example, the `matchExpressions` selector selects objects that have the label `kubernetes.io/metadata.name` with the value `red-namespace` or `blue-namespace`.
 
-    - Specifies the type of operator. Possible values are `In`, `NotIn`, and `Exists`.
+    - `spec.namespaceSelector.matchExpressions.operator` specifies the type of operator. Possible values are `In`, `NotIn`, and `Exists`.
 
-    - Specifies the topological configuration of the network. The required value is `Layer2`. A `Layer2` topology creates a logical switch that is shared by all nodes.
+    - `spec.network.topology` specifies the topological configuration of the network. The required value is `Layer2`. A `Layer2` topology creates a logical switch that is shared by all nodes.
 
-    - Specifies whether the UDN is primary or secondary. The `Primary` role means that the UDN acts as the primary network for the VM and all default traffic passes through this network.
+    - `spec.network.layer2.role` specifies whether the UDN is primary or secondary. The `Primary` role means that the UDN acts as the primary network for the VM and all default traffic passes through this network.
 
 2.  Apply the `ClusterUserDefinedNetwork` manifest by running the following command:
 
@@ -314,13 +314,13 @@ You can connect a virtual machine (VM) to the primary user-defined network (UDN)
     # ...
     ```
 
-    - The namespace in which the VM is located. This value must match the namespace in which the UDN is defined.
+    - `metadata.namespace` specifies the namespace in which the VM is located. This value must match the namespace in which the UDN is defined.
 
-    - The name of the user-defined network interface.
+    - `spec.template.spec.domain.devices.interfaces.name` specifies the name of the user-defined network interface.
 
-    - The name of the binding plugin that is used to connect the interface to the VM. The possible values are `l2bridge` and `passt`. The default value is `l2bridge`.
+    - `spec.template.spec.domain.devices.interfaces.binding.name` specifies the name of the binding plugin that is used to connect the interface to the VM. The possible values are `l2bridge` and `passt`. The default value is `l2bridge`.
 
-    - The name of the network. This must match the value of the `spec.template.spec.domain.devices.interfaces.name` field.
+    - `spec.template.spec.networks.name` specifies the name of the network. This must match the value of the `spec.template.spec.domain.devices.interfaces.name` field.
 
 2.  Optional: If you are using the Plug a Simple Socket Transport (passt) network binding plugin, set the `hco.kubevirt.io/deployPasstNetworkBinding` annotation to `true` in the `HyperConverged` custom resource (CR) by running the following command:
 

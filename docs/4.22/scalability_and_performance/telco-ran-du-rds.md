@@ -60,11 +60,11 @@ Deviation from the RDS can have some or all of the following consequences:
 
 - Unapproved deviations may require escalation at executive levels.
 
-  <div class="note">
+<div class="note">
 
-  Red Hat prioritizes the servicing of requests for deviations based on partner engagement priorities.
+Red Hat prioritizes the servicing of requests for deviations based on partner engagement priorities.
 
-  </div>
+</div>
 
 # Engineering considerations for the RAN DU use model
 
@@ -435,7 +435,7 @@ Engineering considerations
 
   - For additional information on the Node Tuning Operator, see "Using the Node Tuning Operator".
 
-- [Finding the effective IRQ affinity setting for a node](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#about_irq_affinity_setting_cnf-low-latency-perf-profile)
+- [Finding the effective IRQ affinity setting for a node](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#about_irq_affinity_setting_cnf-tuning-low-latency-nodes-with-perf-profile)
 
 - [Tuning nodes for low latency with the performance profile](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-tuning-low-latency-nodes-with-perf-profile)
 

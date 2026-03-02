@@ -271,7 +271,7 @@ You can now mount the secret, config map, or service account as you would mount 
 
 You can use the command line interface (CLI) to update multiple virtual machines (VMs) at the same time.
 
-- You installed the `oc` CLI.
+- You installed the OpenShift CLI (`oc`).
 
 - You have access to the OpenShift Container Platform cluster, and you have `cluster-admin` permissions.
 
@@ -332,19 +332,28 @@ You can use the command line interface (CLI) to update multiple virtual machines
        serviceAccountName: kubevirt-api-lifecycle-automation
     ```
 
-- Replace the image value with your pull URL for the image.
+    where:
 
-- Replace the `MACHINE_TYPE_GLOB` value with your own pattern. This pattern is used to detect deprecated machine types that need to be upgraded.
+    `quay.io/openshift-virtualization/kubevirt-api-lifecycle-automation:v4.21`
+    Specifies the pull URL for your image. Replace the image value in this example with your pull URL for the image.
 
-- If the `RESTART_REQUIRED` emvironment variable is set to `true`, VMs are restarted after the machine type is updated. If you do not want VMs to be restarted, set the value to `false`.
+    `MACHINE_TYPE_GLOB`
+    Specifies the pattern that is used to detect deprecated machine types that need to be upgraded. Replace the `MACHINE_TYPE_GLOB` value with your own pattern.
 
-- The `namespace` environment value indicates the namespace to look for VMs in. Leave the parameter empty for the job to go over all namespaces in the cluster.
+    `RESTART_REQUIRED`
+    Specifies whether VMs should be restarted after the machine type is updated. If the `RESTART_REQUIRED` environment variable is set to `true`, VMs are restarted after the machine type is updated. If you do not want VMs to be restarted, set this value to `false`.
 
-- You can use the `LABEL_SELECTOR` environment variable to select VMs that receive the job action. If you want the job to go over all VMs in the cluster, do not assign a value to the parameter.
+    `NAMESPACE`
+    Specifies the namespace to look for VMs in. Leave the parameter empty for the job to go over all namespaces in the cluster.
+
+    `LABEL_SELECTOR`
+    Specifies which VMs receive the job action. If you want the job to go over all VMs in the cluster, do not assign a value to the parameter.
 
 ## Performing bulk actions on virtual machines
 
 You can perform bulk actions on multiple virtual machines (VMs) simultaneously by using the **VirtualMachines** list view in the web console. This allows you to efficiently manage a group of VMs with minimal manual effort.
+
+Available bulk actions:
 
 - **Label VMs** - Add, edit, or remove labels that are applied across selected VMs.
 
@@ -396,7 +405,7 @@ Multiple IOThreads are supported only when `blockMultiQueue` is enabled and the 
 
     </div>
 
-**Additional resources for config maps, secrets, and service accounts**
+# Additional resources
 
 - [Understanding config maps](../../nodes/pods/nodes-pods-configmaps.xml#nodes-pods-configmap-overview_builds-configmaps)
 

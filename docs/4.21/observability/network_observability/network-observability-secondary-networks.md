@@ -35,7 +35,7 @@ The eBPF agent monitors other network namespaces in addition to the host network
       name: cluster
     spec:
       namespace: netobserv
-      deploymentModel: Direct
+      deploymentModel: Service
       agent:
         type: eBPF
         ebpf:

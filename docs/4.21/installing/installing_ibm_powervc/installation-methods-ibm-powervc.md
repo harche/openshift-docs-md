@@ -1,12 +1,6 @@
-You can install OpenShift Container Platform on IBM® Power® Virtualization Center (IBM PowerVC) using installer-provisioned infrastructure.
+You can install OpenShift Container Platform on IBM PowerVC using installer-provisioned infrastructure. This process involves using the installation program to provision the underlying infrastructure for your cluster.
 
-# Prerequisites
-
-- You reviewed details about the [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation) processes.
-
-- You read the documentation on [selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing).
-
-## Installing a cluster on installer-provisioned infrastructure
+# Installing a cluster on installer-provisioned infrastructure
 
 You can install a cluster on IBM PowerVC infrastructure that is provisioned by the OpenShift Container Platform installation program, by using one of the following methods:
 

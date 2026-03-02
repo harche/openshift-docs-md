@@ -1,11 +1,5 @@
 You can use the Run Once Duration Override Operator to specify a maximum time limit that run-once pods can be active for.
 
-<div class="important">
-
-The Run Once Duration Override Operator is not currently available for OpenShift Container Platform 4.17. The Operator is planned to be released in the near future.
-
-</div>
-
 # About the Run Once Duration Override Operator
 
 OpenShift Container Platform relies on run-once pods to perform tasks such as deploying a pod or performing a build. Run-once pods are pods that have a `RestartPolicy` of `Never` or `OnFailure`.

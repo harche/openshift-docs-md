@@ -35,25 +35,22 @@ To configure interface-level network sysctls in OpenShift Container Platform, yo
 
     where:
 
-    `name`
+    `metadata.name`
     Specifies the name for the additional network attachment to create. The name must be unique within the specified namespace.
 
-    `namespace`
+    `metadata.namespace`
     Specifies the namespace that the object is associated with.
 
-    `cniVersion`
+    `spec.config.cniVersion`
     Specifies the CNI specification version.
 
-    `name`
+    `spec.config.name`
     Specifies the name for the configuration. It is recommended to match the configuration name to the name value of the network attachment definition.
 
-    `main_CNI_plugin`
+    `spec.config.plugins.type`
     Specifies the name of the main CNI plugin to configure.
 
-    `tuning`
-    Specifies the name of the CNI meta plugin.
-
-    `sysctl`
+    `spec.config.plugins.tuning.sysctl`
     Specifies the sysctl to set. The interface name is represented by the `IFNAME` token and is replaced with the actual name of the interface at runtime.
 
     <div class="formalpara-title">
@@ -130,25 +127,25 @@ To configure interface-level network sysctls in OpenShift Container Platform, yo
 
     where:
 
-    `k8s.v1.cni.cncf.io/networks`
+    `metadata.annotations.k8s.v1.cni.cncf.io/networks`
     Specifies the name of the configured `NetworkAttachmentDefinition`.
 
-    `runAsUser`
+    `spec.containers.securityContext.runAsUser`
     Specifies which user ID the container is run with.
 
-    `runAsGroup`
+    `spec.containers.securityContext.runAsGroup`
     Specifies which primary group ID the containers is run with.
 
-    `allowPrivilegeEscalation`
+    `spec.containers.securityContext.allowPrivilegeEscalation`
     Specifies if a pod can request to allow privilege escalation. If unspecified, it defaults to true. This boolean directly controls whether the `no_new_privs` flag gets set on the container process.
 
-    `capabilities`
+    `spec.containers.securityContext.capabilities`
     Specifies privileged actions without giving full root access. This policy ensures all capabilities are dropped from the pod.
 
-    `runAsNonRoot: true`
+    `spec.securityContext.runAsNonRoot: true`
     Specifies that the container will run with a user with any UID other than 0.
 
-    `seccompProfile`
+    `spec.securityContext.seccompProfile`
     Specifies the default seccomp profile for a pod or container workload.
 
 4.  Apply the yaml by running the following command:
@@ -226,25 +223,25 @@ To enable all-multicast mode on network interfaces in OpenShift Container Platfo
 
     where:
 
-    `name`
+    `<name>`
     Specifies the name for the additional network attachment to create. The name must be unique within the specified namespace.
 
-    `namespace`
+    `default`
     Specifies the namespace that the object is associated with.
 
-    `cniVersion`
+    `"0.4.0"`
     Specifies the CNI specification version.
 
-    `name`
+    `"<name>"`
     Specifies the name for the configuration. Match the configuration name to the name value of the network attachment definition.
 
-    `main_CNI_plugin`
+    `"<main_CNI_plugin>"`
     Specifies the name of the main CNI plugin to configure.
 
-    `tuning`
+    `"tuning"`
     Specifies the name of the CNI meta plugin.
 
-    `allmulti`
+    `"true"`
     Specifies the all-multicast mode of interface. If enabled, all multicast packets on the network will be received by the interface.
 
     <div class="formalpara-title">
@@ -320,25 +317,25 @@ To enable all-multicast mode on network interfaces in OpenShift Container Platfo
 
     where:
 
-    `k8s.v1.cni.cncf.io/networks`
+    `metadata.annotations.k8s.v1.cni.cncf.io/networks`
     Specifies the name of the configured `NetworkAttachmentDefinition`.
 
-    `runAsUser`
+    `spec.containers.securityContext.runAsUser`
     Specifies which user ID the container is run with.
 
-    `runAsGroup`
+    `spec.containers.securityContext.runAsGroup`
     Specifies which primary group ID the containers is run with.
 
-    `allowPrivilegeEscalation`
+    `spec.containers.securityContext.allowPrivilegeEscalation`
     Specifies if a pod can request to allow privilege escalation. If unspecified, it defaults to true. This boolean directly controls whether the `no_new_privs` flag gets set on the container process.
 
-    `capabilities`
+    `spec.containers.securityContext.capabilities`
     Specifies privileged actions without giving full root access. This policy ensures all capabilities are dropped from the pod.
 
-    `runAsNonRoot: true`
+    `spec.containers.securityContext.runAsNonRoot: true`
     Specifies that the container will run with a user with any UID other than 0.
 
-    `seccompProfile`
+    `spec.containers.securityContext.seccompProfile`
     Specifies the default seccomp profile for a pod or container workload.
 
 4.  Apply the settings specified in the YAML file by running the following command:

@@ -154,7 +154,7 @@ To ensure that your builds and deployments use the intended image version in Ope
 
   where:
 
-  `image`
+  `spec.containers.image`
   Specifies the image to use from the image stream. For example, `ruby:2.0`.
 
 - To reference a specific, immutable image ID, or digest, within an image stream, use the `<image_stream_name>@<image_id>` format in your build or deployment. For example:
@@ -169,7 +169,7 @@ To ensure that your builds and deployments use the intended image version in Ope
 
   where:
 
-  `image`
+  `spec.containers.image`
   Specifies the image to use from the image stream. For example, `ruby@sha256:3a335d7d8a452970c5b4054ad7118ff134b3a6b50a2bb6d0c07c746e8986b28e`.
 
   <div class="note">
@@ -195,7 +195,7 @@ To ensure that your builds and deployments use the intended image version in Ope
 
   where:
 
-  `image`
+  `spec.strategy.dockerStrategy.from.name`
   Specifies the image to use from the external registry. For example, `registry.redhat.io/rhel7:latest`.
 
   <div class="note">

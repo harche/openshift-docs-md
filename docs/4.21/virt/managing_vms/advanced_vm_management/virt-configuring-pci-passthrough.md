@@ -58,49 +58,49 @@ If you use the [NVIDIA GPU Operator](https://docs.nvidia.com/datacenter/cloud-na
   `<node_name>`
   Specifies the name of a node where you do not want to install the NVIDIA GPU operands.
 
-  1.  Verify that the label was added to the node by running the following command:
+1.  Verify that the label was added to the node by running the following command:
 
-      ``` terminal
-      $ oc describe node <node_name>
-      ```
+    ``` terminal
+    $ oc describe node <node_name>
+    ```
 
-  2.  Optional: If GPU operands were previously deployed on the node, verify their removal.
+2.  Optional: If GPU operands were previously deployed on the node, verify their removal.
 
-      1.  Check the status of the pods in the `nvidia-gpu-operator` namespace by running the following command:
+    1.  Check the status of the pods in the `nvidia-gpu-operator` namespace by running the following command:
 
-          ``` terminal
-          $ oc get pods -n nvidia-gpu-operator
-          ```
+        ``` terminal
+        $ oc get pods -n nvidia-gpu-operator
+        ```
 
-          Example output:
+        Example output:
 
-          ``` terminal
-          NAME                             READY   STATUS        RESTARTS   AGE
-          gpu-operator-59469b8c5c-hw9wj    1/1     Running       0          8d
-          nvidia-sandbox-validator-7hx98   1/1     Running       0          8d
-          nvidia-sandbox-validator-hdb7p   1/1     Running       0          8d
-          nvidia-sandbox-validator-kxwj7   1/1     Terminating   0          9d
-          nvidia-vfio-manager-7w9fs        1/1     Running       0          8d
-          nvidia-vfio-manager-866pz        1/1     Running       0          8d
-          nvidia-vfio-manager-zqtck        1/1     Terminating   0          9d
-          ```
+        ``` terminal
+        NAME                             READY   STATUS        RESTARTS   AGE
+        gpu-operator-59469b8c5c-hw9wj    1/1     Running       0          8d
+        nvidia-sandbox-validator-7hx98   1/1     Running       0          8d
+        nvidia-sandbox-validator-hdb7p   1/1     Running       0          8d
+        nvidia-sandbox-validator-kxwj7   1/1     Terminating   0          9d
+        nvidia-vfio-manager-7w9fs        1/1     Running       0          8d
+        nvidia-vfio-manager-866pz        1/1     Running       0          8d
+        nvidia-vfio-manager-zqtck        1/1     Terminating   0          9d
+        ```
 
-      2.  Monitor the pod status until the pods with `Terminating` status are removed:
+    2.  Monitor the pod status until the pods with `Terminating` status are removed:
 
-          ``` terminal
-          $ oc get pods -n nvidia-gpu-operator
-          ```
+        ``` terminal
+        $ oc get pods -n nvidia-gpu-operator
+        ```
 
-          Example output:
+        Example output:
 
-          ``` terminal
-          NAME                             READY   STATUS    RESTARTS   AGE
-          gpu-operator-59469b8c5c-hw9wj    1/1     Running   0          8d
-          nvidia-sandbox-validator-7hx98   1/1     Running   0          8d
-          nvidia-sandbox-validator-hdb7p   1/1     Running   0          8d
-          nvidia-vfio-manager-7w9fs        1/1     Running   0          8d
-          nvidia-vfio-manager-866pz        1/1     Running   0          8d
-          ```
+        ``` terminal
+        NAME                             READY   STATUS    RESTARTS   AGE
+        gpu-operator-59469b8c5c-hw9wj    1/1     Running   0          8d
+        nvidia-sandbox-validator-7hx98   1/1     Running   0          8d
+        nvidia-sandbox-validator-hdb7p   1/1     Running   0          8d
+        nvidia-vfio-manager-7w9fs        1/1     Running   0          8d
+        nvidia-vfio-manager-866pz        1/1     Running   0          8d
+        ```
 
 # Preparing host devices for PCI passthrough
 
@@ -142,16 +142,11 @@ To enable the IOMMU driver in the kernel, create the `MachineConfig` object and 
     # ...
     ```
 
-    where:
+    - `metadata.labels.machineconfiguration.openshift.io/role` specifies that the new kernel argument is applied only to worker nodes.
 
-    \<apiversion\>
-    Applies the new kernel argument only to worker nodes.
+    - `metadata.name` specifies the ranking of this kernel argument (100) among the machine configs and its purpose. If you have an AMD CPU, specify the kernel argument as `amd_iommu=on`.
 
-    \<name\>
-    Indicates the ranking of this kernel argument (100) among the machine configs and its purpose. If you have an AMD CPU, specify the kernel argument as `amd_iommu=on`.
-
-    \<intel_iommu=o\>
-    Identifies the kernel argument as `intel_iommu` for an Intel CPU.
+    - `spec.kernelArguments` specifies the kernel argument as `intel_iommu` for an Intel CPU.
 
 2.  Create the new `MachineConfig` object:
 
@@ -252,11 +247,11 @@ The `MachineConfig` Operator generates the `/etc/modprobe.d/vfio.conf` on the no
           inline: vfio-pci
     ```
 
-    - Applies the new kernel argument only to worker nodes.
+    - `metadata.labels.machineconfiguration.openshift.io/role: worker` specifies that the new kernel argument is applied only to worker nodes.
 
-    - Specify the previously determined `vendor-ID` value (`10de`) and the `device-ID` value (`1eb8`) to bind a single device to the VFIO driver. You can add a list of multiple devices with their vendor and device information.
+    - `storage.files.contents.inline`, where the path is `/etc/modprobe.d/vfio.conf`, specifies the previously determined `vendor-ID` value (`10de`) and the `device-ID` value (`1eb8`) to bind a single device to the VFIO driver. You can add a list of multiple devices with their vendor and device information.
 
-    - The file that loads the vfio-pci kernel module on the worker nodes.
+    - `storage.files.path`, where the `contents.inline` is `vfio-pci`, specifies the file that loads the `vfio-pci` kernel module on the worker nodes.
 
 3.  Use Butane to generate a `MachineConfig` object file, `100-worker-vfiopci.yaml`, containing the configuration to be delivered to the worker nodes:
 
@@ -489,10 +484,7 @@ When a PCI device is available in a cluster, you can assign it to a virtual mach
           name: hostdevices1
   ```
 
-  where:
-
-  `deviceName`
-  Specifies the name of the PCI device that is permitted on the cluster as a host device. The virtual machine can access this host device.
+  - `spec.template.spec.domain.devices.hostDevices.deviceName` specifies the name of the PCI device that is permitted on the cluster as a host device. The virtual machine can access this host device.
 
 <!-- -->
 

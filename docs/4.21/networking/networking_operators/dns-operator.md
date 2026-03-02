@@ -523,7 +523,7 @@ As a cluster administrator, you can use a custom node selector to configure the 
                 node-role.kubernetes.io/control-plane: ""
           ```
 
-          - The `nodeselector` field in the example ensures that the CoreDNS pods run only on control plane nodes.
+          - The `spec.nodePlacement.nodeSelector` field in the example ensures that the CoreDNS pods run only on control plane nodes.
 
 ## Configuring DNS forwarding with TLS
 

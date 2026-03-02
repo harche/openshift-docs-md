@@ -18,7 +18,7 @@ Navigate to the network traffic **Overview** view in the OpenShift Container Pla
 
 2.  In the **Network Traffic** page, click the **Overview** tab.
 
-You can configure the scope of each flow rate data by clicking the menu icon.
+3.  Click the menu icon to configure the scope of each flow rate data.
 
 ## Configuring advanced options for the Overview view
 
@@ -299,7 +299,7 @@ As an administrator, you can navigate to **Traffic flows** table to see network 
 
 2.  In the **Network Traffic** page, click the **Traffic flows** tab.
 
-You can click on each row to get the corresponding flow information.
+3.  Click on each row to get the corresponding flow information.
 
 ## Configuring advanced options for the Traffic flows view
 
@@ -540,11 +540,11 @@ CPU and memory usage increases are observed in the eBPF agent when this feature 
 
     3.  Filter on specific DNS metrics, such as **DNS Id**, **DNS Error** **DNS Latency** and **DNS Response Code**, and see more information from the side panel. The **DNS Latency** and **DNS Response Code** columns are shown by default.
 
-<div class="note">
+        <div class="note">
 
-TCP handshake packets do not have DNS headers. TCP protocol flows without DNS headers are shown in the traffic flow data with **DNS Latency**, **ID**, and **Response code** values of "n/a". You can filter out flow data to view only flows that have DNS headers using the **Common** filter "DNSError" equal to "0".
+        TCP handshake packets do not have DNS headers. TCP protocol flows without DNS headers are shown in the traffic flow data with **DNS Latency**, **ID**, and **Response code** values of "n/a". You can filter out flow data to view only flows that have DNS headers using the **Common** filter "DNSError" equal to "0".
 
-</div>
+        </div>
 
 ## Working with RTT tracing
 
@@ -726,13 +726,13 @@ Configure multiple filtering rules in the `FlowCollector` custom resource to ref
 
 3.  Select **cluster**, then select the **YAML** tab.
 
-4.  Configure the `FlowCollector` custom resource, similar to the following sample configurations:
+4.  Configure the `FlowCollector` custom resource.
 
-<div class="formalpara-title">
+## eBPF flow data filtering examples
 
-**Example YAML to sample all North-South traffic, and 1:50 East-West traffic**
+Use these `FlowCollector` custom resource examples to filter eBPF flows using multiple rules to control the flow of packets cached in the eBPF flow table.
 
-</div>
+### Example YAML to sample all North-South traffic, and 1:50 East-West traffic
 
 By default, all other flows are rejected.
 
@@ -743,7 +743,7 @@ metadata:
   name: cluster
 spec:
   namespace: netobserv
-  deploymentModel: Direct
+  deploymentModel: Service
   agent:
     type: eBPF
     ebpf:
@@ -762,21 +762,17 @@ spec:
            sampling: 50
 ```
 
-- To enable eBPF flow filtering, set `spec.agent.ebpf.flowFilter.enable` to `true`.
+- Enables `eBPF` flow filtering by setting `spec.agent.ebpf.flowFilter.enable` to `true`.
 
-- To define the action for the flow filter rule, set the required `action` parameter. Valid values are `Accept` or `Reject`.
+- Defines the action for the flow filter rule. Valid values are `Accept` or `Reject`.
 
-- To define the IP address and CIDR mask for the flow filter rule, set the required `cidr` parameter. This parameter supports both IPv4 and IPv6 address formats. To match any IP address, use `0.0.0.0/0` for IPv4 or `::/0` for IPv6.
+- Defines the IP address and `CIDR` mask for the flow filter rule. This parameter supports both `IPv4` and `IPv6` address formats. Use `0.0.0.0/0` for `IPv4` or `::/0` for `IPv6` to match any IP address.
 
-- To define the sampling interval for matched flows and override the global sampling setting `spec.agent.ebpf.sampling`, set the `sampling` parameter.
+- Defines the sampling interval for matched flows and overrides the global sampling setting (`spec.agent.ebpf.sampling`).
 
-- To filter flows by Peer IP CIDR, set the `peerCIDR` parameter.
+- Filters flows by Peer IP `CIDR`.
 
-<div class="formalpara-title">
-
-**Example YAML to filter flows with packet drops**
-
-</div>
+### Example YAML to filter flows with packet drops
 
 By default, all other flows are rejected.
 
@@ -787,7 +783,7 @@ metadata:
   name: cluster
 spec:
   namespace: netobserv
-  deploymentModel: Direct
+  deploymentModel: Service
   agent:
     type: eBPF
     ebpf:
@@ -802,15 +798,15 @@ spec:
           pktDrops: true
 ```
 
-- To enable packet drops, set `spec.agent.ebpf.privileged` to `true`.
+- Enables packet drops reporting by setting `spec.agent.ebpf.privileged` to `true`.
 
-- To report packet drops for each network flow, add the `PacketDrop` value to the `spec.agent.ebpf.features` list.
+- Reports packet drops for each network flow by adding the `PacketDrop` value to the `spec.agent.ebpf.features` list.
 
-- To enable eBPF flow filtering, set `spec.agent.ebpf.flowFilter.enable` to `true`.
+- Enables `eBPF` flow filtering by setting `spec.agent.ebpf.flowFilter.enable` to `true`.
 
-- To define the action for the flow filter rule, set the required `action` parameter. Valid values are `Accept` or `Reject`.
+- Defines the action for the flow filter rule. Valid values are `Accept` or `Reject`.
 
-- To filter flows containing drops, set `pktDrops` to `true`.
+- Filters flows that contain drops by setting `pktDrops` to `true`.
 
 ## Endpoint translation (xlat)
 
@@ -872,25 +868,19 @@ You can use network observability and eBPF to enrich network flows from a Kubern
 
     - You can start enriching network flows with translated packet information by listing the `PacketTranslation` parameter in the `spec.agent.ebpf.features` specification list.
 
-<div class="formalpara-title">
+5.  Refresh the **Network Traffic** page to filter for information about translated packets:
 
-**Example filtering**
+    1.  Filter the network flow data based on **Destination kind: Service**.
 
-</div>
+    2.  You can see the **xlat** column, which distinguishes where translated information is displayed, and the following default columns:
 
-When you refresh the **Network Traffic** page you can filter for information about translated packets:
+        - **Xlat Zone ID**
 
-1.  Filter the network flow data based on **Destination kind: Service**.
+        - **Xlat Src Kubernetes Object**
 
-2.  You can see the **xlat** column, which distinguishes where translated information is displayed, and the following default columns:
+        - **Xlat Dst Kubernetes Object**
 
-    - **Xlat Zone ID**
-
-    - **Xlat Src Kubernetes Object**
-
-    - **Xlat Dst Kubernetes Object**
-
-You can manage the display of additional **xlat** columns in **Manage columns**.
+    3.  You can manage the display of additional **xlat** columns in **Manage columns**.
 
 ## Working with user-defined networks
 
@@ -1045,7 +1035,7 @@ As an administrator, you can navigate to the **Topology** view to see the detail
 
 2.  In the **Network Traffic** page, click the **Topology** tab.
 
-You can click each component in the **Topology** to view the details and metrics of the component.
+3.  Click each component in the **Topology** tab to view its details and metrics.
 
 ## Configuring the advanced options for the Topology view
 

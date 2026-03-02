@@ -155,13 +155,17 @@ To ensure stable behavior and avoid unnecessary re-importing, you can specify th
     # ...
     ```
 
-    - Define the storage class.
+    - `spec.dataImportCronTemplates.spec.template.spec.storage.storageClassName` specifies the storage class.
 
-    - Required: Schedule for the job specified in cron format.
+    - `spec.dataImportCronTemplates.spec.schedule` is a required field that specifies the schedule for the job in cron format.
 
-    - Required: The data source to use.
+    - `spec.dataImportCronTemplates.spec.managedDataSource` is a required field that specifies the data source to use.
 
-          For the custom image to be detected as an available boot source, the value of the `spec.dataVolumeTemplates.spec.sourceRef.name` parameter in the VM template must match this value.
+      <div class="note">
+
+      For the custom image to be detected as an available boot source, the value of the `spec.dataVolumeTemplates.spec.sourceRef.name` parameter in the VM template must match this value.
+
+      </div>
 
 3.  Wait for the HyperConverged Operator (HCO) and Scheduling, Scale, and Performance (SSP) resources to complete reconciliation.
 
@@ -219,13 +223,13 @@ OpenShift Virtualization automatically updates system-defined boot sources by de
           managedDataSource: centos-stream9
     ```
 
-    - This annotation is required for storage classes with `volumeBindingMode` set to `WaitForFirstConsumer`.
+    - `spec.dataImportCronTemplates.metadata.annotations` specifies a required annotation for storage classes with `volumeBindingMode` set to `WaitForFirstConsumer`.
 
-    - Schedule for the job specified in cron format.
+    - `spec.dataImportCronTemplates.spec.schedule` specifies the schedule for the job, specified in cron format.
 
-    - Use to create a data volume from a registry source. Use the default `pod` `pullMethod` and not `node` `pullMethod`, which is based on the `node` docker cache. The `node` docker cache is useful when a registry image is available via `Container.Image`, but the CDI importer is not authorized to access it.
+    - `spec.dataImportCronTemplates.spec.template.spec.source.registry` specifies the registry source to use to create a data volume. Use the default `pod` `pullMethod` and not `node` `pullMethod`, which is based on the `node` docker cache. The `node` docker cache is useful when a registry image is available via `Container.Image`, but the CDI importer is not authorized to access it.
 
-    - For the custom image to be detected as an available boot source, the name of the image’s `managedDataSource` must match the name of the template’s `DataSource`, which is found under `spec.dataVolumeTemplates.spec.sourceRef.name` in the VM template YAML file.
+    - `spec.dataImportCronTemplates.spec.managedDataSource` specifies the name of the managed data source. For the custom image to be detected as an available boot source, the name of the image’s `managedDataSource` must match the name of the template’s `DataSource`, which is found under `spec.dataVolumeTemplates.spec.sourceRef.name` in the VM template YAML file.
 
 3.  Save the file.
 
@@ -396,11 +400,9 @@ You can determine if a boot source is system-defined or custom by viewing the `H
     # ...
     ```
 
-    `status.dataImportCronTemplates.status.commonTemplate`
-    Indicates a system-defined boot source.
+    - `status.dataImportCronTemplates.status.commonTemplate` specifies a system-defined boot source.
 
-    `status.dataImportCronTemplates.status`
-    Indicates a custom boot source.
+    - `status.dataImportCronTemplates.status` specifies a custom boot source.
 
 2.  Verify the status of the boot source by reviewing the `status.dataImportCronTemplates.status` field.
 

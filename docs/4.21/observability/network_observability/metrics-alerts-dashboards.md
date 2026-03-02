@@ -18,7 +18,7 @@ View network observability metrics dashboards using the **Overview** tab in the 
 
 3.  Select the **Netobserv/Health** dashboard.
 
-4.  View metrics about the health of the Operator in the following categories, with each having the subset per node, namespace, source, and destination.
+4.  View metrics about the health of the Operator in the following categories, with each having the subset per node, namespace, source, and destination:
 
     - **Flows**
 
@@ -32,7 +32,7 @@ View network observability metrics dashboards using the **Overview** tab in the 
 
     - **Operator**
 
-**Infrastructure** and **Application** metrics are shown in a split-view for namespace and workloads.
+      **Infrastructure** and **Application** metrics are shown in a split-view for namespace and workloads.
 
 # Network observability metrics
 

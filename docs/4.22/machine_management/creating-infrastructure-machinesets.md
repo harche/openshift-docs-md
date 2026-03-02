@@ -438,9 +438,9 @@ Machine sets running on Azure Stack Hub do not support non-guaranteed Spot VMs.
 
 ### Sample YAML for a compute machine set custom resource on IBM Cloud
 
-This sample YAML defines a compute machine set that runs in a specified IBM Cloud® zone in a region and creates nodes that are labeled with `node-role.kubernetes.io/infra: ""`.
+You can use the sample YAML file to automate the provisioning of compute or infrastructure nodes within a specific Virtual Private Cloud (VPC). The sample YAML defines a compute machine set that runs in a specified IBM Cloud® zone in a region and creates nodes that are labeled with `node-role.kubernetes.io/infra: ""`.
 
-In this sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<infra>` is the node label to add.
+In the sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<infra>` is the node label to add.
 
 ``` yaml
 apiVersion: machine.openshift.io/v1beta1
@@ -493,45 +493,60 @@ spec:
           effect: NoSchedule
 ```
 
-- The infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI installed, you can obtain the infrastructure ID by running the following command:
+where:
 
-  ``` terminal
-  $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
-  ```
+`<infrastructure_id>`
+Specifies the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI installed, you can obtain the infrastructure ID by running the following command:
 
-- The `<infra>` node label.
+``` terminal
+$ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
+```
 
-- The infrastructure ID, `<infra>` node label, and region.
+`<infra>`
+Specifies the `<infra>` node label.
 
-- The custom Red Hat Enterprise Linux CoreOS (RHCOS) image that was used for cluster installation.
+`<infrastructure_id>-<infra>-<region>`
+Specifies the infrastructure ID, `<infra>` node label, and region.
 
-- The infrastructure ID and zone within your region to place machines on. Be sure that your region supports the zone that you specify.
+`<infrastructure_id>-rhcos`
+Specifies the custom Red Hat Enterprise Linux CoreOS (RHCOS) image that was used for cluster installation.
 
-- Specify the [IBM Cloud® instance profile](https://cloud.ibm.com/docs/vpc?topic=vpc-profiles&interface=ui).
+`<infrastructure_id>-subnet-compute-<zone>`
+Specifies the infrastructure ID and zone within your region to place machines on. Be sure that your region supports the zone that you specify.
 
-- Specify the region to place machines on.
+`<instance_profile>`
+Specifies the [IBM Cloud® instance profile](https://cloud.ibm.com/docs/vpc?topic=vpc-profiles&interface=ui).
 
-- The resource group that machine resources are placed in. This is either an existing resource group specified at installation time, or an installer-created resource group named based on the infrastructure ID.
+`<region>`
+Specifies the region to place machines on.
 
-- The VPC name.
+`<resource_group>`
+Specifies the resource group that machine resources are placed in. This is either an existing resource group specified at installation time, or an installer-created resource group named based on the infrastructure ID.
 
-- Specify the zone within your region to place machines on. Be sure that your region supports the zone that you specify.
+`<vpc_name>`
+Specifies the VPC name.
 
-- The taint to prevent user workloads from being scheduled on infra nodes.
+`<zone>`
+Specifies the zone within your region to place machines on. Be sure that your region supports the zone that you specify.
 
-  <div class="note">
+`taints`
+Specifies the taint to prevent user workloads from being scheduled on infra nodes.
 
-  After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
+<div class="note">
 
-  </div>
+After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
+
+</div>
 
 ### Sample YAML for a compute machine set custom resource on Google Cloud
 
-This sample YAML defines a compute machine set that runs in Google Cloud and creates nodes that are labeled with `node-role.kubernetes.io/infra: ""`, where `infra` is the node label to add.
+The sample YAML defines a compute machine set for Google Cloud, enabling the automated provisioning of nodes within a specific VPC. When you apply this configuration by using the OpenShift Container Platform CLI, you can ensure consistent scaling, scheduling, and infrastructure ID labeling for compute resources in your cluster.
+
+The sample YAML defines a compute machine set that runs in Google Cloud and creates nodes that are labeled with `node-role.kubernetes.io/infra: ""`, where `infra` is the node label to add.
 
 #### Values obtained by using the OpenShift CLI
 
-In the following example, you can obtain some of the values for your cluster by using the OpenShift CLI.
+In the following example, you can obtain some of the values for your cluster by using the OpenShift Container Platform CLI.
 
 Infrastructure ID
 The `<infrastructure_id>` string is the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI installed, you can obtain the infrastructure ID by running the following command:
@@ -621,33 +636,40 @@ spec:
         effect: NoSchedule
 ```
 
-- For `<infrastructure_id>`, specify the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster.
+where:
 
-- For `<infra>`, specify the `<infra>` node label.
+`<infrastructure_id>`
+Specifies the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster.
 
-- Specify the path to the image that is used in current compute machine sets.
+`<infra>`
+Specifies the `<infra>` node label.
 
-  To use a Google Cloud Marketplace image, specify the offer to use:
+`<path_to_image>`
+Specifies the path to the image that is used in current compute machine sets. To use a Google Cloud Marketplace image, specify the offer to use:
 
-  - OpenShift Container Platform: `https://www.googleapis.com/compute/v1/projects/redhat-marketplace-public/global/images/redhat-coreos-ocp-413-x86-64-202305021736`
+- OpenShift Container Platform: `https://www.googleapis.com/compute/v1/projects/redhat-marketplace-public/global/images/redhat-coreos-ocp-413-x86-64-202305021736`
 
-  - OpenShift Platform Plus: `https://www.googleapis.com/compute/v1/projects/redhat-marketplace-public/global/images/redhat-coreos-opp-413-x86-64-202305021736`
+- OpenShift Platform Plus: `https://www.googleapis.com/compute/v1/projects/redhat-marketplace-public/global/images/redhat-coreos-opp-413-x86-64-202305021736`
 
-  - OpenShift Kubernetes Engine: `https://www.googleapis.com/compute/v1/projects/redhat-marketplace-public/global/images/redhat-coreos-oke-413-x86-64-202305021736`
+- OpenShift Kubernetes Engine: `https://www.googleapis.com/compute/v1/projects/redhat-marketplace-public/global/images/redhat-coreos-oke-413-x86-64-202305021736`
 
-- Optional: Specify custom metadata in the form of a `key:value` pair. For example use cases, see the Google Cloud documentation for [setting custom metadata](https://cloud.google.com/compute/docs/metadata/setting-custom-metadata).
+`<gcpMetadata>`
+Optional: Specifies the custom metadata in the form of a `key:value` pair. For example use cases, see the Google Cloud documentation for [setting custom metadata](https://cloud.google.com/compute/docs/metadata/setting-custom-metadata).
 
-- For `<project_name>`, specify the name of the Google Cloud project that you use for your cluster.
+`<project_name>`
+Specifies the name of the Google Cloud project that you use for your cluster.
 
-- Specifies a single service account. Multiple service accounts are not supported.
+`<serviceAccounts>`
+Specifies a single service account. Multiple service accounts are not supported.
 
-- Specify a taint to prevent user workloads from being scheduled on infra nodes.
+`<taints>`
+Specifies a taint to prevent user workloads from being scheduled on infra nodes.
 
-  <div class="note">
+<div class="note">
 
-  After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
+After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
 
-  </div>
+</div>
 
 Machine sets running on Google Cloud support non-guaranteed [preemptible VM instances](../machine_management/creating_machinesets/creating-machineset-gcp.xml#machineset-non-guaranteed-instance_creating-machineset-gcp). You can save on costs by using preemptible VM instances at a lower price compared to normal instances on Google Cloud. You can [configure preemptible VM instances](../machine_management/creating_machinesets/creating-machineset-gcp.xml#machineset-creating-non-guaranteed-instance_creating-machineset-gcp) by adding `preemptible` to the `MachineSet` YAML file.
 
@@ -1012,7 +1034,7 @@ After adding the `NoSchedule` taint on the infrastructure node, existing DNS pod
 
 ## Creating a compute machine set
 
-In addition to the compute machine sets created by the installation program, you can create your own to dynamically manage the machine compute resources for specific workloads of your choice.
+In addition to the compute machine sets created by the installation program, you can create your own compute machine sets to dynamically manage the machine compute resources for specific workloads of your choice. Use the OpenShift Container Platform CLI to automate node provisioning.
 
 - Deploy an OpenShift Container Platform cluster.
 
@@ -1087,17 +1109,22 @@ In addition to the compute machine sets created by the installation program, you
                 ...
         ```
 
-        - The cluster infrastructure ID.
+        where:
 
-        - A default node label.
+        `metadata.labels.machine.openshift.io/cluster-api-cluster`
+        Specifies the cluster infrastructure ID.
 
-          <div class="note">
+        `metadata.labels.name`
+        Specifies a default node label.
 
-          For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
+        <div class="note">
 
-          </div>
+        For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
 
-        - The values in the `<providerSpec>` section of the compute machine set CR are platform-specific. For more information about `<providerSpec>` parameters in the CR, see the sample compute machine set CR configuration for your provider.
+        </div>
+
+        `spec.template.metadata.spec.providerSpec`
+        Specifies the values of the compute machine set CR. The values are platform-specific. For more information about `<providerSpec>` parameters in the CR, see the sample compute machine set CR configuration for your provider.
 
 3.  Create a `MachineSet` CR by running the following command:
 

@@ -127,7 +127,7 @@ You can connect a VM to an SR-IOV network by performing the following steps:
 
 1.  [Configure an SR-IOV network device](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#nw-sriov-configuring-device_virt-connecting-vm-to-sriov) by creating a `SriovNetworkNodePolicy` CRD.
 
-2.  [Configure an SR-IOV network](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#nw-sriov-network-attachment_virt-connecting-vm-to-sriov) by creating an `SriovNetwork` object.
+2.  [Configure an SR-IOV network](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#nw-sriov-additional-network_virt-connecting-vm-to-sriov) by creating an `SriovNetwork` object.
 
 3.  [Connect the VM to the SR-IOV network](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#virt-attaching-vm-to-sriov-network_virt-connecting-vm-to-sriov) by including the network details in the VM configuration.
 

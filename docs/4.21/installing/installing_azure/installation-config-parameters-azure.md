@@ -75,135 +75,6 @@ Required installation configuration parameters are described in the following ta
 
 Required parameters
 
-## Additional IBM PowerVC configuration parameters
-
-Additional IBM PowerVC configuration parameters are described in the following table:
-
-<table>
-<caption>Additional IBM PowerVC parameters</caption>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Parameter</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><pre><code>platform:
-  powervc:
-    cloud:</code></pre></td>
-<td style="text-align: left;"><p>The name of the IBM PowerVC cloud to use from the list of clouds in the <code>clouds.yaml</code> file.</p>
-<p>In the cloud configuration in the <code>clouds.yaml</code> file, if possible, use application credentials rather than a user name and password combination. Using application credentials avoids disruptions from secret propogation that follow user name and password rotation.</p>
-<p><strong>Value:</strong> String, for example <code>MyCloud</code>.</p></td>
-</tr>
-</tbody>
-</table>
-
-Additional IBM PowerVC parameters
-
-## Optional IBM PowerVC configuration parameters
-
-Optional IBM PowerVC configuration parameters are described in the following table:
-
-<table>
-<caption>Optional IBM PowerVC parameters</caption>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Parameter</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><pre><code>compute:
-  platform:
-    powervc:
-      zones:</code></pre></td>
-<td style="text-align: left;"><p>IBM PowerVC Compute availability zones to install machines on. If this parameter is not set, the installation program relies on the default settings that the IBM PowerVC administrator configured.</p>
-<p><strong>Value:</strong> A list of strings. For example, <code>["zone-1", "zone-2"]</code>.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><pre><code>controlPlane:
-  platform:
-    powervc:
-      zones:</code></pre></td>
-<td style="text-align: left;"><p>IBM PowerVC Compute availability zones to install machines on. If this parameter is not set, the installation program relies on the default settings that the IBM PowerVC administrator configured.</p>
-<p><strong>Value:</strong> A list of strings. For example, <code>["zone-1", "zone-2"]</code>.</p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><pre><code>platform:
-  powervc:
-    clusterOSImage:</code></pre></td>
-<td style="text-align: left;"><p>The name of the existing IBM PowerVC image.</p>
-<p><strong>Value:</strong> the name of an existing IBM PowerVC image, for example <code>my-rhcos</code>.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><pre><code>platform:
-  powervc:
-    controlPlanePort:
-      fixedIPs:</code></pre></td>
-<td style="text-align: left;"><p>Subnets for the machines to use.</p>
-<p><strong>Value:</strong> A list of subnet names or UUIDs to use in cluster installation.</p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><pre><code>platform:
-  powervc:
-    controlPlanePort:
-      network:</code></pre></td>
-<td style="text-align: left;"><p>A network for the machines to use.</p>
-<p><strong>Value:</strong> The UUID or name of an IBM PowerVC network to use in cluster installation.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><pre><code>platform:
-  powervc:
-    defaultMachinePlatform:</code></pre></td>
-<td style="text-align: left;"><p>The default machine pool platform configuration.</p>
-<p><strong>Value:</strong></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>   <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;my-compute-template&quot;</span><span class="fu">,</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><pre><code>platform:
-  powervc:
-    externalDNS:</code></pre></td>
-<td style="text-align: left;"><p>IP addresses for external DNS servers that cluster instances use for DNS resolution.</p>
-<p><strong>Value:</strong> A list of IP addresses as strings. For example, <code>["8.8.8.8", "192.168.1.12"]</code>.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><pre><code>platform:
-  powervc:
-    loadbalancer:</code></pre></td>
-<td style="text-align: left;"><p>Whether or not to use the default, internal load balancer. If the value is set to <code>UserManaged</code>, this default load balancer is disabled so that you can deploy a cluster that uses an external, user-managed load balancer. If the parameter is not set, or if the value is <code>OpenShiftManagedDefault</code>, the cluster uses the default load balancer.</p>
-<p><strong>Value:</strong> <code>UserManaged</code> or <code>OpenShiftManagedDefault</code>.</p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><pre><code>platform:
-  powervc:
-    apiVIPs:</code></pre></td>
-<td style="text-align: left;"><p>Virtual IP (VIP) addresses that you configured for control plane API access.</p>
-<p><strong>Value:</strong> A list of IP addresses as strings. For example, <code>["10.0.0.30", "10.0.0.31"]</code></p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><pre><code>platform:
-  powervc:
-    ingressVIPs:</code></pre></td>
-<td style="text-align: left;"><p>Virtual IP (VIP) addresses that you configured for cluster ingress.</p>
-<p><strong>Value:</strong> A list of IP addresses as strings. For example, <code>["10.0.0.32", "10.0.0.33"]</code></p></td>
-</tr>
-</tbody>
-</table>
-
-Optional IBM PowerVC parameters
-
 ## Network configuration parameters
 
 You can customize your installation configuration based on the requirements of your existing network infrastructure. For example, you can expand the IP address block for the cluster network or configure different IP address blocks than the defaults.
@@ -411,12 +282,6 @@ Optional installation configuration parameters are described in the following ta
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
-  architecture:</code></pre></td>
-<td style="text-align: left;"><p>Determines the instruction set architecture of the machines in the pool. Currently, heterogeneous clusters are not supported, so all pools must specify the same architecture. The valid value is the default: <code>ppc64le</code>.</p>
-<p><strong>Value:</strong> String</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><pre><code>controlPlane:
   hyperthreading:</code></pre></td>
 <td style="text-align: left;"><p>Whether to enable or disable simultaneous multithreading, or <code>hyperthreading</code>, on control plane machines. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores.</p>
 <div class="important">
@@ -424,35 +289,35 @@ Optional installation configuration parameters are described in the following ta
 </div>
 <p><strong>Value:</strong> <code>Enabled</code> or <code>Disabled</code></p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   name:</code></pre></td>
 <td style="text-align: left;"><p>Required if you use <code>controlPlane</code>. The name of the machine pool.</p>
 <p><strong>Value:</strong> <code>master</code></p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:</code></pre></td>
 <td style="text-align: left;"><p>Required if you use <code>controlPlane</code>. Use this parameter to specify the cloud provider that hosts the control plane machines. This parameter value must match the <code>compute.platform</code> parameter value.</p>
 <p><strong>Value:</strong> <code>aws</code>, <code>azure</code>, <code>gcp</code>, <code>ibmcloud</code>, <code>nutanix</code>, <code>openstack</code>, <code>powervs</code>, <code>vsphere</code>, or <code>{}</code></p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   replicas:</code></pre></td>
 <td style="text-align: left;"><p>The number of control plane machines to provision.</p>
 <p><strong>Value:</strong> Supported values are <code>3</code>, or <code>1</code> when deploying single-node OpenShift.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>arbiter:
     name: arbiter</code></pre></td>
 <td style="text-align: left;"><p>The OpenShift Container Platform cluster requires a name for arbiter nodes. For example, <code>arbiter</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>arbiter:
     replicas: 1</code></pre></td>
 <td style="text-align: left;"><p>The <code>replicas</code> parameter sets the number of arbiter nodes for the OpenShift Container Platform cluster. You cannot set this field to a value that is greater than 1.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>credentialsMode:</code></pre></td>
 <td style="text-align: left;"><p>The Cloud Credential Operator (CCO) mode. If no mode is specified, the CCO dynamically tries to determine the capabilities of the provided credentials, with a preference for mint mode on the platforms where multiple modes are supported.</p>
 <div class="note">
@@ -460,7 +325,7 @@ Optional installation configuration parameters are described in the following ta
 </div>
 <p><strong>Value:</strong> <code>Mint</code>, <code>Passthrough</code>, <code>Manual</code> or an empty string (<code>""</code>).</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>fips:</code></pre></td>
 <td style="text-align: left;"><p>Enable or disable FIPS mode. The default is <code>false</code> (disabled). If you enable FIPS mode, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that RHCOS provides instead.</p>
 <div class="important">
@@ -472,7 +337,7 @@ Optional installation configuration parameters are described in the following ta
 </div>
 <p><strong>Value:</strong> <code>false</code> or <code>true</code></p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>endpoint:
   name: &lt;endpoint_name&gt;
   clusterUseOnly: `true` or `false`</code></pre></td>
@@ -483,29 +348,29 @@ Optional installation configuration parameters are described in the following ta
 <p>When you want the installation program to use the public API endpoints and cluster operators to use the API endpoint overrides, set <code>clusterUseOnly</code> to <code>true</code>. When you want both the installation program and the cluster operators to use the API endpoint overrides, for example if you are running the installation program from a bastion host that is within the same VPC where you want to deploy the cluster, set <code>clusterUseOnly</code> to <code>false</code> . The parameter is optional and defaults to <code>false</code>.</p>
 <p><strong>Value:</strong> String or boolean</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>imageContentSources:</code></pre></td>
 <td style="text-align: left;"><p>Sources and repositories for the release-image content.</p>
 <p><strong>Value:</strong> Array of objects. Includes a <code>source</code> and, optionally, <code>mirrors</code>, as described in the following rows of this table.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>imageContentSources:
   source:</code></pre></td>
 <td style="text-align: left;"><p>Required if you use <code>imageContentSources</code>. Specify the repository that users refer to, for example, in image pull specifications.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>imageContentSources:
   mirrors:</code></pre></td>
 <td style="text-align: left;"><p>Specify one or more repositories that might also contain the same images.</p>
 <p><strong>Value:</strong> Array of strings</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>publish:</code></pre></td>
 <td style="text-align: left;"><p>How to publish or expose the user-facing endpoints of your cluster, such as the Kubernetes API, OpenShift routes.</p>
 <p><strong>Value:</strong> <code>Internal</code>, <code>External</code>, or <code>Mixed</code>. To deploy a private cluster that cannot be accessed from the internet, set the <code>publish</code> parameter to <code>Internal</code>. The default value is <code>External</code>. To deploy a cluster where the API and the ingress server have different publishing strategies, set <code>publish</code> to <code>Mixed</code> and use the <code>operatorPublishingStrategy</code> parameter.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>sshKey:</code></pre></td>
 <td style="text-align: left;"><p>The SSH key to authenticate access to your cluster machines.</p>
 <div class="note">

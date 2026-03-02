@@ -1,8 +1,8 @@
-The *Downward API* is a mechanism that allows containers to consume information about API objects without coupling to OpenShift Container Platform. Such information includes the pod’s name, namespace, and resource values. Containers can consume information from the downward API using environment variables or a volume plugin.
+You can use the *Downward API* to allow containers to consume information about API objects, such as the pod’s name, namespace, and resource values, without coupling to OpenShift Container Platform by using environment variables or a volume plugin.
 
 # Expose pod information to Containers using the Downward API
 
-The Downward API contains such information as the pod’s name, project, and resource values. Containers can consume information from the downward API using environment variables or a volume plugin.
+You can review the following tables to learn what information the Downward API contains, including the pod’s name, project, and resource values. Your containers can consume this information by using environment variables or a volume plugin.
 
 Fields within the pod are selected using the `FieldRef` API type. `FieldRef` has two fields:
 
@@ -25,7 +25,9 @@ The `apiVersion` field, if not specified, defaults to the API version of the enc
 
 # Understanding how to consume container values using the downward API
 
-You containers can consume API values using environment variables or a volume plugin. Depending on the method you choose, containers can consume:
+Your containers can consume API values by using environment variables or a volume plugin.
+
+Depending on the method you choose, containers can consume:
 
 - Pod name
 
@@ -39,9 +41,9 @@ Annotations and labels are available using only a volume plugin.
 
 ## Consuming container values using environment variables
 
-When using a container’s environment variables, use the `EnvVar` type’s `valueFrom` field (of type `EnvVarSource`) to specify that the variable’s value should come from a `FieldRef` source instead of the literal value specified by the `value` field.
+When using environment variables in a container, you can specify that the variable’s value should come from a `FieldRef` source instead of the literal value specified.
 
-Only constant attributes of the pod can be consumed this way, as environment variables cannot be updated once a process is started in a way that allows the process to be notified that the value of a variable has changed. The fields supported using environment variables are:
+Only constant attributes of the pod can be consumed this way, because environment variables cannot be updated after a process is started in a way that allows the process to be notified that the value of a variable has changed. The following fields are supported for using with environment variables:
 
 - Pod name
 
@@ -82,13 +84,18 @@ Only constant attributes of the pod can be consumed this way, as environment var
         # ...
         ```
 
-    2.  Create the pod from the `pod.yaml` file:
+        where:
+
+        `spec.containers.env.valueFrom.fieldRef.fieldPath`
+        Specifies that the environment variable gets its value from the specified pod value, either `metadata.name` for the pod name or `metadata.namespace` for the pod namespace, instead of a literal value specified by a `value` field.
+
+    2.  Create the pod from the `pod.yaml` file by using the following command:
 
         ``` terminal
         $ oc create -f pod.yaml
         ```
 
-- Check the container’s logs for the `MY_POD_NAME` and `MY_POD_NAMESPACE` values:
+- Check the container logs for the `MY_POD_NAME` and `MY_POD_NAMESPACE` values:
 
   ``` terminal
   $ oc logs -p dapi-env-test-pod
@@ -96,9 +103,9 @@ Only constant attributes of the pod can be consumed this way, as environment var
 
 ## Consuming container values using a volume plugin
 
-You containers can consume API values using a volume plugin.
+Your containers can consume Downward API values by using a volume plugin.
 
-Containers can consume:
+Containers can consume the following values:
 
 - Pod name
 
@@ -108,13 +115,7 @@ Containers can consume:
 
 - Pod labels
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To use the volume plugin:
+The following procedure show how to use the volume plugin.
 
 1.  Create a new pod spec that contains the environment variables you want the container to consume:
 
@@ -170,13 +171,13 @@ To use the volume plugin:
         # ...
         ```
 
-    2.  Create the pod from the `volume-pod.yaml` file:
+    2.  Create the pod from the `volume-pod.yaml` file by using the following command:
 
         ``` terminal
         $ oc create -f volume-pod.yaml
         ```
 
-- Check the container’s logs and verify the presence of the configured fields:
+- Check the container logs and verify the presence of the configured fields by using the following command:
 
   ``` terminal
   $ oc logs -p dapi-volume-test-pod
@@ -205,9 +206,7 @@ You can do this using environment variable or a volume plugin.
 
 ## Consuming container resources using environment variables
 
-When creating pods, you can use the Downward API to inject information about computing resource requests and limits using environment variables.
-
-When creating the pod configuration, specify environment variables that correspond to the contents of the `resources` field in the `spec.container` field.
+When creating pods, you can use the Downward API to inject information about computing resource requests and limits by using environment variables that correspond to the contents of the `resources` field in the `spec.container` field.
 
 <div class="note">
 
@@ -256,7 +255,7 @@ If the resource limits are not included in the container configuration, the down
         # ...
         ```
 
-    2.  Create the pod from the `pod.yaml` file:
+    2.  Create the pod from the `pod.yaml` file by using the following command:
 
         ``` terminal
         $ oc create -f pod.yaml
@@ -264,9 +263,7 @@ If the resource limits are not included in the container configuration, the down
 
 ## Consuming container resources using a volume plugin
 
-When creating pods, you can use the Downward API to inject information about computing resource requests and limits using a volume plugin.
-
-When creating the pod configuration, use the `spec.volumes.downwardAPI.items` field to describe the desired resources that correspond to the `spec.resources` field.
+When creating pods, you can use the Downward API to inject information about computing resource requests and limits by using a volume plugin to describe the desired resources that correspond to the `spec.resources` field.
 
 <div class="note">
 
@@ -322,7 +319,7 @@ If the resource limits are not included in the container configuration, the Down
         # ...
         ```
 
-    2.  Create the pod from the `volume-pod.yaml` file:
+    2.  Create the pod from the `volume-pod.yaml` file by using the following command:
 
         ``` terminal
         $ oc create -f volume-pod.yaml
@@ -347,7 +344,7 @@ When creating pods, you can use the downward API to inject secrets so image and 
         type: kubernetes.io/basic-auth
         ```
 
-    2.  Create the secret object from the `secret.yaml` file:
+    2.  Create the secret object from the `secret.yaml` file by using the following command:
 
         ``` terminal
         $ oc create -f secret.yaml
@@ -385,13 +382,13 @@ When creating pods, you can use the downward API to inject secrets so image and 
         # ...
         ```
 
-    2.  Create the pod from the `pod.yaml` file:
+    2.  Create the pod from the `pod.yaml` file by using the following command:
 
         ``` terminal
         $ oc create -f pod.yaml
         ```
 
-- Check the container’s logs for the `MY_SECRET_USERNAME` value:
+- Check the container logs for the `MY_SECRET_USERNAME` value by using the following command:
 
   ``` terminal
   $ oc logs -p dapi-env-test-pod
@@ -399,7 +396,7 @@ When creating pods, you can use the downward API to inject secrets so image and 
 
 # Consuming configuration maps using the Downward API
 
-When creating pods, you can use the Downward API to inject configuration map values so image and application authors can create an image for specific environments.
+When creating pods, you can use the Downward API to inject configuration map values so that image and application authors can create an image for specific environments.
 
 1.  Create a config map with the values to inject:
 
@@ -414,7 +411,7 @@ When creating pods, you can use the Downward API to inject configuration map val
           mykey: myvalue
         ```
 
-    2.  Create the config map from the `configmap.yaml` file:
+    2.  Create the config map from the `configmap.yaml` file by using the following command:
 
         ``` terminal
         $ oc create -f configmap.yaml
@@ -452,13 +449,13 @@ When creating pods, you can use the Downward API to inject configuration map val
         # ...
         ```
 
-    2.  Create the pod from the `pod.yaml` file:
+    2.  Create the pod from the `pod.yaml` file by using the following command:
 
         ``` terminal
         $ oc create -f pod.yaml
         ```
 
-- Check the container’s logs for the `MY_CONFIGMAP_VALUE` value:
+- Check the container’s logs for the `MY_CONFIGMAP_VALUE` value by using the following command:
 
   ``` terminal
   $ oc logs -p dapi-env-test-pod
@@ -466,7 +463,9 @@ When creating pods, you can use the Downward API to inject configuration map val
 
 # Referencing environment variables
 
-When creating pods, you can reference the value of a previously defined environment variable by using the `$()` syntax. If the environment variable reference can not be resolved, the value will be left as the provided string.
+When creating pods, you can reference the value of a previously defined environment variable by using the `$()` syntax. By using this syntax, you can reference variables that you define within a pod configuration elsewhere in that configuration.
+
+If the environment variable reference cannot be resolved, the value will be left as the provided string.
 
 1.  Create a pod that references an existing environment variable:
 
@@ -499,13 +498,13 @@ When creating pods, you can reference the value of a previously defined environm
         # ...
         ```
 
-    2.  Create the pod from the `pod.yaml` file:
+    2.  Create the pod from the `pod.yaml` file by using the following command:
 
         ``` terminal
         $ oc create -f pod.yaml
         ```
 
-- Check the container’s logs for the `MY_ENV_VAR_REF_ENV` value:
+- Check the container’s logs for the `MY_ENV_VAR_REF_ENV` value by using the following command:
 
   ``` terminal
   $ oc logs -p dapi-env-test-pod
@@ -544,13 +543,13 @@ When creating a pod, you can escape an environment variable reference by using a
         # ...
         ```
 
-    2.  Create the pod from the `pod.yaml` file:
+    2.  Create the pod from the `pod.yaml` file by using the following command:
 
         ``` terminal
         $ oc create -f pod.yaml
         ```
 
-- Check the container’s logs for the `MY_NEW_ENV` value:
+- Check the container’s logs for the `MY_NEW_ENV` value by using the following command:
 
   ``` terminal
   $ oc logs -p dapi-env-test-pod

@@ -226,23 +226,15 @@ Compatible parameters
 
 When a virtual machine (VM) terminates unexpectedly, you can use the `virtctl memory-dump` to generate a memory dump command to output a VM memory dump and save it on a persistent volume claim (PVC). Afterwards, you can analyze the memory dump to diagnose and troubleshoot issues on the VM.
 
-- The hot plug feature gate is enabled in the `HyperConverged` custom resource. To do so, run the following command:
+1.  Optional: You have an existing PVC on which you want to save the memory dump.
 
-  ``` terminal
-  $ oc patch hyperconverged kubevirt-hyperconverged -n openshift-cnv \
-    --type json -p '[{"op": "add", "path": "/spec/featureGates", \
-    "value": "HotplugVolumes"}]'
-  ```
+    - The PVC volume mode must be `FileSystem`.
 
-- Optional: You have an existing PVC on which you want to save the memory dump.
+    - The PVC must be large enough to contain the memory dump.
 
-  - The PVC volume mode must be `FileSystem`.
+      The formula for calculating the PVC size is `(VMMemorySize + 100Mi) * FileSystemOverhead`, where `100Mi` is the memory dump overhead, and `FileSystemOverhead` is defined in the `HCO` object.
 
-  - The PVC must be large enough to contain the memory dump.
-
-    The formula for calculating the PVC size is `(VMMemorySize + 100Mi) * FileSystemOverhead`, where `100Mi` is the memory dump overhead, and `FileSystemOverhead` is defined in the `HCO` object.
-
-1.  Create a memory dump of the required VM:
+2.  Create a memory dump of the required VM:
 
     - If you have an existing PVC selected on which you want to save the memory dump:
 
@@ -256,17 +248,17 @@ When a virtual machine (VM) terminates unexpectedly, you can use the `virtctl me
       $ virtctl memory-dump get <vm_name> --claim-name=<new_pvc_name> --create-claim
       ```
 
-2.  Download the memory dump:
+3.  Download the memory dump:
 
     ``` terminal
     $ virtctl memory-dump download <vm_name> --output=<output_file>
     ```
 
-3.  Attach the memory dump to a Red Hat Support case.
+4.  Attach the memory dump to a Red Hat Support case.
 
     Alternatively, you can inspect the memory dump, for example by using [the volatility3 tool](https://github.com/volatilityfoundation/volatility3).
 
-4.  Optional: Remove the memory dump:
+5.  Optional: Remove the memory dump:
 
     ``` terminal
     $ virtctl memory-dump remove <vm_name>

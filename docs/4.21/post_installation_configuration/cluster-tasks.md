@@ -431,7 +431,9 @@ To add a default cluster-wide node selector:
 
 # Improving cluster stability in high latency environments using worker latency profiles
 
-If the cluster administrator has performed latency tests for platform verification, they can discover the need to adjust the operation of the cluster to ensure stability in cases of high latency. The cluster administrator needs to change only one parameter, recorded in a file, which controls four parameters affecting how supervisory processes read status and interpret the health of the cluster. Changing only the one parameter provides cluster tuning in an easy, supportable manner.
+If the cluster administrator has performed latency tests for platform verification, they can discover the need to adjust the operation of the cluster to ensure stability in cases of high latency.
+
+The cluster administrator needs to change only one parameter, recorded in a file, which controls four parameters affecting how supervisory processes read status and interpret the health of the cluster. Changing only the one parameter provides cluster tuning in an easy, supportable manner.
 
 The `Kubelet` process provides the starting point for monitoring cluster health. The `Kubelet` sets status values for all nodes in the OpenShift Container Platform cluster. The Kubernetes Controller Manager (`kube controller`) reads the status values every 10 seconds, by default. If the `kube controller` cannot read a node status value, it loses contact with that node after a configured period. The default behavior is:
 
@@ -477,7 +479,7 @@ Specifies the amount of time in seconds after marking a node unreachable that th
 
 The following Operators monitor the changes to the worker latency profiles and respond accordingly:
 
-- The Machine Config Operator (MCO) updates the `node-status-update-frequency` parameter on the worker nodes.
+- The Machine Config Operator (MCO) updates the `node-status-update-frequency` parameter on the compute nodes.
 
 - The Kubernetes Controller Manager updates the `node-monitor-grace-period` parameter on the control plane nodes.
 
@@ -535,9 +537,9 @@ The latency profiles do not support custom machine config pools, only the defaul
 
 ## Using and changing worker latency profiles
 
-You can change a worker latency profile to deal with network latency at any time by editing the `node.config` object. This allows you to ensure that your cluster runs properly if network latency between the control plane and the worker nodes fluctuates.
+You can change a worker latency profile to deal with network latency at any time by editing the `node.config` object. With this configuration, you can ensure that your cluster runs properly if network latency between the control plane and the compute nodes fluctuates.
 
-You must move one worker latency profile at a time. For example, you cannot move directly from the `Default` profile to the `LowUpdateSlowReaction` worker latency profile. You must move from the `Default` worker latency profile to the `MediumUpdateAverageReaction` profile first, then to `LowUpdateSlowReaction`. Similarly, when returning to the `Default` profile, you must move from the low profile to the medium profile first, then to `Default`.
+You must move one worker latency profile at a time. For example, you cannot move directly from the `Default` profile to the `LowUpdateSlowReaction` worker latency profile. You must move from the `Default` worker latency profile to the `MediumUpdateAverageReaction` profile and then to the `LowUpdateSlowReaction` profile. Similarly, when returning to the `Default` profile, you must move from the low profile to the medium profile first, then to `Default`.
 
 <div class="note">
 
@@ -582,7 +584,6 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
           uid: 0c0f7a4c-4307-4187-b591-6155695ac85b
         spec:
           workerLatencyProfile: MediumUpdateAverageReaction
-
         # ...
         ```
 
@@ -591,7 +592,7 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
         `spec.workerLatencyProfile.MediumUpdateAverageReaction`
         Specifies that the medium worker latency policy should be used.
 
-        Scheduling on each worker node is disabled as the change is being applied.
+        Scheduling on each compute node is disabled as the change is being applied.
 
 2.  Optional: Move to the low worker latency profile:
 
@@ -630,7 +631,6 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
           uid: 0c0f7a4c-4307-4187-b591-6155695ac85b
         spec:
           workerLatencyProfile: LowUpdateSlowReaction
-
         # ...
         ```
 
@@ -639,7 +639,7 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
         `spec.workerLatencyProfile.LowUpdateSlowReaction`
         Specifies that the low worker latency policy should be used.
 
-        Scheduling on each worker node is disabled as the change is being applied.
+        Scheduling on each compute node is disabled as the change is being applied.
 
 - When all nodes return to the `Ready` condition, you can use the following command to look in the Kubernetes Controller Manager to ensure it was applied:
 
@@ -678,7 +678,7 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
   `status.message: all static pod revision(s) have updated latency profile`
   Specifies that the profile is applied and active.
 
-To change the medium profile to default or change the default to medium, edit the `node.config` object and set the `spec.workerLatencyProfile` parameter to the appropriate value.
+  To change the medium profile to default or change the default to medium, edit the `node.config` object and set the `spec.workerLatencyProfile` parameter to the appropriate value.
 
 # Managing control plane machines
 
@@ -1061,7 +1061,7 @@ Applying a specific node selector to all infrastructure components causes OpenSh
 
 ## Creating a compute machine set
 
-In addition to the compute machine sets created by the installation program, you can create your own to dynamically manage the machine compute resources for specific workloads of your choice.
+In addition to the compute machine sets created by the installation program, you can create your own compute machine sets to dynamically manage the machine compute resources for specific workloads of your choice. Use the OpenShift Container Platform CLI to automate node provisioning.
 
 - Deploy an OpenShift Container Platform cluster.
 
@@ -1136,17 +1136,22 @@ In addition to the compute machine sets created by the installation program, you
                 ...
         ```
 
-        - The cluster infrastructure ID.
+        where:
 
-        - A default node label.
+        `metadata.labels.machine.openshift.io/cluster-api-cluster`
+        Specifies the cluster infrastructure ID.
 
-          <div class="note">
+        `metadata.labels.name`
+        Specifies a default node label.
 
-          For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
+        <div class="note">
 
-          </div>
+        For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
 
-        - The values in the `<providerSpec>` section of the compute machine set CR are platform-specific. For more information about `<providerSpec>` parameters in the CR, see the sample compute machine set CR configuration for your provider.
+        </div>
+
+        `spec.template.metadata.spec.providerSpec`
+        Specifies the values of the compute machine set CR. The values are platform-specific. For more information about `<providerSpec>` parameters in the CR, see the sample compute machine set CR configuration for your provider.
 
 3.  Create a `MachineSet` CR by running the following command:
 

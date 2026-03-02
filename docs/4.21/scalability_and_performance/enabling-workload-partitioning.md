@@ -169,4 +169,4 @@ spec:
 
 PerformanceProfile CR options for single-node OpenShift clusters
 
-- [About the Performance Profile Creator](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-about-the-profile-creator-tool_cnf-low-latency-perf-profile)
+- [About the Performance Profile Creator](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-about-the-profile-creator-tool_cnf-tuning-low-latency-nodes-with-perf-profile)

@@ -26,7 +26,7 @@ You can combine Distributed Tracing Platform with other relevant components of t
 
 <!-- -->
 
-- [Red Hat build of OpenTelemetry](../../observability/otel/otel-installing.xml#install-otel)
+- [Red Hat build of OpenTelemetry](https://docs.redhat.com/en/documentation/red_hat_build_of_opentelemetry/latest/html/installing_red_hat_build_of_opentelemetry/install-otel)
 
 - [Distributed tracing UI plugin](https://docs.redhat.com/en/documentation/red_hat_openshift_cluster_observability_operator/1-latest/html/ui_plugins_for_red_hat_openshift_cluster_observability_operator/distributed-tracing-ui-plugin)
 

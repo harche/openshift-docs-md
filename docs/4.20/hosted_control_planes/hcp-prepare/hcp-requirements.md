@@ -241,7 +241,7 @@ Multi-architecture support for hosted control planes on IBM Power
 <li><p>ppc64le: Not available</p></li>
 </ul></td>
 <td style="text-align: left;"><ul>
-<li><p>64-bit x86: Not available</p></li>
+<li><p>64-bit x86: General Availability</p></li>
 <li><p>ARM64: Not available</p></li>
 <li><p>s390x: General Availability</p></li>
 </ul></td>
@@ -255,7 +255,7 @@ Multi-architecture support for hosted control planes on IBM Power
 <li><p>ppc64le: Not available</p></li>
 </ul></td>
 <td style="text-align: left;"><ul>
-<li><p>64-bit x86: Not available</p></li>
+<li><p>64-bit x86: General Availability</p></li>
 <li><p>ARM64: Not available</p></li>
 <li><p>s390x: General Availability</p></li>
 </ul></td>
@@ -269,7 +269,7 @@ Multi-architecture support for hosted control planes on IBM Power
 <li><p>ppc64le: Not available</p></li>
 </ul></td>
 <td style="text-align: left;"><ul>
-<li><p>64-bit x86: Not available</p></li>
+<li><p>64-bit x86: General Availability</p></li>
 <li><p>ARM64: Not available</p></li>
 <li><p>s390x: General Availability</p></li>
 <li><p>ppc64le: Not available</p></li>
@@ -284,7 +284,7 @@ Multi-architecture support for hosted control planes on IBM Power
 <li><p>ppc64le: Not available</p></li>
 </ul></td>
 <td style="text-align: left;"><ul>
-<li><p>64-bit x86: Not available</p></li>
+<li><p>64-bit x86: General Availability</p></li>
 <li><p>ARM64: Not available</p></li>
 <li><p>s390x: General Availability</p></li>
 <li><p>ppc64le: Not available</p></li>

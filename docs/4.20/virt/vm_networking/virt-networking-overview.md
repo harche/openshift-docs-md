@@ -123,7 +123,7 @@ You can connect a VM to an SR-IOV network by performing the following steps:
 
 1.  [Configure an SR-IOV network device](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#nw-sriov-configuring-device_virt-connecting-vm-to-sriov) by creating a `SriovNetworkNodePolicy` CRD.
 
-2.  [Configure an SR-IOV network](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#nw-sriov-network-attachment_virt-connecting-vm-to-sriov) by creating an `SriovNetwork` object.
+2.  [Configure an SR-IOV network](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#nw-sriov-additional-network_virt-connecting-vm-to-sriov) by creating an `SriovNetwork` object.
 
 3.  [Connect the VM to the SR-IOV network](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#virt-attaching-vm-to-sriov-network_virt-connecting-vm-to-sriov) by including the network details in the VM configuration.
 
@@ -181,7 +181,7 @@ The following table provides a comparison of features available when using the L
 
 Linux bridge CNI compared to an OVN-Kubernetes localnet topology
 
-# Integrating with OpenShift Service Mesh
+# Integrating with Red Hat OpenShift Service Mesh
 
 [Connecting a virtual machine to a service mesh](../../virt/vm_networking/virt-connecting-vm-to-service-mesh.xml#virt-connecting-vm-to-service-mesh)
 OpenShift Virtualization is integrated with OpenShift Service Mesh. You can monitor, visualize, and control traffic between pods and virtual machines.

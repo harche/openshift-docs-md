@@ -2,13 +2,7 @@ Learn how to keep OpenShift Virtualization updated and compatible with OpenShift
 
 # About updating OpenShift Virtualization
 
-When you install OpenShift Virtualization, you select an update channel and an approval strategy. The update channel determines the versions that OpenShift Virtualization will be updated to. The approval strategy setting determines whether updates occur automatically or require manual approval.
-
-<div class="note">
-
-Both settings can impact supportability.
-
-</div>
+When you install OpenShift Virtualization, you select an update channel and an approval strategy. The update channel determines the version that OpenShift Virtualization is updated to. The approval strategy setting determines whether updates occur automatically or require manual approval. Both settings can impact supportability.
 
 ## Recommended settings
 
@@ -17,6 +11,8 @@ To maintain a supportable environment, use the following settings:
 - Update channel: **stable**
 
 - Approval strategy: **Automatic**
+
+The **stable** release channel and the **Automatic** approval strategy are recommended for most OpenShift Virtualization installations. Use other settings only if you understand the risks.
 
 With these settings, the update process automatically starts when a new version of the Operator is available in the **stable** channel. This ensures that your OpenShift Virtualization and OpenShift Container Platform versions remain compatible, and that your version of OpenShift Virtualization is suitable for production environments.
 
@@ -48,13 +44,57 @@ As a workaround, you can reconfigure the virtual machines so that they can be po
 
 - OLM provides z-stream and minor version updates for OpenShift Virtualization. Minor version updates become available when you update OpenShift Container Platform to the next minor version. You cannot update OpenShift Virtualization to the next minor version without first updating OpenShift Container Platform.
 
-## RHEL 9 compatibility
+## Changing update settings
+
+You can change the update channel and approval strategy for your OpenShift Virtualization Operator subscription by using the web console.
+
+- You have installed the OpenShift Virtualization Operator.
+
+- You have administrator permissions.
+
+1.  Click **Ecosystem** → **Installed Operators**.
+
+2.  Select **OpenShift Virtualization** from the list.
+
+3.  Click the **Subscription** tab.
+
+4.  In the **Subscription details** section, click the setting that you want to change. For example, to change the approval strategy from **Manual** to **Automatic**, click **Manual**.
+
+5.  In the window that opens, select the new update channel or approval strategy.
+
+6.  Click **Save**.
+
+## Manual approval strategy
+
+If you use the **Manual** approval strategy, you must manually approve every pending update. If OpenShift Container Platform and OpenShift Virtualization updates are out of sync, your cluster becomes unsupported.
+
+To avoid risking the supportability and functionality of your cluster, use the **Automatic** approval strategy. If you must use the **Manual** approval strategy, maintain a supportable cluster by approving pending Operator updates as soon as they become available.
+
+## Manually approving a pending Operator update
+
+If an installed Operator has the approval strategy in its subscription set to **Manual**, when new updates are released in its current update channel, the update must be manually approved before installation can begin.
+
+- An Operator previously installed using Operator Lifecycle Manager (OLM).
+
+1.  In the OpenShift Container Platform web console, navigate to **Ecosystem** → **Installed Operators**.
+
+2.  Operators that have a pending update display a status with **Upgrade available**. Click the name of the Operator you want to update.
+
+3.  Click the **Subscription** tab. Any updates requiring approval are displayed next to **Upgrade status**. For example, it might display **1 requires approval**.
+
+4.  Click **1 requires approval**, then click **Preview Install Plan**.
+
+5.  Review the resources that are listed as available for update. When satisfied, click **Approve**.
+
+6.  Navigate back to the **Ecosystem** → **Installed Operators** page to monitor the progress of the update. When complete, the status changes to **Succeeded** and **Up to date**.
+
+# RHEL 9 compatibility
 
 OpenShift Virtualization 4.20 is based on Red Hat Enterprise Linux (RHEL) 9. You can update to OpenShift Virtualization 4.20 from a version that was based on RHEL 8 by following the standard OpenShift Virtualization update procedure. No additional steps are required.
 
 As in previous versions, you can perform the update without disrupting running workloads. OpenShift Virtualization 4.20 supports live migration from RHEL 8 nodes to RHEL 9 nodes.
 
-### RHEL 9 machine type
+## RHEL 9 machine type
 
 All VM templates that are included with OpenShift Virtualization now use the RHEL 9 machine type by default: `machineType: pc-q35-rhel9.<y>.0`, where `<y>` is a single digit corresponding to the latest minor version of RHEL 9. For example, the value `pc-q35-rhel9.2.0` is used for RHEL 9.2.
 
@@ -194,15 +234,15 @@ You can configure workload update methods by editing the `HyperConverged` custom
     # ...
     ```
 
-    - The methods that can be used to perform automated workload updates. The available values are `LiveMigrate` and `Evict`. If you enable both options as shown in this example, updates use `LiveMigrate` for VMIs that support live migration and `Evict` for any VMIs that do not support live migration. To disable automatic workload updates, you can either remove the `workloadUpdateStrategy` stanza or set `workloadUpdateMethods: []` to leave the array empty.
+    - `spec.workloadUpdateStrategy.workloadUpdateMethods` defines the methods that can be used to perform automated workload updates. The available values are `LiveMigrate` and `Evict`. If you enable both options as shown in this example, updates use `LiveMigrate` for VMIs that support live migration and `Evict` for any VMIs that do not support live migration. To disable automatic workload updates, you can either remove the `workloadUpdateStrategy` stanza or set `workloadUpdateMethods: []` to leave the array empty.
 
-    - The least disruptive update method. VMIs that support live migration are updated by migrating the virtual machine (VM) guest into a new pod with the updated components enabled. If `LiveMigrate` is the only workload update method listed, VMIs that do not support live migration are not disrupted or updated.
+      - `LiveMigrate` is the least disruptive update method. VMIs that support live migration are updated by migrating the virtual machine (VM) guest into a new pod with the updated components enabled. If `LiveMigrate` is the only workload update method listed, VMIs that do not support live migration are not disrupted or updated.
 
-    - A disruptive method that shuts down VMI pods during upgrade. `Evict` is the only update method available if live migration is not enabled in the cluster. If a VMI is controlled by a `VirtualMachine` object that has `runStrategy: Always` configured, a new VMI is created in a new pod with updated components.
+      - `Evict` is a disruptive method that shuts down VMI pods during upgrade. `Evict` is the only update method available if live migration is not enabled in the cluster. If a VMI is controlled by a `VirtualMachine` object that has `runStrategy: Always` configured, a new VMI is created in a new pod with updated components.
 
-    - The number of VMIs that can be forced to be updated at a time by using the `Evict` method. This does not apply to the `LiveMigrate` method.
+    - `spec.workloadUpdateStrategy.batchEvictionSize` defines the number of VMIs that can be forced to be updated at a time by using the `Evict` method. This does not apply to the `LiveMigrate` method.
 
-    - The interval to wait before evicting the next batch of workloads. This does not apply to the `LiveMigrate` method.
+    - `spec.workloadUpdateStrategy.batchEvictionInterval` defines the interval to wait before evicting the next batch of workloads. This does not apply to the `LiveMigrate` method.
 
       <div class="note">
 
@@ -232,12 +272,6 @@ If there are outdated virtualization pods in your cluster, the `OutdatedVirtualM
   $ oc get vmi -l kubevirt.io/outdatedLauncherImage --all-namespaces
   ```
 
-<div class="note">
-
-To ensure that VMIs update automatically, configure workload updates.
-
-</div>
-
 # Control Plane Only updates
 
 Every even-numbered minor version of OpenShift Container Platform is an Extended Update Support (EUS) version. However, Kubernetes design mandates serial minor version updates, so you cannot directly update from one EUS version to the next.
@@ -265,8 +299,6 @@ Before beginning a Control Plane Only update, you must:
 By default, OpenShift Virtualization automatically updates workloads, such as the `virt-launcher` pod, when you update the OpenShift Virtualization Operator. You can configure this behavior in the `spec.workloadUpdateStrategy` stanza of the `HyperConverged` custom resource.
 
 </div>
-
-Learn more about [Performing a Control Plane Only update](../../updating/updating_a_cluster/control-plane-only-update.xml#control-plane-only-update).
 
 ## Preventing workload updates during a Control Plane Only update
 
@@ -476,54 +508,6 @@ For the list of supported OpenShift Container Platform releases and the RHEL ver
       ```
 
 - Unpause the machine config pools for each compute node.
-
-# Advanced options
-
-The **stable** release channel and the **Automatic** approval strategy are recommended for most OpenShift Virtualization installations. Use other settings only if you understand the risks.
-
-## Changing update settings
-
-You can change the update channel and approval strategy for your OpenShift Virtualization Operator subscription by using the web console.
-
-- You have installed the OpenShift Virtualization Operator.
-
-- You have administrator permissions.
-
-1.  Click **Ecosystem** → **Installed Operators**.
-
-2.  Select **OpenShift Virtualization** from the list.
-
-3.  Click the **Subscription** tab.
-
-4.  In the **Subscription details** section, click the setting that you want to change. For example, to change the approval strategy from **Manual** to **Automatic**, click **Manual**.
-
-5.  In the window that opens, select the new update channel or approval strategy.
-
-6.  Click **Save**.
-
-## Manual approval strategy
-
-If you use the **Manual** approval strategy, you must manually approve every pending update. If OpenShift Container Platform and OpenShift Virtualization updates are out of sync, your cluster becomes unsupported.
-
-To avoid risking the supportability and functionality of your cluster, use the **Automatic** approval strategy. If you must use the **Manual** approval strategy, maintain a supportable cluster by approving pending Operator updates as soon as they become available.
-
-## Manually approving a pending Operator update
-
-If an installed Operator has the approval strategy in its subscription set to **Manual**, when new updates are released in its current update channel, the update must be manually approved before installation can begin.
-
-- An Operator previously installed using Operator Lifecycle Manager (OLM).
-
-1.  In the OpenShift Container Platform web console, navigate to **Ecosystem** → **Installed Operators**.
-
-2.  Operators that have a pending update display a status with **Upgrade available**. Click the name of the Operator you want to update.
-
-3.  Click the **Subscription** tab. Any updates requiring approval are displayed next to **Upgrade status**. For example, it might display **1 requires approval**.
-
-4.  Click **1 requires approval**, then click **Preview Install Plan**.
-
-5.  Review the resources that are listed as available for update. When satisfied, click **Approve**.
-
-6.  Navigate back to the **Ecosystem** → **Installed Operators** page to monitor the progress of the update. When complete, the status changes to **Succeeded** and **Up to date**.
 
 # Early access releases
 

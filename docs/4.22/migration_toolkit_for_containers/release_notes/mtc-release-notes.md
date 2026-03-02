@@ -6,6 +6,10 @@ MTC provides a web console and an API, based on Kubernetes custom resources, to 
 
 For information on the support policy for MTC, see [OpenShift Application and Cluster Migration Solutions](https://access.redhat.com/support/policy/updates/openshift#app_migration), part of the *Red Hat OpenShift Container Platform Life Cycle Policy*.
 
+# Migration Toolkit for Containers 1.8.13 release notes
+
+Migration Toolkit for Containers (MTC) 1.8.13 is a Container Grade Only (CGO) release, which is released to refresh the health grades of the containers. No code was changed in the product itself compared to that of MTC 1.8.12.
+
 # Migration Toolkit for Containers 1.8.12 release notes
 
 The Migration Toolkit for Containers (MTC) 1.8.12 section lists known and resolved issues.

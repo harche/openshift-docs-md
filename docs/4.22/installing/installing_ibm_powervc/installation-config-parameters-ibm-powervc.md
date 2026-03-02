@@ -1,4 +1,4 @@
-Before you deploy an OpenShift Container Platform cluster on IBM® Power® Virtualization Center (IBM PowerVC), you provide parameters to customize your cluster and the platform that hosts it. When you create the `install-config.yaml` file, you provide values for the required parameters through the command line. You can then modify the `install-config.yaml` file to customize your cluster further.
+Before you deploy an OpenShift Container Platform cluster on IBM® Power® Virtualization Center, you provide parameters to customize your cluster and the platform that hosts it. When you create the `install-config.yaml` file, you provide values for the required parameters through the command line. You can then modify the `install-config.yaml` file to customize your cluster further.
 
 # Available installation configuration parameters for IBM PowerVC
 
@@ -77,10 +77,10 @@ Required parameters
 
 ## Additional IBM PowerVC configuration parameters
 
-Additional configuration parameters are described in the following table:
+Additional IBM PowerVC configuration parameters are described in the following table:
 
 <table>
-<caption>Additional parameters</caption>
+<caption>Additional IBM PowerVC parameters</caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -96,21 +96,21 @@ Additional configuration parameters are described in the following table:
 <td style="text-align: left;"><pre><code>platform:
   powervc:
     cloud:</code></pre></td>
-<td style="text-align: left;"><p>The name of the cloud to use from the list of clouds in the <code>clouds.yaml</code> file.</p>
+<td style="text-align: left;"><p>The name of the IBM PowerVC cloud to use from the list of clouds in the <code>clouds.yaml</code> file.</p>
 <p>In the cloud configuration in the <code>clouds.yaml</code> file, if possible, use application credentials rather than a user name and password combination. Using application credentials avoids disruptions from secret propogation that follow user name and password rotation.</p>
 <p><strong>Value:</strong> String, for example <code>MyCloud</code>.</p></td>
 </tr>
 </tbody>
 </table>
 
-Additional parameters
+Additional IBM PowerVC parameters
 
-## Optional configuration parameters
+## Optional IBM PowerVC configuration parameters
 
-Optional configuration parameters are described in the following table:
+Optional IBM PowerVC configuration parameters are described in the following table:
 
 <table>
-<caption>Optional parameters</caption>
+<caption>Optional IBM PowerVC parameters</caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -127,7 +127,7 @@ Optional configuration parameters are described in the following table:
   platform:
     powervc:
       zones:</code></pre></td>
-<td style="text-align: left;"><p>Compute availability zones to install machines on. If this parameter is not set, the installation program relies on the default settings that the administrator configured.</p>
+<td style="text-align: left;"><p>IBM PowerVC Compute availability zones to install machines on. If this parameter is not set, the installation program relies on the default settings that the IBM PowerVC administrator configured.</p>
 <p><strong>Value:</strong> A list of strings. For example, <code>["zone-1", "zone-2"]</code>.</p></td>
 </tr>
 <tr class="even">
@@ -135,15 +135,15 @@ Optional configuration parameters are described in the following table:
   platform:
     powervc:
       zones:</code></pre></td>
-<td style="text-align: left;"><p>Compute availability zones to install machines on. If this parameter is not set, the installation program relies on the default settings that the administrator configured.</p>
+<td style="text-align: left;"><p>IBM PowerVC Compute availability zones to install machines on. If this parameter is not set, the installation program relies on the default settings that the IBM PowerVC administrator configured.</p>
 <p><strong>Value:</strong> A list of strings. For example, <code>["zone-1", "zone-2"]</code>.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   powervc:
     clusterOSImage:</code></pre></td>
-<td style="text-align: left;"><p>The name of the existing image.</p>
-<p><strong>Value:</strong> the name of an existing image, for example <code>my-rhcos</code>.</p></td>
+<td style="text-align: left;"><p>The name of the existing IBM PowerVC image.</p>
+<p><strong>Value:</strong> the name of an existing IBM PowerVC image, for example <code>my-rhcos</code>.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><pre><code>platform:
@@ -159,7 +159,7 @@ Optional configuration parameters are described in the following table:
     controlPlanePort:
       network:</code></pre></td>
 <td style="text-align: left;"><p>A network for the machines to use.</p>
-<p><strong>Value:</strong> The UUID or name of an network to use in cluster installation.</p></td>
+<p><strong>Value:</strong> The UUID or name of an IBM PowerVC network to use in cluster installation.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><pre><code>platform:
@@ -202,7 +202,7 @@ Optional configuration parameters are described in the following table:
 </tbody>
 </table>
 
-Optional parameters
+Optional IBM PowerVC parameters
 
 ## Network configuration parameters
 

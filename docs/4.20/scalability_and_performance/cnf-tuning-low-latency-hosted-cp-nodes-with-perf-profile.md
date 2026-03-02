@@ -4,11 +4,9 @@ Tune hosted control planes for low latency by applying a performance profile. Wi
 
 You can create a cluster performance profile by using the Performance Profile Creator (PPC) tool. The PPC is a function of the Node Tuning Operator.
 
-The PPC combines information about your cluster with user-supplied configurations to generate a performance profile that is appropriate to your hardware, topology, and use-case.
+The PPC combines information about your cluster with user-supplied configurations to generate a performance profile that is appropriate to your hardware, topology, and use-case. The following high-level workflow creates and applys a performance profile in your cluster:
 
-The following is a high-level workflow for creating and applying a performance profile in your cluster:
-
-1.  Gather information about your cluster using the `must-gather` command.
+1.  Gather information about your cluster by using the `must-gather` command.
 
 2.  Use the PPC tool to create a performance profile.
 
@@ -124,7 +122,7 @@ The Performance Profile Creator (PPC) tool requires `must-gather` data. As a clu
 
 - [Gathering data about your cluster](../support/gathering-cluster-data.xml#nodes-nodes-managing)
 
-- [Gathering data for a hosted cluster by using the CLI](../hosted_control_planes/hcp-troubleshooting.xml#hcp-must-gather-cli).
+- [Gathering data for a hosted cluster by using the CLI](../hosted_control_planes/hcp-troubleshooting.xml#hcp-must-gather-cli)
 
 ## Running the Performance Profile Creator on a hosted cluster using Podman
 
@@ -184,35 +182,44 @@ The PPC uses the `must-gather` data from your hosted cluster to create the perfo
         > my-hosted-cp-performance-profile.yaml
     ```
 
-    - Mounts the local directory where the output of an `oc adm must-gather` was created into the container.
+    where:
 
-    - Specifies two reserved CPUs.
+    `/path/to/must-gather:/must-gather:z`
+    Specifies the local directory to mount where the output of an `oc adm must-gather` was created into the container.
 
-    - Disables the real-time kernel.
+    `reserved-cpu-count=2`
+    Specifies two reserved CPUs.
 
-    - Disables reserved CPUs splitting across NUMA nodes.
+    `rt-kernel=false`
+    Specifies whether to disable the real-time kernel. A setting of `false` disables the kernel.
 
-    - Specifies the NUMA topology policy. If installing the NUMA Resources Operator, this must be set to `single-numa-node`.
+    `split-reserved-cpus-across-numa=false`
+    Specifies whether to split CPUs across NUMA nodes. A setting of `false` disables the CPU-splitting.
 
-    - Specifies minimal latency at the cost of increased power consumption.
+    `topology-manager-policy=single-numa-node`
+    Specifies the NUMA topology policy. If installing the NUMA Resources Operator, this must be set to `single-numa-node`.
 
-    - Specifies one offlined CPU.
+    `power-consumption-mode=ultra-low-latency`
+    Specifies minimal latency at the cost of increased power consumption.
 
-      <div class="formalpara-title">
+    `offlined-cpu-count=1`
+    Specifies one offlined CPU.
 
-      **Example output**
+    <div class="formalpara-title">
 
-      </div>
+    **Example output**
 
-      ``` terminal
-      level=info msg="Nodes names targeted by democluster-us-east-1a pool are: ip-10-0-129-110.ec2.internal "
-      level=info msg="NUMA cell(s): 1"
-      level=info msg="NUMA cell 0 : [0 2 1 3]"
-      level=info msg="CPU(s): 4"
-      level=info msg="2 reserved CPUs allocated: 0,2 "
-      level=info msg="1 isolated CPUs allocated: 1"
-      level=info msg="Additional Kernel Args based on configuration: []
-      ```
+    </div>
+
+    ``` terminal
+    level=info msg="Nodes names targeted by democluster-us-east-1a pool are: ip-10-0-129-110.ec2.internal "
+    level=info msg="NUMA cell(s): 1"
+    level=info msg="NUMA cell 0 : [0 2 1 3]"
+    level=info msg="CPU(s): 4"
+    level=info msg="2 reserved CPUs allocated: 0,2 "
+    level=info msg="1 isolated CPUs allocated: 1"
+    level=info msg="Additional Kernel Args based on configuration: []
+    ```
 
 3.  Review the created YAML file by running the following command:
 
@@ -260,11 +267,13 @@ The PPC uses the `must-gather` data from your hosted cluster to create the perfo
       namespace: clusters
     ```
 
-- [Performance Profile Creator arguments](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#performance-profile-creator-arguments_cnf-low-latency-perf-profile)
+- [Performance Profile Creator arguments](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#performance-profile-creator-arguments_cnf-tuning-low-latency-nodes-with-perf-profile)
 
 ## Configuring low-latency tuning in a hosted cluster
 
-To set low latency with the performance profile on the nodes in your hosted cluster, you can use the Node Tuning Operator. In hosted control planes, you can configure low-latency tuning by creating config maps that contain `Tuned` objects and referencing those config maps in your node pools. The tuned object in this case is a `PerformanceProfile` object that defines the performance profile you want to apply to the nodes in a node pool.
+To set low latency with the performance profile on the nodes in your hosted cluster, you can use the Node Tuning Operator. In hosted control planes, you can configure low-latency tuning by creating config maps that contain `Tuned` objects and referencing those config maps in your node pools.
+
+The tuned object in this case is a `PerformanceProfile` object that defines the performance profile you want to apply to the nodes in a node pool.
 
 1.  Export the management cluster `kubeconfig` file by running the following command:
 

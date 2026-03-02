@@ -37,7 +37,7 @@ After you have uninstalled the Zero Trust Workload Identity Manager, you have th
     2.  Delete the `SpiffeCSIDriver` cluster by running the following command:
 
         ``` terminal
-        $ oc delete SpiffeCSIDriver cluster -l=app.kubernetes.io/name=zero-trust-workload-identity-manager
+        $ oc delete SpiffeCSIDriver cluster -l
         ```
 
     3.  Delete the `SpireAgent` cluster by running the following command:

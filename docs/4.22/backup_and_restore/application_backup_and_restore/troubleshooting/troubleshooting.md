@@ -1,3 +1,5 @@
+Troubleshoot OpenShift API for Data Protection (OADP) issues by using diagnostic tools such as the Velero CLI, webhooks, `must-gather` custom resource, and other methods. This helps you identify and resolve problems with backup and restore operations.
+
 You can troubleshoot OADP issues by using the following methods:
 
 - Debug Velero custom resources (CRs) by using the [OpenShift CLI tool](../../../backup_and_restore/application_backup_and_restore/troubleshooting/velero-cli-tool.xml#oadp-debugging-oc-cli_velero-cli-tool) or the [Velero CLI tool](../../../backup_and_restore/application_backup_and_restore/troubleshooting/velero-cli-tool.xml#migration-debugging-velero-resources_velero-cli-tool). The Velero CLI tool provides more detailed logs and information.

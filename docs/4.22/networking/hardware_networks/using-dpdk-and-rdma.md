@@ -602,7 +602,7 @@ In OpenShift Container Platform version 4.14 and later, you can use non-privileg
     $ oc create -f dpdk-pod-rootless.yaml
     ```
 
-- [Creating a performance profile](../../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-create-performance-profiles)
+- [Creating a performance profile](../../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-create-performance-profiles_cnf-tuning-low-latency-nodes-with-perf-profile)
 
 - [Configuring an SR-IOV network device](../../networking/hardware_networks/configuring-sriov-device.xml#configuring-sriov-device)
 
@@ -1157,9 +1157,9 @@ spec:
 
 - [Red Hat certified hardware (Red Hat Ecosystem Catalog)](https://catalog.redhat.com/en/hardware)
 
-- [Creating a performance profile](../../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-create-performance-profiles)
+- [Creating a performance profile](../../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-create-performance-profiles_cnf-tuning-low-latency-nodes-with-perf-profile)
 
-- [Adjusting the NIC queues with the performance profile](../../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#adjusting-nic-queues-with-the-performance-profile_cnf-low-latency-perf-profile)
+- [Adjusting the NIC queues with the performance profile](../../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#adjusting-nic-queues-with-the-performance-profile_cnf-tuning-low-latency-nodes-with-perf-profile)
 
 - [Provisioning real-time and low latency workloads](../../scalability_and_performance/cnf-provisioning-low-latency-workloads.xml#cnf-provisioning-low-latency-workloads)
 

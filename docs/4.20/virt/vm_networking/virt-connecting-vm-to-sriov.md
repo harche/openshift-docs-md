@@ -2,7 +2,7 @@ You can connect a virtual machine (VM) to a Single Root I/O Virtualization (SR-I
 
 - [Configuring an SR-IOV network device](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#nw-sriov-configuring-device_virt-connecting-vm-to-sriov)
 
-- [Configuring an SR-IOV network](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#nw-sriov-network-attachment_virt-connecting-vm-to-sriov)
+- [Configuring an SR-IOV network](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#nw-sriov-additional-network_virt-connecting-vm-to-sriov)
 
 - [Connecting the VM to the SR-IOV network](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#virt-attaching-vm-to-sriov-network_virt-connecting-vm-to-sriov)
 
@@ -116,9 +116,7 @@ It might take several minutes for a configuration change to apply.
 
 # Configuring SR-IOV additional network
 
-You can configure an additional network that uses SR-IOV hardware by creating an `SriovNetwork` object.
-
-When you create an `SriovNetwork` object, the SR-IOV Network Operator automatically creates a `NetworkAttachmentDefinition` object.
+You can configure an additional network that uses SR-IOV hardware by creating an `SriovNetwork` object. When you create an `SriovNetwork` object, the SR-IOV Network Operator automatically creates a `NetworkAttachmentDefinition` object.
 
 <div class="note">
 
@@ -151,59 +149,47 @@ Do not modify or delete an `SriovNetwork` object if it is attached to pods or vi
       capabilities: <capabilities>
     ```
 
-    `metadata.name`
-    Specify a name for the `SriovNetwork` object. The SR-IOV Network Operator creates a `NetworkAttachmentDefinition` object with same name.
+    - `metadata.name` defines a name for the `SriovNetwork` object. The SR-IOV Network Operator creates a `NetworkAttachmentDefinition` object with same name.
 
-    `metadata.namespace`
-    Specify the namespace where the SR-IOV Network Operator is installed.
+    - `metadata.namespace` defines the namespace where the SR-IOV Network Operator is installed.
 
-    `spec.resourceName`
-    Specify the value of the `.spec.resourceName` parameter in the `SriovNetworkNodePolicy` object that defines the SR-IOV hardware for this additional network.
+    - `spec.resourceName` defines the value of the `.spec.resourceName` parameter in the `SriovNetworkNodePolicy` object that defines the SR-IOV hardware for this additional network.
 
-    `spec.networkNamespace`
-    Specify the target namespace for the `SriovNetwork` object. Only pods or virtual machines in the target namespace can attach to the `SriovNetwork` object.
+    - `spec.networkNamespace` defines the target namespace for the `SriovNetwork` object. Only pods or virtual machines in the target namespace can attach to the `SriovNetwork` object.
 
-    `spec.vlan`
-    Optional: Specify a Virtual LAN (VLAN) ID for the additional network. The integer value must be from `0` to `4095`. The default value is `0`.
+    - `spec.vlan` an optional field that defines a Virtual LAN (VLAN) ID for the additional network. The integer value must be from `0` to `4095`. The default value is `0`.
 
-    `spec.spoofChk`
-    Optional: Specify the spoof check mode of the VF. The allowed values are the strings `"on"` and `"off"`.
+    - `spec.spoofChk` an optional field that defines the spoof check mode of the VF. The allowed values are the strings `"on"` and `"off"`.
 
-    <div class="important">
+      <div class="important">
 
-    You must enclose the value you specify in quotes or the CR is rejected by the SR-IOV Network Operator.
+      You must enclose the value you specify in quotes or the CR is rejected by the SR-IOV Network Operator.
 
-    </div>
+      </div>
 
-    `spec.linkState`
-    Optional: Specify the link state of virtual function (VF). Allowed values are `enable`, `disable` and `auto`.
+    - `spec.linkState` an optional field that defines the link state of virtual function (VF). Allowed values are `enable`, `disable` and `auto`.
 
-    `spec.maxTxRate`
-    Optional: Specify the maximum transmission rate, in Mbps, for the VF.
+    - `spec.maxTxRate` an optional field that defines the maximum transmission rate, in Mbps, for the VF.
 
-    `spec.minTxRate`
-    Optional: Specify the minimum transmission rate, in Mbps, for the VF. This value should always be less than or equal to the maximum transmission rate.
+    - `spec.minTxRate` an optional field that defines the minimum transmission rate, in Mbps, for the VF. This value should always be less than or equal to the maximum transmission rate.
 
-    <div class="note">
+      <div class="note">
 
-    Intel NICs do not support the `minTxRate` parameter. For more information, see [BZ#1772847](https://bugzilla.redhat.com/show_bug.cgi?id=1772847).
+      Intel NICs do not support the `minTxRate` parameter. For more information, see [BZ#1772847](https://bugzilla.redhat.com/show_bug.cgi?id=1772847).
 
-    </div>
+      </div>
 
-    `spec.vlanQoS`
-    Optional: Specify the IEEE 802.1p priority level for the VF. The default value is `0`.
+    - `spec.vlanQoS` an optional field that defines the IEEE 802.1p priority level for the VF. The default value is `0`.
 
-    `spec.trust`
-    Optional: Specify the trust mode of the VF. The allowed values are the strings `"on"` and `"off"`.
+    - `spec.trust` an optional field that defines the trust mode of the VF. The allowed values are the strings `"on"` and `"off"`.
 
-    <div class="important">
+      <div class="important">
 
-    You must enclose the value you specify in quotes or the CR is rejected by the SR-IOV Network Operator.
+      You must enclose the value you specify in quotes or the CR is rejected by the SR-IOV Network Operator.
 
-    </div>
+      </div>
 
-    `spec.capabilities`
-    Optional: Specify the capabilities to configure for this network.
+    - `spec.capabilities` an optional field that defines the capabilities to configure for this network.
 
 <!-- -->
 
@@ -245,11 +231,11 @@ You can connect the virtual machine (VM) to the SR-IOV network by including the 
     # ...
     ```
 
-    - Specify a unique name for the SR-IOV interface.
+    - `spec.template.spec.domain.devices.interfaces.name` specifies a unique name for the SR-IOV interface.
 
-    - Specify the name of the SR-IOV interface. This must be the same as the `interfaces.name` that you defined earlier.
+    - `spec.template.spec.networks.name` specifies the name of the SR-IOV interface. This must be the same as the `interfaces.name` that you defined earlier.
 
-    - Specify the name of the SR-IOV network attachment definition.
+    - `spec.template.spec.networks.multus.networkName` specifies the name of the SR-IOV network attachment definition.
 
 2.  Apply the virtual machine configuration:
 
@@ -257,7 +243,10 @@ You can connect the virtual machine (VM) to the SR-IOV network by including the 
     $ oc apply -f <vm_sriov>.yaml
     ```
 
-    - The name of the virtual machine YAML file.
+    where:
+
+    `<vm_sriov>`
+    Specifies the name of the virtual machine YAML file.
 
 # Connecting a VM to an SR-IOV network by using the web console
 

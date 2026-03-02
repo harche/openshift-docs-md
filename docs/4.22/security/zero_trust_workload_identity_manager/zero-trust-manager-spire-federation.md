@@ -394,7 +394,7 @@ The Zero Trust Workload Identity Manager includes SPIRE Federation support, allo
 
     ``` terminal
     $ oc logs -n zero-trust-workload-identity-manager \
-        deployment/spire-server -c spire-server --tail=50
+        statefulset/spire-server -c spire-server --tail=50
     ```
 
     Look for log messages indicating successful bundle synchronization with federated trust domains.

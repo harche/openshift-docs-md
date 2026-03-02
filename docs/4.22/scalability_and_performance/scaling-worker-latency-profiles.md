@@ -1,4 +1,8 @@
-If the cluster administrator has performed latency tests for platform verification, they can discover the need to adjust the operation of the cluster to ensure stability in cases of high latency. The cluster administrator needs to change only one parameter, recorded in a file, which controls four parameters affecting how supervisory processes read status and interpret the health of the cluster. Changing only the one parameter provides cluster tuning in an easy, supportable manner.
+To improve cluster stability in high latency environments, apply worker latency profiles. These profiles adjust Kubelet timing parameters to ensure that nodes remain healthy and responsive despite network delays.
+
+If the cluster administrator has performed latency tests for platform verification, they can discover the need to adjust the operation of the cluster to ensure stability in cases of high latency.
+
+The cluster administrator needs to change only one parameter, recorded in a file, which controls four parameters affecting how supervisory processes read status and interpret the health of the cluster. Changing only the one parameter provides cluster tuning in an easy, supportable manner.
 
 The `Kubelet` process provides the starting point for monitoring cluster health. The `Kubelet` sets status values for all nodes in the OpenShift Container Platform cluster. The Kubernetes Controller Manager (`kube controller`) reads the status values every 10 seconds, by default. If the `kube controller` cannot read a node status value, it loses contact with that node after a configured period. The default behavior is:
 
@@ -44,7 +48,7 @@ Specifies the amount of time in seconds after marking a node unreachable that th
 
 The following Operators monitor the changes to the worker latency profiles and respond accordingly:
 
-- The Machine Config Operator (MCO) updates the `node-status-update-frequency` parameter on the worker nodes.
+- The Machine Config Operator (MCO) updates the `node-status-update-frequency` parameter on the compute nodes.
 
 - The Kubernetes Controller Manager updates the `node-monitor-grace-period` parameter on the control plane nodes.
 
@@ -102,31 +106,35 @@ The latency profiles do not support custom machine config pools, only the defaul
 
 # Implementing worker latency profiles at cluster creation
 
+To ensure cluster stability in high latency environments, implement worker latency profiles during cluster creation.
+
 <div class="important">
 
 To edit the configuration of the installation program, first use the command `openshift-install create manifests` to create the default node manifest and other manifest YAML files. This file structure must exist before you can add `workerLatencyProfile`. The platform on which you are installing might have varying requirements. Refer to the Installing section of the documentation for your specific platform.
 
 </div>
 
-The `workerLatencyProfile` must be added to the manifest in the following sequence:
-
-1.  Create the manifest needed to build the cluster, using a folder name appropriate for your installation.
+1.  Create the manifest that is needed to build the cluster by using a folder name appropriate for your installation.
 
 2.  Create a YAML file to define `config.node`. The file must be in the `manifests` directory.
 
 3.  When defining `workerLatencyProfile` in the manifest for the first time, specify any of the profiles at cluster creation time: `Default`, `MediumUpdateAverageReaction` or `LowUpdateSlowReaction`.
 
-- Here is an example manifest creation showing the `spec.workerLatencyProfile` `Default` value in the manifest file:
+- View the manifest file by running the following command. The output of the command should show the creation of the `spec.workerLatencyProfile` `Default` value in the manifest file.
 
   ``` terminal
-  $ openshift-install create manifests --dir=<cluster-install-dir>
+  $ openshift-install create manifests --dir=<cluster_install_dir>
   ```
 
-- Edit the manifest and add the value. In this example we use `vi` to show an example manifest file with the "Default" `workerLatencyProfile` value added:
+- `<cluster_install_dir>`: Specifies the directory where you installed your cluster.
+
+- Edit the manifest and add the value by entering the following command. The following example command uses the `vi` editor to show an example manifest file with the "Default" `workerLatencyProfile` value added.
 
   ``` terminal
-  $ vi <cluster-install-dir>/manifests/config-node-default-profile.yaml
+  $ vi <cluster_install_dir>/manifests/config-node-default-profile.yaml
   ```
+
+- `<cluster_install_dir>`: Specifies the directory where you installed your cluster.
 
   <div class="formalpara-title">
 
@@ -141,13 +149,14 @@ The `workerLatencyProfile` must be added to the manifest in the following sequen
   name: cluster
   spec:
   workerLatencyProfile: "Default"
+  # ...
   ```
 
 # Using and changing worker latency profiles
 
-You can change a worker latency profile to deal with network latency at any time by editing the `node.config` object. This allows you to ensure that your cluster runs properly if network latency between the control plane and the worker nodes fluctuates.
+You can change a worker latency profile to deal with network latency at any time by editing the `node.config` object. With this configuration, you can ensure that your cluster runs properly if network latency between the control plane and the compute nodes fluctuates.
 
-You must move one worker latency profile at a time. For example, you cannot move directly from the `Default` profile to the `LowUpdateSlowReaction` worker latency profile. You must move from the `Default` worker latency profile to the `MediumUpdateAverageReaction` profile first, then to `LowUpdateSlowReaction`. Similarly, when returning to the `Default` profile, you must move from the low profile to the medium profile first, then to `Default`.
+You must move one worker latency profile at a time. For example, you cannot move directly from the `Default` profile to the `LowUpdateSlowReaction` worker latency profile. You must move from the `Default` worker latency profile to the `MediumUpdateAverageReaction` profile and then to the `LowUpdateSlowReaction` profile. Similarly, when returning to the `Default` profile, you must move from the low profile to the medium profile first, then to `Default`.
 
 <div class="note">
 
@@ -192,7 +201,6 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
           uid: 0c0f7a4c-4307-4187-b591-6155695ac85b
         spec:
           workerLatencyProfile: MediumUpdateAverageReaction
-
         # ...
         ```
 
@@ -201,7 +209,7 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
         `spec.workerLatencyProfile.MediumUpdateAverageReaction`
         Specifies that the medium worker latency policy should be used.
 
-        Scheduling on each worker node is disabled as the change is being applied.
+        Scheduling on each compute node is disabled as the change is being applied.
 
 2.  Optional: Move to the low worker latency profile:
 
@@ -240,7 +248,6 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
           uid: 0c0f7a4c-4307-4187-b591-6155695ac85b
         spec:
           workerLatencyProfile: LowUpdateSlowReaction
-
         # ...
         ```
 
@@ -249,7 +256,7 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
         `spec.workerLatencyProfile.LowUpdateSlowReaction`
         Specifies that the low worker latency policy should be used.
 
-        Scheduling on each worker node is disabled as the change is being applied.
+        Scheduling on each compute node is disabled as the change is being applied.
 
 - When all nodes return to the `Ready` condition, you can use the following command to look in the Kubernetes Controller Manager to ensure it was applied:
 
@@ -288,11 +295,13 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
   `status.message: all static pod revision(s) have updated latency profile`
   Specifies that the profile is applied and active.
 
-To change the medium profile to default or change the default to medium, edit the `node.config` object and set the `spec.workerLatencyProfile` parameter to the appropriate value.
+  To change the medium profile to default or change the default to medium, edit the `node.config` object and set the `spec.workerLatencyProfile` parameter to the appropriate value.
 
-# Example steps for displaying resulting values of workerLatencyProfile
+# Displaying resulting values of worker latency profile
 
-You can display the values in the `workerLatencyProfile` with the following commands.
+To verify the configuration of your compute nodes, display the resulting values of the worker latency profile configured for those nodes. This ensures that the Kubelet parameters are correctly adjusted for high latency environments and helps you confirm system stability.
+
+The following procedure uses example commands to display the values in the worker latency profile configured for your node.
 
 1.  Check the `default-not-ready-toleration-seconds` and `default-unreachable-toleration-seconds` fields output by the Kube API Server:
 
@@ -330,10 +339,10 @@ You can display the values in the `workerLatencyProfile` with the following comm
     - 40s
     ```
 
-3.  Check the `nodeStatusUpdateFrequency` value from the Kubelet. Set the directory `/host` as the root directory within the debug shell. By changing the root directory to `/host`, you can run binaries contained in the host’s executable paths:
+3.  Check the `nodeStatusUpdateFrequency` value from the Kubelet by entering the following command. Set the directory `/host` as the root directory within the debug shell. By changing the root directory to `/host`, you can run binaries contained in the executable paths of the host.
 
     ``` terminal
-    $ oc debug node/<worker-node-name>
+    $ oc debug node/<compute_node_name>
     ```
 
     ``` terminal
@@ -354,4 +363,4 @@ You can display the values in the `workerLatencyProfile` with the following comm
     “nodeStatusUpdateFrequency”: “10s”
     ```
 
-These outputs validate the set of timing variables for the Worker Latency Profile.
+    These outputs validate the set of timing variables for the Worker Latency Profile.

@@ -122,7 +122,7 @@ Multiple compute nodes can be updated in parallel given workloads are tolerant o
     $ oc adm drain <compute_node> [--pod-selector=<pod_selector>]
     ```
 
-    See the "Understanding how to evacuate pods on nodes" section for other options to evacuate pods from a node.
+    See the "Evacuating pods on nodes" section for other options to evacuate pods from a node.
 
 4.  Shut down the virtual machine (VM) associated with the compute node. Do this in the vSphere client by right-clicking the VM and selecting **Power** → **Shut Down Guest OS**. Do not shut down the VM using **Power Off** because it might not shut down safely.
 
@@ -174,7 +174,7 @@ Multiple compute nodes can be updated in parallel given workloads are tolerant o
 
     </div>
 
-- [Understanding how to evacuate pods on nodes](../../nodes/nodes/nodes-nodes-working.xml#nodes-nodes-working-evacuating_nodes-nodes-working)
+- [Evacuating pods on nodes](../../nodes/nodes/nodes-nodes-working.xml#nodes-nodes-working-evacuating_nodes-nodes-working)
 
 # Scheduling an update for virtual hardware on vSphere
 

@@ -30,11 +30,11 @@ Deviation from the RDS can have some or all of the following consequences:
 
 - Unapproved deviations may require escalation at executive levels.
 
-  <div class="note">
+<div class="note">
 
-  Red Hat prioritizes the servicing of requests for deviations based on partner engagement priorities.
+Red Hat prioritizes the servicing of requests for deviations based on partner engagement priorities.
 
-  </div>
+</div>
 
 # Hub cluster architecture overview
 
@@ -88,9 +88,9 @@ The hub cluster provides managed cluster installation, configuration, observabil
 
 - For more information about observability metrics and alerts, see:
 
-  - [Multicluster architecture](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/about/index#multicluster-architecture)
+  - [Multicluster architecture](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/about/index#multicluster-architecture)
 
-  - [Observability](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/about/index#observability-arch)
+  - [Observability](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/about/index#observability-arch)
 
 # Hub cluster scaling target
 
@@ -110,7 +110,7 @@ The hub cluster reference configuration can support up to 3500 managed single-no
 
 The reference configuration is also validated for deployment and management of a mix of managed cluster topologies. The specific limits depend on the mix of cluster topologies, enabled RHACM features, and so on. In a mixed topology scenario, the reference hub configuration is validated with a combination of 1200 single-node OpenShift clusters, 400 compact clusters (3 nodes combined control plane and compute nodes), and 230 standard clusters (3 control plane and 2 worker nodes).
 
-A hub cluster conforming to this reference specification can support synchronization of 1000 single-node `ClusterInstance` CRs for each ArgoCD application. You can use multiple applications to achieve the maximum number of clusters supported by a single hub cluster.
+A hub cluster conforming to this reference specification can support synchronization of 1000 single node `ClusterInstance` CRs for each ArgoCD application. You can use multiple applications to achieve the maximum number of clusters supported by a single hub cluster.
 
 <div class="note">
 
@@ -139,7 +139,7 @@ Resource utilization was measured for deploying hub clusters in the following sc
 
 Resource utilization values
 
-- [Comparison of hub cluster and managed cluster templates](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/governance/index#template-comparison-table)
+- [Comparison of hub cluster and managed cluster templates](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/governance/index#template-comparison-table)
 
 # Hub cluster topology
 
@@ -160,6 +160,8 @@ Engineering considerations
 - The number of optional compute nodes can vary depending on the scale of the specific use case.
 
 - Compute nodes can be added later as required.
+
+- Consult the 4.21 release notes regarding the decrease in the default maximum open files soft limit for containers in this release.
 
 - [OpenShift Container Platform architecture](../welcome/learn_more_about_openshift.xml#architecture)
 
@@ -204,7 +206,7 @@ For the above networking configurations, some values are required, or can be aut
 
 - An image registry must be accessible throughout the lifetime of the hub cluster.
 
-  - All required container images must be mirrored to the disconnected registry.
+  - All required container images must be mirrored to the disconnected registry. All OpenShift Container Platform releases and OLM Operator release images needed in your deployment must be mirrored to the registry. You can see example mirroring configuration in the `imageset-config.yaml` resource. You must update this example YAML to include your required versions. For deploying clusters, you can only use `ClusterImageSet` CRs that reference mirrored versions.
 
   - The hub cluster must be configured to use a disconnected registry.
 
@@ -225,9 +227,9 @@ Engineering considerations
 
 - [Networking in OpenShift Container Platform](../networking/networking_overview/understanding-networking.xml#understanding-networking)
 
-- [Networking in RHACM](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/networking/index)
+- [Networking in RHACM](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/networking/index)
 
-- [Network configuration in RHACM](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html/clusters/cluster_mce_overview#mce-network-configuration)
+- [Network configuration in RHACM](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#mce-network-configuration)
 
 # Hub cluster memory and CPU requirements
 
@@ -243,7 +245,7 @@ For more information about scaling the number of managed clusters, see "Hub clus
 
 - [Scaling your OpenShift Container Platform cluster and tuning performance in production environments](../scalability_and_performance/index.xml#scalability-and-performance-overview)
 
-- [Sizing your cluster](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html/install/installing#sizing-your-cluster)
+- [Sizing your cluster](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/install/installing#sizing-your-cluster)
 
 # Hub cluster storage requirements
 
@@ -259,29 +261,39 @@ The storage required for the underlying OpenShift Container Platform installatio
 
 The Assisted Service is deployed with the multicluster engine and Red Hat Advanced Cluster Management (RHACM).
 
-| Persistent volume resource | Size (GB) |
-|----------------------------|-----------|
-| `imageStorage`             | 50        |
-| `filesystemStorage`        | 700       |
-| `dataBaseStorage`          | 20        |
+<div class="note">
+
+The following numbers are estimated. Tune the values for more accurate results. Add an engineering margin, for example +20%, to the results to account for potential estimation inaccuracies.
+
+</div>
+
+| Persistent volume resource          | Size (GB) |
+|-------------------------------------|-----------|
+| `imageStorage`<sup>\[1\]</sup>      | 30        |
+| `filesystemStorage`<sup>\[2\]</sup> | 709       |
+| `dataBaseStorage`<sup>\[3\]</sup>   | 0.7       |
 
 Assisted Service storage requirements
 
-- [Enabling central infrastructure management in disconnected environments](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html/clusters/cluster_mce_overview#enable-cim-disconnected)
+\[1\]\[2\] For more information, refer to the multicluster engine Operator documentation [About enabling central infrastructure management](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#enable-cim).
+
+\[3\] The `databaseStorage` value is an empirical estimate based on cluster topology, number of installation events, hardware profile, and configuration complexity. Based on empirical testing, estimate approximately 200 KB per host.
+
+- [Enabling central infrastructure management in disconnected environments](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#enable-cim-disconnected)
 
 ## RHACM Observability
 
-Cluster Observability is provided by the multicluster engine and Red Hat Advanced Cluster Management (RHACM).
-
-- Observability storage needs several `PV` resources and an S3 compatible bucket storage for long term retention of the metrics.
+- Observability storage needs several `PV` resources and an S3 compatible bucket storage for long-term retention of the metrics.
 
 - Storage requirements calculation is complex and dependent on the specific workloads and characteristics of managed clusters. Requirements for `PV` resources and the S3 bucket depend on many aspects including data retention, the number of managed clusters, managed cluster workloads, and so on.
 
 - Estimate the required storage for observability by using the observability sizing calculator in the RHACM capacity planning repository. See the Red Hat Knowledgebase article [Calculating storage need for MultiClusterHub Observability on telco environments](https://access.redhat.com/articles/7103886) for an explanation of using the calculator to estimate observability storage requirements. The below table uses inputs derived from the telco RAN DU RDS and the hub cluster RDS as representative values.
 
-<div class="note">
+<div class="informalexample">
 
 The following numbers are estimated. Tune the values for more accurate results. Add an engineering margin, for example +20%, to the results to account for potential estimation inaccuracies.
+
+Storage resources depend on the number of replicas for each component. You can configure the sizing for the Observability stack in the `MultiClusterObservability` custom resource. The number of replicas scales with the sizing configuration. The sizing values in this specification use the default size.
 
 </div>
 
@@ -306,14 +318,14 @@ With these input values, the sizing calculator as described in the Red Hat Knowl
 
 Storage requirements
 
-| `thanos rule` PV |           | `thanos store` PV |           | Object bucket<sup>\[1\]</sup> |           |
-|------------------|-----------|-------------------|-----------|-------------------------------|-----------|
-| **Per replica**  | **Total** | **Per replica**   | **Total** | **Per day**                   | **Total** |
-| 30 GiB           | 90 GiB    | 100 GiB           | 300 GiB   | 15 GiB                        | 101 GiB   |
+| `thanos rule` PV | `thanos store` PV |                 | Object bucket<sup>\[1\]</sup> |           |
+|------------------|-------------------|-----------------|-------------------------------|-----------|
+| **Per replica**  | **Total**         | **Per replica** | **Total**                     | **Total** |
+| 30 GiB           | 90 GiB            | 100 GiB         | 300 GiB                       | 310 GiB   |
 
 Storage requirements
 
-\[1\] For the object bucket, it is assumed that downsampling is disabled, so that only raw data is calculated for storage requirements.
+\[1\] This value assumes downsampling is enabled. You cannot configure the object bucket size in the `MultiClusterObservability` CR. Ensure this storage capacity is available in your environment.
 
 ## Storage considerations
 
@@ -327,11 +339,15 @@ Limits and requirements
 Engineering considerations
 - Use SSD or NVMe disks with low latency and high throughput for etcd storage.
 
+- You must use clean storage disks with OpenShift Data Foundation, including before a re-install procedure. See "ODF disks cleaning procedure" for further information.
+
 - The storage solution for telco hub clusters is OpenShift Data Foundation.
 
   - Local Storage Operator supports the storage class used by OpenShift Data Foundation to provide block, file, and object storage as needed by other components on the hub cluster.
 
 - The Local Storage Operator `LocalVolume` configuration includes setting `forceWipeDevicesAndDestroyAllData: true` to support the reinstallation of hub cluster nodes where OpenShift Data Foundation has previously been used.
+
+- [ODF disks cleaning procedure](https://access.redhat.com/solutions/7114870)
 
 - [Persistent storage overview](../storage/understanding-persistent-storage.xml#persistent-storage-overview_understanding-persistent-storage)
 
@@ -341,7 +357,7 @@ Engineering considerations
 
 - [Recommended etcd practices](../etcd/etcd-practices.xml#recommended-etcd-practices)
 
-## Git repository
+# Git repository
 
 The telco management hub cluster supports a GitOps-driven methodology for installing and managing the configuration of OpenShift clusters for various telco applications. This methodology requires an accessible Git repository that serves as the authoritative source of truth for cluster definitions and configuration artifacts.
 
@@ -368,7 +384,7 @@ Engineering considerations
 Description
 The reference method for installing OpenShift Container Platform for the hub cluster is through the Agent-based Installer.
 
-Agent-based Installer provides installation capabilities without additional centralized infrastructure. The Agent-based Installer creates an ISO image, which you mount to the server to be installed. When you boot the server, OpenShift Container Platform is installed alongside optionally supplied extra manifests, such as the Red Hat OpenShift GitOps Operator.
+Agent-based Installer provides installation capabilities without additional centralized infrastructure. The Agent-based Installer creates an ISO image, which you mount to the server to be installed. When you boot the server, OpenShift Container Platform is installed alongside optionally supplied extra manifests, such as Red Hat OpenShift GitOps custom resources.
 
 <div class="note">
 
@@ -441,7 +457,7 @@ Limits and requirements
 
   - [Introduction to OpenShift updates](../updating/understanding_updates/intro-to-updates.xml#understanding-openshift-updates)
 
-  - [Upgrading your hub cluster](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.13/html-single/install/index#upgrading-hub)
+  - [Upgrading your hub cluster](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/install/index#upgrading-hub)
 
   - [Updating GitOps ZTP](../edge_computing/ztp-updating-gitops.xml#ztp-updating-gitops)
 
@@ -460,7 +476,7 @@ The primary CR to enable and configure the Observability service is the `Multicl
 
   <div class="note">
 
-  Without this setting the Observability component attempts to configure the managed cluster monitoring configuration. With this value set you can merge your desired configuration with the necessary Observability configuration of alert forwarding into the managed cluster monitoring `ConfigMap` object. When the Observability service is enabled RHACM will deploy to each managed cluster a workload to push metrics and alerts generated by local Monitoring to the hub cluster. The metrics and alerts to be forwarded from the managed cluster to the hub, are defined by a `ConfigMap` CR in the `open-cluster-management-addon-observability` namespace. You can also specify custom metrics, for more information, see [Adding custom metrics](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.13/html-single/observability/index#adding-custom-metrics).
+  Without this setting the Observability component attempts to configure the managed cluster monitoring configuration. With this value set you can merge your desired configuration with the necessary Observability configuration of alert forwarding into the managed cluster monitoring `ConfigMap` object. When the Observability service is enabled RHACM will deploy to each managed cluster a workload to push metrics and alerts generated by local Monitoring to the hub cluster. The metrics and alerts to be forwarded from the managed cluster to the hub, are defined by a `ConfigMap` CR in the `open-cluster-management-addon-observability` namespace. You can also specify custom metrics. For more information, see [Adding custom metrics](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/observability/index#adding-custom-metrics).
 
   </div>
 
@@ -495,17 +511,17 @@ Engineering considerations
 
 - For more information about observability, see:
 
-  - [Exporting metrics to external endpoints](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/observability/index#exporting-metrics-to-external-endpoints)
+  - [Exporting metrics to external endpoints](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/observability/index#exporting-metrics-to-external-endpoints)
 
-  - [Enabling the Observability service](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/observability/index#enabling-observability-service)
+  - [Enabling the Observability service](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/observability/index#enabling-observability-service)
 
-- For more information about custom metrics, see [Adding custom metrics](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/observability/index#adding-custom-metrics)
+- For more information about custom metrics, see [Adding custom metrics](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/observability/index#adding-custom-metrics)
 
-- For more information about forwarding alerts to other external systems, see [Forwarding alerts](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/observability/index#forward-alerts)
+- For more information about forwarding alerts to other external systems, see [Forwarding alerts](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/observability/index#forward-alerts)
 
-- For more information about CPU and memory requirements see: [Observability pod capacity requests](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/observability/index#observability-pod-capacity-requests)
+- For more information about CPU and memory requirements see: [Observability pod capacity requests](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/observability/index#observability-pod-capacity-requests)
 
-- For more information about custom dashboards, see [Using Grafana dashboards](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/observability/index#using-grafana-dashboards)
+- For more information about custom dashboards, see [Using Grafana dashboards](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/observability/index#using-grafana-dashboards)
 
 # Managed cluster lifecycle management
 
@@ -521,16 +537,20 @@ Description
 As of Red Hat Advanced Cluster Management (RHACM) 2.12, using the SiteConfig Operator is the recommended method for deploying managed clusters. The SiteConfig Operator introduces a unified ClusterInstance API that decouples the parameters that define the cluster from the manner in which it is deployed. The SiteConfig Operator uses a set of cluster templates that are instantiated using the data from a `ClusterInstance` custom resource (CR) to dynamically generate installation manifests. Following the GitOps methodology, the `ClusterInstance` CR is sourced from a Git repository through ArgoCD. The `ClusterInstance` CR can be used to initiate cluster installation by using either Assisted Installer, or the image-based installation available in multicluster engine.
 
 Limits and requirements
-- The SiteConfig ArgoCD plugin which handles `SiteConfig` CRs is deprecated from OpenShift Container Platform 4.18.
+- The `SiteConfig` ArgoCD plugin which handles `SiteConfig` CRs is removed from OpenShift Container Platform 4.21. From this release, use `ClusterInstance` CRs to define managed cluster deployments.
+
+- An HTTP server hosting the root filesystem and RHCOS live ISO images is required for cluster deployment. These images are release specific. ISO images for each OpenShift Container Platform release to be deployed must be reachable by the hub cluster and each deployed spoke cluster. Only include ISO images which exist on the HTTP server in the `AgentServiceConfig` CR.
+
+- A container registry hosting all OpenShift Container Platform and day-2 OLM operator images must be reachable from all deployed spoke clusters. The hub configuration includes `kustomize` overlays which you can use to provide the TLS certificates and credentials for a disconnected container registry.
 
 Engineering considerations
 - You must create a `Secret` CR with the login information for the cluster baseboard management controller (BMC). This `Secret` CR is then referenced in the `SiteConfig` CR. Integration with a secret store, such as Vault, can be used to manage the secrets.
 
 - Besides offering deployment method isolation and unification of Git and non-Git workflows, the SiteConfig Operator provides better scalability, greater flexibility with the use of custom templates, and an enhanced troubleshooting experience.
 
-- [SiteConfig](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html/multicluster_engine_operator_with_red_hat_advanced_cluster_management/siteconfig-intro#siteconfig-intro)
+- [SiteConfig](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/multicluster_engine_operator_with_red_hat_advanced_cluster_management/siteconfig-intro#siteconfig-intro)
 
-- [ClusterInstance](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html/apis/apis#rhacm-docs_apis_clusterinstance_jsonclusterinstance)
+- [ClusterInstance](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/apis/apis#rhacm-docs_apis_clusterinstance_jsonclusterinstance)
 
 - [Creating the managed bare-metal host secrets](../edge_computing/ztp-deploying-far-edge-sites.xml#ztp-creating-the-site-secrets_ztp-deploying-far-edge-sites)
 
@@ -569,7 +589,7 @@ Engineering considerations
 
 - During cluster installation, you can pause `MachineConfigPool` CRs by setting the `paused` field to `true` and setting `maxUnavailable` to 100% to improve installation times.
 
-- [Configuration policy YAML structure](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html/governance/governance#configuration-policy-yaml)
+- [Configuration policy YAML structure](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/governance/governance#configuration-policy-yaml)
 
 - [About the ClusterGroupUpgrade CR](../edge_computing/cnf-talm-for-cluster-upgrades.xml#talo-about-cgu-crs_cnf-topology-aware-lifecycle-manager)
 
@@ -577,7 +597,7 @@ Engineering considerations
 
 - [Performing an image-based upgrade for single-node OpenShift clusters using GitOps ZTP](../edge_computing/image_based_upgrade/ztp-image-based-upgrade.xml#ztp-image-based-upgrade)
 
-# Hub cluster disaster recovery
+## Hub cluster disaster recovery
 
 Note that loss of the hub cluster does not typically create a service outage on the managed clusters. Functions provided by the hub cluster will be lost, such as observability, configuration, lifecycle management updates being driven through the hub cluster, and so on.
 
@@ -589,7 +609,7 @@ Engineering considerations
 
 - The cluster backup and restore operator is not enabled by default in Red Hat Advanced Cluster Management (RHACM). The reference configuration enables this feature.
 
-- [Business continuity](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.13/html-single/business_continuity/index)
+- [Business continuity](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/business_continuity/index)
 
 # Hub cluster components
 
@@ -611,9 +631,7 @@ RHACM provides functionality such as the following:
 
 - The Topology Aware Lifecycle Manager component of RHACM provides phased rollout of configuration changes to managed clusters.
 
-- The RHACM multicluster engine Observability component provides selective monitoring, dashboards, alerts, and metrics.
-
-The recommended method for single-node OpenShift cluster installation is the image-based installation method in multicluster engine, which uses the `ClusterInstance` CR for cluster definition.
+- The RHACM multicluster engine Observability component provides selective monitoring, dashboards, alerts, and metrics. The recommended method for single-node OpenShift cluster installation is the image-based installation method in multicluster engine, which uses the `ClusterInstance` CR for cluster definition.
 
 The recommended method for single-node OpenShift upgrade is the image-based upgrade method.
 
@@ -636,7 +654,7 @@ Limits and requirements
 
   - Workload demands and distribution
 
-- The hub and managed clusters must maintain sufficient bi-directional connectivity.
+- The hub and managed clusters must maintain sufficient bidirectional connectivity. Refer to the RHACM Hub Network Configuration for further details.
 
 Engineering considerations
 - You can configure the cluster backup and restore Operator to include third-party resources.
@@ -645,19 +663,21 @@ Engineering considerations
 
 - Managed clusters typically have some number of configuration values which are specific to an individual cluster. These should be managed using RHACM policy hub side templating with values pulled from `ConfigMap` CRs based on the cluster name.
 
-- [Multi Cluster Engine](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.13/html-single/clusters/index#cluster_mce_overview)
+- \* [Hub Network Configuration](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/networking/networking#hub-network-config)
 
-- [Governance](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.13/html-single/governance/index)
+- [Multi Cluster Engine](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/clusters/index#cluster_mce_overview)
+
+- [Governance](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/governance/index)
 
 - [Topology Aware Lifecycle Manager](../edge_computing/cnf-talm-for-cluster-upgrades.xml#cnf-talm-for-cluster-updates)
 
-- [MultiClusterHub Observability](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.13/html/observability/index)
+- [MultiClusterHub Observability](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/observability/index)
 
-- [Business continuity](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.13/html-single/business_continuity/index#business-cont-overview)
+- [Business continuity](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/business_continuity/index#business-cont-overview)
 
-- [Performance and scalability](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.13/html/install/installing#performance-and-scalability)
+- [Performance and scalability](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/install/installing#performance-and-scalability)
 
-- [Network configuration](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/clusters/index#mce-network-configuration)
+- [Network configuration](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/clusters/index#mce-network-configuration)
 
 ## Topology Aware Lifecycle Manager
 
@@ -709,7 +729,7 @@ Engineering considerations
 
 - To help with multiple versions, keep all source CRs and policy creation CRs in versioned Git repositories to ensure consistent generation of policies for each OpenShift Container Platform version.
 
-- [ClusterInstance CR](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html/multicluster_engine_operator_with_red_hat_advanced_cluster_management/siteconfig-intro)
+- [ClusterInstance CR](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/multicluster_engine_operator_with_red_hat_advanced_cluster_management/siteconfig-intro)
 
 - [PolicyGenTemplate CRs](../edge_computing/policygentemplate_for_ztp/ztp-configuring-managed-clusters-policies.xml#ztp-configuring-managed-clusters-policies)
 
@@ -790,6 +810,24 @@ Limits and requirements
 Engineering considerations
 - No engineering consideration updates in this release.
 
+## cert-manager Operator
+
+New in this release
+- cert-manager Operator is a new optional component in this release.
+
+Description
+The cert-manager Operator for OpenShift Container Platform manages the lifecycle of TLS certificates for cluster components and workloads. The cert-manager Operator automates certificate issuance, renewal, and rotation, eliminating manual certificate management. The reference configuration includes the cert-manager Operator to optionally manage certificates for the API server and ingress controller endpoints.
+
+You can use RHACM `CertificatePolicy` resources to monitor certificate health across all managed clusters.
+
+Limits and requirements
+- The reference configuration includes only the ACME DNS01 challenge type for platform certificate issuance.
+
+Engineering considerations
+- Use RHACM `CertificatePolicy` resources on the hub cluster to monitor certificate expiration and compliance across managed clusters.
+
+- Optionally, configure a `PrometheusRule` on the hub cluster to generate alerts based on policy compliance status.
+
 # Extracting the telco hub reference design configuration CRs
 
 You can extract the complete set of custom resources (CRs) for the telco hub profile from the `openshift-telco-hub-rds-rhel9` container image. The container image has both the required CRs, and the optional CRs, for the telco hub profile.
@@ -809,7 +847,7 @@ You can extract the complete set of custom resources (CRs) for the telco hub pro
     ```
 
     ``` terminal
-    $ podman run -it registry.redhat.io/openshift4/openshift-telco-hub-rds-rhel9:v4.19 | base64 -d | tar xv -C out
+    $ podman run -it registry.redhat.io/openshift4/openshift-telco-hub-rds-rhel9:v4.21 | base64 -d | tar xv -C out
     ```
 
 - The `out` directory has the following directory structure. You can view the telco hub CRs in the `out/telco-hub-rds/` directory by running the following command:
@@ -881,70 +919,81 @@ You can extract the complete set of custom resources (CRs) for the telco hub pro
 
 # Hub cluster reference configuration CRs
 
-The following sections briefly describe each custom resource (CR) for the telco management hub reference configuration in 4.19.
+The following sections briefly describe each custom resource (CR) for the telco management hub reference configuration in 4.21.
 
-# Red Hat Advanced Cluster Management (RHACM) CRs
+# Advanced Cluster Management reference CRs
 
-| Component | Reference CR                 | Description                                                                                                                                                                                              | Optional |
-|-----------|------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
-| RHACM     | `acmAgentServiceConfig.yaml` | Creates a policy to manage copying data from an object bucket claim into a secret for Observability to connect to Thanos.                                                                                | No       |
-| RHACM     | `acmMCE.yaml`                | Defines the MultiCluster Engine configuration required by ACM.                                                                                                                                           | No       |
-| RHACM     | `acmMCH.yaml`                | Configures a `MultiClusterHub` CR with high availability, enabling various components and specifying installation settings.                                                                              | No       |
-| RHACM     | `acmMirrorRegistryCM.yaml`   | Defines the SSL certificates and mirror registry configuration for various Red Hat and OpenShift Container Platform registries used by the `multicluster-engine` in the `multicluster-engine` namespace. | No       |
-| RHACM     | `acmNS.yaml`                 | Defines the `open-cluster-management` namespace with a label to enable cluster monitoring.                                                                                                               | No       |
-| RHACM     | `acmOperGroup.yaml`          | Defines an OperatorGroup for the `open-cluster-management` namespace, targeting the same namespace.                                                                                                      | No       |
-| RHACM     | `acmPerfSearch.yaml`         | Configures search for Open Cluster Management by defining various parameters and API settings.                                                                                                           | No       |
-| RHACM     | `acmProvisioning.yaml`       | Configures a provisioning resource in the metal3.io/v1alpha1 API version to watch all namespaces.                                                                                                        | No       |
-| RHACM     | `acmSubscription.yaml`       | Subscribes to the RHACM Operator using automatic install plan approval.                                                                                                                                  | No       |
-| RHACM     | `observabilityMCO.yaml`      | Configures `MultiClusterObservability` for managing observability and alerting across multiple clusters.                                                                                                 | No       |
-| RHACM     | `observabilityNS.yaml`       | Creates an `open-cluster-management-observability` namespace.                                                                                                                                            | No       |
-| RHACM     | `observabilityOBC.yaml`      | Creates an `ObjectBucketClaim` CR in the `open-cluster-management-observability` namespace.                                                                                                              | No       |
-| RHACM     | `observabilitySecret.yaml`   | Creates a Secret CR in the `open-cluster-management-observability` namespace for storing Docker configuration details.                                                                                   | No       |
-| RHACM     | `pull-secret-copy.yaml`      | Creates a policy to copy the global pull secret into observability namespaces.                                                                                                                           | No       |
-| RHACM     | `thanosSecret.yaml`          | Creates a policy to copy data from an object bucket claim into a secret for observability to connect to Thanos.                                                                                          | No       |
-| TALM      | `talmSubscription.yaml`      | Creates a `Subscription` CR for TALM.                                                                                                                                                                    | No       |
+| Component | Reference CR                        | Description                                                                                                                                                                                                     | Optional |
+|-----------|-------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
+| RHACM     | `acmAgentServiceConfig.yaml`        | Creates a policy to manage copying data from an object bucket claim into a secret for Observability to connect to Thanos.                                                                                       | No       |
+| RHACM     | `acmMCE.yaml`                       | Defines the multicluster-engine configuration required by ACM.                                                                                                                                                  | No       |
+| RHACM     | `acmMCH.yaml`                       | Configures a `MultiClusterHub` CR with high availability, enabling various components and specifying installation settings for Open Cluster Management.                                                         | No       |
+| RHACM     | `acmMirrorRegistryCM.yaml`          | Defines the SSL certificates and mirror registry configuration for various Red Hat and OpenShift Container Platform registries used by the multicluster-engine Operator in the `multicluster-engine` namespace. | No       |
+| RHACM     | `acmNS.yaml`                        | Defines the `open-cluster-management` namespace with a label to enable cluster monitoring.                                                                                                                      | No       |
+| RHACM     | `acmOperGroup.yaml`                 | Defines an `OperatorGroup` CR for the `open-cluster-management` namespace, targeting the same namespace.                                                                                                        | No       |
+| RHACM     | `acmPerfSearch.yaml`                | Configures search for Open Cluster Management by defining various parameters and API settings.                                                                                                                  | No       |
+| RHACM     | `acmProvisioning.yaml`              | Configures a provisioning resource in the `metal3.io/v1alpha1` API version to watch all namespaces.                                                                                                             | No       |
+| RHACM     | `acmSubscription.yaml`              | Subscribes to the Red Hat Advanced Cluster Management for Kubernetes Operator using automatic install plan approval.                                                                                            | No       |
+| RHACM     | `observabilityMCO.yaml`             | Configures `MultiClusterObservability` for managing observability and alerting across multiple clusters.                                                                                                        | No       |
+| RHACM     | `observabilityNS.yaml`              | Creates an `open-cluster-management-observability` namespace.                                                                                                                                                   | No       |
+| RHACM     | `observabilityOBC.yaml`             | Creates an `ObjectBucketClaim` CR in the `open-cluster-management-observability` namespace.                                                                                                                     | No       |
+| RHACM     | `observabilitySecret.yaml`          | Creates a `Secret` CR in the `open-cluster-management-observability` namespace for storing Docker configuration details.                                                                                        | No       |
+| RHACM     | `observabilityRoutePolicy.yaml`     | Policy to propagate Red Hat Advanced Cluster Management for Kubernetes observability route to the managed cluster.                                                                                              | No       |
+| RHACM     | `pullSecretMCSB.yaml`               | Creates a `ManagedClusterSetBinding` CR for the pull secret policy.                                                                                                                                             | No       |
+| RHACM     | `pullSecretPlacementBinding.yaml`   | Creates the `PlacementBinding` CR needed for the pull secret policy.                                                                                                                                            | No       |
+| RHACM     | `pullSecretPlacement.yaml`          | Creates the `Placement` CR against local cluster needed for the pull secret policy.                                                                                                                             | No       |
+| RHACM     | `pullSecretPolicy.yaml`             | Creates a policy to copy the global pull secret into observability namespaces.                                                                                                                                  | No       |
+| RHACM     | `thanosSecretPlacementBinding.yaml` | Creates the `PlacementBinding` CR needed for the thanos secret policy.                                                                                                                                          | No       |
+| RHACM     | `thanosSecretPlacement.yaml`        | Creates the `Placement` CR against local cluster needed for the thanos secret policy.                                                                                                                           | No       |
+| RHACM     | `thanosSecretPolicy.yaml`           | Creates a policy to copy data from an object bucket claim into a secret for observability to connect to Thanos.                                                                                                 | No       |
+| TALM      | `talmSubscription.yaml`             | Creates a `Subscription` CR for TALM.                                                                                                                                                                           | No       |
 
-RHACM CRs
+Advanced Cluster Management CRs
 
 # Storage reference CRs
 
-| Component                 | Reference CR            | Description                                                                                                                                                                                                | Optional |
-|---------------------------|-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
-| Local Storage Operator    | `lsoLocalVolume.yaml`   | Defines a `LocalVolume` CR specifying local storage configuration and node selection criteria.                                                                                                             | Yes      |
-| Local Storage Operator    | `lsoNS.yaml`            | Defines the `openshift-local-storage` namespace.                                                                                                                                                           | Yes      |
-| Local Storage Operator    | `lsoOperatorGroup.yaml` | Defines an `OperatorGroup` for the `openshift-local-storage` namespace.                                                                                                                                    | Yes      |
-| Local Storage Operator    | `lsoSubscription.yaml`  | Defines a `Subscription` CR for the Local Storage Operator.                                                                                                                                                | Yes      |
-| OpenShift Data Foundation | `odfNS.yaml`            | Defines the `openshift-storage namespace` with specific annotations and labels for workload management and cluster monitoring.                                                                             | Yes      |
-| OpenShift Data Foundation | `odfOperatorGroup.yaml` | Defines an `OperatorGroup` for the `openshift-storage` namespace.                                                                                                                                          | Yes      |
-| OpenShift Data Foundation | `odfReady.yaml`         | Defines a resource to verify readiness of the ODF deployment.                                                                                                                                              | Yes      |
-| OpenShift Data Foundation | `odfSubscription.yaml`  | Configures an OpenShift Container Platform subscription to the OpenShift Data Foundation Operator, specifying installation details such as the Operator’s name, namespace, channel, and approval strategy. | Yes      |
-| OpenShift Data Foundation | `storageCluster.yaml`   | Defines a `StorageCluster` CR with specific resource requests and limits, storage device sets, and annotations for Argo CD synchronization.                                                                | No       |
+| Component                 | Reference CR            | Description                                                                                                                                                                                                        | Optional |
+|---------------------------|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
+| Local Storage Operator    | `lsoLocalVolume.yaml`   | Defines a `LocalVolume` CR specifying local storage configuration and node selection criteria.                                                                                                                     | Yes      |
+| Local Storage Operator    | `lsoNS.yaml`            | Defines the `openshift-local-storage` namespace.                                                                                                                                                                   | Yes      |
+| Local Storage Operator    | `lsoOperatorGroup.yaml` | Defines an `OperatorGroup` for the `openshift-local-storage` namespace.                                                                                                                                            | Yes      |
+| Local Storage Operator    | `lsoSubscription.yaml`  | Defines a `Subscription` CR for the Local Storage Operator.                                                                                                                                                        | Yes      |
+| OpenShift Data Foundation | `odfNS.yaml`            | Defines the `openshift-storage namespace` with specific annotations and labels for workload management and cluster monitoring.                                                                                     | Yes      |
+| OpenShift Data Foundation | `odfOperatorGroup.yaml` | Defines an `OperatorGroup` for the `openshift-storage` namespace.                                                                                                                                                  | Yes      |
+| OpenShift Data Foundation | `odfReady.yaml`         | Defines a resource to verify readiness of the ODF deployment.                                                                                                                                                      | Yes      |
+| OpenShift Data Foundation | `odfSubscription.yaml`  | Configures an OpenShift Container Platform subscription to the Red Hat OpenShift Data Foundation Operator, specifying installation details such as the Operator’s name, namespace, channel, and approval strategy. | Yes      |
+| OpenShift Data Foundation | `storageCluster.yaml`   | Defines a `StorageCluster` CR with specific resource requests and limits, storage device sets, and annotations for Argo CD synchronization.                                                                        | No       |
 
 Storage CRs
 
 # GitOps Zero Touch Provisioning (ZTP) reference CRs
 
-| Component           | Reference CR                      | Description                                                                                                                                                                       | Optional |
-|---------------------|-----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
-| GitOps Operator     | `argocd-ssh-known-hosts-cm.yaml`  | Defines a `ConfigMap` CR to store SSH known hosts used by ArgoCD in a disconnected environment.                                                                                   | No       |
-| GitOps Operator     | `addPluginsPolicy.yaml`           | Defines a policy to add ArgoCD custom plugins to the GitOps controller.                                                                                                           | No       |
-| GitOps Operator     | `argocd-application.yaml`         | Defines the ArgoCD Application for GitOps management.                                                                                                                             | No       |
-| GitOps Operator     | `argocd-tls-certs-cm.yaml`        | Defines a `ConfigMap` CR for ArgoCD TLS certificate management.                                                                                                                   | No       |
-| GitOps Operator     | `clusterrole.yaml`                | Defines the `ClusterRole` CR that grants permissions to the GitOps Operator.                                                                                                      | No       |
-| GitOps Operator     | `clusterrolebinding.yaml`         | Binds the `ClusterRole` CR to the ArgoCD controller `ServiceAccount` CR.                                                                                                          | No       |
-| GitOps Operator     | `gitopsNS.yaml`                   | Defines an `openshift-gitops-operator` namespace with a label for cluster monitoring.                                                                                             | No       |
-| GitOps Operator     | `gitopsOperatorGroup.yaml`        | Defines an OperatorGroup in the `openshift-gitops-operator` namespace with a default upgrade strategy.                                                                            | No       |
-| GitOps Operator     | `gitopsSubscription.yaml`         | Defines a subscription for the OpenShift Container Platform GitOps Operator, specifying automatic install plan approval and source details.                                       | No       |
-| GitOps Operator     | `ztp-repo.yaml`                   | Defines the Git repository for ZTP manifests and configurations.                                                                                                                  | No       |
-| GitOps applications | `app-project.yaml`                | Defines an ArgoCD `AppProject` CR specifying resource whitelists and destination rules for cluster and namespace resources.                                                       | No       |
-| GitOps applications | `clusters-app.yaml`               | Defines a namespace and an ArgoCD application for managing the deployment of cluster configurations from the specified Git repository.                                            | No       |
-| GitOps applications | `gitops-cluster-rolebinding.yaml` | Defines a `ClusterRoleBinding` CR that grants the `cluster-admin` role to the openshift-gitops-argocd-application-controller service account in the `openshift-gitops` namespace. | No       |
-| GitOps applications | `gitops-policy-rolebinding.yaml`  | Binds the `cluster-manager-admin` cluster role to the ArgoCD application controller `ServiceAccount` CR.                                                                          | No       |
-| GitOps applications | `kustomization.yaml`              | Defines a Kustomization configuration for the GitOps ZTP application installations, listing various YAML resources to be included.                                                | No       |
-| GitOps applications | `policies-app-project.yaml`       | Defines an Argo CD AppProject resource, specifying cluster and namespace resource whitelists and destinations.                                                                    | No       |
-| GitOps applications | `policies-app.yaml`               | Defines the ArgoCD `Application` CR for policy management.                                                                                                                        | No       |
+| Component           | Reference CR                            | Description                                                                                                                                                                       | Optional |
+|---------------------|-----------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
+| GitOps Operator     | `argocd-ssh-known-hosts-cm.yaml`        | Defines a `ConfigMap` CR to store SSH known hosts used by ArgoCD in a disconnected environment.                                                                                   | No       |
+| GitOps Operator     | `addPluginsMCSB.yaml`                   | Defines the `ManagedClusterSetBinding` CR for policy used to patch GitOps operator.                                                                                               | No       |
+| GitOps Operator     | `addPluginsPolicyNS.yaml`               | Namespace for GitOps plugin policy.                                                                                                                                               | No       |
+| GitOps Operator     | `addPluginsPolicyPlacementBinding.yaml` | Defines the `PlacementBinding` CR for the GitOps plugin policy.                                                                                                                   | No       |
+| GitOps Operator     | `addPluginsPolicyPlacement.yaml`        | Defines the `Placement` CR against local cluster for the GitOps plugin policy.                                                                                                    | No       |
+| GitOps Operator     | `addPluginsPolicy.yaml`                 | Defines a policy to add ArgoCD custom plugins to the GitOps controller.                                                                                                           | No       |
+| GitOps Operator     | `argocd-application.yaml`               | Defines the ArgoCD Application for GitOps management.                                                                                                                             | No       |
+| GitOps Operator     | `argocd-tls-certs-cm.yaml`              | Defines a `ConfigMap` CR for ArgoCD TLS certificate management.                                                                                                                   | No       |
+| GitOps Operator     | `clusterrole.yaml`                      | Defines the `ClusterRole` CR that grants permissions to the GitOps Operator.                                                                                                      | No       |
+| GitOps Operator     | `clusterrolebinding.yaml`               | Binds the `ClusterRole` CR to the ArgoCD controller `ServiceAccount` CR.                                                                                                          | No       |
+| GitOps Operator     | `gitopsNS.yaml`                         | Defines an `openshift-gitops-operator` namespace with a label for cluster monitoring.                                                                                             | No       |
+| GitOps Operator     | `gitopsOperatorGroup.yaml`              | Defines an OperatorGroup in the `openshift-gitops-operator` namespace with a default upgrade strategy.                                                                            | No       |
+| GitOps Operator     | `gitopsSubscription.yaml`               | Defines a subscription for the OpenShift Container Platform GitOps Operator, specifying automatic install plan approval and source details.                                       | No       |
+| GitOps Operator     | `ztp-repo.yaml`                         | Defines the Git repository for ZTP manifests and configurations.                                                                                                                  | No       |
+| GitOps applications | `app-project.yaml`                      | Defines an ArgoCD `AppProject` CR specifying resource whitelists and destination rules for cluster and namespace resources.                                                       | No       |
+| GitOps applications | `clusters-app.yaml`                     | Defines a namespace and an ArgoCD application for managing the deployment of cluster configurations from the specified Git repository.                                            | No       |
+| GitOps applications | `gitops-cluster-rolebinding.yaml`       | Defines a `ClusterRoleBinding` CR that grants the `cluster-admin` role to the openshift-gitops-argocd-application-controller service account in the `openshift-gitops` namespace. | No       |
+| GitOps applications | `gitops-policy-rolebinding.yaml`        | Binds the `cluster-manager-admin` cluster role to the ArgoCD application controller `ServiceAccount` CR.                                                                          | No       |
+| GitOps applications | `kustomization.yaml`                    | Defines a Kustomization configuration for the GitOps ZTP application installations, listing various YAML resources to be included.                                                | No       |
+| GitOps applications | `policies-app-project.yaml`             | Defines an Argo CD AppProject resource, specifying cluster and namespace resource whitelists and destinations.                                                                    | No       |
+| GitOps applications | `policies-app.yaml`                     | Defines the ArgoCD `Application` CR for policy management.                                                                                                                        | No       |
+| GitOps applications | `extra-manifests-policy.yaml`           | Defines policy to manage extra configuration manifests provided during Day 0 installation.                                                                                        | No       |
 
-\[ztp\] CRs
+GitOps ZTP CRs
 
 # Logging reference CRs
 
@@ -980,34 +1029,69 @@ Container registry CRs
 
 | Component                   | Reference CR           | Description                                                                                                                                               | Optional |
 |-----------------------------|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
-| Mirroring configuration CRs | `imageset-config.yaml` | Defines an `ImageSetConfiguration` CR for mirroring OpenShift Container Platform channels and Operator packages specific to versions and target catalogs. | No       |
+| Mirroring configuration CRs | `imageset-config.yaml` | Defines an `ImageSetConfiguration` CR for mirroring OpenShift Container Platform channels and Operator packages, specifying versions and target catalogs. | No       |
 
 Image mirroring CRs
 
 # Installation reference CRs
 
-| Component           | Reference CR          | Description                                                                                                                                                                                          | Optional |
-|---------------------|-----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
-| Agent-based install | `agent-config.yaml`   | Use this example template `AgentConfig` CR to configure the Agent-based installer, specifying network and device settings for your target hosts.                                                     | No       |
-| Agent-based install | `install-config.yaml` | Use this example `install-config.yaml` template to configure your hub cluster installation for networking, control plane, compute nodes, mirror registries, and other environment-specific settings. | No       |
+| Component           | Reference CR          | Description                                                                                                         | Optional |
+|---------------------|-----------------------|---------------------------------------------------------------------------------------------------------------------|----------|
+| Agent-based install | `agent-config.yaml`   | Configures the Agent-based installer, specifying network and device settings for the hosts to be installed.         | No       |
+| Agent-based install | `install-config.yaml` | Configures the hub cluster installation for networking, control plane, compute nodes, mirror registries, and so on. | No       |
 
 Installation CRs
 
+# Security reference CRs
+
+| Component    | Reference CR                                        | Description                                                                                             | Optional |
+|--------------|-----------------------------------------------------|---------------------------------------------------------------------------------------------------------|----------|
+| Cert-Manager | `certManagerNS.yaml`                                | Defines the cert-manager-operator namespace.                                                            | Yes      |
+| Cert-Manager | `certManagerOperatorgroup.yaml`                     | Defines the OperatorGroup for cert-manager.                                                             | Yes      |
+| Cert-Manager | `certManagerSubscription.yaml`                      | Installs the OpenShift cert-manager operator.                                                           | Yes      |
+| Cert-Manager | `certManagerClusterIssuer.yaml`                     | Configures an ACME ClusterIssuer using Let’s Encrypt with DNS-01 challenge.                             | Yes      |
+| Cert-Manager | `apiServerCertificate.yaml`                         | Creates a certificate for the API Server endpoint.                                                      | Yes      |
+| Cert-Manager | `ingressCertificate.yaml`                           | Creates a wildcard certificate for the Ingress/Router.                                                  | Yes      |
+| Cert-Manager | `apiServerConfig.yaml`                              | Configures OpenShift to use the cert-manager generated API Server certificate.                          | Yes      |
+| Cert-Manager | `ingressControllerConfig.yaml`                      | Configures OpenShift to use the cert-manager generated Ingress certificate.                             | Yes      |
+| Cert-Manager | `certManagerCertificatePolicy.yaml`                 | Defines CertificatePolicy for monitoring certificate expiration and compliance across managed clusters. | Yes      |
+| Cert-Manager | `certManagerCertificatePolicyPlacement.yaml`        | Defines Placement for CertificatePolicy targeting clusters with the common label.                       | Yes      |
+| Cert-Manager | `certManagerCertificatePolicyPlacementBinding.yaml` | Binds the CertificatePolicy to the Placement for policy distribution.                                   | Yes      |
+
+Security CRs
+
+# Backup Recovery reference CRs
+
+| Component | Reference CR                     | Description                                                                               | Optional |
+|-----------|----------------------------------|-------------------------------------------------------------------------------------------|----------|
+| OADP      | `backupSchedule.yaml`            | Defines a `BackupSchedule` CR.                                                            | Yes      |
+| OADP      | `dataProtectionApplication.yaml` | Defines the data protection application with backup storage and configuration parameters. | Yes      |
+| OADP      | `objectBucketClaim.yaml`         | Defines the object bucket used by backup.                                                 | Yes      |
+| OADP      | `policy-backup.yaml`             | Defines a policy to ensure `BareMetalHost` CRs are correctly annotated for backup.        | Yes      |
+| OADP      | `restore.yaml`                   | Example `Restore` CR.                                                                     | Yes      |
+
+Backup Recovery CRs
+
 # Telco hub reference configuration software specifications
 
-The telco hub 4.19 solution has been validated using the following Red Hat software products for OpenShift Container Platform clusters.
+The telco hub 4.21 solution has been validated using the following Red Hat software products for OpenShift Container Platform clusters.
 
-| Component                                           | Software version                            |
+| Hub Cluster Component                               | Software Version (y-stream)                 |
 |-----------------------------------------------------|---------------------------------------------|
-| OpenShift Container Platform                        | 4.19                                        |
-| Local Storage Operator                              | 4.19                                        |
-| Red Hat OpenShift Data Foundation (ODF)             | 4.18                                        |
-| Red Hat Advanced Cluster Management (RHACM)         | 2.13                                        |
-| Red Hat OpenShift GitOps                            | 1.16                                        |
-| GitOps Zero Touch Provisioning (ZTP) plugins        | 4.19                                        |
-| multicluster engine Operator PolicyGenerator plugin | 2.13                                        |
-| Topology Aware Lifecycle Manager (TALM)             | 4.19                                        |
-| Cluster Logging Operator                            | 6.2                                         |
+| OpenShift Container Platform                        | 4.21                                        |
+| Red Hat Advanced Cluster Management (RHACM)         | 2.15<sup>1</sup>                            |
+| Local Storage Operator                              | 4.21                                        |
+| cert-manager Operator                               | 1.18<sup>3</sup>                            |
+| Red Hat OpenShift Data Foundation (ODF)             | 4.20<sup>2</sup>                            |
+| Red Hat OpenShift GitOps                            | 1.19<sup>3</sup>                            |
+| GitOps Zero Touch Provisioning (ZTP) plugins        | 4.21                                        |
+| multicluster engine Operator PolicyGenerator plugin | 2.10<sup>1</sup>                            |
+| Topology Aware Lifecycle Manager (TALM)             | 4.21                                        |
+| Cluster Logging Operator                            | 6.4                                         |
 | OpenShift API for Data Protection (OADP)            | The version aligned with the RHACM release. |
 
-Telco hub cluster validated software components
+1.  This table will be updated when the aligned RHACM version (2.16) is released.
+
+2.  This table will be updated when the aligned ODF version (4.21) is released.
+
+3.  This is a platform-agnostic Operator. Its support lifecycle does not extend to the full lifecycle of OpenShift Container Platform. With all platform agnostic Operators, customers need to anticipate the need to update to a newer minor version of the Operator at the end of the Operator lifecycle of the current version or when planning to update the OpenShift Container Platform cluster to stay supported. While a given Operator minor version may not support the latest available OpenShift Container Platform release, there will always be a version of the Operator available for every supported version of OpenShift Container Platform at any given point in time. For terms of support, see the Platform Agnostic Operators section of [OpenShift Operator Life Cycles](https://access.redhat.com/support/policy/updates/openshift_operators).

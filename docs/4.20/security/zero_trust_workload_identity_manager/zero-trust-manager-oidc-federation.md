@@ -119,11 +119,16 @@ After the Entra ID configuration is complete, you can set up Entra ID to work wi
     $ export LOCATION=centralus
     ```
 
-    - Your unique subscription identifier.
+    where:
 
-    - The ID for your Azure Active Directory instance.
+    `SUBSCRIPTION_ID`
+    Specifies your unique subscription identifier.
 
-    - The Azure region where your resource is created.
+    `TENANT_ID`
+    Specifies the ID for your Azure Active Directory instance.
+
+    `LOCATION`
+    The Azure region where your resource is created.
 
 3.  Define resource variable names by running the following commands:
 
@@ -147,15 +152,22 @@ After the Entra ID configuration is complete, you can set up Entra ID to work wi
     $ export USER_ASSIGNED_IDENTITY_NAME="${NAME}-identity"
     ```
 
-    - A base name for all resources.
+    where:
 
-    - The name of the resource group.
+    `NAME`
+    Specifies A base name for all resources.
 
-    - The name for the storage account.
+    `RESOURCE_GROUP`
+    Specifies the name of the resource group.
 
-    - The name for the storage container.
+    `STORAGE_ACCOUNT`
+    Specifies the name for the storage account.
 
-    - The name for a managed identity.
+    `STORAGE_CONTAINER`
+    Specifies the name for the storage container.
+
+    `USER_ASSIGNED_IDENTITY_NAME`
+    Specifies the name for a managed identity.
 
 4.  Create the resource group by running the following command:
 

@@ -169,4 +169,4 @@ spec:
 
 PerformanceProfile CR options for single-node OpenShift clusters
 
-- [Recommended single-node OpenShift cluster configuration for vDU application workloads → Workload partitioning](../edge_computing/ztp-reference-cluster-configuration-for-vdu.xml#ztp-sno-du-enabling-workload-partitioning_sno-configure-for-vdu)
+- [Recommended single-node OpenShift cluster configuration for vDU application workloads](../edge_computing/ztp-reference-cluster-configuration-for-vdu.xml#ztp-sno-du-enabling-workload-partitioning_sno-configure-for-vdu)

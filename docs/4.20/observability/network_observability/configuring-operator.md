@@ -25,7 +25,7 @@ metadata:
   name: cluster
 spec:
   namespace: netobserv
-  deploymentModel: Direct
+  deploymentModel: Service
   agent:
     type: eBPF
     ebpf:
@@ -149,6 +149,8 @@ For Kafka or IPFIX, any processor or storage that supports those inputs, such as
 
 For OpenTelemetry, network flow data and metrics can be exported to a compatible OpenTelemetry endpoint, such as Red Hat build of OpenTelemetry or Prometheus.
 
+After configuration, network flows data can be sent to an available output. For more information, see "Network flows format reference".
+
 - Your Kafka, IPFIX, or OpenTelemetry collector endpoints are available from Network Observability `flowlogs-pipeline` pods.
 
 1.  In the web console, navigate to **Ecosystem** → **Installed Operators**.
@@ -211,8 +213,6 @@ For OpenTelemetry, network flow data and metrics can be exported to a compatible
     - The time interval that metrics are sent to the OpenTelemetry collector.
 
     - **Optional**:Network Observability network flows formats get automatically renamed to an OpenTelemetry compliant format. The `fieldsMapping` specification gives you the ability to customize the OpenTelemetry format output. For example in the YAML sample, `SrcAddr` is the Network Observability input field, and it is being renamed `source.address` in OpenTelemetry output. You can see both Network Observability and OpenTelemetry formats in the "Network flows format reference".
-
-After configuration, network flows data can be sent to an available output in a JSON format. For more information, see "Network flows format reference".
 
 - [Network flows format reference](../../observability/network_observability/json-flows-format-reference.xml#network-observability-flows-format_json_reference)
 

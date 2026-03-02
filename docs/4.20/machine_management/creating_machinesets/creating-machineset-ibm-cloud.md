@@ -1,4 +1,4 @@
-You can create a different compute machine set to serve a specific purpose in your OpenShift Container Platform cluster on IBM Cloud®. For example, you might create infrastructure machine sets and related machines so that you can move supporting workloads to the new machines.
+You can create compute machine sets in your OpenShift Container Platform cluster on IBM Cloud® to perform specific tasks. For example, you might create infrastructure machine sets and related machines so that you can move supporting workloads to the new machines. Moving supporting workloads to dedicated machines helps ensure that your cluster resources are allocated efficiently.
 
 <div class="important">
 
@@ -16,9 +16,9 @@ $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
 
 # Sample YAML for a compute machine set custom resource on IBM Cloud
 
-This sample YAML defines a compute machine set that runs in a specified IBM Cloud® zone in a region and creates nodes that are labeled with `node-role.kubernetes.io/<role>: ""`.
+You can use the sample YAML file to automate the provisioning of compute or infrastructure nodes within a specific Virtual Private Cloud (VPC). The sample YAML defines a compute machine set that runs in a specified IBM Cloud® zone in a region and creates nodes that are labeled with `node-role.kubernetes.io/<role>: ""`.
 
-In this sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<role>` is the node label to add.
+In the sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<role>` is the node label to add.
 
 ``` yaml
 apiVersion: machine.openshift.io/v1beta1
@@ -68,33 +68,45 @@ spec:
           zone: <zone>
 ```
 
-- The infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI installed, you can obtain the infrastructure ID by running the following command:
+where:
 
-  ``` terminal
-  $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
-  ```
+`<infrastructure_id>`
+Specifies the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI installed, you can obtain the infrastructure ID by running the following command:
 
-- The node label to add.
+``` terminal
+$ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
+```
 
-- The infrastructure ID, node label, and region.
+`<role>`
+Specifies the node label to add.
 
-- The custom Red Hat Enterprise Linux CoreOS (RHCOS) image that was used for cluster installation.
+`<infrastructure_id>-<role>-<region>`
+Specifies the infrastructure ID, node label, and region.
 
-- The infrastructure ID and zone within your region to place machines on. Be sure that your region supports the zone that you specify.
+`<infrastructure_id>-rhcos`
+Specifies the custom Red Hat Enterprise Linux CoreOS (RHCOS) image that was used for cluster installation.
 
-- Specify the [IBM Cloud® instance profile](https://cloud.ibm.com/docs/vpc?topic=vpc-profiles&interface=ui).
+`<infrastructure_id>-subnet-compute-<zone>`
+Specifies the infrastructure ID and zone within your region to place machines on. Be sure that your region supports the zone that you specify.
 
-- Specify the region to place machines on.
+`<instance_profile>`
+Specifies the [IBM Cloud® instance profile](https://cloud.ibm.com/docs/vpc?topic=vpc-profiles&interface=ui).
 
-- The resource group that machine resources are placed in. This is either an existing resource group specified at installation time, or an installer-created resource group named based on the infrastructure ID.
+`<region>`
+Specifies the region to place machines on.
 
-- The VPC name.
+`<resource_group>`
+Specifies the resource group that machine resources are placed in. This is either an existing resource group specified at installation time, or an installer-created resource group named based on the infrastructure ID.
 
-- Specify the zone within your region to place machines on. Be sure that your region supports the zone that you specify.
+`<vpc_name>`
+Specifies the VPC name.
+
+`<zone>`
+Specifies the zone within your region to place machines on. Be sure that your region supports the zone that you specify.
 
 # Creating a compute machine set
 
-In addition to the compute machine sets created by the installation program, you can create your own to dynamically manage the machine compute resources for specific workloads of your choice.
+In addition to the compute machine sets created by the installation program, you can create your own compute machine sets to dynamically manage the machine compute resources for specific workloads of your choice. Use the OpenShift Container Platform CLI to automate node provisioning.
 
 - Deploy an OpenShift Container Platform cluster.
 
@@ -169,17 +181,22 @@ In addition to the compute machine sets created by the installation program, you
                 ...
         ```
 
-        - The cluster infrastructure ID.
+        where:
 
-        - A default node label.
+        `metadata.labels.machine.openshift.io/cluster-api-cluster`
+        Specifies the cluster infrastructure ID.
 
-          <div class="note">
+        `metadata.labels.name`
+        Specifies a default node label.
 
-          For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
+        <div class="note">
 
-          </div>
+        For clusters that have user-provisioned infrastructure, a compute machine set can only create `worker` and `infra` type machines.
 
-        - The values in the `<providerSpec>` section of the compute machine set CR are platform-specific. For more information about `<providerSpec>` parameters in the CR, see the sample compute machine set CR configuration for your provider.
+        </div>
+
+        `spec.template.metadata.spec.providerSpec`
+        Specifies the values of the compute machine set CR. The values are platform-specific. For more information about `<providerSpec>` parameters in the CR, see the sample compute machine set CR configuration for your provider.
 
 3.  Create a `MachineSet` CR by running the following command:
 
@@ -214,7 +231,7 @@ In addition to the compute machine sets created by the installation program, you
 
 # Labeling GPU machine sets for the cluster autoscaler
 
-You can use a machine set label to indicate which machines the cluster autoscaler can use to deploy GPU-enabled nodes.
+Label your machine sets to indicate which machines the cluster autoscaler can use for GPU-enabled nodes. Applying the accelerator label helps ensure that the autoscaler deploys the correct resources for your GPU workloads.
 
 - Your cluster uses a cluster autoscaler.
 
@@ -237,7 +254,7 @@ You can use a machine set label to indicate which machines the cluster autoscale
 
   where:
 
-  \<accelerator_name\>
+  `<accelerator_name>`
   Specifies a label of your choice that consists of alphanumeric characters, `-`, `_`, or `.` and starts and ends with an alphanumeric character. For example, you might use `nvidia-t4` to represent Nvidia T4 GPUs, or `nvidia-a10g` for A10G GPUs.
 
   <div class="note">

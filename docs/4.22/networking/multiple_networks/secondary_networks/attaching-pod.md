@@ -44,13 +44,13 @@ The pod must be in the same namespace as the secondary network.
 
         where:
 
-        `name`
+        `<network>`
         Specifies the name of the secondary network defined by a `NetworkAttachmentDefinition` object.
 
-        `namespace`
+        `<namespace>`
         Specifies the namespace where the `NetworkAttachmentDefinition` object is defined.
 
-        `default-route`
+        `<default-route>`
         Optional parameter. Specifies an override for the default route, such as `192.168.17.1`.
 
 2.  Create the pod by entering the following command.
@@ -162,10 +162,10 @@ To set static IP addresses, MAC addresses, and default routes for a pod in OpenS
 
     where:
 
-    `name`
-    Specifies the name of the secondary network to associate with the pod.
+    `net1`, `net2`
+    Specifies the name of the `NetworkAttachmentDefinition` resource that defines the secondary network to associate with the pod.
 
-    `default-route`
+    `192.0.2.1`
     Specifies a value of a gateway for traffic to be routed over if no other routing entry is present in the routing table. If more than one `default-route` key is specified, this will cause the pod to fail to become active.
 
     The default route will cause any traffic that is not specified in other routes to be routed to the gateway.
@@ -299,13 +299,13 @@ To set static IP addresses, MAC addresses, and default routes for a pod in OpenS
 
     where:
 
-    `name`
+    `metadata.name`
     Specifies the name for the secondary network attachment to create. The name must be unique within the specified `namespace`.
 
-    `ips`
+    `metadata.annotations.k8s.v1.cni.cncf.io/ips`
     Specifies an IP address including the subnet mask.
 
-    `mac`
+    `metadata.annotations.k8s.v1.cni.cncf.io/mac`
     Specifies the MAC address.
 
     <div class="note">

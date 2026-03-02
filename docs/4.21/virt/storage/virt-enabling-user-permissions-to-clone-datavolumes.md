@@ -22,22 +22,29 @@ If you are a non-admin user that is an administrator for both the source and tar
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
-      name: <datavolume-cloner>
+      name: <datavolume_cloner>
     rules:
     - apiGroups: ["cdi.kubevirt.io"]
       resources: ["datavolumes/source"]
       verbs: ["*"]
+    # ...
     ```
 
-    - Unique name for the cluster role.
+    where:
+
+    `<datavolume_cloner>`
+    Specifies a unique name for the cluster role.
 
 2.  Create the cluster role in the cluster:
 
     ``` terminal
-    $ oc create -f <datavolume-cloner.yaml>
+    $ oc create -f <datavolume_cloner.yaml>
     ```
 
-    - The file name of the `ClusterRole` manifest created in the previous step.
+    where:
+
+    `<datavolume_cloner.yaml>`
+    Specifies the file name of the `ClusterRole` manifest created in the previous step.
 
 3.  Create a `RoleBinding` manifest that applies to both the source and destination namespaces and references the cluster role created in the previous step.
 
@@ -45,30 +52,33 @@ If you are a non-admin user that is an administrator for both the source and tar
     apiVersion: rbac.authorization.k8s.io/v1
     kind: RoleBinding
     metadata:
-      name: <allow-clone-to-user>
-      namespace: <Source namespace>
+      name: <allow_clone_to_user>
+      namespace: <source_namespace>
     subjects:
     - kind: ServiceAccount
       name: default
-      namespace: <Destination namespace>
+      namespace: <destination_namespace>
     roleRef:
       kind: ClusterRole
       name: datavolume-cloner
       apiGroup: rbac.authorization.k8s.io
     ```
 
-    - Unique name for the role binding.
+    - `metadata.name` specifies a unique name for the role binding.
 
-    - The namespace for the source data volume.
+    - `metadata.namespace` specifies the namespace for the source data volume.
 
-    - The namespace to which the data volume is cloned.
+    - `subjects.namespace` specifies the namespace to which the data volume is cloned.
 
-    - The name of the cluster role created in the previous step.
+    - `roleRef.name` specifies the name of the cluster role created in the previous step.
 
 4.  Create the role binding in the cluster:
 
     ``` terminal
-    $ oc create -f <datavolume-cloner.yaml>
+    $ oc create -f <datavolume_cloner.yaml>
     ```
 
-    - The file name of the `RoleBinding` manifest created in the previous step.
+    where:
+
+    `<datavolume_cloner.yaml>`
+    Specifies the file name of the `RoleBinding` manifest created in the previous step.

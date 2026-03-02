@@ -4,7 +4,7 @@ When you perform node management operations, the CLI interacts with node objects
 
 # About listing all the nodes in a cluster
 
-You can get detailed information on the nodes in the cluster.
+You can get detailed information about the nodes in the cluster, which can help you understand the state of the nodes in your cluster.
 
 - The following command lists all nodes:
 
@@ -212,33 +212,46 @@ You can get detailed information on the nodes in the cluster.
   #...
   ```
 
-  - The name of the node.
+  where:
 
-  - The role of the node, either `master` or `worker`.
+  `Names`
+  Specifies the name of the node.
 
-  - The labels applied to the node.
+  `Roles`
+  Specifies the role of the node, either `master` or `worker`.
 
-  - The annotations applied to the node.
+  `Labels`
+  Specifies the labels applied to the node.
 
-  - The taints applied to the node.
+  `Annotations`
+  Specifies the annotations applied to the node.
 
-  - The node conditions and status. The `conditions` stanza lists the `Ready`, `PIDPressure`, `MemoryPressure`, `DiskPressure` and `OutOfDisk` status. These condition are described later in this section.
+  `Taints`
+  Specifies the taints applied to the node.
 
-  - The IP address and hostname of the node.
+  `Conditions`
+  Specifies the node conditions and status. The `conditions` stanza lists the `Ready`, `PIDPressure`, `MemoryPressure`, `DiskPressure` and `OutOfDisk` status. These condition are described later in this section.
 
-  - The pod resources and allocatable resources.
+  `Addresses`
+  Specifies the IP address and hostname of the node.
 
-  - Information about the node host.
+  `Capacity`
+  Specifies the pod resources and allocatable resources.
 
-  - The pods on the node.
+  `Information`
+  Specifies information about the node host.
 
-  - The events reported by the node.
+  `Non-terminated Pods`
+  Specifies the pods on the node.
 
-    <div class="note">
+  `Events`
+  Specifies the events reported by the node.
 
-    The control plane label is not automatically added to newly created or updated master nodes. If you want to use the control plane label for your nodes, you can manually configure the label. For more information, see *Understanding how to update labels on nodes* in the *Additional resources* section.
+  <div class="note">
 
-    </div>
+  The control plane label is not automatically added to newly created or updated master nodes. If you want to use the control plane label for your nodes, you can manually configure the label. For more information, see *Understanding how to update labels on nodes* in the *Additional resources* section.
+
+  </div>
 
 Among the information shown for nodes, the following node conditions appear in the output of the commands shown in this section:
 
@@ -255,11 +268,9 @@ Among the information shown for nodes, the following node conditions appear in t
 
 Node Conditions
 
-- [Understanding how to update labels on nodes](../../nodes/nodes/nodes-nodes-working.xml#nodes-nodes-working-updating_nodes-nodes-working)
-
 # Listing pods on a node in your cluster
 
-You can list all the pods on a specific node.
+You can list all of the pods on a node by using the `oc get pods` command along with specific flags. This command shows the number of pods on that node, the state of the pods, number of pod restarts, and the age of the pods.
 
 - To list all or selected pods on selected nodes:
 
@@ -289,7 +300,7 @@ You can list all the pods on a specific node.
 
 # Viewing memory and CPU usage statistics on your nodes
 
-You can display usage statistics about nodes, which provide the runtime environments for containers. These usage statistics include CPU, memory, and storage consumption.
+You can display usage statistics about nodes, including CPU, memory, and storage consumption. These statistics can help you ensure your cluster is running efficiently.
 
 - You must have `cluster-reader` permission to view the usage statistics.
 
@@ -327,3 +338,7 @@ You can display usage statistics about nodes, which provide the runtime environm
   ```
 
   You must choose the selector (label query) to filter on. Supports `=`, `==`, and `!=`.
+
+# Additional resources
+
+- [Understanding how to update labels on nodes](../../nodes/nodes/nodes-nodes-working.xml#nodes-nodes-working-updating_nodes-nodes-working)

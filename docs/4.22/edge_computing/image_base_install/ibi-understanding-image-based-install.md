@@ -114,6 +114,8 @@ For a successful image-based installation and deployment, see the following guid
 
 - If you are using Red Hat Advanced Cluster Management (RHACM), to avoid including any RHACM resources in your seed image, you need to disable all optional RHACM add-ons before generating the seed image.
 
+- In a deployed cluster, the `clusterversion` resource shows a `creationTimestamp` that reflects the creation date of the seed cluster, not the deployment date of the new cluster. To determine the deployment date of a new cluster, check the `creationTimestamp` field for the `Node` resource instead.
+
 ## Seed cluster guidelines
 
 - If your cluster deployment at the edge of the network requires a proxy configuration, you must create a seed image from a seed cluster featuring a proxy configuration. The proxy configurations do not have to match.

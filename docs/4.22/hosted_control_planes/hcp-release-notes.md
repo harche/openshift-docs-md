@@ -42,9 +42,16 @@ For IBM Power and IBM Z, the following exceptions apply:
 | Hosted control planes for OpenShift Container Platform on RHOSP                            | Technology Preview | Technology Preview   | Technology Preview   |
 | Custom taints and tolerations                                                              | Technology Preview | Technology Preview   | Technology Preview   |
 | NVIDIA GPU devices on hosted control planes for OpenShift Virtualization                   | Technology Preview | Technology Preview   | Technology Preview   |
+| Hosted control planes for OpenShift Virtualization on IBM Z                                | \-                 | \-                   | Technology Preview   |
 | Hosted control planes on IBM Z in a disconnected environment                               | Technology Preview | General Availability | General Availability |
 
 Hosted control planes GA and TP tracker
+
+<div class="note">
+
+Hosted control planes for OpenShift Virtualization on IBM Z is supported as Technology Preview starting with OpenShift Container Platform 4.21, multicluster engine for Kubernetes Operator 2.11, and Red Hat Advanced Cluster Management (RHACM) 2.16. Currently, only the default pod network is supported. Cluster upgrades are supported. The following features are not supported in this release: FIPS mode, disconnected environments, and autoscaling.
+
+</div>
 
 # Known issues
 

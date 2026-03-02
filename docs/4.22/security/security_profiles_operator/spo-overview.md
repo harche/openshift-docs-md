@@ -8,6 +8,8 @@ You can create [seccomp](../../security/security_profiles_operator/spo-seccomp.x
 
 Use [Advanced Security Profile Operator tasks](../../security/security_profiles_operator/spo-advanced.xml#spo-advanced) to enable the log enricher, configure webhooks and metrics, or restrict profiles to a single namespace.
 
+Use [SPO Advanced Audit Logging](../../security/security_profiles_operator/spo-logging.xml#spo-advanced) to access logs in RHCOS containers for container-level security audit features.
+
 [Troubleshoot the Security Profiles Operator](../../security/security_profiles_operator/spo-troubleshooting.xml#spo-inspecting-seccomp-profiles_spo-troubleshooting) as needed, or engage [Red Hat support](https://access.redhat.com/support/).
 
 You can [Uninstall the Security Profiles Operator](../../security/security_profiles_operator/spo-uninstalling.xml#spo-uninstalling) by removing the profiles before removing the Operator.

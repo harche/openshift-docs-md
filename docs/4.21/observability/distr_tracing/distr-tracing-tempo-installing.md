@@ -818,7 +818,15 @@ You can set up IBM Cloud Object Storage by using the OpenShift CLI (`oc`).
 
 # Configuring the permissions and tenants
 
-Before installing a `TempoStack` or `TempoMonolithic` instance, you must define one or more tenants and configure their read and write access. You can configure such an authorization setup by using a cluster role and cluster role binding for the Kubernetes Role-Based Access Control (RBAC). By default, no users are granted read or write permissions. For more information, see "Configuring the read permissions for tenants" and "Configuring the write permissions for tenants".
+Before installing a `TempoStack` or `TempoMonolithic` instance, you must define one or more tenants and configure their read and write access.
+
+<div class="warning">
+
+Tenant access is global. Granting access to a tenant applies to all `TempoStack` and `TempoMonolithic` instances whose configuration includes that tenant.
+
+</div>
+
+You can configure such an authorization setup by using a cluster role and cluster role binding for the Kubernetes Role-Based Access Control (RBAC). By default, no users are granted read or write permissions. For more information, see "Configuring the read permissions for tenants" and "Configuring the write permissions for tenants".
 
 <div class="note">
 
@@ -1066,7 +1074,7 @@ You can configure the write permissions for tenants from the **Administrator** v
 
       - The exporter you specified in `exporters` section of the CR.
 
-- [Creating the required RBAC resources automatically](../../observability/otel/otel-installing.xml#install-otel)
+- [Creating the required RBAC resources automatically](https://docs.redhat.com/en/documentation/red_hat_build_of_opentelemetry/latest/html/installing_red_hat_build_of_opentelemetry/install-otel)
 
 # Installing a TempoStack instance
 
@@ -1089,6 +1097,12 @@ You can install a `TempoStack` instance from the **Administrator** view of the w
   </div>
 
 - You have defined one or more tenants and configured the read and write permissions. For more information, see "Configuring the read permissions for tenants" and "Configuring the write permissions for tenants".
+
+  <div class="note">
+
+  A `TempoStack` instance without configured tenants is not supported.
+
+  </div>
 
 1.  Go to **Home** → **Projects** → **Create Project** to create a permitted project of your choice for the `TempoStack` instance that you will create in a subsequent step. Project names beginning with the `openshift-` prefix are not permitted.
 
@@ -1244,6 +1258,12 @@ You can install a `TempoStack` instance from the command line.
   </div>
 
 - You have defined one or more tenants and configured the read and write permissions. For more information, see "Configuring the read permissions for tenants" and "Configuring the write permissions for tenants".
+
+  <div class="note">
+
+  A `TempoStack` instance without configured tenants is not supported.
+
+  </div>
 
 1.  Run the following command to create a permitted project of your choice for the `TempoStack` instance that you will create in a subsequent step:
 
@@ -1415,11 +1435,11 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 You can install a `TempoMonolithic` instance by using the web console or command line.
 
-The `TempoMonolithic` custom resource (CR) creates a Tempo deployment in monolithic mode. All components of the Tempo deployment, such as the compactor, distributor, ingester, querier, and query frontend, are contained in a single container.
+The `TempoMonolithic` custom resource (CR) creates a Tempo deployment in monolithic mode. The TempoMonolithic deployment contains all Tempo components, such as the compactor, distributor, ingester, querier, and query frontend, in a single container.
 
 A `TempoMonolithic` instance supports storing traces in in-memory storage, a persistent volume, or object storage.
 
-Tempo deployment in monolithic mode is preferred for a small deployment, demonstration, and testing.
+Opt for Tempo deployment in monolithic mode for small deployments, demonstrations, and testing.
 
 <div class="note">
 
@@ -1444,6 +1464,12 @@ You can install a `TempoMonolithic` instance from the **Administrator** view of 
 - For Red Hat OpenShift Dedicated, you must be logged in using an account with the `dedicated-admin` role.
 
 - You have defined one or more tenants and configured the read and write permissions. For more information, see "Configuring the read permissions for tenants" and "Configuring the write permissions for tenants".
+
+  <div class="note">
+
+  A `TempoMonolithic` instance without configured tenants is not supported.
+
+  </div>
 
 1.  Go to **Home** → **Projects** → **Create Project** to create a permitted project of your choice for the `TempoMonolithic` instance that you will create in a subsequent step. Project names beginning with the `openshift-` prefix are not permitted.
 
@@ -1619,6 +1645,12 @@ You can install a `TempoMonolithic` instance from the command line.
 
 - You have defined one or more tenants and configured the read and write permissions. For more information, see "Configuring the read permissions for tenants" and "Configuring the write permissions for tenants".
 
+  <div class="note">
+
+  A `TempoMonolithic` instance without configured tenants is not supported.
+
+  </div>
+
 1.  Run the following command to create a permitted project of your choice for the `TempoMonolithic` instance that you will create in a subsequent step:
 
     ``` terminal
@@ -1787,6 +1819,41 @@ You can install a `TempoMonolithic` instance from the command line.
 4.  When the pod of the `TempoMonolithic` instance is ready, you can send traces to the `tempo-<metadata_name_of_tempomonolithic_cr>:4317` (OTLP/gRPC) and `tempo-<metadata_name_of_tempomonolithic_cr>:4318` (OTLP/HTTP) endpoints inside the cluster.
 
     The Tempo API is available at the `tempo-<metadata_name_of_tempomonolithic_cr>:3200` endpoint inside the cluster.
+
+# Network policies
+
+The Tempo Operator applies network policies by default.
+
+| Network Policy                                          | Description                                                                                                                                                                                                                                                                                                          |
+|---------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `<tempostack_metadata_name>-allow-dns`                  | Allows egress DNS queries to the `openshift-dns` DNS service on DNS port 5353.                                                                                                                                                                                                                                       |
+| `<tempostack_metadata_name>-compactor`                  | Compactor egress to S3-compatible object storage. There is no port restriction. This network policy grants unrestricted egress traffic to pods labeled as the Tempo compactor, allowing them to initiate connections to any IP address, such as `0.0.0.0/0`, or any namespace, as the object storage ports can vary. |
+| `<tempostack_metadata_name>-distributor`                | Distributor ingress and egress rules for trace ingestion and communication with ingesters.                                                                                                                                                                                                                           |
+| `<tempostack_metadata_name>-gossip`                     | Inter-component gossip protocol communication on ports 7946, 3200, and 3101.                                                                                                                                                                                                                                         |
+| `<tempostack_metadata_name>-ingester`                   | Ingester ingress and egress rules for receiving traces from distributors and serving queriers.                                                                                                                                                                                                                       |
+| `<tempostack_metadata_name>-querier`                    | Querier ingress and egress rules for communication with ingesters, query frontend, and object storage.                                                                                                                                                                                                               |
+| `<tempostack_metadata_name>-query-frontend`             | Query frontend ingress and egress rules for serving queries and communicating with queriers.                                                                                                                                                                                                                         |
+| `<tempostack_metadata_name>-ingress-to-operand-metrics` | Allows OpenShift cluster monitoring to scrape metrics on port 3200.                                                                                                                                                                                                                                                  |
+
+Default network policies
+
+<div class="tip">
+
+You can manually disable these network policies in the `TempoStack` custom resource as follows:
+
+``` yaml
+apiVersion: tempo.grafana.com/v1alpha1
+kind: TempoStack
+metadata:
+  name: example
+spec:
+  networkPolicy:
+    enabled: false
+```
+
+- Disables the default network policies. The default value is `true`.
+
+</div>
 
 # Additional resources
 

@@ -18,6 +18,7 @@ spec:
   completions: 1
   activeDeadlineSeconds: 1800
   backoffLimit: 6
+  ttlSecondsAfterFinished: 100
   template:
     metadata:
       name: pi
@@ -37,6 +38,8 @@ spec:
 - The maximum duration the job can run.
 
 - The number of retries for a job.
+
+- The period of time in seconds after which the job should be automatically deleted upon completion.
 
 - The template for the pod the controller creates.
 
@@ -150,6 +153,16 @@ Cron jobs can leave behind artifact resources such as jobs or pods. As a user it
 
 </div>
 
+## Understanding how to automatically remove completed jobs
+
+You can specify that OpenShift Container Platform should delete jobs when they are finished, either `Complete` or `Failed`, in order to limit the number of objects in your cluster.
+
+By default, for jobs that are not associated with a cron job or other controlling object, OpenShift Container Platform does not delete the job or its related pods when the job is finished. If you keep these artifacts in your cluster, you can view the status of finished jobs or view job logs for errors, warnings, or other diagnostic output.
+
+However, having too many of these objects in the cluster can lead to etcd issues, latency issues, performance degradation, and other problems.
+
+You can configure a time-to-live (TTL) duration for jobs without a controlling object by setting the `ttlSecondsAfterFinished` parameter in the job spec. When set, OpenShift Container Platform deletes the jobs and any related pods immediately after the job is finished or after a specified period of time in seconds.
+
 ## Known limitations
 
 The job specification restart policy only applies to the *pods*, and not the *job controller*. However, the job controller is hard-coded to keep retrying jobs to completion.
@@ -184,6 +197,7 @@ To create a job:
       completions: 1
       activeDeadlineSeconds: 1800
       backoffLimit: 6
+      ttlSecondsAfterFinished: 100
       template:
         metadata:
           name: pi
@@ -211,6 +225,8 @@ To create a job:
     - Optional: Specify the maximum duration the job can run.
 
     - Optional: Specify the number of retries for a job. This field defaults to six.
+
+    - Optional: Specify the period of time in seconds after which the job should be automatically deleted upon completion. If set to '0', the job is immediately deleted after completion. If this field is not included, the job is not automatically deleted.
 
     - Specify the template for the pod the controller creates.
 

@@ -194,4 +194,4 @@ A *recommended update edge* is a recommended update between OpenShift Container 
 
 # Additional resources
 
-- [How cluster updates work](../../updating/understanding_updates/how-updates-work.xml#how-updates-work).
+- [How cluster updates work](../../updating/understanding_updates/how-updates-work.xml#how-updates-work)

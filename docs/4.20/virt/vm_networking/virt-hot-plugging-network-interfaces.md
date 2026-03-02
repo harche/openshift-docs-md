@@ -200,6 +200,6 @@ Hot unplugging is not supported for Single Root I/O Virtualization (SR-IOV) inte
 
 - [Connecting a virtual machine to a Linux bridge network](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#configuring-vm-network-interface)
 
-- [Creating an SR-IOV network attachment definition](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#nw-sriov-network-attachment_virt-connecting-vm-to-sriov)
+- [Creating an SR-IOV network attachment definition](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#nw-sriov-additional-network_virt-connecting-vm-to-sriov)
 
 - [Connecting a virtual machine to an SR-IOV network](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#virt-attaching-vm-to-sriov-network_virt-connecting-vm-to-sriov)

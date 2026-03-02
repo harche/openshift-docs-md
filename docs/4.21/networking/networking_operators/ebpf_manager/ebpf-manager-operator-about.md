@@ -1,3 +1,5 @@
+You can use the eBPF Manager Operator to centralize and secure the deployment of eBPF programs in a Kubernetes cluster. The eBPF Manager Operator streamlines lifecycle management and provides system-wide visibility so that you can focus on program interaction rather than manual configuration.
+
 <div class="important">
 
 eBPF Manager Operator is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
@@ -45,7 +47,3 @@ The eBPF Manager Operator offers the following features:
 - [bpfman](https://bpfman.io/latest)
 
 - [eBPF Manager custom resource definition (CRD) API specification](https://bpfman.io/latest/developer-guide/api-spec/)
-
-# Next steps
-
-- [Installing the eBPF Manager Operator](../../../networking/networking_operators/ebpf_manager/ebpf-manager-operator-install.xml#bpfman-operator-install)

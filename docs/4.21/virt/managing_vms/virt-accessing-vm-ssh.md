@@ -933,7 +933,7 @@ See the [Multus](https://access.redhat.com/articles/6994974#networking-multus) a
 
 - You configured a secondary network such as [Linux bridge](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-connecting-vm-to-linux-bridge) or [SR-IOV](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#virt-connecting-vm-to-sriov).
 
-- You created a network attachment definition for a [Linux bridge network](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-creating-linux-bridge-nad-web_virt-connecting-vm-to-linux-bridge) or the SR-IOV Network Operator created a [network attachment definition](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#nw-sriov-network-attachment_virt-connecting-vm-to-sriov) when you created an `SriovNetwork` object.
+- You created a network attachment definition for a [Linux bridge network](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-creating-linux-bridge-nad-web_virt-connecting-vm-to-linux-bridge) or the SR-IOV Network Operator created a [network attachment definition](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#nw-sriov-additional-network_virt-connecting-vm-to-sriov) when you created an `SriovNetwork` object.
 
 ## Configuring a VM network interface by using the web console
 

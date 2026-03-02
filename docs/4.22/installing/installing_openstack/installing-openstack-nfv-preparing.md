@@ -112,4 +112,4 @@ After you perform preinstallation tasks, install your cluster by following the m
 
   - [A test pod template for clusters that use SR-IOV on OpenStack](../../networking/hardware_networks/configuring-sriov-device.xml#nw-openstack-sr-iov-testpmd-pod_configuring-sriov-device).
 
-  - [A performance profile template for clusters that use OVS-DPDK on OpenStack](../../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#installation-openstack-ovs-dpdk-performance-profile_cnf-low-latency-perf-profile)
+  - [A performance profile template for clusters that use OVS-DPDK on OpenStack](../../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#installation-openstack-ovs-dpdk-performance-profile_cnf-tuning-low-latency-nodes-with-perf-profile)

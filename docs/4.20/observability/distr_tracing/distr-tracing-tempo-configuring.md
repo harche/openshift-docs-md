@@ -232,7 +232,7 @@ You can have the request rate, error, and duration (RED) metrics extracted from 
             resource_to_telemetry_conversion:
               enabled: true
 
-          otlp:
+          otlp/traces:
             auth:
               authenticator: bearertokenauth
             endpoint: tempo-redmetrics-gateway.mynamespace.svc.cluster.local:8090
@@ -252,7 +252,7 @@ You can have the request rate, error, and duration (RED) metrics extracted from 
           pipelines:
             traces:
               receivers: [otlp]
-              exporters: [otlp, spanmetrics]
+              exporters: [otlp/traces, spanmetrics]
             metrics:
               receivers: [spanmetrics]
               exporters: [prometheus]
