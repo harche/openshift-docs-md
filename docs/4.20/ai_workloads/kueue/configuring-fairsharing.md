@@ -17,7 +17,7 @@ The `weight` value, or share value, defines a comparative advantage for the clus
 </div>
 
 ``` yaml
-apiVersion: kueue.x-k8s.io/v1beta1
+apiVersion: kueue.x-k8s.io/v1beta2
 kind: ClusterQueue
 metadata:
   name: cluster-queue
@@ -30,7 +30,7 @@ spec:
       resources:
       - name: cpu
         nominalQuota: 9
-  cohort: example-cohort
+  cohortName: example-cohort
   fairSharing:
     weight: 2
 ```

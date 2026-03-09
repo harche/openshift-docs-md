@@ -191,4 +191,4 @@ As a cluster administrator, you can configure the Cluster Network Operator (CNO)
 
 # Additional resources
 
-- [Network \[operator.openshift.io/v1](../../rest_api/operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1)\]
+- [Network \[operator.openshift.io/v1\]](../../rest_api/operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1)

@@ -28,13 +28,7 @@ The OpenShift Container Platform SR-IOV solution already supports setting the VL
 
 Supported network interface cards
 
-<div class="formalpara-title">
-
-**Additional resources**
-
-</div>
-
-[Configuration for an VLAN additional network](../../networking/multiple_networks/secondary_networks/creating-secondary-nwt-other-cni.xml#nw-multus-vlan-object_configuring-additional-network-cni)
+- [Configuration for an VLAN additional network](../../networking/multiple_networks/secondary_networks/creating-secondary-nwt-other-cni.xml#nw-multus-vlan-object_configuring-additional-network-cni)
 
 # Configuring QinQ support for SR-IOV enabled workloads
 

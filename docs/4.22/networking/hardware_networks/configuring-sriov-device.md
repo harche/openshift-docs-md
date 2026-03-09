@@ -618,7 +618,7 @@ It might take several minutes for a configuration change to apply.
     $ oc get sriovnetworknodestates -n openshift-sriov-network-operator <node_name> -o jsonpath='{.status.syncStatus}'
     ```
 
-- [Understanding how to update labels on nodes](../../nodes/nodes/nodes-nodes-working.xml#nodes-nodes-working-updating_nodes-nodes-working).
+- [Understanding how to update labels on nodes](../../nodes/nodes/nodes-nodes-working.xml#nodes-nodes-working-updating_nodes-nodes-working)
 
 # Creating a non-uniform memory access (NUMA) aligned SR-IOV pod
 

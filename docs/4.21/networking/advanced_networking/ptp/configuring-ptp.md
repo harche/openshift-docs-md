@@ -3336,7 +3336,7 @@ For more information about the support scope of Red Hat Technology Preview featu
         I1115 09:41:17.117626 4143292 daemon.go:116] ------------------------------------
         ```
 
-- For a complete example CR that configures `linuxptp` services as an ordinary clock with PTP fast events, see [Configuring linuxptp services as ordinary clock](../../../networking/advanced_networking/ptp/configuring-ptp.xml#configuring-linuxptp-services-as-ordinary-clock_configuring-ptp).
+- [Configuring linuxptp services as ordinary clock](../../../networking/advanced_networking/ptp/configuring-ptp.xml#configuring-linuxptp-services-as-ordinary-clock_configuring-ptp)
 
 - [Using dual-port NICs to improve redundancy for PTP ordinary clocks](../../../networking/advanced_networking/ptp/about-ptp.xml#ptp-dual-ports-oc_about-ptp)
 

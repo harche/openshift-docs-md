@@ -1261,25 +1261,7 @@
 - **Monitoring**
   - [About OpenShift Container Platform monitoring](observability/monitoring/about-ocp-monitoring.md)
 - **Logging**
-  - **Logging 6.2**
-    - [Support](observability/logging/logging-6.2/log62-cluster-logging-support.md)
-    - [Release notes](observability/logging/logging-6.2/log6x-release-notes-6.2.md)
-    - [About logging 6.2](observability/logging/logging-6.2/log6x-about-6.2.md)
-    - [Configuring log forwarding](observability/logging/logging-6.2/log6x-clf-6.2.md)
-    - [Configuring the logging collector](observability/logging/logging-6.2/6x-cluster-logging-collector-6.2.md)
-    - [Configuring LokiStack storage](observability/logging/logging-6.2/log6x-loki-6.2.md)
-    - [Configuring LokiStack for OTLP](observability/logging/logging-6.2/log6x-configuring-lokistack-otlp-6.2.md)
-    - [Visualization for logging](observability/logging/logging-6.2/log6x-visual-6.2.md)
-  - **Logging 6.1**
-    - [Support](observability/logging/logging-6.1/log61-cluster-logging-support.md)
-    - [Release notes](observability/logging/logging-6.1/log6x-release-notes-6.1.md)
-    - [About logging 6.1](observability/logging/logging-6.1/log6x-about-6.1.md)
-    - [Configuring log forwarding](observability/logging/logging-6.1/log6x-clf-6.1.md)
-    - [Configuring the logging collector](observability/logging/logging-6.1/6x-cluster-logging-collector-6.1.md)
-    - [Configuring LokiStack storage](observability/logging/logging-6.1/log6x-loki-6.1.md)
-    - [Configuring LokiStack for OTLP](observability/logging/logging-6.1/log6x-configuring-lokistack-otlp-6.1.md)
-    - [OpenTelemetry data model](observability/logging/logging-6.1/log6x-opentelemetry-data-model-6.1.md)
-    - [Visualization for logging](observability/logging/logging-6.1/log6x-visual-6.1.md)
+  - [About Logging](observability/logging/about-logging.md)
 - **Distributed Tracing**
   - [Release notes for the Distributed Tracing Platform](observability/distr_tracing/distr-tracing-rn.md)
   - [About the Distributed Tracing Platform](observability/distr_tracing/distr-tracing-tempo-architecture.md)
@@ -1983,7 +1965,7 @@
   - [Security policies](virt/about_virt/virt-security-policies.md)
   - [Architecture](virt/about_virt/virt-architecture.md)
 - **Release notes**
-  - [OpenShift Virtualization release notes](virt/release_notes/virt-4-21-release-notes.md)
+  - [OpenShift Virtualization release notes](virt/release_notes/virt-4-22-release-notes.md)
 - **Getting started**
   - [Getting started with OpenShift Virtualization](virt/getting_started/virt-getting-started.md)
   - [virtctl and libguestfs](virt/getting_started/virt-using-the-cli-tools.md)
@@ -2109,7 +2091,6 @@
 - **Monitoring**
   - [Monitoring overview](virt/monitoring/virt-monitoring-overview.md)
   - [Cluster checkup framework](virt/monitoring/virt-running-cluster-checkups.md)
-  - [Latency checkups](virt/monitoring/virt-latency-checkups.md)
   - [Storage checkups](virt/monitoring/virt-storage-checkups.md)
   - [Prometheus queries for virtual resources](virt/monitoring/virt-prometheus-queries.md)
   - [Virtual machine custom metrics](virt/monitoring/virt-exposing-custom-metrics-for-vms.md)

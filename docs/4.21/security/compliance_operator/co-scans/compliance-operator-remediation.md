@@ -594,4 +594,4 @@ annotate compliancescans/rhcos4-e8-worker compliance.openshift.io/rescan=
 
 # Additional resources
 
-- [Modifying nodes](../../../nodes/nodes/nodes-nodes-managing.xml#nodes-nodes-managing-about_nodes-nodes-managing).
+- [Modifying nodes](../../../nodes/nodes/nodes-nodes-managing.xml#nodes-nodes-managing-about_nodes-nodes-managing)

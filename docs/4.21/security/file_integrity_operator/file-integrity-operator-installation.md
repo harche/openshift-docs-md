@@ -127,4 +127,4 @@ If the Operator is not installed successfully:
 
 # Additional resources
 
-- The File Integrity Operator is supported in a restricted network environment. For more information, see [Using Operator Lifecycle Manager in disconnected environments](../../disconnected/using-olm.xml#olm-restricted-networks).
+- [Using Operator Lifecycle Manager in disconnected environments](../../disconnected/using-olm.xml#olm-restricted-networks)

@@ -4,19 +4,15 @@ If your storage provider does not support volume expansion, you can expand the a
 
 You cannot reduce the size of a VM disk.
 
-# Increasing a VM disk size by expanding the PVC of the disk
+# Expand a VM disk PVC by using the web console
 
-You can increase the size of a virtual machine (VM) disk by expanding the persistent volume claim (PVC) of the disk. To specify the increased PVC volume, you can use the web console with the VM running. Alternatively, you can edit the PVC manifest in the CLI.
+You can increase the size of a virtual machine (VM) disk by expanding the persistent volume claim (PVC) of the disk. To specify the increased PVC volume, you can use the **VirtualMachines** page in the web console, with the VM running.
 
 <div class="note">
 
 If the PVC uses the file system volume mode, the disk image file expands to the available size while reserving some space for file system overhead.
 
 </div>
-
-## Expanding a VM disk PVC in the web console
-
-You can increase the size of a VM disk PVC in the web console without leaving the **VirtualMachines** page and with the VM running.
 
 1.  In the **Administrator** or **Virtualization** perspective, open the **VirtualMachines** page.
 
@@ -30,15 +26,23 @@ You can increase the size of a VM disk PVC in the web console without leaving th
 
 5.  In the **PersistentVolumeClaim size** field, enter the desired size.
 
+    <div class="note">
+
+    You can enter any value greater than the current one. However, if the new value exceeds the available size, an error is displayed.
+
+    </div>
+
 6.  Click **Save**.
+
+# Expanding a VM disk PVC by using the CLI
+
+You can increase the size of a virtual machine (VM) disk by expanding the persistent volume claim (PVC) of the disk. To specify the increased PVC volume, you can edit the `PersistentVolumeClaim` manifest by using the OpenShift CLI (`oc`).
 
 <div class="note">
 
-You can enter any value greater than the current one. However, if the new value exceeds the available size, an error is displayed.
+If the PVC uses the file system volume mode, the disk image file expands to the available size while reserving some space for file system overhead.
 
 </div>
-
-## Expanding a VM disk PVC by editing its manifest
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -64,13 +68,7 @@ You can enter any value greater than the current one. However, if the new value 
     # ...
     ```
 
-    - Specify the new disk size.
-
-- [Extending a basic volume in Windows](https://docs.microsoft.com/en-us/windows-server/storage/disk-management/extend-a-basic-volume)
-
-- [Extending an existing file system partition without destroying data in Red Hat Enterprise Linux](https://access.redhat.com/solutions/29095)
-
-- [Extending a logical volume and its file system online in Red Hat Enterprise Linux](https://access.redhat.com/solutions/24770)
+    - `spec.resources.requests.storage` specifies the new disk size.
 
 # Expanding available virtual storage by adding blank data volumes
 
@@ -97,15 +95,23 @@ You can expand the available storage of a virtual machine (VM) by adding blank d
       storageClassName: "<storage_class>"
     ```
 
-    - Specify the amount of available space requested for the data volume.
+    - `spec.storage.resources.requests.storage` specifies the amount of available space requested for the data volume.
 
-    - Optional: If you do not specify a storage class, the default storage class is used.
+    - `spec.storageClassName` is an optional field that specifies a storage class. If you do not specify a storage class, the default storage class is used.
 
 2.  Create the data volume by running the following command:
 
     ``` terminal
     $ oc create -f <blank-image-datavolume>.yaml
     ```
+
+# Additional resources
+
+- [Extending a basic volume in Windows](https://docs.microsoft.com/en-us/windows-server/storage/disk-management/extend-a-basic-volume)
+
+- [Extending an existing file system partition without destroying data in Red Hat Enterprise Linux](https://access.redhat.com/solutions/29095)
+
+- [Extending a logical volume and its file system online in Red Hat Enterprise Linux](https://access.redhat.com/solutions/24770)
 
 - [Configuring preallocation mode for data volumes](../../../virt/storage/virt-using-preallocation-for-datavolumes.xml#virt-using-preallocation-for-datavolumes)
 

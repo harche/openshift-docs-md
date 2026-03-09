@@ -1872,7 +1872,7 @@ The following issues are fixed for this release:
 
 To update an OpenShift Container Platform 4.20 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
 
-## RHSA-2026:1555 - OpenShift Container Platform 4.17.13 bug fix and security update advisory
+## RHSA-2026:1555 - OpenShift Container Platform 4.17.13 fixed issues and security update advisory
 
 Issued: 4 February 2026
 
@@ -1980,7 +1980,7 @@ The following issues are fixed for this release:
 
 - Before this update, the instance architecture in worker machines did not match the Amazon Machine Image (AMI) architecture, which caused a mismatch with the user’s instance type. This resulted in failed installations. With this release, the ARM64 AMI architecture mismatch with the x86_64 instance type is resolved. As a result, the installation process does not fail due to an architecture mismatch and improves the successful provisioning of worker machines. ([OCPBUGS-70322](https://issues.redhat.com/browse/OCPBUGS-70322))
 
-- Before this update, a Red Hat Enterprise Linux CoreOS (RHCOS) networking timeout occurred during agent-based OpenShift Container Platform installation on Virtual Local Area Network (VLAN) interfaces. As a consequence, RHCOS nodes failed to automatically configure networking during installation on bare metal systems. With this release, the RHCOS networking auto-configuration timeout has been fixed, allowing automatic network setup. As a result, RHCOS nodes automatically configure networking during installation on bare metal systems. ([OCPBUGS-71212](https://issues.redhat.com/browse/OCPBUGS-71212))
+- Before this update, a Red Hat Enterprise Linux CoreOS (RHCOS) networking timeout occurred during agent-based OpenShift Container Platform installation on Virtual Local Area Network (VLAN) interfaces. As a consequence, RHCOS nodes failed to automatically configure networking during installation on bare-metal systems. With this release, the RHCOS networking auto-configuration timeout has been fixed, allowing automatic network setup. As a result, RHCOS nodes automatically configure networking during installation on bare-metal systems. ([OCPBUGS-71212](https://issues.redhat.com/browse/OCPBUGS-71212))
 
 ### Updating
 
@@ -2070,11 +2070,11 @@ The following issues are fixed for this release:
 
 To update an OpenShift Container Platform 4.20 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
 
-## RHSA-2025:22257 - OpenShift Container Platform 4.17.6 bug fix advisory
+## RHSA-2025:22257 - OpenShift Container Platform 4.17.6 fixed issues advisory
 
 Issued: 02 December 2025
 
-OpenShift Container Platform release 4.17.6 is now available. The list of bug fixes that are included in the update is documented in the [RHSA-2025:22257](https://access.redhat.com/errata/RHSA-2025:22257) advisory. The RPM packages that are included in the update are provided by the [RHSA-2025:22255](https://access.redhat.com/errata/RHSA-2025:22255) advisory.
+OpenShift Container Platform release 4.17.6 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2025:22257](https://access.redhat.com/errata/RHSA-2025:22257) advisory. The RPM packages that are included in the update are provided by the [RHSA-2025:22255](https://access.redhat.com/errata/RHSA-2025:22255) advisory.
 
 Space precluded documenting all of the container images for this release in the advisory.
 
@@ -2095,9 +2095,9 @@ For more information, see the following documentation:
 
 - [Installing a cluster without an external registry](../installing/installing_with_agent_based_installer/installing-ove.xml#installing-ove)
 
-### Bug fixes
+### Fixed issues
 
-The following bugs are fixed for this release:
+The following issues are fixed for this release:
 
 - Before this update, the `CloudFront` object distribution was not deleted due to a failed tag-based retrieval, and caused persistence of resources, including the origin access identity. With this release, the `CloudFront` origin access identity is deleted after using the distribution command. As a result, the `CloudFront` object distribution and origin access identity are deleted after using the delete command. ([OCPBUGS-63690](https://issues.redhat.com/browse/OCPBUGS-63690))
 
@@ -2111,11 +2111,11 @@ The following bugs are fixed for this release:
 
 To update an OpenShift Container Platform 4.20 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
 
-## RHBA-2025:21811 - OpenShift Container Platform 4.17.5 bug fix advisory
+## RHBA-2025:21811 - OpenShift Container Platform 4.17.5 fixed issues advisory
 
 Issued: 25 November 2025
 
-OpenShift Container Platform release 4.17.5 is now available. The list of bug fixes that are included in the update is documented in the [RHBA-2025:21811](https://access.redhat.com/errata/RHBA-2025:21811) advisory. The RPM packages that are included in the update are provided by the [RHBA-2025:21809](https://access.redhat.com/errata/RHBA-2025:21809) advisory.
+OpenShift Container Platform release 4.17.5 is now available. The list of fixed issues that are included in the update is documented in the [RHBA-2025:21811](https://access.redhat.com/errata/RHBA-2025:21811) advisory. The RPM packages that are included in the update are provided by the [RHBA-2025:21809](https://access.redhat.com/errata/RHBA-2025:21809) advisory.
 
 Space precluded documenting all of the container images for this release in the advisory.
 
@@ -2179,9 +2179,9 @@ This release contains the following known issues:
 
 - If you configure direct authentication with an external OIDC provider and do not provide a value for `issuerCertificateAuthority` for the issuer in the OIDC provider configuration, the Machine Config Operator degrades. This can cause the Console Operator to degrade and some control plane nodes might fail to become available. As a workaround, set the `issuerCertificateAuthority` value for the issuer. ([OCPBUGS-62011](https://issues.redhat.com/browse/OCPBUGS-62011))
 
-### Bug fixes
+### Fixed issues
 
-The following bugs are fixed for this release:
+The following issues are fixed for this release:
 
 - Before this update, the `oauth` pods in the `openshift-authentication` namespaces could get stuck while rolling out changes when one of the corresponding nodes these pods are running on is not ready or not available. This was causing authentication to completely stop until the blocked rollout concludes. With this release, the pods can proceed with the rolling update even when an unhealthy node is down or unavailable ([OCPBUGS-61896](https://issues.redhat.com/browse/OCPBUGS-61896))
 
@@ -2201,11 +2201,11 @@ The following bugs are fixed for this release:
 
 To update an OpenShift Container Platform 4.20 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
 
-## RHSA-2025:21228 - OpenShift Container Platform 4.17.4 image release, bug fix, and security update advisory
+## RHSA-2025:21228 - OpenShift Container Platform 4.17.4 image release, fixed issues, and security update advisory
 
 Issued: 18 November 2025
 
-OpenShift Container Platform release 4.17.4, which includes security updates, is now available. The list of bug fixes that are included in the update is documented in the [RHBA-2025:21228](https://access.redhat.com/errata/RHBA-2025:21228) advisory. The RPM packages that are included in the update are provided by the [RHBA-2025:21223](https://access.redhat.com/errata/RHBA-2025:21223) advisory.
+OpenShift Container Platform release 4.17.4, which includes security updates, is now available. The list of fixed issues that are included in the update is documented in the [RHBA-2025:21228](https://access.redhat.com/errata/RHBA-2025:21228) advisory. The RPM packages that are included in the update are provided by the [RHBA-2025:21223](https://access.redhat.com/errata/RHBA-2025:21223) advisory.
 
 Space precluded documenting all of the container images for this release in the advisory.
 
@@ -2215,13 +2215,15 @@ You can view the container images in this release by running the following comma
 $ oc adm release info 4.20.4 --pullspecs
 ```
 
-### Bug fixes
+### Fixed issues
+
+The following issues are fixed for this release:
 
 - Before this update, the horizontal pod autoscaler (HPA) form in the web console incorrectly required you to provide values for both CPU and memory utilization, even though the API allows for HPAs to be created with a single metric or with no metrics (to use the API default). As a consequence, you could not use the form to create single-metric HPAs, for example, Memory-only, or HPAs that rely on the API default (80% CPU). This issue required you to use the YAML view for these common configurations. With this release, the HPA form logic is updated to align with the API so that the user interface no longer requires both fields to be completed. As a result, an empty utilization field correctly omits that HPA metric from the HPA manifest, which allows the API to apply its default behavior or create a single-metric HPA. You can use the HPA form to create single-metric HPAs, for example, CPU-only or Memory-only. If both utilization fields are left empty, the HPA is created and correctly falls back to the API default of 80% CPU utilization. ([OCPBUGS-63339](https://issues.redhat.com/browse/OCPBUGS-63339))
 
 - Before this update, during rolling cluster updates from etcd 3.5.19 to a release of 3.6, the wrong membership data could be propagated to new members. As a consequence, cluster updates failed with an error indicating too many learner members in the cluster. With this release, etcd is updated to 3.5.24, which includes fixes that prevent membership-related errors. ([OCPBUGS-63474](https://issues.redhat.com/browse/OCPBUGS-63474))
 
-- Before this update, the `ccoctl` utility would automatically generate a new keypair if the private key was not found, even when users intentionally provided only the public key as per documented security procedures. This behavior caused a problem, as the newly generated keys would not match the cluster’s keys, resulting in service outages for users following the correct process. With this update, the utility was changed to ensure a new keypair is never generated when the `--public-key-file` parameter is specified, and this parameter was added to all create-all functions for consistency. As a result, specifying the public key file now guarantees the provided key is used, ensuring the cluster continues to function as expected without interruption. ([OCPBUGS-63546](https://issues.redhat.com/browse/OCPBUGS-63546))
+- Before this update, the `ccoctl` utility would automatically generate a new keypair if the private key was not found, even when users intentionally provided only the public key as documented security procedures. This behavior caused a problem, as the newly generated keys would not match the cluster’s keys, resulting in service outages for users following the correct process. With this update, the utility was changed to ensure a new keypair is never generated when the `--public-key-file` parameter is specified, and this parameter was added to all create-all functions for consistency. As a result, specifying the public key file now guarantees the provided key is used, ensuring the cluster continues to function as expected without interruption. ([OCPBUGS-63546](https://issues.redhat.com/browse/OCPBUGS-63546))
 
 - Before this update, the binary version data for Kubernetes binaries was incorrectly set to `v0.0.0`, which caused problems with vulnerability scanning tools. With this release, the build issue is fixed. As a result, the most recent upstream `kube` version is shown, for example, `v1.33.5`. ([OCPBUGS-63749](https://issues.redhat.com/browse/OCPBUGS-63749))
 
@@ -2229,11 +2231,11 @@ $ oc adm release info 4.20.4 --pullspecs
 
 To update an OpenShift Container Platform 4.20 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
 
-## RHSA-2025:19890 - OpenShift Container Platform 4.17.3 image release, bug fix, and security update advisory
+## RHSA-2025:19890 - OpenShift Container Platform 4.17.3 image release, fixed issues, and security update advisory
 
 Issued: 11 November 2025
 
-OpenShift Container Platform release 4.17.3, which includes security updates, is now available. The list of bug fixes that are included in the update is documented in the [RHSA-2025:19890](https://access.redhat.com/errata/RHSA-2025:19890) advisory. The RPM packages that are included in the update are provided by the [RHBA-2025:19888](https://access.redhat.com/errata/RHBA-2025:19888) advisory.
+OpenShift Container Platform release 4.17.3, which includes security updates, is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2025:19890](https://access.redhat.com/errata/RHSA-2025:19890) advisory. The RPM packages that are included in the update are provided by the [RHBA-2025:19888](https://access.redhat.com/errata/RHBA-2025:19888) advisory.
 
 Space precluded documenting all of the container images for this release in the advisory.
 
@@ -2243,7 +2245,9 @@ You can view the container images in this release by running the following comma
 $ oc adm release info 4.20.3 --pullspecs
 ```
 
-### Bug fixes
+### Fixed issues
+
+The following issues are fixed for this release:
 
 - Before this update, the communication matrix project failed to create EndPointSlice objects for open ports 9193 and 9194 on the primary node because of a missing service connection. As a consequence, inaccurate communication matrixes resulted. With this release, the service is connected to open ports 9193 and 9194, which resolve the missing EndPointSlice objects. As a result, open ports 9193 and 9194 on the primary node are associated with a service, resulting in accurate communication matrixes for OpenShift Container Platform users. ([OCPBUGS-63587](https://issues.redhat.com/browse/OCPBUGS-63587))
 
@@ -2253,11 +2257,11 @@ $ oc adm release info 4.20.3 --pullspecs
 
 To update an OpenShift Container Platform 4.20 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
 
-## RHSA-2025:19296 - OpenShift Container Platform 4.17.2 image release, bug fix, and security update advisory
+## RHSA-2025:19296 - OpenShift Container Platform 4.17.2 image release, fixed issues, and security update advisory
 
 Issued: 04 November 2025
 
-OpenShift Container Platform release 4.17.2, which includes security updates, is now available. The list of bug fixes that are included in the update is documented in the [RHSA-2025:19296](https://access.redhat.com/errata/RHSA-2025:19296) advisory. The RPM packages that are included in the update are provided by the [RHBA-2025:19294](https://access.redhat.com/errata/RHBA-2025:19294) advisory.
+OpenShift Container Platform release 4.17.2, which includes security updates, is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2025:19296](https://access.redhat.com/errata/RHSA-2025:19296) advisory. The RPM packages that are included in the update are provided by the [RHBA-2025:19294](https://access.redhat.com/errata/RHBA-2025:19294) advisory.
 
 Space precluded documenting all of the container images for this release in the advisory.
 
@@ -2269,9 +2273,13 @@ $ oc adm release info 4.20.2 --pullspecs
 
 ### Enhancements
 
+The following enhancements are included in this z-stream release:
+
 - With this update, the `adm upgrade recommend` command now retrieves and displays critical and non-critical alerts that can be used by cluster administrators for cluster updates. Cluster administrators can also use a new `--accept` option with the `--version` command to accept specific acceptable issues. The command exits nonzero if unaccepted issues are detected. ([OCPBUGS-61757](https://issues.redhat.com/browse/OCPBUGS-61757))
 
-### Bug fixes
+### Fixed issues
+
+The following issues are fixed for this release:
 
 - Before this update, if NetworkManager was restarted or crashed on a node with a `br-ex` interface managed by NMState, the node lost network connectivity. With this release, a fallback check in the dispatcher script was added to detect NMState-managed `br-ex` interfaces by checking for the `br-ex-br` bridge ID when the standard `br-ex` bridge ID is not found. As a result, nodes with this interface type do not lose network connectivity when NetworkManager restarts or crashes. ([OCPBUGS-62167](https://issues.redhat.com/browse/OCPBUGS-62167))
 
@@ -2293,11 +2301,11 @@ $ oc adm release info 4.20.2 --pullspecs
 
 To update an OpenShift Container Platform 4.20 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
 
-## RHSA-2025:19003 - OpenShift Container Platform 4.17.1 image release, bug fix, and security update advisory
+## RHSA-2025:19003 - OpenShift Container Platform 4.17.1 image release, fixed issues, and security update advisory
 
 Issued: 28 Oct 2025
 
-OpenShift Container Platform release 4.17.1, which includes security updates, is now available. The list of bug fixes that are included in the update is documented in the [RHSA-2025:19003](https://access.redhat.com/errata/RHSA-2025:19003) advisory. The RPM packages that are included in the update are provided by the [RHEA-2025:19001](https://access.redhat.com/errata/RHEA-2025:19001) advisory.
+OpenShift Container Platform release 4.17.1, which includes security updates, is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2025:19003](https://access.redhat.com/errata/RHSA-2025:19003) advisory. The RPM packages that are included in the update are provided by the [RHEA-2025:19001](https://access.redhat.com/errata/RHEA-2025:19001) advisory.
 
 Space precluded documenting all of the container images for this release in the advisory.
 
@@ -2309,9 +2317,13 @@ $ oc adm release info 4.20.1 --pullspecs
 
 ### Known issues
 
+This release contains the following known issues:
+
 - Starting with OpenShift Container Platform 4.20, there is a decrease in the default maximum open files soft limit for containers. As a consequence, end users may experience application failures. To work around this problem, increase the container runtimes (CRI-O) ulimit configuration. ([OCPBUGS-62095](https://issues.redhat.com/browse/OCPBUGS-62095))
 
-### Bug fixes
+### Fixed issues
+
+The following issues are fixed for this release:
 
 - Before this update, iDRAC10 hardware provisioning was failing due to an incorrect data type for the Dell Original Equipment Manufacturer (OEM) `Target` property and the use of an incorrect virtual media slot. As a result, users were unable to provision Dell iDRAC10 servers. With this release, the Dell iDRAC10 can be provisioned. ([OCPBUGS-52427](https://issues.redhat.com/browse/OCPBUGS-52427))
 
@@ -2349,11 +2361,11 @@ $ oc adm release info 4.20.1 --pullspecs
 
 To update an OpenShift Container Platform 4.20 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
 
-## RHSA-2025:9562 - OpenShift Container Platform 4.17.0 image release, bug fix, and security update advisory
+## RHSA-2025:9562 - OpenShift Container Platform 4.17.0 image release, fixed issues, and security update advisory
 
 Issued: 21 Oct 2025
 
-OpenShift Container Platform release 4.17.0, which includes security updates, is now available. The list of bug fixes that are included in the update is documented in the [RHSA-2025:9562](https://access.redhat.com/errata/RHSA-2025:9562) advisory. The RPM packages that are included in the update are provided by the [RHEA-2025:4782](https://access.redhat.com/errata/RHEA-2025:4782) advisory.
+OpenShift Container Platform release 4.17.0, which includes security updates, is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2025:9562](https://access.redhat.com/errata/RHSA-2025:9562) advisory. The RPM packages that are included in the update are provided by the [RHEA-2025:4782](https://access.redhat.com/errata/RHEA-2025:4782) advisory.
 
 Space precluded documenting all of the container images for this release in the advisory.
 

@@ -26,8 +26,8 @@ You can use the JobSet Operator to deploy a JobSet to manage and run large-scale
       - name: workers
         template:
           spec:
-            parallelism: <pods_running_number>
-            completions: <pods_finish_number>
+            parallelism: 3
+            completions: 3
             backoffLimit: 0
             template:
               spec:
@@ -77,10 +77,10 @@ You can use the JobSet Operator to deploy a JobSet to manage and run large-scale
 
     where:
 
-    `<pods_running_number>`
+    `spec.replicatedJobs.template.spec.parallelism`
     Specifies the number of pods running at the same time.
 
-    `<pods_finish_number>`
+    `spec.replicatedJobs.template.spec.completions`
     Specifies the total number of pods that must finish successfully for the job to be marked complete.
 
 3.  Apply the JobSet configuration by running the following command:

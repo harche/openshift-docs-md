@@ -294,6 +294,10 @@ Label your machine sets to indicate which machines the cluster autoscaler can us
 
   </div>
 
+<!-- -->
+
+- [Cluster autoscaler resource definition](../../machine_management/applying-autoscaling.xml#cluster-autoscaler-cr_applying-autoscaling)
+
 # Configuring persistent disk types by using machine sets
 
 Configure the persistent disk type for your machine set on Google Cloud to match your workload requirements. Editing the `MachineSet` YAML file allows you to choose between standard, balanced, or SSD persistent disks.
@@ -540,8 +544,6 @@ For more information about Shielded VM features and functionality, see the Googl
 - [Virtual Trusted Platform Module (vTPM)](https://cloud.google.com/compute/shielded-vm/docs/shielded-vm#vtpm)
 
 - [Integrity monitoring](https://cloud.google.com/compute/shielded-vm/docs/shielded-vm#integrity-monitoring)
-
-- [Cluster autoscaler resource definition](../../machine_management/applying-autoscaling.xml#cluster-autoscaler-cr_applying-autoscaling)
 
 # Enabling customer-managed encryption keys for a machine set
 

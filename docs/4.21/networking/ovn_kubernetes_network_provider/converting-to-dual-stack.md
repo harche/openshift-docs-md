@@ -6,7 +6,7 @@ When using dual-stack networking where IPv6 is required, you cannot use IPv4-map
 
 </div>
 
-- For more information about platform-specific support for dual-stack networking, see [OVN-Kubernetes purpose](../../networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.xml#nw-ovn-kubernetes-purpose_about-ovn-kubernetes)
+- [OVN-Kubernetes purpose](../../networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.xml#nw-ovn-kubernetes-purpose_about-ovn-kubernetes)
 
 # Converting to a dual-stack cluster network
 

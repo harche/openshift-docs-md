@@ -704,7 +704,7 @@ You can collect data for a one-hour or a 24-hour period and view the data with t
 
 ## Debugging Velero resources with the Velero CLI tool
 
-You can debug `Backup` and `Restore` custom resources (CRs) and retrieve logs with the Velero CLI tool. The Velero CLI tool provides more detailed information than the OpenShift CLI tool.
+Debug `Backup` and `Restore` custom resources (CRs) and retrieve logs with the Velero CLI tool. The Velero CLI tool provides more detailed information than the OpenShift CLI tool.
 
 - Use the `oc exec` command to run a Velero CLI command:
 
@@ -778,6 +778,8 @@ You can debug `Backup` and `Restore` custom resources (CRs) and retrieve logs wi
   One or more errors in one of these categories results in a `Restore` operation receiving the status of `PartiallyFailed` and not `Completed`. Warnings do not lead to a change in the completion status.
 
   Consider the following points for these restore errors:
+
+- For resource-specific errors, that is, `Cluster` and `Namespaces` errors, the `restore describe --details` output includes a resource list that includes all resources that Velero restored. For any resource that has such an error, check if the resource is actually in the cluster.
 
 - For resource-specific errors, that is, `Cluster` and `Namespaces` errors, the `restore describe --details` output includes a resource list that includes all resources that Velero restored. For any resource that has such an error, check if the resource is actually in the cluster.
 

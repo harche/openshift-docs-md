@@ -56,7 +56,7 @@ Any CPUs specifically reserved using the `reservedSystemCPUs` parameter in a `Ku
 
 </div>
 
-You can manually manage CPU and memory reservations for the node and system components by configuring the `system-reserved` parameter in a `MachineConfig` object, as described in "Manually allocating resources for nodes".
+You can manually manage CPU and memory reservations for the node and system components by configuring the `system-reserved` parameter in a `KubeletConfig` object, as described in "Manually allocating resources for nodes".
 
 ## How OpenShift Container Platform computes allocated resources
 

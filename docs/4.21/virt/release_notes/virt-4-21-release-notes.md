@@ -16,6 +16,13 @@ The SVVP certification applies to:
 
 # New features and enhancements
 
+Remove the MTC Operator during the upgrade process
+With this update, cluster administrators can optionally remove the Migration Toolkit for Containers (MTC) Operator when they upgrade from previous OpenShift Virtualization versions to version 4.21. MTC is end-of-life and no longer needed in OpenShift Virtualization version 4.21 to support live storage migration.
+
+[CNV-50822](https://issues.redhat.com/browse/CNV-50822)
+
+<!-- -->
+
 IBM® Secure Execution for VMs on IBM Z® and IBM® LinuxONE is generally available
 IBM® Secure Execution for VMs on IBM Z® and IBM® LinuxONE is now generally available. This capability provides hardware based memory encryption that protects virtual machine workloads from access by the host or hypervisor environment. For more information, see [Configuring IBM® Secure Execution virtual machines on IBM Z® and IBM® LinuxONE](../../virt/creating_vm/virt-configuring-ibm-secure-execution-vms-ibm-z.xml#virt-configuring-ibm-secure-execution-vms-ibm-z).
 

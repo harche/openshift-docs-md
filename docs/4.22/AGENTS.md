@@ -280,8 +280,7 @@ Root: ./
 |observability/overview:{index.md}
 |observability/cluster_observability_operator:{cluster-observability-operator-overview.md}
 |observability/monitoring:{about-ocp-monitoring.md}
-|observability/logging/logging-6.2:{log62-cluster-logging-support.md,log6x-release-notes-6.2.md,log6x-about-6.2.md,log6x-clf-6.2.md,6x-cluster-logging-collector-6.2.md,log6x-loki-6.2.md,log6x-configuring-lokistack-otlp-6.2.md,log6x-visual-6.2.md}
-|observability/logging/logging-6.1:{log61-cluster-logging-support.md,log6x-release-notes-6.1.md,log6x-about-6.1.md,log6x-clf-6.1.md,6x-cluster-logging-collector-6.1.md,log6x-loki-6.1.md,log6x-configuring-lokistack-otlp-6.1.md,log6x-opentelemetry-data-model-6.1.md,log6x-visual-6.1.md}
+|observability/logging:{about-logging.md}
 |observability/distr_tracing:{distr-tracing-rn.md,distr-tracing-tempo-architecture.md,distr-tracing-tempo-installing.md,distr-tracing-tempo-configuring.md,distr-tracing-tempo-troubleshooting.md,distr-tracing-tempo-updating.md,distr-tracing-tempo-removing.md}
 |observability/otel:{otel-rn.md,otel-architecture.md,otel-installing.md,otel-configuration-of-instrumentation.md,otel-sending-traces-logs-and-metrics-to-otel-collector.md,otel-configuring-metrics-for-monitoring-stack.md,otel-forwarding-telemetry-data.md,otel-configuring-otelcol-metrics.md,otel-receiving-telemetry-data.md,otel-troubleshooting.md,otel-migrating.md,otel-updating.md,otel-removing.md}
 |observability/otel/otel-collector:{otel-collector-configuration-intro.md,otel-collector-receivers.md,otel-collector-processors.md,otel-collector-exporters.md,otel-collector-connectors.md,otel-collector-extensions.md}
@@ -403,7 +402,7 @@ Root: ./
 ### Virtualization
 
 |virt/about_virt:{about-virt.md,virt-supported-limits.md,virt-security-policies.md,virt-architecture.md}
-|virt/release_notes:{virt-4-21-release-notes.md}
+|virt/release_notes:{virt-4-22-release-notes.md}
 |virt/getting_started:{virt-getting-started.md,virt-using-the-cli-tools.md}
 |virt/install:{preparing-cluster-for-virt.md,installing-virt.md,uninstalling-virt.md,virt-install-ibm-cloud-bm-nodes.md}
 |virt/post_installation_configuration:{virt-post-install-config.md,virt-node-placement-virt-components.md,virt-post-install-network-config.md,virt-post-install-storage-config.md,virt-self-validation-checkups.md,virt-perf-optimization.md,virt-configuring-higher-vm-workload-density.md,virt-configuring-certificate-rotation.md}
@@ -419,7 +418,7 @@ Root: ./
 |virt/storage:{virt-storage-config-overview.md,virt-configuring-storage-profile.md,virt-automatic-bootsource-updates.md,virt-reserving-pvc-space-fs-overhead.md,virt-configuring-local-storage-with-hpp.md,virt-enabling-user-permissions-to-clone-datavolumes.md,virt-configuring-cdi-for-namespace-resourcequota.md,virt-preparing-cdi-scratch-space.md,virt-using-preallocation-for-datavolumes.md,virt-managing-data-volume-annotations.md,virt-storage-with-csi-paradigm.md,install-configure-fusion-access-san.md}
 |virt/live_migration:{virt-about-live-migration.md,virt-configuring-live-migration.md,virt-initiating-live-migration.md,virt-enabling-cclm-for-vms.md,virt-configuring-cross-cluster-live-migration-network.md,virt-about-mtv-providers.md}
 |virt/nodes:{virt-node-maintenance.md,virt-managing-node-labeling-obsolete-cpu-models.md,virt-preventing-node-reconciliation.md,virt-triggering-vm-failover-resolving-failed-node.md,virt-activating-ksm.md}
-|virt/monitoring:{virt-monitoring-overview.md,virt-running-cluster-checkups.md,virt-latency-checkups.md,virt-storage-checkups.md,virt-prometheus-queries.md,virt-exposing-custom-metrics-for-vms.md,virt-exposing-downward-metrics.md,virt-monitoring-vm-health.md,virt-runbooks.md}
+|virt/monitoring:{virt-monitoring-overview.md,virt-running-cluster-checkups.md,virt-storage-checkups.md,virt-prometheus-queries.md,virt-exposing-custom-metrics-for-vms.md,virt-exposing-downward-metrics.md,virt-monitoring-vm-health.md,virt-runbooks.md}
 |virt/support:{virt-support-overview.md,virt-collecting-virt-data.md,virt-troubleshooting.md}
 |virt/backup_restore:{virt-backup-restore-snapshots.md,virt-backup-restore-overview.md,virt-disaster-recovery.md}
 

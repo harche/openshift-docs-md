@@ -49,10 +49,11 @@ The GCP PD CSI driver uses the `csi.storage.k8s.io/fstype` parameter key to supp
 <tbody>
 <tr class="odd">
 <td style="text-align: left;"><p><code>type</code></p></td>
-<td style="text-align: left;"><p><code>pd-ssd</code>, <code>pd-standard</code>, or <code>pd-balanced</code></p></td>
+<td style="text-align: left;"><p><code>pd-ssd</code>, <code>pd-standard</code>, <code>pd-balanced</code>, or <code>hyperdisk-balanced</code></p></td>
 <td style="text-align: left;"><p><code>pd-standard</code></p></td>
 <td style="text-align: left;"><p>Allows you to choose between standard PVs or solid-state-drive PVs.</p>
-<p>The driver does not validate the value, thus all the possible values are accepted.</p></td>
+<p>The driver does not validate the value, thus all the possible values are accepted.</p>
+<p>For <code>hyperdisk-balanced</code>, be sure to check the limitations under Section <em>C3 and N4 instance type limitations</em>.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>replication-type</code></p></td>

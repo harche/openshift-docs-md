@@ -1,20 +1,8 @@
-You can obtain the `velero` CLI tool by using the following options:
-
-- Downloading the `velero` CLI tool
-
-- Accessing the `velero` binary in the Velero deployment in the cluster
+Download the `velero` CLI tool or access the `velero` binary in your cluster to debug `Backup` and `Restore` custom resources (CRs) and retrieve logs. This helps you to troubleshoot failed backup and restore operations.
 
 # Downloading the Velero CLI tool
 
-You can download and install the Velero CLI tool by following the instructions on the Velero documentation page. The page includes instructions for the following options:
-
-- macOS by using Homebrew
-
-- GitHub
-
-- Windows by using Chocolatey
-
-<!-- -->
+Download and install the `velero` CLI tool from the Velero documentation page, which provides instructions for macOS by using Homebrew, GitHub, and Windows by using Chocolatey. This helps you to access the `velero` CLI for debugging backup and restore operations.
 
 - You have access to a Kubernetes cluster, v1.16 or later, with DNS and container networking enabled.
 
@@ -46,7 +34,7 @@ Review the version relationship between OADP, Velero, and OpenShift Container Pl
 
 # Accessing the Velero binary in the Velero deployment in the cluster
 
-You can use a shell command to access the Velero binary in the Velero deployment in the cluster.
+Use a shell command to access the Velero binary in the Velero deployment in the cluster.
 
 - Your `DataProtectionApplication` custom resource has a status of `Reconcile complete`.
 
@@ -60,7 +48,7 @@ You can use a shell command to access the Velero binary in the Velero deployment
 
 # Debugging Velero resources with the OpenShift CLI tool
 
-You can debug a failed backup or restore by checking Velero custom resources (CRs) and the `Velero` pod log with the OpenShift CLI tool.
+Debug a failed backup or restore by checking Velero custom resources (CRs) and the `Velero` pod log with the OpenShift CLI tool.
 
 - Retrieve a summary of warnings and errors associated with a `Backup` or `Restore` CR by using the following `oc describe` command:
 
@@ -82,12 +70,6 @@ You can debug a failed backup or restore by checking Velero custom resources (CR
 
   </div>
 
-  <div class="formalpara-title">
-
-  **Example Velero log level file**
-
-  </div>
-
   ``` yaml
   apiVersion: oadp.openshift.io/v1alpha1
   kind: DataProtectionApplication
@@ -101,25 +83,25 @@ You can debug a failed backup or restore by checking Velero custom resources (CR
 
   The following `logLevel` values are available:
 
-- `trace`
+  - `trace`
 
-- `debug`
+  - `debug`
 
-- `info`
+  - `info`
 
-- `warning`
+  - `warning`
 
-- `error`
+  - `error`
 
-- `fatal`
+  - `fatal`
 
-- `panic`
+  - `panic`
 
-  Use the `info` `logLevel` value for most logs.
+    Use the `info` `logLevel` value for most logs.
 
 # Debugging Velero resources with the Velero CLI tool
 
-You can debug `Backup` and `Restore` custom resources (CRs) and retrieve logs with the Velero CLI tool. The Velero CLI tool provides more detailed information than the OpenShift CLI tool.
+Debug `Backup` and `Restore` custom resources (CRs) and retrieve logs with the Velero CLI tool. The Velero CLI tool provides more detailed information than the OpenShift CLI tool.
 
 - Use the `oc exec` command to run a Velero CLI command:
 
@@ -193,6 +175,8 @@ You can debug `Backup` and `Restore` custom resources (CRs) and retrieve logs wi
   One or more errors in one of these categories results in a `Restore` operation receiving the status of `PartiallyFailed` and not `Completed`. Warnings do not lead to a change in the completion status.
 
   Consider the following points for these restore errors:
+
+- For resource-specific errors, that is, `Cluster` and `Namespaces` errors, the `restore describe --details` output includes a resource list that includes all resources that Velero restored. For any resource that has such an error, check if the resource is actually in the cluster.
 
 - For resource-specific errors, that is, `Cluster` and `Namespaces` errors, the `restore describe --details` output includes a resource list that includes all resources that Velero restored. For any resource that has such an error, check if the resource is actually in the cluster.
 

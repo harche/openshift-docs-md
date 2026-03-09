@@ -97,6 +97,6 @@ Red Hat has not performed testing outside the default port range of `30000-3276
 
 - [Configuring ingress cluster traffic using a NodePort](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-nodeport.xml#configuring-ingress-cluster-traffic-nodeport)
 
-- [Network \[config.openshift.io/v1](../../rest_api/config_apis/network-config-openshift-io-v1.xml#network-config-openshift-io-v1)\]
+- [Network \[config.openshift.io/v1\]](../../rest_api/config_apis/network-config-openshift-io-v1.xml#network-config-openshift-io-v1)
 
-- [Service \[core/v1](../../rest_api/network_apis/service-v1.xml#service-v1)\]
+- [Service \[core/v1\]](../../rest_api/network_apis/service-v1.xml#service-v1)

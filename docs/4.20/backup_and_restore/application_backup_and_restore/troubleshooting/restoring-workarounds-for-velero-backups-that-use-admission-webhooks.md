@@ -1,6 +1,6 @@
-Velero has limited abilities to resolve admission webhook issues during a restore. If you have workloads with admission webhooks, you might need to use an additional Velero plugin or make changes to how you restore the workload.
+Resolve restore failures caused by admission webhooks by applying workarounds for workloads such as Knative and IBM AppConnect resources. This helps you to successfully restore workloads that have mutating or validating admission webhooks.
 
-Typically, workloads with admission webhooks require you to create a resource of a specific kind first. This is especially true if your workload has child resources because admission webhooks typically block child resources.
+Velero has limited abilities to resolve admission webhook issues during a restore. If you have workloads with admission webhooks, you might need to use an additional Velero plugin or make changes to how you restore the workload. Typically, workloads with admission webhooks require you to create a resource of a specific kind first. This is especially true if your workload has child resources because admission webhooks typically block child resources.
 
 For example, creating or restoring a top-level object such as `service.serving.knative.dev` typically creates child resources automatically. If you do this first, you will not need to use Velero to create and restore these resources. This avoids the problem of child resources being blocked by an admission webhook that Velero might use.
 
@@ -12,21 +12,19 @@ Velero plugins are started as separate processes. After a Velero operation has c
 
 # Restoring Knative resources
 
-You might encounter problems by using Velero to back up Knative resources that use admission webhooks.
+Resolve issues with restoring Knative resources that use admission webhooks by restoring the top-level `service.serving.knative.dev` service resource with Velero. This helps you to ensure that Knative resources are restored successfully without admission webhook errors.
 
-You can avoid such problems by restoring the top level `Service` resource whenever you back up and restore Knative resources that use admission webhooks.
-
-- Restore the top level `service.serving.knavtive.dev Service` resource by using the following command:
+- Restore the top level `service.serving.knative.dev Service` resource by using the following command:
 
   ``` terminal
   $ velero restore <restore_name> \
     --from-backup=<backup_name> --include-resources \
-    service.serving.knavtive.dev
+    service.serving.knative.dev
   ```
 
 # Restoring IBM AppConnect resources
 
-If you experience issues when you use Velero to a restore an IBM® AppConnect resource that has an admission webhook, you can run the checks in this procedure.
+Troubleshoot Velero restore failures for IBM® AppConnect resources that use admission webhooks. Verify your webhook rules and check that the installed Operator supports the backup’s version to successfully complete the restore.
 
 1.  Check if you have any mutating admission plugins of `kind: MutatingWebhookConfiguration` in the cluster by entering/running the following command:
 
@@ -40,9 +38,9 @@ If you experience issues when you use Velero to a restore an IBM® AppConnect re
 
 # Avoiding the Velero plugin panic error
 
-A missing secret can cause a panic error for the Velero plugin during image stream backups.
+Label a custom Backup Storage Location (BSL) to resolve Velero plugin panic errors during `imagestream` backups. This action prompts the OADP controller to create the required registry secret when you manage the BSL outside the `DataProtectionApplication` (DPA) custom resource (CR).
 
-When the backup and the Backup Storage Location (BSL) are managed outside the scope of the Data Protection Application (DPA), the OADP controller does not create the relevant `oadp-<bsl_name>-<bsl_provider>-registry-secret` parameter.
+A missing secret can cause a panic error for the Velero plugin during image stream backups. When the backup and the BSL are managed outside the scope of the DPA, the OADP controller does not create the relevant `oadp-<bsl_name>-<bsl_provider>-registry-secret` parameter.
 
 During the backup operation, the OpenShift Velero plugin panics on the `imagestream` backup, with the following panic error:
 
@@ -52,8 +50,6 @@ backup=openshift-adp/<backup name> error="error executing custom action (groupRe
 namespace=<BSL Name>, name=postgres): rpc error: code = Aborted desc = plugin panicked:
 runtime error: index out of range with length 1, stack trace: goroutine 94…
 ```
-
-Use the following workaround to avoid the Velero plugin panic error.
 
 1.  Label the custom BSL with the relevant label by using the following command:
 
@@ -77,7 +73,7 @@ Use the following workaround to avoid the Velero plugin panic error.
 
 # Workaround for OpenShift ADP Controller segmentation fault
 
-If you configure a Data Protection Application (DPA) with both `cloudstorage` and `restic` enabled, the `openshift-adp-controller-manager` pod crashes and restarts indefinitely until the pod fails with a crash loop segmentation fault.
+Define either `velero` or `cloudstorage` in your Data Protection Application (DPA) configuration to prevent indefinite pod crashes. This configuration resolves a segmentation fault in the `openshift-adp-controller-manager` pod that occurs when both components are enabled.
 
 Define either `velero` or `cloudstorage` when you configure a DPA. Otherwise, the `openshift-adp-controller-manager` pod fails with a crash loop segmentation fault due to the following settings:
 

@@ -152,6 +152,8 @@ You can enable default access to VM guest system logs by using the web console.
 
 4.  Set **Enable guest system log access** to on.
 
+5.  Optional: If you want to hide the VM user credentials that were set by using cloud-init, set **Hide guest credentials for non-privileged users** to on.
+
 ## Enabling default access to VM guest system logs with the CLI
 
 You can enable default access to VM guest system logs by editing the `HyperConverged` custom resource (CR).

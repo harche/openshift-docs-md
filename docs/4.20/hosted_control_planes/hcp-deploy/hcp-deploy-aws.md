@@ -952,6 +952,8 @@ You can configure a custom certificate during either day-1 or day-2 operations. 
 
 # Creating a hosted cluster in multiple zones on AWS
 
+To improve availability and fault tolerance, you can create a hosted cluster across multiple AWS availability zones. Distributing your node pools and compute nodes across several zones protects your workloads against potential outages in a single geographical region.
+
 You can create a hosted cluster in multiple zones on Amazon Web Services (AWS) by using the `hcp` command-line interface (CLI).
 
 - You created an AWS Identity and Access Management (IAM) role and AWS Security Token Service (STS) credentials.
@@ -972,21 +974,31 @@ You can create a hosted cluster in multiple zones on Amazon Web Services (AWS) b
     --sts-creds <path_to_sts_credential_file>
   ```
 
-  - Specify the name of your hosted cluster, for instance, `example`.
+  where:
 
-  - Specify the node pool replica count, for example, `2`.
+  `<hosted_cluster_name>`
+  Specifies the name of your hosted cluster, such as `example`.
 
-  - Specify your base domain, for example, `example.com`.
+  `<node_pool_replica_count>`
+  Specifies the node pool replica count, for example, `2`.
 
-  - Specify the path to your pull secret, for example, `/user/name/pullsecret`.
+  `<basedomain>`
+  Specifies your base domain, for example, `example.com`.
 
-  - Specify the Amazon Resource Name (ARN), for example, `arn:aws:iam::820196288204:role/myrole`.
+  `<path_to_pull_secret>`
+  Specifies the path to your pull secret, for example, `/user/name/pullsecret`.
 
-  - Specify the AWS region name, for example, `us-east-1`.
+  `<arn_role>`
+  Specifies the Amazon Resource Name (ARN), for example, `arn:aws:iam::820196288204:role/myrole`.
 
-  - Specify availability zones within your AWS region, for example, `us-east-1a`, and `us-east-1b`.
+  `<region>`
+  Specifies the AWS region name, for example, `us-east-1`.
 
-  - Specify the path to your AWS STS credentials file, for example, `/home/user/sts-creds/sts-creds.json`.
+  `<zones>`
+  Specifies availability zones within your AWS region, for example, `us-east-1a`, and `us-east-1b`.
+
+  `<path_to_sts_credential_file>`
+  Specifies the path to your AWS STS credentials file, for example, `/home/user/sts-creds/sts-creds.json`.
 
 For each specified zone, the following infrastructure is created:
 
@@ -1188,9 +1200,9 @@ For private clusters on AWS, all communication with the hosted cluster occurs ov
 
     The following API endpoints for the hosted cluster are accessible through a private DNS zone:
 
-- `api.<hosted_cluster_name>.hypershift.local`
+    - `api.<hosted_cluster_name>.hypershift.local`
 
-- `*.apps.<hosted_cluster_name>.hypershift.local`
+    - `*.apps.<hosted_cluster_name>.hypershift.local`
 
 ## Accessing a private management cluster on AWS
 

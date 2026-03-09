@@ -599,7 +599,10 @@ Some parameters, such as the cluster domain name, are required in the `install-c
 <tr class="even">
 <td style="text-align: left;"><p><code>bootMode</code></p></td>
 <td style="text-align: left;"><p><code>UEFI</code></p></td>
-<td style="text-align: left;"><p>The boot mode for a node. Options are <code>legacy</code>, <code>UEFI</code>, and <code>UEFISecureBoot</code>. If <code>bootMode</code> is not set, Ironic sets it while inspecting the node.</p></td>
+<td style="text-align: left;"><p>The boot mode for a node. Options are <code>legacy</code>, <code>UEFI</code>, and <code>UEFISecureBoot</code>. If <code>bootMode</code> is not set, Ironic sets it while inspecting the node.</p>
+<div class="note">
+<p>For hardware that implements <code>BootMode</code> read-only, such as HP or Cisco, do not leave this parameter blank. You must manually set the system to UEFI mode before installation and explicitly set this parameter to UEFI.</p>
+</div></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><pre><code>platform:

@@ -280,8 +280,7 @@ Root: ./
 |observability/overview:{index.md}
 |observability/cluster_observability_operator:{cluster-observability-operator-overview.md}
 |observability/monitoring:{about-ocp-monitoring.md}
-|observability/logging/logging-6.2:{log62-cluster-logging-support.md,log6x-release-notes-6.2.md,log6x-about-6.2.md,log6x-clf-6.2.md,6x-cluster-logging-collector-6.2.md,log6x-loki-6.2.md,log6x-configuring-lokistack-otlp-6.2.md,log6x-visual-6.2.md}
-|observability/logging/logging-6.1:{log61-cluster-logging-support.md,log6x-release-notes-6.1.md,log6x-about-6.1.md,log6x-clf-6.1.md,6x-cluster-logging-collector-6.1.md,log6x-loki-6.1.md,log6x-configuring-lokistack-otlp-6.1.md,log6x-opentelemetry-data-model-6.1.md,log6x-visual-6.1.md}
+|observability/logging:{about-logging.md}
 |observability/distr_tracing:{distr-tracing-rn.md,distr-tracing-tempo-architecture.md,distr-tracing-tempo-installing.md,distr-tracing-tempo-configuring.md,distr-tracing-tempo-troubleshooting.md,distr-tracing-tempo-updating.md,distr-tracing-tempo-removing.md}
 |observability/otel:{otel-architecture.md}
 |observability/network_observability:{network-observability-operator-release-notes.md,network-observability-overview.md,installing-operators.md,understanding-network-observability-operator.md,configuring-operator.md,network-observability-per-tenant-model.md,network-observability-network-policy.md,network-observability-dns-resolution-analysis.md,observing-network-traffic.md,network-observability-health-rules.md,metrics-alerts-dashboards.md,network-observability-operator-monitoring.md,network-observability-scheduling-resources.md,network-observability-secondary-networks.md,flowcollector-api.md,flowmetric-api.md,json-flows-format-reference.md,troubleshooting-network-observability.md}

@@ -203,9 +203,9 @@ OpenShift API for Data Protection (OADP) has been tested and works on FIPS-enabl
 
 # Avoiding the Velero plugin panic error
 
-A missing secret can cause a panic error for the Velero plugin during image stream backups.
+Label a custom Backup Storage Location (BSL) to resolve Velero plugin panic errors during `imagestream` backups. This action prompts the OADP controller to create the required registry secret when you manage the BSL outside the `DataProtectionApplication` (DPA) custom resource (CR).
 
-When the backup and the Backup Storage Location (BSL) are managed outside the scope of the Data Protection Application (DPA), the OADP controller does not create the relevant `oadp-<bsl_name>-<bsl_provider>-registry-secret` parameter.
+A missing secret can cause a panic error for the Velero plugin during image stream backups. When the backup and the BSL are managed outside the scope of the DPA, the OADP controller does not create the relevant `oadp-<bsl_name>-<bsl_provider>-registry-secret` parameter.
 
 During the backup operation, the OpenShift Velero plugin panics on the `imagestream` backup, with the following panic error:
 
@@ -215,8 +215,6 @@ backup=openshift-adp/<backup name> error="error executing custom action (groupRe
 namespace=<BSL Name>, name=postgres): rpc error: code = Aborted desc = plugin panicked:
 runtime error: index out of range with length 1, stack trace: goroutine 94…
 ```
-
-Use the following workaround to avoid the Velero plugin panic error.
 
 1.  Label the custom BSL with the relevant label by using the following command:
 
@@ -240,7 +238,7 @@ Use the following workaround to avoid the Velero plugin panic error.
 
 # Workaround for OpenShift ADP Controller segmentation fault
 
-If you configure a Data Protection Application (DPA) with both `cloudstorage` and `restic` enabled, the `openshift-adp-controller-manager` pod crashes and restarts indefinitely until the pod fails with a crash loop segmentation fault.
+Define either `velero` or `cloudstorage` in your Data Protection Application (DPA) configuration to prevent indefinite pod crashes. This configuration resolves a segmentation fault in the `openshift-adp-controller-manager` pod that occurs when both components are enabled.
 
 Define either `velero` or `cloudstorage` when you configure a DPA. Otherwise, the `openshift-adp-controller-manager` pod fails with a crash loop segmentation fault due to the following settings:
 

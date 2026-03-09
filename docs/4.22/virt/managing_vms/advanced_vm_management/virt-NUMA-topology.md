@@ -1,8 +1,10 @@
-Non-uniform memory access (NUMA) architecture is a multiprocessor architecture model where CPUs do not access all memory in all locations at the same speed. Instead, CPUs can gain faster access to memory that is in closer proximity to them, or *local* to them, but slower access to memory that is further away.
+To reduce latency in multiprocessor systems, Non-Uniform Memory Access (NUMA) architecture allows CPUs to access local memory faster than remote memory. This design optimizes performance by prioritizing memory resources that are physically closer to the processor.
 
 A CPU with multiple memory controllers can use any available memory across CPU complexes, regardless of where the memory is located. However, this increased flexibility comes at the expense of performance.
 
-*NUMA resource topology* refers to the physical locations of CPUs, memory, and PCI devices relative to each other in a *NUMA zone*. In a NUMA architecture, a NUMA zone is a group of CPUs that has its own processors and memory. Colocated resources are said to be in the same NUMA zone, and CPUs in a zone have faster access to the same local memory than CPUs outside of that zone. A CPU processing a workload using memory that is outside its NUMA zone is slower than a workload processed in a single NUMA zone. For I/O-constrained workloads, the network interface on a distant NUMA zone slows down how quickly information can reach the application.
+*NUMA resource topology* refers to the physical locations of CPUs, memory, and PCI devices relative to each other in a *NUMA zone*. In a NUMA architecture, a NUMA zone is a group of CPUs that has its own processors and memory. Colocated resources are said to be in the same NUMA zone, and CPUs in a zone have faster access to the same local memory than CPUs outside of that zone.
+
+A CPU processing a workload using memory that is outside its NUMA zone is slower than a workload processed in a single NUMA zone. For I/O-constrained workloads, the network interface on a distant NUMA zone slows down how quickly information can reach the application.
 
 Applications can achieve better performance by containing data and processing within the same NUMA zone. For high-performance workloads and applications, such as telecommunications workloads, the cluster must process pod workloads in a single NUMA zone so that the workload can operate to specification.
 
@@ -104,34 +106,34 @@ When a VM is created by using an instance type where the CPU hot plug is disable
 
     where:
 
-    spec.cpu.dedicatedCPUPlacement
+    `spec.cpu.dedicatedCPUPlacement`
     Specifies whether dedicated resources are allocated to the VM instance. If this is set to `true`, the VM’s VCPUs are pinned to physical host CPUs. This is often used for high-performance workloads to minimize scheduling jitter.
 
-    spec.cpu.isolateEmulatorThread
+    `spec.cpu.isolateEmulatorThread`
     Specifies whether the QEMU emulator thread should be isolated and run on a dedicated physical CPU core. This is a performance optimization that is typically used alongside the `dedicatedCPUPlacement` spec.
 
-    spec.cpu.numa
+    `spec.cpu.numa`
     Specifies the NUMA topology configuration for the VM.
 
-    spec.cpu.numa.guestMappingPassthrough
+    `spec.cpu.numa.guestMappingPassthrough`
     Specifies that the VM’s NUMA topology should directly pass through the NUMA topology of the underlying host machine. This is critical for applications that are NUMA-aware and require optimal performance.
 
-    spec.cpu.guest
+    `spec.cpu.guest`
     Specifies the total number of vCPUs to be allocated to the VM.
 
-    spec.cpu.maxSockets
+    `spec.cpu.maxSockets`
     Specifies the maximum number of CPU sockets the VM is allowed to have.
 
-    spec.memory
+    `spec.memory`
     Specifies the memory configuration for the VM.
 
-    spec.memory.guest
+    `spec.memory.guest`
     Specifies the total amount of memory to be allocated to the VM.
 
-    spec.memory.hugepages
+    `spec.memory.hugepages`
     Specifies configuration related to hugepages.
 
-    spec.memory.hugepages.pageSize
+    `spec.memory.hugepages.pageSize`
     Specifies the size of the hugepages to be used for the VM’s memory.
 
 2.  Create the `VirtualMachineClusterInstancetype` CR by running the following command:

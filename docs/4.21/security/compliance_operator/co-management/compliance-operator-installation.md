@@ -392,4 +392,4 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 # Additional resources
 
-- The Compliance Operator is supported in a restricted network environment. For more information, see [Using Operator Lifecycle Manager in disconnected environments](../../../disconnected/using-olm.xml#olm-restricted-networks).
+- [Using Operator Lifecycle Manager in disconnected environments](../../../disconnected/using-olm.xml#olm-restricted-networks)

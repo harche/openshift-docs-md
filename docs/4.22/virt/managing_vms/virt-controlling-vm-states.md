@@ -1,6 +1,6 @@
 You can use [`virtctl`](../../virt/getting_started/virt-using-the-cli-tools.xml#virt-using-the-cli-tools) to manage virtual machine states and perform other actions from the CLI. For example, you can use `virtctl` to force stop a VM or expose a port.
 
-You can stop, start, restart, pause, and unpause virtual machines from the web console.
+You can stop, start, restart, reset, pause, and unpause virtual machines from the web console.
 
 # Configuring RBAC permissions for managing VM states by using the web console
 
@@ -149,19 +149,19 @@ You can start a virtual machine (VM) from the web console.
 
     - To stay on this page, where you can perform actions on multiple VMs:
 
-      1.  Click the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) located at the far right end of the row and click **Start VirtualMachine**.
+      1.  Click the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) located at the far right end of the row and click **Control** → **Start VirtualMachine**.
 
     - To start the VM from the tree view:
 
       1.  Click the **\>** icon next to the project name to open the list of VMs.
 
-      2.  Right-click the name of the VM and select **Start**.
+      2.  Right-click the name of the VM and select **Control** → **Start**.
 
     - To view comprehensive information about the selected VM before you start it:
 
       1.  Access the **VirtualMachine details** page by clicking the name of the VM.
 
-      2.  Click **Actions** → **Start**.
+      2.  Click **Actions** → **Control** → **Start**.
 
           <div class="note">
 
@@ -181,7 +181,7 @@ You can stop a virtual machine (VM) from the web console.
 
     - To stay on this page, where you can perform actions on multiple VMs:
 
-      1.  Click the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) located at the far right end of the row and click **Stop VirtualMachine**.
+      1.  Click the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) located at the far right end of the row and click **Control** → **Stop VirtualMachine**.
 
       2.  If action confirmation is enabled, click **Stop** in the confirmation dialog.
 
@@ -189,7 +189,7 @@ You can stop a virtual machine (VM) from the web console.
 
       1.  Click the **\>** icon next to the project name to open the list of VMs.
 
-      2.  Right-click the name of the VM and select **Stop**.
+      2.  Right-click the name of the VM and select **Control** → **Stop**.
 
       3.  If action confirmation is enabled, click **Stop** in the confirmation dialog.
 
@@ -197,7 +197,7 @@ You can stop a virtual machine (VM) from the web console.
 
       1.  Access the **VirtualMachine details** page by clicking the name of the VM.
 
-      2.  Click **Actions** → **Stop**.
+      2.  Click **Actions** → **Control** → **Stop**.
 
       3.  If action confirmation is enabled, click **Stop** in the confirmation dialog.
 
@@ -206,6 +206,8 @@ You can stop a virtual machine (VM) from the web console.
 You can restart a running virtual machine (VM) from the web console.
 
 <div class="important">
+
+The **Restart** action shuts down the VM and starts a new pod. This action removes all related resources including the `virt-launcher` pod and recreates them.
 
 To avoid errors, do not restart a VM while it has a status of **Importing**.
 
@@ -219,7 +221,7 @@ To avoid errors, do not restart a VM while it has a status of **Importing**.
 
     - To stay on this page, where you can perform actions on multiple VMs:
 
-      1.  Click the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) located at the far right end of the row and click **Restart**.
+      1.  Click the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) located at the far right end of the row and click **Control** → **Restart**.
 
       2.  If action confirmation is enabled, click **Restart** in the confirmation dialog.
 
@@ -227,7 +229,7 @@ To avoid errors, do not restart a VM while it has a status of **Importing**.
 
       1.  Click the **\>** icon next to the project name to open the list of VMs.
 
-      2.  Right-click the name of the VM and select **Restart**.
+      2.  Right-click the name of the VM and select **Control** → **Restart**.
 
       3.  If action confirmation is enabled, click **Restart** in the confirmation dialog.
 
@@ -238,6 +240,40 @@ To avoid errors, do not restart a VM while it has a status of **Importing**.
       2.  Click **Actions** → **Restart**.
 
       3.  If action confirmation is enabled, click **Restart** in the confirmation dialog.
+
+# Resetting a virtual machine
+
+Unlike the **Restart** action, the **Reset** action preserves the pod in which the virtual machine (VM) is running and just hard resets the same VM inside it. When a VM is unresponsive or failed to boot, you can use the **Reset** action to bring it back immediately.
+
+You can reset a VM from the web console.
+
+1.  Click **Virtualization** → **VirtualMachines** from the side menu.
+
+2.  In the tree view, select the project that contains the VM that you want to restart.
+
+3.  Navigate to the appropriate menu for your use case:
+
+    - To stay on this page, where you can perform actions on multiple VMs:
+
+      1.  Click the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) located at the far right end of the row and click **Control** → **Reset**.
+
+      2.  If action confirmation is enabled, click **Reset** in the confirmation dialog.
+
+    - To reset the VM from the tree view:
+
+      1.  Click the **\>** icon next to the project name to open the list of VMs.
+
+      2.  Right-click the name of the VM and select **Control** → **Reset**.
+
+      3.  If action confirmation is enabled, click **Reset** in the confirmation dialog.
+
+    - To view comprehensive information about the selected VM before you reset it:
+
+      1.  Access the **VirtualMachine details** page by clicking the name of the virtual machine.
+
+      2.  Click **Actions** → **Control** → **Reset**.
+
+      3.  If action confirmation is enabled, click **Reset** in the confirmation dialog.
 
 # Pausing a virtual machine
 
@@ -251,7 +287,7 @@ You can pause a virtual machine (VM) from the web console.
 
     - To stay on this page, where you can perform actions on multiple VMs:
 
-      1.  Click the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) located at the far right end of the row and click **Pause VirtualMachine**.
+      1.  Click the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) located at the far right end of the row and click **Control** → **Pause VirtualMachine**.
 
       2.  If action confirmation is enabled, click **Pause** in the confirmation dialog.
 
@@ -259,7 +295,7 @@ You can pause a virtual machine (VM) from the web console.
 
       1.  Click the **\>** icon next to the project name to open the list of VMs.
 
-      2.  Right-click the name of the VM and select **Pause**.
+      2.  Right-click the name of the VM and select **Control** → **Pause**.
 
       3.  If action confirmation is enabled, click **Pause** in the confirmation dialog.
 
@@ -267,7 +303,7 @@ You can pause a virtual machine (VM) from the web console.
 
       1.  Access the **VirtualMachine details** page by clicking the name of the VM.
 
-      2.  Click **Actions** → **Pause**.
+      2.  Click **Actions** → **Control** → **Pause**.
 
       3.  If action confirmation is enabled, click **Pause** in the confirmation dialog.
 
@@ -285,19 +321,19 @@ You can unpause a paused virtual machine (VM) from the web console.
 
     - To stay on this page, where you can perform actions on multiple VMs:
 
-      1.  Click the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) located at the far right end of the row and click **Unpause VirtualMachine**.
+      1.  Click the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) located at the far right end of the row and click **Control** → **Unpause VirtualMachine**.
 
     - To unpause the VM from the tree view:
 
       1.  Click the **\>** icon next to the project name to open the list of VMs.
 
-      2.  Right-click the name of the VM and select **Unpause**.
+      2.  Right-click the name of the VM and select **Control** → **Unpause**.
 
     - To view comprehensive information about the selected VM before you unpause it:
 
       1.  Access the **VirtualMachine details** page by clicking the name of the virtual machine.
 
-      2.  Click **Actions** → **Unpause**.
+      2.  Click **Actions** → **Control** → **Unpause**.
 
 # Controlling the state of multiple virtual machines
 

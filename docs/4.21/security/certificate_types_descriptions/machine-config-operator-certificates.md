@@ -24,7 +24,7 @@ To ensure that the machine config server endpoints, ports 22623 and 22624, are s
 
 </div>
 
-- [Machine Config Operator](../../machine_configuration/index.xml#machine-config-operator_machine-config-overview).
+- [Machine Config Operator](../../machine_configuration/index.xml#machine-config-operator_machine-config-overview)
 
 - [About the OVN-Kubernetes network plugin](../../networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.xml#about-ovn-kubernetes)
 

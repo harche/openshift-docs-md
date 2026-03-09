@@ -10,7 +10,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 # Installing the eBPF Manager Operator using the CLI
 
-As a cluster administrator, you can install the Operator using the CLI.
+To manage eBPF programs across your cluster nodes, you can install the eBPF Manager Operator by using the OpenShift Container Platform CLI. This process involves creating a dedicated namespace and subscribing to the Operator to enable node-level networking and observability tools.
 
 - You have installed the OpenShift CLI (`oc`).
 

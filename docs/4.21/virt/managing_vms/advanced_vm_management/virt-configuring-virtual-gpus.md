@@ -1,10 +1,8 @@
-If you have graphics processing unit (GPU) cards, OpenShift Virtualization can automatically create virtual GPUs (vGPUs) that you can assign to virtual machines (VMs).
+Use the NVIDIA GPU operator to create virtual GPUs (vGPUs) and assign them to virtual machines (VMs) in OpenShift Virtualization.
 
 # About using virtual GPUs with OpenShift Virtualization
 
-Some graphics processing unit (GPU) cards support the creation of virtual GPUs (vGPUs). OpenShift Virtualization can automatically create vGPUs and other mediated devices if an administrator provides configuration details in the `HyperConverged` custom resource (CR).
-
-This automation is especially useful for large clusters.
+You can create vGPUs for your VMs using supported GPU cards. You can use the NVIDIA GPU Operator to manage the lifecycle and creation of these vGPUs on the cluster nodes. You must add these devices to the `HyperConverged` custom resource (CR) so that OpenShift Virtualization can discover and make them available to virtual machines.
 
 <div class="note">
 
@@ -221,64 +219,6 @@ For more information about MIG profiles, see the [MIG User Guide](https://docs.n
 
 - [Configuring PCI passthrough](../../../virt/managing_vms/advanced_vm_management/virt-configuring-pci-passthrough.xml#virt-configuring-pci-passthrough)
 
-# How vGPUs are assigned to nodes
-
-For each physical device, OpenShift Virtualization configures the following values:
-
-- A single mdev type.
-
-- The maximum number of instances of the selected `mdev` type.
-
-The cluster architecture affects how devices are created and assigned to nodes.
-
-Large cluster with multiple cards per node
-On nodes with multiple cards that can support similar vGPU types, the relevant device types are created in a round-robin manner. For example:
-
-``` yaml
-# ...
-mediatedDevicesConfiguration:
-  mediatedDeviceTypes:
-  - nvidia-222
-  - nvidia-228
-  - nvidia-105
-  - nvidia-108
-# ...
-```
-
-In this scenario, each node has two cards, both of which support the following vGPU types:
-
-``` yaml
-nvidia-105
-# ...
-nvidia-108
-nvidia-217
-nvidia-299
-# ...
-```
-
-On each node, OpenShift Virtualization creates the following vGPUs:
-
-- 16 vGPUs of type nvidia-105 on the first card.
-
-- 2 vGPUs of type nvidia-108 on the second card.
-
-One node has a single card that supports more than one requested vGPU type
-OpenShift Virtualization uses the supported type that comes first on the `mediatedDeviceTypes` list.
-
-For example, the card on a node card supports `nvidia-223` and `nvidia-224`. The following `mediatedDeviceTypes` list is configured:
-
-``` yaml
-# ...
-mediatedDevicesConfiguration:
-  mediatedDeviceTypes:
-  - nvidia-22
-  - nvidia-223
-  - nvidia-224
-# ...
-```
-
-In this example, OpenShift Virtualization uses the `nvidia-223` type.
-
 # Managing mediated devices
 
 Before you can assign mediated devices to virtual machines, you must create the devices and expose them to the cluster. You can also reconfigure and remove mediated devices.
@@ -354,9 +294,7 @@ As an administrator, you can create mediated devices and expose them to the clus
 
 3.  Create and expose the mediated devices by updating the configuration:
 
-    1.  Create mediated devices by adding them to the `spec.mediatedDevicesConfiguration` stanza.
-
-    2.  Expose the mediated devices to the cluster by adding the `mdevNameSelector` and `resourceName` values to the `spec.permittedHostDevices.mediatedDevices` stanza. The `resourceName` value is based on the `mdevNameSelector` value, but you use underscores instead of spaces.
+    1.  Expose the mediated devices to the cluster by adding the `mdevNameSelector` and `resourceName` values to the `spec.permittedHostDevices.mediatedDevices` stanza. The `resourceName` value is based on the `mdevNameSelector` value, but you use underscores instead of spaces.
 
         Example `HyperConverged` CR:
 
@@ -367,14 +305,6 @@ As an administrator, you can create mediated devices and expose them to the clus
           name: kubevirt-hyperconverged
           namespace: openshift-cnv
         spec:
-          mediatedDevicesConfiguration:
-            mediatedDeviceTypes:
-            - nvidia-745
-            nodeMediatedDeviceTypes:
-            - mediatedDeviceTypes:
-              - nvidia-746
-              nodeSelector:
-                kubernetes.io/hostname: node-11.redhat.com
           permittedHostDevices:
             mediatedDevices:
             - mdevNameSelector: NVIDIA A2-2Q
@@ -388,23 +318,14 @@ As an administrator, you can create mediated devices and expose them to the clus
 
         where:
 
-        `mediatedDeviceTypes`
-        Specifies global settings for the cluster and is required.
-
-        `nodeMediatedDeviceTypes`
-        Specifies global configuration overrides for a specific node or group of nodes and is optional. Must be used with the global `mediatedDeviceTypes` configuration.
-
-        `mediatedDeviceTypes`
-        Specifies an override to the global `mediatedDeviceTypes` configuration for the specified nodes. Required if you use `nodeMediatedDeviceTypes`.
-
-        `nodeSelector`
-        Specifies the node selector and must include a `key:value` pair. Required if you use `nodeMediatedDeviceTypes`.
-
         `mdevNameSelector`
         Specifies the mediated devices that map to this value on the host.
 
         `resourceName`
         Specifies the matching resource name that is allocated on the node.
+
+        `externalResourceProvider`
+        Specifies that the device is handled by an external provider, such as the NVIDIA GPU Operator.
 
 4.  Save your changes and exit the editor.
 
@@ -417,27 +338,9 @@ As an administrator, you can create mediated devices and expose them to the clus
     | with_entries(select(.value != "0"))'
   ```
 
-## About changing and removing mediated devices
-
-As an administrator, you can change or remove mediated devices by editing the `HyperConverged` custom resource (CR).
-
-You can reconfigure or remove mediated devices in several ways:
-
-- Edit the `HyperConverged` CR and change the contents of the `mediatedDeviceTypes` stanza.
-
-- Change the node labels that match the `nodeMediatedDeviceTypes` node selector.
-
-- Remove the device information from the `spec.mediatedDevicesConfiguration` and `spec.permittedHostDevices` stanzas of the `HyperConverged` CR.
-
-  <div class="note">
-
-  If you remove the device information from the `spec.permittedHostDevices` stanza without also removing it from the `spec.mediatedDevicesConfiguration` stanza, you cannot create a new mediated device type on the same node. To properly remove mediated devices, remove the device information from both stanzas.
-
-  </div>
-
 ## Removing mediated devices from the cluster
 
-To remove a mediated device from the cluster, delete the information for that device from the `HyperConverged` custom resource (CR).
+As a cluster administrator you can remove mediated devices from the cluster so that you can reallocate GPU hardware. To remove a mediated device from the cluster, delete the information for that device from the `HyperConverged` CR.
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -447,7 +350,7 @@ To remove a mediated device from the cluster, delete the information for that de
     $ oc edit hyperconverged kubevirt-hyperconverged -n openshift-cnv
     ```
 
-2.  Remove the device information from the `spec.mediatedDevicesConfiguration` and `spec.permittedHostDevices` stanzas of the `HyperConverged` CR. Removing both entries ensures that you can later create a new mediated device type on the same node. For example:
+2.  Remove the device information from the `spec.permittedHostDevices` stanza of the `HyperConverged` CR. For example:
 
     ``` yaml
     apiVersion: hco.kubevirt.io/v1
@@ -456,16 +359,12 @@ To remove a mediated device from the cluster, delete the information for that de
       name: kubevirt-hyperconverged
       namespace: openshift-cnv
     spec:
-      mediatedDevicesConfiguration:
-        mediatedDeviceTypes:
-          - nvidia-231
       permittedHostDevices:
         mediatedDevices:
         - mdevNameSelector: GRID T4-2Q
           resourceName: nvidia.com/GRID_T4-2Q
+          externalResourceProvider: true
     ```
-
-    - To remove the `nvidia-231` device type, delete it from the `mediatedDeviceTypes` array.
 
     - To remove the `GRID T4-2Q` device, delete the `mdevNameSelector` field and its corresponding `resourceName` field.
 

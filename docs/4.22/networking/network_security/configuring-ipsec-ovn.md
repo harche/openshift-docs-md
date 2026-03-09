@@ -605,7 +605,7 @@ As a cluster administrator, you can disable IPsec encryption.
 
 # Additional resources
 
-- [Configuring a VPN with IPsec](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/configuring_and_managing_networking/setting-up-an-ipsec-vpn) in Red Hat Enterprise Linux (RHEL) 10
+- [Configuring a VPN with IPsec](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/configuring_and_managing_networking/setting-up-an-ipsec-vpn)
 
 - [Installing Butane](../../installing/install_config/installing-customizing.xml#installation-special-config-butane-install_installing-customizing)
 
@@ -613,4 +613,4 @@ As a cluster administrator, you can disable IPsec encryption.
 
 - [Changing the MTU for the cluster network](../../networking/advanced_networking/changing-cluster-network-mtu.xml#changing-cluster-network-mtu)
 
-- [Network \[operator.openshift.io/v1\]](../../rest_api/operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1)API
+- [Network \[operator.openshift.io/v1\] API](../../rest_api/operator_apis/network-operator-openshift-io-v1.xml#network-operator-openshift-io-v1)

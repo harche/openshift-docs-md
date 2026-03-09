@@ -216,11 +216,7 @@ You can configure the project to run DPDK workloads on SR-IOV hardware.
 
     - The value of the `spec.resourceName` attribute of the `SriovNetworkNodePolicy` object that was created when configuring the cluster for DPDK workloads.
 
-3.  Optional: Run the virtual machine latency checkup to verify that the network is properly configured.
-
 - [Working with projects](../../applications/projects/working-with-projects.xml#working-with-projects)
-
-- [Virtual machine latency checkup](../../virt/monitoring/virt-latency-checkups.xml#virt-measuring-latency-vm-secondary-network_virt-latency-checkups)
 
 # Configuring a virtual machine for DPDK workloads
 

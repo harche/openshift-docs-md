@@ -1,30 +1,28 @@
-Learn about NUMA-aware scheduling and how you can use it to deploy high performance workloads in an OpenShift Container Platform cluster.
+To deploy high performance workloads with optimal efficiency, use NUMA-aware scheduling. This feature aligns pods with the underlying hardware topology in your OpenShift Container Platform cluster, minimizing latency and maximizing resource utilization.
 
-The NUMA Resources Operator allows you to schedule high-performance workloads in the same NUMA zone. It deploys a node resources exporting agent that reports on available cluster node NUMA resources, and a secondary scheduler that manages the workloads.
+By using the NUMA Resources Operator, you can schedule high-performance workloads in the same NUMA zone. The Operator deploys a node resources exporting agent that reports on available cluster node NUMA resources, and a secondary scheduler that manages the workloads.
 
 # About NUMA
 
-Non-uniform memory access (NUMA) architecture is a multiprocessor architecture model where CPUs do not access all memory in all locations at the same speed. Instead, CPUs can gain faster access to memory that is in closer proximity to them, or *local* to them, but slower access to memory that is further away.
+To reduce latency in multiprocessor systems, Non-Uniform Memory Access (NUMA) architecture allows CPUs to access local memory faster than remote memory. This design optimizes performance by prioritizing memory resources that are physically closer to the processor.
 
 A CPU with multiple memory controllers can use any available memory across CPU complexes, regardless of where the memory is located. However, this increased flexibility comes at the expense of performance.
 
-*NUMA resource topology* refers to the physical locations of CPUs, memory, and PCI devices relative to each other in a *NUMA zone*. In a NUMA architecture, a NUMA zone is a group of CPUs that has its own processors and memory. Colocated resources are said to be in the same NUMA zone, and CPUs in a zone have faster access to the same local memory than CPUs outside of that zone. A CPU processing a workload using memory that is outside its NUMA zone is slower than a workload processed in a single NUMA zone. For I/O-constrained workloads, the network interface on a distant NUMA zone slows down how quickly information can reach the application.
+*NUMA resource topology* refers to the physical locations of CPUs, memory, and PCI devices relative to each other in a *NUMA zone*. In a NUMA architecture, a NUMA zone is a group of CPUs that has its own processors and memory. Colocated resources are said to be in the same NUMA zone, and CPUs in a zone have faster access to the same local memory than CPUs outside of that zone.
+
+A CPU processing a workload using memory that is outside its NUMA zone is slower than a workload processed in a single NUMA zone. For I/O-constrained workloads, the network interface on a distant NUMA zone slows down how quickly information can reach the application.
 
 Applications can achieve better performance by containing data and processing within the same NUMA zone. For high-performance workloads and applications, such as telecommunications workloads, the cluster must process pod workloads in a single NUMA zone so that the workload can operate to specification.
 
 # About NUMA-aware scheduling
 
-NUMA-aware scheduling aligns the requested cluster compute resources (CPUs, memory, devices) in the same NUMA zone to process latency-sensitive or high-performance workloads efficiently. NUMA-aware scheduling also improves pod density per compute node for greater resource efficiency.
+To process latency-sensitive or high-performance workloads efficiently, use NUMA-aware scheduling. This feature aligns cluster compute resources, such as CPUs, memory, and devices, in the same NUMA zone, optimizing resource efficiency and improving pod density per compute node.
 
-## Integration with Node Tuning Operator
+By integrating the performance profile of the Node Tuning Operator with NUMA-aware scheduling, you can further configure CPU affinity to optimize performance for latency-sensitive workloads.
 
-By integrating the Node Tuning Operator’s performance profile with NUMA-aware scheduling, you can further configure CPU affinity to optimize performance for latency-sensitive workloads.
+The default OpenShift Container Platform pod scheduler scheduling logic considers the available resources of the entire compute node, not individual NUMA zones. If the most restrictive resource alignment is requested in the kubelet topology manager, error conditions can occur when admitting the pod to a node.
 
-## Default scheduling logic
-
-The default OpenShift Container Platform pod scheduler scheduling logic considers the available resources of the entire compute node, not individual NUMA zones. If the most restrictive resource alignment is requested in the kubelet topology manager, error conditions can occur when admitting the pod to a node. Conversely, if the most restrictive resource alignment is not requested, the pod can be admitted to the node without proper resource alignment, leading to worse or unpredictable performance. For example, runaway pod creation with `Topology Affinity Error` statuses can occur when the pod scheduler makes suboptimal scheduling decisions for guaranteed pod workloads without knowing if the pod’s requested resources are available. Scheduling mismatch decisions can cause indefinite pod startup delays. Also, depending on the cluster state and resource allocation, poor pod scheduling decisions can cause extra load on the cluster because of failed startup attempts.
-
-## NUMA-aware pod scheduling diagram
+Conversely, if the most restrictive resource alignment is not requested, the pod can be admitted to the node without proper resource alignment, leading to worse or unpredictable performance. For example, runaway pod creation with `Topology Affinity Error` statuses can occur when the pod scheduler makes suboptimal scheduling decisions for guaranteed pod workloads without knowing if the pod’s requested resources are available. Scheduling mismatch decisions can cause indefinite pod startup delays. Also, depending on the cluster state and resource allocation, poor pod scheduling decisions can cause extra load on the cluster because of failed startup attempts.
 
 The NUMA Resources Operator deploys a custom NUMA resources secondary scheduler and other resources to mitigate against the shortcomings of the default OpenShift Container Platform pod scheduler. The following diagram provides a high-level overview of NUMA-aware pod scheduling.
 
@@ -55,27 +53,25 @@ The `GetAllocatableResources` endpoint exposes allocatable resources available o
 
 # NUMA resource scheduling strategies
 
-The secondary scheduler optimizes the placement of high-performance workloads by using NUMA-aware scoring strategies to select the most suitable worker nodes. This process assigns workloads to nodes with sufficient resources while allowing local node managers to handle final resource pinning.
+To optimize the placement of high-performance workloads, the secondary scheduler uses NUMA-aware scoring strategies to select the most suitable compute nodes. This process assigns workloads based on resource availability while allowing local node managers to handle final resource pinning.
 
-When scheduling high-performance workloads, the secondary scheduler determines which worker node is best suited for the task based on its internal NUMA resource distribution. While the scheduler uses NUMA-level data to score and select a worker node, the actual resource pinning within that node is managed by the local Topology Manager and CPU Manager.
+When scheduling high-performance workloads, the secondary scheduler determines which compute node is best suited for the task based on its internal NUMA resource distribution. While the scheduler uses NUMA-level data to score and select a compute node, the actual resource pinning within that node is managed by the local Topology Manager and CPU Manager.
 
 When a high-performance workload is scheduled in a NUMA-aware cluster, the following steps occur:
 
-1.  **Node filtering**: The scheduler first filters the entire cluster to find a shortlist of *feasible* nodes. A node is only kept if it meets all requirements, such as matching labels, respecting taints and tolerations, and, importantly, having sufficient available resources within its specific NUMA zones. If a node cannot satisfy the workload’s NUMA affinity, it is filtered out at this stage.
+1.  **Node filtering**: The scheduler first filters the entire cluster to find a shortlist of *feasible* nodes. A node is only kept if the node meets all requirements, such as matching labels, respecting taints and tolerations, and, importantly, having sufficient available resources within its specific NUMA zones. If a node cannot satisfy the NUMA affinity of the workload, the node is filtered out at this stage.
 
-2.  **Node selection**: Once a shortlist of suitable nodes is established, the scheduler evaluates them to find the best fit. It applies a NUMA-aware scoring strategy to rank these candidates based on their resource distribution. The node with the highest score is then selected for the workload.
+2.  **Node selection**: When a shortlist of suitable nodes is established, the scheduler evaluates them to find the best fit. The scheduler applies a NUMA-aware scoring strategy to rank these candidates based on their resource distribution. The node with the highest score is then selected for the workload.
 
-3.  **Local Allocation**: Once the pod is assigned to a worker node, the node-level components (CPU, memory, device, and topology managers) perform the authoritative allocation of specific CPUs and memory. The scheduler does not influence this final selection.
+3.  **Local Allocation**: When the pod is assigned to a compute node, the node-level components (CPU, memory, device, and topology managers) perform the authoritative allocation of specific CPUs and memory. The scheduler does not influence this final selection.
 
 The following table summarizes the different OpenShift Container Platform strategies and their outcomes:
 
-**Scoring strategy summary**
-
-| Strategy             | Description                                                                                             | Outcome                                                                                                                        |
-|----------------------|---------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
-| `LeastAllocated`     | Favors worker nodes that contain NUMA zones with the most available resources.                          | Distributes workloads across the cluster to nodes with the highest available headroom.                                         |
-| `MostAllocated`      | Favors worker nodes where the requested resources fit into NUMA zones that are already highly utilized. | Consolidates workloads on already utilized nodes, potentially leaving other nodes idle.                                        |
-| `BalancedAllocation` | Favors worker nodes with the most balanced CPU and memory usage across NUMA zones.                      | Prevents skewed usage patterns where one resource type, such as CPU, is exhausted while another, such as memory, remains idle. |
+| Strategy             | Description                                                                                              | Outcome                                                                                                                        |
+|----------------------|----------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| `LeastAllocated`     | Favors compute nodes that contain NUMA zones with the most available resources.                          | Distributes workloads across the cluster to nodes with the highest available headroom.                                         |
+| `MostAllocated`      | Favors compute nodes where the requested resources fit into NUMA zones that are already highly utilized. | Consolidates workloads on already utilized nodes, potentially leaving other nodes idle.                                        |
+| `BalancedAllocation` | Favors compute nodes with the most balanced CPU and memory usage across NUMA zones.                      | Prevents skewed usage patterns where one resource type, such as CPU, is exhausted while another, such as memory, remains idle. |
 
 Scoring strategy summary
 
@@ -89,11 +85,11 @@ NUMA Resources Operator deploys resources that allow you to schedule NUMA-aware 
 
 ## Installing the NUMA Resources Operator using the CLI
 
-As a cluster administrator, you can install the Operator using the CLI.
+To enable NUMA-aware scheduling for high-performance workloads, install the NUMA Resources Operator by using the OpenShift CLI (`oc`). As a cluster administrator, you can deploy the Operator efficiently without using the web console.
 
-- Install the OpenShift CLI (`oc`).
+- Installed the OpenShift CLI (`oc`).
 
-- Log in as a user with `cluster-admin` privileges.
+- Logged in as a user with `cluster-admin` privileges.
 
 1.  Create a namespace for the NUMA Resources Operator:
 
@@ -104,6 +100,7 @@ As a cluster administrator, you can install the Operator using the CLI.
         kind: Namespace
         metadata:
           name: openshift-numaresources
+        # ...
         ```
 
     2.  Create the `Namespace` CR by running the following command:
@@ -125,6 +122,7 @@ As a cluster administrator, you can install the Operator using the CLI.
         spec:
           targetNamespaces:
           - openshift-numaresources
+        # ...
         ```
 
     2.  Create the `OperatorGroup` CR by running the following command:
@@ -148,6 +146,7 @@ As a cluster administrator, you can install the Operator using the CLI.
           name: numaresources-operator
           source: redhat-operators
           sourceNamespace: openshift-marketplace
+        # ...
         ```
 
     2.  Create the `Subscription` CR by running the following command:
@@ -177,7 +176,7 @@ As a cluster administrator, you can install the Operator using the CLI.
 
 ## Installing the NUMA Resources Operator using the web console
 
-As a cluster administrator, you can install the NUMA Resources Operator using the web console.
+To enable NUMA-aware scheduling for high-performance workloads, install the NUMA Resources Operator by using the web console. As a cluster administrator, you can deploy the Operator through the graphical interface.
 
 1.  Create a namespace for the NUMA Resources Operator:
 
@@ -213,17 +212,19 @@ As a cluster administrator, you can install the NUMA Resources Operator using th
 
 # Configuring a single NUMA node policy
 
-The NUMA Resources Operator requires a single NUMA node policy to be configured on the cluster. This can be achieved in two ways: by creating and applying a performance profile, or by configuring a KubeletConfig.
+To enable the NUMA Resources Operator, configure a single NUMA node policy on your cluster. You can implement this policy by creating a performance profile or by configuring a `KubeletConfig` custom resource (CR).
 
 <div class="note">
 
-The preferred way to configure a single NUMA node policy is to apply a performance profile. You can use the Performance Profile Creator (PPC) tool to create the performance profile. If a performance profile is created on the cluster, it automatically creates other tuning components like `KubeletConfig` and the `tuned` profile.
+The preferred way to configure a single NUMA node policy is to apply a performance profile. You can use the Performance Profile Creator (PPC) tool to create the performance profile. If a performance profile is created on the cluster, the PPC tool automatically creates other tuning components like `KubeletConfig` and the `tuned` profile.
 
 </div>
 
 For more information about creating a performance profile, see "About the Performance Profile Creator" in the "Additional resources" section.
 
 ## Managing high availability (HA) for the NUMA-aware scheduler
+
+To ensure high availability for the NUMA-aware secondary scheduler, the NUMA Resources Operator automatically creates scheduler replicas on control plane nodes. The Operator manages this configuration by using the `spec.replicas` field in the `NUMAResourcesScheduler` custom resource (CR).
 
 <div class="important">
 
@@ -233,9 +234,9 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 </div>
 
-The NUMA Resources Operator manages the high availability of the NUMA-aware secondary scheduler based on the `spec.replicas` field in the `NUMAResourcesScheduler` custom resource (CR). By default, the NUMA Resources Operator automatically enables HA mode by creating one scheduler replica for each control plane node, with a maximum of three replicas.
+By default, the NUMA Resources Operator automatically enables HA mode by creating one scheduler replica for each control plane node, with a maximum of three replicas.
 
-The following manifest demonstrates this default behavior. To automatically enable replica detection, omit the `replicas` field.
+The following manifest demonstrates the default behavior. To automatically enable replica detection, omit the `replicas` field.
 
 ``` yaml
 apiVersion: nodetopology.openshift.io/v1
@@ -255,7 +256,7 @@ You can control scheduler behavior by using one of the following options:
 
 ### Customizing scheduler replicas
 
-Set a specific number of scheduler replicas by updating the `spec.replicas` field in the `NUMAResourcesScheduler` custom resource. This overrides the default HA behavior.
+You can set a specific number of scheduler replicas by updating the `spec.replicas` field in the `NUMAResourcesScheduler` custom resource. This configuration overrides the default HA behavior.
 
 1.  Create the `NUMAResourcesScheduler` CR with the following YAML named for example `custom-ha.yaml` that sets the number of replicas to 2:
 
@@ -267,6 +268,7 @@ Set a specific number of scheduler replicas by updating the `spec.replicas` fiel
     spec:
       imageSpec: 'registry.redhat.io/openshift4/noderesourcetopology-scheduler-rhel9:v4.17'
       replicas: 2
+    # ...
     ```
 
 2.  Deploy the NUMA-aware pod scheduler by running the following command:
@@ -277,7 +279,7 @@ Set a specific number of scheduler replicas by updating the `spec.replicas` fiel
 
 ### Disabling NUMA-aware scheduling
 
-Disable the NUMA-aware scheduler, stopping all running scheduler pods and preventing new ones from starting.
+You can disable the NUMA-aware scheduler to stop all running scheduler pods and preventing new ones from starting.
 
 1.  Save the following minimal required YAML in the `nro-disable-scheduler.yaml` file. Disable the scheduler by setting the `spec.replicas` field to `0`.
 
@@ -289,6 +291,7 @@ Disable the NUMA-aware scheduler, stopping all running scheduler pods and preven
     spec:
       imageSpec: 'registry.redhat.io/openshift4/noderesourcetopology-scheduler-rhel9:v4.17'
       replicas: 0
+    # ...
     ```
 
 2.  Disable the NUMA-aware pod scheduler by running the following command:
@@ -299,7 +302,7 @@ Disable the NUMA-aware scheduler, stopping all running scheduler pods and preven
 
 ### Verifying scheduler high availability (HA) status
 
-Verify the status of the NUMA-aware scheduler to ensure it is running with the expected number of replicas based on your configuration.
+You can verify the status of the NUMA-aware scheduler to ensure the scheduler is running with the expected number of replicas based on your configuration.
 
 1.  List only the scheduler pods by running the following command:
 
@@ -313,8 +316,6 @@ Verify the status of the NUMA-aware scheduler to ensure it is running with the e
 
     </div>
 
-    Using the default HA mode, the number of pods equals the number of control-plane nodes. A standard HA OpenShift Container Platform cluster typically has three control-plane nodes, and therefore displays three pods:
-
     ``` terminal
     NAME                                   READY   STATUS    RESTARTS   AGE
     secondary-scheduler-5b8c9d479d-2r4p5   1/1     Running   0          5m
@@ -322,15 +323,13 @@ Verify the status of the NUMA-aware scheduler to ensure it is running with the e
     secondary-scheduler-5b8c9d479d-q8c7b   1/1     Running   0          5m
     ```
 
-    - If you **customized the replicas**, the number of pods matches the value you set.
+    Using the default HA mode, the number of pods equals the number of control-plane nodes. A standard HA OpenShift Container Platform cluster typically has three control-plane nodes, and therefore displays three pods. If you **customized the replicas**, the number of pods matches the value you set. If you **disabled the scheduler**, there are no running pods with this label.
 
-    - If you **disabled the scheduler**, there are no running pods with this label.
+    <div class="note">
 
-      <div class="note">
+    A limit of 3 replicas is enforced for the NUMA-aware scheduler. On a hosted control planes cluster, the scheduler pods run on the compute nodes of the hosted-cluster.
 
-      A limit of 3 replicas is enforced for the NUMA-aware scheduler. On a hosted control planes cluster, the scheduler pods run on the worker nodes of the hosted-cluster.
-
-      </div>
+    </div>
 
 2.  Verify the number of replicas and their status by running the following command:
 
@@ -363,11 +362,11 @@ Verify the status of the NUMA-aware scheduler to ensure it is running with the e
 
     </div>
 
-    The `Replicas` line shows a deployment configured for 3 replicas, with all 3 updated and available.
-
     ``` yaml
     Replicas:        3 desired | 3 updated | 3 total | 3 available | 0 unavailable
     ```
+
+    The `Replicas` line shows a deployment configured for 3 replicas, with all 3 updated and available.
 
 - [Configuring image registry repository mirroring](../disconnected/updating/disconnected-update.xml#images-configuration-registry-mirror-configuring_updating-disconnected-cluster)
 
@@ -375,7 +374,7 @@ Verify the status of the NUMA-aware scheduler to ensure it is running with the e
 
 ## Sample performance profile
 
-This example YAML shows a performance profile created by using the performance profile creator (PPC) tool:
+Reference an example YAML to understand how to use the performance profile creator (PPC) tool to create a performance profile.
 
 ``` yaml
 apiVersion: performance.openshift.io/v2
@@ -400,19 +399,23 @@ spec:
     realTime: true
 ```
 
-- This value must match the `MachineConfigPool` value that you want to configure the NUMA Resources Operator on. For example, you might create a `MachineConfigPool` object named `worker-cnf` that designates a set of nodes that run telecommunications workloads. The value for `MachineConfigPool` must match the `machineConfigPoolSelector` value in the `NUMAResourcesOperator` CR that you configure later in "Creating the NUMAResourcesOperator custom resource".
+where:
 
-- Ensure that the `topologyPolicy` field is set to `single-numa-node` by setting the `topology-manager-policy` argument to `single-numa-node` when you run the PPC tool.
+`spec.pools.operator.machineconfiguration.openshift.io/worker`
+Specifies the value that must match the `MachineConfigPool` value that you want to configure the NUMA Resources Operator on. For example, you might create a `MachineConfigPool` object named `worker-cnf` that designates a set of nodes that run telecommunications workloads. The value for `MachineConfigPool` must match the `machineConfigPoolSelector` value in the `NUMAResourcesOperator` CR that you configure later in "Creating the NUMAResourcesOperator custom resource".
 
-  <div class="note">
+`spec.numa.topologyPolicy`
+Specifies that the `topologyPolicy` field is set to `single-numa-node` by setting the `topology-manager-policy` argument to `single-numa-node` when you run the PPC tool.
 
-  For hosted control plane clusters, the `machineConfigPoolSelector` does not have any functional effect. Node association is instead determined by the specified `NodePool` object.
+<div class="note">
 
-  </div>
+For hosted control plane clusters, the `machineConfigPoolSelector` does not have any functional effect. Node association is instead determined by the specified `NodePool` object.
+
+</div>
 
 ## Creating a KubeletConfig CR
 
-The recommended way to configure a single NUMA node policy is to apply a performance profile. Another way is by creating and applying a `KubeletConfig` custom resource (CR), as shown in the following procedure.
+To configure a single NUMA node policy, create and apply a KubeletConfig custom resource (CR). While applying a performance profile is recommended, you can use the alternative method to manually manage the configuration on your cluster.
 
 1.  Create the `KubeletConfig` custom resource (CR) that configures the pod admittance policy for the machine profile:
 
@@ -445,21 +448,28 @@ The recommended way to configure a single NUMA node policy is to apply a perform
             topologyManagerPolicy: "single-numa-node"
         ```
 
-        - Ensure that this label matches the `machineConfigPoolSelector` setting in the `NUMAResourcesOperator` CR that you configure later in "Creating the NUMAResourcesOperator custom resource".
+        where:
 
-        - For `cpuManagerPolicy`, `static` must use a lowercase `s`.
+        `spec.machineConfigPoolSelector.matchLabels.pools.operator.machineconfiguration.openshift.io/worker`
+        Specifies that this label matches the `machineConfigPoolSelector` setting in the `NUMAResourcesOperator` CR that you configure later in "Creating the NUMAResourcesOperator custom resource".
 
-        - Adjust this based on the CPU on your nodes.
+        `spec.kubeletConfig.cpuManagerPolicy`
+        Specifies the `static` value. You must use a lowercase `s`.
 
-        - For `memoryManagerPolicy`, `Static` must use an uppercase `S`.
+        `spec.kubeletConfig.reservedSystemCPUs`
+        Adjust the field based on the CPU on your nodes.
 
-        - `topologyManagerPolicy` must be set to `single-numa-node`.
+        `spec.kubeletConfig.memoryManagerPolicy`
+        Specifies `Static`. You must use an uppercase `S`.
 
-          <div class="note">
+        `spec.kubeletConfig.topologyManagerPolicy`
+        Specifies the value as `single-numa-node`.
 
-          For hosted control plane clusters, the `machineConfigPoolSelector` setting does not have any functional effect. Node association is instead determined by the specified `NodePool` object. To apply a `KubeletConfig` for hosted control plane clusters, you must create a `ConfigMap` that contains the configuration, and then reference that `ConfigMap` within the `spec.config` field of a `NodePool`.
+        <div class="note">
 
-          </div>
+        For hosted control plane clusters, the `machineConfigPoolSelector` setting does not have any functional effect. Node association is instead determined by the specified `NodePool` object. To apply a `KubeletConfig` for hosted control plane clusters, you must create a `ConfigMap` that contains the configuration, and then reference that `ConfigMap` within the `spec.config` field of a `NodePool`.
+
+        </div>
 
     2.  Create the `KubeletConfig` CR by running the following command:
 
@@ -475,19 +485,21 @@ The recommended way to configure a single NUMA node policy is to apply a perform
 
 # Scheduling NUMA-aware workloads
 
+To process latency-sensitive and high-performance workloads efficiently, configure your OpenShift Container Platform cluster for NUMA-aware scheduling. This process aligns pods with specific NUMA zones to minimize network delays and maximize compute resource utilization.
+
 Clusters running latency-sensitive workloads typically feature performance profiles that help to minimize workload latency and optimize performance. The NUMA-aware scheduler deploys workloads based on available node NUMA resources and with respect to any performance profile settings applied to the node. The combination of NUMA-aware deployments, and the performance profile of the workload, ensures that workloads are scheduled in a way that maximizes performance.
 
 For the NUMA Resources Operator to be fully operational, you must deploy the `NUMAResourcesOperator` custom resource and the NUMA-aware secondary pod scheduler.
 
 ## Creating the NUMAResourcesOperator custom resource
 
-When you have installed the NUMA Resources Operator, then create the `NUMAResourcesOperator` custom resource (CR) that instructs the NUMA Resources Operator to install all the cluster infrastructure needed to support the NUMA-aware scheduler, including daemon sets and APIs.
+After you have installed the NUMA Resources Operator, you can create the `NUMAResourcesOperator` custom resource (CR). This CR instructs the NUMA Resources Operator to install all the cluster infrastructure that is needed to support the NUMA-aware scheduler, including daemon sets and APIs.
 
-- Install the OpenShift CLI (`oc`).
+- Installed the OpenShift CLI (`oc`).
 
-- Log in as a user with `cluster-admin` privileges.
+- Logged in as a user with `cluster-admin` privileges.
 
-- Install the NUMA Resources Operator.
+- Installed the NUMA Resources Operator.
 
 1.  Create the `NUMAResourcesOperator` custom resource:
 
@@ -503,9 +515,10 @@ When you have installed the NUMA Resources Operator, then create the `NUMAResour
           - machineConfigPoolSelector:
               matchLabels:
                 pools.operator.machineconfiguration.openshift.io/worker: ""
+        # ...
         ```
 
-        - This must match the `MachineConfigPool` resource that you want to configure the NUMA Resources Operator on. For example, you might have created a `MachineConfigPool` resource named `worker-cnf` that designates a set of nodes expected to run telecommunications workloads. Each `NodeGroup` must match exactly one `MachineConfigPool`. Configurations where `NodeGroup` matches more than one `MachineConfigPool` are not supported.
+        `pools.operator.machineconfiguration.openshift.io/worker`: Specifies a value that must match the `MachineConfigPool` resource that you want to configure the NUMA Resources Operator on. For example, you might have created a `MachineConfigPool` resource named `worker-cnf` that designates a set of nodes expected to run telecommunications workloads. When configuring the `nodeGroups` spec, ensure that each `MachineConfigPool` resource you reference targets nodes with a unique `nodeSelector` label. This `nodeSelector` label should be applied exclusively to that specific node set. A node you want to manage with topology-aware scheduling must be associated with a single `MachineConfigPool` resource. Consequently, each `nodeGroup` should match exactly one `MachineConfigPool` resource, as configurations matching multiple pools are not supported.
 
     2.  Create the `NUMAResourcesOperator` CR by running the following command:
 
@@ -538,6 +551,7 @@ When you have installed the NUMA Resources Operator, then create the `NUMAResour
         - machineConfigPoolSelector:
             matchLabels:
               machineconfiguration.openshift.io/role: worker-other
+    # ...
     ```
 
 <!-- -->
@@ -591,11 +605,11 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 </div>
 
-- Install the OpenShift CLI (`oc`).
+- Installed the OpenShift CLI (`oc`).
 
-- Log in as a user with `cluster-admin` privileges.
+- Logged in as a user with `cluster-admin` privileges.
 
-- Install the NUMA Resources Operator.
+- Installed the NUMA Resources Operator.
 
 1.  Export the management cluster kubeconfig file by running the following command:
 
@@ -632,9 +646,10 @@ For more information about the support scope of Red Hat Technology Preview featu
     spec:
       nodeGroups:
       - poolName: democluster-us-east-1a
+    # ...
     ```
 
-    - The `poolName` is the `node-pool-name` retrieved in step 2.
+    - `spec.nodeGroups.poolName`: Specifies the `poolName`. The example shows the `node-pool-name` pool name that was retrieved from a previous step.
 
 4.  On the management cluster, run the following command to list the available secrets:
 
@@ -730,7 +745,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 ## Deploying the NUMA-aware secondary pod scheduler
 
-After you install the NUMA Resources Operator, follow this procedure to deploy the NUMA-aware secondary pod scheduler.
+To optimize the placement of high-performance workloads, deploy the NUMA-aware secondary pod scheduler. This component aligns pods with specific NUMA zones to ensure efficient resource utilization in your cluster.
 
 1.  Create the `NUMAResourcesScheduler` custom resource that deploys the NUMA-aware custom pod scheduler:
 
@@ -743,15 +758,16 @@ After you install the NUMA Resources Operator, follow this procedure to deploy t
           name: numaresourcesscheduler
         spec:
           imageSpec: "registry.redhat.io/openshift4/noderesourcetopology-scheduler-rhel9:v4.17"
+        # ...
         ```
 
-        - In a disconnected environment, make sure to configure the resolution of this image by either:
+        - `spec.imageSpec`: In a disconnected environment, make sure to configure the resolution of this image by either:
 
-          - Creating an `ImageTagMirrorSet` custom resource (CR). For more information, see "Configuring image registry repository mirroring" in the "Additional resources" section.
+    2.  Create an `ImageTagMirrorSet` custom resource (CR). For more information, see "Configuring image registry repository mirroring" in the "Additional resources" section.
 
-          - Setting the URL to the disconnected registry.
+    3.  Set the URL to the disconnected registry.
 
-    2.  Create the `NUMAResourcesScheduler` CR by running the following command:
+    4.  Create the `NUMAResourcesScheduler` CR by running the following command:
 
         ``` terminal
         $ oc create -f nro-scheduler.yaml
@@ -795,15 +811,19 @@ After you install the NUMA Resources Operator, follow this procedure to deploy t
     replicaset.apps/secondary-scheduler-847cb74f84                1         1         1       10m
     ```
 
+- [Configuring image registry repository mirroring](../disconnected/updating/disconnected-update.xml#images-configuration-registry-mirror_updating-disconnected-cluster)
+
 ## Scheduling workloads with the NUMA-aware scheduler
 
-Now that `topo-aware-scheduler` is installed, the `NUMAResourcesOperator` and `NUMAResourcesScheduler` CRs are applied and your cluster has a matching performance profile or `kubeletconfig`, you can schedule workloads with the NUMA-aware scheduler using deployment CRs that specify the minimum required resources to process the workload.
+To schedule workloads with the NUMA-aware scheduler, use deployment CRs that specify the minimum required resources. This ensures your cluster processes the workloads efficiently.
 
-The following example deployment uses NUMA-aware scheduling for a sample workload.
+Before you schedule workloads with the NUMA-aware scheduler, ensure that you previouslu installed the `topo-aware-scheduler`, you applied the `NUMAResourcesOperator` and `NUMAResourcesScheduler` CRs, and that your cluster has a matching performance profile or `kubeletconfig`.
 
-- Install the OpenShift CLI (`oc`).
+The example in the procedure uses NUMA-aware scheduling for a sample workload.
 
-- Log in as a user with `cluster-admin` privileges.
+- Installed the OpenShift CLI (`oc`).
+
+- Logged in as a user with `cluster-admin` privileges.
 
 1.  Get the name of the NUMA-aware scheduler that is deployed in the cluster by running the following command:
 
@@ -867,7 +887,7 @@ The following example deployment uses NUMA-aware scheduling for a sample workloa
                     cpu: "8"
         ```
 
-        - `schedulerName` must match the name of the NUMA-aware scheduler that is deployed in your cluster, for example `topo-aware-scheduler`.
+        `spec.schedulerName`: Specifies the scheduler name that must match the name of the NUMA-aware scheduler that is deployed in your cluster, such as `topo-aware-scheduler`.
 
     2.  Create the `Deployment` CR by running the following command:
 
@@ -985,9 +1005,7 @@ The following example deployment uses NUMA-aware scheduling for a sample workloa
           Type:           Node
         ```
 
-        - The `Available` capacity is reduced because of the resources that have been allocated to the guaranteed pod.
-
-          Resources consumed by guaranteed pods are subtracted from the available node resources listed under `noderesourcetopologies.topology.node.k8s.io`.
+        `Resources.Available`: Specifies the `Available` capacity that is reduced because of the resources that have been allocated to the guaranteed pod. Resources consumed by guaranteed pods are subtracted from the available node resources listed under `noderesourcetopologies.topology.node.k8s.io`.
 
 4.  Resource allocations for pods with a `Best-effort` or `Burstable` quality of service (`qosClass`) are not reflected in the NUMA node resources under `noderesourcetopologies.topology.node.k8s.io`. If a pod’s consumed resources are not reflected in the node resource calculation, verify that the pod has `qosClass` of `Guaranteed` and the CPU request is an integer value, not a decimal value. You can verify the that the pod has a `qosClass` of `Guaranteed` by running the following command:
 
@@ -1007,7 +1025,9 @@ The following example deployment uses NUMA-aware scheduling for a sample workloa
 
 # NUMA Resources Operator support for schedulable control-plane nodes
 
-You can enable schedulable control plane nodes to run user-defined pods, effectively turning the nodes into hybrid Control Plane and Worker nodes. This configuration is especially beneficial in resource-constrained environments, such as compact clusters. When enabled, the NUMA Resources Operator can apply its topology-aware scheduling to the nodes for guaranteed workloads, ensuring Pods are placed according to the best NUMA affinity.
+You can enable schedulable control plane nodes to run user-defined pods, effectively turning the nodes into hybrid control plane and compute nodes. This configuration is especially beneficial in resource-constrained environments, such as compact clusters.
+
+When enabled, the NUMA Resources Operator can apply its topology-aware scheduling to the nodes for guaranteed workloads, ensuring pods are placed according to the best NUMA affinity.
 
 Traditionally, control plane nodes in OpenShift Container Platform are dedicated to running critical cluster services. Enabling schedulable control plane nodes allows user-defined Pods to be scheduled on the nodes.
 
@@ -1019,7 +1039,7 @@ When you enable schedulable control plane nodes, enabling workload partitioning 
 
 </div>
 
-The NUMA Resources Operator provides topology-aware scheduling for workloads that need a specific NUMA affinity. When control plane nodes are made schedulable, the operator’s management capabilities can be applied to them, just as they are to worker nodes. This ensures that NUMA-aware pods are placed on a node with the best NUMA topology, whether it’s a control plane or worker node.
+The NUMA Resources Operator provides topology-aware scheduling for workloads that need a specific NUMA affinity. When control plane nodes are made schedulable, the management capabilities of the Operator can be applied to them, just as they are to compute nodes. This ensures that NUMA-aware pods are placed on a node with the best NUMA topology, whether it is a control plane or compute node.
 
 When configuring the NUMA Resources Operator, its management scope is determined by the `nodeGroups` field in its custom resource (CR). This principle applies to both compact and multi-node clusters.
 
@@ -1027,7 +1047,7 @@ Compact clusters
 In a compact cluster, all nodes are configured as schedulable control plane nodes. The NUMA Resources Operator can be configured to manage all nodes in the cluster. Follow the deployment instructions for more details on the process.
 
 Multi-Node OpenShift (MNO) clusters
-In a Multi-Node OpenShift Container Platform cluster, control plane nodes are made schedulable in addition to existing worker nodes. To manage these nodes, you can configure the NUMA Resources Operator by defining separate `nodeGroups` in the `NUMAResourcesOperator` CR for the control plane and worker nodes. This ensures that the NUMA Resources Operator correctly schedules pods on both sets of nodes based on resource availability and NUMA topology.
+In a Multi-Node OpenShift Container Platform cluster, control plane nodes are made schedulable in addition to existing compute nodes. To manage these nodes, you can configure the NUMA Resources Operator by defining separate `nodeGroups` in the `NUMAResourcesOperator` CR for the control plane and compute nodes. This ensures that the NUMA Resources Operator correctly schedules pods on both sets of nodes based on resource availability and NUMA topology.
 
 <div class="note">
 
@@ -1045,7 +1065,7 @@ To resolve this, administrators have two options:
 
 ## Configuring NUMA Resources Operator on schedulable control plane nodes
 
-This procedure describes how to configure the NUMA Resources Operator (NROP) to manage control plane nodes that a user configures to be schedulable. This is particularly useful in compact clusters where control plane nodes also serve as worker nodes, or in multi-node OpenShift (MNO) clusters where control plane nodes are configured as schedulable to run workloads.
+To run workloads on control plane nodes, configure the NUMA Resources Operator (NROP) to manage them as schedulable. This configuration is ideal for compact clusters and multi-node OpenShift (MNO) environments where control plane nodes also function as compute nodes.
 
 - Install the OpenShift CLI (`oc`).
 
@@ -1099,6 +1119,7 @@ This procedure describes how to configure the NUMA Resources Operator (NROP) to 
         spec:
           nodeGroups:
             - poolName: master
+        # ...
         ```
 
         <div class="note">
@@ -1107,7 +1128,7 @@ This procedure describes how to configure the NUMA Resources Operator (NROP) to 
 
         </div>
 
-    2.  For an MNO cluster where both control plane and worker nodes are schedulable, you have the option to configure the NUMA Resources Operator to manage multiple `nodeGroups`. You can specify which nodes to include by adding their corresponding MCPs to the `nodeGroups` list in the `NUMAResourcesOperator` CR. The configuration depends entirely on your specific requirements. For example, to manage both the `master` and `worker-cnf` pools, create the following `nodeGroups` configuration in the NUMAResourcesOperator CR:
+    2.  For an MNO cluster where both control plane and compute nodes are schedulable, you have the option to configure the NUMA Resources Operator to manage multiple `nodeGroups`. You can specify which nodes to include by adding their corresponding MCPs to the `nodeGroups` list in the `NUMAResourcesOperator` CR. The configuration depends entirely on your specific requirements. For example, to manage both the `master` and `worker-cnf` pools, create the following `nodeGroups` configuration in the NUMAResourcesOperator CR:
 
         ``` yaml
         apiVersion: nodetopology.openshift.io/v1
@@ -1118,6 +1139,7 @@ This procedure describes how to configure the NUMA Resources Operator (NROP) to 
           nodeGroups:
             - poolName: master
             - poolName: worker-cnf
+        # ...
         ```
 
         <div class="note">
@@ -1259,17 +1281,18 @@ After applying the configuration, verify that the NUMA Resources Operator is cor
         capacity: "1576189952"
         name: memory
       type: Node
+    # ...
     ```
 
     The presence of this resource for a node with a master role proves that the NUMA Resources Operator was able to deploy its discovery pods onto that node. These pods are what gather the NUMA topology data, and they can only be scheduled on nodes that are considered schedulable.
 
     The output confirms that the procedure to make the master nodes schedulable was successful, as the NUMA Resources Operator has now collected and reported the NUMA-related information for that specific control plane node.
 
-# Optional: Configuring polling operations for NUMA resources updates
+# Configuring polling operations for NUMA resources updates
 
-The daemons controlled by the NUMA Resources Operator in their `nodeGroup` poll resources to retrieve updates about available NUMA resources. You can fine-tune polling operations for these daemons by configuring the `spec.nodeGroups` specification in the `NUMAResourcesOperator` custom resource (CR). This provides advanced control of polling operations. Configure these specifications to improve scheduling behavior and troubleshoot suboptimal scheduling decisions.
+As an optional task, you can improve scheduling behavior and troubleshoot suboptimal scheduling decisions by configuring the `spec.nodeGroups` specification in the `NUMAResourcesOperator` custom resource (CR). This configuration fine-tunes how daemons poll for available NUMA resources, providing advanced control over your polling operations.
 
-The configuration options are the following:
+The configuration options are listed as follows:
 
 - `infoRefreshMode`: Determines the trigger condition for polling the kubelet. The NUMA Resources Operator reports the resulting information to the API server.
 
@@ -1277,19 +1300,17 @@ The configuration options are the following:
 
 - `podsFingerprinting`: Determines if point-in-time information for the current set of pods running on a node is exposed in polling updates.
 
-  <div class="note">
+<div class="note">
 
-  The default value for `podsFingerprinting` is `EnabledExclusiveResources`. To optimize scheduler performance, set `podsFingerprinting` to either `EnabledExclusiveResources` or `Enabled`. Additionally, configure the `cacheResyncPeriod` in the `NUMAResourcesScheduler` custom resource (CR) to a value greater than 0. The `cacheResyncPeriod` specification helps to report more exact resource availability by monitoring pending resources on nodes.
+The default value for `podsFingerprinting` is `EnabledExclusiveResources`. To optimize scheduler performance, set `podsFingerprinting` to either `EnabledExclusiveResources` or `Enabled`. Additionally, configure the `cacheResyncPeriod` in the `NUMAResourcesScheduler` custom resource (CR) to a value greater than 0. The `cacheResyncPeriod` specification helps to report more exact resource availability by monitoring pending resources on nodes.
 
-  </div>
+</div>
 
-<!-- -->
+- Installed the OpenShift CLI (`oc`).
 
-- Install the OpenShift CLI (`oc`).
+- Logged in as a user with `cluster-admin` privileges.
 
-- Log in as a user with `cluster-admin` privileges.
-
-- Install the NUMA Resources Operator.
+- Installed the NUMA Resources Operator.
 
 <!-- -->
 
@@ -1307,13 +1328,19 @@ The configuration options are the following:
         infoRefreshPeriod: 10s
         podsFingerprinting: Enabled
       name: worker
+  # ...
   ```
 
-  - Valid values are `Periodic`, `Events`, `PeriodicAndEvents`. Use `Periodic` to poll the kubelet at intervals that you define in `infoRefreshPeriod`. Use `Events` to poll the kubelet at every pod lifecycle event. Use `PeriodicAndEvents` to enable both methods.
+  where:
 
-  - Define the polling interval for `Periodic` or `PeriodicAndEvents` refresh modes. The field is ignored if the refresh mode is `Events`.
+  `spec.nodeGroups.config.infoRefreshMode`
+  Valid values are `Periodic`, `Events`, `PeriodicAndEvents`. Use `Periodic` to poll the kubelet at intervals that you define in `infoRefreshPeriod`. Use `Events` to poll the kubelet at every pod lifecycle event. Use `PeriodicAndEvents` to enable both methods.
 
-  - Valid values are `Enabled`, `Disabled`, and `EnabledExclusiveResources`. Setting to `Enabled` or `EnabledExclusiveResources` is a requirement for the `cacheResyncPeriod` specification in the `NUMAResourcesScheduler`.
+  `spec.nodeGroups.config.infoRefreshPeriod`
+  Specifies the polling interval for `Periodic` or `PeriodicAndEvents` refresh modes. The field is ignored if the refresh mode is `Events`.
+
+  `spec.nodeGroups.config.podsFingerprinting`
+  Valid values are `Enabled`, `Disabled`, and `EnabledExclusiveResources`. Setting to `Enabled` or `EnabledExclusiveResources` is a requirement for the `cacheResyncPeriod` specification in the `NUMAResourcesScheduler`.
 
 1.  After you deploy the NUMA Resources Operator, verify that the node group configurations were applied by running the following command:
 
@@ -1342,13 +1369,13 @@ The configuration options are the following:
 
 # Troubleshooting NUMA-aware scheduling
 
-To troubleshoot common problems with NUMA-aware pod scheduling, perform the following steps.
+To resolve common problems with NUMA-aware pod scheduling, troubleshoot your cluster configuration. Identifying and fixing these issues ensures that your pods are optimally aligned with underlying hardware for high-performance workloads.
 
-- Install the OpenShift Container Platform CLI (`oc`).
+- Installed the OpenShift CLI (`oc`).
 
-- Log in as a user with cluster-admin privileges.
+- Logged in as a user with cluster-admin privileges.
 
-- Install the NUMA Resources Operator and deploy the NUMA-aware secondary scheduler.
+- Installed the NUMA Resources Operator and deploy the NUMA-aware secondary scheduler.
 
 1.  Verify that the `noderesourcetopologies` CRD is deployed in the cluster by running the following command:
 
@@ -1548,19 +1575,22 @@ To troubleshoot common problems with NUMA-aware pod scheduling, perform the foll
     metadata:
       resourceVersion: ""
       selfLink: ""
+    # ...
     ```
 
-    - Each stanza under `zones` describes the resources for a single NUMA zone.
+    - `zones`: Each stanza under `zones` describes the resources for a single NUMA zone.
 
-    - `resources` describes the current state of the NUMA zone resources. Check that resources listed under `items.zones.resources.available` correspond to the exclusive NUMA zone resources allocated to each guaranteed pod.
+    - `costs.resources`: Specifies the current state of the NUMA zone resources. Check that resources listed under `items.zones.resources.available` correspond to the exclusive NUMA zone resources allocated to each guaranteed pod.
 
 ## Reporting more exact resource availability
 
-Enable the `cacheResyncPeriod` specification to help the NUMA Resources Operator report more exact resource availability by monitoring pending resources on nodes and synchronizing this information in the scheduler cache at a defined interval. This also helps to minimize Topology Affinity Error errors because of sub-optimal scheduling decisions. The lower the interval, the greater the network load. The `cacheResyncPeriod` specification is disabled by default.
+To report more exact resource availability and minimize Topology Affinity Errors, enable the `cacheResyncPeriod` specification for the NUMA Resources Operator. This configuration monitors pending resources on nodes and synchronizes them in the scheduler cache, though lower intervals increase network load.
 
-- Install the OpenShift CLI (`oc`).
+The lower the interval, the greater the network load. The `cacheResyncPeriod` specification is disabled by default.
 
-- Log in as a user with `cluster-admin` privileges.
+- Installed the OpenShift CLI (`oc`).
+
+- You are logged in as a user with `cluster-admin` privileges.
 
 1.  Delete the currently running `NUMAResourcesScheduler` resource:
 
@@ -1609,7 +1639,7 @@ Enable the `cacheResyncPeriod` specification to help the NUMA Resources Operator
       cacheResyncPeriod: "5s"
     ```
 
-    - Enter an interval value in seconds for synchronization of the scheduler cache. A value of `5s` is typical for most implementations.
+    - `spec.cacheResyncPeriod`: Enter an interval value in seconds for synchronization of the scheduler cache. A value of `5s` is typical for most implementations.
 
 3.  Create the updated `NUMAResourcesScheduler` resource by running the following command:
 
@@ -1711,13 +1741,13 @@ Enable the `cacheResyncPeriod` specification to help the NUMA Resources Operator
 
 ## Changing where high-performance workloads run
 
-The NUMA-aware secondary scheduler is responsible for scheduling high-performance workloads on a worker node and within a NUMA node where the workloads can be optimally processed. By default, the secondary scheduler assigns workloads to the NUMA node within the chosen worker node that has the most available resources.
+To optimize the processing of high-performance workloads, change the default placement behavior of the NUMA-aware secondary scheduler. With this configuration, you can assign workloads to a specific NUMA node within a compute node instead of relying on default resource availability.
 
 If you want to change where the workloads run, you can add the `scoringStrategy` setting to the `NUMAResourcesScheduler` custom resource and set its value to either `MostAllocated` or `BalancedAllocation`.
 
-- Install the OpenShift CLI (`oc`).
+- Installed the OpenShift CLI (`oc`).
 
-- Log in as a user with `cluster-admin` privileges.
+- Logged in as a user with `cluster-admin` privileges.
 
 1.  Delete the currently running `NUMAResourcesScheduler` resource by using the following steps:
 
@@ -1765,9 +1795,10 @@ If you want to change where the workloads run, you can add the `scoringStrategy`
       imageSpec: "registry.redhat.io/openshift4/noderesourcetopology-scheduler-container-rhel8:v{product-version}"
       scoringStrategy:
             type: "MostAllocated"
+    # ...
     ```
 
-    - If the `scoringStrategy` configuration is omitted, the default of `LeastAllocated` applies.
+    `spec.imageSpec.scoringStrategy`: If the `scoringStrategy` configuration is omitted, the default of `LeastAllocated` applies.
 
 3.  Create the updated `NUMAResourcesScheduler` resource by running the following command:
 
@@ -1842,7 +1873,9 @@ If you want to change where the workloads run, you can add the `scoringStrategy`
 
 ## Checking the NUMA-aware scheduler logs
 
-Troubleshoot problems with the NUMA-aware scheduler by reviewing the logs. If required, you can increase the scheduler log level by modifying the `spec.logLevel` field of the `NUMAResourcesScheduler` resource. Acceptable values are `Normal`, `Debug`, and `Trace`, with `Trace` being the most verbose option.
+To troubleshoot problems with the NUMA-aware scheduler, review the scheduler logs. If necessary, increase the log level in the `NUMAResourcesScheduler` custom resource (CR) to capture more detailed diagnostic data.
+
+Acceptable values are `Normal`, `Debug`, and `Trace`, with `Trace` being the most verbose option.
 
 <div class="note">
 
@@ -1850,9 +1883,9 @@ To change the log level of the secondary scheduler, delete the running scheduler
 
 </div>
 
-- Install the OpenShift CLI (`oc`).
+- Installed the OpenShift CLI (`oc`).
 
-- Log in as a user with `cluster-admin` privileges.
+- You are logged in as a user with `cluster-admin` privileges.
 
 1.  Delete the currently running `NUMAResourcesScheduler` resource:
 
@@ -1899,6 +1932,7 @@ To change the log level of the secondary scheduler, delete the running scheduler
     spec:
       imageSpec: "registry.redhat.io/openshift4/noderesourcetopology-scheduler-container-rhel8:v4.17"
       logLevel: Debug
+    # ...
     ```
 
 3.  Create the updated `Debug` logging `NUMAResourcesScheduler` resource by running the following command:
@@ -2001,11 +2035,11 @@ To change the log level of the secondary scheduler, delete the running scheduler
 
 ## Troubleshooting the resource topology exporter
 
-Troubleshoot `noderesourcetopologies` objects where unexpected results are occurring by inspecting the corresponding `resource-topology-exporter` logs.
+To resolve unexpected results in `noderesourcetopologies` objects, inspect the `resource-topology-exporter` logs. Reviewing this diagnostic data helps you identify and fix configuration issues within your cluster.
 
 <div class="note">
 
-It is recommended that NUMA resource topology exporter instances in the cluster are named for nodes they refer to. For example, a worker node with the name `worker` should have a corresponding `noderesourcetopologies` object called `worker`.
+Ensure that the NUMA resource topology exporter instances in the cluster are named for nodes they refer to. For example, a compute node with the name `worker` should have a corresponding `noderesourcetopologies` object called `worker`.
 
 </div>
 
@@ -2098,23 +2132,21 @@ It is recommended that NUMA resource topology exporter instances in the cluster 
 
 ## Correcting a missing resource topology exporter config map
 
-If you install the NUMA Resources Operator in a cluster with misconfigured cluster settings, in some circumstances, the Operator is shown as active but the logs of the resource topology exporter (RTE) daemon set pods show that the configuration for the RTE is missing, for example:
+To correct a missing config map for the resource topology exporter (RTE), resolve misconfigured settings in your cluster. Fixing this issue ensures the NUMA Resources Operator functions properly when the logs of the RTE daemon set pods indicate missing configurations.
+
+The following example log message indicates a missing configuration:
 
 ``` text
 Info: couldn't find configuration in "/etc/resource-topology-exporter/config.yaml"
 ```
 
-This log message indicates that the `kubeletconfig` with the required configuration was not properly applied in the cluster, resulting in a missing RTE `configmap`. For example, the following cluster is missing a `numaresourcesoperator-worker` `configmap` custom resource (CR):
+The previous log message indicates that the `kubeletconfig` with the required configuration was not properly applied in the cluster, resulting in a missing RTE `configmap`. For example, the following cluster is missing a `numaresourcesoperator-worker` `configmap` custom resource (CR):
 
 ``` terminal
 $ oc get configmap
 ```
 
-<div class="formalpara-title">
-
-**Example output**
-
-</div>
+Example output:
 
 ``` terminal
 NAME                           DATA   AGE
@@ -2126,11 +2158,11 @@ topo-aware-scheduler-config    1      6d18h
 
 In a correctly configured cluster, `oc get configmap` also returns a `numaresourcesoperator-worker` `configmap` CR.
 
-- Install the OpenShift Container Platform CLI (`oc`).
+- Installed the OpenShift CLI (`oc`).
 
-- Log in as a user with cluster-admin privileges.
+- Logged in as a user with cluster-admin privileges.
 
-- Install the NUMA Resources Operator and deploy the NUMA-aware secondary scheduler.
+- Installed the NUMA Resources Operator and deploy the NUMA-aware secondary scheduler.
 
 1.  Compare the values for `spec.machineConfigPoolSelector.matchLabels` in `kubeletconfig` and `metadata.labels` in the `MachineConfigPool` (`mcp`) worker CR using the following commands:
 
@@ -2191,7 +2223,7 @@ In a correctly configured cluster, `oc get configmap` also returns a `numaresour
       cnf-worker-tuning: enabled
     ```
 
-3.  Apply the label changes and wait for the cluster to apply the updated configuration. Run the following command:
+3.  Apply the label changes and wait for the cluster to apply the updated configuration.
 
 - Check that the missing `numaresourcesoperator-worker` `configmap` CR is applied:
 

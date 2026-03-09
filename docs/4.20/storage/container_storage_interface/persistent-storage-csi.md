@@ -93,7 +93,6 @@ For a list of third-party-certified CSI drivers, see the *Red Hat ecosystem port
 | OpenStack Cinder                                   | ✅                   |                                             | ✅                 | ✅                 |                          |
 | OpenShift Data Foundation                          | ✅                   | ✅                                          | ✅                 | ✅                 |                          |
 | OpenStack Manila                                   | ✅                   |                                             |                    | ✅                 |                          |
-| Shared Resource                                    |                      |                                             |                    |                    | ✅                       |
 | CIFS/SMB                                           |                      |                                             | ✅                 |                    |                          |
 | VMware vSphere                                     | ✅<sup>\[5\]</sup>   |                                             |                    | ✅<sup>\[6\]</sup> |                          |
 

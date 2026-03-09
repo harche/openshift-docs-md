@@ -6,8 +6,8 @@ The following table lists the platforms on which boot image management is availa
 |---------------------------|---------------------|----------------------------|
 | Google Cloud              | Enabled by default  | Disabled by default        |
 | Amazon Web Services (AWS) | Enabled by default  | Disabled by default        |
-| Microsoft Azure           | Enabled by default  | Disabled by default        |
-| VMware vSphere            | Enabled by default  | Not supported              |
+| Microsoft Azure           | Disabled by default | Disabled by default        |
+| VMware vSphere            | Disabled by default | Not supported              |
 
 For all other platforms, the MCO does not update the boot image with each cluster update.
 
@@ -33,8 +33,8 @@ The following table lists the platforms on which boot image management is availa
 |---------------------------|---------------------|----------------------------|
 | Google Cloud              | Enabled by default  | Disabled by default        |
 | Amazon Web Services (AWS) | Enabled by default  | Disabled by default        |
-| Microsoft Azure           | Enabled by default  | Disabled by default        |
-| VMware vSphere            | Enabled by default  | Not supported              |
+| Microsoft Azure           | Disabled by default | Disabled by default        |
+| VMware vSphere            | Disabled by default | Not supported              |
 
 For all other platforms, the MCO does not update the boot image with each cluster update.
 
@@ -129,8 +129,8 @@ The following table lists the platforms on which boot image management is availa
 |---------------------------|---------------------|----------------------------|
 | Google Cloud              | Enabled by default  | Disabled by default        |
 | Amazon Web Services (AWS) | Enabled by default  | Disabled by default        |
-| Microsoft Azure           | Enabled by default  | Disabled by default        |
-| VMware vSphere            | Enabled by default  | Not supported              |
+| Microsoft Azure           | Disabled by default | Disabled by default        |
+| VMware vSphere            | Disabled by default | Not supported              |
 
 For all other platforms, the MCO does not update the boot image with each cluster update.
 
@@ -341,8 +341,8 @@ The following table lists the platforms on which boot image management is availa
 |---------------------------|---------------------|----------------------------|
 | Google Cloud              | Enabled by default  | Disabled by default        |
 | Amazon Web Services (AWS) | Enabled by default  | Disabled by default        |
-| Microsoft Azure           | Enabled by default  | Disabled by default        |
-| VMware vSphere            | Enabled by default  | Not supported              |
+| Microsoft Azure           | Disabled by default | Disabled by default        |
+| VMware vSphere            | Disabled by default | Not supported              |
 
 For all other platforms, the MCO does not update the boot image with each cluster update.
 

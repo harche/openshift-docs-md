@@ -12,8 +12,8 @@ The NBDE Tang Server Operator is implemented using the Operator SDK and allows t
 
 # Additional resources
 
-- [Tang-Operator: Providing NBDE in OpenShift](https://cloud.redhat.com/blog/tang-operator-providing-nbde-in-openshift) Red Hat Hybrid Cloud blog article
+- [Tang-Operator: Providing NBDE in OpenShift](https://cloud.redhat.com/blog/tang-operator-providing-nbde-in-openshift)
 
-- [tang-operator](https://github.com/latchset/tang-operator) Github project
+- [Tang Server Operator](https://github.com/openshift/nbde-tang-server)
 
-- [Configuring automated unlocking of encrypted volumes using policy-based decryption](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/security_hardening/configuring-automated-unlocking-of-encrypted-volumes-using-policy-based-decryption_security-hardening) chapter in the RHEL 9 Security hardening document
+- [Configuring automated unlocking of encrypted volumes using policy-based decryption](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/security_hardening/configuring-automated-unlocking-of-encrypted-volumes-using-policy-based-decryption_security-hardening)

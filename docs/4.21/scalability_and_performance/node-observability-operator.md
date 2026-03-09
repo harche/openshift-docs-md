@@ -535,4 +535,4 @@ You must create and run the `NodeObservability` custom resource (CR) before you 
 
 # Additional resources
 
-For more information on how to collect worker metrics, see [Red Hat Knowledgebase article](https://access.redhat.com/solutions/5343671).
+- [Red Hat Knowledgebase article](https://access.redhat.com/solutions/5343671)

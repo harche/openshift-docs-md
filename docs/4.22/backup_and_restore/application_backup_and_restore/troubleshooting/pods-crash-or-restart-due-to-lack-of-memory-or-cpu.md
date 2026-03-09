@@ -1,4 +1,6 @@
-If a Velero or Restic pod crashes due to a lack of memory or CPU, you can set specific resource requests for either of those resources. The values for the resource request fields must follow the same format as Kubernetes resource requirements.
+Resolve Velero or Restic pod crashes caused by insufficient memory or CPU by configuring resource requests in the `DataProtectionApplication` custom resource (CR). This helps you allocate adequate CPU and memory resources to prevent pod restarts and ensure stable backup and restore operations.
+
+Ensure that the values for the resource request fields follow the same format as Kubernetes resource requirements.
 
 If you do not specify `configuration.velero.podConfig.resourceAllocations` or `configuration.restic.podConfig.resourceAllocations`, see the following default `resources` specification configuration for a Velero or Restic pod:
 
@@ -12,15 +14,9 @@ requests:
 
 # Setting resource requests for a Velero pod
 
-You can use the `configuration.velero.podConfig.resourceAllocations` specification field in the `oadp_v1alpha1_dpa.yaml` file to set specific resource requests for a `Velero` pod.
+Use the `configuration.velero.podConfig.resourceAllocations` specification field in the `oadp_v1alpha1_dpa.yaml` file to set specific resource requests for a `Velero` pod.
 
-- Set the `cpu` and `memory` resource requests in the YAML file:
-
-  <div class="formalpara-title">
-
-  **Example Velero file**
-
-  </div>
+- Set the `cpu` and `memory` resource requests as shown in the following example:
 
   ``` yaml
   apiVersion: oadp.openshift.io/v1alpha1
@@ -35,11 +31,11 @@ You can use the `configuration.velero.podConfig.resourceAllocations` specificati
             memory: 256Mi
   ```
 
-  - The `resourceAllocations` listed are for average usage.
+  The `resourceAllocations` listed are for average usage.
 
 # Setting resource requests for a Restic pod
 
-You can use the `configuration.restic.podConfig.resourceAllocations` specification field to set specific resource requests for a `Restic` pod.
+Use the `configuration.restic.podConfig.resourceAllocations` specification field to set specific resource requests for a `Restic` pod.
 
 <div class="note">
 
@@ -47,13 +43,7 @@ With OADP 1.5.0, the `configuration.restic.podConfig.resourceAllocations` specif
 
 </div>
 
-- Set the `cpu` and `memory` resource requests in the YAML file:
-
-  <div class="formalpara-title">
-
-  **Example Restic file**
-
-  </div>
+- Set the `cpu` and `memory` resource requests as shown in the following example:
 
   ``` yaml
   apiVersion: oadp.openshift.io/v1alpha1
@@ -68,11 +58,11 @@ With OADP 1.5.0, the `configuration.restic.podConfig.resourceAllocations` specif
             memory: 16Gi
   ```
 
-  - The `resourceAllocations` listed are for average usage.
+  The `resourceAllocations` listed are for average usage.
 
 # Setting resource requests for a nodeAgent pod
 
-You can use the `configuration.nodeAgent.podConfig.resourceAllocations` specification field to set specific resource requests for a `nodeAgent` pod.
+Use the `configuration.nodeAgent.podConfig.resourceAllocations` specification field to set specific resource requests for a `nodeAgent` pod.
 
 <div class="note">
 
@@ -81,12 +71,6 @@ With OADP 1.5.0, the `configuration.restic.podConfig.resourceAllocations` specif
 </div>
 
 1.  Set the `cpu` and `memory` resource requests in the YAML file:
-
-    <div class="formalpara-title">
-
-    **Example `nodeAgent.yaml` file**
-
-    </div>
 
     ``` yaml
     apiVersion: oadp.openshift.io/v1alpha1
@@ -120,9 +104,13 @@ With OADP 1.5.0, the `configuration.restic.podConfig.resourceAllocations` specif
                 memory: 16Gi
     ```
 
-    - The resource allocation examples shown are for average usage.
+    where:
 
-    - You can modify this parameter depending on your infrastructure and usage.
+    `resourceAllocations`
+    The resource allocation examples shown are for average usage.
+
+    `memory`
+    You can modify this parameter depending on your infrastructure and usage.
 
 2.  Create the DPA CR by running the following command:
 

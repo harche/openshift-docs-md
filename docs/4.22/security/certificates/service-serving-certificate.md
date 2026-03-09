@@ -85,7 +85,7 @@ Because the generated certificates contain wildcard subjects for headless servic
 
 3.  After the cluster generates a secret for your service, your `Pod` spec can mount it, and the pod will run after it becomes available.
 
-- You can use a service certificate to configure a secure route using reencrypt TLS termination. For more information, see [Creating a re-encrypt route with a custom certificate](../../networking/ingress_load_balancing/routes/creating-advanced-routes.xml#nw-ingress-creating-a-reencrypt-route-with-a-custom-certificate_secured-routes).
+- [Creating a re-encrypt route with a custom certificate](../../networking/ingress_load_balancing/routes/creating-advanced-routes.xml#nw-ingress-creating-a-reencrypt-route-with-a-custom-certificate_secured-routes)
 
 # Add the service CA bundle to a config map
 

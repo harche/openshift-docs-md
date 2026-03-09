@@ -1,8 +1,8 @@
-Extending a timeout allows complex or resource-intensive processes to complete successfully without premature termination. This configuration can reduce errors, retries, or failures.
+Configure OADP timeout parameters for Restic, Velero, Data Mover, CSI snapshots, and item operations to allow complex or resource-intensive processes to complete successfully. This helps you reduce errors, retries, and failures caused by premature termination of backup and restore operations.
 
 Ensure that you balance timeout extensions in a logical manner so that you do not configure excessively long timeouts that might hide underlying issues in the process. Consider and monitor an appropriate timeout value that meets the needs of the process and the overall system performance.
 
-The following OADP timeouts show instructions of how and when to implement these parameters:
+Review the following OADP timeout instructions:
 
 - [Restic timeout](../../../backup_and_restore/application_backup_and_restore/troubleshooting/oadp-timeouts.xml#restic-timeout_oadp-timeouts)
 
@@ -18,7 +18,9 @@ The following OADP timeouts show instructions of how and when to implement these
 
 # Implementing restic timeout
 
-The `spec.configuration.nodeAgent.timeout` parameter defines the Restic timeout. The default value is `1h`.
+Configure the Restic timeout parameter to prevent backup failures for large persistent volumes or long-running backup operations. This helps you avoid timeout errors when backing up data greater than 500GB or when backups exceed the default one-hour limit.
+
+Use the `spec.configuration.nodeAgent.timeout` parameter to set the Restic timeout. The default value is `1h`.
 
 Use the Restic `timeout` parameter in the `nodeAgent` section for the following scenarios:
 
@@ -50,11 +52,11 @@ Use the Restic `timeout` parameter in the `nodeAgent` section for the following 
 
 # Implementing velero resource timeout
 
-`resourceTimeout` defines how long to wait for several Velero resources before timeout occurs, such as Velero custom resource definition (CRD) availability, `volumeSnapshot` deletion, and repository availability. The default is `10m`.
+Configure the `resourceTimeout` parameter in the `DataProtectionApplication` custom resource (CR) to define how long Velero waits for resource availability. Adjusting this timeout helps you prevent errors during large backups, repository readiness checks, and restore operations.
 
 Use the `resourceTimeout` for the following scenarios:
 
-- For backups with total PV data usage that is greater than 1 TB. This parameter is used as a timeout value when Velero tries to clean up or delete the Container Storage Interface (CSI) snapshots, before marking the backup as complete.
+- For backups with total PV data usage that is greater than 1 TB. Use the parameter as a timeout value when Velero tries to clean up or delete the Container Storage Interface (CSI) snapshots, before marking the backup as complete.
 
   - A sub-task of this cleanup tries to patch VSC, and this timeout can be used for that task.
 
@@ -80,13 +82,13 @@ Use the `resourceTimeout` for the following scenarios:
 
 ## Implementing velero default item operation timeout
 
-The `defaultItemOperationTimeout` setting defines how long to wait on asynchronous `BackupItemActions` and `RestoreItemActions` to complete before timing out. The default value is `1h`.
+Configure the `defaultItemOperationTimeout` parameter in the \`DataProtectionApplication\`ccustom resource (CR) to define how long Velero waits for backup and restore operations to finish. Adjusting this timeout helps you prevent errors during Container Storage Interface (CSI) Data Mover tasks.
+
+The default value is `1h`.
 
 Use the `defaultItemOperationTimeout` for the following scenarios:
 
 - Only with Data Mover 1.2.x.
-
-- To specify the amount of time a particular backup or restore should wait for the Asynchronous actions to complete. In the context of OADP features, this value is used for the Asynchronous actions involved in the Container Storage Interface (CSI) Data Mover feature.
 
 - When `defaultItemOperationTimeout` is defined in the Data Protection Application (DPA) using the `defaultItemOperationTimeout`, it applies to both backup and restore operations. You can use `itemOperationTimeout` to define only the backup or only the restore of those CRs, as described in the following "Item operation timeout - restore", and "Item operation timeout - backup" sections.
 
@@ -108,7 +110,7 @@ Use the `defaultItemOperationTimeout` for the following scenarios:
 
 # Implementing Data Mover timeout
 
-`timeout` is a user-supplied timeout to complete `VolumeSnapshotBackup` and `VolumeSnapshotRestore`. The default value is `10m`.
+Configure the Data Mover `timeout` parameter in the `DataProtectionApplication` custom resource (CR) to define how long backup and restore operations run. Adjusting this value helps prevent timeouts in large environments over 500GB or when using the `VolumeSnapshotMover` plugin. The default value is `10m`.
 
 Use the Data Mover `timeout` for the following scenarios:
 
@@ -117,8 +119,6 @@ Use the Data Mover `timeout` for the following scenarios:
 - For large scale environments with total PV data usage that is greater than 500GB. Set the timeout for `1h`.
 
 - With the `VolumeSnapshotMover` (VSM) plugin.
-
-- Only with OADP 1.1.x.
 
 <!-- -->
 
@@ -138,13 +138,7 @@ Use the Data Mover `timeout` for the following scenarios:
 
 # Implementing CSI snapshot timeout
 
-`CSISnapshotTimeout` specifies the time during creation to wait until the `CSI VolumeSnapshot` status becomes `ReadyToUse`, before returning error as timeout. The default value is `10m`.
-
-Use the `CSISnapshotTimeout` for the following scenarios:
-
-- With the CSI plugin.
-
-- For very large storage volumes that may take longer than 10 minutes to snapshot. Adjust this timeout if timeouts are found in the logs.
+Configure the `CSISnapshotTimeout` parameter in the `Backup` custom resource (CR) to define how long to wait for a CSI snapshot to become ready. Adjusting this timeout prevents errors when using the CSI plugin to take snapshots of large storage volumes that require more time. The default value is `10m`.
 
 <div class="note">
 
@@ -166,15 +160,7 @@ Typically, the default value for `CSISnapshotTimeout` does not require adjustmen
 
 # Implementing item operation timeout - restore
 
-The `ItemOperationTimeout` setting specifies the time that is used to wait for `RestoreItemAction` operations. The default value is `1h`.
-
-Use the restore `ItemOperationTimeout` for the following scenarios:
-
-- Only with Data Mover 1.2.x.
-
-- For Data Mover uploads and downloads to or from the `BackupStorageLocation`. If the restore action is not completed when the timeout is reached, it will be marked as failed. If Data Mover operations are failing due to timeout issues, because of large storage volume sizes, then this timeout setting may need to be increased.
-
-<!-- -->
+Configure the `ItemOperationTimeout` parameter in the `Restore` custom resource (CR) to define how long restore operations wait to complete. Adjusting this timeout prevents failures when Data Mover needs more time to download large storage volumes. The default value is `1h`.
 
 - Edit the values in the `Restore.spec.itemOperationTimeout` block of the `Restore` CR manifest, as shown in the following example:
 
@@ -190,15 +176,7 @@ Use the restore `ItemOperationTimeout` for the following scenarios:
 
 # Implementing item operation timeout - backup
 
-The `ItemOperationTimeout` setting specifies the time used to wait for asynchronous `BackupItemAction` operations. The default value is `1h`.
-
-Use the backup `ItemOperationTimeout` for the following scenarios:
-
-- Only with Data Mover 1.2.x.
-
-- For Data Mover uploads and downloads to or from the `BackupStorageLocation`. If the backup action is not completed when the timeout is reached, it will be marked as failed. If Data Mover operations are failing due to timeout issues, because of large storage volume sizes, then this timeout setting may need to be increased.
-
-<!-- -->
+Configure the `ItemOperationTimeout` parameter in the `Backup` custom resource (CR) to define how long asynchronous `BackupItemAction` operations wait to complete. Adjusting this timeout prevents failures when Data Mover needs more time to upload large storage volumes. The default value is `1h`.
 
 - Edit the values in the `Backup.spec.itemOperationTimeout` block of the `Backup` CR manifest, as shown in the following example:
 

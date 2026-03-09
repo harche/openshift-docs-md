@@ -16,42 +16,6 @@ The SVVP certification applies to:
 
 # New features and enhancements
 
-IBM® Secure Execution for VMs on IBM Z® and IBM® LinuxONE is generally available
-IBM® Secure Execution for VMs on IBM Z® and IBM® LinuxONE is now generally available. This capability provides hardware based memory encryption that protects virtual machine workloads from access by the host or hypervisor environment. For more information, see [Configuring IBM® Secure Execution virtual machines on IBM Z® and IBM® LinuxONE](../../virt/creating_vm/virt-configuring-ibm-secure-execution-vms-ibm-z.xml#virt-configuring-ibm-secure-execution-vms-ibm-z).
-
-<!-- -->
-
-Custom MAC pool range configuration
-With this update, cluster administrators can specify a custom MAC pool range for a OpenShift Virtualization environment, preventing potential MAC address conflicts with other virtualization solutions on the same network. This gives cluster administrators more control over network resources, ensuring greater network stability and resource management efficiency.
-
-[CNV-63212](https://issues.redhat.com/browse/CNV-63212)
-
-Import VMs into OpenShift Virtualization while maintaining their previously assigned IP and MAC addresses
-With this update, you can import VMs into OpenShift Virtualization, preserving their original IP and MAC addresses when connected to custom, primary layer 2 networks. This enhancement streamlines the import process, ensuring network consistency and a seamless transition of VMs, resulting in minimal disruption.
-
-[CNV-61227](https://issues.redhat.com/browse/CNV-61227)
-
-<!-- -->
-
-Enhancements for the virtual machines **Search** menu
-With this update, the search interface is enhanced, making it more noticeable and user-friendly. A prominent **Search** button and an advanced search option are introduced, allowing users to initiate a search with either the primary button or the **Enter** key. This streamlines the user experience and improves overall search functionality.
-
-[CNV-70130](https://issues.redhat.com/browse/CNV-70130)
-
-New flag introduced to prevent unintentional VNC disconnects
-A new, optional `--preserve-session` flag has been introduced for VMs. This flag prevents an existing VNC console connection from being disconnected if you attempt to start a new session.
-
-If you attempt to create a second connection to the VNC console by using the `virtctl` CLI when this flag is set, an error is displayed and the connection fails.
-
-If you attempt to create a second connection to the VNC console by using the web console, a warning is displayed, and you are prompted to disconnect the existing session before you create the new session.
-
-[CNV-66115](https://issues.redhat.com/browse/CNV-66115)
-
-Starting a virtual machine console from the tree-view
-You can now start a virtual machine (VM) console session by clicking on the name of the running VM in the navigation panel, and then selecting **Open Console**.
-
-[CNV-70942](https://issues.redhat.com/browse/CNV-70942)
-
 # Deprecated features
 
 The `HotplugVolume` feature gate is deprecated
@@ -69,13 +33,10 @@ The `HotplugVolume` feature gate, which allows you to add storage without restar
 
 Removed features are no longer supported in OpenShift Virtualization.
 
-Legacy virtctl ssh target syntax removed
-With this release, support for the `virtctl ssh type/name[.namespace]` target syntax has been removed. You must specify the target by using an explicit resource type, such as `vmi/<name>` or `vm/<name>`. Scripts and automation that rely on the removed syntax must be updated.
+Predefined latency checkup feature removed
+In previous versions, cluster and project administrators could use a predefined latency checkup to verify network connectivity and measure latency between two virtual machines (VMs) that are attached to a secondary network interface. With this release, the predefined latency checkup feature is removed.
 
-<!-- -->
-
-Support for `kubevirt-virtctl` RPM removed
-With this release, support for the RHEL 8 `kubevirt-virtctl` RPM is removed and no longer supported.
+[CNV-77646](https://issues.redhat.com/browse/CNV-77646)
 
 # Technology Preview features
 

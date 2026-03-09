@@ -8,18 +8,13 @@ To manually set resource values, you must use a kubelet config CR. You cannot us
 
 # Understanding how to allocate resources for nodes
 
-CPU and memory resources reserved for node components in OpenShift Container Platform are based on two node settings:
+You can manually reserve optimal CPU and memory resources for the node and system components on your nodes. Ensuring proper resources for these services can help ensure that your cluster is operating efficiently.
 
-| Setting           | Description                                                                                                                                                                                                                                                                                                                  |
-|-------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `kube-reserved`   | This setting is not used with OpenShift Container Platform. Add the CPU and memory resources that you planned to reserve to the `system-reserved` setting.                                                                                                                                                                   |
-| `system-reserved` | This setting identifies the resources to reserve for the node components and system components, such as CRI-O and Kubelet. The default settings depend on the OpenShift Container Platform and Machine Config Operator versions. Confirm the default `systemReserved` parameter on the `machine-config-operator` repository. |
-
-If a flag is not set, the defaults are used. If none of the flags are set, the allocated resource is set to the node’s capacity as it was before the introduction of allocatable resources.
+The `system-reserved` setting in the `KubeletConfig` custom resource (CR) identifies the resources to reserve for the node components and system components, such as CRI-O and Kubelet. The default settings depend on the OpenShift Container Platform and Machine Config Operator versions. Confirm the default `systemReserved` parameter on the `machine-config-operator` repository.
 
 <div class="note">
 
-Any CPUs specifically reserved using the `reservedSystemCPUs` parameter are not available for allocation using `kube-reserved` or `system-reserved`.
+The Kubernetes `kubeReserved` parameter is not supported in OpenShift Container Platform.
 
 </div>
 

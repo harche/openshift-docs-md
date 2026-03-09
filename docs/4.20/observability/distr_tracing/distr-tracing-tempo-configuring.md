@@ -1,5 +1,93 @@
 The Tempo Operator uses a custom resource definition (CRD) file that defines the architecture and configuration settings for creating and deploying the Distributed Tracing Platform resources. You can install the default configuration or modify the file.
 
+# Configuring the Tempo Operator
+
+You can configure the Tempo Operator by using the Operator Lifecycle Manager (OLM) Subscription custom resource (CR) to override default settings. This configuration method uses environment variables that take precedence over any ConfigMap-based configuration.
+
+<div class="formalpara-title">
+
+**Example Subscription CR with Operator configuration**
+
+</div>
+
+``` yaml
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: tempo-product
+  namespace: openshift-tempo-operator
+spec:
+  channel: stable
+  name: tempo-product
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+  config:
+    env:
+    - name: FEATURE_GATES
+      value: "openshift.route,openshift.servingCertsService"
+    - name: TLS_PROFILE
+      value: "Modern"
+```
+
+where:
+
+`FEATURE_GATES`
+Specifies a comma-separated list of feature gates to enable or disable. Prefix a gate with `-` to disable it.
+
+`TLS_PROFILE`
+Specifies the TLS security profile for the Operator.
+
+<div class="tip">
+
+You can also configure these values from the OpenShift Container Platform web console by editing the Subscription object under **Operators** \> **Installed Operators** \> **Tempo Operator** \> **Subscription**.
+
+</div>
+
+You can configure the Tempo Operator by using the environment variables from the following tables.
+
+| Feature gate                                  | Description                                                               |
+|-----------------------------------------------|---------------------------------------------------------------------------|
+| `openshift.route`                             | Enables OpenShift Container Platform route creation for Tempo components. |
+| `openshift.servingCertsService`               | Enables OpenShift Container Platform service serving certificates.        |
+| `openshift.oauthProxy`                        | Enables OpenShift Container Platform OAuth proxy integration.             |
+| `httpEncryption`                              | Enables HTTP encryption for Tempo components.                             |
+| `grpcEncryption`                              | Enables gRPC encryption for Tempo components.                             |
+| `prometheusOperator`                          | Enables Prometheus Operator integration for metrics.                      |
+| `grafanaOperator`                             | Enables Grafana Operator integration.                                     |
+| `builtInCertManagement`                       | Enables built-in certificate management.                                  |
+| `observability.metrics.createServiceMonitors` | Enables creation of `ServiceMonitor` resources for Prometheus.            |
+| `observability.metrics.createPrometheusRules` | Enables creation of `PrometheusRule` resources for alerts.                |
+| `networkPolicies`                             | Enables creation of `NetworkPolicy` resources.                            |
+
+Feature gates
+
+| Environment variable           | Description                                                                                     | Example value                                                    |
+|--------------------------------|-------------------------------------------------------------------------------------------------|------------------------------------------------------------------|
+| `FEATURE_GATES`                | Lists comma-separated feature gates to enable or disable. Prefix a gate with `-` to disable it. | `openshift.route,openshift.servingCertsService,-networkPolicies` |
+| `TLS_PROFILE`                  | Sets TLS security profile type.                                                                 | `Old`, `Intermediate`, or `Modern`                               |
+| `OPENSHIFT_BASE_DOMAIN`        | Sets the OpenShift Container Platform base domain for route generation.                         | `apps.example.com`                                               |
+| `DEFAULT_POD_SECURITY_CONTEXT` | Sets the default `PodSecurityContext` object as JSON.                                           | `{"runAsNonRoot": true}`                                         |
+
+General configuration environment variables
+
+| Environment variable                     | Description                       | Example value |
+|------------------------------------------|-----------------------------------|---------------|
+| `BUILT_IN_CERT_MANAGEMENT_CA_VALIDITY`   | CA certificate validity duration. | `8760h`       |
+| `BUILT_IN_CERT_MANAGEMENT_CA_REFRESH`    | CA certificate refresh interval.  | `7008h`       |
+| `BUILT_IN_CERT_MANAGEMENT_CERT_VALIDITY` | Certificate validity duration.    | `2160h`       |
+| `BUILT_IN_CERT_MANAGEMENT_CERT_REFRESH`  | Certificate refresh interval.     | `1728h`       |
+
+Built-in certificate management environment variables
+
+| Environment variable        | Description                     | Example value |
+|-----------------------------|---------------------------------|---------------|
+| `METRICS_BIND_ADDRESS`      | Metrics server bind address.    | `:8080`       |
+| `METRICS_SECURE`            | Enables secure metrics serving. | `true`        |
+| `HEALTH_PROBE_BIND_ADDRESS` | Health probe bind address.      | `:8081`       |
+| `WEBHOOK_PORT`              | Webhook server port.            | `9443`        |
+
+Controller manager environment variables
+
 # Configuring back-end storage
 
 For information about configuring the back-end storage, see [Understanding persistent storage](../../storage/understanding-persistent-storage.xml#understanding-persistent-storage) and the relevant configuration section for your chosen storage option.

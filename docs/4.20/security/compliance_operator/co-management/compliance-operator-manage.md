@@ -84,4 +84,4 @@ Each `ProfileBundle` is backed by a deployment. When the Compliance Operator det
 
 # Additional resources
 
-- The Compliance Operator is supported in a restricted network environment. For more information, see [Using Operator Lifecycle Manager in disconnected environments](../../../disconnected/using-olm.xml#olm-restricted-networks).
+- [Using Operator Lifecycle Manager in disconnected environments](../../../disconnected/using-olm.xml#olm-restricted-networks)

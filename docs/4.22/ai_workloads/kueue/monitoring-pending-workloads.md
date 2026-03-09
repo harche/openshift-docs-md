@@ -43,12 +43,12 @@ The following procedure tells you how to install and test workload monitoring.
     ``` terminal
     cat <<EOF| oc create -f -
     ---
-    apiVersion: kueue.x-k8s.io/v1beta1
+    apiVersion: kueue.x-k8s.io/v1beta2
     kind: ResourceFlavor
     metadata:
       name: "default-flavor"
     ---
-    apiVersion: kueue.x-k8s.io/v1beta1
+    apiVersion: kueue.x-k8s.io/v1beta2
     kind: ClusterQueue
     metadata:
       name: "cluster-queue"
@@ -64,7 +64,7 @@ The following procedure tells you how to install and test workload monitoring.
           - name: "memory"
             nominalQuota: 36Gi
     ---
-    apiVersion: kueue.x-k8s.io/v1beta1
+    apiVersion: kueue.x-k8s.io/v1beta2
     kind: LocalQueue
     metadata:
       namespace: "default"
@@ -126,7 +126,7 @@ To view all pending workloads at the cluster level, administrators can use the `
 1.  To view pending workloads in `ClusterQueue` run the following command:
 
     ``` terminal
-    $ oc get --raw "/apis/visibility.kueue.x-k8s.io/v1beta1/clusterqueues/cluster-queue/pendingworkloads"
+    $ oc get --raw "/apis/visibility.kueue.x-k8s.io/v1beta2/clusterqueues/cluster-queue/pendingworkloads"
     ```
 
     <div class="formalpara-title">
@@ -138,7 +138,7 @@ To view all pending workloads at the cluster level, administrators can use the `
     ``` yaml
     {
       "kind": "PendingWorkloadsSummary",
-      "apiVersion": "visibility.kueue.x-k8s.io/v1beta1",
+      "apiVersion": "visibility.kueue.x-k8s.io/v1beta2",
       "metadata": {
         "creationTimestamp": null
       },
@@ -215,7 +215,7 @@ To view all pending workloads at the cluster level, administrators can use the `
 2.  To view only one pending workload starting from position 0 in `ClusterQueue` run the following command:
 
     ``` terminal
-    $ oc get --raw "/apis/visibility.kueue.x-k8s.io/v1beta1/clusterqueues/cluster-queue/pendingworkloads?limit=1&offset=0"
+    $ oc get --raw "/apis/visibility.kueue.x-k8s.io/v1beta2/clusterqueues/cluster-queue/pendingworkloads?limit=1&offset=0"
     ```
 
 ## Viewing pending workloads in LocalQueue
@@ -225,7 +225,7 @@ To view the pending workloads submitted by a specific tenant within their namesp
 1.  To view pending workloads in `LocalQueue` run the following command:
 
     ``` terminal
-    $ oc get --raw /apis/visibility.kueue.x-k8s.io/v1beta1/namespaces/default/localqueues/user-queue/pendingworkloads
+    $ oc get --raw /apis/visibility.kueue.x-k8s.io/v1beta2/namespaces/default/localqueues/user-queue/pendingworkloads
     ```
 
     <div class="formalpara-title">
@@ -237,7 +237,7 @@ To view the pending workloads submitted by a specific tenant within their namesp
     ``` yaml
     {
       "kind": "PendingWorkloadsSummary",
-      "apiVersion": "visibility.kueue.x-k8s.io/v1beta1",
+      "apiVersion": "visibility.kueue.x-k8s.io/v1beta2",
       "metadata": {
         "creationTimestamp": null
       },
@@ -314,7 +314,7 @@ To view the pending workloads submitted by a specific tenant within their namesp
 2.  To view only one pending workload starting from position 0 in LocalQueue run the following command:
 
     ``` terminal
-    $ oc get --raw "/apis/visibility.kueue.x-k8s.io/v1beta1/namespaces/default/localqueues/user-queue/pendingworkloads?limit=1&offset=0"
+    $ oc get --raw "/apis/visibility.kueue.x-k8s.io/v1beta2/namespaces/default/localqueues/user-queue/pendingworkloads?limit=1&offset=0"
     ```
 
 # Modifying monitoring settings

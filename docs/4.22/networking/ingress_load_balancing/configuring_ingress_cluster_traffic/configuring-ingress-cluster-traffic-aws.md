@@ -659,7 +659,7 @@ You can specify static IPs, otherwise known as elastic IPs, for your network loa
 
 # Additional resources
 
-- [Installing a cluster on AWS with network customizations](../../../installing/installing_aws/ipi/installing-aws-customizations.xml#installing-aws-customizations).
+- [Installing a cluster on AWS with network customizations](../../../installing/installing_aws/ipi/installing-aws-customizations.xml#installing-aws-customizations)
 
 - [Network Load Balancer support on AWS](https://kubernetes.io/docs/concepts/services-networking/service/#aws-nlb-support)
 

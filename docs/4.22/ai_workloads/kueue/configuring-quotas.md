@@ -35,7 +35,7 @@ The cluster queue is not ready for use until a `ResourceFlavor` object has also 
     </div>
 
     ``` yaml
-    apiVersion: kueue.x-k8s.io/v1beta1
+    apiVersion: kueue.x-k8s.io/v1beta2
     kind: ClusterQueue
     metadata:
       name: cluster-queue
@@ -109,7 +109,7 @@ You can use a custom `ResourceFlavor` object to represent different resource var
     </div>
 
     ``` yaml
-    apiVersion: kueue.x-k8s.io/v1beta1
+    apiVersion: kueue.x-k8s.io/v1beta2
     kind: ResourceFlavor
     metadata:
       name: default-flavor
@@ -122,7 +122,7 @@ You can use a custom `ResourceFlavor` object to represent different resource var
     </div>
 
     ``` yaml
-    apiVersion: kueue.x-k8s.io/v1beta1
+    apiVersion: kueue.x-k8s.io/v1beta2
     kind: ResourceFlavor
     metadata:
       name: "x86"
@@ -160,7 +160,7 @@ As an administrator, you can configure a `LocalQueue` object to point to a clust
     </div>
 
     ``` yaml
-    apiVersion: kueue.x-k8s.io/v1beta1
+    apiVersion: kueue.x-k8s.io/v1beta2
     kind: LocalQueue
     metadata:
       namespace: team-namespace
@@ -204,7 +204,7 @@ Preexisting jobs in a namespace are not affected when you create a default local
     </div>
 
     ``` yaml
-    apiVersion: kueue.x-k8s.io/v1beta1
+    apiVersion: kueue.x-k8s.io/v1beta2
     kind: LocalQueue
     metadata:
       namespace: team-namespace

@@ -1,4 +1,6 @@
-The basic units of OpenShift Container Platform applications are called *containers*. [Linux container technologies](https://www.redhat.com/en/topics/containers#overview) are lightweight mechanisms for isolating running processes so that they are limited to interacting with only their designated resources.
+Containers are the basic units of OpenShift Container Platform applications that isolate processes to provide portable micro-services. To maintain cluster stability, you must understand how container runtimes manage workloads and how kernel memory allocation impacts resource limits on your nodes.
+
+[Linux container technologies](https://www.redhat.com/en/topics/containers#overview) are lightweight mechanisms for isolating running processes so that they are limited to interacting with only their designated resources.
 
 Many application instances can be running in containers on a single host without visibility into each others' processes, files, network, and so on. Typically, each container provides a single service (often called a "micro-service"), such as a web server or a database, though containers can be used for arbitrary workloads.
 
@@ -6,7 +8,7 @@ The Linux kernel has been incorporating capabilities for container technologies 
 
 # About containers and RHEL kernel memory
 
-Due to Red Hat Enterprise Linux (RHEL) behavior, a container on a node with high CPU usage might seem to consume more memory than expected. The higher memory consumption could be caused by the `kmem_cache` in the RHEL kernel. The RHEL kernel creates a `kmem_cache` for each cgroup. For added performance, the `kmem_cache` contains a `cpu_cache`, and a node cache for any NUMA nodes. These caches all consume kernel memory.
+Due to Red Hat Enterprise Linux (RHEL) behavior, a container on a node with high CPU usage might seem to consume more memory than expected. The higher memory consumption could be caused by the `kmem_cache` in the RHEL kernel. The RHEL kernel creates a `kmem_cache` for each cgroup. For added performance, the `kmem_cache` contains a `cpu_cache`, and a node cache for any NUMA nodes. These caches all consume kernel memory.
 
 The amount of memory stored in those caches is proportional to the number of CPUs that the system uses. As a result, a higher number of CPUs results in a greater amount of kernel memory being held in these caches. Higher amounts of kernel memory in these caches can cause OpenShift Container Platform containers to exceed the configured memory limits, resulting in the container being killed.
 
@@ -50,4 +52,6 @@ runC has some benefits over crun, including:
 
 You can move between the two container runtimes as needed.
 
-For information on setting which container runtime to use, see [Creating a `ContainerRuntimeConfig` CR to edit CRI-O parameters](../../machine_configuration/machine-configs-custom.xml#create-a-containerruntimeconfig_machine-configs-custom).
+# Additional resources
+
+- [Creating a `ContainerRuntimeConfig` CR to edit CRI-O parameters](../../machine_configuration/machine-configs-custom.xml#create-a-containerruntimeconfig_machine-configs-custom)

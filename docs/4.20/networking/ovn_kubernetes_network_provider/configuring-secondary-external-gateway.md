@@ -234,4 +234,4 @@ You can configure an external gateway on the default network for a namespace in 
 
 # Additional resources
 
-- For more information about additional network attachments, see [Understanding multiple networks](../../networking/multiple_networks/understanding-multiple-networks.xml#understanding-multiple-networks)
+- [Understanding multiple networks](../../networking/multiple_networks/understanding-multiple-networks.xml#understanding-multiple-networks)

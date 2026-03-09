@@ -6,8 +6,6 @@ View the overall health of your OpenShift Virtualization environment in the web 
 [OpenShift Container Platform cluster checkup framework](../../virt/monitoring/virt-running-cluster-checkups.xml#virt-running-cluster-checkups)
 Run automated tests on your cluster with the OpenShift Container Platform cluster checkup framework to check the following conditions:
 
-- Network connectivity and latency between two VMs attached to a secondary network interface
-
 - VM running a Data Plane Development Kit (DPDK) workload with zero packet loss
 
 - Cluster storage is optimally configured for OpenShift Virtualization
