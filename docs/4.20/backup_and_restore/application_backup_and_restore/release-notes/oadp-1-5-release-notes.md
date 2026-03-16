@@ -6,6 +6,24 @@ For additional information about OADP, see [OpenShift API for Data Protection (O
 
 </div>
 
+# OADP 1.5.5 release notes
+
+OpenShift API for Data Protection (OADP) 1.5.5 release notes list resolved issues.
+
+## Resolved issues
+
+OADP 1.5.5 fixes the following CVEs
+- [CVE-2025-61726](https://access.redhat.com/security/cve/cve-2025-61726)
+
+- [CVE-2025-61728](https://access.redhat.com/security/cve/cve-2025-61728)
+
+- [CVE-2025-68121](https://access.redhat.com/security/cve/cve-2025-68121)
+
+Single-node OpenShift clusters no longer crash due to premature CRD sync before API initialization
+Before this update, the controller crashed during image-based upgrade (IBU) due to missing OpenShift Container Platform custom resource definitions (CRDs) before they were fully initialized. As a consequence, this failure delayed `DataProtectionApplication` (DPA) reconciliation during IBU upgrade by 8 minutes. This release resolves this issue by requiring the controller to wait for OpenShift Container Platform CRDs to load before starting in the IBU environment on single-node OpenShift, while also disabling leader election. This change shortens the DPA reconciliation window and improves the overall upgrade duration for single-node OpenShift clusters.
+
+[OADP-7508](https://issues.redhat.com/browse/OADP-7508)
+
 # OADP 1.5.4 release notes
 
 OpenShift API for Data Protection (OADP) 1.5.4 is a Container Grade Only (CGO) release, which is released to refresh the health grades of the containers. No code was changed in the product itself compared to that of OADP 1.5.3. OADP 1.5.4 introduces a known issue and fixes several Common Vulnerabilities and Exposures (CVEs).

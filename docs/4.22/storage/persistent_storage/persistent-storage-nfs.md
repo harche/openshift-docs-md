@@ -1,5 +1,11 @@
 OpenShift Container Platform clusters can be provisioned with persistent storage using NFS. Persistent volumes (PVs) and persistent volume claims (PVCs) provide a convenient method for sharing a volume across a project. While the NFS-specific information contained in a PV definition could also be defined directly in a `Pod` definition, doing so does not create the volume as a distinct cluster resource, making the volume more susceptible to conflicts.
 
+<div class="note">
+
+The in-tree NFS provisioner does not support user namespaces.
+
+</div>
+
 - [Mounting NFS shares](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/managing_file_systems/mounting-nfs-shares_managing-file-systems)
 
 # Provisioning

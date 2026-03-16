@@ -78,23 +78,23 @@ If your CSI driver is not listed in the following table, you must follow the ins
 
 For a list of third-party-certified CSI drivers, see the *Red Hat ecosystem portal* under *Additional resources*.
 
-| CSI driver                                         | CSI volume snapshots | CSI volume group snapshots <sup>\[1\]</sup> | CSI cloning        | CSI resize         | Inline ephemeral volumes |
-|----------------------------------------------------|----------------------|---------------------------------------------|--------------------|--------------------|--------------------------|
-| AWS EBS                                            | ✅                   |                                             |                    | ✅                 |                          |
-| AWS EFS                                            |                      |                                             |                    |                    |                          |
-| Google Compute Platform (GCP) persistent disk (PD) | ✅                   |                                             | ✅<sup>\[2\]</sup> | ✅                 |                          |
-| GCP Filestore                                      | ✅                   |                                             |                    | ✅                 |                          |
-| IBM Power® Virtual Server Block                    |                      |                                             |                    | ✅                 |                          |
-| IBM Cloud® Block                                   | ✅<sup>\[3\]</sup>   |                                             |                    | ✅<sup>\[3\]</sup> |                          |
-| LVM Storage                                        | ✅                   |                                             | ✅                 | ✅                 |                          |
-| Microsoft Azure Disk                               | ✅                   |                                             | ✅                 | ✅                 |                          |
-| Microsoft Azure Stack Hub                          | ✅                   |                                             | ✅                 | ✅                 |                          |
-| Microsoft Azure File                               | ✅                   |                                             | ✅                 | ✅                 | ✅                       |
-| OpenStack Cinder                                   | ✅                   |                                             | ✅                 | ✅                 |                          |
-| OpenShift Data Foundation                          | ✅                   | ✅                                          | ✅                 | ✅                 |                          |
-| OpenStack Manila                                   | ✅                   |                                             |                    | ✅                 |                          |
-| CIFS/SMB                                           |                      |                                             | ✅                 |                    |                          |
-| VMware vSphere                                     | ✅<sup>\[4\]</sup>   |                                             |                    | ✅<sup>\[5\]</sup> |                          |
+| CSI driver                                         | CSI volume snapshots | CSI volume group snapshots <sup>\[1\]</sup> | CSI cloning        | CSI resize         | Inline ephemeral volumes | User namespaces     |
+|----------------------------------------------------|----------------------|---------------------------------------------|--------------------|--------------------|--------------------------|---------------------|
+| AWS EBS                                            | ✅                   |                                             |                    | ✅                 |                          | ✅                  |
+| AWS EFS                                            |                      |                                             |                    |                    |                          |                     |
+| Google Compute Platform (GCP) persistent disk (PD) | ✅                   |                                             | ✅<sup>\[2\]</sup> | ✅                 |                          | ✅                  |
+| GCP Filestore                                      | ✅                   |                                             |                    | ✅                 |                          |                     |
+| IBM Power® Virtual Server Block                    |                      |                                             |                    | ✅                 |                          | ✅                  |
+| IBM Cloud® Block                                   | ✅<sup>\[3\]</sup>   |                                             |                    | ✅<sup>\[3\]</sup> |                          | ✅                  |
+| LVM Storage                                        | ✅                   |                                             | ✅                 | ✅                 |                          | ✅                  |
+| Microsoft Azure Disk                               | ✅                   |                                             | ✅                 | ✅                 |                          | ✅                  |
+| Microsoft Azure Stack Hub                          | ✅                   |                                             | ✅                 | ✅                 |                          | ✅                  |
+| Microsoft Azure File                               | ✅                   |                                             | ✅                 | ✅                 | ✅                       |                     |
+| OpenStack Cinder                                   | ✅                   |                                             | ✅                 | ✅                 |                          | ✅                  |
+| OpenShift Data Foundation                          | ✅                   | ✅                                          | ✅                 | ✅                 |                          | ✅ <sup>\[4\]</sup> |
+| OpenStack Manila                                   | ✅                   |                                             |                    | ✅                 |                          |                     |
+| CIFS/SMB                                           |                      |                                             | ✅                 |                    |                          |                     |
+| VMware vSphere                                     | ✅<sup>\[5\]</sup>   |                                             |                    | ✅<sup>\[6\]</sup> |                          | ✅<sup>\[7\]</sup>  |
 
 Supported CSI drivers and features in OpenShift Container Platform
 
@@ -118,13 +118,21 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 4\.
 
+- RBD supports user namespaces; CephFS does not.
+
+5\.
+
 - Requires VMware vSphere version 8.0 Update 1 or later, or VMware vSphere Foundation (VVF) 9, or VMware Cloud Foundation (VCF) 9, for both vCenter Server and ESXi.
 
 - Does not support fileshare volumes.
 
-5\.
+6\.
 
 - Online expansion is supported from VMware vSphere version 8.0 Update 1 and later, or VVF 9, or VCF 9.
+
+7\.
+
+- File persistent volumes (PVs), such as vSAN file service, do not support user namespaces.
 
 <!-- -->
 

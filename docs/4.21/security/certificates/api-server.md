@@ -2,7 +2,7 @@ The default API server certificate is issued by an internal OpenShift Container 
 
 <div class="note">
 
-In hosted control plane clusters, you can add as many custom certificates to your Kubernetes API Server as you need. However, do not add a certificate for the endpoint that worker nodes use to communicate with the control plane.
+In hosted control plane clusters, you can add as many custom certificates to your Kubernetes API Server as you need. However, do not add a certificate for the endpoint that worker nodes use to communicate with the control plane. For more information, see [Configuring a custom API server certificate in a hosted cluster](../../hosted_control_planes/hcp-deploy/hcp-deploy-bm.xml#hcp-custom-cert_hcp-deploy-bm).
 
 </div>
 

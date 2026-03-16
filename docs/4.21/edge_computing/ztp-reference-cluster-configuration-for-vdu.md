@@ -1171,13 +1171,12 @@ spec:
             [Service]
             Type=oneshot
             TimeoutStartSec=300
-            ExecCondition=/bin/bash -c 'systemctl is-enabled chronyd.service --quiet && exit 1 || exit 0'
             ExecStart=/usr/sbin/chronyd -n -f /etc/chrony.conf -q
             RemainAfterExit=yes
             [Install]
             WantedBy=multi-user.target
           enabled: true
-          name: sync-time-once.service
+          name: chrony-wait.service
 ```
 
 <div class="formalpara-title">
@@ -1209,13 +1208,12 @@ spec:
             [Service]
             Type=oneshot
             TimeoutStartSec=300
-            ExecCondition=/bin/bash -c 'systemctl is-enabled chronyd.service --quiet && exit 1 || exit 0'
             ExecStart=/usr/sbin/chronyd -n -f /etc/chrony.conf -q
             RemainAfterExit=yes
             [Install]
             WantedBy=multi-user.target
           enabled: true
-          name: sync-time-once.service
+          name: chrony-wait.service
 ```
 
 ## PTP

@@ -218,6 +218,10 @@ You can use Operators to package, deploy, and manage services on the control pla
 
 - Ensure applications stay in the specified state
 
+<!-- -->
+
+- [Hosted control planes overview](../hosted_control_planes/index.xml#hcp-overview)
+
 # About containerized applications for developers
 
 As a developer, you can use different tools, methods, and formats to [develop your containerized application](../architecture/understanding-development.xml#understanding-development) based on your unique requirements, for example:

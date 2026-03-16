@@ -34,6 +34,9 @@ E
 F
 [File Integrity Operator](../security/file_integrity_operator/file-integrity-operator-release-notes.xml#file-integrity-operator-release-notes-v0)
 
+H
+[Hosted control planes](../hosted_control_planes/hcp-release-notes.xml#hcp-release-notes)
+
 K
 [Kube Descheduler Operator](../nodes/scheduling/descheduler/nodes-descheduler-release-notes.xml#nodes-descheduler-release-notes)
 

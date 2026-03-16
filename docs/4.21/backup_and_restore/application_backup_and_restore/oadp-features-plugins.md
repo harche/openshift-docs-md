@@ -173,7 +173,7 @@ OpenShift API for Data Protection (OADP) is platform neutral. The information th
 
 - OADP 1.4.6 was tested successfully against OpenShift Container Platform 4.14, 4.15, 4.16, and 4.17 for both IBM Power® and IBM Z®. The sections that follow give testing and support information for OADP 1.4.6 in terms of backup locations for these systems.
 
-- OADP 1.5.4 was tested successfully against OpenShift Container Platform 4.19 for both IBM Power® and IBM Z®. The sections that follow give testing and support information for OADP 1.5.4 in terms of backup locations for these systems.
+- OADP 1.5.5 was tested successfully against OpenShift Container Platform 4.19 for both IBM Power® and IBM Z®. The sections that follow give testing and support information for OADP 1.5.5 in terms of backup locations for these systems.
 
 ## OADP support for target backup locations using IBM Power
 
@@ -181,7 +181,7 @@ OpenShift API for Data Protection (OADP) is platform neutral. The information th
 
 - IBM Power® running with OpenShift Container Platform 4.14, 4.15, 4.16, and 4.17, and OADP 1.4.6 was tested successfully against an AWS S3 backup location target. Although the test involved only an AWS S3 target, Red Hat supports running IBM Power® with OpenShift Container Platform 4.14, 4.15, 4.16, and 4.17, and OADP 1.4.6 against all S3 backup location targets, which are not AWS, as well.
 
-- IBM Power® running with OpenShift Container Platform 4.19 and OADP 1.5.4 was tested successfully against an AWS S3 backup location target. Although the test involved only an AWS S3 target, Red Hat supports running IBM Power® with OpenShift Container Platform 4.19 and OADP 1.5.4 against all S3 backup location targets, which are not AWS, as well.
+- IBM Power® running with OpenShift Container Platform 4.19 and OADP 1.5.5 was tested successfully against an AWS S3 backup location target. Although the test involved only an AWS S3 target, Red Hat supports running IBM Power® with OpenShift Container Platform 4.19 and OADP 1.5.5 against all S3 backup location targets, which are not AWS, as well.
 
 ## OADP testing and support for target backup locations using IBM Z
 
@@ -189,7 +189,7 @@ OpenShift API for Data Protection (OADP) is platform neutral. The information th
 
 - IBM Z® running with OpenShift Container Platform 4.14, 4.15, 4.16, and 4.17, and 1.4.6 was tested successfully against an AWS S3 backup location target. Although the test involved only an AWS S3 target, Red Hat supports running IBM Z® with OpenShift Container Platform 4.14, 4.15, 4.16, and 4.17, and 1.4.6 against all S3 backup location targets, which are not AWS, as well.
 
-- IBM Z® running with OpenShift Container Platform 4.19 and OADP 1.5.4 was tested successfully against an AWS S3 backup location target. Although the test involved only an AWS S3 target, Red Hat supports running IBM Z® with OpenShift Container Platform 4.19 and OADP 1.5.4 against all S3 backup location targets, which are not AWS, as well.
+- IBM Z® running with OpenShift Container Platform 4.19 and OADP 1.5.5 was tested successfully against an AWS S3 backup location target. Although the test involved only an AWS S3 target, Red Hat supports running IBM Z® with OpenShift Container Platform 4.19 and OADP 1.5.5 against all S3 backup location targets, which are not AWS, as well.
 
 ### Known issue of OADP using IBM Power® and IBM Z® platforms
 

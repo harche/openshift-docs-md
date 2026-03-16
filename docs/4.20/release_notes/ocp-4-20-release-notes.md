@@ -1836,6 +1836,46 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHBA-2026:2987 - OpenShift Container Platform 4.17.15 fixed issues advisory
+
+Issued: 25 February 2026
+
+OpenShift Container Platform release 4.17.15 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026-2987](https://access.redhat.com/errata/RHSA-2026:2987) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:2980](https://access.redhat.com/errata/RHBA-2026:2980) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.20.15 --pullspecs
+```
+
+### Enhancements
+
+The following enhancements are fixed for this release:
+
+- With this update, the system ensures that the `HostedControlPlane` and `HostedCluster` become available only after all control plane parts have successfully rolled out. This is accomplished by using the `ControlPlaneComponent` resource to track the rollout status of each control plane part. This enhancement improves the reliability and accuracy of the system’s availability reporting, providing a more secure user experience. By accurately tracking the rollout status, the system reduces the risk of unexpected issues during the initial provisioning of a `HostedCluster`. ([OCPBUGS-74775](https://issues.redhat.com/browse/OCPBUGS-74775))
+
+### Fixed issues
+
+The following issues are fixed for this release:
+
+- Before this update, a problem with signal handling in the `keepalived` container caused an unnecessary delaty in failover when the nodes were restarted. As a consequence, access to the API and ingress services was disrupted. With this release, the signal handling is fixed so failover occurs immediately. As a result, disruption to the API and ingress services is minimized. ([OCPBUGS-69706](https://issues.redhat.com/browse/OCPBUGS-69706))
+
+- Before this update, during the cluster deletion got stuck during the inspection phase due to a power off stage transition. As a consequence, the cluster was not deleted. With this release, the BareMetal host (BMH) is prevented from getting stuck during deletion in a ZTP environment. As a result, the cluster removal is prevented from getting stuck during the inspection phase, which improves the efficiency of the ZTP environment. ([OCPBUGS-74987](https://issues.redhat.com/browse/OCPBUGS-74987))
+
+- Before this update, a duplicate channel in catalog.json caused a mirroring failure. As a consequence, mirroring operation failed for some Operators due to a duplicate channel error. With this release, the mirroring issue is fixed. As a result, mirroring to enclaves succeeds without duplicate channel errors. ([OCPBUGS-75007](https://issues.redhat.com/browse/OCPBUGS-75007))
+
+- Before this update, the overflow menu on the **Subscription details** page was empty, which affected user navigation. With this update, the issue is resolved and the menu is populated correctly with relevant actions.([OCPBUGS-75880](https://issues.redhat.com/browse/OCPBUGS-75880))
+
+- Before this update, the Security Context Constraints(SCC) additionally set `readOnlyRootFilesystem: true`. As a consequence, read-only file system errors occurred. With this release, by default, SSC sets the `readOnlyRootFilesystem` value to false. As a result, read-only file system errors do not occur. ([OCPBUGS-75933](https://issues.redhat.com/browse/OCPBUGS-75933))
+
+- Before this update, the `collect-profiles` job was affected by maintenance difficulties, causing confusion for customers and support engineers during troubleshooting. With this release, the `collect-profiles` job is removed, improving user experience and reducing maintenance effort. ([OCPBUGS-76335](https://issues.redhat.com/browse/OCPBUGS-76335))
+
+### Updating
+
+To update an OpenShift Container Platform 4.20 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHSA-2026:2119 - OpenShift Container Platform 4.17.14 fixed issues advisory
 
 Issued: 11 February 2026

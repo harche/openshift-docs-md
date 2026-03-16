@@ -301,23 +301,30 @@ As an administrator, you can navigate to **Traffic flows** table to see network 
 
 3.  Click on each row to get the corresponding flow information.
 
-## Configuring advanced options for the Traffic flows view
+## Traffic flow display settings
 
-Customize the **Traffic flows** view by adjusting row density, selecting specific data columns, and exporting filtered flow data for external analysis.
+The **Traffic flows** view contains settings to customize the display density, data columns, and data export options.
 
-You can customize and export the view by using **Show advanced options**. You can set the row size by using the **Display options** drop-down menu. The default value is **Normal**.
+### Display options
 
-### Managing columns
+The following elements are available in the **Traffic flows** view:
 
-You can select the required columns to be displayed, and reorder them. To manage columns, click **Manage columns**.
+**Show advanced options**
+Specifies a menu to customize and export the current view.
 
-### Exporting the traffic flow data
+**Display options** drop-down
+Specifies the row size for the data table. The default value is **Normal**.
 
-You can export data from the **Traffic flows** view.
+**Manage columns**
+Specifies a dialog to select and reorder the columns displayed in the **Traffic flows** table.
+
+## Exporting traffic flow data
+
+Export network flow data from the **Traffic flows** view to a CSV file for external analysis or reporting.
 
 1.  Click **Export data**.
 
-2.  In the pop-up window, you can select the **Export all data** checkbox to export all the data, and clear the checkbox to select the required fields to be exported.
+2.  In the window, select the **Export all data** checkbox to export all the data, and clear the checkbox to select the required fields to be exported.
 
 3.  Click **Export**.
 
@@ -588,23 +595,23 @@ You can track RTT by editing the `FlowCollector` to the specifications in the fo
 
 </div>
 
-When you refresh the **Network Traffic** page, the **Overview**, **Traffic Flow**, and **Topology** views display new information about RTT:
+After the **Network Traffic** page is refreshed, the **Overview**, **Traffic flows**, and **Topology** views display RTT information.
 
-1.  In the **Overview**, select new choices in **Manage panels** to choose which graphical visualizations of RTT to display.
+1.  In the **Overview** view, click **Manage panels** to select the RTT graphical visualizations to display.
 
-2.  In the **Traffic flows** table, the **Flow RTT** column can be seen, and you can manage display in **Manage columns**.
+2.  In the **Traffic flows** table, verify that the **Flow RTT** column is visible by default. To manage columns, click **Manage columns**.
 
-3.  In the **Traffic Flows** view, you can also expand the side panel to view more information about RTT.
+3.  In the **Traffic flows** view, expand the side panel to view RTT metadata:
 
-    1.  Click the **Common** filters → **Protocol**.
+    1.  Filter the flow data for the **TCP** protocol by entering `protocol=TCP` in the filter search bar.
 
-    2.  Filter the network flow data based on **TCP**, **Ingress** direction, and look for **FlowRTT** values greater than 10,000,000 nanoseconds (10ms).
+    2.  Verify that all TCP filtered flows have **FlowRTT** values greater than `0`.
 
-    3.  Remove the **Protocol** filter.
+    3.  Filter for **FlowRTT** values greater than `10,000,000` nanoseconds (10 ms) by entering `time_flow_rtt>=10000000` in the filter search bar.
 
-    4.  Filter for **Flow RTT** values greater than 0 in the **Common** filters.
+    4.  Remove the filters.
 
-4.  In the **Topology** view, click the Display option dropdown. Then click **RTT** in the **edge labels** drop-down list.
+4.  In the **Topology** view, click the **Display** option drop-down menu. In the **Edge labels** list, select **RTT**.
 
 ## Working with the eBPF Manager Operator
 
@@ -997,17 +1004,17 @@ You can edit the `FlowCollector` to view information about network traffic event
 
 2.  You should see the new column, **Network Events**, where you can view information about impacts of one of the following network APIs you have enabled: `NetworkPolicy`, `AdminNetworkPolicy`, `BaselineNetworkPolicy`, `UserDefinedNetwork` isolation, multicast, or egress firewalls.
 
-An example of the kind of events you could see in this column is as follows:
+    An example of the kind of events you could see in this column is as follows:
 
-<div class="formalpara-title">
+    <div class="formalpara-title">
 
-**Example of Network Events output**
+    **Example of Network Events output**
 
-</div>
+    </div>
 
-``` text
-<Dropped_or_Allowed> by <network_event_and_event_name>, direction <Ingress_or_Egress>
-```
+    ``` text
+    <Dropped_or_Allowed> by <network_event_and_event_name>, direction <Ingress_or_Egress>
+    ```
 
 - [Enabling feature sets using the CLI](../../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features-cli_nodes-cluster-enabling-features)
 

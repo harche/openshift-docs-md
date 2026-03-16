@@ -170,42 +170,7 @@ Configure the `FlowMetric` API to create custom Prometheus metrics by mapping fl
 
 4.  Click **Create FlowMetric**.
 
-5.  Configure the `FlowMetric` resource, similar to the following sample configurations:
-
-    <div class="formalpara-title">
-
-    **Generate a metric that tracks ingress bytes received from cluster external sources**
-
-    </div>
-
-    ``` yaml
-    apiVersion: flows.netobserv.io/v1alpha1
-    kind: FlowMetric
-    metadata:
-      name: flowmetric-cluster-external-ingress-traffic
-      namespace: netobserv
-    spec:
-      metricName: cluster_external_ingress_bytes_total
-      type: Counter
-      valueField: Bytes
-      direction: Ingress
-      labels: [DstK8S_HostName,DstK8S_Namespace,DstK8S_OwnerName,DstK8S_OwnerType]
-      filters:
-      - field: SrcSubnetLabel
-        matchType: Absence
-    ```
-
-    - The `FlowMetric` resources need to be created in the namespace defined in the `FlowCollector` `spec.namespace`, which is `netobserv` by default.
-
-    - The name of the Prometheus metric, which in the web console appears with the prefix `netobserv-<metricName>`.
-
-    - The `type` specifies the type of metric. The `Counter` `type` is useful for counting bytes or packets.
-
-    - The direction of traffic to capture. If not specified, both ingress and egress are captured, which can lead to duplicated counts.
-
-    - Labels define what the metrics look like and the relationship between the different entities and also define the metrics cardinality. For example, `SrcK8S_Name` is a high cardinality metric.
-
-    - Refines results based on the listed criteria. In this example, selecting only the cluster external traffic is done by matching only flows where `SrcSubnetLabel` is absent. This assumes the subnet labels feature is enabled (via `spec.processor.subnetLabels`), which is done by default.
+5.  Configure the `FlowMetric` resource. See "Custom metrics configuration examples".
 
 <!-- -->
 
@@ -213,46 +178,75 @@ Configure the `FlowMetric` API to create custom Prometheus metrics by mapping fl
 
 2.  In the **Expression** field, type the metric name to view the corresponding result. You can also enter an expression, such as `topk(5, sum(rate(netobserv_cluster_external_ingress_bytes_total{DstK8S_Namespace="my-namespace"}[2m])) by (DstK8S_HostName, DstK8S_OwnerName, DstK8S_OwnerType))`
 
-    <div class="formalpara-title">
+## Custom metrics configuration examples
 
-    **Show RTT latency for cluster external ingress traffic**
+To monitor specific network behaviors not covered by default metrics, such as external traffic volume or latency spikes, use the `FlowMetric` custom resource (CR). These examples provide the configuration needed to generate targeted Prometheus metrics from network flows.
 
-    </div>
+### Tracking ingress bytes from cluster external sources
 
-    ``` yaml
-    apiVersion: flows.netobserv.io/v1alpha1
-    kind: FlowMetric
-    metadata:
-      name: flowmetric-cluster-external-ingress-rtt
-      namespace: netobserv
-    spec:
-      metricName: cluster_external_ingress_rtt_seconds
-      type: Histogram
-      valueField: TimeFlowRttNs
-      direction: Ingress
-      labels: [DstK8S_HostName,DstK8S_Namespace,DstK8S_OwnerName,DstK8S_OwnerType]
-      filters:
-      - field: SrcSubnetLabel
-        matchType: Absence
-      - field: TimeFlowRttNs
-        matchType: Presence
-      divider: "1000000000"
-      buckets: [".001", ".005", ".01", ".02", ".03", ".04", ".05", ".075", ".1", ".25", "1"]
-    ```
+To measure the volume of data entering the cluster from external networks, use the following `FlowMetric` configuration. This metric helps identify potential bandwidth issues or unexpected external data transfer costs.
 
-    - The `FlowMetric` resources need to be created in the namespace defined in the `FlowCollector` `spec.namespace`, which is `netobserv` by default.
+``` yaml
+apiVersion: flows.netobserv.io/v1alpha1
+kind: FlowMetric
+metadata:
+  name: flowmetric-cluster-external-ingress-traffic
+  namespace: netobserv
+spec:
+  metricName: cluster_external_ingress_bytes_total
+  type: Counter
+  valueField: Bytes
+  direction: Ingress
+  labels: [DstK8S_HostName,DstK8S_Namespace,DstK8S_OwnerName,DstK8S_OwnerType]
+  filters:
+  - field: SrcSubnetLabel
+    matchType: Absence
+```
 
-    - The `type` specifies the type of metric. The `Histogram` `type` is useful for a latency value (`TimeFlowRttNs`).
+- The `FlowMetric` resources need to be created in the namespace defined in the `FlowCollector` `spec.namespace`, which is `netobserv` by default.
 
-    - Since the Round-trip time (RTT) is provided as nanos in flows, use a divider of 1 billion to convert into seconds, which is standard in Prometheus guidelines.
+- The name of the Prometheus metric, which in the web console appears with the prefix `netobserv-<metricName>`.
 
-    - The custom buckets specify precision on RTT, with optimal precision ranging between 5ms and 250ms.
+- The `type` specifies the type of metric. The `Counter` `type` is useful for counting bytes or packets.
 
-<!-- -->
+- The direction of traffic to capture. If not specified, both ingress and egress are captured, which can lead to duplicated counts.
 
-1.  Once the pods refresh, navigate to **Observe** → **Metrics**.
+- Labels define what the metrics look like and the relationship between the different entities and also define the metrics cardinality. For example, `SrcK8S_Name` is a high cardinality metric.
 
-2.  In the **Expression** field, you can type the metric name to view the corresponding result.
+- Refines results based on the listed criteria. In this example, selecting only the cluster external traffic is done by matching only flows where `SrcSubnetLabel` is absent. This assumes the subnet labels feature is enabled (via `spec.processor.subnetLabels`), which is done by default.
+
+### Monitoring RTT latency for cluster external ingress traffic
+
+To analyze the performance of external connections and identify high-latency paths, use the following `FlowMetric` configuration. This metric converts nanoseconds to seconds to align with standard Prometheus latency dashboards.
+
+``` yaml
+apiVersion: flows.netobserv.io/v1alpha1
+kind: FlowMetric
+metadata:
+  name: flowmetric-cluster-external-ingress-rtt
+  namespace: netobserv
+spec:
+  metricName: cluster_external_ingress_rtt_seconds
+  type: Histogram
+  valueField: TimeFlowRttNs
+  direction: Ingress
+  labels: [DstK8S_HostName,DstK8S_Namespace,DstK8S_OwnerName,DstK8S_OwnerType]
+  filters:
+  - field: SrcSubnetLabel
+    matchType: Absence
+  - field: TimeFlowRttNs
+    matchType: Presence
+  divider: "1000000000"
+  buckets: [".001", ".005", ".01", ".02", ".03", ".04", ".05", ".075", ".1", ".25", "1"]
+```
+
+- The `FlowMetric` resources need to be created in the namespace defined in the `FlowCollector` `spec.namespace`, which is `netobserv` by default.
+
+- The `type` specifies the type of metric. The `Histogram` `type` is useful for a latency value (`TimeFlowRttNs`).
+
+- Since the Round-trip time (RTT) is provided as nanos in flows, use a divider of 1 billion to convert into seconds, which is standard in Prometheus guidelines.
+
+- The custom buckets specify precision on RTT, with optimal precision ranging between 5ms and 250ms.
 
 # Creating metrics from nested or array fields in the Traffic flows table
 
@@ -347,41 +341,7 @@ You can view custom charts as an administrator in the **Dashboard** menu.
 
 4.  Click **Create FlowMetric**.
 
-5.  Configure the `FlowMetric` resource, similar to the following sample configurations:
-
-    <div class="formalpara-title">
-
-    **Chart for tracking ingress bytes received from cluster external sources**
-
-    </div>
-
-    ``` yaml
-    apiVersion: flows.netobserv.io/v1alpha1
-    kind: FlowMetric
-    metadata:
-      name: flowmetric-cluster-external-ingress-traffic
-      namespace: netobserv
-    # ...
-      charts:
-      - dashboardName: Main
-        title: External ingress traffic
-        unit: Bps
-        type: SingleStat
-        queries:
-        - promQL: "sum(rate($METRIC[2m]))"
-          legend: ""
-      - dashboardName: Main
-        sectionName: External
-        title: Top external ingress traffic per workload
-        unit: Bps
-        type: StackArea
-        queries:
-        - promQL: "sum(rate($METRIC{DstK8S_Namespace!=\"\"}[2m])) by (DstK8S_Namespace, DstK8S_OwnerName)"
-          legend: "{{DstK8S_Namespace}} / {{DstK8S_OwnerName}}"
-    # ...
-    ```
-
-    - The `FlowMetric` resources need to be created in the namespace defined in the `FlowCollector` `spec.namespace`, which is `netobserv` by default.
+5.  Configure the `FlowMetric` resource. See "Flowmetric chart configuration examples".
 
 <!-- -->
 
@@ -395,11 +355,45 @@ You can view custom charts as an administrator in the **Dashboard** menu.
 
 For more information about the query language, refer to the [Prometheus documentation](https://prometheus.io/docs/prometheus/latest/querying/basics/).
 
-<div class="formalpara-title">
+## Flowmetric chart configuration examples
 
-**Chart for RTT latency for cluster external ingress traffic**
+These `FlowMetric` custom resource examples demonstrate how to define charts in the OpenShift Container Platform web console for tracking external ingress traffic and round-trip time (RTT) latency.
 
-</div>
+### Ingress bytes chart for cluster external sources
+
+Use the following configuration to track the rate of ingress traffic from cluster external sources. These charts help identify bandwidth usage per workload.
+
+``` yaml
+apiVersion: flows.netobserv.io/v1alpha1
+kind: FlowMetric
+metadata:
+  name: flowmetric-cluster-external-ingress-traffic
+  namespace: netobserv
+# ...
+  charts:
+  - dashboardName: Main
+    title: External ingress traffic
+    unit: Bps
+    type: SingleStat
+    queries:
+    - promQL: "sum(rate($METRIC[2m]))"
+      legend: ""
+  - dashboardName: Main
+    sectionName: External
+    title: Top external ingress traffic per workload
+    unit: Bps
+    type: StackArea
+    queries:
+    - promQL: "sum(rate($METRIC{DstK8S_Namespace!=\"\"}[2m])) by (DstK8S_Namespace, DstK8S_OwnerName)"
+      legend: "{{DstK8S_Namespace}} / {{DstK8S_OwnerName}}"
+# ...
+```
+
+- The `FlowMetric` resources need to be created in the namespace defined in the `FlowCollector` `spec.namespace`, which is `netobserv` by default.
+
+### RTT latency chart for cluster external ingress traffic
+
+Use the following configuration to monitor round-trip time (RTT) for cluster external ingress traffic. These examples use the `histogram_quantile` function to display the 50th and 99th percentiles (p50 and p99).
 
 ``` yaml
 apiVersion: flows.netobserv.io/v1alpha1
@@ -439,19 +433,13 @@ metadata:
 
 - Using a different `dashboardName` creates a new dashboard that is prefixed with `Netobserv`. For example, **Netobserv / \<dashboard_name\>**.
 
-This example uses the `histogram_quantile` function to show `p50` and `p99`.
+### Calculate histogram averages
 
 You can show averages of histograms by dividing the metric, `$METRIC_sum`, by the metric, `$METRIC_count`, which are automatically generated when you create a histogram. With the preceding example, the Prometheus query to do this is as follows:
 
 ``` yaml
 promQL: "(sum(rate($METRIC_sum{DstK8S_Namespace!=\"\"}[2m])) by (DstK8S_Namespace,DstK8S_OwnerName) / sum(rate($METRIC_count{DstK8S_Namespace!=\"\"}[2m])) by (DstK8S_Namespace,DstK8S_OwnerName))*1000"
 ```
-
-1.  Once the pods refresh, navigate to **Observe** → **Dashboards**.
-
-2.  Search for the **NetObserv / Main** dashboard. View the new panel under the **NetObserv / Main** dashboard, or optionally a dashboard name that you create.
-
-For more information about the query language, refer to the [Prometheus documentation](https://prometheus.io/docs/prometheus/latest/querying/basics/).
 
 # Detecting SYN flooding using the FlowMetric API and TCP flags
 

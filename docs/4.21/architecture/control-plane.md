@@ -166,6 +166,10 @@ The `installer-*` and `revision-pruner-*` control plane pods must run with root 
 
 - `openshift-kube-scheduler`
 
+<!-- -->
+
+- [Hosted control planes overview](../hosted_control_planes/index.xml#hcp-overview)
+
 # Operators in OpenShift Container Platform
 
 Operators are among the most important components of OpenShift Container Platform. They are the preferred method of packaging, deploying, and managing services on the control plane. They can also provide advantages to applications that users run.

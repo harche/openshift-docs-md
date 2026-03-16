@@ -12,6 +12,8 @@ Not all file systems currently support ID-mapped mounts, such as Network File Sy
 
 </div>
 
+To check user namespaces support for storage options, see [CSI drivers supported by OpenShift Container Platform](../../storage/container_storage_interface/persistent-storage-csi.xml#csi-drivers-supported_persistent-storage-csi).
+
 # Configuring Linux user namespace support
 
 You can configure Linux user namespace by setting the `hostUsers` parameter to `false` in the pod spec, and a few other configurations, as shown in the following procedure.

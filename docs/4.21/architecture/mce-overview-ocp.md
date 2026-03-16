@@ -8,7 +8,7 @@ One of the challenges of scaling Kubernetes environments is managing the lifecyc
 
 When you enable multicluster engine on OpenShift Container Platform, you gain the following capabilities:
 
-- Hosted control planes, which is a feature that is based on the HyperShift project. With a centralized hosted control plane, you can operate OpenShift Container Platform clusters in a hyperscale manner.
+- [Hosted control planes](../hosted_control_planes/index.xml#hcp-overview), which is a feature that is based on the HyperShift project. With a centralized hosted control plane, you can operate OpenShift Container Platform clusters in a hyperscale manner.
 
 - Hive, which provisions self-managed OpenShift Container Platform clusters to the hub and completes the initial configurations for those clusters.
 

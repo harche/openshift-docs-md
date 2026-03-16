@@ -686,7 +686,7 @@ The following table displays which volume plugins support block volumes.
 | LVM Storage                              | ✅                   | ✅                      | ✅              |
 | NFS                                      |                      |                         |                 |
 | Red Hat OpenShift Data Foundation        | ✅                   | ✅                      | ✅              |
-| CIFS/SMB                                 | ✅                   | ✅                      | ✅              |
+| CIFS/SMB                                 |                      |                         |                 |
 | VMware vSphere                           | ✅                   | ✅                      | ✅              |
 
 Block volume support

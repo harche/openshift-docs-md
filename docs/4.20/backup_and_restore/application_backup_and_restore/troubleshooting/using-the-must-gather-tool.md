@@ -1,10 +1,10 @@
-You can collect logs and information about OADP custom resources by using the `must-gather` tool. The `must-gather` data must be attached to all customer cases.
+Collect logs and information about OADP custom resources by using the `must-gather` tool. The `must-gather` data must be attached to all customer cases.
 
-The `must-gather` tool is a container and does not run all the time. The tool runs for a few minutes only after you invoke the tool by running the `must-gather` command.
+The `must-gather` tool is a container and does not run all the time. The tool runs for a few minutes only after you start the tool by running the `must-gather` command.
 
 # Using the must-gather tool
 
-You can run the `must-gather` tool with the following options. To use an option, add a flag corresponding to that option in the `must-gather` command.
+Run the `must-gather` tool with the default configuration, timeout, and insecure TLS options. To use an option, add a flag corresponding to that option in the `must-gather` command.
 
 Default configuration
 This configuration collects pod logs, OADP, and `Velero` custom resource (CR) information for all namespaces where the OADP Operator is installed.
@@ -43,7 +43,7 @@ $ oc adm must-gather --image=registry.redhat.io/oadp/oadp-mustgather-rhel9:v1.5 
       $ oc adm must-gather --image=registry.redhat.io/oadp/oadp-mustgather-rhel9:v1.5 -- /usr/bin/gather --request-timeout 1m
       ```
 
-      - In this example, the timeout is 1 minute.
+      In this example, the timeout is 1 minute.
 
     - To use the insecure TLS connection flag with the `must-gather` tool, run the following command:
 
@@ -57,7 +57,7 @@ $ oc adm must-gather --image=registry.redhat.io/oadp/oadp-mustgather-rhel9:v1.5 
       $ oc adm must-gather --image=registry.redhat.io/oadp/oadp-mustgather-rhel9:v1.5 -- /usr/bin/gather --request-timeout 15s --skip-tls
       ```
 
-      - In this example, the timeout is 15 seconds. By default, the `--skip-tls` flag value is `false`. Set the value to `true` to allow insecure TLS connections.
+      In this example, the timeout is 15 seconds. By default, the `--skip-tls` flag value is `false`. Set the value to `true` to allow insecure TLS connections.
 
 <!-- -->
 

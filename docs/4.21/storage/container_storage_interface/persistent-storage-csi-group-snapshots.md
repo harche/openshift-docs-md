@@ -324,3 +324,5 @@ To restore existing volumes to a previous state from a volume group snapshot:
 # Additional resources
 
 - [CSI volume snapshots](../../storage/container_storage_interface/persistent-storage-csi-snapshots.xml#persistent-storage-csi-snapshots)
+
+- [Enabling features sets by using feature gates](../../hosted_control_planes/hcp-using-feature-gates.xml#hcp-enable-feature-sets_hcp-using-feature-gates)

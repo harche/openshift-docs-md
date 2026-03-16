@@ -109,6 +109,10 @@ Only save a backup from a single control plane host. Do not take a backup from e
 
       </div>
 
+# Additional resources
+
+- [Recovering an unhealthy etcd cluster](../../hosted_control_planes/hcp_high_availability/hcp-recovering-etcd-cluster.xml#hcp-recovering-etcd-cluster)
+
 # Creating automated etcd backups
 
 The automated backup feature for etcd supports both recurring and single backups. Recurring backups create a cron job that starts a single backup each time the job triggers.

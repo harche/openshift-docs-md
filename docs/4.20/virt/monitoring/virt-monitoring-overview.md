@@ -4,15 +4,7 @@ Monitoring OpenShift Virtualization VM health status
 View the overall health of your OpenShift Virtualization environment in the web console by navigating to the **Home** → **Overview** page in the OpenShift Container Platform web console. The **Status** card displays the overall health of OpenShift Virtualization based on the alerts and conditions.
 
 [OpenShift Container Platform cluster checkup framework](../../virt/monitoring/virt-running-cluster-checkups.xml#virt-running-cluster-checkups)
-Run automated tests on your cluster with the OpenShift Container Platform cluster checkup framework to check the following conditions:
-
-- Network connectivity and latency between two VMs attached to a secondary network interface
-
-- VM running a Data Plane Development Kit (DPDK) workload with zero packet loss
-
-- Cluster storage is optimally configured for OpenShift Virtualization
-
-<!-- -->
+Run automated tests with the OpenShift Container Platform cluster checkup framework to ensure that your cluster, including cluster storage, is optimally configured for OpenShift Virtualization.
 
 [Prometheus queries for virtual resources](../../virt/monitoring/virt-prometheus-queries.xml#virt-prometheus-queries)
 Query vCPU, network, storage, and guest memory swapping usage and live migration progress.

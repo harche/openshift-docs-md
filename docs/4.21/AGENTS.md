@@ -246,7 +246,13 @@ Root: ./
 
 ### Hosted control planes
 
-|hosted_control_planes:{hosted-control-planes-release-notes.md}
+|hosted_control_planes:{hcp-release-notes.md,index.md,hcp-certificates.md,hcp-updating.md,hcp-authentication-authorization.md,hcp-machine-config.md,hcp-using-feature-gates.md,hcp-observability.md,hcp-networking.md,hcp-troubleshooting.md,hcp-import.md}
+|hosted_control_planes/hcp-prepare:{hcp-requirements.md,hcp-sizing-guidance.md,hcp-override-resource-util.md,hcp-cli.md,hcp-distribute-workloads.md,hcp-enable-disable.md}
+|hosted_control_planes/hcp-deploy:{hcp-deploy-aws.md,hcp-deploy-bm.md,hcp-deploy-virt.md,hcp-deploy-non-bm.md,hcp-deploy-ibmz.md,hcp-deploy-ibm-power.md,hcp-deploy-openstack.md}
+|hosted_control_planes/hcp-manage:{hcp-manage-aws.md,hcp-manage-bm.md,hcp-manage-virt.md,hcp-manage-non-bm.md,hcp-manage-ibm-power.md,hcp-manage-openstack.md}
+|hosted_control_planes/hcp-disconnected:{hcp-deploy-dc.md,hcp-deploy-dc-virt.md,hcp-deploy-dc-bm.md,disconnected-install-ibmz-hcp.md,hcp-dc-monitor.md}
+|hosted_control_planes/hcp_high_availability:{about-hcp-ha.md,hcp-recovering-etcd-cluster.md,hcp-backup-restore-on-premise.md,hcp-backup-restore-aws.md,hcp-backup-restore-virt.md,hcp-disaster-recovery-aws.md,hcp-disaster-recovery-oadp.md,hcp-disaster-recovery-oadp-auto.md}
+|hosted_control_planes/hcp-destroy:{hcp-destroy-aws.md,hcp-destroy-bm.md,hcp-destroy-virt.md,hcp-destroy-ibmz.md,hcp-destroy-ibm-power.md,hcp-destroy-openstack.md,hcp-destroy-non-bm.md}
 
 ### Nodes
 
@@ -298,7 +304,7 @@ Root: ./
 ### AI workloads
 
 |ai_workloads:{index.md}
-|ai_workloads/kueue:{about-kueue.md,release-notes.md,install-kueue.md,install-disconnected.md,rbac-permissions.md,configuring-quotas.md,managing-workloads.md,monitoring-pending-workloads.md,using-cohorts.md,configuring-fairsharing.md,gangscheduling.md,running-kueue-jobs.md,getting-support.md}
+|ai_workloads/kueue:{about-kueue.md,release-notes.md,install-kueue.md,install-disconnected.md,integrating-lws.md,integrating-jobset.md,rbac-permissions.md,configuring-quotas.md,managing-workloads.md,monitoring-pending-workloads.md,using-cohorts.md,configuring-fairsharing.md,gangscheduling.md,running-kueue-jobs.md,getting-support.md}
 |ai_workloads/leader_worker_set:{index.md,lws-release-notes.md,lws-managing.md,lws-uninstalling.md}
 |ai_workloads/jobset_operator:{index.md,jobset-release-notes.md,jobset-install.md,managing-jobset.md,jobset-uninstall.md}
 
@@ -410,7 +416,7 @@ Root: ./
 |virt/creating_vms_advanced/creating_vms_advanced_web:{virt-creating-vms-from-rh-images-overview.md,virt-golden-image-heterogeneous-clusters.md}
 |virt/creating_vms_advanced/creating_vms_advanced_web:{virt-creating-vms-from-web-images.md,virt-creating-vms-uploading-images.md,virt-cloning-vms.md}
 |virt/creating_vms_advanced/creating_vms_cli:{virt-creating-vms-from-cli.md,virt-creating-vms-from-container-disks.md,virt-creating-vms-by-cloning-pvcs.md}
-|virt/managing_vms:{virt-list-vms.md,virt-installing-qemu-guest-agent.md,virt-accessing-vm-consoles.md,virt-accessing-vm-ssh.md,virt-edit-vms.md,virt-edit-boot-order.md,virt-delete-vms.md,virt-enabling-disabling-vm-delete-protection.md,virt-exporting-vms.md,virt-manage-vmis.md,virt-controlling-vm-states.md,virt-using-vtpm-devices.md,virt-managing-vms-openshift-pipelines.md,virt-migrating-vms-in-single-cluster-to-different-storage-class.md}
+|virt/managing_vms:{virt-list-vms.md,virt-installing-qemu-guest-agent.md,virt-accessing-vm-consoles.md,virt-accessing-vm-ssh.md,virt-customize-web-console.md,virt-edit-vms.md,virt-edit-boot-order.md,virt-delete-vms.md,virt-enabling-disabling-vm-delete-protection.md,virt-exporting-vms.md,virt-manage-vmis.md,virt-controlling-vm-states.md,virt-using-vtpm-devices.md,virt-managing-vms-openshift-pipelines.md,virt-migrating-vms-in-single-cluster-to-different-storage-class.md}
 |virt/managing_vms/advanced_vm_management:{virt-working-with-resource-quotas-for-vms.md,virt-understanding-aaq-operator.md,virt-specifying-nodes-for-vms.md,virt-configuring-default-cpu-model.md,virt-uefi-mode-for-vms.md,virt-configuring-pxe-booting.md,virt-using-huge-pages-with-vms.md,virt-dedicated-resources-vm.md,virt-schedule-vms.md,virt-configuring-pci-passthrough.md,virt-configuring-virtual-gpus.md,virt-configuring-usb-host-passthrough.md,virt-enabling-descheduler-evictions.md,virt-high-availability-for-vms.md,virt-vm-control-plane-tuning.md,virt-assigning-compute-resources.md,virt-about-multi-queue.md,virt-managing-virtual-machines-by-using-openshift-gitops.md,virt-NUMA-topology.md}
 |virt/managing_vms/virtual_disks:{virt-hot-plugging-virtual-disks.md,virt-expanding-vm-disks.md,virt-configuring-shared-volumes-for-vms.md,virt-migrating-storage-class.md,virt-inserting-cd-roms-in-virtual-machines.md}
 |virt/vm_networking:{virt-networking-overview.md,virt-connecting-vm-to-default-pod-network.md,virt-connecting-vm-to-primary-udn.md,virt-connecting-vm-to-secondary-udn.md,virt-exposing-vm-with-service.md,virt-accessing-vm-internal-fqdn.md,virt-connecting-vm-to-linux-bridge.md,virt-connecting-vm-to-sriov.md,virt-using-dpdk-with-sriov.md,virt-connecting-vm-to-ovn-secondary-network.md,virt-hot-plugging-network-interfaces.md,virt-setting-interface-link-state.md,virt-connecting-vm-to-service-mesh.md,virt-configuring-physical-networks.md,virt-dedicated-network-live-migration.md,virt-configuring-viewing-ips-for-vms.md,virt-accessing-vm-secondary-network-fqdn.md,virt-using-mac-address-pool-for-vms.md}

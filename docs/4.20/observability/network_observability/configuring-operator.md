@@ -273,17 +273,17 @@ The query language uses the following syntax:
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>Comparison operators</p></td>
-<td style="text-align: left;"><p><code>=</code> (equals),<br />
-<code>!=</code> (not equals),<br />
-<code>=~</code> (matches regexp),<br />
-<code>!~</code> (not matches regexp),<br />
-<code>&lt;</code> / <code>&lt;=</code> (less than or equal to),<br />
-<code>&gt;</code> / <code>&gt;=</code> (greater than or equal to)</p></td>
+<td style="text-align: left;"><p><code>=</code> (equals),</p>
+<p><code>!=</code> (not equals),</p>
+<p><code>=~</code> (matches regexp),</p>
+<p><code>!~</code> (not matches regexp),</p>
+<p><code>&lt;</code> / <code>&lt;=</code> (less than or equal to),</p>
+<p><code>&gt;</code> / <code>&gt;=</code> (greater than or equal to)</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>Unary operations</p></td>
-<td style="text-align: left;"><p><code>with(field)</code> (field is present),<br />
-<code>without(field)</code> (field is absent)</p></td>
+<td style="text-align: left;"><p><code>with(field)</code> (field is present),</p>
+<p><code>without(field)</code> (field is absent)</p></td>
 </tr>
 </tbody>
 </table>

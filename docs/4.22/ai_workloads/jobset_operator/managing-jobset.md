@@ -307,6 +307,12 @@ spec:
                 sleep 1000
 ```
 
+<div class="note">
+
+The `InPlaceRestart` alpha feature is not currently supported on the JobSet Operator.
+
+</div>
+
 # Configuring volume claim policies for JobSet Operator
 
 You can configure a JobSet to automatically create and manage shared persistent volume claims (PVCs) across multiple replicated jobs. This is useful for workloads that require shared access to datasets, models, or checkpoints.

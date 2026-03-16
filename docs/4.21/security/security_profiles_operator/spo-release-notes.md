@@ -20,7 +20,7 @@ The following advisory is available for the Security Profiles Operator 0.10.0: [
 
 - With the release of SPO v0.10.0, the Operator now supports Red Hat Enterprise Linux CoreOS (RHCOS) 10 containers. [CMP-4033](https://issues.redhat.com/browse/CMP-4033)
 
-- In this release of the Security Profiles Operator, the Advanced Audit Logging Framework is available as a General Availability (GA) feature. The Advanced Audit Logging Framework uses the Audit JSON Log Enricher to capture and log terminal-based command activity in Red Hat Enterprise Linux CoreOS (RHCOS) containers, including `oc rsh`, `oc exec`, and `oc debug` commands.
+- In this release of the Security Profiles Operator, the Advanced Audit Logging Framework is available as a General Availability (GA) feature. The Advanced Audit Logging Framework uses the Audit JSON Log Enricher to capture and log terminal-based command activity in Red Hat Enterprise Linux CoreOS (RHCOS) containers, including `oc rsh`, `oc exec`, and `oc debug` commands. For more details, see [Advanced Audit Logging Framework](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/security_and_compliance/security-profiles-operator#spo-audit-logging_spo-advanced).
 
 # Security Profiles Operator 0.9.0
 

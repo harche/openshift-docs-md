@@ -7,23 +7,23 @@ Prometheus
 Prometheus is a time-series database and a rule evaluation engine for metrics. Prometheus sends alerts to Alertmanager for processing.
 
 Alertmanager
-The Alertmanager service handles alerts received from Prometheus. The Alertmanager is also responsible for sending the alerts to external notification systems. For information about the OpenShift Container Platform monitoring stack, see [About OpenShift Container Platform monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/about_monitoring/about-ocp-monitoring).
+The Alertmanager service handles alerts received from Prometheus. The Alertmanager is also responsible for sending the alerts to external notification systems.
 
 # Collecting data about your environment
 
 Collecting data about your environment minimizes the time required to analyze and determine the root cause.
 
-- [Set the retention time for Prometheus metrics data](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_core_platform_monitoring/storing-and-recording-data#modifying-retention-time-and-size-for-prometheus-metrics-data_storing-and-recording-data) to a minimum of seven days.
+- You have [set the retention time for Prometheus metrics data](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_core_platform_monitoring/storing-and-recording-data#modifying-retention-time-and-size-for-prometheus-metrics-data_storing-and-recording-data) to a minimum of seven days.
 
-- [Configure the Alertmanager to capture relevant alerts and to send alert notifications to a dedicated mailbox](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_core_platform_monitoring/configuring-alerts-and-notifications) so that they can be viewed and persisted outside the cluster.
+- You have [configured the Alertmanager to capture relevant alerts and to send alert notifications to a dedicated mailbox](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_core_platform_monitoring/configuring-alerts-and-notifications) so that they can be viewed and persisted outside the cluster.
 
-- Record the exact number of affected nodes and virtual machines.
+- You have recorded the exact number of affected nodes and virtual machines.
 
-1.  [Collect must-gather data for the cluster](../../support/gathering-cluster-data.xml#support_gathering_data_gathering-cluster-data).
+1.  Collect must-gather data for the cluster.
 
 2.  [Collect must-gather data for Red Hat OpenShift Data Foundation](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/latest/html-single/troubleshooting_openshift_data_foundation/index#downloading-log-files-and-diagnostic-information_rhodf), if necessary.
 
-3.  [Collect must-gather data for OpenShift Virtualization](../../virt/support/virt-collecting-virt-data.xml#virt-using-virt-must-gather_virt-collecting-virt-data).
+3.  Collect must-gather data for OpenShift Virtualization.
 
 4.  [Collect Prometheus metrics for the cluster](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/accessing_metrics/accessing-metrics-as-an-administrator#querying-metrics-for-all-projects-with-mon-dashboard_accessing-metrics-as-an-administrator).
 
@@ -31,23 +31,23 @@ Collecting data about your environment minimizes the time required to analyze an
 
 Collecting data about malfunctioning virtual machines (VMs) minimizes the time required to analyze and determine the root cause.
 
-- Linux VMs: [Install the latest QEMU guest agent](../../virt/managing_vms/virt-installing-qemu-guest-agent.xml#virt-installing-qemu-guest-agent-on-linux-vm_virt-installing-qemu-guest-agent).
+- For Linux VMs, you have installed the latest QEMU guest agent.
 
-- Windows VMs:
+- For Windows VMs, you have:
 
-  - Record the Windows patch update details.
+  - Recorded the Windows patch update details.
 
-  - [Install the latest VirtIO drivers](https://access.redhat.com/solutions/6957701).
+  - [Installed the latest VirtIO drivers](https://access.redhat.com/solutions/6957701).
 
-  - [Install the latest QEMU guest agent](../../virt/managing_vms/virt-installing-qemu-guest-agent.xml#virt-installing-virtio-drivers-existing-windows_virt-installing-qemu-guest-agent).
+  - Installed the latest QEMU guest agent.
 
-  - If Remote Desktop Protocol (RDP) is enabled, connect by using the [desktop viewer](../../virt/managing_vms/virt-accessing-vm-consoles.xml#desktop-viewer_virt-accessing-vm-consoles) to determine whether there is a problem with the connection software.
+  - If Remote Desktop Protocol (RDP) is enabled, you have connected by using the desktop viewer to determine whether there is a problem with the connection software.
 
-1.  [Collect must-gather data for the VMs](../../virt/support/virt-collecting-virt-data.xml#virt-must-gather-options_virt-collecting-virt-data) using the `/usr/bin/gather` script.
+1.  Collect must-gather data for the VMs using the `/usr/bin/gather` script.
 
-2.  Collect screenshots of VMs that have crashed *before* you restart them.
+2.  Collect screenshots of VMs that have crashed before you restart them.
 
-3.  [Collect memory dumps from VMs](../../virt/support/virt-collecting-virt-data.xml#virt-generating-a-vm-memory-dump_virt-collecting-virt-data) *before* remediation attempts.
+3.  Collect memory dumps from VMs before remediation attempts.
 
 4.  Record factors that the malfunctioning VMs have in common. For example, the VMs have the same host or network.
 
@@ -269,3 +269,13 @@ When a virtual machine (VM) terminates unexpectedly, you can use the `virtctl me
 - [VM support overview](../../virt/support/virt-support-overview.xml#virt-support-overview)
 
 - [How to provide log files to Red Hat Support (Red Hat Knowledgebase)](https://access.redhat.com/solutions/2112)
+
+- [About OpenShift Container Platform monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/about_monitoring/about-ocp-monitoring)
+
+- [Installing the QEMU guest agent on a Linux VM](../../virt/managing_vms/virt-installing-qemu-guest-agent.xml#virt-installing-qemu-guest-agent-on-linux-vm_virt-installing-qemu-guest-agent)
+
+- [Installing VirtIO drivers from a SATA CD drive on an existing Windows VM](../../virt/managing_vms/virt-installing-qemu-guest-agent.xml#virt-installing-virtio-drivers-existing-windows_virt-installing-qemu-guest-agent)
+
+- [Connecting to the desktop viewer](../../virt/managing_vms/virt-accessing-vm-consoles.xml#desktop-viewer_virt-accessing-vm-consoles)
+
+- [Collect memory dumps from VMs](../../virt/support/virt-collecting-virt-data.xml#virt-generating-a-vm-memory-dump_virt-collecting-virt-data)
