@@ -1273,6 +1273,7 @@
 - [Red Hat OpenShift support for Windows Containers overview](windows_containers/index.md)
 - **Release notes**
   - [Red Hat OpenShift support for Windows Containers release notes](windows_containers/wmco_rn/windows-containers-release-notes.md)
+  - [Past releases](windows_containers/wmco_rn/windows-containers-release-notes-past.md)
   - [Windows Machine Config Operator prerequisites](windows_containers/wmco_rn/windows-containers-release-notes-prereqs.md)
   - [Windows Machine Config Operator known limitations](windows_containers/wmco_rn/windows-containers-release-notes-limitations.md)
 - [Getting support](windows_containers/windows-containers-support.md)
@@ -1305,13 +1306,7 @@
 - **Logging**
   - [About Logging](observability/logging/about-logging.md)
 - **Distributed Tracing**
-  - [Release notes for the Distributed Tracing Platform](observability/distr_tracing/distr-tracing-rn.md)
   - [About the Distributed Tracing Platform](observability/distr_tracing/distr-tracing-tempo-architecture.md)
-  - [Installing the Distributed Tracing Platform](observability/distr_tracing/distr-tracing-tempo-installing.md)
-  - [Configuring the Distributed Tracing Platform](observability/distr_tracing/distr-tracing-tempo-configuring.md)
-  - [Troubleshooting the Distributed Tracing Platform](observability/distr_tracing/distr-tracing-tempo-troubleshooting.md)
-  - [Upgrading the Distributed Tracing Platform](observability/distr_tracing/distr-tracing-tempo-updating.md)
-  - [Removing the Distributed Tracing Platform](observability/distr_tracing/distr-tracing-tempo-removing.md)
 - **Red Hat build of OpenTelemetry**
   - [About the Red Hat build of OpenTelemetry](observability/otel/otel-architecture.md)
 - **Network Observability**

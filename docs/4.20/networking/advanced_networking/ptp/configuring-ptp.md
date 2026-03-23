@@ -183,9 +183,13 @@ Identify PTP-capable network devices that exist in your cluster so that you can 
   ...
   ```
 
-  - The value for the `name` parameter is the same as the name of the parent node.
+  where:
 
-  - The `devices` collection includes a list of the PTP capable devices that the PTP Operator discovers for the node.
+  `-worker-0`
+  The value for the `name` parameter is the same as the name of the parent node.
+
+  `devices`
+  The `devices` collection includes a list of the PTP capable devices that the PTP Operator discovers for the node.
 
 # Configuring linuxptp services as a grandmaster clock
 
@@ -1187,11 +1191,16 @@ Use the following example `PtpConfig` CRs as the basis to configure `linuxptp` s
         GM[1742826305]:[ts2phc.0.config] ens4f0 T-GM-STATUS s2
         ```
 
-        - `ts2phc` is updating the PTP hardware clock.
+        where:
 
-        - Estimated PTP device offset between PTP device and the reference clock is 0 nanoseconds. The PTP device is in sync with the leader clock.
+        `adding tstamp <timestamp> to clock /dev/ptp<N>`
+        Indicates `ts2phc` is actively synchronizing the PTP hardware clock (PHC) by applying a specific timestamp.
 
-        - T-GM is in a locked state (s2).
+        `/dev/ptp<N> offset 0 s2 freq +0`
+        Displays the estimated offset between the PTP device and the reference; an offset of 0 and state `s2` signifies full synchronization.
+
+        `T-GM-STATUS s2`
+        Confirms the Telecom Grandmaster (T-GM) is in a locked state (`s2`), providing a stable time reference for the network.
 
 - [Configuring the PTP fast event notifications publisher](../../../networking/advanced_networking/ptp/ptp-cloud-events-consumer-dev-reference-v2.xml#cnf-configuring-the-ptp-fast-event-publisher-v2_ptp-consumer)
 
@@ -1297,7 +1306,9 @@ PtpConfig configuration options for PTP Grandmaster clock
 
 ## Grandmaster clock class sync state reference
 
-The following table describes the PTP grandmaster clock (T-GM) `gm.ClockClass` states. Clock class states categorize T-GM clocks based on their accuracy and stability with regard to the Primary Reference Time Clock (PRTC) or other timing source.
+The following table describes the PTP grandmaster clock (T-GM) `gm.ClockClass` states.
+
+Clock class states categorize T-GM clocks based on their accuracy and stability with regard to the Primary Reference Time Clock (PRTC) or other timing source.
 
 Holdover specification is the amount of time a PTP clock can maintain synchronization without receiving updates from the primary time source.
 
@@ -1313,7 +1324,9 @@ For more information, see ["Phase/time traceability information", ITU-T G.8275.1
 
 ## Intel E810 NIC hardware configuration reference
 
-Use this information to understand how to use the [Intel E810 hardware plugin](https://github.com/openshift/linuxptp-daemon/blob/release-4.16/addons/intel/e810.go) to configure the E810 network interface as PTP grandmaster clock. Hardware pin configuration determines how the network interface interacts with other components and devices in the system. The Intel E810 NIC has four connectors for external 1PPS signals: `SMA1`, `SMA2`, `U.FL1`, and `U.FL2`.
+Use this information to understand how to use the [Intel E810 hardware plugin](https://github.com/openshift/linuxptp-daemon/blob/release-4.16/addons/intel/e810.go) to configure the E810 network interface as PTP grandmaster clock.
+
+Hardware pin configuration determines how the network interface interacts with other components and devices in the system. The Intel E810 NIC has four connectors for external 1PPS signals: `SMA1`, `SMA2`, `U.FL1`, and `U.FL2`.
 
 | Hardware pin | Recommended setting | Description                                                                  |
 |--------------|---------------------|------------------------------------------------------------------------------|
@@ -1382,7 +1395,10 @@ ublxCmds:
     reportOutput: false
 ```
 
-- Measured T-GM antenna delay offset in nanoseconds. To get the required delay offset value, you must measure the cable delay using external test equipment.
+where:
+
+`"CFG-TP-ANT_CABLEDELAY,<antenna_delay_offset>"`
+Measured T-GM antenna delay offset in nanoseconds. To get the required delay offset value, you must measure the cable delay using external test equipment.
 
 The following table describes the equivalent `ubxtool` commands:
 
@@ -1575,7 +1591,7 @@ The following figure illustrates the holdover behavior in a T-GM clock with GNSS
 
 # Applying unassisted holdover for boundary clocks and time slave clocks
 
-The unassisted holdover feature enables an Intel E810-XXVDA4T Network Interface Card (NIC), configured as either a PTP boundary clock (T-BC) or a PTP time slave clock (T-TSC), to maintain highly accurate time synchronization even when the upstream timing signal is lost. This is achieved by relying on the NIC’s internal oscillator to enter a stable, controlled drift state.
+The unassisted holdover feature enables an Intel E810-XXVDA4T NIC, configured as a PTP boundary clock (T-BC) or telecom time synchronous clock (T-TSC), to maintain time synchronization when the upstream timing source becomes unavailable.
 
 The `ts2phc` service monitors the `ptp4l` instance bound to the timing receiver (TR) port. If, for example, the TR port stops operating as the time receiver, the upstream grandmaster clock (T-GM) deteriorates in quality or the link disconnects, the system enters holdover mode and reconfigures itself dynamically.
 
@@ -1962,7 +1978,9 @@ This is reported every second, where `s2` indicates it is locked, `s1` indicates
 
 # Configuring dynamic leap seconds handling for PTP grandmaster clocks
 
-The PTP Operator container image includes the latest `leap-seconds.list` file that is available at the time of release. You can configure the PTP Operator to automatically update the leap second file by using Global Positioning System (GPS) announcements.
+The PTP Operator container image includes the latest `leap-seconds.list` file that is available at the time of release.
+
+You can configure the PTP Operator to automatically update the leap second file by using Global Positioning System (GPS) announcements.
 
 Leap second information is stored in an automatically generated `ConfigMap` resource named `leap-configmap` in the `openshift-ptp` namespace. The PTP Operator mounts the `leap-configmap` resource as a volume in the `linuxptp-daemon` pod that is accessible by the `ts2phc` process.
 
@@ -2049,7 +2067,7 @@ The following procedure is provided as reference. The 4.17 version of the PTP Op
     $ oc -n openshift-ptp get configmap leap-configmap -o jsonpath='{.data.<node_name>}'
     ```
 
-    - Replace `<node_name>` with the node where you have installed and configured the PTP T-GM clock with automatic leap second management. Escape special characters in the node name. For example, `node-1\.example\.com`.
+    Replace `<node_name>` with the node where you have installed and configured the PTP T-GM clock with automatic leap second management. Escape special characters in the node name. For example, `node-1\.example\.com`.
 
     <div class="formalpara-title">
 
@@ -2367,9 +2385,13 @@ Dual NIC hardware allows you to connect each NIC to the same upstream leader clo
             phc2sysOpts: "-a -r -m -n 24 -N 8 -R 16"
         ```
 
-        - Specify the required interfaces to start `ptp4l` as a boundary clock. For example, `ens5f0` synchronizes from a grandmaster clock and `ens5f1` synchronizes connected devices.
+        where:
 
-        - Required `phc2sysOpts` values. `-m` prints messages to `stdout`. The `linuxptp-daemon` `DaemonSet` parses the logs and generates Prometheus metrics.
+        `ptp4lConf`
+        Specifies the required interfaces to start `ptp4l` as a boundary clock. For example, `ens5f0` synchronizes from a grandmaster clock and `ens5f1` synchronizes connected devices.
+
+        `phc2sysOpts: "-a -r -m -n 24 -N 8 -R 16"`
+        Sets the required `phc2sysOpts` values. `-m` prints messages to `stdout`. The `linuxptp-daemon` `DaemonSet` parses the logs and generates Prometheus metrics.
 
     2.  Create `boundary-clock-ptp-config-nic2.yaml`, removing the `phc2sysOpts` field altogether to disable the `phc2sys` service for the second NIC:
 
@@ -2391,13 +2413,13 @@ Dual NIC hardware allows you to connect each NIC to the same upstream leader clo
         ...
         ```
 
-        - Specify the required interfaces to start `ptp4l` as a boundary clock on the second NIC.
+        Specify the required interfaces to start `ptp4l` as a boundary clock on the second NIC.
 
-          <div class="note">
+        <div class="note">
 
-          You must completely remove the `phc2sysOpts` field from the second `PtpConfig` CR to disable the `phc2sys` service on the second NIC.
+        You must completely remove the `phc2sysOpts` field from the second `PtpConfig` CR to disable the `phc2sys` service on the second NIC.
 
-          </div>
+        </div>
 
 2.  Create the dual-NIC `PtpConfig` CRs by running the following commands:
 
@@ -2484,9 +2506,13 @@ Ensure that you set `spec.recommend.priority` to the same value for all three `P
             phc2sysOpts: ""
         ```
 
-        - Specify the required interfaces to start `ptp4l` as a boundary clock. For example, `ens5f0` synchronizes from a grandmaster clock and `ens5f1` synchronizes connected devices.
+        where:
 
-        - Set `phc2sysOpts` with an empty string. These values are populated from the `spec.profile.ptpSettings.haProfiles` field of the `PtpConfig` CR that configures high availability.
+        `ptp4lConf`
+        Specifies the required interfaces to start `ptp4l` as a boundary clock. For example, `ens5f0` synchronizes from a grandmaster clock and `ens5f1` synchronizes connected devices.
+
+        `phc2sysOpts: ""`
+        Sets `phc2sysOpts` with an empty string. These values are populated from the `spec.profile.ptpSettings.haProfiles` field of the `PtpConfig` CR that configures high availability.
 
     2.  Apply the `PtpConfig` CR for NIC 1 by running the following command:
 
@@ -2549,15 +2575,15 @@ Ensure that you set `spec.recommend.priority` to the same value for all three `P
                 - nodeLabel: "node-role.kubernetes.io/$mcp"
         ```
 
-        - Set the `ptp4lOpts` field to an empty string. If it is not empty, the `p4ptl` process starts with a critical error.
+        Set the `ptp4lOpts` field to an empty string. If it is not empty, the `p4ptl` process starts with a critical error.
 
-    <div class="important">
+        <div class="important">
 
-    Do not apply the high availability `PtpConfig` CR before the `PtpConfig` CRs that configure the individual NICs.
+        Do not apply the high availability `PtpConfig` CR before the `PtpConfig` CRs that configure the individual NICs.
 
-    </div>
+        </div>
 
-    1.  Apply the HA `PtpConfig` CR by running the following command:
+    2.  Apply the HA `PtpConfig` CR by running the following command:
 
         ``` terminal
         $ oc create -f ptp-config-for-ha.yaml
@@ -2861,7 +2887,9 @@ For `phc2sysOpts`, `-m` prints messages to `stdout`. The `linuxptp-daemon` `Daem
 
 ## Configuring linuxptp services as an ordinary clock with dual-port NIC redundancy
 
-You can configure `linuxptp` services (`ptp4l`, `phc2sys`) as an ordinary clock with dual-port NIC redundancy by creating a `PtpConfig` custom resource (CR) object. In a dual-port NIC configuration for an ordinary clock, if one port fails, the standby port takes over, maintaining PTP timing synchronization.
+You can configure `linuxptp` services (`ptp4l`, `phc2sys`) as an ordinary clock with dual-port NIC redundancy by creating a `PtpConfig` custom resource (CR) object.
+
+In a dual-port NIC configuration for an ordinary clock, if one port fails, the standby port takes over, maintaining PTP timing synchronization.
 
 <div class="important">
 
@@ -2911,11 +2939,16 @@ For more information about the support scope of Red Hat Technology Preview featu
     #...
     ```
 
-    - Specify the system config options for the `ptp4l` service.
+    where:
 
-    - Specify the interface configuration for the `ptp4l` service. In this example, setting `masterOnly 0` for the `ens3f2` and `ens3f3` interfaces enables both ports on the `ens3` interface to run as leader or follower clocks. In combination with the `slaveOnly 1` specification, this configuration ensures one port operates as the active ordinary clock, and the other port operates as a standby ordinary clock in the `Listening` port state.
+    `phc2sysOpts: -a -r -n 24 -N 8 -R 16 -u 0`
+    Specifies the system config options for the `phc2sys` service.
 
-    - Configures `ptp4l` to run as an ordinary clock only.
+    `ptp4lConf`
+    Specifies the interface configuration for the `ptp4l` service. In this example, setting `masterOnly 0` for the `ens3f2` and `ens3f3` interfaces enables both ports on the `ens3` interface to run as leader or follower clocks. In combination with the `slaveOnly 1` specification, this configuration ensures one port operates as the active ordinary clock, and the other port operates as a standby ordinary clock in the `Listening` port state.
+
+    `slaveOnly 1`
+    Configures `ptp4l` to run as an ordinary clock only.
 
 2.  Create the `PtpConfig` CR by running the following command:
 
@@ -3008,9 +3041,13 @@ Setting `ptpSchedulingPolicy` is optional, and is only required if you are exper
         ptpSchedulingPriority: 10
     ```
 
-    - Scheduling policy for `ptp4l` and `phc2sys` processes. Use `SCHED_FIFO` on systems that support FIFO scheduling.
+    where:
 
-    - Required. Sets the integer value 1-65 used to configure FIFO priority for `ptp4l` and `phc2sys` processes.
+    `ptpSchedulingPolicy: SCHED_FIFO`
+    Sets the scheduling policy for `ptp4l` and `phc2sys` processes. Use `SCHED_FIFO` on systems that support FIFO scheduling.
+
+    `ptpSchedulingPriority: 10`
+    Sets the integer value 1-65 used to configure FIFO priority for `ptp4l` and `phc2sys` processes.
 
 3.  Save and exit to apply the changes to the `PtpConfig` CR.
 
@@ -3125,7 +3162,7 @@ Modify the `PtpConfig` custom resource (CR) to configure basic log filtering and
     $ oc -n openshift-ptp logs <linux_daemon_container> -c linuxptp-daemon-container | grep "master offset"
     ```
 
-    - \<linux_daemon_container\> is the name of the `linuxptp-daemon` pod, for example `linuxptp-daemon-gmv2n`.
+    - `<linux_daemon_container>` is the name of the `linuxptp-daemon` pod, for example `linuxptp-daemon-gmv2n`.
 
       When you configure the `logReduce` specification, this command does not report any instances of `master offset` in the logs of the `linuxptp` daemon.
 
@@ -3223,7 +3260,7 @@ Basic log reduction effectively filters out frequent logs. However, if you want 
     $ oc -n openshift-ptp logs <linux_daemon_container> -c linuxptp-daemon-container | grep "master offset"
     ```
 
-    - \<linux_daemon_container\> is the name of the `linuxptp-daemon` pod, for example, `linuxptp-daemon-gmv2n`.
+    - `<linux_daemon_container>` is the name of the `linuxptp-daemon` pod, for example, `linuxptp-daemon-gmv2n`.
 
 # Configuring GNSS failover to NTP for time synchronization continuity
 
@@ -4539,9 +4576,13 @@ You can get the digital phase-locked loop (DPLL) firmware version for the Clock 
     fw.cgu 8032.16973825.6021
     ```
 
-    - CGU hardware revision number
+    where:
 
-    - The DPLL firmware version running in the CGU, where the DPLL firmware version is `6201`, and the DPLL model is `8032`. The string `16973825` is a shorthand representation of the binary version of the DPLL firmware version (`1.3.0.1`).
+    `cgu.id 36`
+    CGU hardware revision number.
+
+    `fw.cgu 8032.16973825.6021`
+    DPLL firmware version running in the CGU, where the DPLL firmware version is `6201`, and the DPLL model is `8032`. The string `16973825` is a shorthand representation of the binary version of the DPLL firmware version (`1.3.0.1`).
 
     <div class="note">
 

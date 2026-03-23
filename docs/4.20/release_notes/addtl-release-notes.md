@@ -55,7 +55,7 @@ O
 
 [Red Hat OpenShift Dev Spaces](https://docs.redhat.com/en/documentation/red_hat_openshift_dev_spaces/#Release%20Notes)
 
-[Red Hat OpenShift Distributed Tracing Platform](../observability/distr_tracing/distr-tracing-rn.xml#distr-tracing-rn)
+[Red Hat OpenShift Distributed Tracing Platform](https://docs.redhat.com/en/documentation/red_hat_openshift_distributed_tracing_platform/latest/html/release_notes_for_the_distributed_tracing_platform/distr-tracing-rn)
 
 [Red Hat OpenShift GitOps](https://docs.redhat.com/en/documentation/red_hat_openshift_gitops/#Get%20started)
 

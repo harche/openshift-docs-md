@@ -1,20 +1,48 @@
 You can perform minor version and patch updates on an OpenShift Container Platform cluster by using the OpenShift CLI (`oc`).
 
-# Prerequisites
+# About updating single node OpenShift Container Platform
 
-- Have access to the cluster as a user with `admin` privileges. See [Using RBAC to define and apply permissions](../../authentication/using-rbac.xml#using-rbac).
+You can update a single-node OpenShift Container Platform cluster by using either the console or CLI.
 
-- Have a recent [etcd backup](../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd) in case your update fails and you must restore your cluster to a previous state.
+However, note the following limitations:
 
-- Have a recent [Container Storage Interface (CSI) volume snapshot](../../backup_and_restore/application_backup_and_restore/installing/oadp-backup-restore-csi-snapshots.xml) in case you need to restore persistent volumes due to a pod failure.
+- The prerequisite to pause the `MachineHealthCheck` resources is not required because there is no other node to perform the health check.
+
+- Restoring a single-node OpenShift Container Platform cluster using an etcd backup is not officially supported. However, it is good practice to perform the etcd backup in case your update fails. If your control plane is healthy, you might be able to restore your cluster to a previous state by using the backup.
+
+- Updating a single-node OpenShift Container Platform cluster requires downtime and can include an automatic reboot. The amount of downtime depends on the update payload, as described in the following scenarios:
+
+  - If the update payload contains an operating system update, which requires a reboot, the downtime is significant and impacts cluster management and user workloads.
+
+  - If the update contains machine configuration changes that do not require a reboot, the downtime is less, and the impact on the cluster management and user workloads is lessened. In this case, the node draining step is skipped with single-node OpenShift Container Platform because there is no other node in the cluster to reschedule the workloads to.
+
+  - If the update payload does not contain an operating system update or machine configuration changes, a short API outage occurs and resolves quickly.
+
+<div class="important">
+
+There are conditions, such as bugs in an updated package, that can cause the single node to not restart after a reboot. In this case, the update does not rollback automatically.
+
+</div>
+
+- [About the Machine Config Operator](../../architecture/control-plane.xml#about-machine-config-operator_control-plane)
+
+# Prerequisites for a cluster update
+
+You must satisfy the following prerequisites before updating a cluster using the CLI.
+
+- Have access to the cluster as a user with `admin` privileges. See "Using RBAC to define and apply permissions" for more information.
+
+- Have a recent etcd backup in case your update fails and you must restore your cluster to a previous state.
+
+- Have a recent Container Storage Interface (CSI) volume snapshot in case you need to restore persistent volumes due to a pod failure.
 
 - Your RHEL7 workers are replaced with RHEL8 or RHCOS workers. Red Hat does not support in-place RHEL7 to RHEL8 updates for RHEL workers; those hosts must be replaced with a clean operating system install.
 
-- You have updated all Operators previously installed through Operator Lifecycle Manager (OLM) to a version that is compatible with your target release. Updating the Operators ensures they have a valid update path when the default software catalogs switch from the current minor version to the next during a cluster update. See [Updating installed Operators](../../operators/admin/olm-upgrading-operators.xml#olm-upgrading-operators) for more information on how to check compatibility and, if necessary, update the installed Operators.
+- You have updated all Operators previously installed through Operator Lifecycle Manager (OLM) to a version that is compatible with your target release. Updating the Operators ensures they have a valid update path when the default software catalogs switch from the current minor version to the next during a cluster update. See "Updating installed Operators" for more information on how to check compatibility and, if necessary, update the installed Operators.
 
 - Ensure that all machine config pools (MCPs) are running and not paused. Nodes associated with a paused MCP are skipped during the update process. You can pause the MCPs if you are performing a canary rollout update strategy.
 
-- If your cluster uses manually maintained credentials, update the cloud provider resources for the new release. For more information, including how to determine if this is a requirement for your cluster, see [Preparing to update a cluster with manually maintained credentials](../../updating/preparing_for_updates/preparing-manual-creds-update.xml#preparing-manual-creds-update).
+- If your cluster uses manually maintained credentials, update the cloud provider resources for the new release. For more information, including how to determine if this is a requirement for your cluster, see "Preparing to update a cluster with manually maintained credentials".
 
 - Ensure that you address all `Upgradeable=False` conditions so the cluster allows an update to the next minor version. An alert displays at the top of the **Cluster Settings** page when you have one or more cluster Operators that cannot be updated. You can still update to the next available patch update for the minor release you are currently on.
 
@@ -30,9 +58,19 @@ You can perform minor version and patch updates on an OpenShift Container Platfo
 
 - [Support policy for unmanaged Operators](../../architecture/architecture-installation.xml#unmanaged-operators_architecture-installation)
 
+- [Using RBAC to define and apply permissions](../../authentication/using-rbac.xml#using-rbac)
+
+- [Backing up etcd](../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd)
+
+- [Backing up persistent volumes with CSI snapshots](../../backup_and_restore/application_backup_and_restore/installing/oadp-backup-restore-csi-snapshots.xml#oadp-1-3-backing-csi-snapshots_oadp-backup-restore-csi-snapshots)
+
+- [Updating installed Operators](../../operators/admin/olm-upgrading-operators.xml#olm-upgrading-operators)
+
+- [Preparing to update a cluster with manually maintained credentials](../../updating/preparing_for_updates/preparing-manual-creds-update.xml#preparing-manual-creds-update)
+
 # Pausing a MachineHealthCheck resource
 
-During the update process, nodes in the cluster might become temporarily unavailable. In the case of worker nodes, the `MachineHealthCheck` resources might identify such nodes as unhealthy and reboot them. To avoid rebooting such nodes, pause all the `MachineHealthCheck` resources before updating the cluster.
+During the update process, nodes in the cluster might become temporarily unavailable. For worker nodes, the `MachineHealthCheck` resources might identify such nodes as unhealthy and reboot them. To avoid rebooting worker nodes, you must pause all the `MachineHealthCheck` resources before updating the cluster.
 
 <div class="note">
 
@@ -40,18 +78,18 @@ Some `MachineHealthCheck` resources might not need to be paused. If your `Machin
 
 </div>
 
-- Install the OpenShift CLI (`oc`).
+- You installed the OpenShift CLI (`oc`).
 
-1.  To list all the available `MachineHealthCheck` resources that you want to pause, run the following command:
+1.  List all of the available `MachineHealthCheck` resources that you want to pause by running the following command:
 
     ``` terminal
     $ oc get machinehealthcheck -n openshift-machine-api
     ```
 
-2.  To pause the machine health checks, add the `cluster.x-k8s.io/paused=""` annotation to the `MachineHealthCheck` resource. Run the following command:
+2.  For each `MachineHealthCheck` resource, pause the machine health check by running the following command:
 
     ``` terminal
-    $ oc -n openshift-machine-api annotate mhc <mhc-name> cluster.x-k8s.io/paused=""
+    $ oc -n openshift-machine-api annotate mhc <mhc_name> cluster.x-k8s.io/paused=""
     ```
 
     The annotated `MachineHealthCheck` resource resembles the following YAML file:
@@ -91,45 +129,19 @@ Some `MachineHealthCheck` resources might not need to be paused. If your `Machin
 
     </div>
 
-# About updating single node OpenShift Container Platform
-
-You can update, or upgrade, a single-node OpenShift Container Platform cluster by using either the console or CLI.
-
-However, note the following limitations:
-
-- The prerequisite to pause the `MachineHealthCheck` resources is not required because there is no other node to perform the health check.
-
-- Restoring a single-node OpenShift Container Platform cluster using an etcd backup is not officially supported. However, it is good practice to perform the etcd backup in case your update fails. If your control plane is healthy, you might be able to restore your cluster to a previous state by using the backup.
-
-- Updating a single-node OpenShift Container Platform cluster requires downtime and can include an automatic reboot. The amount of downtime depends on the update payload, as described in the following scenarios:
-
-  - If the update payload contains an operating system update, which requires a reboot, the downtime is significant and impacts cluster management and user workloads.
-
-  - If the update contains machine configuration changes that do not require a reboot, the downtime is less, and the impact on the cluster management and user workloads is lessened. In this case, the node draining step is skipped with single-node OpenShift Container Platform because there is no other node in the cluster to reschedule the workloads to.
-
-  - If the update payload does not contain an operating system update or machine configuration changes, a short API outage occurs and resolves quickly.
-
-<div class="important">
-
-There are conditions, such as bugs in an updated package, that can cause the single node to not restart after a reboot. In this case, the update does not rollback automatically.
-
-</div>
-
-- For information on which machine configuration changes require a reboot, see the note in [About the Machine Config Operator](../../architecture/control-plane.xml#about-machine-config-operator_control-plane).
-
 # Updating a cluster by using the CLI
 
 You can use the OpenShift CLI (`oc`) to review and request cluster updates.
 
 You can find information about available OpenShift Container Platform advisories and updates [in the errata section](https://access.redhat.com/downloads/content/290) of the Customer Portal.
 
-- Install the OpenShift CLI (`oc`) that matches the version for your updated version.
+- You installed the OpenShift CLI (`oc`) that matches the version for your updated version.
 
-- Log in to the cluster as user with `cluster-admin` privileges.
+- You are logged in to the cluster as user with `cluster-admin` privileges.
 
-- Pause all `MachineHealthCheck` resources.
+- You have paused all `MachineHealthCheck` resources.
 
-1.  View the available updates and note the version number of the update that you want to apply:
+1.  View the available updates and note the version number of the update that you want to apply by running the following command:
 
     ``` terminal
     $ oc adm upgrade recommend
@@ -161,17 +173,21 @@ You can find information about available OpenShift Container Platform advisories
 
     - You can use the `--version` flag to determine whether a specific version is recommended for your update. If there are no recommended updates, updates that have known issues might still be available.
 
-    - For details and information on how to perform a `Control Plane Only` update, please refer to the *Preparing to perform a Control Plane Only update* page, listed in the Additional resources section.
+    - For details and information on how to perform a *Control Plane Only* update, see "Performing a Control Plane Only update".
 
     </div>
 
-2.  Based on your organization requirements, set the appropriate update channel. For example, you can set your channel to `stable-4.13` or `fast-4.13`. For more information about channels, refer to *Understanding update channels and releases* listed in the Additional resources section.
+2.  Based on your organization requirements, set the appropriate update channel by running the following command. For example, you can set your channel to `stable-4.13` or `fast-4.13`. For more information about channels, see "Understanding update channels and releases".
 
     ``` terminal
     $ oc adm upgrade channel <channel>
     ```
 
-    For example, to set the channel to `stable-4.17`:
+    <div class="formalpara-title">
+
+    **Example command**
+
+    </div>
 
     ``` terminal
     $ oc adm upgrade channel stable-4.17
@@ -185,7 +201,7 @@ You can find information about available OpenShift Container Platform advisories
 
     <div class="note">
 
-    When you are ready to move to the next minor version, choose the channel that corresponds to that minor version. The sooner the update channel is declared, the more effectively the cluster can recommend update paths to your target version. The cluster might take some time to evaluate all the possible updates that are available and offer the best update recommendations to choose from. Update recommendations can change over time, as they are based on what update options are available at the time.
+    When you are ready to move to the next minor version, choose the channel that corresponds to that minor version. The sooner you declare the update channel, the more effectively the cluster can recommend update paths to your target version. The cluster might take some time to evaluate all the possible updates that are available and offer the best update recommendations to choose from. Update recommendations can change over time, as they are based on what update options are available at the time.
 
     If you cannot see an update path to your target minor version, keep updating your cluster to the latest patch release for your current version until the next minor version is available in the path.
 
@@ -193,25 +209,25 @@ You can find information about available OpenShift Container Platform advisories
 
 3.  Apply an update:
 
-    - To update to the latest version:
+    - To update to the latest version, run the following command:
 
       ``` terminal
       $ oc adm upgrade --to-latest=true
       ```
 
-    - To update to a specific version:
+    - To update to a specific version, run the following command:
 
       ``` terminal
       $ oc adm upgrade --to=<version>
       ```
 
-      - `<version>` is the update version that you obtained from the output of the `oc adm upgrade recommend` command.
+      Replace `<version>` with the update version that you obtained from the output of the `oc adm upgrade recommend` command.
 
-        <div class="important">
+      <div class="important">
 
-        When using `oc adm upgrade --help`, there is a listed option for `--force`. This is *heavily discouraged*, because using the `--force` option bypasses cluster-side guards, including release verification and precondition checks. Using `--force` does not guarantee a successful update. Bypassing guards puts the cluster at risk.
+      When using the `oc adm upgrade --help` command, there is a listed option for the `--force` flag. This is *heavily discouraged*, because using the `--force` option bypasses cluster-side guards, including release verification and precondition checks. Using the `--force` flag does not guarantee a successful update. Bypassing guards puts the cluster at risk.
 
-        </div>
+      </div>
 
 4.  If the cluster administrator evaluates the potential known risks and decides it is acceptable for the current cluster, then the administrator can waive the safety guards and proceed with the update by running the following command:
 
@@ -231,7 +247,7 @@ You can find information about available OpenShift Container Platform advisories
 
     </div>
 
-6.  After the update completes, you can confirm that the cluster version has updated to the new version:
+6.  After the update completes, confirm that the cluster version has updated to the new version by running the following command:
 
     ``` terminal
     $ oc adm upgrade
@@ -252,7 +268,7 @@ You can find information about available OpenShift Container Platform advisories
     No updates available. You may force an update to a specific release image, but doing so might not be supported and might result in downtime or data loss.
     ```
 
-7.  If you are updating your cluster to the next minor version, such as version X.y to X.(y+1), it is recommended to confirm that your nodes are updated before deploying workloads that rely on a new feature:
+7.  If you are updating your cluster to the next minor version, such as version X.y to X.(y+1), confirm that your nodes are updated before deploying workloads that rely on a new feature. Run the following command:
 
     ``` terminal
     $ oc get nodes
@@ -274,23 +290,30 @@ You can find information about available OpenShift Container Platform advisories
     ip-10-0-250-100.ec2.internal   Ready    worker   69m   v1.33.4
     ```
 
+- [Performing a Control Plane Only update](../../updating/updating_a_cluster/control-plane-only-update.xml#control-plane-only-update)
+
+- [Understanding update channels and releases](../../updating/understanding_updates/understanding-update-channels-release.xml#understanding-update-channels-releases)
+
 # Cluster update status using oc adm upgrade status
 
-When updating your cluster, the `oc adm upgrade` command returns limited information about the status of your update. The cluster administrator can use the `oc adm upgrade status` command to decouple status information from the `oc adm upgrade` command and return specific information regarding a cluster update, including the status of the control plane and worker node updates. Worker is also known as compute.
+When updating your cluster, the `oc adm upgrade` command returns limited information about the status of your update. The cluster administrator can use the `oc adm upgrade status` command to return specific information regarding a cluster update, including the status of the control plane and worker node updates. Worker is also known as compute.
 
 The `oc adm upgrade status` command is read-only and does not alter any state in your cluster.
 
-The `oc adm upgrade status` command can be used for clusters from version 4.12 up to the latest supported release.
+The `oc adm upgrade status` command can be used for clusters on versions 4.12 or later.
 
 The `oc adm upgrade status` command will output three sections, control plane update, worker nodes update, and health insights.
 
-- **Control Plane Update**: Displays details about the updating cluster control plane, contains a high-level assessment, completion status, duration estimate, or cluster operator health. The section also shows a table with control plane node update information.
+Control Plane Update
+Displays details about the updating cluster control plane, contains a high-level assessment, completion status, duration estimate, or cluster Operator health. The section also shows a table with control plane node update information.
 
-  The control plane update section can also show an additional table that lists cluster operators being updated if the `--details=operators` or `--details-all` flags are used. Please note that due the asynchronous distributed nature of OpenShift Container Platform, an operator may appear in this section more than once during the update, or not at all. The section is only shown when a Cluster Operator is observed to be updating. It is normal during an update to observe no updating Cluster Operator at certain periods; not every performed action can be assigned to an observable updating Cluster Operator.
+The control plane update section can also show an additional table that lists cluster Operators being updated if the `--details=operators` or `--details-all` flags are used. Please note that due the asynchronous distributed nature of OpenShift Container Platform, an operator may appear in this section more than once during the update, or not at all. The section is only shown when a cluster Operator is observed to be updating. It is normal during an update to observe no updating cluster Operator at certain periods; not every performed action can be assigned to an observable updating cluster Operator.
 
-- **Worker Notes Update**: Displays the worker node update information. The worker nodes section starts with a table that displays a summary of information about each worker pool configured in the cluster. Each non-empty worker pool output will show a dedicated table listing update information about nodes that belong to that pool. If a cluster does not have any worker nodes the output will not contain the worker node section. You can make the node tables show all lines by using `--details=nodes` or `--details=all`.
+Worker Notes Update
+Displays the worker node update information. The worker nodes section starts with a table that displays a summary of information about each worker pool configured in the cluster. Each non-empty worker pool output will show a dedicated table listing update information about nodes that belong to that pool. If a cluster does not have any worker nodes, the output will not contain the worker node section. You can make the node tables show all lines by using the `--details=nodes` or `--details=all` flags.
 
-- **Health Insights**: displays insights about states and events present in the cluster that may be relevant for the ongoing update. You can use `--details=health` to expand the items in this section into a more verbose form with more content such as documentation links, longer form descriptions, or cluster resources involved in the insight.
+Health Insights
+Displays insights about states and events present in the cluster that may be relevant for the ongoing update. You can use the `--details=health` flag to expand the items in this section into a more verbose form with more content such as documentation links, longer form descriptions, or cluster resources involved in the insight.
 
 <div class="note">
 
@@ -337,25 +360,19 @@ SINCE   LEVEL   IMPACT   MESSAGE
 54m4s   Info    None     Update is proceeding well
 ```
 
-- [Performing a Control Plane Only update](../../updating/updating_a_cluster/control-plane-only-update.xml#control-plane-only-update)
-
-- [Understanding update channels and releases](../../updating/understanding_updates/understanding-update-channels-release.xml#understanding-update-channels-releases)
-
-<!-- -->
-
-- [Understanding update channels and releases](../../updating/understanding_updates/understanding-update-channels-release.xml#understanding-update-channels-releases)
-
 # Changing the update server by using the CLI
+
+You can change the update server your cluster uses to retrieve information about update paths.
 
 Changing the update server is optional. If you have an OpenShift Update Service (OSUS) installed and configured locally, you must set the URL for the server as the `upstream` to use the local server during updates. The default value for `upstream` is `https://api.openshift.com/api/upgrades_info/v1/graph`.
 
-- Change the `upstream` parameter value in the cluster version:
+- Change the `upstream` parameter value in the cluster version by running the following command:
 
   ``` terminal
-  $ oc patch clusterversion/version --patch '{"spec":{"upstream":"<update-server-url>"}}' --type=merge
+  $ oc patch clusterversion/version --patch '{"spec":{"upstream":"<update_server_url>"}}' --type=merge
   ```
 
-  The `<update-server-url>` variable specifies the URL for the update server.
+  Replace `<update_server_url>` with the URL for the update server.
 
   <div class="formalpara-title">
 

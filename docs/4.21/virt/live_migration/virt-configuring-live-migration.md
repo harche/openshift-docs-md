@@ -34,17 +34,25 @@ Configure live migration limits and timeouts for the cluster by updating the `Hy
       allowPostCopy: false
   ```
 
-  - Bandwidth limit of each migration, where the value is the quantity of bytes per second. For example, a value of `2048Mi` means 2048 MiB/s. Default: `0`, which is unlimited.
+  where:
 
-  - The migration is canceled if it has not completed in this time, in seconds per GiB of memory. For example, a VM with 6GiB memory times out if it has not completed migration in 4800 seconds. If the `Migration Method` is `BlockMigration`, the size of the migrating disks is included in the calculation.
+  `bandwidthPerMigration`
+  Specifies the bandwidth of each migration in bytes per second. For example, a value of 2048Mi means 2048 MiB/s. Default: 0, which is unlimited.
 
-  - Number of migrations running in parallel in the cluster. Default: `5`.
+  `completionTimeoutPerGiB`
+  Specifies the length of time, in seconds per GiB of memory, at which the migration is canceled if it has not completed. For example, a VM with 6GiB memory times out if it has not completed migration in 4800 seconds. If the `Migration Method` is `BlockMigration`, the size of the migrating disks is included in the calculation.
 
-  - Maximum number of outbound migrations per node. Default: `2`.
+  `parallelMigrationsPerCluster`
+  Specifies the number of migrations running in parallel in the cluster. Default: `5`.
 
-  - The migration is canceled if memory copy fails to make progress in this time, in seconds. Default: `150`.
+  `parallelOutboundMigrationsPerNode`
+  Specifies the maximum number of outbound migrations per node. Default: `2`.
 
-  - If a VM is running a heavy workload and the memory dirty rate is too high, this can prevent the migration from one node to another from converging. To prevent this, you can enable post copy mode. By default, `allowPostCopy` is set to `false`.
+  `progressTimeout`
+  Specifies the length of time, in seconds, at which the migration is canceled if memory copy fails to make progress. Default: `150`.
+
+  `allowPostCopy`
+  Specifies whether the post copy mode is enabled. You can enable post copy mode to allow the migration of one node to another to converge, even if a VM is running a heavy workload and the memory dirty rate is too high. By default, `allowPostCopy` is set to `false`.
 
   <div class="note">
 
@@ -88,17 +96,25 @@ Configure live migration for heavy workloads by updating the `HyperConverged` cu
         allowPostCopy: true
     ```
 
-    - Bandwidth limit of each migration, where the value is the quantity of bytes per second. The default is `0`, which is unlimited.
+    where:
 
-    - The migration is canceled if it is not completed in this time, and triggers post copy mode, when post copy is enabled. This value is measured in seconds per GiB of memory. You can lower `completionTimeoutPerGiB` to trigger post copy mode earlier in the migration process, or raise the `completionTimeoutPerGiB` to trigger post copy mode later in the migration process.
+    `bandwidthPerMigration`
+    Specifies the bandwidth of each migration in bytes per second. The default is `0`, which is unlimited.
 
-    - Number of migrations running in parallel in the cluster. The default is `5`. Keeping the `parallelMigrationsPerCluster` setting low is better when migrating heavy workloads.
+    `completionTimeoutPerGiB`
+    Specifies the length of time, in seconds per GiB of memory, at which the migration is canceled if it has not completed and post copy mode is triggered, if enabled. You can lower `completionTimeoutPerGiB` to trigger post copy mode earlier in the migration process, or raise the `completionTimeoutPerGiB` to trigger post copy mode later in the migration process.
 
-    - Maximum number of outbound migrations per node. Configure a single VM per node for heavy workloads.
+    `parallelMigrationsPerCluster`
+    Specifies the number of migrations running in parallel in the cluster. The default is `5`. Keeping the `parallelMigrationsPerCluster` setting low is better when migrating heavy workloads.
 
-    - The migration is canceled if memory copy fails to make progress in this time. This value is measured in seconds. Increase this parameter for large memory sizes running heavy workloads.
+    `parallelOutboundMigrationsPerNode`
+    Specifies the maximum number of outbound migrations per node. Configure a single VM per node for heavy workloads.
 
-    - Use post copy mode when memory dirty rates are high to ensure the migration converges. Set `allowPostCopy` to `true` to enable post copy mode.
+    `progressTimeout`
+    Specifies the length of time, in seconds, at which the migration is canceled if memory copy fails to make progress. Increase this parameter for large memory sizes running heavy workloads.
+
+    `allowPostCopy`
+    Specifies whether the post copy mode is enabled. You can enable post copy mode to allow the migration of one node to another to converge, even if a VM is running a heavy workload and the memory dirty rate is too high. Set allowPostCopy to true to enable post copy mode.
 
 2.  Optional: If your main network is too busy for the migration, configure a secondary, dedicated migration network.
 
@@ -107,10 +123,6 @@ Configure live migration for heavy workloads by updating the `HyperConverged` cu
     Post copy mode can impact performance during the transfer, and should not be used for critical data, or with unstable networks.
 
     </div>
-
-# Additional resources
-
-- [Configuring a dedicated network for live migration](../../virt/vm_networking/virt-dedicated-network-live-migration.xml#virt-configuring-secondary-network-vm-live-migration_virt-dedicated-network-live-migration)
 
 # Live migration policies
 
@@ -122,7 +134,7 @@ You can create live migration policies by using the OpenShift Container Platform
 
 </div>
 
-## Creating a live migration policy by using the CLI
+# Creating a live migration policy by using the CLI
 
 You can create a live migration policy by using the command line.
 
@@ -191,9 +203,13 @@ If multiple policies meet this criteria, the policies are sorted by alphabetical
           kubevirt.io/environment: "production"
     ```
 
-    - Specify project labels.
+    where:
 
-    - Specify VM labels.
+    `namespaceSelector`
+    Specifies the project labels.
+
+    `virtualMachineInstanceSelector`
+    Specifies the VM labels.
 
 3.  Create the migration policy by running the following command:
 
@@ -201,50 +217,6 @@ If multiple policies meet this criteria, the policies are sorted by alphabetical
     $ oc create -f <migration_policy>.yaml
     ```
 
-# Migrating a VM to a specific node
-
-You can migrate a running virtual machine (VM) to a specific subset of nodes by using the `addedNodeSelector` field on the `VirtualMachineInstanceMigration` object.
-
-The `addedNodeSelector` field lets you apply additional node selection rules for a **one-time** migration attempt, without affecting the VM configuration or future migrations.
-
-- You have access to the cluster as a user with the `cluster-admin` role.
-
-- The VM you want to migrate is running.
-
-- You have identified the labels of the target nodes. Multiple labels can be specified and are combined with logical `AND`.
-
-- The `oc` CLI tool is installed.
-
-1.  Create a migration manifest YAML file. For example:
-
-    ``` yaml
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstanceMigration
-    metadata:
-      name: migration-job
-    spec:
-      vmiName: vmi-fedora
-      addedNodeSelector:
-        accelerator: gpu-enabled23
-        kubernetes.io/hostname: "ip-172-28-114-199.example"
-    ```
-
-    where:
-
-    `vmiName`
-    Specifies the name of the running VM (for example, `vmi-fedora`).
-
-    `addedNodeSelector`
-    Specifies additional constraints for selecting the target node.
-
-2.  Apply the manifest to the cluster by running the following command:
-
-    ``` terminal
-    $ oc apply -f <file_name>.yaml
-    ```
-
-    If no nodes satisfy the constraints, the migration is declared a failure after a timeout. The VM remains unaffected.
-
 # Additional resources
 
-- [Configuring a dedicated Multus network for live migration](../../virt/vm_networking/virt-dedicated-network-live-migration.xml#virt-dedicated-network-live-migration)
+- [Configuring a dedicated network for live migration](../../virt/vm_networking/virt-dedicated-network-live-migration.xml#virt-configuring-secondary-network-vm-live-migration_virt-dedicated-network-live-migration)

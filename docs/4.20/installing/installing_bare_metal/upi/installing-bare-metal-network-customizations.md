@@ -4639,16 +4639,16 @@ If you choose to use a block storage volume with the image registry, you must us
 
         where:
 
-        `name`
+        `metadata.name`
         Specifies a unique name that represents the `PersistentVolumeClaim` object.
 
-        `namespace`
+        `metadata.namespace`
         Specifies the `namespace` for the `PersistentVolumeClaim` object, which is `openshift-image-registry`.
 
-        `accessModes`
+        `spec.accessModes`
         Specifies the access mode of the persistent volume claim. With `ReadWriteOnce`, the volume can be mounted with read and write permissions by a single node.
 
-        `storage`
+        `spec.resources.requests.storage`
         The size of the persistent volume claim.
 
     2.  Enter the following command to create the `PersistentVolumeClaim` object from the file:

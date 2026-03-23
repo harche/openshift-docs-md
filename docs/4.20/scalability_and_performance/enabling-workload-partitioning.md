@@ -170,3 +170,5 @@ spec:
 PerformanceProfile CR options for single-node OpenShift clusters
 
 - [Recommended single-node OpenShift cluster configuration for vDU application workloads](../edge_computing/ztp-reference-cluster-configuration-for-vdu.xml#ztp-sno-du-enabling-workload-partitioning_sno-configure-for-vdu)
+
+- [About the Performance Profile Creator](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-about-the-profile-creator-tool_cnf-tuning-low-latency-nodes-with-perf-profile)

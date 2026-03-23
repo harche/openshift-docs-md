@@ -228,9 +228,11 @@ You can customize the OpenShift Container Platform cluster you install on Google
     3.  Define the network and subnets for the VPC to install the cluster in under the parent `platform.gcp` field:
 
         ``` yaml
-        network: <existing_vpc>
-        controlPlaneSubnet: <control_plane_subnet>
-        computeSubnet: <compute_subnet>
+        platform:
+          gcp:
+            network: <existing_vpc>
+            controlPlaneSubnet: <control_plane_subnet>
+            computeSubnet: <compute_subnet>
         ```
 
         For `platform.gcp.network`, specify the name for the existing Google VPC. For `platform.gcp.controlPlaneSubnet` and `platform.gcp.computeSubnet`, specify the existing subnets to deploy the control plane machines and compute machines, respectively.
@@ -249,7 +251,7 @@ You can customize the OpenShift Container Platform cluster you install on Google
 
         For these values, use the `imageContentSources` that you recorded during mirror registry creation.
 
-    5.  Set the publishing strategy to `Internal`:
+    5.  Optionally, set the publishing strategy to `Internal`:
 
         ``` yaml
         publish: Internal
@@ -505,7 +507,7 @@ For information about provisioning your DNS records for the API server and the I
 
 ## Sample customized install-config.yaml file for Google Cloud
 
-You can customize the `install-config.yaml` file to specify more details about your OpenShift Container Platform cluster’s platform or modify the values of the required parameters.
+To specify more details about your OpenShift Container Platform cluster’s platform or modify the values of the required parameters, you can customize the `install-config.yaml` file.
 
 <div class="important">
 
@@ -516,149 +518,46 @@ This sample YAML file is provided for reference only. You must obtain your `inst
 ``` yaml
 apiVersion: v1
 baseDomain: example.com
-credentialsMode: Mint
+pullSecret: '{"auths": ...}'
 controlPlane:
-  hyperthreading: Enabled
   name: master
+  replicas: 3
   platform:
     gcp:
       type: n2-standard-4
-      zones:
-      - us-central1-a
-      - us-central1-c
-      osDisk:
-        diskType: pd-ssd
-        diskSizeGB: 1024
-        encryptionKey:
-          kmsKey:
-            name: worker-key
-            keyRing: test-machine-keys
-            location: global
-            projectID: project-id
-      tags:
-      - control-plane-tag1
-      - control-plane-tag2
-      osImage:
-        project: example-project-name
-        name: example-image-name
-  replicas: 3
 compute:
-- hyperthreading: Enabled
-  name: worker
+- name: worker
+  replicas: 3
   platform:
     gcp:
       type: n2-standard-4
-      zones:
-      - us-central1-a
-      - us-central1-c
-      osDisk:
-        diskType: pd-standard
-        diskSizeGB: 128
-        encryptionKey:
-          kmsKey:
-            name: worker-key
-            keyRing: test-machine-keys
-            location: global
-            projectID: project-id
-        tags:
-        - compute-tag1
-        - compute-tag2
-        osImage:
-          project: example-project-name
-          name: example-image-name
-  replicas: 3
 metadata:
   name: test-cluster
 networking:
   clusterNetwork:
   - cidr: 10.128.0.0/14
     hostPrefix: 23
-  machineNetwork:
-  - cidr: 10.0.0.0/16
-  networkType: OVNKubernetes
-  serviceNetwork:
-  - 172.30.0.0/16
 platform:
   gcp:
-    projectID: openshift-production
-    region: us-central1
-    defaultMachinePlatform:
-      tags:
-      - global-tag1
-      - global-tag2
-      osImage:
-        project: example-project-name
-        name: example-image-name
-    network: existing_vpc
-    controlPlaneSubnet: control_plane_subnet
-    computeSubnet: compute_subnet
-pullSecret: '{"auths":{"<local_registry>": {"auth": "<credentials>","email": "you@example.com"}}}'
-fips: false
-sshKey: ssh-ed25519 AAAA...
-additionalTrustBundle: |
-    -----BEGIN CERTIFICATE-----
-    <MY_TRUSTED_CA_CERT>
-    -----END CERTIFICATE-----
-imageContentSources:
-- mirrors:
-  - <local_registry>/<local_repository_name>/release
-  source: quay.io/openshift-release-dev/ocp-release
-- mirrors:
-  - <local_registry>/<local_repository_name>/release
-  source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
+    projectID: sample-project
+    region: us-east1
 ```
 
-- Required. The installation program prompts you for this value.
+where:
 
-- Optional: Add this parameter to force the Cloud Credential Operator (CCO) to use the specified mode. By default, the CCO uses the root credentials in the `kube-system` namespace to dynamically try to determine the capabilities of the credentials. For details about CCO modes, see the "About the Cloud Credential Operator" section in the *Authentication and authorization* guide.
+`controlPlane`
+Specifies parameters that apply to control plane machines.
 
-- If you do not provide these parameters and values, the installation program provides the default value.
+`compute`
+Specifies parameters that apply to compute machines.
 
-- The `controlPlane` section is a single mapping, but the `compute` section is a sequence of mappings. To meet the requirements of the different data structures, the first line of the `compute` section must begin with a hyphen, `-`, and the first line of the `controlPlane` section must not. Only one control plane pool is used.
+`networking`
+Specifies parameters that apply to the cluster networking configuration. If you do not provide networking values, the installation program provides default values.
 
-- Whether to enable or disable simultaneous multithreading, or `hyperthreading`. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores. You can disable it by setting the parameter value to `Disabled`. If you disable simultaneous multithreading in some cluster machines, you must disable it in all cluster machines.
+`platform`
+Specifies parameters that apply to the infrastructure platform that hosts the cluster.
 
-  <div class="important">
-
-  If you disable simultaneous multithreading, ensure that your capacity planning accounts for the dramatically decreased machine performance. Use larger machine types, such as `n1-standard-8`, for your machines if you disable simultaneous multithreading.
-
-  </div>
-
-- Optional: The custom encryption key section to encrypt both virtual machines and persistent volumes. Your default compute service account must have the permissions granted to use your KMS key and have the correct IAM role assigned. The default service account name follows the `service-<project_number>@compute-system.iam.gserviceaccount.com` pattern. For more information about granting the correct permissions for your service account, see "Machine management" → "Creating compute machine sets" → "Creating a compute machine set on Google Cloud".
-
-- Optional: A set of network tags to apply to the control plane or compute machine sets. The `platform.gcp.defaultMachinePlatform.tags` parameter will apply to both control plane and compute machines. If the `compute.platform.gcp.tags` or `controlPlane.platform.gcp.tags` parameters are set, they override the `platform.gcp.defaultMachinePlatform.tags` parameter.
-
-- Optional: A custom Red Hat Enterprise Linux CoreOS (RHCOS) that should be used to boot control plane and compute machines. The `project` and `name` parameters under `platform.gcp.defaultMachinePlatform.osImage` apply to both control plane and compute machines. If the `project` and `name` parameters under `controlPlane.platform.gcp.osImage` or `compute.platform.gcp.osImage` are set, they override the `platform.gcp.defaultMachinePlatform.osImage` parameters.
-
-- The cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
-
-- Specify the name of an existing VPC.
-
-- Specify the name of the existing subnet to deploy the control plane machines to. The subnet must belong to the VPC that you specified.
-
-- Specify the name of the existing subnet to deploy the compute machines to. The subnet must belong to the VPC that you specified.
-
-- For `<local_registry>`, specify the registry domain name, and optionally the port, that your mirror registry uses to serve content. For example, `registry.example.com` or `registry.example.com:5000`. For `<credentials>`, specify the base64-encoded user name and password for your mirror registry.
-
-- Whether to enable or disable FIPS mode. By default, FIPS mode is not enabled. If FIPS mode is enabled, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that are provided with RHCOS instead.
-
-  <div class="important">
-
-  When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
-
-  </div>
-
-- You can optionally provide the `sshKey` value that you use to access the machines in your cluster.
-
-  <div class="note">
-
-  For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
-
-  </div>
-
-- Provide the contents of the certificate file that you used for your mirror registry.
-
-- Provide the `imageContentSources` section from the output of the command to mirror the repository.
+- [Installation configuration parameters for GCP](../../installing/installing_gcp/installation-config-parameters-gcp.xml#installation-config-parameters-gcp)
 
 ## Create an Ingress Controller with global access on Google Cloud
 

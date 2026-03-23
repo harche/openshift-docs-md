@@ -1,24 +1,14 @@
-As an administrator, you can expose a limited set of host and virtual machine (VM) metrics to a guest VM by first enabling a `downwardMetrics` feature gate and then configuring a `downwardMetrics` device.
-
-Users can view the metrics results by using the command line or the `vm-dump-metrics tool`.
+As an administrator, you can expose a set of host and virtual machine (VM) metrics to a guest VM by enabling the `downwardMetrics` feature gate and configuring a downward metrics device. You can view these metrics by using the command line or the `vm-dump-metrics` tool.
 
 <div class="note">
 
 On Red Hat Enterprise Linux (RHEL) 9, use the command line to view downward metrics. See [Viewing downward metrics by using the command line](../../virt/monitoring/virt-exposing-downward-metrics.xml#virt-viewing-downward-metrics-cli_virt-exposing-downward-metrics).
 
-The vm-dump-metrics tool is not supported on the Red Hat Enterprise Linux (RHEL) 9 platform.
+The `vm-dump-metrics` tool is not supported on the Red Hat Enterprise Linux (RHEL) 9 platform.
 
 </div>
 
-# Enabling or disabling the downwardMetrics feature gate
-
-You can enable or disable the `downwardMetrics` feature gate by performing either of the following actions:
-
-- Editing the HyperConverged custom resource (CR) in your default editor
-
-- Using the command line
-
-## Enabling or disabling the downward metrics feature gate in a YAML file
+# Enabling or disabling the downward metrics feature gate in a YAML file
 
 To expose downward metrics for a host virtual machine, you can enable the `downwardMetrics` feature gate by editing a YAML file.
 
@@ -62,7 +52,7 @@ To expose downward metrics for a host virtual machine, you can enable the `downw
       # ...
       ```
 
-## Enabling or disabling the downward metrics feature gate from the CLI
+# Enabling or disabling the downward metrics feature gate from the CLI
 
 To expose downward metrics for a host virtual machine, you can enable the `downwardMetrics` feature gate by using the command line.
 
@@ -145,21 +135,11 @@ You can enable the capturing of downward metrics for a host VM by creating a con
             name: cloudinitdisk
   ```
 
-  - The `downwardMetrics` device.
+- `spec.domain.devices.downwardMetrics` defines the `downwardMetrics` device.
 
-  - The password for the `fedora` user.
+- `spec.volumes.cloudInitNoCloud.userdata.password` defines the password for the `fedora` user.
 
-# Viewing downward metrics
-
-You can view downward metrics by using either the command-line interface (CLI), or the `vm-dump-metrics` tool.
-
-<div class="note">
-
-On Red Hat Enterprise Linux (RHEL) 9, use the command line to view downward metrics. The vm-dump-metrics tool is not supported on the Red Hat Enterprise Linux (RHEL) 9 platform.
-
-</div>
-
-## Viewing downward metrics by using the CLI
+# Viewing downward metrics by using the CLI
 
 You can view downward metrics by entering a command from inside a guest virtual machine (VM).
 
@@ -173,7 +153,7 @@ You can view downward metrics by entering a command from inside a guest virtual 
   $ sudo cat /dev/virtio-ports/org.github.vhostmd.1
   ```
 
-## Viewing downward metrics by using the vm-dump-metrics tool
+# Viewing downward metrics by using the vm-dump-metrics tool
 
 To view downward metrics, install the `vm-dump-metrics` tool and then use the tool to expose the metrics results.
 

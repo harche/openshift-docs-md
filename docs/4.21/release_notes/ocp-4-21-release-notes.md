@@ -649,6 +649,7 @@ In the following tables, features are marked with the following statuses:
 |---------------------------------------------------------------|--------------------|----------------------|----------------------|
 | Pod security admission restricted enforcement                 | Technology Preview | Technology Preview   | Technology Preview   |
 | Direct authentication with an external OIDC identity provider | Technology Preview | General Availability | General Availability |
+| KMS Plugin                                                    | Not Available      | Not Available        | Technology Preview   |
 
 Authentication and authorization Technology Preview tracker
 
@@ -931,6 +932,56 @@ This section will continue to be updated over time to provide notes on enhanceme
 For any OpenShift Container Platform release, always review the instructions on [updating your cluster](../updating/updating_a_cluster/updating-cluster-web-console.xml#updating-cluster-web-console) properly.
 
 </div>
+
+## RHBA-2026:4420 - OpenShift Container Platform 4.17.6 fixed issues
+
+Issued: 17 March 2026
+
+OpenShift Container Platform release 4.17.6 is now available. The list of fixed issues that are included in the update is documented in the [RHBA-2026:4420](https://access.redhat.com/errata/RHBA-2026:4420) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:4416](https://access.redhat.com/errata/RHBA-2026:4416) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.6 --pullspecs
+```
+
+### New features
+
+- KMS v2 support for etcd encryption (Technology Preview)
+
+  You can now use the Kubernetes KMS v2 interface to encrypt etcd data, including secrets, config maps, and OAuth tokens, using keys managed by an external Key Management Service (KMS). This Technology Preview release integrates with the HashiCorp Vault KMS plugin to offload encryption key storage and lifecycle management to an external Vault instance. This is a Technology Preview feature.
+
+  For more information about Technology Preview feature support, see [Technology Preview Features - Scope of Support](https://access.redhat.com/support/offerings/techpreview).
+
+### Known issues
+
+- In some Microsoft Azure configurations (Azure private, public Azure OpenShift Container Platform, and private Azure OpenShift Container Platform), outbound connectivity is achieved through outbound rules that are connected to the backend address pool of the primary IP address of the VM network interface controller (NIC). Before this update, the Egress IP address was added to the public load balancer backend address pool when an `OutBoundRule` parameter was not specified. The Egress IP addresses are no longer added to the public load balancer backend pool for any OpenShift Container Platform cluster hosted on Azure, regardless of the existence of an `OutBoundRule` parameter. As a result, Egress IP addresses will have no outbound connectivity except for the infrastructure subnet in an Azure OpenShift Container Platform cluster. ([OCPBUGS-77154](https://redhat.atlassian.net/browse/OCPBUGS-77154))
+
+### Fixed issues
+
+- Before this update, the minimal collection profile did not include the `kube_pod_labels` metric. As a consequence, the status for the control plane was displayed as `unknown` on the web console. With this release, the `kube_pod_labels` metric is included. As a result, the displayed status for the control plane is correct. ([OCPBUGS-74425](https://redhat.atlassian.net/browse/OCPBUGS-74425))
+
+- Before this update, the `IngressControllerDynamicConfigurationManager` feature gate was temporarily removed from the `TechPreviewNoUpgrade` feature set while a critical defect was being resolved. As a consequence, the dynamic configuration manager feature of the router was not available even as a `TechPreviewNoUpgrade` feature. With this release, the `IngressControllerDynamicConfigurationManager` feature gate is added back to the `TechPreviewNoUpgrade` feature set. As a result, the OpenShift Container Platform router includes the dynamic configuration manager option on clusters that enable the `TechPreviewNoUpgrade` feature set. ([OCPBUGS-76408](https://redhat.atlassian.net/browse/OCPBUGS-76408))
+
+- Before this update, control plane nodes with a root partition larger than 300 GB caused a boot failure of the nodes and stopped the cluster installation. With this release, the boot failure does not occur and the cluster installation is not stopped. ([OCPBUGS-77536](https://redhat.atlassian.net/browse/OCPBUGS-77536))
+
+- Before this update, the `tmpfs` volume that stored the ostree image on the bootstrap node was too small to contain the entire image for the ppc64le architecture. With this release, the `tmpfs` size is increased to support the ppc64le architecture. ([OCPBUGS-77551](https://redhat.atlassian.net/browse/OCPBUGS-77551))
+
+- Before this update, faulty `vCenter` matching logic caused boot image update failures in multi center vSphere clusters. As a consequence, the Machine Config Operator (MCO) degraded when boot image updates were enabled for this scenario. With this update, the matching `vCenter` logic is fixed. As a result, boot image updates work as expected in 4.21 for multi center vSphere clusters. ([OCPBUGS-77577](https://redhat.atlassian.net/browse/OCPBUGS-77577))
+
+- Before this update, `NetworkPolicy` egress rules hard-coded port 6443 for Kube API Server access. Because hosted control planes allows custom API server ports through the `hostedcluster.spec.networking.apiServer.port` parameter, Operator Lifecycle Manager (OLM) Operators failed to communicate with the Kube API Server in the hosted clusters, which used non-default API ports. As a consequence, the Operator functionality and catalog operations were broken. With this release, the hard-coded port 6443 is replaced with wildcard egress (**egress: \[{}\]**) for the Kube API Server traffic. Explicit DNS rules (ports 53, 5353) are also added for documentation and future policy refinements. As a result, OLM supports hosted control planes deployments with any configured API server port. ([OCPBUGS-77580](https://redhat.atlassian.net/browse/OCPBUGS-77580))
+
+- Before this update, `NetworkPolicy` egress rules in Operator Lifecycle Manager (OLM) Classic hard-coded port 6443 for Kube API Server access across static manifests and generated policies. Because hosted control planes allows custom API server ports that differ from 6443, OLM (Classic) components (`olm-operator`, `catalog-operator`, and `packageserver`) did not communicate with the Kube API Server in hosted clusters that used custom API ports. As a consequence, this issue prevented Operator installation and catalog operations. With this release, `NetworkPolicy` egress rules are updated to use a wildcard (**egress: \[{}\]**) for Kube API Server traffic in both static manifests and dynamic policy generation code. Explicit DNS rules (ports 53, 5353) are also added for future policy refinements. As a result, OLM (Classic) supports hosted control planes deployments with any configured API server port. ([OCPBUGS-77712](https://redhat.atlassian.net/browse/OCPBUGS-77712))
+
+- Before this update, the `olm` cluster Operator did not detect version changes during cluster upgrades. As a consequence, the Operator failed to report the `Progressing=True` status during upgrades, which prevented accurate upgrade monitoring. With this release, a new version detection logic compares the release version with the stored Operator version and sets the `Progressing=True` status when an upgrade is detected. As a result, the Operator correctly reports the Progressing status during upgrades, which improves upgrade observability. ([OCPBUGS-77826](https://redhat.atlassian.net/browse/OCPBUGS-77826))
+
+- Before this update, when you clicked the **Add access** button on the **Project access** tab on the **Project** details page while in the **Developer** perspective, the **Save** button was disabled and a potential error occurred. With this release, the **Project access** tab works as expected. ([OCPBUGS-77882](https://redhat.atlassian.net/browse/OCPBUGS-77882))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
 
 ## RHBA-2026:3881 - OpenShift Container Platform 4.17.5 fixed issues
 

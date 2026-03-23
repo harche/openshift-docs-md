@@ -1487,16 +1487,16 @@ Additionally, specifying `login` at the beginning of the name in the `metadata.n
         where:
 
         `<vnet_resource_group>`
-        Replace `<vnet_resource_group>` with the resource group name that contains the existing virtual network (VNet).
+        Specifies the resource group name that contains the existing virtual network (VNet).
 
         `<vnet>`
-        Replace `<vnet>` with the existing virtual network name.
+        Specifies the existing virtual network name.
 
         `<control_plane_subnet>`
-        Replace `<control_plane_subnet>` with the existing subnet name to deploy the control plane machines.
+        Specifies the existing subnet name to deploy the control plane machines.
 
-        \`\<compute_subnet\>
-        Replace `<compute_subnet>` with the existing subnet name to deploy compute machines.
+        `<compute_subnet>`
+        Specifies the existing subnet name to deploy compute machines.
 
     4.  Add the image content resources, which resemble the following YAML excerpt:
 
@@ -1512,7 +1512,7 @@ Additionally, specifying `login` at the beginning of the name in the `metadata.n
 
         For these values, use the `imageContentSources` that you recorded during mirror registry creation.
 
-    5.  Set the publishing strategy to `Internal`:
+    5.  Optionally, set the publishing strategy to `Internal`:
 
         ``` yaml
         publish: Internal

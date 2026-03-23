@@ -1,6 +1,4 @@
-OpenShift Container Platform includes a preconfigured, preinstalled, and self-updating monitoring stack that provides monitoring for core platform components. This monitoring stack is based on the Prometheus monitoring system. Prometheus is a time-series database and a rule evaluation engine for metrics.
-
-In addition to using the OpenShift Container Platform monitoring stack, you can enable monitoring for user-defined projects by using the CLI and query custom metrics that are exposed for virtual machines through the `node-exporter` service.
+Monitor core platform components using the OpenShift Container Platform monitoring stack based on the Prometheus monitoring system. Additionally, enable monitoring for user-defined projects by using the CLI and query custom metrics that are exposed for virtual machines through the `node-exporter` service.
 
 # Configuring the node exporter service
 
@@ -35,19 +33,19 @@ The node-exporter agent is deployed on every virtual machine in the cluster from
         monitor: metrics
     ```
 
-    - The node-exporter service that exposes the metrics from the virtual machines.
+    - `metadata.name` defines the node-exporter service that exposes the metrics from the virtual machines.
 
-    - The namespace where the service is created.
+    - `metadata.namespace` defines the namespace where the service is created.
 
-    - The label for the service. The `ServiceMonitor` uses this label to match this service.
+    - `metadata.labels.servicetype` defines the label for the service. The `ServiceMonitor` uses this label to match this service.
 
-    - The name given to the port that exposes metrics on port 9100 for the `ClusterIP` service.
+    - `spec.ports.name` defines the name given to the port that exposes metrics on port 9100 for the `ClusterIP` service.
 
-    - The target port used by `node-exporter-service` to listen for requests.
+    - `spec.ports.port` defines the target port used by `node-exporter-service` to listen for requests.
 
-    - The TCP port number of the virtual machine that is configured with the `monitor` label.
+    - `spec.ports.targetPort` defines the TCP port number of the virtual machine that is configured with the `monitor` label.
 
-    - The label used to match the virtual machine’s pods. In this example, any virtual machine’s pod with the label `monitor` and a value of `metrics` will be matched.
+    - `spec.selector.monitor` defines the label used to match the virtual machine’s pods. In this example, any virtual machine’s pod with the label `monitor` and a value of `metrics` will be matched.
 
 2.  Create the node-exporter service:
 
@@ -247,13 +245,13 @@ You can use a Prometheus client library and scrape metrics from the `/metrics` e
           servicetype: metrics
     ```
 
-    - The name of the `ServiceMonitor`.
+    - `metadata.name` defines the name of the `ServiceMonitor`.
 
-    - The namespace where the `ServiceMonitor` is created.
+    - `metadata.namespace` defines the namespace where the `ServiceMonitor` is created.
 
-    - The interval at which the port will be queried.
+    - `spec.endpoints.interval` defines the interval at which the port will be queried.
 
-    - The name of the port that is queried every 30 seconds
+    - `spec.endpoints.port` defines the name of the port that is queried every 30 seconds
 
 2.  Create the `ServiceMonitor` configuration for the node-exporter service.
 

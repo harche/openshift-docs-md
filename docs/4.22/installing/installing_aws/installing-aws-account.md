@@ -825,6 +825,8 @@ Instead of allowing the installation program to create IAM instance profiles wit
 
     </div>
 
+- [Deploying the cluster](../../installing/installing_aws/ipi/installing-aws-customizations.xml#installation-launching-installer_installing-aws-customizations)
+
 ## Using AWS IAM Analyzer to create policy templates
 
 To reduce security risk, you can use AWS IAM Access Analyzer and CloudTrail to generate and apply minimal, fine-grained IAM policies for cluster control plane and compute instance profiles.

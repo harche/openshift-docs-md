@@ -386,9 +386,9 @@ After you back up your hosted cluster, you must destroy it to initiate the resto
 
 </div>
 
-- You completed the steps in [Removing a cluster by using the console](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#remove-a-cluster-by-using-the-console) to delete your hosted cluster.
+- You completed the steps in [Removing a cluster by using the console](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#remove-a-cluster-by-using-the-console) to delete your hosted cluster.
 
-- You completed the steps in [Removing remaining resources after removing a cluster](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#removing-a-cluster-from-management-in-special-cases).
+- You completed the steps in [Removing remaining resources after removing a cluster](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#removing-a-cluster-from-management-in-special-cases).
 
 To monitor and observe the backup process, see "Observing the backup and restore process".
 

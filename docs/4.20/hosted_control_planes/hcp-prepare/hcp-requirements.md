@@ -20,7 +20,7 @@ Because multicluster engine for Kubernetes Operator includes the HyperShift Oper
 
 ## Management cluster support
 
-Any supported standalone OpenShift Container Platform cluster can be a management cluster.
+Any supported OpenShift Container Platform cluster can be a management cluster.
 
 <div class="note">
 

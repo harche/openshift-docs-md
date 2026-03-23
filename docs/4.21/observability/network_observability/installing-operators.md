@@ -124,7 +124,7 @@ You can deploy a `LokiStack` custom resource (CR) to create a namespace or new p
       size: 1x.small
       storage:
         schemas:
-        - version: v12
+        - version: v13
           effectiveDate: '2022-06-01'
         secret:
           name: loki-s3

@@ -18,7 +18,7 @@ When you enable multicluster engine on OpenShift Container Platform, you gain th
 
 - Open cluster management, which provides resources to manage Kubernetes clusters.
 
-The multicluster engine is included with your OpenShift Container Platform support subscription and is delivered separately from the core payload. To start to use multicluster engine, you deploy the OpenShift Container Platform cluster and then install the operator. For more information, see [Installing and upgrading multicluster engine operator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#mce-install-intro).
+The multicluster engine is included with your OpenShift Container Platform support subscription and is delivered separately from the core payload. To start to use multicluster engine, you deploy the OpenShift Container Platform cluster and then install the operator. For more information, see [Installing and upgrading multicluster engine operator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#mce-install-intro).
 
 # Cluster management with Red Hat Advanced Cluster Management
 
@@ -26,4 +26,4 @@ If you need cluster management capabilities beyond what OpenShift Container Plat
 
 # Additional resources
 
-For the complete documentation for multicluster engine, see [Cluster lifecycle with multicluster engine documentation](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview), which is part of the product documentation for Red Hat Advanced Cluster Management.
+For the complete documentation for multicluster engine, see [Cluster lifecycle with multicluster engine documentation](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview), which is part of the product documentation for Red Hat Advanced Cluster Management.

@@ -755,7 +755,7 @@ In order for the data plane workers in the hosted cluster to be able to retrieve
     ``` yaml
     spec:
       additionalTrustBundle:
-        - name: user-ca-bundle
+        name: user-ca-bundle
     ```
 
     - The `user-ca-bundle` entry is a config map that you create in the next step.

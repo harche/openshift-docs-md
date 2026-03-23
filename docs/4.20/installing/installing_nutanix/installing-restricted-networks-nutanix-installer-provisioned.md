@@ -319,7 +319,7 @@ You can customize the OpenShift Container Platform cluster you install on Nutani
 
         For these values, use the `imageContentSourcePolicy.yaml` file that was created when you mirrored the registry.
 
-    4.  Set the publishing strategy to `Internal`:
+    4.  Optionally, set the publishing strategy to `Internal`:
 
         ``` yaml
         publish: Internal

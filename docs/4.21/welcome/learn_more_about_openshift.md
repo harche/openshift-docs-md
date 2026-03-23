@@ -213,8 +213,8 @@ Explore the following OpenShift Container Platform installation tasks:
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><p><a href="../observability/distr_tracing/distr-tracing-rn.xml#distr-tracing-rn">Release notes for the Red Hat OpenShift Distributed Tracing Platform</a></p></td>
-<td style="text-align: left;"><p><a href="../observability/distr_tracing/distr-tracing-tempo-architecture.xml#distr-tracing-tempo-architecture">Red Hat OpenShift Distributed Tracing Platform</a></p></td>
+<td style="text-align: left;"><p><a href="https://docs.redhat.com/en/documentation/red_hat_openshift_distributed_tracing_platform/latest/html/release_notes_for_the_distributed_tracing_platform/distr-tracing-rn">Release notes for the Red Hat OpenShift Distributed Tracing Platform</a></p></td>
+<td style="text-align: left;"><p><a href="https://docs.redhat.com/en/documentation/red_hat_openshift_distributed_tracing_platform/latest">Red Hat OpenShift Distributed Tracing Platform</a></p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><a href="https://docs.redhat.com/en/documentation/red_hat_build_of_opentelemetry/latest/html/installing_red_hat_build_of_opentelemetry/install-otel">Red Hat build of OpenTelemetry</a></p></td>

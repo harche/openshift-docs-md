@@ -979,14 +979,14 @@ hosts:
           dns-resolver:
             config:
               server:
-                - 10.11.5.160
-                - 10.2.70.215
+              - 10.11.5.160
+              - 10.2.70.215
           routes:
             config:
-              - destination: 0.0.0.0/0
-                next-hop-address: 10.19.17.254
-                next-hop-interface: bond0
-                table-id: 254
+            - destination: 0.0.0.0/0
+              next-hop-address: 10.19.17.254
+              next-hop-interface: bond0
+              table-id: 254
 ```
 
 - The `networkConfig` field includes information about the network configuration of the host, with subfields including `interfaces`,`dns-resolver`, and `routes`.

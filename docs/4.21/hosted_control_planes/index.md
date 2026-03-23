@@ -2,7 +2,7 @@ You can deploy OpenShift Container Platform clusters by using two different cont
 
 # Introduction to hosted control planes
 
-Hosted control planes is available by using a [supported version of multicluster engine for Kubernetes Operator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#cluster_mce_overview) on the following platforms:
+Hosted control planes is available by using a [supported version of multicluster engine for Kubernetes Operator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#cluster_mce_overview) on the following platforms:
 
 - Bare metal by using the Agent provider
 
@@ -266,7 +266,7 @@ hosting cluster
 See *management cluster*.
 
 managed cluster
-A cluster that the hub cluster manages. This term is specific to the cluster lifecycle that the multicluster engine for Kubernetes Operator manages in Red Hat Advanced Cluster Management. A managed cluster is not the same thing as a *management cluster*. For more information, see [Managed cluster](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/about/welcome-to-red-hat-advanced-cluster-management-for-kubernetes#managed-cluster).
+A cluster that the hub cluster manages. This term is specific to the cluster lifecycle that the multicluster engine for Kubernetes Operator manages in Red Hat Advanced Cluster Management. A managed cluster is not the same thing as a *management cluster*. For more information, see [Managed cluster](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/about/welcome-to-red-hat-advanced-cluster-management-for-kubernetes#managed-cluster).
 
 management cluster
 An OpenShift Container Platform cluster where the HyperShift Operator is deployed and where the control planes for hosted clusters are hosted. The management cluster is synonymous with the *hosting cluster*.

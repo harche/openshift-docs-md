@@ -253,6 +253,15 @@ The `controllerConfig` specifies the configurations used by the controller when 
 <p>The minimum number of properties is 0.</p>
 <p>Optional</p></td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>annotations</code></p></td>
+<td style="text-align: left;"><p><em>object (keys:string, values:string)</em></p></td>
+<td style="text-align: left;"><p><code>annotations</code> add custom annotations to all the resources created for the <code>external-secrets</code> deployment. The annotations are merged with any default annotations set by the Operator. User-specified annotations take precedence over defaults in case of conflicts. Annotation keys containing the reserved domains <code>kubernetes.io/</code>, <code>openshift.io/</code>, <code>k8s.io/</code>, or <code>cert-manager.io/</code> (including subdomains like <code>*.kubernetes.io/</code>) are not allowed.</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>The maximum number of properties is 20.</p>
+<p>The minimum number of properties is 0.</p>
+<p>Optional</p></td>
+</tr>
 </tbody>
 </table>
 
@@ -641,6 +650,89 @@ The `proxyConfig` holds the proxy configurations which are made available in the
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><p>The maximum length is 4096 characters.</p>
 <p>The minimum length is 0 characters.</p>
+<p>Optional</p></td>
+</tr>
+</tbody>
+</table>
+
+# componentConfig
+
+The `componentConfig` field defines configuration overrides for a specific `external-secrets` component.
+
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Field</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Validation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>componentName</code></p></td>
+<td style="text-align: left;"><p><em>string</em></p></td>
+<td style="text-align: left;"><p><code>componentName</code> identifies which <code>external-secrets</code> component this configuration applies to. Valid values are <code>ExternalSecretsCoreController</code>, <code>Webhook</code>, <code>CertController</code>, and <code>BitwardenSDKServer</code>.</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Enum: [<code>ExternalSecretsCoreController</code>, <code>Webhook</code>, <code>CertController</code>, <code>BitwardenSDKServer</code>]</p>
+<p>Required</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>deploymentConfigs</code></p></td>
+<td style="text-align: left;"><p><em>object</em></p></td>
+<td style="text-align: left;"><p><code>deploymentConfigs</code> specifies overrides for the Kubernetes Deployment resource of this component.</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>Optional</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>overrideEnv</code></p></td>
+<td style="text-align: left;"><p><strong>EnvVar</strong></p>
+<p><em>array</em></p></td>
+<td style="text-align: left;"><p><code>overrideEnv</code> specifies custom environment variables for this component’s container. These are merged with operator-managed environment variables, with user-defined values taking precedence. Environment variable names starting with <code>HOSTNAME</code>, <code>KUBERNETES_</code> or <code>EXTERNAL_SECRETS_</code> are reserved and are not allowed.</p></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>The maximum number of items is 50.</p>
+<p>Optional</p></td>
+</tr>
+</tbody>
+</table>
+
+# deploymentConfig
+
+The `deploymentConfig` field defines configuration overrides for a Kubernetes Deployment resource.
+
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Field</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Validation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>revisionHistoryLimit</code></p></td>
+<td style="text-align: left;"><p><em>integer</em></p></td>
+<td style="text-align: left;"><p><code>revisionHistoryLimit</code> specifies the number of old <code>ReplicaSets</code> to retain for rollback purposes. This allows rolling back to previous deployment versions using the command <code>oc rollout undo</code>. Must be at least 1 to ensure rollback capability.</p></td>
+<td style="text-align: left;"><p>10</p></td>
+<td style="text-align: left;"><p>The minimum value is 1.</p>
+<p>The maximum value is 50.</p>
 <p>Optional</p></td>
 </tr>
 </tbody>

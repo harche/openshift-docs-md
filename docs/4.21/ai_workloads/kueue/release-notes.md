@@ -36,6 +36,12 @@ Red Hat build of Kueue version 1.3 is a generally available release that is sup
 
 ## New features and enhancements
 
+Leader Worker Set Operator
+Red Hat build of Kueue version 1.3 provides for the integration of the Leader Worker Set Operator with Red Hat build of Kueue so you can leverage the Red Hat build of Kueue scheduling and resource management functionality when running LeaderWorkerSets. For more information, see [Integrating the Leader Worker Set Operator](../../ai_workloads/kueue/integrating-lws.xml#integrating-lws).
+
+JobSet Operator
+Red Hat build of Kueue version 1.3 provides for the integration of the JobSet Operator so you can use the JobSet Operator to manage and run large-scale, coordinated workloads like high-performance computing (HPC) and AI training. For more information, see [Integrating the JobSet Operator](../../ai_workloads/kueue/integrating-jobset.xml#integrating-jobset).
+
 Upstream progression of the Red Hat build of Kueue API to `v1beta2`
 Red Hat build of Kueue version 1.3 provides the `v1beta2` version of the Red Hat build of Kueue API. This update continues the evolution of the Red Hat build of Kueue APIs with the ultimate goal of graduating the API to `v1`.
 

@@ -1501,7 +1501,7 @@ The arbiter node must meet the following minimum system requirements:
 
 - 8 GB of RAM
 
-- 120 GB of SSD or equivalent storage
+- 50 GB of SSD or equivalent storage
 
 The arbiter node must be located in a network environment with an end-to-end latency of less than 500 milliseconds, including disk I/O. In high-latency environments, you might need to apply the `etcd` slow profile.
 

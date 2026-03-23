@@ -287,7 +287,7 @@ Root: ./
 |observability/cluster_observability_operator:{cluster-observability-operator-overview.md}
 |observability/monitoring:{about-ocp-monitoring.md}
 |observability/logging:{about-logging.md}
-|observability/distr_tracing:{distr-tracing-rn.md,distr-tracing-tempo-architecture.md,distr-tracing-tempo-installing.md,distr-tracing-tempo-configuring.md,distr-tracing-tempo-troubleshooting.md,distr-tracing-tempo-updating.md,distr-tracing-tempo-removing.md}
+|observability/distr_tracing:{distr-tracing-tempo-architecture.md}
 |observability/otel:{otel-architecture.md}
 |observability/network_observability:{network-observability-operator-release-notes.md,network-observability-overview.md,installing-operators.md,understanding-network-observability-operator.md,configuring-operator.md,network-observability-per-tenant-model.md,network-observability-network-policy.md,network-observability-dns-resolution-analysis.md,observing-network-traffic.md,network-observability-health-rules.md,metrics-alerts-dashboards.md,network-observability-operator-monitoring.md,network-observability-scheduling-resources.md,network-observability-secondary-networks.md,flowcollector-api.md,flowmetric-api.md,json-flows-format-reference.md,troubleshooting-network-observability.md}
 |observability/network_observability/release_notes_archive:{network-observability-operator-release-notes-archive.md}

@@ -418,7 +418,7 @@ Certain configurations can cause conflicts, leading to errors, for example:
 When the daemon finds an invalid configuration for a node, it reports the configuration as invalid and reverts to the previous valid `FRR` configuration.
 
 Merging
-When merging, iyou can complete the following actions:
+When merging, you can complete the following actions:
 
 - Extend the set of IP addresses that you want to advertise to a neighbor.
 

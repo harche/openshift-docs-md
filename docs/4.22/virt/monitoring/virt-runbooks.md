@@ -1,6 +1,10 @@
-To diagnose and resolve issues that trigger OpenShift Virtualization [alerts](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/monitoring_key_concepts/key-concepts#about-managing-alerts_key-concepts), follow the procedures in the runbooks for the OpenShift Virtualization Operator. Triggered OpenShift Virtualization alerts can be viewed in the main **Observe** → **Alerts** tab in the web console, and also in the **Virtualization** → **Overview** tab.
+To diagnose and resolve OpenShift Virtualization alerts, you can use the OpenShift Virtualization Operator runbooks. These guides help ensure you can effectively troubleshoot cluster issues and restore system health.
+
+<div class="note">
 
 Runbooks for the OpenShift Virtualization Operator are maintained in the [openshift/runbooks](https://github.com/openshift/runbooks/tree/master/alerts/openshift-virtualization-operator) Git repository, and you can view them on GitHub.
+
+</div>
 
 # CDIDataImportCronOutdated
 

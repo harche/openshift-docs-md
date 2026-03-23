@@ -223,6 +223,29 @@ Additionally, specifying `login` at the beginning of the name in the `metadata.n
 
 3.  Modify the `install-config.yaml` file. You can find more information about the available parameters in the "Installation configuration parameters" section.
 
+    1.  Define the network and subnets for the VNet to install the cluster under the `platform.azure` field:
+
+        ``` yaml
+        networkResourceGroupName: <vnet_resource_group>
+        virtualNetwork: <vnet>
+        controlPlaneSubnet: <control_plane_subnet>
+        computeSubnet: <compute_subnet>
+        ```
+
+        where:
+
+        `<vnet_resource_group>`
+        Specifies the resource group name that contains the existing virtual network (VNet).
+
+        `<vnet>`
+        Specifies the existing virtual network name.
+
+        `<control_plane_subnet>`
+        Specifies the existing subnet name to deploy the control plane machines.
+
+        `<compute_subnet>`
+        Specifies the existing subnet name to deploy compute machines.
+
 4.  Back up the `install-config.yaml` file so that you can use it to install multiple clusters.
 
     <div class="important">
@@ -491,32 +514,28 @@ You can customize the `install-config.yaml` file to specify more details about y
 
 <div class="important">
 
-This sample YAML file is provided for reference only. You must obtain your `install-config.yaml` file by using the installation program and modify it.
+This sample YAML file is provided for reference only. You must obtain your `install-config.yaml` file by using the installation program and modify it. For a full list and description of all installation configuration parameters, see *Installation configuration parameters for Azure*.
+
+</div>
+
+<div class="formalpara-title">
+
+**Sample `install-config.yaml` file for Azure**
 
 </div>
 
 ``` yaml
 apiVersion: v1
 baseDomain: example.com
+pullSecret: '{"auths": ...}'
+sshKey: ssh-ed25519 AAAA...
+metadata:
+  name: example-cluster
 controlPlane:
   hyperthreading: Enabled
   name: master
   platform:
     azure:
-      encryptionAtHost: true
-      ultraSSDCapability: Enabled
-      osDisk:
-        diskSizeGB: 1024
-        diskType: Premium_LRS
-        diskEncryptionSet:
-          resourceGroup: disk_encryption_set_resource_group
-          name: disk_encryption_set_name
-          subscriptionId: secondary_subscription_id
-      osImage:
-        publisher: example_publisher_name
-        offer: example_image_offer
-        sku: example_offer_sku
-        version: example_image_version
       type: Standard_D8s_v3
   replicas: 3
 compute:
@@ -524,110 +543,33 @@ compute:
   name: worker
   platform:
     azure:
-      ultraSSDCapability: Enabled
       type: Standard_D2s_v3
-      encryptionAtHost: true
-      osDisk:
-        diskSizeGB: 512
-        diskType: Standard_LRS
-        diskEncryptionSet:
-          resourceGroup: disk_encryption_set_resource_group
-          name: disk_encryption_set_name
-          subscriptionId: secondary_subscription_id
-      osImage:
-        publisher: example_publisher_name
-        offer: example_image_offer
-        sku: example_offer_sku
-        version: example_image_version
-      zones:
-      - "1"
-      - "2"
-      - "3"
-  replicas: 5
-metadata:
-  name: test-cluster
+  replicas: 3
+networking:
   clusterNetwork:
   - cidr: 10.128.0.0/14
     hostPrefix: 23
-  machineNetwork:
-  - cidr: 10.0.0.0/16
-  networkType: OVNKubernetes
-  serviceNetwork:
-  - 172.30.0.0/16
 platform:
   azure:
-    defaultMachinePlatform:
-      osImage:
-        publisher: example_publisher_name
-        offer: example_image_offer
-        sku: example_offer_sku
-        version: example_image_version
-      ultraSSDCapability: Enabled
-    baseDomainResourceGroupName: resource_group
+    baseDomainResourceGroupName: example-basedomain-resourcegroup-name
     region: centralus
-    resourceGroupName: existing_resource_group
-    networkResourceGroupName: vnet_resource_group
-    virtualNetwork: vnet
-    controlPlaneSubnet: control_plane_subnet
-    computeSubnet: compute_subnet
-    outboundType: Loadbalancer
-    cloudName: AzurePublicCloud
-pullSecret: '{"auths": ...}'
-fips: false
-sshKey: ssh-ed25519 AAAA...
 ```
 
-- Required. The installation program prompts you for this value.
+where:
 
-- If you do not provide these parameters and values, the installation program provides the default value.
+`controlPlane`
+Specifies parameters that apply to control plane machines.
 
-- The `controlPlane` section is a single mapping, but the `compute` section is a sequence of mappings. To meet the requirements of the different data structures, the first line of the `compute` section must begin with a hyphen, `-`, and the first line of the `controlPlane` section must not. Only one control plane pool is used.
+`compute`
+Specifies parameters that apply to compute machines.
 
-- Whether to enable or disable simultaneous multithreading, or `hyperthreading`. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores. You can disable it by setting the parameter value to `Disabled`. If you disable simultaneous multithreading in some cluster machines, you must disable it in all cluster machines.
+`networking`
+Specifies parameters that apply to the cluster networking configuration. If you do not provide networking values, the installation program provides default values.
 
-  <div class="important">
+`platform`
+Specifies parameters that apply to the infrastructure platform that hosts the cluster.
 
-  If you disable simultaneous multithreading, ensure that your capacity planning accounts for the dramatically decreased machine performance. Use larger virtual machine types, such as `Standard_D8s_v3`, for your machines if you disable simultaneous multithreading.
-
-  </div>
-
-- You can specify the size of the disk to use in GB. Minimum recommendation for control plane nodes is 1024 GB.
-
-- Specify a list of zones to deploy your machines to. For high availability, specify at least two zones.
-
-- The cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
-
-- Optional: A custom Red Hat Enterprise Linux CoreOS (RHCOS) image that should be used to boot control plane and compute machines. The `publisher`, `offer`, `sku`, and `version` parameters under `platform.azure.defaultMachinePlatform.osImage` apply to both control plane and compute machines. If the parameters under `controlPlane.platform.azure.osImage` or `compute.platform.azure.osImage` are set, they override the `platform.azure.defaultMachinePlatform.osImage` parameters.
-
-- Specify the name of the resource group that contains the DNS zone for your base domain.
-
-- Specify the name of an already existing resource group to install your cluster to. If undefined, a new resource group is created for the cluster.
-
-- If you use an existing VNet, specify the name of the resource group that contains it.
-
-- If you use an existing VNet, specify its name.
-
-- If you use an existing VNet, specify the name of the subnet to host the control plane machines.
-
-- If you use an existing VNet, specify the name of the subnet to host the compute machines.
-
-- Whether to enable or disable FIPS mode. By default, FIPS mode is not enabled. If FIPS mode is enabled, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that are provided with RHCOS instead.
-
-  <div class="important">
-
-  To enable FIPS mode for your cluster, you must run the installation program from a Red Hat Enterprise Linux (RHEL) computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see [Switching RHEL to FIPS mode](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/security_hardening/switching-rhel-to-fips-mode_security-hardening).
-
-  When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
-
-  </div>
-
-- You can optionally provide the `sshKey` value that you use to access the machines in your cluster.
-
-  <div class="note">
-
-  For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
-
-  </div>
+- [Installation configuration parameters for Azure](../../../installing/installing_azure/installation-config-parameters-azure.xml#installation-config-parameters-azure)
 
 ## Configuring the cluster-wide proxy during installation
 

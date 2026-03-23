@@ -117,7 +117,7 @@ To configure image mirroring, complete the following steps:
           --from file://<file_path> docker://<mirror_registry_url> --v2
         ```
 
-7.  Mirror the latest multicluster engine Operator images by following the steps in [Install on disconnected networks](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#install-on-disconnected-networks).
+7.  Mirror the latest multicluster engine Operator images by following the steps in [Install on disconnected networks](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#install-on-disconnected-networks).
 
 - [Mirroring an image set in a partially disconnected environment](../../disconnected/about-installing-oc-mirror-v2.xml#oc-mirror-workflows-partially-disconnected-v2_about-installing-oc-mirror-v2)
 
@@ -189,9 +189,9 @@ Deploy the multicluster engine Operator by completing the steps in *Deploying mu
 
 The multicluster engine for Kubernetes Operator plays a crucial role in deploying clusters across providers. If you do not have multicluster engine Operator installed, review the following documentation to understand the prerequisites and steps to install it:
 
-- [About cluster lifecycle with multicluster engine operator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#mce-intro)
+- [About cluster lifecycle with multicluster engine operator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#mce-intro)
 
-- [Installing and upgrading multicluster engine operator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#mce-install-intro)
+- [Installing and upgrading multicluster engine operator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#mce-install-intro)
 
 # Configuring TLS certificates for a disconnected installation of hosted control planes
 
@@ -250,7 +250,7 @@ In order for the data plane workers in the hosted cluster to be able to retrieve
     ``` yaml
     spec:
       additionalTrustBundle:
-        - name: user-ca-bundle
+        name: user-ca-bundle
     ```
 
     - The `user-ca-bundle` entry is a config map that you create in the next step.

@@ -75,10 +75,11 @@ For more information about the support scope of Red Hat Technology Preview featu
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>Google Cloud</p></td>
-<td style="text-align: left;"><p>Technology Preview</p></td>
+<td style="text-align: left;"><p>GA, as of OpenShift Virtualization 4.21.1</p></td>
 <td style="text-align: left;"><p>Google Cloud native storage</p></td>
 <td style="text-align: left;"><ul>
-<li><p><a href="https://access.redhat.com/articles/7120382">OpenShift Virtualization and Google Cloud known storage issues and limitations</a> in the Red Hat Knowledgebase</p></li>
+<li><p><a href="https://access.redhat.com/articles/7139046">Storage configuration for OpenShift Virtualization 4.17.x on Google Cloud</a> in the Red Hat Knowledgebase</p></li>
+<li><p><a href="https://access.redhat.com/articles/7139682">OpenShift Virtualization on Google Cloud: Known issues and limitations</a> in the Red Hat Knowledgebase</p></li>
 </ul></td>
 </tr>
 </tbody>

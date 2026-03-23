@@ -2164,43 +2164,43 @@ Block storage volumes are supported but not recommended for use with image regis
 
         where:
 
-        `name`
-        Specifies a unique name that represents the `PersistentVolumeClaim` object.
+`metadata.name`
+Specifies a unique name that represents the `PersistentVolumeClaim` object.
 
-        `namespace`
-        Specifies the `namespace` for the `PersistentVolumeClaim` object, which is `openshift-image-registry`.
+`metadata.namespace`
+Specifies the `namespace` for the `PersistentVolumeClaim` object, which is `openshift-image-registry`.
 
-        `accessModes`
-        Specifies the access mode of the persistent volume claim. With `ReadWriteOnce`, the volume can be mounted with read and write permissions by a single node.
+`spec.accessModes`
+Specifies the access mode of the persistent volume claim. With `ReadWriteOnce`, the volume can be mounted with read and write permissions by a single node.
 
-        `storage`
-        The size of the persistent volume claim.
+`spec.resources.requests.storage`
+Specifies the size of the persistent volume claim.
 
-    2.  Enter the following command to create the `PersistentVolumeClaim` object from the file:
-
-        ``` terminal
-        $ oc create -f pvc.yaml -n openshift-image-registry
-        ```
-
-3.  Enter the following command to edit the registry configuration so that it references the correct PVC:
+1.  Enter the following command to create the `PersistentVolumeClaim` object from the file:
 
     ``` terminal
-    $ oc edit config.imageregistry.operator.openshift.io -o yaml
+    $ oc create -f pvc.yaml -n openshift-image-registry
     ```
 
-    <div class="formalpara-title">
+    1.  Enter the following command to edit the registry configuration so that it references the correct PVC:
 
-    **Example output**
+        ``` terminal
+        $ oc edit config.imageregistry.operator.openshift.io -o yaml
+        ```
 
-    </div>
+        <div class="formalpara-title">
 
-    ``` yaml
-    storage:
-      pvc:
-        claim:
-    ```
+        **Example output**
 
-    By creating a custom PVC, you can leave the `claim` field blank for the default automatic creation of an `image-registry-storage` PVC.
+        </div>
+
+        ``` yaml
+        storage:
+          pvc:
+            claim:
+        ```
+
+        By creating a custom PVC, you can leave the `claim` field blank for the default automatic creation of an `image-registry-storage` PVC.
 
 For instructions about configuring registry storage so that it references the correct PVC, see [Configuring the registry for vSphere](../../../registry/configuring_registry_storage/configuring-registry-storage-vsphere.xml#registry-configuring-storage-vsphere_configuring-registry-storage-vsphere).
 

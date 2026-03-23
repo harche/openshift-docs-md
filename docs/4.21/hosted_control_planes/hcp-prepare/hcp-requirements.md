@@ -22,7 +22,7 @@ For more information, see [OpenShift Operator Life Cycles](https://access.redhat
 
 ## Management cluster support
 
-Any supported standalone OpenShift Container Platform cluster can be a management cluster.
+Any supported OpenShift Container Platform cluster can be a management cluster.
 
 <div class="note">
 
@@ -57,7 +57,7 @@ The following table shows the hosted cluster versions that you can create by usi
 
 <div class="note">
 
-Although the HyperShift Operator supports the hosted cluster versions in the following table, multicluster engine Operator supports only as far back as 2 versions earlier than the current version. For example, if the current hosted cluster version is 4.21, multicluster engine Operator supports as far back as version 4.19. If you want to use a hosted cluster version that is earlier than one of the versions that multicluster engine Operator supports, you can detach your hosted clusters from multicluster engine Operator to be unmanaged, or you can use an earlier version of multicluster engine Operator. For instructions to detach your hosted clusters from multicluster engine Operator, see [Removing a cluster from management](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#remove-managed-cluster) (RHACM documentation). For more information about multicluster engine Operator support, see [The multicluster engine for Kubernetes operator 2.11 Support Matrix](https://access.redhat.com/articles/7136929) (Red Hat Knowledgebase).
+Although the HyperShift Operator supports the hosted cluster versions in the following table, multicluster engine Operator supports only as far back as 2 versions earlier than the current version. For example, if the current hosted cluster version is 4.21, multicluster engine Operator supports as far back as version 4.19. If you want to use a hosted cluster version that is earlier than one of the versions that multicluster engine Operator supports, you can detach your hosted clusters from multicluster engine Operator to be unmanaged, or you can use an earlier version of multicluster engine Operator. For instructions to detach your hosted clusters from multicluster engine Operator, see [Removing a cluster from management](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#remove-managed-cluster) (RHACM documentation). For more information about multicluster engine Operator support, see [The multicluster engine for Kubernetes operator 2.11 Support Matrix](https://access.redhat.com/articles/7136929) (Red Hat Knowledgebase).
 
 </div>
 
@@ -132,7 +132,7 @@ When you update to another version of the multicluster engine Operator, your hos
 
 <div class="note">
 
-Although the HyperShift Operator supports the hosted cluster versions in the following table, multicluster engine Operator supports only as far back as 2 versions earlier than the current version. For example, if the current hosted cluster version is 4.21, multicluster engine Operator supports as far back as version 4.19. If you want to use a hosted cluster version that is earlier than one of the versions that multicluster engine Operator supports, you can detach your hosted clusters from multicluster engine Operator to be unmanaged, or you can use an earlier version of multicluster engine Operator. For instructions to detach your hosted clusters from multicluster engine Operator, see [Removing a cluster from management](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#remove-managed-cluster) (RHACM documentation). For more information about multicluster engine Operator support, see [The multicluster engine for Kubernetes operator 2.11 Support Matrix](https://access.redhat.com/articles/7136929) (Red Hat Knowledgebase).
+Although the HyperShift Operator supports the hosted cluster versions in the following table, multicluster engine Operator supports only as far back as 2 versions earlier than the current version. For example, if the current hosted cluster version is 4.21, multicluster engine Operator supports as far back as version 4.19. If you want to use a hosted cluster version that is earlier than one of the versions that multicluster engine Operator supports, you can detach your hosted clusters from multicluster engine Operator to be unmanaged, or you can use an earlier version of multicluster engine Operator. For instructions to detach your hosted clusters from multicluster engine Operator, see [Removing a cluster from management](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#remove-managed-cluster) (RHACM documentation). For more information about multicluster engine Operator support, see [The multicluster engine for Kubernetes operator 2.11 Support Matrix](https://access.redhat.com/articles/7136929) (Red Hat Knowledgebase).
 
 </div>
 

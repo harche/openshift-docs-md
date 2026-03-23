@@ -36,7 +36,7 @@ To deploy a private cluster, you must:
 
 ## Private clusters in Google Cloud
 
-To create a private cluster on Google Cloud, you must provide an existing private VPC and subnets to host the cluster. The installation program must also be able to resolve the DNS records that the cluster requires. The installation program configures the Ingress Operator and API server for only internal traffic.
+To create a private cluster on Google Cloud, you must provide an existing VPC network and subnets to host the cluster, and you must specify `publish: Internal` in your `install-config.yaml` file. The installation program must also be able to resolve the DNS records that the cluster requires. The installation program configures the Ingress Operator and API server for only internal traffic.
 
 The cluster still requires access to internet to access the Google Cloud APIs.
 
@@ -296,7 +296,23 @@ To customise your OpenShift Container Platform deployment and meet specific netw
 
     </div>
 
-2.  Customize the provided sample `install-config.yaml` file template and save the file in the `<installation_directory>`.
+2.  Edit the `install-config.yaml` file to set the `publish: Internal` parameter.
+
+3.  Edit the `install-config.yaml` file to set the parameters necessary for installation into an existing VPC.
+
+    1.  Define the network and subnets for the VPC to install the cluster in under the parent `platform.gcp` field:
+
+        ``` yaml
+        platform:
+          gcp:
+            network: <existing_vpc>
+            controlPlaneSubnet: <control_plane_subnet>
+            computeSubnet: <compute_subnet>
+        ```
+
+        For the `platform.gcp.network` parameter, specify the name for the existing Google VPC. For the `platform.gcp.controlPlaneSubnet` and `platform.gcp.computeSubnet` parameters, specify the existing subnets to deploy the control plane machines and compute machines, respectively.
+
+4.  Customize the provided sample `install-config.yaml` file template and save the file in the `<installation_directory>`.
 
     <div class="note">
 
@@ -304,7 +320,7 @@ To customise your OpenShift Container Platform deployment and meet specific netw
 
     </div>
 
-3.  Back up the `install-config.yaml` file so that you can use it to install many clusters.
+5.  Back up the `install-config.yaml` file so that you can use it to install many clusters.
 
     <div class="important">
 
@@ -540,7 +556,7 @@ For information about provisioning your DNS records for the API server and the I
 
 ## Sample customized install-config.yaml file for Google Cloud
 
-You can customize the `install-config.yaml` file to specify more details about your OpenShift Container Platform cluster’s platform or modify the values of the required parameters.
+To specify more details about your OpenShift Container Platform cluster’s platform or modify the values of the required parameters, you can customize the `install-config.yaml` file.
 
 <div class="important">
 
@@ -551,139 +567,46 @@ This sample YAML file is provided for reference only. You must obtain your `inst
 ``` yaml
 apiVersion: v1
 baseDomain: example.com
-credentialsMode: Mint
+pullSecret: '{"auths": ...}'
 controlPlane:
-  hyperthreading: Enabled
   name: master
+  replicas: 3
   platform:
     gcp:
       type: n2-standard-4
-      zones:
-      - us-central1-a
-      - us-central1-c
-      osDisk:
-        diskType: pd-ssd
-        diskSizeGB: 1024
-        encryptionKey:
-          kmsKey:
-            name: worker-key
-            keyRing: test-machine-keys
-            location: global
-            projectID: project-id
-      tags:
-      - control-plane-tag1
-      - control-plane-tag2
-      osImage:
-        project: example-project-name
-        name: example-image-name
-  replicas: 3
 compute:
-- hyperthreading: Enabled
-  name: worker
+- name: worker
+  replicas: 3
   platform:
     gcp:
       type: n2-standard-4
-      zones:
-      - us-central1-a
-      - us-central1-c
-      osDisk:
-        diskType: pd-standard
-        diskSizeGB: 128
-        encryptionKey:
-          kmsKey:
-            name: worker-key
-            keyRing: test-machine-keys
-            location: global
-            projectID: project-id
-        tags:
-        - compute-tag1
-        - compute-tag2
-        osImage:
-          project: example-project-name
-          name: example-image-name
-  replicas: 3
 metadata:
   name: test-cluster
 networking:
   clusterNetwork:
   - cidr: 10.128.0.0/14
     hostPrefix: 23
-  machineNetwork:
-  - cidr: 10.0.0.0/16
-  networkType: OVNKubernetes
-  serviceNetwork:
-  - 172.30.0.0/16
 platform:
   gcp:
-    projectID: openshift-production
-    region: us-central1
-    defaultMachinePlatform:
-      tags:
-      - global-tag1
-      - global-tag2
-      osImage:
-        project: example-project-name
-        name: example-image-name
-    network: existing_vpc
-    controlPlaneSubnet: control_plane_subnet
-    computeSubnet: compute_subnet
-pullSecret: '{"auths": ...}'
-fips: false
-sshKey: ssh-ed25519 AAAA...
-publish: Internal
+    projectID: sample-project
+    region: us-east1
 ```
 
-- Required. The installation program prompts you for this value.
+where:
 
-- Optional: Add this parameter to force the Cloud Credential Operator (CCO) to use the specified mode. By default, the CCO uses the root credentials in the `kube-system` namespace to dynamically try to determine the capabilities of the credentials. For details about CCO modes, see the "About the Cloud Credential Operator" section in the *Authentication and authorization* guide.
+`controlPlane`
+Specifies parameters that apply to control plane machines.
 
-- If you do not provide these parameters and values, the installation program provides the default value.
+`compute`
+Specifies parameters that apply to compute machines.
 
-- The `controlPlane` section is a single mapping, but the `compute` section is a sequence of mappings. To meet the requirements of the different data structures, the first line of the `compute` section must begin with a hyphen, `-`, and the first line of the `controlPlane` section must not. Only one control plane pool is used.
+`networking`
+Specifies parameters that apply to the cluster networking configuration. If you do not provide networking values, the installation program provides default values.
 
-- Whether to enable or disable simultaneous multithreading, or `hyperthreading`. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores. You can disable it by setting the parameter value to `Disabled`. If you disable simultaneous multithreading in some cluster machines, you must disable it in all cluster machines.
+`platform`
+Specifies parameters that apply to the infrastructure platform that hosts the cluster.
 
-  <div class="important">
-
-  If you disable simultaneous multithreading, ensure that your capacity planning accounts for the dramatically decreased machine performance. Use larger machine types, such as `n1-standard-8`, for your machines if you disable simultaneous multithreading.
-
-  </div>
-
-- Optional: The custom encryption key section to encrypt both virtual machines and persistent volumes. Your default compute service account must have the permissions granted to use your KMS key and have the correct IAM role assigned. The default service account name follows the `service-<project_number>@compute-system.iam.gserviceaccount.com` pattern. For more information about granting the correct permissions for your service account, see "Machine management" → "Creating compute machine sets" → "Creating a compute machine set on Google Cloud".
-
-- Optional: A set of network tags to apply to the control plane or compute machine sets. The `platform.gcp.defaultMachinePlatform.tags` parameter will apply to both control plane and compute machines. If the `compute.platform.gcp.tags` or `controlPlane.platform.gcp.tags` parameters are set, they override the `platform.gcp.defaultMachinePlatform.tags` parameter.
-
-- Optional: A custom Red Hat Enterprise Linux CoreOS (RHCOS) that should be used to boot control plane and compute machines. The `project` and `name` parameters under `platform.gcp.defaultMachinePlatform.osImage` apply to both control plane and compute machines. If the `project` and `name` parameters under `controlPlane.platform.gcp.osImage` or `compute.platform.gcp.osImage` are set, they override the `platform.gcp.defaultMachinePlatform.osImage` parameters.
-
-- The cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
-
-- Specify the name of an existing VPC.
-
-- Specify the name of the existing subnet to deploy the control plane machines to. The subnet must belong to the VPC that you specified.
-
-- Specify the name of the existing subnet to deploy the compute machines to. The subnet must belong to the VPC that you specified.
-
-- Whether to enable or disable FIPS mode. By default, FIPS mode is not enabled. If FIPS mode is enabled, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that are provided with RHCOS instead.
-
-  <div class="important">
-
-  To enable FIPS mode for your cluster, you must run the installation program from a Red Hat Enterprise Linux (RHEL) computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see [Installing the system in FIPS mode](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/security_hardening/assembly_installing-the-system-in-fips-mode_security-hardening).
-
-  When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
-
-  </div>
-
-- You can optionally provide the `sshKey` value that you use to access the machines in your cluster.
-
-  <div class="note">
-
-  For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
-
-  </div>
-
-- How to publish the user-facing endpoints of your cluster. Set `publish` to `Internal` to deploy a private cluster, which cannot be accessed from the internet. The default value is `External`.
-
-<!-- -->
+- [Installation configuration parameters for GCP](../../installing/installing_gcp/installation-config-parameters-gcp.xml#installation-config-parameters-gcp)
 
 - [Enabling customer-managed encryption keys for a compute machine set](../../machine_management/creating_machinesets/creating-machineset-gcp.xml#machineset-enabling-customer-managed-encryption_creating-machineset-gcp)
 

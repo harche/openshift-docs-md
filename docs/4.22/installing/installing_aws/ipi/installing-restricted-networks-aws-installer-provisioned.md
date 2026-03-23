@@ -375,7 +375,7 @@ You can customize the OpenShift Container Platform cluster you install on Amazon
 
         For these values, use the `imageContentSources` that you recorded during mirror registry creation.
 
-    5.  Set the publishing strategy to `Internal`:
+    5.  Optionally, set the publishing strategy to `Internal`:
 
         ``` yaml
         publish: Internal

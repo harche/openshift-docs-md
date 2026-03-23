@@ -453,7 +453,7 @@ For the list of supported OpenShift Container Platform releases and the RHEL ver
     [
       {
         "name": "operator",
-        "version": "4.20.3"
+        "version": "4.20.8"
       }
     ]
     ```

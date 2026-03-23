@@ -62,13 +62,13 @@ After you install a cluster on Red Hat OpenStack Platform (RHOSP), you can use 
 
     where:
 
-    `openshift-image-registry`
-    Specifying this namespace allows the Cluster Image Registry Operator to consume the PVC.
+    `metadata.namespace`
+    Specifying the `openshift-image-registry` namespace allows the Cluster Image Registry Operator to consume the PVC.
 
-    `storage`
+    `spec.resources.requests.storage`
     This optional field adjusts the volume size.
 
-    `storageClassName`
+    `spec.storageClassName`
     Specifies the name of the storage class that you created.
 
 4.  From a command line, apply the configuration:

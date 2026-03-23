@@ -279,7 +279,7 @@ You can add one or more nodes to your cluster by using the `nodes-config.yaml` f
 2.  Generate the ISO image by running the following command:
 
     ``` terminal
-    $ oc adm node-image create nodes-config.yaml
+    $ oc adm node-image create
     ```
 
     <div class="important">

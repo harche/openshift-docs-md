@@ -332,7 +332,7 @@ You can customize the OpenShift Container Platform cluster you install on VMware
 
         For these values, use the `imageContentSources` that you recorded during mirror registry creation.
 
-    4.  Set the publishing strategy to `Internal`:
+    4.  Optionally, set the publishing strategy to `Internal`:
 
         ``` yaml
         publish: Internal

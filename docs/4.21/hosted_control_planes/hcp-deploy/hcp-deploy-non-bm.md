@@ -42,7 +42,7 @@ Before you deploy hosted control planes on non-bare-metal agent machines, ensure
 
 - You must have multicluster engine for Kubernetes Operator 2.5 or later installed on an OpenShift Container Platform cluster. You can install the multicluster engine Operator as an Operator from the OpenShift Container Platform software catalog.
 
-- You must have at least one managed OpenShift Container Platform cluster for the multicluster engine Operator. The `local-cluster` management cluster is automatically imported. For more information about the `local-cluster`, see [Advanced configuration](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#advanced-config-engine) in the Red Hat Advanced Cluster Management documentation. You can check the status of your management cluster by running the following command:
+- You must have at least one managed OpenShift Container Platform cluster for the multicluster engine Operator. The `local-cluster` management cluster is automatically imported. For more information about the `local-cluster`, see [Advanced configuration](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#advanced-config-engine) in the Red Hat Advanced Cluster Management documentation. You can check the status of your management cluster by running the following command:
 
   ``` terminal
   $ oc get managedclusters local-cluster
@@ -58,9 +58,9 @@ Before you deploy hosted control planes on non-bare-metal agent machines, ensure
 
 <!-- -->
 
-- [Advanced configuration](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#advanced-config-engine)
+- [Advanced configuration](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#advanced-config-engine)
 
-- [Enabling the central infrastructure management service](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#enable-cim)
+- [Enabling the central infrastructure management service](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#enable-cim)
 
 ## Firewall, port, and service requirements for non-bare-metal agent machines
 
@@ -186,13 +186,15 @@ The DNS entry can be as simple as a record that points to one of the nodes in th
 
 ## Defining a custom DNS name
 
-As a cluster administrator, you can create a hosted cluster with an external API DNS name that differs from the internal endpoint that gets used for node bootstraps and control plane communication. You might want to define a different DNS name for the following reasons:
+As a cluster administrator, you can create a hosted cluster with an external API DNS name that differs from the internal endpoint that gets used for node bootstraps and control plane communication.
 
-- To replace the user-facing TLS certificate with one from a public CA without breaking the control plane functions that bind to the internal root CA.
+You might want to define a different DNS name for the following reasons:
 
-- To support split-horizon DNS and NAT scenarios.
+- To replace the user-facing TLS certificate with one from a public CA without breaking the control plane functions that bind to the internal root CA
 
-- To ensure a similar experience to standalone control planes, where you can use functions, such as the `Show Login Command` function, with the correct `kubeconfig` and DNS configuration.
+- To support split-horizon DNS and NAT scenarios
+
+- To ensure a similar experience to standalone control planes, where you can use functions, such as the `Show Login Command` function, with the correct `kubeconfig` and DNS configuration
 
 You can define a DNS name either during your initial setup or during postinstallation operations, by entering a domain name in the `kubeAPIServerDNSName` parameter of a `HostedCluster` object.
 
@@ -219,21 +221,21 @@ You can define a DNS name either during your initial setup or during postinstall
     kubeAPIServerDNSName: <custom_address>
   ```
 
-  - The value for the `kubeAPIServerDNSName` parameter must be a valid and addressable domain.
+  The value for the `kubeAPIServerDNSName` parameter must be a valid and addressable domain.
 
-After you define the `kubeAPIServerDNSName` parameter and specify the certificate, the Control Plane Operator controllers create a `kubeconfig` file named `custom-admin-kubeconfig`, where the file gets stored in the `HostedControlPlane` namespace. The generation of certificates happen from the root CA, and the `HostedControlPlane` namespace manages their expiration and renewal.
+  After you define the `kubeAPIServerDNSName` parameter and specify the certificate, the Control Plane Operator controllers create a `kubeconfig` file named `custom-admin-kubeconfig`, where the file gets stored in the `HostedControlPlane` namespace. The generation of certificates happen from the root CA, and the `HostedControlPlane` namespace manages their expiration and renewal.
 
-The Control Plane Operator reports a new `kubeconfig` file named `CustomKubeconfig` in the `HostedControlPlane` namespace. That file uses the defined new server in the `kubeAPIServerDNSName` parameter.
+  The Control Plane Operator reports a new `kubeconfig` file named `CustomKubeconfig` in the `HostedControlPlane` namespace. That file uses the defined new server in the `kubeAPIServerDNSName` parameter.
 
-A reference for the custom `kubeconfig` file exists in the `status` parameter as `CustomKubeconfig` of the `HostedCluster` object. The `CustomKubeConfig` parameter is optional, and you can add the parameter only if the `kubeAPIServerDNSName` parameter is not empty. After you set the `CustomKubeConfig` parameter, the parameter triggers the generation of a secret named `<hosted_cluster_name>-custom-admin-kubeconfig` in the `HostedCluster` namespace. You can use the secret to access the `HostedCluster` API server. If you remove the `CustomKubeConfig` parameter during postinstallation operations, deletion of all related secrets and status references occur.
+  A reference for the custom `kubeconfig` file exists in the `status` parameter as `CustomKubeconfig` of the `HostedCluster` object. The `CustomKubeConfig` parameter is optional, and you can add the parameter only if the `kubeAPIServerDNSName` parameter is not empty. After you set the `CustomKubeConfig` parameter, the parameter triggers the generation of a secret named `<hosted_cluster_name>-custom-admin-kubeconfig` in the `HostedCluster` namespace. You can use the secret to access the `HostedCluster` API server. If you remove the `CustomKubeConfig` parameter during postinstallation operations, deletion of all related secrets and status references occur.
 
-<div class="note">
+  <div class="note">
 
-Defining a custom DNS name does not directly impact the data plane, so no expected rollouts occur. The `HostedControlPlane` namespace receives the changes from the HyperShift Operator and deletes the corresponding parameters.
+  Defining a custom DNS name does not directly impact the data plane, so no expected rollouts occur. The `HostedControlPlane` namespace receives the changes from the HyperShift Operator and deletes the corresponding parameters.
 
-</div>
+  </div>
 
-If you remove the `kubeAPIServerDNSName` parameter from the specification for the `HostedCluster` object, all newly generated secrets and the `CustomKubeconfig` reference are removed from the cluster and from the `status` parameter.
+  If you remove the `kubeAPIServerDNSName` parameter from the specification for the `HostedCluster` object, all newly generated secrets and the `CustomKubeconfig` reference are removed from the cluster and from the `status` parameter.
 
 # Creating a hosted cluster on non-bare-metal agent machines by using the CLI
 
@@ -411,13 +413,13 @@ You can use a mirror registry to create a hosted cluster on non-bare-metal agent
 
     - Specify the supported OpenShift Container Platform version that you want to use, for example, `4.21.0-multi`. If you are using a disconnected environment, replace `<ocp_release_image>` with the digest image. To extract the OpenShift Container Platform release image digest, see *Extracting the OpenShift Container Platform release image digest*.
 
-- To create credentials that you can reuse when you create a hosted cluster with the console, see [Creating a credential for an on-premises environment](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#creating-a-credential-for-an-on-premises-environment).
+- To create credentials that you can reuse when you create a hosted cluster with the console, see [Creating a credential for an on-premises environment](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#creating-a-credential-for-an-on-premises-environment).
 
 - To access a hosted cluster, see [Accessing the hosted cluster](../../hosted_control_planes/hcp-manage/hcp-manage-bm.xml#hcp-bm-access_hcp-manage-bm).
 
-- To add hosts to the host inventory by using the Discovery Image, see [Adding hosts to the host inventory by using the Discovery Image](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#add-host-host-inventory).
+- To add hosts to the host inventory by using the Discovery Image, see [Adding hosts to the host inventory by using the Discovery Image](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#add-host-host-inventory).
 
-- To extract the OpenShift Container Platform release image digest, see [Extracting the OpenShift Container Platform release image digest](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#configure-hosted-disconnected-digest-image).
+- To extract the OpenShift Container Platform release image digest, see [Extracting the OpenShift Container Platform release image digest](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#configure-hosted-disconnected-digest-image).
 
 # Verifying hosted cluster creation on non-bare-metal agent machines
 

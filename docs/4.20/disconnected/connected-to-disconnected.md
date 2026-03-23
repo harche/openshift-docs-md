@@ -96,7 +96,7 @@ Before disconnecting your cluster, you must mirror, or copy, the images to a mir
     4.  Edit the `.dockerconfigjson` file to add your mirror registry and authentication credentials and save it as a new file:
 
         ``` terminal
-        {"auths":{"<local_registry>": {"auth": "<credentials>","email": "you@example.com"}}},"<registry>:<port>/<namespace>/":{"auth":"<token>"}}}
+        {"auths":{"<local_registry>": {"auth": "<credentials>","email": "you@example.com"},"<registry>:<port>/<namespace>/":{"auth":"<token>"}}}
         ```
 
         where:

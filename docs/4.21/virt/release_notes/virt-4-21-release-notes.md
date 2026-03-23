@@ -124,6 +124,11 @@ With this update, cluster administrators can integrate third-party solutions int
 
 [CNV-73256](https://issues.redhat.com/browse/CNV-73256)
 
+Customizable action menu added for Kubevirt plugin
+With this update, the Kubevirt plugin introduces a customizable action menu, which allows you to load custom actions from dynamic plugins. This enhancement also offers dynamic loading of local actions, and de-duplication of action lists, resulting in a more flexible user interface.
+
+[CNV-70667](https://issues.redhat.com/browse/CNV-70667)
+
 <!-- -->
 
 New metric to list VM labels as Prometheus labels
@@ -283,3 +288,32 @@ To work around this problem, manually delete the stale boot source resources:
 2.  Delete the older, non-suffixed `DataSource` objects and the PVCs or `VolumeSnapshots` they reference.
 
     [CNV-75084](https://issues.redhat.com/browse/CNV-75084)
+
+# Maintenance releases
+
+## OpenShift Virtualization 4.21.1 updates
+
+OpenShift Virtualization 4.17.1 is now available with updates to packages and images that fix several bugs and add enhancements.
+
+### New features and enhancements
+
+OpenShift Virtualization on Google Cloud is generally available
+Using OpenShift Virtualization on a Google Cloud cluster with bare-metal nodes is now generally available. For more information, see the following articles in the Red Hat Knowledgebase:
+
+- [Storage configuration for OpenShift Virtualization 4.17.x on Google Cloud](https://access.redhat.com/articles/7139046)
+
+- [OpenShift Virtualization on Google Cloud: Known issues and limitations](https://access.redhat.com/articles/7139682)
+
+<div class="important">
+
+- Running OpenShift Virtualization on Google Cloud requires OpenShift Container Platform 4.21.5 and OpenShift Virtualization 4.21.1, or later versions.
+
+- Resizing an attached Hyperdisk volume is not supported in RWX mode. For more information, see [Increase the capacity of a Hyperdisk volume](https://docs.cloud.google.com/compute/docs/disks/modify-hyperdisks#capacity_changes) in the Google Cloud documentation.
+
+- The Google Cloud platform, by default, has limitations that are incompatible with the capabilities of OpenShift Virtualization. You can override these limitations by contacting Google to request project-level allow list approval:
+
+  - Multi-writer mode (RWX) is currently not allowed for bare-metal machines. For more information, see [Limitations for sharing Hyperdisk volumes in multi-writer mode](https://docs.cloud.google.com/compute/docs/disks/sharing-disks-between-vms#mw-limitations) in the Google Cloud documentation.
+
+  - While most machine types default to 127 volumes per node, certain bare-metal machine types have lower volume attachment limits. For more information, see [Disk and capacity limits](https://docs.cloud.google.com/compute/docs/general-purpose-machines#disk_and_capacity_limits_8) in the Google Cloud documentation and [Volume Attachment Limit Per Node](https://access.redhat.com/articles/7139682#volume-attachment-limit-per-node-2) in the Red Hat Knowledgebase.
+
+</div>

@@ -1,4 +1,4 @@
-When you provision hosted control planes on bare metal, you use the Agent platform. The Agent platform and multicluster engine for Kubernetes Operator work together to enable disconnected deployments. The Agent platform uses the central infrastructure management service to add worker nodes to a hosted cluster. For an introduction to the central infrastructure management service, see [Enabling the central infrastructure management service](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#enable-cim).
+When you provision hosted control planes on bare metal, you use the Agent platform. The Agent platform and multicluster engine for Kubernetes Operator work together to enable disconnected deployments. The Agent platform uses the central infrastructure management service to add worker nodes to a hosted cluster. For an introduction to the central infrastructure management service, see [Enabling the central infrastructure management service](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#enable-cim).
 
 # Disconnected environment architecture for bare metal
 
@@ -338,11 +338,11 @@ To set up an OpenShift Container Platform management cluster, you need to ensure
 
 Next, configure the web server.
 
-- [Installing and upgrading multicluster engine operator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#mce-install-intro)
+- [Installing and upgrading multicluster engine operator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#mce-install-intro)
 
 - [Manually enabling the hypershift-addon managed cluster add-on for local-cluster](../../hosted_control_planes/hcp-prepare/hcp-enable-disable.html#hcp-enable-manual-addon_hcp-enable-disable)
 
-- [About cluster lifecycle with multicluster engine operator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#mce-intro)
+- [About cluster lifecycle with multicluster engine operator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#mce-intro)
 
 # Configuring the web server for hosted control planes in a disconnected environment
 
@@ -502,7 +502,7 @@ To configure image mirroring, complete the following steps:
           --from file://<file_path> docker://<mirror_registry_url> --v2
         ```
 
-7.  Mirror the latest multicluster engine Operator images by following the steps in [Install on disconnected networks](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#install-on-disconnected-networks).
+7.  Mirror the latest multicluster engine Operator images by following the steps in [Install on disconnected networks](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#install-on-disconnected-networks).
 
 - [Mirroring an image set in a partially disconnected environment](../../disconnected/about-installing-oc-mirror-v2.xml#oc-mirror-workflows-partially-disconnected-v2_about-installing-oc-mirror-v2)
 
@@ -755,7 +755,7 @@ In order for the data plane workers in the hosted cluster to be able to retrieve
     ``` yaml
     spec:
       additionalTrustBundle:
-        - name: user-ca-bundle
+        name: user-ca-bundle
     ```
 
     - The `user-ca-bundle` entry is a config map that you create in the next step.

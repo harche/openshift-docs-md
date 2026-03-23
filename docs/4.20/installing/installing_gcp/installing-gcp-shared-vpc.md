@@ -198,7 +198,39 @@ To customise your OpenShift Container Platform deployment and meet specific netw
 
     </div>
 
-2.  Customize the provided sample `install-config.yaml` file template and save the file in the `<installation_directory>`.
+2.  Edit the `install-config.yaml` file to set the parameters necessary for installation into a shared VPC.
+
+    1.  Define the network, subnets, and project names for the shared VPC:
+
+        ``` yaml
+        # ...
+        platform:
+          gcp:
+            computeSubnet: <shared_vpc_compute_subnet>
+            controlPlaneSubnet: <shared_vpc_control_plane_subnet>
+            network: <shared_vpc_name>
+            networkProjectID: <host_project_name>
+            projectID: <service_project_name>
+        ```
+
+        where:
+
+        `<shared_vpc_compute_subnet>`
+        Specifies the name of the subnet in the shared VPC for compute machines to use.
+
+        `<shared_vpc_control_plane_subnet>`
+        Specifies the name of the subnet in the shared VPC for control plane machines to use.
+
+        `<shared_vpc_name>`
+        Specifies the name of the shared VPC.
+
+        `<host_project_name>`
+        Specifies the name of the host project where the shared VPC exists.
+
+        `<service_project_name>`
+        Specifies the name of the project where you want to install the cluster.
+
+3.  Customize the provided sample `install-config.yaml` file template and save the file in the `<installation_directory>`.
 
     <div class="note">
 
@@ -206,7 +238,7 @@ To customise your OpenShift Container Platform deployment and meet specific netw
 
     </div>
 
-3.  Back up the `install-config.yaml` file so that you can use it to install many clusters.
+4.  Back up the `install-config.yaml` file so that you can use it to install many clusters.
 
     <div class="important">
 
@@ -349,80 +381,59 @@ For information about provisioning your DNS records for the API server and the I
 
 - [Installation configuration parameters for Google Cloud](../../installing/installing_gcp/installation-config-parameters-gcp.xml#installation-config-parameters-gcp)
 
-## Sample customized install-config.yaml file for shared VPC installation
+## Sample customized install-config.yaml file for Google Cloud
 
-There are several configuration parameters which are required to install OpenShift Container Platform on Google Cloud using a shared VPC. The following is a sample `install-config.yaml` file which demonstrates these fields.
+To specify more details about your OpenShift Container Platform cluster’s platform or modify the values of the required parameters, you can customize the `install-config.yaml` file.
 
 <div class="important">
 
-This sample YAML file is provided for reference only. You must modify this file with the correct values for your environment and cluster.
+This sample YAML file is provided for reference only. You must obtain your `install-config.yaml` file by using the installation program and modify it.
 
 </div>
 
 ``` yaml
 apiVersion: v1
 baseDomain: example.com
-credentialsMode: Passthrough
-metadata:
-  name: cluster_name
-platform:
-  gcp:
-    computeSubnet: shared-vpc-subnet-1
-    controlPlaneSubnet: shared-vpc-subnet-2
-    network: shared-vpc
-    networkProjectID: host-project-name
-    projectID: service-project-name
-    region: us-east1
-    defaultMachinePlatform:
-      tags:
-      - global-tag1
+pullSecret: '{"auths": ...}'
 controlPlane:
   name: master
+  replicas: 3
   platform:
     gcp:
-      tags:
-      - control-plane-tag1
       type: n2-standard-4
-      zones:
-      - us-central1-a
-      - us-central1-c
-  replicas: 3
 compute:
 - name: worker
+  replicas: 3
   platform:
     gcp:
-      tags:
-      - compute-tag1
       type: n2-standard-4
-      zones:
-      - us-central1-a
-      - us-central1-c
-  replicas: 3
+metadata:
+  name: test-cluster
 networking:
   clusterNetwork:
   - cidr: 10.128.0.0/14
     hostPrefix: 23
-  machineNetwork:
-  - cidr: 10.0.0.0/16
-pullSecret: '{"auths": ...}'
-sshKey: ssh-ed25519 AAAA...
+platform:
+  gcp:
+    projectID: sample-project
+    region: us-east1
 ```
 
-- `credentialsMode` must be set to `Passthrough` or `Manual`. See the "Prerequisites" section for the required Google Cloud permissions that your service account must have.
+where:
 
-- The name of the subnet in the shared VPC for compute machines to use.
+`controlPlane`
+Specifies parameters that apply to control plane machines.
 
-- The name of the subnet in the shared VPC for control plane machines to use.
+`compute`
+Specifies parameters that apply to compute machines.
 
-- The name of the shared VPC.
+`networking`
+Specifies parameters that apply to the cluster networking configuration. If you do not provide networking values, the installation program provides default values.
 
-- The name of the host project where the shared VPC exists.
+`platform`
+Specifies parameters that apply to the infrastructure platform that hosts the cluster.
 
-- The name of the Google Cloud project where you want to install the cluster.
-
-- Optional. One or more network tags to apply to compute machines, control plane machines, or all machines.
-
-- You can optionally provide the `sshKey` value that you use to access the machines in your cluster.
+- [Installation configuration parameters for GCP](../../installing/installing_gcp/installation-config-parameters-gcp.xml#installation-config-parameters-gcp)
 
 ## Configuring the cluster-wide proxy during installation
 

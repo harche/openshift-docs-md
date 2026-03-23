@@ -140,7 +140,7 @@ Complete the following steps to run the `must-gather` command in a disconnected 
       --dest-dir=./data
     ```
 
-- [Install on disconnected networks](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#install-on-disconnected-networks)
+- [Install on disconnected networks](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#install-on-disconnected-networks)
 
 # Troubleshooting hosted clusters on OpenShift Virtualization
 
@@ -192,7 +192,7 @@ If a hosted control plane is not coming fully online because the hosted control 
 
 <!-- -->
 
-- [Identifying the problem: Access the VM console logs](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#identifying-vm-console-logs)
+- [Identifying the problem: Access the VM console logs](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#identifying-vm-console-logs)
 
 ## Worker nodes are stuck in the NotReady state
 
@@ -350,7 +350,7 @@ To unbind the non-bare-metal nodes with late binding, complete the following ste
 
 3.  Reboot manually with the Discovery ISO.
 
-- [Removing a cluster from management](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#remove-managed-cluster)
+- [Removing a cluster from management](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#remove-managed-cluster)
 
 # Troubleshooting hosted clusters on bare metal
 
@@ -386,7 +386,7 @@ When you scale up a hosted control planes cluster with nodes that were provision
 
     </div>
 
-- [Add the pull secret to the namespace](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.14/html-single/clusters/index#on-prem-creating-your-cluster-with-the-cli-pull-secret)
+- [Add the pull secret to the namespace](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html-single/clusters/index#on-prem-creating-your-cluster-with-the-cli-pull-secret)
 
 # Restarting hosted control plane components
 

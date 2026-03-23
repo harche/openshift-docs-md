@@ -926,6 +926,6 @@ The following steps show how to integrate Service Mesh with user-workload monito
 
 - [Enabling monitoring for user-defined projects](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_user_workload_monitoring/preparing-to-configure-the-monitoring-stack-uwm#enabling-monitoring-for-user-defined-projects-uwm_preparing-to-configure-the-monitoring-stack-uwm)
 
-- [Installing the Distributed Tracing Platform](../../observability/distr_tracing/distr-tracing-tempo-installing.xml#distr-tracing-tempo-installing)
+- [Installing the Distributed Tracing Platform](https://docs.redhat.com/en/documentation/red_hat_openshift_distributed_tracing_platform/latest/html/installing_the_distributed_tracing_platform/distr-tracing-tempo-installing)
 
 - [Installing the Red Hat build of OpenTelemetry](https://docs.redhat.com/en/documentation/red_hat_build_of_opentelemetry/latest/html/installing_red_hat_build_of_opentelemetry/install-otel)
