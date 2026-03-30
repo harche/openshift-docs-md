@@ -14,12 +14,7 @@ It is helpful to collect debugging data to include with your support request.
 
 ### Collecting data for Red Hat Support
 
-You can gather debugging information by performing the following steps:
-
-[Collecting data about your environment](../../virt/support/virt-collecting-virt-data.xml#virt-collecting-data-about-your-environment_virt-collecting-virt-data)
-Configure Prometheus and Alertmanager and collect `must-gather` data for OpenShift Container Platform and OpenShift Virtualization.
-
-<!-- -->
+You can gather debugging information by performing the following steps: Configure Prometheus and Alertmanager and collect `must-gather` data for OpenShift Container Platform and OpenShift Virtualization.
 
 [`must-gather` tool for OpenShift Virtualization](../../virt/support/virt-collecting-virt-data.xml#virt-using-virt-must-gather_virt-collecting-virt-data)
 Configure and use the `must-gather` tool.

@@ -27,17 +27,17 @@ With this update, the cert-manager Operator for Red Hat OpenShift images use ubi
 
 ## CVEs
 
-- [CVE-2025-66418](https://access..redhat.com/security/cve/CVE-2025-66418)
+- [CVE-2025-66418](https://access.redhat.com/security/cve/CVE-2025-66418)
 
-- [CVE-2025-66471](https://access..redhat.com/security/cve/CVE-2025-66471)
+- [CVE-2025-66471](https://access.redhat.com/security/cve/CVE-2025-66471)
 
-- [CVE-2025-61729](https://access..redhat.com/security/cve/CVE-2025-61729)
+- [CVE-2025-61729](https://access.redhat.com/security/cve/CVE-2025-61729)
 
-- [CVE-2025-21441](https://access..redhat.com/security/cve/CVE-2026-21441)
+- [CVE-2025-21441](https://access.redhat.com/security/cve/CVE-2026-21441)
 
-- [CVE-2025-61727](https://access..redhat.com/security/cve/CVE-2025-61727)
+- [CVE-2025-61727](https://access.redhat.com/security/cve/CVE-2025-61727)
 
-- [CVE-2025-61729](https://access..redhat.com/security/cve/CVE-2025-61729)
+- [CVE-2025-61729](https://access.redhat.com/security/cve/CVE-2025-61729)
 
 # cert-manager Operator for Red Hat OpenShift 1.18.0
 

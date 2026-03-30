@@ -79,7 +79,7 @@ The Loki Operator supports a few log storage options, such as AWS S3, Google Clo
     kind: Secret
     metadata:
       name: loki-s3
-      namespace: netobserv
+      namespace: netobserv-loki
     stringData:
       access_key_id: QUtJQUlPU0ZPRE5ON0VYQU1QTEUK
       access_key_secret: d0phbHJYVXRuRkVNSS9LN01ERU5HL2JQeFJmaUNZRVhBTVBMRUtFWQo=
@@ -88,7 +88,25 @@ The Loki Operator supports a few log storage options, such as AWS S3, Google Clo
       region: eu-central-1
     ```
 
-    - The installation examples in this documentation use the same namespace, `netobserv`, across all components. You can optionally use a different namespace for the different components
+    where:
+
+    `metadata.namespace`
+    Specifies the namespace for the Loki S3 secret. While this example uses `netobserv-loki`, you can use a different namespace for different components.
+
+    `stringData.access_key_id`
+    Specifies the access key ID for the S3 bucket.
+
+    `stringData.access_key_secret`
+    Specifies the secret access key for the S3 bucket.
+
+    `stringData.bucketnames`
+    Specifies the name of the S3 bucket.
+
+    `stringData.endpoint`
+    Specifies the endpoint URL for the S3 service.
+
+    `stringData.region`
+    Specifies the AWS region where the bucket is located.
 
 - After you create the secret, you view the secret listed under **Workloads** → **Secrets** in the web console.
 
@@ -119,7 +137,7 @@ You can deploy a `LokiStack` custom resource (CR) to create a namespace or new p
     kind: LokiStack
     metadata:
       name: loki
-      namespace: netobserv
+      namespace: netobserv-loki
     spec:
       size: 1x.small
       storage:
@@ -134,23 +152,28 @@ You can deploy a `LokiStack` custom resource (CR) to create a namespace or new p
         mode: openshift-network
     ```
 
-    - The installation examples in this documentation use the same namespace, `netobserv`, across all components. You can optionally use a different namespace.
+    where:
 
-    - Specify the deployment size. In the Loki Operator 5.8 and later versions, the supported size options for production instances of Loki are `1x.extra-small`, `1x.small`, or `1x.medium`.
+    `metadata.namespace`
+    Specifies the namespace for the `LokiStack` resource. While this example uses `netobserv-loki`, you can use a different namespace for different components.
 
-      <div class="important">
+    `spec.size`
+    Specifies the deployment size. In Loki Operator 5.8 and later versions, the supported size options for production instances of Loki are `1x.extra-small`, `1x.small`, or `1x.medium`.
 
-      It is not possible to change the number `1x` for the deployment size.
+    <div class="important">
 
-      </div>
+    It is not possible to change the number `1x` for the deployment size.
 
-    - Use a storage class name that is available on the cluster for `ReadWriteOnce` access mode. For best performance, specify a storage class that allocates block storage. You can use `oc get storageclasses` to see what is available on your cluster.
+    </div>
 
-      <div class="important">
+    `spec.storageClassName`
+    Specifies a storage class name that is available on the cluster for `ReadWriteOnce` access mode. For best performance, specify a storage class that allocates block storage. Use the `oc get storageclasses` command to see available storage classes on your cluster.
 
-      You must not reuse the same `LokiStack` CR that is used for logging.
+    <div class="important">
 
-      </div>
+    You must not reuse the same `LokiStack` custom resource that is used for logging.
+
+    </div>
 
 5.  Click **Create**.
 

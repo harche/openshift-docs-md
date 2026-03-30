@@ -531,7 +531,7 @@ Deploy a custom `AlertingRule` and `FlowMetric` configuration to monitor TCP fla
     # ...
     ```
 
-    - In this example, the threshold for the alert is `300`; however, you can adapt this value empirically. A threshold that is too low might produce false-positives, and if it’s too high it might miss actual attacks.
+    In this example, the threshold for the alert is `300`; however, you can adapt this value empirically. A threshold that is too low might produce false-positives, and if it’s too high it might miss actual attacks.
 
 <!-- -->
 

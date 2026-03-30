@@ -1,18 +1,18 @@
-OpenShift Container Platform supports port forwarding to pods.
+You can configure port forwarding to pods, which expose services in your cluster to clients outside of the cluster.
 
 # Understanding port forwarding
 
-You can use the CLI to forward one or more local ports to a pod. This allows you to listen on a given or random port locally, and have data forwarded to and from given ports in the pod.
+You can use the OpenShift CLI (`oc`) to forward one or more local ports to a pod. This allows you to listen on a given or random port locally, and have data forwarded to and from given ports in the pod.
 
-Support for port forwarding is built into the CLI:
+You can use a command similar to the following to forward one or more local ports to a pod.
 
 ``` terminal
 $ oc port-forward <pod> [<local_port>:]<remote_port> [...[<local_port_n>:]<remote_port_n>]
 ```
 
-The CLI listens on each local port specified by the user, forwarding using the protocol described below.
+The OpenShift CLI (`oc`) listens on each local port specified by the user, forwarding using the protocol described below.
 
-Ports may be specified using the following formats:
+You can specify ports by using the following formats:
 
 |                     |                                                                          |
 |---------------------|--------------------------------------------------------------------------|
@@ -26,23 +26,15 @@ Architecturally, there are options for forwarding to a pod’s port. The support
 
 # Using port forwarding
 
-You can use the CLI to port-forward one or more local ports to a pod.
+You can use the OpenShift CLI (`oc`) to port-forward one or more local ports to a pod.
 
-<div class="formalpara-title">
+- Use a command similar to the following to listen on the specified port in a pod:
 
-**Procedure**
+  ``` terminal
+  $ oc port-forward <pod> [<local_port>:]<remote_port> [...[<local_port_n>:]<remote_port_n>]
+  ```
 
-</div>
-
-Use the following command to listen on the specified port in a pod:
-
-``` terminal
-$ oc port-forward <pod> [<local_port>:]<remote_port> [...[<local_port_n>:]<remote_port_n>]
-```
-
-For example:
-
-- Use the following command to listen on ports `5000` and `6000` locally and forward data to and from ports `5000` and `6000` in the pod:
+  For example, use the following command to listen on ports `5000` and `6000` locally and forward data to and from ports `5000` and `6000` in the pod:
 
   ``` terminal
   $ oc port-forward <pod> 5000 6000
@@ -61,7 +53,7 @@ For example:
   Forwarding from [::1]:6000 -> 6000
   ```
 
-- Use the following command to listen on port `8888` locally and forward to `5000` in the pod:
+  For example, use the following command to listen on port `8888` locally and forward to `5000` in the pod:
 
   ``` terminal
   $ oc port-forward <pod> 8888:5000
@@ -78,7 +70,7 @@ For example:
   Forwarding from [::1]:8888 -> 5000
   ```
 
-- Use the following command to listen on a free port locally and forward to `5000` in the pod:
+  For example, use the following command to listen on a free port locally and forward to `5000` in the pod:
 
   ``` terminal
   $ oc port-forward <pod> :5000
@@ -95,7 +87,7 @@ For example:
   Forwarding from [::1]:42390 -> 5000
   ```
 
-  Or:
+  Alternatively, use the following command to listen on a free port locally and forward to `5000` in the pod:
 
   ``` terminal
   $ oc port-forward <pod> 0:5000
@@ -103,21 +95,34 @@ For example:
 
 # Protocol for initiating port forwarding from a client
 
-Clients initiate port forwarding to a pod by issuing a request to the Kubernetes API server:
+A client resource in your cluster can initiate port forwarding to a pod by issuing a request to the Kubernetes API server.
 
-    /proxy/nodes/<node_name>/portForward/<namespace>/<pod>
+Use a request in the following format:
 
-In the above URL:
+``` terminal
+/proxy/nodes/<node_name>/portForward/<namespace>/<pod>
+```
 
-- `<node_name>` is the FQDN of the node.
+where:
 
-- `<namespace>` is the namespace of the target pod.
+`<node_name>`
+Specifies the FQDN of the node.
 
-- `<pod>` is the name of the target pod.
+`<namespace>`
+Specifies the namespace of the target pod.
 
-For example:
+`<pod>`
+Specifies the name of the target pod.
 
-    /proxy/nodes/node123.openshift.com/portForward/myns/mypod
+<div class="formalpara-title">
+
+**Example request**
+
+</div>
+
+``` terminal
+/proxy/nodes/node123.openshift.com/portForward/myns/mypod
+```
 
 After sending a port forward request to the API server, the client upgrades the connection to one that supports multiplexed streams; the current implementation uses [**Hyptertext Transfer Protocol Version 2 (HTTP/2)**](https://httpwg.org/specs/rfc7540.html).
 

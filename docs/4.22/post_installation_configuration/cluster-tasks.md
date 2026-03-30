@@ -686,7 +686,7 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
 
 ## Adding a control plane node to your cluster
 
-When installing a cluster on bare-metal infrastructure, you can manually scale up to 4 or 5 control plane nodes for your cluster. The example in the procedure uses `node-5` as the new control plane node.
+Add a control plane node to recover from a degraded state, perform deep-level debugging, or ensure stability and security of the control plane in complex bare metal scenarios.
 
 - You have installed a healthy cluster with at least three control plane nodes.
 
@@ -752,7 +752,7 @@ When installing a cluster on bare-metal infrastructure, you can manually scale u
         $ oc apply -f <filename>
         ```
 
-        - Replace \<filename\> with the name of the `BareMetalHost` CR.
+        where `<filename>` specifies the name of the `BareMetalHost` CR.
 
     3.  Create the `Machine` CR by using the unique `.metadata.name` value as demonstrated in the following example:
 
@@ -790,7 +790,7 @@ When installing a cluster on bare-metal infrastructure, you can manually scale u
         # ...
         ```
 
-        - Replace `<cluster_name>` with the name of the specific cluster, for example, `test-day2-1-6qv96`.
+        where `<cluster_name>` specifies the name of the specific cluster, for example, `test-day2-1-6qv96`.
 
     4.  Get the cluster name by running the following command:
 
@@ -804,7 +804,7 @@ When installing a cluster on bare-metal infrastructure, you can manually scale u
         $ oc apply -f <filename>
         ```
 
-        - Replace `<filename>` with the name of the `Machine` CR.
+        where `<filename>` specifies the name of the `Machine` CR.
 
     6.  Link `BareMetalHost`, `Machine`, and `Node` objects by running the `link-machine-and-node.sh` script:
 

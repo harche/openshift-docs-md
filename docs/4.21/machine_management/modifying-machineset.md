@@ -1,16 +1,16 @@
-You can modify a compute machine set, such as adding labels, changing the instance type, or changing block storage.
+To add labels, change the instance type, change block storage, or make other changes, you can modify a compute machine set.
 
 <div class="note">
 
-If you need to scale a compute machine set without making other changes, see [Manually scaling a compute machine set](../machine_management/manually-scaling-machineset.xml#manually-scaling-machineset).
+If you need to scale a compute machine set without making other changes, see "Manually scaling a compute machine set".
 
 </div>
 
 # Modifying a compute machine set by using the CLI
 
-You can modify the configuration of a compute machine set, and then propagate the changes to the machines in your cluster by using the CLI.
+To enable features or change the properties of machines, you can modify the configuration of a compute machine set using the CLI. You can then propagate the changes to the machines in your cluster.
 
-By updating the compute machine set configuration, you can enable features or change the properties of the machines it creates. When you modify a compute machine set, your changes only apply to compute machines that are created after you save the updated `MachineSet` custom resource (CR). The changes do not affect existing machines.
+When you modify a compute machine set, your changes only apply to compute machines that are created after you save the updated `MachineSet` custom resource (CR). The changes do not affect existing machines.
 
 <div class="note">
 
@@ -72,7 +72,7 @@ The output examples in this procedure use the values for an AWS cluster.
     # ...
     ```
 
-    - The examples in this procedure show a compute machine set that has a `replicas` value of `2`.
+    The examples in this procedure show a compute machine set that has a `replicas` value of `2`.
 
 4.  Update the compute machine set CR with the configuration options that you want and save your changes.
 
@@ -112,7 +112,7 @@ The output examples in this procedure use the values for an AWS cluster.
       -n openshift-machine-api
     ```
 
-    - The original example value of `2` is doubled to `4`.
+    The original example value of `2` is doubled to `4`.
 
 8.  List the machines that are managed by the updated compute machine set by running the following command:
 
@@ -146,7 +146,7 @@ The output examples in this procedure use the values for an AWS cluster.
       -n openshift-machine-api
     ```
 
-    - The original example value of `2`.
+    The `replicas` parameter is set to the original example value of `2`.
 
 - To verify that a machine created by the updated machine set has the correct configuration, examine the relevant fields in the CR for one of the new machines by running the following command:
 
@@ -193,6 +193,6 @@ The output examples in this procedure use the values for an AWS cluster.
 
 - [Lifecycle hooks for the machine deletion phase](../machine_management/deleting-machine.xml#machine-lifecycle-hook-deletion_deleting-machine)
 
-- [Scaling a compute machine set manually](../machine_management/manually-scaling-machineset.xml#machineset-manually-scaling_manually-scaling-machineset)
+- [Manually scaling a compute machine set](../machine_management/manually-scaling-machineset.xml#machineset-manually-scaling_manually-scaling-machineset)
 
 - [Controlling pod placement using the scheduler](../nodes/scheduling/nodes-scheduler-about.xml#nodes-scheduler-about)

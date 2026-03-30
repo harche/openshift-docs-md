@@ -1,4 +1,4 @@
-You can configure shared disks to allow multiple virtual machines (VMs) to share the same underlying storage. A shared disk’s volume must be block mode.
+Enable high-availability scenarios like Windows Failover Clustering by configuring shared disks to allow multiple virtual machines to access the same storage volume. A shared disk’s volume must be block mode.
 
 You configure disk sharing by exposing the storage as either of these types:
 
@@ -59,9 +59,9 @@ You can accept the default behavior, or you can set the error policy to one of t
                 name: default
     ```
 
-    - Identifies the error policy.
+    - `spec.template.spec.domain.devices.disks.errorPolicy` defines how the hypervisor should behave when an IO error occurs.
 
-    - Identifies a shared disk.
+    - `spec.template.spec.domain.devices.disks.shareable` defines whether multiple virtual machines (VMs) can use the same underlying disk.
 
 2.  Save the `VirtualMachine` manifest file to apply your changes.
 
@@ -132,11 +132,11 @@ OpenShift Virtualization does not currently support SCSI-3 Persistent Reservatio
               claimName: pvc-na-share
     ```
 
-    - Identifies the error policy.
+    - `spec.template.spec.domain.devices.disks.errorPolicy` defines how the hypervisor should behave when an IO error occurs.
 
-    - Identifies a LUN disk.
+    - `spec.template.spec.domain.devices.disks.lun` defines a volume exposed as a LUN device.
 
-    - Identifies that the persistent reservation is enabled.
+    - `spec.template.spec.domain.devices.disks.lun.reservation` defines whether the persistent reservation is enabled.
 
 2.  Save the `VirtualMachine` manifest file to apply your changes.
 
@@ -201,9 +201,11 @@ You can use the command line to configure disk sharing by using LUN.
               claimName: pvc-na-share
     ```
 
-    - Identifies a LUN disk.
+    - `spec.template.spec.domain.devices.disks.errorPolicy` defines how the hypervisor should behave when an IO error occurs.
 
-    - Identifies that the persistent reservation is enabled.
+    - `spec.template.spec.domain.devices.disks.lun` defines a volume exposed as a LUN device.
+
+    - `spec.template.spec.domain.devices.disks.lun.reservation` defines whether the persistent reservation is enabled.
 
 2.  Save the `VirtualMachine` manifest file to apply your changes.
 

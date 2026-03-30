@@ -353,11 +353,11 @@ If you add more than one extra manifest, and the manifests must be applied in a 
 
 2.  Create the `SriovNetworkNodePolicy` and `SriovNetwork` resources in the `extra-manifests` folder:
 
-    1.  Create a YAML file that defines the resources:
+    1.  Create a YAML file that defines the resources, as shown in the following example:
 
-        <div class="formalpara-title">
+        <div class="note">
 
-        **Example `sriov-extra-manifest.yaml` file**
+        If the cluster nodes include Intel vRAN Boost (VRB1 or VRB2) hardware, you can include a `SriovVrbClusterConfig` resource in the extra manifests to configure the hardware.
 
         </div>
 
@@ -393,6 +393,52 @@ If you add more than one extra manifest, and the manifests must be applied in a 
           resourceName: example-sriov-node-policy
           spoofChk: "on"
           trust: "off"
+        ---
+        apiVersion: sriovvrb.intel.com/v1
+        kind: SriovVrbClusterConfig
+        metadata:
+          name: config
+          namespace: vran-acceleration-operators
+        spec:
+          priority: 1
+          nodeSelector:
+            kubernetes.io/hostname: worker-node
+          acceleratorSelector:
+            pciAddress: 0000:07:00.0
+          drainSkip: true
+          physicalFunction:
+            pfDriver: vfio-pci
+            vfDriver: vfio-pci
+            vfAmount: 2
+            bbDevConfig:
+              vrb2:
+                pfMode: false
+                numVfBundles: 2
+                maxQueueSize: 1024
+                downlink4G:
+                  aqDepthLog2: 4
+                  numAqsPerGroups: 16
+                  numQueueGroups: 0
+                uplink4G:
+                  aqDepthLog2: 4
+                  numAqsPerGroups: 16
+                  numQueueGroups: 0
+                downlink5G:
+                  aqDepthLog2: 4
+                  numAqsPerGroups: 16
+                  numQueueGroups: 4
+                uplink5G:
+                  aqDepthLog2: 4
+                  numAqsPerGroups: 16
+                  numQueueGroups: 4
+                qfft:
+                  aqDepthLog2: 4
+                  numAqsPerGroups: 16
+                  numQueueGroups: 4
+                qmld:
+                  aqDepthLog2: 4
+                  numAqsPerGroups: 64
+                  numQueueGroups: 4
         ```
 
 - When you create the configuration ISO, you can view the reference to the extra manifests in the `.openshift_install_state.json` file in your working directory:

@@ -91,13 +91,19 @@ Network flows coming from VMs that are connected to the default internal pod net
     #  ...
     ```
 
-    - The name of the secondary network.
+    where:
 
-    - The network interface name of the secondary network.
+    `name`
+    Specifies the name of the secondary network.
 
-    - The list of IPs used by the secondary network.
+    `interface`
+    Specifies the network interface of the secondary network.
 
-    - The MAC address used for secondary network.
+    `ips`
+    Specifies the list of IP addresses used by the secondary network.
+
+    `mac`
+    Specifies the MAC address used for the secondary network.
 
 2.  In the web console, navigate to **Ecosystem** → **Installed Operators**.
 
@@ -115,25 +121,33 @@ Network flows coming from VMs that are connected to the default internal pod net
     spec:
       agent:
         ebpf:
-          privileged: true \
+          privileged: true
       processor:
         advanced:
           secondaryNetworks:
-          - index: \
-            - MAC  \
-            name: my-vms/l2-network \
+          - index:
+            - MAC
+            name: my-vms/l2-network
     # ...
     ```
 
-    - Ensure that the eBPF agent is in `privileged` mode so that flows are collected for secondary interfaces.
+    where:
 
-    - Define the fields to use for indexing the virtual machine launcher pods. It is recommended to use the `MAC` address as the indexing field to get network flows enrichment for secondary interfaces. If you have overlapping MAC address between pods, then additional indexing fields, such as `IP` and `Interface`, could be added to have accurate enrichment.
+    `spec.agent.ebpf.privileged`
+    Specifies that the eBPF agent runs in `privileged` mode, which is required to collect flows from secondary network interfaces on virtual machine launcher pods.
 
-    - If your additional network information has a MAC address, add `MAC` to the field list.
+    `spec.processor.advanced.secondaryNetworks.index`
+    Specifies the fields to use for indexing the virtual machine launcher pods. It is recommended to use the `MAC` address as the indexing field to get network flows enrichment for secondary interfaces. If you have overlapping MAC addresses between pods, then additional indexing fields, such as `IP` and `Interface`, can be added to ensure accurate enrichment.
 
-    - Specify the name of the network found in the `k8s.v1.cni.cncf.io/network-status` annotation. Usually \<namespace\>/\<network_attachement_definition_name\>.
+    `MAC`
+    Specifies the MAC address as an indexing field value. Add `MAC` to the `index` field list if your additional network information includes a MAC address.
 
-6.  Observe VM traffic:
+    `spec.processor.advanced.secondaryNetworks.name`
+    Specifies the name of the secondary network as found in the `k8s.v1.cni.cncf.io/network-status` annotation of the virtual machine launcher pod. The format is typically `<namespace>/<network_attachment_definition_name>`.
+
+<!-- -->
+
+1.  Observe VM traffic:
 
     1.  Navigate to the **Network Traffic** page.
 

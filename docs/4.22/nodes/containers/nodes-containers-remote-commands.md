@@ -1,78 +1,83 @@
-You can use the CLI to execute remote commands in OpenShift Container Platform containers.
+You can use the `oc exec` command to execute remote commands in OpenShift Container Platform containers from your local machine.
 
 # Executing remote commands in containers
 
-Support for remote container command execution is built into the CLI.
+You can use the OpenShift CLI (`oc`) to execute remote commands in OpenShift Container Platform containers. By running commands in a container, you can perform troubleshooting, inspect logs, run scripts, and other tasks.
 
-<div class="formalpara-title">
+- Use a command similar to the following to run a command in a container:
 
-**Procedure**
+  ``` terminal
+  $ oc exec <pod> [-c <container>] -- <command> [<arg_1> ... <arg_n>]
+  ```
 
-</div>
+  For example:
 
-To run a command in a container:
+  ``` terminal
+  $ oc exec mypod date
+  ```
 
-``` terminal
-$ oc exec <pod> [-c <container>] -- <command> [<arg_1> ... <arg_n>]
-```
+  <div class="formalpara-title">
 
-For example:
+  **Example output**
 
-``` terminal
-$ oc exec mypod date
-```
+  </div>
 
-<div class="formalpara-title">
+  ``` terminal
+  Thu Apr  9 02:21:53 UTC 2015
+  ```
 
-**Example output**
+  <div class="important">
 
-</div>
+  [For security purposes](https://access.redhat.com/errata/RHSA-2015:1650), the `oc exec` command does not work when accessing privileged containers except when the command is executed by a `cluster-admin` user.
 
-``` terminal
-Thu Apr  9 02:21:53 UTC 2015
-```
-
-<div class="important">
-
-[For security purposes](https://access.redhat.com/errata/RHSA-2015:1650), the `oc exec` command does not work when accessing privileged containers except when the command is executed by a `cluster-admin` user.
-
-</div>
+  </div>
 
 # Protocol for initiating a remote command from a client
 
-Clients initiate the execution of a remote command in a container by issuing a request to the Kubernetes API server:
+A client resource in your cluster can initiate the execution of a remote command in a container by issuing a request to the Kubernetes API server.
+
+The following example is the format for a typical request to a Kubernetes API server:
 
 ``` terminal
 /proxy/nodes/<node_name>/exec/<namespace>/<pod>/<container>?command=<command>
 ```
 
-In the above URL:
+where:
 
-- `<node_name>` is the FQDN of the node.
+`<node_name>`
+Specifies the FQDN of the node.
 
-- `<namespace>` is the project of the target pod.
+`<namespace>`
+Specifies the project of the target pod.
 
-- `<pod>` is the name of the target pod.
+`<pod>`
+Specifies the name of the target pod.
 
-- `<container>` is the name of the target container.
+`<container>`
+Specifies the name of the target container.
 
-- `<command>` is the desired command to be executed.
+`<command>`
+Specifies the desired command to be executed.
 
-For example:
+<div class="formalpara-title">
+
+**Example request**
+
+</div>
 
 ``` terminal
 /proxy/nodes/node123.openshift.com/exec/myns/mypod/mycontainer?command=date
 ```
 
-Additionally, the client can add parameters to the request to indicate if:
+Additionally, the client can add parameters to the request to indicate any of the following conditions:
 
-- the client should send input to the remote container’s command (stdin).
+- The client should send input to the remote container’s command (stdin).
 
-- the client’s terminal is a TTY.
+- The client’s terminal is a TTY.
 
-- the remote container’s command should send output from stdout to the client.
+- The remote container’s command should send output from stdout to the client.
 
-- the remote container’s command should send output from stderr to the client.
+- The remote container’s command should send output from stderr to the client.
 
 After sending an `exec` request to the API server, the client upgrades the connection to one that supports multiplexed streams; the current implementation uses **HTTP/2**.
 

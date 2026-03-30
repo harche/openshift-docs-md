@@ -1,4 +1,4 @@
-You can connect to the following consoles to access running virtual machines (VMs):
+By using VNC, serial, or desktop viewer consoles, you can access the console of your virtual machine for troubleshooting when the VM does not have network connectivity.
 
 - [VNC console](../../virt/managing_vms/virt-accessing-vm-consoles.xml#vnc-console_virt-accessing-vm-consoles)
 

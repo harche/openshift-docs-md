@@ -175,7 +175,7 @@ You can enable FIPS mode through the preferred method of `install-config.yaml` a
     kind: AgentClusterInstall
     metadata:
       annotations:
-        agent-install.openshift.io/install-config-overrides: '{"fips": true}'
+        agent-install.openshift.io/install-config-overrides: '{"fips":true}'
       name: sno-cluster
       namespace: sno-cluster-test
     ```

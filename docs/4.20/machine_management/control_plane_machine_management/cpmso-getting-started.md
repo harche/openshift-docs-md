@@ -1,3 +1,5 @@
+Set up the control plane machine set to enable automated management, recovery, and configuration updates for control plane machines in your cluster.
+
 The process for getting started with control plane machine sets depends on the state of the `ControlPlaneMachineSet` custom resource (CR) in your cluster.
 
 Clusters with an active generated CR
@@ -38,7 +40,7 @@ Control plane machine set implementation for OpenShift Container Platform 4.17
 
 # Checking the control plane machine set custom resource state
 
-You can verify the existence and state of the `ControlPlaneMachineSet` custom resource (CR).
+Check the state of the control plane machine set custom resource to determine if it is active, inactive, or missing before making configuration changes.
 
 - Determine the state of the CR by running the following command:
 
@@ -105,12 +107,6 @@ For more information about the structure and parameters of the CR, see "Control 
 
 1.  Create a YAML file using the following template:
 
-    <div class="formalpara-title">
-
-    **Control plane machine set CR YAML file template**
-
-    </div>
-
     ``` yaml
     apiVersion: machine.openshift.io/v1
     kind: ControlPlaneMachineSet
@@ -144,29 +140,35 @@ For more information about the structure and parameters of the CR, see "Control 
                 <platform_provider_spec>
     ```
 
-    - Specify the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. You must specify this value when you create a `ControlPlaneMachineSet` CR. If you have the OpenShift CLI (`oc`) installed, you can obtain the infrastructure ID by running the following command:
+    where:
 
-      ``` terminal
-      $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
-      ```
+    `<cluster_id>`
+    Specifies the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. You must specify this value when you create a `ControlPlaneMachineSet` CR. If you have the OpenShift CLI (`oc`) installed, you can obtain the infrastructure ID by running the following command:
 
-    - Specify the state of the Operator. When the state is `Inactive`, the Operator is not operational. You can activate the Operator by setting the value to `Active`.
+    ``` terminal
+    $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
+    ```
 
-      <div class="important">
+    `state: Active`
+    Specifies the state of the Operator. When the state is `Inactive`, the Operator is not operational. You can activate the Operator by setting the value to `Active`.
 
-      Before you activate the CR, you must ensure that its configuration is correct for your cluster requirements.
+    <div class="important">
 
-      </div>
+    Before you activate the CR, you must ensure that its configuration is correct for your cluster requirements.
 
-    - Specify the update strategy for the cluster. Valid values are `OnDelete` and `RollingUpdate`. The default value is `RollingUpdate`. For more information about update strategies, see "Updating the control plane configuration".
+    </div>
 
-    - Specify your cloud provider platform name. Valid values are `AWS`, `Azure`, `GCP`, `Nutanix`, `VSphere`, and `OpenStack`.
+    `type: RollingUpdate`
+    Specifies the update strategy for the cluster. Valid values are `OnDelete` and `RollingUpdate`. The default value is `RollingUpdate`. For more information about update strategies, see "Updating the control plane configuration".
 
-    - Add the `<platform_failure_domains>` configuration for the cluster. The format and values of this section are provider-specific. For more information, see the sample failure domain configuration for your cloud provider.
+    `platform: <platform>`
+    Specifies the cloud provider platform name. Valid values are `AWS`, `Azure`, `GCP`, `Nutanix`, `VSphere`, and `OpenStack`.
 
-    - Specify the infrastructure ID.
+    `<platform_failure_domains>`
+    Specifies the failure domains configuration for the cluster. The format and values of this section are provider-specific. For more information, see the sample failure domain configuration for your cloud provider.
 
-    - Add the `<platform_provider_spec>` configuration for the cluster. The format and values of this section are provider-specific. For more information, see the sample provider specification for your cloud provider.
+    `<platform_provider_spec>`
+    Specifies the provider spec configuration for the cluster. The format and values of this section are provider-specific. For more information, see the sample provider specification for your cloud provider.
 
 2.  Refer to the sample YAML for a control plane machine set CR and populate your file with values that are appropriate for your cluster configuration.
 
@@ -180,10 +182,10 @@ For more information about the structure and parameters of the CR, see "Control 
     $ oc create -f <control_plane_machine_set>.yaml
     ```
 
-    where `<control_plane_machine_set>` is the name of the YAML file that contains the CR configuration.
+    where `<control_plane_machine_set>` specifies the name of the YAML file that contains the CR configuration.
 
 - [Updating the control plane configuration](../../machine_management/control_plane_machine_management/cpmso-managing-machines.xml#cpmso-feat-config-update_cpmso-managing-machines)
 
 - [Control plane machine set configuration](../../machine_management/control_plane_machine_management/cpmso-configuration.xml#cpmso-configuration)
 
-- [Provider-specific configuration options](../../machine_management/control_plane_machine_management/cpmso-configuration.xml#cpmso-sample-yaml-provider-specific_cpmso-configuration)
+- [Provider-specific configuration options](../../machine_management/control_plane_machine_management/cpmso-configuration.xml#cpmso-config-provider-specific_cpmso-configuration)

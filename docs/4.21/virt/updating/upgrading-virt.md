@@ -50,11 +50,11 @@ Learn how the OpenShift Virtualization Operator is updated through the Operator 
 
 ## Changing update settings
 
-You can change the update channel and approval strategy for your OpenShift Virtualization Operator subscription by using the web console.
+You can control how and when updates are installed by changing the update channel and approval strategy for the OpenShift Virtualization Operator subscription.
 
 - You have installed the OpenShift Virtualization Operator.
 
-- You have administrator permissions.
+- You have logged in to the OpenShift Container Platform web console as a cluster administrator.
 
 1.  Click **Ecosystem** → **Installed Operators**.
 
@@ -104,11 +104,11 @@ You can uninstall the Migration Toolkit for Containers (MTC) and delete its reso
 
 <div class="note">
 
-Deleting the `velero` CRDs removes Velero from the cluster.
+Deleting the `velero` custom resource definitions (CRDs) removes Velero from the cluster.
 
 </div>
 
-- You must be logged in as a user with `cluster-admin` privileges.
+- You have logged in to the OpenShift Container Platform cluster as a cluster administrator.
 
 1.  Delete the `MigrationController` custom resource (CR) on all clusters:
 
@@ -116,7 +116,7 @@ Deleting the `velero` CRDs removes Velero from the cluster.
     $ oc delete migrationcontroller <migration_controller>
     ```
 
-2.  Uninstall the Migration Toolkit for Containers Operator on OpenShift Container Platform 4 by using the Operator Lifecycle Manager.
+2.  Uninstall the Migration Toolkit for Containers Operator on OpenShift Container Platform 4 by using the Operator Lifecycle Manager (OLM).
 
 3.  Delete cluster-scoped resources on all clusters by running the following commands:
 
@@ -186,7 +186,7 @@ Before you change a VM’s `machineType` value, you must shut down the VM.
 
 # Monitoring update status
 
-To monitor the status of a OpenShift Virtualization Operator update, watch the cluster service version (CSV) `PHASE`. You can also monitor the CSV conditions in the web console or by running the command provided here.
+To monitor the status of a OpenShift Virtualization Operator update, watch the cluster service version (CSV) `PHASE`. You can also monitor the CSV conditions in the web console or by using the CLI.
 
 <div class="note">
 
@@ -194,9 +194,9 @@ The `PHASE` and conditions values are approximations that are based on available
 
 </div>
 
-- Log in to the cluster as a user with the `cluster-admin` role.
+- You have logged in to the OpenShift Container Platform cluster as a cluster administrator.
 
-- Install the OpenShift CLI (`oc`).
+- You have installed the OpenShift CLI (`oc`).
 
 1.  Run the following command:
 
@@ -277,9 +277,9 @@ Each attempt corresponds to a migration object. Only the five most recent attemp
 
 ## Configuring workload update methods
 
-You can configure workload update methods by editing the `HyperConverged` custom resource (CR).
+You can configure how virtual machine workloads are updated during cluster upgrades by editing the `HyperConverged` custom resource (CR).
 
-- To use live migration as an update method, you must first enable live migration in the cluster.
+- You have enabled live migration in the cluster.
 
   <div class="note">
 
@@ -352,9 +352,11 @@ If there are outdated virtualization pods in your cluster, the `OutdatedVirtualM
 
 # Control Plane Only updates
 
-Every even-numbered minor version of OpenShift Container Platform is an Extended Update Support (EUS) version. However, Kubernetes design mandates serial minor version updates, so you cannot directly update from one EUS version to the next.
+A Control Plane Only update allows you to update between Extended Update Support (EUS) versions of OpenShift Container Platform while preventing virtual machine workloads from updating during the intermediate upgrade.
 
-An EUS-to-EUS update starts with updating OpenShift Virtualization to the latest z-stream of the next odd-numbered minor version. Next, update OpenShift Container Platform to the target EUS version. When the OpenShift Container Platform update succeeds, the corresponding update for OpenShift Virtualization becomes available. You can now update OpenShift Virtualization to the target EUS version.
+Every even-numbered minor version of OpenShift Container Platform is an Extended Update Support (EUS) version. However, Kubernetes requires minor version updates to occur sequentially. As a result, you cannot update directly from one EUS version to the next.
+
+To move between EUS versions, you must first update OpenShift Virtualization to the latest z-stream release of the next odd-numbered minor version. After the cluster updates to the target EUS version of OpenShift Container Platform, the corresponding update for OpenShift Virtualization becomes available. You can then update OpenShift Virtualization to the target EUS version.
 
 <div class="note">
 
@@ -362,29 +364,15 @@ You can directly update OpenShift Virtualization to the latest z-stream release 
 
 </div>
 
-For more information about EUS versions, see the [Red Hat OpenShift Container Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift).
-
-## Prerequisites
-
-Before beginning a Control Plane Only update, you must:
-
-- Pause worker nodes' machine config pools before you start a Control Plane Only update so that the workers are not rebooted twice.
-
-- Disable automatic workload updates before you begin the update process. This is to prevent OpenShift Virtualization from migrating or evicting your virtual machines (VMs) until you update to your target EUS version.
-
-<div class="note">
-
-By default, OpenShift Virtualization automatically updates workloads, such as the `virt-launcher` pod, when you update the OpenShift Virtualization Operator. You can configure this behavior in the `spec.workloadUpdateStrategy` stanza of the `HyperConverged` custom resource.
-
-</div>
+For more information about EUS versions, see the [OpenShift Container Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift).
 
 ## Preventing workload updates during a Control Plane Only update
 
-When you update from one Extended Update Support (EUS) version to the next, you must manually disable automatic workload updates to prevent OpenShift Virtualization from migrating or evicting workloads during the update process.
+When you update from one Extended Update Support (EUS) version to the next, you must temporarily disable automatic workload updates to prevent OpenShift Virtualization from migrating or evicting virtual machines during the upgrade process.
 
 <div class="important">
 
-In OpenShift Container Platform 4.16, the underlying Red Hat Enterprise Linux CoreOS (RHCOS) upgraded to version 9.4 of Red Hat Enterprise Linux (RHEL). To operate correctly, all `virt-launcher` pods in the cluster need to use the same version of RHEL.
+In OpenShift Container Platform 4.16, the underlying Red Hat Enterprise Linux CoreOS (RHCOS) upgraded to version 9.4 of Red Hat Enterprise Linux (RHEL). To operate correctly, all `virt-launcher` pods in the cluster must use the same version of RHEL.
 
 After upgrading to OpenShift Container Platform 4.16 from an earlier version, re-enable workload updates in OpenShift Virtualization to allow `virt-launcher` pods to update. Before upgrading to the next OpenShift Container Platform version, verify that all VMIs use up-to-date workloads:
 
@@ -392,7 +380,7 @@ After upgrading to OpenShift Container Platform 4.16 from an earlier version, re
 $ oc get kv kubevirt-kubevirt-hyperconverged -o json -n openshift-cnv | jq .status.outdatedVirtualMachineInstanceWorkloads
 ```
 
-If the previous command returns a value larger than `0`, list all VMIs with outdated `virt-launcher` pods and start live migration to update them to a new version:
+If the previous command returns a value larger than `0`, list all VMIs with outdated `virt-launcher` pods and start live migration to update them:
 
 ``` terminal
 $ oc get vmi -l kubevirt.io/outdatedLauncherImage --all-namespaces
@@ -404,13 +392,13 @@ For the list of supported OpenShift Container Platform releases and the RHEL ver
 
 - You have installed the OpenShift CLI (`oc`).
 
-- You are running an EUS version of OpenShift Container Platform and want to update to the next EUS version. You have not yet updated to the odd-numbered version in between.
+- You are running an EUS version of OpenShift Container Platform and plan to update to the next EUS version.
 
-- You read "Preparing to perform a Control Plane Only update" and learned the caveats and requirements that pertain to your OpenShift Container Platform cluster.
+- You have not yet updated to the intermediate odd-numbered minor version.
 
-- You paused the worker nodes' machine config pools as directed by the OpenShift Container Platform documentation.
+- You paused the worker nodes' machine config pools as described in the OpenShift Container Platform documentation.
 
-- It is recommended that you use the default **Automatic** approval strategy. If you use the **Manual** approval strategy, you must approve all pending updates in the web console. For more details, refer to the "Manually approving a pending Operator update" section.
+- It is recommended that you use the default **Automatic** approval strategy. If you use the **Manual** approval strategy, you must approve all pending updates in the web console. For more details, see "Manually approving a pending Operator update".
 
 1.  Run the following command and record the `workloadUpdateMethods` configuration:
 
@@ -419,73 +407,18 @@ For the list of supported OpenShift Container Platform releases and the RHEL ver
       -n openshift-cnv -o jsonpath='{.spec.workloadUpdateStrategy.workloadUpdateMethods}'
     ```
 
-2.  Turn off all workload update methods by running the following command:
+2.  Disable workload update methods by running the following command:
 
     ``` terminal
     $ oc patch hyperconverged kubevirt-hyperconverged -n openshift-cnv \
       --type json -p '[{"op":"replace","path":"/spec/workloadUpdateStrategy/workloadUpdateMethods", "value":[]}]'
     ```
 
-    Example output:
-
-    ``` terminal
-    hyperconverged.hco.kubevirt.io/kubevirt-hyperconverged patched
-    ```
-
-3.  Ensure that the `HyperConverged` Operator is `Upgradeable` before you continue. Enter the following command and monitor the output:
+3.  Ensure that the `HyperConverged` Operator is `Upgradeable` before continuing:
 
     ``` terminal
     $ oc get hyperconverged kubevirt-hyperconverged -n openshift-cnv -o json | jq ".status.conditions"
     ```
-
-    Example output:
-
-    ``` json
-    [
-      {
-        "lastTransitionTime": "2022-12-09T16:29:11Z",
-        "message": "Reconcile completed successfully",
-        "observedGeneration": 3,
-        "reason": "ReconcileCompleted",
-        "status": "True",
-        "type": "ReconcileComplete"
-      },
-      {
-        "lastTransitionTime": "2022-12-09T20:30:10Z",
-        "message": "Reconcile completed successfully",
-        "observedGeneration": 3,
-        "reason": "ReconcileCompleted",
-        "status": "True",
-        "type": "Available"
-      },
-      {
-        "lastTransitionTime": "2022-12-09T20:30:10Z",
-        "message": "Reconcile completed successfully",
-        "observedGeneration": 3,
-        "reason": "ReconcileCompleted",
-        "status": "False",
-        "type": "Progressing"
-      },
-      {
-        "lastTransitionTime": "2022-12-09T16:39:11Z",
-        "message": "Reconcile completed successfully",
-        "observedGeneration": 3,
-        "reason": "ReconcileCompleted",
-        "status": "False",
-        "type": "Degraded"
-      },
-      {
-        "lastTransitionTime": "2022-12-09T20:30:10Z",
-        "message": "Reconcile completed successfully",
-        "observedGeneration": 3,
-        "reason": "ReconcileCompleted",
-        "status": "True",
-        "type": "Upgradeable"
-      }
-    ]
-    ```
-
-    The OpenShift Virtualization Operator has the `Upgradeable` status.
 
 4.  Manually update your cluster from the source EUS version to the next minor version of OpenShift Container Platform:
 
@@ -493,70 +426,53 @@ For the list of supported OpenShift Container Platform releases and the RHEL ver
     $ oc adm upgrade
     ```
 
-    Verification:
-
-    - Check the current version by running the following command:
-
-      ``` terminal
-      $ oc get clusterversion
-      ```
-
-      <div class="note">
-
-      Updating OpenShift Container Platform to the next version is a prerequisite for updating OpenShift Virtualization. For more details, refer to the "Updating clusters" section of the OpenShift Container Platform documentation.
-
-      </div>
-
-5.  Update OpenShift Virtualization.
-
-    - With the default **Automatic** approval strategy, OpenShift Virtualization automatically updates to the corresponding version after you update OpenShift Container Platform.
-
-    - If you use the **Manual** approval strategy, approve the pending updates by using the web console.
-
-6.  Monitor the OpenShift Virtualization update by running the following command:
-
-    ``` terminal
-    $ oc get csv -n openshift-cnv
-    ```
-
-7.  Confirm that OpenShift Virtualization successfully updated to the latest z-stream release of the non-EUS version by running the following command:
-
-    ``` terminal
-    $ oc get hyperconverged kubevirt-hyperconverged -n openshift-cnv -o json | jq ".status.versions"
-    ```
-
-    Example output:
-
-    ``` terminal
-    [
-      {
-        "name": "operator",
-        "version": "4.21.1"
-      }
-    ]
-    ```
-
-8.  Wait until the `HyperConverged` Operator has the `Upgradeable` status before you perform the next update. Enter the following command and monitor the output:
-
-    ``` terminal
-    $ oc get hyperconverged kubevirt-hyperconverged -n openshift-cnv -o json | jq ".status.conditions"
-    ```
-
-9.  Update OpenShift Container Platform to the target EUS version.
-
-10. Confirm that the update succeeded by checking the cluster version:
+5.  Verify the current cluster version:
 
     ``` terminal
     $ oc get clusterversion
     ```
 
-11. Update OpenShift Virtualization to the target EUS version.
+    <div class="note">
 
-    - With the default **Automatic** approval strategy, OpenShift Virtualization automatically updates to the corresponding version after you update OpenShift Container Platform.
+    Updating OpenShift Container Platform to the next version is a prerequisite for updating OpenShift Virtualization. For more details, see the "Updating clusters" section of the OpenShift Container Platform documentation.
 
-    - If you use the **Manual** approval strategy, approve the pending updates by using the web console.
+    </div>
 
-12. Monitor the OpenShift Virtualization update by running the following command:
+6.  Update OpenShift Virtualization.
+
+    - With the default **Automatic** approval strategy, OpenShift Virtualization automatically updates after the OpenShift Container Platform update completes.
+
+    - If you use the **Manual** approval strategy, approve the pending update in the web console.
+
+7.  Monitor the OpenShift Virtualization update:
+
+    ``` terminal
+    $ oc get csv -n openshift-cnv
+    ```
+
+8.  Confirm that OpenShift Virtualization updated to the latest z-stream release of the intermediate version:
+
+    ``` terminal
+    $ oc get hyperconverged kubevirt-hyperconverged -n openshift-cnv -o json | jq ".status.versions"
+    ```
+
+9.  Wait until the `HyperConverged` Operator again reports the `Upgradeable` condition.
+
+10. Update OpenShift Container Platform to the target EUS version.
+
+11. Verify the cluster version:
+
+    ``` terminal
+    $ oc get clusterversion
+    ```
+
+12. Update OpenShift Virtualization to the target EUS version.
+
+    - With the default **Automatic** approval strategy, OpenShift Virtualization updates automatically.
+
+    - If you use the **Manual** approval strategy, approve the pending update in the web console.
+
+13. Monitor the update:
 
     ``` terminal
     $ oc get csv -n openshift-cnv
@@ -564,26 +480,20 @@ For the list of supported OpenShift Container Platform releases and the RHEL ver
 
     The update completes when the `VERSION` field matches the target EUS version and the `PHASE` field reads `Succeeded`.
 
-13. Restore the `workloadUpdateMethods` configuration that you recorded from step 1 with the following command:
+14. Restore the `workloadUpdateMethods` configuration recorded in step 1:
 
     ``` terminal
     $ oc patch hyperconverged kubevirt-hyperconverged -n openshift-cnv --type json -p \
-      "[{\"op\":\"add\",\"path\":\"/spec/workloadUpdateStrategy/workloadUpdateMethods\", \"value\":{WorkloadUpdateMethodConfig}}]"
+    "[{\"op\":\"add\",\"path\":\"/spec/workloadUpdateStrategy/workloadUpdateMethods\", \"value\":{WorkloadUpdateMethodConfig}}]"
     ```
 
-    Example output:
+- Check the status of VM migrations:
 
-    ``` terminal
-    hyperconverged.hco.kubevirt.io/kubevirt-hyperconverged patched
-    ```
+  ``` terminal
+  $ oc get vmim -A
+  ```
 
-    Verification:
-
-    - Check the status of VM migration by running the following command:
-
-      ``` terminal
-      $ oc get vmim -A
-      ```
+<!-- -->
 
 - Unpause the machine config pools for each compute node.
 
@@ -593,7 +503,7 @@ You can gain access to builds in development by subscribing to the **candidate**
 
 These releases have not been fully tested by Red Hat and are not supported, but you can use them on non-production clusters to test capabilities and bug fixes being developed for that version.
 
-The **stable** channel, which matches the underlying OpenShift Container Platform version and is fully tested, is suitable for production systems. You can switch between the **stable** and **candidate** channels in Operator Hub. However, updating from a **candidate** channel release to a **stable** channel release is not tested by Red Hat.
+The **stable** channel, which matches the underlying OpenShift Container Platform version and is fully tested, is suitable for production systems. You can switch between the **stable** and **candidate** channels in OperatorHub. However, updating from a **candidate** channel release to a **stable** channel release is not tested by Red Hat.
 
 Some candidate releases are promoted to the **stable** channel. However, releases present only in **candidate** channels might not contain all features that will be made generally available (GA), and some features in candidate builds might be removed before GA. Additionally, candidate releases might not offer update paths to later GA releases.
 

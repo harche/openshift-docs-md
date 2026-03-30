@@ -205,17 +205,17 @@ If you have GPUs that support NVIDIA Multi-Instance GPU (MIG), you can select a 
 
   - Replace `<profile>` with a supported MIG profile.
 
-<div class="formalpara-title">
+    Example command:
 
-**Example command**
+    ``` terminal
+    $ oc label node worker_1 --overwrite nvidia.com/vgpu.config=A30-1-6C
+    ```
 
-</div>
+<!-- -->
 
-``` terminal
-$ oc label node worker_1 --overwrite nvidia.com/vgpu.config=A30-1-6C
-```
+- [MIG User Guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/supported-mig-profiles.html)
 
-For more information about MIG profiles, see the [MIG User Guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/supported-mig-profiles.html).
+<!-- -->
 
 - [Configuring PCI passthrough](../../../virt/managing_vms/advanced_vm_management/virt-configuring-pci-passthrough.xml#virt-configuring-pci-passthrough)
 

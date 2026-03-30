@@ -27,17 +27,17 @@ With this update, the cert-manager Operator for Red Hat OpenShift images use ubi
 
 ## CVEs
 
-- [CVE-2025-66418](https://access..redhat.com/security/cve/CVE-2025-66418)
+- [CVE-2025-66418](https://access.redhat.com/security/cve/CVE-2025-66418)
 
-- [CVE-2025-66471](https://access..redhat.com/security/cve/CVE-2025-66471)
+- [CVE-2025-66471](https://access.redhat.com/security/cve/CVE-2025-66471)
 
-- [CVE-2025-61729](https://access..redhat.com/security/cve/CVE-2025-61729)
+- [CVE-2025-61729](https://access.redhat.com/security/cve/CVE-2025-61729)
 
-- [CVE-2025-21441](https://access..redhat.com/security/cve/CVE-2026-21441)
+- [CVE-2025-21441](https://access.redhat.com/security/cve/CVE-2026-21441)
 
-- [CVE-2025-61727](https://access..redhat.com/security/cve/CVE-2025-61727)
+- [CVE-2025-61727](https://access.redhat.com/security/cve/CVE-2025-61727)
 
-- [CVE-2025-61729](https://access..redhat.com/security/cve/CVE-2025-61729)
+- [CVE-2025-61729](https://access.redhat.com/security/cve/CVE-2025-61729)
 
 # cert-manager Operator for Red Hat OpenShift 1.18.0
 
@@ -75,6 +75,39 @@ By default, this feature is disabled to prevent connectivity issues during upgra
 
 - The upstream cert-manager `v1.18` release updated the ACME HTTP-01 challenge ingress path type from `ImplementationSpecific` to `Exact`. The OpenShift Route API does not have an equivalent for the `Exact` path type, which prevents the ingress-to-route controller from supporting it. As a result, ingress resources created for HTTP-01 challenges cannot route traffic to the solver pod, causing the challenge to fail with a 503 error. To mitigate this issue, the `ACMEHTTP01IngressPathTypeExact` feature gate is disabled by default in this release.
 
+# cert-manager Operator for Red Hat OpenShift 1.17.1
+
+Issued: 2025-03-25
+
+The following advisories are available for the cert-manager Operator for Red Hat OpenShift 1.17.1:
+
+- [RHBA-2026:5642](https://access.redhat.com/errata/RHBA-2026:5642)
+
+- [RHSA-2026:5645](https://access.redhat.com/errata/RHSA-2026:5645)
+
+- [RHBA-2026:5749](https://access.redhat.com/errata/RHBA-2026:5749)
+
+Version `1.17.1` of the cert-manager Operator for Red Hat OpenShift is based on the upstream cert-manager version `v1.17.4`. For more information, see the [cert-manager project release notes for v1.17.4](https://cert-manager.io/docs/releases/release-notes/release-notes-1.17#v1174).
+
+## New features and enhancements
+
+The final images use `ubi9-minimal` as base images
+With this update, the cert-manager Operator for Red Hat OpenShift images use ubi9-minimal as their base images providing improved security compliance. No manual action is required, as the Operator automatically uses the updated images upon installation or upgrade.
+
+## CVEs
+
+- [CVE-2025-47907](https://access.redhat.com/security/cve/CVE-2025-47907)
+
+- [CVE-2025-58183](https://access.redhat.com/security/cve/CVE-2025-58183)
+
+- [CVE-2025-61726](https://access.redhat.com/security/cve/CVE-2025-61726)
+
+- [CVE-2025-61728](https://access.redhat.com/security/cve/CVE-2025-61728)
+
+- [CVE-2025-61729](https://access.redhat.com/security/cve/CVE-2025-61729)
+
+- [CVE-2025-68121](https://access.redhat.com/security/cve/CVE-2025-68121)
+
 # cert-manager Operator for Red Hat OpenShift 1.17.0
 
 Issued: 2025-08-06
@@ -93,7 +126,7 @@ Version `1.17.0` of the cert-manager Operator for Red Hat OpenShift is based on 
 
 - Previously, the `status` field in the `IstioCSR` custom resource (CR) was not set to `Ready` even after the successful deployment of Istio‑CSR. With this fix, the `status` field is correctly set to `Ready`, ensuring consistent and reliable status reporting. ([CM-546](https://issues.redhat.com/browse/CM-546))
 
-# New features and enhancements
+## New features and enhancements
 
 **Support to configure resource requests and limits for ACME HTTP‑01 solver pods**
 
@@ -109,7 +142,7 @@ With this release, the cert-manager Operator for Red Hat OpenShift supports conf
 
 For more information, see [Overridable arguments for the cert‑manager components](../../security/cert_manager_operator/cert-manager-customizing-api-fields.xml#cert-manager-overridable-arguments_cert-manager-customizing-api-fields).
 
-# CVEs
+## CVEs
 
 - [CVE-2025-22866](https://access.redhat.com/security/cve/CVE-2025-22866)
 

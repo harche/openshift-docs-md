@@ -1,4 +1,4 @@
-You can migrate virtual machines (VMs) within a single cluster from one storage class to a different storage class. By using the OpenShift Container Platform web console, you can perform the migration for the VMs in bulk.
+To optimize performance or reduce costs, you can migrate virtual machines (VMs) between storage classes within a single cluster. You can use the OpenShift Container Platform web console to perform these migrations in bulk.
 
 # Migrating VMs in a single cluster to a different storage class by using the web console
 

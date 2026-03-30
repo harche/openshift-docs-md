@@ -1,4 +1,4 @@
-You can update the values for a boot order list by using the web console or the CLI.
+You can configure the boot order of disks and network devices on your virtual machine (VM) by using the web console or the CLI.
 
 With **Boot Order** in the **Virtual Machine Overview** page, you can:
 
@@ -95,9 +95,9 @@ You can edit the boot order list in a YAML configuration file by using the CLI.
         name: default
     ```
 
-    - The boot order value specified for the disk.
+    - `disks.bootOrder` defines the boot order value specified for the disk.
 
-    - The boot order value specified for the network interface controller.
+    - `interfaces.bootOrder` defines the boot order value specified for the network interface controller.
 
 3.  Save the YAML file.
 

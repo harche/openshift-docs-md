@@ -116,15 +116,13 @@ Mapping of vSphere concepts to their closest OpenShift Virtualization counterpar
 
 # Supported cluster versions for OpenShift Virtualization
 
-OpenShift Virtualization 4.21 is supported for use on OpenShift Container Platform 4.17 clusters. To use the latest z-stream release of OpenShift Virtualization, you must first upgrade to the latest version of OpenShift Container Platform.
-
-The latest stable release of OpenShift Virtualization 4.21 is 4.21.0.
+OpenShift Virtualization 4.21 is supported for use on OpenShift Container Platform 4.17 clusters. To use the latest z-stream release of OpenShift Virtualization, you must first upgrade to the latest version of OpenShift Container Platform. The latest stable release of OpenShift Virtualization 4.21 is 4.21.0.
 
 # About volume and access modes for virtual machine disks
 
 If you use the storage API with known storage providers, the volume and access modes are selected automatically. However, if you use a storage class that does not have a storage profile, you must configure the volume and access mode.
 
-For a list of known storage providers for OpenShift Virtualization, see [the Red Hat Ecosystem Catalog](https://catalog.redhat.com/search?searchType=software&badges_and_features=OpenShift+Virtualization&subcategories=Storage).
+For a list of known storage providers for OpenShift Virtualization, see the [ Red Hat Ecosystem Catalog](https://catalog.redhat.com/search?searchType=software&badges_and_features=OpenShift+Virtualization&subcategories=Storage).
 
 For best results, use the `ReadWriteMany` (RWX) access mode and the `Block` volume mode. This is important for the following reasons:
 

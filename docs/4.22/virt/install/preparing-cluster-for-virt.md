@@ -103,59 +103,6 @@ OpenShift Virtualization is also supported on Red Hat OpenShift Service on AWS 
 
 </div>
 
-Before you set up your cluster, review the following summary of supported features and limitations:
-
-Installing
-
-- You can install the cluster by using installer-provisioned infrastructure, ensuring that you specify bare-metal instance types for the worker nodes. For example, you can use the `c5n.metal` type value for a machine based on x86_64 architecture. You specify bare-metal instance types by editing the `install-config.yaml` file.
-
-  For more information, see the OpenShift Container Platform documentation about installing on AWS.
-
-Accessing virtual machines (VMs)
-
-- There is no change to how you access VMs by using the `virtctl` CLI tool or the OpenShift Container Platform web console.
-
-- You can expose VMs by using a `NodePort` or `LoadBalancer` service.
-
-  <div class="note">
-
-  The load balancer approach is preferable because OpenShift Container Platform automatically creates the load balancer in AWS and manages its lifecycle. A security group is also created for the load balancer, and you can use annotations to attach existing security groups. When you remove the service, OpenShift Container Platform removes the load balancer and its associated resources.
-
-  </div>
-
-Networking
-
-- You cannot use Single Root I/O Virtualization (SR-IOV) or bridge Container Network Interface (CNI) networks, including virtual LAN (VLAN). If your application requires a flat layer 2 network or control over the IP pool, consider using OVN-Kubernetes secondary overlay networks.
-
-Storage
-
-- You can use any storage solution that is certified by the storage vendor to work with the underlying platform.
-
-  <div class="important">
-
-  AWS bare metal, Red Hat OpenShift Service on AWS, and Red Hat OpenShift Service on AWS classic architecture clusters might have different supported storage solutions. Ensure that you confirm support with your storage vendor.
-
-  </div>
-
-- Using Amazon Elastic File System (EFS) or Amazon Elastic Block Store (EBS) with OpenShift Virtualization might cause performance and functionality limitations as shown in the following table:
-
-  | Feature                                  | EBS volume    |               |           | EFS volume    | Shared storage solutions |
-  |------------------------------------------|---------------|---------------|-----------|---------------|--------------------------|
-  |                                          | **gp2**       | **gp3**       | **io2**   |               |                          |
-  | VM live migration                        | Not available | Not available | Available | Available     | Available                |
-  | Fast VM creation by using cloning        | Available     |               |           | Not available | Available                |
-  | VM backup and restore by using snapshots | Available     |               |           | Not available | Available                |
-
-  EFS and EBS performance and functionality limitations
-
-  Consider using CSI storage, which supports ReadWriteMany (RWX), cloning, and snapshots to enable live migration, fast VM creation, and VM snapshots capabilities.
-
-Hosted control planes (HCPs)
-
-- HCPs for OpenShift Virtualization are not currently supported on AWS infrastructure.
-
-<!-- -->
-
 - [Connecting a virtual machine to an OVN-Kubernetes secondary network](../../virt/vm_networking/virt-connecting-vm-to-ovn-secondary-network.xml#virt-connecting-vm-to-ovn-secondary-network)
 
 - [Exposing a virtual machine by using a service](../../virt/vm_networking/virt-exposing-vm-with-service.xml#virt-exposing-vm-with-service)
@@ -254,13 +201,11 @@ OpenShift Virtualization support for single-stack IPv6 clusters is limited to th
 
 <div class="important">
 
-Deploying OpenShift Virtualization on a single-stack IPv6 cluster is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+Installing OpenShift Virtualization on certain cloud platforms is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
 For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
-
-<!-- -->
 
 FIPS mode
 If you install your cluster in [FIPS mode](../../installing/overview/installing-fips.xml#installing-fips-mode_installing-fips), no additional setup is required for OpenShift Virtualization.
@@ -321,7 +266,7 @@ To mark a storage class as the default for virtualization workloads, set the ann
 
 If you use the storage API with known storage providers, the volume and access modes are selected automatically. However, if you use a storage class that does not have a storage profile, you must configure the volume and access mode.
 
-For a list of known storage providers for OpenShift Virtualization, see [the Red Hat Ecosystem Catalog](https://catalog.redhat.com/search?searchType=software&badges_and_features=OpenShift+Virtualization&subcategories=Storage).
+For a list of known storage providers for OpenShift Virtualization, see the [ Red Hat Ecosystem Catalog](https://catalog.redhat.com/search?searchType=software&badges_and_features=OpenShift+Virtualization&subcategories=Storage).
 
 For best results, use the `ReadWriteMany` (RWX) access mode and the `Block` volume mode. This is important for the following reasons:
 

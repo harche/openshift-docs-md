@@ -361,7 +361,7 @@ After you set up your management cluster in FIPS mode, the hosted cluster creati
 
 To successfully deploy hosted control planes on OpenShift Container Platform, define the network environment by using specific Classless Inter-Domain Routing (CIDR) subnet ranges. Establishing these nonoverlapping ranges ensures reliable communication between cluster components and prevents internal IP address conflicts.
 
-For deploying hosted control planes on OpenShift Container Platform, use the following required Classless Inter-Domain Routing (CIDR) subnet ranges:
+The following Classless Inter-Domain Routing (CIDR) subnet ranges are the default settings for hosted control planes:
 
 - `v4InternalSubnet`: 100.65.0.0/16 (OVN-Kubernetes)
 
@@ -369,6 +369,6 @@ For deploying hosted control planes on OpenShift Container Platform, use the fol
 
 - `serviceNetwork`: 172.31.0.0/16
 
-<!-- -->
+By using one of the default subnet ranges, you can avoid CIDR overlap with the management cluster and avoid connectivity issues. However, you can use other CIDR subnet ranges if they do not overlap with the management cluster.
 
 - [CIDR range definitions](../../networking/networking_overview/cidr-range-definitions.xml#cidr-range-definitions)

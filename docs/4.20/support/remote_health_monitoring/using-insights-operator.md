@@ -636,7 +636,7 @@ Use the following procedure to create a `DataGather` custom resource definition 
 
 - Check that your new gather operation is prefixed with your chosen name under the list of pods in the `openshift-insights` project. Upon completion, the Insights Operator automatically uploads the data to Red Hat for processing.
 
-<!-- -->
+# Additional resources
 
 - [Insights Operator Gathered Data GitHub repository](https://github.com/openshift/insights-operator/blob/master/docs/gathered-data.md)
 

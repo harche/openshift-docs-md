@@ -110,6 +110,12 @@ Before you install an OpenShift Container Platform cluster on your vCenter that 
 
 To install an OpenShift Container Platform cluster in a vCenter, your vSphere account must include privileges for reading and creating the required resources. Using an account that has global administrative privileges is the simplest way to access all of the necessary permissions.
 
+<div class="note">
+
+The following tables do not explicitly list the ESXi host object. In the vSphere hierarchy, ESXi hosts are child objects of the cluster. If you apply your custom role to the vSphere vCenter Cluster object with the "Propagate to children" setting enabled, the required privileges automatically propagate down to the ESXi hosts. You do not need to apply permissions directly to individual ESXi host objects.
+
+</div>
+
 <table>
 <colgroup>
 <col style="width: 33%" />
@@ -141,7 +147,7 @@ To install an OpenShift Container Platform cluster in a vCenter, your vSphere ac
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>vSphere vCenter Cluster</p></td>
-<td style="text-align: left;"><p>If VMs need creation in the cluster root</p></td>
+<td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>Host.Config.Storage</code><br />
 <code>Resource.AssignVMToPool</code><br />
 <code>VApp.AssignResourcePool</code><br />
@@ -271,7 +277,7 @@ To install an OpenShift Container Platform cluster in a vCenter, your vSphere ac
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>vSphere vCenter Cluster</p></td>
-<td style="text-align: left;"><p>For VMs creation in the cluster root</p></td>
+<td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>Host.Configuration."Storage partition configuration"</code><br />
 <code>Resource."Assign virtual machine to resource pool"</code><br />
 <code>VApp."Assign resource pool"</code><br />
@@ -373,17 +379,16 @@ To install an OpenShift Container Platform cluster in a vCenter, your vSphere ac
 
 Additionally, the user requires some `ReadOnly` permissions, and some of the roles require permission to propagate the permissions to child objects. These settings vary depending on whether or not you install the cluster into an existing folder.
 
-| vSphere object                         | When required          | Propagate to children      | Permissions required       |
-|----------------------------------------|------------------------|----------------------------|----------------------------|
-| vSphere vCenter                        | Always                 | False                      | Listed required privileges |
-| vSphere vCenter data center            | Existing folder        | False                      | `ReadOnly` permission      |
-| vSphere vCenter Cluster                | Existing resource pool | False                      | `ReadOnly` permission      |
-| VMs in cluster root                    | True                   | Listed required privileges |                            |
-| vSphere vCenter Datastore              | Always                 | False                      | Listed required privileges |
-| vSphere Switch                         | Always                 | False                      | `ReadOnly` permission      |
-| vSphere Port Group                     | Always                 | False                      | Listed required privileges |
-| vSphere vCenter Virtual Machine Folder | Existing folder        | True                       | Listed required privileges |
-| vSphere vCenter Resource Pool          | Existing resource pool | True                       | Listed required privileges |
+| vSphere object                         | When required          | Propagate to children | Permissions required       |
+|----------------------------------------|------------------------|-----------------------|----------------------------|
+| vSphere vCenter                        | Always                 | False                 | Listed required privileges |
+| vSphere vCenter data center            | Existing folder        | False                 | `ReadOnly` permission      |
+| vSphere vCenter Cluster                | Always                 | True                  | Listed required privileges |
+| vSphere vCenter Datastore              | Always                 | False                 | Listed required privileges |
+| vSphere Switch                         | Always                 | False                 | `ReadOnly` permission      |
+| vSphere Port Group                     | Always                 | False                 | Listed required privileges |
+| vSphere vCenter Virtual Machine Folder | Existing folder        | True                  | Listed required privileges |
+| vSphere vCenter Resource Pool          | Existing resource pool | True                  | Listed required privileges |
 
 For more information about creating an account with only the required privileges, see [vSphere Permissions and User Management Tasks](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-5372F580-5C23-4E9C-8A4E-EF1B4DD9033E.html) in the vSphere documentation.
 

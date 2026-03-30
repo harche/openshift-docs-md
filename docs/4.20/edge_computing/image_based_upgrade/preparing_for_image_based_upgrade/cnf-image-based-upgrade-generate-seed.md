@@ -89,6 +89,7 @@ The following table lists the components, resources, and configurations that you
 | `StorageClass.yaml`                                                | No, if it is used in `StorageLV.yaml` |
 | `StorageLV.yaml`                                                   | No                                    |
 | `StorageLVMCluster.yaml`                                           | No                                    |
+| `SriovVrbClusterConfig.yaml`                                       | Yes                                   |
 
 Seed image configuration with RAN DU profile
 

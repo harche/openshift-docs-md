@@ -933,6 +933,40 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHSA-2026:5174 - OpenShift Container Platform 4.17.7 fixed issues
+
+Issued: 24 March 2026
+
+OpenShift Container Platform release 4.17.7 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:5174](https://access.redhat.com/errata/RHSA-2026:5174) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:5147](https://access.redhat.com/errata/RHBA-2026:5147) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.7 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, pagination titles in the console UI were not marked for translation when the user interface language was set to non-English. As a consequence, the user interface text remained in English, causing confusion for non-English users. With this release, pagination titles are marked for translation in the `DataView` object. As a result, pagination titles support translation, improving user experience in non-English OCP consoles. ([OCPBUGS-76387](https://issues.redhat.com/browse/OCPBUGS-76387))
+
+- Before this release, creating a hosted cluster with a node port publishing strategy, specifying a port outside the Kubernetes `ServiceNodePortRange` was silently accepted during cluster creation. As a consequence, the cluster installation was stuck with three pods and in the hosted cluster namespace. With this release, a fix added an early validation for `NodePort.Port` against the cluster’s configured `ServiceNodePortRange`, rejecting invalid values with a clear error message indicating the allowed range. As a result, users receive an immediate validation error when specifying a node port outside the acceptable range, preventing stuck cluster installations. ([OCPBUGS-77456](https://issues.redhat.com/browse/OCPBUGS-77456))
+
+- Before this update, the icon was not displayed in the **Status** column due to missing icon rendering in specific plugin statuses. This affected the user’s ability to visually identify plugin status. With this release, the icon is added to the **Status** column for loaded, pending, and failed plugin states. As a result, the icon is now displayed in the **Status** column for all plugins, enhancing the visual experience. ([OCPBUGS-77561](https://issues.redhat.com/browse/OCPBUGS-77561))
+
+- Before this update, the hosted control planes Operator created Agent pods with insufficient memory limits, causing crashes on large clusters. As a consequence, the Agent CAPI-provider pod crashed due to insufficient memory limits on big clusters. With this release, memory limits for the Agent CAPI provider in the hosted control planes Operator are increased. As a result, Agent pods do not crash due to memory limits, improving cluster stability. ([OCPBUGS-77647](https://issues.redhat.com/browse/OCPBUGS-77647))
+
+- Before this update, the etcd Operator randomly removed control plane nodes, causing duplication and potential cluster downtime. As a consequence, user experience was disrupted, leading to a potential loss of control plane nodes in the etcd cluster. With this release, the etcd Operator prioritizes removing members in the same failure domain index, reducing potential duplication and improving cluster stability. As a result, the etcd Operator ensures the control plane remains stable with three nodes, preventing potential service disruptions. ([OCPBUGS-77921](https://issues.redhat.com/browse/OCPBUGS-77921))
+
+- Before this update, an ordering issue in the hosted cluster controller’s reconcile loop caused a deadlock during z-stream updates, stalling cluster provisioning and causing Azure Red Hat OpenShift hosted control planes to fail. With this release, the deadlock during initial provisioning is resolved by updating Control Plane Operator (CPO) deployment before secret fetching. As a result, seamless cluster creation is enabled. ([OCPBUGS-78473](https://issues.redhat.com/browse/OCPBUGS-78473))
+
+- Before this update, the catalog image version cap in `images.go` prevented the use of OpenShift Container Platform 4.21 images. As a consequence, hosted clusters on OpenShift Container Platform 4.21 and later were using OpenShift Container Platform 4.20 catalog images, causing compatibility issues. With this release, the catalog image version cap is updated to OpenShift Container Platform 4.21 in `support/catalogs/images.go`. As a result, hosted clusters on OpenShift Container Platform 4.21 and later use OpenShift Container Platform 4.21 catalog images, improving compatibility and functionality. ([OCPBUGS-78484](https://issues.redhat.com/browse/OCPBUGS-78484))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHBA-2026:4420 - OpenShift Container Platform 4.17.6 fixed issues
 
 Issued: 17 March 2026

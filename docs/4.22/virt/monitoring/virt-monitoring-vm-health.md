@@ -248,13 +248,13 @@ You configure a watchdog device for the virtual machine (VM).
     $ oc apply -f <file_name>.yaml
     ```
 
-<div class="formalpara-title">
+<div class="important">
 
-**Verification**
+<div class="title">
+
+Verification
 
 </div>
-
-<div class="important">
 
 This procedure is provided for testing watchdog functionality only and must not be run on production machines.
 

@@ -703,6 +703,7 @@
     - [Configuring IP address assignment for secondary networks](networking/multiple_networks/secondary_networks/configuring-ip-secondary-nwt.md)
     - [Configuring the master interface in the container network namespace](networking/multiple_networks/secondary_networks/configuring-master-interface.md)
     - [Removing an additional network](networking/multiple_networks/secondary_networks/removing-additional-network.md)
+    - [Enabling multi-networking for advanced use cases with CNI Plugin chaining](networking/multiple_networks/secondary_networks/about-chaining.md)
   - [About virtual routing and forwarding](networking/multiple_networks/about-virtual-routing-and-forwarding.md)
   - [Assigning a secondary network to a VRF](networking/multiple_networks/assigning-a-secondary-network-to-a-vrf.md)
 - **Hardware networks**
@@ -754,7 +755,6 @@
     - [Configuring ingress cluster traffic using a NodePort](networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-nodeport.md)
     - [Configuring ingress cluster traffic using load balancer allowed source ranges](networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-load-balancer-allowed-source-ranges.md)
     - [Patching existing ingress objects](networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-patch-fields.md)
-    - [Allocating load balancers to specific subnets](networking/ingress_load_balancing/configuring_ingress_cluster_traffic/allocating-load-balancers.md)
     - [Configuring the Ingress Controller for manual DNS management](networking/ingress_load_balancing/configuring_ingress_cluster_traffic/ingress-controller-dnsmgt.md)
     - [Gateway API with OpenShift Container Platform networking](networking/ingress_load_balancing/configuring_ingress_cluster_traffic/ingress-gateway-api.md)
   - [Load balancing on OpenStack](networking/ingress_load_balancing/load-balancing-openstack.md)
@@ -1286,6 +1286,7 @@
 - [Red Hat OpenShift support for Windows Containers overview](windows_containers/index.md)
 - **Release notes**
   - [Red Hat OpenShift support for Windows Containers release notes](windows_containers/wmco_rn/windows-containers-release-notes.md)
+  - [Past releases](windows_containers/wmco_rn/windows-containers-release-notes-past.md)
   - [Windows Machine Config Operator prerequisites](windows_containers/wmco_rn/windows-containers-release-notes-prereqs.md)
   - [Windows Machine Config Operator known limitations](windows_containers/wmco_rn/windows-containers-release-notes-limitations.md)
 - [Getting support](windows_containers/windows-containers-support.md)

@@ -92,9 +92,9 @@ You can update the machine template resource for your cluster by modifying the Y
 
 # Modifying a compute machine set by using the CLI
 
-You can modify the configuration of a compute machine set, and then propagate the changes to the machines in your cluster by using the CLI.
+To enable features or change the properties of machines, you can modify the configuration of a compute machine set using the CLI. You can then propagate the changes to the machines in your cluster.
 
-By updating the compute machine set configuration, you can enable features or change the properties of the machines it creates. When you modify a compute machine set, your changes only apply to compute machines that are created after you save the updated `MachineSet` custom resource (CR). The changes do not affect existing machines.
+When you modify a compute machine set, your changes only apply to compute machines that are created after you save the updated `MachineSet` custom resource (CR). The changes do not affect existing machines.
 
 <div class="note">
 
@@ -156,7 +156,7 @@ The output examples in this procedure use the values for an AWS cluster.
     # ...
     ```
 
-    - The examples in this procedure show a compute machine set that has a `replicas` value of `2`.
+    The examples in this procedure show a compute machine set that has a `replicas` value of `2`.
 
 4.  Update the compute machine set CR with the configuration options that you want and save your changes.
 
@@ -196,7 +196,7 @@ The output examples in this procedure use the values for an AWS cluster.
       -n openshift-cluster-api
     ```
 
-    - The original example value of `2` is doubled to `4`.
+    The original example value of `2` is doubled to `4`.
 
 8.  List the machines that are managed by the updated compute machine set by running the following command:
 
@@ -230,7 +230,7 @@ The output examples in this procedure use the values for an AWS cluster.
       -n openshift-cluster-api
     ```
 
-    - The original example value of `2`.
+    The `replicas` parameter is set to the original example value of `2`.
 
 - To verify that a machine created by the updated machine set has the correct configuration, examine the relevant fields in the CR for one of the new machines by running the following command:
 

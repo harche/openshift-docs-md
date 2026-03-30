@@ -421,17 +421,22 @@ As an administrator, you can group network flows that are part of the same conve
        conversationHeartbeatInterval: 30s
     ```
 
-    - When `logTypes` is set to `Flows`, only the **Flow** event is exported. If you set the value to `All`, both conversation and flow events are exported and visible in the **Network Traffic** page. To focus only on conversation events, you can specify `Conversations` which exports the **Conversation start**, **Conversation tick** and **Conversation end** events; or `EndedConversations` exports only the **Conversation end** events. Storage requirements are highest for `All` and lowest for `EndedConversations`.
+    where:
 
-    - The **Conversation end** event represents the point when the `conversationEndTimeout` is reached or the TCP flag is intercepted.
+    `spec.processor.logTypes`
+    Specifies the types of events to export. When set to `Flows`, only the Flow event is exported. When set to `All`, both conversation and flow events are exported and visible in the **Network Traffic** page. To focus only on conversation events, specify `Conversations` to export **Conversation start**, **Conversation tick**, and **Conversation end** events. To export only the **Conversation end** events, specify `EndedConversations`. Storage requirements are highest for `All` and lowest for `EndedConversations`.
 
-    - The **Conversation tick** event represents each specified interval defined in the `FlowCollector` `conversationHeartbeatInterval` parameter while the network connection is active.
+    `spec.processor.advanced.conversationEndTimeout`
+    Specifies the duration at which a **Conversation end** event is triggered once the timeout is reached or a TCP flag is intercepted.
 
-      <div class="note">
+    `spec.processor.advanced.conversationHeartbeatInterval`
+    Specifies the interval for the **Conversation tick** event while the network connection is active.
 
-      If you update the `logType` option, the flows from the previous selection do not clear from the console plugin. For example, if you initially set `logType` to `Conversations` for a span of time until 10 AM and then move to `EndedConversations`, the console plugin shows all conversation events before 10 AM and only ended conversations after 10 AM.
+    <div class="note">
 
-      </div>
+    If you update the `logType` option, the flows from the previous selection do not clear from the console plugin. For example, if you initially set `logType` to `Conversations` for a span of time until 10 AM and then move to `EndedConversations`, the console plugin shows all conversation events before 10 AM and only ended conversations after 10 AM.
+
+    </div>
 
 5.  Refresh the **Network Traffic** page on the **Traffic flows** tab. Notice there are two new columns, **Event/Type** and **Conversation Id**. All the **Event/Type** fields are `Flow` when **Flow** is the selected query option.
 
@@ -480,9 +485,13 @@ CPU and memory usage increases when this feature is enabled.
           privileged: true
     ```
 
-    - You can start reporting the packet drops of each network flow by listing the `PacketDrop` parameter in the `spec.agent.ebpf.features` specification list.
+    where:
 
-    - The `spec.agent.ebpf.privileged` specification value must be `true` for packet drop tracking.
+    `spec.agent.ebpf.features`
+    Specifies the features to enable. Include `PacketDrop` to start reporting packet drops for each network flow.
+
+    `spec.agent.ebpf.privileged`
+    Specifies whether privileged mode is enabled. Must be set to `true` for packet drop tracking.
 
 - When you refresh the **Network Traffic** page, the **Overview**, **Traffic Flow**, and **Topology** views display new information about packet drops:
 
@@ -919,7 +928,13 @@ You can enable user-defined networks (UDN) in network observability resources. T
           - UDNMapping
     ```
 
-    - Recommended so all flows are observed.
+    where:
+
+    `spec.agent.ebpf.sampling`
+    Specifies sampling rate for network events. Set to a value of `1` to capture all network events. If sampling `1` is too resource heavy, set sampling to something more appropriate for your needs.
+
+    `spec.agent.ebpf.privileged`
+    Specifies whether privileged mode is enabled. Must be set to `true` for user-defined network mapping.
 
 - Refresh the **Network Traffic** page to view updated UDN information in the **Traffic Flow** and **Topology** views:
 
@@ -994,9 +1009,13 @@ You can edit the `FlowCollector` to view information about network traffic event
            - "NetworkEvents"
     ```
 
-    - Optional: The `sampling` parameter is set to a value of 1 so that all network events are captured. If sampling `1` is too resource heavy, set sampling to something more appropriate for your needs.
+    where:
 
-    - The `privileged` parameter is set to `true` because the `OVN observability` library needs to access local Open vSwitch (OVS) socket and OpenShift Virtual Network (OVN) databases.
+    `spec.agent.ebpf.sampling`
+    Specifies the sampling rate for network events. Set to a value of `1` to capture all network events. If the sampling `1` is too resource heavy, set sampling to something more appropriate for your needs. This value is optional.
+
+    `spec.agent.ebpf.privileged`
+    Specifies whether the eBPF agent runs in privileged mode. Set to `true` because the OVN observability library needs to access local Open vSwitch (OVS) socket and Open Virtual Network (OVN) databases.
 
 <!-- -->
 

@@ -106,11 +106,11 @@ To do this, specify a resource name and USB device name for each device you want
                 product: "b100"
   ```
 
-  - Lists the host devices that have permission to be used in the cluster.
+- `spec.permittedHostDevices` defines the host devices that have permission to be used in the cluster.
 
-  - Lists the available USB devices.
+- `spec.permittedHostDevices.usbHostDevices` defines the available USB devices.
 
-  - Uses `resourceName: deviceName` for each device you want to add and assign to the VM. In this example, the resource is bound to three devices, each of which is identified by `vendor` and `product` and is known as a `selector`.
+- Use `resourceName: deviceName` for each device you want to add and assign to the VM. In this example, the resource is bound to three devices, each of which is identified by `vendor` and `product` and is known as a `selector`.
 
 # Connecting a USB device to a virtual machine
 
@@ -151,7 +151,7 @@ You can configure virtual machine (VM) access to a USB device. This configuratio
 
     where:
 
-    \<vmi_usb\>
+    `<vmi_usb>`
     Specifies the name of the `VirtualMachineInstance` CR.
 
 3.  Edit the CR by adding the USB device, as shown in the following example:
@@ -174,7 +174,7 @@ You can configure virtual machine (VM) access to a USB device. This configuratio
     # ...
     ```
 
-    - The name of the USB device.
+    - `spec.domain.devices.hostDevices.name` defines the name of the USB device.
 
 4.  Apply the modifications to the VM configurations:
 

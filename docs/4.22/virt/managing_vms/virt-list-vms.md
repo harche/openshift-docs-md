@@ -1,4 +1,4 @@
-You can list available virtual machines (VMs) by using the web console or the OpenShift CLI (`oc`).
+Use the web console or OpenShift CLI (`oc`) to list your virtual machines (VMs). From the list, you can filter and search for specific VMs.
 
 # Listing virtual machines by using the CLI
 

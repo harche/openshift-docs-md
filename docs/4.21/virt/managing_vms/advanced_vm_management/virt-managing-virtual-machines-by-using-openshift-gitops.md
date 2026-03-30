@@ -1,4 +1,4 @@
-To automate and optimize virtual machine (VM) management in OpenShift Virtualization, you can use OpenShift GitOps.
+To automate and optimize virtual machine (VM) management in {VirtProductName}, you can use Red Hat OpenShift GitOps.
 
 With GitOps, you can set up VM deployments based on configuration files stored in a Git repository. This also makes it easier to automate, update, or replicate these configurations, as well to use version control for tracking their changes.
 

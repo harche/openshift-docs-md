@@ -33,7 +33,7 @@ The following figure illustrates the typical network setup of OpenShift Virtuali
 
 <div class="important">
 
-Connecting VMs directly to the underlay network is not supported on Red Hat OpenShift Service on AWS, Azure for OpenShift Container Platform, Google Cloud, or Oracle® Cloud Infrastructure (OCI).
+Connecting VMs directly to the underlay network is not supported on Red Hat OpenShift Service on AWS, Azure,{dedicated}, Google Cloud, or Oracle® Cloud Infrastructure (OCI).
 
 </div>
 

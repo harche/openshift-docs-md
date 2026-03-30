@@ -417,11 +417,11 @@ You can uninstall the Migration Toolkit for Containers (MTC) and delete its reso
 
 <div class="note">
 
-Deleting the `velero` CRDs removes Velero from the cluster.
+Deleting the `velero` custom resource definitions (CRDs) removes Velero from the cluster.
 
 </div>
 
-- You must be logged in as a user with `cluster-admin` privileges.
+- You have logged in to the OpenShift Container Platform cluster as a cluster administrator.
 
 1.  Delete the `MigrationController` custom resource (CR) on all clusters:
 
@@ -429,7 +429,7 @@ Deleting the `velero` CRDs removes Velero from the cluster.
     $ oc delete migrationcontroller <migration_controller>
     ```
 
-2.  Uninstall the Migration Toolkit for Containers Operator on OpenShift Container Platform 4 by using the Operator Lifecycle Manager.
+2.  Uninstall the Migration Toolkit for Containers Operator on OpenShift Container Platform 4 by using the Operator Lifecycle Manager (OLM).
 
 3.  Delete cluster-scoped resources on all clusters by running the following commands:
 

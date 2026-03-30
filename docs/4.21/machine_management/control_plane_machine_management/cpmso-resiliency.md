@@ -6,7 +6,7 @@ When possible, the control plane machine set spreads the control plane machines 
 
 ## Failure domain platform support and configuration
 
-The control plane machine set concept of a failure domain is analogous to existing concepts on cloud providers. Not all platforms support the use of failure domains.
+Review failure domain support for your cloud provider to determine how to configure high availability for your control plane.
 
 | Cloud provider                     | Support for failure domains | Provider nomenclature                                                                                                                                                                                                           |
 |------------------------------------|-----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -39,7 +39,7 @@ The failure domain configuration in the control plane machine set custom resourc
 
 ## Balancing control plane machines
 
-The control plane machine set balances control plane machines across the failure domains that are specified in the custom resource (CR).
+The control plane machine set balances control plane machines across failure domains to ensure fault tolerance and high availability.
 
 When possible, the control plane machine set uses each failure domain equally to ensure appropriate fault tolerance. If there are fewer failure domains than control plane machines, failure domains are selected for reuse alphabetically by name. For clusters with no failure domains specified, all control plane machines are placed within a single failure domain.
 
@@ -47,7 +47,7 @@ Some changes to the failure domain configuration cause the control plane machine
 
 # Recovery of failed control plane machines
 
-The Control Plane Machine Set Operator automates the recovery of control plane machines. When a control plane machine is deleted, the Operator creates a replacement with the configuration that is specified in the `ControlPlaneMachineSet` custom resource (CR).
+The Control Plane Machine Set Operator automates the recovery of control plane machines to maintain cluster availability without manual intervention. When a control plane machine is deleted, the Operator creates a replacement with the configuration that is specified in the `ControlPlaneMachineSet` custom resource (CR).
 
 For clusters that use control plane machine sets, you can configure a machine health check. The machine health check deletes unhealthy control plane machines so that they are replaced.
 
@@ -65,7 +65,7 @@ If the etcd cluster is degraded, manual intervention might be required. If a sca
 
 # Quorum protection with machine lifecycle hooks
 
-For OpenShift Container Platform clusters that use the Machine API Operator, the etcd Operator uses lifecycle hooks for the machine deletion phase to implement a quorum protection mechanism.
+To protect etcd quorum on OpenShift Container Platform clusters that use the Machine API Operator, the etcd Operator uses lifecycle hooks for the machine deletion phase to implement a quorum protection mechanism.
 
 By using a `preDrain` lifecycle hook, the etcd Operator can control when the pods on a control plane machine are drained and removed. To protect etcd quorum, the etcd Operator prevents the removal of an etcd member until it migrates that member onto a new node within the cluster.
 
@@ -124,10 +124,12 @@ spec:
   ...
 ```
 
-- The name of the `preDrain` lifecycle hook.
+where:
 
-- The hook-implementing controller that manages the `preDrain` lifecycle hook.
+`spec.lifecycleHooks.preDrain.name`
+Specifies the name of the `preDrain` lifecycle hook.
 
-<!-- -->
+`spec.lifecycleHooks.preDrain.owner`
+Specifies the hook-implementing controller that manages the `preDrain` lifecycle hook.
 
 - [Lifecycle hooks for the machine deletion phase](../../machine_management/deleting-machine.xml#machine-lifecycle-hook-deletion_deleting-machine)

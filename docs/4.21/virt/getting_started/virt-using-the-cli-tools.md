@@ -463,4 +463,4 @@ The `virtctl guestfs` command accepts only a single PVC attached to the interact
 
 # Using Ansible
 
-To use the Ansible collection for OpenShift Virtualization, see [Red Hat Ansible Automation Hub](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/openshift_virtualization) (Red Hat Hybrid Cloud Console).
+To use the Ansible collection for OpenShift Virtualization, see [Red Hat Ansible Automation Hub](https://console.redhat.com/ansible/automation-hub) (Red Hat Hybrid Cloud Console).

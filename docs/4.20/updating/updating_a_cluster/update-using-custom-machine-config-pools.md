@@ -1,6 +1,8 @@
-A *canary update* is an update strategy where worker node updates are performed in discrete, sequential stages instead of updating all worker nodes at the same time. This strategy can be useful in the following scenarios:
+For a more controlled rollout of worker node updates, you can use a *canary update*. A canary update is an update strategy where worker node updates are performed in discrete, sequential stages instead of updating all worker nodes at the same time.
 
-- You want a more controlled rollout of worker node updates to ensure that mission-critical applications stay available during the whole update, even if the update process causes your applications to fail.
+This strategy can be useful in the following scenarios:
+
+- You want a more controlled rollout of worker node updates to ensure that mission-critical applications stay available during the entire update, even if the update process causes your applications to fail.
 
 - You want to update a small subset of worker nodes, evaluate cluster and workload health over a period of time, and then update the remaining nodes.
 
@@ -10,6 +12,8 @@ In these scenarios, you can create multiple custom machine config pools (MCPs) t
 
 # Example Canary update strategy
 
+To better understand how the canary rollout strategy works, it is useful to consider an example of an update using the strategy.
+
 The following example describes a canary update strategy where you have a cluster with 100 nodes with 10% excess capacity, you have maintenance windows that must not exceed 4 hours, and you know that it takes no longer than 8 minutes to drain and reboot a worker node.
 
 <div class="note">
@@ -18,9 +22,9 @@ The previous values are an example only. The time it takes to drain a node might
 
 </div>
 
-## Defining custom machine config pools
+## Definition of custom machine config pools
 
-In order to organize the worker node updates into separate stages, you can begin by defining the following MCPs:
+In order to organize the worker node updates into separate stages, you can begin by defining the following machine config pools:
 
 - **workerpool-canary** with 10 nodes
 
@@ -30,15 +34,15 @@ In order to organize the worker node updates into separate stages, you can begin
 
 - **workerpool-C** with 30 nodes
 
-## Updating the canary worker pool
+## Update of the canary worker pool
 
-During your first maintenance window, you pause the MCPs for **workerpool-A**, **workerpool-B**, and **workerpool-C**, and then initiate the cluster update. This updates components that run on top of OpenShift Container Platform and the 10 nodes that are part of the unpaused **workerpool-canary** MCP. The other three MCPs are not updated because they were paused.
+During your first maintenance window, you pause the machine config pools (MCPs) for **workerpool-A**, **workerpool-B**, and **workerpool-C**, and then initiate the cluster update. This updates components that run on top of OpenShift Container Platform and the 10 nodes that are part of the unpaused **workerpool-canary** MCP. The other three MCPs are not updated because they were paused.
 
-## Determining whether to proceed with the remaining worker pool updates
+## Whether or not to proceed with the remaining worker pool updates
 
 If for some reason you determine that your cluster or workload health was negatively affected by the **workerpool-canary** update, you then cordon and drain all nodes in that pool while still maintaining sufficient capacity until you have diagnosed and resolved the problem. When everything is working as expected, you evaluate the cluster and workload health before deciding to unpause, and thus update, **workerpool-A**, **workerpool-B**, and **workerpool-C** in succession during each additional maintenance window.
 
-Managing worker node updates using custom MCPs provides flexibility, however it can be a time-consuming process that requires you execute multiple commands. This complexity can result in errors that might affect the entire cluster. It is recommended that you carefully consider your organizational needs and carefully plan the implementation of the process before you start.
+Managing worker node updates using custom machine config pools (MCPs) provides flexibility, however it can be a time-consuming process that requires you execute multiple commands. This complexity can result in errors that might affect the entire cluster. It is recommended that you carefully consider your organizational needs and carefully plan the implementation of the process before you start.
 
 <div class="important">
 
@@ -58,7 +62,9 @@ It is not recommended to update the MCPs to different OpenShift Container Platfo
 
 # About the canary rollout update process and MCPs
 
-In OpenShift Container Platform, nodes are not considered individually. Instead, they are grouped into machine config pools (MCPs). By default, nodes in an OpenShift Container Platform cluster are grouped into two MCPs: one for the control plane nodes and one for the worker nodes. An OpenShift Container Platform update affects all MCPs concurrently.
+In OpenShift Container Platform, nodes are not considered individually. Instead, they are grouped into machine config pools (MCPs). By default, nodes in an OpenShift Container Platform cluster are grouped into two MCPs: one for the control plane nodes and one for the worker nodes.
+
+An OpenShift Container Platform update affects all MCPs concurrently.
 
 During the update, the Machine Config Operator (MCO) drains and cordons all nodes within an MCP up to the specified `maxUnavailable` number of nodes, if a max number is specified. By default, `maxUnavailable` is set to `1`. Draining and cordoning a node deschedules all pods on the node and marks the node as unschedulable.
 
@@ -96,7 +102,9 @@ You can use this update process with all documented OpenShift Container Platform
 
 # About performing a canary rollout update
 
-The following steps outline the high-level workflow of the canary rollout update process:
+The process of a canary update can be understood as several high-level steps.
+
+The following steps outline the high-level workflow of the process:
 
 1.  Create custom machine config pools (MCP) based on the worker pool.
 
@@ -196,11 +204,16 @@ To perform a canary rollout update, you must first create one or more custom mac
               node-role.kubernetes.io/workerpool-canary: ""
         ```
 
-        - Specify a name for the MCP.
+        where:
 
-        - Specify the `worker` and custom MCP name.
+        `metadata.name`
+        Specifies a name for the MCP.
 
-        - Specify the custom label you added to the nodes that you want in this pool.
+        `spec.machineConfigSelector.matchExpressions.values`
+        Specifies the `worker` and custom MCP name.
+
+        `spec.nodeSelectormatchLabels.node-role.kubernetes.io/workerpool-canary`
+        Specifies the custom label you added to the nodes that you want in this pool.
 
     2.  Create the `MachineConfigPool` object by running the following command:
 
@@ -380,7 +393,10 @@ You can configure a machine config pool (MCP) canary to inherit any `MachineConf
               node-role.kubernetes.io/worker-perf-canary: ""
         ```
 
-        - Optional value. This example includes `worker-perf-canary` as an additional value. You can use a value in this way to configure members of an additional `MachineConfig`.
+        where:
+
+        `spec.machineConfigSelector.matchExpressions.values`
+        Specifies a value you can use to configure members of an additional `MachineConfig`. This example includes `worker-perf-canary` as an additional value. This is an optional value.
 
     4.  Create the new `worker-perf-canary` by running the following command:
 
@@ -498,37 +514,43 @@ You can configure a machine config pool (MCP) canary to inherit any `MachineConf
 
 After you create your custom machine config pools (MCPs), you then pause those MCPs. Pausing an MCP prevents the Machine Config Operator (MCO) from updating the nodes associated with that MCP.
 
-1.  Patch the MCP that you want paused by running the following command:
+- Patch the MCP that you want paused by running the following command:
 
-    ``` terminal
-    $ oc patch mcp/<mcp_name> --patch '{"spec":{"paused":true}}' --type=merge
-    ```
+  ``` terminal
+  $ oc patch mcp/<mcp_name> --patch '{"spec":{"paused":true}}' --type=merge
+  ```
 
-    For example:
+  For example:
 
-    ``` terminal
-    $  oc patch mcp/workerpool-canary --patch '{"spec":{"paused":true}}' --type=merge
-    ```
+  ``` terminal
+  $  oc patch mcp/workerpool-canary --patch '{"spec":{"paused":true}}' --type=merge
+  ```
 
-    <div class="formalpara-title">
+  <div class="formalpara-title">
 
-    **Example output**
+  **Example output**
 
-    </div>
+  </div>
 
-    ``` terminal
-    machineconfigpool.machineconfiguration.openshift.io/workerpool-canary patched
-    ```
+  ``` terminal
+  machineconfigpool.machineconfiguration.openshift.io/workerpool-canary patched
+  ```
 
 # Performing the cluster update
 
-After the machine config pools (MCP) enter a ready state, you can perform the cluster update. See one of the following update methods, as appropriate for your cluster:
+After the machine config pools (MCP) enter a ready state, you can perform the cluster update.
+
+- See one of the following update methods, as appropriate for your cluster:
+
+  - "Updating a cluster using the web console"
+
+  - "Updating a cluster using the CLI"
+
+<!-- -->
 
 - [Updating a cluster using the web console](../../updating/updating_a_cluster/updating-cluster-web-console.xml#update-upgrading-web_updating-cluster-web-console)
 
 - [Updating a cluster using the CLI](../../updating/updating_a_cluster/updating-cluster-cli.xml#update-upgrading-cli_updating-cluster-cli)
-
-After the cluster update is complete, you can begin to unpause the MCPs one at a time.
 
 # Unpausing the machine config pools
 
@@ -570,11 +592,11 @@ After the OpenShift Container Platform update is complete, unpause your custom m
 
 4.  Repeat this process for any other paused MCPs, one at a time.
 
-<div class="note">
+    <div class="note">
 
-In case of a failure, such as your applications not working on the updated nodes, you can cordon and drain the nodes in the pool, which moves the application pods to other nodes to help maintain the quality-of-service for the applications. This first MCP should be no larger than the excess capacity.
+    In case of a failure, such as your applications not working on the updated nodes, you can cordon and drain the nodes in the pool, which moves the application pods to other nodes to help maintain the quality-of-service for the applications. This first MCP should be no larger than the excess capacity.
 
-</div>
+    </div>
 
 # Moving a node to the original machine config pool
 

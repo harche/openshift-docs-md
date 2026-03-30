@@ -521,6 +521,84 @@ spec:
 
 With a shared gateway topology, the routes must specify the namespace of the `Gateway` object it wants to attach to. Multiple `Gateway` objects can be deployed and shared across namespaces. When there are multiple shared gateways, this topology becomes conceptually similar to Ingress Controller sharding.
 
+# Provisioning an internal load balancer for a gateway
+
+By default, the Gateway API provisions an external load balancer. You can configure the Gateway API to provision an internal load balancer by adding a cloud-specific annotation to your `Gateway` custom resource (CR).
+
+- You have access to the cluster as a user with the `cluster-admin` role.
+
+- You have installed the OpenShift CLI (`oc`).
+
+- You have configured a `GatewayClass` object.
+
+1.  Create or edit your `Gateway` CR to include the cloud-specific annotation under `spec.infrastructure.annotations`.
+
+    <div class="note">
+
+    For a complete list of supported annotations and values, see "Cloud provider annotations for internal gateway load balancers".
+
+    </div>
+
+    The following example provisions an internal load balancer for an AWS cluster:
+
+    <div class="formalpara-title">
+
+    **Example `Gateway` CR for an AWS internal load balancer**
+
+    </div>
+
+    ``` yaml
+    apiVersion: gateway.networking.k8s.io/v1
+    kind: Gateway
+    metadata:
+      name: mygateway
+      namespace: openshift-ingress
+    spec:
+      gatewayClassName: openshift-default
+      infrastructure:
+        annotations:
+        # Specifies the cloud provider annotation and value required to provision an internal load balancer:
+          service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+      listeners:
+      - name: https
+        hostname: "*.example.com"
+        port: 443
+        protocol: HTTPS
+        tls:
+          mode: Terminate
+          certificateRefs:
+          - name: gateway-tls-secret
+    # ...
+    ```
+
+2.  Apply the updated `Gateway` CR by running the following command:
+
+    ``` terminal
+    $ oc apply -f <gateway_filename>.yaml
+    ```
+
+- Verify that the load balancer service is provisioned and has an internal IP address by running the following command:
+
+  ``` terminal
+  $ oc -n openshift-ingress get svc
+  ```
+
+# Cloud provider annotations for internal gateway load balancers
+
+The Gateway API supports provisioning internal load balancers for clusters deployed in private environments on Amazon Web Services (AWS), Microsoft Azure, Google Cloud, Red Hat OpenStack Platform (RHOSP), and IBM Cloud.
+
+The following table details the cloud-specific annotations and corresponding values required in the `spec.infrastructure.annotations` field of a `Gateway` custom resource (CR) to enable an internal load balancer.
+
+| Cloud Provider                      | Annotation                                                       | Value        |
+|-------------------------------------|------------------------------------------------------------------|--------------|
+| AWS                                 | `service.beta.kubernetes.io/aws-load-balancer-internal`          | `"true"`     |
+| Azure                               | `service.beta.kubernetes.io/azure-load-balancer-internal`        | `"true"`     |
+| Google Cloud                        | `cloud.google.com/load-balancer-type`                            | `"Internal"` |
+| RHOSP                               | `service.beta.kubernetes.io/openstack-internal-load-balancer`    | `"true"`     |
+| IBM Cloud/ IBM Power Virtual Server | `service.kubernetes.io/ibm-load-balancer-cloud-provider-ip-type` | `"private"`  |
+
+Internal load balancer annotations by cloud provider
+
 # Verifying gateway infrastructure status
 
 You can verify the status of the load balancer and DNS records assigned to your managed gateway by inspecting the `.status` field of the `Gateway` resource. OpenShift Container Platform provides a `LoadBalancerReady` condition at the overall gateway level and a `DNSReady` condition at the individual listener level.

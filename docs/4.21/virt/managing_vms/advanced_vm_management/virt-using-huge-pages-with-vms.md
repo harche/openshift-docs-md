@@ -44,9 +44,9 @@ If you edit a running virtual machine, the virtual machine must be rebooted for 
     # ...
     ```
 
-    - The total amount of memory requested for the virtual machine. This value must be divisible by the page size.
+    - `memory` defines the total amount of memory requested for the virtual machine. This value must be divisible by the page size.
 
-    - The size of each huge page. Valid values for x86_64 architecture are `1Gi` and `2Mi`. The page size must be smaller than the requested memory.
+    - `pageSize` defines the size of each huge page. Valid values for x86_64 architecture are `1Gi` and `2Mi`. The page size must be smaller than the requested memory.
 
 2.  Apply the virtual machine configuration:
 

@@ -1,12 +1,12 @@
-You can delete a specific machine.
+If you need to remove a machine from your cluster, you can delete a specific machine. If the machine is part of a machine set, deleting the machine can help troubleshoot and resolve unhealthy nodes and other technical issues.
 
 # Deleting a specific machine
 
-You can delete a specific machine.
+To remove a machine from your cluster, or restart a machine that is part of a machine set, you can use the OpenShift CLI (`oc`) to delete a specific machine.
 
 <div class="important">
 
-Do not delete a control plane machine unless your cluster uses a control plane machine set.
+Do not delete a control plane machine unless your cluster uses a control plane machine set. If the machine that you delete belongs to a machine set, a new machine is immediately created to satisfy the specified number of replicas.
 
 </div>
 
@@ -32,6 +32,8 @@ Do not delete a control plane machine unless your cluster uses a control plane m
     $ oc delete machine <machine> -n openshift-machine-api
     ```
 
+    Replace `<machine>` with the name of the machine.
+
     <div class="important">
 
     By default, the machine controller tries to drain the node that is backed by the machine until it succeeds. In some situations, such as with a misconfigured pod disruption budget, the drain operation might not be able to succeed. If the drain operation fails, the machine controller cannot proceed removing the machine.
@@ -40,11 +42,11 @@ Do not delete a control plane machine unless your cluster uses a control plane m
 
     </div>
 
-    If the machine that you delete belongs to a machine set, a new machine is immediately created to satisfy the specified number of replicas.
-
 # Lifecycle hooks for the machine deletion phase
 
-Machine lifecycle hooks are points in the reconciliation lifecycle of a machine where the normal lifecycle process can be interrupted. In the machine `Deleting` phase, these interruptions provide the opportunity for components to modify the machine deletion process.
+You can use lifecycle hooks to modify the process of machine deletion. Machine lifecycle hooks are points in the reconciliation lifecycle of a machine where the normal lifecycle process can be interrupted.
+
+For example, you might use a `preDrain` lifecycle hook to maintain etcd quorum when deleting a control plane machine.
 
 ## Terminology and definitions
 
@@ -156,9 +158,13 @@ spec:
   ...
 ```
 
-- The name of the `preDrain` lifecycle hook.
+where:
 
-- The hook-implementing controller that manages the `preDrain` lifecycle hook.
+`<hook_name>`
+Specifies the name of the `preDrain` lifecycle hook.
+
+`<hook_owner>`
+Specifies the hook-implementing controller that manages the `preDrain` lifecycle hook.
 
 <div class="formalpara-title">
 
@@ -179,9 +185,13 @@ spec:
   ...
 ```
 
-- The name of the `preTerminate` lifecycle hook.
+where:
 
-- The hook-implementing controller that manages the `preTerminate` lifecycle hook.
+`<hook_name>`
+Specifies the name of the `preDrain` lifecycle hook.
+
+`<hook_owner>`
+Specifies the hook-implementing controller that manages the `preDrain` lifecycle hook.
 
 ### Example lifecycle hook configuration
 
@@ -213,15 +223,19 @@ spec:
   ...
 ```
 
-- A `preDrain` lifecycle hook stanza that contains a single lifecycle hook.
+where:
 
-- A `preTerminate` lifecycle hook stanza that contains three lifecycle hooks.
+`spec.lifecycleHooks.preDrain`
+Specifies a `preDrain` lifecycle hook stanza that contains a single lifecycle hook.
 
-- A hook-implementing controller that manages two `preTerminate` lifecycle hooks: `CloudProviderSpecialCase` and `WaitForStorageDetach`.
+`spec.lifecycleHooks.preTerminate`
+Specifies a `preTerminate` lifecycle hook stanza that contains three lifecycle hooks. Note that one controller can own multiple lifecycle hooks, as `my-custom-storage-detach-controller` does in the example.
 
 ## Machine deletion lifecycle hook examples for Operator developers
 
-Operators can use lifecycle hooks for the machine deletion phase to modify the machine deletion process. The following examples demonstrate possible ways that an Operator can use this functionality.
+Operators can use lifecycle hooks for the machine deletion phase to modify the machine deletion process.
+
+The following examples demonstrate possible ways that an Operator can use this functionality.
 
 ### Example use cases for `preDrain` lifecycle hooks
 
@@ -245,7 +259,7 @@ A logging Operator can use a `preTerminate` lifecycle hook to add a delay betwee
 
 ## Quorum protection with machine lifecycle hooks
 
-For OpenShift Container Platform clusters that use the Machine API Operator, the etcd Operator uses lifecycle hooks for the machine deletion phase to implement a quorum protection mechanism.
+To protect etcd quorum on OpenShift Container Platform clusters that use the Machine API Operator, the etcd Operator uses lifecycle hooks for the machine deletion phase to implement a quorum protection mechanism.
 
 By using a `preDrain` lifecycle hook, the etcd Operator can control when the pods on a control plane machine are drained and removed. To protect etcd quorum, the etcd Operator prevents the removal of an etcd member until it migrates that member onto a new node within the cluster.
 
@@ -304,9 +318,13 @@ spec:
   ...
 ```
 
-- The name of the `preDrain` lifecycle hook.
+where:
 
-- The hook-implementing controller that manages the `preDrain` lifecycle hook.
+`spec.lifecycleHooks.preDrain.name`
+Specifies the name of the `preDrain` lifecycle hook.
+
+`spec.lifecycleHooks.preDrain.owner`
+Specifies the hook-implementing controller that manages the `preDrain` lifecycle hook.
 
 # Additional resources
 

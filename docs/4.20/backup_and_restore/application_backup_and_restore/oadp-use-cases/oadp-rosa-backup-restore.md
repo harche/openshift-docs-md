@@ -1,8 +1,8 @@
 To back up and restore workloads on ROSA, you can use OADP. You can create a backup of a workload, restore it from the backup, and verify the restoration. You can also clean up the OADP Operator, backup storage, and AWS resources when they are no longer needed.
 
-# Performing a backup with OADP and OpenShift Container Platform
+# Example: Performing a backup with OADP and OpenShift Container Platform
 
-The following example `hello-world` application has no persistent volumes (PVs) attached. Perform a backup by using OpenShift API for Data Protection (OADP) with OpenShift Container Platform.
+Perform a backup by using OpenShift API for Data Protection (OADP) with OpenShift Container Platform. The following example `hello-world` application has no persistent volumes (PVs) attached.
 
 Either Data Protection Application (DPA) configuration will work.
 
@@ -140,15 +140,15 @@ Either Data Protection Application (DPA) configuration will work.
     Hello OpenShift!
     ```
 
-<div class="note">
+    <div class="note">
 
-For troubleshooting tips, see the [troubleshooting documentation](https://access.redhat.com/articles/5456281).
+    For troubleshooting tips, see the [troubleshooting documentation](https://access.redhat.com/articles/5456281).
 
-</div>
+    </div>
 
 # Cleaning up a cluster after a backup with OADP and ROSA STS
 
-If you need to uninstall the OpenShift API for Data Protection (OADP) Operator together with the backups and the S3 bucket from this example, follow these instructions.
+Uninstall the OpenShift API for Data Protection (OADP) Operator together with the backups and the S3 bucket from the hello-world example.
 
 1.  Delete the workload by running the following command:
 

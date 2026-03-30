@@ -142,6 +142,12 @@ If you cannot use an account with global administrative privileges, you must cre
 
 The installation program requires an additional role to create a vSphere virtual machine folder.
 
+<div class="note">
+
+The following tables do not explicitly list the ESXi host object. In the vSphere hierarchy, ESXi hosts are child objects of the cluster. If you apply your custom role to the vSphere vCenter Cluster object with the "Propagate to children" setting enabled, the required privileges automatically propagate down to the ESXi hosts. You do not need to apply permissions directly to individual ESXi host objects.
+
+</div>
+
 <table>
 <colgroup>
 <col style="width: 33%" />
@@ -173,7 +179,7 @@ The installation program requires an additional role to create a vSphere virtual
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>vSphere vCenter Cluster</p></td>
-<td style="text-align: left;"><p>If VMs need creation in the cluster root</p></td>
+<td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>Host.Config.Storage</code><br />
 <code>Resource.AssignVMToPool</code><br />
 <code>VApp.AssignResourcePool</code><br />
@@ -303,7 +309,7 @@ The installation program requires an additional role to create a vSphere virtual
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>vSphere vCenter Cluster</p></td>
-<td style="text-align: left;"><p>For VMs creation in the cluster root</p></td>
+<td style="text-align: left;"><p>Always</p></td>
 <td style="text-align: left;"><p><code>Host.Configuration."Storage partition configuration"</code><br />
 <code>Resource."Assign virtual machine to resource pool"</code><br />
 <code>VApp."Assign resource pool"</code><br />
@@ -410,8 +416,7 @@ Additionally, the user requires some `ReadOnly` permissions, and some of the rol
 | vSphere vCenter                         | Always                 | False                      | Listed required privileges |
 | vSphere vCenter data center             | Existing folder        | False                      | `ReadOnly` permission      |
 | Installation program creates the folder | True                   | Listed required privileges |                            |
-| vSphere vCenter Cluster                 | Existing resource pool | False                      | `ReadOnly` permission      |
-| VMs in cluster root                     | True                   | Listed required privileges |                            |
+| vSphere vCenter Cluster                 | Always                 | True                       | Listed required privileges |
 | vSphere vCenter Datastore               | Always                 | False                      | Listed required privileges |
 | vSphere Switch                          | Always                 | False                      | `ReadOnly` permission      |
 | vSphere Port Group                      | Always                 | False                      | Listed required privileges |

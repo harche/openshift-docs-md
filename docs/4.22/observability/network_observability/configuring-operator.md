@@ -26,72 +26,56 @@ metadata:
 spec:
   namespace: netobserv
   deploymentModel: Service
+  networkPolicy:
+    enable: true
   agent:
     type: eBPF
     ebpf:
       sampling: 50
-      logLevel: info
       privileged: false
-      resources:
-        requests:
-          memory: 50Mi
-          cpu: 100m
-        limits:
-          memory: 800Mi
+      features: []
   processor:
-    logLevel: info
-    resources:
-      requests:
-        memory: 100Mi
-        cpu: 100m
-      limits:
-        memory: 800Mi
-    logTypes: Flows
-    advanced:
-      conversationEndTimeout: 10s
-      conversationHeartbeatInterval: 30s
+    addZone: false
+    subnetLabels:
+      openShiftAutoDetect: true
+      customLabels: []
+    consumerReplicas: 3
   loki:
+    enable: true
     mode: LokiStack
+    lokiStack:
+      name: loki
+      namespace: netobserv-loki
   consolePlugin:
-    register: true
-    logLevel: info
-    portNaming:
-      enable: true
-      portNames:
-        "3100": loki
-    quickFilters:
-    - name: Applications
-      filter:
-        src_namespace!: 'openshift-,netobserv'
-        dst_namespace!: 'openshift-,netobserv'
-      default: true
-    - name: Infrastructure
-      filter:
-        src_namespace: 'openshift-,netobserv'
-        dst_namespace: 'openshift-,netobserv'
-    - name: Pods network
-      filter:
-        src_kind: 'Pod'
-        dst_kind: 'Pod'
-      default: true
-    - name: Services network
-      filter:
-        dst_kind: 'Service'
+    enable: true
+  exporters: []
 ```
 
-- The Agent specification, `spec.agent.type`, must be `EBPF`. eBPF is the only OpenShift Container Platform supported option.
+where:
 
-- You can set the Sampling specification, `spec.agent.ebpf.sampling`, to manage resources. By default, eBPF sampling is set to `50`, so a flow has a 1 in 50 chance of being sampled. A lower sampling interval value requires more computational, memory, and storage resources. A value of `0` or `1` means all flows are sampled. It is recommended to start with the default value and refine it empirically to determine the optimal setting for your cluster.
+`spec.agent.type`
+Must be `eBPF` as eBPF is the only OpenShift Container Platform supported option.
 
-- The Processor specification `spec.processor.` can be set to enable conversation tracking. When enabled, conversation events are queryable in the web console. The `spec.processor.logTypes` value is `Flows`. The `spec.processor.advanced` values are `Conversations`, `EndedConversations`, or `ALL`. Storage requirements are highest for `All` and lowest for `EndedConversations`.
+`spec.agent.ebpf.sampling`
+Specifies the sampling interval. By default, eBPF sampling is set to `50`, so a packet has a 1 in 50 chance of being sampled. A lower sampling interval value requires more computational, memory, and storage resources. A value of `0` or `1` means all packets are sampled. It is recommended to start with the default value and refine it empirically to determine the optimal setting for your cluster.
 
-- The Loki specification, `spec.loki`, specifies the Loki client. The default values match the Loki install paths mentioned in the Installing the Loki Operator section. If you used another installation method for Loki, specify the appropriate client information for your install.
+`spec.agent.ebpf.privileged`
+Specifies if the eBPF agent pods should run as privileged. Running as privileged is required for several features, such as monitoring non-default networks and tracking packet drops. For security, in accordance with the principle of least privilege, it should only be enabled when some of those features are desired. A warning will be displayed if you enabled a feature requiring privileged mode without setting it to true explicitly.
 
-- The `LokiStack` mode automatically sets a few configurations: `querierUrl`, `ingesterUrl` and `statusUrl`, `tenantID`, and corresponding TLS configuration. Cluster roles and a cluster role binding are created for reading and writing logs to Loki. And `authToken` is set to `Forward`. You can set these manually using the `Manual` mode.
+`spec.processor.addZone`
+Used to inject cloud availability zones in network flows.
 
-- The `spec.quickFilters` specification defines filters that show up in the web console. The `Application` filter keys,`src_namespace` and `dst_namespace`, are negated (`!`), so the `Application` filter shows all traffic that *does not* originate from, or have a destination to, any `openshift-` or `netobserv` namespaces. For more information, see Configuring quick filters below.
+`spec.processor.subnetLabels`
+Specifies a list of customized labels to inject in network flows, based on CIDR matching.
 
-<!-- -->
+`spec.processor.consumerReplicas`
+Specifies the number of replicas for the processor pods (flowlogs-pipeline). Refer to the Resource management and performance considerations section for recommendations based on the cluster size.
+
+`spec.loki.mode`
+Specifies how to configure the connection to Loki, depending on its installation mode. If you use the install paths described in "Installing the Loki Operator", the mode must be set to `LokiStack`, and `spec.loki.lokiStack` should refer to the installed `LokiStack` resource name and namespace.
+
+`spec.loki.lokistack.namespace`
+Specifies the namespace for the `LokiStack` resource. This value must match the `metadata.namespace` defined in the `LokiStack` custom resource. While this example uses `netobserv-loki`, you can use a different namespace for different components.
 
 - [FlowCollector API reference](../../observability/network_observability/flowcollector-api.xml#network-observability-flowcollector-api-specifications_network_observability)
 
@@ -101,9 +85,9 @@ spec:
 
 Configure the `FlowCollector` resource to use Kafka for high-throughput and low-latency data feeds.
 
-A Kafka instance needs to be running, and a Kafka topic dedicated to OpenShift Container Platform Network Observability must be created in that instance. For more information, see [Kafka documentation with AMQ Streams](https://access.redhat.com/documentation/en-us/red_hat_amq/7.7/html/using_amq_streams_on_openshift/using-the-topic-operator-str).
+You must have a running Kafka instance and create a Kafka topic in that instance dedicated to OpenShift Container Platform Network Observability. For more information, see [Kafka documentation with AMQ Streams](https://access.redhat.com/documentation/en-us/red_hat_amq/7.7/html/using_amq_streams_on_openshift/using-the-topic-operator-str).
 
-- Kafka is installed. Red Hat supports Kafka with AMQ Streams Operator.
+- You have installed Kafka. Red Hat supports Kafka with AMQ Streams Operator.
 
 1.  In the web console, navigate to **Ecosystem** → **Installed Operators**.
 
@@ -111,7 +95,7 @@ A Kafka instance needs to be running, and a Kafka topic dedicated to OpenShift C
 
 3.  Select the cluster and then click the **YAML** tab.
 
-4.  Modify the `FlowCollector` resource for OpenShift Container Platform Network Observability Operator to use Kafka, as shown in the following sample YAML:
+4.  Change the `FlowCollector` resource for OpenShift Container Platform Network Observability Operator to use Kafka, as shown in the following sample YAML:
 
     <div class="formalpara-title">
 
@@ -133,13 +117,19 @@ A Kafka instance needs to be running, and a Kafka topic dedicated to OpenShift C
           enable: false
     ```
 
-    - Set `spec.deploymentModel` to `Kafka` instead of `Direct` to enable the Kafka deployment model.
+    where:
 
-    - `spec.kafka.address` refers to the Kafka bootstrap server address. You can specify a port if needed, for instance `kafka-cluster-kafka-bootstrap.netobserv:9093` for using TLS on port 9093.
+    `spec.deploymentModel`
+    Specifies the deployment model. Set to `Kafka` instead of `Service` to enable the Kafka deployment model.
 
-    - `spec.kafka.topic` should match the name of a topic created in Kafka.
+    `spec.kafka.address`
+    Specifies the Kafka bootstrap server address. You can specify a port if needed, for instance `kafka-cluster-kafka-bootstrap.netobserv:9093` for using TLS on port 9093.
 
-    - `spec.kafka.tls` can be used to encrypt all communications to and from Kafka with TLS or mTLS. When enabled, the Kafka CA certificate must be available as a ConfigMap or a Secret, both in the namespace where the `flowlogs-pipeline` processor component is deployed (default: `netobserv`) and where the eBPF agents are deployed (default: `netobserv-privileged`). It must be referenced with `spec.kafka.tls.caCert`. When using mTLS, client secrets must be available in these namespaces as well (they can be generated for instance using the AMQ Streams User Operator) and referenced with `spec.kafka.tls.userCert`.
+    `spec.kafka.topic`
+    Specifies the name of the topic created in Kafka. It should match the name of a topic created in Kafka.
+
+    `spec.kafka.tls`
+    Specifies communication encryption. Use this setting to encrypt all communications to and from Kafka with TLS or mTLS. When enabled, the Kafka CA certificate must be available as a ConfigMap or a Secret in both namespaces: the namespace where you deploy the `flowlogs-pipeline` processor component (default: `netobserv`) and the namespace where you deploy the eBPF agents (default: `netobserv-privileged`). Reference the certificate by using `spec.kafka.tls.caCert`. When you use mTLS, make the client secrets available in these namespaces as well. You can generate the secrets by using the Red Hat AMQ Streams User Operator. Reference the secrets by using `spec.kafka.tls.userCert`.
 
 # Export enriched network flow data
 

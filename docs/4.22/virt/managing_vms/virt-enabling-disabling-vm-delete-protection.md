@@ -1,4 +1,4 @@
-You can prevent the inadvertent deletion of a virtual machine (VM) by enabling delete protection for the VM. You can also disable delete protection for the VM.
+You can prevent accidental deletion of a virtual machine (VM) by enabling delete protection. If delete protection is enabled, you must disable it before you can delete that VM.
 
 You enable or disable delete protection from either the command line or the VM’s **VirtualMachine details** page in the OpenShift Container Platform web console. The option is disabled by default.
 

@@ -2,7 +2,7 @@ Use the information in this section to understand and recover from issues you mi
 
 # Checking the control plane machine set custom resource state
 
-You can verify the existence and state of the `ControlPlaneMachineSet` custom resource (CR).
+Check the state of the control plane machine set custom resource to determine if it is active, inactive, or missing before making configuration changes.
 
 - Determine the state of the CR by running the following command:
 
@@ -37,7 +37,7 @@ To use the control plane machine set, you must ensure that a `ControlPlaneMachin
 
 # Adding a missing Azure internal load balancer
 
-The `internalLoadBalancer` parameter is required in both the `ControlPlaneMachineSet` and control plane `Machine` custom resources (CRs) for Azure. If this parameter is not preconfigured on your cluster, you must add it to both CRs.
+Add the required `internalLoadBalancer` parameter to Azure control plane resources to ensure proper load balancing configuration.
 
 For more information about where this parameter is located in the Azure provider specification, see the sample Azure provider specification. The placement in the control plane `Machine` CR is similar.
 
@@ -76,7 +76,7 @@ For more information about where this parameter is located in the Azure provider
 
 # Recovering a degraded etcd Operator
 
-Certain situations can cause the etcd Operator to become degraded.
+Recover a degraded etcd Operator by removing failed members to restore cluster state after machine health check operations.
 
 For example, while performing remediation, the machine health check might delete a control plane machine that is hosting etcd. If the etcd member is not reachable at that time, the etcd Operator becomes degraded.
 
@@ -121,7 +121,9 @@ When the etcd Operator is degraded, manual intervention is required to force the
 
 # Upgrading clusters that run on RHOSP
 
-For clusters that run on Red Hat OpenStack Platform (RHOSP) that were created with OpenShift Container Platform 4.13 or earlier, you might have to perform post-upgrade tasks before you can use control plane machine sets.
+Review post-upgrade requirements for clusters running on Red Hat OpenStack Platform (RHOSP) to ensure control plane machine sets function correctly.
+
+For clusters that run on RHOSP that were created with OpenShift Container Platform 4.13 or earlier, you might have to perform post-upgrade tasks before you can use control plane machine sets.
 
 ## Configuring RHOSP clusters that have machines with root volume availability zones after an upgrade
 
@@ -195,15 +197,18 @@ To understand why this procedure is necessary, see [Solution \#7024383](https://
           name: master-user-data
     ```
 
-    - Set the zone name as this value.
+    where:
 
-      <div class="note">
+    `availabilityZone: nova`
+    Specifies the zone name for the root volume.
 
-      If you edited or recreated machine resources after your initial cluster deployment, you might have to adapt these steps for your configuration.
+    <div class="note">
 
-      In your RHOSP cluster, find the availability zone of the root volumes for your machines and use that as the value.
+    If you edited or recreated machine resources after your initial cluster deployment, you might have to adapt these steps for your configuration.
 
-      </div>
+    In your RHOSP cluster, find the availability zone of the root volumes for your machines and use that as the value.
+
+    </div>
 
 3.  Run the following command to retrieve information about the control plane machine set resource:
 
@@ -219,7 +224,7 @@ To understand why this procedure is necessary, see [Solution \#7024383](https://
 
 5.  For that resource, set the value of the `spec.state` property to `Active` to activate control plane machine sets for your cluster.
 
-Your control plane is ready to be managed by the Cluster Control Plane Machine Set Operator.
+    The control plane is now ready to be managed by the Cluster Control Plane Machine Set Operator.
 
 ## Configuring RHOSP clusters that have control plane machines with availability zones after an upgrade
 
@@ -286,15 +291,18 @@ To understand why this procedure is necessary, see [Solution \#7013893](https://
           name: master-user-data
     ```
 
-    - This value must match for machines `master-0`, `master-1`, and `master-3`.
+    where:
 
-      <div class="note">
+    `serverGroupName`
+    Specifies the server group name. This value must match for machines `master-0`, `master-1`, and `master-2`.
 
-      If you edited or recreated machine resources after your initial cluster deployment, you might have to adapt these steps for your configuration.
+    <div class="note">
 
-      In your RHOSP cluster, find the server group that your control plane instances are in and use that as the value.
+    If you edited or recreated machine resources after your initial cluster deployment, you might have to adapt these steps for your configuration.
 
-      </div>
+    In your RHOSP cluster, find the server group that your control plane instances are in and use that as the value.
+
+    </div>
 
 3.  Run the following command to retrieve information about the control plane machine set resource:
 
@@ -310,7 +318,7 @@ To understand why this procedure is necessary, see [Solution \#7013893](https://
 
 5.  For that resource, set the value of the `spec.state` property to `Active` to activate control plane machine sets for your cluster.
 
-Your control plane is ready to be managed by the Cluster Control Plane Machine Set Operator.
+    The control plane is now ready to be managed by the Cluster Control Plane Machine Set Operator.
 
 # Improving reliability for multiple subnet configurations on Nutanix
 

@@ -1,4 +1,6 @@
-Sysctl settings are exposed through Kubernetes, allowing users to modify certain kernel parameters at runtime. Only sysctls that are namespaced can be set independently on pods. If a sysctl is not namespaced, called *node-level*, you must use another method of setting the sysctl, such as by using the Node Tuning Operator.
+You can configure namespaced sysctls to manage kernel parameters for specific pods or network interfaces. By enabling safe or unsafe namespaced sysctls, you can fine-tune your environment’s performance and networking behavior at the pod level.
+
+Only sysctls that are namespaced can be set independently on pods. If a sysctl is not namespaced, it is known as a *node-level* sysctl. You must use another method of setting the sysctl, such as by using the Node Tuning Operator. To set node-level sysctls, see "Using the Node Tuning Operator".
 
 Network sysctls are a special category of sysctl. Network sysctls include:
 
@@ -6,13 +8,13 @@ Network sysctls are a special category of sysctl. Network sysctls include:
 
 - Interface-specific sysctls, for example `net.ipv4.conf.IFNAME.accept_local`, that only apply to a specific additional network interface for a given pod. You can set these independently for each additional network configuration. You set these by using a configuration in the `tuning-cni` after the network interfaces are created.
 
-Moreover, only those sysctls considered *safe* are whitelisted by default; you can manually enable other *unsafe* sysctls on the node to be available to the user.
-
-If you are setting the sysctl and it is node-level, you can find information on this procedure in the section [Using the Node Tuning Operator](../../scalability_and_performance/using-node-tuning-operator.xml#using-node-tuning-operator).
+Only those sysctls considered *safe* are enabled by default. A cluster administrator can manually enable *unsafe* sysctls on the node to be available to the user.
 
 # About sysctls
 
-In Linux, the sysctl interface allows an administrator to modify kernel parameters at runtime. Parameters are available from the `/proc/sys/` virtual process file system. The parameters cover various subsystems, such as:
+The Linux sysctl interface allows you to modify kernel parameters at runtime to manage subsystems such as networking, virtual memory, and MDADM. By accessing the sysctl interface, you can view and adjust system configurations without rebooting the operating system.
+
+You can modify the following subsystems by using sysctls:
 
 - kernel (common prefix: `kernel.`)
 
@@ -22,7 +24,7 @@ In Linux, the sysctl interface allows an administrator to modify kernel paramete
 
 - MDADM (common prefix: `dev.`)
 
-More subsystems are described in [Kernel documentation](https://www.kernel.org/doc/Documentation/sysctl/README). To get a list of all parameters, run:
+Refer to the [Kernel.org documentation](https://www.kernel.org/doc/Documentation/sysctl/README) for more information on the subsystems you can manage. You can get a list of all parameters by running the following command:
 
 ``` terminal
 $ sudo sysctl -a
@@ -30,7 +32,9 @@ $ sudo sysctl -a
 
 # Namespaced and node-level sysctls
 
-A number of sysctls are *namespaced* in the Linux kernels. This means that you can set them independently for each pod on a node. Being namespaced is a requirement for sysctls to be accessible in a pod context within Kubernetes.
+In a OpenShift Container Platform cluster, you can use namespaced sysctls, which apply to specific pods on a node, or node-level sysctls, which affect an entire node.
+
+Some sysctls are *namespaced* in the Linux kernels. This means that you can set them independently for each pod on a node. Being namespaced is a requirement for sysctls to be accessible in a pod context within Kubernetes.
 
 The following sysctls are known to be namespaced:
 
@@ -44,7 +48,7 @@ The following sysctls are known to be namespaced:
 
 Additionally, most of the sysctls in the `net.*` group are known to be namespaced. Their namespace adoption differs based on the kernel version and distributor.
 
-Sysctls that are not namespaced are called *node-level* and must be set manually by the cluster administrator, either by means of the underlying Linux distribution of the nodes, such as by modifying the `/etc/sysctls.conf` file, or by using a daemon set with privileged containers. You can use the Node Tuning Operator to set *node-level* sysctls.
+*Node-level* sysctls are not namespaced and must be set manually by a cluster administrator, either by using of the underlying Linux distribution of the nodes, such as by modifying the `/etc/sysctls.conf` file, or by using a daemon set with privileged containers. You can also use the Node Tuning Operator to set *node-level* sysctls.
 
 <div class="note">
 
@@ -54,11 +58,11 @@ Consider marking nodes with special sysctls as tainted. Only schedule pods onto 
 
 # Safe and unsafe sysctls
 
-Sysctls are grouped into *safe* and *unsafe* sysctls.
+In a OpenShift Container Platform cluster, you can use *safe* or *unsafe* sysctls.
 
-For system-wide sysctls to be considered safe, they must be namespaced. A namespaced sysctl ensures there is isolation between namespaces and therefore pods. If you set a sysctl for one pod it must not add any of the following:
+For system-wide sysctls to be considered safe, they must be namespaced. A namespaced sysctl ensures there is isolation between namespaces and therefore pods. If you set a sysctl for one pod it must not take any of the following actions:
 
-- Influence any other pod on the node
+- Influence on any other pod on the node
 
 - Harm the node health
 
@@ -72,7 +76,7 @@ Being namespaced alone is not sufficient for the sysctl to be considered safe.
 
 Any sysctl that is not added to the allowed list on OpenShift Container Platform is considered unsafe for OpenShift Container Platform.
 
-Unsafe sysctls are not allowed by default. For system-wide sysctls the cluster administrator must manually enable them on a per-node basis. Pods with disabled unsafe sysctls are scheduled but do not launch.
+Unsafe sysctls are not allowed by default. For system-wide sysctls, a cluster administrator must manually enable them on a per-node basis. Pods with disabled unsafe sysctls are scheduled but do not launch.
 
 <div class="note">
 
@@ -82,18 +86,18 @@ You cannot manually enable interface-specific unsafe sysctls.
 
 OpenShift Container Platform adds the following system-wide and interface-specific safe sysctls to an allowed safe list:
 
-| sysctl                                | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|---------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `kernel.shm_rmid_forced`              | When set to `1`, all shared memory objects in current IPC namespace are automatically forced to use IPC_RMID. For more information, see [shm_rmid_forced](https://docs.kernel.org/admin-guide/sysctl/kernel.html?highlight=shm_rmid_forced#shm-rmid-forced).                                                                                                                                                                                                                                                                                                  |
-| `net.ipv4.ip_local_port_range`        | Defines the local port range that is used by TCP and UDP to choose the local port. The first number is the first port number, and the second number is the last local port number. If possible, it is better if these numbers have different parity (one even and one odd value). They must be greater than or equal to `ip_unprivileged_port_start`. The default values are `32768` and `60999` respectively. For more information, see [ip_local_port_range](https://docs.kernel.org/networking/ip-sysctl.html?highlight=ip_local_port_range#ip-variables). |
-| `net.ipv4.tcp_syncookies`             | When `net.ipv4.tcp_syncookies` is set, the kernel handles TCP SYN packets normally until the half-open connection queue is full, at which time, the SYN cookie functionality kicks in. This functionality allows the system to keep accepting valid connections, even if under a denial-of-service attack. For more information, see [tcp_syncookies](https://docs.kernel.org/networking/ip-sysctl.html?highlight=tcp_syncookies#tcp-variables).                                                                                                              |
-| `net.ipv4.ping_group_range`           | This restricts `ICMP_PROTO` datagram sockets to users in the group range. The default is `1 0`, meaning that nobody, not even root, can create ping sockets. For more information, see [ping_group_range](https://docs.kernel.org/networking/ip-sysctl.html?highlight=ping_group_range#ip-variables).                                                                                                                                                                                                                                                         |
-| `net.ipv4.ip_unprivileged_port_start` | This defines the first unprivileged port in the network namespace. To disable all privileged ports, set this to `0`. Privileged ports must not overlap with the `ip_local_port_range`. For more information, see [ip_unprivileged_port_start](https://docs.kernel.org/networking/ip-sysctl.html?highlight=ip_unprivileged_port_start#ip-variables#ip-variables).                                                                                                                                                                                              |
-| `net.ipv4.ip_local_reserved_ports`    | Specify a range of comma-separated local ports that you want to reserve for applications or services.                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| `net.ipv4.tcp_keepalive_time`         | Specify the interval in seconds before the first `keepalive` probe should be sent after a connection has become idle.                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| `net.ipv4.tcp_fin_timeout`            | Specify the time in seconds that a connection remains in the `FIN-WAIT-2` state before it is aborted.                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| `net.ipv4.tcp_keepalive_intvl`        | Specify the interval in seconds between the `keepalive` probes. This value is multiplied by the `tcp_keepalive_probes` value to determine the total time required before it is decided that the connection is broken.                                                                                                                                                                                                                                                                                                                                         |
-| `net.ipv4.tcp_keepalive_probes`       | Specify how many `keepalive` probes to send until it is determined that the connection is broken.                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| sysctl                                | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+|---------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `kernel.shm_rmid_forced`              | When set to `1`, all shared memory objects in current IPC namespace are automatically forced to use IPC_RMID. For more information, see [shm_rmid_forced](https://docs.kernel.org/admin-guide/sysctl/kernel.html?highlight=shm_rmid_forced#shm-rmid-forced).                                                                                                                                                                                                                                                                                                                             |
+| `net.ipv4.ip_local_port_range`        | Defines the local port range that is used by TCP and UDP to choose the local port. The first number is the first port number, and the second number is the last local port number. If possible, it is better if these numbers have different parity (one even and one odd value). They must be greater than or equal to `ip_unprivileged_port_start`. The default values are `32768` and `60999` respectively. For more information, see [ip_local_port_range (Kernel.org documentation)](https://docs.kernel.org/networking/ip-sysctl.html?highlight=ip_local_port_range#ip-variables). |
+| `net.ipv4.tcp_syncookies`             | When `net.ipv4.tcp_syncookies` is set, the kernel handles TCP SYN packets normally until the half-open connection queue is full, at which time, the SYN cookie functionality kicks in. This functionality allows the system to keep accepting valid connections, even if under a denial-of-service attack. For more information, see [tcp_syncookies (Kernel.org documentation)](https://docs.kernel.org/networking/ip-sysctl.html?highlight=tcp_syncookies#tcp-variables).                                                                                                              |
+| `net.ipv4.ping_group_range`           | Restricts `ICMP_PROTO` datagram sockets to users in the group range. The default is `1 0`, meaning that nobody, not even root, can create ping sockets. For more information, see [ping_group_range (Kernel.org documentation)](https://docs.kernel.org/networking/ip-sysctl.html?highlight=ping_group_range#ip-variables).                                                                                                                                                                                                                                                              |
+| `net.ipv4.ip_unprivileged_port_start` | Defines the first unprivileged port in the network namespace. To disable all privileged ports, set to `0`. Privileged ports must not overlap with the `ip_local_port_range`. For more information, see [ip_unprivileged_port_start (Kernel.org documentation)](https://docs.kernel.org/networking/ip-sysctl.html?highlight=ip_unprivileged_port_start#ip-variables#ip-variables).                                                                                                                                                                                                        |
+| `net.ipv4.ip_local_reserved_ports`    | Specifies a range of comma-separated local ports that you want to reserve for applications or services.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `net.ipv4.tcp_keepalive_time`         | Specifies the interval in seconds before the first `keepalive` probe should be sent after a connection has become idle.                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `net.ipv4.tcp_fin_timeout`            | Specifies the time in seconds that a connection remains in the `FIN-WAIT-2` state before it is aborted.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `net.ipv4.tcp_keepalive_intvl`        | Specifies the interval in seconds between the `keepalive` probes. This value is multiplied by the `tcp_keepalive_probes` value to determine the total time required before it is decided that the connection is broken.                                                                                                                                                                                                                                                                                                                                                                  |
+| `net.ipv4.tcp_keepalive_probes`       | Specifies how many `keepalive` probes to send until it is determined that the connection is broken.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 
 System-wide safe sysctls
 
@@ -112,15 +116,15 @@ System-wide safe sysctls
 <tbody>
 <tr class="odd">
 <td style="text-align: left;"><p><code>net.ipv4.conf.IFNAME.accept_redirects</code></p></td>
-<td style="text-align: left;"><p>Accept IPv4 ICMP redirect messages.</p></td>
+<td style="text-align: left;"><p>Accepts IPv4 ICMP redirect messages.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>net.ipv4.conf.IFNAME.accept_source_route</code></p></td>
-<td style="text-align: left;"><p>Accept IPv4 packets with strict source route (SRR) option.</p></td>
+<td style="text-align: left;"><p>Accepts IPv4 packets with strict source route (SRR) option.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>net.ipv4.conf.IFNAME.arp_accept</code></p></td>
-<td style="text-align: left;"><p>Define behavior for gratuitous ARP frames with an IPv4 address that is not already present in the ARP table:</p>
+<td style="text-align: left;"><p>Defines the behavior for gratuitous ARP frames with an IPv4 address that is not already present in the ARP table:</p>
 <ul>
 <li><p><code>0</code> - Do not create new entries in the ARP table.</p></li>
 <li><p><code>1</code> - Create new entries in the ARP table.</p></li>
@@ -128,35 +132,35 @@ System-wide safe sysctls
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>net.ipv4.conf.IFNAME.arp_notify</code></p></td>
-<td style="text-align: left;"><p>Define mode for notification of IPv4 address and device changes.</p></td>
+<td style="text-align: left;"><p>Defines the mode for notification of IPv4 address and device changes.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>net.ipv4.conf.IFNAME.disable_policy</code></p></td>
-<td style="text-align: left;"><p>Disable IPSEC policy (SPD) for this IPv4 interface.</p></td>
+<td style="text-align: left;"><p>Disables IPSEC policy (SPD) for this IPv4 interface.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>net.ipv4.conf.IFNAME.secure_redirects</code></p></td>
-<td style="text-align: left;"><p>Accept ICMP redirect messages only to gateways listed in the interface’s current gateway list.</p></td>
+<td style="text-align: left;"><p>Accepts ICMP redirect messages only to gateways listed in the interface’s current gateway list.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>net.ipv4.conf.IFNAME.send_redirects</code></p></td>
-<td style="text-align: left;"><p>Send redirects is enabled only if the node acts as a router. That is, a host should not send an ICMP redirect message. It is used by routers to notify the host about a better routing path that is available for a particular destination.</p></td>
+<td style="text-align: left;"><p>Sends redirects only if the node acts as a router. That is, a host should not send an ICMP redirect message. It is used by routers to notify the host about a better routing path that is available for a particular destination.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>net.ipv6.conf.IFNAME.accept_ra</code></p></td>
-<td style="text-align: left;"><p>Accept IPv6 Router advertisements; autoconfigure using them. It also determines whether or not to transmit router solicitations. Router solicitations are transmitted only if the functional setting is to accept router advertisements.</p></td>
+<td style="text-align: left;"><p>Accepts IPv6 Router advertisements; autoconfigure using them. It also determines whether or not to transmit router solicitations. Router solicitations are transmitted only if the functional setting is to accept router advertisements.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>net.ipv6.conf.IFNAME.accept_redirects</code></p></td>
-<td style="text-align: left;"><p>Accept IPv6 ICMP redirect messages.</p></td>
+<td style="text-align: left;"><p>Accepts IPv6 ICMP redirect messages.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>net.ipv6.conf.IFNAME.accept_source_route</code></p></td>
-<td style="text-align: left;"><p>Accept IPv6 packets with SRR option.</p></td>
+<td style="text-align: left;"><p>Accepts IPv6 packets with SRR option.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>net.ipv6.conf.IFNAME.arp_accept</code></p></td>
-<td style="text-align: left;"><p>Define behavior for gratuitous ARP frames with an IPv6 address that is not already present in the ARP table:</p>
+<td style="text-align: left;"><p>Defines the behavior for gratuitous ARP frames with an IPv6 address that is not already present in the ARP table:</p>
 <ul>
 <li><p><code>0</code> - Do not create new entries in the ARP table.</p></li>
 <li><p><code>1</code> - Create new entries in the ARP table.</p></li>
@@ -164,15 +168,15 @@ System-wide safe sysctls
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>net.ipv6.conf.IFNAME.arp_notify</code></p></td>
-<td style="text-align: left;"><p>Define mode for notification of IPv6 address and device changes.</p></td>
+<td style="text-align: left;"><p>Defines the mode for notification of IPv6 address and device changes.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>net.ipv6.neigh.IFNAME.base_reachable_time_ms</code></p></td>
-<td style="text-align: left;"><p>This parameter controls the hardware address to IP mapping lifetime in the neighbour table for IPv6.</p></td>
+<td style="text-align: left;"><p>Controls the hardware address to IP mapping lifetime in the neighbor table for IPv6.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>net.ipv6.neigh.IFNAME.retrans_time_ms</code></p></td>
-<td style="text-align: left;"><p>Set the retransmit timer for neighbor discovery messages.</p></td>
+<td style="text-align: left;"><p>Sets the retransmit timer for neighbor discovery messages.</p></td>
 </tr>
 </tbody>
 </table>
@@ -187,7 +191,7 @@ When setting these values using the `tuning` CNI plugin, use the value `IFNAME` 
 
 # Updating the interface-specific safe sysctls list
 
-OpenShift Container Platform includes a predefined list of safe interface-specific `sysctls`. You can modify this list by updating the `cni-sysctl-allowlist` in the `openshift-multus` namespace.
+You can modify the default list of safe interface-specific `sysctls` by updating the `cni-sysctl-allowlist` in the `openshift-multus` namespace.
 
 <div class="important">
 
@@ -197,7 +201,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 </div>
 
-Follow this procedure to modify the predefined list of safe `sysctls`. This procedure describes how to extend the default allow list.
+For example, the following procedure modifies the predefined list of safe `sysctls` to add sysctls that allow users to enforce stricter reverse path forwarding for IPv4. For more information on reverse path forwarding see Reverse Path Forwarding.
 
 1.  View the existing predefined list by running the following command:
 
@@ -248,7 +252,7 @@ Follow this procedure to modify the predefined list of safe `sysctls`. This proc
     $ oc edit cm -n openshift-multus cni-sysctl-allowlist -oyaml
     ```
 
-    For example, to allow you to be able to implement stricter reverse path forwarding you need to add `^net.ipv4.conf.IFNAME.rp_filter$` and `^net.ipv6.conf.IFNAME.rp_filter$` to the list as shown here:
+3.  Add the `^net.ipv4.conf.IFNAME.rp_filter$` and `^net.ipv6.conf.IFNAME.rp_filter$` fields to the list of parameters to allow users to implement stricter reverse path forwarding.
 
     ``` terminal
     # Please edit the object below. Lines beginning with a '#' will be ignored,
@@ -276,7 +280,7 @@ Follow this procedure to modify the predefined list of safe `sysctls`. This proc
         ^net.ipv6.conf.IFNAME.rp_filter$
     ```
 
-3.  Save the changes to the file and exit.
+4.  Save the changes to the file and exit.
 
     <div class="note">
 
@@ -284,13 +288,7 @@ Follow this procedure to modify the predefined list of safe `sysctls`. This proc
 
     </div>
 
-<div class="formalpara-title">
-
-**Verification**
-
-</div>
-
-Follow this procedure to enforce stricter reverse path forwarding for IPv4. For more information on reverse path forwarding see [Reverse Path Forwarding ](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/security_guide/sect-security_guide-server_security-reverse_path_forwarding).
+<!-- -->
 
 1.  Create a network attachment definition, such as `reverse-path-fwd-example.yaml`, with the following content:
 
@@ -362,9 +360,12 @@ Follow this procedure to enforce stricter reverse path forwarding for IPv4. For 
                 - ALL
     ```
 
-    - Specify the name of the configured `NetworkAttachmentDefinition`.
+    where:
 
-4.  Apply the yaml by running the following command:
+    `metadata.annotations`
+    Specifies the name of the configured `NetworkAttachmentDefinition`.
+
+4.  Apply the YAML by running the following command:
 
     ``` terminal
     $ oc apply -f examplepod.yaml
@@ -409,11 +410,9 @@ Follow this procedure to enforce stricter reverse path forwarding for IPv4. For 
     net.ipv4.conf.net1.rp_filter = 1
     ```
 
-- [Linux networking documentation](https://docs.kernel.org/networking/ip-sysctl.html)
-
 # Starting a pod with safe sysctls
 
-You can set sysctls on pods using the pod’s `securityContext`. The `securityContext` applies to all containers in the same pod.
+You can modify kernel parameters for all containers in a pod by adding the sysctls parameter to the `securityContext` parameter in a pod spec.
 
 Safe sysctls are allowed by default.
 
@@ -433,7 +432,7 @@ To avoid destabilizing your operating system, modify sysctl parameters only afte
 
 </div>
 
-Use this procedure to start a pod with the configured sysctl settings.
+The following procedure shows how to start a pod with the configured sysctl settings.
 
 <div class="note">
 
@@ -475,17 +474,25 @@ In most cases you modify an existing pod definition and add the `securityContext
           value: "0           200000000"
     ```
 
-    - `runAsUser` controls which user ID the container is run with.
+    where:
 
-    - `runAsGroup` controls which primary group ID the containers is run with.
+    `spec.containers.securityContext.runAsUser`
+    Specifies which user ID the container is run with.
 
-    - `allowPrivilegeEscalation` determines if a pod can request to allow privilege escalation. If unspecified, it defaults to true. This boolean directly controls whether the `no_new_privs` flag gets set on the container process.
+    `spec.containers.securityContext.runAsGroup`
+    Specifies which primary group ID the containers is run with.
 
-    - `capabilities` permit privileged actions without giving full root access. This policy ensures all capabilities are dropped from the pod.
+    `spec.containers.securityContext.allowPrivilegeEscalation`
+    Specifies whether a pod can request privilege escalation. The default is `true`. This boolean directly controls whether the `no_new_privs` flag gets set on the container process.
 
-    - `runAsNonRoot: true` requires that the container will run with a user with any UID other than 0.
+    `spec.containers.securityContext.capabilities`
+    Specifies permitted privileged actions without giving full root access. This policy ensures all capabilities are dropped from the pod.
 
-    - `RuntimeDefault` enables the default seccomp profile for a pod or container workload.
+    `spec.securityContext.runAsNonRoot: true`
+    Specifies that the container runs with a user with any UID other than 0.
+
+    `spec.securityContext.seccompProfile.type: RuntimeDefault`
+    Specifies that the default seccomp profile is enabled for a pod or container workload.
 
 2.  Create the pod by running the following command:
 
@@ -493,7 +500,9 @@ In most cases you modify an existing pod definition and add the `securityContext
     $ oc apply -f sysctl_pod.yaml
     ```
 
-3.  Verify that the pod is created by running the following command:
+<!-- -->
+
+1.  Check that the pod is created by running the following command:
 
     ``` terminal
     $ oc get pod
@@ -510,13 +519,13 @@ In most cases you modify an existing pod definition and add the `securityContext
     sysctl-example    1/1     Running           0          14s
     ```
 
-4.  Log in to the pod by running the following command:
+2.  Log in to the pod by running the following command:
 
     ``` terminal
     $ oc rsh sysctl-example
     ```
 
-5.  Verify the values of the configured sysctl flags. For example, find the value `kernel.shm_rmid_forced` by running the following command:
+3.  Verify the values of the configured sysctl flags. For example, find the value `kernel.shm_rmid_forced` by running the following command:
 
     ``` terminal
     sh-4.4# sysctl kernel.shm_rmid_forced
@@ -534,7 +543,9 @@ In most cases you modify an existing pod definition and add the `securityContext
 
 # Starting a pod with unsafe sysctls
 
-A pod with unsafe sysctls fails to launch on any node unless the cluster administrator explicitly enables unsafe sysctls for that node. As with node-level sysctls, use the taints and toleration feature or labels on nodes to schedule those pods onto the right nodes.
+You can run a pod that is configured to use unsafe sysctls on a node where a cluster administrator explicitly enabled unsafe sysctls. You might use unsafe sysctls for situations such as high performance or real-time application tuning.
+
+You can use the taints and toleration feature or labels on nodes to schedule those pods onto the right nodes.
 
 The following example uses the pod `securityContext` to set a safe sysctl `kernel.shm_rmid_forced` and two unsafe sysctls, `net.core.somaxconn` and `kernel.msgmax`. There is no distinction between *safe* and *unsafe* sysctls in the specification.
 
@@ -577,7 +588,7 @@ The following example illustrates what happens when you add safe and unsafe sysc
           value: "65536"
     ```
 
-2.  Create the pod using the following command:
+2.  Create the pod by using the following command:
 
     ``` terminal
     $ oc apply -f sysctl-example-unsafe.yaml
@@ -602,21 +613,21 @@ The following example illustrates what happens when you add safe and unsafe sysc
 
 # Enabling unsafe sysctls
 
-A cluster administrator can allow certain unsafe sysctls for very special situations such as high performance or real-time application tuning.
+As a cluster administrator, you can allow certain unsafe sysctls for very special situations such as high performance or real-time application tuning.
 
 If you want to use unsafe sysctls, a cluster administrator must enable them individually for a specific type of node. The sysctls must be namespaced.
 
 You can further control which sysctls are set in pods by specifying lists of sysctls or sysctl patterns in the `allowedUnsafeSysctls` field of the Security Context Constraints.
 
-- The `allowedUnsafeSysctls` option controls specific needs such as high performance or real-time application tuning.
+The `allowedUnsafeSysctls` option controls specific needs such as high performance or real-time application tuning.
 
 <div class="warning">
 
-Due to their nature of being unsafe, the use of unsafe sysctls is at-your-own-risk and can lead to severe problems, such as improper behavior of containers, resource shortage, or breaking a node.
+Because these sysctls are considered unsafe, the use of unsafe sysctls is at-your-own-risk and can lead to severe problems, such as improper behavior of containers, resource shortage, or node breakage.
 
 </div>
 
-1.  List existing MachineConfig objects for your OpenShift Container Platform cluster to decide how to label your machine config by running the following command:
+1.  List existing `MachineConfig` objects for your OpenShift Container Platform cluster to decide how to label your machine config by running the following command:
 
     ``` terminal
     $ oc get machineconfigpool
@@ -634,13 +645,13 @@ Due to their nature of being unsafe, the use of unsafe sysctls is at-your-own-ri
     worker   rendered-worker-21b6cb9a0f8919c88caf39db80ac1fce   True      False      False      3              3                   3                     0                      42m
     ```
 
-2.  Add a label to the machine config pool where the containers with the unsafe sysctls will run by running the following command:
+2.  Add a label to the machine config pool where the containers with the unsafe sysctls are to run by running the following command:
 
     ``` terminal
     $ oc label machineconfigpool worker custom-kubelet=sysctl
     ```
 
-3.  Create a YAML file `set-sysctl-worker.yaml` that defines a `KubeletConfig` custom resource (CR):
+3.  Create a YAML file that defines a `KubeletConfig` custom resource (CR):
 
     ``` yaml
     apiVersion: machineconfiguration.openshift.io/v1
@@ -657,9 +668,13 @@ Due to their nature of being unsafe, the use of unsafe sysctls is at-your-own-ri
           - "net.core.somaxconn"
     ```
 
-    - Specify the label from the machine config pool.
+    where:
 
-    - List the unsafe sysctls you want to allow.
+    `spec.machineConfigPoolSelector.matchLabels`
+    Specifies the label from the machine config pool.
+
+    `spec.kubeletConfig.allowedUnsafeSysctls`
+    Specifies a list of unsafe sysctls to allow.
 
 4.  Create the object by running the following command:
 
@@ -682,7 +697,7 @@ Due to their nature of being unsafe, the use of unsafe sysctls is at-your-own-ri
     worker   rendered-worker-0188658afe1f3a183ec8c4f14186f4d5   True      False      False      3              3                   3                     0                      72m
     ```
 
-6.  Create a YAML file `sysctl-example-safe-unsafe.yaml` that defines an example pod and add the `securityContext` spec, as shown in the following example:
+6.  Create a YAML file that defines a pod and add the `securityContext` spec, as shown in the following example:
 
     ``` yaml
     apiVersion: v1
@@ -753,7 +768,7 @@ Due to their nature of being unsafe, the use of unsafe sysctls is at-your-own-ri
     $ oc rsh sysctl-example-safe-unsafe
     ```
 
-10. Verify the values of the configured sysctl flags. For example, find the value `net.core.somaxconn` by running the following command:
+10. Verify the values of the configured sysctl flags. For example, find the value of the `net.core.somaxconn` parameter by running the following command:
 
     ``` terminal
     sh-4.4# sysctl net.core.somaxconn
@@ -769,10 +784,14 @@ Due to their nature of being unsafe, the use of unsafe sysctls is at-your-own-ri
     net.core.somaxconn = 1024
     ```
 
-The unsafe sysctl is now allowed and the value is set as defined in the `securityContext` spec of the updated pod specification.
+    The unsafe sysctl is now allowed and the value is set as defined in the `securityContext` spec of the updated pod specification.
 
 # Additional resources
+
+- [Linux networking documentation](https://docs.kernel.org/networking/ip-sysctl.html)
 
 - [Configuring system controls by using the tuning CNI](../../networking/configuring_network_settings/configure-syscontrols-interface-tuning-cni.xml#nw-configuring-tuning-cni_configure-syscontrols-interface-tuning-cni)
 
 - [Using the Node Tuning Operator](../../scalability_and_performance/using-node-tuning-operator.xml#using-node-tuning-operator)
+
+- [Kernel.org documentation](https://www.kernel.org/doc/Documentation/sysctl/)

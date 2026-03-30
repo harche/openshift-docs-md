@@ -1,4 +1,4 @@
-Add a virtual Trusted Platform Module (vTPM) device to a new or existing virtual machine by editing the `VirtualMachine` (VM) or `VirtualMachineInstance` (VMI) manifest.
+To run Windows 11 or other workloads that require a Trusted Platform Module, you can add a virtual TPM (vTPM) to a new or existing virtual machine. Enable this by editing the `VirtualMachine` or `VirtualMachineInstance` manifest.
 
 <div class="important">
 
