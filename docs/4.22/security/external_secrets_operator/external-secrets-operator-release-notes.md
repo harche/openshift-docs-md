@@ -4,7 +4,33 @@ These release notes track the development of External Secrets Operator.
 
 For more information, see [External Secrets Operator overview](../../security/external_secrets_operator/index.xml#external-secrets-operator-about).
 
+# Release notes for External Secrets Operator for Red Hat OpenShift 1.1.0 (General Availability)
+
+External Secrets Operator for Red Hat OpenShift version 1.1.0 is based on the upstream external-secrets project, version v0.20.4. For more information, see the [external-secrets project release notes for v0.20.4](https://https://github.com/external-secrets/external-secrets/tree/v0.20.4).
+
+Issued: 2026-03-17
+
+The following advisories are available for the External Secrets Operator for Red Hat OpenShift 1.1.0:
+
+- [RHBA-2026:5554](https://access.redhat.com/errata/RHBA-2026:5554)
+
+- [RHBA-2026:5555](https://access.redhat.com/errata/RHBA-2026:5555)
+
+- [RHBA-2026:5558](https://access.redhat.com/errata/RHBA-2026:5557)
+
+- [RHBA-2026:5589](https://access.redhat.com/errata/RHBA-2026:5589)
+
+## New features and enhancements
+
+**Customization feature is now available for External Secrets Operator components**
+
+With this release, the Operator API, `externalsecretsconfig.operator.openshift.io` allows users to customize various aspects of the `external-secrets` controllers. The new API allows users to add custom annotations and environment variables, and allows configuring revision history limits for the `external-secrets` deployments.
+
+For more information, see [Customizing the External Secrets Operator for Red Hat OpenShift](https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html-single/security_and_compliance/index#external-secrets-log-levels).
+
 # Release notes for External Secrets Operator for Red Hat OpenShift 1.0.0 (General Availability)
+
+External Secrets Operator for Red Hat OpenShift version 1.0.0 is based on the upstream external-secrets project, version v0.19.0. For more information, see the [external-secrets project release notes for v0.19.0](https://github.com/external-secrets/external-secrets/releases/tag/v0.19.0).
 
 Issued: 2025-11-03
 
@@ -18,9 +44,7 @@ The following advisories are available for the External Secrets Operator for Red
 
 - [RHBA-2025:19463](https://access.redhat.com/errata/RHBA-2025:19463)
 
-Version 1.0.0 of the External Secrets Operator for Red Hat OpenShift is based on the upstream external-secrets project, version v0.19.0. For more information, see the [external-secrets project release notes for v0.19.0](https://github.com/external-secrets/external-secrets/releases/tag/v0.19.0).
-
-## Bug fixes
+## Fixed issues
 
 - Before this release, many of the APIs listed in the console for the External Secrets Operator for Red Hat OpenShift were missing descriptions. With this release, the API descriptions have been added. ([OCPBUGS-61081](https://issues.redhat.com/browse/OCPBUGS-61081))
 
@@ -56,6 +80,8 @@ For more information, see [Configuring network policy for the operand](https://d
 
 # Release notes for External Secrets Operator for Red Hat OpenShift 0.1.0 (Technology Preview)
 
+Version `0.1.0` of the External Secrets Operator for Red Hat OpenShift is based on the upstream external-secrets version `0.14.3`. For more information, see the [external-secrets project release notes for v0.14.3](https://github.com/external-secrets/external-secrets/releases/tag/v0.14.3).
+
 Issued: 2025-06-26
 
 The following advisories are available for the External Secrets Operator for Red Hat OpenShift 0.1.0:
@@ -67,8 +93,6 @@ The following advisories are available for the External Secrets Operator for Red
 - [RHBA-2025:9757](https://access.redhat.com/errata/RHBA-2025:9757)
 
 - [RHBA-2025:9763](https://access.redhat.com/errata/RHBA-2025:9763)
-
-Version `0.1.0` of the External Secrets Operator for Red Hat OpenShift is based on the upstream external-secrets version `0.14.3`. For more information, see the [external-secrets project release notes for v0.14.3](https://github.com/external-secrets/external-secrets/releases/tag/v0.14.3).
 
 ## New features and enhancements
 

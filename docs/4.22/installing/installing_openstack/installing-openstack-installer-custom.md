@@ -1188,7 +1188,13 @@ sshKey: ssh-ed25519 AAAA...
 
 ## Configuring a cluster with dual-stack networking
 
-You can create a dual-stack cluster on RHOSP. However, the dual-stack configuration is enabled only if you are using an RHOSP network with IPv4 and IPv6 subnets.
+Deploy a cluster with both IPv4 and IPv6 addressing on Red Hat OpenStack Platform (RHOSP). From RHOSP 17.1, you can use single-stack IPv6 infrastructure while the cluster provides internal IPv4 connectivity.
+
+You can create a dual-stack cluster on RHOSP.
+
+For RHOSP 17.1, you can deploy a dual-stack OpenShift Container Platform cluster on a single-stack IPv6 RHOSP infrastructure. The OpenShift Container Platform cluster offers IPv4 connectivity internally, even when the underlying RHOSP network only has IPv6 subnets.
+
+For earlier versions of RHOSP, you can enable the dual-stack configuration only if you are using an RHOSP network with IPv4 and IPv6 subnets.
 
 <div class="note">
 
@@ -1198,19 +1204,27 @@ RHOSP does not support the conversion of an IPv4 single-stack cluster to a dual-
 
 ### Deploying the dual-stack cluster
 
-1.  Create a network with IPv4 and IPv6 subnets. The available address modes for the `ipv6-ra-mode` and `ipv6-address-mode` fields are: `dhcpv6-stateful`, `dhcpv6-stateless`, and `slaac`.
+Create dual-stack networks and VIPs, then edit the `install-config.yaml` file to deploy an cluster with both IPv4 and IPv6 addressing on Red Hat OpenStack Platform (RHOSP).
 
-    <div class="note">
+1.  Create a network with the required subnets:
 
-    The dualstack network MTU must accommodate both the minimum MTU for IPv6, which is 1280, and the OVN-Kubernetes encapsulation overhead, which is 100.
+    - For RHOSP 17.1, you can create a network with an IPv6 subnet. The OpenShift Container Platform cluster offers IPv4 connectivity internally. In the `install-config.yaml` file, you specify both IPv4 and IPv6 subnets in the `controlPlanePort.fixedIPs` section.
 
-    </div>
+    - For earlier versions of RHOSP, create a network with both IPv4 and IPv6 subnets.
 
-    <div class="note">
+      The available address modes for the `ipv6-ra-mode` and `ipv6-address-mode` fields are: `dhcpv6-stateful`, `dhcpv6-stateless`, and `slaac`.
 
-    DHCP must be enabled on the subnets.
+      <div class="note">
 
-    </div>
+      The dual-stack network MTU must accommodate both the minimum MTU for IPv6, which is 1280, and the OVN-Kubernetes encapsulation requirement, which is 100 bytes.
+
+      </div>
+
+      <div class="note">
+
+      DHCP must be enabled on the subnets.
+
+      </div>
 
 2.  Create the API and Ingress VIPs ports.
 
@@ -1270,19 +1284,25 @@ RHOSP does not support the conversion of an IPv4 single-stack cluster to a dual-
             id: network-id
     ```
 
-    - You must specify an IP address range for both the IPv4 and IPv6 address families.
+    - `networking.machineNetwork`, `networking.clusterNetwork`, and `networking.serviceNetwork` specify IP address ranges for both the IPv4 and IPv6 address families. For RHOSP 17.1 deployments on single-stack IPv6 infrastructure, the OpenShift Container Platform cluster offers IPv4 connectivity internally.
 
-    - Specify the virtual IP (VIP) address endpoints for the Ingress VIP services to provide an interface to the cluster.
+    - `platform.openstack.ingressVIPs` specifies the virtual IP (VIP) address endpoints for the Ingress VIP services to give an interface to the cluster.
 
-    - Specify the virtual IP (VIP) address endpoints for the API VIP services to provide an interface to the cluster.
+    - `platform.openstack.apiVIPs` specifies the virtual IP (VIP) address endpoints for the API VIP services to give an interface to the cluster.
 
-    - Specify the dual-stack network details that are used by all of the nodes across the cluster.
+    - `platform.openstack.controlPlanePort` specifies the dual-stack network details that all the nodes across the cluster use.
 
-    - The CIDR of any subnet specified in this field must match the CIDRs listed on `networks.machineNetwork`.
+    - `platform.openstack.controlPlanePort.fixedIPs` specifies the subnets for the control plane port. The CIDR of any subnet specified in this field must match the CIDRs listed on `networking.machineNetwork`.
 
-    - You can specify a value for either `name` or `id`, or both.
+    - `platform.openstack.controlPlanePort.fixedIPs[].subnet` specifies each subnet. You can specify a value for either `name` or `id`, or both.
 
-    - Specifying the `network` under the `ControlPlanePort` field is optional.
+    - `platform.openstack.controlPlanePort.network` specifies the network. Specifying the `network` under the `controlPlanePort` field is optional.
+
+      <div class="note">
+
+      For RHOSP 17.1 deployments on single-stack IPv6 infrastructure, you can deploy a dual-stack OpenShift Container Platform cluster. In the `install-config.yaml` file, specify both IPv4 and IPv6 address ranges for the cluster and service networks. The OpenShift Container Platform cluster offers IPv4 connectivity internally, even though the underlying RHOSP network only has IPv6 subnets. In the `controlPlanePort.fixedIPs` section, specify both the IPv4 and IPv6 subnets.
+
+      </div>
 
       Alternatively, if you want an IPv6 primary dual-stack cluster, edit the `install-config.yaml` file following the example below:
 
@@ -1338,25 +1358,25 @@ RHOSP does not support the conversion of an IPv4 single-stack cluster to a dual-
               id: network-id
       ```
 
-    - You must specify an IP address range for both the IPv4 and IPv6 address families.
+    - `networking.machineNetwork`, `networking.clusterNetwork`, and `networking.serviceNetwork` specify IP address ranges for both the IPv4 and IPv6 address families. For RHOSP 17.1 deployments on single-stack IPv6 infrastructure, the OpenShift Container Platform cluster offers IPv4 connectivity internally.
 
-    - Specify the virtual IP (VIP) address endpoints for the Ingress VIP services to provide an interface to the cluster.
+    - `platform.openstack.ingressVIPs` specifies the virtual IP (VIP) address endpoints for the Ingress VIP services to give an interface to the cluster.
 
-    - Specify the virtual IP (VIP) address endpoints for the API VIP services to provide an interface to the cluster.
+    - `platform.openstack.apiVIPs` specifies the virtual IP (VIP) address endpoints for the API VIP services to give an interface to the cluster.
 
-    - Specify the dual-stack network details that are used by all the nodes across the cluster.
+    - `platform.openstack.controlPlanePort` specifies the dual-stack network details that all the nodes across the cluster use.
 
-    - The CIDR of any subnet specified in this field must match the CIDRs listed on `networks.machineNetwork`.
+    - `platform.openstack.controlPlanePort.fixedIPs` specifies the subnets for the control plane port. The CIDR of any subnet specified in this field must match the CIDRs listed on `networking.machineNetwork`.
 
-    - You can specify a value for either `name` or `id`, or both.
+    - `platform.openstack.controlPlanePort.fixedIPs[].subnet` specifies each subnet. You can specify a value for either `name` or `id`, or both.
 
-    - Specifying the `network` under the `ControlPlanePort` field is optional.
+    - `platform.openstack.controlPlanePort.network` specifies the network. Specifying the `network` under the `controlPlanePort` field is optional.
 
 <div class="note">
 
-When using an installation host in an isolated dual-stack network, the IPv6 address may not be reassigned correctly upon reboot.
+When using an installation host in an isolated dual-stack network, the IPv6 address might not be reassigned correctly upon reboot.
 
-To resolve this problem on Red Hat Enterprise Linux (RHEL) 8, create a file called `/etc/NetworkManager/system-connections/required-rhel8-ipv6.conf` that contains the following configuration:
+To resolve this problem on Red Hat Enterprise Linux (RHEL) 8, create a file called `/etc/NetworkManager/system-connections/required-rhel8-ipv6.conf` that has the following configuration:
 
 ``` text
 [connection]
@@ -1366,7 +1386,7 @@ addr-gen-mode=eui64
 method=auto
 ```
 
-To resolve this problem on RHEL 9, create a file called `/etc/NetworkManager/conf.d/required-rhel9-ipv6.conf` that contains the following configuration:
+To resolve this problem on RHEL 9, create a file called `/etc/NetworkManager/conf.d/required-rhel9-ipv6.conf` that has the following configuration:
 
 ``` text
 [connection]
@@ -1379,13 +1399,21 @@ After you create and edit the file, reboot the installation host.
 
 <div class="note">
 
-The `ip=dhcp,dhcp6` kernel argument, which is set on all of the nodes, results in a single Network Manager connection profile that is activated on multiple interfaces simultaneously. Because of this behavior, any additional network has the same connection enforced with an identical UUID. If you need an interface-specific configuration, create a new connection profile for that interface so that the default connection is no longer enforced on it.
+The `ip=dhcp,dhcp6` kernel argument, which is set on all of the nodes, results in a single Network Manager connection profile that activates on many interfaces simultaneously. Because of this behavior, any additional network has the same connection enforced with the same UUID. If you need an interface-specific configuration, create a new connection profile for that interface so that the default connection is no longer enforced on it.
 
 </div>
 
 ## Configuring a cluster with single-stack IPv6 networking
 
+Create API and Ingress VIP ports and configure the `install-config.yaml` file to deploy a cluster with IPv6-only networking on Red Hat OpenStack Platform (RHOSP).
+
 You can create a single-stack IPv6 cluster on Red Hat OpenStack Platform (RHOSP) after you configure your RHOSP deployment.
+
+<div class="note">
+
+For RHOSP 17.1, you can also deploy a dual-stack OpenShift Container Platform cluster on a single-stack IPv6 RHOSP infrastructure. The OpenShift Container Platform cluster offers IPv4 connectivity internally, even when the underlying RHOSP network only has IPv6 subnets.
+
+</div>
 
 <div class="important">
 
@@ -1473,13 +1501,13 @@ You cannot convert a dual-stack cluster into a single-stack IPv6 cluster.
     <certificate_of_the_mirror>
     ```
 
-    - The CIDR of the subnet specified in this field must match the CIDR of the subnet that is specified in the `controlPlanePort` section.
+    - `networking.machineNetwork` specifies the CIDR of the subnet. The CIDR of the subnet specified in this field must match the CIDR of the subnet that is specified in the `controlPlanePort` section.
 
-    - Use the address from the ports you generated in the previous steps as the values for the parameters `platform.openstack.ingressVIPs` and `platform.openstack.apiVIPs`.
+    - `platform.openstack.ingressVIPs` and `platform.openstack.apiVIPs` specify the virtual IP addresses. Use the address from the ports you generated in the earlier steps as the values for these parameters.
 
-    - Items under the `platform.openstack.controlPlanePort.fixedIPs` and `platform.openstack.controlPlanePort.network` keys can contain an ID, a name, or both.
+    - `platform.openstack.controlPlanePort.fixedIPs` and `platform.openstack.controlPlanePort.network` specify the control plane port configuration. Items under these keys can contain an ID, a name, or both.
 
-    - The `imageContentSources` section contains the mirror details. For more information on configuring a local image registry, see "Creating a mirror registry with mirror registry for Red Hat OpenShift".
+    - `imageContentSources` specifies the mirror details. For more information on configuring a local image registry, see "Creating a mirror registry with mirror registry for Red Hat OpenShift".
 
 - See [Creating a mirror registry with mirror registry for Red Hat OpenShift](../../disconnected/installing-mirroring-creating-registry.xml#installing-mirroring-creating-registry)
 

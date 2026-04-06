@@ -168,7 +168,7 @@ After configuration, network flows data can be sent to an available output. For 
           ipfix:
             targetHost: "ipfix-collector.ipfix.svc.cluster.local"
             targetPort: 4739
-            transport: tcp or udp
+            transport: tcp
      -  type: OpenTelemetry
           openTelemetry:
             targetHost: my-otelcol-collector-headless.otlp.svc
@@ -186,23 +186,34 @@ After configuration, network flows data can be sent to an available output. For 
        #      output: source.address
     ```
 
-    - You can export flows to IPFIX, OpenTelemetry, and Kafka individually or concurrently.
+    where:
 
-    - The Network Observability Operator exports all flows to the configured Kafka topic.
+    `spec.exporters.type`
+    Specifies the export type. You can export flows to `IPFIX`, `OpenTelemetry`, and `Kafka` individually or concurrently.
 
-    - You can encrypt all communications to and from Kafka with SSL/TLS or mTLS. When enabled, the Kafka CA certificate must be available as a ConfigMap or a Secret, both in the namespace where the `flowlogs-pipeline` processor component is deployed (default: netobserv). It must be referenced with `spec.exporters.tls.caCert`. When using mTLS, client secrets must be available in these namespaces as well (they can be generated for instance using the AMQ Streams User Operator) and referenced with `spec.exporters.tls.userCert`.
+    `spec.exporters.kafka.topic`
+    Specifies the Kafka topic where the Network Observability Operator exports all flows.
 
-    - You have the option to specify transport. The default value is `tcp` but you can also specify `udp`.
+    `spec.exporters.kafka.tls.enable`
+    Specifies whether to encrypt communications to and from Kafka with SSL/TLS or mTLS. When enabled, the Kafka CA certificate must be available as a `ConfigMap` or a `Secret` in the namespace where the `flowlogs-pipeline` processor component is deployed (default: `netobserv`). Reference the certificate with `spec.exporters.tls.caCert`. For mTLS, client secrets must also be available in these namespaces and referenced with `spec.exporters.tls.userCert`.
 
-    - The protocol of OpenTelemetry connection. The available options are `http` and `grpc`.
+    `spec.exporters.ipfix.transport`
+    Specifies the transport protocol. The default value is `tcp`, but you can also specify `udp`.
 
-    - OpenTelemetry configuration for exporting logs, which are the same as the logs created for Loki.
+    `spec.exporters.openTelemetry.type`
+    Specifies the OpenTelemetry connection protocol. The available options are `http` and `grpc`.
 
-    - OpenTelemetry configuration for exporting metrics, which are the same as the metrics created for Prometheus. These configurations are specified in the `spec.processor.metrics.includeList` parameter of the `FlowCollector` custom resource, along with any custom metrics you defined using the `FlowMetrics` custom resource.
+    `spec.exporters.openTelemetry.logs`
+    Specifies the OpenTelemetry configuration for exporting logs, which are identical to the logs created for Loki.
 
-    - The time interval that metrics are sent to the OpenTelemetry collector.
+    `spec.exporters.openTelemetry.metrics`
+    Specifies the OpenTelemetry configuration for exporting metrics, which are identical to the metrics created for Prometheus. These are defined in the `spec.processor.metrics.includeList` parameter of the `FlowCollector` resource or via the `FlowMetrics` resource.
 
-    - **Optional**:Network Observability network flows formats get automatically renamed to an OpenTelemetry compliant format. The `fieldsMapping` specification gives you the ability to customize the OpenTelemetry format output. For example in the YAML sample, `SrcAddr` is the Network Observability input field, and it is being renamed `source.address` in OpenTelemetry output. You can see both Network Observability and OpenTelemetry formats in the "Network flows format reference".
+    `spec.exporters.openTelemetry.metrics.pushTimeInterval`
+    Specifies the time interval for sending metrics to the OpenTelemetry collector.
+
+    `spec.exporters.openTelemetry.fieldsMapping`
+    Specifies an optional mapping to customize the OpenTelemetry format output. Network Observability flow formats are automatically renamed to an OpenTelemetry-compliant format, but this parameter allows for custom overrides. For example in the YAML sample, `SrcAddr` is the Network Observability input field, and it is being renamed to `source.address` in OpenTelemetry output. You can see both Network Observability and OpenTelemetry formats in the "Network flows format reference".
 
 - [Network flows format reference](../../observability/network_observability/json-flows-format-reference.xml#network-observability-flows-format_json_reference)
 
@@ -304,11 +315,13 @@ spec:
         sampling: 10
 ```
 
-- Sends matching flows to a specific output, such as Loki, Prometheus, or an external system. When omitted, sends to all configured outputs.
+where:
 
-- Optional. Applies a sampling interval to limit the number of matching flows to be stored or exported. For example, `sampling: 10` means that there is a 1 in 10 chance that a flow will be kept.
+`spec.processor.filters.outputTarget`
+Specifies the output destination for matching flows, such as `Loki`, `Prometheus`, or an external system. If you omit this parameter, the system sends the flows to all configured outputs.
 
-<!-- -->
+`spec.processor.filters.sampling`
+Specifies an optional sampling interval to limit the number of matching flows stored or exported. For example, a value of `10` means there is a 1 in 10 chance that a flow is kept.
 
 - [Filtering eBPF flow data using multiple rules](../network_observability/observing-network-traffic.xml#network-observability-filtering-ebpf-rule_nw-observe-network-traffic)
 

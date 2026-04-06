@@ -1,4 +1,4 @@
-You can export a virtual machine (VM) and its associated disks in order to import a VM into another cluster or to analyze the volume for forensic purposes.
+Export a virtual machine (VM) and its associated disks to import it into another cluster, or for another use case, such as forensic volume analysis.
 
 You create a `VirtualMachineExport` custom resource (CR) by using the command-line interface.
 
@@ -57,17 +57,23 @@ The export server supports the following file formats:
       ttlDuration: 1h
     ```
 
-    - Specify the appropriate API group:
+    - `spec.source.apiGroup` defines the API group of the resource that you want to export:
 
-      - `"kubevirt.io"` for `VirtualMachine`.
+      - Use `"kubevirt.io"` for `VirtualMachine`.
 
-      - `"snapshot.kubevirt.io"` for `VirtualMachineSnapshot`.
+      - Use `"snapshot.kubevirt.io"` for `VirtualMachineSnapshot`.
 
-      - `""` for `PersistentVolumeClaim`.
+      - Use `""` for `PersistentVolumeClaim`.
 
-    - Specify `VirtualMachine`, `VirtualMachineSnapshot`, or `PersistentVolumeClaim`.
+    - `spec.source.kind` defines the data source for the export. There are three primary values used for this field:
 
-    - Optional. The default duration is 2 hours.
+      - `VirtualMachine`
+
+      - `VirtualMachineSnapshot`
+
+      - `PersistentVolumeClaim`
+
+    - `spec.ttlDuration` defines the length of time before the export resource is automatically deleted. The default is 2 hours.
 
 2.  Create the `VirtualMachineExport` CR:
 
@@ -138,9 +144,9 @@ The export server supports the following file formats:
       serviceName: virt-export-example-export
     ```
 
-    - External links are accessible from outside the cluster by using an `Ingress` or `Route`.
+    - `status.links.external` defines external links that are accessible from outside the cluster by using an `Ingress` or `Route`.
 
-    - Internal links are only valid inside the cluster.
+    - `status.links.internal` defines internal links that are valid only inside the cluster.
 
 # Accessing exported virtual machine manifests
 

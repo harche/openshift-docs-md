@@ -215,62 +215,58 @@ You can gather debugging information about specific features by using the `oc ad
 <td style="text-align: left;"><p>Data collection for hosted control planes.</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>registry.redhat.io/rhmtc/openshift-migration-must-gather-rhel8:v&lt;installed_version_migration_toolkit&gt;</code></p></td>
-<td style="text-align: left;"><p>Data collection for the Migration Toolkit for Containers.</p></td>
-</tr>
-<tr class="even">
 <td style="text-align: left;"><p><code>registry.redhat.io/odf4/odf-must-gather-rhel9:v&lt;installed_version_ODF&gt;</code></p></td>
 <td style="text-align: left;"><p>Data collection for Red Hat OpenShift Data Foundation.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>registry.redhat.io/openshift-logging/cluster-logging-rhel9-operator:v&lt;installed_version_logging&gt;</code></p></td>
 <td style="text-align: left;"><p>Data collection for logging.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>quay.io/netobserv/must-gather</code></p></td>
 <td style="text-align: left;"><p>Data collection for the Network Observability Operator.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>registry.redhat.io/openshift4/ose-local-storage-mustgather-rhel9:v&lt;installed_version_LSO&gt;</code></p></td>
 <td style="text-align: left;"><p>Data collection for Local Storage Operator.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>registry.redhat.io/openshift-sandboxed-containers/osc-must-gather-rhel8:v&lt;installed_version_sandboxed_containers&gt;</code></p></td>
 <td style="text-align: left;"><p>Data collection for OpenShift sandboxed containers.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>registry.redhat.io/workload-availability/node-healthcheck-must-gather-rhel8:v&lt;installed_version_NHC&gt;</code></p></td>
 <td style="text-align: left;"><p>Data collection for the Red Hat Workload Availability Operators, including the Self Node Remediation (SNR) Operator, the Fence Agents Remediation (FAR) Operator, the Machine Deletion Remediation (MDR) Operator, the Node Health Check (NHC) Operator, and the Node Maintenance Operator (NMO).</p>
 <p>Use this image if your NHC Operator version is <strong>earlier than 0.9.0</strong>.</p>
 <p>For more information, see the "Gathering data" section for the specific Operator in <a href="https://docs.redhat.com/en/documentation/workload_availability_for_red_hat_openshift/latest/html/remediation_fencing_and_maintenance/index">Remediation, fencing, and maintenance</a> (Workload Availability for Red Hat OpenShift documentation).</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>registry.redhat.io/workload-availability/node-healthcheck-must-gather-rhel9:v&lt;installed_version_NHC&gt;</code></p></td>
 <td style="text-align: left;"><p>Data collection for the Red Hat Workload Availability Operators, including the Self Node Remediation (SNR) Operator, the Fence Agents Remediation (FAR) Operator, the Machine Deletion Remediation (MDR) Operator, the Node Health Check (NHC) Operator, and the Node Maintenance Operator (NMO).</p>
 <p>Use this image if your NHC Operator version is <strong>0.9.0. or later</strong>.</p>
 <p>For more information, see the "Gathering data" section for the specific Operator in <a href="https://docs.redhat.com/en/documentation/workload_availability_for_red_hat_openshift/latest/html/remediation_fencing_and_maintenance/index">Remediation, fencing, and maintenance</a> (Workload Availability for Red Hat OpenShift documentation).</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>registry.redhat.io/numaresources/numaresources-must-gather-rhel9:v&lt;installed-version-nro&gt;</code></p></td>
 <td style="text-align: left;"><p>Data collection for the NUMA Resources Operator (NRO).</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>registry.redhat.io/openshift4/ptp-must-gather-rhel8:v&lt;installed-version-ptp&gt;</code></p></td>
 <td style="text-align: left;"><p>Data collection for the PTP Operator.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>registry.redhat.io/openshift-gitops-1/must-gather-rhel8:v&lt;installed_version_GitOps&gt;</code></p></td>
 <td style="text-align: left;"><p>Data collection for Red Hat OpenShift GitOps.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>registry.redhat.io/openshift4/ose-secrets-store-csi-mustgather-rhel9:v&lt;installed_version_secret_store&gt;</code></p></td>
 <td style="text-align: left;"><p>Data collection for the Secrets Store CSI Driver Operator.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>registry.redhat.io/lvms4/lvms-must-gather-rhel9:v&lt;installed_version_LVMS&gt;</code></p></td>
 <td style="text-align: left;"><p>Data collection for the LVM Operator.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>registry.redhat.io/compliance/openshift-compliance-must-gather-rhel8:&lt;digest-version&gt;</code></p></td>
 <td style="text-align: left;"><p>Data collection for the Compliance Operator.</p></td>
 </tr>

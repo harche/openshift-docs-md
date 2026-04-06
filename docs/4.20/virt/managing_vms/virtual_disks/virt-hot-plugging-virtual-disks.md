@@ -1,4 +1,4 @@
-You can add or remove virtual disks without stopping your virtual machine (VM) or virtual machine instance (VMI).
+You can hot-plug or hot-unplug virtual disks from running VMs to dynamically adjust storage without downtime.
 
 Only data volumes and persistent volume claims (PVCs) can be hot plugged and hot-unplugged. You cannot hot plug or hot-unplug container disks.
 

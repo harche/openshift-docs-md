@@ -2,12 +2,6 @@ Configure OpenShift API for Data Protection (OADP) to use Multicloud Object Gate
 
 You can install the OpenShift API for Data Protection (OADP) with MCG by installing the OADP Operator. The Operator installs [Velero 1.16](https://velero.io/docs/v1.16/).
 
-<div class="note">
-
-Starting from OADP 1.0.4, all OADP 1.0.*z* versions can only be used as a dependency of the Migration Toolkit for Containers Operator and are not available as a standalone Operator.
-
-</div>
-
 You can create a `Secret` CR for the backup location and install the Data Protection Application. For more details, see [Installing the OADP Operator](../../../backup_and_restore/application_backup_and_restore/installing/oadp-installing-operator.xml#oadp-installing-operator-doc).
 
 To install the OADP Operator in a restricted network environment, you must first disable the default software catalog sources and mirror the Operator catalog. For details, see [Using Operator Lifecycle Manager in disconnected environments](../../../disconnected/using-olm.xml#olm-restricted-networks).

@@ -88,7 +88,7 @@ You can create a snapshot of a virtual machine (VM) by using the OpenShift Conta
 
 3.  Click the **Snapshots** tab and then click **Take Snapshot**.
 
-    Alternatively, right-click the VM and select **Create snapshot** from the pop-up menu.
+    Alternatively, right-click the VM and select **Create snapshot** from the menu.
 
 4.  Enter the snapshot name.
 

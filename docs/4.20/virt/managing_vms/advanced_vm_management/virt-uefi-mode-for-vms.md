@@ -1,4 +1,4 @@
-You can boot a virtual machine (VM) in Unified Extensible Firmware Interface (UEFI) mode.
+You can boot a virtual machine (VM) in Unified Extensible Firmware Interface (UEFI) mode for faster boot times, the ability to boot to larger disks, and added security features.
 
 # About UEFI mode for virtual machines
 
@@ -46,15 +46,13 @@ You can configure a virtual machine to boot in UEFI mode by editing the `Virtual
                   secureBoot: true
     # ...
 
-- OpenShift Virtualization requires System Management Mode (`SMM`) to be enabled for Secure Boot in UEFI mode to occur.
+\+ \* You must set `spec.template.spec.domain.features.ssm.enabled` to have a value of `true`. \* If `spec.template.spec.domain.firmware.bootloader.efi.secureBoot` is set to `true`, then UEFI mode is required. However, you can enable UEFI mode without using Secure Boot.
 
-- OpenShift Virtualization supports a VM with or without Secure Boot when using UEFI mode. If Secure Boot is enabled, then UEFI mode is required. However, UEFI mode can be enabled without using Secure Boot.
+1.  Apply the manifest to your cluster by running the following command:
 
-  1.  Apply the manifest to your cluster by running the following command:
-
-      ``` terminal
-      $ oc create -f <file_name>.yaml
-      ```
+    ``` terminal
+    $ oc create -f <file_name>.yaml
+    ```
 
 # Enabling persistent EFI
 

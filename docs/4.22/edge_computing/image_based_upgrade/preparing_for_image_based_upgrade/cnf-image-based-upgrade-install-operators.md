@@ -151,11 +151,7 @@ Install the Lifecycle Agent with GitOps Zero Touch Provisioning (ZTP) to do an i
 
 1.  Extract the following CRs from the `ztp-site-generate` container image and push them to the `source-cr` directory:
 
-    <div class="formalpara-title">
-
-    **Example `LcaSubscriptionNS.yaml` file**
-
-    </div>
+    Example `LcaSubscriptionNS.yaml` file:
 
     ``` yaml
     apiVersion: v1
@@ -169,11 +165,7 @@ Install the Lifecycle Agent with GitOps Zero Touch Provisioning (ZTP) to do an i
         kubernetes.io/metadata.name: openshift-lifecycle-agent
     ```
 
-    <div class="formalpara-title">
-
-    **Example `LcaSubscriptionOperGroup.yaml` file**
-
-    </div>
+    Example `LcaSubscriptionOperGroup.yaml` file:
 
     ``` yaml
     apiVersion: operators.coreos.com/v1
@@ -188,11 +180,7 @@ Install the Lifecycle Agent with GitOps Zero Touch Provisioning (ZTP) to do an i
         - openshift-lifecycle-agent
     ```
 
-    <div class="formalpara-title">
-
-    **Example `LcaSubscription.yaml` file**
-
-    </div>
+    Example `LcaSubscription.yaml` file:
 
     ``` yaml
     apiVersion: operators.coreos.com/v1alpha1
@@ -212,11 +200,7 @@ Install the Lifecycle Agent with GitOps Zero Touch Provisioning (ZTP) to do an i
       state: AtLatestKnown
     ```
 
-    <div class="formalpara-title">
-
-    **Example directory structure**
-
-    </div>
+    Example directory structure:
 
     ``` terminal
     ├── kustomization.yaml
@@ -274,11 +258,7 @@ Install and configure the OADP Operator with GitOps ZTP before starting the upgr
 
 1.  Extract the following CRs from the `ztp-site-generate` container image and push them to the `source-cr` directory:
 
-    <div class="formalpara-title">
-
-    **Example `OadpSubscriptionNS.yaml` file**
-
-    </div>
+    Example `OadpSubscriptionNS.yaml` file:
 
     ``` yaml
     apiVersion: v1
@@ -291,11 +271,7 @@ Install and configure the OADP Operator with GitOps ZTP before starting the upgr
         kubernetes.io/metadata.name: openshift-adp
     ```
 
-    <div class="formalpara-title">
-
-    **Example `OadpSubscriptionOperGroup.yaml` file**
-
-    </div>
+    Example `OadpSubscriptionOperGroup.yaml` file:
 
     ``` yaml
     apiVersion: operators.coreos.com/v1
@@ -310,11 +286,7 @@ Install and configure the OADP Operator with GitOps ZTP before starting the upgr
       - openshift-adp
     ```
 
-    <div class="formalpara-title">
-
-    **Example `OadpSubscription.yaml` file**
-
-    </div>
+    Example `OadpSubscription.yaml` file:
 
     ``` yaml
     apiVersion: operators.coreos.com/v1alpha1
@@ -334,11 +306,7 @@ Install and configure the OADP Operator with GitOps ZTP before starting the upgr
       state: AtLatestKnown
     ```
 
-    <div class="formalpara-title">
-
-    **Example `OadpOperatorStatus.yaml` file**
-
-    </div>
+    Example `OadpOperatorStatus.yaml` file:
 
     ``` yaml
     apiVersion: operators.coreos.com/v1
@@ -368,11 +336,7 @@ Install and configure the OADP Operator with GitOps ZTP before starting the upgr
             reason: InstallSucceeded
     ```
 
-    <div class="formalpara-title">
-
-    **Example directory structure**
-
-    </div>
+    Example directory structure:
 
     ``` terminal
     ├── kustomization.yaml
@@ -417,11 +381,7 @@ Install and configure the OADP Operator with GitOps ZTP before starting the upgr
 
     1.  Extract the following CRs from the `ztp-site-generate` container image and push them to the `source-cr` directory:
 
-        <div class="formalpara-title">
-
-        **Example `OadpDataProtectionApplication.yaml` file**
-
-        </div>
+        Example `OadpDataProtectionApplication.yaml` file:
 
         ``` yaml
         apiVersion: oadp.openshift.io/v1alpha1
@@ -463,15 +423,11 @@ Install and configure the OADP Operator with GitOps ZTP before starting the upgr
             type: Reconciled
         ```
 
-        - The `spec.configuration.restic.enable` field must be set to `false` for an image-based upgrade because persistent volume contents are retained and reused after the upgrade.
+        - `spec.configuration.restic.enable` must be set to `false` for an image-based upgrade because persistent volume contents are retained and reused after the upgrade.
 
-        - The bucket defines the bucket name that is created in S3 backend. The prefix defines the name of the subdirectory that will be automatically created in the bucket. The combination of bucket and prefix must be unique for each target cluster to avoid interference between them. To ensure a unique storage directory for each target cluster, you can use the Red Hat Advanced Cluster Management hub template function, for example, `prefix: {{hub .ManagedClusterName hub}}`.
+        - `bucket` defines the bucket name created in S3 backend. `prefix` defines the name of the subdirectory that will be automatically created in the bucket. The combination of bucket and prefix must be unique for each target cluster to avoid interference between them. To ensure a unique storage directory for each target cluster, you can use the Red Hat Advanced Cluster Management hub template function, for example, `prefix: {{hub .ManagedClusterName hub}}`.
 
-        <div class="formalpara-title">
-
-        **Example `OadpSecret.yaml` file**
-
-        </div>
+        Example `OadpSecret.yaml` file:
 
         ``` yaml
         apiVersion: v1
@@ -484,11 +440,7 @@ Install and configure the OADP Operator with GitOps ZTP before starting the upgr
         type: Opaque
         ```
 
-        <div class="formalpara-title">
-
-        **Example `OadpBackupStorageLocationStatus.yaml` file**
-
-        </div>
+        Example `OadpBackupStorageLocationStatus.yaml` file:
 
         ``` yaml
         apiVersion: velero.io/v1
@@ -502,7 +454,13 @@ Install and configure the OADP Operator with GitOps ZTP before starting the upgr
           phase: Available
         ```
 
-        - The `name` value in the `BackupStorageLocation` resource must follow the `<DataProtectionApplication.metadata.name>-<index>` pattern. The `<index>` represents the position of the corresponding `backupLocations` entry in the `spec.backupLocations` field in the `DataProtectionApplication` resource. The position starts from `1`. If the `metadata.name` value of the `DataProtectionApplication` resource is changed in the `OadpDataProtectionApplication.yaml` file, update the `metadata.name` field in the `BackupStorageLocation` resource accordingly.
+        The `name` value in the `BackupStorageLocation` resource must follow a specific naming convention that aligns with the corresponding `DataProtectionApplication` resource.
+
+        - The name must use the `<DataProtectionApplication.metadata.name>-<index>` pattern.
+
+        - The `<index>` represents the position of the corresponding entry in the `spec.backupLocations` field in the `DataProtectionApplication` resource. The position starts at `1`.
+
+        - If you change the `metadata.name` value of the `DataProtectionApplication` resource in the `OadpDataProtectionApplication.yaml` file, you must also update the `metadata.name` field in the `BackupStorageLocation` resource to match the new value.
 
         The `OadpBackupStorageLocationStatus.yaml` CR verifies the availability of backup storage locations created by OADP.
 
@@ -548,10 +506,16 @@ Install and configure the OADP Operator with GitOps ZTP before starting the upgr
               policyName: "config-policy"
         ```
 
-        - Specify your credentials for your S3 storage backend.
+where:
 
-        - If more than one `backupLocations` entries are defined in the `OadpDataProtectionApplication` CR, ensure that each location has a corresponding `OadpBackupStorageLocation` CR added for status tracking. Ensure that the name of each additional `OadpBackupStorageLocation` CR is overridden with the correct index as described in the example `OadpBackupStorageLocationStatus.yaml` file.
+`your_credentials`
+Specifies your credentials for your S3 storage backend.
 
-        - Specify the URL for your S3-compatible bucket.
+`OadpDataProtectionApplication.yaml`
+If more than one `backupLocations` entries are defined in the `OadpDataProtectionApplication` CR, ensure that each location has a corresponding `OadpBackupStorageLocation` CR added for status tracking. Ensure that the name of each additional `OadpBackupStorageLocation` CR is overridden with the correct index as described in the example `OadpBackupStorageLocationStatus.yaml` file.
 
-        - The `bucket` defines the bucket name that is created in S3 backend. The `prefix` defines the name of the subdirectory that will be automatically created in the `bucket`. The combination of `bucket` and `prefix` must be unique for each target cluster to avoid interference between them. To ensure a unique storage directory for each target cluster, you can use the Red Hat Advanced Cluster Management hub template function, for example, `prefix: {{hub .ManagedClusterName hub}}`.
+`your_S3_URL`
+Specifies the URL for your S3-compatible bucket.
+
+`bucket` and `prefix`
+The `bucket` defines the bucket name that is created in S3 backend. The `prefix` defines the name of the subdirectory that will be automatically created in the `bucket`. The combination of `bucket` and `prefix` must be unique for each target cluster to avoid interference between them. To ensure a unique storage directory for each target cluster, you can use the Red Hat Advanced Cluster Management hub template function, for example, `prefix: {{hub .ManagedClusterName hub}}`.

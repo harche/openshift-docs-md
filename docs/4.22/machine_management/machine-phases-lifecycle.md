@@ -2,7 +2,7 @@ Machines move through a *lifecycle* that has several defined phases. Understandi
 
 # Machine phases
 
-As a machine moves through its lifecycle, it passes through different phases. Each phase is a basic representation of the state of the machine.
+Understanding machine lifecycle phases can help you troubleshoot machine issues. As a machine moves through its lifecycle, it passes through different phases. Each phase is a basic representation of the state of the machine.
 
 `Provisioning`
 There is a request to provision a new machine. The machine does not yet exist and does not have an instance, a provider ID, or an address.
@@ -21,7 +21,7 @@ There is an unrecoverable problem with the machine. This can happen, for example
 
 # The machine lifecycle
 
-The lifecycle begins with the request to provision a machine and continues until the machine no longer exists.
+Understanding the machine lifecycle can help you troubleshoot machine issues. The lifecycle begins with the request to provision a machine and continues until the machine no longer exists.
 
 The machine lifecycle proceeds in the following order. Interruptions due to errors or lifecycle hooks are not included in this overview.
 
@@ -65,13 +65,9 @@ The machine lifecycle proceeds in the following order. Interruptions due to erro
 
 12. The machine controller deletes the `Node` object.
 
-# Determining the phase of a machine
+# Determining the phase of a machine by using the CLI
 
-You can find the phase of a machine by using the OpenShift CLI (`oc`) or by using the web console. You can use this information to verify whether a procedure is complete or to troubleshoot undesired behavior.
-
-## Determining the phase of a machine by using the CLI
-
-You can find the phase of a machine by using the OpenShift CLI (`oc`).
+To troubleshoot issues with a machine, you can find the phase of a machine by using the OpenShift CLI (`oc`).
 
 - You have access to an OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
 
@@ -103,9 +99,9 @@ You can find the phase of a machine by using the OpenShift CLI (`oc`).
 
   The `PHASE` column of the output contains the phase of each machine.
 
-## Determining the phase of a machine by using the web console
+# Determining the phase of a machine by using the web console
 
-You can find the phase of a machine by using the OpenShift Container Platform web console.
+To troubleshoot issues with a machine, you can find the phase of a machine by using the OpenShift Container Platform web console.
 
 - You have access to an OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
 
@@ -135,7 +131,7 @@ You can find the phase of a machine by using the OpenShift Container Platform we
       phase: Running
     ```
 
-    - In this example, the phase is `Running`.
+    In this example, the phase is `Running`.
 
 # Additional resources
 

@@ -194,6 +194,11 @@ With this update, you can install a cluster on Oracle Database Appliance using t
 
 For more information, see [Installing a cluster on Oracle Database Appliance by using the Assisted Installer](../installing/installing_oda/installing-oda-assisted.xml#installing-oda-assisted-installer).
 
+Installing a dual-stack cluster on Red Hat OpenStack Platform (RHOSP) when the machine network is IPv6-only
+From RHOSP 17.1, you can deploy a dual-stack OpenShift Container Platform cluster when your RHOSP machine network is IPv6-only; the cluster still uses IPv4 for internal cluster and service networks.
+
+For more information, see [Configuring a cluster with dual-stack networking](../installing/installing_openstack/installing-openstack-installer-custom.xml#install-osp-dualstack_installing-openstack-installer-custom).
+
 Installing a cluster on AWS with a user-provisioned DNS (Technology Preview)
 You can enable a user-provisioned domain name server (DNS) instead of the default cluster-provisioned DNS solution. For example, your organization’s security policies might not allow the use of public DNS services such as Amazon Web Services (AWS) DNS. As a result, you can manage the API and Ingress DNS records in your own system rather than adding the records to the DNS of the cloud. If you use this feature, you must provide your own DNS solution that includes records for `api.<cluster_name>.<base_domain>.` and `*.apps.<cluster_name>.<base_domain>.`. Enabling a user-provisioned DNS is available as a Technology Preview feature.
 
@@ -933,7 +938,53 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
-## RHSA-2026:5174 - OpenShift Container Platform 4.17.7 fixed issues
+## RHBA-2026:5926 - OpenShift Container Platform 4.17.8 fixed issues advisory
+
+Issued: 31 March 2026
+
+OpenShift Container Platform release 4.17.8 is now available. The list of fixed issues that are included in the update is documented in the [RHBA-2026:5926](https://access.redhat.com/errata/RHBA-2026:5926) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:5920](https://access.redhat.com/errata/RHBA-2026:5920) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.8 --pullspecs
+```
+
+### Enhancements
+
+- With this update, support for the `kubevirt-csi-driver` on non-hosted control plane nested clusters using OpenShift Virtualization Virtual Machines (VMs) has been added through manual mapping annotations. The new manual mapping annotations are:
+
+  - `csi.kubevirt.io/infra-vm-name` - the VirtualMachine name on the infra cluster representing the nested cluster’s node
+
+  - `csi.kubevirt.io/infra-vm-namespace` - the namespace name on the infra cluster that the VMs (representing the nested cluster’s nodes) are running at
+
+  ([OCPBUGS-79038](https://redhat.atlassian.net/browse/OCPBUGS-79038))
+
+### Known issues
+
+- On certain Telecom Grandmaster (T-GM) systems, an OpenShift Container Platform node reboot can trigger a change in the Global Navigation Satellite System (GNSS) device name. This prevents the T-GM from achieving a locked state because the configuration points to a static, stale device path. To workaround this problem, omit the `ts2phc.nmea_serialport` setting from the `ts2phcConf` section of the `PtpConfig` resource. ([OCPBUGS-77750](https://redhat.atlassian.net/browse/OCPBUGS-77750))
+
+### Fixed issues
+
+- Before this update, secrets containing a mix of text and binary values would trigger a runtime error in the edit form because the `stringData` initialization logic returned null when encountering any binary data. With this release, the system has been updated to skip binary fields during `stringData` initialization while preserving text fields. This ensures that mixed-type secrets can now be edited seamlessly without causing application crashes. ([OCPBUGS-77251](https://redhat.atlassian.net/browse/OCPBUGS-77251))
+
+- Before this update, Red Hat OpenShift Service on AWS Hosted Control Plane (HCP) would continuously attempt to retag Elastic Block Store (EBS) volumes during creation and resync events even if the correct tags were already present, leading to `UnauthorizedOperation` errors in CloudWatch due to insufficient permissions for modifying existing volumes. With this release, the `EBSVolumeTagsController` has been updated to implement `idempotent` tagging logic to verify the current state of existing volumes. If a provisioned volume’s tags already match the target state, the controller skips the update step. ([OCPBUGS-78115](https://redhat.atlassian.net/browse/OCPBUGS-78115))
+
+- Before this update, the 60-minute timeout for cluster-managed networking on bare-metal hardware was insufficient, causing control plane nodes to fail joining the bootstrap node and leading to installation failures. With this release, the timeout has been increased from 60 minutes to 90 minutes, improving installation reliability for bare-metal installations. ([OCPBUGS-78241](https://redhat.atlassian.net/browse/OCPBUGS-78241))
+
+- Before this update, the use of deprecated Kubernetes APIs generated significant unnecessary log noise within Prometheus, cluttering monitoring dashboards with redundant warnings. With this release, these deprecated API calls have been mitigated to reduce the log output to only one error. ([OCPBUGS-78581](https://redhat.atlassian.net/browse/OCPBUGS-78581))
+
+- Before this update, the cluster autoscaler processed paused node groups as if they were active, which could lead to the wrong nodes being deleted. With this release, the cluster autoscaler identifies paused node groups and does not act upon them, preventing incorrect node deletion. ([OCPBUGS-78684](https://redhat.atlassian.net/browse/OCPBUGS-78684))
+
+- Before this update, the Cloud Controller Manager (CCM) attempted to create a Red Hat OpenStack Platform (RHOSP) `LoadBalancer` client regardless of whether the Octavia service was enabled on the openstack cloud, causing CCM pods to crash with `Failed to create an OpenStack LoadBalancer client` during the OpenStack installer-provisioned infrastructure cluster installation and leading to a deployment failure. With this release, the CCM properly handles OpenStack clusters without the Octavia service enabled, allowing deployments to succeed. ([OCPBUGS-78696](https://redhat.atlassian.net/browse/OCPBUGS-78696))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
+## RHSA-2026:5174 - OpenShift Container Platform 4.17.7 fixed issues advisory
 
 Issued: 24 March 2026
 

@@ -1,13 +1,5 @@
 Cross-cluster live migration requires that the clusters be connected in the same network. Specifically, `virt-handler` pods must be able to communicate.
 
-<div class="important">
-
-Cross-cluster live migration is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
 # Configuration for a bridge secondary network
 
 The bridge CNI plugin JSON configuration object describes the configuration parameters for the Bridge CNI plugin. The following table details these parameters:
@@ -99,13 +91,13 @@ To configure a dedicated secondary network for live migration, you must first cr
       }'
     ```
 
-    - `metadata.name` specifies the name of the `NetworkAttachmentDefinition` object.
+    - `metadata.name` defines the name of the `NetworkAttachmentDefinition` object.
 
-    - `config.master` specifies the name of the NIC to be used for live migration.
+    - `config.master` defines the name of the NIC to be used for live migration.
 
-    - `config.type` specifies the name of the CNI plugin that provides the network for the NAD.
+    - `config.type` defines the name of the CNI plugin that provides the network for the NAD.
 
-    - `config.range` specifies an IP address range for the secondary network. This range must not overlap the IP addresses of the main network.
+    - `config.range` defines an IP address range for the secondary network. This range must not overlap the IP addresses of the main network.
 
 2.  Open the `HyperConverged` CR in your default editor by running the following command:
 
@@ -133,7 +125,7 @@ To configure a dedicated secondary network for live migration, you must first cr
     # ...
     ```
 
-    - `spec.liveMigrationConfig.network` specifies the name of the Multus `NetworkAttachmentDefinition` object to be used for live migrations.
+    - `spec.liveMigrationConfig.network` defines the name of the Multus `NetworkAttachmentDefinition` object to be used for live migrations.
 
 4.  Save your changes and exit the editor. The `virt-handler` pods restart and connect to the secondary network.
 

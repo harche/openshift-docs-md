@@ -73,7 +73,10 @@ Disable specific health alerts, such as `NetObservLokiError` or `NetObservNoFlow
           disableAlerts: [NetObservLokiError, NetObservNoFlows]
     ```
 
-    - You can specify one or a list with both types of alerts to disable.
+    where:
+
+    `spec.processor.metrics.disableAlerts`
+    Specifies one or more types of alerts to disable.
 
 # Creating Loki rate limit alerts for the NetObserv dashboard
 
@@ -146,6 +149,9 @@ Increasing the `cacheMaxFlows` might increase the memory usage of the eBPF agent
           cacheMaxFlows: 200000
     ```
 
-    - Increase the `cacheMaxFlows` value from its value at the time of the `NetObservAgentFlowsDropped` alert.
+    where:
+
+    `spec.agent.ebpf.cacheMaxFlows`
+    Specifies the maximum number of flows to cache. If a `NetObservAgentFlowsDropped` alert occurs, increase this value from its current level.
 
 - [Creating alerting rules for user-defined projects](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/managing_alerts/managing-alerts-as-a-developer#creating-alerting-rules-for-user-defined-projects_managing-alerts-as-a-developer)

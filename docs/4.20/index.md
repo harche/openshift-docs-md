@@ -1144,7 +1144,7 @@
   - [About high availability for hosted control planes](hosted_control_planes/hcp_high_availability/about-hcp-ha.md)
   - [Recovering a failing etcd cluster](hosted_control_planes/hcp_high_availability/hcp-recovering-etcd-cluster.md)
   - [Backing up and restoring etcd in an on-premise environment](hosted_control_planes/hcp_high_availability/hcp-backup-restore-on-premise.md)
-  - [Backing up and restoring etcd on AWS](hosted_control_planes/hcp_high_availability/hcp-backup-restore-aws.md)
+  - [Backing up and restoring etcd on the management cluster](hosted_control_planes/hcp_high_availability/hcp-backup-restore-aws.md)
   - [Backing up and restoring a hosted cluster on OpenShift Virtualization](hosted_control_planes/hcp_high_availability/hcp-backup-restore-virt.md)
   - [Disaster recovery for a hosted cluster in AWS](hosted_control_planes/hcp_high_availability/hcp-disaster-recovery-aws.md)
   - [Disaster recovery for a hosted cluster by using OADP](hosted_control_planes/hcp_high_availability/hcp-disaster-recovery-oadp.md)
@@ -1483,6 +1483,7 @@
   - [Introduction to OpenShift API for Data Protection](backup_and_restore/application_backup_and_restore/oadp-intro.md)
   - **OADP release notes**
     - [OADP 1.5 release notes](backup_and_restore/application_backup_and_restore/release-notes/oadp-1-5-release-notes.md)
+    - [Upgrading OADP 1.4 to 1.5](backup_and_restore/application_backup_and_restore/release-notes/oadp-upgrade-notes-1-5.md)
   - **OADP performance**
     - [OADP recommended network settings](backup_and_restore/application_backup_and_restore/oadp-performance/oadp-recommended-network-settings.md)
   - [OADP features and plugins](backup_and_restore/application_backup_and_restore/oadp-features-plugins.md)

@@ -596,7 +596,10 @@ You can track RTT by editing the `FlowCollector` to the specifications in the fo
            - FlowRTT
     ```
 
-    - You can start tracing RTT network flows by listing the `FlowRTT` parameter in the `spec.agent.ebpf.features` specification list.
+    where:
+
+    `spec.agent.ebpf.features`
+    Specifies the list of eBPF features to enable. Add `FlowRTT` to this list to start tracing Round-trip time (RTT) network flows.
 
 <div class="formalpara-title">
 

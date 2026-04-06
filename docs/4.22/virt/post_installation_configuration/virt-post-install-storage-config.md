@@ -48,11 +48,11 @@ To solve this problem, use the Kubernetes pod scheduler to bind the persistent v
       storagePool: my-storage-pool
     ```
 
-    - `reclaimPolicy` specifies whether the underlying storage is deleted or retained when a user deletes a PVC. The two possible `reclaimPolicy` values are `Delete` and `Retain`. If you do not specify a value, the default value is `Delete`.
+    - `reclaimPolicy` defines whether the underlying storage is deleted or retained when a user deletes a PVC. The two possible `reclaimPolicy` values are `Delete` and `Retain`. If you do not specify a value, the default value is `Delete`.
 
-    - `volumeBindingMode` specifies the timing of PV creation. The `WaitForFirstConsumer` configuration in this example means that PV creation is delayed until a pod is scheduled to a specific node.
+    - `volumeBindingMode` defines the timing of PV creation. The `WaitForFirstConsumer` configuration in this example means that PV creation is delayed until a pod is scheduled to a specific node.
 
-    - `parameters.storagePool` specifies the name of the storage pool defined in the HPP custom resource (CR).
+    - `parameters.storagePool` defines the name of the storage pool defined in the HPP custom resource (CR).
 
 2.  Save the file and exit.
 

@@ -1041,6 +1041,7 @@
 - [Configuring MCO-related custom resources](machine_configuration/machine-configs-custom.md)
 - [Pinning images to nodes](machine_configuration/machine-config-pin-preload-images-about.md)
 - [Boot image management](machine_configuration/mco-update-boot-images.md)
+- [Manually updating the boot image](machine_configuration/mco-update-boot-images-manual.md)
 - [Managing unused rendered machine configs](machine_configuration/machine-configs-garbage-collection.md)
 - [Image mode for OpenShift](machine_configuration/mco-coreos-layering.md)
 - [Machine Config Daemon metrics](machine_configuration/machine-config-daemon-metrics.md)
@@ -1461,6 +1462,7 @@
   - [Introduction to OpenShift API for Data Protection](backup_and_restore/application_backup_and_restore/oadp-intro.md)
   - **OADP release notes**
     - [OADP 1.5 release notes](backup_and_restore/application_backup_and_restore/release-notes/oadp-1-5-release-notes.md)
+    - [Upgrading OADP 1.4 to 1.5](backup_and_restore/application_backup_and_restore/release-notes/oadp-upgrade-notes-1-5.md)
   - **OADP performance**
     - [OADP recommended network settings](backup_and_restore/application_backup_and_restore/oadp-performance/oadp-recommended-network-settings.md)
   - [OADP features and plugins](backup_and_restore/application_backup_and_restore/oadp-features-plugins.md)
@@ -1552,33 +1554,6 @@
 - [About migrating from OpenShift Container Platform 3 to 4](migrating_from_ocp_3_to_4/about-migrating-from-3-to-4.md)
 - [Differences between OpenShift Container Platform 3 and 4](migrating_from_ocp_3_to_4/planning-migration-3-4.md)
 - [Network considerations](migrating_from_ocp_3_to_4/planning-considerations-3-4.md)
-- [About MTC](migrating_from_ocp_3_to_4/about-mtc-3-4.md)
-- [Installing MTC](migrating_from_ocp_3_to_4/installing-3-4.md)
-- [Installing MTC in a disconnected environment](migrating_from_ocp_3_to_4/installing-restricted-3-4.md)
-- [Upgrading MTC](migrating_from_ocp_3_to_4/upgrading-3-4.md)
-- [Premigration checklists](migrating_from_ocp_3_to_4/premigration-checklists-3-4.md)
-- [Migrating your applications](migrating_from_ocp_3_to_4/migrating-applications-3-4.md)
-- [Advanced migration options](migrating_from_ocp_3_to_4/advanced-migration-options-3-4.md)
-- [Troubleshooting](migrating_from_ocp_3_to_4/troubleshooting-3-4.md)
-
-### Migration Toolkit for Containers
-
-- [About MTC](migration_toolkit_for_containers/about-mtc.md)
-- **MTC release notes**
-  - [MTC release notes 1.8](migration_toolkit_for_containers/release_notes/mtc-release-notes.md)
-  - [MTC release notes 1.7](migration_toolkit_for_containers/release_notes/mtc-release-notes-1-7.md)
-  - [MTC release notes 1.6](migration_toolkit_for_containers/release_notes/mtc-release-notes-1-6.md)
-  - [MTC release notes 1.5](migration_toolkit_for_containers/release_notes/mtc-release-notes-1-5.md)
-- [Installing MTC](migration_toolkit_for_containers/installing-mtc.md)
-- [Installing MTC in a disconnected environment](migration_toolkit_for_containers/installing-mtc-restricted.md)
-- [Upgrading MTC](migration_toolkit_for_containers/upgrading-mtc.md)
-- [Premigration checklists](migration_toolkit_for_containers/premigration-checklists-mtc.md)
-- [Network considerations](migration_toolkit_for_containers/network-considerations-mtc.md)
-- [Direct Migration Requirements](migration_toolkit_for_containers/mtc-direct-migration-requirements.md)
-- [Migrating your applications](migration_toolkit_for_containers/migrating-applications-with-mtc.md)
-- [Advanced migration options](migration_toolkit_for_containers/advanced-migration-options-mtc.md)
-- [Migrating virtual machine storage](migration_toolkit_for_containers/mtc-migrating-vms.md)
-- [Troubleshooting](migration_toolkit_for_containers/troubleshooting-mtc.md)
 
 ### API reference
 
@@ -2078,7 +2053,7 @@
   - [Initiating and canceling live migration](virt/live_migration/virt-initiating-live-migration.md)
   - [Enabling cross-cluster live migration for virtual machines](virt/live_migration/virt-enabling-cclm-for-vms.md)
   - [Configuring a cross-cluster live migration network](virt/live_migration/virt-configuring-cross-cluster-live-migration-network.md)
-  - [About Migration Toolkit for Virtualization providers](virt/live_migration/virt-about-mtv-providers.md)
+  - [About Migration Toolkit for Virtualization (MTV) providers](virt/live_migration/virt-about-mtv-providers.md)
 - **Nodes**
   - [Node maintenance](virt/nodes/virt-node-maintenance.md)
   - [Managing node labeling for obsolete CPU models](virt/nodes/virt-managing-node-labeling-obsolete-cpu-models.md)

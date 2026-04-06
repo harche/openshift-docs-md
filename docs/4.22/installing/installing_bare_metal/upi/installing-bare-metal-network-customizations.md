@@ -945,6 +945,8 @@ After preparation, your cluster infrastructure must meet the requirements outlin
 
     By default, port `1936` is accessible for an OpenShift Container Platform cluster, because each control plane node needs access to this port.
 
+    For ingress health check probes, the `/healthz/ready` endpoint is available on this port.
+
     Avoid using the Ingress load balancer to expose this port, because doing so might result in the exposure of sensitive information, such as statistics and metrics, related to Ingress Controllers.
 
     </div>

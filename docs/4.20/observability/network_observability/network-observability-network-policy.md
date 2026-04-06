@@ -43,8 +43,12 @@ If you have installed Loki, Kafka or any exporter in a different namespace that 
     # ...
     ```
 
-    - By default, the `enable` value is `true`.
+    where:
 
-    - Default values are `["openshift-console", "openshift-monitoring"]`.
+    `spec.networkPolicy.enable`
+    Specifies whether to enable network policy management. The default value is `true`.
+
+    `spec.networkPolicy.additionalNamespaces`
+    Specifies the namespaces to include in the network policy. The default values are `["openshift-console", "openshift-monitoring"]`.
 
 - [Creating a network policy using the CLI](../../networking/network_security/network_policy/creating-network-policy.xml#nw-networkpolicy-object_creating-network-policy)

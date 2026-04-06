@@ -1,4 +1,4 @@
-You can delete a virtual machine by using the web console or the `oc` command line interface.
+You can remove virtual machines (VMs) from your cluster to free up resources using either the web console or CLI. Deleting a VM removes the virtual machine definition and optionally its associated storage resources.
 
 # Deleting a virtual machine using the web console
 

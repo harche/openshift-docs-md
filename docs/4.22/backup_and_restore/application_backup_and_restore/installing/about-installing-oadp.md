@@ -1,11 +1,5 @@
 As a cluster administrator, you install the OpenShift API for Data Protection (OADP) by installing the OADP Operator. The OADP Operator installs [Velero 1.16](https://velero.io/docs/v1.16/).
 
-<div class="note">
-
-Starting from OADP 1.0.4, all OADP 1.0.*z* versions can only be used as a dependency of the Migration Toolkit for Containers Operator and are not available as a standalone Operator.
-
-</div>
-
 To back up Kubernetes resources and internal images, you must have object storage as a backup location, such as one of the following storage types:
 
 - [Amazon Web Services](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-aws.xml#installing-oadp-aws)

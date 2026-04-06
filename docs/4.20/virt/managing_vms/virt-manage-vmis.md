@@ -1,4 +1,4 @@
-If you have standalone virtual machine instances (VMIs) that were created independently outside of the OpenShift Virtualization environment, you can manage them by using the web console or by using `oc` or [`virtctl`](../../virt/getting_started/virt-using-the-cli-tools.xml#virt-using-the-cli-tools) commands from the command-line interface (CLI).
+Manage standalone virtual machine instances (VMIs) that were created independently outside of the OpenShift Virtualization environment through the web console by using `oc` or [`virtctl`](../../virt/getting_started/virt-using-the-cli-tools.xml#virt-using-the-cli-tools) commands from the command-line interface (CLI).
 
 The `virtctl` command provides more virtualization options than the `oc` command. For example, you can use `virtctl` to pause a VM or expose a port.
 

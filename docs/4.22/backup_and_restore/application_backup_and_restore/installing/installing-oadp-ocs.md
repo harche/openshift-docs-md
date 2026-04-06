@@ -1,11 +1,5 @@
 Install the OpenShift API for Data Protection (OADP) with OpenShift Data Foundation by installing the OADP Operator and configuring a backup location and a snapshot location. You then install the Data Protection Application.
 
-<div class="note">
-
-Starting from OADP 1.0.4, all OADP 1.0.*z* versions can only be used as a dependency of the Migration Toolkit for Containers Operator and are not available as a standalone Operator.
-
-</div>
-
 You can configure [Multicloud Object Gateway](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-mcg.xml#installing-oadp-mcg) or any AWS S3-compatible object storage as a backup location.
 
 You can create a `Secret` CR for the backup location and install the Data Protection Application. For more details, see [Installing the OADP Operator](../../../backup_and_restore/application_backup_and_restore/installing/oadp-installing-operator.xml#oadp-installing-operator-doc).

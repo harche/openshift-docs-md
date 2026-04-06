@@ -50,26 +50,35 @@ spec:
     pullSecretRef:
       name: <seed_pull_secret>
   autoRollbackOnFailure: {}
-#    initMonitorTimeoutSeconds: 1800
   extraManifests:
   - name: example-extra-manifests
     namespace: openshift-lifecycle-agent
+  # List of ConfigMap resources that contain the OADP Backup and Restore CRs.
   oadpContent:
   - name: oadp-cm-example
     namespace: openshift-adp
 ```
 
-- Stage of the `ImageBasedUpgrade` CR. The value can be `Idle`, `Prep`, `Upgrade`, or `Rollback`.
+where
 
-- Target platform version, seed image to be used, and the secret required to access the image.
+`spec.stage`
+Defines the stage of the `ImageBasedUpgrade` CR. The value can be `Idle`, `Prep`, `Upgrade`, or `Rollback`.
 
-- Optional: Time frame in seconds to roll back when the upgrade does not complete within that time frame after the first reboot. If not defined or set to `0`, the default value of `1800` seconds (30 minutes) is used.
+`spec.seedImageRef`
+Defines the seed image to be used, the target platform version, and the secret required to access the image.
 
-- Optional: List of `ConfigMap` resources that contain your custom catalog sources to retain after the upgrade, and your extra manifests to apply to the target cluster that are not part of the seed image.
+`initMonitorTimeoutSeconds`
+Optionally defines the time frame in seconds to roll back when the upgrade does not complete within that time frame after the first reboot. If not defined or set to `0`, the default value of `1800` seconds (30 minutes) is used.
 
-- List of `ConfigMap` resources that contain the OADP `Backup` and `Restore` CRs.
+`spec.extraManifests`
+Optionally defines the list of `ConfigMap` resources that contain your custom catalog sources to retain after the upgrade, and your extra manifests to apply to the target cluster that are not part of the seed image.
+
+`spec.oadpContent`
+Defines the list of `ConfigMap` resources that contain the OADP `Backup` and `Restore` CRs.
 
 # Stages of the image-based upgrade
+
+The image-based upgrade consists of four stages that you control by setting the `spec.stage` field in the `ImageBasedUpgrade` CR: Idle, Prep, Upgrade, and Rollback.
 
 After generating the seed image on the seed cluster, you can move through the stages on the target cluster by setting the `spec.stage` field to one of the following values in the `ImageBasedUpgrade` CR:
 
@@ -195,6 +204,8 @@ The Lifecycle Agent initiates an automatic rollback if the upgrade does not comp
 
 # Guidelines for the image-based upgrade
 
+Your deployments must meet specific requirements for a successful image-based upgrade, which can be performed using either GitOps ZTP or non-GitOps deployment methods.
+
 For a successful image-based upgrade, your deployments must meet certain requirements.
 
 There are different deployment methods in which you can perform the image-based upgrade:
@@ -210,6 +221,8 @@ You can perform an image-based upgrade in disconnected environments. For more in
 - [Mirroring images for a disconnected installation](../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images)
 
 ## Minimum software version of components
+
+The image-based upgrade requires specific minimum software versions for various components depending on your deployment method.
 
 Depending on your deployment method, the image-based upgrade requires the following minimum software versions.
 
@@ -232,6 +245,8 @@ Minimum software version of components
 
 ## Hub cluster guidelines
 
+When using RHACM, the hub cluster must meet specific conditions including disabling optional add-ons and upgrading to at least the target version.
+
 If you are using Red Hat Advanced Cluster Management (RHACM), your hub cluster needs to meet the following conditions:
 
 - To avoid including any RHACM resources in your seed image, you need to disable all optional RHACM add-ons before generating the seed image.
@@ -239,6 +254,8 @@ If you are using Red Hat Advanced Cluster Management (RHACM), your hub cluster 
 - Your hub cluster must be upgraded to at least the target version before performing an image-based upgrade on a target single-node OpenShift cluster.
 
 ## Seed image guidelines
+
+The seed image targets single-node OpenShift clusters with matching hardware and configuration, requiring the seed cluster to match specific aspects of the target clusters.
 
 The seed image targets a set of single-node OpenShift clusters with the same hardware and similar configuration. This means that the seed cluster must match the configuration of the target clusters for the following items:
 
@@ -273,6 +290,8 @@ For more information about what to include in the seed image, see "Seed image co
 - [Seed image configuration](../../edge_computing/image_based_upgrade/preparing_for_image_based_upgrade/cnf-image-based-upgrade-generate-seed.xml#cnf-image-based-upgrade-seed-image-config_generate-seed)
 
 ## OADP backup and restore guidelines
+
+Use the OADP Operator to back up and restore applications during the image-based upgrade by creating `Backup` and `Restore` CRs wrapped in `ConfigMap` objects.
 
 With the OADP Operator, you can back up and restore your applications on your target clusters by using `Backup` and `Restore` CRs wrapped in `ConfigMap` objects. The application must work on the current and the target OpenShift Container Platform versions so that they can be restored after the upgrade. The backups must include resources that were initially created.
 
@@ -349,9 +368,11 @@ spec:
    - deployments
 ```
 
-- The value must be a list of comma-separated objects in `group/version/resource/name` format for cluster-scoped resources or `group/version/resource/namespace/name` format for namespace-scoped resources, and it must be attached to the related `Backup` CR.
+- The `metadata.annotations.lca.openshift.io/apply-label` value must be a list of comma-separated objects in `group/version/resource/name` format for cluster-scoped resources or `group/version/resource/namespace/name` format for namespace-scoped resources, and it must be attached to the related `Backup` CR.
 
 ## Extra manifest guidelines
+
+Extra manifests enable the Lifecycle Agent to restore cluster-specific configurations after the upgrade pivot but before restoring application artifacts.
 
 The Lifecycle Agent uses extra manifests to restore your target clusters after rebooting with the new stateroot deployment and before restoring application artifacts.
 

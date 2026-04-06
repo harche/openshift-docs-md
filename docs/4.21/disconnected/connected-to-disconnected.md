@@ -46,7 +46,7 @@ Red Hat does not test third party registries with OpenShift Container Platform.
 
   - [Harbor](https://goharbor.io/)
 
-  If you have a subscription to Red Hat Quay, see the documentation on deploying Red Hat Quay [for proof-of-concept purposes](https://access.redhat.com/documentation/en-us/red_hat_quay/3/html/deploy_red_hat_quay_for_proof-of-concept_non-production_purposes/) or [by using the Quay Operator](https://access.redhat.com/documentation/en-us/red_hat_quay/3/html/deploying_the_red_hat_quay_operator_on_openshift_container_platform/index).
+  If you have a subscription to Red Hat Quay, see the documentation on deploying Red Hat Quay [for proof-of-concept purposes](https://docs.redhat.com/en/documentation/red_hat_quay/3/html/proof_of_concept_-_deploying_red_hat_quay) or [by using the Quay Operator](https://access.redhat.com/documentation/en-us/red_hat_quay/3/html/deploying_the_red_hat_quay_operator_on_openshift_container_platform/index).
 
 - The mirror repository must be configured to share images. For example, a Red Hat Quay repository requires [Organizations](https://access.redhat.com/documentation/en-us/red_hat_quay/3/html-single/use_red_hat_quay/index#user-org-intro_use-quay) in order to share images.
 

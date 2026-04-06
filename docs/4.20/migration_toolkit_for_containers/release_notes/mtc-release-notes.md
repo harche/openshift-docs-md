@@ -30,6 +30,13 @@ Before this update, the MTC Operator mistakenly included an older version of the
 
 Migration Toolkit for Containers (MTC) 1.8.13 is a Container Grade Only (CGO) release, which is released to refresh the health grades of the containers. No code was changed in the product itself compared to that of MTC 1.8.12.
 
+## Enhancements
+
+MTC 1.8.13 restricts cluster upgrades beyond OpenShift Container Platform 4.20
+With this update, MTC prevents OpenShift Container Platform clusters from upgrading to version 4.21 and later to maintain compatibility and stability. To upgrade your cluster beyond version 4.20, uninstall MTC first. For instructions on how to uninstall MTC, see [Uninstalling MTC and deleting resources](../migration_toolkit_for_containers/installing-mtc.xml#migration-uninstalling-mtc-clean-up_installing-mtc).
+
+[(MIG-1872)](https://redhat.atlassian.net/browse/MIG-1872)
+
 # Migration Toolkit for Containers 1.8.12 release notes
 
 The Migration Toolkit for Containers (MTC) 1.8.12 section lists known and resolved issues.

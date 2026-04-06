@@ -144,3 +144,9 @@ This section includes several known issues for OpenShift Container Platform 4.17
 - In hosted control planes on OpenShift Virtualization, if you store all hosted cluster information in a shared namespace and then back up and restore a hosted cluster, you might unintentionally change other hosted clusters. To avoid this issue, back up and restore only hosted clusters that use labels, or avoid storing all hosted cluster information in a shared namespace.
 
 - For version 4.21, hosted control planes pins all Cluster API images to the `4.20.10-multi` release image for compatibility reasons. Hosted control planes pins the images when Cluster API deployments are generated. The `4.20.10-multi` image must always be mirrored and available in order for the Cluster API to work with hosted control planes version 4.21.
+
+- Intermittent egress IP outages occur when a hosted cluster uses the following combined settings:
+
+  - The service publishing strategy for the `Konnectivity` service is set to `Route`.
+
+  - The management cluster uses Virtual Router Redundancy Protocol (VRRP) VIP for ingress.

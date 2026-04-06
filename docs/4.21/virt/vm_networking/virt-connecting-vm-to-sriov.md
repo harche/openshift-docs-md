@@ -56,21 +56,21 @@ It might take several minutes for a configuration change to apply.
       isRdma: false
     ```
 
-    - `metadata.name` specifies a name for the `SriovNetworkNodePolicy` object.
+    - `metadata.name` defines a name for the `SriovNetworkNodePolicy` object.
 
-    - `metadata.namespace` specifies the namespace where the SR-IOV Network Operator is installed.
+    - `metadata.namespace` defines the namespace where the SR-IOV Network Operator is installed.
 
-    - `spec.resourceName` specifies the resource name of the SR-IOV device plugin. You can create multiple `SriovNetworkNodePolicy` objects for a resource name.
+    - `spec.resourceName` defines the resource name of the SR-IOV device plugin. You can create multiple `SriovNetworkNodePolicy` objects for a resource name.
 
-    - `spec.nodeSelector.feature.node.kubernetes.io/network-sriov.capable` specifies the node selector to select which nodes are configured. Only SR-IOV network devices on selected nodes are configured. The SR-IOV Container Network Interface (CNI) plugin and device plugin are deployed only on selected nodes.
+    - `spec.nodeSelector.feature.node.kubernetes.io/network-sriov.capable` defines the node selector to select which nodes are configured. Only SR-IOV network devices on selected nodes are configured. The SR-IOV Container Network Interface (CNI) plugin and device plugin are deployed only on selected nodes.
 
-    - `spec.priority` is an optional field that specifies an integer value between `0` and `99`. A smaller number gets higher priority, so a priority of `10` is higher than a priority of `99`. The default value is `99`.
+    - `spec.priority` is an optional field that defines an integer value between `0` and `99`. A smaller number gets higher priority, so a priority of `10` is higher than a priority of `99`. The default value is `99`.
 
-    - `spec.mtu` is an optional field that specifies a value for the maximum transmission unit (MTU) of the virtual function. The maximum MTU value can vary for different NIC models.
+    - `spec.mtu` is an optional field that defines a value for the maximum transmission unit (MTU) of the virtual function. The maximum MTU value can vary for different NIC models.
 
-    - `spec.numVfs` specifies the number of the virtual functions (VF) to create for the SR-IOV physical network device. For an Intel network interface controller (NIC), the number of VFs cannot be larger than the total VFs supported by the device. For a Mellanox NIC, the number of VFs cannot be larger than `127`.
+    - `spec.numVfs` defines the number of the virtual functions (VF) to create for the SR-IOV physical network device. For an Intel network interface controller (NIC), the number of VFs cannot be larger than the total VFs supported by the device. For a Mellanox NIC, the number of VFs cannot be larger than `127`.
 
-    - `spec.nicSelector` selects the Ethernet device for the Operator to configure. You do not need to specify values for all the parameters.
+    - `spec.nicSelector` defines the Ethernet device for the Operator to configure. You do not need to specify values for all the parameters.
 
       <div class="note">
 
@@ -80,17 +80,17 @@ It might take several minutes for a configuration change to apply.
 
       If you specify both `pfNames` and `rootDevices` at the same time, ensure that they point to an identical device.
 
-    - `spec.nicSelector.vendor` is an optional field that specifies the vendor hex code of the SR-IOV network device. The only allowed values are either `8086` or `15b3`.
+    - `spec.nicSelector.vendor` is an optional field that defines the vendor hex code of the SR-IOV network device. The only allowed values are either `8086` or `15b3`.
 
-    - `spec.nicSelector.deviceID` is an optional field that specifies the device hex code of SR-IOV network device. The only allowed values are `158b`, `1015`, `1017`.
+    - `spec.nicSelector.deviceID` is an optional field that defines the device hex code of SR-IOV network device. The only allowed values are `158b`, `1015`, `1017`.
 
-    - `spec.nicSelector.pfNames` is an optional field that specifies an array of one or more physical function (PF) names for the Ethernet device.
+    - `spec.nicSelector.pfNames` is an optional field that defines an array of one or more physical function (PF) names for the Ethernet device.
 
-    - `spec.nicSelector.rootDevices` is an optional field that specifies an array of one or more PCI bus addresses for the physical function of the Ethernet device. Provide the address in the following format: `0000:02:00.1`.
+    - `spec.nicSelector.rootDevices` is an optional field that defines an array of one or more PCI bus addresses for the physical function of the Ethernet device. Provide the address in the following format: `0000:02:00.1`.
 
-    - `spec.deviceType` specifies the driver type. The `vfio-pci` driver type is required for virtual functions in OpenShift Virtualization.
+    - `spec.deviceType` defines the driver type. The `vfio-pci` driver type is required for virtual functions in OpenShift Virtualization.
 
-    - `spec.isRdma` is an optional field that specifies whether to enable remote direct memory access (RDMA) mode. For a Mellanox card, set `isRdma` to `false`. The default value is `false`.
+    - `spec.isRdma` is an optional field that defines whether to enable remote direct memory access (RDMA) mode. For a Mellanox card, set `isRdma` to `false`. The default value is `false`.
 
       <div class="note">
 

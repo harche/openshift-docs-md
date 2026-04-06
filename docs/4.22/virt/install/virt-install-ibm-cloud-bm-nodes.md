@@ -75,29 +75,29 @@ Configure and provision the IBM Cloud environment to establish the operational f
 
     where:
 
-    \<dns_domain_name\>
-    The default domain name for DNS clients.
+    `<dns_domain_name>`
+    Specifies the default domain name for DNS clients.
 
-    \<dns_ip_addresses\>
-    A comma-seperated list of DNS server IP addresses.
+    `<dns_ip_addresses>`
+    Specifies a comma-separated list of DNS server IP addresses.
 
-    \<default_lease_value\>
-    The default number of seconds a client keeps an assigned address.
+    `<default_lease_value>`
+    Specifies the default number of seconds a client keeps an assigned address.
 
-    \<max_lease_value\>
-    The maximum number of seconds a client keeps an assigned address.
+    `<max_lease_value>`
+    Specifies the maximum number of seconds a client keeps an assigned address.
 
-    \<subnet_ip_address\>
-    The start of the subnet IP address range.
+    `<subnet_ip_address>`
+    Specifies the start of the subnet IP address range.
 
-    \<subnet_mask\>
-    The subnet mask of the subnet IP address range.
+    `<subnet_mask>`
+    Specifies the subnet mask of the subnet IP address range.
 
-    \<broad_ip_address\>
-    The broadcast IP address to use when to use sending a message to every device on the subnet.
+    `<broad_ip_address>`
+    Specifies the broadcast IP address to use when to use sending a message to every device on the subnet.
 
-    \<default_gateway_ip_address\>
-    The default gateway of the subnet.
+    `<default_gateway_ip_address>`
+    Specifies the default gateway of the subnet.
 
 10. Restart DHCP on the Bastion virtual server instance:
 
@@ -280,18 +280,18 @@ Configure networking and access to allow for remote management of the cluster.
 
         where:
 
-        \<vpn_endpoint\>
-        The appropriate SSL VPN endpoint.
+        `<vpn_endpoint>`
+        Specifies the appropriate SSL VPN endpoint.
 
-        \<vpn_username\>
-        The SSL VPN user name you configured.
+        `<vpn_username>`
+        Specifies the SSL VPN user name you configured.
 
-        \<vpn_password\>
-        The SSL VPN password you configured.
+        `<vpn_password>`
+        Specifies the SSL VPN password you configured.
 
         <div class="note">
 
-        Connecting to the IBM Cloud SSL VPN will disconnect you from any open VPN connections.
+        Connecting to the IBM Cloud SSL VPN disconnects you from any open VPN connections.
 
         </div>
 
@@ -483,29 +483,29 @@ Complete the cluster configuration by installing software on the control plane a
 
     where:
 
-    \<api_ip_address\>:\<api_port\>
-    The front end IP address and port used by the Kubernetes API server.
+    `<api_ip_address>:<api_port>`
+    Specifies the front end IP address and port used by the Kubernetes API server.
 
-    \<apiinternal_ip_address\>:\<apiinternal_port\>
-    The front end IP address and port used for internal cluster management.
+    `<apiinternal_ip_address>:<apiinternal_port>`
+    Specifies the front end IP address and port used for internal cluster management.
 
-    \<frontend_secure_ip_address\>:\<frontend_secure_port\>
-    The front end IP address and port used for HTTPS traffic for hosted applications.
+    `<frontend_secure_ip_address>:<frontend_secure_port>`
+    Specifies the front end IP address and port used for HTTPS traffic for hosted applications.
 
-    \<frontend_insecure_ip_address\>:\<frontend_insecure_port\>
-    The front end IP address and port used for HTTP traffic for hosted applications.
+    `<frontend_insecure_ip_address>:<frontend_insecure_port>`
+    Specifies the front end IP address and port used for HTTP traffic for hosted applications.
 
-    \<controlplaneapi_ip_address\>:\<controlplaneapi_port\>
-    The back end IP address and port used by the Kubernetes API server.
+    `<controlplaneapi_ip_address>:<controlplaneapi_port>`
+    Specifies the back end IP address and port used by the Kubernetes API server.
 
-    \<controlplaneapiinternal_ip_address\>:\<controlplaneapiinternal_port\>
-    The back end IP address and port used for internal cluster management.
+    `<controlplaneapiinternal_ip_address>:<controlplaneapiinternal_port>`
+    Specifies the back end IP address and port used for internal cluster management.
 
-    \<backend_secure_ip_address\>:\<backend_secure_port\>
-    The back end IP address and port used for HTTPS traffic for hosted applications.
+    `<backend_secure_ip_address>:<backend_secure_port>`
+    Specifies the back end IP address and port used for HTTPS traffic for hosted applications.
 
-    \<backend_insecure_ip_address\>:\<backend_insecure_port\>
-    The back end IP address and port used for HTTP traffic for hosted applications.
+    `<backend_insecure_ip_address>:<backend_insecure_port>`
+    Specifies the back end IP address and port used for HTTP traffic for hosted applications.
 
     <div class="note">
 
@@ -524,14 +524,14 @@ Complete the cluster configuration by installing software on the control plane a
 
     where:
 
-    \<bastion_public_ip_address\>
-    The externally available IP address of the Bastion virtual server instance.
+    `<bastion_public_ip_address>`
+    Specifies the externally available IP address of the Bastion virtual server instance.
 
-    \<cluster_name\>
-    The name assigned to the cluster.
+    `<cluster_name>`
+    Specifies the name assigned to the cluster.
 
-    \<cluster_domain\>
-    The domain assigned to the cluster.
+    `<cluster_domain>`
+    Specifies the domain assigned to the cluster.
 
 <!-- -->
 
@@ -545,8 +545,8 @@ Complete the cluster configuration by installing software on the control plane a
 
         where:
 
-        \<kubeconfig_file_path\>
-        The path to the downloaded `kubeconfig` file.
+        `<kubeconfig_file_path>`
+        Specifies the path to the downloaded `kubeconfig` file.
 
     2.  Check cluster node status:
 

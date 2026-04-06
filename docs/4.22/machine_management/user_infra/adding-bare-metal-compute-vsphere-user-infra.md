@@ -36,8 +36,6 @@ To use this feature, you must explicitly disable the native vSphere Container St
 
 </div>
 
-- [Migrating virtual machine storage](../../migration_toolkit_for_containers/mtc-migrating-vms.xml#mtc-migrating-vms)
-
 - [Disabling and enabling storage on vSphere](../../storage/container_storage_interface/persistent-storage-csi-vsphere.xml#persistent-storage-csi-vsphere-disable-storage-procedure_persistent-storage-csi-vsphere)
 
 # Creating RHCOS machines using an ISO image

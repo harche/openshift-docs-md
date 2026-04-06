@@ -73,9 +73,9 @@ spec:
 
 ## About backing up data from one cluster and restoring it on another cluster
 
-OpenShift API for Data Protection (OADP) is designed to back up and restore application data in the same OpenShift Container Platform cluster. Migration Toolkit for Containers (MTC) is designed to migrate containers, including application data, from one OpenShift Container Platform cluster to another cluster.
+OpenShift API for Data Protection (OADP) is designed to back up and restore application data in the same OpenShift Container Platform cluster.
 
-You can use OADP to back up application data from one OpenShift Container Platform cluster and restore it on another cluster. However, doing so is more complicated than using MTC or using OADP to back up and restore on the same cluster.
+You can use OADP to back up application data from one OpenShift Container Platform cluster and restore it on another cluster. However, doing so is more complicated than using OADP to back up and restore on the same cluster.
 
 To successfully use OADP to back up data from one cluster and restore it to another cluster, you must take into account the following factors, in addition to the prerequisites and procedures that apply to using OADP to back up and restore data on the same cluster:
 
@@ -258,10 +258,6 @@ Storage class mapping allows you to define rules or policies specifying which st
 
 You can use the `change-storage-class-config` field to change the storage class of your data objects, which lets you optimize costs and performance by moving data between different storage tiers, such as from standard to archival storage, based on your needs and access patterns.
 
-### Storage class mapping with Migration Toolkit for Containers
-
-You can use the Migration Toolkit for Containers (MTC) to migrate containers, including application data, from one OpenShift Container Platform cluster to another cluster and for storage class mapping and conversion. You can convert the storage class of a persistent volume (PV) by migrating it within the same cluster. To do so, you must create and run a migration plan in the MTC web console.
-
 ### Mapping storage classes with OADP
 
 You can use OpenShift API for Data Protection (OADP) with the Velero plugin v1.1.0 and later to change the storage class of a persistent volume (PV) during restores, by configuring a storage class mapping in the config map in the Velero namespace.
@@ -308,5 +304,3 @@ To deploy ConfigMap with OADP, use the `change-storage-class-config` field. You 
 - [Using Data Mover for CSI snapshots](../../backup_and_restore/application_backup_and_restore/installing/oadp-backup-restore-csi-snapshots.xml#oadp-1-3-backing-csi-snapshots_oadp-backup-restore-csi-snapshots).
 
 - [Backing up applications with File System Backup: Kopia or Restic](../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-backing-up-applications-restic-doc.xml#backing-up-applications).
-
-- [Migration converting storage classes](../../migration_toolkit_for_containers/advanced-migration-options-mtc.xml#migration-converting-storage-classes_advanced-migration-options-mtc).

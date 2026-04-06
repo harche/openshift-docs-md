@@ -48,8 +48,6 @@ L
 [Logging](https://docs.redhat.com/en/documentation/red_hat_openshift_logging)
 
 M
-[Migration Toolkit for Containers (MTC)](../migration_toolkit_for_containers/release_notes/mtc-release-notes.xml#mtc-release-notes)
-
 [Monitoring stack](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift)
 
 N

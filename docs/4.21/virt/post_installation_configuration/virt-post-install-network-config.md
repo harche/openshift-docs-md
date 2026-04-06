@@ -58,13 +58,13 @@ You can create a `NodeNetworkConfigurationPolicy` (NNCP) manifest for a Linux br
 
   - `spec.desiredState.interfaces.ipv4.enabled` defines whether the ipv4 protocol is active. Setting this to `false` disables IPv4 addressing on this bridge.
 
-  - `spec.desiredState.interfaces.bridge.options.stp.enabled` defines whether STP is active. Setting this to `false` disables STP on this bridge.
+  - `spec.desiredState.interfaces.bridge.options.stp.enabled` defines whether Spanning Tree Protocol (STP) is active. Setting this to `false` disables STP on this bridge.
 
-  - `spec.desiredState.interfaces.bridge.port.name` defines the node NIC to which the bridge is attached.
+  - `spec.desiredState.interfaces.bridge.port.name` defines the node NIC that the bridge is attached to.
 
     <div class="note">
 
-    To create the NNCP manifest for a Linux bridge using OSA with IBM Z®, you must disable VLAN filtering by the setting the `rx-vlan-filter` to `false` in the `NodeNetworkConfigurationPolicy` manifest.
+    To create the NNCP manifest for a Linux bridge using Open Systems Adapter (OSA) with IBM Z®, you must disable VLAN filtering by the setting the `rx-vlan-filter` to `false` in the `NodeNetworkConfigurationPolicy` manifest.
 
     Alternatively, if you have SSH access to the node, you can disable VLAN filtering by running the following command:
 
@@ -154,13 +154,13 @@ To configure a dedicated secondary network for live migration, you must first cr
       }'
     ```
 
-    - `metadata.name` specifies the name of the `NetworkAttachmentDefinition` object.
+    - `metadata.name` defines the name of the `NetworkAttachmentDefinition` object.
 
-    - `config.master` specifies the name of the NIC to be used for live migration.
+    - `config.master` defines the name of the NIC to be used for live migration.
 
-    - `config.type` specifies the name of the CNI plugin that provides the network for the NAD.
+    - `config.type` defines the name of the CNI plugin that provides the network for the NAD.
 
-    - `config.range` specifies an IP address range for the secondary network. This range must not overlap the IP addresses of the main network.
+    - `config.range` defines an IP address range for the secondary network. This range must not overlap the IP addresses of the main network.
 
 2.  Open the `HyperConverged` CR in your default editor by running the following command:
 
@@ -188,7 +188,7 @@ To configure a dedicated secondary network for live migration, you must first cr
     # ...
     ```
 
-    - `spec.liveMigrationConfig.network` specifies the name of the Multus `NetworkAttachmentDefinition` object to be used for live migrations.
+    - `spec.liveMigrationConfig.network` defines the name of the Multus `NetworkAttachmentDefinition` object to be used for live migrations.
 
 4.  Save your changes and exit the editor. The `virt-handler` pods restart and connect to the secondary network.
 
@@ -266,21 +266,21 @@ It might take several minutes for a configuration change to apply.
       isRdma: false
     ```
 
-    - `metadata.name` specifies a name for the `SriovNetworkNodePolicy` object.
+    - `metadata.name` defines a name for the `SriovNetworkNodePolicy` object.
 
-    - `metadata.namespace` specifies the namespace where the SR-IOV Network Operator is installed.
+    - `metadata.namespace` defines the namespace where the SR-IOV Network Operator is installed.
 
-    - `spec.resourceName` specifies the resource name of the SR-IOV device plugin. You can create multiple `SriovNetworkNodePolicy` objects for a resource name.
+    - `spec.resourceName` defines the resource name of the SR-IOV device plugin. You can create multiple `SriovNetworkNodePolicy` objects for a resource name.
 
-    - `spec.nodeSelector.feature.node.kubernetes.io/network-sriov.capable` specifies the node selector to select which nodes are configured. Only SR-IOV network devices on selected nodes are configured. The SR-IOV Container Network Interface (CNI) plugin and device plugin are deployed only on selected nodes.
+    - `spec.nodeSelector.feature.node.kubernetes.io/network-sriov.capable` defines the node selector to select which nodes are configured. Only SR-IOV network devices on selected nodes are configured. The SR-IOV Container Network Interface (CNI) plugin and device plugin are deployed only on selected nodes.
 
-    - `spec.priority` is an optional field that specifies an integer value between `0` and `99`. A smaller number gets higher priority, so a priority of `10` is higher than a priority of `99`. The default value is `99`.
+    - `spec.priority` is an optional field that defines an integer value between `0` and `99`. A smaller number gets higher priority, so a priority of `10` is higher than a priority of `99`. The default value is `99`.
 
-    - `spec.mtu` is an optional field that specifies a value for the maximum transmission unit (MTU) of the virtual function. The maximum MTU value can vary for different NIC models.
+    - `spec.mtu` is an optional field that defines a value for the maximum transmission unit (MTU) of the virtual function. The maximum MTU value can vary for different NIC models.
 
-    - `spec.numVfs` specifies the number of the virtual functions (VF) to create for the SR-IOV physical network device. For an Intel network interface controller (NIC), the number of VFs cannot be larger than the total VFs supported by the device. For a Mellanox NIC, the number of VFs cannot be larger than `127`.
+    - `spec.numVfs` defines the number of the virtual functions (VF) to create for the SR-IOV physical network device. For an Intel network interface controller (NIC), the number of VFs cannot be larger than the total VFs supported by the device. For a Mellanox NIC, the number of VFs cannot be larger than `127`.
 
-    - `spec.nicSelector` selects the Ethernet device for the Operator to configure. You do not need to specify values for all the parameters.
+    - `spec.nicSelector` defines the Ethernet device for the Operator to configure. You do not need to specify values for all the parameters.
 
       <div class="note">
 
@@ -290,17 +290,17 @@ It might take several minutes for a configuration change to apply.
 
       If you specify both `pfNames` and `rootDevices` at the same time, ensure that they point to an identical device.
 
-    - `spec.nicSelector.vendor` is an optional field that specifies the vendor hex code of the SR-IOV network device. The only allowed values are either `8086` or `15b3`.
+    - `spec.nicSelector.vendor` is an optional field that defines the vendor hex code of the SR-IOV network device. The only allowed values are either `8086` or `15b3`.
 
-    - `spec.nicSelector.deviceID` is an optional field that specifies the device hex code of SR-IOV network device. The only allowed values are `158b`, `1015`, `1017`.
+    - `spec.nicSelector.deviceID` is an optional field that defines the device hex code of SR-IOV network device. The only allowed values are `158b`, `1015`, `1017`.
 
-    - `spec.nicSelector.pfNames` is an optional field that specifies an array of one or more physical function (PF) names for the Ethernet device.
+    - `spec.nicSelector.pfNames` is an optional field that defines an array of one or more physical function (PF) names for the Ethernet device.
 
-    - `spec.nicSelector.rootDevices` is an optional field that specifies an array of one or more PCI bus addresses for the physical function of the Ethernet device. Provide the address in the following format: `0000:02:00.1`.
+    - `spec.nicSelector.rootDevices` is an optional field that defines an array of one or more PCI bus addresses for the physical function of the Ethernet device. Provide the address in the following format: `0000:02:00.1`.
 
-    - `spec.deviceType` specifies the driver type. The `vfio-pci` driver type is required for virtual functions in OpenShift Virtualization.
+    - `spec.deviceType` defines the driver type. The `vfio-pci` driver type is required for virtual functions in OpenShift Virtualization.
 
-    - `spec.isRdma` is an optional field that specifies whether to enable remote direct memory access (RDMA) mode. For a Mellanox card, set `isRdma` to `false`. The default value is `false`.
+    - `spec.isRdma` is an optional field that defines whether to enable remote direct memory access (RDMA) mode. For a Mellanox card, set `isRdma` to `false`. The default value is `false`.
 
       <div class="note">
 
@@ -365,10 +365,10 @@ As a cluster administrator, you can configure additional routes to the `cdi-uplo
 
     where:
 
-    \<route_name\>
+    `<route_name>`
     Specifies the name to assign to this custom route.
 
-    \<host_name_or_address\>
+    `<host_name_or_address>`
     Specifies the fully qualified domain name or IP address of the external host providing image upload access.
 
 2.  Run the following command to annotate the route. This ensures that the correct Containerized Data Importer (CDI) CA certificate is injected when certificates are rotated:
@@ -380,5 +380,5 @@ As a cluster administrator, you can configure additional routes to the `cdi-uplo
 
     where:
 
-    \<route_name\>
-    The name of the route you created.
+    `<route_name>`
+    Specifies the name of the route you created.

@@ -10,17 +10,9 @@ You can update your virtual hardware immediately or schedule an update in vCente
 
 </div>
 
-# Updating virtual hardware on vSphere
+# Updating the virtual hardware for control plane nodes on vSphere
 
-To update the hardware of your virtual machines (VMs) on VMware vSphere, update your virtual machines separately to reduce the risk of downtime for your cluster.
-
-<div class="important">
-
-As of OpenShift Container Platform 4.13, VMware virtual hardware version 13 is no longer supported. You need to update to VMware version 15 or later for supporting functionality.
-
-</div>
-
-## Updating the virtual hardware for control plane nodes on vSphere
+You can update the virtual hardware for control plane nodes on vSphere.
 
 To reduce the risk of downtime, it is recommended that control plane nodes be updated serially. This ensures that the Kubernetes API remains available and etcd retains quorum.
 
@@ -28,7 +20,7 @@ To reduce the risk of downtime, it is recommended that control plane nodes be up
 
 - Your vSphere ESXi hosts are version 8.0 Update 1 or later, or VWware vSphere Foundation 9, or VMware Cloud Foundation 9.
 
-1.  List the control plane nodes in your cluster.
+1.  List the control plane nodes in your cluster by running the following command:
 
     ``` terminal
     $ oc get nodes -l node-role.kubernetes.io/master
@@ -49,7 +41,7 @@ To reduce the risk of downtime, it is recommended that control plane nodes be up
 
     Note the names of your control plane nodes.
 
-2.  Mark the control plane node as unschedulable.
+2.  Mark the control plane node as unschedulable by running the following command:
 
     ``` terminal
     $ oc adm cordon <control_plane_node>
@@ -57,17 +49,17 @@ To reduce the risk of downtime, it is recommended that control plane nodes be up
 
 3.  Shut down the virtual machine (VM) associated with the control plane node. Do this in the vSphere client by right-clicking the VM and selecting **Power** → **Shut Down Guest OS**. Do not shut down the VM using **Power Off** because it might not shut down safely.
 
-4.  Update the VM in the vSphere client. Follow [Upgrade the Compatibility of a Virtual Machine Manually](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-60768C2F-72E1-42E0-8A17-CA76849F2950.html) in the VMware documentation for more information.
+4.  Update the VM in the vSphere client. Follow [Upgrade the Compatibility of a Virtual Machine Manually](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-60768C2F-72E1-42E0-8A17-CA76849F2950.html) (VMware vSphere documentation).
 
 5.  Power on the VM associated with the control plane node. Do this in the vSphere client by right-clicking the VM and selecting **Power On**.
 
-6.  Wait for the node to report as `Ready`:
+6.  Run the following command and wait for the node to report as `Ready`:
 
     ``` terminal
     $ oc wait --for=condition=Ready node/<control_plane_node>
     ```
 
-7.  Mark the control plane node as schedulable again:
+7.  Mark the control plane node as schedulable again by running the following command:
 
     ``` terminal
     $ oc adm uncordon <control_plane_node>
@@ -75,7 +67,9 @@ To reduce the risk of downtime, it is recommended that control plane nodes be up
 
 8.  Repeat this procedure for each control plane node in your cluster.
 
-## Updating the virtual hardware for compute nodes on vSphere
+# Updating the virtual hardware for compute nodes on vSphere
+
+You can update the virtual hardware for compute nodes on vSphere.
 
 To reduce the risk of downtime, it is recommended that compute nodes be updated serially.
 
@@ -89,7 +83,7 @@ Multiple compute nodes can be updated in parallel given workloads are tolerant o
 
 - Your vSphere ESXi hosts are version 8.0 Update 1 or later, or VWware vSphere Foundation 9, or VMware Cloud Foundation 9.
 
-1.  List the compute nodes in your cluster.
+1.  List the compute nodes in your cluster by running the following command:
 
     ``` terminal
     $ oc get nodes -l node-role.kubernetes.io/worker
@@ -110,33 +104,33 @@ Multiple compute nodes can be updated in parallel given workloads are tolerant o
 
     Note the names of your compute nodes.
 
-2.  Mark the compute node as unschedulable:
+2.  Mark the compute node as unschedulable by running the following command:
 
     ``` terminal
     $ oc adm cordon <compute_node>
     ```
 
-3.  Evacuate the pods from the compute node. There are several ways to do this. For example, you can evacuate all or selected pods on a node:
+3.  Evacuate the pods from the compute node. There are several ways to do this. For example, you can evacuate all or selected pods on a node by running the following command:
 
     ``` terminal
     $ oc adm drain <compute_node> [--pod-selector=<pod_selector>]
     ```
 
-    See the "Evacuating pods on nodes" section for other options to evacuate pods from a node.
+    See "Evacuating pods on nodes" for other options to evacuate pods from a node.
 
 4.  Shut down the virtual machine (VM) associated with the compute node. Do this in the vSphere client by right-clicking the VM and selecting **Power** → **Shut Down Guest OS**. Do not shut down the VM using **Power Off** because it might not shut down safely.
 
-5.  Update the VM in the vSphere client. Follow [Upgrade the Compatibility of a Virtual Machine Manually](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-60768C2F-72E1-42E0-8A17-CA76849F2950.html) in the VMware documentation for more information.
+5.  Update the VM in the vSphere client. Follow [Upgrade the Compatibility of a Virtual Machine Manually](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-60768C2F-72E1-42E0-8A17-CA76849F2950.html) (VMware vSphere documentation).
 
 6.  Power on the VM associated with the compute node. Do this in the vSphere client by right-clicking the VM and selecting **Power On**.
 
-7.  Wait for the node to report as `Ready`:
+7.  Run the following command and wait for the node to report as `Ready`:
 
     ``` terminal
     $ oc wait --for=condition=Ready node/<compute_node>
     ```
 
-8.  Mark the compute node as schedulable again:
+8.  Mark the compute node as schedulable again by running the following command:
 
     ``` terminal
     $ oc adm uncordon <compute_node>
@@ -144,13 +138,17 @@ Multiple compute nodes can be updated in parallel given workloads are tolerant o
 
 9.  Repeat this procedure for each compute node in your cluster.
 
-## Updating the virtual hardware for template on vSphere
+- [Evacuating pods on nodes](../../nodes/nodes/nodes-nodes-working.xml#nodes-nodes-working-evacuating_nodes-nodes-working)
+
+# Updating the virtual hardware for template on vSphere
+
+You can update the virtual hardware for templates on vSphere.
 
 - You have cluster administrator permissions to execute the required permissions in the vCenter instance hosting your OpenShift Container Platform cluster.
 
 - Your vSphere ESXi hosts are version 8.0 Update 1 or later, or VWware vSphere Foundation 9, or VMware Cloud Foundation 9.
 
-1.  If the RHCOS template is configured as a vSphere template follow [Convert a Template to a Virtual Machine](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-D632CAC5-BA5E-4A1E-959B-382D9ACB1DD0_copy.html) in the VMware documentation prior to the next step.
+1.  If the RHCOS template is configured as a vSphere template, follow [Convert a Template to a Virtual Machine](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-D632CAC5-BA5E-4A1E-959B-382D9ACB1DD0_copy.html) (VMware vSphere documentation).
 
     <div class="note">
 
@@ -174,10 +172,8 @@ Multiple compute nodes can be updated in parallel given workloads are tolerant o
 
     </div>
 
-- [Evacuating pods on nodes](../../nodes/nodes/nodes-nodes-working.xml#nodes-nodes-working-evacuating_nodes-nodes-working)
+# Scheduled updates for virtual hardware on vSphere
 
-# Scheduling an update for virtual hardware on vSphere
-
-Virtual hardware updates can be scheduled to occur when a virtual machine is powered on or rebooted. You can schedule your virtual hardware updates exclusively in vCenter by following [Schedule a Compatibility Upgrade for a Virtual Machine](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-96C06236-C271-4CFE-857E-22D1FDEECC95.html) in the VMware documentation.
+Virtual hardware updates can be scheduled to occur when a virtual machine is powered on or rebooted. You can schedule your virtual hardware updates exclusively in vCenter by following [Schedule a Compatibility Upgrade for a Virtual Machine](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-96C06236-C271-4CFE-857E-22D1FDEECC95.html) (VMware vSphere documentation).
 
 When scheduling an update prior to performing an update of OpenShift Container Platform, the virtual hardware update occurs when the nodes are rebooted during the course of the OpenShift Container Platform update.

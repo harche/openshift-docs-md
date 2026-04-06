@@ -1,6 +1,8 @@
-Administrators can use the `pod_network_info` metric to classify and monitor secondary network interfaces. The metric does this by adding a label that identifies the interface type, typically based on the associated `NetworkAttachmentDefinition` resource.
+To gain better visibility into cluster traffic, you can associate secondary interface metrics with specific network attachments. By using the `pod_network_info` metric to label interfaces based on their `NetworkAttachmentDefinition` resource, you can more easily monitor performance and troubleshoot connectivity issues across your network.
 
 # Extending secondary network metrics for monitoring
+
+To monitor and manage network traffic effectively, you can extend secondary network metrics with identifying information. By using the `pod_network_name_info` metric to label interfaces based on their `NetworkAttachmentDefinition` resource, you can classify interface types to enable precise metric aggregation and alerting.
 
 Secondary devices, or interfaces, are used for different purposes. Metrics from secondary network interfaces need to be classified to allow for effective aggregation and monitoring.
 
@@ -14,7 +16,7 @@ The network type is generated from the name of the `NetworkAttachmentDefinition`
 
 # Network Metrics Daemon
 
-The Network Metrics Daemon is a daemon component that collects and publishes network related metrics.
+The Network Metrics Daemon collects and publishes network-related metrics to support performance management in complex pod environments. This component provides metadata for secondary interfaces, which is required for accurate traffic monitoring across distinct network attachments.
 
 The kubelet is already publishing network related metrics you can observe. These metrics are:
 
@@ -50,7 +52,7 @@ This is addressed by introducing the new `pod_network_name_info` described in th
 
 # Metrics with network name
 
-The Network Metrics daemonset publishes a `pod_network_name_info` gauge metric, with a fixed value of `0`.
+To simplify the monitoring of secondary networks, you can use the `pod_network_name_info` metric to correlate network performance data with specific network names. By joining this metric with container network metrics, you can identify traffic patterns and errors across distinct network attachment definitions.
 
 <div class="formalpara-title">
 
@@ -62,7 +64,7 @@ The Network Metrics daemonset publishes a `pod_network_name_info` gauge metric, 
 pod_network_name_info{interface="net0",namespace="namespacename",network_name="nadnamespace/firstNAD",pod="podname"} 0
 ```
 
-The network name label is produced using the annotation added by Multus. It is the concatenation of the namespace the network attachment definition belongs to, plus the name of the network attachment definition.
+The network name label is produced using the annotation added by Multus. It is the concatenation of the namespace the network attachment definition belongs to, plus the name of the network attachment definition. The Network Metrics daemonset publishes a `pod_network_name_info` gauge metric, with a fixed value of `0`.
 
 The new metric alone does not provide much value, but combined with the network related `container_network_*` metrics, it offers better support for monitoring secondary networks.
 

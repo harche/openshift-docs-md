@@ -224,7 +224,7 @@ Explore the following OpenShift Container Platform installation tasks:
 <td style="text-align: left;"><p><a href="../observability/network_observability/network-observability-overview.xml#network-observability-overview">About Network Observability</a></p></td>
 <td style="text-align: left;"><ul>
 <li><p><a href="../observability/network_observability/metrics-alerts-dashboards.xml#metrics-alerts-dashboards_metrics-alerts-dashboards">Using metrics with dashboards and alerts</a></p></li>
-<li><p><a href="../observability/network_observability/observing-network-traffic.xml#network-observability-trafficflow_nw-observe-network-traffic">Obsserving the network traffic from the Traffic flows view</a></p></li>
+<li><p><a href="../observability/network_observability/observing-network-traffic.xml#network-observability-trafficflow_nw-observe-network-traffic">Observing the network traffic from the Traffic flows view</a></p></li>
 </ul></td>
 </tr>
 <tr class="even">

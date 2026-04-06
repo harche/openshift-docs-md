@@ -58,13 +58,13 @@ You can create a `NodeNetworkConfigurationPolicy` (NNCP) manifest for a Linux br
 
   - `spec.desiredState.interfaces.ipv4.enabled` defines whether the ipv4 protocol is active. Setting this to `false` disables IPv4 addressing on this bridge.
 
-  - `spec.desiredState.interfaces.bridge.options.stp.enabled` defines whether STP is active. Setting this to `false` disables STP on this bridge.
+  - `spec.desiredState.interfaces.bridge.options.stp.enabled` defines whether Spanning Tree Protocol (STP) is active. Setting this to `false` disables STP on this bridge.
 
-  - `spec.desiredState.interfaces.bridge.port.name` defines the node NIC to which the bridge is attached.
+  - `spec.desiredState.interfaces.bridge.port.name` defines the node NIC that the bridge is attached to.
 
     <div class="note">
 
-    To create the NNCP manifest for a Linux bridge using OSA with IBM Z®, you must disable VLAN filtering by the setting the `rx-vlan-filter` to `false` in the `NodeNetworkConfigurationPolicy` manifest.
+    To create the NNCP manifest for a Linux bridge using Open Systems Adapter (OSA) with IBM Z®, you must disable VLAN filtering by the setting the `rx-vlan-filter` to `false` in the `NodeNetworkConfigurationPolicy` manifest.
 
     Alternatively, if you have SSH access to the node, you can disable VLAN filtering by running the following command:
 

@@ -203,17 +203,25 @@ spec:
     matchType: Absence
 ```
 
-- The `FlowMetric` resources need to be created in the namespace defined in the `FlowCollector` `spec.namespace`, which is `netobserv` by default.
+where:
 
-- The name of the Prometheus metric, which in the web console appears with the prefix `netobserv-<metricName>`.
+`metadata.namespace`
+Specifies the namespace where the `FlowMetric` resources are created. This must match the namespace defined in the `FlowCollector` resource `spec.namespace` field, which is `netobserv` by default.
 
-- The `type` specifies the type of metric. The `Counter` `type` is useful for counting bytes or packets.
+`spec.metricName`
+Specifies the name of the Prometheus metric, which in the OpenShift Container Platform web console appears with the prefix `netobserv-<metricName>`.
 
-- The direction of traffic to capture. If not specified, both ingress and egress are captured, which can lead to duplicated counts.
+`spec.type`
+Specifies the type of metric. The `Counter` type is useful for counting bytes or packets.
 
-- Labels define what the metrics look like and the relationship between the different entities and also define the metrics cardinality. For example, `SrcK8S_Name` is a high cardinality metric.
+`spec.direction`
+Specifies the direction of traffic to capture. If not specified, both ingress and egress are captured, which can lead to duplicated counts.
 
-- Refines results based on the listed criteria. In this example, selecting only the cluster external traffic is done by matching only flows where `SrcSubnetLabel` is absent. This assumes the subnet labels feature is enabled (via `spec.processor.subnetLabels`), which is done by default.
+`spec.labels`
+Specifies the labels that define what the metrics look like, the relationship between the different entities, and the metrics cardinality. For example, `SrcK8S_Name` is a high cardinality metric.
+
+`spec.filters`
+Specifies the criteria to refine results based on the listed criteria. In this example, selecting only the cluster external traffic is done by matching only flows where `SrcSubnetLabel` is absent. This assumes the subnet labels feature is enabled (via `spec.processor.subnetLabels`), which is done by default
 
 ### Monitoring RTT latency for cluster external ingress traffic
 
@@ -240,13 +248,19 @@ spec:
   buckets: [".001", ".005", ".01", ".02", ".03", ".04", ".05", ".075", ".1", ".25", "1"]
 ```
 
-- The `FlowMetric` resources need to be created in the namespace defined in the `FlowCollector` `spec.namespace`, which is `netobserv` by default.
+where:
 
-- The `type` specifies the type of metric. The `Histogram` `type` is useful for a latency value (`TimeFlowRttNs`).
+`metadata.namespace`
+Specifies the namespace where the `FlowMetric` resources are created. This must match the namespace defined in the `FlowCollector` resource `spec.namespace` field, which is `netobserv` by default.
 
-- Since the Round-trip time (RTT) is provided as nanos in flows, use a divider of 1 billion to convert into seconds, which is standard in Prometheus guidelines.
+`spec.type`
+Specifies the type of metric. The `Histogram` type is useful for a latency value, such as `TimeFlowRttNs`.
 
-- The custom buckets specify precision on RTT, with optimal precision ranging between 5ms and 250ms.
+`spec.divider`
+Specifies the value used to divide the metric. Because the Round-trip time (RTT) is provided as nanoseconds in flows, use a divider of 1,000,000,000 to convert the value into seconds, which is standard in Prometheus guidelines.
+
+`spec.buckets`
+Specifies custom buckets for RTT precision. The optimal precision ranges between 5ms and 250ms.
 
 # Creating metrics from nested or array fields in the Traffic flows table
 
@@ -309,11 +323,16 @@ The following example shows how to generate metrics from the **Network events** 
         "NetworkEvents>Direction": direction
     ```
 
-    - These labels represent the nested fields for **Network Events** from the **Traffic flows** table. Each network event has a specific type, namespace, name, action, and direction. You can alternatively specify the `Interfaces` if `NetworkEvents` is unavailable in your OpenShift Container Platform version.
+    where:
 
-    - Optional: You can choose to represent a field that contains a list of items as distinct items.
+    `spec.labels`
+    Specifies the labels that represent the nested fields for **Network Events** from the **Traffic flows** table. Each network event has a specific type, namespace, name, action, and direction. You can alternatively specify `Interfaces` if `NetworkEvents` is unavailable in your version of OpenShift Container Platform.
 
-    - Optional: You can rename the fields in Prometheus.
+    `spec.flatten`
+    Specifies an optional field that contains a list of items to be represented as distinct items.
+
+    `spec.remap`
+    Specifies an optional set of fields to rename in Prometheus.
 
 <!-- -->
 
@@ -389,7 +408,13 @@ metadata:
 # ...
 ```
 
-- The `FlowMetric` resources need to be created in the namespace defined in the `FlowCollector` `spec.namespace`, which is `netobserv` by default.
+where:
+
+`metadata.namespace`
+Specifies the namespace where the `FlowMetric` resources are created. This must match the namespace defined in the `FlowCollector` `spec.namespace`, which is `netobserv` by default.
+
+`spec.charts.dashboardName`
+Specifies the name of the dashboard. Using a different `dashboardName` creates a new dashboard that is prefixed with `Netobserv`. For example, **Netobserv / \<dashboard_name\>**.
 
 ### RTT latency chart for cluster external ingress traffic
 
@@ -429,9 +454,13 @@ metadata:
 # ...
 ```
 
-- The `FlowMetric` resources need to be created in the namespace defined in the `FlowCollector` `spec.namespace`, which is `netobserv` by default.
+where:
 
-- Using a different `dashboardName` creates a new dashboard that is prefixed with `Netobserv`. For example, **Netobserv / \<dashboard_name\>**.
+`metadata.namespace`
+Specifies the namespace where the `FlowMetric` resources are created. This must match the namespace defined in the `FlowCollector` `spec.namespace`, which is `netobserv` by default.
+
+`spec.charts.dashboardName`
+Specifies the name of the dashboard. Using a different `dashboardName` creates a new dashboard that is prefixed with `Netobserv`. For example, **Netobserv / \<dashboard_name\>**.
 
 ### Calculate histogram averages
 

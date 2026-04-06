@@ -330,7 +330,7 @@ Root: ./
 
 |backup_and_restore:{index.md,graceful-cluster-shutdown.md,graceful-cluster-restart.md,hibernating-cluster.md}
 |backup_and_restore/application_backup_and_restore:{oadp-intro.md,oadp-features-plugins.md,oadp-api.md,oadp-advanced-topics.md}
-|backup_and_restore/application_backup_and_restore/release-notes:{oadp-1-5-release-notes.md}
+|backup_and_restore/application_backup_and_restore/release-notes:{oadp-1-5-release-notes.md,oadp-upgrade-notes-1-5.md}
 |backup_and_restore/application_backup_and_restore/oadp-performance:{oadp-recommended-network-settings.md}
 |backup_and_restore/application_backup_and_restore/oadp-use-cases:{oadp-usecase-backup-using-odf.md,oadp-usecase-restore-different-namespace.md,oadp-usecase-enable-ca-cert.md,oadp-usecase-legacy-aws-plugin.md,oadp-rosa-backup-restore.md}
 |backup_and_restore/application_backup_and_restore/installing:{about-installing-oadp.md,oadp-installing-operator.md}
@@ -357,12 +357,7 @@ Root: ./
 
 ### Migrating from version 3 to 4
 
-|migrating_from_ocp_3_to_4:{index.md,about-migrating-from-3-to-4.md,planning-migration-3-4.md,planning-considerations-3-4.md,about-mtc-3-4.md,installing-3-4.md,installing-restricted-3-4.md,upgrading-3-4.md,premigration-checklists-3-4.md,migrating-applications-3-4.md,advanced-migration-options-3-4.md,troubleshooting-3-4.md}
-
-### Migration Toolkit for Containers
-
-|migration_toolkit_for_containers:{about-mtc.md,installing-mtc.md,installing-mtc-restricted.md,upgrading-mtc.md,premigration-checklists-mtc.md,network-considerations-mtc.md,mtc-direct-migration-requirements.md,migrating-applications-with-mtc.md,advanced-migration-options-mtc.md,mtc-migrating-vms.md,troubleshooting-mtc.md}
-|migration_toolkit_for_containers/release_notes:{mtc-release-notes.md,mtc-release-notes-1-7.md,mtc-release-notes-1-6.md,mtc-release-notes-1-5.md}
+|migrating_from_ocp_3_to_4:{index.md,about-migrating-from-3-to-4.md,planning-migration-3-4.md,planning-considerations-3-4.md}
 
 ### API reference
 

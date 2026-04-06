@@ -1,4 +1,4 @@
-You can migrate one or more virtual disks to a different storage class without stopping your virtual machine (VM) or virtual machine instance (VMI).
+You can migrate one or more virtual disks to a different storage class to optimize storage performance or reduce costs without stopping your virtual machine (VM) or virtual machine instance (VMI).
 
 # Migrating VM disks to a different storage class by using the web console
 
@@ -24,7 +24,7 @@ Migration Toolkit for Containers is not part of OpenShift Virtualization and req
 
     You can also access this option from the **VirtualMachine details** page by selecting **Actions** → **Migration** → **Storage**.
 
-    Alternatively, right-click the VM in the tree view and select **Migration** from the pop-up menu.
+    Alternatively, right-click the VM in the tree view and select **Migration** from the menu.
 
 3.  On the **Migration details** page, choose whether to migrate the entire VM storage or selected volumes only. If you click **Selected volumes**, select any disks that you intend to migrate. Click **Next** to proceed.
 

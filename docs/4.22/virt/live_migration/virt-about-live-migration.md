@@ -1,8 +1,8 @@
-Live migration is the process of moving a running virtual machine (VM) to another node in the cluster without interrupting the virtual workload. Live migration enables smooth transitions during cluster upgrades or any time a node needs to be drained for maintenance or configuration changes.
-
-By default, live migration traffic is encrypted using Transport Layer Security (TLS).
+Live migration is the process of moving a running virtual machine (VM) to another node in the cluster without interrupting the virtual workload. Live migration enables smooth transitions during cluster upgrades or any time a node needs to be drained for maintenance or configuration changes. By default, live migration traffic is encrypted using Transport Layer Security (TLS).
 
 # Live migration requirements
+
+Live migration requires specific cluster configuration, including shared storage, sufficient resources, and compatible node settings.
 
 Live migration has the following requirements:
 
@@ -22,7 +22,7 @@ Live migration has the following requirements:
 
 - If a VM uses a host model CPU, the nodes must support the CPU.
 
-- [Configuring a dedicated Multus network](../../virt/vm_networking/virt-dedicated-network-live-migration.xml#virt-dedicated-network-live-migration) for live migration is highly recommended. A dedicated network minimizes the effects of network saturation on tenant workloads during migration.
+- Configuring a dedicated Multus network for live migration is highly recommended. A dedicated network minimizes the effects of network saturation on tenant workloads during migration. For more details, see the "Configuring a dedicated network for live migration" section.
 
 # About live migration permissions
 
@@ -152,20 +152,6 @@ Post copy mode, when enabled, triggers if the initial pre-copy phase does not co
 Post copy mode should not be used for critical data, or with unstable networks.
 
 </div>
-
-# Common live migration tasks
-
-You can perform the following live migration tasks:
-
-- [Configure live migration settings](../../virt/live_migration/virt-configuring-live-migration.xml#virt-configuring-live-migration)
-
-- [Configure live migration for heavy workloads](../../virt/live_migration/virt-configuring-live-migration.xml#virt-configuring-live-migration-heavy_virt-configuring-live-migration)
-
-- [Initiate and cancel live migration](../../virt/live_migration/virt-initiating-live-migration.xml#virt-initiating-live-migration)
-
-- Monitor the progress of all live migrations in the **Migrations** tab of the OpenShift Container Platform web console.
-
-- View VM migration metrics in the **Metrics** tab of the web console.
 
 # Additional resources
 

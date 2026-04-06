@@ -16,8 +16,8 @@ The SVVP certification applies to:
 
 # New features and enhancements
 
-Remove the MTC Operator during the upgrade process
-With this update, cluster administrators can optionally remove the Migration Toolkit for Containers (MTC) Operator when they upgrade from previous OpenShift Virtualization versions to version 4.21. MTC is end-of-life and no longer needed in OpenShift Virtualization version 4.21 to support live storage migration.
+Remove the {mtc-short} Operator during the upgrade process
+With this update, cluster administrators can optionally remove the {mtc-first} Operator when they upgrade from previous OpenShift Virtualization versions to version 4.21. {mtc-short} is end-of-life and no longer needed in OpenShift Virtualization version 4.21 to support live storage migration.
 
 [CNV-50822](https://issues.redhat.com/browse/CNV-50822)
 
@@ -46,7 +46,7 @@ With this update, you can import VMs into OpenShift Virtualization, preserving t
 <!-- -->
 
 Migrate VM disks to different storage classes
-Previously, installation of Migration Toolkit for Containers (MTC) was required before migrating VM disks to different storage classes. This requirement no longer exists, as VM disk storage class migration is now native to OpenShift Virtualization.
+Previously, installation of {mtc-first} was required before migrating VM disks to different storage classes. This requirement no longer exists, as VM disk storage class migration is now native to OpenShift Virtualization.
 
 In addition, it is no longer a requirement that the VMs you select for each bulk migration be in the same namespace.
 
@@ -317,3 +317,8 @@ Using OpenShift Virtualization on a Google Cloud cluster with bare-metal nodes i
   - While most machine types default to 127 volumes per node, certain bare-metal machine types have lower volume attachment limits. For more information, see [Disk and capacity limits](https://docs.cloud.google.com/compute/docs/general-purpose-machines#disk_and_capacity_limits_8) in the Google Cloud documentation and [Volume Attachment Limit Per Node](https://access.redhat.com/articles/7139682#volume-attachment-limit-per-node-2) in the Red Hat Knowledgebase.
 
 </div>
+
+Cross-cluster live migration for OpenShift Virtualization is generally available
+Cross-cluster live migration is generally available for OpenShift Virtualization 4.21.1. You can now move the workloads of running virtual machines (VMs) from one OpenShift Container Platform cluster to another OpenShift Container Platform cluster without disruption.
+
+[CNV-50823](https://redhat.atlassian.net/browse/CNV-50823)

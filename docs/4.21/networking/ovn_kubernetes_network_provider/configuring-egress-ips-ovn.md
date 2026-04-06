@@ -33,6 +33,12 @@ The Egress IP address feature that runs on a primary host network is supported o
 | IBM Power®                                                       | Yes       |
 | Nutanix                                                          | Yes       |
 
+<div class="important">
+
+Support for egress IP addresses in Microsoft Azure is restricted to the infra subnet. As a workaround for this limitation, you can use a Network Address Translation (NAT) gateway instead of a general purpose public load balancer.
+
+</div>
+
 The Egress IP address feature that runs on secondary host networks is supported on the following platform:
 
 | Platform   | Supported |

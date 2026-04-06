@@ -56,7 +56,7 @@ You can create a service and associate it with a virtual machine (VM) by using t
 
 - You have installed the OpenShift CLI (`oc`).
 
-1.  Edit the `VirtualMachine` manifest to add the label for service creation:
+1.  Edit the `VirtualMachine` manifest to add the label for service creation. Add `special: key` to the `spec.template.metadata.labels` stanza:
 
     ``` yaml
     apiVersion: kubevirt.io/v1
@@ -73,13 +73,11 @@ You can create a service and associate it with a virtual machine (VM) by using t
     # ...
     ```
 
-    - Add `special: key` to the `spec.template.metadata.labels` stanza.
+    <div class="note">
 
-      <div class="note">
+    Labels on a virtual machine are passed through to the pod. The `special: key` label must match the label in the `spec.selector` attribute of the `Service` manifest.
 
-      Labels on a virtual machine are passed through to the pod. The `special: key` label must match the label in the `spec.selector` attribute of the `Service` manifest.
-
-      </div>
+    </div>
 
 2.  Save the `VirtualMachine` manifest file to apply your changes.
 
@@ -103,11 +101,11 @@ You can create a service and associate it with a virtual machine (VM) by using t
         nodePort: 30000
     ```
 
-    - Specify the label that you added to the `spec.template.metadata.labels` stanza of the `VirtualMachine` manifest.
+    - `spec.selector` defines the label that you added to the `spec.template.metadata.labels` stanza of the `VirtualMachine` manifest.
 
-    - Specify `ClusterIP`, `NodePort`, or `LoadBalancer`.
+    - `spec.type` defines the type of service by the way it is exposed. Choose one of `ClusterIP`, `NodePort`, or `LoadBalancer`.
 
-    - Specifies a collection of network ports and protocols that you want to expose from the virtual machine.
+    - `spec.ports` defines a collection of network ports and protocols that you want to expose from the virtual machine.
 
 4.  Save the `Service` manifest file.
 

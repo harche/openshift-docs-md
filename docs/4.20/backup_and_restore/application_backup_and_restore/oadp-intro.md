@@ -1,12 +1,12 @@
 The OpenShift API for Data Protection (OADP) product safeguards customer applications on OpenShift Container Platform. It offers comprehensive disaster recovery protection, covering OpenShift Container Platform applications, application-related cluster resources, persistent volumes, and internal images. OADP is also capable of backing up both containerized applications and virtual machines (VMs).
 
-However, OADP does not serve as a disaster recovery solution for [etcd](../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd) or OpenShift Operators.
+However, OADP does not serve as a disaster recovery solution for `etcd` or OpenShift Operators.
 
 <div class="important">
 
 OADP support is applicable to customer workload namespaces and cluster scope resources.
 
-Full cluster [backup](../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/backing-up-applications.xml#backing-up-applications) and [restore](../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/restoring-applications.xml#restoring-applications) are not supported.
+Full cluster `backup` and `restore` are not supported.
 
 </div>
 
@@ -27,6 +27,8 @@ OADP provides the following APIs:
 - [VolumeSnapshotLocation](../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-backing-up-pvs-csi-doc.xml#oadp-backing-up-pvs-csi-doc)
 
 ## Support for OpenShift API for Data Protection
+
+Review the support matrix for OADP.
 
 <table>
 <caption>Supported versions of OADP</caption>

@@ -280,8 +280,11 @@ If you log in with a user with the `cluster-admin` role, then you can create a n
 1.  Create a policy that allows traffic from all pods in all namespaces to a particular application. Save the YAML in the `web-allow-all-namespaces.yaml` file:
 
     ``` yaml
-    kind: NetworkPolicy
     apiVersion: networking.k8s.io/v1
+    kind: NetworkPolicy
+    metadata:
+      name: web-allow-all-namespaces
+      namespace: default
     spec:
       podSelector:
         matchLabels:

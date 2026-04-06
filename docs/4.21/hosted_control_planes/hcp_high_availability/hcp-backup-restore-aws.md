@@ -1,4 +1,4 @@
-You can back up and restore etcd on a hosted cluster on Amazon Web Services (AWS) to fix failures.
+You can back up and restore etcd on the management cluster to fix failures.
 
 # Taking a snapshot of etcd for a hosted cluster
 

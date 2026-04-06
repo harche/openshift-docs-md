@@ -560,9 +560,26 @@ If you log in with a user with the `cluster-admin` role, then you can create a n
 
 1.  Create a policy that allows traffic from all pods in all namespaces to a particular application. Save the YAML in the `web-allow-all-namespaces.yaml` file:
 
-    \+ where:
+    ``` yaml
+    apiVersion: k8s.cni.cncf.io/v1beta1
+    kind: MultiNetworkPolicy
+    metadata:
+      name: web-allow-all-namespaces
+      namespace: default
+      annotations:
+        k8s.v1.cni.cncf.io/policy-for:<namespace_name>/<network_name>
+    spec:
+      podSelector:
+        matchLabels:
+         app: web
+      policyTypes:
+      - Ingress
+      ingress:
+      - from:
+        - namespaceSelector: {}
+    ```
 
-    \+
+    where:
 
     `app`
     Applies the policy only to `app:web` pods in default namespace.
@@ -570,13 +587,13 @@ If you log in with a user with the `cluster-admin` role, then you can create a n
     `namespaceSelector`
     Selects all pods in all namespaces.
 
-<div class="informalexample">
+    <div class="note">
 
-By default, if you do not specify a `namespaceSelector` parameter in the policy object, no namespaces get selected. This means the policy allows traffic only from the namespace where the network policy deployes.
+    By default, if you do not specify a `namespaceSelector` parameter in the policy object, no namespaces get selected. This means the policy allows traffic only from the namespace where the network policy deployes.
 
-</div>
+    </div>
 
-1.  Apply the policy by entering the following command. Successful output lists the name of the policy object and the `created` status.
+2.  Apply the policy by entering the following command. Successful output lists the name of the policy object and the `created` status.
 
     ``` terminal
     $ oc apply -f web-allow-all-namespaces.yaml

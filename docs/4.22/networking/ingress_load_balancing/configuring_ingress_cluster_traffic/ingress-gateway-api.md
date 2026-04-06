@@ -8,9 +8,7 @@ Gateway API does not support user-defined networks (UDN).
 
 # Overview of Gateway API
 
-To optimize network traffic management and implement routing policies in OpenShift Container Platform, use the Gateway API. By adopting this community-managed Kubernetes mechanism, you can configure advanced routing at both the transport (L4) and application (L7) layers while leveraging various vendor-supported implementations to meet your specific networking requirements
-
-A variety of vendors offer many [implementations of Gateway API](https://gateway-api.sigs.k8s.io/implementations/).
+To optimize network traffic management and implement routing policies in OpenShift Container Platform, use the Gateway API. By adopting this community-managed Kubernetes mechanism, you can configure advanced routing at both the transport (L4) and application (L7) layers while leveraging various vendor-supported implementations to meet your specific networking requirements.
 
 The project is an effort to provide a standardized ecosystem by using a portable API with broad community support. By integrating Gateway API functionality into the Ingress Operator, it enables a networking solution that aligns with existing community and upstream development efforts.
 

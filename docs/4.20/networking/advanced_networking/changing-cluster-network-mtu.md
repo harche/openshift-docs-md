@@ -142,7 +142,7 @@ To ensure network stability and performance in a hybrid environment where part o
 
 ## Preparing your hardware MTU configuration
 
-Many ways exist to configure the hardware maximum transmission unit (MTU) for your cluster nodes. The following examples show only the most common methods. Verify the correctness of your infrastructure MTU. Select your preferred method for configuring your hardware MTU in the cluster nodes.
+To maintain network stability during an MTU change, you must prepare the configuration for your underlying hardware using a method such as DHCP, PXE, or NetworkManager. This preparation ensures that all cluster nodes are ready to accept the new MTU value before you apply the changes to the cluster network.
 
 1.  Prepare your configuration for the hardware MTU:
 
@@ -190,7 +190,7 @@ Many ways exist to configure the hardware maximum transmission unit (MTU) for yo
 
 ## Creating MachineConfig objects
 
-Use the following procedure to create the `MachineConfig` objects.
+To prepare your nodes for a hardware MTU change, you must create `MachineConfig` objects for both control plane and compute nodes. Creating these objects ensures that the updated network interface settings are ready for deployment without causing immediate cluster instability.
 
 1.  Create two `MachineConfig` objects, one for the control plane nodes and another for the worker nodes in your cluster:
 
@@ -217,9 +217,13 @@ Use the following procedure to create the `MachineConfig` objects.
               mode: 0600
         ```
 
-        - Specifies the `NetworkManager` connection name for the primary network interface.
+        where:
 
-        - Specifies the local filename for the updated `NetworkManager` configuration file from an earlier step.
+        `storage.files.path`
+        Specifies the `NetworkManager` connection name for the primary network interface.
+
+        `storage.files.local`
+        Specifies the local filename for the updated `NetworkManager` configuration file from an earlier step.
 
     2.  Create the following Butane config in the `worker-interface.bu` file:
 
@@ -244,9 +248,13 @@ Use the following procedure to create the `MachineConfig` objects.
               mode: 0600
         ```
 
-        - Specifies the `NetworkManager` connection name for the primary network interface.
+        where:
 
-        - Specifies the local filename for the updated `NetworkManager` configuration file from an earlier step.
+        `storage.files.path`
+        Specifies the `NetworkManager` connection name for the primary network interface.
+
+        `storage.files.local`
+        Specifies the local filename for the updated `NetworkManager` configuration file from an earlier step.
 
 2.  Create `MachineConfig` objects from the Butane configs by running the following command:
 
@@ -354,7 +362,7 @@ Verify the machine configuration on your hosts to confirm that the maximum trans
 
 ## Applying the new hardware MTU value
 
-Use the following procedure to apply the new hardware maximum transmission unit (MTU) value.
+To ensure consistent network communication across your cluster, you must apply the new hardware maximum transmission unit (MTU) value to your nodes. This process involves updating the underlying network interfaces and verifying that the Machine Config Operator successfully reboots and updates each node.
 
 1.  Update the underlying network interface MTU value:
 

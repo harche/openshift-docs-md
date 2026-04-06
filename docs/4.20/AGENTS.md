@@ -328,7 +328,7 @@ Root: ./
 
 |backup_and_restore:{index.md,graceful-cluster-shutdown.md,graceful-cluster-restart.md,hibernating-cluster.md}
 |backup_and_restore/application_backup_and_restore:{oadp-intro.md,oadp-features-plugins.md,oadp-api.md,oadp-advanced-topics.md}
-|backup_and_restore/application_backup_and_restore/release-notes:{oadp-1-5-release-notes.md}
+|backup_and_restore/application_backup_and_restore/release-notes:{oadp-1-5-release-notes.md,oadp-upgrade-notes-1-5.md}
 |backup_and_restore/application_backup_and_restore/oadp-performance:{oadp-recommended-network-settings.md}
 |backup_and_restore/application_backup_and_restore/oadp-use-cases:{oadp-usecase-backup-using-odf.md,oadp-usecase-restore-different-namespace.md,oadp-usecase-enable-ca-cert.md,oadp-usecase-legacy-aws-plugin.md,oadp-rosa-backup-restore.md}
 |backup_and_restore/application_backup_and_restore/installing:{about-installing-oadp.md,oadp-installing-operator.md}

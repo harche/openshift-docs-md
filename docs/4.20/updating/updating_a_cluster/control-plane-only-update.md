@@ -1,3 +1,5 @@
+To reduce the rebooting of non-control plane hosts during cluster updates, you can perform a Control Plane Only update for your cluster.
+
 Due to fundamental Kubernetes design, all OpenShift Container Platform updates between minor versions must be serialized. You must update from OpenShift Container Platform \<4.y\> to \<4.y+1\>, and then to \<4.y+2\>. You cannot update from OpenShift Container Platform \<4.y\> to \<4.y+2\> directly. However, administrators who want to update between two even-numbered minor versions can do so incurring only a single reboot of non-control plane hosts.
 
 <div class="important">
@@ -20,15 +22,17 @@ There are several caveats to consider when attempting a Control Plane Only updat
 
 # Performing a Control Plane Only update
 
-The following procedure pauses all non-`master` machine config pools and performs updates from OpenShift Container Platform \<4.y\> to \<4.y+1\> to \<4.y+2\>, then unpauses the machine config pools. Following this procedure reduces the total update duration and the number of times worker nodes are restarted.
+You can perform a Control Plane Only update by pausing all non-`master` machine config pools, performing updates from OpenShift Container Platform \<4.y\> to \<4.y+1\> to \<4.y+2\>, then unpausing the machine config pools.
 
-- Review the release notes for OpenShift Container Platform \<4.y+1\> and \<4.y+2\>.
+Following this procedure reduces the total update duration and the number of times worker nodes are restarted.
 
-- Review the release notes and product lifecycles for any layered products and Operator Lifecycle Manager (OLM) Operators. Some products and OLM Operators might require updates either before or during a Control Plane Only update.
+- You reviewed the release notes for OpenShift Container Platform \<4.y+1\> and \<4.y+2\>.
 
-- Ensure that you are familiar with version-specific prerequisites, such as the removal of deprecated APIs, that are required before updating from OpenShift Container Platform \<4.y+1\> to \<4.y+2\>.
+- You reviewed the release notes and product lifecycles for any layered products and Operator Lifecycle Manager (OLM) Operators. Some products and OLM Operators might require updates either before or during a Control Plane Only update.
 
-- If your cluster uses in-tree vSphere volumes, update vSphere to version 7.0u3L+ or 8.0u2+.
+- You are familiar with version-specific prerequisites, such as the removal of deprecated APIs, that are required before updating from OpenShift Container Platform \<4.y+1\> to \<4.y+2\>.
+
+- If your cluster uses in-tree vSphere volumes, you updated vSphere to version 7.0u3L+ or 8.0u2+.
 
   <div class="important">
 
@@ -38,11 +42,13 @@ The following procedure pauses all non-`master` machine config pools and perform
 
 ## Control Plane Only update using the web console
 
-- Verify that machine config pools are unpaused.
+You can perform a Control Plane Only update by using the web console.
 
-- Have access to the web console as a user with `cluster-admin` privileges.
+- You verified that machine config pools are unpaused.
 
-1.  Using the web console, update any Operator Lifecycle Manager (OLM) Operators to the versions that are compatible with your intended updated version. You can find more information on how to perform this action in "Updating installed Operators"; see "Additional resources".
+- You have access to the web console as a user with `cluster-admin` privileges.
+
+1.  Using the web console, update any Operator Lifecycle Manager (OLM) Operators to the versions that are compatible with your intended updated version. For more information, see "Updating installed Operators".
 
 2.  Verify that all machine config pools display a status of `Up to date` and that no machine config pool displays a status of `UPDATING`.
 
@@ -50,7 +56,7 @@ The following procedure pauses all non-`master` machine config pools and perform
 
     <div class="note">
 
-    If your machine config pools have an `Updating` status, please wait for this status to change to `Up to date`. This process could take several minutes.
+    If your machine config pools have an `Updating` status, wait for this status to change to `Up to date`. This process could take several minutes.
 
     </div>
 
@@ -60,13 +66,13 @@ The following procedure pauses all non-`master` machine config pools and perform
 
 4.  Pause all worker machine pools except for the master pool. You can perform this action on the **MachineConfigPools** tab under the **Compute** page. Select the vertical ellipses next to the machine config pool you’d like to pause and click **Pause updates**.
 
-5.  Update to version \<4.y+1\> and complete up to the **Save** step. You can find more information on how to perform these actions in "Updating a cluster by using the web console"; see "Additional resources".
+5.  Update to version \<4.y+1\> and complete up to the **Save** step. For more information, see "Updating a cluster by using the web console".
 
 6.  Ensure that the \<4.y+1\> updates are complete by viewing the **Last completed version** of your cluster. You can find this information on the **Cluster Settings** page under the **Details** tab.
 
-7.  If necessary, update your OLM Operators by using the Administrator perspective on the web console. You can find more information on how to perform these actions in "Updating installed Operators"; see "Additional resources".
+7.  If necessary, update your OLM Operators by using the Administrator perspective on the web console. For more information, see "Updating installed Operators".
 
-8.  Update to version \<4.y+2\> and complete up to the **Save** step. You can find more information on how to perform these actions in "Updating a cluster by using the web console"; see "Additional resources".
+8.  Update to version \<4.y+2\> and complete up to the **Save** step. For more information, see "Updating a cluster by using the web console".
 
 9.  Ensure that the \<4.y+2\> update is complete by viewing the **Last completed version** of your cluster. You can find this information on the **Cluster Settings** page under the **Details** tab.
 
@@ -84,7 +90,7 @@ The following procedure pauses all non-`master` machine config pools and perform
 
     <div class="important">
 
-    When you update a cluster that contains Red Hat Enterprise Linux (RHEL) compute machines, those machines temporarily become unavailable during the update process. You must run the upgrade playbook against each RHEL machine as it enters the `NotReady` state for the cluster to finish updating. For more information, see "Updating a cluster that includes RHEL compute machines" in the additional resources section.
+    When you update a cluster that contains Red Hat Enterprise Linux (RHEL) compute machines, those machines temporarily become unavailable during the update process. You must run the upgrade playbook against each RHEL machine as it enters the `NotReady` state for the cluster to finish updating. For more information, see "Updating a cluster that includes RHEL compute machines".
 
     </div>
 
@@ -96,17 +102,19 @@ The following procedure pauses all non-`master` machine config pools and perform
 
 ## Control Plane Only update using the CLI
 
-- Verify that machine config pools are unpaused.
+You can perform a Control Plane Only update by using the OpenShift CLI (`oc`).
 
-- Have access to the OpenShift Container Platform web console as a user with `cluster-admin` privileges.
+- You verified that machine config pools are unpaused.
 
-- Update the OpenShift CLI (`oc`) to the target version before each update.
+- You have access to the OpenShift Container Platform web console as a user with `cluster-admin` privileges.
 
-<div class="important">
+- You updated the OpenShift CLI (`oc`) to the target version before each update.
 
-It is highly discouraged to skip this prerequisite. If the OpenShift CLI (`oc`) is not updated to the target version before your update, unexpected issues may occur.
+  <div class="important">
 
-</div>
+  It is highly discouraged to skip this prerequisite. If the OpenShift CLI (`oc`) is not updated to the target version before your update, unexpected issues may occur.
+
+  </div>
 
 1.  Using the web console, update any Operator Lifecycle Manager (OLM) Operators to the versions that are compatible with your intended updated version. You can find more information on how to perform this action in "Updating installed Operators"; see "Additional resources".
 
@@ -248,37 +256,27 @@ It is highly discouraged to skip this prerequisite. If the OpenShift CLI (`oc`) 
 
 ## Control Plane Only updates for layered products and Operators installed through Operator Lifecycle Manager
 
-In addition to the Control Plane Only update steps mentioned for the web console and CLI, there are additional steps to consider when performing Control Plane Only updates for clusters with the following:
-
-- Layered products
-
-- Operators installed through Operator Lifecycle Manager (OLM)
-
-<div class="formalpara-title">
-
-**What is a layered product?**
-
-</div>
+There are additional steps to consider when performing Control Plane Only updates for clusters with either layered products or Operators installed through Operator Lifecycle Manager (OLM).
 
 Layered products refer to products that are made of multiple underlying products that are intended to be used together and cannot be broken into individual subscriptions. For examples of layered OpenShift Container Platform products, see [Layered Offering On OpenShift](https://access.redhat.com/support/policy/updates/openshift/#layered).
 
-As you perform a Control Plane Only update for the clusters of layered products and those of Operators that have been installed through OLM, you must complete the following:
+As you perform a Control Plane Only update for the clusters of layered products and those of Operators that have been installed through OLM, you must complete the following actions:
 
-1.  You have updated all Operators previously installed through Operator Lifecycle Manager (OLM) to a version that is compatible with your target release. Updating the Operators ensures they have a valid update path when the default software catalogs switch from the current minor version to the next during a cluster update. See "Updating installed Operators" in the "Additional resources" section for more information on how to check compatibility and, if necessary, update the installed Operators.
+1.  You have updated all Operators previously installed through Operator Lifecycle Manager (OLM) to a version that is compatible with your target release. Updating the Operators ensures they have a valid update path when the default software catalogs switch from the current minor version to the next during a cluster update. See "Updating installed Operators" for more information on how to check compatibility and, if necessary, update the installed Operators.
 
 2.  Confirm the cluster version compatibility between the current and intended Operator versions. You can verify which versions your OLM Operators are compatible with by using the [Red Hat OpenShift Container Platform Operator Update Information Checker](https://access.redhat.com/labs/ocpouic/?operator=logging&&ocp_versions=4.10,4.11,4.12).
 
-As an example, here are the steps to perform a Control Plane Only update from \<4.y\> to \<4.y+2\> for 'OpenShift Data Foundation'. This can be done through the CLI or web console. For information about how to update clusters through your desired interface, see *Control Plane Only update using the web console* and "Control Plane Only update using the CLI" in "Additional resources".
+For example, the following high level steps describe how to perform a Control Plane Only update from \<4.y\> to \<4.y+2\> for OpenShift Data Foundation (ODF). This can be done through the CLI or web console. For information about how to update clusters through your desired interface, see "Control Plane Only update using the web console" and "Control Plane Only update using the CLI".
 
 1.  Pause the worker machine pools.
 
-2.  Update OpenShift \<4.y\> → OpenShift \<4.y+1\>.
+2.  Update OpenShift Container Platform from \<4.y\> to \<4.y+1\>.
 
-3.  Update ODF \<4.y\> → ODF \<4.y+1\>.
+3.  Update ODF from \<4.y\> to \<4.y+1\>.
 
-4.  Update OpenShift \<4.y+1\> → OpenShift \<4.y+2\>.
+4.  Update OpenShift Container Platform from \<4.y+1\> to \<4.y+2\>.
 
-5.  Update to ODF \<4.y+2\>.
+5.  Update ODF to \<4.y+2\>.
 
 6.  Unpause the worker machine pools.
 

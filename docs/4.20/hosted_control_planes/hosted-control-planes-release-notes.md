@@ -114,6 +114,12 @@ In hosted clusters, you can configure internal IPv4 subnets that the OVN-Kuberne
 
 - In hosted control planes on OpenShift Virtualization, if you store all hosted cluster information in a shared namespace and then back up and restore a hosted cluster, you might unintentionally change other hosted clusters. To avoid this issue, back up and restore only hosted clusters that use labels, or avoid storing all hosted cluster information in a shared namespace.
 
+- Intermittent egress IP outages occur when a hosted cluster uses the following combined settings:
+
+  - The service publishing strategy for the `Konnectivity` service is set to `Route`.
+
+  - The management cluster uses Virtual Router Redundancy Protocol (VRRP) VIP for ingress.
+
 ## General Availability and Technology Preview features
 
 Some features in this release are currently in Technology Preview. These experimental features are not intended for production use. For more information about the scope of support for these features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview) on the Red Hat Customer Portal.

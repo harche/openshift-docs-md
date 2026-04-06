@@ -1,6 +1,4 @@
-You can update a virtual machine (VM) configuration by using the OpenShift Container Platform web console. You can update the YAML file or the **VirtualMachine details** page.
-
-You can also edit a VM by using the command line.
+You can update virtual machine (VM) configuration details like CPU, memory, and networking by using the CLI or the OpenShift Container Platform web console. In the web console, you can modify settings on the **VirtualMachine details** page or by editing the YAML file directly.
 
 To edit a VM to configure disk sharing by using virtual disks or LUN, see [Configuring shared volumes for virtual machines](../../virt/managing_vms/virtual_disks/virt-configuring-shared-volumes-for-vms.xml#virt-configuring-shared-volumes-for-vms).
 
@@ -201,11 +199,11 @@ If you do not specify these parameters, the system uses the default storage prof
 <tr class="odd">
 <td style="text-align: left;"><p>Access Mode</p></td>
 <td style="text-align: left;"><p>ReadWriteOnce (RWO)</p></td>
-<td style="text-align: left;"><p>Volume can be mounted as read-write by a single node.</p></td>
+<td style="text-align: left;"><p>Volume can be mounted as read/write by a single node.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>ReadWriteMany (RWX)</p></td>
-<td style="text-align: left;"><p>Volume can be mounted as read-write by many nodes at one time.</p>
+<td style="text-align: left;"><p>Volume can be mounted as read/write by many nodes at one time.</p>
 <div class="note">
 <p>This mode is required for live migration.</p>
 </div></td>

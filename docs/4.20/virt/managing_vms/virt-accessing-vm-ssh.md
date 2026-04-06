@@ -1,4 +1,4 @@
-You can configure SSH access to virtual machines (VMs) by using the following methods:
+You can use SSH to securely access your virtual machines (VMs) from the command line. To set up your SSH configuration, use one of the following methods:
 
 - [`virtctl ssh` command](../../virt/managing_vms/virt-accessing-vm-ssh.xml#using-virtctl-ssh_virt-accessing-vm-ssh)
 
@@ -606,11 +606,11 @@ The key is added to the VM by the QEMU guest agent, which is installed automatic
       key: c3NoLXJzYSB...
     ```
 
-    - Specify the `cloudInitNoCloud` data source.
+    - `spec.template.spec.volumes.cloudInitNoCloud` defines the data source, for example `userData`.
 
-    - Specify the `Secret` object name.
+    - `spec.template.spec.accessCredentials.sshPublicKey.source.secret.secretName` defines the `secret` object name.
 
-    - Paste the public SSH key.
+    - `data.key` within the `secret` object defines the full public SSH key.
 
 2.  Create the `VirtualMachine` and `Secret` objects by running the following command:
 
@@ -798,13 +798,25 @@ You can create a service for a virtual machine (VM) by using the `virtctl` comma
   $ virtctl expose vm <vm_name> --name <service_name> --type <service_type> --port <port>
   ```
 
-  - Specify the `ClusterIP`, `NodePort`, or `LoadBalancer` service type.
+  where:
 
-    Example:
+  `<vm_name>`
+  Specifies the name of the VM you are exposing.
 
-    ``` terminal
-    $ virtctl expose vm example-vm --name example-service --type NodePort --port 22
-    ```
+  `<service_name>`
+  Specifies a user-defined name for the service you are creating.
+
+  `<service_type>`
+  Specifies one of `ClusterIP`, `NodePort`, or `LoadBalancer`.
+
+  `<port>`
+  Specifies the network port on the VM that the service will expose.
+
+  Example:
+
+  ``` terminal
+  $ virtctl expose vm example-vm --name example-service --type NodePort --port 22
+  ```
 
 <!-- -->
 
@@ -830,7 +842,7 @@ You can create a service and associate it with a virtual machine (VM) by using t
 
 - You have installed the OpenShift CLI (`oc`).
 
-1.  Edit the `VirtualMachine` manifest to add the label for service creation:
+1.  Edit the `VirtualMachine` manifest to add the label for service creation. Add `special: key` to the `spec.template.metadata.labels` stanza:
 
     ``` yaml
     apiVersion: kubevirt.io/v1
@@ -847,13 +859,11 @@ You can create a service and associate it with a virtual machine (VM) by using t
     # ...
     ```
 
-    - Add `special: key` to the `spec.template.metadata.labels` stanza.
+    <div class="note">
 
-      <div class="note">
+    Labels on a virtual machine are passed through to the pod. The `special: key` label must match the label in the `spec.selector` attribute of the `Service` manifest.
 
-      Labels on a virtual machine are passed through to the pod. The `special: key` label must match the label in the `spec.selector` attribute of the `Service` manifest.
-
-      </div>
+    </div>
 
 2.  Save the `VirtualMachine` manifest file to apply your changes.
 
@@ -877,11 +887,11 @@ You can create a service and associate it with a virtual machine (VM) by using t
         nodePort: 30000
     ```
 
-    - Specify the label that you added to the `spec.template.metadata.labels` stanza of the `VirtualMachine` manifest.
+    - `spec.selector` defines the label that you added to the `spec.template.metadata.labels` stanza of the `VirtualMachine` manifest.
 
-    - Specify `ClusterIP`, `NodePort`, or `LoadBalancer`.
+    - `spec.type` defines the type of service by the way it is exposed. Choose one of `ClusterIP`, `NodePort`, or `LoadBalancer`.
 
-    - Specifies a collection of network ports and protocols that you want to expose from the virtual machine.
+    - `spec.ports` defines a collection of network ports and protocols that you want to expose from the virtual machine.
 
 4.  Save the `Service` manifest file.
 
@@ -917,7 +927,10 @@ You can connect to a virtual machine (VM) that is exposed by a service by using 
   $ ssh <user_name>@<ip_address> -p <port>
   ```
 
-  - Specify the cluster IP for a cluster IP service, the node IP for a node port service, or the external IP address for a load balancer service.
+  where:
+
+  `<ip_address>`
+  Specifies the cluster IP for a cluster IP service, the node IP for a node port service, or the external IP address for a load balancer service.
 
 # Using a secondary network for SSH access
 
