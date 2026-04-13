@@ -1,4 +1,4 @@
-You can access a virtual machine (VM) that is attached to a secondary network interface from outside the cluster by using its fully qualified domain name (FQDN).
+You can access a virtual machine (VM) that is attached to a secondary network interface from outside the cluster by using its fully qualified domain name (FQDN). To connect to a VM by using its external FQDN, you must configure the DNS server, retrieve the cluster FQDN, and then connect to the VM by using the `ssh` command.
 
 <div class="important">
 
@@ -173,4 +173,4 @@ You can access a running virtual machine (VM) attached to a secondary network in
 
 - [About MetalLB and the MetalLB Operator](../../networking/networking_operators/metallb-operator/about-metallb.xml#about-metallb_about-metallb)
 
-- [Configuring IP addresses for virtual machines](../../virt/vm_networking/virt-configuring-viewing-ips-for-vms.xml#configuring-ips_virt-configuring-viewing-ips-for-vms)
+- [Configuring IP addresses for virtual machines](../../virt/vm_networking/virt-configuring-viewing-ips-for-vms.xml#virt-configuring-viewing-ips-for-vms)

@@ -29,7 +29,7 @@ List checks that belong to a specific scan:
 
 ``` terminal
 $ oc get -n openshift-compliance compliancecheckresults \
--l compliance.openshift.io/scan=workers-scan
+-l compliance.openshift.io/scan-name=workers-scan
 ```
 
 Not all `ComplianceCheckResult` objects create `ComplianceRemediation` objects. Only `ComplianceCheckResult` objects that can be remediated automatically do. A `ComplianceCheckResult` object has a related remediation if it is labeled with the `compliance.openshift.io/automated-remediation` label. The name of the remediation is the same as the name of the check.

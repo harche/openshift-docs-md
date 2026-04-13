@@ -24,6 +24,16 @@ Red Hat has not performed testing outside the default port range of `30000-3276
 
 </div>
 
+<div class="important">
+
+When expanding the `serviceNodePortRange` parameter, ensure the value you set for the parameter does not overlap with the ephemeral port range, `net.ipv4.ip_local_port_range`, of the kernel.
+
+OVN-Kubernetes uses this ephemeral range for source network address translation (SNAT) source port selection on outbound pod traffic. When a SNAT source port coincides with a node port number, return traffic can be misrouted, causing intermittent outbound TCP connection timeouts.
+
+For more information, see "Safe and unsafe sysctls" in the *Additional resources* section.
+
+</div>
+
 - Installed the OpenShift CLI (`oc`).
 
 - Logged in to the cluster as a user with `cluster-admin` privileges.
@@ -97,6 +107,8 @@ Red Hat has not performed testing outside the default port range of `30000-3276
 
 - [Configuring ingress cluster traffic using a NodePort](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-nodeport.xml#configuring-ingress-cluster-traffic-nodeport)
 
-- [Network \[config.openshift.io/v1\]](../../rest_api/config_apis/network-config-openshift-io-v1.xml#network-config-openshift-io-v1)
+- [Network: config.openshift.io v1](../../rest_api/config_apis/network-config-openshift-io-v1.xml#network-config-openshift-io-v1)
 
-- [Service \[core/v1\]](../../rest_api/network_apis/service-v1.xml#service-v1)
+- [Service: core v1](../../rest_api/network_apis/service-v1.xml#service-v1)
+
+- [Safe and unsafe sysctls](../../nodes/containers/nodes-containers-sysctls.xml#safe_and_unsafe_sysctls_nodes-containers-sysctls)

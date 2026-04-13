@@ -1,4 +1,6 @@
-Cross-cluster live migration enables users to move a virtual machine (VM) workload from one OpenShift Container Platform cluster to another cluster without disruption. You enable cross-cluster live migration by setting cluster feature gates in OpenShift Virtualization.
+Cross-cluster live migration enables users to move a virtual machine (VM) workload from one OpenShift Container Platform cluster to another cluster without disruption.
+
+# Prerequisites
 
 - OpenShift Virtualization 4.20 or later must be installed.
 

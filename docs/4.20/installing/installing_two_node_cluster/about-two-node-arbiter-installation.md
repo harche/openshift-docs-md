@@ -9,3 +9,9 @@ You can install a cluster with two control plane nodes and one local arbiter nod
 - Installing on bare metal: [Configuring a local arbiter node](../installing_bare_metal/ipi/ipi-install-installation-workflow.xml#ipi-install-config-local-arbiter-node_ipi-install-installation-workflow)
 
 - Installing with the Agent-based Installer: [Configuring a local arbiter node](../../installing/installing_with_agent_based_installer/installing-with-agent-based-installer.xml#installing-ocp-agent-local-arbiter-node_installing-with-agent-based-installer)
+
+<div class="note">
+
+For a cluster with an arbiter, the same networking requirements as a regular cluster for connectivity between machines apply. For more information, see [Network connectivity requirements](../../installing/installing_platform_agnostic/installing-platform-agnostic.xml#installation-network-connectivity-user-infra_installing-platform-agnostic).
+
+</div>

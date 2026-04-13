@@ -1546,7 +1546,10 @@
     - [Configuring backupPVC and restorePVC for Data Mover](backup_and_restore/application_backup_and_restore/installing/configuring-backup-restore-pvc-datamover.md)
     - [Overriding Kopia algorithms](backup_and_restore/application_backup_and_restore/installing/overriding-kopia-algorithms.md)
   - [OADP API](backup_and_restore/application_backup_and_restore/oadp-api.md)
-  - [Advanced OADP features and functionalities](backup_and_restore/application_backup_and_restore/oadp-advanced-topics.md)
+  - **Advanced OADP features and functionalities**
+    - [Working with different Kubernetes API versions on the same cluster](backup_and_restore/application_backup_and_restore/oadp-advanced-topics/oadp-different-kubernetes-api-versions.md)
+    - [Backing up data from one cluster and restoring it to another cluster](backup_and_restore/application_backup_and_restore/oadp-advanced-topics/oadp-backing-up-data-one-cluster-restoring-another-cluster.md)
+    - [OADP storage class mapping](backup_and_restore/application_backup_and_restore/oadp-advanced-topics/oadp-storage-class-mapping-main.md)
   - **OADP troubleshooting**
     - [Troubleshooting OADP](backup_and_restore/application_backup_and_restore/troubleshooting/troubleshooting.md)
     - [Velero CLI tool](backup_and_restore/application_backup_and_restore/troubleshooting/velero-cli-tool.md)
@@ -2009,7 +2012,9 @@
     - [Creating VMs by cloning PVCs](virt/creating_vms_advanced/creating_vms_cli/virt-creating-vms-by-cloning-pvcs.md)
 - **Managing VMs**
   - [Listing virtual machines](virt/managing_vms/virt-list-vms.md)
-  - [Installing the QEMU guest agent and VirtIO drivers](virt/managing_vms/virt-installing-qemu-guest-agent.md)
+  - [Install the QEMU guest agent](virt/managing_vms/virt-installing-qemu-guest-agent.md)
+  - [Install VirtIO drivers on Windows VMs](virt/managing_vms/virt-install-virtio-drivers-on-windows-vms.md)
+  - [Update VirtIO drivers](virt/managing_vms/virt-update-virtio-drivers.md)
   - [Connecting to VM consoles](virt/managing_vms/virt-accessing-vm-consoles.md)
   - [Configuring SSH access to VMs](virt/managing_vms/virt-accessing-vm-ssh.md)
   - [Editing virtual machines](virt/managing_vms/virt-edit-vms.md)

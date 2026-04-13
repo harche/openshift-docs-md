@@ -1,16 +1,6 @@
-You can configure an IP address when you create a virtual machine (VM). The IP address is provisioned with cloud-init.
+You can configure an IP address when you create a virtual machine (VM). The IP address is provisioned with cloud-init. View the IP address of a VM by using the OpenShift Container Platform web console or the command line. The network information is collected by the QEMU guest agent.
 
-You can view the IP address of a VM by using the OpenShift Container Platform web console or the command line. The network information is collected by the QEMU guest agent.
-
-# Configuring IP addresses for virtual machines
-
-You can configure a static IP address when you create a virtual machine (VM) by using the web console or the command line.
-
-You can configure a dynamic IP address when you create a VM by using the command line.
-
-The IP address is provisioned with cloud-init.
-
-## Configuring a static IP address when creating a virtual machine by using the web console
+# Configuring a static IP address when creating a virtual machine by using the web console
 
 You can configure a static IP address when you create a virtual machine (VM) by using the web console. The IP address is provisioned with cloud-init.
 
@@ -40,7 +30,7 @@ If the VM is connected to the pod network, the pod network interface is the defa
 
 9.  Click **Create VirtualMachine**.
 
-## Configuring an IP address when creating a virtual machine by using the CLI
+# Configuring an IP address when creating a virtual machine by using the CLI
 
 You can configure a static or dynamic IP address when you create a virtual machine (VM). The IP address is provisioned with cloud-init.
 
@@ -101,13 +91,7 @@ If the VM is connected to the pod network, the pod network interface is the defa
 
     - Specify the static IP address.
 
-# Viewing IP addresses of virtual machines
-
-You can view the IP address of a VM by using the OpenShift Container Platform web console or the command line.
-
-The network information is collected by the QEMU guest agent.
-
-## Viewing the IP address of a virtual machine by using the web console
+# Viewing the IP address of a virtual machine by using the web console
 
 You can view the IP address of a virtual machine (VM) by using the OpenShift Container Platform web console.
 
@@ -123,7 +107,7 @@ You must install the QEMU guest agent on a VM to view the IP address of a second
 
 3.  Click the **Details** tab to view the IP address.
 
-## Viewing the IP address of a virtual machine by using the CLI
+# Viewing the IP address of a virtual machine by using the CLI
 
 You can view the IP address of a virtual machine (VM) by using the command line.
 

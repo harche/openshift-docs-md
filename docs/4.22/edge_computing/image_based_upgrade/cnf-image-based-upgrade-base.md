@@ -4,9 +4,9 @@ When you deploy the Lifecycle Agent on a cluster, an `ImageBasedUpgrade` CR is a
 
 # Moving to the Prep stage of the image-based upgrade with Lifecycle Agent
 
-When you deploy the Lifecycle Agent on a cluster, an `ImageBasedUpgrade` custom resource (CR) is automatically created.
+When you deploy the Lifecycle Agent on a cluster, the Lifecycle Agent automatically creates an `ImageBasedUpgrade` custom resource (CR).
 
-After you created all the resources that you need during the upgrade, you can move on to the `Prep` stage. For more information, see the "Creating ConfigMap objects for the image-based upgrade with Lifecycle Agent" section.
+After you create all the resources that you need during the upgrade, you can move on to the `Prep` stage. For more information, see the "Creating ConfigMap objects for the image-based upgrade with Lifecycle Agent" section.
 
 <div class="note">
 
@@ -32,11 +32,11 @@ $ skopeo inspect docker://<imagename> | jq -r '.Labels."com.openshift.lifecycle-
     spec:
       stage: Idle
       seedImageRef:
-        version: 4.15.2
+        version: <target_version>
         image: <seed_container_image>
         pullSecretRef: <seed_pull_secret>
       autoRollbackOnFailure: {}
-    #    initMonitorTimeoutSeconds: 1800
+        initMonitorTimeoutSeconds: <initMonitorTimeoutSeconds>
       extraManifests:
       - name: example-extra-manifests-cm
         namespace: openshift-lifecycle-agent
@@ -47,17 +47,25 @@ $ skopeo inspect docker://<imagename> | jq -r '.Labels."com.openshift.lifecycle-
         namespace: openshift-adp
     ```
 
-    - Target platform version. The value must match the version of the seed image.
+    where:
 
-    - Repository where the target cluster can pull the seed image from.
+    `<target_version>`
+    Target platform version. The value must match the version of the seed image.
 
-    - Reference to a secret with credentials to pull container images if the images are in a private registry.
+    `<seed_container_image>`
+    Repository where the target cluster can pull the seed image from.
 
-    - Optional: Time frame in seconds to roll back if the upgrade does not complete within that time frame after the first reboot. If not defined or set to `0`, the default value of `1800` seconds (30 minutes) is used.
+    `<seed_pull_secret>`
+    Reference to a secret with credentials to pull container images if the images are in a private registry.
 
-    - Optional: List of `ConfigMap` resources that contain your custom catalog sources to retain after the upgrade and your extra manifests to apply to the target cluster that are not part of the seed image.
+    `<initMonitorTimeoutSeconds>`
+    Optional: Time frame in seconds to roll back if the upgrade does not complete within that time frame after the first reboot. If not defined or set to `0`, the Lifecycle Agent uses the default value of `1800` seconds (30 minutes).
 
-    - List of `ConfigMap` resources that contain the OADP `Backup` and `Restore` CRs.
+    `extraManifests`
+    Optional: List of `ConfigMap` resources. These resources contain your custom catalog sources to retain after the upgrade and any extra manifests that the seed image does not include.
+
+    `oadpContent`
+    List of `ConfigMap` resources that contain the OADP `Backup` and `Restore` CRs.
 
 2.  To start the `Prep` stage, change the value of the `stage` field to `Prep` in the `ImageBasedUpgrade` CR by running the following command:
 
@@ -65,19 +73,15 @@ $ skopeo inspect docker://<imagename> | jq -r '.Labels."com.openshift.lifecycle-
     $ oc patch imagebasedupgrades.lca.openshift.io upgrade -p='{"spec": {"stage": "Prep"}}' --type=merge -n openshift-lifecycle-agent
     ```
 
-    If you provide `ConfigMap` objects for OADP resources and extra manifests, Lifecycle Agent validates the specified `ConfigMap` objects during the `Prep` stage. You might encounter the following issues:
+    If you include `ConfigMap` objects for OADP resources and extra manifests, Lifecycle Agent validates the specified `ConfigMap` objects during the `Prep` stage.
+
+    The following issues might occur:
 
     - Validation warnings or errors if the Lifecycle Agent detects any issues with the `extraManifests` parameters.
 
     - Validation errors if the Lifecycle Agent detects any issues with the `oadpContent` parameters.
 
-    Validation warnings do not block the `Upgrade` stage but you must decide if it is safe to proceed with the upgrade. These warnings, for example missing CRDs, namespaces, or dry run failures, update the `status.conditions` for the `Prep` stage and `annotation` fields in the `ImageBasedUpgrade` CR with details about the warning.
-
-    <div class="formalpara-title">
-
-    **Example validation warning**
-
-    </div>
+    Validation warnings do not block the `Upgrade` stage but you must decide if it is safe to proceed with the upgrade. These warnings, for example missing custom resource definitions (CRDs), namespaces, or dry run failures, update the `status.conditions` for the `Prep` stage and `annotation` fields in the `ImageBasedUpgrade` CR with details about the warning. The following example shows these details:
 
     ``` yaml
     # ...
@@ -89,7 +93,7 @@ $ skopeo inspect docker://<imagename> | jq -r '.Labels."com.openshift.lifecycle-
 
     However, validation errors, such as adding `MachineConfig` or Operator manifests to extra manifests, cause the `Prep` stage to fail and block the `Upgrade` stage.
 
-    When the validations pass, the cluster creates a new `ostree` stateroot, which involves pulling and unpacking the seed image, and running host-level commands. Finally, all the required images are precached on the target cluster.
+    When the validations pass, the cluster creates a new `ostree` stateroot, which involves pulling and unpacking the seed image, and running host-level commands. Finally, the Lifecycle Agent precaches all the required images on the target cluster.
 
 - Check the status of the `ImageBasedUpgrade` CR by running the following command:
 
@@ -97,11 +101,7 @@ $ skopeo inspect docker://<imagename> | jq -r '.Labels."com.openshift.lifecycle-
   $ oc get ibu -o yaml
   ```
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
+  The following example shows a successful `Prep` stage:
 
   ``` yaml
     conditions:
@@ -139,7 +139,7 @@ $ skopeo inspect docker://<imagename> | jq -r '.Labels."com.openshift.lifecycle-
 
 After you generate the seed image and complete the `Prep` stage, you can upgrade the target cluster. During the upgrade process, the OADP Operator creates a backup of the artifacts specified in the OADP custom resources (CRs), then the Lifecycle Agent upgrades the cluster.
 
-If the upgrade fails or stops, an automatic rollback is initiated. If you have an issue after the upgrade, you can initiate a manual rollback. For more information about manual rollback, see "Moving to the Rollback stage of the image-based upgrade with Lifecycle Agent".
+If the upgrade fails or stops, the Lifecycle Agent initiates an automatic rollback. If you have an issue after the upgrade, you can perform a manual rollback. For more information about manual rollback, see "Moving to the Rollback stage of the image-based upgrade with Lifecycle Agent".
 
 - You have completed the `Prep` stage.
 
@@ -155,11 +155,7 @@ If the upgrade fails or stops, an automatic rollback is initiated. If you have a
     $ oc get ibu -o yaml
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following example shows an upgrade in progress:
 
     ``` yaml
     status:
@@ -206,7 +202,7 @@ If the upgrade fails or stops, an automatic rollback is initiated. If you have a
     $ oc get ibu -o yaml
     ```
 
-4.  If you are satisfied with the upgrade, finalize the changes by patching the value of the `stage` field to `Idle` in the `ImageBasedUpgrade` CR by running the following command:
+4.  After the upgrade, complete the changes by patching the value of the `stage` field to `Idle` in the `ImageBasedUpgrade` CR by running the following command:
 
     ``` terminal
     $ oc patch imagebasedupgrades.lca.openshift.io upgrade -p='{"spec": {"stage": "Idle"}}' --type=merge
@@ -230,11 +226,7 @@ If the upgrade fails or stops, an automatic rollback is initiated. If you have a
     $ oc get ibu -o yaml
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following example shows a completed upgrade:
 
     ``` yaml
     status:
@@ -282,11 +274,7 @@ If the upgrade fails or stops, an automatic rollback is initiated. If you have a
     $ oc get restores -n openshift-adp -o custom-columns=NAME:.metadata.name,Status:.status.phase,Reason:.status.failureReason
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following example shows completed restores:
 
     ``` terminal
     NAME             Status      Reason
@@ -295,7 +283,11 @@ If the upgrade fails or stops, an automatic rollback is initiated. If you have a
     localvolume      Completed   <none>
     ```
 
-    - The `acm-klusterlet` is specific to RHACM environments only.
+    <div class="note">
+
+    The `acm-klusterlet` is specific to RHACM environments only.
+
+    </div>
 
 - [Moving to the Rollback stage of the image-based upgrade with Lifecycle Agent](../../edge_computing/image_based_upgrade/cnf-image-based-upgrade-base.xml#cnf-image-based-upgrade-rollback_cnf-non-gitops)
 
@@ -303,13 +295,7 @@ If the upgrade fails or stops, an automatic rollback is initiated. If you have a
 
 # Moving to the Rollback stage of the image-based upgrade with Lifecycle Agent
 
-An automatic rollback is initiated if the upgrade does not complete within the time frame specified in the `initMonitorTimeoutSeconds` field after rebooting.
-
-<div class="formalpara-title">
-
-**Example ImageBasedUpgrade CR**
-
-</div>
+The Lifecycle Agent initiates an automatic rollback if the upgrade does not complete within the time frame specified in the `initMonitorTimeoutSeconds` field after rebooting, as shown in the following example:
 
 ``` yaml
 apiVersion: lca.openshift.io/v1
@@ -322,13 +308,16 @@ spec:
     version: 4.15.2
     image: <seed_container_image>
   autoRollbackOnFailure: {}
-#    initMonitorTimeoutSeconds: 1800
+#    initMonitorTimeoutSeconds: <initMonitorTimeoutSeconds>
 # ...
 ```
 
-- Optional: The time frame in seconds to roll back if the upgrade does not complete within that time frame after the first reboot. If not defined or set to `0`, the default value of `1800` seconds (30 minutes) is used.
+where:
 
-You can manually roll back the changes if you encounter unresolvable issues after an upgrade.
+`<initMonitorTimeoutSeconds>`
+Optional: The time frame in seconds to roll back if the upgrade does not complete within that time frame after the first reboot. If not defined or set to `0`, the Lifecycle Agent uses the default value of `1800` seconds (30 minutes).
+
+You can manually roll back the changes if you see unresolvable issues after an upgrade.
 
 - You have logged into the hub cluster as a user with `cluster-admin` privileges.
 
@@ -336,7 +325,7 @@ You can manually roll back the changes if you encounter unresolvable issues afte
 
 <div class="warning">
 
-If you choose to upgrade a recently installed single-node OpenShift cluster for example, for testing purposes, you have a limited rollback timeframe of 24 hours or less. You can verify the rollback time by checking the `rollbackAvailabilityExpiration` field of the `ImageBasedUpgrade` custom resource.
+If you choose to upgrade a recently installed single-node OpenShift cluster for example, for testing purposes, you have a limited rollback time frame of 24 hours or less. You can verify the rollback time by checking the `rollbackAvailabilityExpiration` field of the `ImageBasedUpgrade` custom resource.
 
 </div>
 
@@ -348,7 +337,7 @@ If you choose to upgrade a recently installed single-node OpenShift cluster for 
 
     The Lifecycle Agent reboots the cluster with the previously installed version of OpenShift Container Platform and restores the applications.
 
-2.  If you are satisfied with the changes, finalize the rollback by patching the value of the `stage` field to `Idle` in the `ImageBasedUpgrade` CR by running the following command:
+2.  After reviewing the changes, complete the rollback by patching the value of the `stage` field to `Idle` in the `ImageBasedUpgrade` CR by running the following command:
 
     ``` terminal
     $ oc patch imagebasedupgrades.lca.openshift.io upgrade -p='{"spec": {"stage": "Idle"}}' --type=merge -n openshift-lifecycle-agent
@@ -356,7 +345,7 @@ If you choose to upgrade a recently installed single-node OpenShift cluster for 
 
     <div class="warning">
 
-    If you move to the `Idle` stage after a rollback, the Lifecycle Agent cleans up resources that can be used to troubleshoot a failed upgrade.
+    If you move to the `Idle` stage after a rollback, the Lifecycle Agent cleans up resources that you can use to troubleshoot a failed upgrade.
 
     </div>
 
@@ -364,11 +353,11 @@ If you choose to upgrade a recently installed single-node OpenShift cluster for 
 
 # Troubleshooting image-based upgrades with Lifecycle Agent
 
-Perform troubleshooting steps on the managed clusters that are affected by an issue.
+Perform troubleshooting steps on the managed clusters to resolve any issues.
 
 <div class="important">
 
-If you are using the `ImageBasedGroupUpgrade` CR to upgrade your clusters, ensure that the `lcm.openshift.io/ibgu-<stage>-completed` or `lcm.openshift.io/ibgu-<stage>-failed` cluster labels are updated properly after performing troubleshooting or recovery steps on the managed clusters. This ensures that the TALM continues to manage the image-based upgrade for the cluster.
+If you are using the `ImageBasedGroupUpgrade` CR to upgrade your clusters, ensure that you update the `lcm.openshift.io/ibgu-<stage>-completed` or `lcm.openshift.io/ibgu-<stage>-failed` cluster labels properly after performing troubleshooting or recovery steps on the managed clusters. This ensures that the TALM continues to manage the image-based upgrade for the cluster.
 
 </div>
 
@@ -376,24 +365,28 @@ If you are using the `ImageBasedGroupUpgrade` CR to upgrade your clusters, ensur
 
 You can use the `oc adm must-gather` CLI to collect information for debugging and troubleshooting.
 
-- Collect data about the Operators by running the following command:
+To collect data about the Operators, run the following command:
 
-  ``` terminal
-  $  oc adm must-gather \
-    --dest-dir=must-gather/tmp \
-    --image=$(oc -n openshift-lifecycle-agent get deployment.apps/lifecycle-agent-controller-manager -o jsonpath='{.spec.template.spec.containers[?(@.name == "manager")].image}') \
-    --image=quay.io/konveyor/oadp-must-gather:latest \//
-    --image=quay.io/openshift/origin-must-gather:latest
-  ```
+``` terminal
+$  oc adm must-gather \
+  --dest-dir=must-gather/tmp \
+  --image=$(oc -n openshift-lifecycle-agent get deployment.apps/lifecycle-agent-controller-manager -o jsonpath='{.spec.template.spec.containers[?(@.name == "manager")].image}') \
+  --image=<oadp_must_gather_image> \
+  --image=<origin_must_gather_image>
+```
 
-  - Optional: Add this option if you need to gather more information from the OADP Operator.
+where:
 
-  - Optional: Add this option if you need to gather more information from the SR-IOV Operator.
+`<oadp_must_gather_image>`
+Optional: Add this option, for example `quay.io/konveyor/oadp-must-gather:latest`, if you need to gather more information from the OADP Operator.
 
-## AbortFailed or FinalizeFailed error
+`<origin_must_gather_image>`
+Optional: Add this option, for example `quay.io/openshift/origin-must-gather:latest`, if you need to gather more information from the SR-IOV Operator.
+
+## `AbortFailed` or `FinalizeFailed` error
 
 Issue
-During the finalize stage or when you stop the process at the `Prep` stage, Lifecycle Agent cleans up the following resources:
+During the finalization stage or when you stop the process at the `Prep` stage, Lifecycle Agent cleans up the following resources:
 
 - Stateroot that is no longer required
 
@@ -403,13 +396,7 @@ During the finalize stage or when you stop the process at the `Prep` stage, Life
 
 - `ImageBasedUpgrade` CR
 
-If the Lifecycle Agent fails to perform the above steps, it transitions to the `AbortFailed` or `FinalizeFailed` states. The condition message and log show which steps failed.
-
-<div class="formalpara-title">
-
-**Example error message**
-
-</div>
+If the Lifecycle Agent fails to clean up these resources, it transitions to the `AbortFailed` or `FinalizeFailed` states. The condition message and log show the steps that failed, as shown in the following example:
 
 ``` yaml
 message: failed to delete all the backup CRs. Perform cleanup manually then add 'lca.openshift.io/manual-cleanup-done' annotation to ibu CR to transition back to Idle
@@ -420,7 +407,7 @@ message: failed to delete all the backup CRs. Perform cleanup manually then add 
 ```
 
 Resolution
-1.  Inspect the logs to determine why the failure occurred.
+1.  Inspect the logs to find the reason for failure.
 
 2.  To prompt Lifecycle Agent to retry the cleanup, add the `lca.openshift.io/manual-cleanup-done` annotation to the `ImageBasedUpgrade` CR.
 
@@ -428,10 +415,10 @@ Resolution
 
     If the cleanup fails again, you can manually clean up the resources.
 
-### Cleaning up stateroot manually
+## Cleaning up stateroot manually
 
 Issue
-Stopping at the `Prep` stage, Lifecycle Agent cleans up the new stateroot. When finalizing after a successful upgrade or a rollback, Lifecycle Agent cleans up the old stateroot. If this step fails, it is recommended that you inspect the logs to determine why the failure occurred.
+Stopping at the `Prep` stage, Lifecycle Agent cleans up the new stateroot. When finalizing after a successful upgrade or a rollback, Lifecycle Agent cleans up the old stateroot. If this step fails, you must inspect the logs to decide why the failure occurred.
 
 Resolution
 1.  Check if there are any existing deployments in the stateroot by running the following command:
@@ -462,7 +449,7 @@ Resolution
     $ unshare -m /bin/sh -c "mount -o remount,rw /sysroot && rm -rf /sysroot/ostree/deploy/${stateroot}"
     ```
 
-### Cleaning up OADP resources manually
+## Cleaning up OADP resources manually
 
 Issue
 Automatic cleanup of OADP resources can fail due to connection issues between Lifecycle Agent and the S3 backend. By restoring the connection and adding the `lca.openshift.io/manual-cleanup-done` annotation, the Lifecycle Agent can successfully cleanup backup resources.
@@ -475,11 +462,7 @@ Resolution
     $ oc get backupstoragelocations.velero.io -n openshift-adp
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following example shows successful backend connectivity:
 
     ``` terminal
     NAME                          PHASE       LAST VALIDATED   AGE   DEFAULT
@@ -490,22 +473,18 @@ Resolution
 
 ## LVM Storage volume contents not restored
 
-When LVM Storage is used to provide dynamic persistent volume storage, LVM Storage might not restore the persistent volume contents if it is configured incorrectly.
+When you use LVM Storage to configure dynamic persistent volume storage, LVM Storage might not restore the persistent volume contents if you have configured it incorrectly.
 
-### Missing LVM Storage-related fields in Backup CR
+## Missing LVM Storage-related fields in Backup CR
 
 Issue
-Your `Backup` CRs might be missing fields that are needed to restore your persistent volumes. You can check for events in your application pod to determine if you have this issue by running the following:
+Your `Backup` CRs might be missing fields that you need to restore your persistent volumes. You can check for events in your application pod to decide if you have this issue by running the following:
 
 ``` terminal
 $ oc describe pod <your_app_name>
 ```
 
-<div class="formalpara-title">
-
-**Example output showing missing LVM Storage-related fields in Backup CR**
-
-</div>
+The following example output shows a pod failing due to missing LVM Storage-related fields in the `Backup` CR:
 
 ``` terminal
 Events:
@@ -517,13 +496,7 @@ Events:
 ```
 
 Resolution
-You must include `logicalvolumes.topolvm.io` in the application `Backup` CR. Without this resource, the application restores its persistent volume claims and persistent volume manifests correctly, however, the `logicalvolume` associated with this persistent volume is not restored properly after pivot.
-
-<div class="formalpara-title">
-
-**Example Backup CR**
-
-</div>
+You must include `logicalvolumes.topolvm.io` in the application `Backup` CR. Without this resource, the application restores its persistent volume claims and persistent volume manifests correctly, however, the `logicalvolume` associated with this persistent volume is not restored properly after pivot. The following example shows a correctly configured `Backup` CR:
 
 ``` yaml
 apiVersion: velero.io/v1
@@ -547,12 +520,12 @@ spec:
   - logicalvolumes.topolvm.io
 ```
 
-- To restore the persistent volumes for your application, you must configure this section as shown.
+To restore the persistent volumes for your application, you must configure the `includedClusterScopedResources` section as shown.
 
-### Missing LVM Storage-related fields in Restore CR
+## Missing LVM Storage-related fields in Restore CR
 
 Issue
-The expected resources for the applications are restored but the persistent volume contents are not preserved after upgrading.
+LVM Storage restores the expected resources for the applications but it does not preserve the persistent volume contents after upgrading.
 
 1.  List the persistent volumes for you applications by running the following command before pivot:
 
@@ -560,11 +533,7 @@ The expected resources for the applications are restored but the persistent volu
     $ oc get pv,pvc,logicalvolumes.topolvm.io -A
     ```
 
-    <div class="formalpara-title">
-
-    **Example output before pivot**
-
-    </div>
+    The following shows the output before pivot:
 
     ``` terminal
     NAME                        CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM            STORAGECLASS   REASON   AGE
@@ -583,11 +552,7 @@ The expected resources for the applications are restored but the persistent volu
     $ oc get pv,pvc,logicalvolumes.topolvm.io -A
     ```
 
-    <div class="formalpara-title">
-
-    **Example output after pivot**
-
-    </div>
+    The following shows the output after pivot:
 
     ``` terminal
     NAME                        CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM            STORAGECLASS   REASON   AGE
@@ -601,13 +566,7 @@ The expected resources for the applications are restored but the persistent volu
     ```
 
 Resolution
-The reason for this issue is that the `logicalvolume` status is not preserved in the `Restore` CR. This status is important because it is required for Velero to reference the volumes that must be preserved after pivoting. You must include the following fields in the application `Restore` CR:
-
-<div class="formalpara-title">
-
-**Example Restore CR**
-
-</div>
+The reason for this issue is that the `logicalvolume` status is not preserved in the `Restore` CR. This status is important because Velero requires this status to reference the volumes that you must preserve after pivoting. You must include the following fields in the application `Restore` CR, as shown in the following example:
 
 ``` yaml
 apiVersion: velero.io/v1
@@ -622,15 +581,19 @@ metadata:
 spec:
   backupName:
     sample-vote-app
-  restorePVs: true
+  restorePVs: <restore_pvs>
   restoreStatus:
     includedResources:
       - logicalvolumes
 ```
 
-- To preserve the persistent volumes for your application, you must set `restorePVs` to `true`.
+where:
 
-- To preserve the persistent volumes for your application, you must configure this section as shown.
+`<restore_pvs>`
+To preserve the persistent volumes for your application, you must set `restorePVs` to `true`.
+
+`restoreStatus`
+To preserve the persistent volumes for your application, you must configure this field as shown.
 
 ## Debugging failed Backup and Restore CRs
 
@@ -638,15 +601,15 @@ Issue
 The backup or restoration of artifacts failed.
 
 Resolution
-You can debug `Backup` and `Restore` CRs and retrieve logs with the Velero CLI tool. The Velero CLI tool provides more detailed information than the OpenShift CLI tool.
+You can debug `Backup` and `Restore` CRs and retrieve logs with the Velero CLI tool. The Velero CLI tool offers more detailed information than the OpenShift CLI tool.
 
-1.  Describe the `Backup` CR that contains errors by running the following command:
+1.  Describe the `Backup` CR that has errors by running the following command:
 
     ``` terminal
     $ oc exec -n openshift-adp velero-7c87d58c7b-sw6fc -c velero -- ./velero describe backup -n openshift-adp backup-acm-klusterlet --details
     ```
 
-2.  Describe the `Restore` CR that contains errors by running the following command:
+2.  Describe the `Restore` CR that has errors by running the following command:
 
     ``` terminal
     $ oc exec -n openshift-adp velero-7c87d58c7b-sw6fc -c velero -- ./velero describe restore -n openshift-adp restore-acm-klusterlet --details

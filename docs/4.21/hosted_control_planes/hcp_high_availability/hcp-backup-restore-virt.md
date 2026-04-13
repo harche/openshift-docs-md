@@ -54,15 +54,28 @@ When the hosted cluster is not running compute nodes on external infrastructure,
       defaultVolumesToFsBackup: false
     ```
 
-    - This field selects the namespaces from the objects to back up. Include namespaces from both the hosted cluster and the hosted control plane. In this example, `clusters` is a namespace from the hosted cluster and `clusters-hosted` is a namespace from the hosted control plane. By default, the `HostedControlPlane` namespace is `clusters-<hosted_cluster_name>`.
+    where:
 
-    - The boot image of the VMs that are used as the hosted cluster nodes are stored in large PVCs. To reduce backup time and storage size, you can filter those PVCs out of the backup by adding this label selector.
+    `includedNamespaces`
+    Specifies the namespaces from the objects to back up. Include namespaces from both the hosted cluster and the hosted control plane. In this example, `clusters` is a namespace from the hosted cluster and `clusters-hosted` is a namespace from the hosted control plane.
 
-    - This field and the `datamover` field enable automatically uploading the CSI `VolumeSnapshots` to remote cloud storage.
+    <div class="important">
 
-    - This field and the `snapshotMoveData` field enable automatically uploading the CSI `VolumeSnapshots` to remote cloud storage.
+    If you store all hosted cluster information in a shared namespace and then back up and restore a hosted cluster, you might unintentionally change other hosted clusters. To avoid this issue, do not store all hosted cluster information in a shared namespace. Alternatively, you can back up and restore resources based on labels.
 
-    - This field indicates whether pod volume file system backup is used for all volumes by default. Set this value to `false` to back up the PVCs that you want.
+    </div>
+
+    `labelSelector`
+    Specifies the boot image of the VMs that are used as the hosted cluster nodes are stored in large PVCs. To reduce backup time and storage size, you can filter those PVCs out of the backup by adding this label selector.
+
+    `snapshotMoveData`
+    Along with the `datamover` field, specifies that the CSI `VolumeSnapshots` are automatically uploaded to remote cloud storage.
+
+    `datamover`
+    Along with the `snapshotMoveData` field, specifies that the CSI `VolumeSnapshots` are automatically uploaded to remote cloud storage.
+
+    `defaultVolumesToFsBackup`
+    Specifies whether pod volume file system backup is used for all volumes by default. Set this value to `false` to back up the PVCs that you want.
 
 2.  Apply the changes to the YAML file by entering the following command:
 

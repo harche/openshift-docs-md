@@ -1,6 +1,6 @@
 You can connect a virtual machine (VM) to an OVN-Kubernetes localnet secondary network by using the CLI. Cluster administrators can use the `ClusterUserDefinedNetwork` (CUDN) custom resource definition (CRD) to create a shared OVN-Kubernetes network across multiple namespaces.
 
-An OVN-Kubernetes secondary network is compatible with the [multi-network policy API](../../networking/multiple_networks/secondary_networks/configuring-multi-network-policy.xml#compatibility-with-multi-network-policy_configuring-additional-network) which provides the `MultiNetworkPolicy` custom resource definition (CRD) to control traffic flow to and from VMs.
+An OVN-Kubernetes secondary network is compatible with the multi-network policy API which provides the `MultiNetworkPolicy` custom resource definition (CRD) to control traffic flow to and from VMs. For more information, see "Additional resources".
 
 <div class="important">
 
@@ -209,3 +209,5 @@ You can connect a virtual machine (VM) to multiple secondary cluster-scoped user
 # Additional resources
 
 - [About the `ClusterUserDefinedNetwork` CR](../../networking/multiple_networks/primary_networks/about-user-defined-networks.xml#about-cudn_about-user-defined-networks)
+
+- [Multi-network policy API](../../networking/multiple_networks/secondary_networks/configuring-multi-network-policy.xml#compatibility-with-multi-network-policy_configuring-additional-network)

@@ -185,7 +185,13 @@ With OpenShift Container Platform 4.14 and later, you can create a cluster with 
 
 ## Creating a hosted cluster with the KubeVirt platform by using the CLI
 
-To create a hosted cluster, you can use the hosted control plane command-line interface (CLI), `hcp`.
+To create a hosted cluster on OpenShift Virtualization, you can use the hosted control plane command-line interface (CLI), `hcp`.
+
+<div class="important">
+
+Avoid storing all hosted cluster information in a shared namespace. If you create a hosted cluster in a shared namespace and then back up and restore the hosted cluster, you might unintentionally change other hosted clusters. Either store hosted cluster information in a separate namespace or set up your hosted cluster to back up and restore resources based on labels.
+
+</div>
 
 1.  Create a hosted cluster with the KubeVirt platform by entering the following command:
 
@@ -201,29 +207,23 @@ To create a hosted cluster, you can use the hosted control plane command-line in
       --release-image <ocp_release_image_for_the_cluster>
     ```
 
-    - Specify the name of your hosted cluster, for example, `my-hosted-cluster`.
+    - `--name` defines the name of your hosted cluster, for example, `my-hosted-cluster`.
 
-    - Specify the node pool replica count, for example, `3`. You must specify the replica count as `0` or greater to create the same number of replicas. Otherwise, no node pools are created.
+    - `--node-pool-replicas` defines the node pool replica count, for example, `3`. You must specify the replica count as `0` or greater to create the same number of replicas. Otherwise, no node pools are created.
 
-    - Specify the path to your pull secret, for example, `/user/name/pullsecret`.
+    - `--pull-secret` defines the path to your pull secret, for example, `/user/name/pullsecret`.
 
-    - Specify a value for memory, for example, `6Gi`.
+    - `--memory` defines a value for memory, for example, `6Gi`.
 
-    - Specify a value for CPU, for example, `2`.
+    - `--cores` defines a value for CPU, for example, `2`.
 
-    - Specify the etcd storage class name, for example, `lvm-storageclass`.
+    - `--etcd-storage-class` defines the etcd storage class name, for example, `lvm-storageclass`.
 
-    - Specify the architecture of the node pool, for example, `s390x`. The default is `amd64`.
+    - `--arch` defines the architecture of the node pool, for example, `s390x`. The default is `amd64`.
 
-    - Specify the ocp release image for the cluster, for example, `quay.io/openshift-release-dev/ocp-release:4.20.14-multi`.
+    - `--release-image` defines the OpenShift Container Platform release image for the cluster, for example, `quay.io/openshift-release-dev/ocp-release:4.20.14-multi`. You can use the `--release-image` flag to set up the hosted cluster with a specific OpenShift Container Platform release.
 
-      <div class="note">
-
-      You can use the `--release-image` flag to set up the hosted cluster with a specific OpenShift Container Platform release.
-
-      </div>
-
-      A default node pool is created for the cluster with two virtual machine worker replicas according to the `--node-pool-replicas` flag.
+    A default node pool is created for the cluster with a specific number of virtual machine worker replicas according to the `--node-pool-replicas` flag.
 
 2.  After a few moments, verify that the hosted control plane pods are running by entering the following command:
 
@@ -264,6 +264,10 @@ To create a hosted cluster, you can use the hosted control plane command-line in
 
   Replace `<4.x.0>` with the supported OpenShift Container Platform version that you want to use.
 
+<!-- -->
+
+- [Labeling management cluster nodes](../../hosted_control_planes/hcp-prepare/hcp-distribute-workloads.xml#hcp-labels-taints_hcp-distribute-workloads)
+
 ## Creating a hosted cluster with the KubeVirt platform by using external infrastructure
 
 By default, the HyperShift Operator hosts both the control plane pods of the hosted cluster and the KubeVirt worker VMs within the same cluster. With the external infrastructure feature, you can place the worker node VMs on a separate cluster from the control plane pods.
@@ -274,21 +278,19 @@ By default, the HyperShift Operator hosts both the control plane pods of the hos
 
 - By default, the management cluster also acts as the infrastructure cluster that hosts VMs. However, for external infrastructure, the management and infrastructure clusters are different.
 
-<!-- -->
+<div class="important">
+
+Avoid storing all hosted cluster information in a shared namespace. If you create a hosted cluster in a shared namespace and then back up and restore the hosted cluster, you might unintentionally change other hosted clusters. Either store hosted cluster information in a separate namespace or set up your hosted cluster to back up and restore resources based on labels.
+
+</div>
 
 - You must have a namespace on the external infrastructure cluster for the KubeVirt nodes to be hosted in.
 
 - You must have a `kubeconfig` file for the external infrastructure cluster.
 
-<div class="formalpara-title">
+<!-- -->
 
-**Procedure**
-
-</div>
-
-You can create a hosted cluster by using the `hcp` command-line interface.
-
-- To place the KubeVirt worker VMs on the infrastructure cluster, use the `--infra-kubeconfig-file` and `--infra-namespace` arguments, as shown in the following example:
+- In the `hcp` command-line interface, place the KubeVirt worker VMs on the infrastructure cluster, use the `--infra-kubeconfig-file` and `--infra-namespace` arguments, as shown in the following example:
 
   ``` terminal
   $ hcp create cluster kubevirt \
@@ -301,25 +303,35 @@ You can create a hosted cluster by using the `hcp` command-line interface.
     --infra-kubeconfig-file=<path-to-external-infra-kubeconfig>
   ```
 
-  - Specify the name of your hosted cluster, for example, `my-hosted-cluster`.
+  - `--name` defines the name of your hosted cluster, for example, `my-hosted-cluster`.
 
-  - Specify the worker count, for example, `2`.
+  - `--node-pool-replicas` defines the worker count, for example, `2`.
 
-  - Specify the path to your pull secret, for example, `/user/name/pullsecret`.
+  - `--pull-secret` defines the path to your pull secret, for example, `/user/name/pullsecret`.
 
-  - Specify a value for memory, for example, `6Gi`.
+  - `--memory` defines a value for memory, for example, `6Gi`.
 
-  - Specify a value for CPU, for example, `2`.
+  - `--cores` defines a value for CPU, for example, `2`.
 
-  - Specify the infrastructure namespace, for example, `clusters-example`.
+  - `--infra-namespace` defines the infrastructure namespace, for example, `clusters-example`.
 
-  - Specify the path to your `kubeconfig` file for the infrastructure cluster, for example, `/user/name/external-infra-kubeconfig`.
+  - `--infra-kubeconfig-file` defines the path to your `kubeconfig` file for the infrastructure cluster, for example, `/user/name/external-infra-kubeconfig`.
 
-    After you enter that command, the control plane pods are hosted on the management cluster that the HyperShift Operator runs on, and the KubeVirt VMs are hosted on a separate infrastructure cluster.
+  After you enter the command, the control plane pods are hosted on the management cluster that the HyperShift Operator runs on, and the KubeVirt VMs are hosted on a separate infrastructure cluster.
+
+<!-- -->
+
+- [Labeling management cluster nodes](../../hosted_control_planes/hcp-prepare/hcp-distribute-workloads.xml#hcp-labels-taints_hcp-distribute-workloads)
 
 ## Creating a hosted cluster by using the console
 
-To create a hosted cluster with the KubeVirt platform by using the console, complete the following steps.
+If you prefer to work in the OpenShift Container Platform console instead of the CLI, you can create a hosted cluster on the KubeVirt platform by using the console.
+
+<div class="note">
+
+If you want to use predefined values to automatically populate fields in the console, you can create a OpenShift Virtualization credential. For more information, see "Creating a credential for an on-premises environment".
+
+</div>
 
 1.  Open the OpenShift Container Platform web console and log in by entering your administrator credentials.
 
@@ -331,11 +343,11 @@ To create a hosted cluster with the KubeVirt platform by using the console, comp
 
 5.  On the **Create cluster** page, follow the prompts to enter details about the cluster and node pools.
 
-    <div class="note">
+    On the **Cluster details** page, the pull secret is your OpenShift Container Platform pull secret that you use to access OpenShift Container Platform resources. If you selected a OpenShift Virtualization credential, the pull secret is automatically populated.
 
-    - If you want to use predefined values to automatically populate fields in the console, you can create a OpenShift Virtualization credential. For more information, see "Creating a credential for an on-premises environment".
+    <div class="important">
 
-    - On the **Cluster details** page, the pull secret is your OpenShift Container Platform pull secret that you use to access OpenShift Container Platform resources. If you selected a OpenShift Virtualization credential, the pull secret is automatically populated.
+    Avoid storing all hosted cluster information in a shared namespace. If you create a hosted cluster in a shared namespace and then back up and restore the hosted cluster, you might unintentionally change other hosted clusters. Either store hosted cluster information in a separate namespace or set up your hosted cluster to back up and restore resources based on labels.
 
     </div>
 
@@ -356,6 +368,8 @@ To create a hosted cluster with the KubeVirt platform by using the console, comp
 2.  Wait until the control plane components are ready. This process can take a few minutes.
 
 3.  To view the node pool status, scroll to the **NodePool** section. The process to install the nodes takes about 10 minutes. You can also click **Nodes** to confirm whether the nodes joined the hosted cluster.
+
+- [Labeling management cluster nodes](../../hosted_control_planes/hcp-prepare/hcp-distribute-workloads.xml#hcp-labels-taints_hcp-distribute-workloads)
 
 - [Creating a credential for an on-premises environment](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#creating-a-credential-for-an-on-premises-environment)
 

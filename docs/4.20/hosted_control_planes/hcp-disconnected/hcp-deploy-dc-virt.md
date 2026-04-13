@@ -301,7 +301,13 @@ As you prepare to deploy hosted control planes on OpenShift Virtualization, cons
 
 ## Creating a hosted cluster with the KubeVirt platform by using the CLI
 
-To create a hosted cluster, you can use the hosted control plane command-line interface (CLI), `hcp`.
+To create a hosted cluster on OpenShift Virtualization, you can use the hosted control plane command-line interface (CLI), `hcp`.
+
+<div class="important">
+
+Avoid storing all hosted cluster information in a shared namespace. If you create a hosted cluster in a shared namespace and then back up and restore the hosted cluster, you might unintentionally change other hosted clusters. Either store hosted cluster information in a separate namespace or set up your hosted cluster to back up and restore resources based on labels.
+
+</div>
 
 1.  Create a hosted cluster with the KubeVirt platform by entering the following command:
 
@@ -315,25 +321,19 @@ To create a hosted cluster, you can use the hosted control plane command-line in
       --etcd-storage-class=<etcd_storage_class>
     ```
 
-    - Specify the name of your hosted cluster, for example, `my-hosted-cluster`.
+    - `--name` defines the name of your hosted cluster, for example, `my-hosted-cluster`.
 
-    - Specify the node pool replica count, for example, `3`. You must specify the replica count as `0` or greater to create the same number of replicas. Otherwise, no node pools are created.
+    - `--node-pool-replicas` defines the node pool replica count, for example, `3`. You must specify the replica count as `0` or greater to create the same number of replicas. Otherwise, no node pools are created.
 
-    - Specify the path to your pull secret, for example, `/user/name/pullsecret`.
+    - `--pull-secret` defines the path to your pull secret, for example, `/user/name/pullsecret`.
 
-    - Specify a value for memory, for example, `6Gi`.
+    - `--memory` defines a value for memory, for example, `6Gi`.
 
-    - Specify a value for CPU, for example, `2`.
+    - `--cores` defines a value for CPU, for example, `2`.
 
-    - Specify the etcd storage class name, for example, `lvm-storageclass`.
+    - `--etcd-storage-class` defines the etcd storage class name, for example, `lvm-storageclass`.
 
-      <div class="note">
-
-      You can use the `--release-image` flag to set up the hosted cluster with a specific OpenShift Container Platform release.
-
-      </div>
-
-      A default node pool is created for the cluster with two virtual machine worker replicas according to the `--node-pool-replicas` flag.
+    A default node pool is created for the cluster with a specific number of virtual machine worker replicas according to the `--node-pool-replicas` flag.
 
 2.  After a few moments, verify that the hosted control plane pods are running by entering the following command:
 
@@ -373,6 +373,10 @@ To create a hosted cluster, you can use the hosted control plane command-line in
       clusters    my-hosted-cluster   <4.x.0>     example-admin-kubeconfig   Completed   True        False         The hosted control plane is available
 
   Replace `<4.x.0>` with the supported OpenShift Container Platform version that you want to use.
+
+<!-- -->
+
+- [Labeling management cluster nodes](../../hosted_control_planes/hcp-prepare/hcp-distribute-workloads.xml#hcp-labels-taints_hcp-distribute-workloads)
 
 ## Configuring the default ingress and DNS for hosted control planes on OpenShift Virtualization
 

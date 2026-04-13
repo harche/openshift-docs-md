@@ -8,7 +8,7 @@ The Leader Worker Set Operator simplifies these multi-node deployments by treati
 
 Use the Leader Worker Set Operator to deploy groups of pods as a single, manageable unit. This helps you to deploy large AI/ML inference workloads, such as sharded large language models (LLMs).
 
-The Leader Worker Set Operator is based on the [LeaderWorkerSet](https://lws.sigs.k8s.io/) open source project. `LeaderWorkerSet` is a custom Kubernetes API that can be used to deploy a group of pods as a unit. This is useful for artificial intelligence (AI) and machine learning (ML) inference workloads, where large language models (LLMs) are sharded across multiple nodes.
+The Leader Worker Set Operator is based on the LeaderWorkerSet open source project. `LeaderWorkerSet` is a custom Kubernetes API that can be used to deploy a group of pods as a unit. This is useful for artificial intelligence (AI) and machine learning (ML) inference workloads, where large language models (LLMs) are sharded across multiple nodes.
 
 With the `LeaderWorkerSet` API, pods are grouped into units consisting of one leader and multiple workers, all managed together as a single entity. Each pod in a group has a unique pod identity. Pods within a group are created in parallel and share identical lifecycle stages. Rollouts, rolling updates, and pod failure restarts are performed as a group.
 
@@ -21,6 +21,8 @@ Before you install the Leader Worker Set Operator, you must install the cert-man
 </div>
 
 Monitoring for the Leader Worker Set Operator is provided by default with OpenShift Container Platform through Prometheus.
+
+- [LeaderWorkerSet project](https://lws.sigs.k8s.io/)
 
 ## LeaderWorkerSet architecture
 

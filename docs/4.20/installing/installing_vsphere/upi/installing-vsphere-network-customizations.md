@@ -1981,11 +1981,11 @@ To finalize the installation on user-provisioned infrastructure, complete the cl
     machine-api                                4.17.0    True        False         False      29m
     machine-approver                           4.17.0    True        False         False      37m
     machine-config                             4.17.0    True        False         False      36m
-    marketplace                                4.17.0    True        False         False      37m
+    marketplace                                4.17.0    True        False         False      37muser
     monitoring                                 4.17.0    True        False         False      29m
     network                                    4.17.0    True        False         False      38m
     node-tuning                                4.17.0    True        False         False      37m
-    openshift-apiserver                        4.17.0    True        False         False      32m
+    openshift-apiserver                        4.17.0    True        False         False      32muser
     openshift-controller-manager               4.17.0    True        False         False      30m
     openshift-samples                          4.17.0    True        False         False      32m
     operator-lifecycle-manager                 4.17.0    True        False         False      37m

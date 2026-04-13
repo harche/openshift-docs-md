@@ -32,6 +32,9 @@ E
 F
 [File Integrity Operator](../security/file_integrity_operator/file-integrity-operator-release-notes.xml#file-integrity-operator-release-notes-v0)
 
+J
+[JobSet Operator](../ai_workloads/jobset_operator/jobset-release-notes.xml#js-release-notes)
+
 K
 [Kube Descheduler Operator](../nodes/scheduling/descheduler/nodes-descheduler-release-notes.xml#nodes-descheduler-release-notes)
 

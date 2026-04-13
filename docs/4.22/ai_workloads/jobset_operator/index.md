@@ -4,7 +4,7 @@ Use the JobSet Operator on OpenShift Container Platform to manage and run large-
 
 Use the JobSet Operator on OpenShift Container Platform to manage large, distributed, and coordinated computing workloads, such as high-performance computing (HPC) or artificial intelligence (AI) training, and gain automatic stability, coordination, and failure recovery.
 
-The JobSet Operator is based on the [JobSet](https://jobset.sigs.k8s.io/docs/overview/) open source project.
+The JobSet Operator is based on the JobSet open source project.
 
 JobSet Operator is designed to manage a group of jobs as a single, coordinated unit. This is especially useful for fields like HPC and training massive AI models where you need a team of machines to run for hours or days.
 
@@ -15,6 +15,8 @@ The JobSet Operator automatically sets up stable headless service to get an IP a
 The JobSet Operator offers startup control, allowing you to define a specific startup sequence to ensure dependencies are met. For example, making sure the leader is running before any workers attempt to connect.
 
 JobSet Operator makes managing large, distributed, and coordinated computing tasks on OpenShift Container Platform easier, turning many individual components into one resilient and manageable system.
+
+- [JobSet project](https://jobset.sigs.k8s.io/docs/overview/)
 
 # Additional resources
 

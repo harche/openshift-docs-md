@@ -1,18 +1,20 @@
-A user performs a range of operations while working on OpenShift Container Platform such as the following:
+OpenShift Container Platform offers a set of command-line interface (CLI) tools that enable users to perform various administration and development operations from the terminal. These tools expose simple commands to manage the applications, as well as interact with each component of the system.
 
-- Managing clusters
+For example, you can use the CLI to complete the following operations:
 
-- Building, deploying, and managing applications
+- Manage clusters
 
-- Managing deployment processes
+- Build, deploy, and manage applications
 
-- Creating and maintaining Operator catalogs
+- Manage deployment processes
 
-OpenShift Container Platform offers a set of command-line interface (CLI) tools that simplify these tasks by enabling users to perform various administration and development operations from the terminal. These tools expose simple commands to manage the applications, as well as interact with each component of the system.
+- Create and maintain Operator catalogs
 
 # List of CLI tools
 
-The following set of CLI tools are available in OpenShift Container Platform:
+Review the primary command-line interface (CLI) tools available for OpenShift Container Platform, including tools for cluster administration, application development, and Operator management.
+
+Use the following tools to manage your cluster from the terminal:
 
 - [OpenShift CLI (`oc`)](../cli_reference/openshift_cli/getting-started-cli.xml#cli-getting-started): This is the most commonly used CLI tool by OpenShift Container Platform users. It helps both cluster administrators and developers to perform end-to-end operations across OpenShift Container Platform using the terminal. Unlike the web console, it allows the user to work directly with the project source code using command scripts.
 

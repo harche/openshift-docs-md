@@ -8,7 +8,15 @@ Network sysctls are a special category of sysctl. Network sysctls include:
 
 - Interface-specific sysctls, for example `net.ipv4.conf.IFNAME.accept_local`, that only apply to a specific additional network interface for a given pod. You can set these independently for each additional network configuration. You set these by using a configuration in the `tuning-cni` after the network interfaces are created.
 
+<div class="important">
+
+If the `net.ipv4.ip_local_port_range` safe sysctl parameter value and the default node port service range overlap, the OVN Kubernetes plugin might experience connection failures. For more information about this parameter, see the *System-wide safe sysctls* table in the "Safe and unsafe sysctls" section.
+
+</div>
+
 Only those sysctls considered *safe* are enabled by default. A cluster administrator can manually enable *unsafe* sysctls on the node to be available to the user.
+
+- [Configuring the node port service range](../../networking/configuring_network_settings/configuring-node-port-service-range.xml#configuring-node-port-service-range)
 
 # About sysctls
 
@@ -86,18 +94,64 @@ You cannot manually enable interface-specific unsafe sysctls.
 
 OpenShift Container Platform adds the following system-wide and interface-specific safe sysctls to an allowed safe list:
 
-| sysctl                                | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-|---------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `kernel.shm_rmid_forced`              | When set to `1`, all shared memory objects in current IPC namespace are automatically forced to use IPC_RMID. For more information, see [shm_rmid_forced](https://docs.kernel.org/admin-guide/sysctl/kernel.html?highlight=shm_rmid_forced#shm-rmid-forced).                                                                                                                                                                                                                                                                                                                             |
-| `net.ipv4.ip_local_port_range`        | Defines the local port range that is used by TCP and UDP to choose the local port. The first number is the first port number, and the second number is the last local port number. If possible, it is better if these numbers have different parity (one even and one odd value). They must be greater than or equal to `ip_unprivileged_port_start`. The default values are `32768` and `60999` respectively. For more information, see [ip_local_port_range (Kernel.org documentation)](https://docs.kernel.org/networking/ip-sysctl.html?highlight=ip_local_port_range#ip-variables). |
-| `net.ipv4.tcp_syncookies`             | When `net.ipv4.tcp_syncookies` is set, the kernel handles TCP SYN packets normally until the half-open connection queue is full, at which time, the SYN cookie functionality kicks in. This functionality allows the system to keep accepting valid connections, even if under a denial-of-service attack. For more information, see [tcp_syncookies (Kernel.org documentation)](https://docs.kernel.org/networking/ip-sysctl.html?highlight=tcp_syncookies#tcp-variables).                                                                                                              |
-| `net.ipv4.ping_group_range`           | Restricts `ICMP_PROTO` datagram sockets to users in the group range. The default is `1 0`, meaning that nobody, not even root, can create ping sockets. For more information, see [ping_group_range (Kernel.org documentation)](https://docs.kernel.org/networking/ip-sysctl.html?highlight=ping_group_range#ip-variables).                                                                                                                                                                                                                                                              |
-| `net.ipv4.ip_unprivileged_port_start` | Defines the first unprivileged port in the network namespace. To disable all privileged ports, set to `0`. Privileged ports must not overlap with the `ip_local_port_range`. For more information, see [ip_unprivileged_port_start (Kernel.org documentation)](https://docs.kernel.org/networking/ip-sysctl.html?highlight=ip_unprivileged_port_start#ip-variables#ip-variables).                                                                                                                                                                                                        |
-| `net.ipv4.ip_local_reserved_ports`    | Specifies a range of comma-separated local ports that you want to reserve for applications or services.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| `net.ipv4.tcp_keepalive_time`         | Specifies the interval in seconds before the first `keepalive` probe should be sent after a connection has become idle.                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| `net.ipv4.tcp_fin_timeout`            | Specifies the time in seconds that a connection remains in the `FIN-WAIT-2` state before it is aborted.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| `net.ipv4.tcp_keepalive_intvl`        | Specifies the interval in seconds between the `keepalive` probes. This value is multiplied by the `tcp_keepalive_probes` value to determine the total time required before it is decided that the connection is broken.                                                                                                                                                                                                                                                                                                                                                                  |
-| `net.ipv4.tcp_keepalive_probes`       | Specifies how many `keepalive` probes to send until it is determined that the connection is broken.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+<table>
+<caption>System-wide safe sysctls</caption>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 70%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">sysctl</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>kernel.shm_rmid_forced</code></p></td>
+<td style="text-align: left;"><p>When set to <code>1</code>, all shared memory objects in current IPC namespace are automatically forced to use IPC_RMID. For more information, see <a href="https://docs.kernel.org/admin-guide/sysctl/kernel.html?highlight=shm_rmid_forced#shm-rmid-forced">shm_rmid_forced</a>.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>net.ipv4.ip_local_port_range</code></p></td>
+<td style="text-align: left;"><p>Defines the local port range that is used by TCP and UDP to choose the local port. The first number is the first port number, and the second number is the last local port number. If possible, ensure these numbers have different parity, such as one even and one odd value. The numbers must be greater than or equal to <code>ip_unprivileged_port_start</code>. The default values are <code>32768</code> and <code>60999</code> respectively. For more information, see <a href="https://docs.kernel.org/networking/ip-sysctl.html?highlight=ip_local_port_range#ip-variables">ip_local_port_range (Kernel.org documentation)</a>.</p>
+<div class="important">
+<p>When specifying a range for the <code>net.ipv4.ip_local_port_range</code> sysctl parameter, ensure the range does not overlap with the range you set for the <code>serviceNodePortRange</code> parameter. For more information, see "Configuring the node port service range" in the <em>Additional resources</em> section.</p>
+</div></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>net.ipv4.tcp_syncookies</code></p></td>
+<td style="text-align: left;"><p>When <code>net.ipv4.tcp_syncookies</code> is set, the kernel handles TCP SYN packets normally until the half-open connection queue is full, at which time, the SYN cookie functionality kicks in. This functionality allows the system to keep accepting valid connections, even if under a denial-of-service attack. For more information, see <a href="https://docs.kernel.org/networking/ip-sysctl.html?highlight=tcp_syncookies#tcp-variables">tcp_syncookies (Kernel.org documentation)</a>.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>net.ipv4.ping_group_range</code></p></td>
+<td style="text-align: left;"><p>Restricts <code>ICMP_PROTO</code> datagram sockets to users in the group range. The default is <code>1 0</code>, meaning that nobody, not even root, can create ping sockets. For more information, see <a href="https://docs.kernel.org/networking/ip-sysctl.html?highlight=ping_group_range#ip-variables">ping_group_range (Kernel.org documentation)</a>.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>net.ipv4.ip_unprivileged_port_start</code></p></td>
+<td style="text-align: left;"><p>Defines the first unprivileged port in the network namespace. To disable all privileged ports, set to <code>0</code>. Privileged ports must not overlap with the <code>ip_local_port_range</code>. For more information, see <a href="https://docs.kernel.org/networking/ip-sysctl.html?highlight=ip_unprivileged_port_start#ip-variables#ip-variables">ip_unprivileged_port_start (Kernel.org documentation)</a>.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>net.ipv4.ip_local_reserved_ports</code></p></td>
+<td style="text-align: left;"><p>Specifies a range of comma-separated local ports that you want to reserve for applications or services.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>net.ipv4.tcp_keepalive_time</code></p></td>
+<td style="text-align: left;"><p>Specifies the interval in seconds before the first <code>keepalive</code> probe should be sent after a connection has become idle.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>net.ipv4.tcp_fin_timeout</code></p></td>
+<td style="text-align: left;"><p>Specifies the time in seconds that a connection remains in the <code>FIN-WAIT-2</code> state before it is aborted.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>net.ipv4.tcp_keepalive_intvl</code></p></td>
+<td style="text-align: left;"><p>Specifies the interval in seconds between the <code>keepalive</code> probes. This value is multiplied by the <code>tcp_keepalive_probes</code> value to determine the total time required before it is decided that the connection is broken.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>net.ipv4.tcp_keepalive_probes</code></p></td>
+<td style="text-align: left;"><p>Specifies how many <code>keepalive</code> probes to send until it is determined that the connection is broken.</p></td>
+</tr>
+</tbody>
+</table>
 
 System-wide safe sysctls
 
@@ -188,6 +242,10 @@ Interface-specific safe sysctls
 When setting these values using the `tuning` CNI plugin, use the value `IFNAME` literally. The interface name is represented by the `IFNAME` token, and is replaced with the actual name of the interface at runtime.
 
 </div>
+
+# Additional resources
+
+- [Configuring ingress cluster traffic using a NodePort](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-nodeport.xml#configuring-ingress-cluster-traffic-nodeport)
 
 # Updating the interface-specific safe sysctls list
 

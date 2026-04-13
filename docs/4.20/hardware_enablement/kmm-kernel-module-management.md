@@ -96,12 +96,11 @@ As a cluster administrator, you can install the Kernel Module Management (KMM) O
           name: kernel-module-management
           namespace: openshift-kmm
         spec:
-          channel: release-1.0
+          channel: stable
           installPlanApproval: Automatic
           name: kernel-module-management
           source: redhat-operators
           sourceNamespace: openshift-marketplace
-          startingCSV: kernel-module-management.v1.0.0
         ```
 
     4.  Create the subscription object by running the following command:
@@ -217,12 +216,11 @@ The KMM Operator is supported on OpenShift Container Platform 4.12 and later. Fo
           name: kernel-module-management
           namespace: openshift-kmm
         spec:
-          channel: release-1.0
+          channel: stable
           installPlanApproval: Automatic
           name: kernel-module-management
           source: redhat-operators
           sourceNamespace: openshift-marketplace
-          startingCSV: kernel-module-management.v1.0.0
         ```
 
     6.  Create the subscription object by running the following command:

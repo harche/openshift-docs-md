@@ -975,6 +975,9 @@ Optional Agent configuration parameters are described in the following table:
   interfaces:
     name:</code></pre></td>
 <td style="text-align: left;"><p>The name of an interface on the host.</p>
+<div class="note">
+<p>This value does not need to match the device name.</p>
+</div>
 <p><strong>Value:</strong> String.</p></td>
 </tr>
 <tr class="even">

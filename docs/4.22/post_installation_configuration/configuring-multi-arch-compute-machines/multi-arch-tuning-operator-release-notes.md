@@ -2,6 +2,26 @@ The Multiarch Tuning Operator (MTO) optimizes workload management within multi-a
 
 For more information, see [Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator](../../post_installation_configuration/configuring-multi-arch-compute-machines/multiarch-tuning-operator.xml#multiarch-tuning-operator).
 
+# Release notes for the Multiarch Tuning Operator 1.3.0
+
+Issued: 6 April 2026
+
+## New features and enhancements
+
+- With this release, after you create a `ClusterPodPlacementConfig` object, you can create namespace-scoped `PodPlacementConfig` objects for the purposes of configuring pod placement at the namespace level. `PodPlacementConfig` objects modify the behavior of the pod placement controller at the namespace level, and take precedence over the `ClusterPodPlacementConfig` object. For more information, see [Creating the namespace-scoped PodPlacementConfig object](../../post_installation_configuration/configuring-multi-arch-compute-machines/multiarch-tuning-operator.xml#multi-arch-creating-namespace-podplacement-config_multiarch-tuning-operator).
+
+- With this release, you can specify a fallback architecture where pods will be scheduled if the image inspector cannot determine the architecture of the image. For more information, see [Creating the ClusterPodPlacementConfig object](../../post_installation_configuration/configuring-multi-arch-compute-machines/multiarch-tuning-operator.xml#multi-architecture-creating-podplacement-config_multiarch-tuning-operator).
+
+## Bug fixes
+
+- Previously, an error could occur that led to an `ENoExecEvent` custom resource (CR) to fail to be deleted. This leftover CR resulted in the failure to uninstall the `execFormatErrorMonitor` plugin. With this update, the `execFormatErrorMonitor` plugin can be uninstalled if there are leftover `ENoExecEvent` CRs. Deleting the `ClusterPodPlacementConfig` object removes all remaining CRs regardless of their state. ([**MULTIARCH-5642**](https://redhat.atlassian.net/browse/MULTIARCH-5642))
+
+- Previously, the Multiarch Tuning Operator (MTO) processed images that contained attestation manifests, leading to the incorrect creation of an "unknown" architecture. Pods could fail to be scheduled when they tried to target the "unknown" architecture. With this update, the MTO does not process attestation manifests, and the "unknown" architecture is not created. ([**MULTIARCH-5800**](https://redhat.atlassian.net/browse/MULTIARCH-5800))
+
+## Enhancements
+
+- MTO has been updated to use `go` version 1.25.7.
+
 # Release notes for the Multiarch Tuning Operator 1.2.2
 
 Issued: 6 February 2026

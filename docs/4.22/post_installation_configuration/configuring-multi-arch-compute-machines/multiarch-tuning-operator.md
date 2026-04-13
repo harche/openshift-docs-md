@@ -271,7 +271,7 @@ kind: ClusterPodPlacementConfig
 metadata:
   name: cluster
 spec:
-  logVerbosityLevel: Normal
+  logVerbosity: Normal
   namespaceSelector:
     matchExpressions:
       - key: multiarch.openshift.io/exclude-pod-placement
@@ -286,27 +286,37 @@ spec:
           weight: 50
     execFormatErrorMonitor:
       enabled: true
+  fallbackArchitecture: amd64
 ```
 
-- You must set this field value to `cluster`.
+where:
 
-- Optional: You can set the field value to `Normal`, `Debug`, `Trace`, or `TraceAll`. The value is set to `Normal` by default.
+`metadata.name`
+Specifies the name of the object. You must set this parameter to `cluster`.
 
-- Optional: You can configure the `namespaceSelector` to select the namespaces in which the Multiarch Tuning Operator’s pod placement operand must process the `nodeAffinity` of the pods. All namespaces are considered by default.
+`spec.logVerbosity`
+Optional: Specifies the log verbosity level. You can set the field value to `Normal`, `Debug`, `Trace`, or `TraceAll`. The value is set to `Normal` by default.
 
-- Optional: Includes a list of plugins for architecture-aware workload scheduling.
+`spec.namespaceSelector`
+Optional: You can configure the `namespaceSelector` to select the namespaces in which the Multiarch Tuning Operator’s pod placement operand must process the `nodeAffinity` of the pods. All namespaces are considered by default.
 
-- Optional: You can use this plugin to set architecture preferences for pod placement. When enabled, the scheduler first filters out nodes that do not meet the pod’s requirements. Then, it prioritizes the remaining nodes based on the architecture scores defined in the `nodeAffinityScoring.platforms` field.
+`spec.plugins.nodeAffinityScoring.enabled`
+Optional: You can enable the node affinity scoring plugin to set architecture preferences for pod placement. When enabled, the scheduler first filters out nodes that do not meet the pod’s requirements. Then, it prioritizes the remaining nodes based on the architecture scores defined in the `nodeAffinityScoring.platforms` field. The default value is false.
 
-- Optional: Set this field to `true` to enable the `nodeAffinityScoring` plugin. The default value is `false`.
+`spec.plugins.nodeAffinityScoring.platforms`
+Optional: Defines a list of architectures and their corresponding scores. The scheduler prioritizes nodes for pod placement based on the architecture scores that you set and the scheduling requirements defined in the pod specification.
 
-- Optional: Defines a list of architectures and their corresponding scores.
+`spec.plugins.nodeAffinityScoring.platforms.architecture`
+Specifies the architecture for the node affinity scoring plugin. Accepted values are `arm64`, `amd64`, `ppc64le`, or `s390x`.
 
-- Specify the node architecture to score. The scheduler prioritizes nodes for pod placement based on the architecture scores that you set and the scheduling requirements defined in the pod specification. Accepted values are `arm64`, `amd64`, `ppc64le`, or `s390x`.
+`spec.plugins.nodeAffinityScoring.platforms.weight`
+Specifies the weight for the architecture you specified in the `spec.plugins.nodeAffinityScoring.platforms.architecture` parameter. The value must be configured in the range of `1` (lowest priority) to `100` (highest priority). The scheduler uses this score to prioritize nodes for pod placement, favoring nodes with architectures that have higher scores.
 
-- Assign a score to the architecture. The value for this field must be configured in the range of `1` (lowest priority) to `100` (highest priority). The scheduler uses this score to prioritize nodes for pod placement, favoring nodes with architectures that have higher scores.
+`spec.plugins.execFormatErrorMonitor.enabled`
+Optional: Set this field to `true` to enable the `execFormatErrorMonitor` plugin. When enabled, the plugin detects `ENOEXEC` errors, caused when a pod executes a binary incompatible with the node’s architecture. The plugin generates events in the affected pods, and triggers the `ExecFormatErrorsDetected` Prometheus alert if one or more errors are found in the last six hours.
 
-- Optional: Set this field to `true` to enable the `execFormatErrorMonitor` plugin. When enabled, the plugin detects `ENOEXEC` errors, caused when a pod executes a binary incompatible with the node’s architecture. The plugin generates events in the affected pods, and triggers the `ExecFormatErrorsDetected` Prometheus alert if one or more errors are found in the last six hours.
+`spec.fallbackArchitecture`
+Optional: Specifies an architecture where pods will be scheduled if the image inspector cannot determine the architecture of the image. Valid values are `""`, `arm64`, `amd64`, `ppc64le`, or `s390x`. The value is set to `""` by default.
 
 In this example, the `operator` field value is set to `DoesNotExist`. Therefore, if the `key` field value (`multiarch.openshift.io/exclude-pod-placement`) is set as a label in a namespace, the operand does not process the `nodeAffinity` of the pods in that namespace. Instead, the operand processes the `nodeAffinity` of the pods in namespaces that do not contain the label.
 
@@ -426,6 +436,71 @@ To deploy the pod placement operand that enables architecture-aware workload sch
     4.  Click **Save**.
 
 - On the **Cluster Pod Placement Config** page, check that the `ClusterPodPlacementConfig` object is in the `Ready` state.
+
+# Creating the namespace-scoped PodPlacementConfig object
+
+After creating the `ClusterPodPlacementConfig` object, you can configure pod placement at the namespace level by creating namespace-scoped `PodPlacementConfig` objects.
+
+`PodPlacementConfig` objects modify the pod placement controller’s behavior at the namespace level, and take precedence over the `ClusterPodPlacementConfig` object.
+
+- You have created a `ClusterPodPlacementConfig` object.
+
+1.  Using a text editor, create a YAML file based on the following example and modify the example with your namespace values:
+
+    <div class="formalpara-title">
+
+    **Example `PodPlacementConfig` object configuration**
+
+    </div>
+
+    ``` yaml
+    apiVersion: multiarch.openshift.io/v1beta1
+    kind: PodPlacementConfig
+    metadata:
+      name: my-namespace-config
+      namespace: my-namespace
+    spec:
+      labelSelector:
+          matchExpressions:
+            - key: app
+              operator: In
+              values:
+                - my-label-for-apps-performing-better-on-arm64
+      priority: 100
+      plugins:
+        nodeAffinityScoring:
+          enabled: true
+          platforms:
+            - architecture: amd64
+              weight: 25
+            - architecture: arm64
+              weight: 75
+    ```
+
+    where:
+
+    `metadata`
+    Specifies the object name, and namespace name. This parameter is required.
+
+    `spec.labelSelector`
+    Optionally specifies a label so that the `PodPlacementConfig` only applies to a subset of pods in the namespace. If you do not specify this parameter, the `PodPlacementConfig` applies to all pods in the namespace.
+
+    `spec.priority`
+    Optionally specifies a priority in case multiple `PodPlacementConfig` objects exist in one namespace. Higher priorities take precedence. Valid values are 0-255, and the default value is 0. If you specify multiple `PodPlacementConfig` objects in one namespace, they must have different priority values.
+
+    `spec.plugins.nodeAffinityScoring`
+    Specifies architecture preferences for pod placement. The controller prioritizes nodes based on the architecture scores, with higher weights taking precedence. If you enable this plugin by setting `spec.plugins.nodeAffinityScoring.enabled` to `true`, you must specify at least one platform with an architecture and weight value.
+
+    `spec.plugins.nodeAffinityScoring.platforms[]`
+    Specifies one or more platform configurations, each with a required architecture and weight pair. This parameter is required if `spec.plugins.nodeAffinityScoring` is present. Valid architecture values are `arm64`, `amd64`, `ppc64le`, and `s390x`. Valid weight values are 0-100. Each architecture can only be specified once.
+
+2.  Apply the configuration file by running the following command:
+
+    ``` terminal
+    $ oc create -f <filename>
+    ```
+
+    Replace `<filename>` with the name of the `PodPlacementConfig` configuration file.
 
 # Deleting the ClusterPodPlacementConfig object by using the CLI
 

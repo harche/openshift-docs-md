@@ -2,7 +2,7 @@ You can use machine management to flexibly work with underlying infrastructure s
 
 It is important to have a cluster that adapts to changing workloads. The OpenShift Container Platform cluster can horizontally scale up and down when the load increases or decreases.
 
-Machine management is implemented as a [custom resource definition](../operators/understanding/crds/crd-extending-api-with-crds.xml#crd-extending-api-with-crds) (CRD). A CRD object defines a new unique object `Kind` in the cluster and enables the Kubernetes API server to handle the object’s entire lifecycle.
+Machine management is implemented as a custom resource definition (CRD). A CRD object defines a new unique object `Kind` in the cluster and enables the Kubernetes API server to handle the object’s entire lifecycle.
 
 The Machine API Operator provisions the following resources:
 
@@ -18,9 +18,9 @@ The Machine API Operator provisions the following resources:
 
 # Machine API overview
 
-The Machine API is a combination of primary resources that are based on the upstream Cluster API project and custom OpenShift Container Platform resources.
+The Machine API performs all node host provisioning management actions after the cluster installation finishes. Because of this system, OpenShift Container Platform offers an elastic, dynamic provisioning method on top of public or private cloud infrastructure.
 
-For OpenShift Container Platform 4.17 clusters, the Machine API performs all node host provisioning management actions after the cluster installation finishes. Because of this system, OpenShift Container Platform 4.17 offers an elastic, dynamic provisioning method on top of public or private cloud infrastructure.
+The Machine API is a combination of primary resources that are based on the upstream Cluster API project and custom OpenShift Container Platform resources.
 
 The two primary resources are:
 
@@ -63,9 +63,11 @@ In OpenShift Container Platform version 3.11, you could not roll out a multi-zon
 
 - [Machine phases and lifecycle](../machine_management/machine-phases-lifecycle.xml#machine-phases-lifecycle)
 
-# Managing compute machines
+# Compute machine management
 
-As a cluster administrator, you can perform the following actions:
+As a cluster administrator, you can manage the compute machines in your OpenShift Container Platform cluster.
+
+For example, you can perform the following actions:
 
 - Create a compute machine set for the following cloud providers:
 
@@ -99,9 +101,11 @@ As a cluster administrator, you can perform the following actions:
 
 - Configure and deploy a [machine health check](../machine_management/deploying-machine-health-checks.xml#deploying-machine-health-checks) to automatically fix damaged machines in a machine pool.
 
-# Managing control plane machines
+# Control plane machine management
 
-As a cluster administrator, you can perform the following actions:
+As a cluster administrator, you can manage the control plane machines in your OpenShift Container Platform cluster.
+
+For example, you can perform the following actions:
 
 - [Update your control plane configuration](../machine_management/control_plane_machine_management/cpmso-managing-machines.xml#cpmso-feat-config-update_cpmso-managing-machines) with a control plane machine set for the following cloud providers:
 
@@ -119,14 +123,18 @@ As a cluster administrator, you can perform the following actions:
 
 - Configure and deploy a [machine health check](../machine_management/deploying-machine-health-checks.xml#deploying-machine-health-checks) to automatically recover unhealthy control plane machines.
 
-# Applying autoscaling to an OpenShift Container Platform cluster
+# Cluster autoscaling
 
-You can automatically scale your OpenShift Container Platform cluster to ensure flexibility for changing workloads. To [autoscale](../machine_management/applying-autoscaling.xml#applying-autoscaling) your cluster, you must first deploy a cluster autoscaler, and then deploy a machine autoscaler for each compute machine set.
+You can automatically scale your OpenShift Container Platform cluster to ensure flexibility for changing workloads.
+
+To [autoscale](../machine_management/applying-autoscaling.xml#applying-autoscaling) your cluster, you must first deploy a cluster autoscaler, and then deploy a machine autoscaler for each compute machine set.
 
 - The [*cluster autoscaler*](../machine_management/applying-autoscaling.xml#cluster-autoscaler-about_applying-autoscaling) increases and decreases the size of the cluster based on deployment needs.
 
 - The [*machine autoscaler*](../machine_management/applying-autoscaling.xml#machine-autoscaler-about_applying-autoscaling) adjusts the number of machines in the compute machine sets that you deploy in your OpenShift Container Platform cluster.
 
-# Adding compute machines on user-provisioned infrastructure
+# Compute machine creation on user-provisioned infrastructure
 
-User-provisioned infrastructure is an environment where you can deploy infrastructure such as compute, network, and storage resources that host the OpenShift Container Platform. You can [add compute machines](../machine_management/user_infra/adding-compute-user-infra-general.xml#adding-compute-user-infra-general) to a cluster on user-provisioned infrastructure during or after the installation process.
+User-provisioned infrastructure is an environment where you can deploy infrastructure such as compute, network, and storage resources that host the OpenShift Container Platform. You can add compute machines to a cluster on user-provisioned infrastructure during or after the installation process.
+
+- [Adding compute machines to clusters with user-provisioned infrastructure manually](../machine_management/user_infra/adding-compute-user-infra-general.xml#adding-compute-user-infra-general)

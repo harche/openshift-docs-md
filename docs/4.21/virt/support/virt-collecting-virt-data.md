@@ -274,7 +274,7 @@ When a virtual machine (VM) terminates unexpectedly, you can use the `virtctl me
 
 - [Installing the QEMU guest agent on a Linux VM](../../virt/managing_vms/virt-installing-qemu-guest-agent.xml#virt-installing-qemu-guest-agent-on-linux-vm_virt-installing-qemu-guest-agent)
 
-- [Installing VirtIO drivers from a SATA CD drive on an existing Windows VM](../../virt/managing_vms/virt-installing-qemu-guest-agent.xml#virt-installing-virtio-drivers-existing-windows_virt-installing-qemu-guest-agent)
+- [Installing VirtIO drivers from a SATA CD drive on an existing Windows VM](../../virt/managing_vms/virt-install-virtio-drivers-on-windows-vms.xml#virt-installing-virtio-drivers-existing-windows_virt-install-virtio-drivers-on-windows-vms)
 
 - [Connecting to the desktop viewer](../../virt/managing_vms/virt-accessing-vm-consoles.xml#desktop-viewer_virt-accessing-vm-consoles)
 

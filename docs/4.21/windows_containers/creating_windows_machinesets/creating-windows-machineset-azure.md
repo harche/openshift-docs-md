@@ -8,9 +8,9 @@ You can create a Windows `MachineSet` object to serve a specific purpose in your
 
 # Machine API overview
 
-The Machine API is a combination of primary resources that are based on the upstream Cluster API project and custom OpenShift Container Platform resources.
+The Machine API performs all node host provisioning management actions after the cluster installation finishes. Because of this system, OpenShift Container Platform offers an elastic, dynamic provisioning method on top of public or private cloud infrastructure.
 
-For OpenShift Container Platform 4.17 clusters, the Machine API performs all node host provisioning management actions after the cluster installation finishes. Because of this system, OpenShift Container Platform 4.17 offers an elastic, dynamic provisioning method on top of public or private cloud infrastructure.
+The Machine API is a combination of primary resources that are based on the upstream Cluster API project and custom OpenShift Container Platform resources.
 
 The two primary resources are:
 

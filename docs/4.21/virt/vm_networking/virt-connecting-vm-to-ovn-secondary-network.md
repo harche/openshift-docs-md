@@ -1,22 +1,16 @@
-You can connect a virtual machine (VM) to an OVN-Kubernetes `layer2` secondary network by using the CLI.
-
-A `layer2` topology connects workloads by a cluster-wide logical switch. The OVN-Kubernetes Container Network Interface (CNI) plugin uses the Geneve (Generic Network Virtualization Encapsulation) protocol to create an overlay network between nodes. You can use this overlay network to connect VMs on different nodes, without having to configure any additional physical networking infrastructure.
+You can connect a VM to an OVN-Kubernetes custom secondary overlay network. A layer 2 topology connects workloads by a cluster-wide logical switch. The OVN-Kubernetes Container Network Interface (CNI) plugin uses the Geneve (Generic Network Virtualization Encapsulation) protocol to create an overlay network between nodes. You can use this overlay network to connect VMs on different nodes, without having to configure any additional physical networking infrastructure.
 
 <div class="note">
 
-An OVN-Kubernetes secondary network is compatible with the [multi-network policy API](../../networking/multiple_networks/secondary_networks/configuring-multi-network-policy.xml#compatibility-with-multi-network-policy_configuring-additional-network) which provides the `MultiNetworkPolicy` custom resource definition (CRD) to control traffic flow to and from VMs. You must use the `ipBlock` attribute to define network policy ingress and egress rules for specific CIDR blocks. You cannot use pod or namespace selectors for virtualization workloads.
+An OVN-Kubernetes secondary network is compatible with the multi-network policy API which provides the `MultiNetworkPolicy` custom resource definition (CRD) to control traffic flow to and from VMs. You must use the `ipBlock` attribute to define network policy ingress and egress rules for specific CIDR blocks. You cannot use pod or namespace selectors for virtualization workloads.
 
 </div>
 
-To configure an OVN-Kubernetes `layer2` secondary network and attach a VM to that network, perform the following steps:
+To configure an OVN-Kubernetes layer 2 secondary network and attach a VM to that network, perform the following steps:
 
-1.  [Configure an OVN-Kubernetes layer 2 secondary network](../../virt/vm_networking/virt-connecting-vm-to-ovn-secondary-network.xml#virt-connecting-vm-to-ovn-secondary-network).
+1.  Define the secondary network
 
-2.  [Connect the VM to the OVN-Kubernetes layer 2 secondary network](../../virt/vm_networking/virt-connecting-vm-to-ovn-secondary-network.xml#attaching-vm-to-ovn-secondary-nw).
-
-# Creating an OVN-Kubernetes layer 2 NAD
-
-You can create an OVN-Kubernetes network attachment definition (NAD) for the layer 2 network topology by using the OpenShift Container Platform web console or the CLI.
+2.  Attach the VM to the secondary network
 
 <div class="note">
 
@@ -24,7 +18,7 @@ Configuring IP address management (IPAM) by specifying the `spec.config.ipam.sub
 
 </div>
 
-## Creating a NAD for layer 2 topology by using the CLI
+# Creating a NAD for layer 2 topology by using the CLI
 
 You can create a network attachment definition (NAD) which describes how to attach a pod to the layer 2 overlay network.
 
@@ -76,7 +70,7 @@ You can create a network attachment definition (NAD) which describes how to atta
     $ oc apply -f <filename>.yaml
     ```
 
-## Creating a NAD for layer 2 topology by using the web console
+# Creating a NAD for layer 2 topology by using the web console
 
 You can create a network attachment definition (NAD) that describes how to attach a pod to the layer 2 overlay network.
 
@@ -92,11 +86,7 @@ You can create a network attachment definition (NAD) that describes how to attac
 
 5.  Click **Create**.
 
-# Attaching a virtual machine to the OVN-Kubernetes layer 2 secondary network
-
-You can attach a virtual machine (VM) to the OVN-Kubernetes layer 2 secondary network interface by using the OpenShift Container Platform web console or the CLI.
-
-## Attaching a virtual machine to an OVN-Kubernetes secondary network using the CLI
+# Attaching a virtual machine to an OVN-Kubernetes secondary network using the CLI
 
 You can connect a virtual machine (VM) to the OVN-Kubernetes secondary network by including the network details in the VM configuration.
 
@@ -153,5 +143,7 @@ You can connect a virtual machine (VM) to the OVN-Kubernetes secondary network b
 - [Creating secondary networks on OVN-Kubernetes](../../networking/multiple_networks/secondary_networks/creating-secondary-nwt-ovnk.xml#configuration-ovnk-additional-networks_configuring-additional-network)
 
 - [About the Kubernetes NMState Operator](../../networking/networking_operators/k8s-nmstate-about-the-k8s-nmstate-operator.xml#k8s-nmstate-about-the-k8s-nmstate-operator)
+
+- [Multi-network policy API](../../networking/multiple_networks/secondary_networks/configuring-multi-network-policy.xml#compatibility-with-multi-network-policy_configuring-additional-network)
 
 - [Creating primary networks using a NetworkAttachmentDefinition](../../networking/multiple_networks/primary_networks/about-primary-nwt-nad.xml#understanding-multiple-networks)

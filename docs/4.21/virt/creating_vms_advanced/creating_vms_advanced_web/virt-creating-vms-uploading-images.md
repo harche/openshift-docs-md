@@ -4,11 +4,15 @@ You can create a Windows VM by uploading a Windows image to a PVC. Then you clon
 
 <div class="important">
 
-You must install the [QEMU guest agent](../../../virt/managing_vms/virt-installing-qemu-guest-agent.xml#virt-installing-qemu-guest-agent) on VMs created from operating system images that are not provided by Red Hat.
+You must install the QEMU guest agent on VMs created from operating system images that are not provided by Red Hat.
 
-You must also install [VirtIO drivers](../../../virt/managing_vms/virt-installing-qemu-guest-agent.xml#installing-virtio-drivers) on Windows VMs.
+You must also install VirtIO drivers on Windows VMs.
 
 </div>
+
+- [Installing the QEMU guest agent](../../../virt/managing_vms/virt-installing-qemu-guest-agent.xml#virt-installing-qemu-guest-agent)
+
+- [Installing VirtIO drivers on Windows VMs](../../../virt/managing_vms/virt-install-virtio-drivers-on-windows-vms.xml#virt-install-virtio-drivers-on-windows-vms)
 
 # Creating a VM from an uploaded image by using the web console
 

@@ -104,17 +104,9 @@ You can connect a VM to an OVN-Kubernetes secondary network. OpenShift Virtualiz
 
 To configure an OVN-Kubernetes secondary network and attach a VM to that network, perform the following steps:
 
-1.  Choose the appropriate option based on your OVN-Kubernetes network topology:
+1.  Define the secondary network
 
-    - [Configure an OVN-Kubernetes layer 2 secondary network](../../virt/vm_networking/virt-connecting-vm-to-ovn-secondary-network.xml#creating-ovn-nad_virt-connecting-vm-to-ovn-secondary-network) by creating a network attachment definition (NAD).
-
-    - [Configure an OVN-Kubernetes localnet secondary network](../../virt/vm_networking/virt-connecting-vm-to-secondary-udn.xml#virt-connecting-vm-to-secondary-udn) by creating a `ClusterUserDefinedNetwork` (CUDN) CR.
-
-2.  Choose the appropriate option based on your OVN-Kubernetes network topology:
-
-    - [Connect the VM to the OVN-Kubernetes layer 2 secondary network](../../virt/vm_networking/virt-connecting-vm-to-ovn-secondary-network.xml#attaching-vm-to-ovn-secondary-nw) by adding the network details to the VM specification.
-
-    - [Connect the VM to the OVN-Kubernetes localnet secondary network](../../virt/vm_networking/virt-connecting-vm-to-secondary-udn.xml#virt-attaching-vm-to-secondary-udn_virt-connecting-vm-to-secondary-udn) by adding the network details to the VM specification.
+2.  Attach the VM to the secondary network
 
 <!-- -->
 
@@ -144,11 +136,11 @@ You cannot directly attach to the default machine network when using Linux bridg
 
 You can create a Linux bridge network and attach a VM to the network by performing the following steps:
 
-1.  [Configure a Linux bridge network device](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-creating-linux-bridge-nncp_virt-connecting-vm-to-linux-bridge) by creating a `NodeNetworkConfigurationPolicy` custom resource definition (CRD).
+1.  Prepare the node network by creating a Linux bridge node network configuration policy (NNCP).
 
-2.  [Configure a Linux bridge network](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#creating-linux-bridge-nad) by creating a `NetworkAttachmentDefinition` CRD.
+2.  Define the secondary Linux bridge network by creating a network attachment definition (NAD).
 
-3.  [Connect the VM to the Linux bridge network](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#configuring-vm-network-interface) by including the network details in the VM configuration.
+3.  Attach the VM to the Linux bridge network.
 
 <!-- -->
 

@@ -81,6 +81,17 @@ Configuring the `install-config.yaml` and `agent-config.yaml` files is the prefe
       none: {}
     pullSecret: '<pull_secret>'
     sshKey: '<ssh_pub_key>'
+    additionalTrustBundle: |
+      -----BEGIN CERTIFICATE-----
+      ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+      -----END CERTIFICATE-----
+    imageContentSources:
+    - mirrors:
+      - <local_registry>/<local_repository_name>/release
+      source: quay.io/openshift-release-dev/ocp-release
+    - mirrors:
+      - <local_registry>/<local_repository_name>/release
+      source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
     EOF
     ```
 
@@ -103,6 +114,20 @@ Configuring the `install-config.yaml` and `agent-config.yaml` files is the prefe
     - Specify your pull secret.
 
     - Specify your SSH public key.
+
+    - Provide the contents of the certificate file that you used for your mirror registry. The certificate file can be an existing, trusted certificate authority or the self-signed certificate that you generated for the mirror registry. You must specify this parameter if you are using a disconnected mirror registry.
+
+    - Provide the `imageContentSources` section according to the output of the command that you used to mirror the repository. You must specify this parameter if you are using a disconnected mirror registry.
+
+      <div class="important">
+
+      - When using the `oc adm release mirror` command, use the output from the `imageContentSources` section.
+
+      - When using the `oc mirror` command, use the `repositoryDigestMirrors` section of the `ImageContentSourcePolicy` file that results from running the command.
+
+      - The `ImageContentSourcePolicy` resource is deprecated.
+
+      </div>
 
     <div class="note">
 

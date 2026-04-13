@@ -1,16 +1,16 @@
-By default, OpenShift Virtualization is installed with a single, internal pod network.
+By default, OpenShift Virtualization is installed with a single, internal pod network. You can connect a virtual machine (VM) to the physical network by using a Linux bridge.
 
-You can create a Linux bridge network and attach a virtual machine (VM) to the network by performing the following steps:
+To create a Linux bridge network and attach a VM to the network, perform the following steps:
 
-1.  [Create a Linux bridge node network configuration policy (NNCP)](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-creating-linux-bridge-nncp_virt-connecting-vm-to-linux-bridge).
+1.  Prepare the node network by creating a Linux bridge node network configuration policy (NNCP).
 
-2.  Create a Linux bridge network attachment definition (NAD) by using the [web console](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-creating-linux-bridge-nad-web_virt-connecting-vm-to-linux-bridge) or the [command line](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-creating-linux-bridge-nad-cli_virt-connecting-vm-to-linux-bridge).
+2.  Define the secondary Linux bridge network by creating a network attachment definition (NAD).
 
-3.  Configure the VM to recognize the NAD by using the [web console](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-vm-creating-nic-web_virt-connecting-vm-to-linux-bridge) or the [command line](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-attaching-vm-secondary-network-cli_virt-connecting-vm-to-linux-bridge).
+3.  Attach the VM to the Linux bridge network.
 
 <div class="note">
 
-OpenShift Virtualization does not support Linux bridge bonding modes 0, 5, and 6. For more information, see [Which bonding modes work when used with a bridge that virtual machine guests or containers connect to?](https://access.redhat.com/solutions/67546).
+OpenShift Virtualization does not support Linux bridge bonding modes 0, 5, and 6. For more information, see "Additional resources".
 
 </div>
 
@@ -74,11 +74,7 @@ You can create a `NodeNetworkConfigurationPolicy` (NNCP) manifest for a Linux br
 
     </div>
 
-# Creating a Linux bridge NAD
-
-You can create a Linux bridge network attachment definition (NAD) by using the OpenShift Container Platform web console or command line.
-
-## Creating a Linux bridge NAD by using the web console
+# Creating a Linux bridge NAD by using the web console
 
 You can create a network attachment definition (NAD) to provide layer-2 networking to pods and virtual machines by using the OpenShift Container Platform web console.
 
@@ -116,7 +112,7 @@ Configuring IP address management (IPAM) in a network attachment definition for 
 
 8.  Click **Create**.
 
-## Creating a Linux bridge NAD by using the CLI
+# Creating a Linux bridge NAD by using the CLI
 
 You can create a network attachment definition (NAD) to provide layer-2 networking to pods and virtual machines (VMs) by using the command line.
 
@@ -264,13 +260,7 @@ Isolating ports in this way can provide enhanced security for VM workloads that 
 
 3.  Optional: If you edited a running virtual machine, you must restart it for the changes to take effect.
 
-- [Configuring IP addresses for virtual machines](../../virt/vm_networking/virt-configuring-viewing-ips-for-vms.xml#configuring-ips_virt-configuring-viewing-ips-for-vms)
-
-# Configuring a VM network interface
-
-You can configure a virtual machine (VM) network interface by using the OpenShift Container Platform web console or command line.
-
-## Configuring a VM network interface by using the web console
+# Configuring a VM network interface by using the web console
 
 You can configure a network interface for a virtual machine (VM) by using the OpenShift Container Platform web console.
 
@@ -290,7 +280,7 @@ You can configure a network interface for a virtual machine (VM) by using the Op
 
 7.  Restart or live migrate the VM to apply the changes.
 
-### Networking fields
+## Networking fields
 
 <table>
 <colgroup>
@@ -334,7 +324,7 @@ You can configure a network interface for a virtual machine (VM) by using the Op
 </tbody>
 </table>
 
-## Configuring a VM network interface by using the CLI
+# Configuring a VM network interface by using the CLI
 
 You can configure a virtual machine (VM) network interface for a bridge network by using the command line.
 
@@ -388,3 +378,9 @@ You can configure a virtual machine (VM) network interface for a bridge network 
     When running OpenShift Virtualization on IBM Z® using OSA, RoCE, or HiperSockets interfaces, you must register the MAC address of the device. For more information, see [OSA interface traffic forwarding](https://www.ibm.com/docs/en/linux-on-systems?topic=choices-osa-interface-traffic-forwarding) (IBM documentation).
 
     </div>
+
+# Additional resources
+
+- [Configuring IP addresses for virtual machines](../../virt/vm_networking/virt-configuring-viewing-ips-for-vms.xml#virt-configuring-viewing-ips-for-vms)
+
+- [Which bonding modes work when used with a bridge that virtual machine guests or containers connect to?](https://access.redhat.com/solutions/67546)

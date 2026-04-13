@@ -1,8 +1,8 @@
 To move a running virtual machine (VM) to a different node without interrupting the workload, you can initiate a live migration. You can also cancel an ongoing migration to keep the VM on its original node.
 
-You can initiate the live migration of a virtual machine (VM) to another node by using the [OpenShift Container Platform web console](../../virt/live_migration/virt-initiating-live-migration.xml#virt-initiating-vm-migration-web_virt-initiating-live-migration) or the [command line](../../virt/live_migration/virt-initiating-live-migration.xml#virt-initiating-vm-migration-cli_virt-initiating-live-migration).
+You can initiate the live migration of a virtual machine (VM) to another node by using the OpenShift Container Platform web console or the command line.
 
-You can cancel a live migration by using the [web console](../../virt/live_migration/virt-initiating-live-migration.xml#virt-canceling-vm-migration-web_virt-initiating-live-migration) or the [command line](../../virt/live_migration/virt-initiating-live-migration.xml#virt-canceling-vm-migration-cli_virt-initiating-live-migration). The VM remains on its original node.
+You can cancel a live migration by using the web console or the command line. The VM remains on its original node.
 
 <div class="tip">
 
@@ -10,9 +10,7 @@ You can also initiate and cancel live migration by using the `virtctl migrate <v
 
 </div>
 
-# Initiating live migration
-
-## Initiating live migration by using the web console
+# Initiating live migration by using the web console
 
 You can live migrate a running virtual machine (VM) to a different node in the cluster by using the OpenShift Container Platform web console.
 
@@ -24,7 +22,7 @@ The **Migrate** action is visible to all users but only cluster administrators c
 
 - You have the `kubevirt.io:migrate` RBAC role or you are a cluster administrator.
 
-- The VM is migratable.
+- The VM is able to be migrated.
 
 - If the VM is configured with a host model CPU, the cluster has an available node that supports the CPU model.
 
@@ -42,7 +40,7 @@ The **Migrate** action is visible to all users but only cluster administrators c
 
 4.  Click **Migrate Virtual Machine**.
 
-## Initiating live migration by using the CLI
+# Initiating live migration by using the CLI
 
 You can initiate the live migration of a running virtual machine (VM) by using the command line to create a `VirtualMachineInstanceMigration` object for the VM.
 
@@ -67,7 +65,7 @@ You can initiate the live migration of a running virtual machine (VM) by using t
     $ oc create -f <migration_name>.yaml
     ```
 
-    The `VirtualMachineInstanceMigration` object triggers a live migration of the VM. This object exists in the cluster for as long as the virtual machine instance is running, unless manually deleted.
+    The `VirtualMachineInstanceMigration` object triggers a live migration of the VM. This object exists in the cluster only while the virtual machine instance is running, unless manually deleted.
 
 - Obtain the VM status by running the following command:
 
@@ -97,9 +95,7 @@ You can initiate the live migration of a running virtual machine (VM) by using t
       Target Node Domain Detected:  true
   ```
 
-# Canceling live migration
-
-## Canceling live migration by using the web console
+# Canceling live migration by using the web console
 
 You can cancel the live migration of a virtual machine (VM) by using the OpenShift Container Platform web console.
 
@@ -109,7 +105,7 @@ You can cancel the live migration of a virtual machine (VM) by using the OpenShi
 
 2.  Select **Cancel Migration** on the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) beside a VM.
 
-## Canceling live migration by using the CLI
+# Canceling live migration by using the CLI
 
 Cancel the live migration of a virtual machine by deleting the `VirtualMachineInstanceMigration` object associated with the migration.
 
@@ -128,3 +124,11 @@ Cancel the live migration of a virtual machine by deleting the `VirtualMachineIn
 # Additional resources
 
 - [About live migration permissions](../../virt/live_migration/virt-about-live-migration.xml#virt-about-live-migration-permissions_virt-about-live-migration)
+
+- [Initiating live migration by using the web console](../../virt/live_migration/virt-initiating-live-migration.xml#virt-initiating-vm-migration-web_virt-initiating-live-migration)
+
+- [Initiating live migration by using the CLI](../../virt/live_migration/virt-initiating-live-migration.xml#virt-initiating-vm-migration-cli_virt-initiating-live-migration)
+
+- [Canceling live migration by using the web console](../../virt/live_migration/virt-initiating-live-migration.xml#virt-canceling-vm-migration-web_virt-initiating-live-migration)
+
+- [Canceling live migration by using the CLI](../../virt/live_migration/virt-initiating-live-migration.xml#virt-canceling-vm-migration-cli_virt-initiating-live-migration)

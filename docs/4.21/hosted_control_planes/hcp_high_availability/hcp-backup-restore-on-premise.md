@@ -2,19 +2,49 @@ You can back up and restore etcd on a hosted cluster in an on-premise environmen
 
 # Backing up and restoring etcd on a hosted cluster in an on-premise environment
 
-By backing up and restoring etcd on a hosted cluster, you can fix failures, such as corrupted or missing data in an etcd member of a three node cluster. If multiple members of the etcd cluster encounter data loss or have a `CrashLoopBackOff` status, this approach helps prevent an etcd quorum loss.
+By backing up and restoring etcd on a hosted cluster, you can fix failures, such as corrupted or missing data in an etcd member of a three-node cluster. If multiple members of the etcd cluster encounter data loss or have a `CrashLoopBackOff` status, this approach helps prevent an etcd quorum loss.
+
+- The `oc` and `jq` binaries have been installed.
+
+- Management cluster prerequisites:
+
+  - A valid `StorageClass` resource is configured in the management cluster.
+
+  - You have `cluster-admin` access to the management cluster.
+
+  - You have access to online storage that is compatible with OpenShift ADP cloud storage providers, such as Amazon Web Services (AWS) S3, Microsoft Azure, Google Cloud, or MinIO. If you use S3 for backup storage, ensure that IAM roles and policies are configured. For more information, see "Configuring Amazon Web Services".
+
+  - Hosted control plane pods are accessible and functioning properly.
+
+  - You have access to the `openshift-adp` subscription through a `CatalogSource` object.
+
+- Hosted cluster service publishing strategy prerequisites:
+
+  - The `APIServer` service must have a fixed hostname. Otherwise, the restore process fails and nodes cannot rejoin the cluster. For hosted control planes on AWS, the `APIServer` service can also use a `Route` service publishing strategy with a fixed hostname.
+
+  - For production environments, it is strongly recommended to configure all services with fixed hostnames. By having fixed hostnames, you can ensure full service continuity and DNS consistency during the restore process on a different management cluster.
+
+  - When you restore a hosted cluster to a different management cluster, all services in the hosted cluster must be configured with a fixed hostname in its `servicePublishingStrategy` property. This requirement applies to all platforms: AWS, Agent, OpenShift Virtualization, and Red Hat OpenStack Platform (RHOSP).
 
 <div class="important">
 
-Restoring etcd on a different management cluster for bare metal is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+Restoring a hosted cluster to a different management cluster is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
 For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
 
-- The `oc` and `jq` binaries have been installed.
+- For hosted control planes on AWS, the OIDC provider configuration must be accessible so that any necessary fixes can be completed after the restore process. See the following procedure for more information about applying any necessary fixes.
 
-1.  First, set up your environment variables:
+- For hosted control planes on bare metal, the `InfraEnv` resource must reside in a different namespace from the hosted control plane namespace. Do not delete the `InfraEnv` resource during the backup or restore process.
+
+<div class="important">
+
+After you back up the hosted cluster, you must back up workloads in the data cluster and then destroy the original hosted cluster so that the restore process can begin.
+
+</div>
+
+1.  Set up your environment variables:
 
     1.  Set up environment variables for your hosted cluster by entering the following commands, replacing values as necessary:
 
@@ -37,7 +67,7 @@ For more information about the support scope of Red Hat Technology Preview featu
           -p '{"spec":{"pausedUntil":"true"}}' --type=merge
         ```
 
-2.  Next, take a snapshot of etcd by using one of the following methods:
+2.  Take a snapshot of etcd by using one of the following methods:
 
     1.  Use a previously backed-up snapshot of etcd.
 
@@ -96,7 +126,7 @@ For more information about the support scope of Red Hat Technology Preview featu
                   /tmp/etcd.snapshot.db
                 ```
 
-3.  Next, scale down the etcd statefulset by entering the following command:
+3.  Scale down the etcd statefulset by entering the following command:
 
     ``` terminal
     $ oc scale -n ${CONTROL_PLANE_NAMESPACE} statefulset/etcd --replicas=0
@@ -260,3 +290,13 @@ For more information about the support scope of Red Hat Technology Preview featu
     ```
 
     After a few minutes, the control plane pods start running.
+
+8.  If your hosted cluster is on AWS and you need to apply OIDC fixes after the restore process, enter the following command:
+
+    ``` terminal
+    $ hcp fix dr-oidc-iam --hc-name <hosted_cluster_name> --hc-namespace <hosted_cluster_namespace> --aws-creds ~/.aws/credentials[4:48 AM]
+    ```
+
+    This command regenerates the OIDC in S3 in case OIDC is deleted.
+
+- [Configuring Amazon Web Services](../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-aws.xml#migration-configuring-aws-s3_installing-oadp-aws)

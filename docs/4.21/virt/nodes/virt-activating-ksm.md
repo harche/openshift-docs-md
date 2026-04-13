@@ -131,4 +131,4 @@ You can enable or disable OpenShift Virtualization’s kernel samepage merging (
 
 - [Placing pods on specific nodes using node selectors](../../nodes/scheduling/nodes-scheduler-node-selectors.xml#nodes-scheduler-node-selectors)
 
-- [Managing kernel samepage merging](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/configuring_and_managing_virtualization/index#proc_managing-ksm_optimizing-virtual-machine-cpu-performance) in the Red Hat Enterprise Linux (RHEL) documentation
+- [Managing kernel samepage merging](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/configuring_and_managing_virtualization/index#proc_managing-ksm_optimizing-virtual-machine-cpu-performance)

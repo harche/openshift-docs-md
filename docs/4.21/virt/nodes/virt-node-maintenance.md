@@ -94,7 +94,7 @@ You must set the eviction strategy of non-migratable VMs to `LiveMigrateIfPossib
     # ...
     ```
 
-    - Specify the eviction strategy. The default value is `LiveMigrate`.
+    - `spec.template.spec.evictionStrategy` defines the eviction strategy. The default value is `LiveMigrate`.
 
 2.  Restart the VM to apply the changes:
 
@@ -191,13 +191,13 @@ You can configure a run strategy for a virtual machine (VM) by using the command
   # ...
   ```
 
-# Maintaining bare metal nodes
+# Maintaining bare-metal nodes
 
 When you deploy OpenShift Container Platform on bare metal infrastructure, there are additional considerations that must be taken into account compared to deploying on cloud infrastructure.
 
-Unlike in cloud environments where the cluster nodes are considered ephemeral, re-provisioning a bare metal node requires significantly more time and effort for maintenance tasks.
+Unlike in cloud environments where the cluster nodes are considered ephemeral, re-provisioning a bare-metal node requires significantly more time and effort for maintenance tasks.
 
-When a bare metal node fails, for example, if a fatal kernel error happens or a NIC card hardware failure occurs, workloads on the failed node need to be restarted elsewhere else on the cluster while the problem node is repaired or replaced. Node maintenance mode allows cluster administrators to gracefully power down nodes, moving workloads to other parts of the cluster and ensuring workloads do not get interrupted. Detailed progress and node status details are provided during maintenance.
+When a bare-metal node fails, for example, if a an unrecoverable kernel error happens or a NIC card hardware failure occurs, workloads on the failed node need to be restarted elsewhere else on the cluster while the problem node is repaired or replaced. Node maintenance mode allows cluster administrators to gracefully power down nodes, moving workloads to other parts of the cluster and ensuring workloads do not get interrupted. Detailed progress and node status details are provided during maintenance.
 
 # Additional resources
 

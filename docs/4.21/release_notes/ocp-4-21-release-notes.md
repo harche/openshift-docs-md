@@ -938,6 +938,56 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHBA-2026:6561 - OpenShift Container Platform 4.17.9 fixed issues advisory
+
+Issued: 08 April 2026
+
+OpenShift Container Platform release 4.17.9 is now available. The list of fixed issues that are included in the update is documented in the [RHBA-2026:6561](https://access.redhat.com/errata/RHBA-2026:6561) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:6557](https://access.redhat.com/errata/RHBA-2026:6557) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.9 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, if you specified using a managed Red Hat OpenStack Platform (RHOSP) Load Balancer, the validation failed when the virtual IP (VIP) was in the `MachineNetwork` allocation pool. With this release, the validation does not fail when you specify using a managed RHOSP Load Balancer. ([OCPBUGS-64603](https://redhat.atlassian.net/browse/OCPBUGS-64603))
+
+- Before this update, the `spec.externallyProvisioned` field could not be changed after a bare-metal host (BMH) was created. As a consequence, hosts that needed hardware inspection before being handed off to an external provisioner (such as the image-based installer for O-RAN deployments) could not follow the required workflow (inspect first with the\`externallyProvisioned\`field set to `false`, then switch to the `externallyProvisioned` field set to `true`). With this update, the validating webhook permits changing the value of the `spec.externallyProvisioned` parameter from `false` to `true` when the host is in the `Available` state (that is, after the inspection has completed). As a result, workflows are enabled where the Bare Metal Operator (BMO) performs hardware inspection to gather CPU, memory, disk, and NIC details, and then an external tool handles provisioning. Changing the value from `true` to `false` is still blocked, and enabling the field in any state other than `Available` is also rejected. ([OCPBUGS-65683](https://redhat.atlassian.net/browse/OCPBUGS-65683))
+
+- Before this update, the Operator Lifecycle Manager (OLM) installation flow incorrectly displayed Google Cloud-specific variables for Operators, such as the Kiali Operator, that did not have the `token-auth-gcp:true` annotation. As a consequence, you were prompted to provide unnecessary Google Cloud Workload Identity parameters during Operator installation, which caused confusion and potential misconfiguration. With this release, the console installation logic correctly respects the absence of the `token-auth-gcp` annotation and suppresses the Google Cloud-specific configuration fields accordingly. As a result, the installation flow correctly identifies when the Google Cloud-specific authentication is not required, which provides a streamlined and accurate setup experience. ([OCPBUGS-77000](https://redhat.atlassian.net/browse/OCPBUGS-77000)) and ([OCPBUGS-77013](https://redhat.atlassian.net/browse/OCPBUGS-77013))
+
+- Before this update, the egress IP address was incorrectly assigned to the br-ex bridge when you configured additional interfaces. This issue caused egress IP address assignment conflicts and routing issues with unexpected traffic paths. With this release, the egress IP address is not assigned to the br-ex bridge. As a result, the egress IP address is correctly assigned to the secondary interface, which resolves routing conflicts. ([OCPBUGS-77257](https://redhat.atlassian.net/browse/OCPBUGS-77257))
+
+- Before this update, when you used an outdated version of the\`vpc-go-sdk\` parameter that could not process `any` Security Group (SG) Rules prevented the Messaging Application Programming Interface (MAPI) from creating new machines. As a consequence, older IBM Cloud SDK versions that could not process SG Rules with the 'any' protocol caused new machines to get stuck during provisioning. With this release, the IBM Cloud `vpc-go-sdk` parameter is updated to handle the 'any' protocol in SG Rules. As a result, new machines can be created in IBM Cloud because they do not get stuck during provisioning. ([OCPBUGS-77445](https://redhat.atlassian.net/browse/OCPBUGS-77445))
+
+- Before this update, after you killed the `cloud-event-process` process on the sidecar of the `linuxptp-daemon` pod with the boundary clock (BC) configuration, the clock class was missing. As a consequence, you could not recover the clock class unless you restarted the `linuxptp-daemon` pod. With this release, the clock class can be recovered quickly after you restart the `cloud-event-process` process. ([OCPBUGS-77871](https://redhat.atlassian.net/browse/OCPBUGS-77871))
+
+- Before this update, when you created snapshots of large Microsoft Azure UltraSSD_LRS or PremiumV2_LRS persistent volumes, the snapshots might have failed because of a hard-coded 10-minute timeout in the CSI driver. This timeout was insufficient for the Azure background copy process on large disks. With this release, the Azure Disk CSI driver supports instant access snapshots, which are configurable in the `instantAccessDurationMinutes` parameter (60-300 minutes) in the `VolumeSnapshotClass` parameter. As a result, snapshots on large volumes are successfully created. ([OCPBUGS-78012](https://redhat.atlassian.net/browse/OCPBUGS-78012))
+
+- Before this update, DNS name rules in the `EgressFirewall` custom resource (CR) were not working correctly when an error was encountered during DNS name resolution or a zero TTL value was returned by the DNS name server. For both scenarios, the next lookup occurred only after 30 minutes. However, these scenarios could be transient and might have gotten resolved well before the next lookup. With this release, the lookup occurs every five seconds when an error is encountered during DNS name resolution or a zero TTL value is returned by the DNS name server. When an error is encountered during the DNS lookup, the lookup occurs with an exponential backoff after 10 retries, with the maximum backoff time capped at two minutes. ([OCPBUGS-78094](https://redhat.atlassian.net/browse/OCPBUGS-78094))
+
+- Before this update, nodes with dynamic system reserved allocation enabled, including all workers installed in 4.21 and later, could not scale down if the node only had 8 GiB of memory, the documented minimum supported worker size for OpenShift Container Platform. With this release, the memory reservation scaling reserves only 1 GiB of the first 8 GiB, 6% of the next 120 GiB, and 2% of all remaining memory. As a result, nodes as small as 8 GiB are properly removed through autoscaling. ([OCPBUGS-78201](https://redhat.atlassian.net/browse/OCPBUGS-78201))
+
+- Before this update, the pagination state persisted incorrectly when switching namespaces. As a consequence, empty tables were displayed. With this release, the pagination resets to **page 1** when switching namespaces while keeping the items-per-page preference. ([OCPBUGS-78599](https://redhat.atlassian.net/browse/OCPBUGS-78599))
+
+- Before this update, an invalid namespace on the **Search** page was being passed through to each resource list component when **All Projects** was selected from the project selector. As a consequence, each list component displayed a 404 error. With this release, the **Search** page is updated so that it no longer passes a namespace through to these components when **All Project** is selected in the project selector. As a result, the list components do not display a 404 error. ([OCPBUGS-78799](https://redhat.atlassian.net/browse/OCPBUGS-78799))
+
+- Before this update, Baremetal Operator’s virtual media baseboard management controller (BMC) drivers required the `bootMACAddress` parameter for inspection, making it impossible to perform automatic MAC discovery. As a consequence, you were required to manually specify MAC addresses to inspect a bare-metal host (BMH) configured with virtual media based provisioning. With this release, the virtual media BMC drivers make the `bootMACAddress` parameter optional for hardware inspection. As a result, virtual media BMC BMHs can now be successfully created and inspected without requiring the `bootMACAddress` parameter, making it possible to discover MAC addresses automatically (for example, for use with O-Cloud Manager). Note that the `bootMACAddress` parameter is still required in install-config, installer-provisioned infrastructure installations and assisted-installer installations. ([OCPBUGS-78835](https://redhat.atlassian.net/browse/OCPBUGS-78835))
+
+- Before this update, when you clicked the **Import to console** action on an OpenShift Container Platform Lightspeed YAML code block which was generated as part of the AI response, the action correctly redirected to the YAML import page, but the editor was not pre-populated with the YAML code block. With this release, the code block is correctly populated. ([OCPBUGS-79035](https://redhat.atlassian.net/browse/OCPBUGS-79035))
+
+- Before this update, the Catalog Operator pod failed during the single-node OpenShift cluster install. With this release, the nil pointer dereference in the `sortUnpackJobs` parameter when sorting non-failed jobs is fixed. As a result, the Catalog Operator pod does not fail during the cluster install. ([OCPBUGS-79400](https://redhat.atlassian.net/browse/OCPBUGS-79400))
+
+- Before this update, the keyboard shortcut navigation on the **Name text** filter was removed as part of the table update. With this release, the keyboard shortcut is restored. ([OCPBUGS-79533](https://redhat.atlassian.net/browse/OCPBUGS-79533))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHBA-2026:5926 - OpenShift Container Platform 4.17.8 fixed issues advisory
 
 Issued: 31 March 2026

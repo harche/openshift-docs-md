@@ -1,10 +1,8 @@
-You can access a virtual machine (VM) that is connected to the default internal pod network on a stable fully qualified domain name (FQDN) by using headless services.
-
-A Kubernetes *headless service* is a form of service that does not allocate a cluster IP address to represent a set of pods. Instead of providing a single virtual IP address for the service, a headless service creates a DNS record for each pod associated with the service. You can expose a VM through its FQDN without having to expose a specific TCP or UDP port.
+You can access a virtual machine (VM) that is connected to the default internal pod network on a stable fully qualified domain name (FQDN) by using headless services. A Kubernetes *headless service* creates a DNS record for each pod associated with the service instead of providing a single virtual IP address for the service. You can expose a VM through its FQDN without having to expose a specific TCP or UDP port.
 
 <div class="important">
 
-If you created a VM by using the OpenShift Container Platform web console, you can find its internal FQDN listed in the **Network** tile on the **Overview** tab of the **VirtualMachine details** page. For more information about connecting to the VM, see [Connecting to a virtual machine by using its internal FQDN](../../virt/vm_networking/virt-accessing-vm-internal-fqdn.xml#virt-connecting-vm-internal-fqdn_virt-accessing-vm-internal-fqdn).
+If you created a VM by using the OpenShift Container Platform web console, you can find its internal FQDN listed in the **Network** tile on the **Overview** tab of the **VirtualMachine details** page.
 
 </div>
 

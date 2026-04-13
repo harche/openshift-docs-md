@@ -2,7 +2,7 @@ The release notes for OpenShift API for Data Protection (OADP) 1.5 describe new 
 
 <div class="note">
 
-For additional information about OADP, see [OpenShift API for Data Protection (OADP) FAQ](https://access.redhat.com/articles/5456281).
+For additional information about OADP, see *OpenShift API for Data Protection (OADP) FAQ*.
 
 </div>
 
@@ -462,3 +462,7 @@ OADP can support and facilitate application migrations within HyperShift hosted 
 For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 [OADP-3930](https://issues.redhat.com/browse/OADP-3930)
+
+# Additional resources
+
+- [OpenShift API for Data Protection (OADP) FAQ](https://access.redhat.com/articles/5456281)

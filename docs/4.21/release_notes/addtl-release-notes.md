@@ -37,6 +37,9 @@ F
 H
 [Hosted control planes](../hosted_control_planes/hcp-release-notes.xml#hcp-release-notes)
 
+J
+[JobSet Operator](../ai_workloads/jobset_operator/jobset-release-notes.xml#js-release-notes)
+
 K
 [Kube Descheduler Operator](../nodes/scheduling/descheduler/nodes-descheduler-release-notes.xml#nodes-descheduler-release-notes)
 

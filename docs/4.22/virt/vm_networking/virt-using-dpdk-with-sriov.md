@@ -1,6 +1,4 @@
-The Data Plane Development Kit (DPDK) provides a set of libraries and drivers for fast packet processing.
-
-You can configure clusters and virtual machines (VMs) to run DPDK workloads over SR-IOV networks.
+The Data Plane Development Kit (DPDK) provides a set of libraries and drivers for fast packet processing. You can configure clusters and virtual machines (VMs) to run ultra-low latency packet processing workloads by using DPDK drivers with SR-IOV hardware.
 
 # Configuring a cluster for DPDK workloads
 
@@ -141,13 +139,7 @@ You can configure an OpenShift Container Platform cluster to run Data Plane Deve
         feature.node.kubernetes.io/network-sriov.capable: "true"
     ```
 
-- [Using CPU Manager and Topology Manager](../../scalability_and_performance/using-cpu-manager.xml#using-cpu-manager)
-
-- [Configuring huge pages](../../scalability_and_performance/what-huge-pages-do-and-how-they-are-consumed-by-apps.xml#configuring-huge-pages_huge-pages)
-
-- [Creating a custom machine config pool](https://access.redhat.com/solutions/5688941)
-
-## Removing a custom machine config pool for high-availability clusters
+# Removing a custom machine config pool for high-availability clusters
 
 You can delete a custom machine config pool that you previously created for your high-availability cluster.
 
@@ -215,8 +207,6 @@ You can configure the project to run DPDK workloads on SR-IOV hardware.
     - The namespace where the `NetworkAttachmentDefinition` object is deployed.
 
     - The value of the `spec.resourceName` attribute of the `SriovNetworkNodePolicy` object that was created when configuring the cluster for DPDK workloads.
-
-- [Working with projects](../../applications/projects/working-with-projects.xml#working-with-projects)
 
 # Configuring a virtual machine for DPDK workloads
 
@@ -332,3 +322,13 @@ You can run Data Packet Development Kit (DPDK) workloads on virtual machines (VM
         ```
 
 5.  Restart the VM to apply the changes.
+
+# Additional resources
+
+- [Using CPU Manager and Topology Manager](../../scalability_and_performance/using-cpu-manager.xml#using-cpu-manager)
+
+- [Configuring huge pages](../../scalability_and_performance/what-huge-pages-do-and-how-they-are-consumed-by-apps.xml#configuring-huge-pages_huge-pages)
+
+- [Creating a custom machine config pool](https://access.redhat.com/solutions/5688941)
+
+- [Working with projects](../../applications/projects/working-with-projects.xml#working-with-projects)

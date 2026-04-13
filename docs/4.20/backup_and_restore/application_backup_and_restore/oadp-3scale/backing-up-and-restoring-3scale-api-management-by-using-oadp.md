@@ -1,4 +1,6 @@
-With Red Hat 3scale API Management, you can manage your APIs for internal or external users. You can deploy 3scale components on-premise, in the cloud, as a managed service, or in any combination based on your requirements.
+Back up and restore Red Hat 3scale API Management deployments by using OpenShift API for Data Protection (OADP) to protect application resources, persistent volumes, and configurations. This helps you to safeguard your 3scale components for disaster recovery.
+
+You can deploy 3scale components on-premise, in the cloud, as a managed service, or in any combination based on your requirements.
 
 With OpenShift API for Data Protection (OADP), you can safeguard 3scale API Management deployments by backing up application resources, persistent volumes, and configurations.
 
@@ -10,6 +12,12 @@ You can use the OpenShift API for Data Protection (OADP) Operator to back up and
 
 You can configure OADP to perform the following operations with 3scale API Management:
 
-- Create a backup of 3scale components by following the steps in [Backing up 3scale API Management](../../../backup_and_restore/application_backup_and_restore/oadp-3scale/backing-up-3scale-api-management-by-using-oadp.xml#backing-up-3scale-api-management-by-using-oadp).
+- Create a backup of 3scale components. For more details, see *Backing up 3scale API Management*.
 
-- Restore the components to scale up the 3scale operator and deployment by following the steps in [Restoring 3scale API Management](../../../backup_and_restore/application_backup_and_restore/oadp-3scale/restoring-3scale-api-management-by-using-oadp.xml#restoring-3scale-api-management-by-using-oadp).
+- Restore the components to scale up the 3scale operator and deployment. For more details, see *Restoring 3scale API Management*.
+
+<!-- -->
+
+- [Backing up 3scale API Management](../../../backup_and_restore/application_backup_and_restore/oadp-3scale/backing-up-3scale-api-management-by-using-oadp.xml#backing-up-3scale-api-management-by-using-oadp)
+
+- [Restoring 3scale API Management](../../../backup_and_restore/application_backup_and_restore/oadp-3scale/restoring-3scale-api-management-by-using-oadp.xml#restoring-3scale-api-management-by-using-oadp)

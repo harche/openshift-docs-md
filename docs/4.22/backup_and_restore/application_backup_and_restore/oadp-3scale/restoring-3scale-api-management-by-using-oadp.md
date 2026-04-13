@@ -1,18 +1,10 @@
-You can restore Red Hat 3scale API Management components by restoring the backed up 3scale operator resources. You can also restore databases such as MySQL and Redis.
+Restore Red Hat 3scale API Management components by restoring the backed up 3scale operator resources, MySQL database, and Redis database. This helps you to recover your 3scale deployment and resume API management services.
 
 After the data has been restored, you can scale up the 3scale operator and deployment.
 
-- You installed and configured Red Hat 3scale API Management. For more information, see [Installing 3scale API Management on OpenShift](https://docs.redhat.com/en/documentation/red_hat_3scale_api_management/2.15/html-single/installing_red_hat_3scale_api_management/index#install-threescale-on-openshift-guide) and [Red Hat 3scale API Management](https://docs.redhat.com/en/documentation/red_hat_3scale_api_management).
-
-- You backed up the 3scale operator, and databases such as MySQL and Redis.
-
-- Ensure that you are restoring 3scale on the same cluster where it was backed up from.
-
-- If you want to restore 3scale on a different cluster, ensure that the original backed-up cluster and the cluster you want to restore the operator on are using the same custom domain.
-
 # Restoring the 3scale API Management operator, secrets, and APIManager
 
-You can restore the Red Hat 3scale API Management operator resources, and both the `Secret` and APIManager custom resources (CRs) by using the following procedure.
+Restore the Red Hat 3scale API Management operator resources, including the `Secret` and APIManager custom resources (CRs). This helps you to recover your 3scale operator configuration on the same or a different cluster.
 
 - You backed up the 3scale operator.
 
@@ -28,23 +20,11 @@ You can restore the Red Hat 3scale API Management operator resources, and both 
     $ oc delete project threescale
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     "threescale" project deleted successfully
     ```
 
 2.  Create a YAML file with the following configuration to restore the 3scale operator:
-
-    <div class="formalpara-title">
-
-    **Example `restore.yaml` file**
-
-    </div>
 
     ``` yaml
     apiVersion: velero.io/v1
@@ -67,19 +47,16 @@ You can restore the Red Hat 3scale API Management operator resources, and both 
       itemOperationTimeout: 4h0m0s
     ```
 
-    - Restoring the 3scale operator’s backup
+    where:
+
+    `operator-install-backup`
+    Specifies the name of the backup to restore the 3scale operator.
 
 3.  Restore the 3scale operator by running the following command:
 
     ``` terminal
     $ oc create -f restore.yaml
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     restore.velerio.io/operator-installation-restore created
@@ -104,13 +81,19 @@ You can restore the Red Hat 3scale API Management operator resources, and both 
     EOF
     ```
 
-    - Replace \<ID_123456\> with your AWS credentials ID.
+    where:
 
-    - Replace \<ID_98765544\> with your AWS credentials KEY.
+    `<AWS_ACCESS_KEY_ID>`
+    Specifies your AWS credentials ID.
 
-    - Replace \<mybucket.example.com\> with your target bucket name.
+    `<AWS_SECRET_ACCESS_KEY>`
+    Specifies your AWS credentials KEY.
 
-    - Replace \<us-east-1\> with the AWS region of your bucket.
+    `<mybucket.example.com>`
+    Specifies your target bucket name.
+
+    `<us-east-1>`
+    Specifies the AWS region of your bucket.
 
 5.  Scale down the 3scale operator by running the following command:
 
@@ -118,23 +101,11 @@ You can restore the Red Hat 3scale API Management operator resources, and both 
     $ oc scale deployment threescale-operator-controller-manager-v2 --replicas=0 -n threescale
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     deployment.apps/threescale-operator-controller-manager-v2 scaled
     ```
 
 6.  Create a YAML file with the following configuration to restore the `Secret`:
-
-    <div class="formalpara-title">
-
-    **Example `restore-secret.yaml` file**
-
-    </div>
 
     ``` yaml
     apiVersion: velero.io/v1
@@ -157,19 +128,16 @@ You can restore the Red Hat 3scale API Management operator resources, and both 
       itemOperationTimeout: 4h0m0s
     ```
 
-    - Restoring the `Secret` backup.
+    where:
+
+    `operator-resources-secrets`
+    Specifies the name of the backup to restore the `Secret`.
 
 7.  Restore the `Secret` by running the following command:
 
     ``` terminal
     $ oc create -f restore-secrets.yaml
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     restore.velerio.io/operator-resources-secrets created
@@ -204,21 +172,19 @@ You can restore the Red Hat 3scale API Management operator resources, and both 
       itemOperationTimeout: 4h0m0s
     ```
 
-    - Restoring the APIManager backup.
+    where:
 
-    - The resources that you do not want to restore.
+    `operator-resources-apim`
+    Specifies the name of the backup to restore the APIManager.
+
+    `excludedResources`
+    Specifies the resources that you do not want to restore.
 
 9.  Restore the APIManager by running the following command:
 
     ``` terminal
     $ oc create -f restore-apimanager.yaml
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     restore.velerio.io/operator-resources-apim created
@@ -230,25 +196,13 @@ You can restore the Red Hat 3scale API Management operator resources, and both 
     $ oc scale deployment threescale-operator-controller-manager-v2 --replicas=1 -n threescale
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     deployment.apps/threescale-operator-controller-manager-v2 scaled
     ```
 
 # Restoring a MySQL database
 
-Restoring a MySQL database re-creates the following resources:
-
-- The `Pod`, `ReplicationController`, and `Deployment` objects.
-
-- The additional persistent volumes (PVs) and associated persistent volume claims (PVCs).
-
-- The MySQL dump, which the `example-claim` PVC contains.
+Restore a MySQL database by scaling down Red Hat 3scale API Management components and creating a Velero `Restore` custom resource (CR). This helps you to recover your 3scale MySQL data, persistent volumes, and associated resources.
 
 <div class="warning">
 
@@ -387,21 +341,19 @@ Do not delete the default PV and PVC associated with the database. If you do, yo
       restorePVs: true
     ```
 
-    - Restoring the MySQL backup.
+    where:
 
-    - A path where the data is restored from.
+    `mysql-backup`
+    Specifies the name of the MySQL backup to restore.
+
+    `/var/lib/mysqldump/data/dump.sql`
+    Specifies the path where the data is restored from.
 
 6.  Restore the MySQL database by running the following command:
 
     ``` terminal
     $ oc create -f restore-mysql.yaml
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     restore.velerio.io/restore-mysql created
@@ -450,7 +402,7 @@ Do not delete the default PV and PVC associated with the database. If you do, yo
 
 # Restoring the back-end Redis database
 
-You can restore the back-end Redis database by deleting the deployment and specifying which resources you do not want to restore.
+Restore the back-end Redis database by creating a `Restore` custom resource (CR) that excludes non-essential cluster resources. This helps you to recover the Redis data store as part of the Red Hat 3scale API Management restoration process.
 
 - You restored the Red Hat 3scale API Management operator resources, `Secret`, and APIManager custom resources.
 
@@ -461,12 +413,6 @@ You can restore the back-end Redis database by deleting the deployment and speci
     ``` terminal
     $ oc delete deployment backend-redis -n threescale
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     Warning: apps.openshift.io/v1 deployment is deprecated in v4.14+, unavailable in v4.10000+
@@ -504,19 +450,16 @@ You can restore the back-end Redis database by deleting the deployment and speci
       restorePVs: true
     ```
 
-    - Restoring the Redis backup.
+    where:
+
+    `redis-backup`
+    Specifies the name of the Redis backup to restore.
 
 3.  Restore the Redis database by running the following command:
 
     ``` terminal
     $ oc create -f restore-backend.yaml
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     restore.velerio.io/restore-backend created
@@ -528,12 +471,6 @@ You can restore the back-end Redis database by deleting the deployment and speci
   $ oc get podvolumerestores.velero.io -n openshift-adp
   ```
 
-  <div class="formalpara-title">
-
-  **Example output:**
-
-  </div>
-
   ``` terminal
   NAME                    NAMESPACE    POD                     UPLOADER TYPE   VOLUME                  STATUS      TOTALBYTES   BYTESDONE   AGE
   restore-backend-jmrwx   threescale   backend-redis-1-bsfmv   kopia           backend-redis-storage   Completed   76123        76123       21m
@@ -541,7 +478,7 @@ You can restore the back-end Redis database by deleting the deployment and speci
 
 # Scaling up the 3scale API Management operator and deployment
 
-You can scale up the Red Hat 3scale API Management operator and any deployment that was manually scaled down. After a few minutes, 3scale installation should be fully functional, and its state should match the backed-up state.
+Scale up the Red Hat 3scale API Management operator and any deployment that was manually scaled down during the restore process. This helps you to bring your 3scale installation back to a fully functional state matching the backed-up configuration.
 
 - You restored the 3scale operator resources, and both the `Secret` and APIManager custom resources (CRs).
 

@@ -54,6 +54,29 @@ You can install the Red Hat Build of Kueue Operator on a OpenShift Container Pla
 
 2.  Choose **Red Hat Build of Kueue Operator** from the list of available Operators, and click **Install**.
 
+3.  Select **Enable Operator recommended cluster monitoring on this Namespace**.
+
+    This option sets the `openshift.io/cluster-monitoring: "true"` label in the Namespace object. You must select this option to ensure that cluster monitoring scrapes the `openshift-kueue-operator` namespace.
+
+4.  Click **Install**.
+
+    <div class="note">
+
+    Alternatively, if you are creating the `Namespace` object by using YAML, ensure that you include the `openshift.io/cluster-monitoring: "true"` label:
+
+    \+
+
+    ``` yaml
+    apiVersion: v1
+    kind: Namespace
+    metadata:
+      labels:
+        openshift.io/cluster-monitoring: "true"
+      name: openshift-kueue-operator
+    ```
+
+    </div>
+
 - Go to **Operators** → **Installed Operators** and confirm that the **Red Hat Build of Kueue Operator** is listed with **Status** as **Succeeded**.
 
 <!-- -->

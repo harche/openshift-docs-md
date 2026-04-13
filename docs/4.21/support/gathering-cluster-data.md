@@ -476,8 +476,6 @@ To determine the latest version for an OpenShift Container Platform component’
 
 5.  Attach the compressed file to your support case on the [the **Customer Support** page](https://access.redhat.com/support/cases/#/case/list) of the Red Hat Customer Portal.
 
-# Additional resources
-
 - [Gathering debugging data for the Custom Metrics Autoscaler](../nodes/cma/nodes-cma-autoscaling-custom.xml#nodes-cma-autoscaling-custom-gather)
 
 - [Red Hat OpenShift Container Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift)
@@ -838,8 +836,6 @@ For more information about the support scope of Red Hat Technology Preview featu
     ```
 
     When successful, the process must create an archive and upload it to the Red Hat Secure File Transfer Protocol (SFTP) server for the specified case.
-
-# Additional resources
 
 - [Understanding and creating service accounts](../authentication/understanding-and-creating-service-accounts.xml#understanding-and-creating-service-accounts)
 

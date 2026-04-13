@@ -8,7 +8,9 @@ Hot unplugging is not supported for Single Root I/O Virtualization (SR-IOV) inte
 
 # VirtIO limitations
 
-Each VirtIO interface uses one of the limited Peripheral Connect Interface (PCI) slots in the VM. There are a total of 32 slots available. The PCI slots are also used by other devices and must be reserved in advance, therefore slots might not be available on demand. OpenShift Virtualization reserves up to four slots for hot plugging interfaces. This includes any existing plugged network interfaces. For example, if your VM has two existing plugged interfaces, you can hot plug two more network interfaces.
+Each VirtIO interface uses one of the limited Peripheral Connect Interface (PCI) slots in the VM. There are a total of 32 slots available. The PCI slots are also used by other devices and must be reserved in advance, therefore slots might not be available on-demand.
+
+OpenShift Virtualization reserves up to four slots for hot plugging interfaces. This includes any existing plugged network interfaces. For example, if your VM has two existing plugged interfaces, you can hot plug two more network interfaces.
 
 <div class="note">
 
@@ -196,9 +198,7 @@ Hot unplugging is not supported for Single Root I/O Virtualization (SR-IOV) inte
 
 - [About live migration permissions](../../virt/live_migration/virt-about-live-migration.xml#virt-about-live-migration-permissions_virt-about-live-migration)
 
-- [Creating a Linux bridge network attachment definition](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#creating-linux-bridge-nad)
-
-- [Connecting a virtual machine to a Linux bridge network](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#configuring-vm-network-interface)
+- [Creating a Linux bridge network attachment definition](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-connecting-vm-to-linux-bridge)
 
 - [Creating an SR-IOV network attachment definition](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#nw-sriov-additional-network_virt-connecting-vm-to-sriov)
 

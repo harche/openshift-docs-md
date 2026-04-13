@@ -879,6 +879,12 @@ The following `agent-config.yaml` file is an example of a manifest for bond and 
 
 - Name of the interface.
 
+  <div class="note">
+
+  This value does not need to match the device name.
+
+  </div>
+
 - The type of interface. This example creates a VLAN.
 
 - The type of interface. This example creates a bond.
@@ -994,6 +1000,12 @@ hosts:
 - The `interfaces` field is an array of network interfaces defined for the host.
 
 - The name of the interface.
+
+  <div class="note">
+
+  This value does not need to match the device name.
+
+  </div>
 
 - The type of interface. This example creates an ethernet interface.
 

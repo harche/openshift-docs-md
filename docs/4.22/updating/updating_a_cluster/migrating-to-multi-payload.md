@@ -12,19 +12,21 @@ Migration from a multi-architecture payload to a single-architecture payload is 
 
 # Migrating to a cluster with multi-architecture compute machines using the CLI
 
+You can use the OpenShift CLI (`oc`) to migrate to a cluster with multi-architecture compute machines.
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
-- Your OpenShift Container Platform version is up to date to at least version 4.13.0.
+- Your OpenShift Container Platform version is 4.13.0 or later.
 
-  For more information on how to update your cluster version, see *Updating a cluster using the web console* or *Updating a cluster using the CLI*.
+  For more information on how to update your cluster version, see "Updating a cluster using the web console" or "Updating a cluster using the CLI".
 
 - You have installed the OpenShift CLI (`oc`) that matches the version for your current cluster.
 
-- Your `oc` client is updated to at least verion 4.13.0.
+- Your `oc` client is updated to version 4.13.0 or later.
 
-- Your OpenShift Container Platform cluster is installed on AWS, Azure, Google Cloud, bare metal or IBM P/Z platforms.
+- Your OpenShift Container Platform cluster is installed on AWS, Azure, Google Cloud, bare metal, or IBM P/Z platforms.
 
-  For more information on selecting a supported platform for your cluster installation, see *Selecting a cluster installation type*.
+  For more information on selecting a supported platform for your cluster installation, see "Selecting a cluster installation type".
 
 1.  Verify that the `RetrievedUpdates` condition is `True` in the Cluster Version Operator (CVO) by running the following command:
 
@@ -38,9 +40,9 @@ Migration from a multi-architecture payload to a single-architecture payload is 
     $ oc adm upgrade
     ```
 
-    For more information about cluster version condition types, see *Understanding cluster version condition types*.
+    For more information about cluster version condition types, see "Understanding cluster version condition types".
 
-2.  If the condition `RetrievedUpdates` is `False`, change the channel to `stable-<4.y>` or `fast-<4.y>` with the following command:
+2.  If the condition `RetrievedUpdates` is `False`, change the channel to `stable-<4.y>` or `fast-<4.y>` by running the following command:
 
     ``` terminal
     $ oc adm upgrade channel <channel>
@@ -48,15 +50,15 @@ Migration from a multi-architecture payload to a single-architecture payload is 
 
     After setting the channel, verify if `RetrievedUpdates` is `True`.
 
-    For more information about channels, see *Understanding update channels and releases*.
+    For more information about channels, see "Understanding update channels and releases".
 
-3.  Migrate to the multi-architecture payload with following command:
+3.  Migrate to the multi-architecture payload by running the following command:
 
     ``` terminal
     $ oc adm upgrade --to-multi-arch
     ```
 
-- You can monitor the migration by running the following command:
+- Monitor the migration by running the following command:
 
   ``` terminal
   $ oc adm upgrade
@@ -74,23 +76,23 @@ Migration from a multi-architecture payload to a single-architecture payload is 
 
   <div class="important">
 
-  Machine launches may fail as the cluster settles into the new state. To notice and recover when machines fail to launch, we recommend deploying machine health checks. For more information about machine health checks and how to deploy them, see *About machine health checks*.
+  Machine launches may fail as the cluster settles into the new state. To notice and recover when machines fail to launch, it is recommended that you deploy machine health checks. For more information about machine health checks and how to deploy them, see "About machine health checks".
 
   </div>
 
-  1.  Optional: To retrieve more detailed information about the status of your update, monitor the migration by running the following command:
+  1.  Optional: Retrieve more detailed information about the status of your update and monitor the migration by running the following command:
 
       ``` terminal
       $ oc adm upgrade status
       ```
 
-      For more information about how to use the `oc adm upgrade status` command, see *Gathering cluster update status using oc adm upgrade status (Technology Preview)*.
+      For more information about how to use the `oc adm upgrade status` command, see "Gathering cluster update status using oc adm upgrade status (Technology Preview)".
 
 The migrations must be complete and all the cluster operators must be stable before you can add compute machine sets with different architectures to your cluster.
 
 - [Configuring multi-architecture compute machines on an OpenShift Container Platform cluster](../../post_installation_configuration/configuring-multi-arch-compute-machines/multi-architecture-configuration.xml#multi-architecture-configuration)
 
-- [Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator](../../post_installation_configuration/configuring-multi-arch-compute-machines/multiarch-tuning-operator.xml#multiarch-tuning-operator).
+- [Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator](../../post_installation_configuration/configuring-multi-arch-compute-machines/multiarch-tuning-operator.xml#multiarch-tuning-operator)
 
 - [Updating a cluster using the web console](../../updating/updating_a_cluster/updating-cluster-web-console.xml#updating-cluster-web-console)
 
@@ -151,7 +153,7 @@ You can migrate the control plane in your cluster from `x86` to `arm64` architec
     }
     ```
 
-    If the cluster is not using the multi payload, migrate the cluster to a multi-architecture cluster. For more information, see "Migrating to a cluster with multi-architecture compute machines".
+    If the cluster is not using the multi payload, migrate the cluster to a multi-architecture cluster. For more information, see "Migrating to a cluster with multi-architecture compute machines using the CLI".
 
 3.  Update your image stream from single-architecture to multi-architecture by running the following command:
 
@@ -166,21 +168,21 @@ You can migrate the control plane in your cluster from `x86` to `arm64` architec
     $ oc get configmap/coreos-bootimages -n openshift-machine-config-operator -o jsonpath='{.data.stream}' | jq -r '.architectures.aarch64.images.aws.regions."<aws_region>".image'
     ```
 
-    - Replace `<aws_region>` with the AWS region where the current cluster is installed. You can get the AWS region for the installed cluster by running the following command:
+    Replace `<aws_region>` with the AWS region where the current cluster is installed. You can get the AWS region for the installed cluster by running the following command:
 
-      ``` terminal
-      $ oc get infrastructure cluster -o jsonpath='{.status.platformStatus.aws.region}'
-      ```
+    ``` terminal
+    $ oc get infrastructure cluster -o jsonpath='{.status.platformStatus.aws.region}'
+    ```
 
-      <div class="formalpara-title">
+    <div class="formalpara-title">
 
-      **Example output**
+    **Example output**
 
-      </div>
+    </div>
 
-      ``` terminal
-      ami-xxxxxxx
-      ```
+    ``` terminal
+    ami-xxxxxxx
+    ```
 
 5.  Update the control plane machine set to support the `arm64` architecture by running the following command:
 
@@ -188,11 +190,11 @@ You can migrate the control plane in your cluster from `x86` to `arm64` architec
     $ oc edit controlplanemachineset.machine.openshift.io cluster -n openshift-machine-api
     ```
 
-    Update the `instanceType` field to a type that supports the `arm64` architecture, and set the `ami.id` field to an AMI that is compatible with the `arm64` architecture. For information about supported instance types, see "Tested instance types for AWS on 64-bit ARM infrastructures".
+    1.  Update the `instanceType` field to a type that supports the `arm64` architecture, and set the `ami.id` field to an AMI that is compatible with the `arm64` architecture. For information about supported instance types, see "Tested instance types for AWS on 64-bit ARM infrastructures".
 
-    For more information about configuring the control plane machine set for AWS, see "Control plane configuration options for Amazon Web Services".
+        For more information about configuring the control plane machine set for AWS, see "Control plane configuration options for Amazon Web Services".
 
-- Verify that the control plane nodes are now running on the `arm64` architecture:
+- Verify that the control plane nodes are now running on the `arm64` architecture by running the following command:
 
   ``` terminal
   $ oc get nodes -o wide
@@ -213,6 +215,14 @@ You can migrate the control plane in your cluster from `x86` to `arm64` architec
   master-002.example.com        Ready    control-plane,master   120d   v1.30.7   10.x.x.x    <none>        Red Hat Enterprise Linux CoreOS 4xx.xx.xxxxx-0   5.x.x-xxx.x.x.el9_xx.aarch64   cri-o://1.30.x
   master-003.example.com        Ready    control-plane,master   120d   v1.30.7   10.x.x.x    <none>        Red Hat Enterprise Linux CoreOS 4xx.xx.xxxxx-0   5.x.x-xxx.x.x.el9_xx.aarch64   cri-o://1.30.x
   ```
+
+<!-- -->
+
+- [Control plane configuration options for Amazon Web Services](../../machine_management/control_plane_machine_management/cpmso_provider_configurations/cpmso-config-options-aws.xml#cpmso-config-options-aws)
+
+- [Tested instance types for AWS on 64-bit ARM infrastructures](../../installing/installing_aws/upi/upi-aws-installation-reqs.xml#installation-aws-arm-tested-machine-types_upi-aws-installation-reqs)
+
+- [Migrating to a cluster with multi-architecture compute machines using the CLI](../../updating/updating_a_cluster/migrating-to-multi-payload.xml#migrating-to-multi-arch-cli_updating-clusters-overview)
 
 # Migrating control plane or infra machine sets between architectures on Google Cloud
 
@@ -236,7 +246,7 @@ You can migrate the control plane or infra machine sets in your Google Cloud clu
 
     ``` terminal
     NAME                          STATUS   ROLES                  AGE    VERSION   INTERNAL-IP EXTERNAL-IP   OS-IMAGE                                         KERNEL-VERSION                 CONTAINER-RUNTIME
-    worker-001.example.com        Ready    infra                 100d   v1.30.7   10.x.x.x    <none>        Red Hat Enterprise Linux CoreOS 4xx.xx.xxxxx-0   5.x.x-xxx.x.x.el9_xx.x86_64    cri-o://1.30.x
+    worker-001.example.com        Ready    infra                  100d   v1.30.7   10.x.x.x    <none>        Red Hat Enterprise Linux CoreOS 4xx.xx.xxxxx-0   5.x.x-xxx.x.x.el9_xx.x86_64    cri-o://1.30.x
     master-001.example.com        Ready    control-plane,master   120d   v1.30.7   10.x.x.x    <none>        Red Hat Enterprise Linux CoreOS 4xx.xx.xxxxx-0   5.x.x-xxx.x.x.el9_xx.x86_64    cri-o://1.30.x
     ```
 
@@ -318,10 +328,6 @@ You can migrate the control plane or infra machine sets in your Google Cloud clu
     2.  Replace the `disks.image` parameter with the `image` parameter that you formed previously.
 
     3.  Replace the `machineType` parameter with the instance type that you selected.
-
-- [Control plane configuration options for Amazon Web Services](../../machine_management/control_plane_machine_management/cpmso_provider_configurations/cpmso-config-options-aws.xml#cpmso-config-options-aws)
-
-- [Tested instance types for AWS on 64-bit ARM infrastructures](../../installing/installing_aws/upi/upi-aws-installation-reqs.xml#installation-aws-arm-tested-machine-types_upi-aws-installation-reqs)
 
 - [Tested instance types for Google Cloud on 64-bit ARM infrastructures](../../installing/installing_gcp/installing-gcp-customizations.xml#installation-gcp-tested-machine-types-arm_installing-gcp-customizations)
 

@@ -12,7 +12,7 @@ You can use `bootupd` to update the boot loader to protect against the BootHole 
 
 You can manually inspect the status of the system and update the boot loader by using the `bootupctl` command-line tool.
 
-1.  Inspect the system status:
+1.  Inspect the system status by running the following command:
 
     ``` terminal
     # bootupctl status
@@ -46,7 +46,7 @@ You can manually inspect the status of the system and update the boot loader by 
 
 1.  OpenShift Container Platform clusters initially installed on version 4.4 and older require an explicit adoption phase.
 
-    If the system status is `Adoptable`, perform the adoption:
+    If the system status is `Adoptable`, perform the adoption by running the following command:
 
     ``` terminal
     # bootupctl adopt-and-update
@@ -62,7 +62,7 @@ You can manually inspect the status of the system and update the boot loader by 
     Updated: grub2-efi-x64-1:2.04-31.el8_4.1.x86_64,shim-x64-15-8.el8_1.x86_64
     ```
 
-2.  If an update is available, apply the update so that the changes take effect on the next reboot:
+2.  If an update is available, apply the update so that the changes take effect on the next reboot by running the following command:
 
     ``` terminal
     # bootupctl update
@@ -78,13 +78,13 @@ You can manually inspect the status of the system and update the boot loader by 
     Updated: grub2-efi-x64-1:2.04-31.el8_4.1.x86_64,shim-x64-15-8.el8_1.x86_64
     ```
 
-# Updating the bootloader automatically via a machine config
+# Updating the boot loader automatically by using a machine config
 
-Another way to automatically update the boot loader with `bootupd` is to create a systemd service unit that will update the boot loader as needed on every boot. This unit will run the `bootupctl update` command during the boot process and will be installed on the nodes via a machine config.
+You can automatically update the boot loader with `bootupd` by creating a systemd service unit that will update the boot loader as needed on every boot. This unit will run the `bootupctl update` command during the boot process and will be installed on the nodes via a machine config.
 
 <div class="note">
 
-This configuration is not enabled by default as unexpected interruptions of the update operation may lead to unbootable nodes. If you enable this configuration, make sure to avoid interrupting nodes during the boot process while the bootloader update is in progress. The boot loader update operation generally completes quickly thus the risk is low.
+This configuration is not enabled by default because unexpected interruptions of the update operation might lead to unbootable nodes. If you enable this configuration, make sure to avoid interrupting nodes during the boot process while the boot loader update is in progress. The boot loader update operation generally completes quickly thus the risk is low.
 
 </div>
 
@@ -125,9 +125,9 @@ This configuration is not enabled by default as unexpected interruptions of the 
           WantedBy=multi-user.target
     ```
 
-    - On control plane nodes, substitute `master` for `worker` in both of these locations.
+    On control plane nodes, substitute `master` for `worker` in `metadata.name` and `metadata.labels.machineconfiguration.openshift.io/role`.
 
-2.  Use Butane to generate a `MachineConfig` object file, `99-worker-bootupctl-update.yaml`, containing the configuration to be delivered to the nodes:
+2.  Generate a `MachineConfig` object file, `99-worker-bootupctl-update.yaml`, containing the configuration to be delivered to the nodes by running the following command:
 
     ``` terminal
     $ butane 99-worker-bootupctl-update.bu -o 99-worker-bootupctl-update.yaml
@@ -137,7 +137,7 @@ This configuration is not enabled by default as unexpected interruptions of the 
 
     - If the cluster is not running yet, after you generate manifest files, add the `MachineConfig` object file to the `<installation_directory>/openshift` directory, and then continue to create the cluster.
 
-    - If the cluster is already running, apply the file:
+    - If the cluster is already running, apply the file by running the following command:
 
       ``` terminal
       $ oc apply -f ./99-worker-bootupctl-update.yaml
