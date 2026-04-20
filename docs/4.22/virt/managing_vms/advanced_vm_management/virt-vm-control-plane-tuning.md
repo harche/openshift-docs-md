@@ -11,7 +11,7 @@ You can use the `highBurst` profile to create and maintain a large number of vir
 - Apply the following patch to enable the `highBurst` tuning policy profile:
 
   ``` terminal
-  $ oc patch hyperconverged kubevirt-hyperconverged -n openshift-cnv \
+  $ oc patch hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv \
     --type=json -p='[{"op": "add", "path": "/spec/tuningPolicy", \
     "value": "highBurst"}]'
   ```

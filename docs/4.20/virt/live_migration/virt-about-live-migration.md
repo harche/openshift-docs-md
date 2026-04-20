@@ -159,6 +159,4 @@ Post copy mode should not be used for critical data, or with unstable networks.
 
 - [Prometheus queries for live migration](../../virt/monitoring/virt-prometheus-queries.xml#virt-live-migration-metrics_virt-prometheus-queries)
 
-- [VM run strategies](../../virt/nodes/virt-node-maintenance.xml#run-strategies)
-
-- [VM and cluster eviction strategies](../../virt/nodes/virt-node-maintenance.xml#eviction-strategies)
+- [Configure eviction and run strategies](../../virt/nodes/virt-eviction-strategies.xml#virt-eviction-strategies)

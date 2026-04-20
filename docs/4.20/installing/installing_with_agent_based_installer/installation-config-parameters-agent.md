@@ -716,19 +716,28 @@ Additional VMware vSphere configuration parameters are described in the followin
 <td style="text-align: left;"><pre><code>platform:
   vsphere:
     failureDomains:
-      topology
+      topology:
+        tagIDs:</code></pre></td>
+<td style="text-align: left;"><p>Optional: Specifies the ID of the tag to be associated by the installation program. Each VM created by OpenShift Container Platform is assigned a unique tag that is specific to the cluster. The assigned tag enables the installation program to identify and remove the associated VMs when a cluster is decommissioned. You can list up to ten additional tag IDs to be attached to the VMs provisioned by the installation program. For more information about determining the tag ID, see the <a href="https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.vcenterhost.doc/GUID-E8E854DD-AA97-4E0C-8419-CE84F93C4058.html">vSphere Tags and Attributes documentation</a>.</p>
+<p><strong>Value:</strong> String, for example <code>urn:vmomi:InventoryServiceTag:208e713c-cae3-4b7f-918e-4051ca7d1f97:GLOBAL</code>.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><pre><code>platform:
+  vsphere:
+    failureDomains:
+      topology:
         template:</code></pre></td>
 <td style="text-align: left;"><p>Specifies the absolute path to a pre-existing Red Hat Enterprise Linux CoreOS (RHCOS) image template or virtual machine. The installation program can use the image template or virtual machine to quickly install RHCOS on vSphere hosts. Consider using this parameter as an alternative to uploading an RHCOS image on vSphere hosts. This parameter is available for use only on installer-provisioned infrastructure.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   vsphere:
     vcenters:</code></pre></td>
 <td style="text-align: left;"><p>Configures the connection details so that services can communicate with a vCenter server.</p>
 <p><strong>Value:</strong> An array of vCenter configuration objects.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   vsphere:
     vcenters:
@@ -736,7 +745,7 @@ Additional VMware vSphere configuration parameters are described in the followin
 <td style="text-align: left;"><p>Lists and defines the data centers where OpenShift Container Platform virtual machines (VMs) operate. The list of data centers must match the list of data centers specified in the <code>failureDomains</code> field.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   vsphere:
     vcenters:
@@ -744,7 +753,7 @@ Additional VMware vSphere configuration parameters are described in the followin
 <td style="text-align: left;"><p>The password associated with the vSphere user.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   vsphere:
     vcenters:
@@ -752,7 +761,7 @@ Additional VMware vSphere configuration parameters are described in the followin
 <td style="text-align: left;"><p>The port number used to communicate with the vCenter server.</p>
 <p><strong>Value:</strong> Integer</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   vsphere:
     vcenters:
@@ -760,7 +769,7 @@ Additional VMware vSphere configuration parameters are described in the followin
 <td style="text-align: left;"><p>The fully qualified host name (FQHN) or IP address of the vCenter server.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   vsphere:
     vcenters:

@@ -421,7 +421,7 @@ You can configure one of the following high-availability (HA) options for your c
 
   <div class="note">
 
-  In OpenShift Container Platform clusters installed using installer-provisioned infrastructure and with a properly configured `MachineHealthCheck` resource, if a node fails the machine health check and becomes unavailable to the cluster, it is recycled. What happens next with VMs that ran on the failed node depends on a series of conditions. See [Run strategies](../../virt/nodes/virt-node-maintenance.xml#run-strategies) for more detailed information about the potential outcomes and how run strategies affect those outcomes.
+  In OpenShift Container Platform clusters installed using installer-provisioned infrastructure and with a properly configured `MachineHealthCheck` resource, if a node fails the machine health check and becomes unavailable to the cluster, it is recycled. What happens next with VMs that ran on the failed node depends on a series of conditions. See the "Run strategies" documentation for more detailed information about the potential outcomes and how run strategies affect those outcomes.
 
   Currently, IPI is not supported on IBM Z®.
 
@@ -442,3 +442,7 @@ You can configure one of the following high-availability (HA) options for your c
   Without an external monitoring system or a qualified human monitoring node health, virtual machines lose high availability.
 
   </div>
+
+# Additional resources
+
+- [Run strategies](../../virt/nodes/virt-eviction-strategies.xml#virt-runstrategies-vms_virt-eviction-strategies)

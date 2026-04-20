@@ -182,7 +182,7 @@ Some features in this release are currently in Technology Preview. These experim
 
 <!-- -->
 
-- You can now use the Plug a Simple Socket Transport (passt) network binding plugin to connect a VM to a primary user-defined network (UDN). For more information, see [Attaching a virtual machine to the primary user-defined network](../../virt/vm_networking/virt-connecting-vm-to-primary-udn.xml#attaching-vm-to-primary-udn_virt-connecting-vm-to-primary-udn).
+- You can now use the Plug a Simple Socket Transport (passt) network binding plugin to connect a VM to a primary user-defined network (UDN). For more information, see [Attaching a virtual machine to the primary user-defined network](../../virt/vm_networking/virt-connecting-vm-to-primary-udn.xml#virt-attaching-vm-to-primary-udn-intro_virt-connecting-vm-to-primary-udn).
 
 <!-- -->
 

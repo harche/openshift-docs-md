@@ -143,7 +143,7 @@ The `PHASE` and conditions values are approximations that are based on available
 3.  Optional: Monitor the aggregated status of all OpenShift Virtualization component conditions by running the following command:
 
     ``` terminal
-    $ oc get hyperconverged kubevirt-hyperconverged -n openshift-cnv \
+    $ oc get hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv \
       -o=jsonpath='{range .status.conditions[*]}{"\t"}{"\t"}{"\n"}{end}'
     ```
 
@@ -220,7 +220,7 @@ You can configure how virtual machine workloads are updated during cluster upgra
 1.  To open the `HyperConverged` CR in your default editor, run the following command:
 
     ``` terminal
-    $ oc edit hyperconverged kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
     ```
 
 2.  Edit the `workloadUpdateStrategy` stanza of the `HyperConverged` CR. For example:
@@ -338,14 +338,14 @@ For supported OpenShift Container Platform releases and their RHEL versions, see
 2.  Disable workload update methods by running the following command:
 
     ``` terminal
-    $ oc patch hyperconverged kubevirt-hyperconverged -n openshift-cnv \
+    $ oc patch hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv \
       --type json -p '[{"op":"replace","path":"/spec/workloadUpdateStrategy/workloadUpdateMethods", "value":[]}]'
     ```
 
 3.  Ensure that the `HyperConverged` Operator is `Upgradeable`:
 
     ``` terminal
-    $ oc get hyperconverged kubevirt-hyperconverged -n openshift-cnv -o json | jq ".status.conditions"
+    $ oc get hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv -o json | jq ".status.conditions"
     ```
 
 4.  Update your cluster from the source EUS version to the next minor version of OpenShift Container Platform:
@@ -381,7 +381,7 @@ For supported OpenShift Container Platform releases and their RHEL versions, see
 8.  Confirm that OpenShift Virtualization updated to the latest z-stream release of the intermediate version:
 
     ``` terminal
-    $ oc get hyperconverged kubevirt-hyperconverged -n openshift-cnv -o json | jq ".status.versions"
+    $ oc get hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv -o json | jq ".status.versions"
     ```
 
 9.  Wait until the `HyperConverged` Operator again reports the `Upgradeable` condition.
@@ -411,7 +411,7 @@ For supported OpenShift Container Platform releases and their RHEL versions, see
 14. Restore the `workloadUpdateMethods` configuration recorded in step 1:
 
     ``` terminal
-    $ oc patch hyperconverged kubevirt-hyperconverged -n openshift-cnv --type json -p \
+    $ oc patch hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv --type json -p \
     "[{\"op\":\"add\",\"path\":\"/spec/workloadUpdateStrategy/workloadUpdateMethods\", \"value\":{WorkloadUpdateMethodConfig}}]"
     ```
 
@@ -453,6 +453,6 @@ Use the candidate channel only for testing where you can delete and re-create th
 
 - [About live migration](../../virt/live_migration/virt-about-live-migration.xml#virt-about-live-migration)
 
-- [Configuring eviction strategies](../../virt/nodes/virt-node-maintenance.xml#eviction-strategies)
+- [Configure eviction and run strategies](../../virt/nodes/virt-eviction-strategies.xml#virt-eviction-strategies)
 
 - [Configuring live migration limits and timeouts](../../virt/live_migration/virt-configuring-live-migration.xml#virt-configuring-live-migration)

@@ -233,7 +233,7 @@ Before you can finally initiate the cluster installation, you must verify host d
 
 # Additional resources
 
-- [Installing virtctl](../../virt/getting_started/virt-using-the-cli-tools.xml#installing-virtctl_virt-using-the-cli-tools)
+- [Installing virtctl](../../virt/getting_started/virt-using-the-cli-tools.xml#virt-installing-virtctl-binary_virt-using-the-cli-tools)
 
 - [Creating virtual machines from instance types](../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types)
 

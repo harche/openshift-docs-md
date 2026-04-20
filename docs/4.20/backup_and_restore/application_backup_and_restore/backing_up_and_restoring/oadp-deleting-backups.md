@@ -1,4 +1,4 @@
-You can delete a backup by creating the `DeleteBackupRequest` custom resource (CR) or by running the `velero backup delete` command as explained in the following procedures.
+Delete a backup by creating the `DeleteBackupRequest` custom resource (CR) or by running the `velero backup delete` command. This helps you to free up storage space and remove outdated backup artifacts.
 
 The volume backup artifacts are deleted at different times depending on the backup method:
 
@@ -10,7 +10,7 @@ The volume backup artifacts are deleted at different times depending on the back
 
 # Deleting a backup by creating a DeleteBackupRequest CR
 
-You can delete a backup by creating a `DeleteBackupRequest` custom resource (CR).
+Delete a backup by creating a `DeleteBackupRequest` custom resource (CR). This helps you to remove specific backups and their associated volume artifacts from storage.
 
 - You have run a backup of your application.
 
@@ -26,7 +26,7 @@ You can delete a backup by creating a `DeleteBackupRequest` custom resource (CR)
       backupName: <backup_name>
     ```
 
-    - Specify the name of the backup.
+    Replace `<backup_name>` with the name of the backup.
 
 2.  Apply the `DeleteBackupRequest` CR to delete the backup:
 
@@ -36,7 +36,7 @@ You can delete a backup by creating a `DeleteBackupRequest` custom resource (CR)
 
 # Deleting a backup by using the Velero CLI
 
-You can delete a backup by using the Velero CLI.
+Delete a backup by using the Velero CLI to run the `velero backup delete` command. This helps you to quickly remove backups and their associated volume artifacts from storage.
 
 - You have run a backup of your application.
 
@@ -50,11 +50,11 @@ You can delete a backup by using the Velero CLI.
   $ velero backup delete <backup_name> -n openshift-adp
   ```
 
-  - Specify the name of the backup.
+  Replace `<backup_name>` with the name of the backup.
 
 # About Kopia repository maintenance
 
-There are two types of Kopia repository maintenance:
+Kopia repository maintenance has two types, quick and full, that run automatically to optimize index performance and perform garbage collection. Knowing the two types helps you understand the maintenance cycle and how long it takes for backup artifacts to be deleted.
 
 Quick maintenance
 - Runs every hour to keep the number of index blobs (n) low. A high number of indexes negatively affects the performance of Kopia operations.
@@ -92,7 +92,9 @@ Three successful executions of a full maintenance cycle are required for the obj
 
 # Deleting a backup repository
 
-After you delete the backup, and after the Kopia repository maintenance cycles to delete the related artifacts are complete, the backup is no longer referenced by any metadata or manifest objects. You can then delete the `backuprepository` custom resource (CR) to complete the backup deletion process.
+Delete the `backuprepository` custom resource (CR) to complete the backup deletion process. This helps you to ensure that all backup metadata and artifacts are fully removed from storage.
+
+After you delete the backup, and after the Kopia repository maintenance cycles to delete the related artifacts are complete, the backup is no longer referenced by any metadata or manifest objects.
 
 - You have deleted the backup of your application.
 
@@ -110,4 +112,4 @@ After you delete the backup, and after the Kopia repository maintenance cycles t
     $ oc delete backuprepository <backup_repository_name> -n openshift-adp
     ```
 
-    - Specify the name of the backup repository from the earlier step.
+    Replace `<backup_repository_name>` with the name of the backup repository.

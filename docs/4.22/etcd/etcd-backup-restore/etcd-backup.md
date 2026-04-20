@@ -22,6 +22,8 @@ Only save a backup from a single control plane host. Do not take a backup from e
 
 </div>
 
+For a Two-Node with Fencing (TNF) setup, follow the steps to back up etcd data on only one node in the cluster. The cluster restore process is driven by data from a single node, so you can perform the etcd backup steps on only one node.
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have checked whether the cluster-wide proxy is enabled.
@@ -103,9 +105,9 @@ Only save a backup from a single control plane host. Do not take a backup from e
 
       <div class="note">
 
-      If etcd encryption is enabled, it is recommended to store this second file separately from the etcd snapshot for security reasons. However, this file is required to restore from the etcd snapshot.
+      If etcd encryption is enabled, store this second file separately from the etcd snapshot for security reasons. However, this file is required to restore from the etcd snapshot.
 
-      Keep in mind that etcd encryption only encrypts values, not keys. This means that resource types, namespaces, and object names are unencrypted.
+      The etcd encryption only encrypts values, not keys. This means that resource types, namespaces, and object names are not encrypted.
 
       </div>
 

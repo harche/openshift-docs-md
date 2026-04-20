@@ -2,9 +2,9 @@ Install OpenShift Virtualization to add virtualization functionality to your Ope
 
 <div class="important">
 
-If you install OpenShift Virtualization in a restricted environment with no internet connectivity, you must [configure Operator Lifecycle Manager for disconnected environments](../../disconnected/using-olm.xml#olm-restricted-networks).
+If you install OpenShift Virtualization in a restricted environment with no internet connectivity, you must configure Operator Lifecycle Manager (OLM) for a disconnected environment.
 
-If you have limited internet connectivity, you can [configure proxy support in OLM](../../operators/admin/olm-configuring-proxy-support.xml#olm-configuring-proxy-support) to access the software catalog.
+If you have limited internet connectivity, you can configure proxy support in OLM to access the software catalog.
 
 </div>
 
@@ -142,7 +142,7 @@ You must verify that the subscription creation was successful before you can pro
 2.  Check that the `HyperConverged` custom resource (CR) has the correct version. Run the following command and verify the output:
 
     ``` terminal
-    $ oc get hco -n openshift-cnv kubevirt-hyperconverged -o json | jq .status.versions
+    $ oc get hyperconvergeds.v1beta1.hco.kubevirt.io -n openshift-cnv kubevirt-hyperconverged -o json | jq .status.versions
     ```
 
     Example output:
@@ -157,7 +157,7 @@ You must verify that the subscription creation was successful before you can pro
 3.  Verify the `HyperConverged` CR conditions. Run the following command and check the output:
 
     ``` terminal
-    $ oc get hco kubevirt-hyperconverged -n openshift-cnv -o json | jq -r '.status.conditions[] | {type,status}'
+    $ oc get hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv -o json | jq -r '.status.conditions[] | {type,status}'
     ```
 
     Example output:
@@ -187,7 +187,7 @@ You must verify that the subscription creation was successful before you can pro
 
 <div class="note">
 
-You can [configure certificate rotation](../../virt/post_installation_configuration/virt-configuring-certificate-rotation.xml#virt-configuring-certificate-rotation) parameters in the YAML file.
+You can configure certificate rotation parameters in the YAML file.
 
 </div>
 
@@ -233,6 +233,18 @@ You can deploy the OpenShift Virtualization Operator by using the `oc` CLI.
 
 # Next steps
 
-- As a cluster administrator, you can run a [self validation checkup](../../virt/post_installation_configuration/virt-self-validation-checkups.xml#virt-self-validation-checkups) to verify that the environment is fully functional and self-sustained before you deploy production workloads.
+- As a cluster administrator, you can run a self validation checkup to verify that the environment is fully functional and self-sustained before you deploy production workloads.
 
-- The [hostpath provisioner](../../virt/storage/virt-configuring-local-storage-with-hpp.xml#virt-creating-hpp-basic-storage-pool_virt-configuring-local-storage-with-hpp) is a local storage provisioner designed for OpenShift Virtualization. If you want to configure local storage for virtual machines, you must enable the hostpath provisioner first.
+- The hostpath provisioner is a local storage provisioner designed for OpenShift Virtualization. If you want to configure local storage for virtual machines, you must enable the hostpath provisioner first.
+
+# Additional resources
+
+- [Using Operator Lifecycle Manager in disconnected environments](../../disconnected/using-olm.xml#olm-restricted-networks)
+
+- [Configuring proxy support in Operator Lifecycle Manager](../../operators/admin/olm-configuring-proxy-support.xml#olm-configuring-proxy-support)
+
+- [Self validation checkup](../../virt/post_installation_configuration/virt-self-validation-checkups.xml#virt-self-validation-checkups)
+
+- [Configure certificate rotation](../../virt/post_installation_configuration/virt-configuring-certificate-rotation.xml#virt-configuring-certificate-rotation)
+
+- [Creating a hostpath provisioner with a basic storage pool](../../virt/storage/virt-configuring-local-storage-with-hpp.xml#virt-creating-hpp-basic-storage-pool_virt-configuring-local-storage-with-hpp)

@@ -1,4 +1,6 @@
-You can create a different compute machine set to serve a specific purpose in your OpenShift Container Platform cluster on Red Hat OpenStack Platform (RHOSP). For example, you might create infrastructure machine sets and related machines so that you can move supporting workloads to the new machines.
+To automate the provisioning and scaling of node virtual machines (VMs) on Red Hat OpenStack Platform (RHOSP) for compute workloads, create a `MachineSet` YAML file that defines details, for example image and network, that are specific to RHOSP.
+
+You can create a different compute machine set to serve a specific purpose in your OpenShift Container Platform cluster on RHOSP. For example, you might create infrastructure machine sets and related machines so that you can move supporting workloads to the new machines.
 
 <div class="important">
 
@@ -16,9 +18,11 @@ $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
 
 # Sample YAML for a compute machine set custom resource on RHOSP
 
-This sample YAML defines a compute machine set that runs on Red Hat OpenStack Platform (RHOSP) and creates nodes that are labeled with `node-role.kubernetes.io/<role>: ""`.
+To enable the Machine API to automate the scaling and management of compute nodes, define a `MachineSet` resource with Red Hat OpenStack Platform (RHOSP) parameters, for example, image and network IDs.
 
-In this sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<role>` is the node label to add.
+The sample YAML defines a compute machine set that runs on Red Hat OpenStack Platform (RHOSP) and creates nodes that are labeled with `node-role.kubernetes.io/<role>: ""`.
+
+In the sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<role>` is the node label to add.
 
 ``` yaml
 apiVersion: machine.openshift.io/v1beta1
@@ -76,25 +80,41 @@ spec:
           availabilityZone: <optional_openstack_availability_zone>
 ```
 
-- Specify the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI installed, you can obtain the infrastructure ID by running the following command:
+where:
 
-  ``` terminal
-  $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
-  ```
+`<infrastructure_id>`
+Specifies the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift Container Platform CLI installed, you can obtain the infrastructure ID by running the following command:
 
-- Specify the node label to add.
+``` terminal
+$ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
+```
 
-- Specify the infrastructure ID and node label.
+`<role>`
+Specifies the node label to add.
 
-- To set a server group policy for the MachineSet, enter the value that is returned from [creating a server group](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html/command_line_interface_reference/server#server_group_create). For most deployments, `anti-affinity` or `soft-anti-affinity` policies are recommended.
+`<infrastructure_id>-<role>`
+Specifies the infrastructure ID and node label.
 
-- Required for deployments to multiple networks. To specify multiple networks, add another entry in the networks array. Also, you must include the network that is used as the `primarySubnet` value.
+`<optional_UUID_of_server_group>`
+Sets a server group policy for the `MachineSet` YAML by entering the value that is returned from [creating a server group](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html/command_line_interface_reference/server#server_group_create). For most deployments, `anti-affinity` or `soft-anti-affinity` policies are recommended.
 
-- Specify the RHOSP subnet that you want the endpoints of nodes to be published on. Usually, this is the same subnet that is used as the value of `machinesSubnet` in the `install-config.yaml` file.
+`<subnet_name>`
+Specifies a subnet to use.
+
+<div class="note">
+
+The `spec.template.spec.providerSpec.value.networks` stanza is required for deployments to multiple networks. If deploying to multiple networks, this list must include the network that is used as the `primarySubnet` value.
+
+</div>
+
+`<rhosp_subnet_UUID>`
+Specifies the RHOSP subnet that you want the endpoints of nodes to be published on. Usually, this is the same subnet that is used as the value of `machinesSubnet` in the `install-config.yaml` file.
 
 # Sample YAML for a compute machine set custom resource that uses SR-IOV on RHOSP
 
-If you configured your cluster for single-root I/O virtualization (SR-IOV), you can create compute machine sets that use that technology.
+To provision compute virtual machines (VMs) with single root I/O virtualization (SR-IOV) for high-performance networking, define the SR-IOV ports directly in the `providerSpec` and set `portSecurity` to `False`.
+
+If you configured your cluster for single-root SR-IOV, you can create compute machine sets that use that technology.
 
 This sample YAML defines a compute machine set that uses SR-IOV networks. The nodes that it creates are labeled with `node-role.openshift.io/<node_role>: ""`
 
@@ -188,17 +208,33 @@ spec:
           configDrive: true
 ```
 
-- Enter a network UUID for each port.
+where:
 
-- Enter a subnet UUID for each port.
+`<radio_network_UUID>`
+Specifies a network UUID for each port.
 
-- The value of the `vnicType` parameter must be `direct` for each port.
+`<radio_subnet_UUID>`
+Specifies a subnet UUID for each port.
 
-- The value of the `portSecurity` parameter must be `false` for each port.
+<div class="note">
 
-  You cannot set security groups and allowed address pairs for ports when port security is disabled. Setting security groups on the instance applies the groups to all ports that are attached to it.
+The value of the `spec.template.spec.providerSpec.value.ports.vnicType` parameter must be `direct` for each port.
 
-- The value of the `configDrive` parameter must be `true`.
+The value of the `spec.template.spec.providerSpec.value.ports.portSecurity` parameter must be `false` for each port. You cannot set security groups and allowed address pairs for ports when port security is disabled. Setting security groups on the instance applies the groups to all ports that are attached to it.
+
+</div>
+
+`<uplink_network_UUID>`
+Specifies a network UUID for each port.
+
+`<uplink_subnet_UUID>`
+Specifies a subnet UUID for each port.
+
+<div class="note">
+
+The value of the `spec.template.spec.providerSpec.value.configDrive` parameter must be `true`.
+
+</div>
 
 <div class="important">
 
@@ -224,7 +260,9 @@ Optionally, you can add tags to ports as part of their `tags` lists.
 
 # Sample YAML for SR-IOV deployments where port security is disabled
 
-To create single-root I/O virtualization (SR-IOV) ports on a network that has port security disabled, define a compute machine set that includes the ports as items in the `spec.template.spec.providerSpec.value.ports` list. This difference from the standard SR-IOV compute machine set is due to the automatic security group and allowed address pair configuration that occurs for ports that are created by using the network and subnet interfaces.
+To create single-root I/O virtualization (SR-IOV) ports on a network that has port security disabled, define a compute machine set that includes the ports as items in the `spec.template.spec.providerSpec.value.ports` list.
+
+This difference from the standard SR-IOV compute machine set is due to the automatic security group and allowed address pair configuration that occurs for ports that are created by using the network and subnet interfaces.
 
 Ports that you define for machines subnets require:
 
@@ -236,7 +274,7 @@ Ports that you define for machines subnets require:
 
 <div class="note">
 
-Only parameters that are specific to SR-IOV deployments where port security is disabled are described in this sample. To review a more general sample, see Sample YAML for a compute machine set custom resource that uses SR-IOV on RHOSP".
+Only parameters that are specific to SR-IOV deployments where port security is disabled are described in this sample. To review a more general sample, see "Sample YAML for a compute machine set custom resource that uses SR-IOV on RHOSP".
 
 </div>
 
@@ -311,15 +349,26 @@ spec:
           configDrive: true
 ```
 
-- Specify allowed address pairs for the API and ingress ports.
+where:
 
-- Specify the machines network and subnet.
+`<API_VIP_port_IP>`
+Specifies the allowed address for the API port. This value is paired with the allowed address for the ingress port.
 
-- Specify the compute machines security group.
+`<ingress_VIP_port_IP>`
+Specifies the allowed address for the ingress port. This value is paired with the allowed address for the API port.
 
-- The value of the `configDrive` parameter must be `true`.
+`<machines_subnet_UUID>`
+Specifies the machines subnet.
+
+`<machines_network_UUID>`
+Specifies the machines network.
+
+`<compute_security_group_UUID>`
+Specifies the compute machines security group.
 
 <div class="note">
+
+The value of the `spec.template.spec.providerSpec.value.configDrive` parameter must be `true`.
 
 Trunking is enabled for ports that are created by entries in the networks and subnets lists. The names of ports that are created from these lists follow the pattern `<machine_name>-<nameSuffix>`. The `nameSuffix` field is required in port definitions.
 

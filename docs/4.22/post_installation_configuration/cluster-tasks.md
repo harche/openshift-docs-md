@@ -431,13 +431,13 @@ To add a default cluster-wide node selector:
 
 # Improving cluster stability in high latency environments using worker latency profiles
 
-If the cluster administrator has performed latency tests for platform verification, they can discover the need to adjust the operation of the cluster to ensure stability in cases of high latency.
+If as a cluster administrator, you performed latency tests for platform verification, you might discover the need to adjust the operation of the cluster to ensure stability in cases of high latency.
 
-The cluster administrator needs to change only one parameter, recorded in a file, which controls four parameters affecting how supervisory processes read status and interpret the health of the cluster. Changing only the one parameter provides cluster tuning in an easy, supportable manner.
+As a cluster administrator, you need to change only one parameter, recorded in a file, which controls four parameters affecting how supervisory processes read status and interpret the health of the cluster. Changing only the one parameter provides cluster tuning in an easy, supportable manner.
 
 The `Kubelet` process provides the starting point for monitoring cluster health. The `Kubelet` sets status values for all nodes in the OpenShift Container Platform cluster. The Kubernetes Controller Manager (`kube controller`) reads the status values every 10 seconds, by default. If the `kube controller` cannot read a node status value, it loses contact with that node after a configured period. The default behavior is:
 
-1.  The node controller on the control plane updates the node health to `Unhealthy` and marks the node `Ready` condition\`Unknown\`.
+1.  The node controller on the control plane updates the node health to `Unhealthy` and marks the node `Ready` condition `Unknown`.
 
 2.  In response, the scheduler stops scheduling pods to that node.
 
@@ -1186,15 +1186,13 @@ In addition to the compute machine sets created by the installation program, you
 
 ## Creating an infrastructure node
 
+You can use labels to configure compute nodes as infrastructure nodes, where you can move infrastructure resources. After you create the infrastructure nodes, you can move appropriate workloads to those nodes by using taints and tolerations.
+
 <div class="important">
 
 See "Creating infrastructure machine sets" for installer-provisioned infrastructure environments or for any cluster where the control plane nodes are managed by the machine API.
 
 </div>
-
-You can use labels to configure worker nodes as infrastructure nodes, where you can move infrastructure resources.
-
-After you create the infrastructure nodes, you can move appropriate workloads to those nodes by using taints and tolerations.
 
 You can optionally create a default cluster-wide node selector. The default node selector is applied to pods created in all namespaces and creates an intersection with any existing node selectors on a pod, which additionally constrains the pod’s selector.
 
@@ -1208,7 +1206,7 @@ You can alternatively use a project node selector to avoid cluster-wide node sel
 
 </div>
 
-1.  Add a label to the worker nodes that you want to act as infrastructure nodes:
+1.  Add a label to the compute nodes that you want to act as infrastructure nodes:
 
     ``` terminal
     $ oc label node <node-name> node-role.kubernetes.io/infra=""
@@ -2769,6 +2767,8 @@ Only save a backup from a single control plane host. Do not take a backup from e
 
 </div>
 
+For a Two-Node with Fencing (TNF) setup, follow the steps to back up etcd data on only one node in the cluster. The cluster restore process is driven by data from a single node, so you can perform the etcd backup steps on only one node.
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
 - You have checked whether the cluster-wide proxy is enabled.
@@ -2850,9 +2850,9 @@ Only save a backup from a single control plane host. Do not take a backup from e
 
       <div class="note">
 
-      If etcd encryption is enabled, it is recommended to store this second file separately from the etcd snapshot for security reasons. However, this file is required to restore from the etcd snapshot.
+      If etcd encryption is enabled, store this second file separately from the etcd snapshot for security reasons. However, this file is required to restore from the etcd snapshot.
 
-      Keep in mind that etcd encryption only encrypts values, not keys. This means that resource types, namespaces, and object names are unencrypted.
+      The etcd encryption only encrypts values, not keys. This means that resource types, namespaces, and object names are not encrypted.
 
       </div>
 
@@ -3068,15 +3068,29 @@ Follow this procedure to defragment etcd data on each etcd member.
         sh-4.4# etcdctl alarm disarm
         ```
 
-## Restoring to a previous cluster state for more than one node
+## Restoring to an earlier cluster state for more than one node
 
-You can use a saved etcd backup to restore a previous cluster state or restore a cluster that has lost the majority of control plane hosts.
+You can use a saved etcd backup to restore an earlier cluster state or restore a cluster that has lost the majority of control plane hosts.
 
-For high availability (HA) clusters, a three-node HA cluster requires you to shut down etcd on two hosts to avoid a cluster split. On four-node and five-node HA clusters, you must shut down three hosts. Quorum requires a simple majority of nodes. The minimum number of nodes required for quorum on a three-node HA cluster is two. On four-node and five-node HA clusters, the minimum number of nodes required for quorum is three. If you start a new cluster from backup on your recovery host, the other etcd members might still be able to form quorum and continue service.
+For a Two-Node with Fencing (TNF) setup, a single surviving node can continue to operate in degraded mode. Use a saved etcd backup to restore an earlier cluster state if only one node is operational, or when both nodes have failed and you need to restart the cluster from a known safe state. In both cases, perform the restore procedure on a single node. The peer node automatically synchronizes its data with the restored node when it rejoins the cluster.
+
+For a 3-node HA cluster, shut down etcd on the following number of hosts:
+
+- For 3-node clusters: Shut down etcd on 2 hosts.
+
+- For 4-node and 5-node clusters: Shut down etcd on 3 hosts.
+
+Quorum requires a simple majority of nodes. The minimum number of nodes required for a quorum is as follows:
+
+- For 3-node HA cluster: 2.
+
+- For 4-node and 5-node HA clusters: 3.
+
+If you start a new cluster from backup on your recovery host, the other etcd members might still form a quorum and continue service.
 
 <div class="note">
 
-If your cluster uses a control plane machine set, see "Recovering a degraded etcd Operator" in "Troubleshooting the control plane machine set" for an etcd recovery procedure. For OpenShift Container Platform on a single node, see "Restoring to a previous cluster state for a single node".
+If your cluster uses a control plane machine set, see "Recovering a degraded etcd Operator" in "Troubleshooting the control plane machine set" for an etcd recovery procedure. For OpenShift Container Platform on a single node, see "Restoring to an earlier cluster state for a single node".
 
 </div>
 
@@ -3110,7 +3124,7 @@ For non-recovery control plane nodes, it is not required to establish SSH connec
 
     <div class="important">
 
-    If you do not complete this step, you will not be able to access the control plane hosts to complete the restore procedure, and you will be unable to recover your cluster from this state.
+    If you do not complete this step, you cannot access the control plane hosts to complete the restore procedure, and you cannot recover your cluster from this state.
 
     </div>
 
@@ -3124,7 +3138,7 @@ For non-recovery control plane nodes, it is not required to establish SSH connec
 
     This procedure assumes that you copied the `backup` directory containing the etcd snapshot and the resources for the static pods to the `/home/core/` directory of your recovery control plane host.
 
-5.  Use SSH to connect to the recovery host and restore the cluster from a previous backup by running the following command:
+5.  Use SSH to connect to the recovery host. To restore the cluster from an earlier backup, run the following command:
 
     ``` terminal
     $ sudo -E /usr/local/bin/cluster-restore.sh /home/core/<etcd-backup-directory>
@@ -3132,13 +3146,27 @@ For non-recovery control plane nodes, it is not required to establish SSH connec
 
 6.  Exit the SSH session.
 
-7.  Once the API responds, turn off the etcd Operator quorum guard by running the following command:
+7.  When the API responds, to turn off the etcd Operator quorum guard, run the following command:
 
-    ``` terminal
-    $ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides": {"useUnsupportedUnsafeNonHANonProductionUnstableEtcd": true}}}'
-    ```
+<div class="important">
 
-8.  Monitor the recovery progress of the control plane by running the following command:
+For a TNF setup, do not:
+
+- Change the etcd Operator quorum setting.
+
+- Turn the etcd Operator quorum off.
+
+- Turn the etcd Operator quorum on back.
+
+</div>
+
+\+
+
+``` terminal
+$ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides": {"useUnsupportedUnsafeNonHANonProductionUnstableEtcd": true}}}'
+```
+
+1.  Monitor the recovery progress of the control plane by running the following command:
 
     ``` terminal
     $ oc adm wait-for-stable-cluster
@@ -3146,11 +3174,11 @@ For non-recovery control plane nodes, it is not required to establish SSH connec
 
     <div class="note">
 
-    It can take up to 15 minutes for the control plane to recover.
+    It can take up to 15 minutes for the control plane to recover. Wait for the control plane to recover before using the next step.
 
     </div>
 
-9.  Once recovered, enable the quorum guard by running the following command:
+2.  Enable the quorum guard by running the following command:
 
     ``` terminal
     $ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides": null}}'
@@ -3162,7 +3190,7 @@ For non-recovery control plane nodes, it is not required to establish SSH connec
 
 </div>
 
-If you see no progress rolling out the etcd static pods, you can force redeployment from the `cluster-etcd-operator` by running the following command:
+If the etcd static pods do not roll out , you can manually force an etcd redeployment from the `cluster-etcd-operator` by running the following command:
 
 ``` terminal
 $ oc patch etcd cluster -p='{"spec": {"forceRedeploymentReason": "recovery-'"$(date --rfc-3339=ns )"'"}}' --type=merge

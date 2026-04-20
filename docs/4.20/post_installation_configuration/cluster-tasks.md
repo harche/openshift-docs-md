@@ -431,13 +431,13 @@ To add a default cluster-wide node selector:
 
 # Improving cluster stability in high latency environments using worker latency profiles
 
-If the cluster administrator has performed latency tests for platform verification, they can discover the need to adjust the operation of the cluster to ensure stability in cases of high latency.
+If as a cluster administrator, you performed latency tests for platform verification, you might discover the need to adjust the operation of the cluster to ensure stability in cases of high latency.
 
-The cluster administrator needs to change only one parameter, recorded in a file, which controls four parameters affecting how supervisory processes read status and interpret the health of the cluster. Changing only the one parameter provides cluster tuning in an easy, supportable manner.
+As a cluster administrator, you need to change only one parameter, recorded in a file, which controls four parameters affecting how supervisory processes read status and interpret the health of the cluster. Changing only the one parameter provides cluster tuning in an easy, supportable manner.
 
 The `Kubelet` process provides the starting point for monitoring cluster health. The `Kubelet` sets status values for all nodes in the OpenShift Container Platform cluster. The Kubernetes Controller Manager (`kube controller`) reads the status values every 10 seconds, by default. If the `kube controller` cannot read a node status value, it loses contact with that node after a configured period. The default behavior is:
 
-1.  The node controller on the control plane updates the node health to `Unhealthy` and marks the node `Ready` condition\`Unknown\`.
+1.  The node controller on the control plane updates the node health to `Unhealthy` and marks the node `Ready` condition `Unknown`.
 
 2.  In response, the scheduler stops scheduling pods to that node.
 
@@ -1186,15 +1186,13 @@ In addition to the compute machine sets created by the installation program, you
 
 ## Creating an infrastructure node
 
+You can use labels to configure compute nodes as infrastructure nodes, where you can move infrastructure resources. After you create the infrastructure nodes, you can move appropriate workloads to those nodes by using taints and tolerations.
+
 <div class="important">
 
 See "Creating infrastructure machine sets" for installer-provisioned infrastructure environments or for any cluster where the control plane nodes are managed by the machine API.
 
 </div>
-
-You can use labels to configure worker nodes as infrastructure nodes, where you can move infrastructure resources.
-
-After you create the infrastructure nodes, you can move appropriate workloads to those nodes by using taints and tolerations.
 
 You can optionally create a default cluster-wide node selector. The default node selector is applied to pods created in all namespaces and creates an intersection with any existing node selectors on a pod, which additionally constrains the pod’s selector.
 
@@ -1208,7 +1206,7 @@ You can alternatively use a project node selector to avoid cluster-wide node sel
 
 </div>
 
-1.  Add a label to the worker nodes that you want to act as infrastructure nodes:
+1.  Add a label to the compute nodes that you want to act as infrastructure nodes:
 
     ``` terminal
     $ oc label node <node-name> node-role.kubernetes.io/infra=""

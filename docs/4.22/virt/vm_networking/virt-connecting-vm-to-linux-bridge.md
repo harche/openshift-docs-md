@@ -76,7 +76,7 @@ You can create a `NodeNetworkConfigurationPolicy` (NNCP) manifest for a Linux br
 
 # Creating a Linux bridge NAD by using the web console
 
-You can create a network attachment definition (NAD) to provide layer-2 networking to pods and virtual machines by using the OpenShift Container Platform web console.
+Use the OpenShift Container Platform web console to create a network attachment definition (NAD) that connects pods and virtual machines to a layer-2 network.
 
 <div class="warning">
 
@@ -104,7 +104,7 @@ Configuring IP address management (IPAM) in a network attachment definition for 
 
     <div class="note">
 
-    OSA interfaces on IBM Z® do not support VLAN filtering and VLAN-tagged traffic is dropped. Avoid using VLAN-tagged NADs with OSA interfaces.
+    Open Systems Adapter (OSA) interfaces on IBM Z® do not support VLAN filtering and drop VLAN-tagged traffic. Avoid using VLAN-tagged NADs with OSA interfaces.
 
     </div>
 

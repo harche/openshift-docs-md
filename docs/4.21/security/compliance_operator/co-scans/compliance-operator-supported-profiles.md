@@ -24,18 +24,18 @@ The following tables reflect the latest available profiles in the Compliance Ope
 
 | Profile                           | Profile title                                             | Application           | Industry compliance benchmark                                                   | Supported architectures              | Supported platforms                                                    |
 |-----------------------------------|-----------------------------------------------------------|-----------------------|---------------------------------------------------------------------------------|--------------------------------------|------------------------------------------------------------------------|
-| ocp4-cis <sup>\[1\]</sup>         | CIS Red Hat OpenShift Container Platform Benchmark v1.7.0 | Platform              | [CIS Benchmarks ™](https://www.cisecurity.org/cis-benchmarks/) <sup>\[4\]</sup> | `x86_64` `ppc64le` `s390x` `aarch64` |                                                                        |
-| ocp4-cis-1-7<sup>\[3\]</sup>      | CIS Red Hat OpenShift Container Platform Benchmark v1.7.0 | Platform              | [CIS Benchmarks ™](https://www.cisecurity.org/cis-benchmarks/) <sup>\[4\]</sup> | `x86_64` `ppc64le` `s390x` `aarch64` |                                                                        |
-| ocp4-cis-node <sup>\[1\]</sup>    | CIS Red Hat OpenShift Container Platform Benchmark v1.7.0 | Node <sup>\[2\]</sup> | [CIS Benchmarks ™](https://www.cisecurity.org/cis-benchmarks/) <sup>\[4\]</sup> | `x86_64` `ppc64le` `s390x` `aarch64` | Red Hat OpenShift Service on AWS with hosted control planes (ROSA HCP) |
-| ocp4-cis-node-1-7<sup>\[3\]</sup> | CIS Red Hat OpenShift Container Platform Benchmark v1.7.0 | Node <sup>\[2\]</sup> | [CIS Benchmarks ™](https://www.cisecurity.org/cis-benchmarks/) <sup>\[4\]</sup> | `x86_64` `ppc64le` `s390x` `aarch64` | Red Hat OpenShift Service on AWS with hosted control planes (ROSA HCP) |
+| ocp4-cis <sup>\[1\]</sup>         | CIS Red Hat OpenShift Container Platform Benchmark v1.9.0 | Platform              | [CIS Benchmarks ™](https://www.cisecurity.org/cis-benchmarks/) <sup>\[4\]</sup> | `x86_64` `ppc64le` `s390x` `aarch64` |                                                                        |
+| ocp4-cis-1-9<sup>\[3\]</sup>      | CIS Red Hat OpenShift Container Platform Benchmark v1.9.0 | Platform              | [CIS Benchmarks ™](https://www.cisecurity.org/cis-benchmarks/) <sup>\[4\]</sup> | `x86_64` `ppc64le` `s390x` `aarch64` |                                                                        |
+| ocp4-cis-node <sup>\[1\]</sup>    | CIS Red Hat OpenShift Container Platform Benchmark v1.9.0 | Node <sup>\[2\]</sup> | [CIS Benchmarks ™](https://www.cisecurity.org/cis-benchmarks/) <sup>\[4\]</sup> | `x86_64` `ppc64le` `s390x` `aarch64` | Red Hat OpenShift Service on AWS with hosted control planes (ROSA HCP) |
+| ocp4-cis-node-1-9<sup>\[3\]</sup> | CIS Red Hat OpenShift Container Platform Benchmark v1.9.0 | Node <sup>\[2\]</sup> | [CIS Benchmarks ™](https://www.cisecurity.org/cis-benchmarks/) <sup>\[4\]</sup> | `x86_64` `ppc64le` `s390x` `aarch64` | Red Hat OpenShift Service on AWS with hosted control planes (ROSA HCP) |
 
 Supported CIS compliance profiles
 
-1.  The `ocp4-cis` and `ocp4-cis-node` profiles maintain the most up-to-date version of the CIS benchmark as it becomes available in the Compliance Operator. If you want to adhere to a specific version, such as CIS v1.7.0, use the `ocp4-cis-1-7` and `ocp4-cis-node-1-7` profiles.
+1.  The `ocp4-cis` and `ocp4-cis-node` profiles maintain the most up-to-date version of the CIS benchmark as it becomes available in the Compliance Operator. If you want to adhere to a specific version, such as CIS v1.9.0, use the `ocp4-cis-1-9` and `ocp4-cis-node-1-9` profiles.
 
 2.  Node profiles must be used with the relevant Platform profile. For more information, see *Compliance Operator profile types*.
 
-3.  All earlier CIS profiles are superceded by CIS v1.7.0. It is recommended to apply the latest profile to your environment.
+3.  All earlier CIS profiles are superceded by CIS v1.9.0. It is recommended to apply the latest profile to your environment.
 
 4.  To locate the CIS OpenShift Container Platform v4 Benchmark, go to [CIS Benchmarks](https://www.cisecurity.org/benchmark/kubernetes) and click **Download Latest CIS Benchmark**, where you can then register to download the benchmark.
 
@@ -45,18 +45,18 @@ Supported CIS compliance profiles
 |-------------------------------------|--------------------------------------------------------------------------|-----------------------|------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|---------------------|
 | ocp4-bsi <sup>\[1\]</sup>           | BSI IT-Grundschutz (Basic Protection) Building Block SYS.1.6 and APP.4.4 | Platform              | [BSI Basic Protection Compendium](https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf) | `x86_64`                |                     |
 | ocp4-bsi-node <sup>\[1\]</sup>      | BSI IT-Grundschutz (Basic Protection) Building Block SYS.1.6 and APP.4.4 | Node <sup>\[2\]</sup> | [BSI Basic Protection Compendium](https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf) | `x86_64`                |                     |
+| rhcos4-bsi <sup>\[1\]</sup>         | BSI IT-Grundschutz (Basic Protection) Building Block SYS.1.6 and APP.4.4 | Node <sup>\[2\]</sup> | [BSI Basic Protection Compendium](https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf) | `x86_64`                |                     |
 | ocp4-bsi-2022 <sup>\[3\]</sup>      | BSI IT-Grundschutz (Basic Protection) Building Block SYS.1.6 and APP.4.4 | Platform              | [BSI Basic Protection Compendium](https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf) | `x86_64`                |                     |
 | ocp4-bsi-node-2022 <sup>\[3\]</sup> | BSI IT-Grundschutz (Basic Protection) Building Block SYS.1.6 and APP.4.4 | Node <sup>\[2\]</sup> | [BSI Basic Protection Compendium](https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf) | `x86_64`                |                     |
-| rhcos4-bsi <sup>\[3\]</sup>         | BSI IT-Grundschutz (Basic Protection) Building Block SYS.1.6 and APP.4.4 | Node <sup>\[2\]</sup> | [BSI Basic Protection Compendium](https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf) | `x86_64`                |                     |
-| ocp4-bsi-2022 <sup>\[3\]</sup>      | BSI IT-Grundschutz (Basic Protection) Building Block SYS.1.6 and APP.4.4 | Node <sup>\[2\]</sup> | [BSI Basic Protection Compendium](https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf) | `x86_64`                |                     |
+| rhcos4-bsi-2022 <sup>\[3\]</sup>    | BSI IT-Grundschutz (Basic Protection) Building Block SYS.1.6 and APP.4.4 | Node <sup>\[2\]</sup> | [BSI Basic Protection Compendium](https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/International/bsi_it_gs_comp_2022.pdf) | `x86_64`                |                     |
 
 Supported BSI compliance profiles
 
-1.  The `ocp4-bsi` and `ocp4-bsi-node` profiles maintain the most up-to-date version of the BSI Basic Protection Profile as it becomes available in the Compliance Operator. If you want to adhere to a specific version, such as BSI 2022, use the `ocp4-bsi-2022` and `ocp4-bsi-node-2022` profiles.
+1.  The `ocp4-bsi`, `ocp4-bsi-node`, `rhcos4-bsi` profiles maintain the most up-to-date version of the BSI Basic Protection Profile as it becomes available in the Compliance Operator. If you want to adhere to a specific version, such as BSI 2022, use the `ocp4-bsi-2022`, `ocp4-bsi-node-2022` or `rhcos4-bsi-2022` profiles.
 
 2.  Node profiles must be used with the relevant Platform profile. For more information, see *Compliance Operator profile types*.
 
-3.  Edition 2022 is the latest available English edition of the BSI IT-Grundschutz (Basic Protection) compendium. There were no changes for Building Blocks SYS.1.6 and APP.4.4 in the latest published German compendium (edition 2023).
+3.  Edition 2022 is the latest available English edition of the BSI IT-Grundschutz (Basic Protection) compendium. There were no changes for Building Blocks SYS.1.6 and APP.4.4, SYS.1.1 and SYS.1.3 in the latest published German compendium (edition 2023).
 
 For more information, see [**BSI Quick Check**](https://access.redhat.com/articles/7045834).
 

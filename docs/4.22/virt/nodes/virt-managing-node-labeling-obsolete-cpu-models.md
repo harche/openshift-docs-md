@@ -1,4 +1,4 @@
-You can schedule a virtual machine (VM) on a node as long as the VM CPU model and policy are supported by the node.
+You can schedule a virtual machine (VM) on a node if the VM CPU model and policy are supported by the node.
 
 # About node labeling for obsolete CPU models
 
@@ -43,4 +43,4 @@ You can configure a list of obsolete CPU models by editing the `HyperConverged` 
         - "<obsolete_cpu_2>"
   ```
 
-  - Replace the example values in the `cpuModels` array with obsolete CPU models. Any value that you specify is added to a predefined list of obsolete CPU models. The predefined list is not visible in the CR.
+  Replace the example values in the `cpuModels` array with obsolete CPU models. Any value that you specify is added to a predefined list of obsolete CPU models. The predefined list is not visible in the CR.

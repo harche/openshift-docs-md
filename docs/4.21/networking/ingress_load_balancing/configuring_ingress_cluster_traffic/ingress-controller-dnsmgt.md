@@ -1,6 +1,4 @@
-To ensure application accessiblity across external networks in OpenShift Container Platform, you can manually configure DNS records for an Ingress Controller.
-
-As a cluster administrator, when you create an Ingress Controller, the Operator manages the DNS records automatically. This has some limitations when the required DNS zone is different from the cluster DNS zone or when the DNS zone is hosted outside the cloud provider.
+As a cluster administrator, when you create an Ingress Controller, the Operator manages the DNS records automatically. This approach has some limitations when the required DNS zone is different from the cluster DNS zone or when the DNS zone is hosted outside the cloud provider.
 
 The following list details key aspects for a managed DNS management policy:
 

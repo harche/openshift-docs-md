@@ -1494,9 +1494,9 @@ Use the updated `inventory.yaml` file to complete the installation process. Mach
 
 <div class="note">
 
-The installer may time out while waiting for bare metal machines to boot.
+The installation program may time out while waiting for bare metal machines to boot.
 
-If the installer times out, restart and then complete the deployment by using the `wait-for` command of the installer. For example:
+If the installation program times out, restart and then complete the deployment by using the `wait-for` command of the installation program. For example:
 
 ``` terminal
 $ ./openshift-install wait-for install-complete --log-level debug

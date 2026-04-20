@@ -176,6 +176,6 @@ However, you should be aware that Single-node OpenShift does not support the fol
 
 - [About live migration](../../virt/live_migration/virt-about-live-migration.xml#virt-about-live-migration)
 
-- [Eviction strategies](../../virt/nodes/virt-node-maintenance.xml#eviction-strategies)
+- [Configure eviction and run strategies](../../virt/nodes/virt-eviction-strategies.xml#virt-eviction-strategies)
 
 - [Tuning & Scaling Guide in the Red Hat Knowledgebase](https://access.redhat.com/articles/6994974)

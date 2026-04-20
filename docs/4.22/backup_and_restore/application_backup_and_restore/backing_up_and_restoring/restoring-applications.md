@@ -1,10 +1,10 @@
-You restore application backups by creating a `Restore` custom resource (CR). See [Creating a Restore CR](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/restoring-applications.xml#oadp-creating-restore-cr_restoring-applications).
-
-You can create restore hooks to run commands in a container in a pod by editing the `Restore` CR. See [Creating restore hooks](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/restoring-applications.xml#oadp-creating-restore-hooks_restoring-applications).
+Restore application backups by previewing resources before running the restore, creating a `Restore` custom resource (CR), and configuring restore hooks to run commands in restored pods. This helps you to recover your application data and configuration while controlling the restore process.
 
 # Previewing resources before running backup and restore
 
-OADP backs up application resources based on the type, namespace, or label. This means that you can view the resources after the backup is complete. Similarly, you can view the restored objects based on the namespace, persistent volume (PV), or label after a restore operation is complete. To preview the resources in advance, you can do a dry run of the backup and restore operations.
+Preview the backup and restore resources in advance by doing a dry run of the backup and restore operations. This helps you to verify which resources will be included before committing to a full backup or restore.
+
+OADP backs up application resources based on the type, namespace, or label. This means that you can view the resources after the backup is complete. Similarly, you can view the restored objects based on the namespace, persistent volume (PV), or label after a restore operation is complete.
 
 - You have installed the OADP Operator.
 
@@ -14,7 +14,7 @@ OADP backs up application resources based on the type, namespace, or label. This
     $ velero backup create <backup-name> --snapshot-volumes false
     ```
 
-    - Specify the value of `--snapshot-volumes` parameter as `false`.
+    Specify the value of `--snapshot-volumes` parameter as `false`.
 
 2.  To know more details about the backup resources, run the following command:
 
@@ -22,21 +22,21 @@ OADP backs up application resources based on the type, namespace, or label. This
     $ velero describe backup <backup_name> --details
     ```
 
-    - Specify the name of the backup.
+    Replace `<backup_name>` with the name of the backup.
 
 3.  To preview the resources included in the restore before running the actual restore, run the following command:
 
     ``` terminal
-    $ velero restore create --from-backup <backup-name>
+    $ velero restore create --from-backup <backup_name>
     ```
 
-    - Specify the name of the backup created to review the backup resources.
+    Replace `<backup_name>` with the name of the backup.
 
-      <div class="important">
+    <div class="important">
 
-      The `velero restore create` command creates restore resources in the cluster. You must delete the resources created as part of the restore, after you review the resources.
+    The `velero restore create` command creates restore resources in the cluster. You must delete the resources created as part of the restore, after you review the resources.
 
-      </div>
+    </div>
 
 4.  To know more details about the restore resources, run the following command:
 
@@ -44,11 +44,11 @@ OADP backs up application resources based on the type, namespace, or label. This
     $ velero describe restore <restore_name> --details
     ```
 
-    - Specify the name of the restore.
+    Replace `<restore_name>` with the name of the restore.
 
 # Creating a Restore CR
 
-You restore a `Backup` custom resource (CR) by creating a `Restore` CR.
+Restore a `Backup` custom resource (CR) by creating a `Restore` CR.
 
 When you restore a stateful application that uses the `azurefile-csi` storage class, the restore operation remains in the `Finalizing` phase.
 
@@ -81,11 +81,16 @@ When you restore a stateful application that uses the `azurefile-csi` storage cl
       restorePVs: true
     ```
 
-    - Name of the `Backup` CR.
+    where:
 
-    - Optional: Specify an array of resources to include in the restore process. Resources might be shortcuts (for example, `po` for `pods`) or fully-qualified. If unspecified, all resources are included.
+    `<backup>`
+    Specifies the name of the `Backup` CR.
 
-    - Optional: The `restorePVs` parameter can be set to `false` to turn off restore of `PersistentVolumes` from `VolumeSnapshot` of Container Storage Interface (CSI) snapshots or from native snapshots when `VolumeSnapshotLocation` is configured.
+    `includedResources`
+    Optional: Specifies an array of resources to include in the restore process. Resources might be shortcuts (for example, `po` for `pods`) or fully-qualified. If unspecified, all resources are included.
+
+    `restorePVs: true`
+    Optional: The `restorePVs` parameter can be set to `false` to turn off restore of `PersistentVolumes` from `VolumeSnapshot` of Container Storage Interface (CSI) snapshots or from native snapshots when `VolumeSnapshotLocation` is configured.
 
 2.  Verify that the status of the `Restore` CR is `Completed` by entering the following command:
 
@@ -99,7 +104,10 @@ When you restore a stateful application that uses the `azurefile-csi` storage cl
     $ oc get all -n <namespace>
     ```
 
-    - Namespace that you backed up.
+    where:
+
+    `<namespace>`
+    Specifies the namespace that you backed up.
 
 4.  If you restore `DeploymentConfig` with volumes or if you use post-restore hooks, run the `dc-post-restore.sh` cleanup script by entering the following command:
 
@@ -110,12 +118,6 @@ When you restore a stateful application that uses the `azurefile-csi` storage cl
     <div class="note">
 
     During the restore process, the OADP Velero plug-ins scale down the `DeploymentConfig` objects and restore the pods as standalone pods. This is done to prevent the cluster from deleting the restored `DeploymentConfig` pods immediately on restore and to allow the restore and post-restore hooks to complete their actions on the restored pods. The cleanup script shown below removes these disconnected pods and scales any `DeploymentConfig` objects back up to the appropriate number of replicas.
-
-    </div>
-
-    <div class="formalpara-title">
-
-    **`dc-restic-post-restore.sh → dc-post-restore.sh` cleanup script**
 
     </div>
 
@@ -168,7 +170,7 @@ When you restore a stateful application that uses the `azurefile-csi` storage cl
 
 # Creating restore hooks
 
-You create restore hooks to run commands in a container in a pod by editing the `Restore` custom resource (CR).
+Create restore hooks to run commands in a container in a pod by editing the `Restore` custom resource (CR).
 
 You can create two types of restore hooks:
 
@@ -226,29 +228,38 @@ You can create two types of restore hooks:
               onError: Continue
   ```
 
-  - Optional: Array of namespaces to which the hook applies. If this value is not specified, the hook applies to all namespaces.
+  where:
 
-  - Currently, pods are the only supported resource that hooks can apply to.
+  `<namespace>`
+  Optional: Specifies an array of namespaces to which the hook applies. If this value is not specified, the hook applies to all namespaces.
 
-  - Optional: This hook only applies to objects matching the label selector.
+  `pods`
+  Currently, pods are the only supported resource that hooks can apply to.
 
-  - Optional: Timeout specifies the maximum length of time Velero waits for `initContainers` to complete.
+  `labelSelector`
+  Optional: This hook only applies to objects matching the label selector.
 
-  - Optional: If the container is not specified, the command runs in the first container in the pod.
+  `timeout`
+  Optional: Specifies the maximum length of time Velero waits for `initContainers` to complete.
 
-  - This is the entrypoint for the init container being added.
+  `<container>`
+  Optional: Specifies the container in which the command runs. If the container is not specified, the command runs in the first container in the pod.
 
-  - Optional: How long to wait for a container to become ready. This should be long enough for the container to start and for any preceding hooks in the same container to complete. If not set, the restore process waits indefinitely.
+  `/bin/bash`
+  Specifies the entrypoint for the init container being added.
 
-  - Optional: How long to wait for the commands to run. The default is `30s`.
+  `waitTimeout: 5m`
+  Optional: Specifies how long to wait for a container to become ready. This should be long enough for the container to start and for any preceding hooks in the same container to complete. If not set, the restore process waits indefinitely.
 
-  - Allowed values for error handling are `Fail` and `Continue`:
+  `execTimeout: 1m`
+  Optional: Specifies how long to wait for the commands to run. The default is `30s`.
 
-    - `Continue`: Only command failures are logged.
+  `onError: Continue`
+  Specifies the error handling behavior. Allowed values are `Fail` and `Continue`:
 
-    - `Fail`: No more restore hooks run in any container in any pod. The status of the `Restore` CR will be `PartiallyFailed`.
+  - `Continue`: Only command failures are logged.
 
-<div class="important">
+  - `Fail`: No more restore hooks run in any container in any pod. The status of the `Restore` CR will be `PartiallyFailed`.
 
 During a File System Backup (FSB) restore operation, a `Deployment` resource referencing an `ImageStream` is not restored properly. The restored pod that runs the FSB, and the `postHook` is terminated prematurely.
 
@@ -271,7 +282,5 @@ The workaround for this behavior is a two-step restore process:
       --from-backup <BACKUP_NAME> \
       --include-resources=deployment.apps
     ```
-
-</div>
 
 - [Triggering updates on image stream changes](../../../openshift_images/triggering-updates-on-imagestream-changes.xml#triggering-updates-on-imagestream-changes)

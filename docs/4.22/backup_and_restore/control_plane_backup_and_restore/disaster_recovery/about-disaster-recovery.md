@@ -15,14 +15,15 @@ If you have a majority of your control plane nodes still available and have an e
 
 </div>
 
-[Restoring to a previous cluster state](../../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
-This solution handles situations where you want to restore your cluster to a previous state, for example, if an administrator deletes something critical. If you have taken an etcd backup, you can restore your cluster to a previous state.
+This solution handles situations where you want to restore your cluster to an earlier state, for example, if an administrator deletes something critical. If you have taken an etcd backup, you can restore your cluster to an earlier state.
 
-If applicable, you might also need to [recover from expired control plane certificates](../../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-3-expired-certs.xml#dr-recovering-expired-certs).
+\+ If applicable, you might also need to [recover from expired control plane certificates](../../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-3-expired-certs.xml#dr-recovering-expired-certs).
+
+\+
 
 <div class="warning">
 
-Restoring to a previous cluster state is a destructive and destablizing action to take on a running cluster. This procedure should only be used as a last resort.
+Restoring to an earlier cluster state is a destructive and destablizing action to take on a running cluster. This procedure should only be used as a last resort.
 
 Prior to performing a restore, see [About restoring cluster state](../../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-scenario-2-restoring-cluster-state-about_dr-restoring-cluster-state) for more information on the impact to the cluster.
 
@@ -95,4 +96,4 @@ You **must** have SSH access to the cluster. Your cluster might be entirely lost
     $ oc get pods -n openshift-etcd
     ```
 
-- [Restoring to a previous cluster state](../../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
+- [Restoring to an earlier cluster state](../../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)

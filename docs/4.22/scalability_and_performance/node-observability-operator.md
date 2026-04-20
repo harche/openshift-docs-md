@@ -226,9 +226,13 @@ The CRI-O unix socket of the node is mounted on the agent pod, which allows the 
           type: crio-kubelet
     ```
 
-    - You must specify the name as `cluster` because there should be only one `NodeObservability` CR per cluster.
+    where:
 
-    - Specify the nodes on which the Node Observability agent must be deployed.
+    `cluster`
+    You must specify the name as `cluster` because there should be only one `NodeObservability` CR per cluster.
+
+    `<node_hostname>`
+    Specify the nodes on which the Node Observability agent must be deployed.
 
 4.  Run the `NodeObservability` CR:
 
@@ -388,11 +392,16 @@ You must create and run the `NodeObservability` custom resource (CR) before you 
           type: scripting
     ```
 
-    - You must specify the name as `cluster` because there should be only one `NodeObservability` CR per cluster.
+    where:
 
-    - Specify the nodes on which the Node Observability agent must be deployed.
+    `cluster`
+    You must specify the name as `cluster` because there should be only one `NodeObservability` CR per cluster.
 
-    - To deploy the agent in scripting mode, you must set the type to `scripting`.
+    `<node_hostname>`
+    Specify the nodes on which the Node Observability agent must be deployed.
+
+    `scripting`
+    To deploy the agent in scripting mode, you must set the type to `scripting`.
 
 4.  Create the `NodeObservability` CR by running the following command:
 
@@ -436,6 +445,8 @@ You must create and run the `NodeObservability` custom resource (CR) before you 
     The `NodeObservability` CR run is completed when the `reason` is `Ready` and `status` is `"True"`.
 
 ## Configuring Node Observability Operator scripting
+
+You can configure the Node Observability Operator to run pre-configured scripts for collecting metrics data from compute nodes.
 
 - You have installed the Node Observability Operator.
 
@@ -535,4 +546,4 @@ You must create and run the `NodeObservability` custom resource (CR) before you 
 
 # Additional resources
 
-- [Red Hat Knowledgebase article](https://access.redhat.com/solutions/5343671)
+- [Collecting worker metrics using the Node Observability Operator](https://access.redhat.com/solutions/5343671)

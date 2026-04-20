@@ -36,13 +36,13 @@ Use this process to access an example Node Tuning Operator specification.
   oc get tuned.tuned.openshift.io/default -o yaml -n openshift-cluster-node-tuning-operator
   ```
 
-The default CR is meant for delivering standard node-level tuning for the OpenShift Container Platform platform and it can only be modified to set the Operator Management state. Any other custom changes to the default CR will be overwritten by the Operator. For custom tuning, create your own Tuned CRs. Newly created CRs will be combined with the default CR and custom tuning applied to OpenShift Container Platform nodes based on node or pod labels and profile priorities.
+  The default CR is meant for delivering standard node-level tuning for the OpenShift Container Platform platform and it can only be modified to set the Operator Management state. Any other custom changes to the default CR will be overwritten by the Operator. For custom tuning, create your own Tuned CRs. Newly created CRs will be combined with the default CR and custom tuning applied to OpenShift Container Platform nodes based on node or pod labels and profile priorities.
 
-<div class="warning">
+  <div class="warning">
 
-While in certain situations the support for pod labels can be a convenient way of automatically delivering required tuning, this practice is discouraged and strongly advised against, especially in large-scale clusters. The default Tuned CR ships without pod label matching. If a custom profile is created with pod label matching, then the functionality will be enabled at that time. The pod label functionality will be deprecated in future versions of the Node Tuning Operator.
+  While in certain situations the support for pod labels can be a convenient way of automatically delivering required tuning, this practice is discouraged and strongly advised against, especially in large-scale clusters. The default Tuned CR ships without pod label matching. If a custom profile is created with pod label matching, then the functionality will be enabled at that time. The pod label functionality will be deprecated in future versions of the Node Tuning Operator.
 
-</div>
+  </div>
 
 # Default profiles set on a cluster
 
@@ -81,55 +81,59 @@ $ oc exec $tuned_pod -n openshift-cluster-node-tuning-operator -- find /usr/lib/
 
 Verify the TuneD profiles that are applied to your cluster node.
 
-``` terminal
-$ oc get profile.tuned.openshift.io -n openshift-cluster-node-tuning-operator
-```
+1.  Run the following command to verify the TuneD profiles that are applied to your cluster node:
 
-<div class="formalpara-title">
+    ``` terminal
+    $ oc get profile.tuned.openshift.io -n openshift-cluster-node-tuning-operator
+    ```
 
-**Example output**
+    <div class="formalpara-title">
 
-</div>
+    **Example output**
 
-``` terminal
-NAME             TUNED                     APPLIED   DEGRADED   AGE
-master-0         openshift-control-plane   True      False      6h33m
-master-1         openshift-control-plane   True      False      6h33m
-master-2         openshift-control-plane   True      False      6h33m
-worker-a         openshift-node            True      False      6h28m
-worker-b         openshift-node            True      False      6h28m
-```
+    </div>
 
-- `NAME`: Name of the Profile object. There is one Profile object per node and their names match.
+    ``` terminal
+    NAME             TUNED                     APPLIED   DEGRADED   AGE
+    master-0         openshift-control-plane   True      False      6h33m
+    master-1         openshift-control-plane   True      False      6h33m
+    master-2         openshift-control-plane   True      False      6h33m
+    worker-a         openshift-node            True      False      6h28m
+    worker-b         openshift-node            True      False      6h28m
+    ```
 
-- `TUNED`: Name of the desired TuneD profile to apply.
+    where:
 
-- `APPLIED`: `True` if the TuneD daemon applied the desired profile. (`True/False/Unknown`).
+    - `NAME`: Name of the Profile object. There is one Profile object per node and their names match.
 
-- `DEGRADED`: `True` if any errors were reported during application of the TuneD profile (`True/False/Unknown`).
+    - `TUNED`: Name of the desired TuneD profile to apply.
 
-- `AGE`: Time elapsed since the creation of Profile object.
+    - `APPLIED`: `True` if the TuneD daemon applied the desired profile. (`True/False/Unknown`).
 
-The `ClusterOperator/node-tuning` object also contains useful information about the Operator and its node agents' health. For example, Operator misconfiguration is reported by `ClusterOperator/node-tuning` status messages.
+    - `DEGRADED`: `True` if any errors were reported during application of the TuneD profile (`True/False/Unknown`).
 
-To get status information about the `ClusterOperator/node-tuning` object, run the following command:
+    - `AGE`: Time elapsed since the creation of Profile object.
 
-``` terminal
-$ oc get co/node-tuning -n openshift-cluster-node-tuning-operator
-```
+2.  Run the following command to get status information about the `ClusterOperator/node-tuning` object:
 
-<div class="formalpara-title">
+    ``` terminal
+    $ oc get co/node-tuning -n openshift-cluster-node-tuning-operator
+    ```
 
-**Example output**
+    <div class="formalpara-title">
 
-</div>
+    **Example output**
 
-``` terminal
-NAME          VERSION   AVAILABLE   PROGRESSING   DEGRADED   SINCE   MESSAGE
-node-tuning   4.17.1    True        False         True       60m     1/5 Profiles with bootcmdline conflict
-```
+    </div>
 
-If either the `ClusterOperator/node-tuning` or a profile object’s status is `DEGRADED`, additional information is provided in the Operator or operand logs.
+    ``` terminal
+    NAME          VERSION   AVAILABLE   PROGRESSING   DEGRADED   SINCE   MESSAGE
+    node-tuning   4.17.1    True        False         True       60m     1/5 Profiles with bootcmdline conflict
+    ```
+
+    The `ClusterOperator/node-tuning` object also contains useful information about the Operator and its node agents' health. For example, Operator misconfiguration is reported by `ClusterOperator/node-tuning` status messages.
+
+    If either the `ClusterOperator/node-tuning` or a profile object’s status is `DEGRADED`, additional information is provided in the Operator or operand logs.
 
 # Custom tuning specification
 
@@ -200,23 +204,25 @@ The individual items of the list:
       reapply_sysctl: <bool>
 ```
 
-- Optional.
+where:
 
-- A dictionary of key/value `MachineConfig` labels. The keys must be unique.
+- `machineConfigLabels`: Optional.
 
-- If omitted, profile match is assumed unless a profile with a higher priority matches first or `machineConfigLabels` is set.
+- `<mcLabels>`: A dictionary of key/value `MachineConfig` labels. The keys must be unique.
 
-- An optional list.
+- `match`: If omitted, profile match is assumed unless a profile with a higher priority matches first or `machineConfigLabels` is set.
 
-- Profile ordering priority. Lower numbers mean higher priority (`0` is the highest priority).
+- `<match>`: An optional list.
 
-- A TuneD profile to apply on a match. For example `tuned_profile_1`.
+- `<priority>`: Profile ordering priority. Lower numbers mean higher priority (`0` is the highest priority).
 
-- Optional operand configuration.
+- `<tuned_profile_name>`: A TuneD profile to apply on a match. For example `tuned_profile_1`.
 
-- Turn debugging on or off for the TuneD daemon. Options are `true` for on or `false` for off. The default is `false`.
+- `operand`: Optional operand configuration.
 
-- Turn `reapply_sysctl` functionality on or off for the TuneD daemon. Options are `true` for on and `false` for off.
+- `debug`: Turn debugging on or off for the TuneD daemon. Options are `true` for on or `false` for off. The default is `false`.
+
+- `reapply_sysctl`: Turn `reapply_sysctl` functionality on or off for the TuneD daemon. Options are `true` for on and `false` for off.
 
 `<match>` is an optional list recursively defined as follows:
 
@@ -227,13 +233,15 @@ The individual items of the list:
     <match>
 ```
 
-- Node or pod label name.
+where:
 
-- Optional node or pod label value. If omitted, the presence of `<label_name>` is enough to match.
+- `<label_name>`: Node or pod label name.
 
-- Optional object type (`node` or `pod`). If omitted, `node` is assumed.
+- `<label_value>`: Optional node or pod label value. If omitted, the presence of `<label_name>` is enough to match.
 
-- An optional `<match>` list.
+- `<label_type>`: Optional object type (`node` or `pod`). If omitted, `node` is assumed.
+
+- `<match>`: An optional `<match>` list.
 
 If `<match>` is not omitted, all nested `<match>` sections must also evaluate to `true`. Otherwise, `false` is assumed and the profile with the respective `<match>` section will not be applied or recommended. Therefore, the nesting (child `<match>` sections) works as logical AND operator. Conversely, if any item of the `<match>` list matches, the entire `<match>` list evaluates to `true`. Therefore, the list acts as logical OR operator.
 
@@ -348,6 +356,8 @@ Due to profile inheritance, any setting specified in the `provider-<cloud-provid
 </div>
 
 # Custom tuning examples
+
+The following examples demonstrate custom tuning configurations for OpenShift Container Platform nodes using the Node Tuning Operator.
 
 **Using TuneD profiles from the default CR**
 
@@ -516,6 +526,8 @@ spec:
       profile: performance-patch
 ```
 
+where:
+
 - The `include` directive is used to inherit the `openshift-node-performance-performance` profile. This is a best practice to ensure that the profile is not missing any required settings.
 
 - The `kernel.shmmni` sysctl parameter is being changed to `8192`.
@@ -659,6 +671,8 @@ The following worked example describes how to defer the application of tuning ch
           profile: performance-patch
     ```
 
+    where:
+
     - The `include` directive is used to inherit the `openshift-node-performance-performance` profile. This is a best practice to ensure that the profile is not missing any required settings.
 
     - The `kernel.shmmni` sysctl parameter is being changed to `8192`.
@@ -765,11 +779,11 @@ The following worked example describes how to defer the application of tuning ch
         kernel.shmmni = 8192
         ```
 
-<div class="note">
+        <div class="note">
 
-An additional restart results in the restoration of the original value of the `kernel.shmmni` sysctl parameter.
+        An additional restart results in the restoration of the original value of the `kernel.shmmni` sysctl parameter.
 
-</div>
+        </div>
 
 # Supported TuneD daemon plugins
 
@@ -1007,7 +1021,7 @@ For more advanced tuning in hosted control planes, which requires setting kernel
     $ oc --kubeconfig="<management_cluster_kubeconfig>" create -f tuned-hugepages.yaml
     ```
 
-    - Replace `<management_cluster_kubeconfig>` with the name of your management cluster `kubeconfig` file.
+    Replace `<management_cluster_kubeconfig>` with the name of your management cluster `kubeconfig` file.
 
 3.  Create a `NodePool` manifest YAML file, customize the upgrade type of the `NodePool`, and reference the `ConfigMap` object that you created in the `spec.tuningConfig` section. Create the `NodePool` manifest and save it in a file named `hugepages-nodepool.yaml` by using the `hcp` CLI:
 
@@ -1020,19 +1034,21 @@ For more advanced tuning in hosted control planes, which requires setting kernel
       --render > hugepages-nodepool.yaml
     ```
 
-    - Replace `<hosted_cluster_name>` with the name of your hosted cluster.
+    where:
 
-    - Replace `<nodepool_name>` with the name of your node pool.
+    - `<hosted_cluster_name>`: The name of your hosted cluster.
 
-    - Replace `<nodepool_replicas>` with the number of your node pool replicas, for example, `2`.
+    - `<nodepool_name>`: The name of your node pool.
 
-    - Replace `<instance_type>` with the instance type, for example, `m5.2xlarge`.
+    - `<nodepool_replicas>`: The number of your node pool replicas, for example, `2`.
 
-      <div class="note">
+    - `<instance_type>`: The instance type, for example, `m5.2xlarge`.
 
-      The `--render` flag in the `hcp create` command does not render the secrets. To render the secrets, you must use both the `--render` and the `--render-sensitive` flags in the `hcp create` command.
+    <div class="note">
 
-      </div>
+    The `--render` flag in the `hcp create` command does not render the secrets. To render the secrets, you must use both the `--render` and the `--render-sensitive` flags in the `hcp create` command.
+
+    </div>
 
 4.  In the `hugepages-nodepool.yaml` file, set `.spec.management.upgradeType` to `InPlace`, and set `.spec.tuningConfig` to reference the `tuned-hugepages` `ConfigMap` object that you created.
 

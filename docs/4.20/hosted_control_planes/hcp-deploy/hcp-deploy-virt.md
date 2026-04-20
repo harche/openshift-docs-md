@@ -262,6 +262,8 @@ Avoid storing all hosted cluster information in a shared namespace. If you creat
 
 - [Labeling management cluster nodes](../../hosted_control_planes/hcp-prepare/hcp-distribute-workloads.xml#hcp-labels-taints_hcp-distribute-workloads)
 
+- [Configuring a custom API server certificate in a hosted cluster](../../hosted_control_planes/hcp-certificates.xml#hcp-custom-cert_hcp-certificates)
+
 ## Creating a hosted cluster with the KubeVirt platform by using external infrastructure
 
 By default, the HyperShift Operator hosts both the control plane pods of the hosted cluster and the KubeVirt worker VMs within the same cluster. With the external infrastructure feature, you can place the worker node VMs on a separate cluster from the control plane pods.
@@ -317,6 +319,8 @@ Avoid storing all hosted cluster information in a shared namespace. If you creat
 
 - [Labeling management cluster nodes](../../hosted_control_planes/hcp-prepare/hcp-distribute-workloads.xml#hcp-labels-taints_hcp-distribute-workloads)
 
+- [Configuring a custom API server certificate in a hosted cluster](../../hosted_control_planes/hcp-certificates.xml#hcp-custom-cert_hcp-certificates)
+
 ## Creating a hosted cluster by using the console
 
 If you prefer to work in the OpenShift Container Platform console instead of the CLI, you can create a hosted cluster on the KubeVirt platform by using the console.
@@ -364,6 +368,8 @@ If you want to use predefined values to automatically populate fields in the con
 3.  To view the node pool status, scroll to the **NodePool** section. The process to install the nodes takes about 10 minutes. You can also click **Nodes** to confirm whether the nodes joined the hosted cluster.
 
 - [Labeling management cluster nodes](../../hosted_control_planes/hcp-prepare/hcp-distribute-workloads.xml#hcp-labels-taints_hcp-distribute-workloads)
+
+- [Configuring a custom API server certificate in a hosted cluster](../../hosted_control_planes/hcp-certificates.xml#hcp-custom-cert_hcp-certificates)
 
 - [Creating a credential for an on-premises environment](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#creating-a-credential-for-an-on-premises-environment)
 
@@ -1124,60 +1130,3 @@ To verify that your hosted cluster was successfully created, complete the follow
     service-ca                                 4.12.2   True        False         False      4m41s
     storage                                    4.12.2   True        False         False      4m43s
     ```
-
-# Configuring a custom API server certificate in a hosted cluster
-
-To configure a custom certificate for the API server, specify the certificate details in the `spec.configuration.apiServer` section of your `HostedCluster` configuration.
-
-You can configure a custom certificate during either day-1 or day-2 operations. However, because the service publishing strategy is immutable after you set it during hosted cluster creation, you must know what the hostname is for the Kubernetes API server that you plan to configure.
-
-- You created a Kubernetes secret that contains your custom certificate in the management cluster. The secret contains the following keys:
-
-  - `tls.crt`: The certificate
-
-  - `tls.key`: The private key
-
-- If your `HostedCluster` configuration includes a service publishing strategy that uses a load balancer, ensure that the Subject Alternative Names (SANs) of the certificate do not conflict with the internal API endpoint (`api-int`). The internal API endpoint is automatically created and managed by your platform. If you use the same hostname in both the custom certificate and the internal API endpoint, routing conflicts can occur. The only exception to this rule is when you use AWS as the provider with either `Private` or `PublicAndPrivate` configurations. In those cases, the SAN conflict is managed by the platform.
-
-- The certificate must be valid for the external API endpoint.
-
-- The validity period of the certificate aligns with your cluster’s expected life cycle.
-
-1.  Create a secret with your custom certificate by entering the following command:
-
-    ``` terminal
-    $ oc create secret tls sample-hosted-kas-custom-cert \
-      --cert=path/to/cert.crt \
-      --key=path/to/key.key \
-      -n <hosted_cluster_namespace>
-    ```
-
-2.  Update your `HostedCluster` configuration with the custom certificate details, as shown in the following example:
-
-    ``` yaml
-    spec:
-      configuration:
-        apiServer:
-          servingCerts:
-            namedCertificates:
-            - names:
-              - api-custom-cert-sample-hosted.sample-hosted.example.com
-              servingCertificate:
-                name: sample-hosted-kas-custom-cert
-    ```
-
-    - The list of DNS names that the certificate is valid for.
-
-    - The name of the secret that contains the custom certificate.
-
-3.  Apply the changes to your `HostedCluster` configuration by entering the following command:
-
-    ``` terminal
-    $ oc apply -f <hosted_cluster_config>.yaml
-    ```
-
-- Check the API server pods to ensure that the new certificate is mounted.
-
-- Test the connection to the API server by using the custom domain name.
-
-- Verify the certificate details in your browser or by using tools such as `openssl`.

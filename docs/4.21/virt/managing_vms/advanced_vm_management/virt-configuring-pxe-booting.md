@@ -172,5 +172,5 @@ A namespace-scoped CRD introduced by the user-defined network (UDN) API that can
 `ClusterUserDefinedNetwork`
 A cluster-scoped CRD introduced by the user-defined network API that cluster administrators can use to create a shared network across multiple namespaces.
 
-Node network configuration policy (NNCP)
+`NodeNetworkConfigurationPolicy`
 A CRD introduced by the nmstate project, describing the requested network configuration on nodes. You update the node network configuration, including adding and removing interfaces, by applying a `NodeNetworkConfigurationPolicy` manifest to the cluster.

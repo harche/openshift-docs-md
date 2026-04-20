@@ -316,7 +316,7 @@ You must keep all of OpenShift Container Platform’s administration routes on t
 
 ## Ingress sharding and DNS
 
-To ensure ingress traffic reaches the correct router in OpenShift Container Platform, create separate DNS entries for each router in your project. Because a router does not forward unknown traffic to other routers, distinct entries are required to resolve specific domains to their hosting nodes."
+As a cluster administrator, ensure that you add a separate DNS entry for each router in a project. A router will not forward unknown routes to another router.
 
 Consider the following example:
 
@@ -434,7 +434,7 @@ Ingress Controller sharding is useful when balancing incoming traffic load among
 
 ## Creating a route for Ingress Controller sharding
 
-To host applications at specific URLs and balance traffic load in OpenShift Container Platform, configure Ingress Controller sharding. By sharding, you can isolate traffic for specific workloads or tenants, ensuring efficient resource management across your cluster.
+You can use a route to host your application at a URL. Ingress Controller sharding helps balance incoming traffic load among a set of Ingress Controllers. Ingress Controller sharding can also isolate traffic to a specific Ingress Controller. For example, company A goes to one Ingress Controller and company B to another.
 
 The following procedure describes how to create a route for Ingress Controller sharding, using the `hello-openshift` application as an example.
 

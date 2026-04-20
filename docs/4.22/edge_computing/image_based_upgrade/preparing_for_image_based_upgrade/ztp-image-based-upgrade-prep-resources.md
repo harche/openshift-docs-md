@@ -170,9 +170,9 @@ Prepare your OADP resources to restore your application after an upgrade.
             backup-app-cluster-resources
         ```
 
-        - Replace the example resource name with your actual resources.
+        - Replace the example resource names in the `lca.openshift.io/apply-label` field with your actual resources.
 
-        - The `lca.openshift.io/apply-wave` value must be higher than the value in the platform `Restore` CRs and lower than the value in the application namespace-scoped `Restore` CR.
+        - The value in the `lca.openshift.io/apply-wave` field must be higher than the value in the platform `Restore` CRs and lower than the value in the application namespace-scoped `Restore` CR.
 
     2.  Create the OADP CRs for your namespace-scoped application artifacts in the `source-crs/custom-crs` directory:
 
@@ -221,7 +221,7 @@ Prepare your OADP resources to restore your application after an upgrade.
             backup-app
         ```
 
-        - Define custom resources for your application.
+        - Define custom resources for your application in the `includedNamespaceScopedResources` field.
 
         <div class="formalpara-title">
 
@@ -274,15 +274,17 @@ Prepare your OADP resources to restore your application after an upgrade.
             - logicalvolumes
         ```
 
-        - Define custom resources for your application.
+        where:
 
-        - Required field.
+        - `<application_custom_resources>`: Define custom resources for your application.
 
-        - Required field
+        - `persistentVolumes`: Required field.
 
-        - Optional if you use LVM Storage volume snapshots.
+        - `logicalvolumes.topolvm.io`: Required field.
 
-        - Required field.
+        - `volumesnapshotcontents`: Optional if you use LVM Storage volume snapshots.
+
+        - `restoreStatus.includedResources`: Required field for restoring logical volumes.
 
         <div class="important">
 

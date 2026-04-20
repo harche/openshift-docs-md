@@ -289,7 +289,7 @@ As an administrator, you can create mediated devices and expose them to the clus
 2.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconverged kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
     ```
 
 3.  Create and expose the mediated devices by updating the configuration:
@@ -299,7 +299,7 @@ As an administrator, you can create mediated devices and expose them to the clus
         Example `HyperConverged` CR:
 
         ``` yaml
-        apiVersion: hco.kubevirt.io/v1
+        apiVersion: hco.kubevirt.io/v1beta1
         kind: HyperConverged
         metadata:
           name: kubevirt-hyperconverged
@@ -347,13 +347,13 @@ As a cluster administrator you can remove mediated devices from the cluster so t
 1.  Edit the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconverged kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
     ```
 
 2.  Remove the device information from the `spec.permittedHostDevices` stanza of the `HyperConverged` CR. For example:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1
+    apiVersion: hco.kubevirt.io/v1beta1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged

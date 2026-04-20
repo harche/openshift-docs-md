@@ -158,11 +158,11 @@ You should only modify the RHCOS image for compute machines to use an Azure Mark
           version: 413.92.2023101700
     ```
 
-# Enabling Azure boot diagnostics
+# Enabling Microsoft Azure boot diagnostics
 
-You can enable boot diagnostics on Azure machines that your machine set creates.
+You can enable boot diagnostics on Microsoft Azure machines that your machine set creates. Use this to store console logs that you can use to troubleshoot why a node fails to boot.
 
-- Have an existing Microsoft Azure cluster.
+- Have an existing Azure cluster.
 
 <!-- -->
 
@@ -178,7 +178,10 @@ You can enable boot diagnostics on Azure machines that your machine set creates.
             storageAccountType: <azure_managed>
     ```
 
-    Where `<azure_managed>` specifies an Azure Managed storage account.
+    where:
+
+    `<azure_managed>`
+    Specifies an Azure Managed storage account.
 
   - For an Azure Unmanaged storage account:
 
@@ -189,16 +192,16 @@ You can enable boot diagnostics on Azure machines that your machine set creates.
           boot:
             storageAccountType: <customer_managed>
             customerManaged:
-              storageAccountURI: <https://<storage-account>.blob.core.windows.net>
+              storageAccountURI: <https://<storage_account>.blob.core.windows.net>
     ```
 
-    Where:
+    where:
 
     `<customer_managed>`
     Specifies an Azure Unmanaged storage account.
 
-    `https://<storage-account>.blob.core.windows.net`
-    Specifies storage account URL. Replace `<storage-account>` with the name of your storage account.
+    `https://<storage_account>.blob.core.windows.net`
+    Specifies the storage account URL. Replace `<storage_account>` with the name of your storage account.
 
     <div class="note">
 
@@ -208,7 +211,7 @@ You can enable boot diagnostics on Azure machines that your machine set creates.
 
 <!-- -->
 
-- On the Microsoft Azure portal, review the **Boot diagnostics** page for a machine deployed by the machine set, and verify that you can see the serial logs for the machine.
+- On the Azure portal, review the **Boot diagnostics** page for a machine deployed by the machine set, and verify that you can see the serial logs for the machine.
 
 # Machine sets that deploy machines with ultra disks as data disks
 
@@ -404,15 +407,17 @@ If the deletion of ultra disks as data disks is not working as expected, the mac
 
 # Enabling customer-managed encryption keys for a machine set
 
+To enhance data security, enable customer-managed encryption on Microsoft Azure by adding the disk encryption set ID to your machine set.
+
 You can supply an encryption key to Azure to encrypt data on managed disks at rest. You can enable server-side encryption with customer-managed keys by using the Machine API.
 
 An Azure Key Vault, a disk encryption set, and an encryption key are required to use a customer-managed key. The disk encryption set must be in a resource group where the Cloud Credential Operator (CCO) has granted permissions. If not, an additional reader role is required to be granted on the disk encryption set.
 
-- [Create an Azure Key Vault instance](https://docs.microsoft.com/en-us/azure/aks/azure-disk-customer-managed-keys#create-an-azure-key-vault-instance).
+- [You created an Azure Key Vault instance (Azure documentation)](https://docs.microsoft.com/en-us/azure/aks/azure-disk-customer-managed-keys#create-an-azure-key-vault-instance).
 
-- [Create an instance of a disk encryption set](https://docs.microsoft.com/en-us/azure/aks/azure-disk-customer-managed-keys#create-an-instance-of-a-diskencryptionset).
+- [You created an instance of a disk encryption set (Azure documentation)](https://docs.microsoft.com/en-us/azure/aks/azure-disk-customer-managed-keys#create-an-instance-of-a-diskencryptionset).
 
-- [Grant the disk encryption set access to key vault](https://docs.microsoft.com/en-us/azure/aks/azure-disk-customer-managed-keys#grant-the-diskencryptionset-access-to-key-vault).
+- [You granted the disk encryption set access to key vault (Azure documentation)](https://docs.microsoft.com/en-us/azure/aks/azure-disk-customer-managed-keys#grant-the-diskencryptionset-access-to-key-vault).
 
 <!-- -->
 
@@ -431,7 +436,7 @@ An Azure Key Vault, a disk encryption set, and an encryption key are required to
 
 <!-- -->
 
-- [Azure documentation about customer-managed keys](https://docs.microsoft.com/en-us/azure/virtual-machines/disk-encryption#customer-managed-keys)
+- [Customer-managed keys (Azure documentation)](https://docs.microsoft.com/en-us/azure/virtual-machines/disk-encryption#customer-managed-keys)
 
 # Configuring trusted launch for Azure virtual machines by using machine sets
 

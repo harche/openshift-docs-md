@@ -37,7 +37,7 @@ You can configure the verbosity level of OpenShift Virtualization pod logs by ed
 1.  To set log verbosity for specific components, open the `HyperConverged` CR in your default text editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconverged kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
     ```
 
 2.  Set the log level for one or more components by editing the `spec.logVerbosityConfig` stanza. For example:
@@ -163,7 +163,7 @@ You can enable default access to VM guest system logs by editing the `HyperConve
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconverged kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
     ```
 
 2.  Update the `disableSerialConsoleLog` value. For example:

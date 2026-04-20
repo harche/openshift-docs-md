@@ -938,6 +938,30 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHSA-2026:7245 - OpenShift Container Platform 4.17.10 fixed issues and security update
+
+Issued: 14 April 2026
+
+OpenShift Container Platform release 4.17.10 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:7245](https://access.redhat.com/errata/RHSA-2026:7245) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:7240](https://access.redhat.com/errata/RHBA-2026:7240) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.10 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, navigating from a dynamic plugin’s tab on one resource detail page to another plugin tab on a different detail page caused the web console to display an error and become unresponsive. This affected plugins that added horizontal navigation tabs to resource detail pages, such as virtual machines, PersistentVolumeClaims, or storage classes. With this update, the web console correctly loads plugin tab components during navigation. As a result, navigation between dynamic plugin tabs on different resource detail pages works as expected.([OCPBUGS-77246](https://redhat.atlassian.net/browse/OCPBUGS-77246))
+
+- Before this update, when a new node joined a cluster, the synchronization process was delayed because the system only checked for updates periodically. As a consequence, the synchronization is delayed for up to 15 minutes. With this update, the `global-pull-secret-syncer` tool is triggered the moment the cluster’s management layer identifies the new node. As a result, the synchronization process begins as soon as the node is ready, significantly reducing the wait time. ([OCPBUGS-77966](https://redhat.atlassian.net/browse/OCPBUGS-77966))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHBA-2026:6561 - OpenShift Container Platform 4.17.9 fixed issues advisory
 
 Issued: 08 April 2026

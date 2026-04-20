@@ -89,7 +89,7 @@ You can configure an OpenShift Container Platform cluster to run Data Plane Deve
 5.  Set the previously obtained `RuntimeClass` name as the default container runtime class for the `virt-launcher` pods by editing the `HyperConverged` custom resource (CR):
 
     ``` terminal
-    $ oc patch hyperconverged kubevirt-hyperconverged -n openshift-cnv \
+    $ oc patch hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv \
         --type='json' -p='[{"op": "add", "path": "/spec/defaultRuntimeClass", "value":"<runtimeclass-name>"}]'
     ```
 
@@ -102,7 +102,7 @@ You can configure an OpenShift Container Platform cluster to run Data Plane Deve
 6.  If your DPDK-enabled compute nodes use Simultaneous multithreading (SMT), enable the `AlignCPUs` enabler by editing the `HyperConverged` CR:
 
     ``` terminal
-    $ oc patch hyperconverged kubevirt-hyperconverged -n openshift-cnv \
+    $ oc patch hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv \
         --type='json' -p='[{"op": "replace", "path": "/spec/featureGates/alignCPUs", "value": true}]'
     ```
 

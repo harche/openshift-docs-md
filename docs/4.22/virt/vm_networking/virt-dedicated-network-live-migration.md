@@ -45,7 +45,7 @@ To configure a dedicated secondary network for live migration, you must first cr
 2.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconverged kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
     ```
 
 3.  Add the name of the `NetworkAttachmentDefinition` object to the `spec.liveMigrationConfig` stanza of the `HyperConverged` CR.

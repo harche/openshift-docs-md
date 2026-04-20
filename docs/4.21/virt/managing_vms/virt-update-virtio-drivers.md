@@ -1,10 +1,10 @@
-To ensure optimal performance and stability, update the VirtIO drivers within a virtual machine’s guest operating system.
+Update VirtIO drivers in guest operating systems. Using the latest VirtIO drivers increases performance and stability.
 
-# Updating VirtIO drivers on a Windows VM
+# Update VirtIO drivers on a Windows VM
 
-You can update the `virtio` drivers on a Windows virtual machine (VM) by using the Windows Update service.
+You can update the VirtIO drivers on a Windows virtual machine (VM) by using the Windows Update service.
 
-- The cluster must be connected to the internet. Disconnected clusters cannot reach the Windows Update service.
+- The cluster must have internet connectivity. Disconnected clusters cannot reach the Windows Update service.
 
 1.  In the Windows Guest operating system, click the **Windows** key and select **Settings**.
 

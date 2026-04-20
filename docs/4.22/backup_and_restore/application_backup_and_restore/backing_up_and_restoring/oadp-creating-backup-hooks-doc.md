@@ -1,8 +1,6 @@
-When performing a backup, it is possible to specify one or more commands to execute in a container within a pod, based on the pod being backed up.
+Create backup hooks to run commands in a container in a pod by editing the `Backup` custom resource (CR). This helps you to run pre-backup and post-backup actions such as quiescing a database or flushing data to disk.
 
 The commands can be configured to performed before any custom action processing (*Pre* hooks), or after all custom actions have been completed and any additional items specified by the custom action have been backed up (*Post* hooks).
-
-You create backup hooks to run commands in a container in a pod by editing the `Backup` custom resource (CR).
 
 - Add a hook to the `spec.hooks` block of the `Backup` CR, as in the following example:
 
@@ -39,24 +37,37 @@ You create backup hooks to run commands in a container in a pod by editing the `
   ...
   ```
 
-  - Optional: You can specify namespaces to which the hook applies. If this value is not specified, the hook applies to all namespaces.
+  where:
 
-  - Optional: You can specify namespaces to which the hook does not apply.
+  `<namespace>`
+  Optional: Specifies the namespaces to which the hook applies. If this value is not specified, the hook applies to all namespaces.
 
-  - Currently, pods are the only supported resource that hooks can apply to.
+  `excludedNamespaces`
+  Optional: Specifies the namespaces to which the hook does not apply.
 
-  - Optional: You can specify resources to which the hook does not apply.
+  `pods`
+  Currently, pods are the only supported resource that hooks can apply to.
 
-  - Optional: This hook only applies to objects matching the label. If this value is not specified, the hook applies to all objects.
+  `excludedResources`
+  Optional: Specifies the resources to which the hook does not apply.
 
-  - Array of hooks to run before the backup.
+  `labelSelector`
+  Optional: This hook only applies to objects matching the label. If this value is not specified, the hook applies to all objects.
 
-  - Optional: If the container is not specified, the command runs in the first container in the pod.
+  `pre`
+  Specifies an array of hooks to run before the backup.
 
-  - This is the entry point for the `init` container being added.
+  `<container>`
+  Optional: Specifies the container in which the command runs. If the container is not specified, the command runs in the first container in the pod.
 
-  - Allowed values for error handling are `Fail` and `Continue`. The default is `Fail`.
+  `/bin/uname`
+  Specifies the entry point for the `init` container being added.
 
-  - Optional: How long to wait for the commands to run. The default is `30s`.
+  `onError: Fail`
+  Specifies the error handling behavior. Allowed values are `Fail` and `Continue`. The default is `Fail`.
 
-  - This block defines an array of hooks to run after the backup, with the same parameters as the pre-backup hooks.
+  `timeout: 30s`
+  Optional: Specifies how long to wait for the commands to run. The default is `30s`.
+
+  `post`
+  Specifies an array of hooks to run after the backup, with the same parameters as the pre-backup hooks.

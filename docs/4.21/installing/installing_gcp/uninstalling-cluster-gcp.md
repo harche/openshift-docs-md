@@ -66,7 +66,7 @@ After uninstalling an OpenShift Container Platform cluster that uses short-term 
     `--included`
     The parameter includes only the manifests that your specific cluster configuration requires.
 
-    \`\<path_to_directory_for_credentials_requests\>'
+    `<path_to_directory_for_credentials_requests>`
     Specify the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
 
 3.  Delete the Google Cloud resources that `ccoctl` created by running the following command:
@@ -74,8 +74,6 @@ After uninstalling an OpenShift Container Platform cluster that uses short-term 
     ``` terminal
     $ ccoctl gcp delete \
       --name=<name> \
-    ifdef::aws-sts
-    [  --region=<gcp_region>]
       --project=<gcp_project_id> \
       --credentials-requests-dir=<path_to_credentials_requests_directory> \
       --force-delete-custom-roles

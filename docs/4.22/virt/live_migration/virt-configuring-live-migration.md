@@ -11,7 +11,7 @@ Configure live migration limits and timeouts for the cluster by updating the `Hy
 - Edit the `HyperConverged` CR and add the necessary live migration parameters:
 
   ``` terminal
-  $ oc edit hyperconverged kubevirt-hyperconverged -n openshift-cnv
+  $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
   ```
 
   Example configuration file:
@@ -69,7 +69,7 @@ Configure live migration for heavy workloads by updating the `HyperConverged` cu
 1.  Edit the `HyperConverged` CR and add the necessary parameters for migrating heavy workloads:
 
     ``` terminal
-    $ oc edit hyperconverged kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
     ```
 
     Example configuration file:

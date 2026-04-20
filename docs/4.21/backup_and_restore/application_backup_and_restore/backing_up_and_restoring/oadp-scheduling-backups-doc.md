@@ -1,4 +1,4 @@
-The schedule operation allows you to create a backup of your data at a particular time, specified by a Cron expression.
+Schedule backup operations by creating a `Schedule` custom resource (CR) with a Cron expression. This helps you to automate recurring backups of your application data at regular intervals.
 
 You schedule backups by creating a `Schedule` custom resource (CR) instead of a `Backup` CR.
 
@@ -19,12 +19,6 @@ For example, if a backup of a namespace typically takes 10 minutes, do not sched
     ``` terminal
     $ oc get backupStorageLocations -n openshift-adp
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     NAMESPACE       NAME              PHASE       LAST VALIDATED   AGE   DEFAULT
@@ -52,27 +46,31 @@ For example, if a backup of a namespace typically takes 10 minutes, do not sched
     EOF
     ```
 
-- `cron` expression to schedule the backup, for example, `0 7 * * *` to perform a backup every day at 7:00.
+    where:
 
-  <div class="note">
+    `schedule: 0 7 * * *`
+    Specifies the `cron` expression to schedule the backup, for example, `0 7 * * *` to perform a backup every day at 7:00.
 
-  To schedule a backup at specific intervals, enter the `<duration_in_minutes>` in the following format:
+    <div class="note">
 
-  ``` terminal
-    schedule: "*/10 * * * *"
-  ```
+    To schedule a backup at specific intervals, enter the `<duration_in_minutes>` in the following format:
 
-  Enter the minutes value between quotation marks (`" "`).
+    ``` terminal
+      schedule: "*/10 * * * *"
+    ```
 
-  </div>
+    Enter the minutes value between quotation marks (`" "`).
 
-- Array of namespaces to back up.
+    </div>
 
-- Name of the `backupStorageLocations` CR.
+    `<namespace>`
+    Specifies an array of namespaces to back up.
 
-- Optional: In OADP version 1.2 and later, add the `defaultVolumesToFsBackup: true` key-value pair to your configuration when performing backups of volumes with Restic. In OADP version 1.1, add the `defaultVolumesToRestic: true` key-value pair when you back up volumes with Restic.
+    `<velero-sample-1>`
+    Specifies the name of the `backupStorageLocations` CR.
 
-<!-- -->
+    `defaultVolumesToFsBackup: true`
+    Optional: In OADP version 1.2 and later, add the `defaultVolumesToFsBackup: true` key-value pair to your configuration when performing backups of volumes with Restic. In OADP version 1.1, add the `defaultVolumesToRestic: true` key-value pair when you back up volumes with Restic.
 
 - Verify that the status of the `Schedule` CR is `Completed` after the scheduled backup runs:
 

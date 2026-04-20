@@ -206,11 +206,16 @@ Apply a `MachineConfig` to the seed cluster to create a separate partition and s
             name: var-lib-containers.mount
   ```
 
-  - Specify the root disk.
+  where:
 
-  - Specify the start of the partition in MiB. If the value is too small, the installation will fail.
+  `<root_disk>`
+  Specifies the root disk.
 
-  - Specify a minimum size for the partition of 500 GB to ensure adequate disk space for precached images. If the value is too small, the deployments after installation will fail.
+  `<start_of_partition>`
+  Specifies the start of the partition in MiB. If the value is too small, the installation will fail.
+
+  `<partition_size>`
+  Specifies a minimum size for the partition of 500 GB to ensure adequate disk space for precached images. If the value is too small, the deployments after installation will fail.
 
 # Seed image configuration
 

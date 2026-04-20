@@ -20,7 +20,7 @@ Connecting to a guest VM through the VNC or serial console does not provide a fu
 
   You can connect to the VNC console of a VM by using the OpenShift Container Platform web console, as documented in the first two steps in [Connecting to the VNC console by using the web console](../../virt/managing_vms/virt-accessing-vm-consoles.xml#vnc-console_virt-accessing-vm-consoles).
 
-  Alternatively, you can use the `virtctl` command-line tool to connect to the VNC console of a running VM. The installation of the `virtctl` command line tool is documented in [Installing virtctl](../../virt/getting_started/virt-using-the-cli-tools.xml#installing-virtctl_virt-using-the-cli-tools), and the usage is documented in [Connecting to the VNC console by using virtctl](../../virt/managing_vms/virt-accessing-vm-consoles.xml#vnc-console_virt-accessing-vm-consoles).
+  Alternatively, you can use the `virtctl` command-line tool to connect to the VNC console of a running VM.
 
   Take into account the following considerations:
 
@@ -42,7 +42,7 @@ Connecting to a guest VM through the VNC or serial console does not provide a fu
 
   You can connect to the serial console of a virtual machine (VM) by using the OpenShift Container Platform web console, as documented in [Connecting to the serial console by using the web console](../../virt/managing_vms/virt-accessing-vm-consoles.xml#serial-console_virt-accessing-vm-consoles).
 
-  Alternatively, you can use the `virtctl` command-line tool to connect to the serial console of a running virtual machine. The installation of the `virtctl` command line tool is documented in [Installing virtctl](../../virt/getting_started/virt-using-the-cli-tools.xml#installing-virtctl_virt-using-the-cli-tools), and the usage is documented in [Connecting to the serial console by using virtctl](../../virt/managing_vms/virt-accessing-vm-consoles.xml#serial-console_virt-accessing-vm-consoles).
+  Alternatively, you can use the `virtctl` command-line tool to connect to the serial console of a running virtual machine.
 
   Take into account the following considerations:
 
@@ -100,6 +100,10 @@ If you run the `virtctl vnc` command on a remote machine over an SSH connection,
 
     $ virtctl vnc <vm_name>
 
+\+ where:
+
+\+ `<vm_name>`:: specifies the name of the VM.
+
 1.  If the connection fails, run the following command to collect troubleshooting information:
 
     ``` terminal
@@ -120,7 +124,7 @@ Kubernetes also supports authentication using client certificates, instead of a 
 
 - You have installed the OpenShift CLI (`oc`).
 
-1.  Set the `deployVmConsoleProxy` field value in the HyperConverged (`HCO`) custom resource (CR) to `true`:
+1.  Set the `deployVmConsoleProxy` field value in the `HyperConverged` (`HCO`) custom resource (CR) to `true`:
 
     ``` terminal
     $ oc patch hyperconverged kubevirt-hyperconverged -n openshift-cnv --type json -p '[{"op": "replace", "path": "/spec/deployVmConsoleProxy", "value": true}]'
@@ -133,7 +137,7 @@ Kubernetes also supports authentication using client certificates, instead of a 
          "https://api.<cluster_fqdn>/apis/token.kubevirt.io/v1alpha1/namespaces/<namespace>/virtualmachines/<vm_name>/vnc?duration=<duration>"
     ```
 
-    The `<duration>` parameter can be set in hours and minutes, with a minimum duration of 10 minutes. For example: `5h30m`. If this parameter is not set, the token is valid for 10 minutes by default.
+    You can set the `<duration>` parameter in hours and minutes, with a minimum duration of 10 minutes. For example: `5h30m`. If you do not set this parameter, the token is valid for 10 minutes by default.
 
     Sample output:
 
@@ -165,9 +169,9 @@ Kubernetes also supports authentication using client certificates, instead of a 
 
 <div class="warning">
 
-It is currently not possible to revoke a specific token.
+You cannot currently revoke a specific token.
 
-To revoke a token, you must delete the service account that was used to create it. However, this also revokes all other tokens that were created by using the service account. Use the following command with caution:
+To revoke a token, you must delete the service account that you used to create it. However, this also revokes all other tokens that you created by using the service account. Use the following command with caution:
 
 ``` terminal
 $ virtctl delete serviceaccount --namespace "<namespace>" "<vm_name>-vnc-access"
@@ -253,6 +257,11 @@ If you run the `virtctl vnc` command on a remote machine over an SSH connection,
     $ virtctl vnc <vm_name>
     ```
 
+    where:
+
+    `<vm_name>`
+    specifies the name of the VM.
+
 3.  If the connection fails, run the following command to collect troubleshooting information:
 
     ``` terminal
@@ -298,3 +307,11 @@ If you connect to a Windows VM with a vGPU assigned as a mediated device, you ca
     - Select **Ctl + Alt + 1** from the **Send key** list to restore the default display.
 
 9.  To end the console session, click outside the console pane and then click **Disconnect**.
+
+# Additional resources
+
+- [Installing virtctl](../../virt/getting_started/virt-using-the-cli-tools.xml#virt-installing-virtctl-binary_virt-using-the-cli-tools)
+
+- [Connecting to the VNC console by using virtctl](../../virt/managing_vms/virt-accessing-vm-consoles.xml#vnc-console_virt-accessing-vm-consoles)
+
+- [Connecting to the serial console by using virtctl](../../virt/managing_vms/virt-accessing-vm-consoles.xml#serial-console_virt-accessing-vm-consoles)

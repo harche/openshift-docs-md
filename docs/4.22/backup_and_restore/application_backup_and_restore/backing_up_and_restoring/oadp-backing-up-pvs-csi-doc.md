@@ -1,8 +1,10 @@
-You back up persistent volumes with Container Storage Interface (CSI) snapshots by editing the `VolumeSnapshotClass` custom resource (CR) of the cloud storage before you create the `Backup` CR, see [CSI volume snapshots](../../../storage/container_storage_interface/persistent-storage-csi-snapshots.xml#persistent-storage-csi-snapshots-overview_persistent-storage-csi-snapshots).
+Back up persistent volumes with Container Storage Interface (CSI) snapshots by editing the `VolumeSnapshotClass` custom resource (CR) before you create the `Backup` CR. This helps you to leverage cloud-native snapshot capabilities for faster and more efficient backups.
 
-For more information, see [Creating a Backup CR](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-creating-backup-cr.xml#oadp-creating-backup-cr-doc).
+For more information, see *CSI volume snapshots* and *Creating a Backup CR*.
 
 # Backing up persistent volumes with CSI snapshots
+
+Configure the `VolumeSnapshotClass` custom resource (CR) to back up persistent volumes with Container Storage Interface (CSI) snapshots. This helps you to prepare your cloud storage for CSI-based backup operations.
 
 - The cloud provider must support CSI snapshots.
 
@@ -31,12 +33,23 @@ For more information, see [Creating a Backup CR](../../../backup_and_restore/app
   deletionPolicy: <deletion_policy_type>
   ```
 
-  - Must be set to `true`.
+  where:
 
-  - If you are restoring this volume in another cluster with the same driver, make sure that you set the `snapshot.storage.kubernetes.io/is-default-class` parameter to `false` instead of setting it to `true`. Otherwise, the restore will partially fail.
+  `velero.io/csi-volumesnapshot-class: "true"`
+  Must be set to `true`.
 
-  - OADP supports the `Retain` and `Delete` deletion policy types for CSI and Data Mover backup and restore.
+  `snapshot.storage.kubernetes.io/is-default-class: true`
+  If you are restoring this volume in another cluster with the same driver, make sure that you set the `snapshot.storage.kubernetes.io/is-default-class` parameter to `false` instead of setting it to `true`. Otherwise, the restore will partially fail.
+
+  `<deletion_policy_type>`
+  Specifies the deletion policy type. OADP supports the `Retain` and `Delete` deletion policy types for CSI and Data Mover backup and restore.
 
 <!-- -->
 
 - You can now create a `Backup` CR.
+
+<!-- -->
+
+- [CSI volume snapshots](../../../storage/container_storage_interface/persistent-storage-csi-snapshots.xml#persistent-storage-csi-snapshots-overview_persistent-storage-csi-snapshots)
+
+- [Creating a Backup CR](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-creating-backup-cr.xml#oadp-creating-backup-cr-doc)

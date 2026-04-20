@@ -1,5 +1,107 @@
 Ensure optimal performance with hosted control planes by configuring network settings. Those settings include internal subnets and proxy support for control-plane workloads, compute nodes, management clusters, and hosted clusters.
 
+# Ingress and egress requirements for hosted control planes
+
+Specific network ports must be open for communication between the management cluster, the hosted control planes components, and the compute nodes. The ports are categorized into ingress ports, which involve incoming traffic to hosted control planes and egress ports, which involve outgoing traffic from hosted control planes.
+
+## Ingress requirements for hosted control planes
+
+Ingress ports involve incoming traffic to hosted control planes. Ensure the correct ports are open for communication between the management cluster, the hosted control planes components, and the compute nodes.
+
+The following table details the ports for incoming traffic to hosted control planes across all platforms:
+
+| Port   | Protocol | Service               | Description                                                                                             | Code reference                                         |
+|--------|----------|-----------------------|---------------------------------------------------------------------------------------------------------|--------------------------------------------------------|
+| `6443` | TCP      | Kubernetes API server | Primary API server port for `kubectl` and cluster communication                                         | `support/config/constants.go:35` - `KASSVCPort = 6443` |
+| `9090` | TCP      | Ignition server       | Port from compute nodes during the bootstrap process, `NodePort` or `Route` service publishing strategy | \-                                                     |
+
+Common ingress ports
+
+The service publishing strategy determines additional ports. The `Ignition Proxy` and `Konnectivity` services are exposed through one of the following service publishing strategies:
+
+`Route`
+This setting is the default on OpenShift Container Platform. Traffic flows through the OpenShift router on port 443. No additional firewall rules are needed beyond standard HTTPS.
+
+`NodePort`
+Direct access is required to port 8091 (Konnectivity) and port 8443 (Ignition Proxy).
+
+`LoadBalancer`
+Direct access is required to port 8091 (Konnectivity) through the cloud load balancer.
+
+The following table details the ingress port configurations that are specific to each platform:
+
+| Platform                              | Port   | Service                 | Description                                                                 | Code reference                                                                                   |
+|---------------------------------------|--------|-------------------------|-----------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| Agent                                 | `8443` | Ignition Proxy          | HTTPS proxy for ignition content delivery (`NodePort` publishing)           | `hypershift-operator/controllers/hostedcluster/network_policies.go:390`                          |
+| Agent                                 | `8081` | Agent CAPI health probe | Health check endpoint for Agent platform CAPI provider                      | `hypershift-operator/controllers/hostedcluster/internal/platform/agent.go:96,105,115`            |
+| Agent                                 | `8080` | Agent CAPI metrics      | Metrics endpoint for Agent platform CAPI provider (binds to localhost only) | `hypershift-operator/controllers/hostedcluster/internal/platform/agent/agent.go:97`              |
+| AWS                                   | `9440` | CAPI health check       | Health and readiness probe endpoint for AWS CAPI provider                   | `hypershift-operator/controllers/hostedcluster/internal/platform/aws/aws.go:222-223`             |
+| Bare metal without the Agent platform | `8443` | Ignition Proxy          | HTTPS proxy for ignition content delivery (`NodePort` publishing)           | \-                                                                                               |
+| KubeVirt                              | `9440` | CAPI health check       | Health and readiness probe endpoint                                         | `hypershift-operator/controllers/hostedcluster/internal/platform/kubevirt/kubevirt.go:140`       |
+| RHOSP (Technology Preview)            | `9440` | CAPI health check       | Health and readiness probe endpoint                                         | `hypershift-operator/controllers/hostedcluster/internal/platform/openstack/openstack.go:238`     |
+| RHOSP (Technology Preview)            | `8081` | ORC health check        | Health and readiness probe endpoint for OpenStack Resource Controller       | `hypershift-operator/controllers/hostedcluster/internal/platform/openstack/openstack.go:294,311` |
+
+Platform-specific ingress port configurations
+
+The following table details the ingress port configurations for private clusters, such as those on AWS:
+
+| Port   | Service              | Description                              | Code reference                                                          |
+|--------|----------------------|------------------------------------------|-------------------------------------------------------------------------|
+| `8080` | Private router HTTP  | HTTP traffic through the private router  | `hypershift-operator/controllers/hostedcluster/network_policies.go:244` |
+| `8443` | Private router HTTPS | HTTPS traffic through the private router | `hypershift-operator/controllers/hostedcluster/network_policies.go:245` |
+
+Ingress port configurations for private clusters
+
+## Egress requirements for hosted control planes
+
+Egress ports involve outgoing traffic from hosted control planes. Ensure the correct ports are open for communication between the management cluster, the hosted control planes components, and the compute nodes.
+
+The following table details the ports that must be accessible for outgoing traffic from hosted control planes, across all platforms.
+
+| Port   | Protocol    | Service               | Purpose                                                 |
+|--------|-------------|-----------------------|---------------------------------------------------------|
+| `443`  | TCP         | HTTPS                 | OLM images, `Ignition` content, external HTTPS services |
+| `6443` | TCP         | Kubernetes API server | Communication with management cluster API               |
+| `53`   | TCP and UDP | DNS                   | Standard DNS queries                                    |
+
+Common egress ports
+
+Compute nodes require outbound network access to several hosted control planes services. The following table details the egress requirements for compute nodes.
+
+| Port   | Protocol    | Service               | Purpose                                                                                                                     | When required                                               |
+|--------|-------------|-----------------------|-----------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------|
+| `443`  | TCP         | HTTPS                 | Container registries, `Ignition` or `Konnectivity` service via `Route` service publishing strategy, external HTTPS services | Always                                                      |
+| `6443` | TCP         | Kubernetes API server | Cluster management and kubelet communication                                                                                | Always                                                      |
+| `8091` | TCP         | Konnectivity server   | Establishes a reverse tunnel for control plane access                                                                       | `NodePort` or `LoadBalancer` publishing only                |
+| `8443` | TCP         | Ignition Proxy        | Retrieves bootstrap configuration                                                                                           | `NodePort` publishing only for Agent platform or bare metal |
+| `53`   | TCP and UDP | DNS                   | Name resolution                                                                                                             | Always                                                      |
+
+Compute node egress requirements
+
+## Example firewall configuration
+
+Review an example of what the firewall configuration looks like for a typical hosted control planes on AWS deployment that uses `Route` service publishing.
+
+Ingress rules
+- Port `6443`/TCP: Kubernetes API server, from compute nodes and external clients
+
+- Port `443`/TCP: OpenShift Router for Ignition or Konnectivity routes, from compute nodes
+
+Egress rules
+- Port `443`/TCP: HTTPS, to container registries, routes, and external services
+
+- Port `6443`/TCP: Management cluster API, to management cluster
+
+- Port `53`/TCP and UDP: DNS, to DNS servers
+
+If you use `NodePort` or `LoadBalancer` service publishing instead of `Route` service publishing, the following rules apply:
+
+- Port `8091`/TCP: Konnectivity server, from compute nodes
+
+- Port `8443`/TCP: Ignition Proxy, from compute nodes during the bootstrap process, `NodePort` publishing strategy only
+
+- Port `9090`/TCP: Ignition server, from compute nodes during the bootstrap process, `NodePort` publishing strategy only
+
 # Configuring internal OVN IPv4 subnets for hosted clusters
 
 In hosted clusters, you can configure internal OVN subnets to avoid routing conflicts, customize network architecture, or enable virtual private cloud (VPC) peering.
@@ -350,8 +452,6 @@ The HyperShift Operator has a controller that monitors the OpenShift global prox
 ## Management cluster that uses a proxy and a hosted cluster with a secondary network and no default pod network
 
 If a management cluster uses a proxy configuration and you are configuring a hosted cluster with a secondary network but are not attaching the default pod network, add the CIDR of the secondary network to the proxy configuration. Specifically, you need to add the CIDR of the secondary network to the `noProxy` section of the proxy configuration for the management cluster. Otherwise, the Kubernetes API server will route some API requests through the proxy. In the hosted cluster configuration, the CIDR of the secondary network is automatically added to the `noProxy` section.
-
-# Additional resources
 
 - [Troubleshooting internal subnets for hosted clusters](../hosted_control_planes/hcp-troubleshooting.xml#hcp-ts-internal-subnets_hcp-troubleshooting)
 

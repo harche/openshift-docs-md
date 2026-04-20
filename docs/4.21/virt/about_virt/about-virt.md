@@ -81,8 +81,7 @@ However, because OpenShift Virtualization is conceptually different from vSphere
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>NSX</p></td>
-<td style="text-align: left;"><p>Multus</p>
-<p>OVN-Kubernetes</p>
+<td style="text-align: left;"><p>Multus OVN-Kubernetes</p>
 <p>Third-party container network interface (CNI) plug-ins</p></td>
 <td style="text-align: left;"><p>Provides an overlay network configuration. There is no direct equivalent for NSX in OpenShift Virtualization, but you can use the OVN-Kubernetes network provider or install certified third-party CNI plug-ins.</p></td>
 </tr>
@@ -116,7 +115,7 @@ Mapping of vSphere concepts to their closest OpenShift Virtualization counterpar
 
 # Supported cluster versions for OpenShift Virtualization
 
-OpenShift Virtualization 4.21 is supported for use on OpenShift Container Platform 4.17 clusters. To use the latest z-stream release of OpenShift Virtualization, you must first upgrade to the latest version of OpenShift Container Platform. The latest stable release of OpenShift Virtualization 4.21 is 4.21.1.
+OpenShift Virtualization 4.21 is supported for use on OpenShift Container Platform 4.17 clusters. To use the latest z-stream release of OpenShift Virtualization, you must first upgrade to the latest version of OpenShift Container Platform. The latest stable release of OpenShift Virtualization 4.21 is 4.21.3.
 
 # About volume and access modes for virtual machine disks
 
@@ -174,6 +173,6 @@ However, you should be aware that Single-node OpenShift does not support the fol
 
 - [About live migration](../../virt/live_migration/virt-about-live-migration.xml#virt-about-live-migration)
 
-- [Eviction strategies](../../virt/nodes/virt-node-maintenance.xml#eviction-strategies)
+- [Configure eviction and run strategies](../../virt/nodes/virt-eviction-strategies.xml#virt-eviction-strategies)
 
 - [Tuning & Scaling Guide in the Red Hat Knowledgebase](https://access.redhat.com/articles/6994974)

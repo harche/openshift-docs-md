@@ -76,7 +76,7 @@ You can create a `NodeNetworkConfigurationPolicy` (NNCP) manifest for a Linux br
 
 ## Creating a Linux bridge NAD by using the web console
 
-You can create a network attachment definition (NAD) to provide layer-2 networking to pods and virtual machines by using the OpenShift Container Platform web console.
+Use the OpenShift Container Platform web console to create a network attachment definition (NAD) that connects pods and virtual machines to a layer-2 network.
 
 <div class="warning">
 
@@ -104,7 +104,7 @@ Configuring IP address management (IPAM) in a network attachment definition for 
 
     <div class="note">
 
-    OSA interfaces on IBM Z® do not support VLAN filtering and VLAN-tagged traffic is dropped. Avoid using VLAN-tagged NADs with OSA interfaces.
+    Open Systems Adapter (OSA) interfaces on IBM Z® do not support VLAN filtering and drop VLAN-tagged traffic. Avoid using VLAN-tagged NADs with OSA interfaces.
 
     </div>
 
@@ -165,7 +165,7 @@ To configure a dedicated secondary network for live migration, you must first cr
 2.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconverged kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
     ```
 
 3.  Add the name of the `NetworkAttachmentDefinition` object to the `spec.liveMigrationConfig` stanza of the `HyperConverged` CR.
@@ -316,9 +316,9 @@ It might take several minutes for a configuration change to apply.
     $ oc create -f <name>-sriov-node-network.yaml
     ```
 
-    After applying the configuration update, all the pods in `sriov-network-operator` namespace transition to the `Running` status.
+    After applying the configuration update, all the pods in the `sriov-network-operator` namespace change to the `Running` status.
 
-4.  To verify that the SR-IOV network device is configured, enter the following command. Replace `<node_name>` with the name of a node with the SR-IOV network device that you just configured.
+4.  To verify your SR-IOV network device configuration, enter the following command and replace `<node_name>` with the name of the node where you configured the device.
 
     ``` terminal
     $ oc get sriovnetworknodestates -n openshift-sriov-network-operator <node_name> -o jsonpath='{.status.syncStatus}'

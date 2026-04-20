@@ -47,7 +47,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 - Enable the `enableMultiArchBootImageImport` feature gate by running the following command:
 
   ``` terminal
-  $ oc patch hyperconverged kubevirt-hyperconverged -n openshift-cnv \
+  $ oc patch hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv \
     --type json -p '[{"op":"replace","path":"/spec/featureGates/enableMultiArchBootImageImport", "value": true}]'
   ```
 
@@ -68,7 +68,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconverged kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
     ```
 
 2.  Edit the `HyperConverged` CR, adding the appropriate values for `ssp.kubevirt.io/dict.architectures` annotation in the `dataImportCronTemplates` section. For example:
@@ -116,7 +116,7 @@ Add a custom golden image in a heterogeneous cluster by setting the `ssp.kubevir
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconverged kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
     ```
 
 2.  Edit the `HyperConverged` CR, to add the custom golden image. You must add the appropriate values for `ssp.kubevirt.io/dict.architectures` annotation in the `dataImportCronTemplates` section. For example:
@@ -174,7 +174,7 @@ If you have a heterogeneous cluster but do not want to enable multiple architect
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconverged kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
     ```
 
 2.  Edit the `HyperConverged` CR, to modify the workloads node placement to include only nodes with a specific architecture. For example:

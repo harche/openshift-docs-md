@@ -20,7 +20,7 @@ To use Topology Manager you must configure CPU Manager with the `static` policy.
 
 # Setting up CPU Manager
 
-To configure CPU manager, create a KubeletConfig custom resource (CR) and apply it to the desired set of nodes.
+To configure CPU manager, create a `KubeletConfig` custom resource (CR) and apply it to the required set of nodes.
 
 1.  Label a node by running the following command:
 
@@ -60,13 +60,13 @@ To configure CPU manager, create a KubeletConfig custom resource (CR) and apply 
          cpuManagerReconcilePeriod: 5s
     ```
 
-    - Specify a policy:
+    - `cpuManagerPolicy` specifies a policy:
 
       - `none`. This policy explicitly enables the existing default CPU affinity scheme, providing no affinity beyond what the scheduler does automatically. This is the default policy.
 
       - `static`. This policy allows containers in guaranteed pods with integer CPU requests. It also limits access to exclusive CPUs on the node. If `static`, you must use a lowercase `s`.
 
-    - Optional. Specify the CPU Manager reconcile frequency. The default is `5s`.
+    - `cpuManagerReconcilePeriod` is optional. Specify the CPU Manager reconcile frequency. The default is `5s`.
 
 5.  Create the dynamic kubelet config by running the following command:
 
@@ -106,11 +106,7 @@ To configure CPU manager, create a KubeletConfig custom resource (CR) and apply 
     sh-4.2# cat /host/etc/kubernetes/kubelet.conf | grep cpuManager
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following is example output:
 
     ``` terminal
     cpuManagerPolicy: static
@@ -372,15 +368,7 @@ To use Topology Manager, you must configure an allocation policy in the `Kubelet
 
 - Configure the CPU Manager policy to be `static`.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To activate Topology Manager:
-
-1.  Configure the Topology Manager allocation policy in the custom resource.
+1.  To activate Topology Manager, configure the Topology Manager allocation policy in the custom resource.
 
     ``` terminal
     $ oc edit KubeletConfig cpumanager-enabled
@@ -401,9 +389,9 @@ To activate Topology Manager:
          topologyManagerPolicy: single-numa-node
     ```
 
-    - This parameter must be `static` with a lowercase `s`.
+    - `cpuManagerPolicy` must be `static` with a lowercase `s`.
 
-    - Specify your selected Topology Manager allocation policy. Here, the policy is `single-numa-node`. Acceptable values are: `default`, `best-effort`, `restricted`, `single-numa-node`.
+    - `topologyManagerPolicy` specifies your selected Topology Manager allocation policy. In this example, the policy is `single-numa-node`. Acceptable values are: `default`, `best-effort`, `restricted`, `single-numa-node`.
 
 # Pod interactions with Topology Manager policies
 
@@ -432,7 +420,7 @@ spec:
         memory: "100Mi"
 ```
 
-If the selected policy is anything other than `none`, Topology Manager would process all the pods and it enforces resource alignment only for the `Guaranteed` Qos `Pod` specification. When the Topology Manager policy is set to `none`, the relevant containers are pinned to any available CPU without considering NUMA affinity. This is the default behavior and it does not optimize for performance-sensitive workloads. Other values enable the use of topology awareness information from device plugins core resources, such as CPU and memory. The Topology Manager attempts to align the CPU, memory, and device allocations according to the topology of the node when the policy is set to other values than `none`. For more information about the available values, see *Topology Manager policies*.
+If the selected policy is anything other than `none`, Topology Manager would process all the pods and it enforces resource alignment only for the `Guaranteed` QoS `Pod` specification. When the Topology Manager policy is set to `none`, the relevant containers are pinned to any available CPU without considering NUMA affinity. This is the default behavior and it does not optimize for performance-sensitive workloads. Other values enable the use of topology awareness information from device plugins core resources, such as CPU and memory. The Topology Manager attempts to align the CPU, memory, and device allocations according to the topology of the node when the policy is set to other values than `none`. For more information about the available values, see *Topology Manager policies*.
 
 The following example pod runs in the `Guaranteed` QoS class because requests are equal to limits.
 

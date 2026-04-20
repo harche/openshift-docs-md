@@ -75,7 +75,7 @@ You can configure a custom namespace for golden images in your cluster by settin
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconverged kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
     ```
 
 2.  Configure the custom namespace by updating the value of the `spec.commonBootImageNamespace` field.
@@ -83,7 +83,7 @@ You can configure a custom namespace for golden images in your cluster by settin
     Example configuration file:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1
+    apiVersion: hco.kubevirt.io/v1beta1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged

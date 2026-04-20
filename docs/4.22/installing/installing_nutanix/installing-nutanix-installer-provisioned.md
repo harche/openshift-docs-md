@@ -574,9 +574,7 @@ To enable internet access in environments that deny direct connections, configur
 
     <div class="note">
 
-    If the installer times out, restart and then complete the deployment by using the `wait-for` command of the installer. For example:
-
-    \+
+    If the installation program times out, restart and then complete the deployment by using the `wait-for` command of the installation program. For example:
 
     ``` terminal
     $ ./openshift-install wait-for install-complete --log-level debug
@@ -921,7 +919,7 @@ Installations on Nutanix require additional `ConfigMap` and `Secret` resources t
 
 # Services for a user-managed load balancer
 
-To integrate your infrastructure with existing network standards or gain more control over traffic management in OpenShift Container Platform , configure services for a user-managed load balancer.
+You can configure an OpenShift Container Platform cluster to use a user-managed load balancer in place of the default load balancer.
 
 <div class="important">
 
@@ -982,7 +980,7 @@ Before you configure a user-managed load balancer for your OpenShift Container P
 
 ## Configuring a user-managed load balancer
 
-To integrate your infrastructure with existing network standards or gain more control over traffic management in OpenShift Container Platform , use a user-managed load balancer in place of the default load balancer.
+You can configure an OpenShift Container Platform cluster to use a user-managed load balancer in place of the default load balancer.
 
 <div class="important">
 

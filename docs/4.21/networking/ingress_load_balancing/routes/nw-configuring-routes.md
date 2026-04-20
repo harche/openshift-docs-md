@@ -427,6 +427,20 @@ metadata:
 
 <div class="formalpara-title">
 
+**A route that sets the load-balancing algorithm to leastconn**
+
+</div>
+
+``` yaml
+metadata:
+  annotations:
+    haproxy.router.openshift.io/balance: leastconn
+```
+
+- The default load-balancing algorithm is `random`.
+
+<div class="formalpara-title">
+
 **A route that allows several IP addresses**
 
 </div>

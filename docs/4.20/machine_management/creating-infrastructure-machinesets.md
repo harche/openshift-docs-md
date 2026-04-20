@@ -315,9 +315,11 @@ Machine sets running on Azure support non-guaranteed [Spot VMs](../machine_manag
 
 ### Sample YAML for a compute machine set custom resource on Azure Stack Hub
 
-This sample YAML defines a compute machine set that runs in the `1` Microsoft Azure zone in a region and creates nodes that are labeled with `node-role.kubernetes.io/infra: ""`.
+You can create a machine set on Microsoft Azure Stack Hub. By defining a YAML configuration with specific cluster IDs and provider details, you can automate the provisioning of specialized nodes.
 
-In this sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<infra>` is the node label to add.
+The Microsoft Azure sample YAML defines a compute machine set that runs in the `1` Azure zone in a region and creates nodes that are labeled with `node-role.kubernetes.io/infra: ""`. The sample YAML specifies a taint to prevent user workloads from being scheduled on infra nodes. After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
+
+In the sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<infra>` is the node label to add.
 
 ``` yaml
 apiVersion: machine.openshift.io/v1beta1
@@ -390,45 +392,48 @@ spec:
           zone: "1"
 ```
 
-- Specify the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI installed, you can obtain the infrastructure ID by running the following command:
+where:
 
-  ``` terminal
-  $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
-  ```
+`<infrastructure_id>`
+Specifies the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift Container Platform CLI installed, you can obtain the infrastructure ID by running the following command:
 
-  You can obtain the subnet by running the following command:
+``` terminal
+$ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
+```
 
-  ``` terminal
-  $  oc -n openshift-machine-api \
-      -o jsonpath='{.spec.template.spec.providerSpec.value.subnet}{"\n"}' \
-      get machineset/<infrastructure_id>-worker-centralus1
-  ```
+You can obtain the subnet by running the following command:
 
-  You can obtain the vnet by running the following command:
+``` terminal
+$  oc -n openshift-machine-api \
+    -o jsonpath='{.spec.template.spec.providerSpec.value.subnet}{"\n"}' \
+    get machineset/<infrastructure_id>-worker-centralus1
+```
 
-  ``` terminal
-  $  oc -n openshift-machine-api \
-      -o jsonpath='{.spec.template.spec.providerSpec.value.vnet}{"\n"}' \
-      get machineset/<infrastructure_id>-worker-centralus1
-  ```
+You can obtain the vnet by running the following command:
 
-- Specify the `<infra>` node label.
+``` terminal
+$  oc -n openshift-machine-api \
+    -o jsonpath='{.spec.template.spec.providerSpec.value.vnet}{"\n"}' \
+    get machineset/<infrastructure_id>-worker-centralus1
+```
 
-- Specify the infrastructure ID, `<infra>` node label, and region.
+`<infra>`
+Specifies the `<infra>` node label.
 
-- Specify a taint to prevent user workloads from being scheduled on infra nodes.
+`<infrastructure_id>-infra-<region>`
+Specifies the infrastructure ID, `<infra>` node label, and region.
 
-  <div class="note">
+`<region>`
+Specifies the region to place machines on.
 
-  After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
+<div class="note">
 
-  </div>
+The `spec.template.spec.providerSpec.value.zone` specifies the zone within your region to place machines on. Be sure that your region supports the zone that you specify.
 
-- Specify the region to place machines on.
+</div>
 
-- Specify the availability set for the cluster.
-
-- Specify the zone within your region to place machines on. Be sure that your region supports the zone that you specify.
+`<availability_set>`
+Specifies the availability set for the cluster.
 
 <div class="note">
 
@@ -821,9 +826,11 @@ After adding the `NoSchedule` taint on the infrastructure node, existing DNS pod
 
 ### Sample YAML for a compute machine set custom resource on RHOSP
 
-This sample YAML defines a compute machine set that runs on Red Hat OpenStack Platform (RHOSP) and creates nodes that are labeled with `node-role.kubernetes.io/infra: ""`.
+To enable the Machine API to automate the scaling and management of compute nodes, define a `MachineSet` resource with Red Hat OpenStack Platform (RHOSP) parameters, for example, image and network IDs.
 
-In this sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<infra>` is the node label to add.
+The sample YAML defines a compute machine set that runs on Red Hat OpenStack Platform (RHOSP) and creates nodes that are labeled with `node-role.kubernetes.io/infra: ""`. It specifies a taint to prevent user workloads from being scheduled on infra nodes. After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
+
+In the sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<infra>` is the node label to add.
 
 ``` yaml
 apiVersion: machine.openshift.io/v1beta1
@@ -831,8 +838,8 @@ kind: MachineSet
 metadata:
   labels:
     machine.openshift.io/cluster-api-cluster: <infrastructure_id>
-    machine.openshift.io/cluster-api-machine-role: <infra>
-    machine.openshift.io/cluster-api-machine-type: <infra>
+    machine.openshift.io/cluster-api-machine-role: infra
+    machine.openshift.io/cluster-api-machine-type: infra
   name: <infrastructure_id>-infra
   namespace: openshift-machine-api
 spec:
@@ -845,8 +852,8 @@ spec:
     metadata:
       labels:
         machine.openshift.io/cluster-api-cluster: <infrastructure_id>
-        machine.openshift.io/cluster-api-machine-role: <infra>
-        machine.openshift.io/cluster-api-machine-type: <infra>
+        machine.openshift.io/cluster-api-machine-role: infra
+        machine.openshift.io/cluster-api-machine-type: infra
         machine.openshift.io/cluster-api-machineset: <infrastructure_id>-infra
     spec:
       metadata:
@@ -888,29 +895,32 @@ spec:
           availabilityZone: <optional_openstack_availability_zone>
 ```
 
-- Specify the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI installed, you can obtain the infrastructure ID by running the following command:
+where:
 
-  ``` terminal
-  $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
-  ```
+`<infrastructure_id>`
+Specifies the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift Container Platform CLI installed, you can obtain the infrastructure ID by running the following command:
 
-- Specify the `<infra>` node label.
+``` terminal
+$ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
+```
 
-- Specify the infrastructure ID and `<infra>` node label.
+`<infrastructure_id>-infra`
+Specifies the infrastructure ID and `infra` node label.
 
-- Specify a taint to prevent user workloads from being scheduled on infra nodes.
+`<optional_UUID_of_server_group>`
+Sets a server group policy for the `MachineSet` YAML, by entering the value that is returned from [creating a server group](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html/command_line_interface_reference/server#server_group_create). For most deployments, `anti-affinity` or `soft-anti-affinity` policies are recommended.
 
-  <div class="note">
+`<subnet_name>`
+Specifies a subnet to use.
 
-  After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
+<div class="note">
 
-  </div>
+The `spec.template.spec.providerSpec.value.networks` stanza is required for deployments to multiple networks. If deploying to multiple networks, this list must include the network that is used as the `primarySubnet` value.
 
-- To set a server group policy for the MachineSet, enter the value that is returned from [creating a server group](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html/command_line_interface_reference/server#server_group_create). For most deployments, `anti-affinity` or `soft-anti-affinity` policies are recommended.
+</div>
 
-- Required for deployments to multiple networks. If deploying to multiple networks, this list must include the network that is used as the `primarySubnet` value.
-
-- Specify the RHOSP subnet that you want the endpoints of nodes to be published on. Usually, this is the same subnet that is used as the value of `machinesSubnet` in the `install-config.yaml` file.
+`<rhosp_subnet_UUID>`
+Specifies the RHOSP subnet that you want the endpoints of nodes to be published on. Usually, this is the same subnet that is used as the value of `machinesSubnet` in the `install-config.yaml` file.
 
 ### Sample YAML for a compute machine set custom resource on vSphere
 
@@ -1159,15 +1169,13 @@ In addition to the compute machine sets created by the installation program, you
 
 ## Creating an infrastructure node
 
+You can use labels to configure compute nodes as infrastructure nodes, where you can move infrastructure resources. After you create the infrastructure nodes, you can move appropriate workloads to those nodes by using taints and tolerations.
+
 <div class="important">
 
 See "Creating infrastructure machine sets" for installer-provisioned infrastructure environments or for any cluster where the control plane nodes are managed by the machine API.
 
 </div>
-
-You can use labels to configure worker nodes as infrastructure nodes, where you can move infrastructure resources.
-
-After you create the infrastructure nodes, you can move appropriate workloads to those nodes by using taints and tolerations.
 
 You can optionally create a default cluster-wide node selector. The default node selector is applied to pods created in all namespaces and creates an intersection with any existing node selectors on a pod, which additionally constrains the pod’s selector.
 
@@ -1181,7 +1189,7 @@ You can alternatively use a project node selector to avoid cluster-wide node sel
 
 </div>
 
-1.  Add a label to the worker nodes that you want to act as infrastructure nodes:
+1.  Add a label to the compute nodes that you want to act as infrastructure nodes:
 
     ``` terminal
     $ oc label node <node-name> node-role.kubernetes.io/infra=""
@@ -2106,43 +2114,40 @@ ip-10-0-67-453.us-west-2.compute.internal   Ready    infra                  55m 
           config:
             nodeSelector:
               node-role.kubernetes.io/infra: ""
-        # ...
-        ```
-
-        where
-
-        `spec.config.nodeSelector`
-        Specifies the role of the node where you want to deploy the Cluster Resource Override Operator pod.
-
-        <div class="note">
-
-        If the infra node uses taints, you need to add a toleration to the `Subscription` CR.
-
-        For example:
-
-        ``` terminal
-        apiVersion: operators.coreos.com/v1alpha1
-        kind: Subscription
-        metadata:
-          name: clusterresourceoverride
-          namespace: clusterresourceoverride-operator
-        # ...
-        spec:
-          config:
-            nodeSelector:
-              node-role.kubernetes.io/infra: ""
-            tolerations:
-            - key: "node-role.kubernetes.io/infra"
-              operator: "Exists"
-              effect: "NoSchedule"
         ```
 
         where:
 
-        `spec.config.tolerations`
-        Specifies a toleration for a taint on the infra node.
+        `spec.config.nodeSelector`
+        Specifies the role of the node where you want to deploy the Cluster Resource Override Operator pod.
 
-        </div>
+    <div class="note">
+
+    If the infra node uses taints, you need to add a toleration to the `Subscription` CR. For example:
+
+    ``` terminal
+    apiVersion: operators.coreos.com/v1alpha1
+    kind: Subscription
+    metadata:
+      name: clusterresourceoverride
+      namespace: clusterresourceoverride-operator
+    # ...
+    spec:
+      config:
+        nodeSelector:
+          node-role.kubernetes.io/infra: ""
+        tolerations:
+        - key: "node-role.kubernetes.io/infra"
+          operator: "Exists"
+          effect: "NoSchedule"
+    ```
+
+    where:
+
+    `spec.config.tolerations`
+    Specifies a toleration for a taint on the infra node.
+
+    </div>
 
 2.  Move the Cluster Resource Override pods by adding a node selector to the `ClusterResourceOverride` custom resource (CR):
 
@@ -2173,7 +2178,7 @@ ip-10-0-67-453.us-west-2.compute.internal   Ready    infra                  55m 
         # ...
         ```
 
-        where
+        where:
 
         `spec.deploymentOverrides.replicas`
         Specifies the number of Cluster Resource Override pods to deploy. The default is `2`. Only one pod is allowed per node. This parameter is optional.
@@ -2181,43 +2186,39 @@ ip-10-0-67-453.us-west-2.compute.internal   Ready    infra                  55m 
         `spec.deploymentOverrides.nodeSelector`
         Specifies the role of the node where you want to deploy the Cluster Resource Override pods. This parameter is optional.
 
-        <div class="note">
+    <div class="note">
 
-        If the infra node uses taints, you need to add a toleration to the `ClusterResourceOverride` CR.
+    If the infra node uses taints, you need to add a toleration to the `ClusterResourceOverride` CR. For example:
 
-        For example:
-
-        ``` terminal
-        apiVersion: operator.autoscaling.openshift.io/v1
-        kind: ClusterResourceOverride
-        metadata:
-          name: cluster
-        # ...
+    ``` terminal
+    apiVersion: operator.autoscaling.openshift.io/v1
+    kind: ClusterResourceOverride
+    metadata:
+      name: cluster
+    # ...
+    spec:
+      podResourceOverride:
         spec:
-          podResourceOverride:
-            spec:
-              memoryRequestToLimitPercent: 50
-              cpuRequestToLimitPercent: 25
-              limitCPUToMemoryPercent: 200
-          deploymentOverrides:
-            replicas: 3
-            nodeSelector:
-              node-role.kubernetes.io/worker: ""
-            tolerations:
-            - key: "key"
-              operator: "Equal"
-              value: "value"
-              effect: "NoSchedule"
-        ```
+          memoryRequestToLimitPercent: 50
+          cpuRequestToLimitPercent: 25
+          limitCPUToMemoryPercent: 200
+      deploymentOverrides:
+        replicas: 3
+        nodeSelector:
+          node-role.kubernetes.io/worker: ""
+        tolerations:
+        - key: "key"
+          operator: "Equal"
+          value: "value"
+          effect: "NoSchedule"
+    ```
 
-        where:
+    where:
 
-        \+
+    `spec.deploymentOverrides.tolerations`
+    Specifies a toleration for a taint on the infra node.
 
-        `spec.config.tolerations`
-        Specifies a toleration for a taint on the infra node.
-
-        </div>
+    </div>
 
 - You can verify that the pods have moved by using the following command:
 

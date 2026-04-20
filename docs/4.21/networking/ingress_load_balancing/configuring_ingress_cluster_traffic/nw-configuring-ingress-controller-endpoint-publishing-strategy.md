@@ -69,9 +69,7 @@ spec:
 
 ## Configuring the Ingress Controller endpoint publishing scope to Internal
 
-To restrict cluster access to internal traffic and enhance network security in OpenShift Container Platform, change the Ingress Controller scope from `External` to `Internal`.
-
-When a cluster administrator installs a new cluster without specifying that the cluster is private, the default Ingress Controller is created with a `scope` set to `External`.
+As a cluster administrator, when you install a new cluster without specifying that the cluster is private, the default Ingress Controller is created with a `scope` set to `External`. You can change an `External` scoped Ingress Controller to `Internal`.
 
 - You installed the OpenShift CLI (`oc`).
 
@@ -101,11 +99,9 @@ When a cluster administrator installs a new cluster without specifying that the 
 
 ## Configuring the Ingress Controller endpoint publishing scope to External
 
-To expose cluster services to public networks or the internet in OpenShift Container Platform, configure the Ingress Controller endpoint publishing scope to `External`.
-
-When a cluster administrator installs a new cluster without specifying that the cluster is private, the default Ingress Controller is created with a `scope` set to `External`.
-
 As an installation or post-installation task, a cluster administrator can configure the Ingress Controller to `Internal`. Additionally, a cluster administrator can change an `Internal` Ingress Controller to `External`.
+
+When you install a new cluster without specifying that the cluster is private, the default Ingress Controller is created with a `scope` set to `External`.
 
 <div class="important">
 

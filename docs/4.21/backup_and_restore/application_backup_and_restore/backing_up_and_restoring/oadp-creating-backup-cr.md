@@ -1,4 +1,4 @@
-You back up Kubernetes resources, internal images, and persistent volumes (PVs) by creating a `Backup` custom resource (CR).
+Back up Kubernetes resources, internal images, and persistent volumes (PVs) by creating a `Backup` custom resource (CR). This helps you to protect your application data and configuration for disaster recovery.
 
 - You must install the OpenShift API for Data Protection (OADP) Operator.
 
@@ -23,12 +23,6 @@ You back up Kubernetes resources, internal images, and persistent volumes (PVs) 
     ``` terminal
     $ oc get backupstoragelocations.velero.io -n openshift-adp
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     NAMESPACE       NAME              PHASE       LAST VALIDATED   AGE   DEFAULT
@@ -65,17 +59,25 @@ You back up Kubernetes resources, internal images, and persistent volumes (PVs) 
           app: <label_3>
     ```
 
-    - Specify an array of namespaces to back up.
+    where:
 
-    - Optional: Specify an array of resources to include in the backup. Resources might be shortcuts (for example, 'po' for 'pods') or fully-qualified. If unspecified, all resources are included.
+    `<namespace>`
+    Specifies an array of namespaces to back up.
 
-    - Optional: Specify an array of resources to exclude from the backup. Resources might be shortcuts (for example, 'po' for 'pods') or fully-qualified.
+    `includedResources`
+    Optional: Specifies an array of resources to include in the backup. Resources might be shortcuts (for example, `po` for `pods`) or fully-qualified. If unspecified, all resources are included.
 
-    - Specify the name of the `backupStorageLocations` CR.
+    `excludedResources`
+    Optional: Specifies an array of resources to exclude from the backup. Resources might be shortcuts (for example, `po` for `pods`) or fully-qualified.
 
-    - Map of {key,value} pairs of backup resources that have **all** the specified labels.
+    `<velero-sample-1>`
+    Specifies the name of the `backupStorageLocations` CR.
 
-    - Map of {key,value} pairs of backup resources that have **one or more** of the specified labels.
+    `labelSelector`
+    Specifies a map of {key,value} pairs of backup resources that have **all** the specified labels.
+
+    `orLabelSelectors`
+    Specifies a map of {key,value} pairs of backup resources that have **one or more** of the specified labels.
 
 3.  Verify that the status of the `Backup` CR is `Completed`:
 

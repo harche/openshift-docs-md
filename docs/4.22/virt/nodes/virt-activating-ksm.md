@@ -72,7 +72,7 @@ You can enable or disable OpenShift Virtualization’s kernel samepage merging (
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconverged kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
     ```
 
 2.  Edit the `ksmConfiguration` stanza:

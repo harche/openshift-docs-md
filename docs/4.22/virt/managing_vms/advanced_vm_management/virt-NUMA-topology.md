@@ -249,7 +249,7 @@ If you are a cluster administrator and want to disable hot plugging for an entir
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
-      namespace: kubevirt-hyperconverged
+      namespace: openshift-cnv
     spec:
       # ...
       kubevirtConfiguration:
@@ -269,7 +269,7 @@ If you are a cluster administrator and want to disable hot plugging for an entir
 1.  Check that you have configured the `maxHotplugRatio` value correctly, by running the following command:
 
     ``` terminal
-    $ oc get hyperconverged -n openshift-cnv -o jsonpath='{.spec.liveUpdateConfiguration.maxHotplugRatio}'
+    $ oc get hyperconvergeds.v1beta1.hco.kubevirt.io -n openshift-cnv -o jsonpath='{.spec.liveUpdateConfiguration.maxHotplugRatio}'
     ```
 
     If the configuration was successful, the output is the `maxHotplugRatio` value that you set in the previous procedure:

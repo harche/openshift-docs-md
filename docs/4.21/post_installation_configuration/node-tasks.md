@@ -1300,7 +1300,7 @@ In OpenShift Container Platform 4.17, half of a CPU core (500 millicore) is now 
 
 ## Setting up CPU Manager
 
-To configure CPU manager, create a KubeletConfig custom resource (CR) and apply it to the desired set of nodes.
+To configure CPU manager, create a `KubeletConfig` custom resource (CR) and apply it to the required set of nodes.
 
 1.  Label a node by running the following command:
 
@@ -1340,13 +1340,13 @@ To configure CPU manager, create a KubeletConfig custom resource (CR) and apply 
          cpuManagerReconcilePeriod: 5s
     ```
 
-    - Specify a policy:
+    - `cpuManagerPolicy` specifies a policy:
 
       - `none`. This policy explicitly enables the existing default CPU affinity scheme, providing no affinity beyond what the scheduler does automatically. This is the default policy.
 
       - `static`. This policy allows containers in guaranteed pods with integer CPU requests. It also limits access to exclusive CPUs on the node. If `static`, you must use a lowercase `s`.
 
-    - Optional. Specify the CPU Manager reconcile frequency. The default is `5s`.
+    - `cpuManagerReconcilePeriod` is optional. Specify the CPU Manager reconcile frequency. The default is `5s`.
 
 5.  Create the dynamic kubelet config by running the following command:
 
@@ -1386,11 +1386,7 @@ To configure CPU manager, create a KubeletConfig custom resource (CR) and apply 
     sh-4.2# cat /host/etc/kubernetes/kubelet.conf | grep cpuManager
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following is example output:
 
     ``` terminal
     cpuManagerPolicy: static
@@ -2568,15 +2564,7 @@ To use Topology Manager, you must configure an allocation policy in the `Kubelet
 
 - Configure the CPU Manager policy to be `static`.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To activate Topology Manager:
-
-1.  Configure the Topology Manager allocation policy in the custom resource.
+1.  To activate Topology Manager, configure the Topology Manager allocation policy in the custom resource.
 
     ``` terminal
     $ oc edit KubeletConfig cpumanager-enabled
@@ -2597,9 +2585,9 @@ To activate Topology Manager:
          topologyManagerPolicy: single-numa-node
     ```
 
-    - This parameter must be `static` with a lowercase `s`.
+    - `cpuManagerPolicy` must be `static` with a lowercase `s`.
 
-    - Specify your selected Topology Manager allocation policy. Here, the policy is `single-numa-node`. Acceptable values are: `default`, `best-effort`, `restricted`, `single-numa-node`.
+    - `topologyManagerPolicy` specifies your selected Topology Manager allocation policy. In this example, the policy is `single-numa-node`. Acceptable values are: `default`, `best-effort`, `restricted`, `single-numa-node`.
 
 ## Pod interactions with Topology Manager policies
 
@@ -2628,7 +2616,7 @@ spec:
         memory: "100Mi"
 ```
 
-If the selected policy is anything other than `none`, Topology Manager would process all the pods and it enforces resource alignment only for the `Guaranteed` Qos `Pod` specification. When the Topology Manager policy is set to `none`, the relevant containers are pinned to any available CPU without considering NUMA affinity. This is the default behavior and it does not optimize for performance-sensitive workloads. Other values enable the use of topology awareness information from device plugins core resources, such as CPU and memory. The Topology Manager attempts to align the CPU, memory, and device allocations according to the topology of the node when the policy is set to other values than `none`. For more information about the available values, see *Topology Manager policies*.
+If the selected policy is anything other than `none`, Topology Manager would process all the pods and it enforces resource alignment only for the `Guaranteed` QoS `Pod` specification. When the Topology Manager policy is set to `none`, the relevant containers are pinned to any available CPU without considering NUMA affinity. This is the default behavior and it does not optimize for performance-sensitive workloads. Other values enable the use of topology awareness information from device plugins core resources, such as CPU and memory. The Topology Manager attempts to align the CPU, memory, and device allocations according to the topology of the node when the policy is set to other values than `none`. For more information about the available values, see *Topology Manager policies*.
 
 The following example pod runs in the `Guaranteed` QoS class because requests are equal to limits.
 
@@ -3698,13 +3686,13 @@ Use this process to access an example Node Tuning Operator specification.
   oc get tuned.tuned.openshift.io/default -o yaml -n openshift-cluster-node-tuning-operator
   ```
 
-The default CR is meant for delivering standard node-level tuning for the OpenShift Container Platform platform and it can only be modified to set the Operator Management state. Any other custom changes to the default CR will be overwritten by the Operator. For custom tuning, create your own Tuned CRs. Newly created CRs will be combined with the default CR and custom tuning applied to OpenShift Container Platform nodes based on node or pod labels and profile priorities.
+  The default CR is meant for delivering standard node-level tuning for the OpenShift Container Platform platform and it can only be modified to set the Operator Management state. Any other custom changes to the default CR will be overwritten by the Operator. For custom tuning, create your own Tuned CRs. Newly created CRs will be combined with the default CR and custom tuning applied to OpenShift Container Platform nodes based on node or pod labels and profile priorities.
 
-<div class="warning">
+  <div class="warning">
 
-While in certain situations the support for pod labels can be a convenient way of automatically delivering required tuning, this practice is discouraged and strongly advised against, especially in large-scale clusters. The default Tuned CR ships without pod label matching. If a custom profile is created with pod label matching, then the functionality will be enabled at that time. The pod label functionality will be deprecated in future versions of the Node Tuning Operator.
+  While in certain situations the support for pod labels can be a convenient way of automatically delivering required tuning, this practice is discouraged and strongly advised against, especially in large-scale clusters. The default Tuned CR ships without pod label matching. If a custom profile is created with pod label matching, then the functionality will be enabled at that time. The pod label functionality will be deprecated in future versions of the Node Tuning Operator.
 
-</div>
+  </div>
 
 ## Custom tuning specification
 
@@ -3775,23 +3763,25 @@ The individual items of the list:
       reapply_sysctl: <bool>
 ```
 
-- Optional.
+where:
 
-- A dictionary of key/value `MachineConfig` labels. The keys must be unique.
+- `machineConfigLabels`: Optional.
 
-- If omitted, profile match is assumed unless a profile with a higher priority matches first or `machineConfigLabels` is set.
+- `<mcLabels>`: A dictionary of key/value `MachineConfig` labels. The keys must be unique.
 
-- An optional list.
+- `match`: If omitted, profile match is assumed unless a profile with a higher priority matches first or `machineConfigLabels` is set.
 
-- Profile ordering priority. Lower numbers mean higher priority (`0` is the highest priority).
+- `<match>`: An optional list.
 
-- A TuneD profile to apply on a match. For example `tuned_profile_1`.
+- `<priority>`: Profile ordering priority. Lower numbers mean higher priority (`0` is the highest priority).
 
-- Optional operand configuration.
+- `<tuned_profile_name>`: A TuneD profile to apply on a match. For example `tuned_profile_1`.
 
-- Turn debugging on or off for the TuneD daemon. Options are `true` for on or `false` for off. The default is `false`.
+- `operand`: Optional operand configuration.
 
-- Turn `reapply_sysctl` functionality on or off for the TuneD daemon. Options are `true` for on and `false` for off.
+- `debug`: Turn debugging on or off for the TuneD daemon. Options are `true` for on or `false` for off. The default is `false`.
+
+- `reapply_sysctl`: Turn `reapply_sysctl` functionality on or off for the TuneD daemon. Options are `true` for on and `false` for off.
 
 `<match>` is an optional list recursively defined as follows:
 
@@ -3802,13 +3792,15 @@ The individual items of the list:
     <match>
 ```
 
-- Node or pod label name.
+where:
 
-- Optional node or pod label value. If omitted, the presence of `<label_name>` is enough to match.
+- `<label_name>`: Node or pod label name.
 
-- Optional object type (`node` or `pod`). If omitted, `node` is assumed.
+- `<label_value>`: Optional node or pod label value. If omitted, the presence of `<label_name>` is enough to match.
 
-- An optional `<match>` list.
+- `<label_type>`: Optional object type (`node` or `pod`). If omitted, `node` is assumed.
+
+- `<match>`: An optional `<match>` list.
 
 If `<match>` is not omitted, all nested `<match>` sections must also evaluate to `true`. Otherwise, `false` is assumed and the profile with the respective `<match>` section will not be applied or recommended. Therefore, the nesting (child `<match>` sections) works as logical AND operator. Conversely, if any item of the `<match>` list matches, the entire `<match>` list evaluates to `true`. Therefore, the list acts as logical OR operator.
 

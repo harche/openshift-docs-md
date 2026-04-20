@@ -408,4 +408,4 @@ Go to the [**Install OpenShift with the Assisted Installer**](https://console.re
 
 - [Troubleshooting OpenShift Container Platform on OCI (Oracle documentation)](https://docs.oracle.com/iaas/Content/openshift-on-oci/openshift-troubleshooting.htm)
 
-- [Installing an on-premise cluster using the Assisted Installer](../../installing/installing_on_prem_assisted/installing-on-prem-assisted.xml#using-the-assisted-installer_installing-on-prem-assisted)
+- [Installing an on-premise cluster using the Assisted Installer](../../installing/installing_on_prem_assisted/installing-on-prem-assisted.xml#installing-on-prem-assisted)

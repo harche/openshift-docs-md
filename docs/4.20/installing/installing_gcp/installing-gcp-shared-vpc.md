@@ -493,9 +493,7 @@ To enable internet access in environments that deny direct connections, configur
 
     <div class="note">
 
-    If the installer times out, restart and then complete the deployment by using the `wait-for` command of the installer. For example:
-
-    \+
+    If the installation program times out, restart and then complete the deployment by using the `wait-for` command of the installation program. For example:
 
     ``` terminal
     $ ./openshift-install wait-for install-complete --log-level debug
@@ -941,7 +939,7 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
     azure        Manage credentials objects for Azure
     gcp          Manage credentials objects for Google cloud
     help         Help about any command
-    ibmcloud     Manage credentials objects for {ibm-cloud-title}
+    ibmcloud     Manage credentials objects for IBM Cloud
     nutanix      Manage credentials objects for Nutanix
 
   Flags:

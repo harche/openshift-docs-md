@@ -22,7 +22,7 @@ You need to provide permissions to the users that require access to the specific
 
 <!-- -->
 
-- [Configuring role-based permissions](https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/ai_workloads/red-hat-build-of-kueue#rbac-permissions)
+- [Configuring role-based permissions](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/ai_workloads/red-hat-build-of-kueue#rbac-permissions)
 
 # Monitoring pending workloads on demand
 

@@ -992,7 +992,7 @@ Install a container that contains the images.
 
 # Services for a user-managed load balancer
 
-To integrate your infrastructure with existing network standards or gain more control over traffic management in OpenShift Container Platform , configure services for a user-managed load balancer.
+You can configure an OpenShift Container Platform cluster to use a user-managed load balancer in place of the default load balancer.
 
 <div class="important">
 
@@ -1053,7 +1053,7 @@ Before you configure a user-managed load balancer for your OpenShift Container P
 
 ## Configuring a user-managed load balancer
 
-To integrate your infrastructure with existing network standards or gain more control over traffic management in OpenShift Container Platform , use a user-managed load balancer in place of the default load balancer.
+You can configure an OpenShift Container Platform cluster to use a user-managed load balancer in place of the default load balancer.
 
 <div class="important">
 

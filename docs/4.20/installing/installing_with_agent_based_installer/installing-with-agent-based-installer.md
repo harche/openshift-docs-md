@@ -513,6 +513,8 @@ If there are leftover TPM encryption keys from a previous operating system on th
 
 Use this procedure to boot the agent image on your machines.
 
+- If you plan to boot the agent image from a USB drive, you have installed the `syslinux` package.
+
 1.  Create the agent image by running the following command:
 
     ``` terminal
@@ -525,7 +527,23 @@ Use this procedure to boot the agent image on your machines.
 
     </div>
 
-2.  Boot the `agent.x86_64.iso`, `agent.aarch64.iso`, or `agent.s390x.iso` image on the bare metal machines.
+2.  If you plan to boot the ISO image from a USB drive, add a master boot record to the image by running the following command:
+
+    ``` terminal
+    $ isohybrid --uefi <agent_iso_image>
+    ```
+
+    <div class="formalpara-title">
+
+    **Example command**
+
+    </div>
+
+    ``` terminal
+    $ isohybrid --uefi agent.x86_64.iso
+    ```
+
+3.  Boot the `agent.x86_64.iso`, `agent.aarch64.iso`, or `agent.s390x.iso` image on the bare-metal machines.
 
 ## Adding IBM Z agents with RHEL KVM
 

@@ -243,39 +243,40 @@ You can customize the OpenShift Container Platform cluster you install on VMware
 
 - [Installation configuration parameters](../../../installing/installing_vsphere/installation-config-parameters-vsphere.xml#installation-config-parameters-vsphere)
 
-## Sample install-config.yaml file for an installer-provisioned VMware vSphere cluster
+## Sample install-config.yaml file for a VMware vSphere cluster
 
 You can customize the `install-config.yaml` file to specify more details about your OpenShift Container Platform cluster’s platform or change the values of the required parameters.
+
+<div class="important">
+
+Carefully review the "Installation configuration parameters for vSphere" page for detailed parameter explanations.
+
+</div>
 
 ``` yaml
 apiVersion: v1
 baseDomain: example.com
+metadata:
+  name: test
+sshKey: ssh-ed25519 AAAA...
 compute:
-- architecture: amd64
-  name:  <worker_node>
+- name:  <worker_name>
   platform: {}
   replicas: 3
 controlPlane:
-  architecture: amd64
-  name: <parent_node>
+  name: <control_plane_name>
   platform: {}
   replicas: 3
-metadata:
-  creationTimestamp: null
-  name: test
 networking:
   clusterNetwork:
   - cidr: 10.128.0.0/14
     hostPrefix: 23
-  machineNetwork:
-  - cidr: 10.0.0.0/16
-  networkType: OVNKubernetes
-  serviceNetwork:
-  - 172.30.0.0/16
 platform:
   vsphere:
     apiVIPs:
     - 10.0.0.1
+    ingressVIPs:
+    - 10.0.0.2
     failureDomains:
     - name: <failure_domain_name>
       region: <default_region_name>
@@ -286,67 +287,27 @@ platform:
         datastore: "/<data_center>/datastore/<datastore>"
         networks:
         - <VM_Network_name>
-        resourcePool: "/<data_center>/host/<cluster>/Resources/<resourcePool>"
-        folder: "/<data_center_name>/vm/<folder_name>/<subfolder_name>"
-        tagIDs:
-        - <tag_id>
       zone: <default_zone_name>
-    ingressVIPs:
-    - 10.0.0.2
     vcenters:
     - datacenters:
       - <data_center>
-      password: <password>
-      port: 443
       server: <fully_qualified_domain_name>
       user: administrator@vsphere.local
-    diskType: thin
-fips: false
-pullSecret: '{"auths": ...}'
-sshKey: 'ssh-ed25519 AAAA...'
 ```
 
-- The base domain of the cluster. All DNS records must be sub-domains of this base and include the cluster name.
+where:
 
-- The `controlPlane` section is a single mapping, but the `compute` section is a sequence of mappings. To meet the requirements of the different data structures, the first line of the `compute` section must begin with a hyphen, `-`, and the first line of the `controlPlane` section must not. Only one control plane pool is used.
+`compute`
+Specifes the parameters that apply to compute nodes.
 
-- The cluster name that you specified in your DNS records.
+`controlPlane`
+Specifies the parameters that apply to control plane nodes.
 
-- Optional: Provides additional configuration for the machine pool parameters for the compute and control plane machines.
+`networking`
+Specifies the parameters that apply to cluster networking configuration.
 
-  <div class="important">
-
-  The VIPs, `apiVIP` and `ingressVIP`, must come from the same `networking.machineNetwork` segment. For `apiVIP` and for `ingressVIP`, if the `networking.machineNetwork` is `10.0.0.0/16` then API VIPs and Ingress VIPs must be in one of the `10.0.0.0/16` machine networks.
-
-  </div>
-
-- Establishes the relationships between a region and zone. You define a failure domain by using vCenter objects, such as a `datastore` object. A failure domain defines the vCenter location for OpenShift Container Platform cluster nodes.
-
-- The path to the vSphere datastore that holds virtual machine files, templates, and ISO images.
-
-  <div class="important">
-
-  You can specify the path of any datastore that exists in a datastore cluster. By default, Storage vMotion is automatically enabled for a datastore cluster. Red Hat does not support Storage vMotion, so you must disable Storage vMotion to avoid data loss issues for your OpenShift Container Platform cluster.
-
-  If you must specify VMs across multiple datastores, use a `datastore` object to specify a failure domain in your cluster’s `install-config.yaml` configuration file. For more information, see "VMware vSphere region and zone enablement".
-
-  </div>
-
-- Optional: Provides an existing resource pool for machine creation. If you do not specify a value, the installation program uses the root resource pool of the vSphere cluster.
-
-- Optional: Each VM created by OpenShift Container Platform is assigned a unique tag that is specific to the cluster. The assigned tag enables the installation program to identify and remove the associated VMs when a cluster is decommissioned. You can list up to ten additional tag IDs to be attached to the VMs provisioned by the installation program.
-
-- The ID of the tag to be associated by the installation program. For example, `urn:vmomi:InventoryServiceTag:208e713c-cae3-4b7f-918e-4051ca7d1f97:GLOBAL`. For more information about determining the tag ID, see the [vSphere Tags and Attributes documentation](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.vcenterhost.doc/GUID-E8E854DD-AA97-4E0C-8419-CE84F93C4058.html).
-
-- The vSphere disk provisioning method.
-
-- The cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
-
-<div class="note">
-
-In OpenShift Container Platform 4.12 and later, the `apiVIP` and `ingressVIP` configuration settings are deprecated. Instead, use a list format to enter values in the `apiVIPs` and `ingressVIPs` configuration settings.
-
-</div>
+`platform`
+Specifies the parameters that apply to the configuration of the platform hosting the cluster.
 
 ## Configuring the cluster-wide proxy during installation
 
@@ -406,9 +367,7 @@ To enable internet access in environments that deny direct connections, configur
 
     <div class="note">
 
-    If the installer times out, restart and then complete the deployment by using the `wait-for` command of the installer. For example:
-
-    \+
+    If the installation program times out, restart and then complete the deployment by using the `wait-for` command of the installation program. For example:
 
     ``` terminal
     $ ./openshift-install wait-for install-complete --log-level debug
@@ -1437,7 +1396,7 @@ defaultNetwork:
 
 # Services for a user-managed load balancer
 
-To integrate your infrastructure with existing network standards or gain more control over traffic management in OpenShift Container Platform , configure services for a user-managed load balancer.
+You can configure an OpenShift Container Platform cluster to use a user-managed load balancer in place of the default load balancer.
 
 <div class="important">
 
@@ -1498,7 +1457,7 @@ Before you configure a user-managed load balancer for your OpenShift Container P
 
 ## Configuring a user-managed load balancer
 
-To integrate your infrastructure with existing network standards or gain more control over traffic management in OpenShift Container Platform , use a user-managed load balancer in place of the default load balancer.
+You can configure an OpenShift Container Platform cluster to use a user-managed load balancer in place of the default load balancer.
 
 <div class="important">
 

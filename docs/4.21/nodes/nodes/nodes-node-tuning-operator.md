@@ -34,13 +34,13 @@ Use this process to access an example Node Tuning Operator specification.
   oc get tuned.tuned.openshift.io/default -o yaml -n openshift-cluster-node-tuning-operator
   ```
 
-The default CR is meant for delivering standard node-level tuning for the OpenShift Container Platform platform and it can only be modified to set the Operator Management state. Any other custom changes to the default CR will be overwritten by the Operator. For custom tuning, create your own Tuned CRs. Newly created CRs will be combined with the default CR and custom tuning applied to OpenShift Container Platform nodes based on node or pod labels and profile priorities.
+  The default CR is meant for delivering standard node-level tuning for the OpenShift Container Platform platform and it can only be modified to set the Operator Management state. Any other custom changes to the default CR will be overwritten by the Operator. For custom tuning, create your own Tuned CRs. Newly created CRs will be combined with the default CR and custom tuning applied to OpenShift Container Platform nodes based on node or pod labels and profile priorities.
 
-<div class="warning">
+  <div class="warning">
 
-While in certain situations the support for pod labels can be a convenient way of automatically delivering required tuning, this practice is discouraged and strongly advised against, especially in large-scale clusters. The default Tuned CR ships without pod label matching. If a custom profile is created with pod label matching, then the functionality will be enabled at that time. The pod label functionality will be deprecated in future versions of the Node Tuning Operator.
+  While in certain situations the support for pod labels can be a convenient way of automatically delivering required tuning, this practice is discouraged and strongly advised against, especially in large-scale clusters. The default Tuned CR ships without pod label matching. If a custom profile is created with pod label matching, then the functionality will be enabled at that time. The pod label functionality will be deprecated in future versions of the Node Tuning Operator.
 
-</div>
+  </div>
 
 # Custom tuning specification
 
@@ -111,23 +111,25 @@ The individual items of the list:
       reapply_sysctl: <bool>
 ```
 
-- Optional.
+where:
 
-- A dictionary of key/value `MachineConfig` labels. The keys must be unique.
+- `machineConfigLabels`: Optional.
 
-- If omitted, profile match is assumed unless a profile with a higher priority matches first or `machineConfigLabels` is set.
+- `<mcLabels>`: A dictionary of key/value `MachineConfig` labels. The keys must be unique.
 
-- An optional list.
+- `match`: If omitted, profile match is assumed unless a profile with a higher priority matches first or `machineConfigLabels` is set.
 
-- Profile ordering priority. Lower numbers mean higher priority (`0` is the highest priority).
+- `<match>`: An optional list.
 
-- A TuneD profile to apply on a match. For example `tuned_profile_1`.
+- `<priority>`: Profile ordering priority. Lower numbers mean higher priority (`0` is the highest priority).
 
-- Optional operand configuration.
+- `<tuned_profile_name>`: A TuneD profile to apply on a match. For example `tuned_profile_1`.
 
-- Turn debugging on or off for the TuneD daemon. Options are `true` for on or `false` for off. The default is `false`.
+- `operand`: Optional operand configuration.
 
-- Turn `reapply_sysctl` functionality on or off for the TuneD daemon. Options are `true` for on and `false` for off.
+- `debug`: Turn debugging on or off for the TuneD daemon. Options are `true` for on or `false` for off. The default is `false`.
+
+- `reapply_sysctl`: Turn `reapply_sysctl` functionality on or off for the TuneD daemon. Options are `true` for on and `false` for off.
 
 `<match>` is an optional list recursively defined as follows:
 
@@ -138,13 +140,15 @@ The individual items of the list:
     <match>
 ```
 
-- Node or pod label name.
+where:
 
-- Optional node or pod label value. If omitted, the presence of `<label_name>` is enough to match.
+- `<label_name>`: Node or pod label name.
 
-- Optional object type (`node` or `pod`). If omitted, `node` is assumed.
+- `<label_value>`: Optional node or pod label value. If omitted, the presence of `<label_name>` is enough to match.
 
-- An optional `<match>` list.
+- `<label_type>`: Optional object type (`node` or `pod`). If omitted, `node` is assumed.
+
+- `<match>`: An optional `<match>` list.
 
 If `<match>` is not omitted, all nested `<match>` sections must also evaluate to `true`. Otherwise, `false` is assumed and the profile with the respective `<match>` section will not be applied or recommended. Therefore, the nesting (child `<match>` sections) works as logical AND operator. Conversely, if any item of the `<match>` list matches, the entire `<match>` list evaluates to `true`. Therefore, the list acts as logical OR operator.
 

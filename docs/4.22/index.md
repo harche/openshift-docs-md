@@ -2059,10 +2059,10 @@
   - [Configuring a cross-cluster live migration network](virt/live_migration/virt-configuring-cross-cluster-live-migration-network.md)
   - [About Migration Toolkit for Virtualization (MTV) providers](virt/live_migration/virt-about-mtv-providers.md)
 - **Nodes**
-  - [Node maintenance](virt/nodes/virt-node-maintenance.md)
+  - [Node maintenance mode](virt/nodes/virt-node-maintenance.md)
+  - [Configure eviction and run strategies](virt/nodes/virt-eviction-strategies.md)
   - [Managing node labeling for obsolete CPU models](virt/nodes/virt-managing-node-labeling-obsolete-cpu-models.md)
   - [Preventing node reconciliation](virt/nodes/virt-preventing-node-reconciliation.md)
-  - [Deleting a failed node to trigger VM failover](virt/nodes/virt-triggering-vm-failover-resolving-failed-node.md)
   - [Activating kernel samepage merging (KSM)](virt/nodes/virt-activating-ksm.md)
 - **Monitoring**
   - [Monitoring overview](virt/monitoring/virt-monitoring-overview.md)

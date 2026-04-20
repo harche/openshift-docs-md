@@ -453,6 +453,6 @@ Use the candidate channel only for testing where you can delete and re-create th
 
 - [About live migration](../../virt/live_migration/virt-about-live-migration.xml#virt-about-live-migration)
 
-- [Configuring eviction strategies](../../virt/nodes/virt-node-maintenance.xml#eviction-strategies)
+- [Configure eviction and run strategies](../../virt/nodes/virt-eviction-strategies.xml#virt-eviction-strategies)
 
 - [Configuring live migration limits and timeouts](../../virt/live_migration/virt-configuring-live-migration.xml#virt-configuring-live-migration)

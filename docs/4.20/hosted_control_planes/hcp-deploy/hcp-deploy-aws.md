@@ -848,6 +848,8 @@ Compatible architectures for node pools and hosted clusters
 
 - [Running hosted clusters on an ARM64 architecture](../../hosted_control_planes/hcp-deploy/hcp-deploy-aws.xml#hcp-enable-arm-amd_hcp-deploy-aws)
 
+- [Configuring a custom API server certificate in a hosted cluster](../../hosted_control_planes/hcp-certificates.xml#hcp-custom-cert_hcp-certificates)
+
 # Accessing a hosted cluster on AWS
 
 After you create a hosted cluster on AWS, you can access it by using your `kubeconfig` file, access secrets, and `kubeadmin` credentials.
@@ -883,63 +885,6 @@ The `kubeadmin` password secret is Base64-encoded and the `kubeconfig` secret co
     ```
 
     You must decode the `kubeadmin` password secret to log in to the API server or the console of the hosted cluster.
-
-# Configuring a custom API server certificate in a hosted cluster
-
-To configure a custom certificate for the API server, specify the certificate details in the `spec.configuration.apiServer` section of your `HostedCluster` configuration.
-
-You can configure a custom certificate during either day-1 or day-2 operations. However, because the service publishing strategy is immutable after you set it during hosted cluster creation, you must know what the hostname is for the Kubernetes API server that you plan to configure.
-
-- You created a Kubernetes secret that contains your custom certificate in the management cluster. The secret contains the following keys:
-
-  - `tls.crt`: The certificate
-
-  - `tls.key`: The private key
-
-- If your `HostedCluster` configuration includes a service publishing strategy that uses a load balancer, ensure that the Subject Alternative Names (SANs) of the certificate do not conflict with the internal API endpoint (`api-int`). The internal API endpoint is automatically created and managed by your platform. If you use the same hostname in both the custom certificate and the internal API endpoint, routing conflicts can occur. The only exception to this rule is when you use AWS as the provider with either `Private` or `PublicAndPrivate` configurations. In those cases, the SAN conflict is managed by the platform.
-
-- The certificate must be valid for the external API endpoint.
-
-- The validity period of the certificate aligns with your cluster’s expected life cycle.
-
-1.  Create a secret with your custom certificate by entering the following command:
-
-    ``` terminal
-    $ oc create secret tls sample-hosted-kas-custom-cert \
-      --cert=path/to/cert.crt \
-      --key=path/to/key.key \
-      -n <hosted_cluster_namespace>
-    ```
-
-2.  Update your `HostedCluster` configuration with the custom certificate details, as shown in the following example:
-
-    ``` yaml
-    spec:
-      configuration:
-        apiServer:
-          servingCerts:
-            namedCertificates:
-            - names:
-              - api-custom-cert-sample-hosted.sample-hosted.example.com
-              servingCertificate:
-                name: sample-hosted-kas-custom-cert
-    ```
-
-    - The list of DNS names that the certificate is valid for.
-
-    - The name of the secret that contains the custom certificate.
-
-3.  Apply the changes to your `HostedCluster` configuration by entering the following command:
-
-    ``` terminal
-    $ oc apply -f <hosted_cluster_config>.yaml
-    ```
-
-- Check the API server pods to ensure that the new certificate is mounted.
-
-- Test the connection to the API server by using the custom domain name.
-
-- Verify the certificate details in your browser or by using tools such as `openssl`.
 
 # Creating a hosted cluster in multiple zones on AWS
 

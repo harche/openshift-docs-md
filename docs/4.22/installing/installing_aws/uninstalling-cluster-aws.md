@@ -52,8 +52,7 @@ After uninstalling an OpenShift Container Platform cluster that uses short-term 
   ``` terminal
   $ ccoctl aws delete \
     --name=<name> \
-  ifdef::aws-sts
-  [  --region=<aws_region>]
+    --region=<aws_region>
   ```
 
   where:

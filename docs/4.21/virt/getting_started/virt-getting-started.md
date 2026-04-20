@@ -70,9 +70,7 @@ Migration Toolkit for Virtualization is not part of OpenShift Virtualization and
 
 - [Specify nodes for virtual machines](../../virt/managing_vms/advanced_vm_management/virt-specifying-nodes-for-vms.xml#virt-specifying-nodes-for-vms)
 
-- [Install the `virtctl` command-line interface (CLI) tool](../../virt/getting_started/virt-using-the-cli-tools.xml#installing-virtctl_virt-using-the-cli-tools)
-
-- [Use `virtctl` commands](../../virt/getting_started/virt-using-the-cli-tools.xml#virtctl-commands_virt-using-the-cli-tools)
+- [Install and use the `virtctl` command-line interface (CLI) tool](../../virt/getting_started/virt-using-the-cli-tools.xml#virt-using-the-cli-tools)
 
 - [Create a VM from a Red Hat image](../../virt/creating_vms_advanced/creating_vms_advanced_web/virt-creating-vms-from-rh-images-overview.xml#virt-creating-vms-from-rh-images-overview)
 

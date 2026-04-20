@@ -89,7 +89,7 @@ To deploy the AAQ Operator, set the `enableApplicationAwareQuota` field value to
 - Set the `enableApplicationAwareQuota` field value to `true` in the `HyperConverged` CR by running the following command:
 
   ``` terminal
-  $ oc patch hco kubevirt-hyperconverged -n openshift-cnv \
+  $ oc patch hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv \
    --type json -p '[{"op": "add", "path": "/spec/enableApplicationAwareQuota", "value": true}]'
   ```
 
@@ -106,7 +106,7 @@ You can configure the AAQ Operator by specifying the fields of the `spec.applica
 - Update the `HyperConverged` CR by running the following command:
 
   ``` terminal
-  $ oc patch hco kubevirt-hyperconverged -n openshift-cnv --type merge -p '{
+  $ oc patch hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv --type merge -p '{
     "spec": {
       "applicationAwareConfig": {
         "vmiCalcConfigName": "DedicatedVirtualResources",

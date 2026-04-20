@@ -129,7 +129,7 @@ To customise your OpenShift Container Platform deployment and meet specific netw
 
     </div>
 
-3.  If you are installing a three-node cluster, modify the `install-config.yaml` file by setting the `compute.replicas` parameter to `0`. This ensures that the cluster’s control planes are schedulable. For more information, see "Installing a three-node cluster on vSphere".
+3.  If you are installing a three-node cluster or a cluster with user-provisioned infrastructure, set the `compute.replicas` parameter to `0`. In a three-node cluster, this ensures that the cluster’s control planes are schedulable. For more information, see "Installing a three-node cluster". In a cluster with user-provisioned infrastructure, you must manually deploy compute machines before you finish installing OpenShift Container Platform.
 
 4.  Back up the `install-config.yaml` file so that you can use it to install many clusters.
 
@@ -141,29 +141,34 @@ To customise your OpenShift Container Platform deployment and meet specific netw
 
 - [Installation configuration parameters](../../../installing/installing_vsphere/installation-config-parameters-vsphere.xml#installation-config-parameters-vsphere)
 
-## Sample `install-config.yaml` file for VMware vSphere
+## Sample install-config.yaml file for a VMware vSphere cluster
 
-You can customize the `install-config.yaml` file to specify more details about your OpenShift Container Platform cluster’s platform or modify the values of the required parameters.
+You can customize the `install-config.yaml` file to specify more details about your OpenShift Container Platform cluster’s platform or change the values of the required parameters.
+
+<div class="important">
+
+Carefully review the "Installation configuration parameters for vSphere" page for detailed parameter explanations.
+
+</div>
 
 ``` yaml
-additionalTrustBundlePolicy: Proxyonly
 apiVersion: v1
 baseDomain: example.com
+metadata:
+  name: test
+sshKey: ssh-ed25519 AAAA...
 compute:
-- architecture: amd64
-  name: <worker_node>
+- name:  <worker_name>
   platform: {}
   replicas: 0
 controlPlane:
-  architecture: amd64
-  name: <parent_node>
+  name: <control_plane_name>
   platform: {}
   replicas: 3
-metadata:
-  creationTimestamp: null
-  name: test
 networking:
----
+  clusterNetwork:
+  - cidr: 10.128.0.0/14
+    hostPrefix: 23
 platform:
   vsphere:
     failureDomains:
@@ -176,75 +181,27 @@ platform:
         datastore: "/<data_center>/datastore/<datastore>"
         networks:
         - <VM_Network_name>
-        resourcePool: "/<data_center>/host/<cluster>/Resources/<resourcePool>"
-        folder: "/<data_center_name>/vm/<folder_name>/<subfolder_name>"
       zone: <default_zone_name>
     vcenters:
     - datacenters:
       - <data_center>
-      password: <password>
-      port: 443
       server: <fully_qualified_domain_name>
       user: administrator@vsphere.local
-    diskType: thin
-fips: false
-pullSecret: '{"auths": ...}'
-sshKey: 'ssh-ed25519 AAAA...'
 ```
 
-- The base domain of the cluster. All DNS records must be sub-domains of this base and include the cluster name.
+where:
 
-- The `controlPlane` section is a single mapping, but the compute section is a sequence of mappings. To meet the requirements of the different data structures, the first line of the `compute` section must begin with a hyphen, `-`, and the first line of the `controlPlane` section must not. Both sections define a single machine pool, so only one control plane is used. OpenShift Container Platform does not support defining multiple compute pools.
+`compute`
+Specifes the parameters that apply to compute nodes.
 
-- You must set the value of the `replicas` parameter to `0`. This parameter controls the number of workers that the cluster creates and manages for you, which are functions that the cluster does not perform when you use user-provisioned infrastructure. You must manually deploy worker machines for the cluster to use before you finish installing OpenShift Container Platform.
+`controlPlane`
+Specifies the parameters that apply to control plane nodes.
 
-- The number of control plane machines that you add to the cluster. Because the cluster uses this values as the number of etcd endpoints in the cluster, the value must match the number of control plane machines that you deploy.
+`networking`
+Specifies the parameters that apply to cluster networking configuration.
 
-- The cluster name that you specified in your DNS records.
-
-- Establishes the relationships between a region and zone. You define a failure domain by using vCenter objects, such as a `datastore` object. A failure domain defines the vCenter location for OpenShift Container Platform cluster nodes.
-
-- The vSphere data center.
-
-- The path to the vSphere datastore that holds virtual machine files, templates, and ISO images.
-
-  <div class="important">
-
-  You can specify the path of any datastore that exists in a datastore cluster. By default, Storage vMotion is automatically enabled for a datastore cluster. Red Hat does not support Storage vMotion, so you must disable Storage vMotion to avoid data loss issues for your OpenShift Container Platform cluster.
-
-  If you must specify VMs across multiple datastores, use a `datastore` object to specify a failure domain in your cluster’s `install-config.yaml` configuration file. For more information, see "VMware vSphere region and zone enablement".
-
-  </div>
-
-- Optional: For installer-provisioned infrastructure, the absolute path of an existing resource pool where the installation program creates the virtual machines, for example, `/<data_center_name>/host/<cluster_name>/Resources/<resource_pool_name>/<optional_nested_resource_pool_name>`. If you do not specify a value, resources are installed in the root of the cluster `/example_data_center/host/example_cluster/Resources`.
-
-- Optional: For installer-provisioned infrastructure, the absolute path of an existing folder where the installation program creates the virtual machines, for example, `/<data_center_name>/vm/<folder_name>/<subfolder_name>`. If you do not provide this value, the installation program creates a top-level folder in the data center virtual machine folder that is named with the infrastructure ID. If you are providing the infrastructure for the cluster and you do not want to use the default `StorageClass` object, named `thin`, you can omit the `folder` parameter from the `install-config.yaml` file.
-
-- The password associated with the vSphere user.
-
-- The fully-qualified hostname or IP address of the vCenter server.
-
-  <div class="important">
-
-  The Cloud Controller Manager Operator performs a connectivity check on a provided hostname or IP address. Ensure that you specify a hostname or an IP address to a reachable vCenter server. If you provide metadata to a non-existent vCenter server, installation of the cluster fails at the bootstrap stage.
-
-  </div>
-
-- The vSphere disk provisioning method.
-
-- Whether to enable or disable FIPS mode. By default, FIPS mode is not enabled. If FIPS mode is enabled, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that are provided with RHCOS instead.
-
-  <div class="important">
-
-  To enable FIPS mode for your cluster, you must run the installation program from a Red Hat Enterprise Linux (RHEL) computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see [Switching RHEL to FIPS mode](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/security_hardening/switching-rhel-to-fips-mode_security-hardening).
-
-  When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
-
-  </div>
-
-- The pull secret that you obtained from [OpenShift Cluster Manager](https://console.redhat.com/openshift). This pull secret allows you to authenticate with the services that are provided by the included authorities, including Quay.io, which serves the container images for OpenShift Container Platform components.
-
-- The public portion of the default SSH key for the `core` user in Red Hat Enterprise Linux CoreOS (RHCOS).
+`platform`
+Specifies the parameters that apply to the configuration of the platform hosting the cluster.
 
 ## Configuring the cluster-wide proxy during installation
 
@@ -304,9 +261,7 @@ To enable internet access in environments that deny direct connections, configur
 
     <div class="note">
 
-    If the installer times out, restart and then complete the deployment by using the `wait-for` command of the installer. For example:
-
-    \+
+    If the installation program times out, restart and then complete the deployment by using the `wait-for` command of the installation program. For example:
 
     ``` terminal
     $ ./openshift-install wait-for install-complete --log-level debug

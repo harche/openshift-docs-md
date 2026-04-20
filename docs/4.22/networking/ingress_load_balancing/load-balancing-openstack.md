@@ -2,7 +2,7 @@ To distribute network traffic and communications activity evenly across your com
 
 # Limitations of load balancer services
 
-To optimise network resource management and mitigate operational risks in OpenShift Container Platform clusters on Red Hat OpenStack Platform (RHOSP), review the implementation of Octavia for load balancer services.
+OpenShift Container Platform clusters on Red Hat OpenStack Platform (RHOSP) use Octavia to handle load balancer services. As a result of this choice, such clusters might have functional limitations.
 
 OpenShift Container Platform clusters on Red Hat OpenStack Platform (RHOSP) use Octavia to handle load balancer services. As a result, your cluster has several functional limitations.
 
@@ -28,7 +28,7 @@ You must create your own Octavia load balancer to use it for application network
 
 ## Scaling clusters by using Octavia
 
-To ensure high availability and distribute traffic across multiple cluster API access points in OpenShift Container Platform on RHOSP, create an Octavia load balancer. Configuring your cluster to use multiple balancers prevents network bottlenecks and ensures continuous access to your API services.
+If you want to use multiple API load balancers, create an Octavia load balancer and then configure your cluster to use it.
 
 - Octavia is available on your Red Hat OpenStack Platform (RHOSP) deployment.
 
@@ -89,7 +89,7 @@ To ensure high availability and distribute traffic across multiple cluster API a
 
 # Services for a user-managed load balancer
 
-To integrate your infrastructure with existing network standards or gain more control over traffic management in OpenShift Container Platform on Red Hat OpenStack Platform (RHOSP) , configure services for a user-managed load balancer.
+You can configure an OpenShift Container Platform cluster on Red Hat OpenStack Platform (RHOSP) to use a user-managed load balancer in place of the default load balancer.
 
 <div class="important">
 
@@ -150,7 +150,7 @@ Before you configure a user-managed load balancer for your OpenShift Container P
 
 ## Configuring a user-managed load balancer
 
-To integrate your infrastructure with existing network standards or gain more control over traffic management in OpenShift Container Platform on Red Hat OpenStack Platform (RHOSP) , use a user-managed load balancer in place of the default load balancer.
+You can configure an OpenShift Container Platform cluster on Red Hat OpenStack Platform (RHOSP) to use a user-managed load balancer in place of the default load balancer.
 
 <div class="important">
 

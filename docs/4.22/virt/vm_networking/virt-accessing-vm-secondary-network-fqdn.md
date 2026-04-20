@@ -21,7 +21,7 @@ The Cluster Network Addons Operator (CNAO) deploys a Domain Name Server (DNS) se
 1.  Edit the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconverged kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
     ```
 
 2.  Enable the DNS server and monitoring components according to the following example:
@@ -65,7 +65,7 @@ The Cluster Network Addons Operator (CNAO) deploys a Domain Name Server (DNS) se
 6.  Edit the `HyperConverged` CR again:
 
     ``` terminal
-    $ oc edit hyperconverged kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
     ```
 
 7.  Add the external IP address that you previously retrieved to the `kubeSecondaryDNSNameServerIP` field in the enterprise DNS server records. For example:

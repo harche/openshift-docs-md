@@ -547,43 +547,40 @@ ip-10-0-67-453.us-west-2.compute.internal   Ready    infra                  55m 
           config:
             nodeSelector:
               node-role.kubernetes.io/infra: ""
-        # ...
-        ```
-
-        where
-
-        `spec.config.nodeSelector`
-        Specifies the role of the node where you want to deploy the Cluster Resource Override Operator pod.
-
-        <div class="note">
-
-        If the infra node uses taints, you need to add a toleration to the `Subscription` CR.
-
-        For example:
-
-        ``` terminal
-        apiVersion: operators.coreos.com/v1alpha1
-        kind: Subscription
-        metadata:
-          name: clusterresourceoverride
-          namespace: clusterresourceoverride-operator
-        # ...
-        spec:
-          config:
-            nodeSelector:
-              node-role.kubernetes.io/infra: ""
-            tolerations:
-            - key: "node-role.kubernetes.io/infra"
-              operator: "Exists"
-              effect: "NoSchedule"
         ```
 
         where:
 
-        `spec.config.tolerations`
-        Specifies a toleration for a taint on the infra node.
+        `spec.config.nodeSelector`
+        Specifies the role of the node where you want to deploy the Cluster Resource Override Operator pod.
 
-        </div>
+    <div class="note">
+
+    If the infra node uses taints, you need to add a toleration to the `Subscription` CR. For example:
+
+    ``` terminal
+    apiVersion: operators.coreos.com/v1alpha1
+    kind: Subscription
+    metadata:
+      name: clusterresourceoverride
+      namespace: clusterresourceoverride-operator
+    # ...
+    spec:
+      config:
+        nodeSelector:
+          node-role.kubernetes.io/infra: ""
+        tolerations:
+        - key: "node-role.kubernetes.io/infra"
+          operator: "Exists"
+          effect: "NoSchedule"
+    ```
+
+    where:
+
+    `spec.config.tolerations`
+    Specifies a toleration for a taint on the infra node.
+
+    </div>
 
 2.  Move the Cluster Resource Override pods by adding a node selector to the `ClusterResourceOverride` custom resource (CR):
 
@@ -614,7 +611,7 @@ ip-10-0-67-453.us-west-2.compute.internal   Ready    infra                  55m 
         # ...
         ```
 
-        where
+        where:
 
         `spec.deploymentOverrides.replicas`
         Specifies the number of Cluster Resource Override pods to deploy. The default is `2`. Only one pod is allowed per node. This parameter is optional.
@@ -622,43 +619,39 @@ ip-10-0-67-453.us-west-2.compute.internal   Ready    infra                  55m 
         `spec.deploymentOverrides.nodeSelector`
         Specifies the role of the node where you want to deploy the Cluster Resource Override pods. This parameter is optional.
 
-        <div class="note">
+    <div class="note">
 
-        If the infra node uses taints, you need to add a toleration to the `ClusterResourceOverride` CR.
+    If the infra node uses taints, you need to add a toleration to the `ClusterResourceOverride` CR. For example:
 
-        For example:
-
-        ``` terminal
-        apiVersion: operator.autoscaling.openshift.io/v1
-        kind: ClusterResourceOverride
-        metadata:
-          name: cluster
-        # ...
+    ``` terminal
+    apiVersion: operator.autoscaling.openshift.io/v1
+    kind: ClusterResourceOverride
+    metadata:
+      name: cluster
+    # ...
+    spec:
+      podResourceOverride:
         spec:
-          podResourceOverride:
-            spec:
-              memoryRequestToLimitPercent: 50
-              cpuRequestToLimitPercent: 25
-              limitCPUToMemoryPercent: 200
-          deploymentOverrides:
-            replicas: 3
-            nodeSelector:
-              node-role.kubernetes.io/worker: ""
-            tolerations:
-            - key: "key"
-              operator: "Equal"
-              value: "value"
-              effect: "NoSchedule"
-        ```
+          memoryRequestToLimitPercent: 50
+          cpuRequestToLimitPercent: 25
+          limitCPUToMemoryPercent: 200
+      deploymentOverrides:
+        replicas: 3
+        nodeSelector:
+          node-role.kubernetes.io/worker: ""
+        tolerations:
+        - key: "key"
+          operator: "Equal"
+          value: "value"
+          effect: "NoSchedule"
+    ```
 
-        where:
+    where:
 
-        \+
+    `spec.deploymentOverrides.tolerations`
+    Specifies a toleration for a taint on the infra node.
 
-        `spec.config.tolerations`
-        Specifies a toleration for a taint on the infra node.
-
-        </div>
+    </div>
 
 - You can verify that the pods have moved by using the following command:
 

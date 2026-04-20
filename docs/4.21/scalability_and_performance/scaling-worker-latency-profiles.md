@@ -1,12 +1,12 @@
-To improve cluster stability in high latency environments, apply worker latency profiles. These profiles adjust Kubelet timing parameters to ensure that nodes remain healthy and responsive despite network delays.
+To improve cluster stability in high latency environments, apply worker latency profiles.
 
-If the cluster administrator has performed latency tests for platform verification, they can discover the need to adjust the operation of the cluster to ensure stability in cases of high latency.
+If as a cluster administrator, you performed latency tests for platform verification, you might discover the need to adjust the operation of the cluster to ensure stability in cases of high latency.
 
-The cluster administrator needs to change only one parameter, recorded in a file, which controls four parameters affecting how supervisory processes read status and interpret the health of the cluster. Changing only the one parameter provides cluster tuning in an easy, supportable manner.
+As a cluster administrator, you need to change only one parameter, recorded in a file, which controls four parameters affecting how supervisory processes read status and interpret the health of the cluster. Changing only the one parameter provides cluster tuning in an easy, supportable manner.
 
 The `Kubelet` process provides the starting point for monitoring cluster health. The `Kubelet` sets status values for all nodes in the OpenShift Container Platform cluster. The Kubernetes Controller Manager (`kube controller`) reads the status values every 10 seconds, by default. If the `kube controller` cannot read a node status value, it loses contact with that node after a configured period. The default behavior is:
 
-1.  The node controller on the control plane updates the node health to `Unhealthy` and marks the node `Ready` condition\`Unknown\`.
+1.  The node controller on the control plane updates the node health to `Unhealthy` and marks the node `Ready` condition `Unknown`.
 
 2.  In response, the scheduler stops scheduling pods to that node.
 
@@ -106,7 +106,7 @@ The latency profiles do not support custom machine config pools, only the defaul
 
 # Implementing worker latency profiles at cluster creation
 
-To ensure cluster stability in high latency environments, implement worker latency profiles during cluster creation.
+During cluster creation, you can implement worker latency profiles so that you can control the reaction of the cluster to latency issues without relying on manual methods to determine the best values.
 
 <div class="important">
 
@@ -299,9 +299,7 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
 
 # Displaying resulting values of worker latency profile
 
-To verify the configuration of your compute nodes, display the resulting values of the worker latency profile configured for those nodes. This ensures that the Kubelet parameters are correctly adjusted for high latency environments and helps you confirm system stability.
-
-The following procedure uses example commands to display the values in the worker latency profile configured for your node.
+You can run specific commands to display the values for the worker latency profile. You can then check the displayed values for information accuracy.
 
 1.  Check the `default-not-ready-toleration-seconds` and `default-unreachable-toleration-seconds` fields output by the Kube API Server:
 

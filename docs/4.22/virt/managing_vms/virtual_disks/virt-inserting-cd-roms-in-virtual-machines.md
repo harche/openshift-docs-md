@@ -27,7 +27,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 - The `DeclarativeHotplugVolumes` feature gate must be enabled. To ensure this, the `HyperConverged` CR must contain the `declarativeHotplugVolumes: true` line in the `spec.featureGates` configuration section:
 
   ``` yaml
-  apiVersion: hco.kubevirt.io/v1
+  apiVersion: hco.kubevirt.io/v1beta1
   kind: HyperConverged
   metadata:
     name: kubevirt-hyperconverged
@@ -40,7 +40,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 - The `HotplugVolumes` feature gate must be disabled. This feature gate is required for using ephemeral volumes, but is incompatible with `DeclarativeHotplugVolumes`.
 
   ``` yaml
-  apiVersion: hco.kubevirt.io/v1
+  apiVersion: hco.kubevirt.io/v1beta1
   kind: HyperConverged
   metadata:
     name: kubevirt-hyperconverged
@@ -125,7 +125,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 - The `DeclarativeHotplugVolumes` feature gate must be enabled. To ensure this, the `HyperConverged` CR must contain the `declarativeHotplugVolumes: true` line in the `spec.featureGates` configuration section:
 
   ``` yaml
-  apiVersion: hco.kubevirt.io/v1
+  apiVersion: hco.kubevirt.io/v1beta1
   kind: HyperConverged
   metadata:
     name: kubevirt-hyperconverged
@@ -138,7 +138,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 - The `HotplugVolumes` feature gate must be disabled. This feature gate is required for using ephemeral volumes, but is incompatible with `DeclarativeHotplugVolumes`.
 
   ``` yaml
-  apiVersion: hco.kubevirt.io/v1
+  apiVersion: hco.kubevirt.io/v1beta1
   kind: HyperConverged
   metadata:
     name: kubevirt-hyperconverged

@@ -1,26 +1,20 @@
-You uninstall OpenShift Virtualization by using the web console or the command-line interface (CLI) to delete the OpenShift Virtualization workloads, the Operator, and its resources.
+You can uninstall OpenShift Virtualization by using the web console or the command-line interface (CLI) to delete OpenShift Virtualization workloads, the Operator, and its resources.
 
-# Uninstalling OpenShift Virtualization by using the web console
+To uninstall OpenShift Virtualization, perform the following tasks:
 
-You uninstall OpenShift Virtualization by using the [web console](../../web_console/web-console.xml#web-console-overview_web-console) to perform the following tasks:
+1.  Delete the `HyperConverged` CR.
 
-1.  [Delete the `HyperConverged` CR](../../virt/install/uninstalling-virt.xml#virt-deleting-deployment-custom-resource_uninstalling-virt).
+2.  Delete the OpenShift Virtualization Operator.
 
-2.  [Delete the OpenShift Virtualization Operator](../../virt/install/uninstalling-virt.xml#olm-deleting-operators-from-a-cluster-using-web-console_uninstalling-virt).
+3.  Delete the `openshift-cnv` namespace.
 
-3.  [Delete the `openshift-cnv` namespace](../../virt/install/uninstalling-virt.xml#deleting-a-namespace-using-the-web-console_uninstalling-virt).
+4.  Delete the OpenShift Virtualization custom resource definitions (CRDs).
 
-4.  [Delete the OpenShift Virtualization custom resource definitions (CRDs)](../../virt/install/uninstalling-virt.xml#virt-deleting-virt-crds-web_uninstalling-virt).
+# Prerequisites
 
-<div class="important">
+- Delete all virtual machine instances. You cannot uninstall OpenShift Virtualization while its workloads remain on the cluster.
 
-You must first delete all [virtual machines](../../virt/managing_vms/virt-delete-vms.xml#virt-delete-vm-web_virt-delete-vms), and [virtual machine instances](../../virt/managing_vms/virt-manage-vmis.xml#virt-deleting-vmis-cli_virt-manage-vmis).
-
-You cannot uninstall OpenShift Virtualization while its workloads remain on the cluster.
-
-</div>
-
-## Deleting the HyperConverged custom resource
+# Deleting the HyperConverged custom resource
 
 To uninstall OpenShift Virtualization, you first delete the `HyperConverged` custom resource (CR).
 
@@ -36,7 +30,7 @@ To uninstall OpenShift Virtualization, you first delete the `HyperConverged` cus
 
 5.  Click **Delete** in the confirmation window.
 
-## Deleting Operators from a cluster using the web console
+# Deleting Operators from a cluster using the web console
 
 Cluster administrators can delete installed Operators from a selected namespace by using the web console.
 
@@ -58,7 +52,7 @@ Cluster administrators can delete installed Operators from a selected namespace 
 
     </div>
 
-## Deleting a namespace using the web console
+# Deleting a namespace using the web console
 
 You can delete a namespace by using the OpenShift Container Platform web console.
 
@@ -74,7 +68,7 @@ You can delete a namespace by using the OpenShift Container Platform web console
 
 5.  Click **Delete**.
 
-## Deleting OpenShift Virtualization custom resource definitions
+# Deleting OpenShift Virtualization custom resource definitions
 
 You can delete the OpenShift Virtualization custom resource definitions (CRDs) by using the web console.
 
@@ -142,6 +136,16 @@ You can uninstall OpenShift Virtualization by using the OpenShift CLI (`oc`).
     $ oc delete crd -l operators.coreos.com/kubevirt-hyperconverged.openshift-cnv
     ```
 
-- [Deleting virtual machines](../../virt/managing_vms/virt-delete-vms.xml#virt-delete-vm-web_virt-delete-vms)
+# Additional resources
 
-- [Deleting virtual machine instances](../../virt/managing_vms/virt-manage-vmis.xml#virt-deleting-vmis-cli_virt-manage-vmis)
+- [Deleting the `HyperConverged` custom resource](../../virt/install/uninstalling-virt.xml#virt-deleting-deployment-custom-resource_uninstalling-virt)
+
+- [Deleting Operators from a cluster using the web console](../../virt/install/uninstalling-virt.xml#olm-deleting-operators-from-a-cluster-using-web-console_uninstalling-virt)
+
+- [Deleting a namespace using the web console](../../virt/install/uninstalling-virt.xml#deleting-a-namespace-using-the-web-console_uninstalling-virt)
+
+- [Deleting OpenShift Virtualization custom resource definitions](../../virt/install/uninstalling-virt.xml#virt-deleting-virt-crds-web_uninstalling-virt)
+
+- [Deleting a virtual machine using the web console](../../virt/managing_vms/virt-delete-vms.xml#virt-delete-vm-web_virt-delete-vms)
+
+- [Deleting a standalone virtual machine instance using the CLI](../../virt/managing_vms/virt-manage-vmis.xml#virt-deleting-vmis-cli_virt-manage-vmis)

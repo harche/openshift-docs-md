@@ -194,7 +194,7 @@ Hot unplugging is not supported for Single Root I/O Virtualization (SR-IOV) inte
 
 # Additional resources
 
-- [Installing virtctl](../../virt/getting_started/virt-using-the-cli-tools.xml#installing-virtctl_virt-using-the-cli-tools)
+- [Installing virtctl](../../virt/getting_started/virt-using-the-cli-tools.xml#virt-installing-virtctl-binary_virt-using-the-cli-tools)
 
 - [About live migration permissions](../../virt/live_migration/virt-about-live-migration.xml#virt-about-live-migration-permissions_virt-about-live-migration)
 

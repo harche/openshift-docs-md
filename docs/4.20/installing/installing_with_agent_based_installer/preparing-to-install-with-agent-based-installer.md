@@ -1058,6 +1058,8 @@ networking:
   clusterNetwork:
   - cidr: 10.128.0.0/14
     hostPrefix: 23
+  machineNetwork:
+  - cidr: 192.168.0.0/16
   networkType: OVNKubernetes
   serviceNetwork:
   - 172.30.0.0/16

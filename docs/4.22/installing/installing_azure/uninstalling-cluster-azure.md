@@ -52,8 +52,6 @@ After uninstalling an OpenShift Container Platform cluster that uses short-term 
   ``` terminal
   $ ccoctl azure delete \
     --name=<name> \
-  ifdef::aws-sts
-  [  --region=<azure_region>]
     --region=<azure_region> \
     --subscription-id=<azure_subscription_id> \
     --delete-oidc-resource-group

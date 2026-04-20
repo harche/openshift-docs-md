@@ -1836,6 +1836,54 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHSA-2026:6564 - OpenShift Container Platform 4.17.18 fixed issues
+
+Issued: 9 April 2026
+
+OpenShift Container Platform release 4.17.18 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:6564](https://access.redhat.com/errata/RHSA-2026:6564) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:6559](https://access.redhat.com/errata/RHBA-2026:6559) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.20.18 --pullspecs
+```
+
+### Enhancements
+
+- With this update, the `kubevirt-csi-driver` allows for annotation-based fallback when resolving the `infra` virtual machine (VM) node ID. This enhancement provides a more flexible and reliable method to resolve the `infra` cluster VM name and namespace from the node’s `providerID` or annotations, ensuring compatibility with non-hosted control planes support. This feature improves the `kubevirt-csi-driver` operation on non-hosted control planes environments, delivering a smoother and more consistent user experience. ([OCPBUGS-79064](https://redhat.atlassian.net/browse/OCPBUGS-79064))
+
+### Known issues
+
+- Before this update, the Cloud Event Proxy of the Precision Time Protocol (PTP) Operator did not report the correct state after a PTP daemon restart for boundary clock (T-BC) configurations. As a consequence, the expected `LOCKED` state was not reported. With this update, the Cloud Event Proxy correctly reports the `LOCKED` state after a PTP daemon restart. ([OCPBUGS-76372](https://issues.redhat.com/browse/OCPBUGS-76372))
+
+- Before this release, global navigation satellite system (GNSS) serial port auto-detection issue in the grandmaster file caused GNSS port index changes after reboot, leading to node time synchronization issues. To work around this problem, remove `ts2phc.nmea_serialport` from the grandmaster `PTPConfig` and reboot the node. As a result, the GNSS port index number is no longer change after reboot, preventing time synchronization issues. ([OCPBUGS-77749](https://redhat.atlassian.net/browse/OCPBUGS-77749))
+
+### Fixed issues
+
+- Before this update, visiting the `/auth/error` page without the required state cookie showed a blank page and prevented error details from displaying. This update improves error handling in the front-end code. As a result, the `/auth/error` page displays error content, making it easier to diagnose and resolve problems. ([OCPBUGS-60912](https://redhat.atlassian.net/browse/OCPBUGS-60912))
+
+- Before this update, insufficient `/var/ostree-container` partition size triggered image pull failure. As a consequence, the user deployment that runs on user-provisioned infrastructure for IBM Power and network boot failed due to insufficient partition size. With this release, the size of `/var/ostree-container` mount is increased to 5GB. As a result, image pull issues are resolved, improving deployment. ([OCPBUGS-77896](https://redhat.atlassian.net/browse/OCPBUGS-77896))
+
+- Before this update, Azure cluster image generation used a fixed resource group pattern, causing incorrect default image ID when a custom resource group was used. As a consequence, user provisioning failed with custom Azure resource groups, assuming default group `infraID-rg`. With this release, the default image resource ID uses the specified resource group instead of a default one. As a result, resource group naming pattern is fixed for image ID generation, ensuring correct image selection for Azure clusters. ([OCPBUGS-78424](https://redhat.atlassian.net/browse/OCPBUGS-78424))
+
+- Before this update, Prometheus pods in OpenShift Container Platform generated repeated deprecation warnings due to API usage. As a consequence, these unwanted log messages overloaded the logging system, potentially hiding important messages. With this release, deprecation warnings are deduplicated in Kubernetes API logs. As a result, Prometheus pods do not generate excessive deprecated warnings, reducing logging overload and improving performance. ([OCPBUGS-78582](https://redhat.atlassian.net/browse/OCPBUGS-78582))
+
+- Before this update, Cluster Autoscaler continued decreasing `MachineDeployment` replicas while it was paused, causing a mass-deletion when reconciliation resumed. As a consequence, there was a catastrophic scale-down of machines due to cluster autoscaler continuing to decrement replicas when Cluster CAPI Operator was paused. With this release, Cluster Autoscaler skips paused machine deployments in scale-down actions. As a result, the Cluster Autoscaler prevents catastrophic scale-down during paused `MachineDeployment`, ensuring a stable user experience. ([OCPBUGS-78690](https://redhat.atlassian.net/browse/OCPBUGS-78690))
+
+- Before this update, the YAML creation page had an empty API version, causing runtime errors and preventing users from creating custom resource definition (CRD) instances. As a consequence, the sidebar panel was missing, preventing users from creating CRD instances. With this release, we have fixed the empty API version issue, added default API versions for `MachineConfig`, `ServiceMonitor`, and other CRDs. As a result, users can create CRD instances with help texts displayed in the sidebar. ([OCPBUGS-78839](https://redhat.atlassian.net/browse/OCPBUGS-78839))
+
+- Before this update, the slow refresh interval of OVN `EgressFirewall` Domain Name System (DNS) resolution caused a synchronization gap between the DNS resolution of the application and the update cycle of the firewall controller. As a consequence, slow DNS resolution in OVN egress firewall caused a delay for application access after Network Load Balancer (NLB) recreation. With this release, the `EgressFirewall` DNS refresh interval has been adjusted for faster resolution. As a result, the `EgressFirewall` DNS resolution delay is reduced, improving the responsiveness of the application. ([OCPBUGS-79537](https://redhat.atlassian.net/browse/OCPBUGS-79537))
+
+- Before this update, a nil pointer dereference occurred in the `sortUnpackJobs` function when sorting non-failed jobs. As a consequence, the Catalog Operator pod crashed during single-node OpenShift cluster installation, causing Operator installation failure. With this release, the nil pointer dereference is fixed, improving stability. As a result, the Operator does not crash during single-node OpenShift cluster installation, ensuring smooth Operator installation. ([OCPBUGS-79681](https://redhat.atlassian.net/browse/OCPBUGS-79681))
+
+- Before this update, the old IBM Cloud `vpc-go-sdk` version was unable to process `SecurityGroup` rules with any protocol, causing machine creation failures due to incompatibility with new Virtual Private Cloud (VPC) security group rule. With this release, the VPC `go` Software Development Kit (SDK) has been updated to resolve the security group rule issue, allowing new `MachineSet` creation. As a result, the updated VPC Go SDK resolves the security group rule creation issue, enabling a new `MachineSet` to be provisioned without errors. ([OCPBUGS-81317](https://redhat.atlassian.net/browse/OCPBUGS-81317))
+
+### Updating
+
+To update an OpenShift Container Platform 4.20 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHSA-2026:5142 - OpenShift Container Platform 4.17.17 fixed issues
 
 Issued: 25 March 2026

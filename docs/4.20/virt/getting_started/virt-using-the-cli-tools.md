@@ -1,14 +1,12 @@
-You can manage OpenShift Virtualization resources by using the `virtctl` command-line tool.
+You can manage OpenShift Virtualization resources by using the `virtctl` command-line tool. Virtual machine (VM) commands can also be used to manage virtual machine instances (VMIs) unless otherwise specified.
 
-You can access and modify virtual machine (VM) disk images by using the [`libguestfs`](https://libguestfs.org) command-line tool. You deploy `libguestfs` by using the `virtctl libguestfs` command.
+<div class="note">
 
-# Installing virtctl
+You can access and change VM disk images by using the `libguestfs` command-line tool. You deploy `libguestfs` by using the `virtctl libguestfs` command.
 
-To install `virtctl` on Red Hat Enterprise Linux (RHEL) 9 or later, Linux, Windows, and MacOS operating systems, you can download and install the `virtctl` binary file.
+</div>
 
-To install `virtctl` on RHEL 8, you can enable the OpenShift Virtualization repository and then install the `kubevirt-virtctl` RPM package.
-
-## Installing the virtctl binary on RHEL 9 or later, Linux, Windows, or macOS
+# Installing the virtctl binary on RHEL 9 or later, Linux, Windows, or macOS
 
 You can download the `virtctl` binary by using the OpenShift Container Platform web console and then install it on Red Hat Enterprise Linux (RHEL) 9 or later, Linux, Windows, or macOS.
 
@@ -72,7 +70,7 @@ You can download the `virtctl` binary by using the OpenShift Container Platform 
           echo $PATH
           ```
 
-## Installing the virtctl RPM package on RHEL 8
+# Installing the virtctl RPM package on RHEL 8
 
 You can install the `virtctl` RPM package on Red Hat Enterprise Linux (RHEL) 8 by enabling the OpenShift Virtualization repository and then installing the `kubevirt-virtctl` RPM package.
 
@@ -90,17 +88,7 @@ You can install the `virtctl` RPM package on Red Hat Enterprise Linux (RHEL) 8 
     # yum install kubevirt-virtctl
     ```
 
-# virtctl commands
-
-The `virtctl` client is a command-line utility for managing OpenShift Virtualization resources.
-
-<div class="note">
-
-The virtual machine (VM) commands also apply to virtual machine instances (VMIs) unless otherwise specified.
-
-</div>
-
-## virtctl information commands
+# virtctl information commands
 
 You can use the following `virtctl` information commands to view information about the `virtctl` client.
 
@@ -113,7 +101,7 @@ You can use the following `virtctl` information commands to view information abo
 
 Information commands
 
-## VM information commands
+# VM information commands
 
 You can use `virtctl` to view information about virtual machines (VMs) and virtual machine instances (VMIs).
 
@@ -125,7 +113,7 @@ You can use `virtctl` to view information about virtual machines (VMs) and virtu
 
 VM information commands
 
-## VM manifest creation commands
+# VM manifest creation commands
 
 You can use the following `virtctl create` commands to create manifests for virtual machines, instance types, and preferences.
 
@@ -199,7 +187,7 @@ You can use the following `virtctl create` commands to create manifests for virt
 
 VM manifest creation commands
 
-## VM management commands
+# VM management commands
 
 You can use the following `virtctl` commands to manage and migrate virtual machines (VMs) and VM instances (VMIs).
 
@@ -217,7 +205,7 @@ You can use the following `virtctl` commands to manage and migrate virtual machi
 
 VM management commands
 
-## VM connection commands
+# VM connection commands
 
 You use can use the following `virtctl` commands to expose ports and connect to virtual machines (VMs) and VM instances (VMIs).
 
@@ -274,7 +262,7 @@ You use can use the following `virtctl` commands to expose ports and connect to 
 
 VM connection commands
 
-## VM export commands
+# VM export commands
 
 Use `virtctl vmexport` commands to create, download, or delete a volume exported from a VM, VM snapshot, or persistent volume claim (PVC). Certain manifests also contain a header secret, which grants access to the endpoint to import a disk image in a format that OpenShift Virtualization can use.
 
@@ -351,7 +339,7 @@ Use `virtctl vmexport` commands to create, download, or delete a volume exported
 
 VM export commands
 
-## Hot plug and hot unplug commands
+# Hot plug and hot unplug commands
 
 You can use the following `virtctl` commands to add or remove resources from running virtual machines (VMs) and VM instances (VMIs).
 
@@ -386,7 +374,7 @@ You can use the following `virtctl` commands to add or remove resources from run
 
 Hot plug and hot unplug commands
 
-## Image upload commands
+# Image upload commands
 
 You can use the following `virtctl image-upload` commands to upload a VM image to a data volume.
 
@@ -414,7 +402,7 @@ You can use the `virtctl guestfs` command to deploy an interactive container wit
 
   </div>
 
-## Libguestfs and virtctl guestfs commands
+# Libguestfs and virtctl guestfs commands
 
 `Libguestfs` tools help you access and modify virtual machine (VM) disk images. You can use `libguestfs` tools to view and edit files in a guest, clone and build virtual machines, and format and resize disks.
 
@@ -481,6 +469,8 @@ The `virtctl guestfs` command accepts only a single PVC attached to the interact
 
 </div>
 
-# Using Ansible
+# Additional resources
 
-To use the Ansible collection for OpenShift Virtualization, see [Red Hat Ansible Automation Hub](https://console.redhat.com/ansible/automation-hub/repo/published/redhat/openshift_virtualization) (Red Hat Hybrid Cloud Console).
+- [Red Hat Ansible Automation Hub](https://console.redhat.com/ansible/automation-hub)
+
+- [`libguestfs`](https://libguestfs.org)

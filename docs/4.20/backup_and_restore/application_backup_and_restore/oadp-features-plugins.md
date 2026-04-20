@@ -1,10 +1,8 @@
-OpenShift API for Data Protection (OADP) features provide options for backing up and restoring applications.
-
-The default plugins enable Velero to integrate with certain cloud providers and to back up and restore OpenShift Container Platform resources.
+Review OpenShift API for Data Protection (OADP) features and default plugins that integrate Velero with cloud providers to back up and restore OpenShift Container Platform resources. This helps you to select the right plugins and features for your backup and restore environment.
 
 # OADP features
 
-OpenShift API for Data Protection (OADP) supports the following features:
+Review the backup, restore, and scheduling features of OpenShift API for Data Protection (OADP) for protecting applications on OpenShift Container Platform. This helps you to understand the available capabilities for your data protection strategy.
 
 Backup
 You can use OADP to back up all applications on the OpenShift Platform, or you can filter the resources by type, namespace, or label.
@@ -34,7 +32,7 @@ You can use hooks to run commands in a container on a pod, for example, `fsfreez
 
 # OADP plugins
 
-The OpenShift API for Data Protection (OADP) provides default Velero plugins that are integrated with storage providers to support backup and snapshot operations. You can create [custom plugins](https://velero.io/docs/v1.16/custom-plugins/) based on the Velero plugins.
+Review the default Velero plugins provided by OpenShift API for Data Protection (OADP) that integrate with storage providers to support backup and snapshot operations. This helps you to select and configure the right plugins for your cloud environment.
 
 OADP also provides plugins for OpenShift Container Platform resource backups, OpenShift Virtualization resource backups, and Container Storage Interface (CSI) snapshots.
 
@@ -65,15 +63,11 @@ OADP plugins
 
 4.  Do not add the `hypershift` plugin in the `DataProtectionApplication` custom resource if the cluster is not a HyperShift hosted cluster.
 
+- [Custom plugins](https://velero.io/docs/v1.16/custom-plugins/)
+
 # About OADP Velero plugins
 
-You can configure two types of plugins when you install Velero:
-
-- Default cloud provider plugins
-
-- Custom plugins
-
-Configure default cloud provider plugins or install custom plugins during deployment to connect your specific storage solutions. Although both types of plugin are optional, setting up at least one helps you successfully back up and restore resources across your environments.
+Review how to configure default cloud provider plugins or install custom plugins during the OADP deployment to connect your specific storage solutions. This helps you to successfully back up and restore resources across your environments.
 
 ## Default Velero cloud provider plugins
 
@@ -137,7 +131,7 @@ spec:
 
 # Supported architectures for OADP
 
-OpenShift API for Data Protection (OADP) supports the following architectures:
+Review the architectures supported by OpenShift API for Data Protection (OADP). This helps you to verify compatibility with your cluster infrastructure.
 
 - AMD64
 
@@ -155,7 +149,7 @@ OADP 1.2.0 and later versions support the ARM64 architecture.
 
 # OADP support for IBM Power and IBM Z
 
-OpenShift API for Data Protection (OADP) is platform neutral. The information that follows relates only to IBM Power® and to IBM Z®.
+Review OpenShift API for Data Protection (OADP) support and tested backup locations for IBM Power® and IBM Z®. This helps you to verify compatibility and supported configurations for your IBM Power® or IBM Z® environment.
 
 - OADP 1.3.6 was tested successfully against OpenShift Container Platform 4.12, 4.13, 4.14, and 4.15 for both IBM Power® and IBM Z®. The sections that follow give testing and support information for OADP 1.3.6 in terms of backup locations for these systems.
 
@@ -165,6 +159,8 @@ OpenShift API for Data Protection (OADP) is platform neutral. The information th
 
 ## OADP support for target backup locations using IBM Power
 
+Review the tested and supported configurations for running OADP on IBM Power® with various OpenShift Container Platform versions and S3-compatible backup locations. This helps you to verify that your IBM Power® environment is supported before configuring backups.
+
 - IBM Power® running with OpenShift Container Platform 4.12, 4.13, 4.14, and 4.15, and OADP 1.3.6 was tested successfully against an AWS S3 backup location target. Although the test involved only an AWS S3 target, Red Hat supports running IBM Power® with OpenShift Container Platform 4.13, 4.14, and 4.15, and OADP 1.3.6 against all S3 backup location targets, which are not AWS, as well.
 
 - IBM Power® running with OpenShift Container Platform 4.14, 4.15, 4.16, and 4.17, and OADP 1.4.6 was tested successfully against an AWS S3 backup location target. Although the test involved only an AWS S3 target, Red Hat supports running IBM Power® with OpenShift Container Platform 4.14, 4.15, 4.16, and 4.17, and OADP 1.4.6 against all S3 backup location targets, which are not AWS, as well.
@@ -172,6 +168,8 @@ OpenShift API for Data Protection (OADP) is platform neutral. The information th
 - IBM Power® running with OpenShift Container Platform 4.19 and OADP 1.5.5 was tested successfully against an AWS S3 backup location target. Although the test involved only an AWS S3 target, Red Hat supports running IBM Power® with OpenShift Container Platform 4.19 and OADP 1.5.5 against all S3 backup location targets, which are not AWS, as well.
 
 ## OADP testing and support for target backup locations using IBM Z
+
+Review the tested and supported OADP and OpenShift Container Platform version combinations for IBM Z® against S3 backup location targets. This helps you verify that your IBM Z® environment and OADP version are supported for backup operations.
 
 - IBM Z® running with OpenShift Container Platform 4.12, 4.13, 4.14, and 4.15, and 1.3.6 was tested successfully against an AWS S3 backup location target. Although the test involved only an AWS S3 target, Red Hat supports running IBM Z® with OpenShift Container Platform 4.13 4.14, and 4.15, and 1.3.6 against all S3 backup location targets, which are not AWS, as well.
 
@@ -181,17 +179,19 @@ OpenShift API for Data Protection (OADP) is platform neutral. The information th
 
 ### Known issue of OADP using IBM Power® and IBM Z® platforms
 
-- Currently, there are backup method restrictions for Single-node OpenShift clusters deployed on IBM Power® and IBM Z® platforms. Only NFS storage is currently compatible with Single-node OpenShift clusters on these platforms. In addition, only the File System Backup (FSB) methods such as Kopia and Restic are supported for backup and restore operations. There is currently no workaround for this issue.
+Use only NFS storage with File System Backup (FSB) methods such as Kopia or Restic for Single-node OpenShift clusters on IBM Power® and IBM Z® platforms. This helps you to avoid unsupported backup configurations on these platforms.
+
+There is currently no workaround for this restriction.
 
 # OADP and FIPS
 
-Federal Information Processing Standards (FIPS) are a set of computer security standards developed by the United States federal government in line with the Federal Information Security Management Act (FISMA).
+Federal Information Processing Standards (FIPS) are a set of computer security standards developed by the United States federal government inline with the Federal Information Security Management Act (FISMA).
 
 OpenShift API for Data Protection (OADP) has been tested and works on FIPS-enabled OpenShift Container Platform clusters.
 
 # Avoiding the Velero plugin panic error
 
-Label a custom Backup Storage Location (BSL) to resolve Velero plugin panic errors during `imagestream` backups. This action prompts the OADP controller to create the required registry secret when you manage the BSL outside the `DataProtectionApplication` (DPA) custom resource (CR).
+Label a custom Backup Storage Location (BSL) to resolve Velero plugin panic errors during `imagestream` backups. This helps you to ensure the OADP controller creates the required registry secret when you manage the BSL outside the `DataProtectionApplication` (DPA) CR.
 
 A missing secret can cause a panic error for the Velero plugin during image stream backups. When the backup and the BSL are managed outside the scope of the DPA, the OADP controller does not create the relevant `oadp-<bsl_name>-<bsl_provider>-registry-secret` parameter.
 
@@ -228,10 +228,12 @@ runtime error: index out of range with length 1, stack trace: goroutine 94…
 
 Define either `velero` or `cloudstorage` in your Data Protection Application (DPA) configuration to prevent indefinite pod crashes. This configuration resolves a segmentation fault in the `openshift-adp-controller-manager` pod that occurs when both components are enabled.
 
-Define either `velero` or `cloudstorage` when you configure a DPA. Otherwise, the `openshift-adp-controller-manager` pod fails with a crash loop segmentation fault due to the following settings:
+The `openshift-adp-controller-manager` pod fails with a crash loop segmentation fault due to the following settings:
 
 - If you define both `velero` and `cloudstorage`, the `openshift-adp-controller-manager` fails.
 
 - If you do not define both `velero` and `cloudstorage`, the `openshift-adp-controller-manager` fails.
 
-For more information about this issue, see [OADP-1054](https://issues.redhat.com/browse/OADP-1054).
+See *OADP-1054* for more information.
+
+- [OADP-1054](https://issues.redhat.com/browse/OADP-1054)

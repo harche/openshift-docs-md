@@ -64,11 +64,7 @@ On a Linux VM, freeze and thaw processes trigger automatically when a snapshot i
 
 The same cycle of freezing and thawing is available on a Windows VM. Applications register with the Volume Shadow Copy Service (VSS) to receive notifications that they should flush out their data because a backup or snapshot is imminent. Thawing of the applications after the backup or snapshot is complete returns them to an active state. For more details, see the Windows Server documentation about the Volume Shadow Copy Service.
 
-# Creating snapshots
-
-You can create snapshots of virtual machines (VMs) by using the OpenShift Container Platform web console or the command line.
-
-## Creating a snapshot by using the web console
+# Creating a snapshot by using the web console
 
 You can create a snapshot of a virtual machine (VM) by using the OpenShift Container Platform web console.
 
@@ -98,7 +94,7 @@ You can create a snapshot of a virtual machine (VM) by using the OpenShift Conta
 
 7.  Click **Save**.
 
-## Creating a snapshot by using the CLI
+# Creating a snapshot by using the CLI
 
 You can create a virtual machine (VM) snapshot for an offline or online VM by creating a `VirtualMachineSnapshot` object.
 
@@ -234,17 +230,24 @@ You can create a virtual machine (VM) snapshot for an offline or online VM by cr
           namespace: default
     ```
 
-    - The `status` field of the `Progressing` condition specifies if the snapshot is still being created.
+    where:
 
-    - The `status` field of the `Ready` condition specifies if the snapshot creation process is complete.
+    `status`
+    The `status` field of the `Progressing` condition specifies if the snapshot is still being created.
 
-    - Specifies if the snapshot is ready to be used.
+    The `status` field of the `Ready` condition specifies if the snapshot creation process is complete.
 
-    - Specifies that the snapshot is bound to a `VirtualMachineSnapshotContent` object created by the snapshot controller.
+    `readyToUse`
+    Specifies if the snapshot is ready to be used.
 
-    - Specifies additional information about the snapshot, such as whether it is an online snapshot, or whether it was created with QEMU guest agent running.
+    `virtualMachineSnapshotContentName`
+    Specifies that the snapshot is bound to a `VirtualMachineSnapshotContent` object created by the snapshot controller.
 
-    - Lists the storage volumes that are part of the snapshot, as well as their parameters.
+    `indications`
+    Specifies additional information about the snapshot, such as whether it is an online snapshot, or whether it was created with QEMU guest agent running.
+
+    `includedVolumes`
+    Lists the storage volumes that are part of the snapshot, as well as their parameters.
 
 3.  Check the `includedVolumes` section in the snapshot description to verify that the expected PVCs are included in the snapshot.
 
@@ -270,11 +273,7 @@ Snapshot indications are contextual information about online virtual machine (VM
 
     - `QuiesceFailed` indicates that an attempt to quiesce the file system failed during the online snapshot process. This means that the snapshot was created, but it is not necessarily application-consistent. To achieve proper consistency, retry the snapshot.
 
-# Restoring virtual machines from snapshots
-
-You can restore virtual machines (VMs) from snapshots by using the OpenShift Container Platform web console or the command line.
-
-## Restoring a VM from a snapshot by using the web console
+# Restoring a VM from a snapshot by using the web console
 
 You can restore a virtual machine (VM) to a previous configuration represented by a snapshot in the OpenShift Container Platform web console.
 
@@ -300,7 +299,7 @@ You can restore a virtual machine (VM) to a previous configuration represented b
 
     3.  Click **Create**
 
-## Restoring a VM from a snapshot by using the CLI
+# Restoring a VM from a snapshot by using the CLI
 
 You can restore an existing virtual machine (VM) to a previous configuration by using the command line. You can only restore from an offline VM snapshot.
 
@@ -401,11 +400,7 @@ You can restore an existing virtual machine (VM) to a previous configuration by 
 
   </div>
 
-# Deleting snapshots
-
-You can delete snapshots of virtual machines (VMs) by using the OpenShift Container Platform web console or the command line.
-
-## Deleting a snapshot by using the web console
+# Deleting a snapshot by using the web console
 
 You can delete an existing virtual machine (VM) snapshot by using the web console.
 
@@ -419,7 +414,7 @@ You can delete an existing virtual machine (VM) snapshot by using the web consol
 
 5.  Click **Delete**.
 
-## Deleting a virtual machine snapshot in the CLI
+# Deleting a virtual machine snapshot in the CLI
 
 You can delete an existing virtual machine (VM) snapshot by deleting the appropriate `VirtualMachineSnapshot` object.
 

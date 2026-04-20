@@ -1856,9 +1856,7 @@ For bare-metal installations, if you do not assign node IP addresses from the ra
 
     <div class="note">
 
-    If the installer times out, restart and then complete the deployment by using the `wait-for` command of the installer. For example:
-
-    \+
+    If the installation program times out, restart and then complete the deployment by using the `wait-for` command of the installation program. For example:
 
     ``` terminal
     $ ./openshift-install wait-for install-complete --log-level debug

@@ -16,9 +16,11 @@ $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
 
 # Sample YAML for a compute machine set custom resource on Azure Stack Hub
 
-This sample YAML defines a compute machine set that runs in the `1` Microsoft Azure zone in a region and creates nodes that are labeled with `node-role.kubernetes.io/<role>: ""`.
+You can create a machine set on Microsoft Azure Stack Hub. By defining a YAML configuration with specific cluster IDs and provider details, you can automate the provisioning of specialized nodes.
 
-In this sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<role>` is the node label to add.
+The Microsoft Azure sample YAML defines a compute machine set that runs in the `1` Azure zone in a region and creates nodes that are labeled with `node-role.kubernetes.io/<role>: ""`.
+
+In the sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<role>` is the node label to add.
 
 ``` yaml
 apiVersion: machine.openshift.io/v1beta1
@@ -88,37 +90,48 @@ spec:
           zone: "1"
 ```
 
-- Specify the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI installed, you can obtain the infrastructure ID by running the following command:
+where:
 
-  ``` terminal
-  $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
-  ```
+`<infrastructure_id>`
+Specifies the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift Container Platform CLI installed, you can obtain the infrastructure ID by running the following command:
 
-  You can obtain the subnet by running the following command:
+``` terminal
+$ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
+```
 
-  ``` terminal
-  $  oc -n openshift-machine-api \
-      -o jsonpath='{.spec.template.spec.providerSpec.value.subnet}{"\n"}' \
-      get machineset/<infrastructure_id>-worker-centralus1
-  ```
+You can obtain the subnet by running the following command:
 
-  You can obtain the vnet by running the following command:
+``` terminal
+$  oc -n openshift-machine-api \
+    -o jsonpath='{.spec.template.spec.providerSpec.value.subnet}{"\n"}' \
+    get machineset/<infrastructure_id>-worker-centralus1
+```
 
-  ``` terminal
-  $  oc -n openshift-machine-api \
-      -o jsonpath='{.spec.template.spec.providerSpec.value.vnet}{"\n"}' \
-      get machineset/<infrastructure_id>-worker-centralus1
-  ```
+You can obtain the vnet by running the following command:
 
-- Specify the node label to add.
+``` terminal
+$  oc -n openshift-machine-api \
+    -o jsonpath='{.spec.template.spec.providerSpec.value.vnet}{"\n"}' \
+    get machineset/<infrastructure_id>-worker-centralus1
+```
 
-- Specify the infrastructure ID, node label, and region.
+`<role>`
+Specifies the node label to add.
 
-- Specify the region to place machines on.
+`<infrastructure_id>-<role>-<region>`
+Specifies the infrastructure ID, node label, and region.
 
-- Specify the zone within your region to place machines on. Be sure that your region supports the zone that you specify.
+`<region>`
+Specifies the region to place machines on.
 
-- Specify the availability set for the cluster.
+<div class="note">
+
+The `spec.template.spec.providerSpec.value.zone` specifies the zone within your region to place machines on. Be sure that your region supports the zone that you specify.
+
+</div>
+
+`<availability_set>`
+Specifies the availability set for the cluster.
 
 # Creating a compute machine set
 
@@ -285,11 +298,11 @@ Label your machine sets to indicate which machines the cluster autoscaler can us
 
 - [Cluster autoscaler resource definition](../../machine_management/applying-autoscaling.xml#cluster-autoscaler-cr_applying-autoscaling)
 
-# Enabling Azure boot diagnostics
+# Enabling Microsoft Azure boot diagnostics
 
-You can enable boot diagnostics on Azure machines that your machine set creates.
+You can enable boot diagnostics on Microsoft Azure machines that your machine set creates. Use this to store console logs that you can use to troubleshoot why a node fails to boot.
 
-- Have an existing Microsoft Azure Stack Hub cluster.
+- Have an existing Azure Stack Hub cluster.
 
 <!-- -->
 
@@ -305,7 +318,10 @@ You can enable boot diagnostics on Azure machines that your machine set creates.
             storageAccountType: <azure_managed>
     ```
 
-    Where `<azure_managed>` specifies an Azure Managed storage account.
+    where:
+
+    `<azure_managed>`
+    Specifies an Azure Managed storage account.
 
   - For an Azure Unmanaged storage account:
 
@@ -316,16 +332,16 @@ You can enable boot diagnostics on Azure machines that your machine set creates.
           boot:
             storageAccountType: <customer_managed>
             customerManaged:
-              storageAccountURI: <https://<storage-account>.blob.core.windows.net>
+              storageAccountURI: <https://<storage_account>.blob.core.windows.net>
     ```
 
-    Where:
+    where:
 
     `<customer_managed>`
     Specifies an Azure Unmanaged storage account.
 
-    `https://<storage-account>.blob.core.windows.net`
-    Specifies storage account URL. Replace `<storage-account>` with the name of your storage account.
+    `https://<storage_account>.blob.core.windows.net`
+    Specifies the storage account URL. Replace `<storage_account>` with the name of your storage account.
 
     <div class="note">
 
@@ -335,19 +351,21 @@ You can enable boot diagnostics on Azure machines that your machine set creates.
 
 <!-- -->
 
-- On the Microsoft Azure portal, review the **Boot diagnostics** page for a machine deployed by the machine set, and verify that you can see the serial logs for the machine.
+- On the Azure portal, review the **Boot diagnostics** page for a machine deployed by the machine set, and verify that you can see the serial logs for the machine.
 
 # Enabling customer-managed encryption keys for a machine set
+
+To enhance data security, enable customer-managed encryption on Microsoft Azure by adding the disk encryption set ID to your machine set.
 
 You can supply an encryption key to Azure to encrypt data on managed disks at rest. You can enable server-side encryption with customer-managed keys by using the Machine API.
 
 An Azure Key Vault, a disk encryption set, and an encryption key are required to use a customer-managed key. The disk encryption set must be in a resource group where the Cloud Credential Operator (CCO) has granted permissions. If not, an additional reader role is required to be granted on the disk encryption set.
 
-- [Create an Azure Key Vault instance](https://docs.microsoft.com/en-us/azure/aks/azure-disk-customer-managed-keys#create-an-azure-key-vault-instance).
+- [You created an Azure Key Vault instance (Azure documentation)](https://docs.microsoft.com/en-us/azure/aks/azure-disk-customer-managed-keys#create-an-azure-key-vault-instance).
 
-- [Create an instance of a disk encryption set](https://docs.microsoft.com/en-us/azure/aks/azure-disk-customer-managed-keys#create-an-instance-of-a-diskencryptionset).
+- [You created an instance of a disk encryption set (Azure documentation)](https://docs.microsoft.com/en-us/azure/aks/azure-disk-customer-managed-keys#create-an-instance-of-a-diskencryptionset).
 
-- [Grant the disk encryption set access to key vault](https://docs.microsoft.com/en-us/azure/aks/azure-disk-customer-managed-keys#grant-the-diskencryptionset-access-to-key-vault).
+- [You granted the disk encryption set access to key vault (Azure documentation)](https://docs.microsoft.com/en-us/azure/aks/azure-disk-customer-managed-keys#grant-the-diskencryptionset-access-to-key-vault).
 
 <!-- -->
 
@@ -366,4 +384,4 @@ An Azure Key Vault, a disk encryption set, and an encryption key are required to
 
 <!-- -->
 
-- [Azure documentation about customer-managed keys](https://docs.microsoft.com/en-us/azure/virtual-machines/disk-encryption#customer-managed-keys)
+- [Customer-managed keys (Azure documentation)](https://docs.microsoft.com/en-us/azure/virtual-machines/disk-encryption#customer-managed-keys)

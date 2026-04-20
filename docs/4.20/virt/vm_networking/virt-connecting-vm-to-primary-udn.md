@@ -22,9 +22,11 @@ You must consider the following limitations before implementing a primary UDN:
 
 - You cannot use headless services to access a VM.
 
-# Creating a primary user-defined network by using the web console
+# Create a primary user-defined network by using the web console
 
-You can use the OpenShift Container Platform web console to create a primary namespace-scoped `UserDefinedNetwork` or a cluster-scoped `ClusterUserDefinedNetwork` CRD. The UDN serves as the default primary network for pods and VMs that you create in namespaces associated with the network.
+You can use the OpenShift Container Platform web console to create a primary namespace-scoped `UserDefinedNetwork` or a cluster-scoped `ClusterUserDefinedNetwork` custom resource definition (CRD). The UDN serves as the default primary network for pods and VMs that you create in namespaces associated with the network.
+
+After you define the custom primary overlay network, you can create namespaces that are associated with the cluster-scoped UDN.
 
 ## Creating a namespace for user-defined networks by using the web console
 
@@ -82,11 +84,9 @@ You can connect multiple namespaces to the same primary user-defined network (UD
 
 6.  Click **Create**. The cluster-scoped UDN serves as the default primary network for pods and virtual machines located in namespaces that contain the labels that you specified in step 5.
 
-- [Create namespaces that are associated with the cluster-scoped UDN](../../virt/vm_networking/virt-connecting-vm-to-primary-udn.xml#virt-creating-udn-namespace-web_virt-connecting-vm-to-primary-udn)
+# Create a primary user-defined network by using the CLI
 
-# Creating a primary user-defined network by using the CLI
-
-You can create a primary `UserDefinedNetwork` or `ClusterUserDefinedNetwork` CRD by using the CLI.
+You can create a primary `UserDefinedNetwork` or `ClusterUserDefinedNetwork` custom resource definition (CRD) by using the OpenShift CLI (`oc`). After you define the custom primary overlay network, you can create namespaces that are associated with the cluster-scoped UDN.
 
 ## Creating a namespace for user-defined networks by using the CLI
 
@@ -212,9 +212,7 @@ You can connect multiple namespaces to the same primary user-defined network (UD
     $ oc apply -f --validate=true <filename>.yaml
     ```
 
-- [Create namespaces that are associated with the cluster-scoped UDN](../../virt/vm_networking/virt-connecting-vm-to-primary-udn.xml#virt-creating-udn-namespace-cli_virt-connecting-vm-to-primary-udn)
-
-# Attaching a virtual machine to the primary user-defined network
+# Attach a virtual machine to the primary user-defined network
 
 You can connect a virtual machine (VM) to the primary user-defined network (UDN) by requesting the pod network attachment and configuring the interface binding.
 

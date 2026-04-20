@@ -43,7 +43,7 @@ As a cluster administrator, you can configure this range to ensure that MAC addr
 1.  Edit the `HyperConverged` CR by running the following command:
 
     ``` terminal
-    $ oc edit hyperconverged kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
     ```
 
 2.  Update the `HyperConverged` CR to configure the `rangeStart` and `rangeEnd` parameters that define your required MAC address range:
@@ -65,7 +65,7 @@ As a cluster administrator, you can configure this range to ensure that MAC addr
 1.  Run the following command and observe the output:
 
     ``` terminal
-    $ oc get hco kubevirt-hyperconverged -n openshift-cnv -o=jsonpath='{.spec.kubeMacPoolConfiguration}'
+    $ oc get hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv -o=jsonpath='{.spec.kubeMacPoolConfiguration}'
     ```
 
     If you have successfully applied the configuration changes, the output shows the new MAC pool range you have configured:

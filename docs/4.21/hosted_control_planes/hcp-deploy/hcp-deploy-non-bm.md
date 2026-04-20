@@ -318,6 +318,12 @@ As you create a hosted cluster, review the following guidelines:
 
 - [Manually importing a hosted cluster](../../hosted_control_planes/hcp-import.xml#hcp-import-manual_hcp-import)
 
+- [Configuring a custom API server certificate in a hosted cluster](../../hosted_control_planes/hcp-certificates.xml#hcp-custom-cert_hcp-certificates)
+
+- [Adding hosts to the host inventory by using the Discovery Image](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#add-host-host-inventory)
+
+- [Extracting the release image digest](../../hosted_control_planes/hcp-disconnected/hcp-deploy-dc-bm.xml#hcp-dc-extract_hcp-deploy-dc-bm)
+
 ## Creating a hosted cluster on non-bare-metal agent machines by using the web console
 
 You can create a hosted cluster on non-bare-metal agent machines by using the OpenShift Container Platform web console.
@@ -358,7 +364,11 @@ As you enter details about the cluster, you might find the following tips useful
 
 <!-- -->
 
-- To access the web console, see [Accessing the web console](../../web_console/web-console.xml#web-console-overview).
+- [Creating a credential for an on-premises environment](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#creating-a-credential-for-an-on-premises-environment)
+
+- [Accessing the web console](../../web_console/web-console.xml#web-console-overview)
+
+- [Configuring a custom API server certificate in a hosted cluster](../../hosted_control_planes/hcp-certificates.xml#hcp-custom-cert_hcp-certificates)
 
 ## Creating a hosted cluster on non-bare-metal agent machines by using a mirror registry
 
@@ -413,13 +423,9 @@ You can use a mirror registry to create a hosted cluster on non-bare-metal agent
 
     - Specify the supported OpenShift Container Platform version that you want to use, for example, `4.21.0-multi`. If you are using a disconnected environment, replace `<ocp_release_image>` with the digest image. To extract the OpenShift Container Platform release image digest, see *Extracting the OpenShift Container Platform release image digest*.
 
-- To create credentials that you can reuse when you create a hosted cluster with the console, see [Creating a credential for an on-premises environment](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#creating-a-credential-for-an-on-premises-environment).
+- [Accessing the hosted cluster](../../hosted_control_planes/hcp-manage/hcp-manage-bm.xml#hcp-bm-access_hcp-manage-bm)
 
-- To access a hosted cluster, see [Accessing the hosted cluster](../../hosted_control_planes/hcp-manage/hcp-manage-bm.xml#hcp-bm-access_hcp-manage-bm).
-
-- To add hosts to the host inventory by using the Discovery Image, see [Adding hosts to the host inventory by using the Discovery Image](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#add-host-host-inventory).
-
-- To extract the OpenShift Container Platform release image digest, see [Extracting the OpenShift Container Platform release image digest](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#configure-hosted-disconnected-digest-image).
+- [Configuring a custom API server certificate in a hosted cluster](../../hosted_control_planes/hcp-certificates.xml#hcp-custom-cert_hcp-certificates)
 
 # Verifying hosted cluster creation on non-bare-metal agent machines
 
@@ -471,60 +477,3 @@ After the deployment process is complete, you can verify that the hosted cluster
     openshift-monitoring                               alertmanager-main-0                                       6/6     Running            0               100s
     openshift-monitoring                               openshift-state-metrics-677b9fb74f-qqp6g                  3/3     Running            0               104s
     ```
-
-# Configuring a custom API server certificate in a hosted cluster
-
-To configure a custom certificate for the API server, specify the certificate details in the `spec.configuration.apiServer` section of your `HostedCluster` configuration.
-
-You can configure a custom certificate during either day-1 or day-2 operations. However, because the service publishing strategy is immutable after you set it during hosted cluster creation, you must know what the hostname is for the Kubernetes API server that you plan to configure.
-
-- You created a Kubernetes secret that contains your custom certificate in the management cluster. The secret contains the following keys:
-
-  - `tls.crt`: The certificate
-
-  - `tls.key`: The private key
-
-- If your `HostedCluster` configuration includes a service publishing strategy that uses a load balancer, ensure that the Subject Alternative Names (SANs) of the certificate do not conflict with the internal API endpoint (`api-int`). The internal API endpoint is automatically created and managed by your platform. If you use the same hostname in both the custom certificate and the internal API endpoint, routing conflicts can occur. The only exception to this rule is when you use AWS as the provider with either `Private` or `PublicAndPrivate` configurations. In those cases, the SAN conflict is managed by the platform.
-
-- The certificate must be valid for the external API endpoint.
-
-- The validity period of the certificate aligns with your cluster’s expected life cycle.
-
-1.  Create a secret with your custom certificate by entering the following command:
-
-    ``` terminal
-    $ oc create secret tls sample-hosted-kas-custom-cert \
-      --cert=path/to/cert.crt \
-      --key=path/to/key.key \
-      -n <hosted_cluster_namespace>
-    ```
-
-2.  Update your `HostedCluster` configuration with the custom certificate details, as shown in the following example:
-
-    ``` yaml
-    spec:
-      configuration:
-        apiServer:
-          servingCerts:
-            namedCertificates:
-            - names:
-              - api-custom-cert-sample-hosted.sample-hosted.example.com
-              servingCertificate:
-                name: sample-hosted-kas-custom-cert
-    ```
-
-    - The list of DNS names that the certificate is valid for.
-
-    - The name of the secret that contains the custom certificate.
-
-3.  Apply the changes to your `HostedCluster` configuration by entering the following command:
-
-    ``` terminal
-    $ oc apply -f <hosted_cluster_config>.yaml
-    ```
-
-- Check the API server pods to ensure that the new certificate is mounted.
-
-- Test the connection to the API server by using the custom domain name.
-
-- Verify the certificate details in your browser or by using tools such as `openssl`.

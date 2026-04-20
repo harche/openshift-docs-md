@@ -610,9 +610,9 @@ It might take several minutes for a configuration change to apply.
     $ oc create -f <name>-sriov-node-network.yaml
     ```
 
-    After applying the configuration update, all the pods in `sriov-network-operator` namespace transition to the `Running` status.
+    After applying the configuration update, all the pods in the `sriov-network-operator` namespace change to the `Running` status.
 
-4.  To verify that the SR-IOV network device is configured, enter the following command. Replace `<node_name>` with the name of a node with the SR-IOV network device that you just configured.
+4.  To verify your SR-IOV network device configuration, enter the following command and replace `<node_name>` with the name of the node where you configured the device.
 
     ``` terminal
     $ oc get sriovnetworknodestates -n openshift-sriov-network-operator <node_name> -o jsonpath='{.status.syncStatus}'

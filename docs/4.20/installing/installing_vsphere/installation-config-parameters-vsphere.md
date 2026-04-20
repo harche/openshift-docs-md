@@ -420,6 +420,7 @@ Additional VMware vSphere configuration parameters are described in the followin
 <td style="text-align: left;"><p>Virtual IP (VIP) addresses that you configured for control plane API access.</p>
 <div class="note">
 <p>This parameter applies only to installer-provisioned infrastructure without an external load balancer configured. You must not specify this parameter in user-provisioned infrastructure.</p>
+<p>The <code>apiVIP</code> and <code>ingressVIP</code> parameters must come from the same network segment as the <code>networking.machineNetwork</code> parameter. If the <code>networking.machineNetwork</code> parameter is set to <code>10.0.0.0/16</code> then the API and Ingress VIPs must be in one of the <code>10.0.0.0/16</code> machine networks.</p>
 </div>
 <p><strong>Value:</strong> Multiple IP addresses</p></td>
 </tr>
@@ -526,6 +527,10 @@ Additional VMware vSphere configuration parameters are described in the followin
       topology:
         datastore:</code></pre></td>
 <td style="text-align: left;"><p>Specifies the path to a vSphere datastore that stores virtual machines files for a failure domain. You must apply the <code>datastore</code> role to the vSphere vCenter datastore location.</p>
+<div class="important">
+<p>You can specify the path of any datastore that exists in a datastore cluster. By default, Storage vMotion is automatically enabled for a datastore cluster. Red Hat does not support Storage vMotion, so you must disable Storage vMotion to avoid data loss issues for your OpenShift Container Platform cluster.</p>
+<p>If you must specify VMs across multiple datastores, use a <code>datastore</code> object to specify a failure domain in your cluster’s <code>install-config.yaml</code> configuration file. For more information, see "VMware vSphere region and zone enablement".</p>
+</div>
 <p><strong>Value:</strong> String</p></td>
 </tr>
 <tr class="even">
@@ -572,29 +577,39 @@ Additional VMware vSphere configuration parameters are described in the followin
 <td style="text-align: left;"><pre><code>platform:
   vsphere:
     failureDomains:
-      topology
+      topology:
+        tagIDs:</code></pre></td>
+<td style="text-align: left;"><p>Optional: Specifies the ID of the tag to be associated by the installation program. Each VM created by OpenShift Container Platform is assigned a unique tag that is specific to the cluster. The assigned tag enables the installation program to identify and remove the associated VMs when a cluster is decommissioned. You can list up to ten additional tag IDs to be attached to the VMs provisioned by the installation program. For more information about determining the tag ID, see the <a href="https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.vcenterhost.doc/GUID-E8E854DD-AA97-4E0C-8419-CE84F93C4058.html">vSphere Tags and Attributes documentation</a>.</p>
+<p><strong>Value:</strong> String, for example <code>urn:vmomi:InventoryServiceTag:208e713c-cae3-4b7f-918e-4051ca7d1f97:GLOBAL</code>.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><pre><code>platform:
+  vsphere:
+    failureDomains:
+      topology:
         template:</code></pre></td>
 <td style="text-align: left;"><p>Specifies the absolute path to a pre-existing Red Hat Enterprise Linux CoreOS (RHCOS) image template or virtual machine. The installation program can use the image template or virtual machine to quickly install RHCOS on vSphere hosts. Consider using this parameter as an alternative to uploading an RHCOS image on vSphere hosts. This parameter is available for use only on installer-provisioned infrastructure.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   vsphere:
     ingressVIPs:</code></pre></td>
 <td style="text-align: left;"><p>Virtual IP (VIP) addresses that you configured for cluster Ingress.</p>
 <div class="note">
 <p>This parameter applies only to installer-provisioned infrastructure without an external load balancer configured. You must not specify this parameter in user-provisioned infrastructure.</p>
+<p>The <code>apiVIP</code> and <code>ingressVIP</code> parameters must come from the same network segment as the <code>networking.machineNetwork</code> parameter. If the <code>networking.machineNetwork</code> parameter is set to <code>10.0.0.0/16</code> then the API and Ingress VIPs must be in one of the <code>10.0.0.0/16</code> machine networks.</p>
 </div>
 <p><strong>Value:</strong> Multiple IP addresses</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   vsphere:
     vcenters:</code></pre></td>
 <td style="text-align: left;"><p>Configures the connection details so that services can communicate with a vCenter server.</p>
 <p><strong>Value:</strong> An array of vCenter configuration objects.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   vsphere:
     vcenters:
@@ -602,7 +617,7 @@ Additional VMware vSphere configuration parameters are described in the followin
 <td style="text-align: left;"><p>Lists and defines the data centers where OpenShift Container Platform virtual machines (VMs) operate. The list of data centers must match the list of data centers specified in the <code>failureDomains</code> field.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   vsphere:
     vcenters:
@@ -610,7 +625,7 @@ Additional VMware vSphere configuration parameters are described in the followin
 <td style="text-align: left;"><p>The password associated with the vSphere user.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   vsphere:
     vcenters:
@@ -618,7 +633,7 @@ Additional VMware vSphere configuration parameters are described in the followin
 <td style="text-align: left;"><p>The port number used to communicate with the vCenter server.</p>
 <p><strong>Value:</strong> Integer</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   vsphere:
     vcenters:
@@ -626,7 +641,7 @@ Additional VMware vSphere configuration parameters are described in the followin
 <td style="text-align: left;"><p>The fully qualified host name (FQHN) or IP address of the vCenter server.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   vsphere:
     vcenters:
@@ -767,7 +782,7 @@ Optional VMware vSphere machine pool configuration parameters are described in t
 <td style="text-align: left;"><pre><code>platform:
   vsphere:
     clusterOSImage:</code></pre></td>
-<td style="text-align: left;"><p>The location from which the installation program downloads the Red Hat Enterprise Linux CoreOS (RHCOS) image. Before setting a path value for this parameter, ensure that the default RHCOS boot image in the OpenShift Container Platform release matches the RHCOS image template or virtual machine version; otherwise, cluster installation might fail.</p>
+<td style="text-align: left;"><p>The location from which the installation program downloads the Red Hat Enterprise Linux CoreOS (RHCOS) image. Before setting a path value for this parameter, ensure that the default RHCOS boot image in the OpenShift Container Platform release matches the RHCOS image template or virtual machine version; otherwise, cluster installation might fail. As an alternative to this configuration, you can use the <code>topology.template</code> parameter to point to the path in your vCenter environment that includes an RHCOS image in Open Virtual Appliance (OVA) format.</p>
 <p><strong>Value:</strong> An HTTP or HTTPS URL, optionally with a SHA-256 checksum. For example, <code>https://mirror.openshift.com/images/rhcos-&lt;version&gt;-vmware.&lt;architecture&gt;.ova</code>.</p></td>
 </tr>
 <tr class="even">

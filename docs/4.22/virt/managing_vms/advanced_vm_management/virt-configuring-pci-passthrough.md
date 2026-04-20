@@ -309,7 +309,7 @@ To expose PCI host devices in the cluster, add details about the PCI devices to 
 1.  Edit the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconverged kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
     ```
 
 2.  Add the PCI device information to the `spec.permittedHostDevices.pciHostDevices` array.
@@ -317,7 +317,7 @@ To expose PCI host devices in the cluster, add details about the PCI devices to 
     Example configuration file:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1
+    apiVersion: hco.kubevirt.io/v1beta1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
@@ -399,7 +399,7 @@ To remove a PCI host device from the cluster, delete the information for that de
 1.  Edit the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconverged kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
     ```
 
 2.  Remove the PCI device information from the `spec.permittedHostDevices.pciHostDevices` array by deleting the `pciDeviceSelector`, `resourceName` and `externalResourceProvider` (if applicable) fields for the appropriate device. In this example, the `intel.com/qat` resource has been deleted.
@@ -407,7 +407,7 @@ To remove a PCI host device from the cluster, delete the information for that de
     Example configuration file:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1
+    apiVersion: hco.kubevirt.io/v1beta1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged

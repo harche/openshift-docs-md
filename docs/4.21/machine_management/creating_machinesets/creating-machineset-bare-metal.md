@@ -16,9 +16,11 @@ $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
 
 # Sample YAML for a compute machine set custom resource on bare metal
 
-This sample YAML defines a compute machine set that runs on bare metal and creates nodes that are labeled with `node-role.kubernetes.io/<role>: ""`.
+You can define and apply a compute machine set on bare-metal infrastructure to automate node provisioning.
 
-In this sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<role>` is the node label to add.
+The sample bare metal YAML defines a compute machine set that runs on bare-metal infrastructure and creates nodes that are labeled with `node-role.kubernetes.io/<role>: ""`.
+
+In the sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<role>` is the node label to add.
 
 ``` yaml
 apiVersion: machine.openshift.io/v1beta1
@@ -53,8 +55,8 @@ spec:
           apiVersion: baremetal.cluster.k8s.io/v1alpha1
           hostSelector: {}
           image:
-            checksum: http:/172.22.0.3:6181/images/rhcos-<version>.<architecture>.qcow2.<md5sum>
-            url: http://172.22.0.3:6181/images/rhcos-<version>.<architecture>.qcow2
+            checksum: <image_checksum>
+            url: <image_url>
           kind: BareMetalMachineProviderSpec
           metadata:
             creationTimestamp: null
@@ -62,19 +64,30 @@ spec:
             name: worker-user-data-managed
 ```
 
-- Specify the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI (`oc`) installed, you can obtain the infrastructure ID by running the following command:
+where:
 
-  ``` terminal
-  $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
-  ```
+`<infrastructure_id>`
+Specifies the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI (`oc`) installed, you can obtain the infrastructure ID by running the following command:
 
-- Specify the infrastructure ID and node label.
+``` terminal
+$ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
+```
 
-- Specify the node label to add.
+`<infrastructure_id>-<role>`
+Specifies the infrastructure ID and `<role>` node label.
 
-- Edit the `checksum` URL to use the API VIP address.
+`<role>`
+Specifies the node label to add.
 
-- Edit the `url` URL to use the API VIP address.
+<div class="note">
+
+`<image_checksum>`
+Specifies the image checksum, the URL that you edit to use the API VIP address, in the following format: `http://172.22.0.3:6181/images/rhcos-<version>.<architecture>.qcow2.<md5sum>`.
+
+`<image_url>`
+Specifies the image URL, the URL that you edit to use the API VIP address, in the following format: `http://172.22.0.3:6181/images/rhcos-<version>.<architecture>.qcow2`.
+
+</div>
 
 # Creating a compute machine set
 

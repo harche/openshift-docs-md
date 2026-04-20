@@ -18,13 +18,7 @@ Create your OADP resources that are used to back up and restore your resources d
 
 1.  Create the OADP `Backup` and `Restore` CRs for platform artifacts in the same namespace where the OADP Operator is installed, which is `openshift-adp`.
 
-    1.  If the target cluster is managed by RHACM, add the following YAML file for backing up and restoring RHACM artifacts:
-
-        <div class="formalpara-title">
-
-        **PlatformBackupRestore.yaml for RHACM**
-
-        </div>
+    1.  If the target cluster is managed by RHACM, add the following `PlatformBackupRestore.yaml` file for backing up and restoring RHACM artifacts:
 
         ``` yaml
         apiVersion: velero.io/v1
@@ -64,15 +58,13 @@ Create your OADP resources that are used to back up and restore your resources d
             acm-klusterlet
         ```
 
-        - If your `multiclusterHub` CR does not have `.spec.imagePullSecret` defined and the secret does not exist on the `open-cluster-management-agent` namespace in your hub cluster, remove `v1/secrets/open-cluster-management-agent/open-cluster-management-image-pull-credentials`.
+        <div class="note">
 
-    2.  If you created persistent volumes on your cluster through LVM Storage, add the following YAML file for LVM Storage artifacts:
-
-        <div class="formalpara-title">
-
-        **PlatformBackupRestoreLvms.yaml for LVM Storage**
+        If your `multiclusterHub` CR does not have `.spec.imagePullSecret` defined and the secret does not exist on the `open-cluster-management-agent` namespace in your hub cluster, remove `v1/secrets/open-cluster-management-agent/open-cluster-management-image-pull-credentials` from the `lca.openshift.io/apply-label` annotation.
 
         </div>
+
+    2.  If you created persistent volumes on your cluster through LVM Storage, add the following `PlatformBackupRestoreLvms.yaml` file for LVM Storage artifacts:
 
         ``` yaml
         apiVersion: velero.io/v1
@@ -108,13 +100,7 @@ Create your OADP resources that are used to back up and restore your resources d
 
 2.  If you need to restore applications after the upgrade, create the OADP `Backup` and `Restore` CRs for your application in the `openshift-adp` namespace.
 
-    1.  Create the OADP CRs for cluster-scoped application artifacts in the `openshift-adp` namespace.
-
-        <div class="formalpara-title">
-
-        **Example OADP CRs for cluster-scoped application artifacts for LSO and LVM Storage**
-
-        </div>
+    1.  Create the OADP CRs for cluster-scoped application artifacts in the `openshift-adp` namespace, for example:
 
         ``` yaml
         apiVersion: velero.io/v1
@@ -149,17 +135,13 @@ Create your OADP resources that are used to back up and restore your resources d
             backup-app-cluster-resources
         ```
 
-        - Replace the example resource name with your actual resources.
+        - Replace the example resource names in the `lca.openshift.io/apply-label` field with your actual resources.
 
-        - The `lca.openshift.io/apply-wave` value must be higher than the value in the platform `Restore` CRs and lower than the value in the application namespace-scoped `Restore` CR.
+        - The value in the `lca.openshift.io/apply-wave` field must be higher than the value in the platform `Restore` CRs and lower than the value in the application namespace-scoped `Restore` CR.
 
     2.  Create the OADP CRs for your namespace-scoped application artifacts.
 
-        <div class="formalpara-title">
-
-        **Example OADP CRs namespace-scoped application artifacts when LSO is used**
-
-        </div>
+        When using LSO, see the following example OADP CRs:
 
         ``` yaml
         apiVersion: velero.io/v1
@@ -200,13 +182,9 @@ Create your OADP resources that are used to back up and restore your resources d
             backup-app
         ```
 
-        - Define custom resources for your application.
+        - Define custom resources for your application in the `includedNamespaceScopedResources` field.
 
-        <div class="formalpara-title">
-
-        **Example OADP CRs namespace-scoped application artifacts when LVM Storage is used**
-
-        </div>
+        When using LVM Storage, see the following example OADP CRs:
 
         ``` yaml
         apiVersion: velero.io/v1
@@ -253,15 +231,17 @@ Create your OADP resources that are used to back up and restore your resources d
             - logicalvolumes
         ```
 
-        - Define custom resources for your application.
+        where:
 
-        - Required field.
+        - `<application_custom_resources>`: Define custom resources for your application.
 
-        - Required field
+        - `persistentVolumes`: Required field.
 
-        - Optional if you use LVM Storage volume snapshots.
+        - `logicalvolumes.topolvm.io`: Required field.
 
-        - Required field.
+        - `volumesnapshotcontents`: Optional if you use LVM Storage volume snapshots.
+
+        - `restoreStatus.includedResources`: Required field for restoring logical volumes.
 
         <div class="important">
 

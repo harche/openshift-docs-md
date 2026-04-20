@@ -1393,6 +1393,8 @@
   - [Release notes](ai_workloads/kueue/release-notes.md)
   - [Installing Red Hat build of Kueue](ai_workloads/kueue/install-kueue.md)
   - [Installing Red Hat build of Kueue in a disconnected environment](ai_workloads/kueue/install-disconnected.md)
+  - [Integrating the Leader Worker Set Operator](ai_workloads/kueue/integrating-lws.md)
+  - [Integrating the JobSet Operator](ai_workloads/kueue/integrating-jobset.md)
   - [Configuring role-based permissions](ai_workloads/kueue/rbac-permissions.md)
   - [Configuring quotas](ai_workloads/kueue/configuring-quotas.md)
   - [Managing jobs and workloads](ai_workloads/kueue/managing-workloads.md)
@@ -2092,10 +2094,10 @@
   - [Configuring a cross-cluster live migration network](virt/live_migration/virt-configuring-cross-cluster-live-migration-network.md)
   - [About Migration Toolkit for Virtualization providers](virt/live_migration/virt-about-mtv-providers.md)
 - **Nodes**
-  - [Node maintenance](virt/nodes/virt-node-maintenance.md)
+  - [Node maintenance mode](virt/nodes/virt-node-maintenance.md)
+  - [Configure eviction and run strategies](virt/nodes/virt-eviction-strategies.md)
   - [Managing node labeling for obsolete CPU models](virt/nodes/virt-managing-node-labeling-obsolete-cpu-models.md)
   - [Preventing node reconciliation](virt/nodes/virt-preventing-node-reconciliation.md)
-  - [Deleting a failed node to trigger VM failover](virt/nodes/virt-triggering-vm-failover-resolving-failed-node.md)
   - [Activating kernel samepage merging (KSM)](virt/nodes/virt-activating-ksm.md)
 - **Monitoring**
   - [Monitoring overview](virt/monitoring/virt-monitoring-overview.md)

@@ -248,7 +248,7 @@ You can enable the `persistentReservation` feature gate by using the command lin
 1.  Enable the `persistentReservation` feature gate by running the following command:
 
     ``` terminal
-    $ oc patch hyperconverged kubevirt-hyperconverged -n openshift-cnv --type json -p \
+    $ oc patch hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv --type json -p \
     '[{"op":"replace","path":"/spec/featureGates/persistentReservation", "value": true}]'
     ```
 

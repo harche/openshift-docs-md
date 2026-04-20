@@ -1,12 +1,6 @@
-You can use OADP to back up and restore Kubernetes volumes attached to pods from the file system of the volumes. This process is called File System Backup (FSB) or Pod Volume Backup (PVB). It is accomplished by using modules from the open source backup tools Restic or Kopia.
+Use OADP File System Backup (FSB) with Kopia or Restic to back up and restore Kubernetes volumes attached to pods when snapshots are not available. This helps you to protect application data on NFS or other non-snapshot storage.
 
 If your cloud provider does not support snapshots or if your applications are on NFS data volumes, you can create backups by using FSB.
-
-<div class="note">
-
-[Restic](https://restic.net/) is installed by the OADP Operator by default. If you prefer, you can install [Kopia](https://kopia.io/) instead.
-
-</div>
 
 FSB integration with OADP provides a solution for backing up and restoring almost any type of Kubernetes volumes. This integration is an additional capability of OADP and is not a replacement for existing functionality.
 
@@ -26,29 +20,21 @@ In OADP version 1.2 and earlier, you can only use Restic for backing up applicat
 
 <div class="important">
 
-FSB does not support backing up `hostPath` volumes. For more information, see [FSB limitations](https://velero.io/docs/v1.12/file-system-backup/#limitations).
+FSB does not support backing up `hostPath` volumes. For more information, see *FSB limitations*.
 
 </div>
 
 <div class="important">
 
-<div class="title">
-
-PodVolumeRestore fails with a `…​/.snapshot: read-only file system` error
-
-</div>
-
 The `…​/.snapshot` directory is a snapshot copy directory, which is used by several NFS servers. This directory has read-only access by default, so Velero cannot restore to this directory.
 
 Do not give Velero write access to the `.snapshot` directory, and disable client access to this directory.
 
-- [Enable or disable client access to Snapshot copy directory by editing a share](https://docs.netapp.com/us-en/ontap/enable-snapshot-dir-access-task.html#enable-or-disable-client-access-to-snapshot-copy-directory-by-editing-a-share)
-
-- [Prerequisites for backup and restore with FlashBlade](https://docs.portworx.com/portworx-backup-on-prem/reference/restore-with-fb#prerequisites-for-backup-and-restore-with-flashblade)
-
 </div>
 
 # Backing up applications with File System Backup
+
+Create a `Backup` custom resource (CR) to back up applications by using File System Backup (FSB) with Kopia as the uploader. This helps you to protect Kubernetes volumes attached to pods when snapshots are not available or when using NFS data volumes.
 
 - You must install the OpenShift API for Data Protection (OADP) Operator.
 
@@ -75,4 +61,11 @@ Do not give Velero write access to the `.snapshot` directory, and disable client
   ...
   ```
 
-  - In OADP version 1.2 and later, add the `defaultVolumesToFsBackup: true` setting within the `spec` block. In OADP version 1.1, add `defaultVolumesToRestic: true`.
+  where:
+
+  `defaultVolumesToFsBackup: true`
+  Specifies the FSB setting within the `spec` block for OADP version 1.2 and later. In OADP version 1.1, add `defaultVolumesToRestic: true` instead.
+
+<!-- -->
+
+- [FSB limitations](https://velero.io/docs/v1.12/file-system-backup/#limitations)

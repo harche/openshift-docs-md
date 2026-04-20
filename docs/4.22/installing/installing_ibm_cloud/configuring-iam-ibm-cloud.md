@@ -91,7 +91,7 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
     azure        Manage credentials objects for Azure
     gcp          Manage credentials objects for Google cloud
     help         Help about any command
-    ibmcloud     Manage credentials objects for {ibm-cloud-title}
+    ibmcloud     Manage credentials objects for IBM Cloud
     nutanix      Manage credentials objects for Nutanix
 
   Flags:
