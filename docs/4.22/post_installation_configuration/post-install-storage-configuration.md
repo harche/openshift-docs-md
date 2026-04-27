@@ -14,7 +14,7 @@ Dynamic Provisioning allows you to create storage volumes on-demand, eliminating
 
 # Recommended configurable storage technology
 
-To select the optimal storage solution for your OpenShift Container Platform cluster application, review the recommended and configurable storage technologies. By reviewing this summary, you can identify the supported options that best meet your specific workload requirements.
+Review the recommended and configurable storage technologies for the given OpenShift Container Platform cluster application.
 
 | Storage type          | Block            | File             | Object           |
 |-----------------------|------------------|------------------|------------------|

@@ -781,15 +781,22 @@ spec:
            sampling: 50
 ```
 
-- Enables `eBPF` flow filtering by setting `spec.agent.ebpf.flowFilter.enable` to `true`.
+where:
 
-- Defines the action for the flow filter rule. Valid values are `Accept` or `Reject`.
+`spec.agent.ebpf.flowFilter.enable`
+Specifies whether to enable `eBPF` flow filtering. Set to `true` to enable flow filtering.
 
-- Defines the IP address and `CIDR` mask for the flow filter rule. This parameter supports both `IPv4` and `IPv6` address formats. Use `0.0.0.0/0` for `IPv4` or `::/0` for `IPv6` to match any IP address.
+`spec.agent.ebpf.flowFilter.rules.action`
+Specifies the action for the flow filter rule. Valid values are `Accept` or `Reject`.
 
-- Defines the sampling interval for matched flows and overrides the global sampling setting (`spec.agent.ebpf.sampling`).
+`spec.agent.ebpf.flowFilter.rules.cidr`
+Specifies the IP address and `CIDR` mask for the flow filter rule. This parameter supports both `IPv4` and `IPv6` address formats. Use `0.0.0.0/0` for `IPv4` or `::/0` for `IPv6` to match any IP address.
 
-- Filters flows by Peer IP `CIDR`.
+`spec.agent.ebpf.flowFilter.rules.peerCIDR`
+Specifies the Peer IP `CIDR` used to filter flows.
+
+`spec.agent.ebpf.flowFilter.rules.sampling`
+Specifies the sampling interval for matched flows. This value overrides the global sampling setting defined in `spec.agent.ebpf.sampling`.
 
 ### Example YAML to filter flows with packet drops
 
@@ -817,15 +824,22 @@ spec:
           pktDrops: true
 ```
 
-- Enables packet drops reporting by setting `spec.agent.ebpf.privileged` to `true`.
+where:
 
-- Reports packet drops for each network flow by adding the `PacketDrop` value to the `spec.agent.ebpf.features` list.
+`spec.agent.ebpf.privileged`
+Specifies whether to enable privileged mode, which is required for reporting packet drops.
 
-- Enables `eBPF` flow filtering by setting `spec.agent.ebpf.flowFilter.enable` to `true`.
+`spec.agent.ebpf.features`
+Specifies the list of eBPF features to enable. Adding the `PacketDrop` value to this list reports packet drops for each network flow.
 
-- Defines the action for the flow filter rule. Valid values are `Accept` or `Reject`.
+`spec.agent.ebpf.flowFilter.enable`
+Specifies whether to enable `eBPF` flow filtering.
 
-- Filters flows that contain drops by setting `pktDrops` to `true`.
+`spec.agent.ebpf.flowFilter.rules.action`
+Specifies the action for the flow filter rule. Valid values are `Accept` or `Reject`.
+
+`spec.agent.ebpf.flowFilter.rules.pktDrops`
+Specifies whether to filter for flows that contain packet drops.
 
 ## Endpoint translation (xlat)
 

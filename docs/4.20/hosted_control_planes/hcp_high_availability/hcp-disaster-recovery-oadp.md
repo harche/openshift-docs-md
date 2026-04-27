@@ -14,7 +14,7 @@ The disaster recovery process with OpenShift API for Data Protection (OADP) invo
 
 You must meet the following prerequisites on the management cluster:
 
-- You [installed the OADP Operator](../../backup_and_restore/application_backup_and_restore/installing/oadp-installing-operator.xml#oadp-installing-operator).
+- You [installed the OADP Operator](../../backup_and_restore/application_backup_and_restore/installing/about-installing-oadp.xml#about-installing-oadp).
 
 - You created a storage class.
 
@@ -27,6 +27,8 @@ You must meet the following prerequisites on the management cluster:
 - In a disconnected environment, you have access to a self-hosted storage provider, for example [Red Hat OpenShift Data Foundation](https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/) or [MinIO](https://min.io/), that is compatible with OADP.
 
 - Your hosted control planes pods are up and running.
+
+- You are using a supported version of OADP for your management cluster. For example, if your management cluster is on OpenShift Container Platform 4.20, you must use OADP version 1.5. For more information, see [Support for OpenShift API for Data Protection (OADP)](../../backup_and_restore/application_backup_and_restore/oadp-intro.xml#oadp-operator-supported_oadp-api).
 
 # Preparing AWS to use OADP
 

@@ -141,7 +141,7 @@ To verify the current Jenkins LTS version: - Navigate to the Jenkins Catalog →
 
 - Jenkins versions older than the current OpenShift Jenkins LTS are not supported.
 
-- Running Jenkins outside of OpenShift Container Platform is not supported.
+- Running OpenShift Jenkins and jenkins-agent-base outside of OpenShift Container Platform is not supported.
 
 - Multiple core versions of Jenkins are not supported. Plugins bundled with our OpenShift Jenkins images follow the same versioning across all supported OpenShift Container Platform releases.
 

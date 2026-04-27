@@ -1,6 +1,4 @@
-The Containerized Data Importer can preallocate disk space to improve write performance when creating data volumes.
-
-You can enable preallocation for specific data volumes.
+The Containerized Data Importer (CDI) can preallocate disk space to improve write performance when creating data volumes. You can enable preallocation for specific data volumes.
 
 # About preallocation
 
@@ -18,7 +16,7 @@ If `fallocate` mode cannot be used, `full` mode allocates space for the image by
 
 You can enable preallocation for specific data volumes by including the `spec.preallocation` field in the data volume manifest. You can enable preallocation mode in either the web console or by using the OpenShift CLI (`oc`).
 
-Preallocation mode is supported for all CDI source types.
+Preallocation mode is supported for all CDI source types. However, preallocation is ignored for cloning operations.
 
 - Specify the `spec.preallocation` field in the data volume manifest:
 
@@ -39,6 +37,7 @@ Preallocation mode is supported for all CDI source types.
   # ...
   ```
 
-  - All CDI source types support preallocation. However, preallocation is ignored for cloning operations.
+  where:
 
-  - Specify the URL of the data source in your registry.
+  `<image_url>`
+  Specifies the URL of the data source in your registry.

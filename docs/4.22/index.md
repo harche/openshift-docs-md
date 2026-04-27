@@ -19,7 +19,7 @@
 
 ### Release notes
 
-- [OpenShift Container Platform 4.21 release notes](release_notes/ocp-4-21-release-notes.md)
+- [OpenShift Container Platform 4.22 release notes](release_notes/ocp-4-22-release-notes.md)
 - [Additional release notes](release_notes/addtl-release-notes.md)
 
 ### Tutorials
@@ -346,7 +346,7 @@
   - [Understanding update channels and releases](updating/understanding_updates/understanding-update-channels-release.md)
   - [Understanding OpenShift update duration](updating/understanding_updates/understanding-openshift-update-duration.md)
 - **Preparing to update a cluster**
-  - [Preparing to update to OpenShift Container Platform 4.21](updating/preparing_for_updates/updating-cluster-prepare.md)
+  - [Preparing to update to OpenShift Container Platform 4.22](updating/preparing_for_updates/updating-cluster-prepare.md)
   - [Preparing to update a cluster with manually maintained credentials](updating/preparing_for_updates/preparing-manual-creds-update.md)
   - [Preflight validation for Kernel Module Management (KMM) Modules](updating/preparing_for_updates/kmm-preflight-validation.md)
   - [Preparing to update from OpenShift Container Platform 4.18 to a newer version](updating/preparing_for_updates/updating-cluster-prepare-past-4-18.md)
@@ -544,6 +544,7 @@
   - [Securing routes with the cert-manager Operator for Red Hat OpenShift](security/cert_manager_operator/cert-manager-securing-routes.md)
   - [Integrating the cert-manager Operator with Istio-CSR](security/cert_manager_operator/cert-manager-operator-integrating-istio.md)
   - [Network policy configuration for cert-manager Operator](security/cert_manager_operator/cert-manager-nw-policy.md)
+  - [Distributing certificates by using trust-manager operand](security/cert_manager_operator/cert-manager-trust-manager.md)
   - [Monitoring the cert-manager Operator for Red Hat OpenShift](security/cert_manager_operator/cert-manager-monitoring.md)
   - [Configuring log levels for cert-manager and the cert-manager Operator for Red Hat OpenShift](security/cert_manager_operator/cert-manager-log-levels.md)
   - [Uninstalling the cert-manager Operator for Red Hat OpenShift](security/cert_manager_operator/cert-manager-operator-uninstall.md)
@@ -757,6 +758,12 @@
     - [Patching existing ingress objects](networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-patch-fields.md)
     - [Configuring the Ingress Controller for manual DNS management](networking/ingress_load_balancing/configuring_ingress_cluster_traffic/ingress-controller-dnsmgt.md)
     - [Gateway API with OpenShift Container Platform networking](networking/ingress_load_balancing/configuring_ingress_cluster_traffic/ingress-gateway-api.md)
+  - **Configuring Gateway API**
+    - [Controlling incoming traffic with Gateway listeners](networking/ingress_load_balancing/configuring_gateway_api/controlling-incoming-traffic-gateway-listeners.md)
+    - [Assigning network addresses to gateways](networking/ingress_load_balancing/configuring_gateway_api/assigning-network-addresses-gateways.md)
+    - [Routing HTTP requests to services](networking/ingress_load_balancing/configuring_gateway_api/routing-http-requests-to-services.md)
+    - [Routing gRPC requests to services](networking/ingress_load_balancing/configuring_gateway_api/routing-grpc-requests-to-services.md)
+    - [Verifying Gateway infrastructure status](networking/ingress_load_balancing/configuring_gateway_api/verifying-gateway-infrastructure-status.md)
   - [Load balancing on OpenStack](networking/ingress_load_balancing/load-balancing-openstack.md)
   - **Load balancing with MetalLB**
     - [Configuring MetalLB address pools](networking/ingress_load_balancing/metallb/metallb-configure-address-pools.md)
@@ -1312,15 +1319,7 @@
   - [Flows format reference](observability/network_observability/json-flows-format-reference.md)
   - [Troubleshooting network observability](observability/network_observability/troubleshooting-network-observability.md)
 - **Power Monitoring**
-  - [Power monitoring 0.5 release notes](observability/power_monitoring/power-monitoring-release-notes-tp-0-5.md)
-  - [Power monitoring release notes](observability/power_monitoring/power-monitoring-release-notes.md)
-  - [Power monitoring overview](observability/power_monitoring/power-monitoring-overview.md)
-  - [Installing power monitoring](observability/power_monitoring/installing-power-monitoring.md)
-  - [Configuring power monitoring](observability/power_monitoring/configuring-power-monitoring.md)
-  - [Visualizing power monitoring metrics](observability/power_monitoring/visualizing-power-monitoring-metrics.md)
-  - [Uninstalling power monitoring](observability/power_monitoring/uninstalling-power-monitoring.md)
-  - [Power monitoring references](observability/power_monitoring/power-monitoring-references.md)
-  - [Power monitoring API reference](observability/power_monitoring/power-monitoring-api-reference.md)
+  - [About power monitoring](observability/power_monitoring/about-power-monitoring.md)
 
 ### Scalability and performance
 
@@ -1954,7 +1953,7 @@
   - [Network configuration](virt/post_installation_configuration/virt-post-install-network-config.md)
   - [Storage configuration](virt/post_installation_configuration/virt-post-install-storage-config.md)
   - [Self validation checkups](virt/post_installation_configuration/virt-self-validation-checkups.md)
-  - [Performance optimization](virt/post_installation_configuration/virt-perf-optimization.md)
+  - [Allocate physical cores for virtual machines](virt/post_installation_configuration/virt-physical-cores-allocation-vms.md)
   - [Configuring higher VM workload density](virt/post_installation_configuration/virt-configuring-higher-vm-workload-density.md)
   - [Configuring certificate rotation](virt/post_installation_configuration/virt-configuring-certificate-rotation.md)
 - **Updating**

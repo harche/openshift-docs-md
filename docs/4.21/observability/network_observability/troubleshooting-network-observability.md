@@ -276,8 +276,6 @@ Some of the situations where this error is observed are as follows:
 
   - **Action**: You can restart the pods to restore the connectivity.
 
-# Resource troubleshooting
-
 # LokiStack rate limit errors
 
 Resolve Loki rate limit errors and prevent data loss by updating the `LokiStack` resource to increase the ingestion rate and burst limits for your network observability data streams.

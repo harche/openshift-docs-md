@@ -83,7 +83,7 @@ You can use the CLI to install the SR-IOV Network Operator. By using the CLI, yo
 
 # Using the web console to install the SR-IOV Network Operator
 
-You can use the web console to install the SR-IOV Network Operator. By using the web console, you can deploy the Operator and manage SR-IOV network devices and attachments directly from a graphical interface without having to the CLI.
+You can use the web console to install the SR-IOV Network Operator. By using the web console, you can deploy the Operator and manage SR-IOV network devices and attachments directly from a graphical interface without having to use the CLI.
 
 - You have an account with `cluster-admin` privileges.
 

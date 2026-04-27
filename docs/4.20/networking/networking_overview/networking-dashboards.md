@@ -1,4 +1,4 @@
-To monitor and analyze network performance within your cluster, view networking metrics in the OpenShift Container Platform web console. By accessing these dashboards through **Observe** → **Dashboards**, you can identify traffic patterns and troubleshoot connectivity issues to ensure consistent workload availability.
+To monitor and analyze network performance within your cluster, view networking metrics in the OpenShift Container Platform web console.
 
 Network Observability Operator
 If you have the Network Observability Operator installed, you can view network traffic metrics dashboards by selecting the **Netobserv** dashboard from the **Dashboards** drop-down list. For more information about metrics available in this **Dashboard**, see [Network Observability metrics dashboards](../../observability/network_observability/metrics-alerts-dashboards.xml#network-observability-viewing-dashboards_metrics-dashboards-alerts).

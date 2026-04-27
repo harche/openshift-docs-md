@@ -115,7 +115,9 @@ You can create DNS records on a public hosted zone for AWS by using the Red Hat 
 
 # Creating DNS records in a different AWS account by using a shared VPC
 
-To create DNS records in a different AWS account, configure the ExternalDNS Operator to use a shared Virtual Private Cloud (VPC). Your organization can then use a single Route 53 instance for name resolution across multiple accounts and projects.
+You can use the ExternalDNS Operator to create DNS records in a different AWS account using a shared Virtual Private Cloud (VPC).
+
+By using a shared VPC, an organization can connect resources from multiple projects to a common VPC network. Organizations can then use VPC sharing to use a single Route 53 instance across multiple AWS accounts.
 
 - You have created two Amazon AWS accounts: one with a VPC and a Route 53 private hosted zone configured (Account A), and another for installing a cluster (Account B).
 

@@ -8,11 +8,7 @@ If you have limited internet connectivity, you can configure proxy support in OL
 
 </div>
 
-# Installing the OpenShift Virtualization Operator
-
-Install the OpenShift Virtualization Operator by using the OpenShift Container Platform web console or the command line.
-
-## Installing the OpenShift Virtualization Operator by using the web console
+# Installing the OpenShift Virtualization Operator by using the web console
 
 You can deploy the OpenShift Virtualization Operator by using the OpenShift Container Platform web console.
 
@@ -60,11 +56,7 @@ You can deploy the OpenShift Virtualization Operator by using the OpenShift Cont
 
 - Navigate to the **Workloads** → **Pods** page and monitor the OpenShift Virtualization pods until they are all **Running**. After all the pods display the **Running** state, you can use OpenShift Virtualization.
 
-## Installing the OpenShift Virtualization Operator by using the command line
-
-Subscribe to the OpenShift Virtualization catalog and install the OpenShift Virtualization Operator by applying manifests to your cluster.
-
-### Subscribing to the OpenShift Virtualization catalog by using the CLI
+# Subscribing to the OpenShift Virtualization catalog by using the CLI
 
 Before you install OpenShift Virtualization, you must subscribe to the OpenShift Virtualization catalog. Subscribing gives the `openshift-cnv` namespace access to the OpenShift Virtualization Operators.
 
@@ -185,13 +177,7 @@ You must verify that the subscription creation was successful before you can pro
     }
     ```
 
-<div class="note">
-
-You can configure certificate rotation parameters in the YAML file.
-
-</div>
-
-### Deploying the OpenShift Virtualization Operator by using the CLI
+# Deploying the OpenShift Virtualization Operator by using the CLI
 
 You can deploy the OpenShift Virtualization Operator by using the `oc` CLI.
 
@@ -230,12 +216,6 @@ You can deploy the OpenShift Virtualization Operator by using the `oc` CLI.
   NAME                                      DISPLAY                    VERSION   REPLACES   PHASE
   kubevirt-hyperconverged-operator.v4.21.0   OpenShift Virtualization   4.21.0                Succeeded
   ```
-
-# Next steps
-
-- As a cluster administrator, you can run a self validation checkup to verify that the environment is fully functional and self-sustained before you deploy production workloads.
-
-- The hostpath provisioner is a local storage provisioner designed for OpenShift Virtualization. If you want to configure local storage for virtual machines, you must enable the hostpath provisioner first.
 
 # Additional resources
 

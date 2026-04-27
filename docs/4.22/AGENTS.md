@@ -20,7 +20,7 @@ Root: ./
 
 ### Release notes
 
-|release_notes:{ocp-4-21-release-notes.md,addtl-release-notes.md}
+|release_notes:{ocp-4-22-release-notes.md,addtl-release-notes.md}
 
 ### Tutorials
 
@@ -126,7 +126,7 @@ Root: ./
 |security/file_integrity_operator:{fio-overview.md,file-integrity-operator-release-notes.md,fio-support.md,file-integrity-operator-installation.md,file-integrity-operator-updating.md,file-integrity-operator-understanding.md,file-integrity-operator-configuring.md,file-integrity-operator-advanced-usage.md,file-integrity-operator-troubleshooting.md,fio-uninstalling.md}
 |security/security_profiles_operator:{spo-overview.md,spo-release-notes.md,spo-support.md,spo-understanding.md,spo-enabling.md,spo-seccomp.md,spo-selinux.md,spo-advanced.md,spo-logging.md,spo-troubleshooting.md,spo-uninstalling.md}
 |security/nbde_tang_server_operator:{nbde-tang-server-operator-overview.md,nbde-tang-server-operator-release-notes.md,nbde-tang-server-operator-understanding.md,nbde-tang-server-operator-installing.md,nbde-tang-server-operator-configuring-managing.md,nbde-tang-server-operator-identifying-url.md}
-|security/cert_manager_operator:{index.md,cert-manager-operator-release-notes.md,cert-manager-operator-install.md,cert-manager-operator-proxy.md,cert-manager-customizing-api-fields.md,cert-manager-authenticate.md,cert-manager-operator-issuer-acme.md,cert-manager-creating-certificate.md,cert-manager-securing-routes.md,cert-manager-operator-integrating-istio.md,cert-manager-nw-policy.md,cert-manager-monitoring.md,cert-manager-log-levels.md,cert-manager-operator-uninstall.md}
+|security/cert_manager_operator:{index.md,cert-manager-operator-release-notes.md,cert-manager-operator-install.md,cert-manager-operator-proxy.md,cert-manager-customizing-api-fields.md,cert-manager-authenticate.md,cert-manager-operator-issuer-acme.md,cert-manager-creating-certificate.md,cert-manager-securing-routes.md,cert-manager-operator-integrating-istio.md,cert-manager-nw-policy.md,cert-manager-trust-manager.md,cert-manager-monitoring.md,cert-manager-log-levels.md,cert-manager-operator-uninstall.md}
 |security/zero_trust_workload_identity_manager:{zero-trust-manager-overview.md,zero-trust-manager-components.md,zero-trust-manager-release-notes.md,zero-trust-manager-install.md,zero-trust-manager-configuration.md,zero-trust-manager-proxy.md,zero-trust-manager-oidc-federation.md,zero-trust-manager-spire-federation.md,zero-trust-manager-reconciliation.md,zero-trust-manager-monitoring.md,zero-trust-manager-uninstall.md}
 |security/external_secrets_operator:{index.md,external-secrets-operator-release-notes.md,external-secrets-operator-install.md,external-secrets-operator-config-net-policy.md,external-secrets-operator-proxy.md,external-secrets-monitoring.md,external-secrets-log-levels.md,external-secrets-operator-uninstall.md,external-secrets-operator-api.md,external-secrets-operator-migrate-downstream-upstream.md}
 |security/network_bound_disk_encryption:{nbde-about-disk-encryption-technology.md,nbde-tang-server-installation-considerations.md,nbde-managing-encryption-keys.md,nbde-disaster-recovery-considerations.md}
@@ -159,6 +159,7 @@ Root: ./
 |networking/ingress_load_balancing:{load-balancing-openstack.md}
 |networking/ingress_load_balancing/routes:{creating-basic-routes.md,securing-routes.md,nw-configuring-routes.md,creating-advanced-routes.md}
 |networking/ingress_load_balancing/configuring_ingress_cluster_traffic:{overview-traffic.md,configuring-externalip.md,configuring-ingress-cluster-traffic-ingress-controller.md,nw-configuring-ingress-controller-endpoint-publishing-strategy.md,configuring-ingress-cluster-traffic-load-balancer.md,configuring-ingress-cluster-traffic-aws.md,configuring-ingress-cluster-traffic-service-external-ip.md,configuring-ingress-cluster-traffic-nodeport.md,configuring-ingress-cluster-traffic-load-balancer-allowed-source-ranges.md,configuring-ingress-cluster-patch-fields.md,ingress-controller-dnsmgt.md,ingress-gateway-api.md}
+|networking/ingress_load_balancing/configuring_gateway_api:{controlling-incoming-traffic-gateway-listeners.md,assigning-network-addresses-gateways.md,routing-http-requests-to-services.md,routing-grpc-requests-to-services.md,verifying-gateway-infrastructure-status.md}
 |networking/ingress_load_balancing/metallb:{metallb-configure-address-pools.md,about-advertising-ipaddresspool.md,metallb-configure-bgp-peers.md,metallb-configure-community-alias.md,metallb-configure-bfd-profiles.md,metallb-configure-services.md,metallb-configure-return-traffic.md,metallb-frr-k8s.md,monitoring-metallb-status.md,metallb-troubleshoot-support.md}
 |networking/configuring_network_settings:{configure-syscontrols-interface-tuning-cni.md,configuring-node-port-service-range.md,configuring-cluster-network-range.md,configuring-ipfailover.md,enable-cluster-wide-proxy.md,configuring-a-custom-pki.md}
 |networking/advanced_networking:{verifying-connectivity-endpoint.md,changing-cluster-network-mtu.md,network-bonding-considerations.md,using-sctp.md,associating-secondary-interfaces-metrics-to-network-attachments.md}
@@ -287,7 +288,7 @@ Root: ./
 |observability/network_observability:{network-observability-operator-release-notes.md,network-observability-overview.md,installing-operators.md,understanding-network-observability-operator.md,configuring-operator.md,network-observability-per-tenant-model.md,network-observability-network-policy.md,network-observability-dns-resolution-analysis.md,observing-network-traffic.md,network-observability-health-rules.md,metrics-alerts-dashboards.md,network-observability-operator-monitoring.md,network-observability-scheduling-resources.md,network-observability-secondary-networks.md,flowcollector-api.md,flowmetric-api.md,json-flows-format-reference.md,troubleshooting-network-observability.md}
 |observability/network_observability/release_notes_archive:{network-observability-operator-release-notes-archive.md}
 |observability/network_observability/netobserv_cli:{netobserv-cli-install.md,netobserv-cli-using.md,netobserv-cli-reference.md}
-|observability/power_monitoring:{power-monitoring-release-notes-tp-0-5.md,power-monitoring-release-notes.md,power-monitoring-overview.md,installing-power-monitoring.md,configuring-power-monitoring.md,visualizing-power-monitoring-metrics.md,uninstalling-power-monitoring.md,power-monitoring-references.md,power-monitoring-api-reference.md}
+|observability/power_monitoring:{about-power-monitoring.md}
 
 ### Scalability and performance
 
@@ -401,7 +402,7 @@ Root: ./
 |virt/release_notes:{virt-4-22-release-notes.md}
 |virt/getting_started:{virt-getting-started.md,virt-using-the-cli-tools.md}
 |virt/install:{preparing-cluster-for-virt.md,installing-virt.md,uninstalling-virt.md,virt-install-ibm-cloud-bm-nodes.md}
-|virt/post_installation_configuration:{virt-post-install-config.md,virt-node-placement-virt-components.md,virt-post-install-network-config.md,virt-post-install-storage-config.md,virt-self-validation-checkups.md,virt-perf-optimization.md,virt-configuring-higher-vm-workload-density.md,virt-configuring-certificate-rotation.md}
+|virt/post_installation_configuration:{virt-post-install-config.md,virt-node-placement-virt-components.md,virt-post-install-network-config.md,virt-post-install-storage-config.md,virt-self-validation-checkups.md,virt-physical-cores-allocation-vms.md,virt-configuring-higher-vm-workload-density.md,virt-configuring-certificate-rotation.md}
 |virt/updating:{upgrading-virt.md}
 |virt/creating_vm:{virt-creating-vms-from-instance-types.md,virt-creating-vms-from-templates.md,virt-configuring-ibm-secure-execution-vms-ibm-z.md,virt-creating-vms-aws-li-windows.md}
 |virt/creating_vms_advanced/creating_vms_advanced_web:{virt-creating-vms-from-rh-images-overview.md,virt-golden-image-heterogeneous-clusters.md}

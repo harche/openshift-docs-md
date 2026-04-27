@@ -1,4 +1,6 @@
-To provide fault-tolerant external IP addresses and load balancing for cluster services, configure MetalLB to advertise addresses by using Layer 2 protocols, the Border Gateway Protocol (BGP), or both. Selecting the appropriate protocol ensures reliable traffic routing and high availability for your application workloads.
+You can configure MetalLB so that the IP address is advertised with layer 2 protocols, the BGP protocol, or both.
+
+With layer 2, MetalLB provides a fault-tolerant external IP address. With BGP, MetalLB provides fault-tolerance for the external IP address and load balancing.
 
 MetalLB supports advertising by using Layer 2 and BGP for the same set of IP addresses.
 
@@ -90,15 +92,15 @@ BGPAdvertisements configuration
 
 # Configure MetalLB with a BGP advertisement and a basic use case
 
-To advertise specific IPv4 and IPv6 routes to peer BGP routers for assigned load-balancer IP addresses, configure MetalLB by using default preference and community settings. Establishing these routes ensures reliable external traffic delivery and consistent network propagation for your application services.
+Configure MetalLB so that the peer BGP routers receive one `203.0.113.200/32` route and one `fc00:f853:ccd:e799::1/128` route for each load-balancer IP address that MetalLB assigns to a service.
+
+Because the `localPref` and `communities` fields are not specified, the routes are advertised with `localPref` set to zero and no BGP communities.
 
 Ensure that you can configure MetalLB so that the peer BGP routers receive one `203.0.113.200/32` route and one `fc00:f853:ccd:e799::1/128` route for each load-balancer IP address that MetalLB assigns to a service. If you do not specify the `localPref` and `communities` parameters, MetalLB advertises the routes with `localPref` set to \`0 and no BGP communities.
 
 ## Advertising a basic address pool configuration with BGP
 
-To ensure application services are reachable from external network peers, configure MetalLB to advertise an `IPAddressPool` by using the BGP advertisement. Establishing this advertisement allows the external network to correctly route traffic to the load balancer IP addresses of your cluster services.
-
-The procedure demonstrates how to configure MetalLB to advertise the `IPAddressPool` by using BGP.
+Configure MetalLB to advertise the `IPAddressPool` by using Border Gateway Protocol (BGP).
 
 - Install the OpenShift CLI (`oc`).
 
@@ -151,8 +153,6 @@ The procedure demonstrates how to configure MetalLB to advertise the `IPAddressP
 
 # Configuring MetalLB with a BGP advertisement and an advanced use case
 
-To assign application services specific IP addresses from designated IPv4 and IPv6 ranges, configure MetalLB for advanced address allocation. Establishing these ranges and BGP advertisements ensures that your load-balancer services remain reachable through predictable network paths.
-
 Configure MetalLB so that MetalLB assigns IP addresses to load-balancer services in the ranges between `203.0.113.200` and `203.0.113.203` and between `fc00:f853:ccd:e799::0` and `fc00:f853:ccd:e799::f`.
 
 To explain the two BGP advertisements, consider an instance when MetalLB assigns the IP address of `203.0.113.200` to a service. With that IP address as an example, the speaker advertises the following two routes to BGP peers:
@@ -165,9 +165,7 @@ As you add more services and MetalLB assigns more load-balancer IP addresses fro
 
 ## Advertising an advanced address pool configuration with BGP
 
-To ensure application services are reachable from external network peers through specific routing paths, configure MetalLB to advertise an advanced address pool by using the BGP. Establishing this advertisement allows your cluster to precisely communicate routing information to the external infrastructure.
-
-The procedure demonstrates how to configure MetalLB to advertise an advanced address pool by using the BGP.
+Configure MetalLB to advertise an advanced address pool by using the BGP.
 
 - Install the OpenShift CLI (`oc`).
 
@@ -251,7 +249,7 @@ The procedure demonstrates how to configure MetalLB to advertise an advanced add
 
 # Advertising an IP address pool from a subset of nodes
 
-To restrict IP address advertisements to a specific set of nodes, such as a public-facing subnet, configure the `nodeSelector` parameter in the `BGPAdvertisement` custom resource (CR). When you configure these selectors, OpenShift Container Platform routes external traffic only through designated network interfaces for improved security and isolation.
+To advertise an IP address from an IP addresses pool, from a specific set of nodes only, use the `.spec.nodeSelector` specification in the `BGPAdvertisement` custom resource (CR). This specification associates a pool of IP addresses with a set of nodes in the cluster. This is useful when you have nodes on different subnets in a cluster and you want to advertise an IP addresses from an address pool from a specific subnet, for example a public-facing subnet only.
 
 - Install the OpenShift CLI (`oc`).
 
@@ -352,7 +350,7 @@ L2 advertisements configuration
 
 # Configuring MetalLB with an L2 advertisement
 
-To provide fault-tolerant external IP addresses for cluster services, configure MetalLB to advertise an `IPAddressPool` by using the Layer 2 protocol. Establishing this advertisement ensures that application workloads remain reachable within the local network through standard address discovery protocols.
+You can configure MetalLB so that the `IPAddressPool` is advertised with the L2 protocol.
 
 - Install the OpenShift CLI (`oc`).
 
@@ -405,7 +403,7 @@ To provide fault-tolerant external IP addresses for cluster services, configure 
 
 # Configuring MetalLB with an L2 advertisement and labels
 
-To dynamically associate IP address pools with advertisements by using labels instead of specific names, configure the `ipAddressPoolSelectors` parameter in the MetalLB custom resource (CR). By using selectors, you can manage network routing more efficiently by automatically grouping address pools as your cluster scales.
+You can use the `ipAddressPoolSelectors` field in the `BGPAdvertisement` and `L2Advertisement` custom resource definitions to associate the `IPAddressPool` to the advertisement. This association is based on the label assigned to the `IPAddressPool` instead of the name itself.
 
 The example in the procedure shows how to configure MetalLB so that the `IPAddressPool` is advertised with the L2 protocol by configuring the `ipAddressPoolSelectors` field.
 
@@ -465,7 +463,7 @@ The example in the procedure shows how to configure MetalLB so that the `IPAddre
 
 # Configuring MetalLB with an L2 advertisement for selected interfaces
 
-To restrict which network interfaces advertise assigned service IP addresses, configure the interfaces parameter in the MetalLB `L2Advertisement` custom resource (CR). Defining specific interfaces ensures that cluster services are reachable only through designated network paths for improved traffic management and isolation.
+By default, the IP addresses from IP address pool that has been assigned to the service, is advertised from all the network interfaces. You can use the `interfaces` field in the `L2Advertisement` custom resource definition to restrict those network interfaces that advertise the IP address pool.
 
 The example in the procedure shows how to configure MetalLB so that the IP address pool is advertised only from the network interfaces listed in the `interfaces` parameter of all nodes.
 
@@ -529,13 +527,11 @@ The example in the procedure shows how to configure MetalLB so that the IP addre
 
 # Configuring MetalLB with secondary networks
 
-To enable traffic forwarding for MetalLB on a secondary network interface, add a machine configuration that allows IP packet forwarding between interfaces. Implementing this configuration ensures that application services remain reachable when they use nondefault network paths.
+From OpenShift Container Platform 4.14 the default network behavior is to not allow forwarding of IP packets between network interfaces. Therefore, when MetalLB is configured on a secondary interface, you need to add a machine configuration to enable IP forwarding for only the required interfaces.
 
 <div class="note">
 
-From OpenShift Container Platform 4.14 the default network behavior does not allow forwarding of IP packets between network interfaces.
-
-OpenShift Container Platform clusters upgraded from 4.13 are not affected because a global parameter is set during an upgrade to enable global IP forwarding.
+OpenShift Container Platform clusters upgraded from 4.13 are not affected because a global parameter is set during upgrade to enable global IP forwarding.
 
 </div>
 

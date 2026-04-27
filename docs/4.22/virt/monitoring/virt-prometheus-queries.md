@@ -2,7 +2,7 @@ Monitor the consumption of cluster infrastructure resources using the metrics pr
 
 <div class="note">
 
-- To use the vCPU metric, the `schedstats=enable` kernel argument must be applied to the `MachineConfig` object. This kernel argument enables scheduler statistics used for debugging and performance tuning and adds a minor additional load to the scheduler. For more information, see [Adding kernel arguments to nodes](../../machine_configuration/machine-configs-configure.xml#nodes-nodes-kernel-arguments_machine-configs-configure).
+- To use the vCPU metric, the `schedstats=enable` kernel argument must be applied to the `MachineConfig` object. This kernel argument enables scheduler statistics used for debugging and performance tuning and adds a minor additional load to the scheduler.
 
 - For guest memory swapping queries to return data, memory swapping must be enabled on the virtual guests.
 
@@ -449,6 +449,8 @@ The number of successfully completed migrations. Type: Gauge.
 The number of failed migrations. Type: Gauge.
 
 # Additional resources
+
+- [Adding kernel arguments to nodes](../../machine_configuration/machine-configs-configure.xml#nodes-nodes-kernel-arguments_machine-configs-configure)
 
 - [About OpenShift Container Platform monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/about_monitoring/about-ocp-monitoring)
 

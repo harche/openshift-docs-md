@@ -1836,6 +1836,52 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHBA-2026:8430 - OpenShift Container Platform 4.17.19 fixed issues
+
+Issued: 22 April 2026
+
+OpenShift Container Platform release 4.17.19 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:8430](https://access.redhat.com/errata/RHBA-2026:8430) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:8428](https://access.redhat.com/errata/RHBA-2026:8428) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.20.19 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, shared key access was enabled on the cluster storage account, preventing it from being migrated to identity-based access to Azure Storage. As a consequence, shared key access caused security concerns and prevented migration. With this release, shared key access is automatically disabled when utilizing a managed identity, facilitating a seamless transition to identity-based access. As a result, disabling shared key access improves security. ([OCPBUGS-37587](https://issues.redhat.com/browse/OCPBUGS-37587))
+
+- Before this update, the users faced issues during NVIDIA DGX B200 node provisioning due to Redfish `VirtualMedia` mounting failures. With this release, the fix improves Redfish VirtualMedia error handling on BMCs requiring credentials, resolving the issue and enabling automated provisioning. ([OCPBUGS-74405](https://issues.redhat.com/browse/OCPBUGS-74405))
+
+- Before OpenShift Container Platform 4.20, secret editing failure occurred due to mixing text and image values. This issue prevented users from editing secrets with both text and image values on OpenShift Container Platform 4.19.12. With this update, editing secrets with mixed text and binary data is fixed. As a result, users can edit secrets with both text and image values in OpenShift Container Platform 4.20. ([OCPBUGS-78295](https://issues.redhat.com/browse/OCPBUGS-78295))
+
+- Before this update, old session cookies from other pods accumulated in the OpenShift Container Platform console, causing the HTTP cookie header length to exceed 4096 bytes. This led to session issues for users. With this release, old session cookies are cleaned up, preventing the header from exceeding the 4096-byte limit. ([OCPBUGS-78366](https://issues.redhat.com/browse/OCPBUGS-78366))
+
+- Before this update, changing the `HostedCluster` release image during initial provisioning caused a permanent deadlock due to an ordering issue in the `HostedCluster` and Control Plane Operator (CPO) reconcile loops. As a consequence, `HostedCluster` provisioning permanently deadlocked during z-stream changes, causing the cluster to remain incomplete. With this release, the `HostedCluster` deadlock during initial provisioning is fixed by reordering reconciliation steps. As a result, Azure Red Hat OpenShift hosted control planes cluster provisioning no longer permanently deadlocks when changing the release image during provisioning. ([OCPBUGS-78474](https://issues.redhat.com/browse/OCPBUGS-78474))
+
+- Before this update, OpenStack `installer-provisioned infrastructure` installations failed if the Octavia (load-balancer) endpoint was missing from the service catalog. This resulted in missing load-balancer details in the cloud.yaml file, causing Cloud Controller Manager (CCM) pods to crash and credential sync to fail. With this release, the load-balancer is disabled when unavailable in the cloud config. As a result, installations no longer fail due to missing load-balancer details. ([OCPBUGS-78694](https://issues.redhat.com/browse/OCPBUGS-78694))
+
+- Before this update, the `spec.externallyProvisioned` field could not be changed after a bare-metal host (BMH) was created. As a consequence, hosts that needed hardware inspection before being handed off to an external provisioner (such as Image-Based Installer for O-RAN deployments) could not follow the required workflow (inspect first with the\`externallyProvisioned\`field set to `false`, then switch to the `externallyProvisioned` field set to `true`). With this update, the validating webhook permits changing the `spec.externallyProvisioned` parameter from `false` to `true` when the host is in the `Available` state (that is, after the inspection has completed). As a result, workflows are enabled where the Bare Metal Operator (BMO) performs hardware inspection to gather CPU, memory, disk, and NIC details, and then an external tool handles provisioning. Changing the value from `true` to `false` is still blocked, and enabling the field in any state other than `Available` is also rejected.([OCPBUGS-78745](https://issues.redhat.com/browse/OCPBUGS-78745))
+
+- Before this update, Baremetal Operator’s virtual media baseboard management controller (BMC) drivers required the `bootMACAddress` parameter for inspection, making it impossible to perform automatic MAC discovery. As a consequence, you were required to manually specify MAC addresses to inspect a bare-metal host (BMH) configured with virtual media based provisioning. With this release, the virtual media BMC drivers make the `bootMACAddress` parameter optional for hardware inspection. As a result, virtual media BMC BMHs can now be successfully created and inspected without requiring the `bootMACAddress` parameter, making it possible to discover MAC addresses automatically (for example, for use with O-Cloud Manager). Note that the `bootMACAddress` parameter is still required in install-config, `installer-provisioned infrastructure` installations and assisted-installer. ([OCPBUGS-78836](https://issues.redhat.com/browse/OCPBUGS-78836))
+
+- Before this update, installation program used the host project ID to determine the API Load Balancer IPs when `UserProvisionedDNS` was enabled. As a consequence, installation failures occurred on OpenShift Container Platform 4.20 on GCP with `installer-provisioned infrastructure` Shared VPC with `UserProvisionedDNS` enabled. This fix now determines the API Load Balancer IPs for `UserProvisionedDNS`  by referring to the Service Project ID. This allows for `UserProvisionedDNS` to be utilized in `installer-provisioned infrastructure` Shared VPC installations too. ([OCPBUGS-79665](https://issues.redhat.com/browse/OCPBUGS-79665))
+
+- Before this update, the incorrect Monaco editor reference in OpenShift Container Platform Lightspeed code import caused the YAML editor to remain empty upon import, resulting in user inconvenience. With this release, a check is added to prevent the 'editor' undefined error. As a result, YAML is correctly pre-populated in the editor upon import, improving the user experience. ([OCPBUGS-81439](https://issues.redhat.com/browse/OCPBUGS-81439))
+
+- Before this update, the `CatalogSource` issue in OpenShift Container Platform v4.20.8/4.20.10 occurred due to missing mirrors for all Operators in `registries.conf`. As a consequence, users were unable to view Operators in the Software Catalog, resulting in a "No Catalog items found" error. With this release, the issue in the `useOperatorCatalogCategories` hook for `CatalogCategory` retrieval has been fixed. As a result, users can view Operators from the Software Catalog in the console using custom catalog sources in OCP v4.20.x. ([OCPBUGS-81678](https://issues.redhat.com/browse/OCPBUGS-81678))
+
+- Before this update, hosted clusters in Amazon Web Services (AWS) ISO regions failed to honor Amazon Machine Image (AMI) overrides due to a code issue in token generation. As a consequence, AWS ISO region deployments failed due to incorrect AMI selection, causing node pool creation to fail. With this release, the AMI override in AWS NodePool token generation is honored, preventing failures in HCP deployments. As a result, AWS Hypershift clusters honor AMI overrides in NodePool specifications, allowing successful node pool deployments in ISO regions. ([OCPBUGS-81746](https://issues.redhat.com/browse/OCPBUGS-81746))
+
+- Before this update, improper encoding of URL parameters during redirect from graph to query-browser caused the issue. As a consequence, incorrect URL encoding in `alertmanager` resulted in broken queries, causing incorrect alert data for users. With this release, the URL encoding issue in redirect from graph to query-browser is fixed. As a result, `alertmanager` URL encoding is corrected, ensuring accurate query results. ([OCPBUGS-82440](https://issues.redhat.com/browse/OCPBUGS-82440))
+
+### Updating
+
+To update an OpenShift Container Platform 4.20 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHSA-2026:6564 - OpenShift Container Platform 4.17.18 fixed issues
 
 Issued: 9 April 2026
@@ -1984,7 +2030,7 @@ To update an OpenShift Container Platform 4.20 cluster to this latest release, s
 
 Issued: 25 February 2026
 
-OpenShift Container Platform release 4.17.15 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026-2987](https://access.redhat.com/errata/RHSA-2026:2987) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:2980](https://access.redhat.com/errata/RHBA-2026:2980) advisory.
+OpenShift Container Platform release 4.17.15 is now available. The list of fixed issues that are included in the update is documented in the [RHBA-2026:2987](https://access.redhat.com/errata/RHBA-2026:2987) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:2980](https://access.redhat.com/errata/RHBA-2026:2980) advisory.
 
 Space precluded documenting all of the container images for this release in the advisory.
 

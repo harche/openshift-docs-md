@@ -84,7 +84,7 @@ O
 [Red Hat build of OpenTelemetry](https://docs.redhat.com/en/documentation/red_hat_build_of_opentelemetry/latest/html-single/release_notes_for_the_red_hat_build_of_opentelemetry/index)
 
 P
-[Power monitoring for Red Hat OpenShift](../observability/power_monitoring/power-monitoring-release-notes.xml#power-monitoring-release-notes)
+[Power monitoring for Red Hat OpenShift](https://docs.redhat.com/en/documentation/power_monitoring_for_red_hat_openshift/latest/html/release_notes/index)
 
 R
 [Run Once Duration Override Operator](../nodes/pods/run_once_duration_override/run-once-duration-override-release-notes.xml#run-once-duration-override-release-notes)

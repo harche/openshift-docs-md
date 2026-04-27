@@ -24,6 +24,12 @@ The Secrets Store CSI Driver Operator has been tested with the following secrets
 
 - HashiCorp Vault
 
+<div class="important">
+
+IBM Z supports only HashiCorp Vault.
+
+</div>
+
 <div class="note">
 
 Red Hat does not test all factors associated with third-party secrets store provider functionality. For more information about third-party support, see the [Red Hat third-party support policy](https://access.redhat.com/third-party-software-support).
@@ -1513,7 +1519,28 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
         $ oc adm policy add-scc-to-user privileged -z vault-csi-provider -n vault
         ```
 
-    5.  Deploy HashiCorp Vault by running the following command:
+    5.  If you are using IBM Z, create a `vault-license` secret for HashiCorp Vault Enterprise:
+
+        1.  Create a `vault-license.yaml` file with the following content:
+
+            ``` yaml
+            apiVersion: v1
+            data:
+              license: <license-string>
+            kind: Secret
+            metadata:
+              name: vault-license
+              namespace: vault
+            type: Opaque
+            ```
+
+        2.  Create the secret by running the following command:
+
+            ``` terminal
+            $ oc create -f vault-license.yaml
+            ```
+
+    6.  Deploy HashiCorp Vault by running the following command:
 
         ``` terminal
         $ helm install vault hashicorp/vault --namespace=vault \
@@ -1528,13 +1555,34 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
           --set "csi.daemonSet.providersDir=/var/run/secrets-store-csi-providers"
         ```
 
-    6.  Patch the `vault-csi-driver` daemon set to set the `securityContext` to `privileged` by running the following command:
+        If you are using IBM Z, you must use Vault Enterprise images and the Vault license secret. Run the following command instead:
+
+        ``` terminal
+        $ helm install vault hashicorp/vault \
+          --namespace vault \
+          --create-namespace \
+          --set server.dev.enabled=true \
+          --set server.image.repository="docker.io/hashicorp/vault-enterprise" \
+          --set server.image.tag="1.21-ent" \
+          --set server.enterpriseLicense.secretName="vault-license" \
+          --set server.logLevel=debug \
+          --set server.serviceAccount.name="vault" \
+          --set "injector.enabled=false" \
+          --set global.openshift=true \
+          --set csi.enabled=true \
+          --set "csi.daemonSet.providersDir=/var/run/secrets-store-csi-providers" \
+          --set csi.image.repository="registry.connect.redhat.com/hashicorp/vault-csi-provider" \
+          --set csi.image.tag="1.7.1-ubi" \
+          --set csi.agent.enabled=false
+        ```
+
+    7.  Patch the `vault-csi-driver` daemon set to set the `securityContext` to `privileged` by running the following command:
 
         ``` terminal
         $ oc patch daemonset -n vault vault-csi-provider --type='json' -p='[{"op": "add", "path": "/spec/template/spec/containers/0/securityContext", "value": {"privileged": true} }]'
         ```
 
-    7.  Verify that the `vault-csi-provider` pods have started properly by running the following command:
+    8.  Verify that the `vault-csi-provider` pods have started properly by running the following command:
 
         ``` terminal
         $ oc get pods -n vault

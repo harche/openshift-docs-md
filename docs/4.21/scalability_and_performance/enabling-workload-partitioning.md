@@ -1,4 +1,4 @@
-To prevent platform processes from interrupting your applications, configure workload partitioning. This isolates OpenShift Container Platform services and infrastructure pods to a reserved set of CPUs, ensuring that the remaining compute resources are available exclusively for your customer workloads.
+Workload partitioning separates compute node CPU resources into distinct CPU sets. Ensure that you keep platform pods on the specified cores to avoid interrupting the CPUs the customer workloads are running on.
 
 The minimum number of reserved CPUs required for the cluster management is four CPU Hyper-Threads (HTs).
 
@@ -18,7 +18,7 @@ Extended resources cannot be overcommitted, so request and limit must be equal i
 
 # Enabling workload partitioning
 
-To partition cluster management pods into a specified CPU affinity, enable workload partitioning. This configuration ensures that management pods operate within the reserved CPU limits defined in your Performance Profile, preventing them from consuming resources intended for customer workloads.
+To partition cluster management pods into a specified CPU affinity, enable workload partitioning. This configuration ensures that management pods operate within the reserved CPU limits defined in your Performance Profile.
 
 Consider additional post-installation Operators that use workload partitioning when calculating how many reserved CPU cores to set aside for the platform.
 
@@ -56,7 +56,7 @@ The procedure demonstrates enabling workload partitioning cluster-wide.
 
 # Performance profiles and workload partitioning
 
-To enable workload partitioning, apply a performance profile. This configuration specifies the isolated and reserved CPUs, ensuring that customer workloads run on dedicated cores without interruption from platform processes.
+To enable workload partitioning, apply a performance profile.
 
 An appropriately configured performance profile specifies the `isolated` and `reserved` CPUs. Create a performance profile by using the Performance Profile Creator (PPC) tool.
 

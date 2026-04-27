@@ -2,7 +2,7 @@ As an administrator, you can expose a set of host and virtual machine (VM) metri
 
 <div class="note">
 
-On Red Hat Enterprise Linux (RHEL) 9, use the command line to view downward metrics. See [Viewing downward metrics by using the command line](../../virt/monitoring/virt-exposing-downward-metrics.xml#virt-viewing-downward-metrics-cli_virt-exposing-downward-metrics).
+On Red Hat Enterprise Linux (RHEL) 9, use the command line to view downward metrics.
 
 The `vm-dump-metrics` tool is not supported on the Red Hat Enterprise Linux (RHEL) 9 platform.
 
@@ -193,3 +193,7 @@ On Red Hat Enterprise Linux (RHEL) 9, use the command line to view downward metr
       </metric>
     </metrics>
     ```
+
+# Additional resources
+
+- [Viewing downward metrics by using the command line](../../virt/monitoring/virt-exposing-downward-metrics.xml#virt-viewing-downward-metrics-cli_virt-exposing-downward-metrics)

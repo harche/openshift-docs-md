@@ -428,7 +428,7 @@ You can change the instance type associated with a running virtual machine (VM) 
 
     1.  Select an item from the **Series** list to show the relevant sizes for that series. For example, select **General Purpose**.
 
-    2.  Select the VM’s new instance type from the **Size** list. For example, select **medium: 1 CPUs, 4Gi Memory**, which is available in the **General Purpose** series.
+    2.  Select the new instance type for the VM from the **Size** list. For example, select **medium: 1 CPUs, 4Gi Memory**, which is available in the **General Purpose** series.
 
 6.  Click **Save**.
 

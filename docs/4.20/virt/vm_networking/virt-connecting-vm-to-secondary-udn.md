@@ -210,4 +210,4 @@ You can connect a virtual machine (VM) to multiple secondary cluster-scoped user
 
 - [About the `ClusterUserDefinedNetwork` CR](../../networking/multiple_networks/primary_networks/about-user-defined-networks.xml#about-cudn_about-user-defined-networks)
 
-- [Multi-network policy API](../../networking/multiple_networks/secondary_networks/configuring-multi-network-policy.xml#compatibility-with-multi-network-policy_configuring-additional-network)
+- [Multi-network policy API](../../networking/multiple_networks/secondary_networks/configuring-multi-network-policy.xml#configuring-multi-network-policy)

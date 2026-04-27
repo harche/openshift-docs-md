@@ -544,6 +544,7 @@
   - [Securing routes with the cert-manager Operator for Red Hat OpenShift](security/cert_manager_operator/cert-manager-securing-routes.md)
   - [Integrating the cert-manager Operator with Istio-CSR](security/cert_manager_operator/cert-manager-operator-integrating-istio.md)
   - [Network policy configuration for cert-manager Operator](security/cert_manager_operator/cert-manager-nw-policy.md)
+  - [Distributing certificates by using trust-manager operand](security/cert_manager_operator/cert-manager-trust-manager.md)
   - [Monitoring the cert-manager Operator for Red Hat OpenShift](security/cert_manager_operator/cert-manager-monitoring.md)
   - [Configuring log levels for cert-manager and the cert-manager Operator for Red Hat OpenShift](security/cert_manager_operator/cert-manager-log-levels.md)
   - [Uninstalling the cert-manager Operator for Red Hat OpenShift](security/cert_manager_operator/cert-manager-operator-uninstall.md)
@@ -1348,15 +1349,7 @@
   - [Flows format reference](observability/network_observability/json-flows-format-reference.md)
   - [Troubleshooting network observability](observability/network_observability/troubleshooting-network-observability.md)
 - **Power Monitoring**
-  - [Power monitoring 0.5 release notes](observability/power_monitoring/power-monitoring-release-notes-tp-0-5.md)
-  - [Power monitoring release notes](observability/power_monitoring/power-monitoring-release-notes.md)
-  - [Power monitoring overview](observability/power_monitoring/power-monitoring-overview.md)
-  - [Installing power monitoring](observability/power_monitoring/installing-power-monitoring.md)
-  - [Configuring power monitoring](observability/power_monitoring/configuring-power-monitoring.md)
-  - [Visualizing power monitoring metrics](observability/power_monitoring/visualizing-power-monitoring-metrics.md)
-  - [Uninstalling power monitoring](observability/power_monitoring/uninstalling-power-monitoring.md)
-  - [Power monitoring references](observability/power_monitoring/power-monitoring-references.md)
-  - [Power monitoring API reference](observability/power_monitoring/power-monitoring-api-reference.md)
+  - [About power monitoring](observability/power_monitoring/about-power-monitoring.md)
 
 ### Scalability and performance
 
@@ -1990,7 +1983,7 @@
   - [Network configuration](virt/post_installation_configuration/virt-post-install-network-config.md)
   - [Storage configuration](virt/post_installation_configuration/virt-post-install-storage-config.md)
   - [Self validation checkups](virt/post_installation_configuration/virt-self-validation-checkups.md)
-  - [Performance optimization](virt/post_installation_configuration/virt-perf-optimization.md)
+  - [Allocate physical cores for virtual machines](virt/post_installation_configuration/virt-physical-cores-allocation-vms.md)
   - [Configuring higher VM workload density](virt/post_installation_configuration/virt-configuring-higher-vm-workload-density.md)
   - [Configuring certificate rotation](virt/post_installation_configuration/virt-configuring-certificate-rotation.md)
 - **Updating**

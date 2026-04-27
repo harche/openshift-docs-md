@@ -38,7 +38,7 @@ You can use an OVN-Kubernetes secondary network with the following supported pla
 
 ## OVN-Kubernetes network plugin JSON configuration table
 
-The OVN-Kubernetes network plugin JSON configuration object describes the configuration parameters for the OVN-Kubernetes CNI network plugin. The following table details these parameters:
+The OVN-Kubernetes network plugin JSON configuration object describes the configuration parameters for the OVN-Kubernetes CNI network plugin.
 
 <table>
 <caption>OVN-Kubernetes network plugin JSON configuration table</caption>

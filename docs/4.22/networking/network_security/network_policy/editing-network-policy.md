@@ -81,7 +81,7 @@ If you log in with `cluster-admin` privileges, you can edit network policies in 
 
 # Example NetworkPolicy object
 
-The following configuration annotates an example NetworkPolicy object:
+Reference the example `NetworkPolicy` object to understand how to configure this object.
 
 ``` yaml
 kind: NetworkPolicy

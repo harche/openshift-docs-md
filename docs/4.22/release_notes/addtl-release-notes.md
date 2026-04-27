@@ -1,4 +1,4 @@
-Release notes for additional related components and products not included in the core [OpenShift Container Platform 4.17 release notes](../release_notes/ocp-4-21-release-notes.xml#ocp-4-21-release-notes) are available in the following documentation.
+Release notes for additional related components and products not included in the core [OpenShift Container Platform 4.17 release notes](../release_notes/ocp-4-22-release-notes.xml#ocp-4-22-release-notes) are available in the following documentation.
 
 <div class="important">
 
@@ -81,7 +81,7 @@ O
 [Red Hat build of OpenTelemetry](../observability/otel/otel-rn.xml#otel-rn)
 
 P
-[Power monitoring for Red Hat OpenShift](../observability/power_monitoring/power-monitoring-release-notes.xml#power-monitoring-release-notes)
+[Power monitoring for Red Hat OpenShift](https://docs.redhat.com/en/documentation/power_monitoring_for_red_hat_openshift/latest/html/release_notes/index)
 
 R
 [Run Once Duration Override Operator](../nodes/pods/run_once_duration_override/run-once-duration-override-release-notes.xml#run-once-duration-override-release-notes)

@@ -25,7 +25,7 @@
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=welcome/providing-feedback-on-red-hat-documentation.md">Providing documentation feedback</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=welcome/legal-notice.md">Legal notice</a></div>
 <h3>Release notes</h3>
-<div style="padding-left:0px">&bull; <a href="viewer.html?doc=release_notes/ocp-4-21-release-notes.md">OpenShift Container Platform 4.21 release notes</a></div>
+<div style="padding-left:0px">&bull; <a href="viewer.html?doc=release_notes/ocp-4-22-release-notes.md">OpenShift Container Platform 4.22 release notes</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=release_notes/addtl-release-notes.md">Additional release notes</a></div>
 <h3>Tutorials</h3>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=tutorials/index.md">Tutorials overview</a></div>
@@ -340,7 +340,7 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=updating/understanding_updates/understanding-update-channels-release.md">Understanding update channels and releases</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=updating/understanding_updates/understanding-openshift-update-duration.md">Understanding OpenShift update duration</a></div>
 <div style="padding-left:0px">&bull; <strong>Preparing to update a cluster</strong></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=updating/preparing_for_updates/updating-cluster-prepare.md">Preparing to update to OpenShift Container Platform 4.21</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=updating/preparing_for_updates/updating-cluster-prepare.md">Preparing to update to OpenShift Container Platform 4.22</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=updating/preparing_for_updates/preparing-manual-creds-update.md">Preparing to update a cluster with manually maintained credentials</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=updating/preparing_for_updates/kmm-preflight-validation.md">Preflight validation for Kernel Module Management (KMM) Modules</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=updating/preparing_for_updates/updating-cluster-prepare-past-4-18.md">Preparing to update from OpenShift Container Platform 4.18 to a newer version</a></div>
@@ -530,6 +530,7 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=security/cert_manager_operator/cert-manager-securing-routes.md">Securing routes with the cert-manager Operator for Red Hat OpenShift</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=security/cert_manager_operator/cert-manager-operator-integrating-istio.md">Integrating the cert-manager Operator with Istio-CSR</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=security/cert_manager_operator/cert-manager-nw-policy.md">Network policy configuration for cert-manager Operator</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=security/cert_manager_operator/cert-manager-trust-manager.md">Distributing certificates by using trust-manager operand</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=security/cert_manager_operator/cert-manager-monitoring.md">Monitoring the cert-manager Operator for Red Hat OpenShift</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=security/cert_manager_operator/cert-manager-log-levels.md">Configuring log levels for cert-manager and the cert-manager Operator for Red Hat OpenShift</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=security/cert_manager_operator/cert-manager-operator-uninstall.md">Uninstalling the cert-manager Operator for Red Hat OpenShift</a></div>
@@ -739,6 +740,12 @@
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-patch-fields.md">Patching existing ingress objects</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_ingress_cluster_traffic/ingress-controller-dnsmgt.md">Configuring the Ingress Controller for manual DNS management</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_ingress_cluster_traffic/ingress-gateway-api.md">Gateway API with OpenShift Container Platform networking</a></div>
+<div style="padding-left:20px">&bull; <strong>Configuring Gateway API</strong></div>
+<div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_gateway_api/controlling-incoming-traffic-gateway-listeners.md">Controlling incoming traffic with Gateway listeners</a></div>
+<div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_gateway_api/assigning-network-addresses-gateways.md">Assigning network addresses to gateways</a></div>
+<div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_gateway_api/routing-http-requests-to-services.md">Routing HTTP requests to services</a></div>
+<div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_gateway_api/routing-grpc-requests-to-services.md">Routing gRPC requests to services</a></div>
+<div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_gateway_api/verifying-gateway-infrastructure-status.md">Verifying Gateway infrastructure status</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/load-balancing-openstack.md">Load balancing on OpenStack</a></div>
 <div style="padding-left:20px">&bull; <strong>Load balancing with MetalLB</strong></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/metallb/metallb-configure-address-pools.md">Configuring MetalLB address pools</a></div>
@@ -1262,15 +1269,7 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/network_observability/json-flows-format-reference.md">Flows format reference</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/network_observability/troubleshooting-network-observability.md">Troubleshooting network observability</a></div>
 <div style="padding-left:0px">&bull; <strong>Power Monitoring</strong></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/power_monitoring/power-monitoring-release-notes-tp-0-5.md">Power monitoring 0.5 release notes</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/power_monitoring/power-monitoring-release-notes.md">Power monitoring release notes</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/power_monitoring/power-monitoring-overview.md">Power monitoring overview</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/power_monitoring/installing-power-monitoring.md">Installing power monitoring</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/power_monitoring/configuring-power-monitoring.md">Configuring power monitoring</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/power_monitoring/visualizing-power-monitoring-metrics.md">Visualizing power monitoring metrics</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/power_monitoring/uninstalling-power-monitoring.md">Uninstalling power monitoring</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/power_monitoring/power-monitoring-references.md">Power monitoring references</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/power_monitoring/power-monitoring-api-reference.md">Power monitoring API reference</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=observability/power_monitoring/about-power-monitoring.md">About power monitoring</a></div>
 <h3>Scalability and performance</h3>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=scalability_and_performance/index.md">Scalability and performance overview</a></div>
 <div style="padding-left:0px">&bull; <strong>Recommended performance and scalability practices</strong></div>
@@ -1882,7 +1881,7 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/post_installation_configuration/virt-post-install-network-config.md">Network configuration</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/post_installation_configuration/virt-post-install-storage-config.md">Storage configuration</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/post_installation_configuration/virt-self-validation-checkups.md">Self validation checkups</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/post_installation_configuration/virt-perf-optimization.md">Performance optimization</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/post_installation_configuration/virt-physical-cores-allocation-vms.md">Allocate physical cores for virtual machines</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/post_installation_configuration/virt-configuring-higher-vm-workload-density.md">Configuring higher VM workload density</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/post_installation_configuration/virt-configuring-certificate-rotation.md">Configuring certificate rotation</a></div>
 <div style="padding-left:0px">&bull; <strong>Updating</strong></div>

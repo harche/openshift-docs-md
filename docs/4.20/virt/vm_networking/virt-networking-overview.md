@@ -237,7 +237,7 @@ You configure a secondary network, attach a VM to the secondary network interfac
 
 - [Access a virtual machine by using its internal FQDN](../../virt/vm_networking/virt-accessing-vm-internal-fqdn.xml#virt-accessing-vm-internal-fqdn)
 
-- [Install the MetalLB Operator](../../networking/networking_operators/metallb-operator/metallb-operator-install.xml#metallb-operator-install_metallb-operator-install)
+- [Installing the MetalLB Operator](../../networking/networking_operators/metallb-operator/metallb-operator-install.xml#metallb-operator-install)
 
 - [Connect a virtual machine to the physical network by using a Linux bridge](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-connecting-vm-to-linux-bridge)
 

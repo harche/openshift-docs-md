@@ -51,7 +51,7 @@ Environment variables include `HTTP_PROXY`, `HTTPS_PROXY`, and `NO_PROXY`. These
 
 # Adding TLS termination on the AWS Load Balancer
 
-To secure traffic for your domain, configure TLS termination on the AWS Load Balancer. This setup routes traffic to the pods of a service while ensuring that encrypted connections are decrypted at the load balancer level.
+You can route the traffic for the domain to pods of a service and add TLS termination on the AWS Load Balancer.
 
 - You have access to the OpenShift CLI (`oc`).
 

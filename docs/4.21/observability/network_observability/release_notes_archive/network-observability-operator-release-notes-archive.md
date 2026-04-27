@@ -48,7 +48,7 @@ With this release, the Network Observability CLI now creates a unique temporary 
 
 # Network Observability Operator 1.10 advisory
 
-Review the advisory that is available for the Network Observability Operator 1.10:
+You can review the advisory for Network Observability Operator 1.10 release.
 
 - [RHEA-2025:19153 Network Observability Operator 1.10](https://access.redhat.com/errata/RHEA-2025:19153)
 
@@ -95,6 +95,8 @@ The network observability console plugin includes a new view to configure the `F
 Network Observability Operator 1.10 has improved the performance and memory footprint of the Operator, especially visible on large clusters.
 
 # Network Observability Operator 1.10 Technology Preview features
+
+You can review the Technology Preview features for Network Observability Operator 1.10 release.
 
 ## Network Observability Operator custom alerts (Technology Preview)
 
@@ -250,17 +252,19 @@ Additionally, while tolerations were always configurable in the `FlowCollector` 
 
 # Network Observability Operator 1.9.3 advisory
 
-The following advisory is available for the Network Observability Operator 1.9.3:
+You can review the advisory for Network Observability Operator 1.9.3 release.
 
 - [RHEA-2025:15780 Network Observability Operator 1.9.3](https://access.redhat.com/errata/RHEA-2025:15780)
 
 # Network Observability Operator 1.9.2 advisory
 
-The following advisory is available for the Network Observability Operator 1.9.2:
+You can review the advisory for Network Observability Operator 1.9.2 release.
 
 - [RHEA-2025:14150 Network Observability Operator 1.9.2](https://access.redhat.com/errata/RHEA-2025:14150)
 
 # Network observability 1.9.2 bug fixes
+
+You can review the fixed issues for the Network Observability Operator 1.9.1 release.
 
 - Before this update, OpenShift Container Platform versions 4.15 and earlier did not support the `TC_ATTACH_MODE` configuration. This led to command-line interface (CLI) errors and prevented the observation of packets and flows. With this release, the Traffic Control eXtension (TCX) hook attachment mode has been adjusted for these older versions. This eliminates `tcx` hook errors and enables flow and packet observation.
 

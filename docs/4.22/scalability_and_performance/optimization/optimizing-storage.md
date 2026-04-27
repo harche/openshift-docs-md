@@ -1,4 +1,4 @@
-Optimizing storage helps to minimize storage use across all resources. By optimizing storage, administrators help ensure that existing storage resources are working in an efficient manner.
+Optimizing storage helps to minimize storage use across all resources. As an administrator, you can optimize storage to ensure that existing storage resources are working in an efficient manner.
 
 # Available persistent storage options
 
@@ -56,7 +56,7 @@ Available storage options
 
 # Recommended configurable storage technology
 
-To select the optimal storage solution for your OpenShift Container Platform cluster application, review the recommended and configurable storage technologies. By reviewing this summary, you can identify the supported options that best meet your specific workload requirements.
+Review the recommended and configurable storage technologies for the given OpenShift Container Platform cluster application.
 
 | Storage type          | Block            | File             | Object           |
 |-----------------------|------------------|------------------|------------------|
@@ -102,7 +102,7 @@ A scaled registry is an OpenShift image registry where two or more pod replicas 
 
 ## Specific application storage recommendations
 
-To select the optimal storage solution for your OpenShift Container Platform cluster application, review the recommended and configurable storage technologies. By understanding these recommendations, you can identify the supported options that best meet your specific workload requirements.
+Review the specific storage recommendations for registries, scaled registries, metrics, logs, and applications to better understand the storage requirements for each of these entities.
 
 <div class="important">
 
@@ -203,7 +203,7 @@ Red Hat does not recommend using RAID configurations on `Write` intensive workl
 
 # Data storage management
 
-To effectively manage data storage in OpenShift Container Platform, review the main directories where components write data. By viewing this reference, you can identify the specific paths used by system components, so that you can plan for capacity requirements and perform necessary maintenance.
+To effectively manage data storage in OpenShift Container Platform, review the main directories where components write data.
 
 The following table summarizes the main directories that OpenShift Container Platform components write data to.
 
@@ -258,7 +258,7 @@ Main directories for storing OpenShift Container Platform data
 
 # Optimizing storage performance for Microsoft Azure
 
-To ensure optimal cluster performance on Microsoft Azure, configure faster storage for OpenShift Container Platform and Kubernetes. Prioritize high-performance disks for etcd on the control plane nodes, as these components are sensitive to disk latency.
+To ensure optimal cluster performance on Microsoft Azure, configure faster storage for OpenShift Container Platform and Kubernetes. Red Hat recommends faster storage, particularly for etcd on the control plane nodes.
 
 For production Azure clusters and clusters with intensive workloads, the virtual machine operating system disk for control plane machines should be able to sustain a tested and recommended minimum throughput of 5000 IOPS / 200 MBps. This throughput can be provided by having a minimum of 1 TiB Premium SSD (P30). In Azure and Azure Stack Hub, disk performance is directly dependent on SSD disk sizes. To achieve the throughput supported by a `Standard_D8s_v3` virtual machine, or other similar machine types, and the target of 5000 IOPS, at least a P30 disk is required.
 

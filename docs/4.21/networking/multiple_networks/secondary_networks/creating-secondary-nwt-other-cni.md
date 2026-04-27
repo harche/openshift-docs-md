@@ -350,7 +350,9 @@ The following example configures a secondary network named `macvlan-net`:
 
 # Configuration for a TAP secondary network
 
-The TAP CNI plugin JSON configuration object describes the configuration parameters for the TAP CNI plugin. The following table describes these parameters:
+The TAP CNI plugin JSON configuration object describes the configuration parameters for the TAP CNI plugin.
+
+The following table describes these configuration parameters:
 
 <table>
 <colgroup>

@@ -42,7 +42,12 @@ For more information about the support scope of Red Hat Technology Preview featu
 <tr class="odd">
 <td style="text-align: left;"><p>Amazon Web Services (AWS)</p></td>
 <td style="text-align: left;"><p>GA</p></td>
-<td style="text-align: left;"><p>Elastic Block Store (EBS), Red Hat OpenShift Data Foundation (ODF), Portworx, FSx (NetApp)</p></td>
+<td style="text-align: left;"><ul>
+<li><p>Elastic Block Store (EBS)</p></li>
+<li><p>Red Hat OpenShift Data Foundation (ODF)</p></li>
+<li><p>Portworx</p></li>
+<li><p>FSx (NetApp)</p></li>
+</ul></td>
 <td style="text-align: left;"><ul>
 <li><p><a href="../../installing/installing_aws/ipi/installing-aws-customizations.xml#installing-aws-customizations">Installing a cluster on AWS with customizations</a></p></li>
 </ul></td>
@@ -50,7 +55,12 @@ For more information about the support scope of Red Hat Technology Preview featu
 <tr class="even">
 <td style="text-align: left;"><p>Red Hat OpenShift Service on AWS (ROSA)</p></td>
 <td style="text-align: left;"><p>GA</p></td>
-<td style="text-align: left;"><p>EBS, Portworx, FSx (Q3), ODF</p></td>
+<td style="text-align: left;"><ul>
+<li><p>EBS</p></li>
+<li><p>Portworx</p></li>
+<li><p>FSx (Q3)</p></li>
+<li><p>ODF</p></li>
+</ul></td>
 <td style="text-align: left;"><ul>
 <li><p><a href="https://docs.redhat.com/en/documentation/red_hat_openshift_service_on_aws/4/html/virtualization/index">OpenShift Virtualization</a> in the Red Hat OpenShift Service on AWS documentation</p></li>
 <li><p><a href="https://docs.aws.amazon.com/rosa/latest/userguide/what-is-rosa.html">What is Red Hat OpenShift Service on AWS?</a> in the AWS documentation</p></li>
@@ -59,7 +69,9 @@ For more information about the support scope of Red Hat Technology Preview featu
 <tr class="odd">
 <td style="text-align: left;"><p>Oracle Cloud Infrastructure (OCI)</p></td>
 <td style="text-align: left;"><p>GA</p></td>
-<td style="text-align: left;"><p>OCI native storage</p></td>
+<td style="text-align: left;"><ul>
+<li><p>OCI native storage</p></li>
+</ul></td>
 <td style="text-align: left;"><ul>
 <li><p><a href="https://access.redhat.com/articles/7118050">OpenShift Virtualization and Oracle Cloud Infrastructure known issues and limitations</a> in the Red Hat Knowledgebase</p></li>
 <li><p><a href="https://github.com/oracle-quickstart/oci-openshift/blob/main/docs/openshift-virtualization.md">Installing OpenShift Virtualization on OCI</a> in the <code>oracle-quickstart/oci-openshift</code> GitHub repository</p></li>
@@ -68,7 +80,9 @@ For more information about the support scope of Red Hat Technology Preview featu
 <tr class="even">
 <td style="text-align: left;"><p>Azure Red Hat OpenShift (ARO)</p></td>
 <td style="text-align: left;"><p>GA</p></td>
-<td style="text-align: left;"><p>ODF</p></td>
+<td style="text-align: left;"><ul>
+<li><p>ODF</p></li>
+</ul></td>
 <td style="text-align: left;"><ul>
 <li><p><a href="https://learn.microsoft.com/en-us/azure/openshift/howto-create-openshift-virtualization">OpenShift Virtualization for Azure Red Hat OpenShift (preview)</a> in the Microsoft documentation</p></li>
 </ul></td>
@@ -76,10 +90,15 @@ For more information about the support scope of Red Hat Technology Preview featu
 <tr class="odd">
 <td style="text-align: left;"><p>Google Cloud</p></td>
 <td style="text-align: left;"><p>GA, as of OpenShift Virtualization 4.21.1</p></td>
-<td style="text-align: left;"><p>Google Cloud native storage</p></td>
+<td style="text-align: left;"><ul>
+<li><p>Google Cloud native storage</p></li>
+<li><p>Google Cloud NetApp Volumes (GCNV); requires OpenShift Virtualization 4.21.2 or later</p></li>
+</ul></td>
 <td style="text-align: left;"><ul>
 <li><p><a href="https://access.redhat.com/articles/7139046">Storage configuration for OpenShift Virtualization 4.17.x on Google Cloud</a> in the Red Hat Knowledgebase</p></li>
 <li><p><a href="https://access.redhat.com/articles/7139682">OpenShift Virtualization on Google Cloud: Known issues and limitations</a> in the Red Hat Knowledgebase</p></li>
+<li><p><a href="https://access.redhat.com/articles/7141472">Storage configuration for OpenShift Virtualization with GCNV</a> in the Red Hat Knowledgebase</p></li>
+<li><p><a href="https://access.redhat.com/articles/7141471">OpenShift Virtualization with GCNV: Known errors and limitations</a> in the Red Hat Knowledgebase</p></li>
 </ul></td>
 </tr>
 </tbody>
@@ -102,10 +121,6 @@ You can run OpenShift Virtualization on an Amazon Web Services (AWS) bare metal 
 OpenShift Virtualization is also supported on Red Hat OpenShift Service on AWS (ROSA) Classic clusters, which have the same configuration requirements as AWS bare-metal clusters.
 
 </div>
-
-- [Connecting a virtual machine to an OVN-Kubernetes secondary network](../../virt/vm_networking/virt-connecting-vm-to-ovn-secondary-network.xml#virt-connecting-vm-to-ovn-secondary-network)
-
-- [Exposing a virtual machine by using a service](../../virt/vm_networking/virt-exposing-vm-with-service.xml#virt-exposing-vm-with-service)
 
 ## ARM64 compatibility
 
@@ -401,10 +416,6 @@ However, you should be aware that Single-node OpenShift does not support the fol
 
 - Virtual machines or templates that have an eviction strategy configured
 
-<!-- -->
-
-- [Glossary of common terms for OpenShift Container Platform storage](../../storage/index.xml#openshift-storage-common-terms_storage-overview)
-
 # Object maximums
 
 You must consider the following tested object maximums when planning your cluster:
@@ -445,4 +456,12 @@ You can configure one of the following high-availability (HA) options for your c
 
 # Additional resources
 
+- [Connecting a virtual machine to an OVN-Kubernetes secondary network](../../virt/vm_networking/virt-connecting-vm-to-ovn-secondary-network.xml#virt-connecting-vm-to-ovn-secondary-network)
+
+- [Exposing a virtual machine by using a service](../../virt/vm_networking/virt-exposing-vm-with-service.xml#virt-exposing-vm-with-service)
+
 - [Run strategies](../../virt/nodes/virt-eviction-strategies.xml#virt-runstrategies-vms_virt-eviction-strategies)
+
+- [GCNV service levels](https://docs.cloud.google.com/netapp/volumes/docs/discover/service-levels)
+
+- [Glossary of common terms for OpenShift Container Platform storage](../../storage/index.xml#openshift-storage-common-terms_storage-overview)

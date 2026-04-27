@@ -20,7 +20,7 @@ You can change the instance type associated with a running virtual machine (VM) 
 
     1.  Select an item from the **Series** list to show the relevant sizes for that series. For example, select **General Purpose**.
 
-    2.  Select the VM’s new instance type from the **Size** list. For example, select **medium: 1 CPUs, 4Gi Memory**, which is available in the **General Purpose** series.
+    2.  Select the new instance type for the VM from the **Size** list. For example, select **medium: 1 CPUs, 4Gi Memory**, which is available in the **General Purpose** series.
 
 6.  Click **Save**.
 
@@ -80,7 +80,7 @@ You can increase or decrease the number of CPU sockets allocated to a virtual ma
 
 4.  Select the **vCPU** radio button.
 
-5.  Enter the desired number of vCPU sockets and click **Save**.
+5.  Enter the required number of vCPU sockets and click **Save**.
 
     <div class="note">
 
@@ -98,7 +98,7 @@ You can increase or decrease the number of CPU sockets allocated to a virtual ma
 
     - To update the queue count of existing interfaces to match the new vCPU configuration, you can restart the VM. A restart is only necessary if the update improves performance.
 
-    - New VirtIO network interfaces that you hot plugged after the CPU hotplug automatically receive a queue count that matches the updated vCPU configuration.
+    - New VirtIO network interfaces that you hot plugged after the CPU hot plug automatically receive a queue count that matches the updated vCPU configuration.
 
     </div>
 
@@ -361,13 +361,13 @@ Available bulk actions:
 
 - **Take snapshot** - Take snapshots of multiple VMs. The **Take snapshots** dialog allows you to enter a suffix for the names of the resulting snapshots.
 
-# Configuring multiple IOThreads for fast storage access
+# Configuring multiple I/O threads for fast storage access
 
-You can improve storage performance by configuring multiple IOThreads for a virtual machine (VM) that uses fast storage, such as solid-state drive (SSD) or non-volatile memory express (NVMe). This configuration option is only available by editing YAML of the VM.
+You can improve storage performance by configuring multiple I/O threads for a virtual machine (VM) that uses fast storage, such as solid-state drive (SSD) or non-volatile memory express (NVMe). This configuration option is only available by editing YAML of the VM.
 
 <div class="note">
 
-Multiple IOThreads are supported only when `blockMultiQueue` is enabled and the disk bus is set to `virtio`. You must set this configuration for the configuration to work correctly.
+Multiple I/O threads are supported only when `blockMultiQueue` is enabled and the disk bus is set to `virtio`. You must set this configuration for the configuration to work correctly.
 
 </div>
 

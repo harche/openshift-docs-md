@@ -1,4 +1,4 @@
-A *projected volume* maps several existing volume sources into the same directory.
+You can centralize sensitive information and environment metadata for your applications by using projected volumes to map multiple configuration sources, such as secrets and config maps, into a single directory. Having a single directory makes it easier for your applications to access that information.
 
 The following types of volume sources can be projected:
 
@@ -16,11 +16,13 @@ All sources are required to be in the same namespace as the pod.
 
 # Understanding projected volumes
 
-Projected volumes can map any combination of these volume sources into a single directory, allowing the user to:
+To simplify data management within your pods, you can use projected volumes to map multiple configuration sources, such as secrets and config maps, into a single directory. By using a single directory, you make it easier for your applications to access sensitive information and environment metadata easier.
 
-- automatically populate a single volume with the keys from multiple secrets, config maps, and with downward API information, so that I can synthesize a single directory with various sources of information;
+You can use projected volumes to map any combination of the volume sources into a single directory, allowing the user to perform the following actions:
 
-- populate a single volume with the keys from multiple secrets, config maps, and with downward API information, explicitly specifying paths for each item, so that I can have full control over the contents of that volume.
+- Automatically populate a single volume with the keys from multiple secrets, config maps, and with downward API information, so that you can synthesize a single directory with various sources of information.
+
+- Populate a single volume with the keys from multiple secrets, config maps, and with downward API information, explicitly specifying paths for each item, so that you can have full control over the contents of that volume.
 
 <div class="important">
 
@@ -32,19 +34,17 @@ Therefore, the `RunAsUsername` permission set in the security context of a Windo
 
 The following general scenarios show how you can use projected volumes.
 
-**Config map, secrets, Downward API.**
+Config map, secrets, Downward API
 Projected volumes allow you to deploy containers with configuration data that includes passwords. An application using these resources could be deploying Red Hat OpenStack Platform (RHOSP) on Kubernetes. The configuration data might have to be assembled differently depending on if the services are going to be used for production or for testing. If a pod is labeled with production or testing, the downward API selector `metadata.labels` can be used to produce the correct RHOSP configs.
 
-**Config map + secrets.**
+Config map + secrets
 Projected volumes allow you to deploy containers involving configuration data and passwords. For example, you might execute a config map with some sensitive encrypted tasks that are decrypted using a vault password file.
 
-**ConfigMap + Downward API.**
+ConfigMap + Downward API
 Projected volumes allow you to generate a config including the pod name (available via the `metadata.name` selector). This application can then pass the pod name along with requests to easily determine the source without using IP tracking.
 
-**Secrets + Downward API.**
+Secrets + Downward API
 Projected volumes allow you to use a secret as a public key to encrypt the namespace of the pod (available via the `metadata.namespace` selector). This example allows the Operator to use the application to deliver the namespace information securely without using an encrypted transport.
-
-## Example Pod specs
 
 The following are examples of `Pod` specs for creating projected volumes.
 
@@ -102,27 +102,40 @@ spec:
               mode: 0777
 ```
 
-- Add a `volumeMounts` section for each container that needs the secret.
+where:
 
-- Specify a path to an unused directory where the secret will appear.
+`spec.containers.volumeMounts`
+Specifies a section for each container that needs the secret.
 
-- Set `readOnly` to `true`.
+`spec.containers.volumeMounts.mountPath`
+Specifies a path to an unused directory where the secret will appear.
 
-- Add a `volumes` block to list each projected volume source.
+`spec.containers.volumeMounts.readOnly`
+When `true`, specifies that the volume mount is `readOnly`.
 
-- Specify any name for the volume.
+`spec.containers.volumes`
+Specifies a `volumes` block to list each projected volume source.
 
-- Set the execute permission on the files.
+`spec.containers.volumes.name`
+Specifies a name for the volume.
 
-- Add a secret. Enter the name of the secret object. Each secret you want to use must be listed.
+`spec.containers.volumes.projected.defaultMode`
+Specifies the execute permission on the files.
 
-- Specify the path to the secrets file under the `mountPath`. Here, the secrets file is in ***/projected-volume/my-group/my-username***.
+`spec.containers.volumes.projected.sources.secret.name`
+Specifies a secret. Enter the name of the secret object. Each secret you want to use must be listed.
 
-- Add a Downward API source.
+`spec.containers.volumes.projected.sources.secret.items.path`
+Specifies the path to the secrets file under the `mountPath`. Here, the secrets file is in ***/projected-volume/my-group/my-username***.
 
-- Add a ConfigMap source.
+`spec.containers.volumes.projected.defaultMode.downwardAPI`
+Specifies a Downward API source.
 
-- Set the mode for the specific projection
+`spec.containers.volumes.projected.defaultMode.configMap`
+Specifies a ConfigMap source.
+
+`spec.containers.volumes.projected.defaultMode.configMap.items.mode`
+Specifies the mode for the specific projection.
 
 <div class="note">
 
@@ -181,57 +194,55 @@ The `defaultMode` can only be specified at the projected level and not for each 
 
 </div>
 
-## Pathing Considerations
+Pathing Considerations
+- Collisions Between Keys when Configured Paths are Identical. If you configure any keys with the same path, the pod spec will not be accepted as valid. In the following example, the specified path for `mysecret` and `myconfigmap` are the same:
 
-**Collisions Between Keys when Configured Paths are Identical**
-If you configure any keys with the same path, the pod spec will not be accepted as valid. In the following example, the specified path for `mysecret` and `myconfigmap` are the same:
-
-``` yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: volume-test
-spec:
-  securityContext:
-    runAsNonRoot: true
-    seccompProfile:
-      type: RuntimeDefault
-  containers:
-  - name: container-test
-    image: busybox
-    volumeMounts:
-    - name: all-in-one
-      mountPath: "/projected-volume"
-      readOnly: true
+  ``` yaml
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: volume-test
+  spec:
     securityContext:
-      allowPrivilegeEscalation: false
-      capabilities:
-        drop: [ALL]
-  volumes:
-  - name: all-in-one
-    projected:
-      sources:
-      - secret:
-          name: mysecret
-          items:
-            - key: username
-              path: my-group/data
-      - configMap:
-          name: myconfigmap
-          items:
-            - key: config
-              path: my-group/data
-```
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    containers:
+    - name: container-test
+      image: busybox
+      volumeMounts:
+      - name: all-in-one
+        mountPath: "/projected-volume"
+        readOnly: true
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: [ALL]
+    volumes:
+    - name: all-in-one
+      projected:
+        sources:
+        - secret:
+            name: mysecret
+            items:
+              - key: username
+                path: my-group/data
+        - configMap:
+            name: myconfigmap
+            items:
+              - key: config
+                path: my-group/data
+  ```
 
 Consider the following situations related to the volume file paths.
 
-**Collisions Between Keys without Configured Paths**
-The only run-time validation that can occur is when all the paths are known at pod creation, similar to the above scenario. Otherwise, when a conflict occurs the most recent specified resource will overwrite anything preceding it (this is true for resources that are updated after pod creation as well).
+- Collisions Between Keys without Configured Paths. The only run-time validation that can occur is when all the paths are known at pod creation, similar to the above scenario. Otherwise, when a conflict occurs the most recent specified resource overwrites anything preceding it (this is true for resources that are updated after pod creation as well).
 
-**Collisions when One Path is Explicit and the Other is Automatically Projected**
-In the event that there is a collision due to a user specified path matching data that is automatically projected, the latter resource will overwrite anything preceding it as before
+- Collisions when One Path is Explicit and the Other is Automatically Projected. If there is a collision due to a user-specified path matching data that is automatically projected, the latter resource overwrites anything preceding it as before.
 
-# Configuring a Projected Volume for a Pod
+# Configuring a projected volume for a Pod
+
+You can create projected volumes to map multiple configuration sources, such as secrets and config maps, into a single directory. Projected volumes centralize sensitive information and environment metadata for your applications into a single directory.
 
 When creating projected volumes, consider the volume file path situations described in *Understanding projected volumes*.
 
@@ -271,13 +282,7 @@ $ echo -n "1f2d1e2e67df" | base64
 MWYyZDFlMmU2N2Rm
 ```
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To use a projected volume to mount an existing secret volume source.
+The following procedure uses a projected volume to mount an existing secret volume source.
 
 1.  Create the secret:
 
@@ -397,10 +402,10 @@ To use a projected volume to mount an existing secret volume source.
             projected:
               sources:
               - secret:
-                  name: mysecret
+                  name: <my_secret>
         ```
 
-        - The name of the secret you created.
+        Replace `<my_secret>` with the name of the secret you created.
 
     2.  Create the pod from the configuration file:
 

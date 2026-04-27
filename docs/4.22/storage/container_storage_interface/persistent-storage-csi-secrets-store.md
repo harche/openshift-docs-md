@@ -24,6 +24,12 @@ The Secrets Store CSI Driver Operator has been tested with the following secrets
 
 - HashiCorp Vault
 
+<div class="important">
+
+IBM Z supports only HashiCorp Vault.
+
+</div>
+
 <div class="note">
 
 Red Hat does not test all factors associated with third-party secrets store provider functionality. For more information about third-party support, see the [Red Hat third-party support policy](https://access.redhat.com/third-party-software-support).

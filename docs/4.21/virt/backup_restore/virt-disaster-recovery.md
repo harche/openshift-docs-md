@@ -78,9 +78,9 @@ The following DR solutions combine Red Hat Advanced Cluster Management (RHACM),
 
 ## Metro-DR for Red Hat OpenShift Data Foundation
 
-OpenShift Virtualization supports the [Metro-DR solution for OpenShift Data Foundation](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/latest/html-single/configuring_openshift_data_foundation_disaster_recovery_for_openshift_workloads/index#metro-dr-solution), which provides two-way synchronous data replication between managed OpenShift Virtualization clusters installed on primary and secondary sites.
+OpenShift Virtualization supports the Metro-DR solution for OpenShift Data Foundation, which provides two-way synchronous data replication between managed OpenShift Virtualization clusters installed on primary and secondary sites.
 
-### Metro-DR differences
+**Metro-DR differences**
 
 - This synchronous solution is only available to metropolitan distance data centers with a network round-trip latency of 10 milliseconds or less.
 
@@ -98,9 +98,9 @@ For more information about using the Metro-DR solution for OpenShift Data Founda
 
 ## Regional-DR for Red Hat OpenShift Data Foundation
 
-OpenShift Virtualization supports the [Regional-DR solution for OpenShift Data Foundation](https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/latest/html-single/configuring_openshift_data_foundation_disaster_recovery_for_openshift_workloads/index#rdr-solution), which provides asynchronous data replication at regular intervals between managed OpenShift Virtualization clusters installed on primary and secondary sites.
+OpenShift Virtualization supports the Regional-DR solution for OpenShift Data Foundation, which provides asynchronous data replication at regular intervals between managed OpenShift Virtualization clusters installed on primary and secondary sites.
 
-### Regional-DR differences
+**Regional-DR differences**
 
 - Regional-DR supports higher network latency between the primary and secondary sites.
 
@@ -110,10 +110,14 @@ OpenShift Virtualization supports the [Regional-DR solution for OpenShift Data F
 
 For more information about using the Regional-DR solution for OpenShift Data Foundation with OpenShift Virtualization, see IBM’s OpenShift Data Foundation Regional-DR documentation.
 
+- [Metro-DR solution for OpenShift Data Foundation](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/latest/html-single/configuring_openshift_data_foundation_disaster_recovery_for_openshift_workloads/index#metro-dr-solution)
+
+- [Regional-DR solution for OpenShift Data Foundation](https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/latest/html-single/configuring_openshift_data_foundation_disaster_recovery_for_openshift_workloads/index#rdr-solution)
+
 # Additional resources
 
 - [Configuring OpenShift Data Foundation Disaster Recovery for OpenShift Workloads](https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/latest/html/configuring_openshift_data_foundation_disaster_recovery_for_openshift_workloads/index)
 
-- [Use OpenShift Data Foundation Disaster Recovery to Protect Virtual Machines](https://access.redhat.com/articles/7053115) in the Red Hat Knowledgebase
+- [Use OpenShift Data Foundation Disaster Recovery to Protect Virtual Machines (in the Red Hat Knowledgebase)](https://access.redhat.com/articles/7053115)
 
 - [Red Hat Advanced Cluster Management for Kubernetes 2.10](https://docs.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.10)

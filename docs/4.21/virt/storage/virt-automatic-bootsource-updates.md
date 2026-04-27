@@ -1,24 +1,10 @@
-You can manage automatic updates for the following boot sources:
+You can manage automatic updates for boot sources used to create virtual machines. This includes configuring update behavior for Red Hat and custom boot sources.
 
-- [All Red Hat boot sources](../../virt/storage/virt-automatic-bootsource-updates.xml#managing-rh-boot-source-updates_virt-automatic-bootsource-updates)
-
-- [All custom boot sources](../../virt/storage/virt-automatic-bootsource-updates.xml#managing-custom-boot-source-updates_virt-automatic-bootsource-updates)
-
-- [Individual Red Hat or custom boot sources](../../virt/storage/virt-automatic-bootsource-updates.xml#virt-disable-auto-updates-single-boot-source_virt-automatic-bootsource-updates)
-
-Boot sources can make virtual machine (VM) creation more accessible and efficient for users. If automatic boot source updates are enabled, the Containerized Data Importer (CDI) imports, polls, and updates the images so that they are ready to be cloned for new VMs. By default, CDI automatically updates Red Hat boot sources.
-
-# Managing Red Hat boot source updates
-
-You can opt out of automatic updates for all system-defined boot sources by setting the `enableCommonBootImageImport` field value to `false`. If you set the value to `false`, all `DataImportCron` objects are deleted. This does not, however, remove previously imported boot source objects that store operating system images, though administrators can delete them manually.
-
-When the `enableCommonBootImageImport` field value is set to `false`, `DataSource` objects are reset so that they no longer point to the original boot source. An administrator can manually provide a boot source by creating a new persistent volume claim (PVC) or volume snapshot for the `DataSource` object, and then populating it with an operating system image.
-
-## Managing automatic updates for all system-defined boot sources
+# Managing automatic updates for all system-defined boot sources
 
 Disabling automatic boot source imports and updates can lower resource usage. In disconnected environments, disabling automatic boot source updates prevents `CDIDataImportCronOutdated` alerts from filling up logs.
 
-To disable automatic updates for all system-defined boot sources, set the `enableCommonBootImageImport` field value to `false`. Setting this value to `true` turns automatic updates back on.
+To disable automatic updates for all system-defined boot sources, set the `enableCommonBootImageImport` field value to `false`. Disabling automatic updates deletes the associated `DataImportCron` objects but does not remove previously imported boot source images. Setting this value to `true` turns automatic updates back on.
 
 <div class="note">
 
@@ -50,17 +36,7 @@ Custom boot sources are not affected by this setting.
       "value": true}]'
     ```
 
-# Managing custom boot source updates
-
-*Custom* boot sources that are not provided by OpenShift Virtualization are not controlled by the feature gate. You must manage them individually by editing the `HyperConverged` custom resource (CR).
-
-<div class="important">
-
-You must configure a storage class. Otherwise, the cluster cannot receive automated updates for custom boot sources. See [Defining a storage class](../../storage/dynamic-provisioning.xml#defining-storage-classes_dynamic-provisioning) for details.
-
-</div>
-
-## Configuring the default and virt-default storage classes
+# Configuring the default and virt-default storage classes
 
 A storage class determines how persistent storage is provisioned for workloads. In OpenShift Virtualization, the virt-default storage class takes precedence over the cluster default storage class and is used specifically for virtualization workloads.
 
@@ -116,7 +92,7 @@ If boot source images were stored as volume snapshots and both the cluster defau
         $ oc patch storageclass <storage_class_name> -p '{"metadata": {"annotations": {"storageclass.kubernetes.io/is-default-class": "true"}}}'
         ```
 
-## Configuring a storage class for boot source images
+# Configuring a storage class for boot source images
 
 You can configure a specific storage class in the `HyperConverged` resource.
 
@@ -181,7 +157,7 @@ To ensure stable behavior and avoid unnecessary re-importing, you can specify th
     $ oc get storageprofile <storage_class_name> -o json | jq .status.dataImportCronSourceFormat
     ```
 
-## Enabling automatic updates for custom boot sources
+# Enabling automatic updates for custom boot sources
 
 OpenShift Virtualization automatically updates system-defined boot sources by default, but does not automatically update custom boot sources. You must manually enable automatic updates by editing the `HyperConverged` custom resource (CR).
 
@@ -233,7 +209,7 @@ OpenShift Virtualization automatically updates system-defined boot sources by de
 
 3.  Save the file.
 
-## Enabling volume snapshot boot sources
+# Enabling volume snapshot boot sources
 
 You can enable volume snapshot boot sources by setting the parameter in the `StorageProfile` associated with the storage class that stores operating system base images.
 
@@ -409,3 +385,11 @@ You can determine if a boot source is system-defined or custom by viewing the `H
     - If the field contains `commonTemplate: true`, it is a system-defined boot source.
 
     - If the `status.dataImportCronTemplates.status` field has the value `{}`, it is a custom boot source.
+
+# Additional resources
+
+- [All Red Hat boot sources](../../virt/storage/virt-automatic-bootsource-updates.xml#virt-managing-auto-update-all-system-boot-sources_virt-automatic-bootsource-updates)
+
+- [All custom boot sources](../../virt/storage/virt-automatic-bootsource-updates.xml#virt-autoupdate-custom-bootsource_virt-automatic-bootsource-updates)
+
+- [Individual Red Hat or custom boot sources](../../virt/storage/virt-automatic-bootsource-updates.xml#virt-disable-auto-updates-single-boot-source_virt-automatic-bootsource-updates)

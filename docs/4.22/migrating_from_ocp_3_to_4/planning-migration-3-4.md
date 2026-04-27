@@ -1,6 +1,6 @@
 OpenShift Container Platform 4.17 introduces architectural changes and enhancements/ The procedures that you used to manage your OpenShift Container Platform 3 cluster might not apply to OpenShift Container Platform 4.
 
-For information on configuring your OpenShift Container Platform 4 cluster, review the appropriate sections of the OpenShift Container Platform documentation. For information on new features and other notable technical changes, review the [OpenShift Container Platform 4.17 release notes](../release_notes/ocp-4-21-release-notes.xml#ocp-4-21-release-notes).
+For information on configuring your OpenShift Container Platform 4 cluster, review the appropriate sections of the OpenShift Container Platform documentation. For information on new features and other notable technical changes, review the [OpenShift Container Platform 4.17 release notes](../release_notes/ocp-4-22-release-notes.xml#ocp-4-21-release-notes).
 
 It is not possible to upgrade your existing OpenShift Container Platform 3 cluster to OpenShift Container Platform 4. You must start with a new OpenShift Container Platform 4 installation. Tools are available to assist in migrating your control plane settings and application workloads.
 
@@ -212,4 +212,4 @@ Review the following monitoring changes when transitioning from OpenShift Contai
 
 The default alert that triggers to ensure the availability of the monitoring structure was called `DeadMansSwitch` in OpenShift Container Platform 3.11. This was renamed to `Watchdog` in OpenShift Container Platform 4. If you had PagerDuty integration set up with this alert in OpenShift Container Platform 3.11, you must set up the PagerDuty integration for the `Watchdog` alert in OpenShift Container Platform 4.
 
-For more information, see [Configuring alert routing for default platform alerts](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_core_platform_monitoring/configuring-alerts-and-notifications#configuring-alert-routing-default-platform-alerts_configuring-alerts-and-notifications).
+For more information, see [Configuring alert routing for default platform alerts](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.22/html/configuring_core_platform_monitoring/configuring-alerts-and-notifications#configuring-alert-routing-default-platform-alerts_configuring-alerts-and-notifications).

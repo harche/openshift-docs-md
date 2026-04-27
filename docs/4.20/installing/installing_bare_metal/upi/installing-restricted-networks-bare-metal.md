@@ -1649,11 +1649,13 @@ You must set the time server and related settings used by the chrony time servic
             logdir /var/log/chrony
     ```
 
-    - On control plane nodes, substitute `master` for `worker` in both of these locations.
+    - `name: 99-worker-chrony` - Specify a name for the machine config file. On control plane nodes, substitute `master` for `worker`.
 
-    - Specify an octal value mode for the `mode` field in the machine config file. After creating the file and applying the changes, the `mode` is converted to a decimal value. You can check the YAML file with the command `oc get mc <mc-name> -o yaml`.
+    - `machineconfiguration.openshift.io/role: worker` - On control plane nodes, substitute `master` for `worker`.
 
-    - Specify any valid, reachable time source, such as the one provided by your DHCP server.
+    - `mode: 0644` - Specify an octal value mode for the `mode` field in the machine config file. After creating the file and applying the changes, the `mode` is converted to a decimal value. You can check the YAML file with the command `oc get mc <mc-name> -o yaml`.
+
+    - `pool 0.rhel.pool.ntp.org iburst` - Specify any valid, reachable time source, such as the one provided by your DHCP server.
 
     <div class="note">
 
@@ -1676,6 +1678,14 @@ You must set the time server and related settings used by the chrony time servic
       ``` terminal
       $ oc apply -f ./99-worker-chrony.yaml
       ```
+
+For more information on chrony best practices, see the following resources:
+
+- [Configuring chrony](https://access.redhat.com/solutions/3073261)
+
+- [Best practices for NTP](https://access.redhat.com/solutions/778603)
+
+- [Basic chrony NTP troubleshooting](https://docs.redhat.com/en/documentation/red_hat_ceph_storage/8/html-single/troubleshooting_guide/basic-chrony-NTP-troubleshooting_diag#basic-chrony-NTP-troubleshooting_diag)
 
 # Installing RHCOS and starting the OpenShift Container Platform bootstrap process
 

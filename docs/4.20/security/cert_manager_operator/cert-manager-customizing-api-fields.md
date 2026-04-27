@@ -213,6 +213,11 @@ The following table describes the overridable arguments for the cert-manager com
 <td style="text-align: left;"><p>Defines the minimum memory request for ACME HTTP‑01 solver pods. The default value is <code>64Mi</code>.</p></td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;"><p><code>--certificate-request-minimum-backoff-duration</code></p></td>
+<td style="text-align: left;"><p>Controller</p></td>
+<td style="text-align: left;"><p>Specify the minimum backoff duration for certificate requests. The default value is <code>1h0m0s</code>.</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--v=&lt;verbosity_level&gt;</code></p></td>
 <td style="text-align: left;"><p>Controller, Webhook, CA injector</p></td>
 <td style="text-align: left;"><p>Specify the log level verbosity to determine the verbosity of log messages.</p></td>
@@ -394,6 +399,7 @@ You can override the supported arguments for the cert-manager Operator for Red H
           - '--acme-http01-solver-resource-limits-memory=<quantity>'
           - '--acme-http01-solver-resource-request-cpu=<quantity>'
           - '--acme-http01-solver-resource-request-memory=<quantity>'
+          - '--certificate-request-minimum-backoff-duration=<duration>'
       webhookConfig:
         overrideArgs:
           - '--v=<verbosity_level>'

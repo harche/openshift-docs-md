@@ -16,7 +16,7 @@ The following procedures deploy a single-node OpenShift Container Platform in a 
 
 ## Downloading the Agent-based Installer
 
-Use this procedure to download the Agent-based Installer and the CLI needed for your installation.
+Begin the installation process by downloading the Agent-based Installer and the CLI needed for your installation.
 
 1.  Log in to the Red Hat Hybrid Cloud Console using your login credentials.
 
@@ -139,7 +139,7 @@ You must create the configuration files that are used by the installation progra
 
 ## Creating and booting the agent image
 
-Use this procedure to boot the agent image on your machines.
+After you have prepared the configuration inputs for your installation, create the ISO image and boot it on your machines.
 
 - If you plan to boot the agent image from a USB drive, you have installed the `syslinux` package.
 
@@ -151,7 +151,7 @@ Use this procedure to boot the agent image on your machines.
 
     <div class="note">
 
-    Red Hat Enterprise Linux CoreOS (RHCOS) supports multipathing on the primary disk, allowing stronger resilience to hardware failure to achieve higher host availability. Multipathing is enabled by default in the agent ISO image, with a default `/etc/multipath.conf` configuration.
+    Red Hat Enterprise Linux CoreOS (RHCOS) supports multipathing on the primary disk, allowing stronger resilience to hardware failure to achieve higher host availability. Multipathing is enabled by default in the agent ISO image, with a default `/etc/multipath.conf` configuration.
 
     </div>
 
@@ -229,7 +229,7 @@ If the agent console application detects host network configuration issues, the 
 
 ## Tracking and verifying installation progress
 
-Use the following procedure to track installation progress and to verify a successful installation.
+After the installation has started, you can track installation progress and verify a successful installation.
 
 - You have configured a DNS record for the Kubernetes API server.
 
@@ -240,9 +240,13 @@ Use the following procedure to track installation progress and to verify a succe
         --log-level=info
     ```
 
-    - For `<install_directory>`, specify the path to the directory where the agent ISO was generated.
+    where:
 
-    - To view different installation details, specify `warn`, `debug`, or `error` instead of `info`.
+    `--dir`
+    specifies the path to the directory where the agent ISO was generated.
+
+    `--log-level`
+    Specifies the level of installation details. Valid values are `info`, `warn`, `debug`, and `error`.
 
     <div class="formalpara-title">
 
@@ -259,13 +263,13 @@ Use the following procedure to track installation progress and to verify a succe
 
     The command succeeds when the Kubernetes API server signals that it has been bootstrapped on the control plane machines.
 
-2.  To track the progress and verify successful installation, run the following command:
+2.  Track the progress and verify successful installation by running the following command:
 
     ``` terminal
     $ openshift-install --dir <install_directory> agent wait-for install-complete
     ```
 
-    - For `<install_directory>` directory, specify the path to the directory where the agent ISO was generated.
+    Replace `<install_directory>` with the path to the directory where the agent ISO was generated.
 
     <div class="formalpara-title">
 
@@ -285,7 +289,7 @@ Use the following procedure to track installation progress and to verify a succe
 
 # Gathering log data from a failed Agent-based installation
 
-Use the following procedure to gather log data about a failed Agent-based installation to provide for a support case.
+If you encounter a failed Agent-based installation, you can gather log data to provide for a support case.
 
 - You have configured a DNS record for the Kubernetes API server.
 

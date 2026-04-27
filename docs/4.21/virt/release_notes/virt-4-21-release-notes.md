@@ -322,3 +322,32 @@ Cross-cluster live migration for OpenShift Virtualization is generally available
 Cross-cluster live migration is generally available for OpenShift Virtualization 4.21.1. You can now move the workloads of running virtual machines (VMs) from one OpenShift Container Platform cluster to another OpenShift Container Platform cluster without disruption.
 
 [CNV-50823](https://redhat.atlassian.net/browse/CNV-50823)
+
+## OpenShift Virtualization 4.21.2 updates
+
+OpenShift Virtualization 4.17.2 is now available with updates to packages and images that fix several bugs and add enhancements.
+
+### New features and enhancements
+
+OpenShift Virtualization with Google Cloud NetApp Volumes (GCNV) is generally available
+OpenShift Virtualization on Google Cloud with Google Cloud NetApp Volumes (GCNV) storage is now generally available (GA). GCNV provides NFS-based shared storage that supports ReadWriteMany (RWX) access in Filesystem mode. The NetApp Trident CSI driver provisions GCNV storage volumes.
+
+For more information, see the following articles in the Red Hat Knowledgebase:
+
+- [Storage configuration for OpenShift Virtualization with GCNV](https://access.redhat.com/articles/7141472)
+
+- [OpenShift Virtualization with GCNV: Known errors and limitations](https://access.redhat.com/articles/7141471)
+
+  <div class="important">
+
+  - Running OpenShift Virtualization with GCNV storage requires OpenShift Container Platform 4.21 and OpenShift Virtualization 4.21.2, or later versions.
+
+  - Only the **Flex File** service level is supported in this release. When creating storage pools, select the **File** storage type. **Flex Unified** is not supported.
+
+  - Flex File volumes are NFS-only and support `volumeMode: Filesystem` exclusively. `volumeMode: Block` is not available with Flex File.
+
+  - GCNV Flex pools are limited to 50 volumes per pool. To support larger deployments, create multiple storage pools and list them all in the `TridentBackendConfig` file. For more information, see [GCNV storage pool limits](https://docs.cloud.google.com/netapp/volumes/docs/quotas#storage_pool_limits).
+
+  - Flex File pools can be **Zonal** or **Regional**. Regional pools replicate volumes across zones but only support default performance, not custom. For more information on service levels and performance, see [GCNV service levels](https://docs.cloud.google.com/netapp/volumes/docs/discover/service-levels).
+
+  </div>

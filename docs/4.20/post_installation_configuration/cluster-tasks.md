@@ -3159,9 +3159,9 @@ Understand and configure pod disruption budgets.
 
 ## Understanding how to use pod disruption budgets to specify the number of pods that must be up
 
-A *pod disruption budget* allows the specification of safety constraints on pods during operations, such as draining a node for maintenance.
+To ensure pod availability during voluntary disruptions such as node maintenance or cluster updates, you can use pod disruption budgets to define safety constraints for your applications.
 
-`PodDisruptionBudget` is an API object that specifies the minimum number or percentage of replicas that must be up at a time. Setting these in projects can be helpful during node maintenance (such as scaling a cluster down or a cluster upgrade) and is only honored on voluntary evictions (not on node failures).
+A `PodDisruptionBudget` is an API object that specifies the minimum number or percentage of replicas that must be up at a time. Setting these in projects can be helpful during node maintenance (such as scaling a cluster down or a cluster upgrade) and is only honored on voluntary evictions (not on node failures).
 
 A `PodDisruptionBudget` object’s configuration consists of the following key parts:
 
@@ -3227,15 +3227,9 @@ Depending on your pod priority and preemption settings, lower-priority pods migh
 
 ## Specifying the number of pods that must be up with pod disruption budgets
 
-You can use a `PodDisruptionBudget` object to specify the minimum number or percentage of replicas that must be up at a time.
+You can use a `PodDisruptionBudget` object to specify the minimum number or percentage of replicas that must be up at a time. This ensures pod availability during voluntary disruptions such as node maintenance or cluster updates.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To configure a pod disruption budget:
+The following procedure shows how to configure a pod disruption budget.
 
 1.  Create a YAML file with the an object definition similar to the following:
 
@@ -3251,31 +3245,41 @@ To configure a pod disruption budget:
           name: my-pod
     ```
 
-    - `PodDisruptionBudget` is part of the `policy/v1` API group.
+    where:
 
-    - The minimum number of pods that must be available simultaneously. This can be either an integer or a string specifying a percentage, for example, `20%`.
+    `apiVersion`
+    Specifies the `policy/v1` API group.
 
-    - A label query over a set of resources. The result of `matchLabels` and `matchExpressions` are logically conjoined. Leave this parameter blank, for example `selector {}`, to select all pods in the project.
+    `spec.minAvailable`
+    Specifies the minimum number of pods that must be available simultaneously. This can be either an integer or a string specifying a percentage, for example, `20%`.
 
-      Or:
+    `spec.selector`
+    Specifies a label query over a set of resources. The result of `matchLabels` and `matchExpressions` are logically conjoined. Leave this parameter blank, for example `selector {}`, to select all pods in the project.
 
-      ``` yaml
-      apiVersion: policy/v1
-      kind: PodDisruptionBudget
-      metadata:
-        name: my-pdb
-      spec:
-        maxUnavailable: 25%
-        selector:
-          matchLabels:
-            name: my-pod
-      ```
+    Or:
 
-    - `PodDisruptionBudget` is part of the `policy/v1` API group.
+    ``` yaml
+    apiVersion: policy/v1
+    kind: PodDisruptionBudget
+    metadata:
+      name: my-pdb
+    spec:
+      maxUnavailable: 25%
+      selector:
+        matchLabels:
+          name: my-pod
+    ```
 
-    - The maximum number of pods that can be unavailable simultaneously. This can be either an integer or a string specifying a percentage, for example, `20%`.
+    where:
 
-    - A label query over a set of resources. The result of `matchLabels` and `matchExpressions` are logically conjoined. Leave this parameter blank, for example `selector {}`, to select all pods in the project.
+    `apiVersion`
+    Specifies the `policy/v1` API group.
+
+    `spec.maxUnavailable`
+    Specifies the maximum number of pods that can be unavailable simultaneously. This can be either an integer or a string specifying a percentage, for example, `20%`.
+
+    `spec.selector`
+    Specifies a label query over a set of resources. The result of `matchLabels` and `matchExpressions` are logically conjoined. Leave this parameter blank, for example `selector {}`, to select all pods in the project.
 
 2.  Run the following command to add the object to project:
 
@@ -3285,7 +3289,7 @@ To configure a pod disruption budget:
 
 ## Specifying the eviction policy for unhealthy pods
 
-When you use pod disruption budgets (PDBs) to specify how many pods must be available simultaneously, you can also define the criteria for how unhealthy pods are considered for eviction.
+When you use pod disruption budgets (PDBs) to specify how many pods must be available simultaneously, you can also define the criteria for how unhealthy pods are considered for eviction. The eviction policy determines which pods the cluster can evict.
 
 You can choose one of the following policies:
 
@@ -3322,7 +3326,10 @@ It is recommended to set the `unhealthyPodEvictionPolicy` field to `AlwaysAllow`
       unhealthyPodEvictionPolicy: AlwaysAllow
     ```
 
-    - Choose either `IfHealthyBudget` or `AlwaysAllow` as the unhealthy pod eviction policy. The default is `IfHealthyBudget` when the `unhealthyPodEvictionPolicy` field is empty.
+    where:
+
+    `spec.unhealthyPodEvictionPolicy`
+    Specifies the unhealthy pod eviction policy, either `IfHealthyBudget` or `AlwaysAllow`. The default is `IfHealthyBudget` when the `unhealthyPodEvictionPolicy` field is empty.
 
 2.  Create the `PodDisruptionBudget` object by running the following command:
 
@@ -3330,7 +3337,7 @@ It is recommended to set the `unhealthyPodEvictionPolicy` field to `AlwaysAllow`
     $ oc create -f pod-disruption-budget.yaml
     ```
 
-With a PDB that has the `AlwaysAllow` unhealthy pod eviction policy set, you can now drain nodes and evict the pods for a malfunctioning application guarded by this PDB.
+    With a PDB that has the `AlwaysAllow` unhealthy pod eviction policy set, you can now drain nodes and evict the pods for a malfunctioning application guarded by this PDB.
 
 - [Enabling features using feature gates](../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)
 

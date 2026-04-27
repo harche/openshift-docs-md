@@ -163,7 +163,7 @@ Developers can enable automatic build pruning by modifying their build configura
 
 # Automatically pruning images
 
-Images from the OpenShift image registry that are no longer required by the system because of age, status, or exceed limits being automatically pruned. As a cluster administrator, can configure or suspend the pruning Custom Resource (CR).
+To reclaim storage in the OpenShift image registry in OpenShift Container Platform and set how long the cluster keeps images, you can configure the automatic image pruner. You set the schedule, suspension, and retention options on the pruning custom resource (CR).
 
 - You have access to an OpenShift Container Platform cluster using an account with cluster administrator permissions.
 

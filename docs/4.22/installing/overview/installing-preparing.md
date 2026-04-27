@@ -98,11 +98,11 @@ For a production cluster, you must configure the following integrations:
 
 - [An identity provider](../../authentication/understanding-identity-provider.xml#understanding-identity-provider)
 
-- [Monitoring core OpenShift Container Platform components](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/getting_started/core-platform-monitoring-first-steps)
+- [Monitoring core OpenShift Container Platform components](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.22/html/getting_started/core-platform-monitoring-first-steps)
 
 # Preparing your cluster for workloads
 
-Depending on your workload needs, you might need to take extra steps before you begin deploying applications. For example, after you prepare infrastructure to support your application [build strategy](../../cicd/builds/build-strategies.xml#build-strategies), you might need to make provisions for [low-latency](../../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-tuning-low-latency-nodes-with-perf-profile) workloads or to [protect sensitive workloads](../../nodes/pods/nodes-pods-secrets.xml#nodes-pods-secrets). You can also configure [monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_user_workload_monitoring/preparing-to-configure-the-monitoring-stack-uwm#enabling-monitoring-for-user-defined-projects-uwm_preparing-to-configure-the-monitoring-stack-uwm) for application workloads.
+Depending on your workload needs, you might need to take extra steps before you begin deploying applications. For example, after you prepare infrastructure to support your application [build strategy](../../cicd/builds/build-strategies.xml#build-strategies), you might need to make provisions for [low-latency](../../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-tuning-low-latency-nodes-with-perf-profile) workloads or to [protect sensitive workloads](../../nodes/pods/nodes-pods-secrets.xml#nodes-pods-secrets). You can also configure [monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.22/html/configuring_user_workload_monitoring/preparing-to-configure-the-monitoring-stack-uwm#enabling-monitoring-for-user-defined-projects-uwm_preparing-to-configure-the-monitoring-stack-uwm) for application workloads.
 
 # Supported installation methods for different platforms
 

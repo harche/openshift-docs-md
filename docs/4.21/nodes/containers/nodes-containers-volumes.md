@@ -1,6 +1,10 @@
-Files in a container are ephemeral. As such, when a container crashes or stops, the data is lost. You can use *volumes* to persist the data used by the containers in a pod. A volume is directory, accessible to the Containers in a pod, where data is stored for the life of the pod.
+You can use *volumes* to persist the data used by the containers in a pod. A volume is directory, accessible to the containers in a pod, where data is stored for the life of the pod.
+
+Files in a container are ephemeral. As such, when a container crashes or stops, the data is lost.
 
 # Understanding volumes
+
+You can provide persistent or temporary storage for your applications by mounting volumes to pods and containers. Using volumes ensures that data remains available even if a container restarts by backing the file system with host-local or network-attached storage.
 
 Volumes are mounted file systems available to pods and their containers which may be backed by a number of host-local or network attached storage endpoints. Containers are not persistent by default; on restart, their contents are cleared.
 
@@ -46,17 +50,11 @@ Any mandatory parameters are specific to the selected operation and are discusse
 Options
 Any options are specific to the selected operation and are discussed in later sections.
 
-# Listing volumes and volume mounts in a pod
+# About listing volumes and volume mounts in a pod
 
-You can list volumes and volume mounts in pods or pod templates:
+You can list volumes and volume mounts in pods or pod templates.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To list volumes:
+You can list volumes by running the following command:
 
 ``` terminal
 $ oc set volume <object_type>/<name> [options]
@@ -83,17 +81,11 @@ For example:
   $ oc set volume dc --all --name=v1
   ```
 
-# Adding volumes to a pod
+# About adding volumes to a pod
 
-You can add volumes and volume mounts to a pod.
+You can add volumes and volume mounts to a pod. Volumes persist the data used by the containers, even if container crashes or stops.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To add a volume, a volume mount, or both to pod templates:
+You can add a volume, a volume mount, or both to pod templates by running the following command:
 
 ``` terminal
 $ oc set volume <object_type>/<name> --add [options]
@@ -154,7 +146,10 @@ For example:
                 protocol: TCP
   ```
 
-  - Add the volume source **emptyDir**.
+  where:
+
+  `spec.template.spec.volumes`
+  Specifies the volume source **emptyDir**.
 
   </div>
 
@@ -202,9 +197,13 @@ For example:
                 mountPath: /data
   ```
 
-  - Add the volume and secret.
+  where:
 
-  - Add the container mount path.
+  `spec.template.spec.volumes`
+  Specifies the volume and secret.
+
+  `spec.template.spec.containers.volumeMounts`
+  Specifies the container mount path.
 
   </div>
 
@@ -252,9 +251,13 @@ For example:
                 mountPath: /data
   ```
 
-  - Add the persistent volume claim named \`pvc1.
+  where:
 
-  - Add the container mount path.
+  `spec.template.spec.volumes.name.v1`
+  Specifies the persistent volume claim named `pvc1`.
+
+  `spec.template.spec.containers.volumeMounts`
+  Specifies the container mount path.
 
   </div>
 
@@ -268,17 +271,11 @@ For example:
               }}'
   ```
 
-# Updating volumes and volume mounts in a pod
+# About updating volumes and volume mounts in a pod
 
 You can modify the volumes and volume mounts in a pod.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-Updating existing volumes using the `--overwrite` option:
+You can update existing volumes by using the `--overwrite` option:
 
 ``` terminal
 $ oc set volume <object_type>/<name> --add --overwrite [options]
@@ -331,7 +328,7 @@ For example:
                 mountPath: /data
   ```
 
-  - Set persistent volume claim to `pvc1`.
+  \+ The `spec.template.spec.volumes` stanza sets the persistent volume claim to `pvc1`.
 
   </div>
 
@@ -381,21 +378,15 @@ For example:
                 mountPath: /opt
   ```
 
-  - Set the mount point to `/opt`.
+  \+ The `spec.template.spec.containers.volumeMounts` stanza sets the mount point to `/opt`.
 
   </div>
 
-# Removing volumes and volume mounts from a pod
+# About removing volumes and volume mounts from a pod
 
 You can remove a volume or volume mount from a pod.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To remove a volume from pod templates:
+You can remove a volume from a pod template by running the following command:
 
 ``` terminal
 $ oc set volume <object_type>/<name> --remove [options]
@@ -433,7 +424,7 @@ For example:
 
 # Configuring volumes for multiple uses in a pod
 
-You can configure a volume to share one volume for multiple uses in a single pod using the `volumeMounts.subPath` property to specify a `subPath` value inside a volume instead of the volume’s root.
+You can configure a volume to share one volume for multiple uses in a single pod by using the `volumeMounts.subPath` property to specify a `subPath` value inside a volume instead of the volume’s root.
 
 <div class="note">
 
@@ -503,6 +494,10 @@ You cannot add a `subPath` parameter to an existing scheduled pod.
             claimName: my-site-data
     ```
 
-    - Databases are stored in the `mysql` folder.
+    where:
 
-    - HTML content is stored in the `html` folder.
+    `spec.containers.volumeMounts.subPath.mysql`
+    Specifies that databases are stored in the `mysql` folder.
+
+    `spec.containers.volumeMounts.subPath.html`
+    Specifies that HTML content is stored in the `html` folder.

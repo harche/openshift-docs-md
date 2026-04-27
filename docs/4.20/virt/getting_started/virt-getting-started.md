@@ -64,7 +64,7 @@ Migration Toolkit for Virtualization is not part of OpenShift Virtualization and
 
 - [Configure local storage for virtual machines](../../virt/storage/virt-configuring-local-storage-with-hpp.xml#virt-configuring-local-storage-with-hpp)
 
-- [Install the OpenShift Virtualization Operator](../../virt/install/installing-virt.xml#installing-virt-operator_installing-virt)
+- [Install the OpenShift Virtualization Operator](../../virt/install/installing-virt.xml#virt-installing-virt-operator_installing-virt)
 
 - [Install the Kubernetes NMState Operator](../../networking/networking_operators/k8s-nmstate-about-the-k8s-nmstate-operator.xml#installing-the-kubernetes-nmstate-operator-cli)
 

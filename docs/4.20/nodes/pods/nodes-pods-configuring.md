@@ -1,10 +1,12 @@
-As an administrator, you can create and maintain an efficient cluster for pods.
+To maintain optimal pod performance and availability, administrators can configure pod restart behavior, lifecycle settings, resource limits, disruption budgets, and other behaviors. You can use these configurations to ensure that your cluster remains resilient while providing a stable environment for application development.
 
 By keeping your cluster efficient, you can provide a better environment for your developers using such tools as what a pod does when it exits, ensuring that the required number of pods is always running, when to restart pods designed to run only once, limit the bandwidth available to pods, and how to keep pods running during disruptions.
 
 # Configuring how pods behave after restart
 
-A pod restart policy determines how OpenShift Container Platform responds when Containers in that pod exit. The policy applies to all Containers in that pod.
+You can configure a pod restart policy to determine how OpenShift Container Platform responds when containers in that pod exit. Having a proper restart policy helps you keep your cluster running efficiently.
+
+The policy applies to all Containers in that pod.
 
 The possible values are:
 
@@ -34,19 +36,15 @@ If the underlying cloud provider endpoints are not reliable, do not install a cl
 
 </div>
 
-For details on how OpenShift Container Platform uses restart policy with failed Containers, see the [Example States](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#example-states) in the Kubernetes documentation.
+For details on how OpenShift Container Platform uses restart policy with failed Containers, see the "Example States" in the Kubernetes documentation.
 
 # Limiting the bandwidth available to pods
 
-You can apply quality-of-service traffic shaping to a pod and effectively limit its available bandwidth. Egress traffic (from the pod) is handled by policing, which simply drops packets in excess of the configured rate. Ingress traffic (to the pod) is handled by shaping queued packets to effectively handle data. The limits you place on a pod do not affect the bandwidth of other pods.
+You can apply quality-of-service traffic shaping to a pod and effectively limit its available bandwidth.
 
-<div class="formalpara-title">
+Egress traffic (from the pod) is handled by policing, which simply drops packets in excess of the configured rate. Ingress traffic (to the pod) is handled by shaping queued packets to effectively handle data. The limits you place on a pod do not affect the bandwidth of other pods.
 
-**Procedure**
-
-</div>
-
-To limit the bandwidth on a pod:
+The following procedure limits the bandwidth on a pod.
 
 1.  Write an object definition JSON file, and specify the data traffic speed using `kubernetes.io/ingress-bandwidth` and `kubernetes.io/egress-bandwidth` annotations. For example, to limit both pod egress and ingress bandwidth to 10M/s:
 
@@ -86,9 +84,9 @@ To limit the bandwidth on a pod:
 
 # Understanding how to use pod disruption budgets to specify the number of pods that must be up
 
-A *pod disruption budget* allows the specification of safety constraints on pods during operations, such as draining a node for maintenance.
+To ensure pod availability during voluntary disruptions such as node maintenance or cluster updates, you can use pod disruption budgets to define safety constraints for your applications.
 
-`PodDisruptionBudget` is an API object that specifies the minimum number or percentage of replicas that must be up at a time. Setting these in projects can be helpful during node maintenance (such as scaling a cluster down or a cluster upgrade) and is only honored on voluntary evictions (not on node failures).
+A `PodDisruptionBudget` is an API object that specifies the minimum number or percentage of replicas that must be up at a time. Setting these in projects can be helpful during node maintenance (such as scaling a cluster down or a cluster upgrade) and is only honored on voluntary evictions (not on node failures).
 
 A `PodDisruptionBudget` object’s configuration consists of the following key parts:
 
@@ -154,15 +152,9 @@ Depending on your pod priority and preemption settings, lower-priority pods migh
 
 ## Specifying the number of pods that must be up with pod disruption budgets
 
-You can use a `PodDisruptionBudget` object to specify the minimum number or percentage of replicas that must be up at a time.
+You can use a `PodDisruptionBudget` object to specify the minimum number or percentage of replicas that must be up at a time. This ensures pod availability during voluntary disruptions such as node maintenance or cluster updates.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To configure a pod disruption budget:
+The following procedure shows how to configure a pod disruption budget.
 
 1.  Create a YAML file with the an object definition similar to the following:
 
@@ -178,31 +170,41 @@ To configure a pod disruption budget:
           name: my-pod
     ```
 
-    - `PodDisruptionBudget` is part of the `policy/v1` API group.
+    where:
 
-    - The minimum number of pods that must be available simultaneously. This can be either an integer or a string specifying a percentage, for example, `20%`.
+    `apiVersion`
+    Specifies the `policy/v1` API group.
 
-    - A label query over a set of resources. The result of `matchLabels` and `matchExpressions` are logically conjoined. Leave this parameter blank, for example `selector {}`, to select all pods in the project.
+    `spec.minAvailable`
+    Specifies the minimum number of pods that must be available simultaneously. This can be either an integer or a string specifying a percentage, for example, `20%`.
 
-      Or:
+    `spec.selector`
+    Specifies a label query over a set of resources. The result of `matchLabels` and `matchExpressions` are logically conjoined. Leave this parameter blank, for example `selector {}`, to select all pods in the project.
 
-      ``` yaml
-      apiVersion: policy/v1
-      kind: PodDisruptionBudget
-      metadata:
-        name: my-pdb
-      spec:
-        maxUnavailable: 25%
-        selector:
-          matchLabels:
-            name: my-pod
-      ```
+    Or:
 
-    - `PodDisruptionBudget` is part of the `policy/v1` API group.
+    ``` yaml
+    apiVersion: policy/v1
+    kind: PodDisruptionBudget
+    metadata:
+      name: my-pdb
+    spec:
+      maxUnavailable: 25%
+      selector:
+        matchLabels:
+          name: my-pod
+    ```
 
-    - The maximum number of pods that can be unavailable simultaneously. This can be either an integer or a string specifying a percentage, for example, `20%`.
+    where:
 
-    - A label query over a set of resources. The result of `matchLabels` and `matchExpressions` are logically conjoined. Leave this parameter blank, for example `selector {}`, to select all pods in the project.
+    `apiVersion`
+    Specifies the `policy/v1` API group.
+
+    `spec.maxUnavailable`
+    Specifies the maximum number of pods that can be unavailable simultaneously. This can be either an integer or a string specifying a percentage, for example, `20%`.
+
+    `spec.selector`
+    Specifies a label query over a set of resources. The result of `matchLabels` and `matchExpressions` are logically conjoined. Leave this parameter blank, for example `selector {}`, to select all pods in the project.
 
 2.  Run the following command to add the object to project:
 
@@ -212,7 +214,7 @@ To configure a pod disruption budget:
 
 ## Specifying the eviction policy for unhealthy pods
 
-When you use pod disruption budgets (PDBs) to specify how many pods must be available simultaneously, you can also define the criteria for how unhealthy pods are considered for eviction.
+When you use pod disruption budgets (PDBs) to specify how many pods must be available simultaneously, you can also define the criteria for how unhealthy pods are considered for eviction. The eviction policy determines which pods the cluster can evict.
 
 You can choose one of the following policies:
 
@@ -249,7 +251,10 @@ It is recommended to set the `unhealthyPodEvictionPolicy` field to `AlwaysAllow`
       unhealthyPodEvictionPolicy: AlwaysAllow
     ```
 
-    - Choose either `IfHealthyBudget` or `AlwaysAllow` as the unhealthy pod eviction policy. The default is `IfHealthyBudget` when the `unhealthyPodEvictionPolicy` field is empty.
+    where:
+
+    `spec.unhealthyPodEvictionPolicy`
+    Specifies the unhealthy pod eviction policy, either `IfHealthyBudget` or `AlwaysAllow`. The default is `IfHealthyBudget` when the `unhealthyPodEvictionPolicy` field is empty.
 
 2.  Create the `PodDisruptionBudget` object by running the following command:
 
@@ -257,7 +262,7 @@ It is recommended to set the `unhealthyPodEvictionPolicy` field to `AlwaysAllow`
     $ oc create -f pod-disruption-budget.yaml
     ```
 
-With a PDB that has the `AlwaysAllow` unhealthy pod eviction policy set, you can now drain nodes and evict the pods for a malfunctioning application guarded by this PDB.
+    With a PDB that has the `AlwaysAllow` unhealthy pod eviction policy set, you can now drain nodes and evict the pods for a malfunctioning application guarded by this PDB.
 
 - [Enabling features using feature gates](../../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)
 
@@ -265,17 +270,11 @@ With a PDB that has the `AlwaysAllow` unhealthy pod eviction policy set, you can
 
 # Preventing pod removal using critical pods
 
-There are a number of core components that are critical to a fully functional cluster, but, run on a regular cluster node rather than the master. A cluster might stop working properly if a critical add-on is evicted.
+You can mark pods on a worker node as *critical* to prevent OpenShift Container Platform from evicting those pods. Pods marked as critical are not allowed to be evicted.
 
-Pods marked as critical are not allowed to be evicted.
+There are several core components that are critical to a fully functional cluster, but, run on a regular cluster node rather than the master. A cluster might stop working properly if a critical add-on is evicted.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To make a pod critical:
+The following procedure shows how to mark a pod as critical.
 
 1.  Create a `Pod` spec or edit existing pods to include the `system-cluster-critical` priority class:
 
@@ -292,9 +291,9 @@ To make a pod critical:
     # ...
     ```
 
-    - Default priority class for pods that should never be evicted from a node.
+    The `spec.template.priorityClassName.system-cluster-critical` parameter specifies the default priority class for pods that should never be evicted from a node.
 
-      Alternatively, you can specify `system-node-critical` for pods that are important to the cluster but can be removed if necessary.
+    Alternatively, you can specify `system-node-critical` for pods that are important to the cluster but can be removed if necessary.
 
 2.  Create the pod:
 
@@ -303,6 +302,8 @@ To make a pod critical:
     ```
 
 # Reducing pod timeouts when using persistent volumes with high file counts
+
+You can prevent pod startup timeouts in clusters with high file counts, by configuring how the cluster manages volume ownership and permissions. Using security context constraints or runtime classes, you can ensure that large storage volumes mount efficiently without the delays associated with recursive permission changes.
 
 If a storage volume contains many files (~1,000,000 or greater), you might experience pod timeouts.
 
@@ -319,3 +320,11 @@ You can reduce this delay by applying one of the following workarounds:
 - Use a runtime class to skip the SELinux relabeling for a volume.
 
 For information, see [When using Persistent Volumes with high file counts in OpenShift, why do pods fail to start or take an excessive amount of time to achieve "Ready" state?](https://access.redhat.com/solutions/6221251).
+
+# Additional resources
+
+- [Enabling features using feature gates](../../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)
+
+- [Unhealthy Pod Eviction Policy (Kubernetes documentation)](https://kubernetes.io/docs/tasks/run-application/configure-pdb/#unhealthy-pod-eviction-policy)
+
+- [Example States (Kubernetes documentation)](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#example-states)

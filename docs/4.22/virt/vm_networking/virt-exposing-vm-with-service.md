@@ -4,24 +4,20 @@ You can expose a virtual machine (VM) within the cluster or outside the cluster 
 
 A Kubernetes service exposes network access for clients to an application running on a set of pods. Services offer abstraction, load balancing, and, in the case of the `NodePort` and `LoadBalancer` types, exposure to the outside world.
 
-ClusterIP
+`ClusterIP`
 Exposes the service on an internal IP address and as a DNS name to other applications within the cluster. A single service can map to multiple virtual machines. When a client tries to connect to the service, the client’s request is load balanced among available backends. `ClusterIP` is the default service type.
 
-NodePort
-Exposes the service on the same port of each selected node in the cluster. `NodePort` makes a port accessible from outside the cluster, as long as the node itself is externally accessible to the client.
+`NodePort`
+Exposes the service on the same port of each selected node in the cluster. `NodePort` makes a port accessible from outside the cluster, provided that the node itself is externally accessible to the client.
 
-LoadBalancer
+`LoadBalancer`
 Creates an external load balancer in the current cloud (if supported) and assigns a fixed, external IP address to the service.
 
 <div class="note">
 
-For on-premise clusters, you can configure a load-balancing service by deploying the MetalLB Operator.
+For on-premise clusters, you can configure a load balancing service by deploying the MetalLB Operator.
 
 </div>
-
-- [Installing the MetalLB Operator](../../networking/networking_operators/metallb-operator/metallb-operator-install.xml#metallb-operator-install_metallb-operator-install)
-
-- [Configuring services to use MetalLB](../../networking/ingress_load_balancing/metallb/metallb-configure-services.xml#metallb-configure-services)
 
 # Dual-stack support
 
@@ -81,7 +77,7 @@ You can create a service and associate it with a virtual machine (VM) by using t
 
     <div class="note">
 
-    Labels on a virtual machine are passed through to the pod. The `special: key` label must match the label in the `spec.selector` attribute of the `Service` manifest.
+    Labels on a virtual machine pass through to the pod. The `special: key` label must match the label in the `spec.selector` attribute of the `Service` manifest.
 
     </div>
 
@@ -111,7 +107,7 @@ You can create a service and associate it with a virtual machine (VM) by using t
 
     - `spec.type` defines the type of service by the way it is exposed. Choose one of `ClusterIP`, `NodePort`, or `LoadBalancer`.
 
-    - `spec.ports` defines a collection of network ports and protocols that you want to expose from the virtual machine.
+    - `spec.ports` defines a collection of network ports and protocols to expose from the virtual machine.
 
 4.  Save the `Service` manifest file.
 
@@ -134,3 +130,7 @@ You can create a service and associate it with a virtual machine (VM) by using t
 - [Configuring ingress cluster traffic using a NodePort](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-nodeport.xml#configuring-ingress-cluster-traffic-nodeport)
 
 - [Configuring ingress cluster traffic using a load balancer](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-load-balancer.xml#configuring-ingress-cluster-traffic-load-balancer)
+
+- [Installing the MetalLB Operator](../../networking/networking_operators/metallb-operator/metallb-operator-install.xml#metallb-operator-install)
+
+- [Configuring services to use MetalLB](../../networking/ingress_load_balancing/metallb/metallb-configure-services.xml#metallb-configure-services)

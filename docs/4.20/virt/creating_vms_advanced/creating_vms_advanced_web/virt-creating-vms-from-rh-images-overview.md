@@ -4,8 +4,6 @@ Red Hat images are [golden images](../../../virt/creating_vms_advanced/creating_
 
 - [Configuring a custom namespace for golden images by using the CLI](../../../virt/creating_vms_advanced/creating_vms_advanced_web/virt-creating-vms-from-rh-images-overview.xml#virt-golden-images-namespace-cli_virt-creating-vms-from-rh-images-overview)
 
-Red Hat images are automatically updated. You can disable and re-enable automatic updates for these images. See [Managing Red Hat boot source updates](../../../virt/storage/virt-automatic-bootsource-updates.xml#managing-rh-boot-source-updates_virt-automatic-bootsource-updates).
-
 Cluster administrators can enable automatic subscription for Red Hat Enterprise Linux (RHEL) virtual machines in the OpenShift Virtualization [web console](../../../virt/about_virt/about-virt.xml#about-virt).
 
 You can create virtual machines (VMs) from operating system images provided by Red Hat by using one of the following methods:
@@ -99,3 +97,7 @@ You can configure a custom namespace for golden images in your cluster by settin
     Specifies the namespace to use for golden images.
 
 3.  Save your changes and exit the editor.
+
+# Additional resources
+
+- [Managing automatic updates for all system-defined boot sources](../../../virt/storage/virt-automatic-bootsource-updates.xml#virt-managing-auto-update-all-system-boot-sources_virt-automatic-bootsource-updates)

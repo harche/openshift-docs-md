@@ -1062,13 +1062,15 @@ After installing OpenShift Container Platform, you can verify if boot disk encry
 
 - For more information about the TPM v2 and Tang encryption modes, see [Configuring automated unlocking of encrypted volumes using policy-based decryption](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/security_hardening/configuring-automated-unlocking-of-encrypted-volumes-using-policy-based-decryption_security-hardening).
 
-## Configuring a RAID-enabled data volume
+# Configuring a RAID-enabled data volume
 
-You can enable software RAID partitioning to provide an external data volume. OpenShift Container Platform supports RAID 0, RAID 1, RAID 4, RAID 5, RAID 6, and RAID 10 for data protection and fault tolerance. See "About disk mirroring" for more details.
+You can enable software Redundant Array of Independent Disks (RAID) partitioning to provide an external data volume.
+
+OpenShift Container Platform supports RAID 0, RAID 1, RAID 4, RAID 5, RAID 6, and RAID 10 for data protection and fault tolerance. See "About disk mirroring" for more details.
 
 <div class="note">
 
-OpenShift Container Platform 4.17 does not support software RAIDs on the installation drive.
+OpenShift Container Platform 4.17 supports manually configuring a hybrid RAID on an installation drive. For a manually configured example, see "Configuring an Intel® Virtual RAID on CPU (VROC) data volume".
 
 </div>
 
@@ -1078,17 +1080,17 @@ OpenShift Container Platform 4.17 does not support software RAIDs on the install
 
   <div class="note">
 
-  Butane is a command-line utility that OpenShift Container Platform uses to provide convenient, short-hand syntax for writing machine configs, as well as for performing additional validation of machine configs. For more information, see the *Creating machine configs with Butane* section.
+  Butane is a command-line utility that OpenShift Container Platform uses to write machine configs. The utility provides convenient, short-hand syntax for writing machine configs and for performing additional validation of machine configs. For more information, see the *Creating machine configs with Butane* section.
 
   </div>
 
 1.  Create a Butane config that configures a data volume by using software RAID.
 
-    - To configure a data volume with RAID 1 on the same disks that are used for a mirrored boot disk, create a `$HOME/clusterconfig/raid1-storage.bu` file, for example:
+    - To configure a data volume with RAID 1 on the same disks that are used for a mirrored boot disk, create a `$HOME/clusterconfig/raid1-storage.bu` file:
 
       <div class="formalpara-title">
 
-      **RAID 1 on mirrored boot disk**
+      **Example configuration for RAID 1 on a mirrored boot disk**
 
       </div>
 
@@ -1128,15 +1130,16 @@ OpenShift Container Platform 4.17 does not support software RAIDs on the install
             format: xfs
             wipe_filesystem: true
             with_mount_unit: true
+      # ...
       ```
 
-      - When adding a data partition to the boot disk, a minimum value of 25000 mebibytes is recommended. If no value is specified, or if the specified value is smaller than the recommended minimum, the resulting root file system will be too small, and future reinstalls of RHCOS might overwrite the beginning of the data partition.
+      The `size_mib` field adds a data partition to the boot disk. A minimum value of 25000 mebibytes is recommended. If no value is specified or the specified value is smaller than the recommended minimum, the resulting root file system will be too small. Future reinstalls of RHCOS might overwrite the beginning of the data partition.
 
-    - To configure a data volume with RAID 1 on secondary disks, create a `$HOME/clusterconfig/raid1-alt-storage.bu` file, for example:
+    - To configure a data volume with RAID 1 on secondary disks, create a `$HOME/clusterconfig/raid1-alt-storage.bu` file:
 
       <div class="formalpara-title">
 
-      **RAID 1 on secondary disks**
+      **Example configuration for RAID 1 on secondary disks**
 
       </div>
 
@@ -1169,15 +1172,16 @@ OpenShift Container Platform 4.17 does not support software RAIDs on the install
             format: xfs
             wipe_filesystem: true
             with_mount_unit: true
+      # ...
       ```
 
-2.  Create a RAID manifest from the Butane config you created in the previous step and save it to the `<installation_directory>/openshift` directory. For example, to create a manifest for the compute nodes, run the following command:
+2.  Create a RAID manifest from the Butane config. Save the config to the `<installation_directory>/openshift` directory. For example, to create a manifest for the compute nodes, run the following command:
 
     ``` terminal
     $ butane $HOME/clusterconfig/<butane_config>.bu -o <installation_directory>/openshift/<manifest_name>.yaml
     ```
 
-    - Replace `<butane_config>` and `<manifest_name>` with the file names from the previous step. For example, `raid1-alt-storage.bu` and `raid1-alt-storage.yaml` for secondary disks.
+    Replace the `<manifest_name>` and `<butane_config>` values with the file names from a previous step. For example, `raid1-alt-storage.bu` and `raid1-alt-storage.yaml` for secondary disks.
 
 3.  Save the Butane config in case you need to update the manifest in the future.
 
@@ -1281,11 +1285,13 @@ You can set the time server and related settings used by the chrony time service
             logdir /var/log/chrony
     ```
 
-    - On control plane nodes, substitute `master` for `worker` in both of these locations.
+    - `name: 99-worker-chrony` - Specify a name for the machine config file. On control plane nodes, substitute `master` for `worker`.
 
-    - Specify an octal value mode for the `mode` field in the machine config file. After creating the file and applying the changes, the `mode` is converted to a decimal value. You can check the YAML file with the command `oc get mc <mc-name> -o yaml`.
+    - `machineconfiguration.openshift.io/role: worker` - On control plane nodes, substitute `master` for `worker`.
 
-    - Specify any valid, reachable time source, such as the one provided by your DHCP server.
+    - `mode: 0644` - Specify an octal value mode for the `mode` field in the machine config file. After creating the file and applying the changes, the `mode` is converted to a decimal value. You can check the YAML file with the command `oc get mc <mc-name> -o yaml`.
+
+    - `pool 0.rhel.pool.ntp.org iburst` - Specify any valid, reachable time source, such as the one provided by your DHCP server.
 
     <div class="note">
 
@@ -1310,6 +1316,14 @@ You can set the time server and related settings used by the chrony time service
       ``` terminal
       $ oc apply -f ./99-worker-chrony.yaml
       ```
+
+For more information on chrony best practices, see the following resources:
+
+- [Configuring chrony](https://access.redhat.com/solutions/3073261)
+
+- [Best practices for NTP](https://access.redhat.com/solutions/778603)
+
+- [Basic chrony NTP troubleshooting](https://docs.redhat.com/en/documentation/red_hat_ceph_storage/8/html-single/troubleshooting_guide/basic-chrony-NTP-troubleshooting_diag#basic-chrony-NTP-troubleshooting_diag)
 
 # Additional resources
 

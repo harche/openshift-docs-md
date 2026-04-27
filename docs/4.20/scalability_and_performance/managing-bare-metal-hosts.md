@@ -10,7 +10,7 @@ When you scale up the relevant `MachineSet` CR that contains a `metal3.io/autosc
 
 # Maintaining bare metal hosts
 
-To ensure your cluster inventory accurately reflects your physical infrastructure, maintain the details of the bare-metal host configurations by using the OpenShift Container Platform web console.
+You can maintain the details of the bare metal hosts in your cluster from the OpenShift Container Platform web console.
 
 1.  From the web console, comlete the following steps:
 
@@ -38,7 +38,7 @@ To ensure your cluster inventory accurately reflects your physical infrastructur
 
 ## Adding a bare metal host to the cluster using the web console
 
-To integrate physical hardware into your cluster, you can add bare-metal hosts by using the web console. By adding these hosts, you can provision and manage these nodes directly through the web console.
+You can add bare-metal hosts to the cluster by using the web console.
 
 - Install an RHCOS cluster on bare metal.
 
@@ -48,13 +48,13 @@ To integrate physical hardware into your cluster, you can add bare-metal hosts b
 
 2.  Select **Add Host** → **New with Dialog**.
 
-3.  Specify a unique name for the new bare metal host.
+3.  Specify a unique name for the new bare-metal host.
 
 4.  Set the **Boot MAC address**.
 
 5.  Set the **Baseboard Management Console (BMC) Address**.
 
-6.  Enter the user credentials for the host’s baseboard management controller (BMC).
+6.  Enter the user credentials for the baseboard management controller (BMC) of the host.
 
 7.  Select to power on the host after creation, and select **Create**.
 

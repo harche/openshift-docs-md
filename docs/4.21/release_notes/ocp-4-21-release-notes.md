@@ -938,6 +938,48 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHBA-2026:8424 - OpenShift Container Platform 4.17.11 fixed issues
+
+Issued: 21 April 2026
+
+OpenShift Container Platform release 4.17.11 is now available. The list of fixed issues that are included in the update is documented in the [RHBA-2026:8424](https://access.redhat.com/errata/RHBA-2026:8424) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:8419](https://access.redhat.com/errata/RHBA-2026:8419) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.11 --pullspecs
+```
+
+### Enhancements
+
+- With this release, the Insights Operator now collects the `opentelemetrycollectors.opentelemetry.io` custom resource to improve data retrieval efficiency and system performance.
+
+  To maintain security and prevent the collection of sensitive information, the Insights Operator applies the following constraints:
+
+  - Resource Limit: The Insights Operator collects a maximum of five OpenTelemetry Collector custom resources from the cluster.
+
+  - Data Masking: The Insights Operator retains only the service subsection of the `spec.config` field. It omits receivers, exporters, and other pipeline configuration details.
+
+    These improvements allow OpenShift Container Platform to better analyze the efficiency of the data gathering process and provide more precise environment insights. ([OCPBUGS-79534](https://redhat.atlassian.net/browse/OCPBUGS-79534))
+
+### Fixed issues
+
+- Before this update, creating an Open Source Service Mesh (OSSM) subscription outside the `openshift-operators` namespace caused a conflict with the `AllNamespace` Operator design. As a result, users encountered duplicate OSSM subscriptions. With this update, the Cluster Ingress Operator no longer creates second OSSM subscriptions in non-default namespaces, improving subscription management. ([OCPBUGS-76609](https://redhat.atlassian.net/browse/OCPBUGS-76609))
+
+- Before this update, an incorrect subnet configuration in the `metal3-static-ip-set` YAML file when switching from a managed to an unmanaged provisioning network prevented users from creating routes with an unmanaged provisioning network. With this update, the `metal3-static-ip-set` YAML file sets the correct subnet for an unmanaged provisioning network, resolving the issue and enabling successful route creation. ([OCPBUGS-78580](https://redhat.atlassian.net/browse/OCPBUGS-78580))
+
+- Before this update, `kube-apiserver` rollouts in user clusters with encrypted etcd caused TCP Reset (RST) storms, resulting in application pod traffic drops. With this update, the issue is resolved, and `kube-apiserver` rollouts no longer cause traffic drops in encrypted clusters, improving service stability. ([OCPBUGS-81475](https://redhat.atlassian.net/browse/OCPBUGS-81475))
+
+- Before this update, missing `itemsPerPage` and `perPageSuffix` properties in internationalization prevented the translation of pagination strings. As a consequence, users experienced untranslated pagination controls. With this update, the pagination component strings are properly internationalized. As a result, pagination strings are translated correctly, improving the localized user experience in the OpenShift Container Platform Console. ([OCPBUGS-81714](https://redhat.atlassian.net/browse/OCPBUGS-81714))
+
+- Before this update, Hypershift hosted clusters in AWS ISO regions failed to honor Amazon Machine Image (AMI) overrides in `NodePool` specifications, causing end users to experience failure when deploying node pools due to incorrect AMI usage. With this update, Hypershift now honors AWS AMI overrides in `NodePool` specifications, enabling consistent node pool deployments in ISO regions. ([OCPBUGS-81745](https://redhat.atlassian.net/browse/OCPBUGS-81745))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHSA-2026:7245 - OpenShift Container Platform 4.17.10 fixed issues and security update
 
 Issued: 14 April 2026
@@ -954,9 +996,9 @@ $ oc adm release info 4.21.10 --pullspecs
 
 ### Fixed issues
 
-- Before this update, navigating from a dynamic plugin’s tab on one resource detail page to another plugin tab on a different detail page caused the web console to display an error and become unresponsive. This affected plugins that added horizontal navigation tabs to resource detail pages, such as virtual machines, PersistentVolumeClaims, or storage classes. With this update, the web console correctly loads plugin tab components during navigation. As a result, navigation between dynamic plugin tabs on different resource detail pages works as expected.([OCPBUGS-77246](https://redhat.atlassian.net/browse/OCPBUGS-77246))
+- Before this update, switching between dynamic plugin tabs on different resource detail pages caused the OpenShift Container Platform web console to error and freeze. This occurred on pages with custom horizontal tabs, such as virtual machines or storage classes. With this update, the web console correctly loads plugin components. Navigation between these tabs now works as expected without interruptions.([OCPBUGS-77246](https://redhat.atlassian.net/browse/OCPBUGS-77246))
 
-- Before this update, when a new node joined a cluster, the synchronization process was delayed because the system only checked for updates periodically. As a consequence, the synchronization is delayed for up to 15 minutes. With this update, the `global-pull-secret-syncer` tool is triggered the moment the cluster’s management layer identifies the new node. As a result, the synchronization process begins as soon as the node is ready, significantly reducing the wait time. ([OCPBUGS-77966](https://redhat.atlassian.net/browse/OCPBUGS-77966))
+- Before this update, when a new node joined a cluster, the synchronization process was delayed because the system only checked for updates periodically. As a consequence, the synchronization is delayed for up to 15 minutes. With this update, the `global-pull-secret-syncer` tool is triggered the moment the cluster management layer identifies the new node. As a result, the synchronization process begins as soon as the node is ready, significantly reducing the wait time. ([OCPBUGS-77966](https://redhat.atlassian.net/browse/OCPBUGS-77966))
 
 ### Updating
 

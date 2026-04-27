@@ -1,7 +1,3 @@
-You can change certain configurations for your OpenShift Virtualization deployment to improve efficiency, cost-effectiveness, and reliability.
-
-# Configuring full physical cores for virtual machines
-
 As a cluster administrator, you can allocate a full physical core to a specific virtual machine (VM), instead of allowing different VMs to share the same physical core. Configuring your VMs to use only full physical cores can optimize performance for high-throughput or latency-critical VMs.
 
 Allocating only full physical cores is important on simultaneous multi-threading (SMT) enabled systems because it offers the following benefits:
@@ -13,6 +9,8 @@ Allocating only full physical cores is important on simultaneous multi-threading
 - Offers predictable latency
 
 - Guarantees exclusive CPU resources
+
+# Configure full physical core allocation for virtual machines
 
 You can configure full physical core allocation by modifying the `cpuManagerPolicy` and `cpuManagerPolicyOptions` settings in the `KubeletConfig` custom resource (CR).
 

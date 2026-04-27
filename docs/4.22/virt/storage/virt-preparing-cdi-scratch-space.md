@@ -44,7 +44,7 @@ You can define the storage class that the Containerized Data Importer (CDI) uses
     $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
     ```
 
-2.  Add the `spec.scratchSpaceStorageClass` field to the CR, setting the value to the name of a storage class that exists in the cluster:
+2.  Add the `spec.scratchSpaceStorageClass` field to the CR and set the value to the name of a storage class that exists in the cluster. If you do not specify a storage class, CDI uses the storage class of the persistent volume claim that is being populated.
 
     ``` yaml
     apiVersion: hco.kubevirt.io/v1beta1
@@ -54,8 +54,6 @@ You can define the storage class that the Containerized Data Importer (CDI) uses
     spec:
       scratchSpaceStorageClass: "<storage_class>"
     ```
-
-    - If you do not specify a storage class, CDI uses the storage class of the persistent volume claim that is being populated.
 
 3.  Save and exit your default editor to update the `HyperConverged` CR.
 
@@ -77,7 +75,7 @@ This matrix shows the supported CDI operations for content types against endpoin
 <th style="text-align: left;">Content types</th>
 <th style="text-align: left;">HTTP</th>
 <th style="text-align: left;">HTTPS</th>
-<th style="text-align: left;">HTTP basic auth</th>
+<th style="text-align: left;">Basic HTTP authentication</th>
 <th style="text-align: left;">Registry</th>
 <th style="text-align: left;">Upload</th>
 </tr>
@@ -102,20 +100,20 @@ This matrix shows the supported CDI operations for content types against endpoin
 <p>✓ XZ*</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p>KubeVirt (RAW)</p></td>
-<td style="text-align: left;"><p>✓ RAW</p>
+<td style="text-align: left;"><p>KubeVirt (raw)</p></td>
+<td style="text-align: left;"><p>✓ raw</p>
 <p>✓ GZ</p>
 <p>✓ XZ</p></td>
-<td style="text-align: left;"><p>✓ RAW</p>
+<td style="text-align: left;"><p>✓ raw</p>
 <p>✓ GZ</p>
 <p>✓ XZ</p></td>
-<td style="text-align: left;"><p>✓ RAW</p>
+<td style="text-align: left;"><p>✓ raw</p>
 <p>✓ GZ</p>
 <p>✓ XZ</p></td>
-<td style="text-align: left;"><p>✓ RAW*</p>
+<td style="text-align: left;"><p>✓ raw*</p>
 <p>□ GZ</p>
 <p>□ XZ</p></td>
-<td style="text-align: left;"><p>✓ RAW*</p>
+<td style="text-align: left;"><p>✓ raw*</p>
 <p>✓ GZ*</p>
 <p>✓ XZ*</p></td>
 </tr>

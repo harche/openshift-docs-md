@@ -250,7 +250,7 @@ To manage the consumption of extended resources, such as `nvidia.com/gpu`, defin
     Error from server (Forbidden): error when creating "gpu-pod.yaml": pods "gpu-pod-f7z2w" is forbidden: exceeded quota: gpu-quota, requested: requests.nvidia.com/gpu=1, used: requests.nvidia.com/gpu=1, limited: requests.nvidia.com/gpu=1
     ```
 
-    You recieve this `Forbidden` error message because you have a quota of 1 GPU and the pod tried to allocate a second GPU, which exceeds the allowed quota.
+    You receive this `Forbidden` error message because you have a quota of 1 GPU and the pod tried to allocate a second GPU, which exceeds the allowed quota.
 
 # Quota scopes
 
@@ -303,7 +303,7 @@ Ephemeral storage requests and limits apply only if you enabled the ephemeral st
 
 # Admin quota usage
 
-To ensure projects remain within defined constraints, monitor admin quota usage. By tracking the aggregate consumption of compute resources and storage, you can identify when `ResourceQuota` limits are reached or approached.
+To ensure projects remain within defined constraints, monitor admin quota usage. After a resource quota for a project is first created, the project restricts the ability to create any new resources that can violate a quota constraint until it has calculated updated usage statistics.
 
 Quota enforcement
 After a resource quota for a project is first created, the project restricts the ability to create any new resources that can violate a quota constraint until the quota has calculated updated usage statistics.
@@ -711,7 +711,7 @@ To monitor usage statistics against defined hard limits, navigate to the **Quota
 
 ## Configuring quota synchronization period
 
-To control the synchronization time frame when resources are deleted, configure the `resource-quota-sync-period` setting. This parameter in the `/etc/origin/master/master-config.yaml` file determines how frequently the system updates usage statistics to reflect deleted resources.
+When a set of resources are deleted, the synchronization time frame of resources is determined by the `resource-quota-sync-period` setting in the `/etc/origin/master/master-config.yaml` file. You can change the `resource-quota-sync-period` setting to have the set of resources regenerate in the needed amount of time (in seconds) for the resources to be once again available.
 
 <div class="note">
 
@@ -801,7 +801,7 @@ The example in the procedure shows how the quota system intercepts every operati
 
 # Limit ranges in a LimitRange object
 
-To define compute resource constraints at the object level, create a `LimitRange` object. By creating this object, you can specify the exact amount of resources that an individual pod, container, image, or persistent volume claim can consume.
+To define compute resource constraints at the object level, create a `LimitRange` object. By creating this object, you can specify the exact amount of resources that an individual pod, container, image, image stream, or persistent volume claim can consume.
 
 All requests to create and modify resources are evaluated against each `LimitRange` object in the project. If the resource violates any of the enumerated constraints, the resource is rejected. If the resource does not set an explicit value, and if the constraint supports a default value, the default value is applied to the resource.
 

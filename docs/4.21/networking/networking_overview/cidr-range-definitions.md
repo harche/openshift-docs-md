@@ -1,4 +1,4 @@
-To ensure stable and accurate network routing in OpenShift Container Platform clusters that use OVN-Kubernetes, define non-overlapping Classless Inter-Domain Routing (CIDR) subnet ranges. Establishing unique ranges prevents IP address conflicts so that internal traffic reaches its intended destination without interference.
+If your cluster uses OVN-Kubernetes, you must specify non-overlapping ranges for Classless Inter-Domain Routing (CIDR) subnet ranges.
 
 <div class="important">
 
@@ -52,7 +52,7 @@ The earlier list includes join, transit, and masquerade IPv4 and IPv6 address su
 
 # Machine CIDR
 
-To establish the network scope for cluster nodes in OpenShift Container Platform, specify an IP address range in the Machine Classless Inter-Domain Routing (CIDR) parameter. Defining this range ensures that all machines within the environment have valid, routable addresses for internal cluster communication.
+In the Machine classless inter-domain routing (CIDR) field, you must specify the IP address range for machines or cluster nodes.
 
 <div class="note">
 
@@ -64,15 +64,15 @@ The default is `10.0.0.0/16`. This range must not conflict with any connected ne
 
 - [Cluster Network Operator configuration](../../networking/networking_operators/cluster-network-operator.xml#nw-operator-cr_cluster-network-operator)
 
-# Service CIDR
+# Service classless inter-domain routing (CIDR)
 
-To allocate IP addresses for cluster services in OpenShift Container Platform, specify an IP address range in the Service Classless Inter-Domain Routing (CIDR) parameter. Defining this range ensures that internal services have a dedicated block of addresses for reliable communication without overlapping with node or pod networks.
+In the Service CIDR field, you must specify the IP address range for services.
 
 The range must be large enough to accommodate your workload. The address block must not overlap with any external service accessed from within the cluster. The default is `172.30.0.0/16`.
 
-# Pod CIDR
+# Pod classless inter-domain routing (CIDR)
 
-To allocate internal network addresses for cluster workloads in OpenShift Container Platform, specify an IP address range in the pod Classless Inter-Domain Routing (CIDR) field. Defining this range ensures that pods can communicate with each other reliably without overlapping with the node or service networks.
+In the pod CIDR field, you must specify the IP address range for pods.
 
 The pod CIDR is the same as the `clusterNetwork` CIDR and the cluster CIDR. The range must be large enough to accommodate your workload. The address block must not overlap with any external service accessed from within the cluster. The default is `10.128.0.0/14`. You can expand the range after cluster installation.
 
@@ -82,7 +82,7 @@ The pod CIDR is the same as the `clusterNetwork` CIDR and the cluster CIDR. The 
 
 # Host prefix
 
-To allocate a dedicated pool of IP addresses for pods on each node in OpenShift Container Platform, specify the subnet prefix length in the hostPrefix parameter. Defining an appropriate prefix ensures that every machine has sufficient unique addresses to support its scheduled workloads without exhausting the cluster’s network resources.
+In the `hostPrefix` parameter, you must specify the subnet prefix length assigned to pods scheduled to individual machines. The host prefix determines the pod IP address pool for each machine.
 
 For example, if the host prefix is set to `/23`, each machine is assigned a `/23` subnet from the pod CIDR address range. The default is `/23`, allowing 510 cluster nodes and 510 pod IP addresses per node.
 
@@ -96,7 +96,7 @@ You can use the [Red Hat OpenShift Network Calculator](https://access.redhat.com
 
 # CIDR ranges for hosted control planes
 
-To successfully deploy hosted control planes on OpenShift Container Platform, define the network environment by using specific Classless Inter-Domain Routing (CIDR) subnet ranges. Establishing these nonoverlapping ranges ensures reliable communication between cluster components and prevents internal IP address conflicts.
+To successfully deploy hosted control planes on OpenShift Container Platform, define the network environment by using specific Classless Inter-Domain Routing (CIDR) subnet ranges.
 
 The following Classless Inter-Domain Routing (CIDR) subnet ranges are the default settings for hosted control planes:
 

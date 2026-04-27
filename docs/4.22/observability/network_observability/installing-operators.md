@@ -377,7 +377,11 @@ For Developers, multi-tenancy is available for both Loki and Prometheus but requ
 
 # Important Flow Collector configuration considerations
 
-Once you create the `FlowCollector` instance, you can reconfigure it, but the pods are terminated and recreated again, which can be disruptive. Therefore, you can consider configuring the following options when creating the `FlowCollector` for the first time:
+Review essential `FlowCollector` configuration options before initial deployment to avoid pod disruptions caused by later reconfiguration. Key settings include Kafka integration, enriched flow data exports, SR-IOV traffic monitoring, and advanced tracking for DNS and packet drops.
+
+When you create the `FlowCollector` instance, you can reconfigure it, but the pods are terminated and recreated again, which can be disruptive.
+
+Therefore, you can consider configuring the following options when creating the `FlowCollector` for the first time.
 
 - [Configuring the Flow Collector resource with Kafka](../../observability/network_observability/configuring-operator.xml#network-observability-flowcollector-kafka-config_network_observability)
 
@@ -390,8 +394,6 @@ Once you create the `FlowCollector` instance, you can reconfigure it, but the po
 - [Working with DNS tracking](../../observability/network_observability/observing-network-traffic.xml#network-observability-dns-tracking_nw-observe-network-traffic)
 
 - [Working with packet drops](../../observability/network_observability/observing-network-traffic.xml#network-observability-packet-drops_nw-observe-network-traffic)
-
-<!-- -->
 
 - [Flow Collector API Reference](../../observability/network_observability/flowcollector-api.xml#network-observability-flowcollector-api-specifications_network_observability)
 

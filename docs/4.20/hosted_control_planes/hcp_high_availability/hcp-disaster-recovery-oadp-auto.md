@@ -16,7 +16,7 @@ The process involves the following steps:
 
 You must meet the following prerequisites on the management cluster:
 
-- You [installed the OADP Operator](../../backup_and_restore/application_backup_and_restore/installing/oadp-installing-operator.xml#oadp-installing-operator).
+- You [installed the OADP Operator](../../backup_and_restore/application_backup_and_restore/installing/about-installing-oadp.xml#about-installing-oadp).
 
 - You created a storage class.
 
@@ -29,6 +29,8 @@ You must meet the following prerequisites on the management cluster:
 - In a disconnected environment, you have access to a self-hosted storage provider that is compatible with OADP, for example [Red Hat OpenShift Data Foundation](https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/) or [MinIO](https://min.io/).
 
 - Your hosted control planes pods are up and running.
+
+- You are using a supported version of OADP for your management cluster. For example, if your management cluster is on OpenShift Container Platform 4.20, you must use OADP version 1.5. For more information, see [Support for OpenShift API for Data Protection (OADP)](../../backup_and_restore/application_backup_and_restore/oadp-intro.xml#oadp-operator-supported_oadp-api).
 
 # Configuring OADP
 
@@ -107,6 +109,8 @@ You can create a DPA by defining a `DataProtectionApplication` object.
 
       - Specify the URL of the S3 endpoint.
 
+      - Specify `kopia` as the uploader type. The `restic` uploader type is deprecated for OADP 1.5 and later.
+
   2.  Create the DPA object by running the following command:
 
       ``` terminal
@@ -167,6 +171,8 @@ You can create a DPA by defining a `DataProtectionApplication` object.
       - Specify the bucket prefix; for example, `hcp`.
 
       - The bucket region in this example is `minio`, which is a storage provider that is compatilble with the S3 API.
+
+      - Specify `kopia` as the uploader type. The `restic` uploader type is deprecated for OADP 1.5 and later.
 
   2.  Create the DPA resource by running the following command:
 
@@ -240,7 +246,7 @@ To monitor and observe the backup process, see "Observing the backup and restore
       ttl: 2h0m0s
       snapshotMoveData: true
       datamover: "velero"
-      defaultVolumesToFsBackup: true
+      defaultVolumesToFsBackup: false
     ```
 
     - Replace `backup_resource_name` with a name for your `Backup` resource.
@@ -255,7 +261,7 @@ To monitor and observe the backup process, see "Observing the backup and restore
 
     - Enables the CSI volume snapshots and uploads the control plane workload automatically to the cloud storage.
 
-    - Sets the `fs-backup` backing up method for persistent volumes (PVs) as default. This setting is useful when you use a combination of Container Storage Interface (CSI) volume snapshots and the `fs-backup` method.
+    - Specifies that the `fs-backup` backing up method for persistent volumes (PVs) is not used.
 
       <div class="note">
 

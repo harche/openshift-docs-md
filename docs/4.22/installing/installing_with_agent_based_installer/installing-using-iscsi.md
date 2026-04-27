@@ -28,7 +28,7 @@ The following configurations are necessary to enable iSCSI booting when using th
 
 # Downloading the Agent-based Installer
 
-Use this procedure to download the Agent-based Installer and the CLI needed for your installation.
+Begin the installation process by downloading the Agent-based Installer and the CLI needed for your installation.
 
 1.  Log in to the Red Hat Hybrid Cloud Console using your login credentials.
 
@@ -46,7 +46,7 @@ Use this procedure to download the Agent-based Installer and the CLI needed for 
 
 # Creating the preferred configuration inputs
 
-Use this procedure to create the preferred configuration inputs used to create the agent image.
+Create the preferred configuration inputs used to create the agent image.
 
 <div class="note">
 
@@ -113,51 +113,21 @@ Configuring the `install-config.yaml` and `agent-config.yaml` files is the prefe
     EOF
     ```
 
-    - Specify the system architecture. Valid values are `amd64`, `arm64`, `ppc64le`, and `s390x`.
+    where:
 
-      If you are using the release image with the `multi` payload, you can install the cluster on different architectures such as `arm64`, `amd64`, `s390x`, and `ppc64le`. Otherwise, you can install the cluster only on the `release architecture` displayed in the output of the `openshift-install version` command. For more information, see "Verifying the supported architecture for installing an Agent-based Installer cluster".
+    `compute.architecture`
+    Specifies the system architecture. Valid values are `amd64`, `arm64`, `ppc64le`, and `s390x`.
 
-    - Required. Specify your cluster name.
+    If you are using the release image with the `multi` payload, you can install the cluster on different architectures such as `arm64`, `amd64`, `s390x`, and `ppc64le`. Otherwise, you can install the cluster only on the `release architecture` displayed in the output of the `openshift-install version` command. For more information, see "Verifying the supported architecture for installing an Agent-based Installer cluster".
 
-    - The cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
+    `metadata.name`
+    Specifies your cluster name. This value is required.
 
-    - Specify your platform.
+    `networking.networkingType`
+    Specifies the cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
 
-      <div class="note">
-
-      For bare-metal platforms, host settings made in the platform section of the `install-config.yaml` file are used by default, unless they are overridden by configurations made in the `agent-config.yaml` file.
-
-      </div>
-
-    - Specify your pull secret.
-
-    - Specify your SSH public key.
-
-    - Provide the contents of the certificate file that you used for your mirror registry. The certificate file can be an existing, trusted certificate authority or the self-signed certificate that you generated for the mirror registry. You must specify this parameter if you are using a disconnected mirror registry.
-
-    - Provide the `imageContentSources` section according to the output of the command that you used to mirror the repository. You must specify this parameter if you are using a disconnected mirror registry.
-
-      <div class="important">
-
-      - When using the `oc adm release mirror` command, use the output from the `imageContentSources` section.
-
-      - When using the `oc mirror` command, use the `repositoryDigestMirrors` section of the `ImageContentSourcePolicy` file that results from running the command.
-
-      - The `ImageContentSourcePolicy` resource is deprecated.
-
-      </div>
-
-    <div class="note">
-
-    If you set the platform to `vSphere`, `baremetal`, or `none`, you can configure IP address endpoints for cluster nodes in three ways:
-
-    - IPv4
-
-    - IPv6
-
-    - IPv4 and IPv6 in parallel (dual-stack)
-
-    </div>
+    `platform`
+    Specifies your platform. If you set the platform to `vSphere`, `baremetal`, or `none`, you can configure IP address endpoints for cluster nodes in three ways: IPv4, IPv6, or IPv4 and IPv6 in parallel (dual-stack).
 
     <div class="formalpara-title">
 
@@ -191,7 +161,29 @@ Configuring the `install-config.yaml` and `agent-config.yaml` files is the prefe
 
     <div class="note">
 
-    When you use a disconnected mirror registry, you must add the certificate file that you created previously for your mirror registry to the `additionalTrustBundle` field of the `install-config.yaml` file.
+    For bare-metal platforms, host settings made in the platform section of the `install-config.yaml` file are used by default, unless they are overridden by configurations made in the `agent-config.yaml` file.
+
+    </div>
+
+    `pullSecret`
+    Specifies your pull secret.
+
+    `sshKey`
+    Specifies your SSH public key.
+
+    `additionalTrustBundle`
+    Specifies the contents of the certificate file that you used for your mirror registry. The certificate file can be an existing, trusted certificate authority or the self-signed certificate that you generated for the mirror registry. You must specify this parameter if you are using a disconnected mirror registry.
+
+    `imageContentSources`
+    Specifies the `imageContentSources` section according to the output of the command that you used to mirror the repository. You must specify this parameter if you are using a disconnected mirror registry.
+
+    <div class="important">
+
+    - When using the `oc adm release mirror` command, use the output from the `imageContentSources` section.
+
+    - When using the `oc mirror` command, use the `repositoryDigestMirrors` section of the `ImageContentSourcePolicy` file that results from running the command.
+
+    - The `ImageContentSourcePolicy` resource is deprecated.
 
     </div>
 
@@ -237,23 +229,31 @@ Configuring the `install-config.yaml` and `agent-config.yaml` files is the prefe
     EOF
     ```
 
-    - This IP address is used to determine which node performs the bootstrapping process as well as running the `assisted-service` component. You must provide the rendezvous IP address when you do not specify at least one host’s IP address in the `networkConfig` parameter. If this address is not provided, one IP address is selected from the provided hosts' `networkConfig`.
+    where:
 
-    - Optional: Host configuration. The number of hosts defined must not exceed the total number of hosts defined in the `install-config.yaml` file, which is the sum of the values of the `compute.replicas` and `controlPlane.replicas` parameters.
+    `rendezvousIP`
+    Specifies the IP address used to determine which node performs the bootstrapping process as well as running the `assisted-service` component. You must provide the rendezvous IP address when you do not specify at least one host’s IP address in the `networkConfig` parameter. If this address is not provided, one IP address is selected from the provided hosts' `networkConfig`.
 
-    - Optional: Overrides the hostname obtained from either the Dynamic Host Configuration Protocol (DHCP) or a reverse DNS lookup. Each host must have a unique hostname supplied by one of these methods.
+    `hosts`
+    Specifies host configuration. The number of hosts defined must not exceed the total number of hosts defined in the `install-config.yaml` file, which is the sum of the values of the `compute.replicas` and `controlPlane.replicas` parameters. This configuration is optional.
 
-    - Enables provisioning of the Red Hat Enterprise Linux CoreOS (RHCOS) image to a particular device. The installation program examines the devices in the order it discovers them, and compares the discovered values with the hint values. It uses the first discovered device that matches the hint value.
+    `hosts.hostname`
+    Specifies a value that overrides the hostname obtained from either the Dynamic Host Configuration Protocol (DHCP) or a reverse DNS lookup. Each host must have a unique hostname supplied by one of these methods. This configuration is optional.
 
-      <div class="note">
+    `hosts.rootDeviceHints`
+    Specifies a configuration that enables provisioning of the Red Hat Enterprise Linux CoreOS (RHCOS) image to a particular device. The installation program examines the devices in the order it discovers them, and compares the discovered values with the hint values. It uses the first discovered device that matches the hint value.
 
-      This parameter is mandatory for FCP multipath configurations on IBM Z.
+    <div class="note">
 
-      </div>
+    This parameter is mandatory for FCP multipath configurations on IBM Z.
 
-    - Optional: Configures the network interface of a host in NMState format.
+    </div>
 
-    - Generates an ISO image without the rootfs image file, and instead provides details about where to pull the rootfs file from. You must set this parameter to `true` to enable iSCSI booting.
+    `hosts.networkConfig`
+    Specifies the network interface configuration of a host in NMState format. This configuration is optional.
+
+    `minimalISO`
+    Specifies whether to generate an ISO image without the rootfs image file, instead providing details about where to pull the rootfs file from. You must set this parameter to `true` to enable iSCSI booting.
 
 - [Deploying with dual-stack networking](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#modifying-install-config-for-dual-stack-network_ipi-install-installation-workflow)
 

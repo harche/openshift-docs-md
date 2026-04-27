@@ -1,20 +1,28 @@
-Use the following procedures to install an OpenShift Container Platform cluster with customizations using the Agent-based Installer.
+You can install an OpenShift Container Platform cluster using the Agent-based Installer, with customizations to meet your deployment needs.
 
-# Prerequisites
+The following procedures deploy a single-node OpenShift Container Platform cluster in a disconnected environment. You can use these procedures as a basis and modify according to your requirements.
 
-- You reviewed details about the [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation) processes.
+# Prerequisites for installing a cluster with the Agent-based Installer
 
-- You read the documentation on [selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing).
+Before beginning your cluster installation, you must complete prerequisite tasks that prepare your environment.
 
-- If you use a firewall or proxy, you [configured it to allow the sites](../../installing/install_config/configuring-firewall.xml#configuring-firewall) that your cluster requires access to.
+- You reviewed details about the OpenShift Container Platform installation and update processes. For more information, see "Installation and update".
 
-# Installing OpenShift Container Platform with the Agent-based Installer
+- You read "Selecting a cluster installation method and preparing it for users".
 
-The following procedures deploy a single-node OpenShift Container Platform in a disconnected environment. You can use these procedures as a basis and modify according to your requirements.
+- If you use a firewall or proxy, you configured it to allow the sites that your cluster requires access to. For more information, see "Configuring your firewall".
 
-## Downloading the Agent-based Installer
+<!-- -->
 
-Use this procedure to download the Agent-based Installer and the CLI needed for your installation.
+- [Installation and update](../../architecture/architecture-installation.xml#architecture-installation)
+
+- [Selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing)
+
+- [Configuring your firewall](../../installing/install_config/configuring-firewall.xml#configuring-firewall)
+
+# Downloading the Agent-based Installer
+
+Begin the installation process by downloading the Agent-based Installer and the CLI needed for your installation.
 
 1.  Log in to the Red Hat Hybrid Cloud Console using your login credentials.
 
@@ -30,9 +38,9 @@ Use this procedure to download the Agent-based Installer and the CLI needed for 
 
 7.  Click **Download command-line tools** and place the `openshift-install` binary in a directory that is on your `PATH`.
 
-## Verifying the supported architecture for an Agent-based installation
+# Verifying the supported architecture for an Agent-based installation
 
-Before installing an OpenShift Container Platform cluster using the Agent-based Installer, you can verify the supported architecture on which you can install the cluster. This procedure is optional.
+Before installing an OpenShift Container Platform cluster using the Agent-based Installer, you can optionally verify the supported architecture on which you can install the cluster.
 
 - You installed the OpenShift CLI (`oc`).
 
@@ -67,23 +75,23 @@ Before installing an OpenShift Container Platform cluster using the Agent-based 
     $ oc adm release info <release_image> -o jsonpath="{ .metadata.metadata}"
     ```
 
-    - Replace `<release_image>` with the release image. For example: `quay.io/openshift-release-dev/ocp-release@sha256:123abc456def789ghi012jkl345mno678pqr901stu234vwx567yz0`.
+    Replace `<release_image>` with the release image. For example: `quay.io/openshift-release-dev/ocp-release@sha256:123abc456def789ghi012jkl345mno678pqr901stu234vwx567yz0`.
 
-      <div class="formalpara-title">
+    <div class="formalpara-title">
 
-      **Example output when the release image uses the `multi` payload**
+    **Example output when the release image uses the `multi` payload**
 
-      </div>
+    </div>
 
-      ``` terminal
-      {"release.openshift.io architecture":"multi"}
-      ```
+    ``` terminal
+    {"release.openshift.io architecture":"multi"}
+    ```
 
-      If you are using the release image with the `multi` payload, you can install the cluster on different architectures such as `arm64`, `amd64`, `s390x`, and `ppc64le`. Otherwise, you can install the cluster only on the `release architecture` displayed in the output of the `openshift-install version` command.
+    If you are using the release image with the `multi` payload, you can install the cluster on different architectures such as `arm64`, `amd64`, `s390x`, and `ppc64le`. Otherwise, you can install the cluster only on the `release architecture` displayed in the output of the `openshift-install version` command.
 
-## Creating the preferred configuration inputs
+# Creating the preferred configuration inputs
 
-Use this procedure to create the preferred configuration inputs used to create the agent image.
+Create the preferred configuration inputs used to create the agent image.
 
 <div class="note">
 
@@ -150,51 +158,21 @@ Configuring the `install-config.yaml` and `agent-config.yaml` files is the prefe
     EOF
     ```
 
-    - Specify the system architecture. Valid values are `amd64`, `arm64`, `ppc64le`, and `s390x`.
+    where:
 
-      If you are using the release image with the `multi` payload, you can install the cluster on different architectures such as `arm64`, `amd64`, `s390x`, and `ppc64le`. Otherwise, you can install the cluster only on the `release architecture` displayed in the output of the `openshift-install version` command. For more information, see "Verifying the supported architecture for installing an Agent-based Installer cluster".
+    `compute.architecture`
+    Specifies the system architecture. Valid values are `amd64`, `arm64`, `ppc64le`, and `s390x`.
 
-    - Required. Specify your cluster name.
+    If you are using the release image with the `multi` payload, you can install the cluster on different architectures such as `arm64`, `amd64`, `s390x`, and `ppc64le`. Otherwise, you can install the cluster only on the `release architecture` displayed in the output of the `openshift-install version` command. For more information, see "Verifying the supported architecture for installing an Agent-based Installer cluster".
 
-    - The cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
+    `metadata.name`
+    Specifies your cluster name. This value is required.
 
-    - Specify your platform.
+    `networking.networkingType`
+    Specifies the cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
 
-      <div class="note">
-
-      For bare-metal platforms, host settings made in the platform section of the `install-config.yaml` file are used by default, unless they are overridden by configurations made in the `agent-config.yaml` file.
-
-      </div>
-
-    - Specify your pull secret.
-
-    - Specify your SSH public key.
-
-    - Provide the contents of the certificate file that you used for your mirror registry. The certificate file can be an existing, trusted certificate authority or the self-signed certificate that you generated for the mirror registry. You must specify this parameter if you are using a disconnected mirror registry.
-
-    - Provide the `imageContentSources` section according to the output of the command that you used to mirror the repository. You must specify this parameter if you are using a disconnected mirror registry.
-
-      <div class="important">
-
-      - When using the `oc adm release mirror` command, use the output from the `imageContentSources` section.
-
-      - When using the `oc mirror` command, use the `repositoryDigestMirrors` section of the `ImageContentSourcePolicy` file that results from running the command.
-
-      - The `ImageContentSourcePolicy` resource is deprecated.
-
-      </div>
-
-    <div class="note">
-
-    If you set the platform to `vSphere`, `baremetal`, or `none`, you can configure IP address endpoints for cluster nodes in three ways:
-
-    - IPv4
-
-    - IPv6
-
-    - IPv4 and IPv6 in parallel (dual-stack)
-
-    </div>
+    `platform`
+    Specifies your platform. If you set the platform to `vSphere`, `baremetal`, or `none`, you can configure IP address endpoints for cluster nodes in three ways: IPv4, IPv6, or IPv4 and IPv6 in parallel (dual-stack).
 
     <div class="formalpara-title">
 
@@ -228,7 +206,29 @@ Configuring the `install-config.yaml` and `agent-config.yaml` files is the prefe
 
     <div class="note">
 
-    When you use a disconnected mirror registry, you must add the certificate file that you created previously for your mirror registry to the `additionalTrustBundle` field of the `install-config.yaml` file.
+    For bare-metal platforms, host settings made in the platform section of the `install-config.yaml` file are used by default, unless they are overridden by configurations made in the `agent-config.yaml` file.
+
+    </div>
+
+    `pullSecret`
+    Specifies your pull secret.
+
+    `sshKey`
+    Specifies your SSH public key.
+
+    `additionalTrustBundle`
+    Specifies the contents of the certificate file that you used for your mirror registry. The certificate file can be an existing, trusted certificate authority or the self-signed certificate that you generated for the mirror registry. You must specify this parameter if you are using a disconnected mirror registry.
+
+    `imageContentSources`
+    Specifies the `imageContentSources` section according to the output of the command that you used to mirror the repository. You must specify this parameter if you are using a disconnected mirror registry.
+
+    <div class="important">
+
+    - When using the `oc adm release mirror` command, use the output from the `imageContentSources` section.
+
+    - When using the `oc mirror` command, use the `repositoryDigestMirrors` section of the `ImageContentSourcePolicy` file that results from running the command.
+
+    - The `ImageContentSourcePolicy` resource is deprecated.
 
     </div>
 
@@ -273,21 +273,38 @@ Configuring the `install-config.yaml` and `agent-config.yaml` files is the prefe
     EOF
     ```
 
-    - This IP address is used to determine which node performs the bootstrapping process as well as running the `assisted-service` component. You must provide the rendezvous IP address when you do not specify at least one host’s IP address in the `networkConfig` parameter. If this address is not provided, one IP address is selected from the provided hosts' `networkConfig`.
+    where:
 
-    - Optional: Host configuration. The number of hosts defined must not exceed the total number of hosts defined in the `install-config.yaml` file, which is the sum of the values of the `compute.replicas` and `controlPlane.replicas` parameters.
+    `rendezvousIP`
+    Specifies the IP address used to determine which node performs the bootstrapping process as well as running the `assisted-service` component. You must provide the rendezvous IP address when you do not specify at least one host’s IP address in the `networkConfig` parameter. If this address is not provided, one IP address is selected from the provided hosts' `networkConfig`.
 
-    - Optional: Overrides the hostname obtained from either the Dynamic Host Configuration Protocol (DHCP) or a reverse DNS lookup. Each host must have a unique hostname supplied by one of these methods.
+    `hosts`
+    Specifies host configuration. The number of hosts defined must not exceed the total number of hosts defined in the `install-config.yaml` file, which is the sum of the values of the `compute.replicas` and `controlPlane.replicas` parameters. This configuration is optional.
 
-    - Enables provisioning of the Red Hat Enterprise Linux CoreOS (RHCOS) image to a particular device. The installation program examines the devices in the order it discovers them, and compares the discovered values with the hint values. It uses the first discovered device that matches the hint value.
+    `hosts.hostname`
+    Specifies a value that overrides the hostname obtained from either the Dynamic Host Configuration Protocol (DHCP) or a reverse DNS lookup. Each host must have a unique hostname supplied by one of these methods. This configuration is optional.
 
-      <div class="note">
+    `hosts.rootDeviceHints`
+    Specifies a configuration that enables provisioning of the Red Hat Enterprise Linux CoreOS (RHCOS) image to a particular device. The installation program examines the devices in the order it discovers them, and compares the discovered values with the hint values. It uses the first discovered device that matches the hint value.
 
-      This parameter is mandatory for FCP multipath configurations on IBM Z.
+    <div class="note">
 
-      </div>
+    This parameter is mandatory for FCP multipath configurations on IBM Z.
 
-    - Optional: Configures the network interface of a host in NMState format.
+    </div>
+
+    `hosts.networkConfig`
+    Specifies the network interface configuration of a host in NMState format. This configuration is optional.
+
+- [Deploying with dual-stack networking](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#modifying-install-config-for-dual-stack-network_ipi-install-installation-workflow)
+
+- [Configuring the install-config yaml file](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#configuring-the-install-config-file_ipi-install-installation-workflow)
+
+- [Configuring a three-node cluster](../../installing/installing_bare_metal/upi/installing-restricted-networks-bare-metal.xml#installation-three-node-cluster_installing-restricted-networks-bare-metal)
+
+- [About root device hints](../../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#root-device-hints_preparing-to-install-with-agent-based-installer)
+
+- [NMState state examples (NMState documentation)](https://nmstate.io/examples.html)
 
 - [Configuring regions and zones for a VMware vCenter](../../installing/installing_vsphere/ipi/installing-vsphere-installer-provisioned-customizations.xml#configuring-vsphere-regions-zones_installing-vsphere-installer-provisioned-customizations)
 
@@ -295,7 +312,7 @@ Configuring the `install-config.yaml` and `agent-config.yaml` files is the prefe
 
 - [Configuring the Agent-based Installer to use mirrored images](../../installing/installing_with_agent_based_installer/understanding-disconnected-installation-mirroring.xml#agent-install-configuring-for-disconnected-registry_understanding-disconnected-installation-mirroring)
 
-## Creating additional manifest files
+# Creating additional manifest files
 
 As an optional task, you can create additional manifests to further configure your cluster beyond the configurations available in the `install-config.yaml` and `agent-config.yaml` files.
 
@@ -305,7 +322,7 @@ Customizations to the cluster made by additional manifests are not validated, ar
 
 </div>
 
-### Creating a directory to contain additional manifests
+## Creating a directory to contain additional manifests
 
 If you create additional manifests to configure your Agent-based installation beyond the `install-config.yaml` and `agent-config.yaml` files, you must create an `openshift` subdirectory within your installation directory. All of your additional machine configurations must be located within this subdirectory.
 
@@ -325,7 +342,7 @@ The most common type of additional manifest you can add is a `MachineConfig` obj
 
 - [Using MachineConfig objects to configure nodes](../../machine_configuration/machine-configs-configure.xml#machine-configs-configure)
 
-### Disk partitioning
+## Creating disk partitions
 
 To accommodate directories expected to grow, create separate partitions during the RHCOS installation. This configuration overrides the default partitioning layout, ensuring specific storage requirements are met for dynamic data.
 
@@ -406,6 +423,8 @@ The following procedure sets up a separate `/var` partition by adding a machine 
 
 As an optional task, you can use GitOps Zero Touch Provisioning (ZTP) manifests to configure your installation beyond the options available through the `install-config.yaml` and `agent-config.yaml` files.
 
+See "Challenges of the network far edge" to learn more about GitOps Zero Touch Provisioning (ZTP).
+
 <div class="note">
 
 GitOps ZTP manifests can be generated with or without configuring the `install-config.yaml` and `agent-config.yaml` files beforehand. If you chose to configure the `install-config.yaml` and `agent-config.yaml` files, the configurations will be imported to the ZTP cluster manifests when they are generated.
@@ -448,13 +467,13 @@ GitOps ZTP manifests can be generated with or without configuring the `install-c
 
     2.  Configure the manifest files in the `mirror` directory.
 
-- [Sample GitOps ZTP custom resources](../../installing/installing_with_agent_based_installer/installing-with-agent-based-installer.xml#sample-ztp-custom-resources_installing-with-agent-based-installer).
+- [Sample GitOps ZTP custom resources](../../installing/installing_with_agent_based_installer/installing-with-agent-based-installer.xml#sample-ztp-custom-resources_installing-with-agent-based-installer)
 
-- See [Challenges of the network far edge](../../edge_computing/ztp-deploying-far-edge-clusters-at-scale.xml#ztp-deploying-far-edge-clusters-at-scale) to learn more about GitOps Zero Touch Provisioning (ZTP).
+- [Challenges of the network far edge](../../edge_computing/ztp-deploying-far-edge-clusters-at-scale.xml#ztp-deploying-far-edge-clusters-at-scale)
 
 ## Encrypting the disk
 
-As an optional task, you can use this procedure to encrypt your disk or partition while installing OpenShift Container Platform with the Agent-based Installer.
+As an optional task, you can encrypt your disk or partition while installing OpenShift Container Platform with the Agent-based Installer.
 
 <div class="important">
 
@@ -501,17 +520,22 @@ If there are leftover TPM encryption keys from a previous operating system on th
         tangServers: "server1": "http://tang-server-1.example.com:7500"
     ```
 
-    - Specify which nodes to enable disk encryption on. Valid values are `none`, `all`, `masters`, and `workers`.
+    where:
 
-    - Specify which disk encryption mode to use. Valid values are `tpmv2` and `tang`.
+    `diskEncryption.enableOn`
+    Specifies which nodes to enable disk encryption on. Valid values are `none`, `all`, `masters`, and `workers`.
 
-    - Optional: If you are using Tang, specify the Tang servers.
+    `diskEncryption.mode`
+    Specifies which disk encryption mode to use. Valid values are `tpmv2` and `tang`.
+
+    `diskEncryption.tangServers`
+    Specifies the Tang servers if you are using Tang. This value is optional.
 
 - [About disk encryption](../../installing/install_config/installing-customizing.xml#installation-special-config-encrypt-disk_installing-customizing)
 
-## Creating and booting the agent image
+# Creating and booting the agent image
 
-Use this procedure to boot the agent image on your machines.
+After you have prepared the configuration inputs for your installation, create the ISO image and boot it on your machines.
 
 - If you plan to boot the agent image from a USB drive, you have installed the `syslinux` package.
 
@@ -523,7 +547,7 @@ Use this procedure to boot the agent image on your machines.
 
     <div class="note">
 
-    Red Hat Enterprise Linux CoreOS (RHCOS) supports multipathing on the primary disk, allowing stronger resilience to hardware failure to achieve higher host availability. Multipathing is enabled by default in the agent ISO image, with a default `/etc/multipath.conf` configuration.
+    Red Hat Enterprise Linux CoreOS (RHCOS) supports multipathing on the primary disk, allowing stronger resilience to hardware failure to achieve higher host availability. Multipathing is enabled by default in the agent ISO image, with a default `/etc/multipath.conf` configuration.
 
     </div>
 
@@ -545,9 +569,11 @@ Use this procedure to boot the agent image on your machines.
 
 3.  Boot the `agent.x86_64.iso`, `agent.aarch64.iso`, or `agent.s390x.iso` image on the bare-metal machines.
 
-## Adding IBM Z agents with RHEL KVM
+# Adding IBM Z agents with RHEL KVM
 
-Use the following procedure to manually add IBM Z® agents with RHEL KVM. Only use this procedure for IBM Z® clusters with RHEL KVM.
+You can manually add IBM Z® agents with RHEL KVM.
+
+Only use this procedure for IBM Z® clusters with RHEL KVM.
 
 <div class="note">
 
@@ -581,13 +607,13 @@ The `nmstateconfig` parameter must be configured for the KVM boot.
         --wait=-1
     ```
 
-    - For the `--cdrom` parameter, specify the location of the ISO image on the local server, for example, `<path_to_image>/home/<image>.iso`.
+    For the `--cdrom` parameter, specify the location of the ISO image on the local server, for example, `<path_to_image>/home/<image>.iso`.
 
-      <div class="note">
+    <div class="note">
 
-      For KVM-based installations using DASD devices on IBM Z, a partition (for example, `/dev/dasdb1`) must be created using the `fdasd` partitioning tool.
+    For KVM-based installations using DASD devices on IBM Z, a partition (for example, `/dev/dasdb1`) must be created using the `fdasd` partitioning tool.
 
-      </div>
+    </div>
 
 3.  Optional: Enable FIPS mode.
 
@@ -623,23 +649,23 @@ The `nmstateconfig` parameter must be configured for the KVM boot.
        --osinfo detect=on,require=off
     ```
 
+    where:
+
+    `--location`
+    Specifies the location of the kernel/initrd on the HTTP or HTTPS server.
+
+    `--extra-args "fips=1"`
+    Specifies the enablement of FIPS mode. This entry is required in addition to setting the `fips` parameter to `true` in the `install-config.yaml` file.
+
     <div class="note">
 
-    For KVM-based installations using DASD devices on IBM Z, a partition (for example, `/dev/dasdb1`) must be created using the `fdasd` partitioning tool.
+    - For KVM-based installations using DASD devices on IBM Z, a partition (for example, `/dev/dasdb1`) must be created using the `fdasd` partitioning tool.
+
+    - Currently, only PXE boot is supported to enable FIPS mode on IBM Z®.
 
     </div>
 
-    - For the `--location` parameter, specify the location of the kernel/initrd on the HTTP or HTTPS server.
-
-    - To enable FIPS mode, specify `fips=1`. This entry is required in addition to setting the `fips` parameter to `true` in the `install-config.yaml` file.
-
-      <div class="note">
-
-      Currently, only PXE boot is supported to enable FIPS mode on IBM Z®.
-
-      </div>
-
-## Configuring a local arbiter node
+# Configuring a local arbiter node
 
 You can configure an OpenShift Container Platform cluster with two control plane nodes and one local arbiter node so as to retain high availability (HA) while reducing infrastructure costs for your cluster.
 
@@ -739,7 +765,7 @@ Additionally, the control plane nodes must also have enough storage for the work
 
 2.  Save the modified `install-config.yaml` file.
 
-## Verifying that the current installation host can pull release images
+# Verifying that the current installation host can pull release images
 
 After you boot the agent image and network services are made available to the host, the agent console application performs a pull check to verify that the current host can retrieve release images.
 
@@ -793,9 +819,9 @@ If the agent console application detects host network configuration issues, the 
 
     11. If the `Release image URL` pull check succeeds and displays a green icon beside the URL, select **Quit** to exit the agent console application and continue with the installation.
 
-## Tracking and verifying installation progress
+# Tracking and verifying installation progress
 
-Use the following procedure to track installation progress and to verify a successful installation.
+After the installation has started, you can track installation progress and verify a successful installation.
 
 - You have configured a DNS record for the Kubernetes API server.
 
@@ -806,9 +832,13 @@ Use the following procedure to track installation progress and to verify a succe
         --log-level=info
     ```
 
-    - For `<install_directory>`, specify the path to the directory where the agent ISO was generated.
+    where:
 
-    - To view different installation details, specify `warn`, `debug`, or `error` instead of `info`.
+    `--dir`
+    specifies the path to the directory where the agent ISO was generated.
+
+    `--log-level`
+    Specifies the level of installation details. Valid values are `info`, `warn`, `debug`, and `error`.
 
     <div class="formalpara-title">
 
@@ -825,13 +855,13 @@ Use the following procedure to track installation progress and to verify a succe
 
     The command succeeds when the Kubernetes API server signals that it has been bootstrapped on the control plane machines.
 
-2.  To track the progress and verify successful installation, run the following command:
+2.  Track the progress and verify successful installation by running the following command:
 
     ``` terminal
     $ openshift-install --dir <install_directory> agent wait-for install-complete
     ```
 
-    - For `<install_directory>` directory, specify the path to the directory where the agent ISO was generated.
+    Replace `<install_directory>` with the path to the directory where the agent ISO was generated.
 
     <div class="formalpara-title">
 
@@ -849,57 +879,47 @@ Use the following procedure to track installation progress and to verify a succe
     INFO Access the OpenShift web-console here: https://console-openshift-console.apps.sno-cluster.test.example.com
     ```
 
-<div class="note">
+    <div class="note">
 
-If you are using the optional method of GitOps ZTP manifests, you can configure IP address endpoints for cluster nodes through the `AgentClusterInstall.yaml` file in three ways:
+    If you are using the optional method of GitOps ZTP manifests, you can configure IP address endpoints for cluster nodes through the `AgentClusterInstall.yaml` file in three ways:
 
-- IPv4
+    - IPv4
 
-- IPv6
+    - IPv6
 
-- IPv4 and IPv6 in parallel (dual-stack)
+    - IPv4 and IPv6 in parallel (dual-stack)
 
-IPv6 is supported only on bare metal platforms.
+    IPv6 is supported only on bare metal platforms.
 
-</div>
+    </div>
 
-<div class="formalpara-title">
+    <div class="formalpara-title">
 
-**Example of dual-stack networking**
+    **Example of dual-stack networking**
 
-</div>
+    </div>
 
-``` yaml
-apiVIP: 192.168.11.3
-ingressVIP: 192.168.11.4
-clusterDeploymentRef:
-  name: mycluster
-imageSetRef:
-  name: openshift-4.17
-networking:
-  clusterNetwork:
-  - cidr: 172.21.0.0/16
-    hostPrefix: 23
-  - cidr: fd02::/48
-    hostPrefix: 64
-  machineNetwork:
-  - cidr: 192.168.11.0/16
-  - cidr: 2001:DB8::/32
-  serviceNetwork:
-  - 172.22.0.0/16
-  - fd03::/112
-  networkType: OVNKubernetes
-```
-
-- See [Deploying with dual-stack networking](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#modifying-install-config-for-dual-stack-network_ipi-install-installation-workflow).
-
-- See [Configuring the install-config yaml file](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#configuring-the-install-config-file_ipi-install-installation-workflow).
-
-- See [Configuring a three-node cluster](../../installing/installing_bare_metal/upi/installing-restricted-networks-bare-metal.xml#installation-three-node-cluster_installing-restricted-networks-bare-metal) to deploy three-node clusters in bare-metal environments.
-
-- See [About root device hints](../../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#root-device-hints_preparing-to-install-with-agent-based-installer).
-
-- See [NMState state examples](https://nmstate.io/examples.html).
+    ``` yaml
+    apiVIP: 192.168.11.3
+    ingressVIP: 192.168.11.4
+    clusterDeploymentRef:
+      name: mycluster
+    imageSetRef:
+      name: openshift-4.17
+    networking:
+      clusterNetwork:
+      - cidr: 172.21.0.0/16
+        hostPrefix: 23
+      - cidr: fd02::/48
+        hostPrefix: 64
+      machineNetwork:
+      - cidr: 192.168.11.0/16
+      - cidr: 2001:DB8::/32
+      serviceNetwork:
+      - 172.22.0.0/16
+      - fd03::/112
+      networkType: OVNKubernetes
+    ```
 
 # Sample GitOps ZTP custom resources
 
@@ -1066,11 +1086,11 @@ stringData:
   .dockerconfigjson: <pull_secret>
 ```
 
-- See [Challenges of the network far edge](../../edge_computing/ztp-deploying-far-edge-clusters-at-scale.xml#ztp-deploying-far-edge-clusters-at-scale) to learn more about GitOps Zero Touch Provisioning (ZTP).
+- [Challenges of the network far edge](../../edge_computing/ztp-deploying-far-edge-clusters-at-scale.xml#ztp-deploying-far-edge-clusters-at-scale)
 
 # Gathering log data from a failed Agent-based installation
 
-Use the following procedure to gather log data about a failed Agent-based installation to provide for a support case.
+If you encounter a failed Agent-based installation, you can gather log data to provide for a support case.
 
 - You have configured a DNS record for the Kubernetes API server.
 

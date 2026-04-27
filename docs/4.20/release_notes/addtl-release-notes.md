@@ -81,7 +81,7 @@ O
 <!-- -->
 
 P
-[Power monitoring for Red Hat OpenShift](../observability/power_monitoring/power-monitoring-release-notes.xml#power-monitoring-release-notes)
+[Power monitoring for Red Hat OpenShift](https://docs.redhat.com/en/documentation/power_monitoring_for_red_hat_openshift/latest/html/release_notes/index)
 
 R
 [Run Once Duration Override Operator](../nodes/pods/run_once_duration_override/run-once-duration-override-release-notes.xml#run-once-duration-override-release-notes)

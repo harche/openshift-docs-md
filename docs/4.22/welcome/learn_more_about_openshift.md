@@ -231,7 +231,7 @@ Explore the following OpenShift Container Platform installation tasks:
 <td style="text-align: left;"><p><a href="https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/about_monitoring/about-ocp-monitoring">About OpenShift Container Platform monitoring</a></p></td>
 <td style="text-align: left;"><ul>
 <li><p><a href="../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring_about-remote-health-monitoring">Remote health monitoring</a></p></li>
-<li><p><a href="../observability/power_monitoring/power-monitoring-overview.xml#power-monitoring-overview">Power monitoring for Red Hat OpenShift (Technology Preview)</a></p></li>
+<li><p><a href="https://docs.redhat.com/en/documentation/power_monitoring_for_red_hat_openshift/latest/html/about_power_monitoring/about-power-monitoring">Power monitoring for Red Hat OpenShift (Technology Preview)</a></p></li>
 </ul></td>
 </tr>
 </tbody>

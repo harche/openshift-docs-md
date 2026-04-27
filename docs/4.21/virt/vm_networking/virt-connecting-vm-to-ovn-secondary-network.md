@@ -140,10 +140,10 @@ You can connect a virtual machine (VM) to the OVN-Kubernetes secondary network b
 
 # Additional resources
 
-- [Creating secondary networks on OVN-Kubernetes](../../networking/multiple_networks/secondary_networks/creating-secondary-nwt-ovnk.xml#configuration-ovnk-additional-networks_configuring-additional-network)
+- [Creating secondary networks on OVN-Kubernetes](../../networking/multiple_networks/secondary_networks/creating-secondary-nwt-ovnk.xml#configuration-ovnk-additional-networks_configuring-additional-network-ovnk)
 
 - [About the Kubernetes NMState Operator](../../networking/networking_operators/k8s-nmstate-about-the-k8s-nmstate-operator.xml#k8s-nmstate-about-the-k8s-nmstate-operator)
 
-- [Multi-network policy API](../../networking/multiple_networks/secondary_networks/configuring-multi-network-policy.xml#compatibility-with-multi-network-policy_configuring-additional-network)
+- [Multi-network policy API](../../networking/multiple_networks/secondary_networks/configuring-multi-network-policy.xml#configuring-multi-network-policy)
 
-- [Creating primary networks using a NetworkAttachmentDefinition](../../networking/multiple_networks/primary_networks/about-primary-nwt-nad.xml#understanding-multiple-networks)
+- [Creating primary networks using a NetworkAttachmentDefinition](../../networking/multiple_networks/primary_networks/about-primary-nwt-nad.xml#about-primary-nwt-nad)

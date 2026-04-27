@@ -1,8 +1,10 @@
+You configure SAN-based storage for virtual machines by using IBM Fusion Access for SAN with OpenShift Virtualization. You must install the Fusion Access for SAN Operator (Fusion Access for SAN) and set up the storage cluster and file systems.
+
 # About IBM Fusion Access for SAN
 
 IBM Fusion Access for SAN provides a scalable clustered file system for enterprise storage, primarily designed to offer access to consolidated, block-level data storage. It presents storage devices, such as disk arrays, to the operating system as if they were direct-attached storage.
 
-This solution is particularly geared towards enterprise storage for OpenShift Virtualization and leverages existing Storage Area Network (SAN) infrastructure. A SAN is a dedicated network of storage devices that is typically not accessible through the local area network (LAN).
+IBM Fusion Access for SAN uses existing Storage Area Network (SAN) infrastructure to provide enterprise storage for OpenShift Virtualization. A SAN is a dedicated network of storage devices that is typically not accessible through the local area network (LAN).
 
 To use OpenShift Virtualization with IBM Fusion Access for SAN, you must first install the Fusion Access for SAN Operator.
 
@@ -10,13 +12,13 @@ Then you must create a Kubernetes pull secret and create the `FusionAccess` cust
 
 Finally, follow the OpenShift Container Platform web console wizard to configure the storage cluster, local disk, and file systems.
 
-## Why use Fusion Access for SAN?
+## Why use Fusion Access for SAN
 
 Easy user experience
 Fusion Access for SAN features a wizard-driven user interface (UI) for installing and configuring storage clusters, file systems, and storage classes, to simplify the setup process.
 
-Leverage existing infrastructure
-Organizations can leverage their existing SAN investments, including Fibre Channel (FC) and iSCSI technologies, as they transition to or expand with OpenShift Virtualization.
+Use existing infrastructure
+Organizations can use their existing SAN investments, including Fibre Channel (FC) and iSCSI technologies, as they migrate to or expand with OpenShift Virtualization.
 
 Scalability
 The storage cluster is designed to scale with OpenShift Container Platform clusters and virtual machine (VM) workloads. It can support up to approximately 3000 VMs on 6 bare-metal hosts, with possibilities for further scaling by adding more file systems or using specific storage class parameters.
@@ -31,9 +33,11 @@ File-level access
 Although a SAN primarily operates at the block level, file systems built on top of SAN storage can provide file-level access through shared-disk file systems.
 
 Centralized management
-The underlying SAN software manages servers, storage devices, and the network to ensure that data moves directly between storage devices with minimal server intervention. It also supports centralized management and configuration of SAN components like Logical Unit Numbers (LUNs).
+The underlying SAN software manages servers, storage devices, and the network to ensure that data moves directly between storage devices with minimal server intervention. It also supports centralized management and configuration of SAN components such as Logical Unit Numbers (LUNs).
 
 # Prerequisites and Limitations for Fusion Access for SAN
+
+Prerequisites and limitations are provided for installing and configuring Fusion Access for SAN.
 
 ## Prerequisites
 
@@ -115,14 +119,12 @@ After installing the Fusion Access for SAN Operator, you must create a Kubernete
 
 3.  Save the entitlement key in a safe place.
 
-4.  Create the secret object by running the `oc create` command:
+4.  Create the secret object by running the `oc create` command, replacing `<ibm-entitlement-key>` with the entitlement key that you copied in step 2.
 
     ``` terminal
     $ oc create secret -n ibm-fusion-access generic fusion-pullsecret \
     --from-literal=ibm-entitlement-key=<ibm-entitlement-key>
     ```
-
-    - This is the entitlement key you copied in step 2 from the **IBM Container software library**.
 
 <!-- -->
 
@@ -144,7 +146,7 @@ Creating the `FusionAccess` CR triggers the installation of the correct version 
 
 1.  In the OpenShift Container Platform web console, navigate to **Ecosystem** → **Installed Operators**.
 
-2.  Click on the Fusion Access for SAN Operator you installed.
+2.  Click the Fusion Access for SAN Operator you installed.
 
 3.  In the **Fusion Access for SAN** page, select the **Fusion Access** tab.
 
@@ -158,7 +160,7 @@ Creating the `FusionAccess` CR triggers the installation of the correct version 
 
 8.  Click **Create**.
 
-- In the **Fusion Access for SAN** Operator page, in the **Fusion Access** tab, verify that the created `FusionAccess` CR appears with the status **Ready**.
+- In the **Fusion Access for SAN** Operator page, in the **Fusion Access** tab, verify that the created `FusionAccess` CR is displayed with the status **Ready**.
 
 # Creating a storage cluster with Fusion Access for SAN
 
@@ -208,7 +210,7 @@ The file system is based on the storage available in the worker nodes you select
 
 5.  Click **Create file system**.
 
-    The **Fusion Access for SAN** page reloads, and the new file system appears in the **File systems** tab.
+    The **Fusion Access for SAN** page reloads, and the new file system is displayed in the **File systems** tab.
 
 <div class="formalpara-title">
 
@@ -218,15 +220,9 @@ The file system is based on the storage available in the worker nodes you select
 
 Repeat this procedure for each file system that you want to create.
 
-1.  Watch the **Status** of the file system in the **File systems** tab until it is marked as **Healthy**.
+1.  Watch the **Status** of the file system in the **File systems** tab until it is marked as **Healthy**. This might take several minutes.
 
-    <div class="note">
-
-    This may take several minutes.
-
-    </div>
-
-2.  Click on the **StorageClass** for the file system.
+2.  Click the **StorageClass** for the file system.
 
 3.  In the **YAML** tab, verify the following:
 
@@ -276,16 +272,6 @@ If you encounter issues with IBM Fusion Access for SAN, provide the must-gather 
     ```
 
     - Replace `<software_version>` with the IBM Fusion Access for SAN version value.
-
-# Next steps
-
-Once you create a storage cluster with file systems, you can create a virtual machine (VM) on the storage cluster.
-
-Create a VM from an instance type or template and select a storage class that corresponds to one of the file systems you created as the storage type.
-
-- [Creating virtual machines from instance types](../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types).
-
-- [Creating virtual machines from templates](../../virt/creating_vm/virt-creating-vms-from-templates.xml#virt-creating-vms-from-templates).
 
 # IBM Fusion Access for SAN release updates
 
@@ -343,3 +329,9 @@ Disk <ID> may still belong to an active file system
 No workaround is available. Contact IBM Support for assistance.
 
 [OCPNAS-233](https://issues.redhat.com/browse/OCPNAS-233)
+
+# Additional resources
+
+- [Creating virtual machines from instance types](../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types)
+
+- [Creating virtual machines from templates](../../virt/creating_vm/virt-creating-vms-from-templates.xml#virt-creating-vms-from-templates)

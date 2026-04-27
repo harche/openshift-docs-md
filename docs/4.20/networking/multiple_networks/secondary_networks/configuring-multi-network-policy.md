@@ -429,7 +429,9 @@ If you log in with `cluster-admin` privileges, you can delete network policies i
 
 ## Creating a default deny all multi-network policy
 
-The default deny all multi-network policy blocks all cross-pod networking other than network traffic allowed by the configuration of other deployed network policies and traffic between host-networked pods. This procedure enforces a strong deny policy by applying a `deny-by-default` policy in the `my-project` namespace.
+The default deny all multi-network policy blocks all cross-pod networking other than network traffic allowed by the configuration of other deployed network policies and traffic between host-networked pods.
+
+The steps in the procedure enforces a strong deny policy by applying a `deny-by-default` policy in the `my-project` namespace.
 
 <div class="warning">
 
@@ -647,7 +649,9 @@ If you log in with a user with the `cluster-admin` role, then you can create a n
 
 ## Creating a multi-network policy allowing traffic to an application from a namespace
 
-You can configure a policy that allows traffic to a pod with the label `app=web` from a particular namespace. This configuration is useful in the following use cases:
+You can configure a policy that allows traffic to a pod with the label `app=web` from a particular namespace.
+
+This configuration is useful in the following use cases:
 
 - Restrict traffic to a production database only to namespaces that have production workloads deployed.
 

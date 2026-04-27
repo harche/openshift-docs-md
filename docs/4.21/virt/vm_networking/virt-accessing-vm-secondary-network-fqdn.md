@@ -171,6 +171,6 @@ You can access a running virtual machine (VM) attached to a secondary network in
 
 - [Configuring ingress cluster traffic using a load balancer](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-load-balancer.xml#configuring-ingress-cluster-traffic-load-balancer)
 
-- [About MetalLB and the MetalLB Operator](../../networking/networking_operators/metallb-operator/about-metallb.xml#about-metallb_about-metallb)
+- [About MetalLB and the MetalLB Operator](../../networking/networking_operators/metallb-operator/about-metallb.xml#about-metallb)
 
 - [Configuring IP addresses for virtual machines](../../virt/vm_networking/virt-configuring-viewing-ips-for-vms.xml#virt-configuring-viewing-ips-for-vms)

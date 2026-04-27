@@ -316,6 +316,6 @@ You can access the node-exporter service outside the cluster and view the expose
 
 - [Monitoring application health by using health checks](../../applications/application-health.xml#application-health)
 
-- [Creating and using config maps](../../nodes/pods/nodes-pods-configmaps.xml#nodes-pods-configmaps)
+- [Creating and using config maps](../../nodes/pods/nodes-pods-configmaps.xml#nodes-pods-configmap-overview_configmaps)
 
 - [Controlling virtual machine states](../../virt/managing_vms/virt-controlling-vm-states.xml#virt-controlling-vm-states)

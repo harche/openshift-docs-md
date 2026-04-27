@@ -329,7 +329,7 @@ You can run Data Packet Development Kit (DPDK) workloads on virtual machines (VM
 
 - [Using CPU Manager and Topology Manager](../../scalability_and_performance/using-cpu-manager.xml#using-cpu-manager)
 
-- [Configuring huge pages](../../scalability_and_performance/what-huge-pages-do-and-how-they-are-consumed-by-apps.xml#configuring-huge-pages_huge-pages)
+- [Optimizing memory management for workloads by using huge pages](../../scalability_and_performance/what-huge-pages-do-and-how-they-are-consumed-by-apps.xml#what-huge-pages-do-and-how-they-are-consumed)
 
 - [Creating a custom machine config pool](https://access.redhat.com/solutions/5688941)
 

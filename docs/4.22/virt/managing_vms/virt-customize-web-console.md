@@ -2,9 +2,9 @@ As a cluster administrator, you can customize the OpenShift Container Platform w
 
 # Enable bulk operations for virtual machines
 
-You can enable virtual machine (VM) owners to perform large-scale management tasks, such as backups and storage migrations, across multiple virtual machines simultaneously, by creating a dynamic plugin that enables bulk actions in the web console.
+You can enable virtual machine (VM) owners to perform large-scale management tasks, such as backups and storage migrations, across many virtual machines simultaneously, by creating a dynamic plugin that enables bulk actions in the web console.
 
-This integration reduces manual overhead for multi-VM environments and ensures that custom actions are available as native, selectable bulk actions from within the **Virtualization** page.
+This integration reduces manual tasks for multi-VM environments and ensures that custom actions are available as native, selectable bulk actions from within the **Virtualization** page.
 
 - You have created a dynamic plugin.
 
@@ -30,7 +30,7 @@ This integration reduces manual overhead for multi-VM environments and ensures t
      }
     ```
 
-    - `properties.contextId` specifies a string for which the KubeVirt plugin declares support.
+    - `properties.contextId` specifies a string for which the `KubeVirt` plugin declares support.
 
     - `properties.provider` specifies the React hook or function in your source code that generates the action items.
 
@@ -114,7 +114,7 @@ As a cluster administrator, you can customize the OpenShift Container Platform w
 
 <!-- -->
 
-- Add the `kubevirt.tab/horizontalNav` extension to the `plugin-extensions.ts` file of the KubeVirt plugin:
+- Add the `kubevirt.tab/horizontalNav` extension to the `plugin-extensions.ts` file of the `KubeVirt` plugin:
 
   ``` typescript
   {
@@ -151,7 +151,7 @@ As a cluster administrator, you can customize the OpenShift Container Platform w
     export default isKubevirtTabVisible;
     ```
 
-    This parameter is provided by the KubeVirt plugin, and is `true` if the referenced object has been already created. This flag ensures that the plugin author can prevent the custom tab from being displayed on certain pages, such as the **Create Virtual Machine** page.
+    The `KubeVirt` plugin provides this parameter, and it is `true` if the referenced object has been already created. This flag ensures that the plugin author can prevent the custom tab from being displayed on certain pages, such as the **Create Virtual Machine** page.
 
 1.  Log in to the OpenShift Container Platform web console.
 
