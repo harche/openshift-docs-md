@@ -1,12 +1,8 @@
-The following storage configuration tasks are mandatory:
-
-- You must configure a [default storage class](../../storage/dynamic-provisioning.xml#defining-storage-classes_dynamic-provisioning) for your cluster. Otherwise, the cluster cannot receive automated boot source updates.
-
-- You must configure [storage profiles](../../virt/storage/virt-configuring-storage-profile.xml#virt-configuring-storage-profile) if your storage provider is not recognized by the Containerized Data Importer (CDI). A storage profile provides recommended storage settings based on the associated storage class.
+After you install OpenShift Virtualization, you must configure a default storage class. If your storage provider is not recognized by the Containerized Data Importer (CDI), you must also configure storage profiles. Configuring a storage class allows your cluster to receive automated boot source updates. Storage profiles provide recommended storage settings based on the associated storage class.
 
 Optional: You can configure local storage by using the hostpath provisioner (HPP).
 
-See the [storage configuration overview](../../virt/storage/virt-storage-config-overview.xml#virt-storage-config-overview) for more options, including configuring the CDI, data volumes, and automatic boot source updates.
+See the "Storage configuration overview" documentation for more options, including configuring the CDI, data volumes, and automatic boot source updates.
 
 # Configuring local storage by using the HPP
 
@@ -61,3 +57,11 @@ When you create a storage class, you set parameters that affect the dynamic prov
     ``` terminal
     $ oc create -f storageclass_csi.yaml
     ```
+
+# Additional resources
+
+- [Defining a storage class](../../storage/dynamic-provisioning.xml#dynamic-provisioning-defining-storage-class_dynamic-provisioning)
+
+- [Configuring storage profiles](../../virt/storage/virt-configuring-storage-profile.xml#virt-configuring-storage-profile)
+
+- [Storage configuration overview](../../virt/storage/virt-storage-config-overview.xml#virt-storage-config-overview)

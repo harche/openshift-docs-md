@@ -436,6 +436,7 @@
 - **opm CLI**
   - [Installing the opm CLI](cli_reference/opm/cli-opm-install.md)
   - [opm CLI reference](cli_reference/opm/cli-opm-ref.md)
+- [Hosted control planes CLI](cli_reference/hcp-cli-ref.md)
 
 ### Security and compliance
 

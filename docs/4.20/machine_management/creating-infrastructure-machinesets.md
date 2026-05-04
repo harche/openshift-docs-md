@@ -1040,8 +1040,6 @@ After adding the `NoSchedule` taint on the infrastructure node, existing DNS pod
 
 </div>
 
-\+ :!infra:
-
 ## Creating a compute machine set
 
 In addition to the compute machine sets created by the installation program, you can create your own compute machine sets to dynamically manage the machine compute resources for specific workloads of your choice. Use the OpenShift Container Platform CLI to automate node provisioning.

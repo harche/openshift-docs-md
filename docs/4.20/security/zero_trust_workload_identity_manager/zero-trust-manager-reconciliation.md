@@ -38,27 +38,27 @@ When `create-only` mode is disabled, the Operator overwrites the resources if an
   $ oc get SpireServer cluster -o yaml
   ```
 
-The following is an example that confirms that the 'create-only' mode is active.
+  The following is an example that confirms that the 'create-only' mode is active.
 
-``` yaml
-status:
-  conditions:
-  - lastTransitionTime: "2025-12-23T11:36:58Z"
-    message: All components are ready
-    reason: Ready
-    status: "True"
-    type: Ready
-  - lastTransitionTime: "2025-12-23T11:36:58Z"
-    message: All operand CRs are ready
-    reason: Ready
-    status: "True"
-    type: OperandsAvailable
-  - lastTransitionTime: "2025-12-23T11:36:58Z"
-    message: create-only mode enabled
-    reason: CreateOnlyModeEnabled
-    status: "True"
-    type: CreateOnlyMode
-```
+<!-- -->
+
+    status:
+      conditions:
+      - lastTransitionTime: "2025-12-23T11:36:58Z"
+        message: All components are ready
+        reason: Ready
+        status: "True"
+        type: Ready
+      - lastTransitionTime: "2025-12-23T11:36:58Z"
+        message: All operand CRs are ready
+        reason: Ready
+        status: "True"
+        type: OperandsAvailable
+      - lastTransitionTime: "2025-12-23T11:36:58Z"
+        message: create-only mode enabled
+        reason: CreateOnlyModeEnabled
+        status: "True"
+        type: CreateOnlyMode
 
 <div class="important">
 

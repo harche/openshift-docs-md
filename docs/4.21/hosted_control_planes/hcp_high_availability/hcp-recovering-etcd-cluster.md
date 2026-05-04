@@ -7,7 +7,7 @@ You can check the status of the etcd cluster health by logging into any etcd pod
 1.  Log in to an etcd pod by entering the following command:
 
     ``` terminal
-    $ oc rsh -n openshift-etcd -c etcd <etcd_pod_name>
+    $ oc rsh -n clusters-<hosted_cluster_name> -c etcd <etcd_pod_name>
     ```
 
 2.  Print the health status of an etcd cluster by entering the following command:
@@ -39,8 +39,11 @@ Each etcd pod of a 3-node cluster has its own persistent volume claim (PVC) to s
 1.  To confirm that the etcd pod is failing, enter the following command:
 
     ``` terminal
-    $ oc get pods -l app=etcd -n openshift-etcd
+    $ oc get pods -l app=etcd -n clusters-<hosted_cluster_name>
     ```
+
+    `<hosted_cluster_name>`
+    Specifies the hosted cluster of the etcd instance.
 
     <div class="formalpara-title">
 
@@ -60,13 +63,16 @@ Each etcd pod of a 3-node cluster has its own persistent volume claim (PVC) to s
 2.  Delete the failing pod and its PVC by entering the following command:
 
     ``` terminal
-    $ oc delete pods etcd-2 -n openshift-etcd
+    $ oc delete pods <etcd_pod_name> -n clusters-<hosted_cluster_name>
     ```
+
+    `<etcd_pod_name>`
+    Specifies the failing pod.
 
 - Verify that a new etcd pod is up and running by entering the following command:
 
   ``` terminal
-  $ oc get pods -l app=etcd -n openshift-etcd
+  $ oc get pods -l app=etcd -n clusters-<hosted_cluster_name>
   ```
 
   <div class="formalpara-title">

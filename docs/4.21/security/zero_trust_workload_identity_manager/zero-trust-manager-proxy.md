@@ -10,7 +10,7 @@ Inject certificate authority (CA) certificates into the Zero Trust Workload Iden
 
 - You have installed Zero Trust Workload Identity Manager 1.0.0 or later.
 
-- You have deployed the SPIRE Server, SPIRE Agent, SPIFFEE CSI Driver, and the SPIRE OIDC Discovery Provider operands in the cluster.
+- You have deployed the SPIRE Server, SPIRE Agent, SPIFFE CSI Driver, and the SPIRE OIDC Discovery Provider operands in the cluster.
 
 1.  Create a config map in the `zero-trust-workload-identity-manager` namespace by running the following command:
 

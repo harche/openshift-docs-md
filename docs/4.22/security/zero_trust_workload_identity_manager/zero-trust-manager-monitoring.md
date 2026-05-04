@@ -1,8 +1,8 @@
-By default, the SPIRE Server and SPIRE Agent components of the Zero Trust Workload Identity Manager emit metrics. You can configure OpenShift Monitoring to collect these metrics by using the Prometheus Operator format.
+Track the performance of the Zero Trust Workload Identity Manager by collecting metrics. Configure monitoring to collect metrics from the Security Production Identity Framework for Everyone (SPIRE) Server and SPIRE Agent components.
 
 # Enabling user workload monitoring
 
-You can enable monitoring for user-defined projects by configuring user workload monitoring in the cluster.
+Enable user workload monitoring to track metrics for your user-defined projects. Configuring this feature allows you to observe application performance and helps you maintain the health of your services.
 
 - You have access to the cluster as a user with the `cluster-admin` cluster role.
 
@@ -120,6 +120,8 @@ The SPIRE Server operand exposes metrics by default on port `9402` at the `/metr
 - [Configuring user workload monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_user_workload_monitoring/preparing-to-configure-the-monitoring-stack-uwm)
 
 # Configuring metrics collection for SPIRE Agent by using a Service Monitor
+
+Configure metrics collection for the SPIRE Agent by creating a `ServiceMonitor` custom resource (CR). This enables the Prometheus Operator to collect custom metrics that the SPIRE Agent exposes on the default port.
 
 The SPIRE Agent operand exposes metrics by default on port `9402` at the `/metrics` endpoint. You can configure metrics collection for the SPIRE Agent by creating a `ServiceMonitor` custom resource (CR), which enables the Prometheus Operator to collect custom metrics.
 
@@ -372,7 +374,7 @@ The SPIRE Server operand exposes metrics by default on port `9402` at the `/metr
 
 # Querying metrics for the Zero Trust Workload Identity Manager
 
-As a cluster administrator, or as a user with view access to all namespaces, you can query SPIRE Agent and SPIRE Server metrics by using the OpenShift Container Platform web console or the command line. The query retrieves all the metrics collected from the SPIRE components that match the specified job labels.
+Query SPIRE Agent and SPIRE Server metrics using the OpenShift Container Platform web console or the command line. This helps you monitor the performance of SPIRE components that match specific job labels.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 

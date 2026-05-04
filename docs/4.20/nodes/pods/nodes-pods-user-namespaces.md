@@ -1,3 +1,5 @@
+To enhance container security and prevent potential breakouts, you can isolate pod processes by using Linux user namespaces. By using this configuration, you can allow containers to run with administrative privileges inside the namespace, but remain unprivileged on the host system.
+
 Linux user namespaces allow administrators to isolate the container user and group identifiers (UIDs and GIDs) so that a container can have a different set of permissions in the user namespace than on the host system where it is running. This allows containers to run processes with full privileges inside the user namespace, but the processes can be unprivileged for operations on the host machine.
 
 By default, a container runs in the host user namespace. Running a container in the host user namespace can be useful when the container needs a feature that is available only in the host namespace. However, running pods in the host namespace introduces security concerns, such as the possibility of container breakouts, in which a process inside another container breaks out onto the host where the process can access or modify files on the host or in your containers.
@@ -16,7 +18,7 @@ To check user namespaces support for storage options, see [CSI drivers supported
 
 # Configuring Linux user namespace support
 
-You can configure Linux user namespace by setting the `hostUsers` parameter to `false` in the pod spec, and a few other configurations, as shown in the following procedure.
+You can configure Linux user namespace by setting the `hostUsers` parameter to `false` in the pod spec, and a few other configurations. When you run workloads in user namespaces, the containers run with administrative privileges inside the namespace, but remain unprivileged on the host system.
 
 Running workloads in user namespaces makes it safe to configure `RunAsAny` for Security Context Constraint (SCC) fields, such as `fsGroup`, `runAsGroup`, `runAsUser`, and `supplementalGroups`, as the UID or GID outside of the container is different from the one inside, which these fields express.
 
@@ -167,7 +169,7 @@ Also, you can optionally use the `procMount` parameter in a pod specification to
         uid=1000(1000) gid=1000(1000) groups=1000(1000)
         ```
 
-        - The UID and group for the container should be the same as you set in the pod specification.
+        The UID and group for the container should be the same as you set in the pod specification.
 
     3.  Display the user ID being used in the container user namespace:
 
@@ -186,7 +188,7 @@ Also, you can optionally use the `procMount` parameter in a pod specification to
         4026532447 user       3   1 1000 /usr/bin/coreutils --coreutils-prog-shebang=sleep /usr/bin/sleep 1000
         ```
 
-        - The UID for the process should be the same as you set in the pod spec.
+        The UID for the process should be the same as you set in the pod spec.
 
     4.  Exit the container shell session by using the following command:
 
@@ -236,7 +238,7 @@ Also, you can optionally use the `procMount` parameter in a pod specification to
         4026532447 user       1  4767 2908816384 /usr/bin/coreutils --coreutils-prog-shebang=sleep /usr/bin/sleep 1000
         ```
 
-        - The UID should be different from what you set in the pod specification.
+        The UID should be different from what you set in the pod specification.
 
     4.  Exit the debug session by using the following commands:
 

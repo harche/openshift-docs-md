@@ -57,14 +57,6 @@ To manage etcd size, you can set the maximum time that Kubernetes events are sto
 
 The `eventTTLMinutes` property is managed through the `KubeAPIServer` custom resource, which is maintained by the Kube API Server Operator.
 
-<div class="important">
-
-Limiting the duration of events by setting the `eventTTLMinutes` property is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
 1.  Edit the `KubeAPIServer` custom resource by entering the following command:
 
     ``` terminal

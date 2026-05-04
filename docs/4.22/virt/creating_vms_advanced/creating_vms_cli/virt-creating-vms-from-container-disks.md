@@ -1,28 +1,28 @@
 You can create virtual machines (VMs) by using container disks built from operating system images.
 
-You can enable auto updates for your container disks. See [Managing automatic boot source updates](../../../virt/storage/virt-automatic-bootsource-updates.xml#virt-automatic-bootsource-updates) for details.
+You can enable auto updates for your container disks. For more information, see "Additional resources".
 
 <div class="important">
 
-If the container disks are large, the I/O traffic might increase and cause worker nodes to be unavailable. You can perform the following tasks to resolve this issue:
+If the container disks are large, the I/O traffic might increase and cause worker nodes to be unavailable. You can perform the following tasks to reclaim resources:
 
-- [Pruning `DeploymentConfig` objects](../../../applications/pruning-objects.xml#pruning-deployments_pruning-objects).
+- Prune `DeploymentConfig` objects.
 
-- [Configuring garbage collection](../../../nodes/nodes/nodes-nodes-garbage-collection.xml#nodes-nodes-garbage-collection-configuring_nodes-nodes-configuring).
+- Configure garbage collection.
 
 </div>
 
 You create a VM from a container disk by performing the following steps:
 
-1.  [Build an operating system image into a container disk and upload it to your container registry](../../../virt/creating_vms_advanced/creating_vms_cli/virt-creating-vms-from-container-disks.xml#virt-preparing-container-disk-for-vms_virt-creating-vms-from-container-disks).
+1.  Build an operating system image into a container disk and upload it to your container registry.
 
-2.  If your container registry does not have TLS, [configure your environment to disable TLS for your registry](../../../virt/creating_vms_advanced/creating_vms_cli/virt-creating-vms-from-container-disks.xml#virt-disabling-tls-for-registry_virt-creating-vms-from-container-disks).
+2.  If your container registry does not have TLS, configure your environment to disable TLS for your registry.
 
-3.  Create a VM with the container disk as the disk source by using the [web console](../../../virt/creating_vms_advanced/creating_vms_cli/virt-creating-vms-from-container-disks.xml#virt-creating-vm-custom-image-web_virt-creating-vms-from-container-disks) or the [command line](../../../virt/creating_vms_advanced/creating_vms_cli/virt-creating-vms-from-container-disks.xml#virt-creating-vm-import-cli_virt-creating-vms-from-container-disks).
+3.  Create a VM with the container disk as the disk source by using the OpenShift Container Platform web console or the command line.
 
 <div class="important">
 
-You must install the [QEMU guest agent](../../../virt/managing_vms/virt-installing-qemu-guest-agent.xml#virt-installing-qemu-guest-agent) on VMs created from operating system images that are not provided by Red Hat.
+You must install the QEMU guest agent on VMs created from operating system images that are not provided by Red Hat.
 
 </div>
 
@@ -208,3 +208,13 @@ You can create a virtual machine (VM) from a container disk by using the command
     ``` terminal
     Successfully connected to vm-rhel-9 console. The escape sequence is ^]
     ```
+
+# Additional resources
+
+- [Managing automatic boot source updates](../../../virt/storage/virt-automatic-bootsource-updates.xml#virt-automatic-bootsource-updates)
+
+- [Installing the QEMU guest agent](../../../virt/managing_vms/virt-installing-qemu-guest-agent.xml#virt-installing-qemu-guest-agent)
+
+- [Pruning objects to reclaim resources](../../../applications/pruning-objects.xml#pruning-deployments_pruning-objects)
+
+- [Configuring garbage collection for containers and images](../../../nodes/nodes/nodes-nodes-garbage-collection.xml#nodes-nodes-garbage-collection-configuring_nodes-nodes-configuring)

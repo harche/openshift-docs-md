@@ -1,16 +1,16 @@
-Some applications need sensitive information, such as passwords and user names, that you do not want developers to have.
-
-As an alternative to using Kubernetes `Secret` objects to provide sensitive information, you can use an external secrets store to store the sensitive information. You can use the Secrets Store CSI Driver Operator to integrate with an external secrets store and mount the secret content as a pod volume.
+As an alternative to using `secret` objects to provide sensitive information, such as passwords and user names, to applications, you can use an external secret management system to store the information. You can then use the Secrets Store CSI Driver Operator to access the information and mount the secret content as a pod volume. Using an external secret store protects information that you do not want developers to have and can be more secure than `secret` objects.
 
 # About the Secrets Store CSI Driver Operator
 
-Kubernetes secrets are stored with Base64 encoding. etcd provides encryption at rest for these secrets, but when secrets are retrieved, they are decrypted and presented to the user. If role-based access control is not configured properly on your cluster, anyone with API or etcd access can retrieve or modify a secret. Additionally, anyone who is authorized to create a pod in a namespace can use that access to read any secret in that namespace.
+To store and manage your secrets securely, you can configure the OpenShift Container Platform Secrets Store CSI Driver Operator to mount secrets from an external secret management system, such as Azure Key Vault, by using a provider plugin. Applications can then use the secret, but the secret does not persist on the system after the application pod is destroyed.
 
-To store and manage your secrets securely, you can configure the OpenShift Container Platform Secrets Store Container Storage Interface (CSI) Driver Operator to mount secrets from an external secret management system, such as Azure Key Vault, by using a provider plugin. Applications can then use the secret, but the secret does not persist on the system after the application pod is destroyed.
+Secret objects are stored with Base64 encoding. etcd provides encryption at rest for these secrets, but when secrets are retrieved, they are decrypted and presented to the user. If role-based access control is not configured properly on your cluster, anyone with API or etcd access can retrieve or modify a secret. Additionally, anyone who is authorized to create a pod in a namespace can use that access to read any secret in that namespace.
 
 The Secrets Store CSI Driver Operator, `secrets-store.csi.k8s.io`, enables OpenShift Container Platform to mount multiple secrets, keys, and certificates stored in enterprise-grade external secrets stores into pods as a volume. The Secrets Store CSI Driver Operator communicates with the provider using gRPC to fetch the mount contents from the specified external secrets store. After the volume is attached, the data in it is mounted into the container’s file system. Secrets store volumes are mounted in-line.
 
 ## Secrets store providers
+
+You can store sensitive information needed by your applications in an external secret management system and use the Secrets Store CSI Driver Operator to mount the secret content as a pod volume. Using an external secret store protects information that you do not want developers to have and can be more secure than `secret` objects.
 
 The Secrets Store CSI Driver Operator has been tested with the following secrets store providers:
 
@@ -26,13 +26,13 @@ The Secrets Store CSI Driver Operator has been tested with the following secrets
 
 <div class="note">
 
-Red Hat does not test all factors associated with third-party secrets store provider functionality. For more information about third-party support, see the [Red Hat third-party support policy](https://access.redhat.com/third-party-software-support).
+Red Hat does not test all factors associated with third-party secrets store provider functionality. For more information about third-party support, see the "Red Hat third-party support policy".
 
 </div>
 
 ## Automatic rotation
 
-The Secrets Store CSI driver periodically rotates the content in the mounted volume with the content from the external secrets store. If a secret is updated in the external secrets store, the secret will be updated in the mounted volume. The Secrets Store CSI Driver Operator polls for updates every 2 minutes.
+To maintain synchronization with your external secret provider, the Secrets Store CSI Driver Operator automatically rotates secret content in mounted volumes. The Secrets Store CSI Driver Operator uses this process to ensure that updates in the external store are automatically reflected in your pods and secrets.
 
 If you enabled synchronization of mounted content as Kubernetes secrets, the Kubernetes secrets are also rotated.
 
@@ -40,17 +40,11 @@ Applications consuming the secret data must watch for updates to the secrets.
 
 # Installing the Secrets Store CSI driver
 
+You can use the OpenShift Container Platform web console to install the Secrets Store CSI driver.
+
 - Access to the OpenShift Container Platform web console.
 
 - Administrator access to the cluster.
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To install the Secrets Store CSI driver:
 
 1.  Install the Secrets Store CSI Driver Operator:
 
@@ -95,21 +89,23 @@ To install the Secrets Store CSI driver:
 
 # Mounting secrets from an external secrets store to a CSI volume
 
-After installing the Secrets Store CSI Driver Operator, you can mount secrets from one of the following external secrets stores to a CSI volume:
+After installing the Secrets Store CSI Driver Operator, you can mount secrets from your external secret store. Using an external secret store protects information that you do not want developers to have and can be more secure than secret objects.
 
-- [AWS Secrets Manager](../../nodes/pods/nodes-pods-secrets-store.xml#secrets-store-aws_nodes-pods-secrets-store)
+The Secrets Store CSI Driver Operator has been tested with the following secrets store providers:
 
-- [AWS Systems Manager Parameter Store](../../nodes/pods/nodes-pods-secrets-store.xml#secrets-store-aws_nodes-pods-secrets-store-parameter-store)
+- AWS Secrets Manager
 
-- [Azure Key Vault](../../nodes/pods/nodes-pods-secrets-store.xml#secrets-store-azure_nodes-pods-secrets-store)
+- AWS Systems Manager Parameter Store
 
-- [Google Secret Manager](../../nodes/pods/nodes-pods-secrets-store.xml#secrets-store-google_nodes-pods-secrets-store)
+- Azure Key Vault
 
-- [HashiCorp Vault](../../nodes/pods/nodes-pods-secrets-store.xml#secrets-store-vault_nodes-pods-secrets-store)
+- Google Secret Manager
+
+- HashiCorp Vault
 
 ## Mounting secrets from AWS Secrets Manager
 
-You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Secrets Manager external secrets store to a Container Storage Interface (CSI) volume in OpenShift Container Platform.
+You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Secrets Manager external secrets store to a Container Storage Interface (CSI) volume in OpenShift Container Platform. Using an external secret store protects information that you do not want developers to have and can be more secure than `secret` objects.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -350,13 +346,19 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Secr
                 objectType: "secretsmanager"
         ```
 
-        - Specify the name for the secret provider class.
+        where:
 
-        - Specify the namespace for the secret provider class.
+        `metadata.name`
+        Specifies the name for the secret provider class.
 
-        - Specify the provider as `aws`.
+        `metadata.namespace`
+        Specifies the namespace for the secret provider class.
 
-        - Specify the provider-specific configuration parameters.
+        `spec.provider`
+        Specifies the provider as `aws`.
+
+        `spec.parameters`
+        Specifies the provider-specific configuration parameters.
 
     2.  Create the `SecretProviderClass` object by running the following command:
 
@@ -410,11 +412,16 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Secr
                       secretProviderClass: "my-aws-provider"
         ```
 
-        - Specify the name for the deployment.
+        where:
 
-        - Specify the namespace for the deployment. This must be the same namespace as the secret provider class.
+        `metadata.name`
+        Specifies the name for the deployment.
 
-        - Specify the name of the secret provider class.
+        `metadata.namespace`
+        Specifies the namespace for the deployment. This must be the same namespace as the secret provider class.
+
+        `spec.template.spec.volumes.csi.volumeAttributes.secretProviderClass`
+        Specifies the name of the secret provider class.
 
     2.  Create the `Deployment` object by running the following command:
 
@@ -456,13 +463,9 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Secr
       <secret_value>
       ```
 
-<!-- -->
-
-- [Configuring the Cloud Credential Operator utility](../../installing/installing_aws/ipi/installing-aws-customizations.xml#cco-ccoctl-configuring_installing-aws-customizations)
-
 ## Mounting secrets from AWS Systems Manager Parameter Store
 
-You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Systems Manager Parameter Store external secrets store to a Container Storage Interface (CSI) volume in OpenShift Container Platform.
+You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Systems Manager Parameter Store external secrets store to a Container Storage Interface (CSI) volume in OpenShift Container Platform. Using an external secret store protects information that you do not want developers to have and can be more secure than `secret` objects.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -703,13 +706,19 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Syst
                 objectType: "ssmparameter"
         ```
 
-        - Specify the name for the secret provider class.
+        where:
 
-        - Specify the namespace for the secret provider class.
+        `metadata.name`
+        Specifies the name for the secret provider class.
 
-        - Specify the provider as `aws`.
+        `metadata.namespace`
+        Specifies the namespace for the secret provider class.
 
-        - Specify the provider-specific configuration parameters.
+        `spec.provider`
+        Specifies the provider as `aws`.
+
+        `spec.parameters`
+        Specifies the provider-specific configuration parameters.
 
     2.  Create the `SecretProviderClass` object by running the following command:
 
@@ -763,11 +772,16 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Syst
                       secretProviderClass: "my-aws-provider"
         ```
 
-        - Specify the name for the deployment.
+        where:
 
-        - Specify the namespace for the deployment. This must be the same namespace as the secret provider class.
+        `metadata.name`
+        Specifies the name for the deployment.
 
-        - Specify the name of the secret provider class.
+        `metadata.namespace`
+        Specifies the namespace for the deployment. This must be the same namespace as the secret provider class.
+
+        `spec.template.spec.volumes.csi.volumeAttributes.secretProviderClass`
+        Specifies the name of the secret provider class.
 
     2.  Create the `Deployment` object by running the following command:
 
@@ -809,13 +823,9 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from AWS Syst
       <secret_value>
       ```
 
-<!-- -->
-
-- [Configuring the Cloud Credential Operator utility](../../installing/installing_aws/ipi/installing-aws-customizations.xml#cco-ccoctl-configuring_installing-aws-customizations)
-
 ## Mounting secrets from Azure Key Vault
 
-You can use the Secrets Store CSI Driver Operator to mount secrets from Microsoft Azure Key Vault to a Container Storage Interface (CSI) volume in OpenShift Container Platform. To mount secrets from Azure Key Vault.
+You can use the Secrets Store CSI Driver Operator to mount secrets from Microsoft Azure Key Vault to a Container Storage Interface (CSI) volume in OpenShift Container Platform. Using an external secret store protects information that you do not want developers to have and can be more secure than `secret` objects.
 
 - Your have installed a cluster on Azure.
 
@@ -1026,13 +1036,19 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Microsof
             tenantId: "tid"
         ```
 
-        - Specify the name for the secret provider class.
+        where:
 
-        - Specify the namespace for the secret provider class.
+        `metadata.name`
+        Specifies the name for the secret provider class.
 
-        - Specify the provider as `azure`.
+        `metadata.namespace`
+        Specifies the namespace for the secret provider class.
 
-        - Specify the provider-specific configuration parameters.
+        `spec.provider`
+        Specifies the provider as `azure`.
+
+        `spec.parameters`
+        Specifies the provider-specific configuration parameters.
 
     2.  Create the `SecretProviderClass` object by running the following command:
 
@@ -1087,13 +1103,19 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Microsof
                       name: secrets-store-creds
         ```
 
-        - Specify the name for the deployment.
+        where:
 
-        - Specify the namespace for the deployment. This must be the same namespace as the secret provider class.
+        `metadata.name`
+        Specifies the name for the deployment.
 
-        - Specify the name of the secret provider class.
+        `metadata.namespace`
+        Specifies the namespace for the deployment. This must be the same namespace as the secret provider class.
 
-        - Specify the name of the Kubernetes secret that contains the service principal credentials to access Azure Key Vault.
+        `spec.template.spec.volumes.csi.volumeAttributes.secretProviderClass`
+        Specifies the name of the secret provider class.
+
+        `spec.template.spec.volumes.csi.nodePublishSecretRef.name`
+        Specifies the name of the Kubernetes secret that contains the service principal credentials to access Azure Key Vault.
 
     2.  Create the `Deployment` object by running the following command:
 
@@ -1137,7 +1159,9 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Microsof
 
 ## Mounting secrets from Google Secret Manager
 
-You can use the Secrets Store CSI Driver Operator to mount secrets from Google Secret Manager to a Container Storage Interface (CSI) volume in OpenShift Container Platform. To mount secrets from Google Secret Manager, your cluster must be installed on Google Cloud.
+You can use the Secrets Store CSI Driver Operator to mount secrets from Google Secret Manager to a Container Storage Interface (CSI) volume in OpenShift Container Platform. Using an external secret store protects information that you do not want developers to have and can be more secure than `secret` objects.
+
+- Your have installed a cluster on Google Cloud.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -1309,7 +1333,7 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Google S
         $ oc create secret generic secrets-store-creds -n my-namespace --from-file=key.json
         ```
 
-        - You created this `key.json` file from the Google Secret Manager.
+        You created this `key.json` file from the Google Secret Manager.
 
     5.  Apply the `secrets-store.csi.k8s.io/used=true` label to allow the provider to find this `nodePublishSecretRef` secret:
 
@@ -1341,13 +1365,19 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Google S
                 path: "testsecret1.txt"
         ```
 
-        - Specify the name for the secret provider class.
+        where:
 
-        - Specify the namespace for the secret provider class.
+        `metadata.name`
+        Specifies the name for the secret provider class.
 
-        - Specify the provider as `gcp`.
+        `metadata.namespace`
+        Specifies the namespace for the secret provider class.
 
-        - Specify the provider-specific configuration parameters.
+        `spec.provider`
+        Specifies the provider as `gcp`.
+
+        `spec.parameters`
+        Specifies the provider-specific configuration parameters.
 
     2.  Create the `SecretProviderClass` object by running the following command:
 
@@ -1403,15 +1433,22 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Google S
                       name: secrets-store-creds
         ```
 
-        - Specify the name for the deployment.
+        where:
 
-        - Specify the namespace for the deployment. This must be the same namespace as the secret provider class.
+        `metadata.name`
+        Specifies the name for the deployment.
 
-        - Specify the service account you created.
+        `metadata.namespace`
+        Specifies the namespace for the deployment. This must be the same namespace as the secret provider class.
 
-        - Specify the name of the secret provider class.
+        `spec.template.spec.serviceAccountName`
+        Specifies the service account you created.
 
-        - Specify the name of the Kubernetes secret that contains the service principal credentials to access Google Secret Manager.
+        `spec.template.spec.volumes.csi.volumeAttributes.secretProviderClass`
+        Specifies the name of the secret provider class.
+
+        `spec.template.spec.volumes.csi.nodePublishSecretRef.name`
+        Specifies the name of the Kubernetes secret that contains the service principal credentials to access Google Secret Manager.
 
     2.  Create the `Deployment` object by running the following command:
 
@@ -1455,7 +1492,7 @@ You can use the Secrets Store CSI Driver Operator to mount secrets from Google S
 
 ## Mounting secrets from HashiCorp Vault
 
-You can use the Secrets Store CSI Driver Operator to mount secrets from HashiCorp Vault to a Container Storage Interface (CSI) volume in OpenShift Container Platform.
+You can use the Secrets Store CSI Driver Operator to mount secrets from HashiCorp Vault to a Container Storage Interface (CSI) volume in OpenShift Container Platform. Using an external secret store protects information that you do not want developers to have and can be more secure than `secret` objects.
 
 <div class="important">
 
@@ -1587,7 +1624,7 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
         destroyed          false
         version            1
 
-        === Data ===
+        ======= Data =======
         Key            Value
         ---            -----
         testSecret1    my-secret-value
@@ -1712,13 +1749,19 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
                 secretKey: "testSecret1"
         ```
 
-        - Specify the name for the secret provider class.
+        where:
 
-        - Specify the namespace for the secret provider class.
+        `metadata.name`
+        Specifies the name for the secret provider class.
 
-        - Specify the provider as `vault`.
+        `metadata.namespace`
+        Specifies the namespace for the secret provider class.
 
-        - Specify the provider-specific configuration parameters.
+        `spec.provider`
+        Specifies the provider as `vault`.
+
+        `spec.parameters`
+        Specifies the provider-specific configuration parameters.
 
     2.  Create the `SecretProviderClass` object by running the following command:
 
@@ -1775,11 +1818,16 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
                       secretProviderClass: "my-vault-provider"
         ```
 
-        - Specify the name for the deployment.
+        where:
 
-        - Specify the namespace for the deployment. This must be the same namespace as the secret provider class.
+        `metadata.name`
+        Specifies the name for the deployment.
 
-        - Specify the name of the secret provider class.
+        `metadata.namespace`
+        Specifies the namespace for the deployment. This must be the same namespace as the secret provider class.
+
+        `spec.template.spec.volumes.csi.volumeAttributes.secretProviderClass`
+        Specifies the name of the secret provider class.
 
     2.  Create the `Deployment` object by running the following command:
 
@@ -1865,11 +1913,11 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
     my-secret-value
     ```
 
-- [Installing Helm](../../applications/working_with_helm_charts/installing-helm.xml#installing-helm)
-
 # Enabling synchronization of mounted content as Kubernetes secrets
 
-You can enable synchronization to create Kubernetes secrets from the content on a mounted volume. An example where you might want to enable synchronization is to use an environment variable in your deployment to reference the Kubernetes secret.
+You can enable a synchronization process that creates `secret` objects from the content on a mounted volume. Using secrets protects information that you do not want developers to have.
+
+An example where you might want to enable synchronization is to use an environment variable in your deployment to reference the Kubernetes secret.
 
 <div class="warning">
 
@@ -1895,7 +1943,7 @@ The synchronized Kubernetes secret is deleted when all pods that mounted the con
     $ oc edit secretproviderclass my-azure-provider
     ```
 
-    - Replace `my-azure-provider` with the name of your secret provider class.
+    Replace `my-azure-provider` with the name of your secret provider class.
 
 2.  Add the `secretsObjects` section with the configuration for the synchronized Kubernetes secrets:
 
@@ -1931,21 +1979,28 @@ The synchronized Kubernetes secret is deleted when all pods that mounted the con
         tenantId: "tid"
     ```
 
-    - Specify the configuration for synchronized Kubernetes secrets.
+    where:
 
-    - Specify the name of the Kubernetes `Secret` object to create.
+    `spec.secretObjects`
+    Specifies the configuration for synchronized Kubernetes secrets.
 
-    - Specify the type of Kubernetes `Secret` object to create. For example, `Opaque` or `kubernetes.io/tls`.
+    `spec.secretObjects.secretname`
+    Specifies the name of the Kubernetes `Secret` object to create.
 
-    - Specify the object name or alias of the mounted content to synchronize.
+    `spec.secretObjects.type`
+    Specifies the type of Kubernetes `Secret` object to create. For example, `Opaque` or `kubernetes.io/tls`.
 
-    - Specify the data field from the specified `objectName` to populate the Kubernetes secret with.
+    `spec.secretObjects.data.object.name`
+    Specifies the object name or alias of the mounted content to synchronize.
+
+    `spec.secretObjects.data.object.key`
+    Specifies the data field from the specified `objectName` to populate the Kubernetes secret with.
 
 3.  Save the file to apply the changes.
 
 # Viewing the status of secrets in the pod volume mount
 
-You can view detailed information, including the versions, of the secrets in the pod volume mount.
+You can view detailed information of the secrets, including the versions, in the pod volume mount. You can use this information to help you confirm that secrets from your external store are active within the pod environment.
 
 The Secrets Store CSI Driver Operator creates a `SecretProviderClassPodStatus` resource in the same namespace as the pod. You can review this resource to see detailed information, including versions, about the secrets in the pod volume mount.
 
@@ -1967,41 +2022,35 @@ The Secrets Store CSI Driver Operator creates a `SecretProviderClassPodStatus` r
   $ oc get secretproviderclasspodstatus <secret_provider_class_pod_status_name> -o yaml
   ```
 
-  - The name of the secret provider class pod status object is in the format of `<pod_name>-<namespace>-<secret_provider_class_name>`.
+  Replace `<secret_provider_class_pod_status_name>` with the name of the secret provider class pod status object is in the format of `<pod_name>-<namespace>-<secret_provider_class_name>`.
 
-    <div class="formalpara-title">
+  <div class="formalpara-title">
 
-    **Example output**
+  **Example output**
 
-    </div>
+  </div>
 
-    ``` terminal
-    ...
-    status:
-      mounted: true
-      objects:
-      - id: secret/tlscrt
-        version: f352293b97da4fa18d96a9528534cb33
-      - id: secret/tlskey
-        version: 02534bc3d5df481cb138f8b2a13951ef
-      podName: busybox-<hash>
-      secretProviderClassName: my-azure-provider
-      targetPath: /var/lib/kubelet/pods/f0d49c1e-c87a-4beb-888f-37798456a3e7/volumes/kubernetes.io~csi/secrets-store-inline/mount
-    ```
+  ``` terminal
+  ...
+  status:
+    mounted: true
+    objects:
+    - id: secret/tlscrt
+      version: f352293b97da4fa18d96a9528534cb33
+    - id: secret/tlskey
+      version: 02534bc3d5df481cb138f8b2a13951ef
+    podName: busybox-<hash>
+    secretProviderClassName: my-azure-provider
+    targetPath: /var/lib/kubelet/pods/f0d49c1e-c87a-4beb-888f-37798456a3e7/volumes/kubernetes.io~csi/secrets-store-inline/mount
+  ```
 
 # Uninstalling the Secrets Store CSI Driver Operator
+
+You can use the OpenShift Container Platform web console to uninstall the Secrets Store CSI driver.
 
 - Access to the OpenShift Container Platform web console.
 
 - Administrator access to the cluster.
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To uninstall the Secrets Store CSI Driver Operator:
 
 1.  Stop all application pods that use the `secrets-store.csi.k8s.io` provider.
 
@@ -2034,3 +2083,11 @@ To uninstall the Secrets Store CSI Driver Operator:
     4.  When prompted on the **Uninstall Operator** window, click the **Uninstall** button to remove the Operator from the namespace. Any applications deployed by the Operator on the cluster need to be cleaned up manually.
 
         After uninstalling, the Secrets Store CSI Driver Operator is no longer listed in the **Installed Operators** section of the web console.
+
+# Additional resources
+
+- [Configuring the Cloud Credential Operator utility](../../installing/installing_aws/ipi/installing-aws-customizations.xml#cco-ccoctl-configuring_installing-aws-customizations)
+
+- [Installing Helm](../../applications/working_with_helm_charts/installing-helm.xml#installing-helm)
+
+- [Red Hat third-party support policy](https://access.redhat.com/third-party-software-support)

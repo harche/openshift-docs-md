@@ -2,19 +2,15 @@ By default, OpenShift Virtualization uses a single internal pod network after in
 
 After you install OpenShift Virtualization, you can install networking Operators and configure additional networks.
 
-# Installing networking Operators
+- You must install the Kubernetes NMState Operator to configure a Linux bridge network for live migration or external access to virtual machines (VMs).
 
-You must install the [Kubernetes NMState Operator](../../networking/networking_operators/k8s-nmstate-about-the-k8s-nmstate-operator.xml#k8s-nmstate-about-the-k8s-nmstate-operator) to configure a Linux bridge network for live migration or external access to virtual machines (VMs). For installation instructions, see [Installing the Kubernetes NMState Operator by using the web console](../../networking/networking_operators/k8s-nmstate-about-the-k8s-nmstate-operator.xml#installing-the-kubernetes-nmstate-operator-web-console_k8s-nmstate-operator).
+- You can install the SR-IOV Operator to manage SR-IOV network devices and network attachments.
 
-You can install the [SR-IOV Operator](../../networking/hardware_networks/about-sriov.xml#about-sriov) to manage SR-IOV network devices and network attachments. For installation instructions, see [Installing the SR-IOV Network Operator](../../networking/networking_operators/sr-iov-operator/installing-sriov-operator.xml#installing-sr-iov-operator_installing-sriov-operator).
+- You can add the MetalLB Operator to manage the lifecycle for an instance of MetalLB on your cluster.
 
-You can add the [About MetalLB and the MetalLB Operator](../../networking/networking_operators/metallb-operator/about-metallb.xml#about-metallb) to manage the lifecycle for an instance of MetalLB on your cluster. For installation instructions, see [Installing the MetalLB Operator from the software catalog by using the web console](../../networking/networking_operators/metallb-operator/metallb-operator-install.xml#metallb-installing-using-web-console_metallb-operator-install).
-
-# Configuring a Linux bridge network
+# Creating a Linux bridge NNCP
 
 After you install the Kubernetes NMState Operator, you can configure a Linux bridge network for live migration or external access to virtual machines (VMs).
-
-## Creating a Linux bridge NNCP
 
 You can create a `NodeNetworkConfigurationPolicy` (NNCP) manifest for a Linux bridge network.
 
@@ -74,7 +70,7 @@ You can create a `NodeNetworkConfigurationPolicy` (NNCP) manifest for a Linux br
 
     </div>
 
-## Creating a Linux bridge NAD by using the web console
+# Creating a Linux bridge NAD by using the web console
 
 You can create a network attachment definition (NAD) to provide layer-2 networking to pods and virtual machines by using the OpenShift Container Platform web console.
 
@@ -112,15 +108,9 @@ Configuring IP address management (IPAM) in a network attachment definition for 
 
 8.  Click **Create**.
 
-# Next steps
-
-- [Attaching a virtual machine (VM) to a Linux bridge network](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-attaching-vm-secondary-network-cli_virt-connecting-vm-to-linux-bridge)
-
-# Configuring a network for live migration
+# Configuring a dedicated secondary network for live migration
 
 After you have configured a Linux bridge network, you can configure a dedicated network for live migration. A dedicated network minimizes the effects of network saturation on tenant workloads during live migration.
-
-## Configuring a dedicated secondary network for live migration
 
 To configure a dedicated secondary network for live migration, you must first create a bridge network attachment definition (NAD) by using the CLI. You can then add the name of the `NetworkAttachmentDefinition` object to the `HyperConverged` custom resource (CR).
 
@@ -198,7 +188,7 @@ To configure a dedicated secondary network for live migration, you must first cr
   $ oc get vmi <vmi_name> -o jsonpath='{.status.migrationState.targetNodeAddress}'
   ```
 
-## Selecting a dedicated network by using the web console
+# Selecting a dedicated network by using the web console
 
 You can select a dedicated network for live migration by using the OpenShift Container Platform web console.
 
@@ -212,11 +202,7 @@ You can select a dedicated network for live migration by using the OpenShift Con
 
 3.  Select the network from the **Live migration network** list.
 
-# Configuring an SR-IOV network
-
-After you install the SR-IOV Operator, you can configure an SR-IOV network.
-
-## Configuring SR-IOV network devices
+# Configuring SR-IOV network devices
 
 The SR-IOV Network Operator adds the `SriovNetworkNodePolicy.sriovnetwork.openshift.io` custom resource definition (CRD) to OpenShift Container Platform. You can configure an SR-IOV network device by creating a `SriovNetworkNodePolicy` custom resource (CR).
 
@@ -324,10 +310,6 @@ It might take several minutes for a configuration change to apply.
     $ oc get sriovnetworknodestates -n openshift-sriov-network-operator <node_name> -o jsonpath='{.status.syncStatus}'
     ```
 
-# Next steps
-
-- [Attaching a virtual machine (VM) to an SR-IOV network](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#virt-attaching-vm-to-sriov-network_virt-connecting-vm-to-sriov)
-
 # Enabling load balancer service creation by using the web console
 
 You can enable the creation of load balancer services for a virtual machine (VM) by using the OpenShift Container Platform web console.
@@ -382,3 +364,15 @@ As a cluster administrator, you can configure additional routes to the `cdi-uplo
 
     `<route_name>`
     Specifies the name of the route you created.
+
+# Additional resources
+
+- [Kubernetes NMState Operator](../../networking/networking_operators/k8s-nmstate-about-the-k8s-nmstate-operator.xml#k8s-nmstate-about-the-k8s-nmstate-operator)
+
+- [SR-IOV Operator](../../networking/hardware_networks/about-sriov.xml#about-sriov)
+
+- [About MetalLB and the MetalLB Operator](../../networking/networking_operators/metallb-operator/about-metallb.xml#about-metallb)
+
+- [Attaching a virtual machine (VM) to a Linux bridge network](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-attaching-vm-secondary-network-cli_virt-connecting-vm-to-linux-bridge)
+
+- [Attaching a virtual machine (VM) to an SR-IOV network](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#virt-attaching-vm-to-sriov-network_virt-connecting-vm-to-sriov)

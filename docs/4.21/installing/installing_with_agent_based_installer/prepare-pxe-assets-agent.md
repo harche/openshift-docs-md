@@ -1,12 +1,18 @@
-Use the following procedures to create the assets needed to PXE boot an OpenShift Container Platform cluster using the Agent-based Installer.
+You can create the assets needed to PXE boot an OpenShift Container Platform cluster by using the Agent-based Installer.
 
 The assets you create in these procedures will deploy a single-node OpenShift Container Platform installation. You can use these procedures as a basis and modify configurations according to your requirements.
 
 See [Installing an OpenShift Container Platform cluster with the Agent-based Installer](../../installing/installing_with_agent_based_installer/installing-with-agent-based-installer.xml#installing-with-agent-based-installer) to learn about more configurations available with the Agent-based Installer.
 
-# Prerequisites
+# Prerequisites for preparing PXE assets
 
-- You reviewed details about the [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation) processes.
+Before beginning to prepare PXE assets, you must complete prerequisite tasks.
+
+- You reviewed details about the OpenShift Container Platform installation and update processes. For more information, see "Installation and update".
+
+<!-- -->
+
+- [Installation and update](../../architecture/architecture-installation.xml#architecture-installation)
 
 # Downloading the Agent-based Installer
 
@@ -246,21 +252,21 @@ Configuring the `install-config.yaml` and `agent-config.yaml` files is the prefe
 
     Where `<asset_server_URL>` is the URL of the server you will upload the PXE assets to.
 
-- [Deploying with dual-stack networking](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#modifying-install-config-for-dual-stack-network_ipi-install-installation-workflow).
+- [Deploying with dual-stack networking](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#modifying-install-config-for-dual-stack-network_ipi-install-installation-workflow)
 
-- [Configuring the install-config yaml file](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#configuring-the-install-config-file_ipi-install-installation-workflow).
+- [Configuring the install-config yaml file](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#configuring-the-install-config-file_ipi-install-installation-workflow)
 
-- See [Configuring a three-node cluster](../../installing/installing_bare_metal/upi/installing-restricted-networks-bare-metal.xml#installation-three-node-cluster_installing-restricted-networks-bare-metal) to deploy three-node clusters in bare metal environments.
+- [Configuring a three-node cluster](../../installing/installing_bare_metal/upi/installing-restricted-networks-bare-metal.xml#installation-three-node-cluster_installing-restricted-networks-bare-metal)
 
-- [About root device hints](../../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#root-device-hints_preparing-to-install-with-agent-based-installer).
+- [About root device hints](../../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#root-device-hints_preparing-to-install-with-agent-based-installer)
 
-- [NMState state examples](https://nmstate.io/examples.html).
+- [NMState state examples (NMState documentation)](https://nmstate.io/examples.html)
 
-- [Optional: Creating additional manifest files](../../installing/installing_with_agent_based_installer/installing-with-agent-based-installer.xml#installing-ocp-agent-opt-manifests_installing-with-agent-based-installer)
+- [Creating additional manifest files](../../installing/installing_with_agent_based_installer/installing-with-agent-based-installer.xml#installing-ocp-agent-opt-manifests_installing-with-agent-based-installer)
 
 # Creating the PXE assets
 
-Use the following procedure to create the assets and optional script to implement in your PXE infrastructure.
+Create the assets and optional script to implement in your PXE infrastructure.
 
 1.  Create the PXE assets by running the following command:
 
@@ -292,7 +298,7 @@ Use the following procedure to create the assets and optional script to implemen
 
     <div class="note">
 
-    Red Hat Enterprise Linux CoreOS (RHCOS) supports multipathing on the primary disk, allowing stronger resilience to hardware failure to achieve higher host availability. Multipathing is enabled by default in the agent ISO image, with a default `/etc/multipath.conf` configuration.
+    Red Hat Enterprise Linux CoreOS (RHCOS) supports multipathing on the primary disk, allowing stronger resilience to hardware failure to achieve higher host availability. Multipathing is enabled by default in the Agent ISO image, with a default `/etc/multipath.conf` configuration.
 
     </div>
 
@@ -300,13 +306,15 @@ Use the following procedure to create the assets and optional script to implemen
 
     <div class="note">
 
-    If you generated an iPXE script, the location of the assets must match the `bootArtifactsBaseURL` you added to the `agent-config.yaml` file.
+    If you generated an iPXE script, the location of the assets must match the `bootArtifactsBaseURL` value you added to the `agent-config.yaml` file.
 
     </div>
 
 # Manually adding IBM Z agents
 
-After creating the PXE assets, you can add IBM Z® agents. Only use this procedure for IBM Z® clusters.
+After creating the PXE assets, you can add IBM Z® agents.
+
+Only use this procedure for IBM Z® clusters.
 
 Depending on your IBM Z® environment, you can choose from the following options:
 
@@ -361,6 +369,12 @@ If you are using an OSA network device in Processor Resource/Systems Manager (PR
 
   This parameter allows the file to add the network settings to the Red Hat Enterprise Linux CoreOS (RHCOS) installer.
 
+  <div class="note">
+
+  The `override` parameter overrides the host’s network configuration settings.
+
+  </div>
+
   <div class="formalpara-title">
 
   **Example `.parm` file**
@@ -385,39 +399,35 @@ If you are using an OSA network device in Processor Resource/Systems Manager (PR
 
   - For installations on direct access storage devices (DASD) type disks, use `rd.` to specify the DASD where Red Hat Enterprise Linux CoreOS (RHCOS) is to be installed. For installations on Fibre Channel Protocol (FCP) disks, use `rd.zfcp=<adapter>,<wwpn>,<lun>` to specify the FCP disk where RHCOS is to be installed.
 
-  - Specify values for `adapter`, `wwpn`, and `lun` as in the following example: `rd.zfcp=0.0.8002,0x500507630400d1e3,0x4000404600000000`.
+  - Specify values for `<adapter>`, `<wwpn>`, and `<lun>` as in the following example: `rd.zfcp=0.0.8002,0x500507630400d1e3,0x4000404600000000`.
 
-<div class="note">
+  <div class="important">
 
-The `override` parameter overrides the host’s network configuration settings.
+  The `ip=` kernel parameter uses the following syntax:
 
-</div>
+  `ip=[IP]:[Gateway]:[Netmask]:[Hostname]:[Interface]:[None]:[DNS]`
 
-<div class="important">
+  For VLAN configurations:
 
-The `ip=` kernel parameter uses the following syntax:
+  - Define both the **base interface** and the **tagged VLAN interface** separately.
 
-`ip=[IP]:[Gateway]:[Netmask]:[Hostname]:[Interface]:[None]:[DNS]`
+  - The `vlan=` parameter links the tagged interface (for example, `encbdf0.300`) to the underlying physical interface (`encbdf0`).
 
-For VLAN configurations:
+  For bonded interfaces:
 
-- Define both the **base interface** and the **tagged VLAN interface** separately.
+  - No changes are required in the default kernel command-line parameters.
 
-- The `vlan=` parameter links the tagged interface (for example, `encbdf0.300`) to the underlying physical interface (`encbdf0`).
+  - To install nodes by using bonded interfaces, provide the appropriate bond configuration in the `agent-config` file.
 
-For bonded interfaces:
-
-- No changes are required in the default kernel command-line parameters.
-
-- To install nodes by using bonded interfaces, provide the appropriate bond configuration in the `agent-config` file.
-
-</div>
+  </div>
 
 ## Adding IBM Z agents with z/VM
 
-Use the following procedure to manually add IBM Z® agents with z/VM. Only use this procedure for IBM Z® clusters with z/VM.
+You can manually add IBM Z® agents with z/VM.
 
-- A running file server with access to the guest Virtual Machines.
+Only use this procedure for IBM Z® clusters with z/VM.
+
+- You have a running file server with access to the guest virtual machines (VMs).
 
 1.  Create a parameter file for the z/VM guest:
 
@@ -426,8 +436,6 @@ Use the following procedure to manually add IBM Z® agents with z/VM. Only use t
     **Example parameter file**
 
     </div>
-
-    \+
 
     ``` text
     rd.neednet=1 \
@@ -450,7 +458,7 @@ Use the following procedure to manually add IBM Z® agents with z/VM. Only use t
 
     - For the `ip` parameter, assign the IP address automatically using DHCP, or manually assign the IP address, as described in "Installing a cluster with z/VM on IBM Z® and IBM® LinuxONE".
 
-    - The default is `1`. Omit this entry when using an OSA network adapter.
+    - The default for `zfcp.allow_lun_scan` is `1`. Omit this entry when using an OSA network adapter.
 
     - For installations on DASD-type disks, use `rd.dasd` to specify the DASD where Red Hat Enterprise Linux CoreOS (RHCOS) is to be installed. Omit this entry for FCP-type disks.
 
@@ -468,7 +476,7 @@ Use the following procedure to manually add IBM Z® agents with z/VM. Only use t
 
       </div>
 
-      ``` yaml
+      ``` text
       rd.zfcp=<adapter1>,<wwpn1>,<lun1> \
       rd.zfcp=<adapter2>,<wwpn2>,<lun2> \
       rd.multipath=default
@@ -595,11 +603,13 @@ The `nmstateconfig` parameter must be configured for the KVM boot.
 
 ## Adding IBM Z agents in a Logical Partition (LPAR)
 
-Use the following procedure to manually add IBM Z® agents to your cluster that runs in an LPAR environment. Use this procedure only for IBM Z® clusters running in an LPAR.
+You can manually add IBM Z® agents to your cluster that runs in an LPAR environment.
+
+Use this procedure only for IBM Z® clusters running in an LPAR.
 
 - You have Python 3 installed.
 
-- A running file server with access to the Logical Partition (LPAR).
+- You have a running file server with access to the Logical Partition (LPAR).
 
 1.  Create a boot parameter file for the agents.
 
@@ -626,7 +636,7 @@ Use the following procedure to manually add IBM Z® agents to your cluster that 
 
     - For the `coreos.live.rootfs_url` artifact, specify the matching `rootfs` artifact for the `kernel` and `initramfs` that you are starting. Only HTTP and HTTPS protocols are supported.
 
-    - For the `ip` parameter, manually assign the IP address, as described in *Installing a cluster with z/VM on IBM Z and IBM LinuxONE*.
+    - For the `ip` parameter, manually assign the IP address, as described in "Installing a cluster with z/VM on IBM Z and IBM LinuxONE".
 
     - For installations on DASD-type disks, use `rd.dasd` to specify the DASD where Red Hat Enterprise Linux CoreOS (RHCOS) is to be installed. For installations on FCP-type disks, use `rd.zfcp=<adapter>,<wwpn>,<lun>` to specify the FCP disk where RHCOS is to be installed.
 
@@ -642,7 +652,7 @@ Use the following procedure to manually add IBM Z® agents to your cluster that 
 
       </div>
 
-      ``` yaml
+      ``` terminal
       rd.zfcp=<adapter1>,<wwpn1>,<lun1> \
       rd.zfcp=<adapter2>,<wwpn2>,<lun2> \
       rd.multipath=default

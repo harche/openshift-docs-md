@@ -283,6 +283,8 @@ Assisted Service storage requirements
 
 ## RHACM Observability
 
+Cluster Observability is provided by the multicluster engine and Red Hat Advanced Cluster Management (RHACM).
+
 - Observability storage needs several `PV` resources and an S3 compatible bucket storage for long-term retention of the metrics.
 
 - Storage requirements calculation is complex and dependent on the specific workloads and characteristics of managed clusters. Requirements for `PV` resources and the S3 bucket depend on many aspects including data retention, the number of managed clusters, managed cluster workloads, and so on.
@@ -1051,36 +1053,40 @@ When comparing a cluster to the telco hub reference configuration by using `must
 
 The following sections briefly describe each custom resource (CR) for the telco management hub reference configuration in 4.21.
 
-# Advanced Cluster Management reference CRs
+# Red Hat Advanced Cluster Management (RHACM) CRs
 
-| Component | Reference CR                        | Description                                                                                                                                                                                                     | Optional |
-|-----------|-------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
-| RHACM     | `acmAgentServiceConfig.yaml`        | Creates a policy to manage copying data from an object bucket claim into a secret for Observability to connect to Thanos.                                                                                       | No       |
-| RHACM     | `acmMCE.yaml`                       | Defines the multicluster-engine configuration required by ACM.                                                                                                                                                  | No       |
-| RHACM     | `acmMCH.yaml`                       | Configures a `MultiClusterHub` CR with high availability, enabling various components and specifying installation settings for Open Cluster Management.                                                         | No       |
-| RHACM     | `acmMirrorRegistryCM.yaml`          | Defines the SSL certificates and mirror registry configuration for various Red Hat and OpenShift Container Platform registries used by the multicluster-engine Operator in the `multicluster-engine` namespace. | No       |
-| RHACM     | `acmNS.yaml`                        | Defines the `open-cluster-management` namespace with a label to enable cluster monitoring.                                                                                                                      | No       |
-| RHACM     | `acmOperGroup.yaml`                 | Defines an `OperatorGroup` CR for the `open-cluster-management` namespace, targeting the same namespace.                                                                                                        | No       |
-| RHACM     | `acmPerfSearch.yaml`                | Configures search for Open Cluster Management by defining various parameters and API settings.                                                                                                                  | No       |
-| RHACM     | `acmProvisioning.yaml`              | Configures a provisioning resource in the `metal3.io/v1alpha1` API version to watch all namespaces.                                                                                                             | No       |
-| RHACM     | `acmSubscription.yaml`              | Subscribes to the Red Hat Advanced Cluster Management for Kubernetes Operator using automatic install plan approval.                                                                                            | No       |
-| RHACM     | `observabilityMCO.yaml`             | Configures `MultiClusterObservability` for managing observability and alerting across multiple clusters.                                                                                                        | No       |
-| RHACM     | `observabilityNS.yaml`              | Creates an `open-cluster-management-observability` namespace.                                                                                                                                                   | No       |
-| RHACM     | `observabilityOBC.yaml`             | Creates an `ObjectBucketClaim` CR in the `open-cluster-management-observability` namespace.                                                                                                                     | No       |
-| RHACM     | `observabilitySecret.yaml`          | Creates a `Secret` CR in the `open-cluster-management-observability` namespace for storing Docker configuration details.                                                                                        | No       |
-| RHACM     | `observabilityRoutePolicy.yaml`     | Policy to propagate Red Hat Advanced Cluster Management for Kubernetes observability route to the managed cluster.                                                                                              | No       |
-| RHACM     | `pullSecretMCSB.yaml`               | Creates a `ManagedClusterSetBinding` CR for the pull secret policy.                                                                                                                                             | No       |
-| RHACM     | `pullSecretPlacementBinding.yaml`   | Creates the `PlacementBinding` CR needed for the pull secret policy.                                                                                                                                            | No       |
-| RHACM     | `pullSecretPlacement.yaml`          | Creates the `Placement` CR against local cluster needed for the pull secret policy.                                                                                                                             | No       |
-| RHACM     | `pullSecretPolicy.yaml`             | Creates a policy to copy the global pull secret into observability namespaces.                                                                                                                                  | No       |
-| RHACM     | `thanosSecretPlacementBinding.yaml` | Creates the `PlacementBinding` CR needed for the thanos secret policy.                                                                                                                                          | No       |
-| RHACM     | `thanosSecretPlacement.yaml`        | Creates the `Placement` CR against local cluster needed for the thanos secret policy.                                                                                                                           | No       |
-| RHACM     | `thanosSecretPolicy.yaml`           | Creates a policy to copy data from an object bucket claim into a secret for observability to connect to Thanos.                                                                                                 | No       |
-| TALM      | `talmSubscription.yaml`             | Creates a `Subscription` CR for TALM.                                                                                                                                                                           | No       |
+The following custom resources (CRs) configure Red Hat Advanced Cluster Management (RHACM) for the telco hub cluster.
 
-Advanced Cluster Management CRs
+| Component | Reference CR                        | Description                                                                                                                                                                                              | Optional |
+|-----------|-------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
+| RHACM     | `acmAgentServiceConfig.yaml`        | Creates a policy to manage copying data from an object bucket claim into a secret for Observability to connect to Thanos.                                                                                | No       |
+| RHACM     | `acmMCE.yaml`                       | Defines the MultiCluster Engine configuration required by ACM.                                                                                                                                           | No       |
+| RHACM     | `acmMCH.yaml`                       | Configures a `MultiClusterHub` CR with high availability, enabling various components and specifying installation settings.                                                                              | No       |
+| RHACM     | `acmMirrorRegistryCM.yaml`          | Defines the SSL certificates and mirror registry configuration for various Red Hat and OpenShift Container Platform registries used by the `multicluster-engine` in the `multicluster-engine` namespace. | No       |
+| RHACM     | `acmNS.yaml`                        | Defines the `open-cluster-management` namespace with a label to enable cluster monitoring.                                                                                                               | No       |
+| RHACM     | `acmOperGroup.yaml`                 | Defines an OperatorGroup for the `open-cluster-management` namespace, targeting the same namespace.                                                                                                      | No       |
+| RHACM     | `acmPerfSearch.yaml`                | Configures search for Open Cluster Management by defining various parameters and API settings.                                                                                                           | No       |
+| RHACM     | `acmProvisioning.yaml`              | Configures a provisioning resource in the metal3.io/v1alpha1 API version to watch all namespaces.                                                                                                        | No       |
+| RHACM     | `acmSubscription.yaml`              | Subscribes to the RHACM Operator using automatic install plan approval.                                                                                                                                  | No       |
+| RHACM     | `observabilityMCO.yaml`             | Configures `MultiClusterObservability` for managing observability and alerting across multiple clusters.                                                                                                 | No       |
+| RHACM     | `observabilityNS.yaml`              | Creates an `open-cluster-management-observability` namespace.                                                                                                                                            | No       |
+| RHACM     | `observabilityOBC.yaml`             | Creates an `ObjectBucketClaim` CR in the `open-cluster-management-observability` namespace.                                                                                                              | No       |
+| RHACM     | `observabilitySecret.yaml`          | Creates a Secret CR in the `open-cluster-management-observability` namespace for storing Docker configuration details.                                                                                   | No       |
+| RHACM     | `observabilityRoutePolicy.yaml`     | Policy to propagate RHACM observability route to the managed cluster.                                                                                                                                    | No       |
+| RHACM     | `pullSecretMCSB.yaml`               | Creates a `ManagedClusterSetBinding` CR for the pull secret policy.                                                                                                                                      | No       |
+| RHACM     | `pullSecretPlacementBinding.yaml`   | Creates the `PlacementBinding` CR needed for the pull secret policy.                                                                                                                                     | No       |
+| RHACM     | `pullSecretPlacement.yaml`          | Creates the `Placement` CR against local cluster needed for the pull secret policy.                                                                                                                      | No       |
+| RHACM     | `pullSecretPolicy.yaml`             | Creates a policy to copy the global pull secret into observability namespaces.                                                                                                                           | No       |
+| RHACM     | `thanosSecretPlacementBinding.yaml` | Creates the `PlacementBinding` CR needed for the thanos secret policy.                                                                                                                                   | No       |
+| RHACM     | `thanosSecretPlacement.yaml`        | Creates the `Placement` CR against local cluster needed for the thanos secret policy.                                                                                                                    | No       |
+| RHACM     | `thanosSecretPolicy.yaml`           | Creates a policy to copy data from an object bucket claim into a secret for observability to connect to Thanos.                                                                                          | No       |
+| TALM      | `talmSubscription.yaml`             | Creates a `Subscription` CR for TALM.                                                                                                                                                                    | No       |
+
+RHACM CRs
 
 # Storage reference CRs
+
+The following custom resources (CRs) configure storage for the telco hub cluster.
 
 | Component                 | Reference CR            | Description                                                                                                                                                                                                        | Optional |
 |---------------------------|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
@@ -1097,6 +1103,8 @@ Advanced Cluster Management CRs
 Storage CRs
 
 # GitOps Zero Touch Provisioning (ZTP) reference CRs
+
+The following custom resources (CRs) configure GitOps Zero Touch Provisioning (ZTP) for the telco hub cluster.
 
 | Component           | Reference CR                            | Description                                                                                                                                                                       | Optional |
 |---------------------|-----------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
@@ -1127,6 +1135,8 @@ GitOps ZTP CRs
 
 # Logging reference CRs
 
+The following custom resources (CRs) configure logging for the telco hub cluster.
+
 | Component                | Reference CR                                         | Description                                                                      | Optional |
 |--------------------------|------------------------------------------------------|----------------------------------------------------------------------------------|----------|
 | Cluster Logging Operator | `clusterLogForwarder.yaml`                           | Defines the `ClusterLogForwarder` CR to send logs to configured outputs.         | Yes      |
@@ -1140,6 +1150,8 @@ GitOps ZTP CRs
 Logging CRs
 
 # Container registry reference CRs
+
+The following custom resources (CRs) configure the container registry for the telco hub cluster.
 
 | Component | Reference CR          | Description                                                                             | Optional |
 |-----------|-----------------------|-----------------------------------------------------------------------------------------|----------|
@@ -1157,6 +1169,8 @@ Container registry CRs
 
 # Image mirroring reference CRs
 
+The following custom resources (CRs) configure image mirroring for the telco hub cluster.
+
 | Component                   | Reference CR           | Description                                                                                                                                               | Optional |
 |-----------------------------|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
 | Mirroring configuration CRs | `imageset-config.yaml` | Defines an `ImageSetConfiguration` CR for mirroring OpenShift Container Platform channels and Operator packages, specifying versions and target catalogs. | No       |
@@ -1164,6 +1178,8 @@ Container registry CRs
 Image mirroring CRs
 
 # Installation reference CRs
+
+The following custom resources (CRs) configure the installation for the telco hub cluster.
 
 | Component           | Reference CR          | Description                                                                                                         | Optional |
 |---------------------|-----------------------|---------------------------------------------------------------------------------------------------------------------|----------|

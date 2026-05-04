@@ -358,6 +358,8 @@ To disable node auto-scaling, complete the following procedure.
 
 - [Scaling down the data plane to zero](../../hosted_control_planes/hcp-troubleshooting.xml#scale-down-data-plane_hcp-troubleshooting)
 
+- [Scaling up and down workloads in a hosted cluster](../../hosted_control_planes/hcp-machine-config.xml#scale-up-down-autoscaler-hcp_hcp-machine-config)
+
 # Handling ingress in a hosted cluster on non-bare-metal agent machines
 
 Every OpenShift Container Platform cluster has a default application Ingress Controller that typically has an external DNS record associated with it. For example, if you create a hosted cluster named `example` with the base domain `krnl.es`, you can expect the wildcard domain `*.apps.example.krnl.es` to be routable.

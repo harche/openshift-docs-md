@@ -10,7 +10,7 @@ The Operator installation is not supported in the `openshift-*` namespaces and t
 
 # Installing the Zero Trust Workload Identity Manager by using the web console
 
-Use the OperatorHub in the OpenShift Container Platform web console to install the Zero Trust Workload Identity Manager. This process streamlines deployment and helps ensure the Operator is installed in the correct namespace with the appropriate installation mode.
+Use the Software Catalog in the OpenShift Container Platform web console to install the Zero Trust Workload Identity Manager. This process streamlines deployment and helps ensure the Operator is installed in the correct namespace with the appropriate installation mode.
 
 <div class="note">
 
@@ -81,6 +81,8 @@ A minimum of 1Gi persistent volume is required to install the SPIRE Server.
 
 # Installing the Zero Trust Workload Identity Manager by using the CLI
 
+Install the Zero Trust Workload Identity Manager by using the command-line interface (CLI) to create the required project, `OperatorGroup`, and `Subscription` objects. You can then deploy the Operator components necessary for managing workload identities on your OpenShift Container Platform cluster.
+
 - You have access to the cluster with `cluster-admin` privileges.
 
 <div class="note">
@@ -98,12 +100,6 @@ A minimum of 1Gi persistent volume is required to install the SPIRE Server.
 2.  Create an `OperatorGroup` object:
 
     1.  Create a YAML file, for example, `operatorGroup.yaml`, with the following content:
-
-        <div class="formalpara-title">
-
-        **Example `operatorGroup.yaml`**
-
-        </div>
 
         ``` yaml
         apiVersion: operators.coreos.com/v1
@@ -124,12 +120,6 @@ A minimum of 1Gi persistent volume is required to install the SPIRE Server.
 3.  Create a `Subscription` object:
 
     1.  Create a YAML file, for example, `subscription.yaml`, that defines the `Subscription` object:
-
-        <div class="formalpara-title">
-
-        **Example `subscription.yaml`**
-
-        </div>
 
         ``` yaml
         apiVersion: operators.coreos.com/v1alpha1

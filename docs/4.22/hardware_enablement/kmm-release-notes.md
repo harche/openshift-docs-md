@@ -438,9 +438,11 @@ If you are running KMM-hub version 2.3.0 or earlier and you are not running KMM,
 
 ## New features and enhancements
 
-- In this release, wildcard and GLOB pattern support for the `filesToSign` field has been added for signing kernel modules in a specific folder. Previously, you had to specify the exact path to each `.ko` file you wanted to sign. Now, you can add the full path to explicit files, as previously required, or any GLOB patterns supported by the `Ash` shell.
+- In this release, wildcard and glob pattern support for the `filesToSign` field has been added for signing kernel modules in a specific folder. Previously, you had to specify the exact path to each `.ko` file you wanted to sign. Now, you can add the full path to explicit files, as previously required, or any glob patterns supported by the `Ash` shell.
 
-  Additionally, this commit propagates `DirName` string from the API into the sign image template, and adds the signed files to the validation webhook.
+  The `DirName` value from `moduleLoader.container.modprobe` is propagated into the sign image. The validation webhook also verifies that all `filesToSign` entries fall under the configured `DirName`.
+
+  For more information, see [Specifying files to sign](../hardware_enablement/kmm-kernel-module-management.xml#kmm-specifying-files-to-sign_kernel-module-management-operator).
 
 <!-- -->
 
@@ -460,7 +462,7 @@ If you are running KMM-hub version 2.3.0 or earlier and you are not running KMM,
 
 <!-- -->
 
-- In this release, a new optional `imageRebuildTrigger` counter field has been added in the `Module`, `ManagedClusterModule`, and `ModuleImagesConfig` CRDs that allows you to force Kernel Module Management (KMM) to reverify and rebuild module images when using ephemeral image registries. When this counter’s value changes, the system automatically clears cached image statuses and reverifies the image existence, potentially triggering rebuilds.
+- In this release, a new optional `imageRebuildTriggerGeneration` counter field has been added in the `Module`, `ManagedClusterModule`, and `ModuleImagesConfig` CRDs that allows you to force Kernel Module Management (KMM) to reverify and rebuild module images when using ephemeral image registries. When this counter’s value changes, the system automatically clears cached image statuses and reverifies the image existence, potentially triggering rebuilds.
 
 ## Bug fixes
 

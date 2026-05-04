@@ -11,7 +11,7 @@ The following table describes the support status of each Oracle® Distributed Cl
 | Commercial Public Cloud | General Availability |
 | Dedicated Region        | General Availability |
 | US Government Cloud     | Technology Preview   |
-| UK Government Cloud     | Technology Preview   |
+| UK Government Cloud     | General Availability |
 | EU Sovereign Cloud      | Technology Preview   |
 | Isolated Region         | Technology Preview   |
 | Oracle Alloy            | Technology Preview   |

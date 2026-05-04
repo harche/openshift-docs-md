@@ -443,6 +443,7 @@
 - **opm CLI**
   - [Installing the opm CLI](cli_reference/opm/cli-opm-install.md)
   - [opm CLI reference](cli_reference/opm/cli-opm-ref.md)
+- [Hosted control planes CLI](cli_reference/hcp-cli-ref.md)
 
 ### Security and compliance
 
@@ -1048,6 +1049,7 @@
 - [Configuring MCO-related custom resources](machine_configuration/machine-configs-custom.md)
 - [Pinning images to nodes](machine_configuration/machine-config-pin-preload-images-about.md)
 - [Boot image management](machine_configuration/mco-update-boot-images.md)
+- [Boot image skew enforcement](machine_configuration/mco-update-boot-skew-mgmt.md)
 - [Manually updating the boot image](machine_configuration/mco-update-boot-images-manual.md)
 - [Managing unused rendered machine configs](machine_configuration/machine-configs-garbage-collection.md)
 - [Image mode for OpenShift](machine_configuration/mco-coreos-layering.md)

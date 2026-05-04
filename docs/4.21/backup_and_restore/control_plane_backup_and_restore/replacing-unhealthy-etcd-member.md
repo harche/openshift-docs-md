@@ -171,7 +171,7 @@ Depending on the state of your unhealthy etcd member, use one of the following p
 
 - [Replacing an unhealthy etcd member whose machine is not running or whose node is not ready](../../backup_and_restore/control_plane_backup_and_restore/replacing-unhealthy-etcd-member.xml#restore-replace-stopped-etcd-member_replacing-unhealthy-etcd-member)
 
-- [Installing a primary control plane node on an unhealthy cluster](https://docs.redhat.com/en/documentation/assisted_installer_for_openshift_container_platform/2024/html/installing_openshift_container_platform_with_the_assisted_installer/expanding-the-cluster#installing-primary-control-plane-node-unhealthy-cluster_expanding-the-cluster)
+- [Replacing a control plane node in an unhealthy cluster](https://docs.redhat.com/en/documentation/assisted_installer_for_openshift_container_platform/2026/html/installing_openshift_container_platform_with_the_assisted_installer/expanding-the-cluster#installing-control-plane-node-unhealthy-cluster_expanding-the-cluster)
 
 - [Replacing an unhealthy etcd member whose etcd pod is crashlooping](../../backup_and_restore/control_plane_backup_and_restore/replacing-unhealthy-etcd-member.xml#restore-replace-crashlooping-etcd-member_replacing-unhealthy-etcd-member)
 
@@ -710,7 +710,7 @@ If your cluster uses a control plane machine set, see "Recovering a degraded etc
 
 - [Recovering a degraded etcd Operator](../../machine_management/control_plane_machine_management/cpmso-troubleshooting.xml#cpmso-ts-etcd-degraded_cpmso-troubleshooting)
 
-- [Installing a primary control plane node on an unhealthy cluster](https://docs.redhat.com/en/documentation/assisted_installer_for_openshift_container_platform/2024/html/installing_openshift_container_platform_with_the_assisted_installer/expanding-the-cluster#installing-primary-control-plane-node-unhealthy-cluster_expanding-the-cluster)
+- [Replacing a control plane node on an unhealthy cluster](https://docs.redhat.com/en/documentation/assisted_installer_for_openshift_container_platform/2026/html/installing_openshift_container_platform_with_the_assisted_installer/expanding-the-cluster#installing-control-plane-node-unhealthy-cluster_expanding-the-cluster)
 
 ## Replacing an unhealthy etcd member whose etcd pod is crashlooping
 

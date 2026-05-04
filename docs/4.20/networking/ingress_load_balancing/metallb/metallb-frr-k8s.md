@@ -43,7 +43,9 @@ spec:
 # ...
 ```
 
-You can also configure FRR-K8s to always block a set of prefixes, regardless of the configuration applied. This can be useful to avoid routes going to pods or `ClusterIPs` CIDRs that might result in cluster malfunctions. The following example blocks the set of prefixes `192.168.1.0/24`:
+You can also configure FRR-K8s to always block a set of prefixes, regardless of the configuration applied. This is useful to prevent routes to pod or `ClusterIPs` CIDRs that might cause cluster malfunctions. For example, you might block the `clusterNetwork` and `serviceNetwork` CIDRs. Run `oc describe network.config/cluster` to find these values.
+
+The following example blocks the prefix `192.168.1.0/24`:
 
 <div class="formalpara-title">
 
@@ -58,20 +60,13 @@ metadata:
   name: metallb
   namespace: metallb-system
 spec:
-  bgpBackend: frr-k8s
   frrk8sConfig:
     alwaysBlock:
     - 192.168.1.0/24
 # ...
 ```
 
-You can set `FRR-K8s` to block the `clusterNetwork` CIDR and `serviceNetwork` CIDR. You can view the values for these CIDR address specifications by running the following command:
-
-``` terminal
-$ oc describe network.config/cluster
-```
-
-# Configuring the FRRConfiguration CRD
+# Configuring the FRRConfiguration CR
 
 To customize routing behavior beyond standard MetalLB capabilities, configure the `FRRConfiguration` custom resource (CR).
 

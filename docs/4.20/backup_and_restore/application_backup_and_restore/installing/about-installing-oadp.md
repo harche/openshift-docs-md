@@ -164,7 +164,7 @@ The following update channels are available:
 
 - Starting with OADP 1.5 on OpenShift Container Platform v4.19, OADP reintroduces the **stable** channel which contains a single supported OADP version for a particular OpenShift Container Platform version.
 
-For more information, see [OpenShift Operator Life Cycles](https://access.redhat.com/support/policy/updates/openshift_operators).
+For more information, see *OpenShift Operator Life Cycles*.
 
 **Which update channel is right for you?**
 
@@ -185,6 +185,8 @@ For more information, see [OpenShift Operator Life Cycles](https://access.redhat
 You cannot switch from OADP 1.y to OADP 1.0 by switching update channels. You must uninstall the Operator and then reinstall it.
 
 </div>
+
+- [OpenShift Operator Life Cycles](https://access.redhat.com/support/policy/updates/openshift_operators)
 
 # Installation of OADP on multiple namespaces
 

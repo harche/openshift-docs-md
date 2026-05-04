@@ -770,7 +770,7 @@ Multi-Architecture Technology Preview tracker
 | SR-IOV Network Operator support for Intel C741 Emmitsburg Chipset                                         | Technology Preview   | Technology Preview   | Technology Preview   |
 | SR-IOV Network Operator support on ARM architecture                                                       | General Availability | General Availability | General Availability |
 | Gateway API and Istio for Ingress management                                                              | General Availability | General Availability | General Availability |
-| Dual-port NIC for PTP ordinary clock                                                                      | Technology Preview   | Technology Preview   | Technology Preview   |
+| Dual-port NIC for PTP ordinary clock                                                                      | General Availability | General Availability | General Availability |
 | DPU Operator                                                                                              | Technology Preview   | Technology Preview   | Technology Preview   |
 | Fast IPAM for the Whereabouts IPAM CNI plugin                                                             | Technology Preview   | Technology Preview   | Technology Preview   |
 | Unnumbered BGP peering                                                                                    | Technology Preview   | General Availability | General Availability |
@@ -937,6 +937,32 @@ This section will continue to be updated over time to provide notes on enhanceme
 For any OpenShift Container Platform release, always review the instructions on [updating your cluster](../updating/updating_a_cluster/updating-cluster-web-console.xml#updating-cluster-web-console) properly.
 
 </div>
+
+## RHBA-2026:10088 - OpenShift Container Platform 4.17.12 fixed issues
+
+Issued: 28 April 2026
+
+OpenShift Container Platform release 4.17.12 is now available. The list of fixed issues that are included in the update is documented in the [RHBA-2026:10088](https://access.redhat.com/errata/RHBA-2026:10088) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:10086](https://access.redhat.com/errata/RHBA-2026:10086) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.12 --pullspecs
+```
+
+### Enhancements
+
+- In OpenShift Container Platform release 4.17.12 and later, you can limit the duration of Kubernetes events by setting the `eventTTLMinutes` property. Previously, that etcd feature was listed as a Technology Preview feature. The feature is now generally available for OpenShift Container Platform release 4.17.12 and later. ([OCPBUGS-83858](https://redhat.atlassian.net/browse/OCPBUGS-83858))
+
+### Fixed issues
+
+- Before this update, Google Cloud Internal Load Balancers (ILBs) failed to provision when node names were configured as fully qualified domain names (FQDNs). With this update, the filtering logic is corrected. As a consequence, Google Cloud ILBs now provision successfully when node names are FQDNs. ([OCPBUGS-83615](https://redhat.atlassian.net/browse/OCPBUGS-83615))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
 
 ## RHBA-2026:8424 - OpenShift Container Platform 4.17.11 fixed issues
 

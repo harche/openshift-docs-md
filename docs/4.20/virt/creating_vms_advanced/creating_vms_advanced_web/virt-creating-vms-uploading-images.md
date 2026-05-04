@@ -10,10 +10,6 @@ You must also install VirtIO drivers on Windows VMs.
 
 </div>
 
-- [Installing the QEMU guest agent](../../../virt/managing_vms/virt-installing-qemu-guest-agent.xml#virt-installing-qemu-guest-agent)
-
-- [Installing VirtIO drivers on Windows VMs](../../../virt/managing_vms/virt-install-virtio-drivers-on-windows-vms.xml#virt-install-virtio-drivers-on-windows-vms)
-
 # Creating a VM from an uploaded image by using the web console
 
 You can create a virtual machine (VM) from an uploaded operating system image by using the OpenShift Container Platform web console.
@@ -130,10 +126,6 @@ You can generalize a RHEL VM by using the `virtctl`, `guestfs`, and `virt-syspre
 </div>
 
 The new volume appears in the **Select volume to boot from** list. This is your new golden image. You can use this volume to create new VMs.
-
-- [Cloning VMs](../../../virt/creating_vms_advanced/creating_vms_advanced_web/virt-cloning-vms.xml#virt-cloning-vms)
-
-- [Cloning a PVC to a data volume](../../../virt/creating_vms_advanced/creating_vms_cli/virt-creating-vms-by-cloning-pvcs.xml#virt-cloning-pvc-to-dv-cli_virt-creating-vms-by-cloning-pvcs)
 
 # Creating a Windows VM
 
@@ -253,12 +245,6 @@ Specializing a Windows virtual machine (VM) configures the computer-specific inf
 
 During the initial boot, Windows uses the `unattend.xml` answer file to specialize the VM. The VM is now ready to use.
 
-- [Microsoft, Sysprep (Generalize) a Windows installation](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/sysprep--generalize--a-windows-installation)
-
-- [Microsoft, generalize](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/generalize)
-
-- [Microsoft, specialize](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/specialize)
-
 # Creating a VM from an uploaded image by using the CLI
 
 You can upload an operating system image by using the `virtctl` command-line tool. You can use an existing data volume or create a new data volume for the image.
@@ -305,3 +291,19 @@ You can upload an operating system image by using the `virtctl` command-line too
     ``` terminal
     $ oc get dvs
     ```
+
+# Additional resources
+
+- [Installing the QEMU guest agent](../../../virt/managing_vms/virt-installing-qemu-guest-agent.xml#virt-installing-qemu-guest-agent)
+
+- [Installing VirtIO drivers on Windows VMs](../../../virt/managing_vms/virt-install-virtio-drivers-on-windows-vms.xml#virt-install-virtio-drivers-on-windows-vms)
+
+- [Cloning VMs](../../../virt/creating_vms_advanced/creating_vms_advanced_web/virt-cloning-vms.xml#virt-cloning-vms)
+
+- [Cloning a PVC to a data volume](../../../virt/creating_vms_advanced/creating_vms_cli/virt-creating-vms-by-cloning-pvcs.xml#virt-cloning-pvc-to-dv-cli_virt-creating-vms-by-cloning-pvcs)
+
+- [Sysprep (Generalize) a Windows installation](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/sysprep--generalize--a-windows-installation)
+
+- [Configuration pass of Windows Setup (generalize)](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/generalize)
+
+- [Configuration pass of Windows Setup (specialize)](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/specialize)

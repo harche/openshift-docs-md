@@ -42,6 +42,8 @@ As you prepare to deploy hosted control planes on bare metal, consider the follo
 
 <!-- -->
 
+- [Installing the hosted control planes command-line interface](../../hosted_control_planes/hcp-prepare/hcp-cli.xml#hcp-cli-terminal_hcp-cli)
+
 - [Advanced configuration](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#advanced-config-engine)
 
 - [Enabling the central infrastructure management service](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#enable-cim)

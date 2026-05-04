@@ -127,9 +127,9 @@ You can create a service and associate it with a virtual machine (VM) by using t
 
 # Additional resources
 
-- [Configuring ingress cluster traffic using a NodePort](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-nodeport.xml#configuring-ingress-cluster-traffic-nodeport)
+- [Configuring ingress cluster traffic by using a `NodePort`](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-nodeport.xml#configuring-ingress-cluster-traffic-nodeport)
 
-- [Configuring ingress cluster traffic using a load balancer](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-load-balancer.xml#configuring-ingress-cluster-traffic-load-balancer)
+- [Configuring ingress cluster traffic by using a load balancer](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-load-balancer.xml#configuring-ingress-cluster-traffic-load-balancer)
 
 - [Installing the MetalLB Operator](../../networking/networking_operators/metallb-operator/metallb-operator-install.xml#metallb-operator-install)
 

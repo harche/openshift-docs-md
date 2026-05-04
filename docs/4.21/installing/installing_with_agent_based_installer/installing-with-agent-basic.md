@@ -1,20 +1,28 @@
 You can install a basic OpenShift Container Platform cluster using the Agent-based Installer.
 
-For procedures that include optional customizations you can make while using the Agent-based Installer, see [Installing a cluster with customizations](../../installing/installing_with_agent_based_installer/installing-with-agent-based-installer.xml#installing-with-agent-based-installer).
-
-# Prerequisites
-
-- You reviewed details about the [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation) processes.
-
-- You read the documentation on [selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing).
-
-- If you use a firewall or proxy, you [configured it to allow the sites](../../installing/install_config/configuring-firewall.xml#configuring-firewall) that your cluster requires access to.
-
-# Installing OpenShift Container Platform with the Agent-based Installer
-
 The following procedures deploy a single-node OpenShift Container Platform in a disconnected environment. You can use these procedures as a basis and modify according to your requirements.
 
-## Downloading the Agent-based Installer
+For procedures that include optional customizations you can make while using the Agent-based Installer, see "Installing a cluster with customizations".
+
+# Prerequisites for installing a cluster with the Agent-based Installer
+
+Before beginning your cluster installation, you must complete prerequisite tasks that prepare your environment.
+
+- You reviewed details about the OpenShift Container Platform installation and update processes. For more information, see "Installation and update".
+
+- You read "Selecting a cluster installation method and preparing it for users".
+
+- If you use a firewall or proxy, you configured it to allow the sites that your cluster requires access to. For more information, see "Configuring your firewall".
+
+<!-- -->
+
+- [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation)
+
+- [Selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing)
+
+- [Configuring your firewall](../../installing/install_config/configuring-firewall.xml#configuring-firewall)
+
+# Downloading the Agent-based Installer
 
 Begin the installation process by downloading the Agent-based Installer and the CLI needed for your installation.
 
@@ -32,9 +40,9 @@ Begin the installation process by downloading the Agent-based Installer and the 
 
 7.  Click **Download command-line tools** and place the `openshift-install` binary in a directory that is on your `PATH`.
 
-## Creating the configuration inputs
+# Creating the configuration inputs
 
-You must create the configuration files that are used by the installation program to create the agent image.
+Create the configuration files that are used by the installation program to generate the agent image.
 
 1.  Place the `openshift-install` binary in a directory that is on your PATH.
 
@@ -89,39 +97,49 @@ You must create the configuration files that are used by the installation progra
     EOF
     ```
 
-    - Specify the system architecture. Valid values are `amd64`, `arm64`, `ppc64le`, and `s390x`.
+    where:
 
-      If you are using the release image with the `multi` payload, you can install the cluster on different architectures such as `arm64`, `amd64`, `s390x`, and `ppc64le`. Otherwise, you can install the cluster only on the `release architecture` displayed in the output of the `openshift-install version` command. For more information, see "Verifying the supported architecture for installing an Agent-based Installer cluster".
+    `compute.architecture`
+    Specifies the system architecture. Valid values are `amd64`, `arm64`, `ppc64le`, and `s390x`.
 
-    - Required. Specify your cluster name.
+    If you are using the release image with the `multi` payload, you can install the cluster on different architectures such as `arm64`, `amd64`, `s390x`, and `ppc64le`. Otherwise, you can install the cluster only on the `release architecture` displayed in the output of the `openshift-install version` command. For more information, see "Verifying the supported architecture for installing an Agent-based Installer cluster".
 
-    - The cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
+    `metadata.name`
+    Specifies your cluster name. This value is required.
 
-    - Specify your platform.
+    `networking.networkingType`
+    Specifies the cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
 
-      <div class="note">
+    `platform`
+    Specifies your platform.
 
-      For bare metal platforms, host settings made in the platform section of the `install-config.yaml` file are used by default, unless they are overridden by configurations made in the `agent-config.yaml` file.
+    <div class="note">
 
-      </div>
+    For bare metal platforms, host settings made in the platform section of the `install-config.yaml` file are used by default, unless they are overridden by configurations made in the `agent-config.yaml` file.
 
-    - Specify your pull secret.
+    </div>
 
-    - Specify your SSH public key.
+    `pullSecret`
+    Specifies your pull secret.
 
-    - Provide the contents of the certificate file that you used for your mirror registry. The certificate file can be an existing, trusted certificate authority or the self-signed certificate that you generated for the mirror registry. You must specify this parameter if you are using a disconnected mirror registry.
+    `sshKey`
+    Specifies your SSH public key.
 
-    - Provide the `imageContentSources` section according to the output of the command that you used to mirror the repository. You must specify this parameter if you are using a disconnected mirror registry.
+    `additionalTrustBundle`
+    Specifies the contents of the certificate file that you used for your mirror registry. The certificate file can be an existing, trusted certificate authority or the self-signed certificate that you generated for the mirror registry. You must specify this parameter if you are using a disconnected mirror registry.
 
-      <div class="important">
+    `imageContentSources`
+    Specifies the `imageContentSources` section according to the output of the command that you used to mirror the repository. You must specify this parameter if you are using a disconnected mirror registry.
 
-      - When using the `oc adm release mirror` command, use the output from the `imageContentSources` section.
+    <div class="important">
 
-      - When using the `oc mirror` command, use the `repositoryDigestMirrors` section of the `ImageContentSourcePolicy` file that results from running the command.
+    - When using the `oc adm release mirror` command, use the output from the `imageContentSources` section.
 
-      - The `ImageContentSourcePolicy` resource is deprecated.
+    - When using the `oc mirror` command, use the `repositoryDigestMirrors` section of the `ImageContentSourcePolicy` file that results from running the command.
 
-      </div>
+    - The `ImageContentSourcePolicy` resource is deprecated.
+
+    </div>
 
 4.  Create the `agent-config.yaml` file by running the following command:
 
@@ -135,9 +153,12 @@ You must create the configuration files that are used by the installation progra
     EOF
     ```
 
-    - This IP address is used to determine which node performs the bootstrapping process as well as running the `assisted-service` component. You must provide the rendezvous IP address when you do not specify at least one host IP address in the `networkConfig` parameter. If this address is not provided, one IP address is selected from the provided host `networkConfig` parameter.
+    where:
 
-## Creating and booting the agent image
+    `rendezvousIP`
+    Specifies the IP address used to determine which node performs the bootstrapping process as well as running the `assisted-service` component. You must provide the rendezvous IP address when you do not specify at least one host IP address in the `networkConfig` parameter. If this address is not provided, one IP address is selected from the provided host `networkConfig` parameter.
+
+# Creating and booting the agent image
 
 After you have prepared the configuration inputs for your installation, create the ISO image and boot it on your machines.
 
@@ -173,7 +194,7 @@ After you have prepared the configuration inputs for your installation, create t
 
 3.  Boot the `agent.x86_64.iso`, `agent.aarch64.iso`, or `agent.s390x.iso` image on the bare-metal machines.
 
-## Verifying that the current installation host can pull release images
+# Verifying that the current installation host can pull release images
 
 After you boot the agent image and network services are made available to the host, the agent console application performs a pull check to verify that the current host can retrieve release images.
 
@@ -227,7 +248,7 @@ If the agent console application detects host network configuration issues, the 
 
     11. If the `Release image URL` pull check succeeds and displays a green icon beside the URL, select **Quit** to exit the agent console application and continue with the installation.
 
-## Tracking and verifying installation progress
+# Tracking and verifying installation progress
 
 After the installation has started, you can track installation progress and verify a successful installation.
 
@@ -351,3 +372,7 @@ If you encounter a failed Agent-based installation, you can gather log data to p
 5.  Excluding the `/auth` subdirectory, attach the installation directory used during the deployment to your support case on the [Red Hat Customer Portal](https://access.redhat.com).
 
 6.  Attach all other data gathered from this procedure to your support case.
+
+# Additional resources
+
+- [Installing a cluster with customizations](../../installing/installing_with_agent_based_installer/installing-with-agent-based-installer.xml#installing-with-agent-based-installer)

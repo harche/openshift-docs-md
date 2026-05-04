@@ -1,4 +1,4 @@
-A *checkup* is an automated test workload that allows you to verify if a specific cluster functionality works as expected. The cluster checkup framework uses native Kubernetes resources to configure and execute the checkup.
+A *checkup* is an automated test workload that you can use to verify if a specific cluster functionality works as expected. The cluster checkup framework uses native Kubernetes resources to configure and run the checkup.
 
 <div class="important">
 
@@ -8,7 +8,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 </div>
 
-As a developer or cluster administrator, you can use predefined checkups to improve cluster maintainability, troubleshoot unexpected behavior, minimize errors, and save time. You can review the results of the checkup and share them with experts for further analysis. Vendors can write and publish checkups for features or services that they provide and verify that their customer environments are configured correctly.
+As a developer or cluster administrator, you can use predefined checkups to improve cluster maintainability, troubleshoot unexpected behavior, minimize errors, and save time. You can review the results of the checkup and share them with experts for further analysis. Vendors can write and publish checkups for features or services that they offer and verify that their customer environments are configured correctly.
 
 # Running predefined latency checkups
 

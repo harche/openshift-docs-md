@@ -1,4 +1,4 @@
-Deploy the Zero Trust Workload Identity Manager operands by creating their custom resources in a specific order. Adhering to the sequence ensures the successful installation of components, such as the SPIRE Server, SPIRE Agent, and SPIFFE CSI driver.
+Deploy the Zero Trust Workload Identity Manager operands by creating their custom resources in a specific order. Adhering to the sequence ensures the successful installation of components, such as the Security Production Identity Framework for Everyone (SPIRE) Server, SPIRE Agent, and Secure Production Identity Framework For Everyone (SPIFFE) CSI driver.
 
 You must deploy the operands in the following sequence to ensure successful installation:
 
@@ -55,11 +55,7 @@ Deploy the SPIRE Server by configuring the `SpireServer` custom resource (CR). T
 
     1.  Create a YAML file that defines the `SpireServer` CR, for example, `SpireServer.yaml`:
 
-        <div class="formalpara-title">
-
-        **Example `SpireServer.yaml`**
-
-        </div>
+        The following is an example of a `SpireServer.yaml` file.
 
         ``` yaml
         apiVersion: operator.openshift.io/v1alpha1
@@ -226,11 +222,7 @@ Use the `SpireAgent` custom resource to configure the SPIRE Agent `DaemonSet` on
 
     1.  Create a YAML file that defines the `SpireAgent` CR, for example, `SpireAgent.yaml`:
 
-        <div class="formalpara-title">
-
-        **Example `SpireAgent.yaml`**
-
-        </div>
+        The following is an example of a `SpireAgent.yaml` file.
 
         ``` yaml
         apiVersion: operator.openshift.io/v1alpha1
@@ -425,7 +417,7 @@ Deploy the SPIRE OpenID Connect (OIDC) Discovery Provider by configuring the `Sp
 
         <div class="formalpara-title">
 
-        **Example `SpireOIDCDiscoveryProvider.yaml`**
+        **Example `SpireOIDCDiscoveryProvider` YAML**
 
         </div>
 
@@ -467,7 +459,7 @@ Deploy the SPIRE OpenID Connect (OIDC) Discovery Provider by configuring the `Sp
         `spec.managedRoute`
         Specifies whether the Operator automatically creates an OpenShift route for the OIDC Discovery Provider endpoints. Set to `true` to have the Operator automatically create and maintain an OpenShift route for OIDC discovery endpoints (`*.apps.`). Set to `false` for administrators to manually configure routes or ingress.
 
-        `spec.ternalSecretRef`
+        `spec.externalSecretRef`
         Specifies a reference to an externally managed secret that contains the TLS certificate for the OIDC Discovery Provider route host. Must be a valid Kubernetes secret reference name with a maximum length of 253 characters. This field is optional.
 
     2.  Apply the configuration by running the following command:

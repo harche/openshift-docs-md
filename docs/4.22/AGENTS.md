@@ -107,7 +107,7 @@ Root: ./
 
 ### CLI tools
 
-|cli_reference:{index.md,odo-important-update.md,kn-cli-tools.md,gitops-argocd-cli-tools.md}
+|cli_reference:{index.md,odo-important-update.md,kn-cli-tools.md,gitops-argocd-cli-tools.md,hcp-cli-ref.md}
 |cli_reference/openshift_cli:{getting-started-cli.md,configuring-cli.md,usage-oc-kubectl.md,managing-cli-profiles.md,extending-cli-plugins.md,developer-cli-commands.md,administrator-cli-commands.md}
 |cli_reference/cli_manager:{index.md,cli-manager-release-notes.md,cli-manager-install.md,cli-manager-using.md,cli-manager-uninstall.md}
 |cli_reference/tkn_cli:{installing-tkn.md,op-configuring-tkn.md,op-tkn-reference.md}
@@ -228,7 +228,7 @@ Root: ./
 
 ### Machine configuration
 
-|machine_configuration:{index.md,machine-configs-configure.md,machine-config-node-disruption.md,machine-configs-custom.md,machine-config-pin-preload-images-about.md,mco-update-boot-images.md,mco-update-boot-images-manual.md,machine-configs-garbage-collection.md,mco-coreos-layering.md,machine-config-daemon-metrics.md}
+|machine_configuration:{index.md,machine-configs-configure.md,machine-config-node-disruption.md,machine-configs-custom.md,machine-config-pin-preload-images-about.md,mco-update-boot-images.md,mco-update-boot-skew-mgmt.md,mco-update-boot-images-manual.md,machine-configs-garbage-collection.md,mco-coreos-layering.md,machine-config-daemon-metrics.md}
 
 ### Machine management
 

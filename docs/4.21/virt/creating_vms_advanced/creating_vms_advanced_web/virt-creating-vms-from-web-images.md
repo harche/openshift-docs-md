@@ -2,7 +2,7 @@ You can create virtual machines (VMs) by importing operating system images from 
 
 <div class="important">
 
-You must install the [QEMU guest agent](../../../virt/managing_vms/virt-installing-qemu-guest-agent.xml#virt-installing-qemu-guest-agent) on VMs created from operating system images that are not provided by Red Hat.
+You must install the QEMU guest agent on VMs created from operating system images that are not provided by Red Hat.
 
 </div>
 
@@ -138,3 +138,7 @@ When the VM is created, the data volume with the image is imported into persiste
     ``` terminal
     Successfully connected to vm-rhel-9 console. The escape sequence is ^]
     ```
+
+# Additional resources
+
+- [Installing the QEMU guest agent](../../../virt/managing_vms/virt-installing-qemu-guest-agent.xml#virt-installing-qemu-guest-agent)

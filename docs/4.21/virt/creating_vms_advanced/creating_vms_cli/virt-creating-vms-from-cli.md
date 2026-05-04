@@ -1,8 +1,8 @@
-You can create virtual machines (VMs) from the command line by editing or creating a `VirtualMachine` manifest. You can simplify VM configuration by using an [instance type](../../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types) in your VM manifest.
+You can create virtual machines (VMs) from the command line by editing or creating a `VirtualMachine` manifest. You can simplify VM configuration by using an instance type in your VM manifest.
 
 <div class="note">
 
-You can also [create VMs from instance types by using the web console](../../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types).
+You can also create VMs from instance types by using the OpenShift Container Platform web console.
 
 </div>
 
@@ -143,4 +143,8 @@ You can configure the following video device types:
 
 Video device support by architecture
 
+# Additional resources
+
 - [Configuring SSH access to virtual machines](../../../virt/managing_vms/virt-accessing-vm-ssh.xml#virt-accessing-vm-ssh)
+
+- [Creating virtual machines from instance types](../../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types)

@@ -88,37 +88,50 @@ spec:
             name: worker-user-data
 ```
 
-- Specify the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI installed, you can obtain the infrastructure ID by running the following command:
+where:
 
-  ``` terminal
-  $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
-  ```
+`<infrastructure_id>`
+Specifies the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI installed, you can obtain the infrastructure ID by running the following command:
 
-- Specify the infrastructure ID, role node label, and zone.
+``` terminal
+$ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
+```
 
-- Specify the role node label to add.
+`<infrastructure_id>-<role>-<zone>`
+Specifies the infrastructure ID, role node label, and zone.
 
-- Specify a valid Red Hat Enterprise Linux CoreOS (RHCOS) Amazon Machine Image (AMI) for your AWS zone for your OpenShift Container Platform nodes. If you want to use an AWS Marketplace image, you must complete the OpenShift Container Platform subscription from the [AWS Marketplace](https://aws.amazon.com/marketplace/fulfillment?productId=59ead7de-2540-4653-a8b0-fa7926d5c845) to obtain an AMI ID for your region.
+`<role>`
+Specifies the role node label to add.
 
-  ``` terminal
-  $ oc -n openshift-machine-api \
-      -o jsonpath='{.spec.template.spec.providerSpec.value.ami.id}{"\n"}' \
-      get machineset/<infrastructure_id>-<role>-<zone>
-  ```
+<div class="note">
 
-- Specify the zone name, for example, `us-east-1a`.
+The `spec.template.spec.providerSpec.value.ami.id` stanza specifies a valid Red Hat Enterprise Linux CoreOS (RHCOS) Amazon Machine Image (AMI) for your AWS zone for your OpenShift Container Platform nodes. If you want to use an AWS Marketplace image, you must complete the OpenShift Container Platform subscription from the [AWS Marketplace](https://aws.amazon.com/marketplace/fulfillment?productId=59ead7de-2540-4653-a8b0-fa7926d5c845) to obtain an AMI ID for your region.
 
-- Specify the region, for example, `us-east-1`.
+``` terminal
+$ oc -n openshift-machine-api \
+    -o jsonpath='{.spec.template.spec.providerSpec.value.ami.id}{"\n"}' \
+    get machineset/<infrastructure_id>-<role>-<zone>
+```
 
-- Specify the infrastructure ID and zone.
+</div>
 
-- Optional: Specify custom tag data for your cluster. For example, you might add an admin contact email address by specifying a `name:value` pair of `Email:admin-email@example.com`.
+`<zone>`
+Specifies the zone name, for example, `us-east-1a`.
 
-  <div class="note">
+`<region>`
+Specifies the region, for example, `us-east-1`.
 
-  Custom tags can also be specified during installation in the `install-config.yml` file. If the `install-config.yml` file and the machine set include a tag with the same `name` data, the value for the tag from the machine set takes priority over the value for the tag in the `install-config.yml` file.
+`<infrastructure_id>-subnet-private-<zone>`
+Specifies the infrastructure ID and zone.
 
-  </div>
+`<custom_tag_name>`
+Optional: Specifies custom tag data for your cluster. For example, you might add an admin contact email address by specifying a `name:value` pair of `Email:admin-email@example.com`.
+
+<div class="note">
+
+Custom tags can also be specified during installation in the `install-config.yaml` file. If the `install-config.yaml` file and the machine set include a tag with the same `name` data, the value for the tag from the machine set takes priority over the value for the tag in the `install-config.yaml` file.
+
+</div>
 
 # Creating a compute machine set
 
@@ -287,9 +300,9 @@ Label your machine sets to indicate which machines the cluster autoscaler can us
 
 # Assigning machines to placement groups for Elastic Fabric Adapter instances by using machine sets
 
-You can configure a machine set to deploy machines on [Elastic Fabric Adapter](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html) (EFA) instances within an existing AWS placement group.
+You can configure a machine set to deploy machines on Elastic Fabric Adapter (EFA) instances within an existing Amazon Web Services (AWS) placement group. Using EFA instances to run control plane machines can improve network performance.
 
-EFA instances do not require placement groups, and you can use placement groups for purposes other than configuring an EFA. This example uses both to demonstrate a configuration that can improve network performance for machines within the specified placement group.
+[EFA](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html) instances do not require placement groups, and you can use placement groups for purposes other than configuring an EFA. This example uses both to demonstrate a configuration that can improve network performance for machines within the specified placement group.
 
 - You created a placement group in the AWS console.
 
@@ -303,36 +316,44 @@ EFA instances do not require placement groups, and you can use placement groups 
 
 2.  Edit the following lines under the `providerSpec` field:
 
-    ``` yaml
-    apiVersion: machine.openshift.io/v1beta1
-    kind: MachineSet
-    # ...
+``` yaml
+apiVersion: machine.openshift.io/v1beta1
+kind: MachineSet
+# ...
+spec:
+  template:
     spec:
-      template:
-        spec:
-          providerSpec:
-            value:
-              instanceType: <supported_instance_type>
-              networkInterfaceType: EFA
-              placement:
-                availabilityZone: <zone>
-                region: <region>
-              placementGroupName: <placement_group>
-              placementGroupPartition: <placement_group_partition_number>
-    # ...
-    ```
+      providerSpec:
+        value:
+          instanceType: <supported_instance_type>
+          networkInterfaceType: EFA
+          placement:
+            availabilityZone: <zone>
+            region: <region>
+          placementGroupName: <placement_group>
+          placementGroupPartition: <placement_group_partition_number>
+# ...
+```
 
-    - Specify an instance type that [supports EFAs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html#efa-instance-types).
+where:
 
-    - Specify the `EFA` network interface type.
+`spec.template.spec.providerSpec.value.instanceType`
+Specifies an instance type that [supports EFAs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html#efa-instance-types).
 
-    - Specify the zone, for example, `us-east-1a`.
+`spec.template.spec.providerSpec.value.networkInterfaceType`
+Specifies the `EFA` network interface type.
 
-    - Specify the region, for example, `us-east-1`.
+`spec.template.spec.providerSpec.value.placement.availabilityZone`
+Specifies the zone, for example, `us-east-1a`.
 
-    - Specify the name of the existing AWS placement group to deploy machines in.
+`spec.template.spec.providerSpec.value.placement.region`
+Specifies the region, for example, `us-east-1`.
 
-    - Optional: Specify the partition number of the existing AWS placement group to deploy machines in.
+`spec.template.spec.providerSpec.value.placementGroupName`
+Specifies the name of the existing AWS placement group to deploy machines in.
+
+`spec.template.spec.providerSpec.value.placementGroupPartition`
+Optional: Specifies the partition number of the existing AWS placement group to deploy machines in.
 
 - In the AWS console, find a machine that the machine set created and verify the following in the machine properties:
 
@@ -344,11 +365,13 @@ EFA instances do not require placement groups, and you can use placement groups 
 
 # Machine set options for the Amazon EC2 Instance Metadata Service
 
-You can use machine sets to create machines that use a specific version of the Amazon EC2 Instance Metadata Service (IMDS). Machine sets can create machines that allow the use of both IMDSv1 and [IMDSv2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html) or machines that require the use of IMDSv2.
+You can use machine sets to create machines that use a specific version of the Amazon EC2 Instance Metadata Service (IMDS). Configuring Amazon EC2 IMDS behavior for control plane machines improves security.
+
+Machine sets can create machines that allow the use of both IMDSv1 and IMDSv2 or machines that require the use of IMDSv2.
 
 <div class="note">
 
-To use IMDSv2 on AWS clusters that were created with OpenShift Container Platform version 4.6 or earlier, you must update your boot image. For more information, see "Boot image management".
+To use IMDSv2 on Amazon Web Services (AWS) clusters that were created with OpenShift Container Platform version 4.6 or earlier, you must update your boot image. For more information, see "Boot image management".
 
 </div>
 
@@ -360,13 +383,15 @@ Before configuring a machine set to create machines that require IMDSv2, ensure 
 
 </div>
 
+- [Use the Instance Metadata Service to access instance metadata (AWS documentation)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html)
+
 - [Boot image management](../../machine_configuration/mco-update-boot-images.xml#mco-update-boot-images)
 
 ## Configuring IMDS by using machine sets
 
 You can specify whether to require the use of IMDSv2 by adding or editing the value of `metadataServiceOptions.authentication` in the machine set YAML file for your machines.
 
-- To use IMDSv2, your AWS cluster must have been created with OpenShift Container Platform version 4.7 or later.
+- To use IMDSv2, your Amazon Web Services (AWS) cluster must have been created with OpenShift Container Platform version 4.7 or later.
 
 <!-- -->
 
@@ -379,7 +404,10 @@ You can specify whether to require the use of IMDSv2 by adding or editing the va
         authentication: Required
   ```
 
-  - To require IMDSv2, set the parameter value to `Required`. To allow the use of both IMDSv1 and IMDSv2, set the parameter value to `Optional`. If no value is specified, both IMDSv1 and IMDSv2 are allowed.
+where:
+
+`providerSpec.value.metadataServiceOptions.authentication`
+Specifies whether to require IMDSv2. Set this parameter to `Required` to require IMDSv2. Set this parameter to `Optional` to allow the use of both IMDSv1 and IMDSv2. If you do not specify a value, both IMDSv1 and IMDSv2 are allowed.
 
 # Configuring storage throughput for gp3 drives
 
@@ -406,13 +434,15 @@ You can improve performance for high traffic services by increasing the throughp
 
 # Machine sets that deploy machines as Dedicated Instances
 
-You can create a machine set running on AWS that deploys machines as Dedicated Instances. Dedicated Instances run in a virtual private cloud (VPC) on hardware that is dedicated to a single customer. These Amazon EC2 instances are physically isolated at the host hardware level. The isolation of Dedicated Instances occurs even if the instances belong to different AWS accounts that are linked to a single payer account. However, other instances that are not dedicated can share hardware with Dedicated Instances if they belong to the same AWS account.
+You can create a machine set running on Amazon Web Services (AWS) that deploys machines as Dedicated Instances. Dedicated Instances run in a virtual private cloud (VPC) on hardware that is dedicated to a single customer.
+
+These Amazon EC2 instances are physically isolated at the host hardware level. The isolation of Dedicated Instances occurs even if the instances belong to different AWS accounts that are linked to a single payer account. However, other instances that are not dedicated can share hardware with Dedicated Instances if they belong to the same AWS account.
 
 Instances with either public or dedicated tenancy are supported by the Machine API. Instances with public tenancy run on shared hardware. Public tenancy is the default tenancy. Instances with dedicated tenancy run on single-tenant hardware.
 
 ## Creating Dedicated Instances by using machine sets
 
-You can run a machine that is backed by a Dedicated Instance by using Machine API integration. Set the `tenancy` field in your machine set YAML file to launch a Dedicated Instance on AWS.
+You can run a machine that is backed by a Dedicated Instance by using Machine API integration. Set the `tenancy` field in your machine set YAML file to launch a Dedicated Instance on Amazon Web Services (AWS).
 
 - Specify a dedicated tenancy under the `providerSpec` field:
 
@@ -424,7 +454,7 @@ You can run a machine that is backed by a Dedicated Instance by using Machine AP
 
 # Machine sets that deploy machines as Spot Instances
 
-You can save on costs by creating a compute machine set running on AWS that deploys machines as non-guaranteed Spot Instances. Spot Instances use unused AWS EC2 capacity and are less expensive than On-Demand Instances. You can use Spot Instances for workloads that can tolerate interruptions, such as batch or stateless, horizontally scalable workloads.
+You can save on costs by creating a compute machine set running on Amazon Web Services (AWS) that deploys machines as non-guaranteed Spot Instances. Spot Instances utilize unused AWS EC2 capacity and are less expensive than On-Demand Instances. You can use Spot Instances for workloads that can tolerate interruptions, such as batch or stateless, horizontally scalable workloads.
 
 AWS EC2 can terminate a Spot Instance at any time. AWS gives a two-minute warning to the user when an interruption occurs. OpenShift Container Platform begins to remove the workloads from the affected instances when AWS issues the termination warning.
 
@@ -452,9 +482,9 @@ You can save on costs by creating a compute machine set that deploys machines as
 
   You can optionally set the `spotMarketOptions.maxPrice` field to limit the cost of the Spot Instance. For example you can set `maxPrice: '2.50'`.
 
-  If the `maxPrice` is set, this value is used as the hourly maximum spot price. If it is not set, the maximum price defaults to charge up to the On-Demand Instance price.
-
   <div class="note">
+
+  If the `maxPrice` is set, this value is used as the hourly maximum spot price. If it is not set, the maximum price defaults to charge up to the On-Demand Instance price.
 
   It is strongly recommended to use the default On-Demand price as the `maxPrice` value and to not set the maximum price for Spot Instances.
 
@@ -464,9 +494,11 @@ You can save on costs by creating a compute machine set that deploys machines as
 
 OpenShift Container Platform version 4.17 and later supports Capacity Reservations on Amazon Web Services clusters, including On-Demand Capacity Reservations and Capacity Blocks for ML.
 
-You can configure a machine set to deploy machines on any available resources that match the parameters of a capacity request that you define. These parameters specify the instance type, region, and number of instances that you want to reserve. If your Capacity Reservation can accommodate the capacity request, the deployment succeeds.
+You can configure a machine set to deploy machines on any available resources that match the parameters of a capacity request that you define.
 
-For more information, including limitations and suggested use cases for this AWS offering, see [On-Demand Capacity Reservations and Capacity Blocks for ML](https://docs.aws.amazon.com/en_us/AWSEC2/latest/UserGuide/capacity-reservation-overview.html) in the AWS documentation.
+These parameters specify the instance type, region, and number of instances that you want to reserve. If your Capacity Reservation can accommodate the capacity request, the deployment succeeds.
+
+For more information, including limitations and suggested use cases for this Amazon Web Services offering, see [On-Demand Capacity Reservations and Capacity Blocks for ML](https://docs.aws.amazon.com/en_us/AWSEC2/latest/UserGuide/capacity-reservation-overview.html) in the AWS documentation.
 
 - You have access to the cluster with `cluster-admin` privileges.
 
@@ -498,18 +530,22 @@ For more information, including limitations and suggested use cases for this AWS
     # ...
     ```
 
-    - Specify the ID of the Capacity Block for ML or On-Demand Capacity Reservation that you want the machine set to deploy machines on.
+    where:
 
-    - Specify the market type to use. The following values are valid:
+    `<capacity_reservation>`
+    Specifies the ID of the Capacity Block for ML or On-Demand Capacity Reservation that you want the machine set to deploy machines on.
 
-      `CapacityBlock`
-      Use this market type with Capacity Blocks for ML.
+    `<market_type>`
+    Specifies the market type to use. The following values are valid:
 
-      `OnDemand`
-      Use this market type with On-Demand Capacity Reservations.
+    `CapacityBlock`
+    Use this market type with Capacity Blocks for ML.
 
-      `Spot`
-      Use this market type with Spot Instances. This option is not compatible with Capacity Reservations.
+    `OnDemand`
+    Use this market type with On-Demand Capacity Reservations.
+
+    `Spot`
+    Use this market type with Spot Instances. This option is not compatible with Capacity Reservations.
 
 - To verify machine deployment, list the machines that the machine set created by running the following command:
 

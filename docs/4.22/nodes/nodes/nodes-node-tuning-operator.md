@@ -339,7 +339,7 @@ There is some dynamic tuning functionality provided by some of these plugins tha
 
 <div class="note">
 
-The TuneD bootloader plugin only supports Red Hat Enterprise Linux CoreOS (RHCOS) worker nodes.
+The TuneD bootloader plugin only supports Red Hat Enterprise Linux CoreOS (RHCOS) worker nodes.
 
 </div>
 

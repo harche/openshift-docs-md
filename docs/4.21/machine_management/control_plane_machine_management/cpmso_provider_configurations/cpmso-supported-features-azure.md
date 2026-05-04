@@ -585,7 +585,9 @@ For more information about related features and functionality, see the Microsoft
 
 OpenShift Container Platform version 4.17 and later supports on-demand Capacity Reservation with Capacity Reservation groups on Microsoft Azure clusters.
 
-You can configure a machine set to deploy machines on any available resources that match the parameters of a capacity request that you define. These parameters specify the VM size, region, and number of instances that you want to reserve. If your Azure subscription quota can accommodate the capacity request, the deployment succeeds.
+You can configure a machine set to deploy machines on any available resources that match the parameters of a capacity request that you define.
+
+These parameters specify the VM size, region, and number of instances that you want to reserve. If your Azure subscription quota can accommodate the capacity request, the deployment succeeds.
 
 For more information, including limitations and suggested use cases for this Azure offering, see [On-demand Capacity Reservation](https://learn.microsoft.com/en-us/azure/virtual-machines/capacity-reservation-overview) in the Microsoft Azure documentation.
 
@@ -625,7 +627,10 @@ You cannot change an existing Capacity Reservation configuration for a machine s
     # ...
     ```
 
-    - Specify the ID of the Capacity Reservation group that you want the machine set to deploy machines on.
+    where:
+
+    `<capacity_reservation_group>`
+    Specifies the ID of the Capacity Reservation group that you want the machine set to deploy machines on.
 
 - To verify machine deployment, list the machines that the machine set created by running the following command:
 

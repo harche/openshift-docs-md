@@ -1,10 +1,10 @@
-Monitor the consumption of cluster infrastructure resources using the metrics provided by OpenShift Virtualization. These metrics are also used to query live migration status.
+Monitor the consumption of cluster infrastructure resources by using the metrics provided by OpenShift Virtualization. These metrics are also used to query live migration status.
 
 <div class="note">
 
-- To use the vCPU metric, the `schedstats=enable` kernel argument must be applied to the `MachineConfig` object. This kernel argument enables scheduler statistics used for debugging and performance tuning and adds a minor additional load to the scheduler.
+- To use the vCPU metric, apply the `schedstats=enable` kernel argument to the `MachineConfig` object. This kernel argument enables scheduler statistics used for debugging and performance tuning and adds a minor additional load to the scheduler.
 
-- For guest memory swapping queries to return data, memory swapping must be enabled on the virtual guests.
+- For guest memory swapping queries to return data, enable memory swapping on the virtual guests.
 
 </div>
 

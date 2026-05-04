@@ -155,11 +155,11 @@ Required permissions and propagation settings
 
 For more information about creating an account with only the required privileges, see [vSphere Permissions and User Management Tasks](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-5372F580-5C23-4E9C-8A4E-EF1B4DD9033E.html) in the vSphere documentation.
 
-## Requirements for clusters with user-provisioned infrastructure to use compute machine sets
+# Requirements for clusters with user-provisioned infrastructure to use compute machine sets
 
 To enable the Machine API to manage and scale compute nodes on user-provisioned infrastructure, you can configure a `MachineSet` YAML file with specific vSphere parameters, for example data center and disk image. To use compute machine sets on clusters that have user-provisioned infrastructure, you must ensure that you cluster configuration supports using the Machine API.
 
-### Obtaining the infrastructure ID
+## Obtaining the infrastructure ID
 
 To ensure the Machine API correctly identifies and manages virtual machines (VMs) that belong to a specific cluster, you must add the unique infrastructure ID to the `MachineSet` YAML file to label and link resources. To create compute machine sets, you must be able to supply the infrastructure ID for your cluster.
 
@@ -169,7 +169,7 @@ To ensure the Machine API correctly identifies and manages virtual machines (VMs
   $ oc get infrastructure cluster -o jsonpath='{.status.infrastructureName}'
   ```
 
-### Satisfying vSphere credentials requirements
+## Satisfying vSphere credentials requirements
 
 To use compute machine sets and manage virtual machine (VM) resources, the Machine API must be able to interact with vCenter. Credentials that authorize the Machine API components to interact with vCenter must exist in a secret in the `openshift-machine-api` namespace.
 
@@ -205,7 +205,7 @@ To use compute machine sets and manage virtual machine (VM) resources, the Machi
       --from-literal=<vcenter-server>.username=<openshift-user> --from-literal=<vcenter-server>.password=<openshift-user-password>
     ```
 
-### Satisfying Ignition configuration requirements
+## Satisfying Ignition configuration requirements
 
 For the Machine API to provision virtual machines (VMs) with the correct initial configuration using Ignition, a valid Ignition configuration is required. The Ignition configuration contains the `machine-config-server` address and a system trust bundle for obtaining further Ignition configurations from the Machine Config Operator.
 
@@ -252,7 +252,7 @@ By default, this configuration is stored in the `worker-user-data` secret in the
 
 - [Installing RHCOS and starting the OpenShift Container Platform bootstrap process](../../installing/installing_vsphere/upi/installing-vsphere.xml#installation-vsphere-machines_installing-vsphere)
 
-## Creating a compute machine set
+# Creating a compute machine set
 
 In addition to the compute machine sets created by the installation program, you can create your own compute machine sets to dynamically manage the machine compute resources for specific workloads of your choice. Use the OpenShift Container Platform CLI to automate node provisioning.
 
@@ -448,7 +448,7 @@ Specifies the IP address or fully qualified domain name (FQDN) of the vCenter se
 
   When the new compute machine set is available, the `DESIRED` and `CURRENT` values match. If the compute machine set is not available, wait a few minutes and run the command again.
 
-## Labeling GPU machine sets for the cluster autoscaler
+# Labeling GPU machine sets for the cluster autoscaler
 
 Label your machine sets to indicate which machines the cluster autoscaler can use for GPU-enabled nodes. Applying the accelerator label helps ensure that the autoscaler deploys the correct resources for your GPU workloads.
 
@@ -486,7 +486,7 @@ Label your machine sets to indicate which machines the cluster autoscaler can us
 
 - [Cluster autoscaler resource definition](../../machine_management/applying-autoscaling.xml#cluster-autoscaler-cr_applying-autoscaling)
 
-## Adding tags to machines by using machine sets
+# Adding tags to machines by using machine sets
 
 To ensure that your cluster remains scalable and resilient, you can use a `MachineSet` object and machine health checks to automate the provisioning and repair of nodes. OpenShift Container Platform adds a cluster-specific tag to each virtual machine (VM) that it creates. The installation program uses these tags to select the VMs to delete when uninstalling a cluster.
 
@@ -553,7 +553,7 @@ In addition to the cluster-specific tags assigned to VMs, you can configure a ma
     `spec.template.spec.providerSpec.value.tagIDs`
     Specifies a list of up to 10 tags to add to the machines that this machine set provisions. Replace `<tag_id_value>` with the tag that you want to add to your machines. For example, `urn:vmomi:InventoryServiceTag:208e713c-cae3-4b7f-918e-4051ca7d1f97:GLOBAL`.
 
-## Configuring multiple network interface controllers by using machine sets
+# Configuring multiple network interface controllers by using machine sets
 
 By configuring multiple network interface controllers (NICs), you can provide dedicated network links in the node virtual machines (VMs) for uses such as storage or databases. OpenShift Container Platform clusters on VMware vSphere support connecting up to 10 network NICs to a node.
 
@@ -649,7 +649,7 @@ You can use machine sets to manage this configuration.
     `spec.template.spec.providerSpec.value.network.workspace.server`
     Specifies the vCenter server IP or fully qualified domain name (FQDN).
 
-## Configuring data disks by using machine sets
+# Configuring data disks by using machine sets
 
 To provide persistent storage beyond the root volume for specialized application workloads, define a `dataDisks` array in the `MachineSet` YAML file to specify disk size and storage policy. OpenShift Container Platform clusters on VMware vSphere support adding up to 29 disks to the virtual machine (VM) controller.
 

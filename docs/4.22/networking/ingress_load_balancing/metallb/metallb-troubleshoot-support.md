@@ -24,6 +24,12 @@ Gain a deeper insight into MetalLB by setting the `logLevel` to `debug`.
         node-role.kubernetes.io/worker: ""
     ```
 
+    <div class="note">
+
+    While other fields like `speakerConfig` can be configured here, the `bgpBackend` field must be omitted. It is reserved for internal use by MetalLB to manage the active BGP implementation.
+
+    </div>
+
 2.  Apply the configuration by entering the following command:
 
     ``` terminal

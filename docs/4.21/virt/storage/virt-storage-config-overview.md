@@ -50,7 +50,7 @@ Boot sources can make virtual machine (VM) creation more accessible and efficien
 
 # Additional resources
 
-- [Configure a default storage class](../../storage/dynamic-provisioning.xml#defining-storage-classes_dynamic-provisioning)
+- [Defining a storage class](../../storage/dynamic-provisioning.xml#dynamic-provisioning-defining-storage-class_dynamic-provisioning)
 
 - [Configure storage profiles](../../virt/storage/virt-configuring-storage-profile.xml#virt-configuring-storage-profile)
 

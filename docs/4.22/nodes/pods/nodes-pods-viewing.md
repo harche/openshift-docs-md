@@ -81,13 +81,9 @@ To troubleshoot pod issues and view detailed information about a pod in OpenShif
     Normal  Started  41m (x170 over 7d1h)  kubelet  Started container busybox
   ```
 
-<!-- -->
-
-- [oc describe](../../cli_reference/openshift_cli/developer-cli-commands.xml#oc-describe)
-
 # Viewing pod usage statistics
 
-You can display usage statistics about pods, which provide the runtime environments for containers. These usage statistics include CPU, memory, and storage consumption.
+You can display usage statistics about pods, including CPU, memory, and storage consumption. By monitoring pod usage levels you can help ensure efficient resource use.
 
 - You must have `cluster-reader` permission to view the usage statistics.
 
@@ -121,11 +117,13 @@ You can display usage statistics about pods, which provide the runtime environme
 
 # Viewing resource logs
 
-You can view logs for resources in the OpenShift CLI (oc) or web console. Logs display from the end (or tail) by default. Viewing logs for resources can help you troubleshoot issues and monitor resource behavior.
+You can view logs for resources in the OpenShift CLI (`oc`) or web console. By viewing logs for resources, you can troubleshoot issues and monitor resource behavior.
+
+Logs display from the end (or tail) by default.
 
 ## Viewing resource logs by using the web console
 
-Use the following procedure to view resource logs by using the OpenShift Container Platform web console.
+You can view resource logs by using the OpenShift Container Platform web console. By viewing logs for resources, you can troubleshoot issues and monitor resource behavior.
 
 1.  In the OpenShift Container Platform console, navigate to **Workloads** → **Pods** or navigate to the pod through the resource you want to investigate.
 
@@ -143,7 +141,7 @@ Use the following procedure to view resource logs by using the OpenShift Contain
 
 ## Viewing resource logs by using the CLI
 
-Use the following procedure to view resource logs by using the command-line interface (CLI).
+You can view resource logs by using the command-line interface (CLI). By viewing logs for resources, you can troubleshoot issues and monitor resource behavior.
 
 - Access to the OpenShift CLI (`oc`).
 
@@ -183,3 +181,7 @@ Use the following procedure to view resource logs by using the command-line inte
   ``` terminal
   $ oc logs deployment/ruby
   ```
+
+# Additional resources
+
+- [oc describe](../../cli_reference/openshift_cli/developer-cli-commands.xml#oc-describe)

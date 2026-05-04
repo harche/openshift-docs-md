@@ -1,14 +1,18 @@
-This feature provides native Border Gateway Protocol (BGP) routing capabilities for the cluster.
+Learn about the Border Gateway Protocol (BGP) routing capabilities available in the cluster, including implementation and configuration of BGP by using FRR-K8s resources. Take into account key considerations for using the MetalLB Operator, including required migration of existing `FRRConfiguration` custom resources to the `openshift-frr-k8s` namespace to ensure compatibility with current implementations.
+
+This feature provides native BGP routing capabilities for the cluster.
 
 <div class="important">
 
-If you are using the MetalLB Operator and there are existing `FRRConfiguration` CRs in the `metallb-system` namespace created by cluster administrators or third-party cluster components other than the MetalLB Operator, you must ensure that they are copied to the `openshift-frr-k8s` namespace or that those third-party cluster components use the new namespace. For more information, see [Migrating FRR-K8s resources](../../../networking/advanced_networking/bgp_routing/migrating-frr-k8s-resources.xml#migrating-frr-k8s-resources).
+If you are using the MetalLB Operator and there are existing `FRRConfiguration` CRs in the `metallb-system` namespace created by cluster administrators or third-party cluster components other than the MetalLB Operator, you must ensure that they are copied to the `openshift-frr-k8s` namespace or that those third-party cluster components use the new namespace. For more information, see "Migrating FRR-K8s resources".
 
 </div>
 
 # About Border Gateway Protocol (BGP) routing
 
-OpenShift Container Platform supports BGP routing through FRRouting (FRR), a free, open source internet routing protocol suite for Linux, UNIX, and similar operating systems. FRR-K8s is a Kubernetes-based daemon set that exposes a subset of the FRR API in a Kubernetes-compliant manner. As a cluster administrator, you can use the `FRRConfiguration` custom resource (CR) to access FRR services.
+To enable external routing for your cluster, configure Border Gateway Protocol (BGP) using FRRouting (FRR) and the FRR-K8s daemon. You can define routing behavior with the `FRRConfiguration` custom resource (CR) and ensure compatibility with the MetalLB Operator by using the required namespace and migration approach.
+
+OpenShift Container Platform supports BGP routing through FRR, a free, open source internet routing protocol suite for Linux, UNIX, and similar operating systems. FRR-K8s is a Kubernetes-based daemon set that exposes a subset of the FRR API in a Kubernetes-compliant manner. As a cluster administrator, you can use the `FRRConfiguration` custom resource to access FRR services.
 
 ## Supported platforms
 
@@ -47,7 +51,7 @@ The following custom resources are used to configure BGP routing:
 `FRRConfiguration`
 This custom resource defines the FRR configuration for the BGP routing. This CR is namespaced.
 
-# Configuring the FRRConfiguration CRD
+# Configuring the FRRConfiguration CR
 
 To customize routing behavior beyond standard MetalLB capabilities, configure the `FRRConfiguration` custom resource (CR).
 
@@ -381,3 +385,5 @@ MetalLB FRRConfiguration custom resource
 # Additional resources
 
 - [FRRouting User Guide: BGP](https://docs.frrouting.org/en/latest/bgp.html)
+
+- [Migrating FRR-K8s resources](../../../networking/advanced_networking/bgp_routing/migrating-frr-k8s-resources.xml#migrating-frr-k8s-resources)

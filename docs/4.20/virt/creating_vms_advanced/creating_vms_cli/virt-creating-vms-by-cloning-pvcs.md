@@ -1,6 +1,6 @@
 You can create virtual machines (VMs) by cloning existing persistent volume claims (PVCs) with custom images.
 
-You must install the [QEMU guest agent](../../../virt/managing_vms/virt-installing-qemu-guest-agent.xml#virt-installing-qemu-guest-agent) on VMs created from operating system images that are not provided by Red Hat.
+You must install the QEMU guest agent on VMs created from operating system images that are not provided by Red Hat.
 
 You clone a PVC by creating a data volume that references a source PVC.
 
@@ -132,12 +132,6 @@ To improve performance when creating hundreds of clones from a single source PVC
           namespace: golden-ns
           name: golden-volumesnapshot
     ```
-
-- [Setting a default cloning strategy using a storage profile](../../../virt/storage/virt-configuring-storage-profile.xml#virt-customizing-storage-profile-default-cloning-strategy_virt-configuring-storage-profile)
-
-- [Volume cloning](https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/latest/html/managing_and_allocating_storage_resources/volume-cloning_rhodf#volume-cloning_rhodf)
-
-- [CSI volume snapshots](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/storage/using-container-storage-interface-csi#persistent-storage-csi-snapshots)
 
 ## Cloning a PVC to a data volume
 
@@ -290,3 +284,13 @@ You can create a virtual machine (VM) that clones the persistent volume claim (P
     ``` terminal
     $ oc create -f <vm_manifest_file>.yaml
     ```
+
+# Additional resources
+
+- [Setting a default cloning strategy using a storage profile](../../../virt/storage/virt-configuring-storage-profile.xml#virt-customizing-storage-profile-default-cloning-strategy_virt-configuring-storage-profile)
+
+- [Installing the QEMU guest agent](../../../virt/managing_vms/virt-installing-qemu-guest-agent.xml#virt-installing-qemu-guest-agent)
+
+- [Volume cloning](https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/latest/html/managing_and_allocating_storage_resources/volume-cloning_rhodf#volume-cloning_rhodf)
+
+- [CSI volume snapshots](../../../storage/container_storage_interface/persistent-storage-csi-snapshots.xml#persistent-storage-csi-snapshots)

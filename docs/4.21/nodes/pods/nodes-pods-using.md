@@ -1,8 +1,10 @@
-A *pod* is one or more containers deployed together on one host, and the smallest compute unit that can be defined, deployed, and managed.
+To run your application containers in OpenShift Container Platform, you must use pods. Pods allow you to group tightly coupled containers together on a single host for shared networking and storage.
 
 # Understanding pods
 
-Pods are the rough equivalent of a machine instance (physical or virtual) to a Container. Each pod is allocated its own internal IP address, therefore owning its entire port space, and containers within pods can share their local storage and networking.
+To run and manage your application containers in OpenShift Container Platform, you must use pods. Pods allow multiple containers to share the same network and storage resources on a single host.
+
+Pods are the rough equivalent of a machine instance (physical or virtual) to a container. Each pod is allocated its own internal IP address, therefore owning its entire port space, and containers within pods can share their local storage and networking.
 
 Pods have a lifecycle; they are defined, then they are assigned to run on a node, then they run until their container(s) exit or they are removed for some other reason. Pods, depending on policy and exit code, might be removed after exiting, or can be retained to enable access to the logs of their containers.
 
@@ -73,23 +75,33 @@ spec:
       sizeLimit: 500Mi
 ```
 
-- Pods can be "tagged" with one or more labels, which can then be used to select and manage groups of pods in a single operation. The labels are stored in key/value format in the `metadata` hash.
+where:
 
-- The pod restart policy with possible values `Always`, `OnFailure`, and `Never`. The default value is `Always`.
+`metadata.labels.app`
+Specifies a label for the pod. Pods can be "tagged" with one or more labels, which can then be used to select and manage groups of pods in a single operation. The labels are stored in key/value format in the `metadata` hash.
 
-- OpenShift Container Platform defines a security context for containers which specifies whether they are allowed to run as privileged containers, run as a user of their choice, and more. The default context is very restrictive but administrators can modify this as needed.
+`spec.restartPolicy`
+Specifies the pod restart policy with possible values `Always`, `OnFailure`, and `Never`. The default value is `Always`.
 
-- `containers` specifies an array of one or more container definitions.
+`spec.securityContext`
+Specifies a security context for containers, which defines whether containers are allowed to run as privileged containers, run as a user of their choice, and more. The default context is very restrictive but administrators can modify this as needed.
 
-- The container specifies where external storage volumes are mounted within the container.
+`spec.containers`
+Specifies an array of one or more container definitions.
 
-- Specify the volumes to provide for the pod. Volumes mount at the specified path. Do not mount to the container root, `/`, or any path that is the same in the host and the container. This can corrupt your host system if the container is sufficiently privileged, such as the host `/dev/pts` files. It is safe to mount the host by using `/host`.
+`spec.containers.volumeMounts`
+Specifies where external storage volumes are mounted within the container.
 
-- Each container in the pod is instantiated from its own container image.
+`spec.containers.volumeMounts.mountPath`
+Specifies the volumes to provide for the pod. Volumes mount at the specified path. Do not mount to the container root, `/`, or any path that is the same in the host and the container. This can corrupt your host system if the container is sufficiently privileged, such as the host `/dev/pts` files. It is safe to mount the host by using `/host`.
 
-- The pod defines storage volumes that are available to its container(s) to use.
+`spec.containers.image`
+Specifies the container image to run. Each container in the pod is instantiated from its own container image.
 
-  If you attach persistent volumes that have high file counts to pods, those pods can fail or can take a long time to start. For more information, see [When using Persistent Volumes with high file counts in OpenShift, why do pods fail to start or take an excessive amount of time to achieve "Ready" state?](https://access.redhat.com/solutions/6221251).
+`spec.volumes`
+Specifies the storage volumes that are available to the container(s) to use.
+
+If you attach persistent volumes that have high file counts to pods, those pods can fail or can take a long time to start. For more information, see [When using Persistent Volumes with high file counts in OpenShift, why do pods fail to start or take an excessive amount of time to achieve "Ready" state?](https://access.redhat.com/solutions/6221251).
 
 <div class="note">
 
@@ -99,7 +111,7 @@ This pod definition does not include attributes that are filled by OpenShift Con
 
 # Understanding resource requests and limits
 
-You can specify CPU and memory requests and limits for pods by using a pod spec, as shown in "Example pod configurations", or the specification for the controlling object of the pod.
+To manage how your applications consume compute resources, you can define CPU and memory requests and limits in your pod specifications. Requests ensure a minimum amount of resources for scheduling, where limits prevent a container from consuming excessive resources that could impact other pods on the node.
 
 CPU and memory *requests* specify the minimum amount of a resource that a pod needs to run, helping OpenShift Container Platform to schedule pods on nodes with sufficient resources.
 
@@ -129,7 +141,9 @@ For Linux workloads, you can specify huge page resources. Huge pages are a Linux
 
 # Additional resources
 
-- For more information on pods and storage see [Understanding persistent storage](../../storage/understanding-persistent-storage.xml#understanding-persistent-storage) and [Understanding ephemeral storage](../../storage/understanding-ephemeral-storage.xml#understanding-ephemeral-storage).
+- [Understanding persistent storage](../../storage/understanding-persistent-storage.xml#understanding-persistent-storage)
+
+- [Understanding ephemeral storage](../../storage/understanding-ephemeral-storage.xml#understanding-ephemeral-storage)
 
 - [Example pod configurations](../../nodes/pods/nodes-pods-using.xml#nodes-pods-using-example_nodes-pods-using-ssy)
 

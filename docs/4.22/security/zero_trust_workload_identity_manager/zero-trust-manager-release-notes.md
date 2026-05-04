@@ -24,7 +24,7 @@ The following advisories are available for the Zero Trust Workload Identity Mana
 
 - [RHBA-2025:23446](https://access.redhat.com/errata/RHBA-2025:23446)
 
-Zero Trust Workload Identity Manager supports the following components and versions:
+Zero Trust Workload Identity Manager supports the following components and versions:git
 
 | Component                     | Version |
 |-------------------------------|---------|
@@ -43,7 +43,7 @@ The Operator now includes support for SPIRE federation, enabling workloads acros
 
   - Configuration of bundle endpoints using `https_spiffe` (TLS) or `https_web` (Web PKI) profiles.
 
-  - Automatic certificate management via the ACME protocol (e.g., Let’s Encrypt).
+  - Automatic certificate management via the ACME protocol, such as Let’s Encrypt.
 
   - Automatic OpenShift Container Platform route creation for federation endpoints.
 
@@ -51,12 +51,12 @@ The Operator now includes support for SPIRE federation, enabling workloads acros
 
 - Customer action required:
 
-  - Review the `federation` configuration within the `SpireServer` Custom Resource (CR).
+  - Review the `federation` configuration within the `SpireServer` custom resource (CR).
 
   - Ensure proper DNS resolution and network connectivity to federated trust domains.
 
 PostgreSQL database support
-SPIRE Server now supports PostgreSQL as an external database backend, accommodating production deployments that necessitate enterprise-grade data persistence and high availability.
+SPIRE Server now supports PostgreSQL as an external database backend, accommodating production deployments that necessitate enterprise-grade data persistence and high availability (HA) clusters.
 
 - Supported Types: `sqlite3` (default), `postgres`, `mysql`.
 
@@ -64,7 +64,7 @@ SPIRE Server now supports PostgreSQL as an external database backend, accommodat
 
   - For production, evaluation of migration from SQLite to PostgreSQL is recommended.
 
-  - Creation and configuration of Kubernetes Secrets for database TLS certificates and credentials are required.
+  - Creation and configuration of Kubernetes secrets for database TLS certificates and credentials are required.
 
 Configurable agent socket path and Container Storage Interface (CSI) plugin name
 The SPIRE Agent socket path and the SPIFFE CSI Driver plugin name are now configurable, providing operational flexibility for environments with specific directory requirements or co-existence with multiple SPIFFE deployments.
@@ -131,9 +131,9 @@ Common configuration consolidation
 Configuring log level and log format for the operands
 This release introduces flexible logging controls to improve observability and debugging across the platform:
 
-- SPIRE Components: Users can now configure the `logLevel` (debug, info, warn, error) and `logFormat` (text, JSON) independently for `SpireServer`, `SpireAgent`, and `SpireOIDCDiscoveryProvider` directly within their CR specifications. The defaults are set to "info" for the `logLevel` and "text" for the `logFormat`.
+- SPIRE Components: Users can now configure the `logLevel` and `logFormat` parameters independently for `SpireServer`, `SpireAgent`, and `SpireOIDCDiscoveryProvider` directly within their CR specifications.
 
-- Operator: The operator’s log verbosity is now configurable via the `OPERATOR_LOG_LEVEL` environment variable using klog’s `textlogger`.
+- Operator: The Operator log verbosity is now configurable via the `OPERATOR_LOG_LEVEL` environment variable using klog’s `textlogger`.
 
 Refactor for create-only mode
 By setting the `CREATE_ONLY_MODE` environment variable, users can prevent the operator from reconciling updates. This allows for manual resource modification without interference. If this mode is disabled, the Operator resumes enforcing the state and overwrites any manual changes.
@@ -153,12 +153,12 @@ Operator metrics
 ## Fixed issues
 
 Enhanced Security Context Constraints for SPIRE Agent
-Before this update, the SPIRE Agent and SPIFFE CSI Driver containers were running as root user, leading to potential security violations. With this release, Security Context Constraints (SCC) have been configured to ensure these components no longer run as root. While privileged container mode is still required for necessary capabilities, this change reduces potential security risks for the end user.
+Before this update, the SPIRE Agent and SPIFFE CSI Driver containers were running as root user, leading to potential security violations. With this release, Security Context Constraints (SCC) have been configured to ensure these components no longer run as root. While privileged container mode is still required for necessary capabilities, this change reduces potential security risks for the user.
 
 ([SPIRE-60](https://issues.redhat.com/browse/SPIRE-60))
 
-SpireServer updates now propagate without operator restart
-- Before this update, the operator failed to trigger reconciliation after updating the operand CR spec. As a consequence, user updates to SpireServer CR resources were not propagated to the StatefulSet, causing reconciliation to fail and changes to be ignored, leading to inconsistent resource allocation. With this release, the race condition between the manager and reconciler’s cache to trigger reconciliation after CR updates has been fixed. As a result, day2 patch operations on SpireServer CRs will reliably trigger reconciliation, ensuring updated values are applied to the StatefulSet without manual operator restart.
+SpireServer updates now propagate without Operator restart
+- Before this update, the Operator failed to trigger reconciliation after updating the Operand CR spec. As a consequence, user updates to the `SpireServer` CR resources were not propagated to the StatefulSet pods, causing reconciliation to fail and changes to be ignored, leading to inconsistent resource allocation. With this release, the race condition between the manager and reconciler’s cache to trigger reconciliation after CR updates has been fixed. As a result, any patches applied to the `SpireServer` CRs reliably trigger reconciliation, ensuring updated values are applied to the StatefulSet pods without manual Operator restart.
 
   ([SPIRE-68](https://issues.redhat.com/browse/SPIRE-68))
 
@@ -168,7 +168,7 @@ Removed unnecessary security context constraint for OpenID Connect discovery pro
   ([SPIRE-190](https://issues.redhat.com/browse/SPIRE-190))
 
 Fixed ConfigMap Reconciliation for SPIRE Controller Manager
-Before this update, Spire-controller manager ConfigMap reconciliation failed due to an unhandled edge case in the previous implementation. As a consequence, users experienced configuration inconsistencies. With this release, the Spire-controller manager ConfigMap reconciliation issue has been resolved. As a result, end users now experience seamless Spire-controller manager configuration.
+Before this update, Spire-controller manager ConfigMap reconciliation failed due to an unhandled edge case in the previous implementation. As a consequence, users experienced configuration inconsistencies. With this release, the Spire-controller manager ConfigMap reconciliation issue has been resolved. As a result, users now experience seamless Spire-controller manager configuration.
 
 ([SPIRE-195](https://issues.redhat.com/browse/SPIRE-195))
 
@@ -188,9 +188,11 @@ Corrected update rollback for DaemonSets, Deployments, and StatefulSets
 
   - Eliminated requeue logic for user input validation errors.
 
-# Zero Trust Workload Identity Manager 0.2.0 (Technology Preview)
+# Zero Trust Workload Identity Manager 0.2.0
 
 Issued: 2025-09-08
+
+This release introduces supoort for the OIDC Discovery Provider route, as well as enabling Time-To-Live for the SPIRE bundle and enabling manual user configurations.
 
 The following advisories are available for the Zero Trust Workload Identity Manager.
 
@@ -201,8 +203,6 @@ The following advisories are available for the Zero Trust Workload Identity Mana
 - [RHBA-2025:15427](https://access.redhat.com/errata/RHBA-2025:15427)
 
 - [RHBA-2025:15428](https://access.redhat.com/errata/RHBA-2025:15428)
-
-This release of Zero Trust Workload Identity Manager is a Technology Preview.
 
 ## New features and enhancements
 
@@ -240,17 +240,11 @@ JSON Web Token Issuer field now requires a valid URL
 
   ([SPIRE-117](https://issues.redhat.com/browse/SPIRE-117))
 
-# Zero Trust Workload Identity Manager 0.1.0 (Technology Preview)
-
-<div class="important">
-
-The Zero Trust Workload Identity Manager is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+# Zero Trust Workload Identity Manager 0.1.0
 
 Issued: 2025-06-16
+
+This is the first release of Zero Trust Workload Identity Manager.
 
 The following advisories are available for the Zero Trust Workload Identity Manager:
 
@@ -270,18 +264,6 @@ The following advisories are available for the Zero Trust Workload Identity Mana
 
 - [RHBA-2025:9104](https://access.redhat.com/errata/RHBA-2025:9104)
 
-This initial release of Zero Trust Workload Identity Manager is a Technology Preview. This version has the following known limitations:
+## New features and enhancements
 
-- Support for SPIRE federation is not enabled.
-
-- Key manager supports only the `disk` storage type.
-
-- Telemetry is supported only through Prometheus.
-
-- High availability (HA) configuration for SPIRE Servers or the OpenID Connect (OIDC) Discovery provider is not supported.
-
-- External datastore is not supported. This version uses the internal `sqlite` datastore deployed by SPIRE.
-
-- This version operates using a fixed configuration. User-defined configurations are not allowed.
-
-- The log level of operands are not configurable. The default value is `DEBUG`.
+There are no new features and enhancements for this release.

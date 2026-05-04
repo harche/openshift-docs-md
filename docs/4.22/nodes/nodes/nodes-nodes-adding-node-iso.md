@@ -43,6 +43,175 @@ You can add nodes with this method in the following two ways:
 
   You can add a node by running the `oc adm node-image create` command with flags to specify your configurations. This is useful if you want to add only a single node at a time, and have only simple configurations to specify for that node.
 
+# Adding one or more nodes using a configuration file
+
+You can add one or more nodes to your cluster by using the `nodes-config.yaml` file to specify configurations for the new nodes.
+
+- You have installed the OpenShift CLI (`oc`)
+
+- You have installed the Rsync utility
+
+- You have an active connection to your target cluster
+
+- You have a kubeconfig file available
+
+1.  Create a new YAML file that contains configurations for the nodes you are adding and is named `nodes-config.yaml`. You must provide a MAC address for each new node.
+
+    In the following example file, two new workers are described with an initial static network configuration:
+
+    <div class="formalpara-title">
+
+    **Example `nodes-config.yaml` file**
+
+    </div>
+
+    ``` yaml
+    hosts:
+    - hostname: extra-worker-1
+      rootDeviceHints:
+       deviceName: /dev/sda
+      interfaces:
+       - macAddress: 00:00:00:00:00:00
+         name: eth0
+      networkConfig:
+       interfaces:
+         - name: eth0
+           type: ethernet
+           state: up
+           mac-address: 00:00:00:00:00:00
+           ipv4:
+             enabled: true
+             address:
+               - ip: 192.168.122.2
+                 prefix-length: 23
+             dhcp: false
+    - hostname: extra-worker-2
+      rootDeviceHints:
+       deviceName: /dev/sda
+      interfaces:
+       - macAddress: 00:00:00:00:00:02
+         name: eth0
+      networkConfig:
+       interfaces:
+         - name: eth0
+           type: ethernet
+           state: up
+           mac-address: 00:00:00:00:00:02
+           ipv4:
+             enabled: true
+             address:
+               - ip: 192.168.122.3
+                 prefix-length: 23
+             dhcp: false
+    ```
+
+2.  Generate the ISO image by running the following command:
+
+    ``` terminal
+    $ oc adm node-image create
+    ```
+
+    <div class="important">
+
+    In order for the `create` command to fetch a release image that matches the target cluster version, you must specify a valid pull secret. You can specify the pull secret either by using the `--registry-config` flag or by setting the `REGISTRY_AUTH_FILE` environment variable beforehand.
+
+    </div>
+
+    <div class="note">
+
+    If the directory of the `nodes-config.yaml` file is not specified by using the `--dir` flag, the tool looks for the file in the current directory.
+
+    </div>
+
+3.  Verify that a new `node.<arch>.iso` file is present in the asset directory. The asset directory is your current directory, unless you specified a different one when creating the ISO image.
+
+4.  Boot the selected node with the generated ISO image.
+
+5.  Track progress of the node creation by running the following command:
+
+    ``` terminal
+    $ oc adm node-image monitor --ip-addresses <ip_addresses>
+    ```
+
+    where:
+
+    `<ip_addresses>`
+    Specifies a list of the IP addresses of the nodes that are being added.
+
+    <div class="note">
+
+    If reverse DNS entries are not available for your node, the `oc adm node-image monitor` command skips checks for pending certificate signing requests (CSRs). If these checks are skipped, you must manually check for CSRs by running the `oc get csr` command.
+
+    </div>
+
+6.  Approve the CSRs by running the following command for each CSR:
+
+    ``` terminal
+    $ oc adm certificate approve <csr_name>
+    ```
+
+# Adding a node with command flags
+
+You can add a single node to your cluster by using command flags to specify configurations for the new node.
+
+- You have installed the OpenShift CLI (`oc`)
+
+- You have installed the Rsync utility
+
+- You have an active connection to your target cluster
+
+- You have a kubeconfig file available
+
+1.  Generate the ISO image by running the following command. The MAC address must be specified using a command flag. See the "Cluster configuration reference" section for more flags that you can use with this command.
+
+    ``` terminal
+    $ oc adm node-image create --mac-address=<mac_address>
+    ```
+
+    where:
+
+    `<mac_address>`
+    Specifies the MAC address of the node that is being added.
+
+    <div class="important">
+
+    In order for the `create` command to fetch a release image that matches the target cluster version, you must specify a valid pull secret. You can specify the pull secret either by using the `--registry-config` flag or by setting the `REGISTRY_AUTH_FILE` environment variable beforehand.
+
+    </div>
+
+    <div class="tip">
+
+    To see additional flags that can be used to configure your node, run the following `oc adm node-image create --help` command.
+
+    </div>
+
+2.  Verify that a new `node.<arch>.iso` file is present in the asset directory. The asset directory is your current directory, unless you specified a different one when creating the ISO image.
+
+3.  Boot the node with the generated ISO image.
+
+4.  Track progress of the node creation by running the following command:
+
+    ``` terminal
+    $ oc adm node-image monitor --ip-addresses <ip_address>
+    ```
+
+    where:
+
+    `<ip_address>`
+    Specifies a list of the IP addresses of the nodes that are being added.
+
+    <div class="note">
+
+    If reverse DNS entries are not available for your node, the `oc adm node-image monitor` command skips checks for pending certificate signing requests (CSRs). If these checks are skipped, you must manually check for CSRs by running the `oc get csr` command.
+
+    </div>
+
+5.  Approve the pending CSRs by running the following command for each CSR:
+
+    ``` terminal
+    $ oc adm certificate approve <csr_name>
+    ```
+
 # Cluster configuration reference
 
 When creating the ISO image, configurations are retrieved from the target cluster and are applied to the new nodes. You can override these configurations by specifying new values in either the `nodes-config.yaml` file or any flags you add to the `oc adm node-image create` command before you create the ISO image.
@@ -213,175 +382,6 @@ The following table describes command flags that can be used only when creating 
 | `-k`, `--ssh-key-path`     | The path to the SSH key used to access the node. This flag can be used to create only a single node, and the `--mac-address` flag must be defined.                                                                        | String |
 
 Single-node only command flags
-
-## Adding one or more nodes using a configuration file
-
-You can add one or more nodes to your cluster by using the `nodes-config.yaml` file to specify configurations for the new nodes.
-
-- You have installed the OpenShift CLI (`oc`)
-
-- You have installed the Rsync utility
-
-- You have an active connection to your target cluster
-
-- You have a kubeconfig file available
-
-1.  Create a new YAML file that contains configurations for the nodes you are adding and is named `nodes-config.yaml`. You must provide a MAC address for each new node.
-
-    In the following example file, two new workers are described with an initial static network configuration:
-
-    <div class="formalpara-title">
-
-    **Example `nodes-config.yaml` file**
-
-    </div>
-
-    ``` yaml
-    hosts:
-    - hostname: extra-worker-1
-      rootDeviceHints:
-       deviceName: /dev/sda
-      interfaces:
-       - macAddress: 00:00:00:00:00:00
-         name: eth0
-      networkConfig:
-       interfaces:
-         - name: eth0
-           type: ethernet
-           state: up
-           mac-address: 00:00:00:00:00:00
-           ipv4:
-             enabled: true
-             address:
-               - ip: 192.168.122.2
-                 prefix-length: 23
-             dhcp: false
-    - hostname: extra-worker-2
-      rootDeviceHints:
-       deviceName: /dev/sda
-      interfaces:
-       - macAddress: 00:00:00:00:00:02
-         name: eth0
-      networkConfig:
-       interfaces:
-         - name: eth0
-           type: ethernet
-           state: up
-           mac-address: 00:00:00:00:00:02
-           ipv4:
-             enabled: true
-             address:
-               - ip: 192.168.122.3
-                 prefix-length: 23
-             dhcp: false
-    ```
-
-2.  Generate the ISO image by running the following command:
-
-    ``` terminal
-    $ oc adm node-image create
-    ```
-
-    <div class="important">
-
-    In order for the `create` command to fetch a release image that matches the target cluster version, you must specify a valid pull secret. You can specify the pull secret either by using the `--registry-config` flag or by setting the `REGISTRY_AUTH_FILE` environment variable beforehand.
-
-    </div>
-
-    <div class="note">
-
-    If the directory of the `nodes-config.yaml` file is not specified by using the `--dir` flag, the tool looks for the file in the current directory.
-
-    </div>
-
-3.  Verify that a new `node.<arch>.iso` file is present in the asset directory. The asset directory is your current directory, unless you specified a different one when creating the ISO image.
-
-4.  Boot the selected node with the generated ISO image.
-
-5.  Track progress of the node creation by running the following command:
-
-    ``` terminal
-    $ oc adm node-image monitor --ip-addresses <ip_addresses>
-    ```
-
-    where:
-
-    `<ip_addresses>`
-    Specifies a list of the IP addresses of the nodes that are being added.
-
-    <div class="note">
-
-    If reverse DNS entries are not available for your node, the `oc adm node-image monitor` command skips checks for pending certificate signing requests (CSRs). If these checks are skipped, you must manually check for CSRs by running the `oc get csr` command.
-
-    </div>
-
-6.  Approve the CSRs by running the following command for each CSR:
-
-    ``` terminal
-    $ oc adm certificate approve <csr_name>
-    ```
-
-## Adding a node with command flags
-
-You can add a single node to your cluster by using command flags to specify configurations for the new node.
-
-- You have installed the OpenShift CLI (`oc`)
-
-- You have installed the Rsync utility
-
-- You have an active connection to your target cluster
-
-- You have a kubeconfig file available
-
-1.  Generate the ISO image by running the following command. The MAC address must be specified using a command flag. See the "Cluster configuration reference" section for more flags that you can use with this command.
-
-    ``` terminal
-    $ oc adm node-image create --mac-address=<mac_address>
-    ```
-
-    where:
-
-    `<mac_address>`
-    Specifies the MAC address of the node that is being added.
-
-    <div class="important">
-
-    In order for the `create` command to fetch a release image that matches the target cluster version, you must specify a valid pull secret. You can specify the pull secret either by using the `--registry-config` flag or by setting the `REGISTRY_AUTH_FILE` environment variable beforehand.
-
-    </div>
-
-    <div class="tip">
-
-    To see additional flags that can be used to configure your node, run the following `oc adm node-image create --help` command.
-
-    </div>
-
-2.  Verify that a new `node.<arch>.iso` file is present in the asset directory. The asset directory is your current directory, unless you specified a different one when creating the ISO image.
-
-3.  Boot the node with the generated ISO image.
-
-4.  Track progress of the node creation by running the following command:
-
-    ``` terminal
-    $ oc adm node-image monitor --ip-addresses <ip_address>
-    ```
-
-    where:
-
-    `<ip_address>`
-    Specifies a list of the IP addresses of the nodes that are being added.
-
-    <div class="note">
-
-    If reverse DNS entries are not available for your node, the `oc adm node-image monitor` command skips checks for pending certificate signing requests (CSRs). If these checks are skipped, you must manually check for CSRs by running the `oc get csr` command.
-
-    </div>
-
-5.  Approve the pending CSRs by running the following command for each CSR:
-
-    ``` terminal
-    $ oc adm certificate approve <csr_name>
-    ```
 
 # Additional resources
 

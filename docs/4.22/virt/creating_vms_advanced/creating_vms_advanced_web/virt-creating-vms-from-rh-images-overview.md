@@ -1,18 +1,16 @@
-Red Hat images are [golden images](../../../virt/creating_vms_advanced/creating_vms_advanced_web/virt-creating-vms-from-rh-images-overview.xml#virt-about-golden-images_virt-creating-vms-from-rh-images-overview). They are published as container disks in a secure registry. The Containerized Data Importer (CDI) polls and imports the container disks into your cluster and stores them in the `openshift-virtualization-os-images` project as snapshots or persistent volume claims (PVCs). You can optionally use a custom namespace for golden images. For more information about using a custom namespace, see:
+RHEL images are golden images. They are published as container disks in a secure registry. The Containerized Data Importer (CDI) polls and imports the container disks into your cluster and stores them in the `openshift-virtualization-os-images` project as snapshots or persistent volume claims (PVCs). You can optionally use a custom namespace for golden images.
 
-- [Configuring a custom namespace for golden images by using the web console](../../../virt/creating_vms_advanced/creating_vms_advanced_web/virt-creating-vms-from-rh-images-overview.xml#virt-golden-images-namespace-web_virt-creating-vms-from-rh-images-overview)
+RHEL images are automatically updated. You can disable and re-enable automatic updates for these images. For more information, see "Additional resources".
 
-- [Configuring a custom namespace for golden images by using the CLI](../../../virt/creating_vms_advanced/creating_vms_advanced_web/virt-creating-vms-from-rh-images-overview.xml#virt-golden-images-namespace-cli_virt-creating-vms-from-rh-images-overview)
+Cluster administrators can enable automatic subscription for RHEL virtual machines in the OpenShift Container Platform web console.
 
-Cluster administrators can enable automatic subscription for Red Hat Enterprise Linux (RHEL) virtual machines in the OpenShift Virtualization [web console](../../../virt/about_virt/about-virt.xml#about-virt).
+You can create virtual machines (VMs) from operating system images provided by Red Hat by using one of the following methods:
 
-You can create virtual machines (VMs) from operating system images provided by Red Hat by using one of the following methods:
+- Create a VM from a template by using the web console.
 
-- [Creating a VM from a template by using the web console](../../../virt/creating_vm/virt-creating-vms-from-templates.xml#virt-creating-vms-from-templates)
+- Create a VM from an instance type by using the web console.
 
-- [Creating a VM from an instance type by using the web console](../../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types)
-
-- [Creating a VM from a `VirtualMachine` manifest by using the command line](../../../virt/creating_vms_advanced/creating_vms_cli/virt-creating-vms-from-cli.xml#virt-creating-vms-from-cli)
+- Create a VM from a `VirtualMachine` manifest by using the command line.
 
 <div class="important">
 
@@ -100,4 +98,10 @@ You can configure a custom namespace for golden images in your cluster by settin
 
 # Additional resources
 
-- [Managing automatic updates for all system-defined boot sources](../../../virt/storage/virt-automatic-bootsource-updates.xml#virt-managing-auto-update-all-system-boot-sources_virt-automatic-bootsource-updates)
+- [Managing Red Hat boot source updates](../../../virt/storage/virt-automatic-bootsource-updates.xml#virt-managing-auto-update-all-system-boot-sources_virt-automatic-bootsource-updates)
+
+- [Creating a VM from a template by using the web console](../../../virt/creating_vm/virt-creating-vms-from-templates.xml#virt-creating-vms-from-templates)
+
+- [Creating a VM from an instance type by using the web console](../../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types)
+
+- [Creating a VM from a `VirtualMachine` manifest by using the command line](../../../virt/creating_vms_advanced/creating_vms_cli/virt-creating-vms-from-cli.xml#virt-creating-vms-from-cli)

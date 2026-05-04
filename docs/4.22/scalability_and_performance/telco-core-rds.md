@@ -1335,25 +1335,37 @@ For further information about the `cluster-compare` plugin, see "Understanding t
     No patched CRs
     ```
 
-    - `Cluster CR` is the CR under comparison. The plugin displays each CR with a difference from the corresponding template.
+    Where:
 
-    - `Reference File` is the template matching with the CR for comparison.
+    Cluster CR
+    The CR under comparison. The plugin displays each CR with a difference from the corresponding template.
 
-    - The `diff` output in Linux diff format shows the difference between the template and the cluster CR.
+    Reference File
+    The template matching with the CR for comparison.
 
-    - `Summary` shows the summary of differences after the plugin reports the line diffs for each CR.
+    Diff Output
+    The output in Linux diff format shows the difference between the template and the cluster CR.
 
-    - `CRs with diffs` is the number of CRs in the comparison with differences from the corresponding templates.
+    Summary
+    After the plugin reports the line diffs for each CR, the summary of differences are reported.
 
-    - `CRs in reference missing from the cluster` is the number of CRs represented in the reference configuration, but missing from the live cluster.
+    CRs with diffs
+    The number of CRs in the comparison with differences from the corresponding templates.
 
-    - `Missing CRs` is the list of CRs represented in the reference configuration, but missing from the live cluster.
+    CRs in reference missing from the cluster
+    The number of CRs represented in the reference configuration, but missing from the live cluster.
 
-    - `No CRs are unmatched to reference CRs` indicates the CRs that did not match to a corresponding template in the reference configuration.
+    Missing CRs
+    The list of CRs represented in the reference configuration, but missing from the live cluster.
 
-    - `Metadata Hash` identifies the reference configuration.
+    No CRs are unmatched to reference CRs
+    The CRs that did not match to a corresponding template in the reference configuration.
 
-    - `No patched CRs` is the list of patched CRs.
+    Metadata Hash
+    Identifies the reference configuration.
+
+    No patched CRs
+    The list of patched CRs.
 
 - [Understanding the cluster-compare plugin](../scalability_and_performance/cluster-compare/understanding-the-cluster-compare-plugin.xml#understanding-the-cluster-compare-plugin)
 

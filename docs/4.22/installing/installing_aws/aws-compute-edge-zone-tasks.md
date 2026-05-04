@@ -902,7 +902,11 @@ The following procedure details how you can create a machine set configuraton th
 
 ### Sample YAML for a compute machine set custom resource on AWS
 
-This sample YAML defines a compute machine set that runs in the `us-east-1-nyc-1a` Amazon Web Services (AWS) zone and creates nodes that are labeled with `node-role.kubernetes.io/edge: ""`.
+This sample YAML defines a compute machine set that runs in the `us-east-1-nyc-1a` AWS zone and creates nodes that are labeled with `node-role.kubernetes.io/edge: ""`.
+
+The sample YAML specifies a taint to prevent user workloads from being scheduled on `edge` nodes.
+
+After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
 
 <div class="note">
 
@@ -984,45 +988,50 @@ spec:
           effect: NoSchedule
 ```
 
-- Specify the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI installed, you can obtain the infrastructure ID by running the following command:
+where:
 
-  ``` terminal
-  $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
-  ```
+`<infrastructure_id>`
+Specifies the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI installed, you can obtain the infrastructure ID by running the following command:
 
-- Specify the infrastructure ID, `edge` role node label, and zone name.
+``` terminal
+$ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
+```
 
-- Specify the `edge` role node label.
+`<infrastructure_id>-edge-<zone>`
+Specifies the infrastructure ID, `edge` role node label, and zone name.
 
-- Specify a valid Red Hat Enterprise Linux CoreOS (RHCOS) Amazon Machine Image (AMI) for your AWS zone for your OpenShift Container Platform nodes. If you want to use an AWS Marketplace image, you must complete the OpenShift Container Platform subscription from the [AWS Marketplace](https://aws.amazon.com/marketplace/fulfillment?productId=59ead7de-2540-4653-a8b0-fa7926d5c845) to obtain an AMI ID for your region.
+`<edge>`
+Specifies the `edge` role node label.
 
-  ``` terminal
-  $ oc -n openshift-machine-api \
-      -o jsonpath='{.spec.template.spec.providerSpec.value.ami.id}{"\n"}' \
-      get machineset/<infrastructure_id>-<role>-<zone>
-  ```
+<div class="note">
 
-- Specify the zone name, for example, `us-east-1-nyc-1a`.
+The `spec.template.spec.providerSpec.value.ami.id` stanza specifies a valid Red Hat Enterprise Linux CoreOS (RHCOS) Amazon Machine Image (AMI) for your AWS zone for your OpenShift Container Platform nodes. If you want to use an AWS Marketplace image, you must complete the OpenShift Container Platform subscription from the [AWS Marketplace](https://aws.amazon.com/marketplace/fulfillment?productId=59ead7de-2540-4653-a8b0-fa7926d5c845) to obtain an AMI ID for your region.
 
-- Specify the region, for example, `us-east-1`.
+``` terminal
+$ oc -n openshift-machine-api \
+    -o jsonpath='{.spec.template.spec.providerSpec.value.ami.id}{"\n"}' \
+    get machineset/<infrastructure_id>-<role>-<zone>
+```
 
-- The ID of the public subnet that you created in AWS Local Zones or Wavelength Zones. You created this public subnet ID when you finished the procedure for "Creating a subnet in an AWS zone".
+</div>
 
-- Optional: Specify custom tag data for your cluster. For example, you might add an admin contact email address by specifying a `name:value` pair of `Email:admin-email@example.com`.
+`<zone>`
+Specifies the zone name, for example, `us-east-1-nyc-1a`.
 
-  <div class="note">
+`<region>`
+Specifies the region, for example, `us-east-1`.
 
-  Custom tags can also be specified during installation in the `install-config.yml` file. If the `install-config.yml` file and the machine set include a tag with the same `name` data, the value for the tag from the machine set takes priority over the value for the tag in the `install-config.yml` file.
+`<value_of_PublicSubnetIds>`
+Indicates the ID of the public subnet that you created in AWS Local Zones or Wavelength Zones. You created this public subnet ID when you finished the procedure for "Creating a subnet in an AWS zone".
 
-  </div>
+`<custom_tag_name>`
+Optional: Specifies custom tag data for your cluster. For example, you might add an admin contact email address by specifying a `name:value` pair of `Email:admin-email@example.com`.
 
-- Specify a taint to prevent user workloads from being scheduled on `edge` nodes.
+<div class="note">
 
-  <div class="note">
+Custom tags can also be specified during installation in the `install-config.yaml` file. If the `install-config.yaml` file and the machine set include a tag with the same `name` data, the value for the tag from the machine set takes priority over the value for the tag in the `install-config.yaml` file.
 
-  After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
-
-  </div>
+</div>
 
 ### Creating a compute machine set
 

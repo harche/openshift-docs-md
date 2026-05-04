@@ -1,3 +1,5 @@
+A heterogeneous cluster is a cluster where nodes have differing architectures. Heterogeneous clusters promote optimal compute resource usage by mixing different types of hardware in one cluster.
+
 <div class="important">
 
 Golden image support for heterogeneous clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
@@ -6,7 +8,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 </div>
 
-A heterogeneous cluster is a cluster where nodes have differing architectures. Heterogeneous clusters promote optimal compute resource usage by mixing different types of hardware in one cluster. This allows workloads to be better matched to hardware intended for the workload task instead of general purpose compute platforms. For example, in a heterogeneous cluster, GPU and general purpose compute resources could be combined and workloads assigned to the appropriate hardware.
+With heterogenous clusters, you can match workloads to hardware intended for the workload task instead of general purpose compute platforms. For example, GPU and general purpose compute resources could be combined and workloads assigned to the appropriate hardware.
 
 <div class="important">
 
@@ -14,7 +16,7 @@ If golden image support is disabled in a heterogeneous cluster, you can encounte
 
 </div>
 
-If you have a heterogeneous cluster but do not want to enable multiple architecture support, see [Modifying workloads node placement in a hetergeneous cluster](../../../virt/creating_vms_advanced/creating_vms_advanced_web/virt-golden-image-heterogeneous-clusters.xml#virt-modify-workload-node-heterogeneous-cluster_virt-golden-image-heterogeneous-clusters) for the procedure to limit node placement to a specific architecture.
+If you have a heterogeneous cluster but do not want to enable multiple architecture support, you can modify the workloads node placement in the `HyperConverged` custom resource (CR) to include only nodes with a specific architecture.
 
 Golden image support for heterogeneous clusters extends golden image support in the following areas:
 
@@ -24,7 +26,7 @@ Golden image support for heterogeneous clusters extends golden image support in 
 
 The same golden image can be used with nodes of different architectures if the boot image supports the required architectures. For example, a golden image that supports both ARM and AMD architectures can be used with both types of nodes.
 
-Golden image support for heterogeneous clusters is not enabled by default. For the procedure to enable this feature, see [Enabling hetergenous cluster support](../../../virt/creating_vms_advanced/creating_vms_advanced_web/virt-golden-image-heterogeneous-clusters.xml#virt-enabling-heterogeneous-clusters_virt-golden-image-heterogeneous-clusters)
+Golden image support for heterogeneous clusters is not enabled by default. You can enable heterogenous cluster support by setting the feature gate in the `HyperConverged` CR.
 
 # Enabling heterogeneous cluster support
 

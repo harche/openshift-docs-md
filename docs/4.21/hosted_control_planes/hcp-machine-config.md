@@ -585,6 +585,14 @@ To scale up and down the workloads in your hosted cluster, you can use the `Scal
   $ oc --kubeconfig <hosted_cluster_name>.kubeconfig get nodes
   ```
 
+<!-- -->
+
+- [Scaling the NodePool object for a hosted cluster (bare-metal platforms)](../hosted_control_planes/hcp-manage/hcp-manage-bm.xml#hcp-bm-scale-np_hcp-manage-bm)
+
+- [Scaling the NodePool object for a hosted cluster (non-bare metal agent machines)](../hosted_control_planes/hcp-manage/hcp-manage-non-bm.xml#hcp-bm-scale-np_hcp-manage-non-bm)
+
+- [Scaling a node pool (OpenShift Virtualization)](../hosted_control_planes/hcp-deploy/hcp-deploy-virt.xml#hcp-virt-scale-nodpool_hcp-deploy-virt)
+
 # Scaling up workloads in a hosted cluster
 
 To scale up the workloads in your hosted cluster, you can use the `ScaleUpOnly` behavior.

@@ -1,12 +1,12 @@
-As a cluster administrator, you can enable OVN-Kubernetes Border Gateway Protocol (BGP) routing support for your cluster.
+To stop external route advertisement and restore standard cluster networking behavior, disable OVN-Kubernetes Border Gateway Protocol (BGP) routing.
+
+As a cluster administrator, you can disable OVN-Kubernetes BGP routing support for your cluster.
 
 # Disabling Border Gateway Protocol (BGP) routing
 
-As a cluster administrator, you can disable Border Gateway Protocol (BGP) routing support for your cluster on bare-metal infrastructure.
+Disable Border Gateway Protocol (BGP) routing for your cluster by removing additional routing capabilities from the network configuration.
 
-## Disabling BGP routing support
-
-As a cluster administrator, you can disable BGP routing support for your cluster.
+As a cluster administrator, you can disable BGP routing support for your cluster on bare-metal infrastructure.
 
 - You have installed the OpenShift CLI (`oc`).
 

@@ -59,6 +59,8 @@ The following example configures a secondary network named `bridge-net`:
 
 # Configuring a dedicated secondary network for live migration
 
+After you have configured a Linux bridge network, you can configure a dedicated network for live migration. A dedicated network minimizes the effects of network saturation on tenant workloads during live migration.
+
 To configure a dedicated secondary network for live migration, you must first create a bridge network attachment definition (NAD) by using the CLI. You can then add the name of the `NetworkAttachmentDefinition` object to the `HyperConverged` custom resource (CR).
 
 - You installed the OpenShift CLI (`oc`).

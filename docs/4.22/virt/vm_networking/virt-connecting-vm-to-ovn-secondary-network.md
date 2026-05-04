@@ -1,4 +1,4 @@
-You can connect a VM to an OVN-Kubernetes custom secondary overlay network. A layer 2 topology connects workloads by a cluster-wide logical switch. The OVN-Kubernetes Container Network Interface (CNI) plugin uses the Geneve (Generic Network Virtualization Encapsulation) protocol to create an overlay network between nodes. You can use this overlay network to connect VMs on different nodes, without having to configure any additional physical networking infrastructure.
+You can connect a VM to an OVN-Kubernetes custom secondary overlay network. A layer 2 topology connects workloads by a cluster-wide logical switch. The OVN-Kubernetes Container Network Interface (CNI) plugin uses the Geneve (Generic Network Virtualization Encapsulation) protocol to create an overlay network between nodes. You can use this overlay network to connect VMs on different nodes, without configuring any additional physical networking infrastructure.
 
 <div class="note">
 
@@ -146,4 +146,4 @@ You can connect a virtual machine (VM) to the OVN-Kubernetes secondary network b
 
 - [Multi-network policy API](../../networking/multiple_networks/secondary_networks/configuring-multi-network-policy.xml#configuring-multi-network-policy)
 
-- [Creating primary networks using a NetworkAttachmentDefinition](../../networking/multiple_networks/primary_networks/about-primary-nwt-nad.xml#about-primary-nwt-nad)
+- [Creating primary networks by using a network attachment definition](../../networking/multiple_networks/primary_networks/about-primary-nwt-nad.xml#about-primary-nwt-nad)

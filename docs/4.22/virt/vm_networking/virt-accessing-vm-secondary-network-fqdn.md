@@ -1,4 +1,4 @@
-You can access a virtual machine (VM) that is attached to a secondary network interface from outside the cluster by using its fully qualified domain name (FQDN). To connect to a VM by using its external FQDN, you must configure the DNS server, retrieve the cluster FQDN, and then connect to the VM by using the `ssh` command.
+You can access a virtual machine (VM) that is attached to a secondary network interface from outside the cluster by using its fully qualified domain name (FQDN). To connect to a VM by using its external FQDN, you must configure the DNS server, retrieve the cluster FQDN, then connect to the VM by using the `ssh` command.
 
 <div class="important">
 
@@ -169,7 +169,7 @@ You can access a running virtual machine (VM) attached to a secondary network in
 
 # Additional resources
 
-- [Configuring ingress cluster traffic using a load balancer](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-load-balancer.xml#configuring-ingress-cluster-traffic-load-balancer)
+- [Configuring ingress cluster traffic by using a load balancer](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-load-balancer.xml#configuring-ingress-cluster-traffic-load-balancer)
 
 - [About MetalLB and the MetalLB Operator](../../networking/networking_operators/metallb-operator/about-metallb.xml#about-metallb)
 

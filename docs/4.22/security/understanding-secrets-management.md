@@ -12,6 +12,19 @@ OpenShift Container Platform offers a suite of supported Operators designed to s
 
 - **cert-manager Operator for Red Hat OpenShift**: Manages the lifecycle of digital certificates that are used by applications running on OpenShift Container Platform by automating the process of issuance and renewal.
 
+# Secrets management use cases
+
+Using secrets management tools with other Red Hat products can protect sensitive data across your OpenShift Container Platform cluster. You can integrate secrets management Operators with other OpenShift Container Platform components to securely manage, automate, and consume credentials across various infrastructure and application workflows.
+
+You can integrate the External Secrets Operator with other OpenShift Container Platform components to securely manage and inject credentials. Learn how to apply External Secrets Operator in real-world deployment strategies, by reviewing the following example.
+
+Securing Red Hat OpenShift GitOps by using External Secrets Operator short-lived tokens
+To reduce the security risk of compromised credentials, you can configure the External Secrets Operator to generate short-lived tokens. Red Hat OpenShift GitOps can then use these temporary tokens to securely authenticate when accessing GitHub repositories. You can refer to an example of the integration in the External Secrets Operator and GitOps demonstration.
+
+- [External Secrets Operator and GitOps demonstration](https://interact.redhat.com/share/tcwyXElfYLWTvHl5dJ5n)
+
+- [Zero trust GitOps: Build a secure, secretless GitOps pipeline](https://developers.redhat.com/articles/2026/03/13/zero-trust-gitops-build-secure-secretless-gitops-pipeline)
+
 <!-- -->
 
 - [Secrets Store Container Storage Interface Driver Operator](../storage/container_storage_interface/persistent-storage-csi-secrets-store.xml#persistent-storage-csi-secrets-store)

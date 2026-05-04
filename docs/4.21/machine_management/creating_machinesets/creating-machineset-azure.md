@@ -483,7 +483,7 @@ You can enable boot diagnostics on Microsoft Azure machines that your machine se
 
 # Machine sets that deploy machines as Spot VMs
 
-You can save on costs by creating a compute machine set running on Azure that deploys machines as non-guaranteed Spot VMs. Spot VMs use unused Azure capacity and are less expensive than standard VMs. You can use Spot VMs for workloads that can tolerate interruptions, such as batch or stateless, horizontally scalable workloads.
+You can save on costs by creating a compute machine set running on Microsoft Azure that deploys machines as non-guaranteed Spot VMs. Spot VMs use unused Azure capacity and are less expensive than standard VMs. You can use Spot VMs for workloads that can tolerate interruptions, such as batch or stateless, horizontally scalable workloads.
 
 Azure can terminate a Spot VM at any time. Azure gives a 30-second warning to the user when an interruption occurs. OpenShift Container Platform begins to remove the workloads from the affected instances when Azure issues the termination warning.
 
@@ -511,13 +511,13 @@ You can save on costs by creating a compute machine set that deploys machines as
 
   You can optionally set the `spotVMOptions.maxPrice` field to limit the cost of the Spot VM. For example you can set `maxPrice: '0.98765'`. If the `maxPrice` is set, this value is used as the hourly maximum spot price. If it is not set, the maximum price defaults to `-1` and charges up to the standard VM price.
 
-  Azure caps Spot VM prices at the standard price. Azure will not evict an instance due to pricing if the instance is set with the default `maxPrice`. However, an instance can still be evicted due to capacity restrictions.
+  Microsoft Azure caps Spot VM prices at the standard price. Azure will not evict an instance due to pricing if the instance is set with the default `maxPrice`. However, an instance can still be evicted due to capacity restrictions.
 
-<div class="note">
+  <div class="note">
 
-It is strongly recommended to use the default standard VM price as the `maxPrice` value and to not set the maximum price for Spot VMs.
+  It is strongly recommended to use the default standard VM price as the `maxPrice` value and to not set the maximum price for Spot VMs.
 
-</div>
+  </div>
 
 # Machine sets that deploy machines on Ephemeral OS disks
 
@@ -993,7 +993,9 @@ Consider the following limitations when deciding whether to use Accelerated Netw
 
 OpenShift Container Platform version 4.17 and later supports on-demand Capacity Reservation with Capacity Reservation groups on Microsoft Azure clusters.
 
-You can configure a machine set to deploy machines on any available resources that match the parameters of a capacity request that you define. These parameters specify the VM size, region, and number of instances that you want to reserve. If your Azure subscription quota can accommodate the capacity request, the deployment succeeds.
+You can configure a machine set to deploy machines on any available resources that match the parameters of a capacity request that you define.
+
+These parameters specify the VM size, region, and number of instances that you want to reserve. If your Azure subscription quota can accommodate the capacity request, the deployment succeeds.
 
 For more information, including limitations and suggested use cases for this Azure offering, see [On-demand Capacity Reservation](https://learn.microsoft.com/en-us/azure/virtual-machines/capacity-reservation-overview) in the Microsoft Azure documentation.
 
@@ -1032,7 +1034,10 @@ You cannot change an existing Capacity Reservation configuration for a machine s
     # ...
     ```
 
-    - Specify the ID of the Capacity Reservation group that you want the machine set to deploy machines on.
+    where:
+
+    `<capacity_reservation_group>`
+    Specifies the ID of the Capacity Reservation group that you want the machine set to deploy machines on.
 
 - To verify machine deployment, list the machines that the machine set created by running the following command:
 

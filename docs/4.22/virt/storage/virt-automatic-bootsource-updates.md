@@ -4,7 +4,7 @@ You can manage automatic updates for boot sources used to create virtual machine
 
 Disabling automatic boot source imports and updates can lower resource usage. In disconnected environments, disabling automatic boot source updates prevents `CDIDataImportCronOutdated` alerts from filling up logs.
 
-To disable automatic updates for all system-defined boot sources, set the `enableCommonBootImageImport` field value to `false`. Disabling automatic updates deletes the associated `DataImportCron` objects but does not remove previously imported boot source images. Setting this value to `true` turns automatic updates back on.
+To disable automatic updates for all system-defined boot sources, set the `enableCommonBootImageImport` field value to `false`. Disabling automatic updates deletes the associated `DataImportCron` objects. Setting this value to `true` turns automatic updates back on.
 
 <div class="note">
 
