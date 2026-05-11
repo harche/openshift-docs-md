@@ -202,7 +202,7 @@ Required
 <td style="text-align: left;"><p><code>resourceClaims</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>ResourceClaims defines which ResourceClaims must be allocated and reserved before the Pod is allowed to start. The resources will be made available to those containers which consume them by name.</p>
-<p>This is an alpha field and requires enabling the DynamicResourceAllocation feature gate.</p>
+<p>This is a stable field but requires that the DynamicResourceAllocation feature gate is enabled.</p>
 <p>This field is immutable.</p></td>
 </tr>
 <tr class="odd">
@@ -307,6 +307,11 @@ Required
 <td style="text-align: left;"><p><code>volumes[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Volume represents a named volume in a pod that may be accessed by any container in the pod.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>workloadRef</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>WorkloadReference identifies the Workload object and PodGroup membership that a Pod belongs to. The scheduler uses this information to apply workload-aware scheduling semantics.</p></td>
 </tr>
 </tbody>
 </table>
@@ -920,7 +925,7 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>resizePolicy</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
-<td style="text-align: left;"><p>Resources resize policy for the container.</p></td>
+<td style="text-align: left;"><p>Resources resize policy for the container. This field cannot be set on ephemeral containers.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>resizePolicy[]</code></p></td>
@@ -1990,7 +1995,7 @@ Required
 ## .spec.containers\[\].resizePolicy
 
 Description
-Resources resize policy for the container.
+Resources resize policy for the container. This field cannot be set on ephemeral containers.
 
 Type
 `array`
@@ -4608,7 +4613,7 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>resizePolicy</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
-<td style="text-align: left;"><p>Resources resize policy for the container.</p></td>
+<td style="text-align: left;"><p>Resources resize policy for the container. This field cannot be set on ephemeral containers.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>resizePolicy[]</code></p></td>
@@ -5678,7 +5683,7 @@ Required
 ## .spec.initContainers\[\].resizePolicy
 
 Description
-Resources resize policy for the container.
+Resources resize policy for the container. This field cannot be set on ephemeral containers.
 
 Type
 `array`
@@ -6344,7 +6349,7 @@ Required
 Description
 ResourceClaims defines which ResourceClaims must be allocated and reserved before the Pod is allowed to start. The resources will be made available to those containers which consume them by name.
 
-This is an alpha field and requires enabling the DynamicResourceAllocation feature gate.
+This is a stable field but requires that the DynamicResourceAllocation feature gate is enabled.
 
 This field is immutable.
 
@@ -6783,8 +6788,8 @@ Type
 <tr class="odd">
 <td style="text-align: left;"><p><code>operator</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>Operator represents a key’s relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category.</p>
-<p>Possible enum values: - <code>"Equal"</code> - <code>"Exists"</code></p></td>
+<td style="text-align: left;"><p>Operator represents a key’s relationship to the value. Valid operators are Exists, Equal, Lt, and Gt. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category. Lt and Gt perform numeric comparisons (requires feature gate TaintTolerationComparisonOperators).</p>
+<p>Possible enum values: - <code>"Equal"</code> - <code>"Exists"</code> - <code>"Gt"</code> - <code>"Lt"</code></p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>tolerationSeconds</code></p></td>
@@ -8140,6 +8145,14 @@ Required
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Kubelet’s generated CSRs will be addressed to this signer.</p></td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>userAnnotations</code></p></td>
+<td style="text-align: left;"><p><code>object (string)</code></p></td>
+<td style="text-align: left;"><p>userAnnotations allow pod authors to pass additional information to the signer implementation. Kubernetes does not restrict or validate this metadata in any way.</p>
+<p>These values are copied verbatim into the <code>spec.unverifiedUserAnnotations</code> field of the PodCertificateRequest objects that Kubelet creates.</p>
+<p>Entries are subject to the same validation as object metadata annotations, with the addition that all keys must be domain-prefixed. No restrictions are placed on values, except an overall size limitation on the entire field.</p>
+<p>Signers should document the keys and values they support. Signers should deny requests that contain keys they do not recognize.</p></td>
+</tr>
 </tbody>
 </table>
 
@@ -8393,6 +8406,25 @@ Required
 | `storagePolicyName` | `string` | storagePolicyName is the storage Policy Based Management (SPBM) profile name.                                                                                                     |
 | `volumePath`        | `string` | volumePath is the path that identifies vSphere volume vmdk                                                                                                                        |
 
+## .spec.workloadRef
+
+Description
+WorkloadReference identifies the Workload object and PodGroup membership that a Pod belongs to. The scheduler uses this information to apply workload-aware scheduling semantics.
+
+Type
+`object`
+
+Required
+- `name`
+
+- `podGroup`
+
+| Property             | Type     | Description                                                                                                                                                                                                                                                                                          |
+|----------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`               | `string` | Name defines the name of the Workload object this Pod belongs to. Workload must be in the same namespace as the Pod. If it doesn’t match any existing Workload, the Pod will remain unschedulable until a Workload object is created and observed by the kube-scheduler. It must be a DNS subdomain. |
+| `podGroup`           | `string` | PodGroup is the name of the PodGroup within the Workload that this Pod belongs to. If it doesn’t match any existing PodGroup within the Workload, the Pod will remain unschedulable until the Workload object is recreated and observed by the kube-scheduler. It must be a DNS label.               |
+| `podGroupReplicaKey` | `string` | PodGroupReplicaKey specifies the replica key of the PodGroup to which this Pod belongs. It is used to distinguish pods belonging to different replicas of the same pod group. The pod group policy is applied separately to each replica. When set, it must be a DNS label.                          |
+
 ## .status
 
 Description
@@ -8416,81 +8448,86 @@ Type
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;"><p><code>allocatedResources</code></p></td>
+<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity"><code>object (Quantity)</code></a></p></td>
+<td style="text-align: left;"><p>AllocatedResources is the total requests allocated for this pod by the node. If pod-level requests are not set, this will be the total requests aggregated across containers in the pod.</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>conditions</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Current service state of pod. More info: <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-conditions">https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-conditions</a></p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>conditions[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>PodCondition contains details for the current condition of this pod.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>containerStatuses</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Statuses of containers in this pod. Each container in the pod should have at most one status in this list, and all statuses should be for containers in the pod. However this is not enforced. If a status for a non-existent container is present in the list, or the list has duplicate names, the behavior of various Kubernetes components is not defined and those statuses might be ignored. More info: <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-and-container-status">https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-and-container-status</a></p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>containerStatuses[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ContainerStatus contains details for the current status of this container.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>ephemeralContainerStatuses</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Statuses for any ephemeral containers that have run in this pod. Each ephemeral container in the pod should have at most one status in this list, and all statuses should be for containers in the pod. However this is not enforced. If a status for a non-existent container is present in the list, or the list has duplicate names, the behavior of various Kubernetes components is not defined and those statuses might be ignored. More info: <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-and-container-status">https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-and-container-status</a></p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>ephemeralContainerStatuses[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ContainerStatus contains details for the current status of this container.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>extendedResourceClaimStatus</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>PodExtendedResourceClaimStatus is stored in the PodStatus for the extended resource requests backed by DRA. It stores the generated name for the corresponding special ResourceClaim created by the scheduler.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>hostIP</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>hostIP holds the IP address of the host to which the pod is assigned. Empty if the pod has not started yet. A pod can be assigned to a node that has a problem in kubelet which in turns mean that HostIP will not be updated even if there is a node is assigned to pod</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>hostIPs</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>hostIPs holds the IP addresses allocated to the host. If this field is specified, the first entry must match the hostIP field. This list is empty if the pod has not started yet. A pod can be assigned to a node that has a problem in kubelet which in turns means that HostIPs will not be updated even if there is a node is assigned to this pod.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>hostIPs[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>HostIP represents a single IP address allocated to the host.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>initContainerStatuses</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Statuses of init containers in this pod. The most recent successful non-restartable init container will have ready = true, the most recently started container will have startTime set. Each init container in the pod should have at most one status in this list, and all statuses should be for containers in the pod. However this is not enforced. If a status for a non-existent container is present in the list, or the list has duplicate names, the behavior of various Kubernetes components is not defined and those statuses might be ignored. More info: <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-and-container-status">https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-and-container-status</a></p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>initContainerStatuses[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>ContainerStatus contains details for the current status of this container.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>message</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>A human readable message indicating details about why the pod is in this condition.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>nominatedNodeName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>nominatedNodeName is set only when this pod preempts other pods on the node, but it cannot be scheduled right away as preemption victims receive their graceful termination periods. This field does not guarantee that the pod will be scheduled on this node. Scheduler may decide to place the pod elsewhere if other nodes become available sooner. Scheduler may also decide to give the resources on this node to a higher priority pod that is created after preemption. As a result, this field may be different than PodSpec.nodeName when the pod is scheduled.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>observedGeneration</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
-<td style="text-align: left;"><p>If set, this represents the .metadata.generation that the pod status was set based upon. This is an alpha field. Enable PodObservedGenerationTracking to be able to use this field.</p></td>
+<td style="text-align: left;"><p>If set, this represents the .metadata.generation that the pod status was set based upon. The PodObservedGenerationTracking feature gate must be enabled to use this field.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>phase</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The phase of a Pod is a simple, high-level summary of where the Pod is in its lifecycle. The conditions array, the reason and message fields, and the individual container status arrays contain more detail about the pod’s status. There are five possible phase values:</p>
@@ -8498,46 +8535,51 @@ Type
 <p>More info: <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-phase">https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-phase</a></p>
 <p>Possible enum values: - <code>"Failed"</code> means that all containers in the pod have terminated, and at least one container has terminated in a failure (exited with a non-zero exit code or was stopped by the system). - <code>"Pending"</code> means the pod has been accepted by the system, but one or more of the containers has not been started. This includes time before being bound to a node, as well as time spent pulling images onto the host. - <code>"Running"</code> means the pod has been bound to a node and all of the containers have been started. At least one container is still running or is in the process of being restarted. - <code>"Succeeded"</code> means that all containers in the pod have voluntarily terminated with a container exit code of 0, and the system is not going to restart any of these containers. - <code>"Unknown"</code> means that for some reason the state of the pod could not be obtained, typically due to an error in communicating with the host of the pod. Deprecated: It isn’t being set since 2015 (74da3b14b0c0f658b3bb8d2def5094686d0e9095)</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>podIP</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>podIP address allocated to the pod. Routable at least within the cluster. Empty if not yet allocated.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>podIPs</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>podIPs holds the IP addresses allocated to the pod. If this field is specified, the 0th entry must match the podIP field. Pods may be allocated at most 1 value for each of IPv4 and IPv6. This list is empty if no IPs have been allocated yet.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>podIPs[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>PodIP represents a single IP address allocated to the pod.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>qosClass</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>The Quality of Service (QOS) classification assigned to the pod based on resource requirements See PodQOSClass type for available QOS classes More info: <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-qos/#quality-of-service-classes">https://kubernetes.io/docs/concepts/workloads/pods/pod-qos/#quality-of-service-classes</a></p>
 <p>Possible enum values: - <code>"BestEffort"</code> is the BestEffort qos class. - <code>"Burstable"</code> is the Burstable qos class. - <code>"Guaranteed"</code> is the Guaranteed qos class.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>reason</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>A brief CamelCase message indicating details about why the pod is in this state. e.g. 'Evicted'</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>resize</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Status of resources resize desired for pod’s containers. It is empty if no resources resize is pending. Any changes to container resources will automatically set this to "Proposed" Deprecated: Resize status is moved to two pod conditions PodResizePending and PodResizeInProgress. PodResizePending will track states where the spec has been resized, but the Kubelet has not yet allocated the resources. PodResizeInProgress will track in-progress resizes, and should be present whenever allocated resources != acknowledged resources.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>resourceClaimStatuses</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>Status of resource claims.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>resourceClaimStatuses[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>PodResourceClaimStatus is stored in the PodStatus for each PodResourceClaim which references a ResourceClaimTemplate. It stores the generated name for the corresponding ResourceClaim.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>resources</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>ResourceRequirements describes the compute resource requirements.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>startTime</code></p></td>
@@ -8568,15 +8610,15 @@ Required
 
 - `status`
 
-| Property             | Type                                                                     | Description                                                                                                                                                                            |
-|----------------------|--------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `lastProbeTime`      | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | Last time we probed the condition.                                                                                                                                                     |
-| `lastTransitionTime` | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | Last time the condition transitioned from one status to another.                                                                                                                       |
-| `message`            | `string`                                                                 | Human-readable message indicating details about last transition.                                                                                                                       |
-| `observedGeneration` | `integer`                                                                | If set, this represents the .metadata.generation that the pod condition was set based upon. This is an alpha field. Enable PodObservedGenerationTracking to be able to use this field. |
-| `reason`             | `string`                                                                 | Unique, one-word, CamelCase reason for the condition’s last transition.                                                                                                                |
-| `status`             | `string`                                                                 | Status is the status of the condition. Can be True, False, Unknown. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-conditions>                       |
-| `type`               | `string`                                                                 | Type is the type of the condition. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-conditions>                                                        |
+| Property             | Type                                                                     | Description                                                                                                                                                                   |
+|----------------------|--------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lastProbeTime`      | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | Last time we probed the condition.                                                                                                                                            |
+| `lastTransitionTime` | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | Last time the condition transitioned from one status to another.                                                                                                              |
+| `message`            | `string`                                                                 | Human-readable message indicating details about last transition.                                                                                                              |
+| `observedGeneration` | `integer`                                                                | If set, this represents the .metadata.generation that the pod condition was set based upon. The PodObservedGenerationTracking feature gate must be enabled to use this field. |
+| `reason`             | `string`                                                                 | Unique, one-word, CamelCase reason for the condition’s last transition.                                                                                                       |
+| `status`             | `string`                                                                 | Status is the status of the condition. Can be True, False, Unknown. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-conditions>              |
+| `type`               | `string`                                                                 | Type is the type of the condition. More info: <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-conditions>                                               |
 
 ## .status.containerStatuses
 
@@ -10066,6 +10108,81 @@ Required
 |---------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `name`              | `string` | Name uniquely identifies this resource claim inside the pod. This must match the name of an entry in pod.spec.resourceClaims, which implies that the string must be a DNS_LABEL.                                                                   |
 | `resourceClaimName` | `string` | ResourceClaimName is the name of the ResourceClaim that was generated for the Pod in the namespace of the Pod. If this is unset, then generating a ResourceClaim was not necessary. The pod.spec.resourceClaims entry can be ignored in this case. |
+
+## .status.resources
+
+Description
+ResourceRequirements describes the compute resource requirements.
+
+Type
+`object`
+
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>claims</code></p></td>
+<td style="text-align: left;"><p><code>array</code></p></td>
+<td style="text-align: left;"><p>Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.</p>
+<p>This field depends on the DynamicResourceAllocation feature gate.</p>
+<p>This field is immutable. It can only be set for containers.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>claims[]</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>ResourceClaim references one entry in PodSpec.ResourceClaims.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>limits</code></p></td>
+<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity"><code>object (Quantity)</code></a></p></td>
+<td style="text-align: left;"><p>Limits describes the maximum amount of compute resources allowed. More info: <a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/</a></p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>requests</code></p></td>
+<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity"><code>object (Quantity)</code></a></p></td>
+<td style="text-align: left;"><p>Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: <a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/</a></p></td>
+</tr>
+</tbody>
+</table>
+
+## .status.resources.claims
+
+Description
+Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.
+
+This field depends on the DynamicResourceAllocation feature gate.
+
+This field is immutable. It can only be set for containers.
+
+Type
+`array`
+
+## .status.resources.claims\[\]
+
+Description
+ResourceClaim references one entry in PodSpec.ResourceClaims.
+
+Type
+`object`
+
+Required
+- `name`
+
+| Property  | Type     | Description                                                                                                                                                         |
+|-----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`    | `string` | Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container.          |
+| `request` | `string` | Request is the name chosen for a request in the referenced claim. If empty, everything from the claim is made available, otherwise only the result of this request. |
 
 # API endpoints
 

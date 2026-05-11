@@ -82,6 +82,15 @@ Type
 <p>Default is "false".</p></td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;"><p><code>serviceAccountTokenInSecrets</code></p></td>
+<td style="text-align: left;"><p><code>boolean</code></p></td>
+<td style="text-align: left;"><p>serviceAccountTokenInSecrets is an opt-in for CSI drivers to indicate that service account tokens should be passed via the Secrets field in NodePublishVolumeRequest instead of the VolumeContext field. The CSI specification provides a dedicated Secrets field for sensitive information like tokens, which is the appropriate mechanism for handling credentials. This addresses security concerns where sensitive tokens were being logged as part of volume context.</p>
+<p>When "true", kubelet will pass the tokens only in the Secrets field with the key "csi.storage.k8s.io/serviceAccount.tokens". The CSI driver must be updated to read tokens from the Secrets field instead of VolumeContext.</p>
+<p>When "false" or not set, kubelet will pass the tokens in VolumeContext with the key "csi.storage.k8s.io/serviceAccount.tokens" (existing behavior). This maintains backward compatibility with existing CSI drivers.</p>
+<p>This field can only be set when TokenRequests is configured. The API server will reject CSIDriver specs that set this field without TokenRequests.</p>
+<p>Default behavior if unset is to pass tokens in the VolumeContext field.</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>storageCapacity</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>storageCapacity indicates that the CSI volume driver wants pod scheduling to consider the storage capacity that the driver deployment will report by creating CSIStorageCapacity objects with capacity information, if set to true.</p>
@@ -89,18 +98,18 @@ Type
 <p>Alternatively, the driver can be deployed with the field unset or false and it can be flipped later when storage capacity information has been published.</p>
 <p>This field was immutable in Kubernetes ⇐ 1.22 and now is mutable.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>tokenRequests</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>tokenRequests indicates the CSI driver needs pods' service account tokens it is mounting volume for to do necessary authentication. Kubelet will pass the tokens in VolumeContext in the CSI NodePublishVolume calls. The CSI driver should parse and validate the following VolumeContext: "csi.storage.k8s.io/serviceAccount.tokens": { "&lt;audience&gt;": { "token": &lt;token&gt;, "expirationTimestamp": &lt;expiration timestamp in RFC3339&gt;, }, …​ }</p>
 <p>Note: Audience in each TokenRequest should be different and at most one token is empty string. To receive a new token after expiry, RequiresRepublish can be used to trigger NodePublishVolume periodically.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>tokenRequests[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>TokenRequest contains parameters of a service account token.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>volumeLifecycleModes</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>volumeLifecycleModes defines what kind of volumes this CSI volume driver supports. The default if the list is empty is "Persistent", which is the usage defined by the CSI specification and implemented in Kubernetes via the usual PV/PVC mechanism.</p>

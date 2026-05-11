@@ -959,6 +959,36 @@ The following AWS public regions are supported:
 
 - `us-west-2` (Oregon)
 
+## AWS EUSC region
+
+<div class="important">
+
+European Sovereign Cloud (EUSC) region is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
+
+Installing an OpenShift Container Platform cluster into the AWS European Sovereign Cloud (EUSC) region helps maximize the sovereignty of your data and satisfy your organization’s regulatory requirements. The AWS EUSC is separate and independent from other AWS regions. The infrastructure is located wholly within the European Union (EU). For more information, see [Establishing a European trust service provider for the AWS European Sovereign Cloud](https://aws.amazon.com/blogs/security/establishing-a-european-trust-service-provider-for-the-aws-european-sovereign-cloud/) in the AWS documentation.
+
+The following AWS EUSC region is supported:
+
+- `eusc-de-east-1` (Brandenburg)
+
+<div class="important">
+
+The following list outlines the limitations that apply to installing an OpenShift Container Platform cluster into the AWS EUSC region:
+
+- Only one region, `eusc-de-east-1`, and two zones in that region are available.
+
+- The Amazon Machine Images (AMIs) for public Red Hat Enterprise Linux CoreOS (RHCOS) are not yet available in the EUSC region. As a workaround, until the AMI publication for RHCOS is extended to the EUSC region, you must edit your `install-config.yaml` file to specify a custom AMI in the `amiID` field.
+
+- Support is not yet provided for the AWS Security Token Service (STS).
+
+- Support is not yet provided for installing a cluster into a shared Virtual Private Cloud (VPC) with a cross-account private hosted zone.
+
+</div>
+
 ## AWS GovCloud regions
 
 The following AWS GovCloud regions are supported:

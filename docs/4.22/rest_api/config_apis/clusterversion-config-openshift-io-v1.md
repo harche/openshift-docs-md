@@ -77,18 +77,6 @@ Required
 <td style="text-align: left;"><p>ComponentOverride allows overriding cluster version operator’s behavior for a component.</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>signatureStores</code></p></td>
-<td style="text-align: left;"><p><code>array</code></p></td>
-<td style="text-align: left;"><p>signatureStores contains the upstream URIs to verify release signatures and optional reference to a config map by name containing the PEM-encoded CA bundle.</p>
-<p>By default, CVO will use existing signature stores if this property is empty. The CVO will check the release signatures in the local ConfigMaps first. It will search for a valid signature in these stores in parallel only when local ConfigMaps did not include a valid signature. Validation will fail if none of the signature stores reply with valid signature before timeout. Setting signatureStores will replace the default signature stores with custom signature stores. Default stores can be used with custom signature stores by adding them manually.</p>
-<p>A maximum of 32 signature stores may be configured.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>signatureStores[]</code></p></td>
-<td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>SignatureStore represents the URL of custom Signature Store</p></td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;"><p><code>upstream</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>upstream may be used to specify the preferred update server. By default it will use the appropriate update server for the cluster and region.</p></td>
@@ -162,49 +150,6 @@ Required
 | `name`      | `string`  | name is the component’s name.                                                                                     |
 | `namespace` | `string`  | namespace is the component’s namespace. If the resource is cluster scoped, the namespace should be empty.         |
 | `unmanaged` | `boolean` | unmanaged controls if cluster version operator should stop managing the resources in this cluster. Default: false |
-
-## .spec.signatureStores
-
-Description
-signatureStores contains the upstream URIs to verify release signatures and optional reference to a config map by name containing the PEM-encoded CA bundle.
-
-By default, CVO will use existing signature stores if this property is empty. The CVO will check the release signatures in the local ConfigMaps first. It will search for a valid signature in these stores in parallel only when local ConfigMaps did not include a valid signature. Validation will fail if none of the signature stores reply with valid signature before timeout. Setting signatureStores will replace the default signature stores with custom signature stores. Default stores can be used with custom signature stores by adding them manually.
-
-A maximum of 32 signature stores may be configured.
-
-Type
-`array`
-
-## .spec.signatureStores\[\]
-
-Description
-SignatureStore represents the URL of custom Signature Store
-
-Type
-`object`
-
-Required
-- `url`
-
-| Property | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|----------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `ca`     | `object` | ca is an optional reference to a config map by name containing the PEM-encoded CA bundle. It is used as a trust anchor to validate the TLS certificate presented by the remote server. The key "ca.crt" is used to locate the data. If specified and the config map or expected key is not found, the signature store is not honored. If the specified ca data is not valid, the signature store is not honored. If empty, we fall back to the CA configured via Proxy, which is appended to the default system roots. The namespace for this config map is openshift-config. |
-| `url`    | `string` | url contains the upstream custom signature store URL. url should be a valid absolute http/https URI of an upstream signature store as per rfc1738. This must be provided and cannot be empty.                                                                                                                                                                                                                                                                                                                                                                                 |
-
-## .spec.signatureStores\[\].ca
-
-Description
-ca is an optional reference to a config map by name containing the PEM-encoded CA bundle. It is used as a trust anchor to validate the TLS certificate presented by the remote server. The key "ca.crt" is used to locate the data. If specified and the config map or expected key is not found, the signature store is not honored. If the specified ca data is not valid, the signature store is not honored. If empty, we fall back to the CA configured via Proxy, which is appended to the default system roots. The namespace for this config map is openshift-config.
-
-Type
-`object`
-
-Required
-- `name`
-
-| Property | Type     | Description                                            |
-|----------|----------|--------------------------------------------------------|
-| `name`   | `string` | name is the metadata.name of the referenced config map |
 
 ## .status
 
@@ -483,15 +428,15 @@ Required
 
 - `verified`
 
-| Property         | Type      | Description                                                                                                                                                                                                                                                                                              |
-|------------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `acceptedRisks`  | `string`  | acceptedRisks records risks which were accepted to initiate the update. For example, it may menition an Upgradeable=False or missing signature that was overridden via desiredUpdate.force, or an update that was initiated despite not being in the availableUpdates set of recommended update targets. |
-| `completionTime` | \`\`      | completionTime, if set, is when the update was fully applied. The update that is currently being applied will have a null completion time. Completion time will always be set for entries that are not the current update (usually to the started time of the next update).                              |
-| `image`          | `string`  | image is a container image location that contains the update. This value is always populated.                                                                                                                                                                                                            |
-| `startedTime`    | `string`  | startedTime is the time at which the update was started.                                                                                                                                                                                                                                                 |
-| `state`          | `string`  | state reflects whether the update was fully applied. The Partial state indicates the update is not fully applied, while the Completed state indicates the update was successfully rolled out at least once (all parts of the update successfully applied).                                               |
-| `verified`       | `boolean` | verified indicates whether the provided update was properly verified before it was installed. If this is false the cluster may not be trusted. Verified does not cover upgradeable checks that depend on the cluster state at the time when the update target was accepted.                              |
-| `version`        | `string`  | version is a semantic version identifying the update version. If the requested image does not define a version, or if a failure occurs retrieving the image, this value may be empty.                                                                                                                    |
+| Property         | Type      | Description                                                                                                                                                                                                                                                                                             |
+|------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `acceptedRisks`  | `string`  | acceptedRisks records risks which were accepted to initiate the update. For example, it may mention an Upgradeable=False or missing signature that was overridden via desiredUpdate.force, or an update that was initiated despite not being in the availableUpdates set of recommended update targets. |
+| `completionTime` | \`\`      | completionTime, if set, is when the update was fully applied. The update that is currently being applied will have a null completion time. Completion time will always be set for entries that are not the current update (usually to the started time of the next update).                             |
+| `image`          | `string`  | image is a container image location that contains the update. This value is always populated.                                                                                                                                                                                                           |
+| `startedTime`    | `string`  | startedTime is the time at which the update was started.                                                                                                                                                                                                                                                |
+| `state`          | `string`  | state reflects whether the update was fully applied. The Partial state indicates the update is not fully applied, while the Completed state indicates the update was successfully rolled out at least once (all parts of the update successfully applied).                                              |
+| `verified`       | `boolean` | verified indicates whether the provided update was properly verified before it was installed. If this is false the cluster may not be trusted. Verified does not cover upgradeable checks that depend on the cluster state at the time when the update target was accepted.                             |
+| `version`        | `string`  | version is a semantic version identifying the update version. If the requested image does not define a version, or if a failure occurs retrieving the image, this value may be empty.                                                                                                                   |
 
 # API endpoints
 

@@ -46,31 +46,36 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>config</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>config is an optional field used to specify bundle specific configuration used to configure the bundle. Configuration is bundle specific and a bundle may provide a configuration schema. When not specified, the default configuration of the resolved bundle will be used.</p>
-<p>config is validated against a configuration schema provided by the resolved bundle. If the bundle does not provide a configuration schema the final manifests will be derived on a best-effort basis. More information on how to configure the bundle should be found in its end-user documentation.</p></td>
+<td style="text-align: left;"><p>config is optional and specifies bundle-specific configuration. Configuration is bundle-specific and a bundle may provide a configuration schema. When not specified, the default configuration of the resolved bundle is used.</p>
+<p>config is validated against a configuration schema provided by the resolved bundle. If the bundle does not provide a configuration schema the bundle is deemed to not be configurable. More information on how to configure bundles can be found in the OLM documentation associated with your current OLM version.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>install</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>install is an optional field used to configure the installation options for the ClusterExtension such as the pre-flight check configuration.</p></td>
+<td style="text-align: left;"><p>install is optional and configures installation options for the ClusterExtension, such as the pre-flight check configuration.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>namespace</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>namespace is a reference to a Kubernetes namespace. This is the namespace in which the provided ServiceAccount must exist. It also designates the default namespace where namespace-scoped resources for the extension are applied to the cluster. Some extensions may contain namespace-scoped resources to be applied in other namespaces. This namespace must exist.</p>
-<p>namespace is required, immutable, and follows the DNS label standard as defined in [RFC 1123]. It must contain only lowercase alphanumeric characters or hyphens (-), start and end with an alphanumeric character, and be no longer than 63 characters</p>
+<td style="text-align: left;"><p>namespace specifies a Kubernetes namespace. This is the namespace where the provided ServiceAccount must exist. It also designates the default namespace where namespace-scoped resources for the extension are applied to the cluster. Some extensions may contain namespace-scoped resources to be applied in other namespaces. This namespace must exist.</p>
+<p>The namespace field is required, immutable, and follows the DNS label standard as defined in [RFC 1123]. It must contain only lowercase alphanumeric characters or hyphens (-), start and end with an alphanumeric character, and be no longer than 63 characters.</p>
 <p>[RFC 1123]: <a href="https://tools.ietf.org/html/rfc1123">https://tools.ietf.org/html/rfc1123</a></p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>serviceAccount</code></p></td>
-<td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>serviceAccount is a reference to a ServiceAccount used to perform all interactions with the cluster that are required to manage the extension. The ServiceAccount must be configured with the necessary permissions to perform these interactions. The ServiceAccount must exist in the namespace referenced in the spec. serviceAccount is required.</p></td>
+<td style="text-align: left;"><p><code>progressDeadlineMinutes</code></p></td>
+<td style="text-align: left;"><p><code>integer</code></p></td>
+<td style="text-align: left;"><p>progressDeadlineMinutes is an optional field that defines the maximum period of time in minutes after which an installation should be considered failed and require manual intervention. This functionality is disabled when no value is provided. The minimum period is 10 minutes, and the maximum is 720 minutes (12 hours).</p></td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;"><p><code>serviceAccount</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>serviceAccount specifies a ServiceAccount used to perform all interactions with the cluster that are required to manage the extension. The ServiceAccount must be configured with the necessary permissions to perform these interactions. The ServiceAccount must exist in the namespace referenced in the spec. The serviceAccount field is required.</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>source</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>source is a required field which selects the installation source of content for this ClusterExtension. Selection is performed by setting the sourceType.</p>
-<p>Catalog is currently the only implemented sourceType, and setting the sourcetype to "Catalog" requires the catalog field to also be defined.</p>
+<td style="text-align: left;"><p>source is required and selects the installation source of content for this ClusterExtension. Set the sourceType field to perform the selection.</p>
+<p>Catalog is currently the only implemented sourceType. Setting sourceType to "Catalog" requires the catalog field to also be defined.</p>
 <p>Below is a minimal example of a source definition (in yaml):</p>
 <p>source: sourceType: Catalog catalog: packageName: example-package</p></td>
 </tr>
@@ -80,9 +85,9 @@ Required
 ## .spec.config
 
 Description
-config is an optional field used to specify bundle specific configuration used to configure the bundle. Configuration is bundle specific and a bundle may provide a configuration schema. When not specified, the default configuration of the resolved bundle will be used.
+config is optional and specifies bundle-specific configuration. Configuration is bundle-specific and a bundle may provide a configuration schema. When not specified, the default configuration of the resolved bundle is used.
 
-config is validated against a configuration schema provided by the resolved bundle. If the bundle does not provide a configuration schema the final manifests will be derived on a best-effort basis. More information on how to configure the bundle should be found in its end-user documentation.
+config is validated against a configuration schema provided by the resolved bundle. If the bundle does not provide a configuration schema the bundle is deemed to not be configurable. More information on how to configure bundles can be found in the OLM documentation associated with your current OLM version.
 
 Type
 `object`
@@ -107,15 +112,15 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>configType</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>configType is a required reference to the type of configuration source.</p>
-<p>Allowed values are "Inline"</p>
-<p>When this field is set to "Inline", the cluster extension configuration is defined inline within the ClusterExtension resource.</p></td>
+<td style="text-align: left;"><p>configType is required and specifies the type of configuration source.</p>
+<p>The only allowed value is "Inline".</p>
+<p>When set to "Inline", the cluster extension configuration is defined inline within the ClusterExtension resource.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>inline</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
 <td style="text-align: left;"><p>inline contains JSON or YAML values specified directly in the ClusterExtension.</p>
-<p>inline must be set if configType is 'Inline'. inline accepts arbitrary JSON/YAML objects. inline is validation at runtime against the schema provided by the bundle if a schema is provided.</p></td>
+<p>It is used to specify arbitrary configuration values for the ClusterExtension. It must be set if configType is 'Inline' and must be a valid JSON/YAML object containing at least one property. The configuration values are validated at runtime against a JSON schema provided by the bundle.</p></td>
 </tr>
 </tbody>
 </table>
@@ -123,7 +128,7 @@ Required
 ## .spec.install
 
 Description
-install is an optional field used to configure the installation options for the ClusterExtension such as the pre-flight check configuration.
+install is optional and configures installation options for the ClusterExtension, such as the pre-flight check configuration.
 
 Type
 `object`
@@ -145,8 +150,8 @@ Type
 <tr class="odd">
 <td style="text-align: left;"><p><code>preflight</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>preflight is an optional field that can be used to configure the checks that are run before installation or upgrade of the content for the package specified in the packageName field.</p>
-<p>When specified, it replaces the default preflight configuration for install/upgrade actions. When not specified, the default configuration will be used.</p></td>
+<td style="text-align: left;"><p>preflight is optional and configures the checks that run before installation or upgrade of the content for the package specified in the packageName field.</p>
+<p>When specified, it replaces the default preflight configuration for install/upgrade actions. When not specified, the default configuration is used.</p></td>
 </tr>
 </tbody>
 </table>
@@ -154,9 +159,9 @@ Type
 ## .spec.install.preflight
 
 Description
-preflight is an optional field that can be used to configure the checks that are run before installation or upgrade of the content for the package specified in the packageName field.
+preflight is optional and configures the checks that run before installation or upgrade of the content for the package specified in the packageName field.
 
-When specified, it replaces the default preflight configuration for install/upgrade actions. When not specified, the default configuration will be used.
+When specified, it replaces the default preflight configuration for install/upgrade actions. When not specified, the default configuration is used.
 
 Type
 `object`
@@ -181,7 +186,7 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>crdUpgradeSafety</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>crdUpgradeSafety is used to configure the CRD Upgrade Safety pre-flight checks that run prior to upgrades of installed content.</p>
+<td style="text-align: left;"><p>crdUpgradeSafety configures the CRD Upgrade Safety pre-flight checks that run before upgrades of installed content.</p>
 <p>The CRD Upgrade Safety pre-flight check safeguards from unintended consequences of upgrading a CRD, such as data loss.</p></td>
 </tr>
 </tbody>
@@ -190,7 +195,7 @@ Required
 ## .spec.install.preflight.crdUpgradeSafety
 
 Description
-crdUpgradeSafety is used to configure the CRD Upgrade Safety pre-flight checks that run prior to upgrades of installed content.
+crdUpgradeSafety configures the CRD Upgrade Safety pre-flight checks that run before upgrades of installed content.
 
 The CRD Upgrade Safety pre-flight check safeguards from unintended consequences of upgrading a CRD, such as data loss.
 
@@ -217,10 +222,10 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>enforcement</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>enforcement is a required field, used to configure the state of the CRD Upgrade Safety pre-flight check.</p>
+<td style="text-align: left;"><p>enforcement is required and configures the state of the CRD Upgrade Safety pre-flight check.</p>
 <p>Allowed values are "None" or "Strict". The default value is "Strict".</p>
-<p>When set to "None", the CRD Upgrade Safety pre-flight check will be skipped when performing an upgrade operation. This should be used with caution as unintended consequences such as data loss can occur.</p>
-<p>When set to "Strict", the CRD Upgrade Safety pre-flight check will be run when performing an upgrade operation.</p></td>
+<p>When set to "None", the CRD Upgrade Safety pre-flight check is skipped during an upgrade operation. Use this option with caution as unintended consequences such as data loss can occur.</p>
+<p>When set to "Strict", the CRD Upgrade Safety pre-flight check runs during an upgrade operation.</p></td>
 </tr>
 </tbody>
 </table>
@@ -228,7 +233,7 @@ Required
 ## .spec.serviceAccount
 
 Description
-serviceAccount is a reference to a ServiceAccount used to perform all interactions with the cluster that are required to manage the extension. The ServiceAccount must be configured with the necessary permissions to perform these interactions. The ServiceAccount must exist in the namespace referenced in the spec. serviceAccount is required.
+serviceAccount specifies a ServiceAccount used to perform all interactions with the cluster that are required to manage the extension. The ServiceAccount must be configured with the necessary permissions to perform these interactions. The ServiceAccount must exist in the namespace referenced in the spec. The serviceAccount field is required.
 
 Type
 `object`
@@ -253,9 +258,9 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>name is a required, immutable reference to the name of the ServiceAccount to be used for installation and management of the content for the package specified in the packageName field.</p>
+<td style="text-align: left;"><p>name is a required, immutable reference to the name of the ServiceAccount used for installation and management of the content for the package specified in the packageName field.</p>
 <p>This ServiceAccount must exist in the installNamespace.</p>
-<p>name follows the DNS subdomain standard as defined in [RFC 1123]. It must contain only lowercase alphanumeric characters, hyphens (-) or periods (.), start and end with an alphanumeric character, and be no longer than 253 characters.</p>
+<p>The name field follows the DNS subdomain standard as defined in [RFC 1123]. It must contain only lowercase alphanumeric characters, hyphens (-) or periods (.), start and end with an alphanumeric character, and be no longer than 253 characters.</p>
 <p>Some examples of valid values are: - some-serviceaccount - 123-serviceaccount - 1-serviceaccount-2 - someserviceaccount - some.serviceaccount</p>
 <p>Some examples of invalid values are: - -some-serviceaccount - some-serviceaccount-</p>
 <p>[RFC 1123]: <a href="https://tools.ietf.org/html/rfc1123">https://tools.ietf.org/html/rfc1123</a></p></td>
@@ -266,9 +271,9 @@ Required
 ## .spec.source
 
 Description
-source is a required field which selects the installation source of content for this ClusterExtension. Selection is performed by setting the sourceType.
+source is required and selects the installation source of content for this ClusterExtension. Set the sourceType field to perform the selection.
 
-Catalog is currently the only implemented sourceType, and setting the sourcetype to "Catalog" requires the catalog field to also be defined.
+Catalog is currently the only implemented sourceType. Setting sourceType to "Catalog" requires the catalog field to also be defined.
 
 Below is a minimal example of a source definition (in yaml):
 
@@ -297,14 +302,14 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>catalog</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>catalog is used to configure how information is sourced from a catalog. This field is required when sourceType is "Catalog", and forbidden otherwise.</p></td>
+<td style="text-align: left;"><p>catalog configures how information is sourced from a catalog. It is required when sourceType is "Catalog", and forbidden otherwise.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>sourceType</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>sourceType is a required reference to the type of install source.</p>
-<p>Allowed values are "Catalog"</p>
-<p>When this field is set to "Catalog", information for determining the appropriate bundle of content to install will be fetched from ClusterCatalog resources existing on the cluster. When using the Catalog sourceType, the catalog field must also be set.</p></td>
+<td style="text-align: left;"><p>sourceType is required and specifies the type of install source.</p>
+<p>The only allowed value is "Catalog".</p>
+<p>When set to "Catalog", information for determining the appropriate bundle of content to install is fetched from ClusterCatalog resources on the cluster. When using the Catalog sourceType, the catalog field must also be set.</p></td>
 </tr>
 </tbody>
 </table>
@@ -312,7 +317,7 @@ Required
 ## .spec.source.catalog
 
 Description
-catalog is used to configure how information is sourced from a catalog. This field is required when sourceType is "Catalog", and forbidden otherwise.
+catalog configures how information is sourced from a catalog. It is required when sourceType is "Catalog", and forbidden otherwise.
 
 Type
 `object`
@@ -337,11 +342,11 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>channels</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
-<td style="text-align: left;"><p>channels is an optional reference to a set of channels belonging to the package specified in the packageName field.</p>
-<p>A "channel" is a package-author-defined stream of updates for an extension.</p>
-<p>Each channel in the list must follow the DNS subdomain standard as defined in [RFC 1123]. It must contain only lowercase alphanumeric characters, hyphens (-) or periods (.), start and end with an alphanumeric character, and be no longer than 253 characters. No more than 256 channels can be specified.</p>
-<p>When specified, it is used to constrain the set of installable bundles and the automated upgrade path. This constraint is an AND operation with the version field. For example: - Given channel is set to "foo" - Given version is set to "&gt;=1.0.0, &lt;1.5.0" - Only bundles that exist in channel "foo" AND satisfy the version range comparison will be considered installable - Automatic upgrades will be constrained to upgrade edges defined by the selected channel</p>
-<p>When unspecified, upgrade edges across all channels will be used to identify valid automatic upgrade paths.</p>
+<td style="text-align: left;"><p>channels is optional and specifies a set of channels belonging to the package specified in the packageName field.</p>
+<p>A channel is a package-author-defined stream of updates for an extension.</p>
+<p>Each channel in the list must follow the DNS subdomain standard as defined in [RFC 1123]. It must contain only lowercase alphanumeric characters, hyphens (-) or periods (.), start and end with an alphanumeric character, and be no longer than 253 characters. You can specify no more than 256 channels.</p>
+<p>When specified, it constrains the set of installable bundles and the automated upgrade path. This constraint is an AND operation with the version field. For example: - Given channel is set to "foo" - Given version is set to "&gt;=1.0.0, &lt;1.5.0" - Only bundles that exist in channel "foo" AND satisfy the version range comparison are considered installable - Automatic upgrades are constrained to upgrade edges defined by the selected channel</p>
+<p>When unspecified, upgrade edges across all channels are used to identify valid automatic upgrade paths.</p>
 <p>Some examples of valid values are: - 1.1.x - alpha - stable - stable-v1 - v1-stable - dev-preview - preview - community</p>
 <p>Some examples of invalid values are: - -some-channel - some-channel- - thisisareallylongchannelnamethatisgreaterthanthemaximumlength - original_40 - --default-channel</p>
 <p>[RFC 1123]: <a href="https://tools.ietf.org/html/rfc1123">https://tools.ietf.org/html/rfc1123</a></p></td>
@@ -349,8 +354,8 @@ Required
 <tr class="even">
 <td style="text-align: left;"><p><code>packageName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>packageName is a reference to the name of the package to be installed and is used to filter the content from catalogs.</p>
-<p>packageName is required, immutable, and follows the DNS subdomain standard as defined in [RFC 1123]. It must contain only lowercase alphanumeric characters, hyphens (-) or periods (.), start and end with an alphanumeric character, and be no longer than 253 characters.</p>
+<td style="text-align: left;"><p>packageName specifies the name of the package to be installed and is used to filter the content from catalogs.</p>
+<p>It is required, immutable, and follows the DNS subdomain standard as defined in [RFC 1123]. It must contain only lowercase alphanumeric characters, hyphens (-) or periods (.), start and end with an alphanumeric character, and be no longer than 253 characters.</p>
 <p>Some examples of valid values are: - some-package - 123-package - 1-package-2 - somepackage</p>
 <p>Some examples of invalid values are: - -some-package - some-package- - thisisareallylongpackagenamethatisgreaterthanthemaximumlength - some.package</p>
 <p>[RFC 1123]: <a href="https://tools.ietf.org/html/rfc1123">https://tools.ietf.org/html/rfc1123</a></p></td>
@@ -358,23 +363,23 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>selector</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>selector is an optional field that can be used to filter the set of ClusterCatalogs used in the bundle selection process.</p>
-<p>When unspecified, all ClusterCatalogs will be used in the bundle selection process.</p></td>
+<td style="text-align: left;"><p>selector is optional and filters the set of ClusterCatalogs used in the bundle selection process.</p>
+<p>When unspecified, all ClusterCatalogs are used in the bundle selection process.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>upgradeConstraintPolicy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>upgradeConstraintPolicy is an optional field that controls whether the upgrade path(s) defined in the catalog are enforced for the package referenced in the packageName field.</p>
-<p>Allowed values are: "CatalogProvided" or "SelfCertified", or omitted.</p>
-<p>When this field is set to "CatalogProvided", automatic upgrades will only occur when upgrade constraints specified by the package author are met.</p>
-<p>When this field is set to "SelfCertified", the upgrade constraints specified by the package author are ignored. This allows for upgrades and downgrades to any version of the package. This is considered a dangerous operation as it can lead to unknown and potentially disastrous outcomes, such as data loss. It is assumed that users have independently verified changes when using this option.</p>
-<p>When this field is omitted, the default value is "CatalogProvided".</p></td>
+<td style="text-align: left;"><p>upgradeConstraintPolicy is optional and controls whether the upgrade paths defined in the catalog are enforced for the package referenced in the packageName field.</p>
+<p>Allowed values are "CatalogProvided", "SelfCertified", or omitted.</p>
+<p>When set to "CatalogProvided", automatic upgrades only occur when upgrade constraints specified by the package author are met.</p>
+<p>When set to "SelfCertified", the upgrade constraints specified by the package author are ignored. This allows upgrades and downgrades to any version of the package. This is considered a dangerous operation as it can lead to unknown and potentially disastrous outcomes, such as data loss. Use this option only if you have independently verified the changes.</p>
+<p>When omitted, the default value is "CatalogProvided".</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>version</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>version is an optional semver constraint (a specific version or range of versions). When unspecified, the latest version available will be installed.</p>
-<p>Acceptable version ranges are no longer than 64 characters. Version ranges are composed of comma- or space-delimited values and one or more comparison operators, known as comparison strings. Additional comparison strings can be added using the OR operator (||).</p>
+<td style="text-align: left;"><p>version is an optional semver constraint (a specific version or range of versions). When unspecified, the latest version available is installed.</p>
+<p>Acceptable version ranges are no longer than 64 characters. Version ranges are composed of comma- or space-delimited values and one or more comparison operators, known as comparison strings. You can add additional comparison strings using the OR operator (||).</p>
 <p># Range Comparisons</p>
 <p>To specify a version range, you can use a comparison string like "&gt;=3.0, &lt;3.6". When specifying a range, automatic updates will occur within that range. The example comparison string means "install any version greater than or equal to 3.0.0 but less than 3.6.0.". It also states intent that if any upgrades are available within the version range after initial installation, those upgrades should be automatically performed.</p>
 <p># Pinned Versions</p>
@@ -396,9 +401,9 @@ Required
 ## .spec.source.catalog.selector
 
 Description
-selector is an optional field that can be used to filter the set of ClusterCatalogs used in the bundle selection process.
+selector is optional and filters the set of ClusterCatalogs used in the bundle selection process.
 
-When unspecified, all ClusterCatalogs will be used in the bundle selection process.
+When unspecified, all ClusterCatalogs are used in the bundle selection process.
 
 Type
 `object`
@@ -459,12 +464,24 @@ Type
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;"><p><code>activeRevisions</code></p></td>
+<td style="text-align: left;"><p><code>array</code></p></td>
+<td style="text-align: left;"><p>activeRevisions holds a list of currently active (non-archived) ClusterObjectSets, including both installed and rolling out revisions.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>activeRevisions[]</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>RevisionStatus defines the observed state of a ClusterObjectSet.</p></td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>conditions</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
-<td style="text-align: left;"><p>The set of condition types which apply to all spec.source variations are Installed and Progressing.</p>
-<p>The Installed condition represents whether or not the bundle has been installed for this ClusterExtension. When Installed is True and the Reason is Succeeded, the bundle has been successfully installed. When Installed is False and the Reason is Failed, the bundle has failed to install.</p>
+<td style="text-align: left;"><p>conditions represents the current state of the ClusterExtension.</p>
+<p>The set of condition types which apply to all spec.source variations are Installed and Progressing.</p>
+<p>The Installed condition represents whether the bundle has been installed for this ClusterExtension: - When Installed is True and the Reason is Succeeded, the bundle has been successfully installed. - When Installed is False and the Reason is Failed, the bundle has failed to install.</p>
 <p>The Progressing condition represents whether or not the ClusterExtension is advancing towards a new state. When Progressing is True and the Reason is Succeeded, the ClusterExtension is making progress towards a new state. When Progressing is True and the Reason is Retrying, the ClusterExtension has encountered an error that could be resolved on subsequent reconciliation attempts. When Progressing is False and the Reason is Blocked, the ClusterExtension has encountered an error that requires manual intervention for recovery.</p>
-<p>When the ClusterExtension is sourced from a catalog, if may also communicate a deprecation condition. These are indications from a package owner to guide users away from a particular package, channel, or bundle. BundleDeprecated is set if the requested bundle version is marked deprecated in the catalog. ChannelDeprecated is set if the requested channel is marked deprecated in the catalog. PackageDeprecated is set if the requested package is marked deprecated in the catalog. Deprecated is a rollup condition that is present when any of the deprecated conditions are present.</p></td>
+<p>When Progressing is True and Reason is RollingOut, the ClusterExtension has one or more ClusterObjectSets in active roll out.</p>
+<p>When the ClusterExtension is sourced from a catalog, it surfaces deprecation conditions based on catalog metadata. These are indications from a package owner to guide users away from a particular package, channel, or bundle: - BundleDeprecated is True if the installed bundle is marked deprecated, False if not deprecated, or Unknown if no bundle is installed yet or if catalog data is unavailable. - ChannelDeprecated is True if any requested channel is marked deprecated, False if not deprecated, or Unknown if catalog data is unavailable. - PackageDeprecated is True if the requested package is marked deprecated, False if not deprecated, or Unknown if catalog data is unavailable. - Deprecated is a rollup condition that is True when any deprecation exists, False when none exist, or Unknown when catalog data is unavailable.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>conditions[]</code></p></td>
@@ -479,16 +496,81 @@ Type
 </tbody>
 </table>
 
+## .status.activeRevisions
+
+Description
+activeRevisions holds a list of currently active (non-archived) ClusterObjectSets, including both installed and rolling out revisions.
+
+Type
+`array`
+
+## .status.activeRevisions\[\]
+
+Description
+RevisionStatus defines the observed state of a ClusterObjectSet.
+
+Type
+`object`
+
+Required
+- `name`
+
+| Property       | Type     | Description                                                                                                                                                                                                                                                                                                                                                   |
+|----------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `conditions`   | `array`  | conditions optionally expose Progressing and Available condition of the revision, in case when it is not yet marked as successfully installed (condition Succeeded is not set to True). Given that a ClusterExtension should remain available during upgrades, an observer may use these conditions to get more insights about reasons for its current state. |
+| `conditions[]` | `object` | Condition contains details for one aspect of the current state of this API Resource.                                                                                                                                                                                                                                                                          |
+| `name`         | `string` | name of the ClusterObjectSet resource                                                                                                                                                                                                                                                                                                                         |
+
+## .status.activeRevisions\[\].conditions
+
+Description
+conditions optionally expose Progressing and Available condition of the revision, in case when it is not yet marked as successfully installed (condition Succeeded is not set to True). Given that a ClusterExtension should remain available during upgrades, an observer may use these conditions to get more insights about reasons for its current state.
+
+Type
+`array`
+
+## .status.activeRevisions\[\].conditions\[\]
+
+Description
+Condition contains details for one aspect of the current state of this API Resource.
+
+Type
+`object`
+
+Required
+- `lastTransitionTime`
+
+- `message`
+
+- `reason`
+
+- `status`
+
+- `type`
+
+| Property             | Type      | Description                                                                                                                                                                                                                                                                                                                     |
+|----------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lastTransitionTime` | `string`  | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable.                                                                                            |
+| `message`            | `string`  | message is a human readable message indicating details about the transition. This may be an empty string.                                                                                                                                                                                                                       |
+| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.                                   |
+| `reason`             | `string`  | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
+| `status`             | `string`  | status of the condition, one of True, False, Unknown.                                                                                                                                                                                                                                                                           |
+| `type`               | `string`  | type of condition in CamelCase or in foo.example.com/CamelCase.                                                                                                                                                                                                                                                                 |
+
 ## .status.conditions
 
 Description
+conditions represents the current state of the ClusterExtension.
+
 The set of condition types which apply to all spec.source variations are Installed and Progressing.
 
-The Installed condition represents whether or not the bundle has been installed for this ClusterExtension. When Installed is True and the Reason is Succeeded, the bundle has been successfully installed. When Installed is False and the Reason is Failed, the bundle has failed to install.
+The Installed condition represents whether the bundle has been installed for this ClusterExtension: - When Installed is True and the Reason is Succeeded, the bundle has been successfully installed. - When Installed is False and the Reason is Failed, the bundle has failed to install.
 
 The Progressing condition represents whether or not the ClusterExtension is advancing towards a new state. When Progressing is True and the Reason is Succeeded, the ClusterExtension is making progress towards a new state. When Progressing is True and the Reason is Retrying, the ClusterExtension has encountered an error that could be resolved on subsequent reconciliation attempts. When Progressing is False and the Reason is Blocked, the ClusterExtension has encountered an error that requires manual intervention for recovery.
 
-When the ClusterExtension is sourced from a catalog, if may also communicate a deprecation condition. These are indications from a package owner to guide users away from a particular package, channel, or bundle. BundleDeprecated is set if the requested bundle version is marked deprecated in the catalog. ChannelDeprecated is set if the requested channel is marked deprecated in the catalog. PackageDeprecated is set if the requested package is marked deprecated in the catalog. Deprecated is a rollup condition that is present when any of the deprecated conditions are present.
+When Progressing is True and Reason is RollingOut, the ClusterExtension has one or more ClusterObjectSets in active roll out.
+
+When the ClusterExtension is sourced from a catalog, it surfaces deprecation conditions based on catalog metadata. These are indications from a package owner to guide users away from a particular package, channel, or bundle: - BundleDeprecated is True if the installed bundle is marked deprecated, False if not deprecated, or Unknown if no bundle is installed yet or if catalog data is unavailable. - ChannelDeprecated is True if any requested channel is marked deprecated, False if not deprecated, or Unknown if catalog data is unavailable. - PackageDeprecated is True if the requested package is marked deprecated, False if not deprecated, or Unknown if catalog data is unavailable. - Deprecated is a rollup condition that is True when any deprecation exists, False when none exist, or Unknown when catalog data is unavailable.
 
 Type
 `array`
@@ -549,7 +631,7 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>bundle</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>bundle is a required field which represents the identifying attributes of a bundle.</p>
+<td style="text-align: left;"><p>bundle is required and represents the identifying attributes of a bundle.</p>
 <p>A "bundle" is a versioned set of content that represents the resources that need to be applied to a cluster to install a package.</p></td>
 </tr>
 </tbody>
@@ -558,7 +640,7 @@ Required
 ## .status.install.bundle
 
 Description
-bundle is a required field which represents the identifying attributes of a bundle.
+bundle is required and represents the identifying attributes of a bundle.
 
 A "bundle" is a versioned set of content that represents the resources that need to be applied to a cluster to install a package.
 
@@ -573,7 +655,7 @@ Required
 | Property  | Type     | Description                                                                                                                                                                                                                                                 |
 |-----------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `name`    | `string` | name is required and follows the DNS subdomain standard as defined in \[RFC 1123\]. It must contain only lowercase alphanumeric characters, hyphens (-) or periods (.), start and end with an alphanumeric character, and be no longer than 253 characters. |
-| `version` | `string` | version is a required field and is a reference to the version that this bundle represents version follows the semantic versioning standard as defined in <https://semver.org/>.                                                                             |
+| `version` | `string` | version is required and references the version that this bundle represents. It follows the semantic versioning standard as defined in <https://semver.org/>.                                                                                                |
 
 # API endpoints
 

@@ -1,4 +1,4 @@
-Use the information in this section to understand and recover from issues you might encounter.
+Use the following information to understand and recover from issues you might encounter.
 
 # Checking the control plane machine set custom resource state
 

@@ -153,7 +153,7 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>claimValidationRules[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>TokenClaimValidationRule represents a validation rule based on token claims. If type is RequiredClaim, requiredClaim must be set. If Type is CEL, CEL must be set and RequiredClaim must be omitted.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>issuer</code></p></td>
@@ -174,7 +174,7 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>oidcClients[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>OIDCClientConfig configures how platform clients interact with identity providers as an authentication method</p></td>
+<td style="text-align: left;"><p>OIDCClientConfig configures how platform clients interact with identity providers as an authentication method.</p></td>
 </tr>
 </tbody>
 </table>
@@ -207,7 +207,8 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>extra</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
-<td style="text-align: left;"><p>extra is an optional field for configuring the mappings used to construct the extra attribute for the cluster identity. When omitted, no extra attributes will be present on the cluster identity. key values for extra mappings must be unique. A maximum of 32 extra attribute mappings may be provided.</p></td>
+<td style="text-align: left;"><p>extra is an optional field for configuring the mappings used to construct the extra attribute for the cluster identity. When omitted, no extra attributes will be present on the cluster identity.</p>
+<p>key values for extra mappings must be unique. A maximum of 32 extra attribute mappings may be provided.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>extra[]</code></p></td>
@@ -217,14 +218,17 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>groups</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>groups is an optional field that configures how the groups of a cluster identity should be constructed from the claims in a JWT token issued by the identity provider. When referencing a claim, if the claim is present in the JWT token, its value must be a list of groups separated by a comma (','). For example - '"example"' and '"exampleOne", "exampleTwo", "exampleThree"' are valid claim values.</p></td>
+<td style="text-align: left;"><p>groups is an optional field that configures how the groups of a cluster identity should be constructed from the claims in a JWT token issued by the identity provider.</p>
+<p>When referencing a claim, if the claim is present in the JWT token, its value must be a list of groups separated by a comma (',').</p>
+<p>For example - '"example"' and '"exampleOne", "exampleTwo", "exampleThree"' are valid claim values.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>uid</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>uid is an optional field for configuring the claim mapping used to construct the uid for the cluster identity.</p>
 <p>When using uid.claim to specify the claim it must be a single string value. When using uid.expression the expression must result in a single string value.</p>
-<p>When omitted, this means the user has no opinion and the platform is left to choose a default, which is subject to change over time. The current default is to use the 'sub' claim.</p></td>
+<p>When omitted, this means the user has no opinion and the platform is left to choose a default, which is subject to change over time.</p>
+<p>The current default is to use the 'sub' claim.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>username</code></p></td>
@@ -237,7 +241,9 @@ Required
 ## .spec.oidcProviders\[\].claimMappings.extra
 
 Description
-extra is an optional field for configuring the mappings used to construct the extra attribute for the cluster identity. When omitted, no extra attributes will be present on the cluster identity. key values for extra mappings must be unique. A maximum of 32 extra attribute mappings may be provided.
+extra is an optional field for configuring the mappings used to construct the extra attribute for the cluster identity. When omitted, no extra attributes will be present on the cluster identity.
+
+key values for extra mappings must be unique. A maximum of 32 extra attribute mappings may be provided.
 
 Type
 `array`
@@ -290,13 +296,14 @@ Required
 ## .spec.oidcProviders\[\].claimMappings.groups
 
 Description
-groups is an optional field that configures how the groups of a cluster identity should be constructed from the claims in a JWT token issued by the identity provider. When referencing a claim, if the claim is present in the JWT token, its value must be a list of groups separated by a comma (','). For example - '"example"' and '"exampleOne", "exampleTwo", "exampleThree"' are valid claim values.
+groups is an optional field that configures how the groups of a cluster identity should be constructed from the claims in a JWT token issued by the identity provider.
+
+When referencing a claim, if the claim is present in the JWT token, its value must be a list of groups separated by a comma (',').
+
+For example - '"example"' and '"exampleOne", "exampleTwo", "exampleThree"' are valid claim values.
 
 Type
 `object`
-
-Required
-- `claim`
 
 <table>
 <colgroup>
@@ -315,13 +322,13 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>claim</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>claim is a required field that configures the JWT token claim whose value is assigned to the cluster identity field associated with this mapping.</p></td>
+<td style="text-align: left;"><p>claim is an optional field for specifying the JWT token claim that is used in the mapping. The value of this claim will be assigned to the field in which this mapping is associated. claim must not exceed 256 characters in length. When set to the empty string <code>""</code>, this means that no named claim should be used for the group mapping. claim is required when the ExternalOIDCWithUpstreamParity feature gate is not enabled.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>prefix</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>prefix is an optional field that configures the prefix that will be applied to the cluster identity attribute during the process of mapping JWT claims to cluster identity attributes.</p>
-<p>When omitted (""), no prefix is applied to the cluster identity attribute.</p>
+<p>When omitted or set to an empty string (""), no prefix is applied to the cluster identity attribute. Must not be set to a non-empty value when expression is set.</p>
 <p>Example: if <code>prefix</code> is set to "myoidc:" and the <code>claim</code> in JWT contains an array of strings "a", "b" and "c", the mapping will result in an array of string "myoidc:a", "myoidc:b" and "myoidc:c".</p></td>
 </tr>
 </tbody>
@@ -334,7 +341,9 @@ uid is an optional field for configuring the claim mapping used to construct the
 
 When using uid.claim to specify the claim it must be a single string value. When using uid.expression the expression must result in a single string value.
 
-When omitted, this means the user has no opinion and the platform is left to choose a default, which is subject to change over time. The current default is to use the 'sub' claim.
+When omitted, this means the user has no opinion and the platform is left to choose a default, which is subject to change over time.
+
+The current default is to use the 'sub' claim.
 
 Type
 `object`
@@ -377,9 +386,6 @@ username is a required field that configures how the username of a cluster ident
 Type
 `object`
 
-Required
-- `claim`
-
 <table>
 <colgroup>
 <col style="width: 33%" />
@@ -397,7 +403,7 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>claim</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>claim is a required field that configures the JWT token claim whose value is assigned to the cluster identity field associated with this mapping.</p>
+<td style="text-align: left;"><p>claim is an optional field that configures the JWT token claim whose value is assigned to the cluster identity field associated with this mapping. claim is required when the ExternalOIDCWithUpstreamParity feature gate is not enabled. When the ExternalOIDCWithUpstreamParity feature gate is enabled, claim must not be set when expression is set.</p>
 <p>claim must not be an empty string ("") and must not exceed 256 characters.</p></td>
 </tr>
 <tr class="even">
@@ -411,9 +417,9 @@ Required
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>prefixPolicy is an optional field that configures how a prefix should be applied to the value of the JWT claim specified in the 'claim' field.</p>
 <p>Allowed values are 'Prefix', 'NoPrefix', and omitted (not provided or an empty string).</p>
-<p>When set to 'Prefix', the value specified in the prefix field will be prepended to the value of the JWT claim. The prefix field must be set when prefixPolicy is 'Prefix'.</p>
-<p>When set to 'NoPrefix', no prefix will be prepended to the value of the JWT claim.</p>
-<p>When omitted, this means no opinion and the platform is left to choose any prefixes that are applied which is subject to change over time. Currently, the platform prepends <code>{issuerURL}#</code> to the value of the JWT claim when the claim is not 'email'. As an example, consider the following scenario: <code>prefix</code> is unset, <code>issuerURL</code> is set to <code>https://myoidc.tld</code>, the JWT claims include "username":"userA" and "email":"<a href="mailto:userA@myoidc.tld">userA@myoidc.tld</a>", and <code>claim</code> is set to: - "username": the mapped value will be "https://myoidc.tld#userA" - "email": the mapped value will be "<a href="mailto:userA@myoidc.tld">userA@myoidc.tld</a>"</p></td>
+<p>When set to 'Prefix', the value specified in the prefix field will be prepended to the value of the JWT claim. The prefix field must be set when prefixPolicy is 'Prefix'. Must not be set to 'Prefix' when expression is set. When set to 'NoPrefix', no prefix will be prepended to the value of the JWT claim. When omitted, this means no opinion and the platform is left to choose any prefixes that are applied which is subject to change over time. Currently, the platform prepends <code>{issuerURL}#</code> to the value of the JWT claim when the claim is not 'email'.</p>
+<p>As an example, consider the following scenario:</p>
+<p><code>prefix</code> is unset, <code>issuerURL</code> is set to <code>https://myoidc.tld</code>, the JWT claims include "username":"userA" and "email":"<a href="mailto:userA@myoidc.tld">userA@myoidc.tld</a>", and <code>claim</code> is set to: - "username": the mapped value will be "https://myoidc.tld#userA" - "email": the mapped value will be "<a href="mailto:userA@myoidc.tld">userA@myoidc.tld</a>"</p></td>
 </tr>
 </tbody>
 </table>
@@ -467,9 +473,13 @@ Type
 ## .spec.oidcProviders\[\].claimValidationRules\[\]
 
 Description
+TokenClaimValidationRule represents a validation rule based on token claims. If type is RequiredClaim, requiredClaim must be set. If Type is CEL, CEL must be set and RequiredClaim must be omitted.
 
 Type
 `object`
+
+Required
+- `type`
 
 <table>
 <colgroup>
@@ -488,15 +498,15 @@ Type
 <tr class="odd">
 <td style="text-align: left;"><p><code>requiredClaim</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>requiredClaim is an optional field that configures the required claim and value that the Kubernetes API server will use to validate if an incoming JWT is valid for this identity provider.</p></td>
+<td style="text-align: left;"><p>requiredClaim allows configuring a required claim name and its expected value. This field is required when <code>type</code> is set to RequiredClaim, and must be omitted when <code>type</code> is set to any other value. The Kubernetes API server uses this field to validate if an incoming JWT is valid for this identity provider.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>type is an optional field that configures the type of the validation rule.</p>
-<p>Allowed values are 'RequiredClaim' and omitted (not provided or an empty string).</p>
+<p>Allowed values are "RequiredClaim" and "CEL".</p>
 <p>When set to 'RequiredClaim', the Kubernetes API server will be configured to validate that the incoming JWT contains the required claim and that its value matches the required value.</p>
-<p>Defaults to 'RequiredClaim'.</p></td>
+<p>When set to 'CEL', the Kubernetes API server will be configured to validate the incoming JWT against the configured CEL expression.</p></td>
 </tr>
 </tbody>
 </table>
@@ -504,7 +514,7 @@ Type
 ## .spec.oidcProviders\[\].claimValidationRules\[\].requiredClaim
 
 Description
-requiredClaim is an optional field that configures the required claim and value that the Kubernetes API server will use to validate if an incoming JWT is valid for this identity provider.
+requiredClaim allows configuring a required claim name and its expected value. This field is required when `type` is set to RequiredClaim, and must be omitted when `type` is set to any other value. The Kubernetes API server uses this field to validate if an incoming JWT is valid for this identity provider.
 
 Type
 `object`
@@ -622,7 +632,7 @@ Type
 ## .spec.oidcProviders\[\].oidcClients\[\]
 
 Description
-OIDCClientConfig configures how platform clients interact with identity providers as an authentication method
+OIDCClientConfig configures how platform clients interact with identity providers as an authentication method.
 
 Type
 `object`
@@ -659,19 +669,22 @@ Required
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>clientSecret is an optional field that configures the client secret used by the platform component when making authentication requests to the identity provider.</p>
 <p>When not specified, no client secret will be used when making authentication requests to the identity provider.</p>
-<p>When specified, clientSecret references a Secret in the 'openshift-config' namespace that contains the client secret in the 'clientSecret' key of the '.data' field. The client secret will be used when making authentication requests to the identity provider.</p>
+<p>When specified, clientSecret references a Secret in the 'openshift-config' namespace that contains the client secret in the 'clientSecret' key of the '.data' field.</p>
+<p>The client secret will be used when making authentication requests to the identity provider.</p>
 <p>Public clients do not require a client secret but private clients do require a client secret to work with the identity provider.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>componentName</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>componentName is a required field that specifies the name of the platform component being configured to use the identity provider as an authentication mode. It is used in combination with componentNamespace as a unique identifier.</p>
+<td style="text-align: left;"><p>componentName is a required field that specifies the name of the platform component being configured to use the identity provider as an authentication mode.</p>
+<p>It is used in combination with componentNamespace as a unique identifier.</p>
 <p>componentName must not be an empty string ("") and must not exceed 256 characters in length.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>componentNamespace</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>componentNamespace is a required field that specifies the namespace in which the platform component being configured to use the identity provider as an authentication mode is running. It is used in combination with componentName as a unique identifier.</p>
+<td style="text-align: left;"><p>componentNamespace is a required field that specifies the namespace in which the platform component being configured to use the identity provider as an authentication mode is running.</p>
+<p>It is used in combination with componentName as a unique identifier.</p>
 <p>componentNamespace must not be an empty string ("") and must not exceed 63 characters in length.</p></td>
 </tr>
 <tr class="odd">
@@ -690,7 +703,9 @@ clientSecret is an optional field that configures the client secret used by the 
 
 When not specified, no client secret will be used when making authentication requests to the identity provider.
 
-When specified, clientSecret references a Secret in the 'openshift-config' namespace that contains the client secret in the 'clientSecret' key of the '.data' field. The client secret will be used when making authentication requests to the identity provider.
+When specified, clientSecret references a Secret in the 'openshift-config' namespace that contains the client secret in the 'clientSecret' key of the '.data' field.
+
+The client secret will be used when making authentication requests to the identity provider.
 
 Public clients do not require a client secret but private clients do require a client secret to work with the identity provider.
 
@@ -871,7 +886,8 @@ Required
 <tr class="even">
 <td style="text-align: left;"><p><code>componentNamespace</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>componentNamespace is a required field that specifies the namespace in which the platform component using the identity provider as an authentication mode is running. It is used in combination with componentName as a unique identifier.</p>
+<td style="text-align: left;"><p>componentNamespace is a required field that specifies the namespace in which the platform component using the identity provider as an authentication mode is running.</p>
+<p>It is used in combination with componentName as a unique identifier.</p>
 <p>componentNamespace must not be an empty string ("") and must not exceed 63 characters in length.</p></td>
 </tr>
 <tr class="odd">
@@ -895,7 +911,8 @@ Required
 <tr class="even">
 <td style="text-align: left;"><p><code>currentOIDCClients</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
-<td style="text-align: left;"><p>currentOIDCClients is an optional list of clients that the component is currently using. Entries must have unique issuerURL/clientID pairs.</p></td>
+<td style="text-align: left;"><p>currentOIDCClients is an optional list of clients that the component is currently using.</p>
+<p>Entries must have unique issuerURL/clientID pairs.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>currentOIDCClients[]</code></p></td>
@@ -948,7 +965,9 @@ Required
 ## .status.oidcClients\[\].currentOIDCClients
 
 Description
-currentOIDCClients is an optional list of clients that the component is currently using. Entries must have unique issuerURL/clientID pairs.
+currentOIDCClients is an optional list of clients that the component is currently using.
+
+Entries must have unique issuerURL/clientID pairs.
 
 Type
 `array`

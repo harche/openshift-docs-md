@@ -1730,6 +1730,8 @@ Web console Technology Preview tracker
 
 # Known issues
 
+- Currently, the `topo-aware-scheduler` provided by the NUMA Resources Operator (NRO) does not support Kubernetes priority-based preemption. When all NUMA zones on available nodes are fully consumed by lower-priority pods, a high-priority pod with a `PreemptLowerPriority` policy remains in `Pending` state indefinitely instead of preempting the lower-priority pods. As a consequence, workloads that depend on priority-based preemption for scheduling recovery do not function correctly when using the `topo-aware-scheduler`. ([OCPBUGS-77930](https://issues.redhat.com/browse/OCPBUGS-77930))
+
 - There is a known issue with Gateway API and Amazon Web Services (AWS), Google Cloud, and Microsoft Azure private clusters. The load balancer that is provisioned for a gateway is always configured to be external, which can cause errors or unexpected behavior:
 
   - In an AWS private cluster, the load balancer becomes stuck in the `pending` state and reports the error: `Error syncing load balancer: failed to ensure load balancer: could not find any suitable subnets for creating the ELB`.
@@ -1835,6 +1837,36 @@ This section will continue to be updated over time to provide notes on enhanceme
 For any OpenShift Container Platform release, always review the instructions on [updating your cluster](../updating/updating_a_cluster/updating-cluster-web-console.xml#updating-cluster-web-console) properly.
 
 </div>
+
+## RHBA-2026:12066 - OpenShift Container Platform 4.17.20 fixed issues
+
+Issued: 05 May 2026
+
+OpenShift Container Platform release 4.17.20 is now available. The list of fixed issues that are included in the update is documented in the [RHBA-2026:12066](https://access.redhat.com/errata/RHBA-2026:12066) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:12063](https://access.redhat.com/errata/RHBA-2026:12063) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.20.20 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, upgrading a cluster with many Network Attachment Definitions (NAD) sharing the same network name caused VMs using `ovn-k8s-cni-overlay localnet` NADs to lose connectivity. As a consequence, logical ports were not created for some VMs, disrupting network traffic. With this release, the upgrade logic correctly handles NAD configurations, facilitating consistent port creation. As a result, VMs maintain stable connectivity during and after cluster upgrades. ([OCPBUGS-78777](https://issues.redhat.com/browse/OCPBUGS-78777))
+
+- Before this update, `kube-apiserver` rollouts in user clusters with encrypted etcd caused TCP RST storms, resulting in application pod traffic drops. With this update, the issue is resolved, and `kube-apiserver` rollouts no longer cause traffic drops in encrypted clusters, improving service stability. ([OCPBUGS-81477](https://issues.redhat.com/browse/OCPBUGS-81477))
+
+- Before this update, an incorrect subnet configuration in the `metal3-static-ip-set` YAML file when switching from a managed to an unmanaged provisioning network prevented users from creating routes with an unmanaged provisioning network. With this update, the `metal3-static-ip-set` YAML file sets the correct subnet for an unmanaged provisioning network, resolving the issue and enabling successful route creation. ([OCPBUGS-81643](https://issues.redhat.com/browse/OCPBUGS-81643))
+
+- Before this update, the `machine-config-controller` used inflated leader election timings on Single Node OpenShift Container Platform, causing a 5 to 6 minute delay in acquiring leases after a non-graceful reboot. As a consequence, this lag stalled `MachineConfig` rendering and pool status updates during critical recovery periods. With this release, the controller uses default leader election settings on Single Node OpenShift Container Platform, facilitating a faster transition to an `active` state after a node recovery. As a result, lease acquisition time is reduced by over 50%, allowing cluster operations to resume promptly. ([OCPBUGS-83393](https://issues.redhat.com/browse/OCPBUGS-83393))
+
+- Before this update, the Ingress Operator did not correctly set the `trustBundleName` configuration when deploying the Istio tool, preventing many Istio instances from coexisting. As a consequence, running simultaneous instances caused configuration conflicts and deployment failures. With this release, the Ingress Operator correctly applies the `trustBundleName` configuration, facilitating a seamless coexistence between different Istio instances. As a result, users can now maintain many Istio deployments within the same cluster. A cluster administrator can then manually delete any legacy ConfigMap objects. ([OCPBUGS-84132](https://issues.redhat.com/browse/OCPBUGS-84132))
+
+### Updating
+
+To update an OpenShift Container Platform 4.20 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
 
 ## RHBA-2026:8430 - OpenShift Container Platform 4.17.19 fixed issues
 

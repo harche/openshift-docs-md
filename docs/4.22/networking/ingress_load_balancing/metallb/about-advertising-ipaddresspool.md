@@ -525,133 +525,105 @@ The example in the procedure shows how to configure MetalLB so that the IP addre
 
         </div>
 
-# Configuring MetalLB with secondary networks
+# Configure MetalLB with secondary networks
 
-From OpenShift Container Platform 4.14 the default network behavior is to not allow forwarding of IP packets between network interfaces. Therefore, when MetalLB is configured on a secondary interface, you need to add a machine configuration to enable IP forwarding for only the required interfaces.
+In environments with multiple network interfaces, you might need MetalLB to advertise load-balancer IP addresses on a secondary interface for network traffic segmentation. To route traffic using a secondary interface, you must do the following:
 
-<div class="note">
+- Enable IP forwarding on the secondary interface so that the interface can forward packets to the pods.
 
-OpenShift Container Platform clusters upgraded from 4.13 are not affected because a global parameter is set during upgrade to enable global IP forwarding.
-
-</div>
-
-To enable IP forwarding for the secondary interface, you have two options:
-
-- Enable IP forwarding for a specific interface.
-
-- Enable IP forwarding for all interfaces.
+- Enable local gateway mode at the cluster level so that traffic uses the host networking stack.
 
 <div class="note">
 
-Enabling IP forwarding for a specific interface provides more granular control, while enabling it for all interfaces applies a global setting.
+From OpenShift Container Platform 4.14, IP forwarding is disabled by default on cluster nodes for improved security. Clusters upgraded from 4.13 might already have IP forwarding enabled because existing node settings are preserved during upgrade.
 
 </div>
 
-1.  Patch the Cluster Network Operator, setting the parameter `routingViaHost` to `true` by running the following command:
+- You installed and configured MetalLB.
+
+- You identified the secondary network interface on each node.
+
+- You installed the Kubernetes NMState Operator.
+
+- You have access to the cluster as a user with the `cluster-admin` role.
+
+- You have installed the OpenShift CLI (`oc`).
+
+1.  Enable local gateway mode by patching the Cluster Network Operator to set `routingViaHost` to `true`:
 
     ``` terminal
     $ oc patch network.operator cluster -p '{"spec":{"defaultNetwork":{"ovnKubernetesConfig":{"gatewayConfig": {"routingViaHost": true} }}}}' --type=merge
     ```
 
-2.  Enable forwarding for a specific secondary interface, such as `bridge-net`, by creating and applying a `MachineConfig` CR:
+    This setting routes traffic through the host networking stack, which is required for MetalLB to use secondary interfaces.
 
-    1.  Base64-encode the string that is used to configure network kernel parameters by running the following command on your local machine:
+2.  Create a `NodeNetworkConfigurationPolicy` manifest to enable IP forwarding on the secondary interface, such as `eth1`:
 
-        ``` terminal
-        $ echo -e "net.ipv4.conf.bridge-net.forwarding = 1" | base64 -w0
-        ```
+    ``` yaml
+    apiVersion: nmstate.io/v1
+    kind: NodeNetworkConfigurationPolicy
+    metadata:
+      name: enable-forwarding-eth1
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/worker: ""
+      desiredState:
+        interfaces:
+        - name: eth1
+          type: ethernet
+          state: up
+          ipv4:
+            enabled: true
+            forwarding: true
+    ```
 
-        <div class="formalpara-title">
+    - `interfaces.name` defines the name of the secondary interface on which to enable IP forwarding.
 
-        **Example output**
+    - `ipv4.forwarding` enables IPv4 forwarding on the interface.
 
-        </div>
-
-        ``` terminal
-        bmV0LmlwdjQuY29uZi5icmlkZ2UtbmV0LmZvcndhcmRpbmcgPSAxCg==
-        ```
-
-    2.  Create the `MachineConfig` CR to enable IP forwarding for the specified secondary interface named `bridge-net`.
-
-    3.  Save the following YAML in the `enable-ip-forward.yaml` file:
-
-        ``` yaml
-        apiVersion: machineconfiguration.openshift.io/v1
-        kind: MachineConfig
-        metadata:
-          labels:
-            machineconfiguration.openshift.io/role: <node_role>
-          name: 81-enable-global-forwarding
-        spec:
-          config:
-            ignition:
-              version: 3.2.0
-            storage:
-              files:
-              - contents:
-                  source: data:text/plain;charset=utf-8;base64,bmV0LmlwdjQuY29uZi5icmlkZ2UtbmV0LmZvcndhcmRpbmcgPSAxCg==
-                  verification: {}
-                filesystem: root
-                mode: 420
-                path: /etc/sysctl.d/enable-global-forwarding.conf
-          osImageURL: ""
-        # ...
-        ```
-
-        where:
-
-        `<node_role>`
-        Node role where you want to enable IP forwarding, for example, `worker`.
-
-        `contents.source`
-        Populate with the generated Base64 string.
-
-    4.  Apply the configuration by running the following command:
-
-        ``` terminal
-        $ oc apply -f enable-ip-forward.yaml
-        ```
-
-3.  Optional: Enable IP forwarding globally by running the following command:
+3.  Apply the policy by running the following command:
 
     ``` terminal
-    $ oc patch network.operator cluster -p '{"spec":{"defaultNetwork":{"ovnKubernetesConfig":{"gatewayConfig":{"ipForwarding": "Global"}}}}}' --type=merge
+    $ oc apply -f enable-forwarding-eth1.yaml
     ```
 
 <!-- -->
 
-1.  After you apply the machine config, verify the changes by completing the following steps:
+1.  Verify that the policy was applied by running the following command:
 
-    1.  Enter into a debug session on the target node by running the following command. This command instantiates a debug pod called `<node-name>-debug`.
+    ``` terminal
+    $ oc get nncp
+    ```
 
-        ``` terminal
-        $ oc debug node/<node-name>
-        ```
+    <div class="formalpara-title">
 
-    2.  Set `/host` as the root directory within the debug shell by running the following command. The debug pod mounts root file system of the host in `/host` within the pod. By changing the root directory to `/host`, you can run binaries contained in the executable paths of the host.
+    **Example output**
 
-        ``` terminal
-        $ chroot /host
-        ```
+    </div>
 
-    3.  Verify that IP forwarding is enabled by running the following command:
+    ``` terminal
+    NAME                      STATUS      REASON
+    enable-forwarding-eth1    Available   SuccessfullyConfigured
+    ```
 
-        ``` terminal
-        $ cat /etc/sysctl.d/enable-global-forwarding.conf
-        ```
+2.  Verify that IP forwarding is enabled on a node by running the following command, replacing `<node_name>` with the name of the node:
 
-        <div class="formalpara-title">
+    ``` terminal
+    $ oc debug node/<node_name> -- chroot /host sysctl net.ipv4.conf.eth1.forwarding
+    ```
 
-        **Example output**
+    <div class="formalpara-title">
 
-        </div>
+    **Example output**
 
-        ``` terminal
-        net.ipv4.conf.bridge-net.forwarding = 1
-        ```
+    </div>
 
-        The output indicates that IPv4 forwarding is enabled on the `bridge-net` interface.
+    ``` terminal
+    net.ipv4.conf.eth1.forwarding = 1
+    ```
 
 # Additional resources
 
 - [Configuring a community alias](../../../networking/ingress_load_balancing/metallb/metallb-configure-community-alias.xml#metallb-configure-community-alias)
+
+- [Enable IP forwarding on specific interfaces](../../../networking/k8s_nmstate/k8s-nmstate-updating-node-network-config.xml#nw-nmstate-enable-per-interface-ip-forwarding_k8s-nmstate-updating-node-network-config)

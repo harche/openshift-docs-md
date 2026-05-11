@@ -399,10 +399,7 @@ Optional installation configuration parameters are described in the following ta
 <td style="text-align: left;"><pre><code>publish:</code></pre></td>
 <td style="text-align: left;"><p>How to publish or expose the user-facing endpoints of your cluster, such as the Kubernetes API, OpenShift routes.</p>
 <p><strong>Value:</strong> <code>Internal</code> or <code>External</code>. The default value is <code>External</code>.</p>
-<p>Setting this field to <code>Internal</code> is not supported on non-cloud platforms.</p>
-<div class="important">
-<p>If the value of the field is set to <code>Internal</code>, the cluster becomes non-functional. For more information, refer to <a href="https://bugzilla.redhat.com/show_bug.cgi?id=1953035">BZ#1953035</a>.</p>
-</div></td>
+<p>Setting this field to <code>Internal</code> is not supported on non-cloud platforms.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><pre><code>sshKey:</code></pre></td>

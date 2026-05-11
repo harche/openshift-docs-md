@@ -16,6 +16,8 @@ OpenShift Container Platform offers a suite of supported Operators designed to s
 
 Using secrets management tools with other Red Hat products can protect sensitive data across your OpenShift Container Platform cluster. You can integrate secrets management Operators with other OpenShift Container Platform components to securely manage, automate, and consume credentials across various infrastructure and application workflows.
 
+## External Secrets Operator for Red Hat OpenShift use cases
+
 You can integrate the External Secrets Operator with other OpenShift Container Platform components to securely manage and inject credentials. Learn how to apply External Secrets Operator in real-world deployment strategies, by reviewing the following example.
 
 Securing Red Hat OpenShift GitOps by using External Secrets Operator short-lived tokens

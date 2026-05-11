@@ -117,9 +117,28 @@ aws contains DNS configuration specific to the Amazon Web Services cloud provide
 Type
 `object`
 
-| Property             | Type     | Description                                                                                                                                                                                                                |
-|----------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `privateZoneIAMRole` | `string` | privateZoneIAMRole contains the ARN of an IAM role that should be assumed when performing operations on the cluster’s private hosted zone specified in the cluster DNS config. When left empty, no role should be assumed. |
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>privateZoneIAMRole</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>privateZoneIAMRole contains the ARN of an IAM role that should be assumed when performing operations on the cluster’s private hosted zone specified in the cluster DNS config. When left empty, no role should be assumed.</p>
+<p>The ARN must follow the format: arn:&lt;partition&gt;:iam::&lt;account-id&gt;:role/&lt;role-name&gt;, where: &lt;partition&gt; is the AWS partition (aws, aws-cn, aws-us-gov, or aws-eusc), &lt;account-id&gt; is a 12-digit numeric identifier for the AWS account, &lt;role-name&gt; is the IAM role name.</p></td>
+</tr>
+</tbody>
+</table>
 
 ## .spec.privateZone
 

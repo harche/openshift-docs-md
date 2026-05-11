@@ -280,6 +280,7 @@
 <div style="padding-left:0px">&bull; <strong>Installation configuration</strong></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/install_config/installing-customizing.md">Customizing nodes</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/install_config/configuring-firewall.md">Configuring your firewall</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/install_config/installation-config-parameters-generic.md">Installation configuration parameters</a></div>
 <div style="padding-left:0px">&bull; <strong>Validation and troubleshooting</strong></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/validation_and_troubleshooting/validating-an-installation.md">Validating an installation</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/validation_and_troubleshooting/installing-troubleshooting.md">Troubleshooting installation issues</a></div>
@@ -343,7 +344,6 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=updating/preparing_for_updates/updating-cluster-prepare.md">Preparing to update to OpenShift Container Platform 4.22</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=updating/preparing_for_updates/preparing-manual-creds-update.md">Preparing to update a cluster with manually maintained credentials</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=updating/preparing_for_updates/kmm-preflight-validation.md">Preflight validation for Kernel Module Management (KMM) Modules</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=updating/preparing_for_updates/updating-cluster-prepare-past-4-18.md">Preparing to update from OpenShift Container Platform 4.18 to a newer version</a></div>
 <div style="padding-left:0px">&bull; <strong>Performing a cluster update</strong></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=updating/updating_a_cluster/updating-cluster-cli.md">Updating a cluster using the CLI</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=updating/updating_a_cluster/updating-cluster-web-console.md">Updating a cluster using the web console</a></div>
@@ -1164,6 +1164,7 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=nodes/nodes/nodes-nodes-garbage-collection.md">Freeing node resources using garbage collection</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=nodes/nodes/nodes-nodes-resources-configuring.md">Allocating resources for nodes</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=nodes/nodes/nodes-nodes-resources-cpus.md">Allocating specific CPUs for nodes in a cluster</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=nodes/nodes/nodes-nodes-additional-crio-storage.md">Additional CRI-O storage locations for faster container startup</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=nodes/nodes/nodes-nodes-tls.md">Enabling TLS security profiles for the kubelet</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=nodes/nodes/nodes-nodes-creating-infrastructure-nodes.md">Creating infrastructure nodes</a></div>
 <div style="padding-left:0px">&bull; <strong>Working with containers</strong></div>
@@ -1523,19 +1524,13 @@
 <div style="padding-left:20px">&bull; [MachineAutoscaler [autoscaling.openshift.io/v1beta1]](rest_api/autoscale_apis/machineautoscaler-autoscaling-openshift-io-v1beta1.md)</div>
 <div style="padding-left:20px">&bull; [HorizontalPodAutoscaler [autoscaling/v2]](rest_api/autoscale_apis/horizontalpodautoscaler-autoscaling-v2.md)</div>
 <div style="padding-left:20px">&bull; [Scale [autoscaling/v1]](rest_api/autoscale_apis/scale-autoscaling-v1.md)</div>
-<div style="padding-left:0px">&bull; <strong>Cluster APIs</strong></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=rest_api/cluster_apis/cluster-apis-index.md">About Cluster APIs</a></div>
-<div style="padding-left:20px">&bull; [IPAddress [ipam.cluster.x-k8s.io/v1beta1]](rest_api/cluster_apis/ipaddress-ipam-cluster-x-k8s-io-v1beta1.md)</div>
-<div style="padding-left:20px">&bull; [IPAddressClaim [ipam.cluster.x-k8s.io/v1beta1]](rest_api/cluster_apis/ipaddressclaim-ipam-cluster-x-k8s-io-v1beta1.md)</div>
 <div style="padding-left:0px">&bull; <strong>Config APIs</strong></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=rest_api/config_apis/config-apis-index.md">About Config APIs</a></div>
 <div style="padding-left:20px">&bull; [APIServer [config.openshift.io/v1]](rest_api/config_apis/apiserver-config-openshift-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [Authentication [config.openshift.io/v1]](rest_api/config_apis/authentication-config-openshift-io-v1.md)</div>
-<div style="padding-left:20px">&bull; [Backup [config.openshift.io/v1alpha1]](rest_api/config_apis/backup-config-openshift-io-v1alpha1.md)</div>
 <div style="padding-left:20px">&bull; [Build [config.openshift.io/v1]](rest_api/config_apis/build-config-openshift-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [ClusterImagePolicy [config.openshift.io/v1]](rest_api/config_apis/clusterimagepolicy-config-openshift-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [ClusterOperator [config.openshift.io/v1]](rest_api/config_apis/clusteroperator-config-openshift-io-v1.md)</div>
-<div style="padding-left:20px">&bull; [ClusterMonitoring [config.openshift.io/v1alpha1]](rest_api/config_apis/clustermonitoring-config-openshift-io-v1alpha1.md)</div>
 <div style="padding-left:20px">&bull; [ClusterVersion [config.openshift.io/v1]](rest_api/config_apis/clusterversion-config-openshift-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [Console [config.openshift.io/v1]](rest_api/config_apis/console-config-openshift-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [DNS [config.openshift.io/v1]](rest_api/config_apis/dns-config-openshift-io-v1.md)</div>
@@ -1546,7 +1541,7 @@
 <div style="padding-left:20px">&bull; [ImageContentPolicy [config.openshift.io/v1]](rest_api/config_apis/imagecontentpolicy-config-openshift-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [ImagePolicy [config.openshift.io/v1]](rest_api/config_apis/imagepolicy-config-openshift-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [ImageTagMirrorSet [config.openshift.io/v1]](rest_api/config_apis/imagetagmirrorset-config-openshift-io-v1.md)</div>
-<div style="padding-left:20px">&bull; [InsightsDataGather [config.openshift.io/v1alpha2]](rest_api/config_apis/insightsdatagather-config-openshift-io-v1alpha2.md)</div>
+<div style="padding-left:20px">&bull; [InsightsDataGather [config.openshift.io/v1]](rest_api/config_apis/insightsdatagather-config-openshift-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [Infrastructure [config.openshift.io/v1]](rest_api/config_apis/infrastructure-config-openshift-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [Ingress [config.openshift.io/v1]](rest_api/config_apis/ingress-config-openshift-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [Network [config.openshift.io/v1]](rest_api/config_apis/network-config-openshift-io-v1.md)</div>
@@ -1572,6 +1567,7 @@
 <div style="padding-left:20px">&bull; [APIService [apiregistration.k8s.io/v1]](rest_api/extension_apis/apiservice-apiregistration-k8s-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [CustomResourceDefinition [apiextensions.k8s.io/v1]](rest_api/extension_apis/customresourcedefinition-apiextensions-k8s-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [MutatingWebhookConfiguration [admissionregistration.k8s.io/v1]](rest_api/extension_apis/mutatingwebhookconfiguration-admissionregistration-k8s-io-v1.md)</div>
+<div style="padding-left:20px">&bull; [TestExtensionAdmission [testextension.redhat.io/v1]](rest_api/extension_apis/testextensionadmission-testextension-redhat-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [ValidatingAdmissionPolicy [admissionregistration.k8s.io/v1]](rest_api/extension_apis/validatingadmissionpolicy-admissionregistration-k8s-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [ValidatingAdmissionPolicyBinding [admissionregistration.k8s.io/v1]](rest_api/extension_apis/validatingadmissionpolicybinding-admissionregistration-k8s-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [ValidatingWebhookConfiguration [admissionregistration.k8s.io/v1]](rest_api/extension_apis/validatingwebhookconfiguration-admissionregistration-k8s-io-v1.md)</div>
@@ -1601,8 +1597,6 @@
 <div style="padding-left:20px">&bull; [MachineConfigNode [machineconfiguration.openshift.io/v1]](rest_api/machine_apis/machineconfignode-machineconfiguration-openshift-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [MachineOSBuild [machineconfiguration.openshift.io/v1]](rest_api/machine_apis/machineosbuild-machineconfiguration-openshift-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [MachineOSConfig [machineconfiguration.openshift.io/v1]](rest_api/machine_apis/machineosconfig-machineconfiguration-openshift-io-v1.md)</div>
-<div style="padding-left:20px">&bull; [InternalReleaseImage [machineconfiguration.openshift.io/v1alpha1]](rest_api/machine_apis/internalreleaseimage-machineconfiguration-openshift-io-v1alpha1.md)</div>
-<div style="padding-left:20px">&bull; [OSImageStream [machineconfiguration.openshift.io/v1alpha1]](rest_api/machine_apis/osimagestream-machineconfiguration-openshift-io-v1alpha1.md)</div>
 <div style="padding-left:20px">&bull; [PinnedImageSet [machineconfiguration.openshift.io/v1]](rest_api/machine_apis/pinnedimageset-machineconfiguration-openshift-io-v1.md)</div>
 <div style="padding-left:0px">&bull; <strong>Metadata APIs</strong></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=rest_api/metadata_apis/metadata-apis-index.md">About Metadata APIs</a></div>
@@ -1621,7 +1615,7 @@
 <div style="padding-left:20px">&bull; [AlertmanagerConfig [monitoring.coreos.com/v1beta1]](rest_api/monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1beta1.md)</div>
 <div style="padding-left:20px">&bull; [AlertRelabelConfig [monitoring.openshift.io/v1]](rest_api/monitoring_apis/alertrelabelconfig-monitoring-openshift-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [AlertingRule [monitoring.openshift.io/v1]](rest_api/monitoring_apis/alertingrule-monitoring-openshift-io-v1.md)</div>
-<div style="padding-left:20px">&bull; [DataGather [insights.openshift.io/v1alpha2]](rest_api/monitoring_apis/datagather-insights-openshift-io-v1alpha2.md)</div>
+<div style="padding-left:20px">&bull; [DataGather [insights.openshift.io/v1]](rest_api/monitoring_apis/datagather-insights-openshift-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [PodMonitor [monitoring.coreos.com/v1]](rest_api/monitoring_apis/podmonitor-monitoring-coreos-com-v1.md)</div>
 <div style="padding-left:20px">&bull; [Probe [monitoring.coreos.com/v1]](rest_api/monitoring_apis/probe-monitoring-coreos-com-v1.md)</div>
 <div style="padding-left:20px">&bull; [Prometheus [monitoring.coreos.com/v1]](rest_api/monitoring_apis/prometheus-monitoring-coreos-com-v1.md)</div>
@@ -1635,9 +1629,9 @@
 <div style="padding-left:20px">&bull; [ClusterUserDefinedNetwork [k8s.ovn.org/v1]](rest_api/network_apis/clusteruserdefinednetwork-k8s-ovn-org-v1.md)</div>
 <div style="padding-left:20px">&bull; [AdminNetworkPolicy [policy.networking.k8s.io/v1alpha1]](rest_api/network_apis/adminnetworkpolicy-policy-networking-k8s-io-v1alpha1.md)</div>
 <div style="padding-left:20px">&bull; [AdminPolicyBasedExternalRoute [k8s.ovn.org/v1]](rest_api/network_apis/adminpolicybasedexternalroute-k8s-ovn-org-v1.md)</div>
+<div style="padding-left:20px">&bull; [BackendTLSPolicy [gateway.networking.k8s.io/v1]](rest_api/network_apis/backendtlspolicy-gateway-networking-k8s-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [BaselineAdminNetworkPolicy [policy.networking.k8s.io/v1alpha1]](rest_api/network_apis/baselineadminnetworkpolicy-policy-networking-k8s-io-v1alpha1.md)</div>
 <div style="padding-left:20px">&bull; [CloudPrivateIPConfig [cloud.network.openshift.io/v1]](rest_api/network_apis/cloudprivateipconfig-cloud-network-openshift-io-v1.md)</div>
-<div style="padding-left:20px">&bull; [DNSNameResolver [network.openshift.io/v1alpha1]](rest_api/network_apis/dnsnameresolver-network-openshift-io-v1alpha1.md)</div>
 <div style="padding-left:20px">&bull; [EgressFirewall [k8s.ovn.org/v1]](rest_api/network_apis/egressfirewall-k8s-ovn-org-v1.md)</div>
 <div style="padding-left:20px">&bull; [EgressIP [k8s.ovn.org/v1]](rest_api/network_apis/egressip-k8s-ovn-org-v1.md)</div>
 <div style="padding-left:20px">&bull; [EgressQoS [k8s.ovn.org/v1]](rest_api/network_apis/egressqos-k8s-ovn-org-v1.md)</div>
@@ -1684,7 +1678,6 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=rest_api/operator_apis/operator-apis-index.md">About Operator APIs</a></div>
 <div style="padding-left:20px">&bull; [Authentication [operator.openshift.io/v1]](rest_api/operator_apis/authentication-operator-openshift-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [CloudCredential [operator.openshift.io/v1]](rest_api/operator_apis/cloudcredential-operator-openshift-io-v1.md)</div>
-<div style="padding-left:20px">&bull; [ClusterVersionOperator [operator.openshift.io/v1alpha1]](rest_api/operator_apis/clusterversionoperator-operator-openshift-io-v1alpha1.md)</div>
 <div style="padding-left:20px">&bull; [ClusterCSIDriver [operator.openshift.io/v1]](rest_api/operator_apis/clustercsidriver-operator-openshift-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [Console [operator.openshift.io/v1]](rest_api/operator_apis/console-operator-openshift-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [Config [operator.openshift.io/v1]](rest_api/operator_apis/config-operator-openshift-io-v1.md)</div>
@@ -1694,7 +1687,6 @@
 <div style="padding-left:20px">&bull; [DNS [operator.openshift.io/v1]](rest_api/operator_apis/dns-operator-openshift-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [DNSRecord [ingress.operator.openshift.io/v1]](rest_api/operator_apis/dnsrecord-ingress-operator-openshift-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [Etcd [operator.openshift.io/v1]](rest_api/operator_apis/etcd-operator-openshift-io-v1.md)</div>
-<div style="padding-left:20px">&bull; [EtcdBackup [operator.openshift.io/v1alpha1]](rest_api/operator_apis/etcdbackup-operator-openshift-io-v1alpha1.md)</div>
 <div style="padding-left:20px">&bull; [ImageContentSourcePolicy [operator.openshift.io/v1alpha1]](rest_api/operator_apis/imagecontentsourcepolicy-operator-openshift-io-v1alpha1.md)</div>
 <div style="padding-left:20px">&bull; [ImagePruner [imageregistry.operator.openshift.io/v1]](rest_api/operator_apis/imagepruner-imageregistry-operator-openshift-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [IngressController [operator.openshift.io/v1]](rest_api/operator_apis/ingresscontroller-operator-openshift-io-v1.md)</div>
@@ -1715,7 +1707,6 @@
 <div style="padding-left:20px">&bull; [CatalogSource [operators.coreos.com/v1alpha1]](rest_api/operatorhub_apis/catalogsource-operators-coreos-com-v1alpha1.md)</div>
 <div style="padding-left:20px">&bull; [ClusterCatalog [olm.operatorframework.io/v1]](rest_api/operatorhub_apis/clustercatalog-olm-operatorframework-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [ClusterExtension [olm.operatorframework.io/v1]](rest_api/operatorhub_apis/clusterextension-olm-operatorframework-io-v1.md)</div>
-<div style="padding-left:20px">&bull; [ClusterExtensionRevision [olm.operatorframework.io/v1]](rest_api/operatorhub_apis/clusterextensionrevision-olm-operatorframework-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [ClusterServiceVersion [operators.coreos.com/v1alpha1]](rest_api/operatorhub_apis/clusterserviceversion-operators-coreos-com-v1alpha1.md)</div>
 <div style="padding-left:20px">&bull; [InstallPlan [operators.coreos.com/v1alpha1]](rest_api/operatorhub_apis/installplan-operators-coreos-com-v1alpha1.md)</div>
 <div style="padding-left:20px">&bull; [OLM [operator.openshift.io/v1]](rest_api/operatorhub_apis/olm-operator-openshift-io-v1.md)</div>
@@ -1764,11 +1755,15 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=rest_api/schedule_and_quota_apis/schedule-and-quota-apis-index.md">About Schedule and quota APIs</a></div>
 <div style="padding-left:20px">&bull; [AppliedClusterResourceQuota [quota.openshift.io/v1]](rest_api/schedule_and_quota_apis/appliedclusterresourcequota-quota-openshift-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [ClusterResourceQuota [quota.openshift.io/v1]](rest_api/schedule_and_quota_apis/clusterresourcequota-quota-openshift-io-v1.md)</div>
+<div style="padding-left:20px">&bull; [DeviceClass [resource.k8s.io/v1]](rest_api/schedule_and_quota_apis/deviceclass-resource-k8s-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [FlowSchema [flowcontrol.apiserver.k8s.io/v1]](rest_api/schedule_and_quota_apis/flowschema-flowcontrol-apiserver-k8s-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [LimitRange [undefined/v1]](rest_api/schedule_and_quota_apis/limitrange-v1.md)</div>
 <div style="padding-left:20px">&bull; [PriorityClass [scheduling.k8s.io/v1]](rest_api/schedule_and_quota_apis/priorityclass-scheduling-k8s-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [PriorityLevelConfiguration [flowcontrol.apiserver.k8s.io/v1]](rest_api/schedule_and_quota_apis/prioritylevelconfiguration-flowcontrol-apiserver-k8s-io-v1.md)</div>
 <div style="padding-left:20px">&bull; [ResourceQuota [undefined/v1]](rest_api/schedule_and_quota_apis/resourcequota-v1.md)</div>
+<div style="padding-left:20px">&bull; [ResourceClaim [resource.k8s.io/v1]](rest_api/schedule_and_quota_apis/resourceclaim-resource-k8s-io-v1.md)</div>
+<div style="padding-left:20px">&bull; [ResourceClaimTemplate [resource.k8s.io/v1]](rest_api/schedule_and_quota_apis/resourceclaimtemplate-resource-k8s-io-v1.md)</div>
+<div style="padding-left:20px">&bull; [ResourceSlice [resource.k8s.io/v1]](rest_api/schedule_and_quota_apis/resourceslice-resource-k8s-io-v1.md)</div>
 <div style="padding-left:0px">&bull; <strong>Security APIs</strong></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=rest_api/security_apis/security-apis-index.md">About Security APIs</a></div>
 <div style="padding-left:20px">&bull; [CertificateSigningRequest [certificates.k8s.io/v1]](rest_api/security_apis/certificatesigningrequest-certificates-k8s-io-v1.md)</div>
@@ -1874,6 +1869,7 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/getting_started/virt-using-the-cli-tools.md">virtctl and libguestfs</a></div>
 <div style="padding-left:0px">&bull; <strong>Installing</strong></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/install/preparing-cluster-for-virt.md">Preparing your cluster</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/install/virt-requirements.md">Hardware, software, and operational requirements</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/install/installing-virt.md">Installing OpenShift Virtualization</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/install/uninstalling-virt.md">Uninstalling OpenShift Virtualization</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/install/virt-install-ibm-cloud-bm-nodes.md">Installing OpenShift Virtualization on IBM Cloud bare-metal nodes</a></div>
@@ -1894,17 +1890,14 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vm/virt-configuring-ibm-secure-execution-vms-ibm-z.md">Configuring IBM Secure Execution virtual machines on IBM Z and IBM LinuxONE</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vm/virt-creating-vms-aws-li-windows.md">Creating AWS EC2 Windows License Included (LI) compliant VMs</a></div>
 <div style="padding-left:0px">&bull; <strong>Advanced VM creation</strong></div>
-<div style="padding-left:20px">&bull; <strong>Creating VMs from Red Hat images</strong></div>
-<div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/creating_vms_advanced/creating_vms_advanced_web/virt-creating-vms-from-rh-images-overview.md">Creating virtual machines from Red Hat images</a></div>
-<div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/creating_vms_advanced/creating_vms_advanced_web/virt-golden-image-heterogeneous-clusters.md">Heterogeneous cluster support</a></div>
-<div style="padding-left:20px">&bull; <strong>Creating VMs in the web console</strong></div>
-<div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/creating_vms_advanced/creating_vms_advanced_web/virt-creating-vms-from-web-images.md">Creating VMs by importing images from web pages</a></div>
-<div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/creating_vms_advanced/creating_vms_advanced_web/virt-creating-vms-uploading-images.md">Creating VMs by uploading images</a></div>
-<div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/creating_vms_advanced/creating_vms_advanced_web/virt-cloning-vms.md">Cloning VMs</a></div>
-<div style="padding-left:20px">&bull; <strong>Creating VMs using the CLI</strong></div>
-<div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/creating_vms_advanced/creating_vms_cli/virt-creating-vms-from-cli.md">Creating virtual machines from the command line</a></div>
-<div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/creating_vms_advanced/creating_vms_cli/virt-creating-vms-from-container-disks.md">Creating VMs by using container disks</a></div>
-<div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/creating_vms_advanced/creating_vms_cli/virt-creating-vms-by-cloning-pvcs.md">Creating VMs by cloning PVCs</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vms_advanced/virt-creating-vms-from-rh-images-overview.md">Creating virtual machines from Red Hat images</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vms_advanced/virt-golden-image-heterogeneous-clusters.md">Heterogeneous cluster support</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vms_advanced/virt-creating-vms-from-web-images.md">Creating VMs by importing images from web pages</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vms_advanced/virt-creating-vms-uploading-images.md">Creating VMs by uploading images</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vms_advanced/virt-cloning-vms.md">Cloning VMs</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vms_advanced/virt-creating-vms-from-cli.md">Creating virtual machines from the command line</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vms_advanced/virt-creating-vms-from-container-disks.md">Creating VMs by using container disks</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/creating_vms_advanced/virt-creating-vms-by-cloning-pvcs.md">Creating VMs by cloning PVCs</a></div>
 <div style="padding-left:0px">&bull; <strong>Managing VMs</strong></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/managing_vms/virt-list-vms.md">Listing virtual machines</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/managing_vms/virt-installing-qemu-guest-agent.md">Install the QEMU guest agent</a></div>

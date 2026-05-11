@@ -1,6 +1,4 @@
-As an OpenShift Container Platform system administrator, you can gain insights into the operational status of your MetalLB deployments by examining the status of its custom resources (CRs). These status fields provide information about IP address allocations, BGP peer announcements, and session states, which are important for effective monitoring and troubleshooting.
-
-For more information about how to install the MetalLB Operator, see [About MetalLB and the MetalLB Operator](../../../networking/networking_operators/metallb-operator/about-metallb.xml#about-metallb).
+As an OpenShift Container Platform system administrator, you can monitor the operational status of your MetalLB deployment by examining its custom resources (CRs). These status fields provide information about IP address allocations, BGP peer announcements, and session states, which are important for effective monitoring and troubleshooting.
 
 # Understanding MetalLB status custom resources
 
@@ -501,3 +499,7 @@ The `BGPSessionStatus` CR is updated at a regular poll interval of 2 minutes. It
     ```
 
     This confirms that BGP is advertising the service IP.
+
+# Additional resources
+
+- [About MetalLB and the MetalLB Operator](../../../networking/networking_operators/metallb-operator/about-metallb.xml#about-metallb)

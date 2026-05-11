@@ -63,24 +63,17 @@ Type
 <td style="text-align: left;"><p>nodeSelector specifies a label selector for Machines</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>osImageStream</code></p></td>
-<td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>osImageStream specifies an OS stream to be used for the pool.</p>
-<p>This field can be optionally set to a known OSImageStream name to change the OS and Extension images with a well-known, tested, release-provided set of images. This enables a streamlined way of switching the pool’s node OS to a different version than the cluster default, such as transitioning to a major RHEL version.</p>
-<p>When set, the referenced stream overrides the cluster-wide OS images for the pool with the OS and Extensions associated to stream. When omitted, the pool uses the cluster-wide default OS images.</p></td>
-</tr>
-<tr class="even">
 <td style="text-align: left;"><p><code>paused</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>paused specifies whether or not changes to this machine config pool should be stopped. This includes generating new desiredMachineConfig and update of machines.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>pinnedImageSets</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>pinnedImageSets specifies a sequence of PinnedImageSetRef objects for the pool. Nodes within this pool will preload and pin images defined in the PinnedImageSet. Before pulling images the MachineConfigDaemon will ensure the total uncompressed size of all the images does not exceed available resources. If the total size of the images exceeds the available resources the controller will report a Degraded status to the MachineConfigPool and not attempt to pull any images. Also to help ensure the kubelet can mitigate storage risk, the pinned_image configuration and subsequent service reload will happen only after all of the images have been pulled for each set. Images from multiple PinnedImageSets are loaded and pinned sequentially as listed. Duplicate and existing images will be skipped.</p>
 <p>Any failure to prefetch or pin images will result in a Degraded pool. Resolving these failures is the responsibility of the user. The admin should be proactive in ensuring adequate storage and proper image authentication exists in advance.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>pinnedImageSets[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"></td>
@@ -216,44 +209,6 @@ Required
 | `operator` | `string`         | operator represents a key’s relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.                                                                                                                       |
 | `values`   | `array (string)` | values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. |
 
-## .spec.osImageStream
-
-Description
-osImageStream specifies an OS stream to be used for the pool.
-
-This field can be optionally set to a known OSImageStream name to change the OS and Extension images with a well-known, tested, release-provided set of images. This enables a streamlined way of switching the pool’s node OS to a different version than the cluster default, such as transitioning to a major RHEL version.
-
-When set, the referenced stream overrides the cluster-wide OS images for the pool with the OS and Extensions associated to stream. When omitted, the pool uses the cluster-wide default OS images.
-
-Type
-`object`
-
-Required
-- `name`
-
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Property</th>
-<th style="text-align: left;">Type</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><p><code>name</code></p></td>
-<td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>name is a required reference to an OSImageStream to be used for the pool.</p>
-<p>It must be a valid RFC 1123 subdomain between 1 and 253 characters in length, consisting of lowercase alphanumeric characters, hyphens ('-'), and periods ('.').</p></td>
-</tr>
-</tbody>
-</table>
-
 ## .spec.pinnedImageSets
 
 Description
@@ -286,93 +241,21 @@ status contains observed information about the machine config pool.
 Type
 `object`
 
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Property</th>
-<th style="text-align: left;">Type</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><p><code>certExpirys</code></p></td>
-<td style="text-align: left;"><p><code>array</code></p></td>
-<td style="text-align: left;"><p>certExpirys keeps track of important certificate expiration data</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>certExpirys[]</code></p></td>
-<td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>ceryExpiry contains the bundle name and the expiry date</p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p><code>conditions</code></p></td>
-<td style="text-align: left;"><p><code>array</code></p></td>
-<td style="text-align: left;"><p>conditions represents the latest available observations of current state.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>conditions[]</code></p></td>
-<td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>MachineConfigPoolCondition contains condition information for an MachineConfigPool.</p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p><code>configuration</code></p></td>
-<td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>configuration represents the current MachineConfig object for the machine config pool.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>degradedMachineCount</code></p></td>
-<td style="text-align: left;"><p><code>integer</code></p></td>
-<td style="text-align: left;"><p>degradedMachineCount represents the total number of machines marked degraded (or unreconcilable). A node is marked degraded if applying a configuration failed..</p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p><code>machineCount</code></p></td>
-<td style="text-align: left;"><p><code>integer</code></p></td>
-<td style="text-align: left;"><p>machineCount represents the total number of machines in the machine config pool.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>observedGeneration</code></p></td>
-<td style="text-align: left;"><p><code>integer</code></p></td>
-<td style="text-align: left;"><p>observedGeneration represents the generation observed by the controller.</p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p><code>osImageStream</code></p></td>
-<td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>osImageStream specifies the last updated OSImageStream for the pool.</p>
-<p>When omitted, the pool is using the cluster-wide default OS images.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>poolSynchronizersStatus</code></p></td>
-<td style="text-align: left;"><p><code>array</code></p></td>
-<td style="text-align: left;"><p>poolSynchronizersStatus is the status of the machines managed by the pool synchronizers.</p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p><code>poolSynchronizersStatus[]</code></p></td>
-<td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>readyMachineCount</code></p></td>
-<td style="text-align: left;"><p><code>integer</code></p></td>
-<td style="text-align: left;"><p>readyMachineCount represents the total number of ready machines targeted by the pool.</p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p><code>unavailableMachineCount</code></p></td>
-<td style="text-align: left;"><p><code>integer</code></p></td>
-<td style="text-align: left;"><p>unavailableMachineCount represents the total number of unavailable (non-ready) machines targeted by the pool. A node is marked unavailable if it is in updating state or NodeReady condition is false.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>updatedMachineCount</code></p></td>
-<td style="text-align: left;"><p><code>integer</code></p></td>
-<td style="text-align: left;"><p>updatedMachineCount represents the total number of machines targeted by the pool that have the CurrentMachineConfig as their config.</p></td>
-</tr>
-</tbody>
-</table>
+| Property                    | Type      | Description                                                                                                                                                                                            |
+|-----------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `certExpirys`               | `array`   | certExpirys keeps track of important certificate expiration data                                                                                                                                       |
+| `certExpirys[]`             | `object`  | ceryExpiry contains the bundle name and the expiry date                                                                                                                                                |
+| `conditions`                | `array`   | conditions represents the latest available observations of current state.                                                                                                                              |
+| `conditions[]`              | `object`  | MachineConfigPoolCondition contains condition information for an MachineConfigPool.                                                                                                                    |
+| `configuration`             | `object`  | configuration represents the current MachineConfig object for the machine config pool.                                                                                                                 |
+| `degradedMachineCount`      | `integer` | degradedMachineCount represents the total number of machines marked degraded (or unreconcilable). A node is marked degraded if applying a configuration failed..                                       |
+| `machineCount`              | `integer` | machineCount represents the total number of machines in the machine config pool.                                                                                                                       |
+| `observedGeneration`        | `integer` | observedGeneration represents the generation observed by the controller.                                                                                                                               |
+| `poolSynchronizersStatus`   | `array`   | poolSynchronizersStatus is the status of the machines managed by the pool synchronizers.                                                                                                               |
+| `poolSynchronizersStatus[]` | `object`  |                                                                                                                                                                                                        |
+| `readyMachineCount`         | `integer` | readyMachineCount represents the total number of ready machines targeted by the pool.                                                                                                                  |
+| `unavailableMachineCount`   | `integer` | unavailableMachineCount represents the total number of unavailable (non-ready) machines targeted by the pool. A node is marked unavailable if it is in updating state or NodeReady condition is false. |
+| `updatedMachineCount`       | `integer` | updatedMachineCount represents the total number of machines targeted by the pool that have the CurrentMachineConfig as their config.                                                                   |
 
 ## .status.certExpirys
 
@@ -470,42 +353,6 @@ Type
 | `namespace`       | `string` | Namespace of the referent. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/>                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | `resourceVersion` | `string` | Specific resourceVersion to which this reference is made, if any. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#concurrency-control-and-consistency>                                                                                                                                                                                                                                                                                                                                                                                       |
 | `uid`             | `string` | UID of the referent. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#uids>                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-
-## .status.osImageStream
-
-Description
-osImageStream specifies the last updated OSImageStream for the pool.
-
-When omitted, the pool is using the cluster-wide default OS images.
-
-Type
-`object`
-
-Required
-- `name`
-
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Property</th>
-<th style="text-align: left;">Type</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><p><code>name</code></p></td>
-<td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>name is a required reference to an OSImageStream to be used for the pool.</p>
-<p>It must be a valid RFC 1123 subdomain between 1 and 253 characters in length, consisting of lowercase alphanumeric characters, hyphens ('-'), and periods ('.').</p></td>
-</tr>
-</tbody>
-</table>
 
 ## .status.poolSynchronizersStatus
 

@@ -118,7 +118,7 @@ Type
 | `nativeApis`                | [`array (GroupVersionKind)`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-GroupVersionKind)                               |                                                      |
 | `provider`                  | `object`                                                                                                                               | AppLink defines a link to an application             |
 | `relatedImages`             | `array (string)`                                                                                                                       | List of related images                               |
-| `version`                   | [`OperatorVersion`](../objects/index.xml#com-github-operator-framework-api-pkg-lib-version-OperatorVersion)                            | Version is the CSV’s semantic version                |
+| `version`                   | [`OperatorVersion`](../objects/index.xml#com-github-operator-framework-api-pkg-operators-lib-version-OperatorVersion)                  | Version is the CSV’s semantic version                |
 
 ## .status.channels\[\].currentCSVDesc.icon
 

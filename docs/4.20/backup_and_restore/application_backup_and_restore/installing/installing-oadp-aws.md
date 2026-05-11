@@ -1,4 +1,4 @@
-You install the OpenShift API for Data Protection (OADP) with Amazon Web Services (AWS) S3 compatible storage by installing the OADP Operator. The Operator installs [Velero 1.16](https://velero.io/docs/v1.16/).
+Install the OpenShift API for Data Protection (OADP) with Amazon Web Services (AWS) S3 compatible storage by installing the OADP Operator. The Operator installs Velero 1.16.
 
 <div class="note">
 
@@ -6,9 +6,9 @@ Starting from OADP 1.0.4, all OADP 1.0.*z* versions can only be used as a depend
 
 </div>
 
-You configure AWS for Velero, create a default `Secret`, and then install the Data Protection Application. For more details, see [Installing the OADP Operator](../../../backup_and_restore/application_backup_and_restore/installing/oadp-installing-operator.xml#oadp-installing-operator-doc).
+You configure AWS for Velero, create a default `Secret`, and then install the Data Protection Application. For more details, see *Installing the OADP Operator*.
 
-To install the OADP Operator in a restricted network environment, you must first disable the default software catalog sources and mirror the Operator catalog. See [Using Operator Lifecycle Manager in disconnected environments](../../../disconnected/using-olm.xml#olm-restricted-networks) for details.
+To install the OADP Operator in a restricted network environment, you must first disable the default software catalog sources and mirror the Operator catalog. See *Using Operator Lifecycle Manager in disconnected environments* for details.
 
 # About Amazon Simple Storage Service, Identity and Access Management, and GovCloud
 
@@ -640,6 +640,38 @@ You install the Data Protection Application (DPA) by creating an instance of the
     NAME           PHASE       LAST VALIDATED   AGE     DEFAULT
     dpa-sample-1   Available   1s               3d16h   true
     ```
+
+# Changing the default backup storage location in a DPA
+
+Understand why the `default` field of the `backupLocations` object in a `DataProtectionApplication` (DPA) does not change the default `BackupStorageLocation` (BSL) when you configure multiple backup locations. This helps you to identify the root cause and apply the correct workaround.
+
+When a DPA includes multiple backup locations, updating the `default` field to change the default BSL does not take effect. After you set `default: true` on a different BSL and set `default: false` on the previously default BSL, the `oc get bsl` command shows that the original BSL remains the default.
+
+Root cause
+The OADP Operator sets the `default` field on a BSL resource only during initial creation of the DPA. On subsequent reconciliations, the Operator preserves the default BSL.
+
+This behavior is intentional. Velero independently manages the `default` field on BSL resources. If the OADP Operator overwrites this field on every reconciliation, it conflicts with Velero, causing a race condition where both controllers compete over the value.
+
+To prevent this conflict, the Operator checks whether the BSL already exists. If it exists, the Operator preserves the current `default` value instead of applying the value from the DPA specification.
+
+Workaround
+To change the default BSL, delete and re-create the DPA. Deleting and re-creating the DPA ensures that the BSL resources are created from scratch. The new `default` setting is applied during initial creation and re-deployment of the DPA.
+
+1.  Delete the existing DPA by running the following command:
+
+    ``` terminal
+    $ oc delete dpa <dpa_name> -n openshift-adp
+    ```
+
+    Replace `<dpa_name>` with the name of the DPA custom resource.
+
+2.  Re-create the DPA with the updated default BSL configuration by running the following command:
+
+    ``` terminal
+    $ oc apply -f <updated_dpa_file>
+    ```
+
+    Replace `<updated_dpa_file>` with the file name of the updated DPA custom resource definition.
 
 ## Setting Velero CPU and memory resource allocations
 
@@ -1483,6 +1515,12 @@ If you are not using `Restic`, `Kopia`, or `DataMover` for your backups, you can
     Enables the node agent.
 
     You can set up a job to enable and disable the `nodeAgent` field in the `DataProtectionApplication` CR. For more information, see "Running tasks in pods using jobs".
+
+- [Installing the OADP Operator](../../../backup_and_restore/application_backup_and_restore/installing/oadp-installing-operator.xml#oadp-installing-operator-doc)
+
+- [Velero 1.16](https://velero.io/docs/v1.16/)
+
+- [Using Operator Lifecycle Manager in disconnected environments](../../../disconnected/using-olm.xml#olm-restricted-networks)
 
 - [Installing the Data Protection Application with the `kubevirt` and `openshift` plugins](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-kubevirt.xml#oadp-installing-dpa_installing-oadp-kubevirt)
 

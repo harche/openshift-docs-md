@@ -1,4 +1,4 @@
-When you submit a [support case](../../support/getting-support.xml#support-submitting-a-case_getting-support) to Red Hat Support, it is helpful to provide debugging information for OpenShift Container Platform and OpenShift Virtualization by using the following tools:
+When you submit a support case to Red Hat Support, it is helpful to provide debugging information for OpenShift Container Platform and OpenShift Virtualization by using the following tools:
 
 must-gather tool
 The `must-gather` tool collects diagnostic information, including resource definitions and service logs.
@@ -13,19 +13,19 @@ The Alertmanager service handles alerts received from Prometheus. The Alertmanag
 
 Collecting data about your environment minimizes the time required to analyze and determine the root cause.
 
-- You have [set the retention time for Prometheus metrics data](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.20/html/configuring_core_platform_monitoring/storing-and-recording-data#modifying-retention-time-and-size-for-prometheus-metrics-data_storing-and-recording-data) to a minimum of seven days.
+- You have set the retention time for Prometheus metrics data to a minimum of seven days.
 
-- You have [configured the Alertmanager to capture relevant alerts and to send alert notifications to a dedicated mailbox](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.20/html/configuring_core_platform_monitoring/configuring-alerts-and-notifications) so that they can be viewed and persisted outside the cluster.
+- You have configured the Alertmanager to capture relevant alerts and to send alert notifications to a dedicated mailbox so that they can be viewed and persisted outside the cluster.
 
 - You have recorded the exact number of affected nodes and virtual machines.
 
 1.  Collect must-gather data for the cluster.
 
-2.  [Collect must-gather data for Red Hat OpenShift Data Foundation](https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/4.20/html-single/troubleshooting_openshift_data_foundation/index#downloading-log-files-and-diagnostic-information_rhodf), if necessary.
+2.  Collect must-gather data for Red Hat OpenShift Data Foundation, if necessary.
 
 3.  Collect must-gather data for OpenShift Virtualization.
 
-4.  [Collect Prometheus metrics for the cluster](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.20/html/accessing_metrics/accessing-metrics-as-an-administrator#querying-metrics-for-all-projects-with-mon-dashboard_accessing-metrics-as-an-administrator).
+4.  Collect Prometheus metrics for the cluster.
 
 # Collecting data about virtual machines
 
@@ -37,7 +37,7 @@ Collecting data about malfunctioning virtual machines (VMs) minimizes the time r
 
   - Recorded the Windows patch update details.
 
-  - [Installed the latest VirtIO drivers](https://access.redhat.com/solutions/6957701).
+  - Installed the latest VirtIO drivers.
 
   - Installed the latest QEMU guest agent.
 
@@ -256,7 +256,7 @@ When a virtual machine (VM) terminates unexpectedly, you can use the `virtctl me
 
 4.  Attach the memory dump to a Red Hat Support case.
 
-    Alternatively, you can inspect the memory dump, for example by using [the volatility3 tool](https://github.com/volatilityfoundation/volatility3).
+    Alternatively, you can inspect the memory dump, for example by using the volatility3 tool.
 
 5.  Optional: Remove the memory dump:
 
@@ -276,6 +276,28 @@ When a virtual machine (VM) terminates unexpectedly, you can use the `virtctl me
 
 - [Installing VirtIO drivers from a SATA CD drive on an existing Windows VM](../../virt/managing_vms/virt-install-virtio-drivers-on-windows-vms.xml#virt-installing-virtio-drivers-existing-windows_virt-install-virtio-drivers-on-windows-vms)
 
-- [Connecting to the desktop viewer](../../virt/managing_vms/virt-accessing-vm-consoles.xml#desktop-viewer_virt-accessing-vm-consoles)
+- [Connect to the desktop viewer by using the web console](../../virt/managing_vms/virt-accessing-vm-consoles.xml#virt-connecting-desktop-viewer-web_virt-accessing-vm-consoles)
 
 - [Collect memory dumps from VMs](../../virt/support/virt-collecting-virt-data.xml#virt-generating-a-vm-memory-dump_virt-collecting-virt-data)
+
+- [Submitting a support case](../../support/getting-support.xml#support-submitting-a-case_getting-support)
+
+- [Modifying retention time and size for Prometheus metrics data](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_user_workload_monitoring/storing-and-recording-data-uwm#modifying-retention-time-and-size-for-prometheus-metrics-data_storing-and-recording-data-uwm)
+
+- [Configuring the Alertmanager to capture relevant alerts and to send alert notifications to a dedicated mailbox](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_user_workload_monitoring/storing-and-recording-data-uwm#modifying-retention-time-and-size-for-prometheus-metrics-data_storing-and-recording-data-uwm)
+
+- [Modifying retention time and size for Prometheus metrics data](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_core_platform_monitoring/storing-and-recording-data#modifying-retention-time-and-size-for-prometheus-metrics-data_storing-and-recording-data)
+
+- [Configuring alerts and notifications](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_core_platform_monitoring/configuring-alerts-and-notifications)
+
+- [Downloading log files and diagnostic information](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/latest/html-single/troubleshooting_openshift_data_foundation/index#downloading-log-files-and-diagnostic-information_rhodf)
+
+- [Querying metrics for all projects with the monitoring dashboard](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/accessing_metrics/accessing-metrics-as-an-administrator#querying-metrics-for-all-projects-with-mon-dashboard_accessing-metrics-as-an-administrator)
+
+- [Installing the latest VirtIO drivers](https://access.redhat.com/solutions/6957701)
+
+- [Volatility3 tool](https://github.com/volatilityfoundation/volatility3)
+
+- [Customer Support](https://access.redhat.com/support/cases/#/case/list)
+
+- [Create issue](https://redhat.atlassian.net/secure/CreateIssue.jspa)

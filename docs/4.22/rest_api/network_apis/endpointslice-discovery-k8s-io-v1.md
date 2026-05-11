@@ -121,17 +121,17 @@ EndpointHints provides hints describing how an endpoint should be consumed.
 Type
 `object`
 
-| Property     | Type     | Description                                                                                                                                                                                                                                         |
-|--------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `forNodes`   | `array`  | forNodes indicates the node(s) this endpoint should be consumed by when using topology aware routing. May contain a maximum of 8 entries. This is an Alpha feature and is only used when the PreferSameTrafficDistribution feature gate is enabled. |
-| `forNodes[]` | `object` | ForNode provides information about which nodes should consume this endpoint.                                                                                                                                                                        |
-| `forZones`   | `array`  | forZones indicates the zone(s) this endpoint should be consumed by when using topology aware routing. May contain a maximum of 8 entries.                                                                                                           |
-| `forZones[]` | `object` | ForZone provides information about which zones should consume this endpoint.                                                                                                                                                                        |
+| Property     | Type     | Description                                                                                                                               |
+|--------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| `forNodes`   | `array`  | forNodes indicates the node(s) this endpoint should be consumed by when using topology aware routing. May contain a maximum of 8 entries. |
+| `forNodes[]` | `object` | ForNode provides information about which nodes should consume this endpoint.                                                              |
+| `forZones`   | `array`  | forZones indicates the zone(s) this endpoint should be consumed by when using topology aware routing. May contain a maximum of 8 entries. |
+| `forZones[]` | `object` | ForZone provides information about which zones should consume this endpoint.                                                              |
 
 ## .endpoints\[\].hints.forNodes
 
 Description
-forNodes indicates the node(s) this endpoint should be consumed by when using topology aware routing. May contain a maximum of 8 entries. This is an Alpha feature and is only used when the PreferSameTrafficDistribution feature gate is enabled.
+forNodes indicates the node(s) this endpoint should be consumed by when using topology aware routing. May contain a maximum of 8 entries.
 
 Type
 `array`

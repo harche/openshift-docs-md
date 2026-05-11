@@ -388,7 +388,7 @@ KubeVirt Container Storage Interface (CSI) extends the storage capabilities of t
 
 <!-- -->
 
-- [Cloning a data volume using smart-cloning](../../virt/creating_vms_advanced/creating_vms_cli/virt-creating-vms-by-cloning-pvcs.xml#smart-cloning_virt-creating-vms-by-cloning-pvcs)
+- [Cloning a data volume using smart-cloning](../../virt/creating_vms_advanced/virt-creating-vms-by-cloning-pvcs.xml#smart-cloning_virt-creating-vms-by-cloning-pvcs)
 
 ## Configuring etcd storage
 

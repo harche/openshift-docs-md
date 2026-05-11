@@ -37,7 +37,7 @@ Type
 |----------------|-----------|---------------------------------------------------------------------|
 | `cpu`          | `object`  | Details of the CPU(s) in the system.                                |
 | `firmware`     | `object`  | System firmware information.                                        |
-| `hostname`     | `string`  |                                                                     |
+| `hostname`     | `string`  | Name of the host at the inspection time.                            |
 | `nics`         | `array`   | List of network interfaces for the host.                            |
 | `nics[]`       | `object`  | NIC describes one network interface on the host.                    |
 | `ramMebibytes` | `integer` | The host’s amount of memory in Mebibytes.                           |
@@ -103,18 +103,19 @@ NIC describes one network interface on the host.
 Type
 `object`
 
-| Property    | Type      | Description                                                                                                                                                                                                  |
-|-------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `ip`        | `string`  | The IP address of the interface. This will be an IPv4 or IPv6 address if one is present. If both IPv4 and IPv6 addresses are present in a dual-stack environment, two nics will be output, one with each IP. |
-| `lldp`      | `object`  | LLDP data for this interface                                                                                                                                                                                 |
-| `mac`       | `string`  | The device MAC address                                                                                                                                                                                       |
-| `model`     | `string`  | The vendor and product IDs of the NIC, e.g. "0x8086 0x1572"                                                                                                                                                  |
-| `name`      | `string`  | The name of the network interface, e.g. "en0"                                                                                                                                                                |
-| `pxe`       | `boolean` | Whether the NIC is PXE Bootable                                                                                                                                                                              |
-| `speedGbps` | `integer` | The speed of the device in Gigabits per second                                                                                                                                                               |
-| `vlanId`    | `integer` | The untagged VLAN ID                                                                                                                                                                                         |
-| `vlans`     | `array`   | The VLANs available                                                                                                                                                                                          |
-| `vlans[]`   | `object`  | VLAN represents the name and ID of a VLAN.                                                                                                                                                                   |
+| Property     | Type      | Description                                                                                                                                                                                                  |
+|--------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `ip`         | `string`  | The IP address of the interface. This will be an IPv4 or IPv6 address if one is present. If both IPv4 and IPv6 addresses are present in a dual-stack environment, two nics will be output, one with each IP. |
+| `lldp`       | `object`  | LLDP data for this interface                                                                                                                                                                                 |
+| `mac`        | `string`  | The device MAC address                                                                                                                                                                                       |
+| `model`      | `string`  | The vendor and product IDs of the NIC, e.g. "0x8086 0x1572"                                                                                                                                                  |
+| `name`       | `string`  | The name of the network interface, e.g. "en0"                                                                                                                                                                |
+| `pciAddress` | `string`  | The NIC PCI address                                                                                                                                                                                          |
+| `pxe`        | `boolean` | Whether the NIC is PXE Bootable                                                                                                                                                                              |
+| `speedGbps`  | `integer` | The speed of the device in Gigabits per second                                                                                                                                                               |
+| `vlanId`     | `integer` | The untagged VLAN ID                                                                                                                                                                                         |
+| `vlans`      | `array`   | The VLANs available                                                                                                                                                                                          |
+| `vlans[]`    | `object`  | VLAN represents the name and ID of a VLAN.                                                                                                                                                                   |
 
 ## .spec.hardware.nics\[\].lldp
 

@@ -217,6 +217,24 @@ These instance type resources are named according to their series, version, and 
 </dd>
 </dl></td>
 </tr>
+<tr class="even">
+<td style="text-align: center;"><p>Dedicated</p></td>
+<td style="text-align: center;"><p>D</p></td>
+<td style="text-align: left;"><ul>
+<li><p>Dedicated CPU</p></li>
+<li><p>Isolated emulator threads</p></li>
+</ul></td>
+<td style="text-align: center;"><p>1:4</p></td>
+<td style="text-align: left;"><dl>
+<dt><code>d1.medium</code></dt>
+<dd>
+<ul>
+<li><p>1 vCPUs</p></li>
+<li><p>4GiB Memory</p></li>
+</ul>
+</dd>
+</dl></td>
+</tr>
 </tbody>
 </table>
 

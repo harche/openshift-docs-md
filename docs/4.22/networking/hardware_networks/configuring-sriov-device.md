@@ -90,7 +90,7 @@ spec:
 
 - Optional: The device hexadecimal device identifier of the SR-IOV network device. For example, `101b` is the device ID for a Mellanox ConnectX-6 device.
 
-- Optional: An array of one or more physical function (PF) names the resource must apply to.
+- Optional: An array of one or more physical function (PF) names the resource must apply to. You can specify either the kernel-assigned interface name or an alternative name configured through the Kubernetes NMState Operator.
 
 - Optional: An array of one or more PCI bus addresses the resource must apply to. For example `0000:02:00.1`.
 
@@ -185,7 +185,7 @@ spec:
 
 ## Automated discovery of SR-IOV network devices
 
-The SR-IOV Network Operator searches your cluster for SR-IOV capable network devices on worker nodes. The Operator creates and updates a SriovNetworkNodeState custom resource (CR) for each worker node that provides a compatible SR-IOV network device.
+The SR-IOV Network Operator searches your cluster for SR-IOV capable network devices on worker nodes. The Operator creates and updates a `SriovNetworkNodeState` custom resource (CR) for each worker node that provides a compatible SR-IOV network device.
 
 The CR is assigned the same name as the worker node. The `status.interfaces` list provides information about the network devices on a node.
 
@@ -195,15 +195,7 @@ Do not modify a `SriovNetworkNodeState` object. The Operator creates and manages
 
 </div>
 
-### Example SriovNetworkNodeState object
-
 The following YAML is an example of a `SriovNetworkNodeState` object created by the SR-IOV Network Operator:
-
-<div class="formalpara-title">
-
-**An SriovNetworkNodeState object**
-
-</div>
 
 ``` yaml
 apiVersion: sriovnetwork.openshift.io/v1
@@ -225,6 +217,8 @@ status:
     driver: mlx5_core
     mtu: 1500
     name: ens785f0
+    altNames:
+    - production-nic
     pciAddress: "0000:18:00.0"
     totalvfs: 8
     vendor: 15b3
@@ -259,9 +253,11 @@ status:
   syncStatus: Succeeded
 ```
 
-- The value of the `name` field is the same as the name of the worker node.
+- `metadata.name` is the same as the name of the worker node.
 
-- The `interfaces` stanza includes a list of all of the SR-IOV devices discovered by the Operator on the worker node.
+- `status.interfaces` lists all SR-IOV devices discovered by the Operator on the worker node.
+
+- `status.interfaces.altNames` lists any alternative interface names configured through the Kubernetes NMState Operator. You can use these names in the `nicSelector.pfNames` field of a `SriovNetworkNodePolicy` CR.
 
 ## Configuring the SR-IOV Network Operator on Mellanox cards when Secure Boot is enabled
 

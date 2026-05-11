@@ -920,6 +920,8 @@ This section includes several known issues for OpenShift Container Platform 4.17
 
 - When installing a private cluster on Google Cloud behind a proxy with user-provisioned DNS, you might encounter installation errors indicating the bootstrap failed to complete or the cluster initialization failed. In both cases, the installation can succeed, resulting in a healthy cluster. As a workaround, install the private cluster on a bastion host that is within the same virtual private cloud (VPC) as the cluster to be deployed. ([OCPBUGS-54901](https://issues.redhat.com/browse/OCPBUGS-54901))
 
+- Currently, the `topo-aware-scheduler` provided by the NUMA Resources Operator (NRO) does not support Kubernetes priority-based preemption. When all NUMA zones on available nodes are fully consumed by lower-priority pods, a high-priority pod with a `PreemptLowerPriority` policy remains in `Pending` state indefinitely instead of preempting the lower-priority pods. As a consequence, workloads that depend on priority-based preemption for scheduling recovery do not function correctly when using the `topo-aware-scheduler`. ([OCPBUGS-77930](https://issues.redhat.com/browse/OCPBUGS-77930))
+
 # Asynchronous errata updates
 
 Security, bug fix, and enhancement updates for OpenShift Container Platform 4.17 are released as asynchronous errata through the Red Hat Network. All OpenShift Container Platform 4.17 errata is [available on the Red Hat Customer Portal](https://access.redhat.com/downloads/content/290/). See the [OpenShift Container Platform Life Cycle](https://access.redhat.com/support/policy/updates/openshift) for more information about asynchronous errata. Red Hat Customer Portal users can enable errata notifications in the account settings for Red Hat Subscription Management (RHSM). When errata notifications are enabled, users are notified through email whenever new errata relevant to their registered systems are released.
@@ -937,6 +939,62 @@ This section will continue to be updated over time to provide notes on enhanceme
 For any OpenShift Container Platform release, always review the instructions on [updating your cluster](../updating/updating_a_cluster/updating-cluster-web-console.xml#updating-cluster-web-console) properly.
 
 </div>
+
+## RHBA-2026:13813 - OpenShift Container Platform 4.17.14 fixed issues advisory
+
+Issued: 7 May 2026
+
+OpenShift Container Platform release 4.17.14 is now available. The list of fixed issues that are included in the update is documented in the [RHBA-2026:13813](https://access.redhat.com/errata/RHBA-2026:13813) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:13810](https://access.redhat.com/errata/RHBA-2026:13810) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.14 --pullspecs
+```
+
+### Fixed issues
+
+There are no notable fixed issues in this release.
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
+## RHBA-2026:12097 - OpenShift Container Platform 4.17.13 fixed issues
+
+Issued: 5 May 2026
+
+OpenShift Container Platform release 4.17.13 is now available. The list of fixed issues that are included in the update is documented in the [RHBA-2026:12097](https://access.redhat.com/errata/RHBA-2026:12097) advisory. The RPM packages that are included in the update are provided by the [RHSA-2026:12092](https://access.redhat.com/errata/RHSA-2026:12092) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.13 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, an `ovnkube-controller` restart, typically occurring during a cluster upgrade, would trigger the removal of DHCP options for User Defined Networks (UDN). This caused Virtual Machine (VM) IP addresses on the primary UDN interface to be lost once the DHCP lease timed out, as the controller failed to distinguish between its own leases and those of other controllers. With this release, the default network controller has been updated to ensure it does not inadvertently remove DHCP options belonging to external network controllers. ([OCPBUGS-81634](https://redhat.atlassian.net/browse/OCPBUGS-81634))
+
+- Before this update, when multiple Identity Providers (IdPs) were configured, a communication failure with any single provider would cause the entire configuration set to roll back to its previous state. This prevented the rollout of valid updates if a subset of IdPs was unreachable or unresponsive. With this release, communication issues with an individual IdP no longer block the deployment of the broader configuration. ([OCPBUGS-81677](https://redhat.atlassian.net/browse/OCPBUGS-81677))
+
+- Before this update, a synchronization failure occurring after a disk-to-mirror operation caused the `ClusterCatalog`, `CatalogSource`, and `UpdateService` resources to generate an empty status field. This lack of data created a significant gap in observability, preventing administrators from verifying resource health and causing downstream automation to stall as it waited for valid status conditions. With this release, the reconciliation logic has been corrected to ensure status metadata is properly captured and applied during the mirroring process. ([OCPBUGS-81743](https://issues.redhat.com/browse/OCPBUGS-81743))
+
+- Before this update, certificate rotation by the `service-ca` controller was not automatically detected by the `cluster-monitoring-operator` object, causing pods to continue using expired certificates. As a consequence, users experienced monitoring Operator failure due to expired `service-ca` certificates. With this release, the monitoring Operator now watches for secret changes of `service-ca` certificates, triggering deployment updates to restart pods. As a result, the monitoring Operator now automatically restarts pods with new certificates after `service-ca` rotation. ([OCPBUGS-82037](https://redhat.atlassian.net/browse/OCPBUGS-82037))
+
+- Before this update, the `cluster-ingress-operator` object failed to correctly set the `trustBundleName` argument when deploying Istio, preventing multiple Istio instances from running simultaneously within the cluster. With this release, the configuration is correctly applied during deployment, enabling interoperability between different Istio instances. ([OCPBUGS-82544](https://redhat.atlassian.net/browse/OCPBUGS-82544))
+
+- Before this update, the `machine-config-controller` used inflated leader election timings on single-node OpenShift clusters, causing a 5–6 minute delay in acquiring leases after a non-graceful reboot. This lag stalled `MachineConfig` rendering and pool status updates. With this release, the controller uses default leader election settings on single-node OpenShift, reducing lease acquisition time by over 50% and allowing operations to resume promptly after a node recovery. ([OCPBUGS-83390](https://redhat.atlassian.net/browse/OCPBUGS-83390))
+
+- Before this update, the Machine Config Operator (MCO) only enabled `systemd` units that contained explicit content, filtering out those without it. This prevented `systemd` units provided by extensions from being enabled when a `MachineConfig` object with `enabled: true` was applied after the extension was installed. With this release, the MCO has been modified to enable any `systemd` unit that either has content or an existing unit file, ensuring that extension-provided `systemd` units are correctly detected and enabled regardless of whether they are currently loaded. ([OCPBUGS-83874](https://redhat.atlassian.net/browse/OCPBUGS-83874))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
 
 ## RHBA-2026:10088 - OpenShift Container Platform 4.17.12 fixed issues
 

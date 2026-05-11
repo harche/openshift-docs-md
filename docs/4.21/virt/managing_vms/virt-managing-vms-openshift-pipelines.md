@@ -143,4 +143,4 @@ You can clean up deprecated or unused resources associated with the Red Hat Ope
 
 - [Creating CI/CD solutions for applications using Red Hat OpenShift Pipelines](https://docs.openshift.com/pipelines/latest/create/creating-applications-with-cicd-pipelines.html)
 
-- [Creating a Windows VM](../../virt/creating_vms_advanced/creating_vms_advanced_web/virt-creating-vms-uploading-images.xml#virt-creating-windows-vm_virt-creating-vms-uploading-images)
+- [Creating a Windows VM](../../virt/creating_vms_advanced/virt-creating-vms-uploading-images.xml#virt-creating-windows-vm_virt-creating-vms-uploading-images)

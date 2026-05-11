@@ -206,12 +206,6 @@ Type
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><p><code>kms</code></p></td>
-<td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>kms defines the configuration for the external KMS instance that manages the encryption keys, when KMS encryption is enabled sensitive resources will be encrypted using keys managed by an externally configured KMS instance.</p>
-<p>The Key Management Service (KMS) instance provides symmetric encryption and is responsible for managing the lifecyle of the encryption keys outside of the control plane. This allows integration with an external provider to manage the data encryption keys securely.</p></td>
-</tr>
-<tr class="even">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>type defines what encryption type should be used to encrypt resources at the datastore layer. When this field is unset (i.e. when it is set to the empty string), identity is implied. The behavior of unset can and will change over time. Even if encryption is enabled by default, the meaning of unset may change to a different encryption type based on changes in best practices.</p>
@@ -220,42 +214,6 @@ Type
 </tr>
 </tbody>
 </table>
-
-## .spec.encryption.kms
-
-Description
-kms defines the configuration for the external KMS instance that manages the encryption keys, when KMS encryption is enabled sensitive resources will be encrypted using keys managed by an externally configured KMS instance.
-
-The Key Management Service (KMS) instance provides symmetric encryption and is responsible for managing the lifecyle of the encryption keys outside of the control plane. This allows integration with an external provider to manage the data encryption keys securely.
-
-Type
-`object`
-
-Required
-- `type`
-
-| Property | Type     | Description                                                                                                                                                        |
-|----------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `aws`    | `object` | aws defines the key config for using an AWS KMS instance for the encryption. The AWS KMS instance is managed by the user outside the purview of the control plane. |
-| `type`   | `string` | type defines the kind of platform for the KMS provider. Available provider types are AWS only.                                                                     |
-
-## .spec.encryption.kms.aws
-
-Description
-aws defines the key config for using an AWS KMS instance for the encryption. The AWS KMS instance is managed by the user outside the purview of the control plane.
-
-Type
-`object`
-
-Required
-- `keyARN`
-
-- `region`
-
-| Property | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|----------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `keyARN` | `string` | keyARN specifies the Amazon Resource Name (ARN) of the AWS KMS key used for encryption. The value must adhere to the format `arn:aws:kms:<region>:<account_id>:key/<key_id>`, where: - `<region>` is the AWS region consisting of lowercase letters and hyphens followed by a number. - `<account_id>` is a 12-digit numeric identifier for the AWS account. - `<key_id>` is a unique identifier for the KMS key, consisting of lowercase hexadecimal characters and hyphens. |
-| `region` | `string` | region specifies the AWS region where the KMS instance exists, and follows the format `<region-prefix>-<region-name>-<number>`, e.g.: `us-east-1`. Only lowercase letters and hyphens followed by numbers are allowed.                                                                                                                                                                                                                                                        |
 
 ## .spec.servingCerts
 
@@ -334,90 +292,32 @@ Type
 <td style="text-align: left;"><p><code>custom</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
 <td style="text-align: left;"><p>custom is a user-defined TLS security profile. Be extremely careful using a custom profile as invalid configurations can be catastrophic. An example custom profile looks like this:</p>
-<p>ciphers:</p>
-<p>- ECDHE-ECDSA-CHACHA20-POLY1305</p>
-<p>- ECDHE-RSA-CHACHA20-POLY1305</p>
-<p>- ECDHE-RSA-AES128-GCM-SHA256</p>
-<p>- ECDHE-ECDSA-AES128-GCM-SHA256</p>
-<p>minTLSVersion: VersionTLS11</p></td>
+<p>minTLSVersion: VersionTLS11 ciphers: - ECDHE-ECDSA-CHACHA20-POLY1305 - ECDHE-RSA-CHACHA20-POLY1305 - ECDHE-RSA-AES128-GCM-SHA256 - ECDHE-ECDSA-AES128-GCM-SHA256</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>intermediate</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
-<td style="text-align: left;"><p>intermediate is a TLS security profile based on:</p>
-<p><a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Intermediate_compatibility_.28recommended.29">https://wiki.mozilla.org/Security/Server_Side_TLS#Intermediate_compatibility_.28recommended.29</a></p>
-<p>and looks like this (yaml):</p>
-<p>ciphers:</p>
-<p>- TLS_AES_128_GCM_SHA256</p>
-<p>- TLS_AES_256_GCM_SHA384</p>
-<p>- TLS_CHACHA20_POLY1305_SHA256</p>
-<p>- ECDHE-ECDSA-AES128-GCM-SHA256</p>
-<p>- ECDHE-RSA-AES128-GCM-SHA256</p>
-<p>- ECDHE-ECDSA-AES256-GCM-SHA384</p>
-<p>- ECDHE-RSA-AES256-GCM-SHA384</p>
-<p>- ECDHE-ECDSA-CHACHA20-POLY1305</p>
-<p>- ECDHE-RSA-CHACHA20-POLY1305</p>
-<p>- DHE-RSA-AES128-GCM-SHA256</p>
-<p>- DHE-RSA-AES256-GCM-SHA384</p>
-<p>minTLSVersion: VersionTLS12</p></td>
+<td style="text-align: left;"><p>intermediate is a TLS profile for use when you do not need compatibility with legacy clients and want to remain highly secure while being compatible with most clients currently in use.</p>
+<p>This profile is equivalent to a Custom profile specified as: minTLSVersion: VersionTLS12 ciphers: - TLS_AES_128_GCM_SHA256 - TLS_AES_256_GCM_SHA384 - TLS_CHACHA20_POLY1305_SHA256 - ECDHE-ECDSA-AES128-GCM-SHA256 - ECDHE-RSA-AES128-GCM-SHA256 - ECDHE-ECDSA-AES256-GCM-SHA384 - ECDHE-RSA-AES256-GCM-SHA384 - ECDHE-ECDSA-CHACHA20-POLY1305 - ECDHE-RSA-CHACHA20-POLY1305</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>modern</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
-<td style="text-align: left;"><p>modern is a TLS security profile based on:</p>
-<p><a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Modern_compatibility">https://wiki.mozilla.org/Security/Server_Side_TLS#Modern_compatibility</a></p>
-<p>and looks like this (yaml):</p>
-<p>ciphers:</p>
-<p>- TLS_AES_128_GCM_SHA256</p>
-<p>- TLS_AES_256_GCM_SHA384</p>
-<p>- TLS_CHACHA20_POLY1305_SHA256</p>
-<p>minTLSVersion: VersionTLS13</p></td>
+<td style="text-align: left;"><p>modern is a TLS security profile for use with clients that support TLS 1.3 and do not need backward compatibility for older clients.</p>
+<p>This profile is equivalent to a Custom profile specified as: minTLSVersion: VersionTLS13 ciphers: - TLS_AES_128_GCM_SHA256 - TLS_AES_256_GCM_SHA384 - TLS_CHACHA20_POLY1305_SHA256</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>old</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
-<td style="text-align: left;"><p>old is a TLS security profile based on:</p>
-<p><a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Old_backward_compatibility">https://wiki.mozilla.org/Security/Server_Side_TLS#Old_backward_compatibility</a></p>
-<p>and looks like this (yaml):</p>
-<p>ciphers:</p>
-<p>- TLS_AES_128_GCM_SHA256</p>
-<p>- TLS_AES_256_GCM_SHA384</p>
-<p>- TLS_CHACHA20_POLY1305_SHA256</p>
-<p>- ECDHE-ECDSA-AES128-GCM-SHA256</p>
-<p>- ECDHE-RSA-AES128-GCM-SHA256</p>
-<p>- ECDHE-ECDSA-AES256-GCM-SHA384</p>
-<p>- ECDHE-RSA-AES256-GCM-SHA384</p>
-<p>- ECDHE-ECDSA-CHACHA20-POLY1305</p>
-<p>- ECDHE-RSA-CHACHA20-POLY1305</p>
-<p>- DHE-RSA-AES128-GCM-SHA256</p>
-<p>- DHE-RSA-AES256-GCM-SHA384</p>
-<p>- DHE-RSA-CHACHA20-POLY1305</p>
-<p>- ECDHE-ECDSA-AES128-SHA256</p>
-<p>- ECDHE-RSA-AES128-SHA256</p>
-<p>- ECDHE-ECDSA-AES128-SHA</p>
-<p>- ECDHE-RSA-AES128-SHA</p>
-<p>- ECDHE-ECDSA-AES256-SHA384</p>
-<p>- ECDHE-RSA-AES256-SHA384</p>
-<p>- ECDHE-ECDSA-AES256-SHA</p>
-<p>- ECDHE-RSA-AES256-SHA</p>
-<p>- DHE-RSA-AES128-SHA256</p>
-<p>- DHE-RSA-AES256-SHA256</p>
-<p>- AES128-GCM-SHA256</p>
-<p>- AES256-GCM-SHA384</p>
-<p>- AES128-SHA256</p>
-<p>- AES256-SHA256</p>
-<p>- AES128-SHA</p>
-<p>- AES256-SHA</p>
-<p>- DES-CBC3-SHA</p>
-<p>minTLSVersion: VersionTLS10</p></td>
+<td style="text-align: left;"><p>old is a TLS profile for use when services need to be accessed by very old clients or libraries and should be used only as a last resort.</p>
+<p>This profile is equivalent to a Custom profile specified as: minTLSVersion: VersionTLS10 ciphers: - TLS_AES_128_GCM_SHA256 - TLS_AES_256_GCM_SHA384 - TLS_CHACHA20_POLY1305_SHA256 - ECDHE-ECDSA-AES128-GCM-SHA256 - ECDHE-RSA-AES128-GCM-SHA256 - ECDHE-ECDSA-AES256-GCM-SHA384 - ECDHE-RSA-AES256-GCM-SHA384 - ECDHE-ECDSA-CHACHA20-POLY1305 - ECDHE-RSA-CHACHA20-POLY1305 - ECDHE-ECDSA-AES128-SHA256 - ECDHE-RSA-AES128-SHA256 - ECDHE-ECDSA-AES128-SHA - ECDHE-RSA-AES128-SHA - ECDHE-ECDSA-AES256-SHA - ECDHE-RSA-AES256-SHA - AES128-GCM-SHA256 - AES256-GCM-SHA384 - AES128-SHA256 - AES128-SHA - AES256-SHA - DES-CBC3-SHA</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>type is one of Old, Intermediate, Modern or Custom. Custom provides the ability to specify individual TLS security profile parameters. Old, Intermediate and Modern are TLS security profiles based on:</p>
-<p><a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Recommended_configurations">https://wiki.mozilla.org/Security/Server_Side_TLS#Recommended_configurations</a></p>
-<p>The profiles are intent based, so they may change over time as new ciphers are developed and existing ciphers are found to be insecure. Depending on precisely which ciphers are available to a process, the list may be reduced.</p>
-<p>Note that the Modern profile is currently not supported because it is not yet well adopted by common software libraries.</p></td>
+<td style="text-align: left;"><p>type is one of Old, Intermediate, Modern or Custom. Custom provides the ability to specify individual TLS security profile parameters.</p>
+<p>The profiles are based on version 5.7 of the Mozilla Server Side TLS configuration guidelines. The cipher lists consist of the configuration’s "ciphersuites" followed by the Go-specific "ciphers" from the guidelines. See: <a href="https://ssl-config.mozilla.org/guidelines/5.7.json">https://ssl-config.mozilla.org/guidelines/5.7.json</a></p>
+<p>The profiles are intent based, so they may change over time as new ciphers are developed and existing ciphers are found to be insecure. Depending on precisely which ciphers are available to a process, the list may be reduced.</p></td>
 </tr>
 </tbody>
 </table>

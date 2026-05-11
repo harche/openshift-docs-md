@@ -60,7 +60,7 @@ This release adds new features and enhancements related to the following compone
 
 <!-- -->
 
-- Using OpenShift Virtualization on a bare-metal cluster installed on an ARM64 (AARCH64) system is now generally available. For more information, see [ARM64 compatibility](../../virt/install/preparing-cluster-for-virt.xml#arm-compatibility_preparing-cluster-for-virt).
+- Using OpenShift Virtualization on a bare-metal cluster installed on an ARM64 (AARCH64) system is now generally available. For more information, see [ARM64 compatibility](../../virt/install/preparing-cluster-for-virt.xml#virt-arm-compatibility_preparing-cluster-for-virt).
 
 ## Virtualization
 

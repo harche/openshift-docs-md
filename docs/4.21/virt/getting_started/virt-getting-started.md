@@ -58,7 +58,7 @@ Migration Toolkit for Virtualization is not part of OpenShift Virtualization and
 
 - [Prepare your cluster for OpenShift Virtualization](../../virt/install/preparing-cluster-for-virt.xml#preparing-cluster-for-virt)
 
-- [Learn about storage volumes for VM disks](../../virt/install/preparing-cluster-for-virt.xml#virt-about-storage-volumes-for-vm-disks_preparing-cluster-for-virt)
+- [Learn about storage volumes for VM disks](../../virt/install/preparing-cluster-for-virt.xml#virt-about-storage-volumes-for-vm-disks_virt-requirements)
 
 - [Use a CSI-enabled storage provider](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi)
 
@@ -72,15 +72,15 @@ Migration Toolkit for Virtualization is not part of OpenShift Virtualization and
 
 - [Install and use the `virtctl` command-line interface (CLI) tool](../../virt/getting_started/virt-using-the-cli-tools.xml#virt-using-the-cli-tools)
 
-- [Create a VM from a Red Hat image](../../virt/creating_vms_advanced/creating_vms_advanced_web/virt-creating-vms-from-rh-images-overview.xml#virt-creating-vms-from-rh-images-overview)
+- [Create a VM from a Red Hat image](../../virt/creating_vms_advanced/virt-creating-vms-from-rh-images-overview.xml#virt-creating-vms-from-rh-images-overview)
 
 - [Create a VM from an instance type](../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types)
 
-- [Import a custom image from a web page](../../virt/creating_vms_advanced/creating_vms_advanced_web/virt-creating-vms-from-web-images.xml#virt-creating-vms-from-web-images)
+- [Import a custom image from a web page](../../virt/creating_vms_advanced/virt-creating-vms-from-web-images.xml#virt-creating-vms-from-web-images)
 
-- [Upload an image from your local machine](../../virt/creating_vms_advanced/creating_vms_advanced_web/virt-creating-vms-uploading-images.xml#virt-creating-vms-uploading-images)
+- [Upload an image from your local machine](../../virt/creating_vms_advanced/virt-creating-vms-uploading-images.xml#virt-creating-vms-uploading-images)
 
-- [Clone a persistent volume claim (PVC)](../../virt/creating_vms_advanced/creating_vms_cli/virt-creating-vms-by-cloning-pvcs.xml#virt-creating-vms-by-cloning-pvcs)
+- [Clone a persistent volume claim (PVC)](../../virt/creating_vms_advanced/virt-creating-vms-by-cloning-pvcs.xml#virt-creating-vms-by-cloning-pvcs)
 
 - [Connect a VM to a Linux bridge network](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-connecting-vm-to-linux-bridge)
 
@@ -88,13 +88,11 @@ Migration Toolkit for Virtualization is not part of OpenShift Virtualization and
 
 - [Connect a VM to a Single Root I/O Virtualization (SR-IOV) network](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#virt-connecting-vm-to-sriov)
 
-- [Connect to the serial console of a VM](../../virt/managing_vms/virt-accessing-vm-consoles.xml#serial-console_virt-accessing-vm-consoles)
-
-- [Connect to the VNC console of a VM](../../virt/managing_vms/virt-accessing-vm-consoles.xml#vnc-console_virt-accessing-vm-consoles)
+- [Connect to a virtual machine console](../../virt/managing_vms/virt-accessing-vm-consoles.xml#virt-accessing-vm-consoles)
 
 - [Connect to a VM by using SSH](../../virt/managing_vms/virt-accessing-vm-ssh.xml#virt-accessing-vm-ssh)
 
-- [Connect to the desktop viewer for Windows VMs](../../virt/managing_vms/virt-accessing-vm-consoles.xml#desktop-viewer_virt-accessing-vm-consoles)
+- [Connect to the desktop viewer by using the web console](../../virt/managing_vms/virt-accessing-vm-consoles.xml#virt-connecting-desktop-viewer-web_virt-accessing-vm-consoles)
 
 - [Manage a VM by using the web console](../../virt/managing_vms/virt-controlling-vm-states.xml#virt-controlling-vm-states)
 

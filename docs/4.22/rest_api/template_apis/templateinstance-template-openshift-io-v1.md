@@ -51,7 +51,7 @@ Required
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>secret</code></p></td>
-<td style="text-align: left;"><p><code>LocalObjectReference_v2</code></p></td>
+<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-LocalObjectReference_v2"><code>LocalObjectReference_v2</code></a></p></td>
 <td style="text-align: left;"><p>secret is a reference to a Secret object containing the necessary template parameters.</p></td>
 </tr>
 <tr class="odd">
@@ -345,10 +345,10 @@ delete collection of TemplateInstance
 
 Query parameters
 
-| HTTP code          | Reponse body                                                                              |
-|--------------------|-------------------------------------------------------------------------------------------|
-| 200 - OK           | [`Status_v9`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v9) schema |
-| 401 - Unauthorized | Empty                                                                                     |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 
@@ -428,11 +428,11 @@ delete a TemplateInstance
 
 Query parameters
 
-| HTTP code          | Reponse body                                                                              |
-|--------------------|-------------------------------------------------------------------------------------------|
-| 200 - OK           | [`Status_v9`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v9) schema |
-| 202 - Accepted     | [`Status_v9`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v9) schema |
-| 401 - Unauthorized | Empty                                                                                     |
+| HTTP code          | Reponse body                                                                        |
+|--------------------|-------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
+| 401 - Unauthorized | Empty                                                                               |
 
 HTTP responses
 

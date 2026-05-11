@@ -9,7 +9,7 @@ Type
 # ClusterCatalog \[olm.operatorframework.io/v1\]
 
 Description
-ClusterCatalog enables users to make File-Based Catalog (FBC) catalog data available to the cluster. For more information on FBC, see <https://olm.operatorframework.io/docs/reference/file-based-catalogs/#docs>
+ClusterCatalog makes File-Based Catalog (FBC) data available to your cluster. For more information on FBC, see <https://olm.operatorframework.io/docs/reference/file-based-catalogs/#docs>
 
 Type
 `object`
@@ -21,13 +21,6 @@ ClusterExtension is the Schema for the clusterextensions API
 
 Type
 `object`
-
-# ClusterExtensionRevision \[olm.operatorframework.io/v1\]
-
-Description
-
-Type
-\`\`
 
 # ClusterServiceVersion \[operators.coreos.com/v1alpha1\]
 

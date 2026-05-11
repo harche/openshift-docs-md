@@ -78,23 +78,23 @@ platformSpec holds desired information specific to the underlying infrastructure
 Type
 `object`
 
-| Property       | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-|----------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `alibabaCloud` | `object` | alibabaCloud contains settings specific to the Alibaba Cloud infrastructure provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `aws`          | `object` | aws contains settings specific to the Amazon Web Services infrastructure provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `azure`        | `object` | azure contains settings specific to the Azure infrastructure provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `baremetal`    | `object` | baremetal contains settings specific to the BareMetal platform.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `equinixMetal` | `object` | equinixMetal contains settings specific to the Equinix Metal infrastructure provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `external`     | `object` | ExternalPlatformType represents generic infrastructure provider. Platform-specific components should be supplemented separately.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| `gcp`          | `object` | gcp contains settings specific to the Google Cloud Platform infrastructure provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `ibmcloud`     | `object` | ibmcloud contains settings specific to the IBMCloud infrastructure provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `kubevirt`     | `object` | kubevirt contains settings specific to the kubevirt infrastructure provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `nutanix`      | `object` | nutanix contains settings specific to the Nutanix infrastructure provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| `openstack`    | `object` | openstack contains settings specific to the OpenStack infrastructure provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| `ovirt`        | `object` | ovirt contains settings specific to the oVirt infrastructure provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `powervs`      | `object` | powervs contains settings specific to the IBM Power Systems Virtual Servers infrastructure provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `type`         | `string` | type is the underlying infrastructure provider for the cluster. This value controls whether infrastructure automation such as service load balancers, dynamic volume provisioning, machine creation and deletion, and other integrations are enabled. If None, no infrastructure automation is enabled. Allowed values are "AWS", "Azure", "BareMetal", "GCP", "Libvirt", "OpenStack", "VSphere", "oVirt", "KubeVirt", "EquinixMetal", "PowerVS", "AlibabaCloud", "Nutanix" and "None". Individual components may not support all platforms, and must handle unrecognized platforms as None if they do not support that platform. |
-| `vsphere`      | `object` | vsphere contains settings specific to the VSphere infrastructure provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| Property       | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+|----------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `alibabaCloud` | `object` | alibabaCloud contains settings specific to the Alibaba Cloud infrastructure provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `aws`          | `object` | aws contains settings specific to the Amazon Web Services infrastructure provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `azure`        | `object` | azure contains settings specific to the Azure infrastructure provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `baremetal`    | `object` | baremetal contains settings specific to the BareMetal platform.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `equinixMetal` | `object` | equinixMetal contains settings specific to the Equinix Metal infrastructure provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `external`     | `object` | ExternalPlatformType represents generic infrastructure provider. Platform-specific components should be supplemented separately.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `gcp`          | `object` | gcp contains settings specific to the Google Cloud Platform infrastructure provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `ibmcloud`     | `object` | ibmcloud contains settings specific to the IBMCloud infrastructure provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `kubevirt`     | `object` | kubevirt contains settings specific to the kubevirt infrastructure provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `nutanix`      | `object` | nutanix contains settings specific to the Nutanix infrastructure provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `openstack`    | `object` | openstack contains settings specific to the OpenStack infrastructure provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `ovirt`        | `object` | ovirt contains settings specific to the oVirt infrastructure provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `powervs`      | `object` | powervs contains settings specific to the IBM Power Systems Virtual Servers infrastructure provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `type`         | `string` | type is the underlying infrastructure provider for the cluster. This value controls whether infrastructure automation such as service load balancers, dynamic volume provisioning, machine creation and deletion, and other integrations are enabled. If None, no infrastructure automation is enabled. Allowed values are "AWS", "Azure", "BareMetal", "GCP", "Libvirt", "OpenStack", "VSphere", "oVirt", "IBMCloud", "KubeVirt", "EquinixMetal", "PowerVS", "AlibabaCloud", "Nutanix", "External", and "None". Individual components may not support all platforms, and must handle unrecognized platforms as None if they do not support that platform. |
+| `vsphere`      | `object` | vsphere contains settings specific to the VSphere infrastructure provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 
 ## .spec.platformSpec.alibabaCloud
 
@@ -195,37 +195,6 @@ ibmcloud contains settings specific to the IBMCloud infrastructure provider.
 
 Type
 `object`
-
-| Property             | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-|----------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `serviceEndpoints`   | `array`  | serviceEndpoints is a list of custom endpoints which will override the default service endpoints of an IBM service. These endpoints are used by components within the cluster when trying to reach the IBM Cloud Services that have been overridden. The CCCMO reads in the IBMCloudPlatformSpec and validates each endpoint is resolvable. Once validated, the cloud config and IBMCloudPlatformStatus are updated to reflect the same custom endpoints. A maximum of 13 service endpoints overrides are supported. |
-| `serviceEndpoints[]` | `object` | IBMCloudServiceEndpoint stores the configuration of a custom url to override existing defaults of IBM Cloud Services.                                                                                                                                                                                                                                                                                                                                                                                                |
-
-## .spec.platformSpec.ibmcloud.serviceEndpoints
-
-Description
-serviceEndpoints is a list of custom endpoints which will override the default service endpoints of an IBM service. These endpoints are used by components within the cluster when trying to reach the IBM Cloud Services that have been overridden. The CCCMO reads in the IBMCloudPlatformSpec and validates each endpoint is resolvable. Once validated, the cloud config and IBMCloudPlatformStatus are updated to reflect the same custom endpoints. A maximum of 13 service endpoints overrides are supported.
-
-Type
-`array`
-
-## .spec.platformSpec.ibmcloud.serviceEndpoints\[\]
-
-Description
-IBMCloudServiceEndpoint stores the configuration of a custom url to override existing defaults of IBM Cloud Services.
-
-Type
-`object`
-
-Required
-- `name`
-
-- `url`
-
-| Property | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `name`   | `string` | name is the name of the IBM Cloud service. Possible values are: CIS, COS, COSConfig, DNSServices, GlobalCatalog, GlobalSearch, GlobalTagging, HyperProtect, IAM, KeyProtect, ResourceController, ResourceManager, or VPC. For example, the IBM Cloud Private IAM service could be configured with the service `name` of `IAM` and `url` of `https://private.iam.cloud.ibm.com` Whereas the IBM Cloud Private VPC service for US South (Dallas) could be configured with the service `name` of `VPC` and `url` of `https://us.south.private.iaas.cloud.ibm.com` |
-| `url`    | `string` | url is fully qualified URI with scheme https, that overrides the default generated endpoint for a client. This must be provided and cannot be empty. The path must follow the pattern /v\[0,9\]+ or /api/v\[0,9\]+                                                                                                                                                                                                                                                                                                                                             |
 
 ## .spec.platformSpec.kubevirt
 
@@ -732,7 +701,7 @@ Type
 <tr class="odd">
 <td style="text-align: left;"><p><code>controlPlaneTopology</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>controlPlaneTopology expresses the expectations for operands that normally run on control nodes. The default is 'HighlyAvailable', which represents the behavior operators have in a "normal" cluster. The 'SingleReplica' mode will be used in single-node deployments and the operators should not configure the operand for highly-available operation The 'External' mode indicates that the control plane is hosted externally to the cluster and that its components are not visible within the cluster.</p></td>
+<td style="text-align: left;"><p>controlPlaneTopology expresses the expectations for operands that normally run on control nodes. The default is 'HighlyAvailable', which represents the behavior operators have in a "normal" cluster. The 'SingleReplica' mode will be used in single-node deployments and the operators should not configure the operand for highly-available operation The 'External' mode indicates that the control plane is hosted externally to the cluster and that its components are not visible within the cluster. The 'HighlyAvailableArbiter' mode indicates that the control plane will consist of 2 control-plane nodes that run conventional services and 1 smaller sized arbiter node that runs a bare minimum of services to maintain quorum.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>cpuPartitioning</code></p></td>
@@ -921,15 +890,13 @@ aws contains settings specific to the Amazon Web Services infrastructure provide
 Type
 `object`
 
-| Property                  | Type     | Description                                                                                                                                                                                                                                                                                                                                                       |
-|---------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `cloudLoadBalancerConfig` | \`\`     | cloudLoadBalancerConfig holds configuration related to DNS and cloud load balancers. It allows configuration of in-cluster DNS as an alternative to the platform default DNS implementation. When using the ClusterHosted DNS type, Load Balancer IP addresses must be provided for the API and internal API load balancers as well as the ingress load balancer. |
-| `ipFamily`                | `string` | ipFamily specifies the IP protocol family that should be used for AWS network resources. This controls whether AWS resources are created with IPv4-only, or dual-stack networking with IPv4 or IPv6 as the primary protocol family.                                                                                                                               |
-| `region`                  | `string` | region holds the default AWS region for new AWS resources created by the cluster.                                                                                                                                                                                                                                                                                 |
-| `resourceTags`            | `array`  | resourceTags is a list of additional tags to apply to AWS resources created for the cluster. See <https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html> for information on tagging AWS resources. AWS supports a maximum of 50 tags per resource. OpenShift reserves 25 tags for its use, leaving 25 tags available for the user.                       |
-| `resourceTags[]`          | `object` | AWSResourceTag is a tag to apply to AWS resources created for the cluster.                                                                                                                                                                                                                                                                                        |
-| `serviceEndpoints`        | `array`  | serviceEndpoints list contains custom endpoints which will override default service endpoint of AWS Services. There must be only one ServiceEndpoint for a service.                                                                                                                                                                                               |
-| `serviceEndpoints[]`      | `object` | AWSServiceEndpoint store the configuration of a custom url to override existing defaults of AWS Services.                                                                                                                                                                                                                                                         |
+| Property             | Type     | Description                                                                                                                                                                                                                                                                                                                                 |
+|----------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `region`             | `string` | region holds the default AWS region for new AWS resources created by the cluster.                                                                                                                                                                                                                                                           |
+| `resourceTags`       | `array`  | resourceTags is a list of additional tags to apply to AWS resources created for the cluster. See <https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html> for information on tagging AWS resources. AWS supports a maximum of 50 tags per resource. OpenShift reserves 25 tags for its use, leaving 25 tags available for the user. |
+| `resourceTags[]`     | `object` | AWSResourceTag is a tag to apply to AWS resources created for the cluster.                                                                                                                                                                                                                                                                  |
+| `serviceEndpoints`   | `array`  | serviceEndpoints list contains custom endpoints which will override default service endpoint of AWS Services. There must be only one ServiceEndpoint for a service.                                                                                                                                                                         |
+| `serviceEndpoints[]` | `object` | AWSServiceEndpoint store the configuration of a custom url to override existing defaults of AWS Services.                                                                                                                                                                                                                                   |
 
 ## .status.platformStatus.aws.resourceTags
 
@@ -991,7 +958,6 @@ Type
 | `armEndpoint`              | `string` | armEndpoint specifies a URL to use for resource management in non-soverign clouds such as Azure Stack.                                                                                                                                                                                                                                                                                                               |
 | `cloudLoadBalancerConfig`  | `object` | cloudLoadBalancerConfig holds configuration related to DNS and cloud load balancers. It allows configuration of in-cluster DNS as an alternative to the platform default DNS implementation. When using the ClusterHosted DNS type, Load Balancer IP addresses must be provided for the API and internal API load balancers as well as the ingress load balancer.                                                    |
 | `cloudName`                | `string` | cloudName is the name of the Azure cloud environment which can be used to configure the Azure SDK with the appropriate Azure API endpoints. If empty, the value is equal to `AzurePublicCloud`.                                                                                                                                                                                                                      |
-| `ipFamily`                 | `string` | ipFamily specifies the IP protocol family that should be used for Azure network resources. This controls whether Azure resources are created with IPv4-only, or dual-stack networking with IPv4 or IPv6 as the primary protocol family.                                                                                                                                                                              |
 | `networkResourceGroupName` | `string` | networkResourceGroupName is the Resource Group for network resources like the Virtual Network and Subnets used by the cluster. If empty, the value is same as ResourceGroupName.                                                                                                                                                                                                                                     |
 | `resourceGroupName`        | `string` | resourceGroupName is the Resource Group for new Azure resources created for the cluster.                                                                                                                                                                                                                                                                                                                             |
 | `resourceTags`             | `array`  | resourceTags is a list of additional tags to apply to Azure resources created for the cluster. See <https://docs.microsoft.com/en-us/rest/api/resources/tags> for information on tagging Azure resources. Due to limitations on Automation, Content Delivery Network, DNS Azure resources, a maximum of 15 tags may be applied. OpenShift reserves 5 tags for internal use, allowing 10 tags for user configuration. |
@@ -1084,32 +1050,27 @@ Type
 <td style="text-align: left;"><p>apiServerInternalIPs are the IP addresses to contact the Kubernetes API server that can be used by components inside the cluster, like kubelets using the infrastructure rather than Kubernetes networking. These are the IPs for a self-hosted load balancer in front of the API servers. In dual stack clusters this list contains two IPs otherwise only one.</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>dnsRecordsType</code></p></td>
-<td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>dnsRecordsType determines whether records for api, api-int, and ingress are provided by the internal DNS service or externally. Allowed values are <code>Internal</code>, <code>External</code>, and omitted. When set to <code>Internal</code>, records are provided by the internal infrastructure and no additional user configuration is required for the cluster to function. When set to <code>External</code>, records are not provided by the internal infrastructure and must be configured by the user on a DNS server outside the cluster. Cluster nodes must use this external server for their upstream DNS requests. This value may only be set when loadBalancer.type is set to UserManaged. When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is <code>Internal</code>.</p></td>
-</tr>
-<tr class="even">
 <td style="text-align: left;"><p><code>ingressIP</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>ingressIP is an external IP which routes to the default ingress controller. The IP is a suitable target of a wildcard DNS record used to resolve default route host names.</p>
 <p>Deprecated: Use IngressIPs instead.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>ingressIPs</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>ingressIPs are the external IPs which route to the default ingress controller. The IPs are suitable targets of a wildcard DNS record used to resolve default route host names. In dual stack clusters this list contains two IPs otherwise only one.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>loadBalancer</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>loadBalancer defines how the load balancer used by the cluster is configured.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>machineNetworks</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>machineNetworks are IP networks used to connect all the OpenShift cluster nodes.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>nodeDNSIP</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>nodeDNSIP is the IP address for the internal DNS used by the nodes. Unlike the one managed by the DNS operator, <code>NodeDNSIP</code> provides name resolution for the nodes themselves. There is no DNS-as-a-service for BareMetal deployments. In order to minimize necessary changes to the datacenter DNS, a DNS service is hosted as a static pod to serve those hostnames to the nodes in the cluster.</p></td>
@@ -1349,22 +1310,17 @@ Type
 <td style="text-align: left;"><p>apiServerInternalIPs are the IP addresses to contact the Kubernetes API server that can be used by components inside the cluster, like kubelets using the infrastructure rather than Kubernetes networking. These are the IPs for a self-hosted load balancer in front of the API servers. In dual stack clusters this list contains two IPs otherwise only one.</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>dnsRecordsType</code></p></td>
-<td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>dnsRecordsType determines whether records for api, api-int, and ingress are provided by the internal DNS service or externally. Allowed values are <code>Internal</code>, <code>External</code>, and omitted. When set to <code>Internal</code>, records are provided by the internal infrastructure and no additional user configuration is required for the cluster to function. When set to <code>External</code>, records are not provided by the internal infrastructure and must be configured by the user on a DNS server outside the cluster. Cluster nodes must use this external server for their upstream DNS requests. This value may only be set when loadBalancer.type is set to UserManaged. When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is <code>Internal</code>.</p></td>
-</tr>
-<tr class="even">
 <td style="text-align: left;"><p><code>ingressIP</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>ingressIP is an external IP which routes to the default ingress controller. The IP is a suitable target of a wildcard DNS record used to resolve default route host names.</p>
 <p>Deprecated: Use IngressIPs instead.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>ingressIPs</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>ingressIPs are the external IPs which route to the default ingress controller. The IPs are suitable targets of a wildcard DNS record used to resolve default route host names. In dual stack clusters this list contains two IPs otherwise only one.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>loadBalancer</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>loadBalancer defines how the load balancer used by the cluster is configured.</p></td>
@@ -1423,32 +1379,27 @@ Type
 <td style="text-align: left;"><p>cloudName is the name of the desired OpenStack cloud in the client configuration file (<code>clouds.yaml</code>).</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>dnsRecordsType</code></p></td>
-<td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>dnsRecordsType determines whether records for api, api-int, and ingress are provided by the internal DNS service or externally. Allowed values are <code>Internal</code>, <code>External</code>, and omitted. When set to <code>Internal</code>, records are provided by the internal infrastructure and no additional user configuration is required for the cluster to function. When set to <code>External</code>, records are not provided by the internal infrastructure and must be configured by the user on a DNS server outside the cluster. Cluster nodes must use this external server for their upstream DNS requests. This value may only be set when loadBalancer.type is set to UserManaged. When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is <code>Internal</code>.</p></td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;"><p><code>ingressIP</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>ingressIP is an external IP which routes to the default ingress controller. The IP is a suitable target of a wildcard DNS record used to resolve default route host names.</p>
 <p>Deprecated: Use IngressIPs instead.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>ingressIPs</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>ingressIPs are the external IPs which route to the default ingress controller. The IPs are suitable targets of a wildcard DNS record used to resolve default route host names. In dual stack clusters this list contains two IPs otherwise only one.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>loadBalancer</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>loadBalancer defines how the load balancer used by the cluster is configured.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>machineNetworks</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>machineNetworks are IP networks used to connect all the OpenShift cluster nodes.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>nodeDNSIP</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>nodeDNSIP is the IP address for the internal DNS used by the nodes. Unlike the one managed by the DNS operator, <code>NodeDNSIP</code> provides name resolution for the nodes themselves. There is no DNS-as-a-service for OpenStack deployments. In order to minimize necessary changes to the datacenter DNS, a DNS service is hosted as a static pod to serve those hostnames to the nodes in the cluster.</p></td>
@@ -1502,27 +1453,22 @@ Type
 <td style="text-align: left;"><p>apiServerInternalIPs are the IP addresses to contact the Kubernetes API server that can be used by components inside the cluster, like kubelets using the infrastructure rather than Kubernetes networking. These are the IPs for a self-hosted load balancer in front of the API servers. In dual stack clusters this list contains two IPs otherwise only one.</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>dnsRecordsType</code></p></td>
-<td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>dnsRecordsType determines whether records for api, api-int, and ingress are provided by the internal DNS service or externally. Allowed values are <code>Internal</code>, <code>External</code>, and omitted. When set to <code>Internal</code>, records are provided by the internal infrastructure and no additional user configuration is required for the cluster to function. When set to <code>External</code>, records are not provided by the internal infrastructure and must be configured by the user on a DNS server outside the cluster. Cluster nodes must use this external server for their upstream DNS requests. This value may only be set when loadBalancer.type is set to UserManaged. When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is <code>Internal</code>.</p></td>
-</tr>
-<tr class="even">
 <td style="text-align: left;"><p><code>ingressIP</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>ingressIP is an external IP which routes to the default ingress controller. The IP is a suitable target of a wildcard DNS record used to resolve default route host names.</p>
 <p>Deprecated: Use IngressIPs instead.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>ingressIPs</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>ingressIPs are the external IPs which route to the default ingress controller. The IPs are suitable targets of a wildcard DNS record used to resolve default route host names. In dual stack clusters this list contains two IPs otherwise only one.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>loadBalancer</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>loadBalancer defines how the load balancer used by the cluster is configured.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>nodeDNSIP</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>deprecated: as of 4.6, this field is no longer set or honored. It will be removed in a future release.</p></td>
@@ -1620,32 +1566,27 @@ Type
 <td style="text-align: left;"><p>apiServerInternalIPs are the IP addresses to contact the Kubernetes API server that can be used by components inside the cluster, like kubelets using the infrastructure rather than Kubernetes networking. These are the IPs for a self-hosted load balancer in front of the API servers. In dual stack clusters this list contains two IPs otherwise only one.</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>dnsRecordsType</code></p></td>
-<td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>dnsRecordsType determines whether records for api, api-int, and ingress are provided by the internal DNS service or externally. Allowed values are <code>Internal</code>, <code>External</code>, and omitted. When set to <code>Internal</code>, records are provided by the internal infrastructure and no additional user configuration is required for the cluster to function. When set to <code>External</code>, records are not provided by the internal infrastructure and must be configured by the user on a DNS server outside the cluster. Cluster nodes must use this external server for their upstream DNS requests. This value may only be set when loadBalancer.type is set to UserManaged. When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is <code>Internal</code>.</p></td>
-</tr>
-<tr class="even">
 <td style="text-align: left;"><p><code>ingressIP</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>ingressIP is an external IP which routes to the default ingress controller. The IP is a suitable target of a wildcard DNS record used to resolve default route host names.</p>
 <p>Deprecated: Use IngressIPs instead.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>ingressIPs</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>ingressIPs are the external IPs which route to the default ingress controller. The IPs are suitable targets of a wildcard DNS record used to resolve default route host names. In dual stack clusters this list contains two IPs otherwise only one.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>loadBalancer</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>loadBalancer defines how the load balancer used by the cluster is configured.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>machineNetworks</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>machineNetworks are IP networks used to connect all the OpenShift cluster nodes.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>nodeDNSIP</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>nodeDNSIP is the IP address for the internal DNS used by the nodes. Unlike the one managed by the DNS operator, <code>NodeDNSIP</code> provides name resolution for the nodes themselves. There is no DNS-as-a-service for vSphere deployments. In order to minimize necessary changes to the datacenter DNS, a DNS service is hosted as a static pod to serve those hostnames to the nodes in the cluster.</p></td>

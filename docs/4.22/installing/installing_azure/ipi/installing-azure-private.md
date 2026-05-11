@@ -475,14 +475,6 @@ You can install a cluster with a domain name server (DNS) solution that you mana
 
 If you enable user-managed DNS during installation, the installation program provisions DNS records for the API and Ingress services only within the cluster. To ensure access from outside the cluster, you must provision the DNS records in an external DNS service of your choice for the API and Ingress services after installation.
 
-<div class="important">
-
-User-provisioned DNS is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
 - You installed the `jq` package.
 
 <!-- -->
@@ -492,9 +484,6 @@ For more information about the support scope of Red Hat Technology Preview featu
   - To enable user-managed DNS:
 
     ``` yaml
-    featureSet: CustomNoUpgrade
-    featureGates: ["AzureClusterHostedDNSInstall=true"]
-
     # ...
 
     platform:
@@ -1331,14 +1320,6 @@ INFO Time elapsed: 36m22s
 # Provisioning your own DNS records
 
 Use the IP address of the API server to provision your own DNS record with the `api.<cluster_name>.<base_domain>.` hostname by using your cluster name and base cluster domain. Use the IP address of the Ingress service to provision your own DNS record with the `*.apps.<cluster_name>.<base_domain>.` hostname by using your cluster name and base cluster domain.
-
-<div class="important">
-
-User-provisioned DNS is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
 
 - You have installed the Azure CLI client `(az)`.
 

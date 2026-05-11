@@ -738,7 +738,7 @@ Type
 <tr class="odd">
 <td style="text-align: left;"><p><code>protocol</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>protocol specifies whether the load balancer uses PROXY protocol to forward connections to the IngressController. See "service.kubernetes.io/ibm-load-balancer-cloud-provider-enable-features: "proxy-protocol"" at <a href="https://cloud.ibm.com/docs/containers?topic=containers-vpc-lbaas">https://cloud.ibm.com/docs/containers?topic=containers-vpc-lbaas</a></p>
+<td style="text-align: left;"><p>protocol specifies whether the load balancer uses PROXY protocol to forward connections to the IngressController. See "service.kubernetes.io/ibm-load-balancer-cloud-provider-enable-features: "proxy-protocol"" at <a href="https://cloud.ibm.com/docs/containers?topic=containers-vpc-lbaas">https://cloud.ibm.com/docs/containers?topic=containers-vpc-lbaas"</a></p>
 <p>PROXY protocol can be used with load balancers that support it to communicate the source addresses of client connections when forwarding those connections to the IngressController. Using PROXY protocol enables the IngressController to report those source addresses instead of reporting the load balancer’s address in HTTP headers and logs. Note that enabling PROXY protocol on the IngressController will cause connections to fail if you are not using a load balancer that uses PROXY protocol to forward connections to the IngressController. See <a href="http://www.haproxy.org/download/2.2/doc/proxy-protocol.txt">http://www.haproxy.org/download/2.2/doc/proxy-protocol.txt</a> for information about PROXY protocol.</p>
 <p>Valid values for protocol are TCP, PROXY and omitted. When omitted, this means no opinion and the platform is left to choose a reasonable default, which is subject to change over time. The current default is TCP, without the proxy protocol enabled.</p></td>
 </tr>
@@ -1507,13 +1507,13 @@ The pod this Toleration is attached to tolerates any taint that matches the trip
 Type
 `object`
 
-| Property            | Type      | Description                                                                                                                                                                                                                                                                                                                 |
-|---------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `effect`            | `string`  | Effect indicates the taint effect to match. Empty means match all taint effects. When specified, allowed values are NoSchedule, PreferNoSchedule and NoExecute.                                                                                                                                                             |
-| `key`               | `string`  | Key is the taint key that the toleration applies to. Empty means match all taint keys. If the key is empty, operator must be Exists; this combination means to match all values and all keys.                                                                                                                               |
-| `operator`          | `string`  | Operator represents a key’s relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category.                                                                                                 |
-| `tolerationSeconds` | `integer` | TolerationSeconds represents the period of time the toleration (which must be of effect NoExecute, otherwise this field is ignored) tolerates the taint. By default, it is not set, which means tolerate the taint forever (do not evict). Zero and negative values will be treated as 0 (evict immediately) by the system. |
-| `value`             | `string`  | Value is the taint value the toleration matches to. If the operator is Exists, the value should be empty, otherwise just a regular string.                                                                                                                                                                                  |
+| Property            | Type      | Description                                                                                                                                                                                                                                                                                                                            |
+|---------------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `effect`            | `string`  | Effect indicates the taint effect to match. Empty means match all taint effects. When specified, allowed values are NoSchedule, PreferNoSchedule and NoExecute.                                                                                                                                                                        |
+| `key`               | `string`  | Key is the taint key that the toleration applies to. Empty means match all taint keys. If the key is empty, operator must be Exists; this combination means to match all values and all keys.                                                                                                                                          |
+| `operator`          | `string`  | Operator represents a key’s relationship to the value. Valid operators are Exists, Equal, Lt, and Gt. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category. Lt and Gt perform numeric comparisons (requires feature gate TaintTolerationComparisonOperators). |
+| `tolerationSeconds` | `integer` | TolerationSeconds represents the period of time the toleration (which must be of effect NoExecute, otherwise this field is ignored) tolerates the taint. By default, it is not set, which means tolerate the taint forever (do not evict). Zero and negative values will be treated as 0 (evict immediately) by the system.            |
+| `value`             | `string`  | Value is the taint value the toleration matches to. If the operator is Exists, the value should be empty, otherwise just a regular string.                                                                                                                                                                                             |
 
 ## .spec.routeAdmission
 
@@ -1633,90 +1633,32 @@ Type
 <td style="text-align: left;"><p><code>custom</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
 <td style="text-align: left;"><p>custom is a user-defined TLS security profile. Be extremely careful using a custom profile as invalid configurations can be catastrophic. An example custom profile looks like this:</p>
-<p>ciphers:</p>
-<p>- ECDHE-ECDSA-CHACHA20-POLY1305</p>
-<p>- ECDHE-RSA-CHACHA20-POLY1305</p>
-<p>- ECDHE-RSA-AES128-GCM-SHA256</p>
-<p>- ECDHE-ECDSA-AES128-GCM-SHA256</p>
-<p>minTLSVersion: VersionTLS11</p></td>
+<p>minTLSVersion: VersionTLS11 ciphers: - ECDHE-ECDSA-CHACHA20-POLY1305 - ECDHE-RSA-CHACHA20-POLY1305 - ECDHE-RSA-AES128-GCM-SHA256 - ECDHE-ECDSA-AES128-GCM-SHA256</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>intermediate</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
-<td style="text-align: left;"><p>intermediate is a TLS security profile based on:</p>
-<p><a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Intermediate_compatibility_.28recommended.29">https://wiki.mozilla.org/Security/Server_Side_TLS#Intermediate_compatibility_.28recommended.29</a></p>
-<p>and looks like this (yaml):</p>
-<p>ciphers:</p>
-<p>- TLS_AES_128_GCM_SHA256</p>
-<p>- TLS_AES_256_GCM_SHA384</p>
-<p>- TLS_CHACHA20_POLY1305_SHA256</p>
-<p>- ECDHE-ECDSA-AES128-GCM-SHA256</p>
-<p>- ECDHE-RSA-AES128-GCM-SHA256</p>
-<p>- ECDHE-ECDSA-AES256-GCM-SHA384</p>
-<p>- ECDHE-RSA-AES256-GCM-SHA384</p>
-<p>- ECDHE-ECDSA-CHACHA20-POLY1305</p>
-<p>- ECDHE-RSA-CHACHA20-POLY1305</p>
-<p>- DHE-RSA-AES128-GCM-SHA256</p>
-<p>- DHE-RSA-AES256-GCM-SHA384</p>
-<p>minTLSVersion: VersionTLS12</p></td>
+<td style="text-align: left;"><p>intermediate is a TLS profile for use when you do not need compatibility with legacy clients and want to remain highly secure while being compatible with most clients currently in use.</p>
+<p>This profile is equivalent to a Custom profile specified as: minTLSVersion: VersionTLS12 ciphers: - TLS_AES_128_GCM_SHA256 - TLS_AES_256_GCM_SHA384 - TLS_CHACHA20_POLY1305_SHA256 - ECDHE-ECDSA-AES128-GCM-SHA256 - ECDHE-RSA-AES128-GCM-SHA256 - ECDHE-ECDSA-AES256-GCM-SHA384 - ECDHE-RSA-AES256-GCM-SHA384 - ECDHE-ECDSA-CHACHA20-POLY1305 - ECDHE-RSA-CHACHA20-POLY1305</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>modern</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
-<td style="text-align: left;"><p>modern is a TLS security profile based on:</p>
-<p><a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Modern_compatibility">https://wiki.mozilla.org/Security/Server_Side_TLS#Modern_compatibility</a></p>
-<p>and looks like this (yaml):</p>
-<p>ciphers:</p>
-<p>- TLS_AES_128_GCM_SHA256</p>
-<p>- TLS_AES_256_GCM_SHA384</p>
-<p>- TLS_CHACHA20_POLY1305_SHA256</p>
-<p>minTLSVersion: VersionTLS13</p></td>
+<td style="text-align: left;"><p>modern is a TLS security profile for use with clients that support TLS 1.3 and do not need backward compatibility for older clients.</p>
+<p>This profile is equivalent to a Custom profile specified as: minTLSVersion: VersionTLS13 ciphers: - TLS_AES_128_GCM_SHA256 - TLS_AES_256_GCM_SHA384 - TLS_CHACHA20_POLY1305_SHA256</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>old</code></p></td>
 <td style="text-align: left;"><p>``</p></td>
-<td style="text-align: left;"><p>old is a TLS security profile based on:</p>
-<p><a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Old_backward_compatibility">https://wiki.mozilla.org/Security/Server_Side_TLS#Old_backward_compatibility</a></p>
-<p>and looks like this (yaml):</p>
-<p>ciphers:</p>
-<p>- TLS_AES_128_GCM_SHA256</p>
-<p>- TLS_AES_256_GCM_SHA384</p>
-<p>- TLS_CHACHA20_POLY1305_SHA256</p>
-<p>- ECDHE-ECDSA-AES128-GCM-SHA256</p>
-<p>- ECDHE-RSA-AES128-GCM-SHA256</p>
-<p>- ECDHE-ECDSA-AES256-GCM-SHA384</p>
-<p>- ECDHE-RSA-AES256-GCM-SHA384</p>
-<p>- ECDHE-ECDSA-CHACHA20-POLY1305</p>
-<p>- ECDHE-RSA-CHACHA20-POLY1305</p>
-<p>- DHE-RSA-AES128-GCM-SHA256</p>
-<p>- DHE-RSA-AES256-GCM-SHA384</p>
-<p>- DHE-RSA-CHACHA20-POLY1305</p>
-<p>- ECDHE-ECDSA-AES128-SHA256</p>
-<p>- ECDHE-RSA-AES128-SHA256</p>
-<p>- ECDHE-ECDSA-AES128-SHA</p>
-<p>- ECDHE-RSA-AES128-SHA</p>
-<p>- ECDHE-ECDSA-AES256-SHA384</p>
-<p>- ECDHE-RSA-AES256-SHA384</p>
-<p>- ECDHE-ECDSA-AES256-SHA</p>
-<p>- ECDHE-RSA-AES256-SHA</p>
-<p>- DHE-RSA-AES128-SHA256</p>
-<p>- DHE-RSA-AES256-SHA256</p>
-<p>- AES128-GCM-SHA256</p>
-<p>- AES256-GCM-SHA384</p>
-<p>- AES128-SHA256</p>
-<p>- AES256-SHA256</p>
-<p>- AES128-SHA</p>
-<p>- AES256-SHA</p>
-<p>- DES-CBC3-SHA</p>
-<p>minTLSVersion: VersionTLS10</p></td>
+<td style="text-align: left;"><p>old is a TLS profile for use when services need to be accessed by very old clients or libraries and should be used only as a last resort.</p>
+<p>This profile is equivalent to a Custom profile specified as: minTLSVersion: VersionTLS10 ciphers: - TLS_AES_128_GCM_SHA256 - TLS_AES_256_GCM_SHA384 - TLS_CHACHA20_POLY1305_SHA256 - ECDHE-ECDSA-AES128-GCM-SHA256 - ECDHE-RSA-AES128-GCM-SHA256 - ECDHE-ECDSA-AES256-GCM-SHA384 - ECDHE-RSA-AES256-GCM-SHA384 - ECDHE-ECDSA-CHACHA20-POLY1305 - ECDHE-RSA-CHACHA20-POLY1305 - ECDHE-ECDSA-AES128-SHA256 - ECDHE-RSA-AES128-SHA256 - ECDHE-ECDSA-AES128-SHA - ECDHE-RSA-AES128-SHA - ECDHE-ECDSA-AES256-SHA - ECDHE-RSA-AES256-SHA - AES128-GCM-SHA256 - AES256-GCM-SHA384 - AES128-SHA256 - AES128-SHA - AES256-SHA - DES-CBC3-SHA</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>type</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>type is one of Old, Intermediate, Modern or Custom. Custom provides the ability to specify individual TLS security profile parameters. Old, Intermediate and Modern are TLS security profiles based on:</p>
-<p><a href="https://wiki.mozilla.org/Security/Server_Side_TLS#Recommended_configurations">https://wiki.mozilla.org/Security/Server_Side_TLS#Recommended_configurations</a></p>
-<p>The profiles are intent based, so they may change over time as new ciphers are developed and existing ciphers are found to be insecure. Depending on precisely which ciphers are available to a process, the list may be reduced.</p>
-<p>Note that the Modern profile is currently not supported because it is not yet well adopted by common software libraries.</p></td>
+<td style="text-align: left;"><p>type is one of Old, Intermediate, Modern or Custom. Custom provides the ability to specify individual TLS security profile parameters.</p>
+<p>The profiles are based on version 5.7 of the Mozilla Server Side TLS configuration guidelines. The cipher lists consist of the configuration’s "ciphersuites" followed by the Go-specific "ciphers" from the guidelines. See: <a href="https://ssl-config.mozilla.org/guidelines/5.7.json">https://ssl-config.mozilla.org/guidelines/5.7.json</a></p>
+<p>The profiles are intent based, so they may change over time as new ciphers are developed and existing ciphers are found to be insecure. Depending on precisely which ciphers are available to a process, the list may be reduced.</p></td>
 </tr>
 </tbody>
 </table>
@@ -2456,7 +2398,7 @@ Type
 <tr class="odd">
 <td style="text-align: left;"><p><code>protocol</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>protocol specifies whether the load balancer uses PROXY protocol to forward connections to the IngressController. See "service.kubernetes.io/ibm-load-balancer-cloud-provider-enable-features: "proxy-protocol"" at <a href="https://cloud.ibm.com/docs/containers?topic=containers-vpc-lbaas">https://cloud.ibm.com/docs/containers?topic=containers-vpc-lbaas</a></p>
+<td style="text-align: left;"><p>protocol specifies whether the load balancer uses PROXY protocol to forward connections to the IngressController. See "service.kubernetes.io/ibm-load-balancer-cloud-provider-enable-features: "proxy-protocol"" at <a href="https://cloud.ibm.com/docs/containers?topic=containers-vpc-lbaas">https://cloud.ibm.com/docs/containers?topic=containers-vpc-lbaas"</a></p>
 <p>PROXY protocol can be used with load balancers that support it to communicate the source addresses of client connections when forwarding those connections to the IngressController. Using PROXY protocol enables the IngressController to report those source addresses instead of reporting the load balancer’s address in HTTP headers and logs. Note that enabling PROXY protocol on the IngressController will cause connections to fail if you are not using a load balancer that uses PROXY protocol to forward connections to the IngressController. See <a href="http://www.haproxy.org/download/2.2/doc/proxy-protocol.txt">http://www.haproxy.org/download/2.2/doc/proxy-protocol.txt</a> for information about PROXY protocol.</p>
 <p>Valid values for protocol are TCP, PROXY and omitted. When omitted, this means no opinion and the platform is left to choose a reasonable default, which is subject to change over time. The current default is TCP, without the proxy protocol enabled.</p></td>
 </tr>
@@ -2652,15 +2594,15 @@ Type
 <tr class="odd">
 <td style="text-align: left;"><p><code>ciphers</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
-<td style="text-align: left;"><p>ciphers is used to specify the cipher algorithms that are negotiated during the TLS handshake. Operators may remove entries their operands do not support. For example, to use DES-CBC3-SHA (yaml):</p>
-<p>ciphers: - DES-CBC3-SHA</p></td>
+<td style="text-align: left;"><p>ciphers is used to specify the cipher algorithms that are negotiated during the TLS handshake. Operators may remove entries that their operands do not support. For example, to use only ECDHE-RSA-AES128-GCM-SHA256 (yaml):</p>
+<p>ciphers: - ECDHE-RSA-AES128-GCM-SHA256</p>
+<p>TLS 1.3 cipher suites (e.g. TLS_AES_128_GCM_SHA256) are not configurable and are always enabled when TLS 1.3 is negotiated.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>minTLSVersion</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>minTLSVersion is used to specify the minimal version of the TLS protocol that is negotiated during the TLS handshake. For example, to use TLS versions 1.1, 1.2 and 1.3 (yaml):</p>
-<p>minTLSVersion: VersionTLS11</p>
-<p>NOTE: currently the highest minTLSVersion allowed is VersionTLS12</p></td>
+<p>minTLSVersion: VersionTLS11</p></td>
 </tr>
 </tbody>
 </table>

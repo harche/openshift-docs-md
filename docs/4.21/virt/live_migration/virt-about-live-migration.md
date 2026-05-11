@@ -2,13 +2,12 @@ Live migration is the process of moving a running virtual machine (VM) to anothe
 
 # Live migration requirements
 
-Live migration requires specific cluster configuration, including shared storage, sufficient resources, and compatible node settings.
+Live migration requires shared storage, sufficient resources, and compatible CPUs across nodes.
 
-Live migration has the following requirements:
+Live migration requirements
+- Shared storage with `ReadWriteMany` (RWX) access mode.
 
-- The cluster must have shared storage with `ReadWriteMany` (RWX) access mode.
-
-- The cluster must have sufficient RAM and network bandwidth.
+- Sufficient RAM and network bandwidth.
 
   <div class="note">
 
@@ -16,13 +15,17 @@ Live migration has the following requirements:
 
       Product of (Maximum number of nodes that can drain in parallel) and (Highest total VM memory request allocations across nodes)
 
-  The default number of migrations that can run in parallel in the cluster is 5.
+  The default number of migrations that can run in parallel in the cluster is 5. For more information, see "Configuring live migration" in the Additional resources section.
 
   </div>
 
-- If a VM uses a host model CPU, the nodes must support the CPU.
+- If the virtual machine uses a host model CPU, the nodes must support the virtual machine’s host model CPU.
 
-- Configuring a dedicated Multus network for live migration is highly recommended. A dedicated network minimizes the effects of network saturation on tenant workloads during migration. For more details, see the "Configuring a dedicated network for live migration" section.
+<div class="note">
+
+A dedicated Multus network for live migration is highly recommended. For more information, see "Using a dedicated network for live migration" in the Additional resources section. A dedicated network minimizes the effects of network saturation on tenant workloads during migration.
+
+</div>
 
 # About live migration permissions
 

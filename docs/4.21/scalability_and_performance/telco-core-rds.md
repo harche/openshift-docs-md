@@ -185,6 +185,8 @@ Engineering Considerations
 
 # Telco core cluster common use model engineering considerations
 
+The following engineering considerations apply to the telco core cluster common use model.
+
 - Cluster workloads are detailed in "Application workloads".
 
 - Worker nodes should run on either of the following CPUs:
@@ -272,6 +274,8 @@ The following sections describe the various OpenShift Container Platform compone
 
 ## CPU partitioning and performance tuning
 
+CPU partitioning improves performance and reduces latency by separating sensitive workloads from general-purpose tasks, interrupts, and driver work queues.
+
 New in this release
 - Optional support for the `acpi_idle` CPUIdle driver.
 
@@ -340,6 +344,8 @@ Engineering considerations
 
 ## Workloads on schedulable control planes
 
+You can enable schedulable control planes to run workloads on control plane nodes, utilizing idle CPU capacity on bare-metal machines for potential cost savings.
+
 Enabling workloads on control plane nodes
 You can enable schedulable control planes to run workloads on control plane nodes, utilizing idle CPU capacity on bare metal machines for potential cost savings. This feature is only applicable to clusters with bare metal control plane nodes.
 
@@ -373,7 +379,6 @@ As part of this enablement, the NUMA Resources Operator is supported on control 
 
 ## Service Mesh
 
-Description
 Telco core cloud-native functions (CNFs) typically require a Service Mesh implementation. Specific Service Mesh features and performance requirements are dependent on the application. The selection of Service Mesh implementation and configuration is outside the scope of this documentation. The implementation must account for the impact of Service Mesh on cluster resource usage and performance, including additional latency introduced in pod networking.
 
 - [About OpenShift Service Mesh](../service_mesh/v2x/ossm-about.xml#ossm-about)
@@ -430,6 +435,8 @@ Description
 
 ### Cluster Network Operator
 
+The Cluster Network Operator (CNO) deploys and manages the cluster network components including the default OVN-Kubernetes network plugin during cluster installation.
+
 New in this release
 - No reference design updates in this release
 
@@ -474,6 +481,8 @@ Engineering considerations
 
 ### Load balancer
 
+MetalLB is a load-balancer implementation for bare metal Kubernetes clusters that uses standard routing protocols.
+
 New in this release
 - No reference design updates in this release.
 
@@ -505,6 +514,8 @@ Engineering considerations
 - [When to use MetalLB](../networking/networking_operators/metallb-operator/about-metallb.xml#nw-metallb-when-metallb_about-metallb-and-metallb-operator)
 
 ### SR-IOV
+
+SR-IOV enables physical functions (PFs) to be divided into multiple virtual functions (VFs) that can then be assigned to multiple pods to achieve higher throughput performance while keeping the pods isolated.
 
 New in this release
 - No reference design updates in this release.
@@ -538,6 +549,8 @@ Engineering considerations
 
 ### NMState Operator
 
+The Kubernetes NMState Operator provides a Kubernetes API for performing state-driven network configuration across cluster nodes.
+
 New in this release
 - No reference design updates in this release
 
@@ -555,6 +568,8 @@ Engineering considerations
 - [Kubernetes NMState Operator](../networking/networking_operators/k8s-nmstate-about-the-k8s-nmstate-operator.xml#k8s-nmstate-about-the-k8s-nmstate-operator)
 
 ## Logging
+
+The Cluster Logging Operator enables collection and shipping of logs off the node for remote archival and analysis.
 
 New in this release
 - No reference design updates in this release
@@ -574,6 +589,8 @@ Engineering considerations
 
 ## Power Management
 
+Use the Performance profile to configure clusters with high power mode, low power mode, or mixed mode depending on the characteristics of the workloads running on the cluster.
+
 New in this release
 - No reference design updates in this release
 
@@ -592,6 +609,8 @@ Engineering considerations
 
 ## Storage
 
+Cloud native storage services can be provided by OpenShift Data Foundation or other third-party solutions.
+
 New in this release
 - No reference design updates in this release
 
@@ -609,6 +628,8 @@ All storage data might not be encrypted in flight. To reduce risk, isolate the s
 - [Red Hat OpenShift Data Foundation](../storage/persistent_storage/persistent-storage-ocs.xml#red-hat-openshift-data-foundation)
 
 ### OpenShift Data Foundation
+
+OpenShift Data Foundation is a software-defined storage service for containers that provides block storage, file system storage, and on-premise object storage.
 
 New in this release
 - No reference design updates in this release.
@@ -650,6 +671,8 @@ The following sections describe the various OpenShift Container Platform compone
 
 ## Red Hat Advanced Cluster Management
 
+RHACM provides Multi Cluster Engine (MCE) installation and ongoing GitOps ZTP lifecycle management for deployed clusters.
+
 New in this release
 - No reference design updates in this release.
 
@@ -673,6 +696,8 @@ Engineering considerations
 - [Red Hat Advanced Cluster Management for Kubernetes](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes)
 
 ## Topology Aware Lifecycle Manager
+
+TALM is an Operator that runs only on the hub cluster and manages how changes are rolled out to managed clusters in the network.
 
 New in this release
 - No reference design updates in this release.
@@ -714,6 +739,8 @@ Engineering considerations
 
 ## GitOps Operator and GitOps ZTP plugins
 
+The GitOps Operator provides a GitOps driven infrastructure for managing cluster deployment and configuration.
+
 New in this release
 - No reference design updates in this release.
 
@@ -750,6 +777,8 @@ Engineering considerations
 
 ## Agent-based Installer
 
+The Agent Based Installer (ABI) is a separate installation flow for OpenShift Container Platform in environments without existing infrastructure for running cluster deployments.
+
 New in this release
 - No reference design updates in this release.
 
@@ -774,6 +803,8 @@ Engineering considerations
 
 # Monitoring
 
+The Cluster Monitoring Operator (CMO) is included by default in OpenShift Container Platform and provides monitoring, including metrics, dashboards, and alerting, for the platform components and optionally user projects.
+
 New in this release
 - Optionally use the `remoteWrite` field in Prometheus configurations for direct export of metrics
 
@@ -794,6 +825,8 @@ Engineering considerations
 - [About OpenShift Container Platform monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/about_monitoring/about-ocp-monitoring)
 
 # Scheduling
+
+The scheduler is a cluster-wide component responsible for selecting the right node for a given workload.
 
 New in this release
 - No reference design updates in this release.
@@ -824,6 +857,8 @@ Engineering considerations
 - [Topology Manager policies](../scalability_and_performance/using-cpu-manager.xml#topology-manager-policies_using-cpu-manager-and-topology-manager)
 
 # Node Configuration
+
+Node configuration for telco core clusters includes additional kernel modules and settings to support telco workloads.
 
 New in this release
 - Consult the 4.21 release notes regarding the decrease in the default maximum open files soft limit for containers in this release.
@@ -881,6 +916,8 @@ Limits and requirements
 
 ## Host firmware and boot loader configuration
 
+Configure host firmware and boot loader settings to support telco core cluster requirements.
+
 New in this release
 - No reference design updates in this release.
 
@@ -899,11 +936,7 @@ Some CNF workloads make use of sysctls which are not in the list of system-wide 
 
 Additionally, the `systemReserved` memory can be configured through the same `kubeletconfig.experimental` annotation to reserve memory for system daemons and kernel processes.
 
-<div class="formalpara-title">
-
-**Example snippet showing allowedUnsafeSysctls and systemReserved**
-
-</div>
+The following example shows the `allowedUnsafeSysctls` and `systemReserved` configuration:
 
 ``` yaml
 apiVersion: performance.openshift.io/v2
@@ -930,6 +963,8 @@ Although these are namespaced they may allow a pod to consume memory or other re
 
 # Disconnected environment
 
+Telco core clusters are expected to be installed in networks without direct access to the internet.
+
 New in this release
 - No reference design updates in this release.
 
@@ -951,6 +986,8 @@ Engineering considerations
 - [Using sysctl in containers](../nodes/containers/nodes-containers-sysctls.xml#nodes-containers-sysctls)
 
 # Security
+
+Telco customers are security conscious and require clusters to be hardened against multiple attack vectors.
 
 New in this release
 - No reference design updates in this release.
@@ -1022,6 +1059,8 @@ Engineering considerations
 
 # Scalability
 
+Scale clusters as described in "Limits and requirements". Scaling of workloads is described in "Application workloads".
+
 New in this release
 - No reference design updates in this release.
 
@@ -1063,11 +1102,7 @@ You can extract the complete set of custom resources (CRs) for the telco core pr
   $ tree -L 4
   ```
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
+  The following is example output:
 
   ``` text
   .
@@ -1197,11 +1232,11 @@ For further information about the `cluster-compare` plugin, see "Understanding t
     └── version_match.tmpl
     ```
 
-    - Configuration file for the reference configuration.
+    - `metadata.yaml` is the configuration file for the reference configuration.
 
-    - Directory for optional templates.
+    - `optional` is the directory for optional templates.
 
-    - Directory for required templates.
+    - `required` is the directory for required templates.
 
 4.  Compare the configuration for your cluster to the telco core reference configuration by running the following command:
 
@@ -1209,11 +1244,7 @@ For further information about the `cluster-compare` plugin, see "Understanding t
     $ oc cluster-compare -r out/telco-core-rds/configuration/reference-crs-kube-compare/metadata.yaml
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following is example output:
 
     ``` terminal
     W1212 14:13:06.281590   36629 compare.go:425] Reference Contains Templates With Types (kind) Not Supported By Cluster: BFDProfile, BGPAdvertisement, BGPPeer, ClusterLogForwarder, Community, IPAddressPool, MetalLB, MultiNetworkPolicy, NMState, NUMAResourcesOperator, NUMAResourcesScheduler, NodeNetworkConfigurationPolicy, SriovNetwork, SriovNetworkNodePolicy, SriovOperatorConfig, StorageCluster
@@ -1289,29 +1320,31 @@ For further information about the `cluster-compare` plugin, see "Understanding t
     No patched CRs
     ```
 
-    - The CR under comparison. The plugin displays each CR with a difference from the corresponding template.
+    - `Cluster CR` is the CR under comparison. The plugin displays each CR with a difference from the corresponding template.
 
-    - The template matching with the CR for comparison.
+    - `Reference File` is the template matching with the CR for comparison.
 
     - The output in Linux diff format shows the difference between the template and the cluster CR.
 
-    - After the plugin reports the line diffs for each CR, the summary of differences are reported.
+    - `Summary` reports the summary of differences after the plugin reports the line diffs for each CR.
 
-    - The number of CRs in the comparison with differences from the corresponding templates.
+    - `CRs with diffs` is the number of CRs in the comparison with differences from the corresponding templates.
 
-    - The number of CRs represented in the reference configuration, but missing from the live cluster.
+    - `CRs in reference missing from the cluster` is the number of CRs represented in the reference configuration, but missing from the live cluster.
 
-    - The list of CRs represented in the reference configuration, but missing from the live cluster.
+    - `Missing CRs` is the list of CRs represented in the reference configuration, but missing from the live cluster.
 
-    - The CRs that did not match to a corresponding template in the reference configuration.
+    - `No CRs are unmatched` indicates the CRs that did not match to a corresponding template in the reference configuration.
 
-    - The metadata hash identifies the reference configuration.
+    - `Metadata Hash` identifies the reference configuration.
 
-    - The list of patched CRs.
+    - `No patched CRs` is the list of patched CRs.
 
 - [Understanding the cluster-compare plugin](../scalability_and_performance/cluster-compare/understanding-the-cluster-compare-plugin.xml#understanding-the-cluster-compare-plugin)
 
 ## Node configuration reference CRs
+
+The following table describes the node configuration custom resources (CRs) for the telco core profile.
 
 | Component                        | Reference CR                             | Description                                                                                                          | Optional |
 |----------------------------------|------------------------------------------|----------------------------------------------------------------------------------------------------------------------|----------|
@@ -1326,6 +1359,8 @@ For further information about the `cluster-compare` plugin, see "Understanding t
 Node configuration CRs
 
 ## Cluster infrastructure reference CRs
+
+The following table describes the cluster infrastructure custom resources (CRs) for the telco core profile.
 
 | Component                    | Reference CR                                         | Description                                                                                                                                                   | Optional |
 |------------------------------|------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
@@ -1347,6 +1382,8 @@ Cluster infrastructure CRs
 
 ## Resource tuning reference CRs
 
+The following table describes the resource tuning custom resources (CRs) for the telco core profile.
+
 | Component                | Reference CR                         | Description                                                                                            | Optional |
 |--------------------------|--------------------------------------|--------------------------------------------------------------------------------------------------------|----------|
 | System reserved capacity | `control-plane-system-reserved.yaml` | Optional. Configures kubelet, enabling auto-sizing reserved resources for the control plane node pool. | No       |
@@ -1354,6 +1391,8 @@ Cluster infrastructure CRs
 Resource tuning CRs
 
 ## Networking reference CRs
+
+The following table describes the networking custom resources (CRs) for the telco core profile.
 
 | Component                               | Reference CR                       | Description                                                                                                                                                                                                                                                                                   | Optional |
 |-----------------------------------------|------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
@@ -1384,6 +1423,8 @@ Networking CRs
 
 ## Scheduling reference CRs
 
+The following table describes the scheduling custom resources (CRs) for the telco core profile.
+
 | Component            | Reference CR                     | Description                                                                                                                                                                          | Optional |
 |----------------------|----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
 | NUMA-aware scheduler | `nrop.yaml`                      | Enables the NUMA Resources Operator, aligning workloads with specific NUMA node configurations. Required for clusters with multi-NUMA nodes.                                         | No       |
@@ -1396,6 +1437,8 @@ Networking CRs
 Scheduling CRs
 
 ## Storage reference CRs
+
+The following table describes the storage custom resources (CRs) for the telco core profile.
 
 | Component                  | Reference CR                                        | Description                                                                                                                                   | Optional |
 |----------------------------|-----------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|----------|

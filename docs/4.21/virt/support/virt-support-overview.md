@@ -24,7 +24,7 @@ Gather troubleshooting information by using the following tools:
 
 Submit a support case to resolve a cluster issue that is affecting the ability of OpenShift Virtualization to function properly in your environment.
 
-You can submit a support case to Red Hat Support by using the [Customer Support](https://access.redhat.com/support/cases/#/case/list) page. Include data that you collected about your issue with your support request.
+You can submit a support case to Red Hat Support by using the Customer Support page. Include data that you collected about your issue with your support request.
 
 ## Creating a Jira issue
 
@@ -32,7 +32,7 @@ To report an issue with your environment to Red Hat Support, create a Jira issu
 
 1.  Log in to Red Hat Atlassian Jira.
 
-2.  Click the following link to open a **Create Issue** page: [Create issue](https://redhat.atlassian.net/secure/CreateIssue.jspa).
+2.  Access the **Create Issue** page.
 
 3.  Select OpenShift Virtualization (CNV) as the **Project**.
 

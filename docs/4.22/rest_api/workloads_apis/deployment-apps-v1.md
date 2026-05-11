@@ -148,7 +148,7 @@ Type
 <td style="text-align: left;"><p><code>terminatingReplicas</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Total number of terminating pods targeted by this deployment. Terminating pods have a non-null .metadata.deletionTimestamp and have not yet reached the Failed or Succeeded .status.phase.</p>
-<p>This is an alpha field. Enable DeploymentReplicaSetTerminatingReplicas to be able to use this field.</p></td>
+<p>This is a beta field and requires enabling DeploymentReplicaSetTerminatingReplicas feature (enabled by default).</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>unavailableReplicas</code></p></td>

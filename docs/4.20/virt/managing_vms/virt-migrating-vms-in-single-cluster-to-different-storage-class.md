@@ -10,10 +10,6 @@ When you migrate a virtual machine disk from one storage class to another, the s
 
 </div>
 
-- The VMs you select for each bulk migration must be in the same namespace.
-
-- The Migration Toolkit for Containers (MTC) must be installed.
-
 1.  From the OpenShift Container Platform web console, navigate to **Virtualization** → **VirtualMachines**.
 
 2.  From the list of VMs in the same namespace, select each VM that you want to move from its current storage class.

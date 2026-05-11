@@ -190,52 +190,57 @@ Type
 <td style="text-align: left;"><p>NodeDaemonEndpoints lists ports opened by daemons running on the Node.</p></td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;"><p><code>declaredFeatures</code></p></td>
+<td style="text-align: left;"><p><code>array (string)</code></p></td>
+<td style="text-align: left;"><p>DeclaredFeatures represents the features related to feature gates that are declared by the node.</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>features</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>NodeFeatures describes the set of features implemented by the CRI implementation. The features contained in the NodeFeatures should depend only on the cri implementation independent of runtime handlers.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>images</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>List of container images on this node</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>images[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Describe a container image</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>nodeInfo</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>NodeSystemInfo is a set of ids/uuids to uniquely identify the node.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>phase</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>NodePhase is the recently observed lifecycle phase of the node. More info: <a href="https://kubernetes.io/docs/concepts/nodes/node/#phase">https://kubernetes.io/docs/concepts/nodes/node/#phase</a> The field is never populated, and now is deprecated.</p>
 <p>Possible enum values: - <code>"Pending"</code> means the node has been created/added by the system, but not configured. - <code>"Running"</code> means the node has been configured and has Kubernetes components running. - <code>"Terminated"</code> means the node has been removed from the cluster.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>runtimeHandlers</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>The available runtime handlers.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>runtimeHandlers[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>NodeRuntimeHandler is a set of runtime handler information.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>volumesAttached</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>List of volumes that are attached to the node.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>volumesAttached[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>AttachedVolume describes a volume attached to a node</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>volumesInUse</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>List of attachable volumes in use (mounted) by the node.</p></td>

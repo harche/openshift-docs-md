@@ -235,11 +235,24 @@ spec:
         state: present
 ```
 
-\+ where:
+where:
 
-\+ `metadata.name`:: The name for the configuration object. `spec.nodeSelector.node-role.kubernetes.io/worker`:: A node selector that specifies the nodes to apply the node network configuration policy to. `spec.desiredState.ovn.bridge-mappings.localnet`:: The name for the secondary network from which traffic is forwarded to the OVS bridge. This secondary network must match the name of the `spec.config.name` field of the `NetworkAttachmentDefinition` CRD that defines the OVN-Kubernetes secondary network. `spec.desiredState.ovn.bridge-mappings.bridge`:: The name of the OVS bridge on the node. This value is required only if you specify `state: present`. `spec.desiredState.ovn.bridge-mappings.state`:: The state for the mapping. Must be either `present` to add the bridge or `absent` to remove the bridge. The default value is `present`.
+`metadata.name`
+The name for the configuration object.
 
-\+ The following JSON example configures a localnet secondary network that is named `localnet1`. Note that the value for the `mtu` parameter must match the MTU value that was set for the secondary network interface that is mapped to the `br-ex` bridge interface.
+`spec.nodeSelector.node-role.kubernetes.io/worker`
+A node selector that specifies the nodes to apply the node network configuration policy to.
+
+`spec.desiredState.ovn.bridge-mappings.localnet`
+The name for the secondary network from which traffic is forwarded to the OVS bridge. This secondary network must match the name of the `spec.config.name` field of the `NetworkAttachmentDefinition` CRD that defines the OVN-Kubernetes secondary network.
+
+`spec.desiredState.ovn.bridge-mappings.bridge`
+The name of the OVS bridge on the node. This value is required only if you specify `state: present`.
+
+`spec.desiredState.ovn.bridge-mappings.state`
+The state for the mapping. Must be either `present` to add the bridge or `absent` to remove the bridge. The default value is `present`.
+
+The following JSON example configures a localnet secondary network that is named `localnet1`. Note that the value for the `mtu` parameter must match the MTU value that was set for the secondary network interface that is mapped to the `br-ex` bridge interface.
 
 ``` json
 {
@@ -288,11 +301,33 @@ spec:
         state: present
 ```
 
-\+ where:
+where:
 
-\+ `metadata.name`:: Specifies the name of the configuration object. `node-role.kubernetes.io/worker`:: Specifies a node selector that identifies the nodes to which the node network configuration policy applies. `desiredState.interfaces.name`:: Specifies a new OVS bridge that operates separately from the default bridge used by OVN-Kubernetes for cluster traffic. `options.mcast-snooping-enable`:: Specifies whether to enable multicast snooping. When enabled, multicast snooping prevents network devices from flooding multicast traffic to all network members. By default, an OVS bridge does not enable multicast snooping. The default value is `false`. `bridge.port.name`:: Specifies the network device on the host system to associate with the new OVS bridge. `ovn.bridge-mappings.localnet`:: Specifies the name of the secondary network that forwards traffic to the OVS bridge. This name must match the value of the `spec.config.name` field in the `NetworkAttachmentDefinition` CRD that defines the OVN-Kubernetes secondary network. `ovn.bridge-mappings.bridge`:: Specifies the name of the OVS bridge on the node. The value is required only when `state: present` is set. `ovn.bridge-mappings.state`:: Specifies the state of the mapping. Valid values are `present` to add the bridge or `absent` to remove the bridge. The default value is `present`.
+`metadata.name`
+Specifies the name of the configuration object.
 
-\+ The following JSON example configures a localnet secondary network that is named `localnet2`. Note that the value for the `mtu` parameter must match the MTU value that was set for the `eth1` secondary network interface.
+`node-role.kubernetes.io/worker`
+Specifies a node selector that identifies the nodes to which the node network configuration policy applies.
+
+`desiredState.interfaces.name`
+Specifies a new OVS bridge that operates separately from the default bridge used by OVN-Kubernetes for cluster traffic.
+
+`options.mcast-snooping-enable`
+Specifies whether to enable multicast snooping. When enabled, multicast snooping prevents network devices from flooding multicast traffic to all network members. By default, an OVS bridge does not enable multicast snooping. The default value is `false`.
+
+`bridge.port.name`
+Specifies the network device on the host system to associate with the new OVS bridge.
+
+`ovn.bridge-mappings.localnet`
+Specifies the name of the secondary network that forwards traffic to the OVS bridge. This name must match the value of the `spec.config.name` field in the `NetworkAttachmentDefinition` CRD that defines the OVN-Kubernetes secondary network.
+
+`ovn.bridge-mappings.bridge`
+Specifies the name of the OVS bridge on the node. The value is required only when `state: present` is set.
+
+`ovn.bridge-mappings.state`
+Specifies the state of the mapping. Valid values are `present` to add the bridge or `absent` to remove the bridge. The default value is `present`.
+
+The following JSON example configures a localnet secondary network that is named `localnet2`. Note that the value for the `mtu` parameter must match the MTU value that was set for the `eth1` secondary network interface.
 
 ``` json
 {

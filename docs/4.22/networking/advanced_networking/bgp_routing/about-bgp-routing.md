@@ -161,8 +161,8 @@ spec:
 
 - `allowed.mode`: Advertises all prefixes.
 
-  The `toReceive` parameter
-  By default, `FRR-K8s` does not process any prefixes advertised by a neighbor. You can use the `toReceive` parameter to process such addresses.
+The `toReceive` parameter
+By default, `FRR-K8s` does not process any prefixes advertised by a neighbor. You can use the `toReceive` parameter to process such addresses.
 
 You can configure for a subset of the prefixes, as in this example:
 

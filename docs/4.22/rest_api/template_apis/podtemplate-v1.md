@@ -214,7 +214,7 @@ Required
 <td style="text-align: left;"><p><code>resourceClaims</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>ResourceClaims defines which ResourceClaims must be allocated and reserved before the Pod is allowed to start. The resources will be made available to those containers which consume them by name.</p>
-<p>This is an alpha field and requires enabling the DynamicResourceAllocation feature gate.</p>
+<p>This is a stable field but requires that the DynamicResourceAllocation feature gate is enabled.</p>
 <p>This field is immutable.</p></td>
 </tr>
 <tr class="odd">
@@ -319,6 +319,11 @@ Required
 <td style="text-align: left;"><p><code>volumes[]</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Volume represents a named volume in a pod that may be accessed by any container in the pod.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>workloadRef</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>WorkloadReference identifies the Workload object and PodGroup membership that a Pod belongs to. The scheduler uses this information to apply workload-aware scheduling semantics.</p></td>
 </tr>
 </tbody>
 </table>
@@ -932,7 +937,7 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>resizePolicy</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
-<td style="text-align: left;"><p>Resources resize policy for the container.</p></td>
+<td style="text-align: left;"><p>Resources resize policy for the container. This field cannot be set on ephemeral containers.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>resizePolicy[]</code></p></td>
@@ -2002,7 +2007,7 @@ Required
 ## .template.spec.containers\[\].resizePolicy
 
 Description
-Resources resize policy for the container.
+Resources resize policy for the container. This field cannot be set on ephemeral containers.
 
 Type
 `array`
@@ -4620,7 +4625,7 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>resizePolicy</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
-<td style="text-align: left;"><p>Resources resize policy for the container.</p></td>
+<td style="text-align: left;"><p>Resources resize policy for the container. This field cannot be set on ephemeral containers.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>resizePolicy[]</code></p></td>
@@ -5690,7 +5695,7 @@ Required
 ## .template.spec.initContainers\[\].resizePolicy
 
 Description
-Resources resize policy for the container.
+Resources resize policy for the container. This field cannot be set on ephemeral containers.
 
 Type
 `array`
@@ -6356,7 +6361,7 @@ Required
 Description
 ResourceClaims defines which ResourceClaims must be allocated and reserved before the Pod is allowed to start. The resources will be made available to those containers which consume them by name.
 
-This is an alpha field and requires enabling the DynamicResourceAllocation feature gate.
+This is a stable field but requires that the DynamicResourceAllocation feature gate is enabled.
 
 This field is immutable.
 
@@ -6795,8 +6800,8 @@ Type
 <tr class="odd">
 <td style="text-align: left;"><p><code>operator</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>Operator represents a key’s relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category.</p>
-<p>Possible enum values: - <code>"Equal"</code> - <code>"Exists"</code></p></td>
+<td style="text-align: left;"><p>Operator represents a key’s relationship to the value. Valid operators are Exists, Equal, Lt, and Gt. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category. Lt and Gt perform numeric comparisons (requires feature gate TaintTolerationComparisonOperators).</p>
+<p>Possible enum values: - <code>"Equal"</code> - <code>"Exists"</code> - <code>"Gt"</code> - <code>"Lt"</code></p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>tolerationSeconds</code></p></td>
@@ -8152,6 +8157,14 @@ Required
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Kubelet’s generated CSRs will be addressed to this signer.</p></td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>userAnnotations</code></p></td>
+<td style="text-align: left;"><p><code>object (string)</code></p></td>
+<td style="text-align: left;"><p>userAnnotations allow pod authors to pass additional information to the signer implementation. Kubernetes does not restrict or validate this metadata in any way.</p>
+<p>These values are copied verbatim into the <code>spec.unverifiedUserAnnotations</code> field of the PodCertificateRequest objects that Kubelet creates.</p>
+<p>Entries are subject to the same validation as object metadata annotations, with the addition that all keys must be domain-prefixed. No restrictions are placed on values, except an overall size limitation on the entire field.</p>
+<p>Signers should document the keys and values they support. Signers should deny requests that contain keys they do not recognize.</p></td>
+</tr>
 </tbody>
 </table>
 
@@ -8404,6 +8417,25 @@ Required
 | `storagePolicyID`   | `string` | storagePolicyID is the storage Policy Based Management (SPBM) profile ID associated with the StoragePolicyName.                                                                   |
 | `storagePolicyName` | `string` | storagePolicyName is the storage Policy Based Management (SPBM) profile name.                                                                                                     |
 | `volumePath`        | `string` | volumePath is the path that identifies vSphere volume vmdk                                                                                                                        |
+
+## .template.spec.workloadRef
+
+Description
+WorkloadReference identifies the Workload object and PodGroup membership that a Pod belongs to. The scheduler uses this information to apply workload-aware scheduling semantics.
+
+Type
+`object`
+
+Required
+- `name`
+
+- `podGroup`
+
+| Property             | Type     | Description                                                                                                                                                                                                                                                                                          |
+|----------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`               | `string` | Name defines the name of the Workload object this Pod belongs to. Workload must be in the same namespace as the Pod. If it doesn’t match any existing Workload, the Pod will remain unschedulable until a Workload object is created and observed by the kube-scheduler. It must be a DNS subdomain. |
+| `podGroup`           | `string` | PodGroup is the name of the PodGroup within the Workload that this Pod belongs to. If it doesn’t match any existing PodGroup within the Workload, the Pod will remain unschedulable until the Workload object is recreated and observed by the kube-scheduler. It must be a DNS label.               |
+| `podGroupReplicaKey` | `string` | PodGroupReplicaKey specifies the replica key of the PodGroup to which this Pod belongs. It is used to distinguish pods belonging to different replicas of the same pod group. The pod group policy is applied separately to each replica. When set, it must be a DNS label.                          |
 
 # API endpoints
 

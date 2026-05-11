@@ -202,7 +202,7 @@ You can connect a virtual machine (VM) to multiple secondary cluster-scoped user
 
     <div class="note">
 
-    When running OpenShift Virtualization on IBM Z®, be aware that certain network interfaces, such as OSA, RoCE, and HiperSockets, only forward network traffic to devices that are registered with the respective interface. As a result, any traffic that is destined for unregistered devices is not forwarded. For more information, see [OSA interface traffic forwarding](https://www.ibm.com/docs/en/linux-on-systems?topic=choices-osa-interface-traffic-forwarding) (IBM documentation).
+    When running OpenShift Virtualization on IBM Z®, be aware that certain network interfaces, such as OSA, RoCE, and HiperSockets, only forward network traffic to devices that are registered with the respective interface. As a result, any traffic that is destined for unregistered devices is not forwarded.
 
     </div>
 

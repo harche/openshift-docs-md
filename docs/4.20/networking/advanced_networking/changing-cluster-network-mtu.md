@@ -161,32 +161,34 @@ To maintain network stability during an MTU change, you must prepare the configu
 
     - If your hardware MTU is specified in a NetworkManager connection configuration, complete the following steps. This approach is the default for OpenShift Container Platform if you do not explicitly specify your network configuration with DHCP, a kernel command line, or some other method. Your cluster nodes must all use the same underlying network configuration for the following procedure to work unmodified.
 
-      1.  Find the primary network interface by entering the following command:
+2.  Find the primary network interface by entering the following command:
 
-          ``` terminal
-          $ oc debug node/<node_name> -- chroot /host nmcli -g connection.interface-name c show ovs-if-phys0
-          ```
+    ``` terminal
+    $ oc debug node/<node_name> -- chroot /host nmcli -g connection.interface-name c show ovs-if-phys0
+    ```
 
-          where:
+    where:
 
-          `<node_name>`
-          Specifies the name of a node in your cluster.
+    `<node_name>`
+    Specifies the name of a node in your cluster.
 
-      2.  Create the following `NetworkManager` configuration in the `<interface>-mtu.conf` file:
+3.  Create the following `NetworkManager` configuration in the `<interface>-mtu.conf` file:
 
-          ``` ini
-          [connection-<interface>-mtu]
-          match-device=interface-name:<interface>
-          ethernet.mtu=<mtu>
-          ```
+    ``` ini
+    [connection-<interface>-mtu]
+    match-device=interface-name:<interface>
+    ethernet.mtu=<mtu>
+    ```
 
-          where:
+    where:
 
-          `<interface>`
-          Specifies the primary network interface name.
+    `<interface>`
+    Specifies the primary network interface name.
 
-          `<mtu>`
-          Specifies the new hardware MTU value.
+    `<mtu>`
+    Specifies the new hardware MTU value.
+
+    - If you used Kubernetes NMState to configure the `br-ex` bridge, use the Kubernetes NMState Operator to update the MTU for the `br-ex` bridge. Changing the MTU for this bridge in a `.nmconnection` file could lead to persistence issues as the Machine Config Operator (MCO) might overwrite the file.
 
 ## Creating MachineConfig objects
 

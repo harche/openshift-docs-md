@@ -752,9 +752,9 @@ You can define a DNS name either during your initial setup or during postinstall
 
 # Creating a hosted cluster on AWS
 
-Create a hosted cluster on Amazon Web Services (AWS) by using the hosted control plane command-line interface (`hcp`).
+On AWS, you can create a hosted cluster by using the command-line interface, `hcp`, or by providing AWS STS credentials. You can also create a hosted cluster in multiple zones on AWS.
 
-A *hosted cluster* is an OpenShift Container Platform cluster with its API endpoint and control plane that are hosted on a management cluster. The hosted cluster includes the control plane and its corresponding data plane.
+A *hosted cluster* is an OpenShift Container Platform cluster with its API endpoint and control plane hosted on a management cluster. The hosted cluster includes the control plane and its corresponding data plane.
 
 The hosted cluster is automatically imported as a managed cluster. If you want to disable this automatic import feature, see "Disabling the automatic import of hosted clusters into multicluster engine Operator".
 
@@ -768,6 +768,14 @@ For compatible combinations of node pools and hosted clusters, see the following
 | ARM64          | ARM64 or AMD64 |
 
 Compatible architectures for node pools and hosted clusters
+
+- [Disabling the automatic import of hosted clusters into multicluster engine Operator](../../hosted_control_planes/hcp-import.xml#hcp-import-disable_hcp-import)
+
+- [Running hosted clusters on an ARM64 architecture](../../hosted_control_planes/hcp-deploy/hcp-deploy-aws.xml#hcp-enable-arm-amd_hcp-deploy-aws)
+
+## Creating a hosted cluster on AWS by using the CLI
+
+To create a hosted cluster on Amazon Web Services (AWS), you can use the hosted control plane command-line interface (`hcp`).
 
 - You have set up the hosted control plane CLI, `hcp`.
 
@@ -882,9 +890,115 @@ Compatible architectures for node pools and hosted clusters
     $ oc get nodepools --namespace <hosted_cluster_namespace>
     ```
 
-- [Running hosted clusters on an ARM64 architecture](../../hosted_control_planes/hcp-deploy/hcp-deploy-aws.xml#hcp-enable-arm-amd_hcp-deploy-aws)
-
 - [Configuring a custom API server certificate in a hosted cluster](../../hosted_control_planes/hcp-certificates.xml#hcp-custom-cert_hcp-certificates)
+
+## Creating a hosted cluster by providing AWS STS credentials
+
+To enhance the security of your hosted control plane deployment, you can create a hosted cluster on AWS by using the AWS Security Token Service (STS).
+
+When you create a hosted cluster by using the `hcp create cluster aws` command, you must provide an Amazon Web Services (AWS) account credentials that have permissions to create infrastructure resources for your hosted cluster.
+
+Infrastructure resources include the following examples:
+
+- Virtual Private Cloud (VPC)
+
+- Subnets
+
+- Network address translation (NAT) gateways
+
+You can provide the AWS credentials by using the either of the following ways:
+
+- The AWS Security Token Service (STS) credentials
+
+- The AWS cloud provider secret from multicluster engine Operator
+
+<!-- -->
+
+- To create a hosted cluster on AWS by providing AWS STS credentials, enter the following command:
+
+  ``` terminal
+  $ hcp create cluster aws \
+    --name <hosted_cluster_name> \
+    --node-pool-replicas <node_pool_replica_count> \
+    --base-domain <base_domain> \
+    --pull-secret <path_to_pull_secret> \
+    --sts-creds <path_to_sts_credential_file> \
+    --region <region> \
+    --role-arn <arn_role>
+  ```
+
+  where:
+
+  `<hosted_cluster_name>`
+  Specifies the name of your hosted cluster, for example, `my-hosted-cluster-01`.
+
+  `<node_pool_replica_count>`
+  Specifies the node pool replica count, for example, `2`.
+
+  `<base_domain>`
+  Specifies your base domain, for example, `example.com`.
+
+  `<path_to_pull_secret>`
+  Specifies the path to your pull secret, for example, `/user/name/pullsecret`.
+
+  `<path_to_sts_credentials>`
+  Specifies the path to your AWS STS credentials file, for example, `/home/user/sts-creds/sts-creds.json`.
+
+  `<region>`
+  Specifies the AWS region name, for example, `us-east-1`.
+
+  `<arn_role>`
+  Specifies the Amazon Resource Name (ARN), for example, `arn:aws:iam::820196288204:role/myrole`.
+
+## Creating a hosted cluster in multiple zones on AWS
+
+To improve availability and fault tolerance, you can create a hosted cluster across multiple AWS availability zones. Distributing your node pools and compute nodes across several zones protects your workloads against potential outages in a single geographical region.
+
+You can create a hosted cluster in multiple zones on Amazon Web Services (AWS) by using the `hcp` command-line interface (CLI).
+
+- You created an AWS Identity and Access Management (IAM) role and AWS Security Token Service (STS) credentials.
+
+<!-- -->
+
+- Create a hosted cluster in multiple zones on AWS by running the following command:
+
+  ``` terminal
+  $ hcp create cluster aws \
+    --name <hosted_cluster_name> \
+    --node-pool-replicas=<node_pool_replica_count> \
+    --base-domain <base_domain> \
+    --pull-secret <path_to_pull_secret> \
+    --role-arn <arn_role> \
+    --region <region> \
+    --zones <zones> \
+    --sts-creds <path_to_sts_credential_file>
+  ```
+
+  where:
+
+  `<hosted_cluster_name>`
+  Specifies the name of your hosted cluster, such as `my-hosted-cluster-01`.
+
+  `<node_pool_replica_count>`
+  Specifies the node pool replica count, for example, `2`.
+
+  `<base_domain>`
+  Specifies your base domain, for example, `example.com`.
+
+  `<path_to_pull_secret>`
+  Specifies the path to your pull secret, for example, `/user/name/pullsecret`.
+
+  `<arn_role>`
+  Specifies the Amazon Resource Name (ARN), for example, `arn:aws:iam::820196288204:role/myrole`.
+
+  `<region>`
+  Specifies the AWS region name, for example, `us-east-1`.
+
+  `<zones>`
+  Specifies availability zones within your AWS region, for example, `us-east-1a`, and `us-east-1b`. For each specified zone, the following infrastructure is created: public subnet, private subnet, NAT gateway, and private route table. A public route table is shared across public subnets. One `NodePool` resource is created for each zone. The node pool name is suffixed by the zone name. The private subnet for the zone is set in the `spec.platform.aws.subnet.id` parameter.
+
+  `<path_to_sts_credential_file>`
+  Specifies the path to your AWS STS credentials file, for example, `/home/user/sts-creds/sts-creds.json`.
 
 # Accessing a hosted cluster on AWS
 
@@ -922,117 +1036,6 @@ The `kubeadmin` password secret is Base64-encoded and the `kubeconfig` secret co
 
     You must decode the `kubeadmin` password secret to log in to the API server or the console of the hosted cluster.
 
-# Creating a hosted cluster in multiple zones on AWS
-
-To improve availability and fault tolerance, you can create a hosted cluster across multiple AWS availability zones. Distributing your node pools and compute nodes across several zones protects your workloads against potential outages in a single geographical region.
-
-You can create a hosted cluster in multiple zones on Amazon Web Services (AWS) by using the `hcp` command-line interface (CLI).
-
-- You created an AWS Identity and Access Management (IAM) role and AWS Security Token Service (STS) credentials.
-
-<!-- -->
-
-- Create a hosted cluster in multiple zones on AWS by running the following command:
-
-  ``` terminal
-  $ hcp create cluster aws \
-    --name <hosted_cluster_name> \
-    --node-pool-replicas=<node_pool_replica_count> \
-    --base-domain <basedomain> \
-    --pull-secret <path_to_pull_secret> \
-    --role-arn <arn_role> \
-    --region <region> \
-    --zones <zones> \
-    --sts-creds <path_to_sts_credential_file>
-  ```
-
-  where:
-
-  `<hosted_cluster_name>`
-  Specifies the name of your hosted cluster, such as `example`.
-
-  `<node_pool_replica_count>`
-  Specifies the node pool replica count, for example, `2`.
-
-  `<basedomain>`
-  Specifies your base domain, for example, `example.com`.
-
-  `<path_to_pull_secret>`
-  Specifies the path to your pull secret, for example, `/user/name/pullsecret`.
-
-  `<arn_role>`
-  Specifies the Amazon Resource Name (ARN), for example, `arn:aws:iam::820196288204:role/myrole`.
-
-  `<region>`
-  Specifies the AWS region name, for example, `us-east-1`.
-
-  `<zones>`
-  Specifies availability zones within your AWS region, for example, `us-east-1a`, and `us-east-1b`.
-
-  `<path_to_sts_credential_file>`
-  Specifies the path to your AWS STS credentials file, for example, `/home/user/sts-creds/sts-creds.json`.
-
-For each specified zone, the following infrastructure is created:
-
-- Public subnet
-
-- Private subnet
-
-- NAT gateway
-
-- Private route table
-
-A public route table is shared across public subnets.
-
-One `NodePool` resource is created for each zone. The node pool name is suffixed by the zone name. The private subnet for zone is set in `spec.platform.aws.subnet.id`.
-
-## Creating a hosted cluster by providing AWS STS credentials
-
-When you create a hosted cluster by using the `hcp create cluster aws` command, you must provide an Amazon Web Services (AWS) account credentials that have permissions to create infrastructure resources for your hosted cluster.
-
-Infrastructure resources include the following examples:
-
-- Virtual Private Cloud (VPC)
-
-- Subnets
-
-- Network address translation (NAT) gateways
-
-You can provide the AWS credentials by using the either of the following ways:
-
-- The AWS Security Token Service (STS) credentials
-
-- The AWS cloud provider secret from multicluster engine Operator
-
-<!-- -->
-
-- To create a hosted cluster on AWS by providing AWS STS credentials, enter the following command:
-
-  ``` terminal
-  $ hcp create cluster aws \
-    --name <hosted_cluster_name> \
-    --node-pool-replicas <node_pool_replica_count> \
-    --base-domain <basedomain> \
-    --pull-secret <path_to_pull_secret> \
-    --sts-creds <path_to_sts_credential_file> \
-    --region <region> \
-    --role-arn <arn_role>
-  ```
-
-  - Specify the name of your hosted cluster, for instance, `example`.
-
-  - Specify the node pool replica count, for example, `2`.
-
-  - Specify your base domain, for example, `example.com`.
-
-  - Specify the path to your pull secret, for example, `/user/name/pullsecret`.
-
-  - Specify the path to your AWS STS credentials file, for example, `/home/user/sts-creds/sts-creds.json`.
-
-  - Specify the AWS region name, for example, `us-east-1`.
-
-  - Specify the Amazon Resource Name (ARN), for example, `arn:aws:iam::820196288204:role/myrole`.
-
 # Running hosted clusters on an ARM64 architecture
 
 By default for hosted control planes on Amazon Web Services (AWS), you use an AMD64 hosted cluster. However, you can enable hosted control planes to run on an ARM64 hosted cluster.
@@ -1052,7 +1055,7 @@ You can run a hosted cluster on an ARM64 OpenShift Container Platform cluster fo
 
 If you do not use a multi-architecture release image, the compute nodes in the node pool are not created and reconciliation of the node pool stops until you either use a multi-architecture release image in the hosted cluster or update the `NodePool` custom resource based on the release image.
 
-- You must have an OpenShift Container Platform cluster with a 64-bit ARM infrastructure that is installed on AWS. For more information, see [Create an OpenShift Container Platform Cluster: AWS (ARM)](https://console.redhat.com/openshift/install/aws/arm).
+- You must have an OpenShift Container Platform cluster with a 64-bit ARM infrastructure that is installed on AWS. For more information, see "Create an OpenShift Container Platform Cluster: AWS (ARM)".
 
 - You must create an AWS Identity and Access Management (IAM) role and AWS Security Token Service (STS) credentials. For more information, see "Creating an AWS IAM role and STS credentials".
 
@@ -1064,7 +1067,7 @@ If you do not use a multi-architecture release image, the compute nodes in the n
   $ hcp create cluster aws \
     --name <hosted_cluster_name> \
     --node-pool-replicas <node_pool_replica_count> \
-    --base-domain <basedomain> \
+    --base-domain <base_domain> \
     --pull-secret <path_to_pull_secret> \
     --sts-creds <path_to_sts_credential_file> \
     --region <region> \
@@ -1072,25 +1075,43 @@ If you do not use a multi-architecture release image, the compute nodes in the n
     --role-arn <role_name>
   ```
 
-  - Specify the name of your hosted cluster, for instance, `example`.
+  where:
 
-  - Specify the node pool replica count, for example, `3`.
+  `<hosted_cluster_name>`
+  Specifies the name of your hosted cluster, for example, `my-hosted-cluster-01`.
 
-  - Specify your base domain, for example, `example.com`.
+  `<node_pool_replica_count>`
+  Specifies the node pool replica count, for example, `3`.
 
-  - Specify the path to your pull secret, for example, `/user/name/pullsecret`.
+  `<base_domain>`
+  Specifies your base domain, for example, `example.com`.
 
-  - Specify the path to your AWS STS credentials file, for example, `/home/user/sts-creds/sts-creds.json`.
+  `<path_to_pull_secret>`
+  Specifies the path to your pull secret, for example, `/user/name/pullsecret`.
 
-  - Specify the AWS region name, for example, `us-east-1`.
+  `<path_to_sts_credential_file>`
+  Specifies the path to your AWS STS credentials file, for example, `/home/user/sts-creds/sts-creds.json`.
 
-  - Specify the supported OpenShift Container Platform version that you want to use, for example, `4.21.0-multi`. If you are using a disconnected environment, replace `<ocp_release_image>` with the digest image. To extract the OpenShift Container Platform release image digest, see "Extracting the OpenShift Container Platform release image digest".
+  `<region>`
+  Specifies the AWS region name, for example, `us-east-1`.
 
-  - Specify the Amazon Resource Name (ARN), for example, `arn:aws:iam::820196288204:role/myrole`.
+  `<ocp_release_image>`
+  Specifies the supported OpenShift Container Platform version that you want to use, for example, `4.21.0-multi`. If you are using a disconnected environment, replace `<ocp_release_image>` with the digest image. To extract the OpenShift Container Platform release image digest, see "Extracting the OpenShift Container Platform release image digest".
+
+  `<role_name>`
+  Specifies the Amazon Resource Name (ARN), for example, `arn:aws:iam::820196288204:role/myrole`.
+
+<!-- -->
+
+- [Create an OpenShift Container Platform Cluster: AWS (ARM)](https://console.redhat.com/openshift/install/aws/arm)
+
+- [Creating an AWS IAM role and STS credentials](../../hosted_control_planes/hcp-deploy/hcp-deploy-aws.xml#hcp-aws-create-role-sts-creds_hcp-deploy-aws)
 
 ## Creating an ARM or AMD NodePool object on AWS hosted clusters
 
-You can schedule application workloads that is the `NodePool` objects on 64-bit ARM and AMD from the same hosted control plane. You can define the `arch` field in the `NodePool` specification to set the required processor architecture for the `NodePool` object. The valid values for the `arch` field are as follows:
+You can schedule application workloads that are the `NodePool` objects on 64-bit ARM and AMD from the same hosted control plane. To set the required processor architecture for the `NodePool` object, you define the `arch` field in the `NodePool` specification.
+
+The valid values for the `arch` field are as follows:
 
 - `arm64`
 
@@ -1098,7 +1119,7 @@ You can schedule application workloads that is the `NodePool` objects on 64-bit 
 
 <!-- -->
 
-- You must have a multi-architecture image for the `HostedCluster` custom resource to use. You can access [multi-architecture nightly images](https://multi.ocp.releases.ci.openshift.org/).
+- You must have a multi-architecture image for the `HostedCluster` custom resource to use. You can access multi-architecture nightly images. For more information, see "Multi-architecture nightly images".
 
 <!-- -->
 
@@ -1112,15 +1133,23 @@ You can schedule application workloads that is the `NodePool` objects on 64-bit 
     --arch <architecture>
   ```
 
-  - Specify the name of your hosted cluster, for instance, `example`.
+  where:
 
-  - Specify the node pool name.
+  `<hosted_cluster_name>`
+  Specifies the name of your hosted cluster, for example, `my-hosted-cluster-01`.
 
-  - Specify the node pool replica count, for example, `3`.
+  `<node_pool_name>`
+  Specifies the node pool name.
 
-  - Specify the architecture type, such as `arm64` or `amd64`. If you do not specify a value for the `--arch` flag, the `amd64` value is used by default.
+  `<node_pool_replica_count>`
+  Specifies the node pool replica count, for example, `3`.
+
+  `<architecture>`
+  Specifies the architecture type, such as `arm64` or `amd64`. If you do not specify a value for the `--arch` flag, the `amd64` value is used by default.
 
 <!-- -->
+
+- [Multi-architecture nightly images](https://multi.ocp.releases.ci.openshift.org/)
 
 - [Extracting the OpenShift Container Platform release image digest](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#configure-hosted-disconnected-digest-image)
 
@@ -1136,7 +1165,7 @@ For private clusters on AWS, all communication with the hosted cluster occurs ov
 
 - You created an AWS Identity and Access Management (IAM) role and AWS Security Token Service (STS) credentials. For more information, see "Creating an AWS IAM role and STS credentials" and "Identity and Access Management (IAM) permissions".
 
-- You configured a [bastion instance on AWS](https://aws.amazon.com/solutions/implementations/linux-bastion).
+- You configured a bastion instance on AWS. For more information, see "Tutorial: Configuring private network access using a Linux Bastion Host".
 
 <!-- -->
 
@@ -1185,6 +1214,16 @@ For private clusters on AWS, all communication with the hosted cluster occurs ov
 - `api.<hosted_cluster_name>.hypershift.local`
 
 - `*.apps.<hosted_cluster_name>.hypershift.local`
+
+<!-- -->
+
+- [Enabling AWS PrivateLink for hosted control planes](../../hosted_control_planes/hcp-deploy/hcp-deploy-aws.xml#hcp-aws-enable-private-link_hcp-deploy-aws)
+
+- [Creating an AWS IAM role and STS credentials](../../hosted_control_planes/hcp-deploy/hcp-deploy-aws.xml#hcp-aws-create-role-sts-creds_hcp-deploy-aws)
+
+- [Identity and Access Management (IAM) permissions](../../hosted_control_planes/hcp-manage/hcp-manage-aws.xml#hcp-manage-aws-infra-req_hcp-managing-aws)
+
+- [Tutorial: Configuring private network access using a Linux Bastion Host](https://docs.aws.amazon.com/mwaa/latest/userguide/tutorials-private-network-bastion.html)
 
 ## Accessing a private hosted cluster on AWS
 

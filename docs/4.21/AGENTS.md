@@ -89,7 +89,7 @@ Root: ./
 ### Updating clusters
 
 |updating/understanding_updates:{intro-to-updates.md,how-updates-work.md,understanding-update-channels-release.md,understanding-openshift-update-duration.md}
-|updating/preparing_for_updates:{updating-cluster-prepare.md,preparing-manual-creds-update.md,kmm-preflight-validation.md,updating-cluster-prepare-past-4-18.md}
+|updating/preparing_for_updates:{updating-cluster-prepare.md,preparing-manual-creds-update.md,kmm-preflight-validation.md}
 |updating/updating_a_cluster:{updating-cluster-cli.md,updating-cluster-web-console.md,control-plane-only-update.md,update-using-custom-machine-config-pools.md,disconnected-update.md,updating-hardware-on-nodes-running-on-vsphere.md,migrating-to-multi-payload.md,updating-bootloader-rhcos.md}
 |updating/troubleshooting_updates:{gathering-data-cluster-update.md}
 
@@ -405,13 +405,11 @@ Root: ./
 |virt/about_virt:{about-virt.md,virt-supported-limits.md,virt-security-policies.md,virt-architecture.md}
 |virt/release_notes:{virt-4-21-release-notes.md}
 |virt/getting_started:{virt-getting-started.md,virt-using-the-cli-tools.md}
-|virt/install:{preparing-cluster-for-virt.md,installing-virt.md,uninstalling-virt.md,virt-install-ibm-cloud-bm-nodes.md}
+|virt/install:{preparing-cluster-for-virt.md,virt-requirements.md,installing-virt.md,uninstalling-virt.md,virt-install-ibm-cloud-bm-nodes.md}
 |virt/post_installation_configuration:{virt-post-install-config.md,virt-node-placement-virt-components.md,virt-post-install-network-config.md,virt-post-install-storage-config.md,virt-self-validation-checkups.md,virt-physical-cores-allocation-vms.md,virt-configuring-higher-vm-workload-density.md,virt-configuring-certificate-rotation.md}
 |virt/updating:{upgrading-virt.md}
 |virt/creating_vm:{virt-creating-vms-from-instance-types.md,virt-creating-vms-from-templates.md,virt-configuring-ibm-secure-execution-vms-ibm-z.md,virt-creating-vms-aws-li-windows.md}
-|virt/creating_vms_advanced/creating_vms_advanced_web:{virt-creating-vms-from-rh-images-overview.md,virt-golden-image-heterogeneous-clusters.md}
-|virt/creating_vms_advanced/creating_vms_advanced_web:{virt-creating-vms-from-web-images.md,virt-creating-vms-uploading-images.md,virt-cloning-vms.md}
-|virt/creating_vms_advanced/creating_vms_cli:{virt-creating-vms-from-cli.md,virt-creating-vms-from-container-disks.md,virt-creating-vms-by-cloning-pvcs.md}
+|virt/creating_vms_advanced:{virt-creating-vms-from-rh-images-overview.md,virt-golden-image-heterogeneous-clusters.md,virt-creating-vms-from-web-images.md,virt-creating-vms-uploading-images.md,virt-cloning-vms.md,virt-creating-vms-from-cli.md,virt-creating-vms-from-container-disks.md,virt-creating-vms-by-cloning-pvcs.md}
 |virt/managing_vms:{virt-list-vms.md,virt-installing-qemu-guest-agent.md,virt-install-virtio-drivers-on-windows-vms.md,virt-update-virtio-drivers.md,virt-accessing-vm-consoles.md,virt-accessing-vm-ssh.md,virt-customize-web-console.md,virt-edit-vms.md,virt-edit-boot-order.md,virt-delete-vms.md,virt-enabling-disabling-vm-delete-protection.md,virt-exporting-vms.md,virt-manage-vmis.md,virt-controlling-vm-states.md,virt-using-vtpm-devices.md,virt-managing-vms-openshift-pipelines.md,virt-migrating-vms-in-single-cluster-to-different-storage-class.md}
 |virt/managing_vms/advanced_vm_management:{virt-working-with-resource-quotas-for-vms.md,virt-understanding-aaq-operator.md,virt-specifying-nodes-for-vms.md,virt-configuring-default-cpu-model.md,virt-uefi-mode-for-vms.md,virt-configuring-pxe-booting.md,virt-using-huge-pages-with-vms.md,virt-dedicated-resources-vm.md,virt-schedule-vms.md,virt-configuring-pci-passthrough.md,virt-configuring-virtual-gpus.md,virt-configuring-usb-host-passthrough.md,virt-enabling-descheduler-evictions.md,virt-high-availability-for-vms.md,virt-vm-control-plane-tuning.md,virt-assigning-compute-resources.md,virt-about-multi-queue.md,virt-managing-virtual-machines-by-using-openshift-gitops.md,virt-NUMA-topology.md}
 |virt/managing_vms/virtual_disks:{virt-hot-plugging-virtual-disks.md,virt-expanding-vm-disks.md,virt-configuring-shared-volumes-for-vms.md,virt-migrating-storage-class.md,virt-inserting-cd-roms-in-virtual-machines.md}

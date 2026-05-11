@@ -569,8 +569,24 @@ This features supports the following storage types:
 
 For information about installing with user-managed encryption for GCP PD, see [Installation configuration parameters](../../installing/installing_gcp/installing-gcp-customizations.xml#installation-configuration-parameters_installing-gcp-customizations).
 
+# Volume snapshot class csi-gce-pd-vsc-images
+
+By default, you cannot restore more than six volumes per snapshot per hour. So in Kubevirt environments, you normally cannot create more than six VMs per hour from a "golden image" (templates saved as snapshots).
+
+For Google Cloud Platform (GCP) persistent disk (PD) storage CSI, there is a non-default `VolumeSnapshotClass`, named `csi-gce-pd-vsc-images`, that uses the `snapshot-type`: `images` parameter. When using KubeVirt, it allows you overcome the six VMs per hour restriction, so that you can create VMs from "golden images".
+
+<div class="note">
+
+Snapshots using the images snapshot class are strictly limited to ReadWriteOnce (RWO) sources, but you can restore them to ReadWriteMany (RWX) hyperdisk-balanced disks.
+
+</div>
+
+For more information, see, under *Additional Resources*, Section *Volume snapshots CRD: VolumeSnapshotClass*.
+
 # Additional resources
 
 - [Persistent storage using GCE Persistent Disk](../../storage/persistent_storage/persistent-storage-gce.xml#persistent-storage-using-gce)
 
 - [Configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi)
+
+- [Volume snapshots CRD: VolumeSnapshotClass](../../storage/container_storage_interface/persistent-storage-csi-snapshots.xml#volume-snapshot-crds)

@@ -72,7 +72,7 @@ Required
 <tr class="even">
 <td style="text-align: left;"><p><code>recordType</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>recordType is the DNS record type. For example, "A" or "CNAME".</p></td>
+<td style="text-align: left;"><p>recordType is the DNS record type. For example, "A", "AAAA", or "CNAME".</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>targets</code></p></td>

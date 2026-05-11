@@ -42,6 +42,13 @@ This release adds improvements related to the following components and concepts:
 
 ## Installation and update
 
+Installing a cluster on Microsoft Azure with a user-provisioned DNS is generally available
+You can enable a user-provisioned domain name server (DNS) instead of the default cluster-provisioned DNS solution. For example, your organization’s security policies might not allow the use of public DNS services such as Microsoft Azure DNS. As a result, you can manage the API and Ingress DNS records in your own system rather than adding the records to the DNS of the cloud. If you use this feature, you must provision the cluster first and then provide your own DNS solution that includes records for `api.<cluster_name>.<base_domain>.` and `*.apps.<cluster_name>.<base_domain>.`.
+
+Installing a cluster on Azure with a user-provisioned DNS was introduced in OpenShift Container Platform 4.21 with Technology Preview status. In OpenShift Container Platform 4.22, it is now generally available.
+
+For more information, see [Enabling a user-managed DNS](../installing/installing_azure/ipi/installing-azure-customizations.xml#installation-azure-enabling-user-managed-DNS_installing-azure-customizations) and [Provisioning your own DNS records](../installing/installing_azure/ipi/installing-azure-customizations.xml#installation-azure-provisioning-own-dns-records_installing-azure-customizations).
+
 ## Machine Config Operator
 
 ## Machine management
@@ -49,6 +56,17 @@ This release adds improvements related to the following components and concepts:
 ## Monitoring
 
 ## Networking
+
+Network policy enhancement
+OpenShift Container Platform now includes `NetworkPolicy` objects in some of its own namespaces by default. This inclusion improves overall security and better protects control plane components.
+
+Do not modify the `NetworkPolicy` objects that OpenShift Container Platform includes in its own namespaces by default. To check the namespaces that include the objects by default, you can run the following command:
+
+``` terminal
+$ oc get networkpolicies --all-namespaces
+```
+
+The OpenShift Container Platform 4.17 release did not include these objects in all OpenShift Container Platform namespaces; later OpenShift Container Platform releases might include the objects in additional namespaces.
 
 ## Nodes
 
@@ -302,7 +320,7 @@ Multi-Architecture Technology Preview tracker
 | Live migration to OVN-Kubernetes from OpenShift Container Platform SDN                                    | Not Available        | Not Available        |      |
 | Dynamic configuration manager                                                                             | Technology Preview   | Technology Preview   |      |
 | SR-IOV Network Operator support for Intel C741 Emmitsburg Chipset                                         | Technology Preview   | Technology Preview   |      |
-| Dual-port NIC for PTP ordinary clock                                                                      | Technology Preview   | Technology Preview   |      |
+| Dual-port NIC for PTP ordinary clock                                                                      | General Availability | General Availability |      |
 | DPU Operator                                                                                              | Technology Preview   | Technology Preview   |      |
 | Fast IPAM for the Whereabouts IPAM CNI plugin                                                             | Technology Preview   | Technology Preview   |      |
 | Unnumbered BGP peering                                                                                    | General Availability | General Availability |      |
@@ -379,6 +397,8 @@ Web console Technology Preview tracker
 # Known issues
 
 This section includes several known issues for OpenShift Container Platform 4.17.
+
+- Currently, the `topo-aware-scheduler` provided by the NUMA Resources Operator (NRO) does not support Kubernetes priority-based preemption. When all NUMA zones on available nodes are fully consumed by lower-priority pods, a high-priority pod with a `PreemptLowerPriority` policy remains in `Pending` state indefinitely instead of preempting the lower-priority pods. As a consequence, workloads that depend on priority-based preemption for scheduling recovery do not function correctly when using the `topo-aware-scheduler`. ([OCPBUGS-77930](https://issues.redhat.com/browse/OCPBUGS-77930))
 
 # Asynchronous errata updates
 

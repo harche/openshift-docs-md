@@ -63,14 +63,14 @@ Type
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>HPAScalingRules configures the scaling behavior for one direction via scaling Policy Rules and a configurable metric tolerance.</p>
 <p>Scaling Policy Rules are applied after calculating DesiredReplicas from metrics for the HPA. They can limit the scaling velocity by specifying scaling policies. They can prevent flapping by specifying the stabilization window, so that the number of replicas is not set instantly, instead, the safest value from the stabilization window is chosen.</p>
-<p>The tolerance is applied to the metric values and prevents scaling too eagerly for small metric variations. (Note that setting a tolerance requires enabling the alpha HPAConfigurableTolerance feature gate.)</p></td>
+<p>The tolerance is applied to the metric values and prevents scaling too eagerly for small metric variations. (Note that setting a tolerance requires the beta HPAConfigurableTolerance feature gate to be enabled.)</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>scaleUp</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>HPAScalingRules configures the scaling behavior for one direction via scaling Policy Rules and a configurable metric tolerance.</p>
 <p>Scaling Policy Rules are applied after calculating DesiredReplicas from metrics for the HPA. They can limit the scaling velocity by specifying scaling policies. They can prevent flapping by specifying the stabilization window, so that the number of replicas is not set instantly, instead, the safest value from the stabilization window is chosen.</p>
-<p>The tolerance is applied to the metric values and prevents scaling too eagerly for small metric variations. (Note that setting a tolerance requires enabling the alpha HPAConfigurableTolerance feature gate.)</p></td>
+<p>The tolerance is applied to the metric values and prevents scaling too eagerly for small metric variations. (Note that setting a tolerance requires the beta HPAConfigurableTolerance feature gate to be enabled.)</p></td>
 </tr>
 </tbody>
 </table>
@@ -82,7 +82,7 @@ HPAScalingRules configures the scaling behavior for one direction via scaling Po
 
 Scaling Policy Rules are applied after calculating DesiredReplicas from metrics for the HPA. They can limit the scaling velocity by specifying scaling policies. They can prevent flapping by specifying the stabilization window, so that the number of replicas is not set instantly, instead, the safest value from the stabilization window is chosen.
 
-The tolerance is applied to the metric values and prevents scaling too eagerly for small metric variations. (Note that setting a tolerance requires enabling the alpha HPAConfigurableTolerance feature gate.)
+The tolerance is applied to the metric values and prevents scaling too eagerly for small metric variations. (Note that setting a tolerance requires the beta HPAConfigurableTolerance feature gate to be enabled.)
 
 Type
 `object`
@@ -126,7 +126,7 @@ Type
 <td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity"><code>Quantity</code></a></p></td>
 <td style="text-align: left;"><p>tolerance is the tolerance on the ratio between the current and desired metric value under which no updates are made to the desired number of replicas (e.g. 0.01 for 1%). Must be greater than or equal to zero. If not set, the default cluster-wide tolerance is applied (by default 10%).</p>
 <p>For example, if autoscaling is configured with a memory consumption target of 100Mi, and scale-down and scale-up tolerances of 5% and 1% respectively, scaling will be triggered when the actual consumption falls below 95Mi or exceeds 101Mi.</p>
-<p>This is an alpha field and requires enabling the HPAConfigurableTolerance feature gate.</p></td>
+<p>This is an beta field and requires the HPAConfigurableTolerance feature gate to be enabled.</p></td>
 </tr>
 </tbody>
 </table>
@@ -167,7 +167,7 @@ HPAScalingRules configures the scaling behavior for one direction via scaling Po
 
 Scaling Policy Rules are applied after calculating DesiredReplicas from metrics for the HPA. They can limit the scaling velocity by specifying scaling policies. They can prevent flapping by specifying the stabilization window, so that the number of replicas is not set instantly, instead, the safest value from the stabilization window is chosen.
 
-The tolerance is applied to the metric values and prevents scaling too eagerly for small metric variations. (Note that setting a tolerance requires enabling the alpha HPAConfigurableTolerance feature gate.)
+The tolerance is applied to the metric values and prevents scaling too eagerly for small metric variations. (Note that setting a tolerance requires the beta HPAConfigurableTolerance feature gate to be enabled.)
 
 Type
 `object`
@@ -211,7 +211,7 @@ Type
 <td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity"><code>Quantity</code></a></p></td>
 <td style="text-align: left;"><p>tolerance is the tolerance on the ratio between the current and desired metric value under which no updates are made to the desired number of replicas (e.g. 0.01 for 1%). Must be greater than or equal to zero. If not set, the default cluster-wide tolerance is applied (by default 10%).</p>
 <p>For example, if autoscaling is configured with a memory consumption target of 100Mi, and scale-down and scale-up tolerances of 5% and 1% respectively, scaling will be triggered when the actual consumption falls below 95Mi or exceeds 101Mi.</p>
-<p>This is an alpha field and requires enabling the HPAConfigurableTolerance feature gate.</p></td>
+<p>This is an beta field and requires the HPAConfigurableTolerance feature gate to be enabled.</p></td>
 </tr>
 </tbody>
 </table>

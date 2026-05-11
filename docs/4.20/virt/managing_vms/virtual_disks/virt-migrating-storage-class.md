@@ -4,14 +4,6 @@ You can migrate one or more virtual disks to a different storage class to optimi
 
 You can migrate one or more disks attached to a virtual machine (VM) to a different storage class by using the OpenShift Container Platform web console. When performing this action on a running VM, the operation of the VM is not interrupted and the data on the migrated disks remains accessible.
 
-<div class="note">
-
-With the OpenShift Virtualization Operator, you can only start storage class migration for one VM at the time and the VM must be running. If you need to migrate more VMs at once or migrate a mix of running and stopped VMs, consider using the [Migration Toolkit for Containers (MTC)](https://docs.redhat.com/en/documentation/migration_toolkit_for_containers/1.8/html/migration_toolkit_for_containers/index).
-
-Migration Toolkit for Containers is not part of OpenShift Virtualization and requires separate installation.
-
-</div>
-
 - You must have a data volume or a persistent volume claim (PVC) available for storage class migration.
 
 - The cluster must have a node available for live migration. As part of the storage class migration, the VM is live migrated to a different node.

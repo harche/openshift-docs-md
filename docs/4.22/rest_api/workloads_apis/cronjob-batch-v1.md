@@ -156,8 +156,7 @@ Required
 <tr class="even">
 <td style="text-align: left;"><p><code>managedBy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>ManagedBy field indicates the controller that manages a Job. The k8s Job controller reconciles jobs which don’t have this field at all or the field value is the reserved string <code>kubernetes.io/job-controller</code>, but skips reconciling Jobs with a custom value for this field. The value must be a valid domain-prefixed path (e.g. acme.io/foo) - all characters before the first "/" must be a valid subdomain as defined by RFC 1123. All characters trailing the first "/" must be valid HTTP Path characters as defined by RFC 3986. The value cannot exceed 63 characters. This field is immutable.</p>
-<p>This field is beta-level. The job controller accepts setting the field when the feature gate JobManagedBy is enabled (enabled by default).</p></td>
+<td style="text-align: left;"><p>ManagedBy field indicates the controller that manages a Job. The k8s Job controller reconciles jobs which don’t have this field at all or the field value is the reserved string <code>kubernetes.io/job-controller</code>, but skips reconciling Jobs with a custom value for this field. The value must be a valid domain-prefixed path (e.g. acme.io/foo) - all characters before the first "/" must be a valid subdomain as defined by RFC 1123. All characters trailing the first "/" must be valid HTTP Path characters as defined by RFC 3986. The value cannot exceed 63 characters. This field is immutable.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>manualSelector</code></p></td>
@@ -353,8 +352,6 @@ Type
 
 Required
 - `type`
-
-- `status`
 
 | Property | Type     | Description                                                                                                                                                       |
 |----------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|

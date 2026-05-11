@@ -440,7 +440,7 @@ An Azure Key Vault, a disk encryption set, and an encryption key are required to
 
 # Configuring trusted launch for Azure virtual machines by using machine sets
 
-OpenShift Container Platform 4.17 supports trusted launch for Azure virtual machines (VMs). By editing the machine set YAML file, you can configure the trusted launch options that a machine set uses for machines that it deploys. For example, you can configure these machines to use UEFI security features such as Secure Boot or a dedicated virtual Trusted Platform Module (vTPM) instance.
+OpenShift Container Platform 4.17 supports trusted launch for Microsoft Azure virtual machines (VMs). By editing the machine set YAML file, you can configure the trusted launch options that a machine set uses for machines that it deploys. For example, you can configure these machines to use UEFI security features such as Secure Boot or a dedicated virtual Trusted Platform Module (vTPM) instance.
 
 <div class="note">
 
@@ -497,19 +497,25 @@ For more information about related features and functionality, see the Microsoft
     # ...
     ```
 
-    - Enables the use of trusted launch for Azure virtual machines. This value is required for all valid configurations.
+    where:
 
-    - Specifies which UEFI security features to use. This section is required for all valid configurations.
+    `spec.template.machines_v1beta1_machine_openshift_io.spec.providerSpec.value.securityProfile.settings.securityType`
+    Enables the use of trusted launch for Azure virtual machines. This value is required for all valid configurations.
 
-    - Enables UEFI Secure Boot.
+    `spec.template.machines_v1beta1_machine_openshift_io.spec.providerSpec.value.securityProfile.settings.trustedLaunch.uefiSettings`
+    Specifies which UEFI security features to use. This section is required for all valid configurations.
 
-    - Enables the use of a vTPM.
+    `spec.template.machines_v1beta1_machine_openshift_io.spec.providerSpec.value.securityProfile.settings.trustedLaunch.uefiSettings.secureBoot`
+    Enables UEFI Secure Boot.
 
-- On the Azure portal, review the details for a machine deployed by the machine set and verify that the trusted launch options match the values that you configured.
+    `spec.template.machines_v1beta1_machine_openshift_io.spec.providerSpec.value.securityProfile.settings.trustedLaunch.uefiSettings.virtualizedTrustedPlatformModule`
+    Enables the use of a vTPM.
+
+- On the Microsoft Azure portal, review the details for a machine deployed by the machine set and verify that the trusted launch options match the values that you configured.
 
 # Configuring Azure confidential virtual machines by using machine sets
 
-OpenShift Container Platform 4.17 supports Azure confidential virtual machines (VMs).
+OpenShift Container Platform 4.17 supports Microsoft Azure confidential virtual machines (VMs). By enabling Azure confidential VMs, you can use memory encryption to improve data confidentiality.
 
 <div class="note">
 
@@ -563,23 +569,33 @@ For more information about related features and functionality, see the Microsoft
     # ...
     ```
 
-    - Specifies security profile settings for the managed disk when using a confidential VM.
+    where:
 
-    - Enables encryption of the Azure VM Guest State (VMGS) blob. This setting requires the use of vTPM.
+    `spec.template.spec.providerSpec.value.osDisk.managedDisk.securityProfile`
+    Specifies security profile settings for the managed disk when using a confidential VM.
 
-    - Specifies security profile settings for the confidential VM.
+    `spec.template.spec.providerSpec.value.osDisk.managedDisk.securityProfile.securityEncryptionType`
+    Enables encryption of the Microsoft Azure VM Guest State (VMGS) blob. This setting requires the use of vTPM.
 
-    - Enables the use of confidential VMs. This value is required for all valid configurations.
+    `spec.template.spec.providerSpec.value.securityProfile`
+    Specifies security profile settings for the confidential VM.
 
-    - Specifies which UEFI security features to use. This section is required for all valid configurations.
+    `spec.template.spec.providerSpec.value.securityProfile.settings.securityType`
+    Enables the use of confidential VMs. This value is required for all valid configurations.
 
-    - Disables UEFI Secure Boot.
+    `spec.template.spec.providerSpec.value.securityProfile.settings.confidentialVM.uefiSettings`
+    Specifies which UEFI security features to use. This section is required for all valid configurations.
 
-    - Enables the use of a vTPM.
+    `spec.template.spec.providerSpec.value.securityProfile.settings.confidentialVM.uefiSettings.secureBoot`
+    Disables UEFI Secure Boot.
 
-    - Specifies an instance type that supports confidential VMs.
+    `spec.template.spec.providerSpec.value.securityProfile.settings.confidentialVM.uefiSettings.virtualizedTrustedPlatformModule`
+    Enables the use of a vTPM.
 
-- On the Azure portal, review the details for a machine deployed by the machine set and verify that the confidential VM options match the values that you configured.
+    `spec.template.spec.providerSpec.value.vmSize`
+    Specifies an instance type that supports confidential VMs.
+
+- On the Microsoft Azure portal, review the details for a machine deployed by the machine set and verify that the confidential VM options match the values that you configured.
 
 # Configuring Capacity Reservation by using machine sets
 
@@ -651,9 +667,9 @@ Consider the following limitations when deciding whether to use Accelerated Netw
 
 ## Enabling Accelerated Networking on an existing Microsoft Azure cluster
 
-You can enable Accelerated Networking on Azure by adding `acceleratedNetworking` to your machine set YAML file.
+You can enable Accelerated Networking on Microsoft Azure by adding `acceleratedNetworking` to your machine set YAML file. This uses SR-IOV to help improve network performance for new node.
 
-- Have an existing Microsoft Azure cluster where the Machine API is operational.
+- Have an existing Azure cluster where the Machine API is operational.
 
 <!-- -->
 
@@ -666,9 +682,13 @@ You can enable Accelerated Networking on Azure by adding `acceleratedNetworking`
       vmSize: <azure-vm-size>
   ```
 
-  - This line enables Accelerated Networking.
+  where:
 
-  - Specify an Azure VM size that includes at least four vCPUs. For information about VM sizes, see [Microsoft Azure documentation](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes).
+  `providerSpec.value.acceleratedNetworking`
+  Enables Accelerated Networking.
+
+  `providerSpec.value.vmSize`
+  Specifies an Azure VM size that includes at least four vCPUs. For information about VM sizes, see the Microsoft Azure documentation [Sizes for virtual machines in Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes).
 
 <!-- -->
 

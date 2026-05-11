@@ -22,6 +22,14 @@ AdminPolicyBasedExternalRoute is a CRD allowing the cluster administrators to co
 Type
 `object`
 
+# BackendTLSPolicy \[gateway.networking.k8s.io/v1\]
+
+Description
+BackendTLSPolicy provides a way to configure how a Gateway connects to a Backend via TLS.
+
+Type
+`object`
+
 # BaselineAdminNetworkPolicy \[policy.networking.k8s.io/v1alpha1\]
 
 Description
@@ -36,16 +44,6 @@ Description
 CloudPrivateIPConfig performs an assignment of a private IP address to the primary NIC associated with cloud VMs. This is done by specifying the IP and Kubernetes node which the IP should be assigned to. This CRD is intended to be used by the network plugin which manages the cluster network. The spec side represents the desired state requested by the network plugin, and the status side represents the current state that this CRD’s controller has executed. No users will have permission to modify it, and if a cluster-admin decides to edit it for some reason, their changes will be overwritten the next time the network plugin reconciles the object. Note: the CR’s name must specify the requested private IP address (can be IPv4 or IPv6).
 
 Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
-
-Type
-`object`
-
-# DNSNameResolver \[network.openshift.io/v1alpha1\]
-
-Description
-DNSNameResolver stores the DNS name resolution information of a DNS name. It can be enabled by the TechPreviewNoUpgrade feature set. It can also be enabled by the feature gate DNSNameResolver when using CustomNoUpgrade feature set.
-
-Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
 
 Type
 `object`

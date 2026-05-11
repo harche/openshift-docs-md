@@ -349,7 +349,6 @@
   - [Preparing to update to OpenShift Container Platform 4.21](updating/preparing_for_updates/updating-cluster-prepare.md)
   - [Preparing to update a cluster with manually maintained credentials](updating/preparing_for_updates/preparing-manual-creds-update.md)
   - [Preflight validation for Kernel Module Management (KMM) Modules](updating/preparing_for_updates/kmm-preflight-validation.md)
-  - [Preparing to update from OpenShift Container Platform 4.18 to a newer version](updating/preparing_for_updates/updating-cluster-prepare-past-4-18.md)
 - **Performing a cluster update**
   - [Updating a cluster using the CLI](updating/updating_a_cluster/updating-cluster-cli.md)
   - [Updating a cluster using the web console](updating/updating_a_cluster/updating-cluster-web-console.md)
@@ -1975,6 +1974,7 @@
   - [virtctl and libguestfs](virt/getting_started/virt-using-the-cli-tools.md)
 - **Installing**
   - [Preparing your cluster](virt/install/preparing-cluster-for-virt.md)
+  - [Hardware, software, and operational requirements](virt/install/virt-requirements.md)
   - [Installing OpenShift Virtualization](virt/install/installing-virt.md)
   - [Uninstalling OpenShift Virtualization](virt/install/uninstalling-virt.md)
   - [Installing OpenShift Virtualization on IBM Cloud bare-metal nodes](virt/install/virt-install-ibm-cloud-bm-nodes.md)
@@ -1995,17 +1995,14 @@
   - [Configuring IBM Secure Execution virtual machines on IBM Z and IBM LinuxONE](virt/creating_vm/virt-configuring-ibm-secure-execution-vms-ibm-z.md)
   - [Creating AWS EC2 Windows License Included (LI) compliant VMs](virt/creating_vm/virt-creating-vms-aws-li-windows.md)
 - **Advanced VM creation**
-  - **Creating VMs from Red Hat images**
-    - [Creating virtual machines from Red Hat images](virt/creating_vms_advanced/creating_vms_advanced_web/virt-creating-vms-from-rh-images-overview.md)
-    - [Heterogeneous cluster support](virt/creating_vms_advanced/creating_vms_advanced_web/virt-golden-image-heterogeneous-clusters.md)
-  - **Creating VMs in the web console**
-    - [Creating VMs by importing images from web pages](virt/creating_vms_advanced/creating_vms_advanced_web/virt-creating-vms-from-web-images.md)
-    - [Creating VMs by uploading images](virt/creating_vms_advanced/creating_vms_advanced_web/virt-creating-vms-uploading-images.md)
-    - [Cloning VMs](virt/creating_vms_advanced/creating_vms_advanced_web/virt-cloning-vms.md)
-  - **Creating VMs using the CLI**
-    - [Creating virtual machines from the command line](virt/creating_vms_advanced/creating_vms_cli/virt-creating-vms-from-cli.md)
-    - [Creating VMs by using container disks](virt/creating_vms_advanced/creating_vms_cli/virt-creating-vms-from-container-disks.md)
-    - [Creating VMs by cloning PVCs](virt/creating_vms_advanced/creating_vms_cli/virt-creating-vms-by-cloning-pvcs.md)
+  - [Creating virtual machines from Red Hat images](virt/creating_vms_advanced/virt-creating-vms-from-rh-images-overview.md)
+  - [Heterogeneous cluster support](virt/creating_vms_advanced/virt-golden-image-heterogeneous-clusters.md)
+  - [Creating VMs by importing images from web pages](virt/creating_vms_advanced/virt-creating-vms-from-web-images.md)
+  - [Creating VMs by uploading images](virt/creating_vms_advanced/virt-creating-vms-uploading-images.md)
+  - [Cloning VMs](virt/creating_vms_advanced/virt-cloning-vms.md)
+  - [Creating virtual machines from the command line](virt/creating_vms_advanced/virt-creating-vms-from-cli.md)
+  - [Creating VMs by using container disks](virt/creating_vms_advanced/virt-creating-vms-from-container-disks.md)
+  - [Creating VMs by cloning PVCs](virt/creating_vms_advanced/virt-creating-vms-by-cloning-pvcs.md)
 - **Managing VMs**
   - [Listing virtual machines](virt/managing_vms/virt-list-vms.md)
   - [Install the QEMU guest agent](virt/managing_vms/virt-installing-qemu-guest-agent.md)

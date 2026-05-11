@@ -68,29 +68,21 @@ The telco management hub reference design specification (RDS) and the associated
 
 The hub cluster provides managed cluster installation, configuration, observability and ongoing lifecycle management for telco application and workload clusters.
 
-- For more information about core clusters or far edge clusters that host RAN distributed unit (DU) workloads, see the following:
+- [Telco core RDS](../scalability_and_performance/telco-core-rds.xml#telco-core-ref-design-specs)
 
-  - [Telco core RDS](../scalability_and_performance/telco-core-rds.xml#telco-core-ref-design-specs)
+- [Telco RAN DU RDS](../scalability_and_performance/telco-ran-du-rds.xml#telco-ran-du-ref-design-specs)
 
-  - [Telco RAN DU RDS](../scalability_and_performance/telco-ran-du-rds.xml#telco-ran-du-ref-design-specs)
+- [Image-based upgrade for single-node OpenShift clusters](../edge_computing/image_based_upgrade/cnf-understanding-image-based-upgrade.xml#cnf-understanding-image-based-upgrade)
 
-- For more information about lifecycle management for the fleet of managed clusters see:
+- [Updating managed clusters with the Topology Aware Lifecycle Manager](../edge_computing/cnf-talm-for-cluster-upgrades.xml#cnf-talm-for-cluster-updates)
 
-  - [Image-based upgrade for single-node OpenShift clusters](../edge_computing/image_based_upgrade/cnf-understanding-image-based-upgrade.xml#cnf-understanding-image-based-upgrade)
+- [Upgrading a telco core CNF cluster](../post_installation_configuration/day_2_core_cnf_clusters/telco-day-2-welcome.xml#telco-day-2-welcome)
 
-  - [Updating managed clusters with the Topology Aware Lifecycle Manager](../edge_computing/cnf-talm-for-cluster-upgrades.xml#cnf-talm-for-cluster-updates)
+- [Installing managed clusters with RHACM and SiteConfig resources](../edge_computing/ztp-deploying-far-edge-sites.xml#ztp-deploying-far-edge-sites)
 
-  - [Upgrading a telco core CNF cluster](../post_installation_configuration/day_2_core_cnf_clusters/telco-day-2-welcome.xml#telco-day-2-welcome)
+- [Multicluster architecture](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/about/index#multicluster-architecture)
 
-- For more information about declarative cluster provisioning with GitOps ZTP see:
-
-  - [Installing managed clusters with RHACM and SiteConfig resources](../edge_computing/ztp-deploying-far-edge-sites.xml#ztp-deploying-far-edge-sites)
-
-- For more information about observability metrics and alerts, see:
-
-  - [Multicluster architecture](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/about/index#multicluster-architecture)
-
-  - [Observability](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/about/index#observability-arch)
+- [Observability](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/about/index#observability-arch)
 
 # Hub cluster scaling target
 
@@ -331,6 +323,8 @@ Storage requirements
 
 ## Storage considerations
 
+Review the storage limits, requirements, and engineering considerations for telco hub clusters.
+
 Limits and requirements
 - Minimum OpenShift Container Platform and Red Hat Advanced Cluster Management (RHACM) limits apply
 
@@ -383,9 +377,9 @@ Engineering considerations
 
 # OpenShift Container Platform installation on the hub cluster
 
-Description
 The reference method for installing OpenShift Container Platform for the hub cluster is through the Agent-based Installer.
 
+Description
 Agent-based Installer provides installation capabilities without additional centralized infrastructure. The Agent-based Installer creates an ISO image, which you mount to the server to be installed. When you boot the server, OpenShift Container Platform is installed alongside optionally supplied extra manifests, such as the Red Hat OpenShift GitOps Operator.
 
 <div class="note">
@@ -447,21 +441,17 @@ Limits and requirements
 
 - [OpenShift Operator lifecycles](https://access.redhat.com/support/policy/updates/openshift_operators)
 
-- For more information about telco hub cluster update requirements, see:
+- [Recommended hub cluster specifications and managed cluster limits for GitOps ZTP](../edge_computing/ztp-preparing-the-hub-cluster.xml#ztp-gitops-ztp-max-spoke-clusters_ztp-preparing-the-hub-cluster)
 
-  - [Recommended hub cluster specifications and managed cluster limits for GitOps ZTP](../edge_computing/ztp-preparing-the-hub-cluster.xml#ztp-gitops-ztp-max-spoke-clusters_ztp-preparing-the-hub-cluster).
+- [Red Hat Advanced Cluster Management for Kubernetes 2.11 Support Matrix](https://access.redhat.com/articles/7073065)
 
-  - [Red Hat Advanced Cluster Management for Kubernetes 2.11 Support Matrix](https://access.redhat.com/articles/7073065)
+- [OpenShift Operator Life Cycles](https://access.redhat.com/support/policy/updates/openshift_operators)
 
-  - [OpenShift Operator Life Cycles](https://access.redhat.com/support/policy/updates/openshift_operators)
+- [Introduction to OpenShift updates](../updating/understanding_updates/intro-to-updates.xml#understanding-openshift-updates)
 
-- For more information about updating the hub cluster, see:
+- [Upgrading your hub cluster](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.13/html-single/install/index#upgrading-hub)
 
-  - [Introduction to OpenShift updates](../updating/understanding_updates/intro-to-updates.xml#understanding-openshift-updates)
-
-  - [Upgrading your hub cluster](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.13/html-single/install/index#upgrading-hub)
-
-  - [Updating GitOps ZTP](../edge_computing/ztp-updating-gitops.xml#ztp-updating-gitops)
+- [Updating GitOps ZTP](../edge_computing/ztp-updating-gitops.xml#ztp-updating-gitops)
 
 # Observability
 
@@ -511,19 +501,17 @@ Engineering considerations
 
 - The reference configuration is sized based on 15 days of metrics storage by the hub cluster for 3500 single-node OpenShift clusters. If longer retention or other managed cluster topology or sizing is required, the storage calculations must be updated and sufficient storage capacity be maintained. For more information about calculating new values, see "Storage requirements".
 
-- For more information about observability, see:
+- [Exporting metrics to external endpoints](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/observability/index#exporting-metrics-to-external-endpoints)
 
-  - [Exporting metrics to external endpoints](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/observability/index#exporting-metrics-to-external-endpoints)
+- [Enabling the Observability service](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/observability/index#enabling-observability-service)
 
-  - [Enabling the Observability service](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/observability/index#enabling-observability-service)
+- [Adding custom metrics](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/observability/index#adding-custom-metrics)
 
-- For more information about custom metrics, see [Adding custom metrics](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/observability/index#adding-custom-metrics)
+- [Forwarding alerts](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/observability/index#forward-alerts)
 
-- For more information about forwarding alerts to other external systems, see [Forwarding alerts](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/observability/index#forward-alerts)
+- [Observability pod capacity requests](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/observability/index#observability-pod-capacity-requests)
 
-- For more information about CPU and memory requirements see: [Observability pod capacity requests](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/observability/index#observability-pod-capacity-requests)
-
-- For more information about custom dashboards, see [Using Grafana dashboards](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/observability/index#using-grafana-dashboards)
+- [Using Grafana dashboards](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/observability/index#using-grafana-dashboards)
 
 # Managed cluster lifecycle management
 
@@ -535,8 +523,10 @@ Lifecycle management for spoke clusters can be divided into two different stages
 
 ## Managed cluster deployment
 
+As of Red Hat Advanced Cluster Management (RHACM) 2.12, using the SiteConfig Operator is the recommended method for deploying managed clusters.
+
 Description
-As of Red Hat Advanced Cluster Management (RHACM) 2.12, using the SiteConfig Operator is the recommended method for deploying managed clusters. The SiteConfig Operator introduces a unified ClusterInstance API that decouples the parameters that define the cluster from the manner in which it is deployed. The SiteConfig Operator uses a set of cluster templates that are instantiated using the data from a `ClusterInstance` custom resource (CR) to dynamically generate installation manifests. Following the GitOps methodology, the `ClusterInstance` CR is sourced from a Git repository through ArgoCD. The `ClusterInstance` CR can be used to initiate cluster installation by using either Assisted Installer, or the image-based installation available in multicluster engine.
+The SiteConfig Operator introduces a unified ClusterInstance API that decouples the parameters that define the cluster from the manner in which it is deployed. The SiteConfig Operator uses a set of cluster templates that are instantiated using the data from a `ClusterInstance` custom resource (CR) to dynamically generate installation manifests. Following the GitOps methodology, the `ClusterInstance` CR is sourced from a Git repository through ArgoCD. The `ClusterInstance` CR can be used to initiate cluster installation by using either Assisted Installer, or the image-based installation available in multicluster engine.
 
 Limits and requirements
 - The SiteConfig ArgoCD plugin which handles `SiteConfig` CRs is deprecated from OpenShift Container Platform 4.18.
@@ -558,9 +548,9 @@ Engineering considerations
 
 ## Managed cluster updates
 
-Description
-You can upgrade versions of OpenShift Container Platform, Day 2 Operators, and managed cluster configurations, by declaring the required version in the `Policy` custom resources (CRs) that target the clusters to be upgraded.
+You can upgrade versions of OpenShift Container Platform, Day 2 Operators, and managed cluster configurations by declaring the required version in the `Policy` custom resources (CRs) that target the clusters to be upgraded.
 
+Description
 Policy controllers periodically check for policy compliance. If the result is negative, a violation report is created. If the policy remediation action is set to `enforce` the violations are remediated according to the updated policy. If the policy remediation action is set to `inform`, the process ends with a non-compliant status report and responsibility to initiate the upgrade is left to the user to perform during an appropriate maintenance window.
 
 The Topology Aware Lifecycle Manager (TALM) extends Red Hat Advanced Cluster Management (RHACM) with features to manage the rollout of upgrades or configuration throughout the lifecycle of the fleet of clusters. It operates in progressive, limited size batches of clusters. When upgrades to OpenShift Container Platform or the Day 2 Operators are required, TALM progressively rolls out the updates by stepping through the set of policies and switching them to an "enforce" policy to push the configuration to the managed cluster.
@@ -615,7 +605,11 @@ Engineering considerations
 
 # Hub cluster components
 
+The following sections describe the components that make up the telco hub cluster reference configuration.
+
 ## Red Hat Advanced Cluster Management (RHACM)
+
+Red Hat Advanced Cluster Management (RHACM) provides multicluster engine installation and ongoing lifecycle management functionality for deployed clusters.
 
 New in this release
 - No reference design updates in this release.
@@ -683,6 +677,8 @@ Engineering considerations
 
 ## Topology Aware Lifecycle Manager
 
+TALM is an Operator that runs only on the hub cluster for managing how changes like cluster upgrades, Operator upgrades, and cluster configuration are rolled out to the network.
+
 New in this release
 - No reference design updates in this release.
 
@@ -713,6 +709,8 @@ Engineering considerations
 
 ## GitOps Operator and GitOps ZTP
 
+GitOps Operator and GitOps ZTP provide a GitOps-based infrastructure for managing cluster deployment and configuration.
+
 New in this release
 - No reference design updates in this release
 
@@ -739,6 +737,8 @@ Engineering considerations
 
 ## Local Storage Operator
 
+You can create persistent volumes that can be used as `PVC` resources by applications with the Local Storage Operator.
+
 New in this release
 - No reference design updates in this release
 
@@ -751,6 +751,8 @@ Engineering considerations
 - Refer to the device listing in `LocalVolume` CRs by the hardware path used to access each device to ensure correct allocation of disks and partitions, for example, `/dev/disk/by-path/<id>`. Logical names (for example, `/dev/sda`) are not guaranteed to be consistent across node reboots.
 
 ## Red Hat OpenShift Data Foundation
+
+Red Hat OpenShift Data Foundation provides file, block, and object storage services to the hub cluster.
 
 New in this release
 - No reference design updates in this release
@@ -778,6 +780,8 @@ Engineering considerations
 
 ## Logging
 
+Use the Cluster Logging Operator to collect and ship logs off the node for remote archival and analysis.
+
 New in this release
 - No reference design updates in this release
 
@@ -795,6 +799,8 @@ Engineering considerations
 - The reference configuration does not include shipping of application logs. The inclusion of application logs in the configuration requires you to evaluate the application logging rate and have sufficient additional CPU resources allocated to the reserved set.
 
 ## OpenShift API for Data Protection
+
+The OpenShift API for Data Protection (OADP) Operator facilitates the backup and restore of workloads in OpenShift Container Platform clusters.
 
 New in this release
 - No reference design updates in this release
@@ -840,11 +846,7 @@ You can extract the complete set of custom resources (CRs) for the telco hub pro
   $ tree -L 4 out/telco-hub-rds/
   ```
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
+  The following is example output:
 
   ``` text
   out/telco-hub-rds/
@@ -907,6 +909,8 @@ The following sections briefly describe each custom resource (CR) for the telco 
 
 # Red Hat Advanced Cluster Management (RHACM) CRs
 
+The following table describes the RHACM custom resources (CRs) for the telco hub reference configuration.
+
 | Component | Reference CR                        | Description                                                                                                                                                                                              | Optional |
 |-----------|-------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
 | RHACM     | `acmAgentServiceConfig.yaml`        | Creates a policy to manage copying data from an object bucket claim into a secret for Observability to connect to Thanos.                                                                                | No       |
@@ -935,6 +939,8 @@ RHACM CRs
 
 # Storage reference CRs
 
+The following table describes the storage custom resources (CRs) for the telco hub reference configuration.
+
 | Component                 | Reference CR            | Description                                                                                                                                                                                                | Optional |
 |---------------------------|-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
 | Local Storage Operator    | `lsoLocalVolume.yaml`   | Defines a `LocalVolume` CR specifying local storage configuration and node selection criteria.                                                                                                             | Yes      |
@@ -949,6 +955,8 @@ RHACM CRs
 Storage CRs
 
 # GitOps Zero Touch Provisioning (ZTP) reference CRs
+
+The following table describes the GitOps ZTP custom resources (CRs) for the telco hub reference configuration.
 
 | Component           | Reference CR                            | Description                                                                                                                                                                         | Optional |
 |---------------------|-----------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
@@ -977,6 +985,8 @@ GitOps ZTP CRs
 
 # Logging reference CRs
 
+The following table describes the logging custom resources (CRs) for the telco hub reference configuration.
+
 | Component                | Reference CR                                         | Description                                                                      | Optional |
 |--------------------------|------------------------------------------------------|----------------------------------------------------------------------------------|----------|
 | Cluster Logging Operator | `clusterLogForwarder.yaml`                           | Defines the `ClusterLogForwarder` CR to send logs to configured outputs.         | Yes      |
@@ -990,6 +1000,8 @@ GitOps ZTP CRs
 Logging CRs
 
 # Container registry reference CRs
+
+The following table describes the container registry custom resources (CRs) for the telco hub reference configuration.
 
 | Component | Reference CR          | Description                                                                             | Optional |
 |-----------|-----------------------|-----------------------------------------------------------------------------------------|----------|
@@ -1006,6 +1018,8 @@ Container registry CRs
 
 # Image mirroring reference CRs
 
+The following table describes the image mirroring custom resources (CRs) for the telco hub reference configuration.
+
 | Component                   | Reference CR           | Description                                                                                                                                               | Optional |
 |-----------------------------|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
 | Mirroring configuration CRs | `imageset-config.yaml` | Defines an `ImageSetConfiguration` CR for mirroring OpenShift Container Platform channels and Operator packages, specifying versions and target catalogs. | No       |
@@ -1013,6 +1027,8 @@ Container registry CRs
 Image mirroring CRs
 
 # Installation reference CRs
+
+The following table describes the installation custom resources (CRs) for the telco hub reference configuration.
 
 | Component           | Reference CR          | Description                                                                                                                                                   | Optional |
 |---------------------|-----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|

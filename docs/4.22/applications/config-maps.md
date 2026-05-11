@@ -4,6 +4,8 @@ The following sections define config maps and how to create and use them.
 
 # Understanding config maps
 
+You can review the following sections to learn how to use config maps to make configuration values available to your pods separately from application code.
+
 Many applications require configuration by using some combination of configuration files, command-line arguments, and environment variables. In OpenShift Container Platform, these configuration artifacts are decoupled from image content to keep containerized applications portable.
 
 The `ConfigMap` object provides mechanisms to inject containers with configuration data while keeping containers agnostic of OpenShift Container Platform. A config map can be used to store fine-grained information like individual properties or coarse-grained information like entire configuration files or JSON blobs.
@@ -34,9 +36,13 @@ binaryData:
   bar: L3Jvb3QvMTAw
 ```
 
-- Contains the configuration data.
+where:
 
-- Points to a file that contains non-UTF8 data, for example, a binary Java keystore file. Enter the file data in Base 64.
+`data`
+Specifies the configuration data.
+
+`binaryData.bar`
+Specifies a file that contains non-UTF8 data, for example, a binary Java keystore file. Enter the file data in Base 64.
 
 <div class="note">
 
@@ -80,13 +86,7 @@ The following sections describe some uses cases when consuming `ConfigMap` objec
 
 You can use config maps to populate individual environment variables in containers or to populate environment variables in containers from all keys that form valid environment variable names.
 
-As an example, consider the following config map:
-
-<div class="formalpara-title">
-
-**`ConfigMap` with two environment variables**
-
-</div>
+The following example `ConfigMap` custom resource (CR) contains two environment variables:
 
 ``` yaml
 apiVersion: v1
@@ -99,17 +99,18 @@ data:
   special.type: charm
 ```
 
-- Name of the config map.
+where:
 
-- The project in which the config map resides. Config maps can only be referenced by pods in the same project.
+`metadata.name`
+Specifies the name of the config map.
 
-- Environment variables to inject.
+`metadata.namespace`
+Specifies the project in which the config map resides. Config maps can only be referenced by pods in the same project.
 
-<div class="formalpara-title">
+`data`
+Specifies the environment variables to inject.
 
-**`ConfigMap` with one environment variable**
-
-</div>
+The following example `ConfigMap` (CR) contains one environment variable:
 
 ``` yaml
 apiVersion: v1
@@ -121,11 +122,16 @@ data:
   log_level: INFO
 ```
 
-- Name of the config map.
+where:
 
-- Environment variable to inject.
+`metadata.name`
+Specifies the name of the config map.
 
-<!-- -->
+`metadata.namespace`
+Specifies the project in which the config map resides. Config maps can only be referenced by pods in the same project.
+
+`data`
+Specifies the environment variables to inject.
 
 - You can consume the keys of this `ConfigMap` in a pod using `configMapKeyRef` sections.
 
@@ -171,34 +177,40 @@ data:
     restartPolicy: Never
   ```
 
-  - Stanza to pull the specified environment variables from a `ConfigMap`.
+  where:
 
-  - Name of a pod environment variable that you are injecting a key’s value into.
+  `spec.containers.env`
+  Specifies the environment variables to pull from a config map.
 
-  - Name of the `ConfigMap` to pull specific environment variables from.
+  `spec.containers.env.name`
+  Specifies the name of a pod environment variable that you are injecting a key’s value into.
 
-  - Environment variable to pull from the `ConfigMap`.
+  `spec.containers.env.valueFrom.configMapKeyRef.name`
+  Specifies the name of the config map to pull specific environment variables from.
 
-  - Makes the environment variable optional. As optional, the pod will be started even if the specified `ConfigMap` and keys do not exist.
+  `spec.containers.env.valueFrom.configMapKeyRef.key`
+  Specifies the environment variable to pull from the config map.
 
-  - Stanza to pull all environment variables from a `ConfigMap`.
+  `spec.containers.env.valueFrom.configMapKeyRef.optional`
+  Specifies that the environment variable is optional. As optional, the pod will be started even if the specified config map and keys do not exist.
 
-  - Name of the `ConfigMap` to pull all environment variables from.
+  `spec.containers.envFrom.configMapRef`
+  Specifies the name of the config map to pull all environment variables from.
 
-    When this pod is run, the pod logs will include the following output:
+  When this pod is run, the pod logs will include the following output:
 
-        SPECIAL_LEVEL_KEY=very
-        log_level=INFO
+      SPECIAL_LEVEL_KEY=very
+      log_level=INFO
 
-<div class="note">
+  <div class="note">
 
-`SPECIAL_TYPE_KEY=charm` is not listed in the example output because `optional: true` is set.
+  `SPECIAL_TYPE_KEY=charm` is not listed in the example output because `optional: true` is set.
 
-</div>
+  </div>
 
 ## Setting command-line arguments for container commands with config maps
 
-You can use a config map to set the value of the commands or arguments in a container by using the Kubernetes substitution syntax `$(VAR_NAME)`.
+You can use config maps to set the value of the commands or arguments in a container by using the Kubernetes substitution syntax `$(VAR_NAME)`.
 
 As an example, consider the following config map:
 
@@ -253,21 +265,20 @@ data:
     restartPolicy: Never
   ```
 
-  - Inject the values into a command in a container using the keys you want to use as environment variables.
+  where:
 
-    When this pod is run, the output from the echo command run in the test-container container is as follows:
+  `spec.containers.command`
+  Specifies values to inject into a command in a container by using the keys you want to use as environment variables.
 
-        very charm
+  When this pod is run, the output from the echo command run in the test-container container is as follows:
+
+      very charm
 
 ## Injecting content into a volume by using config maps
 
-You can inject content into a volume by using config maps.
+You can use config maps to inject content into a volume.
 
-<div class="formalpara-title">
-
-**Example `ConfigMap` custom resource (CR)**
-
-</div>
+The following example `ConfigMap` custom resource (CR) contains two environment variables:
 
 ``` yaml
 apiVersion: v1
@@ -280,13 +291,7 @@ data:
   special.type: charm
 ```
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-You have a couple different options for injecting content into a volume by using config maps.
+The following procedure describes options for injecting content into a volume by using config maps.
 
 - The most basic way to inject content into a volume by using a config map is to populate the volume with files where the key is the file name and the content of the file is the value of the key:
 
@@ -318,11 +323,14 @@ You have a couple different options for injecting content into a volume by using
     restartPolicy: Never
   ```
 
-  - File containing key.
+  where:
 
-    When this pod is run, the output of the cat command will be:
+  `spec.volumes.configMap.name`
+  Specifies a file containing key.
 
-        very
+  When this pod is run, the output of the cat command will be:
+
+      very
 
 - You can also control the paths within the volume where config map keys are projected:
 
@@ -357,8 +365,9 @@ You have a couple different options for injecting content into a volume by using
     restartPolicy: Never
   ```
 
-  - Path to config map key.
+  where:
 
-    When this pod is run, the output of the cat command will be:
+  `spec.volumes.configMap.items.path`
+  Specifies the path to config map key.
 
-        very
+  When this pod is run, the output of the cat command is `very`.

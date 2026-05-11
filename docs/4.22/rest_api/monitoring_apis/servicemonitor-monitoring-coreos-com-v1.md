@@ -182,35 +182,40 @@ Required
 <p>Notice: <code>scrapeClassicHistograms</code> corresponds to the <code>always_scrape_classic_histograms</code> field in the Prometheus configuration.</p></td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;"><p><code>scrapeNativeHistograms</code></p></td>
+<td style="text-align: left;"><p><code>boolean</code></p></td>
+<td style="text-align: left;"><p>scrapeNativeHistograms defines whether to enable scraping of native histograms. It requires Prometheus &gt;= v3.8.0.</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>scrapeProtocols</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>scrapeProtocols defines the protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred).</p>
 <p>If unset, Prometheus uses its default value.</p>
 <p>It requires Prometheus &gt;= v2.49.0.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>selector</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>selector defines the label selector to select the Kubernetes <code>Endpoints</code> objects to scrape metrics from.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>selectorMechanism</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>selectorMechanism defines the mechanism used to select the endpoints to scrape. By default, the selection process relies on relabel configurations to filter the discovered targets. Alternatively, you can opt in for role selectors, which may offer better efficiency in large clusters. Which strategy is best for your use case needs to be carefully evaluated.</p>
 <p>It requires Prometheus &gt;= v2.17.0.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>serviceDiscoveryRole</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>serviceDiscoveryRole defines the service discovery role used to discover targets.</p>
 <p>If set, the value should be either "Endpoints" or "EndpointSlice". Otherwise it defaults to the value defined in the Prometheus/PrometheusAgent resource.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>targetLabels</code></p></td>
 <td style="text-align: left;"><p><code>array (string)</code></p></td>
 <td style="text-align: left;"><p>targetLabels defines the labels which are transferred from the associated Kubernetes <code>Service</code> object onto the ingested metrics.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>targetLimit</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>targetLimit defines a limit on the number of scraped targets that will be accepted.</p></td>
@@ -284,14 +289,14 @@ Type
 <tr class="odd">
 <td style="text-align: left;"><p><code>authorization</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>authorization configures the Authorization header credentials to use when scraping the target.</p>
-<p>Cannot be set at the same time as <code>basicAuth</code>, or <code>oauth2</code>.</p></td>
+<td style="text-align: left;"><p>authorization configures the Authorization header credentials used by the client.</p>
+<p>Cannot be set at the same time as <code>basicAuth</code>, <code>bearerTokenSecret</code> or <code>oauth2</code>.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>basicAuth</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>basicAuth defines the Basic Authentication credentials to use when scraping the target.</p>
-<p>Cannot be set at the same time as <code>authorization</code>, or <code>oauth2</code>.</p></td>
+<td style="text-align: left;"><p>basicAuth defines the Basic Authentication credentials used by the client.</p>
+<p>Cannot be set at the same time as <code>authorization</code>, <code>bearerTokenSecret</code> or <code>oauth2</code>.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>bearerTokenFile</code></p></td>
@@ -302,13 +307,14 @@ Type
 <tr class="even">
 <td style="text-align: left;"><p><code>bearerTokenSecret</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>bearerTokenSecret defines a key of a Secret containing the bearer token for scraping targets. The secret needs to be in the same namespace as the ServiceMonitor object and readable by the Prometheus Operator.</p>
+<td style="text-align: left;"><p>bearerTokenSecret defines a key of a Secret containing the bearer token used by the client for authentication. The secret needs to be in the same namespace as the custom resource and readable by the Prometheus Operator.</p>
+<p>Cannot be set at the same time as <code>authorization</code>, <code>basicAuth</code> or <code>oauth2</code>.</p>
 <p>Deprecated: use <code>authorization</code> instead.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>enableHttp2</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
-<td style="text-align: left;"><p>enableHttp2 can be used to disable HTTP2 when scraping the target.</p></td>
+<td style="text-align: left;"><p>enableHttp2 can be used to disable HTTP2.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>filterRunning</code></p></td>
@@ -320,7 +326,7 @@ Type
 <tr class="odd">
 <td style="text-align: left;"><p><code>followRedirects</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
-<td style="text-align: left;"><p>followRedirects defines whether the scrape requests should follow HTTP 3xx redirects.</p></td>
+<td style="text-align: left;"><p>followRedirects defines whether the client should follow HTTP 3xx redirects.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>honorLabels</code></p></td>
@@ -358,9 +364,9 @@ Type
 <tr class="even">
 <td style="text-align: left;"><p><code>oauth2</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>oauth2 defines the OAuth2 settings to use when scraping the target.</p>
+<td style="text-align: left;"><p>oauth2 defines the OAuth2 settings used by the client.</p>
 <p>It requires Prometheus &gt;= 2.27.0.</p>
-<p>Cannot be set at the same time as <code>authorization</code>, or <code>basicAuth</code>.</p></td>
+<p>Cannot be set at the same time as <code>authorization</code>, <code>basicAuth</code> or <code>bearerTokenSecret</code>.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>params</code></p></td>
@@ -416,7 +422,7 @@ Type
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>relabelings defines the relabeling rules to apply the target’s metadata labels.</p>
 <p>The Operator automatically adds relabelings for a few standard Kubernetes fields.</p>
-<p>The original scrape job’s name is available via the <code>\__tmp_prometheus_job_name</code> label.</p>
+<p>The original scrape job’s name is available via the <code>__tmp_prometheus_job_name</code> label.</p>
 <p>More info: <a href="https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config">https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config</a></p></td>
 </tr>
 <tr class="odd">
@@ -444,7 +450,7 @@ Type
 <tr class="odd">
 <td style="text-align: left;"><p><code>tlsConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>tlsConfig defines the TLS configuration to use when scraping the target.</p></td>
+<td style="text-align: left;"><p>tlsConfig defines TLS configuration used by the client.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>trackTimestampsStaleness</code></p></td>
@@ -458,9 +464,9 @@ Type
 ## .spec.endpoints\[\].authorization
 
 Description
-authorization configures the Authorization header credentials to use when scraping the target.
+authorization configures the Authorization header credentials used by the client.
 
-Cannot be set at the same time as `basicAuth`, or `oauth2`.
+Cannot be set at the same time as `basicAuth`, `bearerTokenSecret` or `oauth2`.
 
 Type
 `object`
@@ -514,9 +520,9 @@ Required
 ## .spec.endpoints\[\].basicAuth
 
 Description
-basicAuth defines the Basic Authentication credentials to use when scraping the target.
+basicAuth defines the Basic Authentication credentials used by the client.
 
-Cannot be set at the same time as `authorization`, or `oauth2`.
+Cannot be set at the same time as `authorization`, `bearerTokenSecret` or `oauth2`.
 
 Type
 `object`
@@ -563,7 +569,9 @@ Required
 ## .spec.endpoints\[\].bearerTokenSecret
 
 Description
-bearerTokenSecret defines a key of a Secret containing the bearer token for scraping targets. The secret needs to be in the same namespace as the ServiceMonitor object and readable by the Prometheus Operator.
+bearerTokenSecret defines a key of a Secret containing the bearer token used by the client for authentication. The secret needs to be in the same namespace as the custom resource and readable by the Prometheus Operator.
+
+Cannot be set at the same time as `authorization`, `basicAuth` or `oauth2`.
 
 Deprecated: use `authorization` instead.
 
@@ -658,11 +666,11 @@ Type
 ## .spec.endpoints\[\].oauth2
 
 Description
-oauth2 defines the OAuth2 settings to use when scraping the target.
+oauth2 defines the OAuth2 settings used by the client.
 
 It requires Prometheus \>= 2.27.0.
 
-Cannot be set at the same time as `authorization`, or `basicAuth`.
+Cannot be set at the same time as `authorization`, `basicAuth` or `bearerTokenSecret`.
 
 Type
 `object`
@@ -1074,7 +1082,7 @@ relabelings defines the relabeling rules to apply the target’s metadata labels
 
 The Operator automatically adds relabelings for a few standard Kubernetes fields.
 
-The original scrape job’s name is available via the `\__tmp_prometheus_job_name` label.
+The original scrape job’s name is available via the `__tmp_prometheus_job_name` label.
 
 More info: <https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config>
 
@@ -1152,7 +1160,7 @@ Type
 ## .spec.endpoints\[\].tlsConfig
 
 Description
-tlsConfig defines the TLS configuration to use when scraping the target.
+tlsConfig defines TLS configuration used by the client.
 
 Type
 `object`

@@ -25,31 +25,140 @@ Type
 Required
 - `online`
 
-| Property                         | Type      | Description                                                                                                                                                                                                                                                                                                                  |
-|----------------------------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `architecture`                   | `string`  | CPU architecture of the host, e.g. "x86_64" or "aarch64". If unset, eventually populated by inspection.                                                                                                                                                                                                                      |
-| `automatedCleaningMode`          | `string`  | When set to disabled, automated cleaning will be skipped during provisioning and deprovisioning.                                                                                                                                                                                                                             |
-| `bmc`                            | `object`  | How do we connect to the BMC (Baseboard Management Controller) on the host?                                                                                                                                                                                                                                                  |
-| `bootMACAddress`                 | `string`  | The MAC address of the NIC used for provisioning the host. In case of network boot, this is the MAC address of the PXE booting interface. The MAC address of the BMC must never be used here!                                                                                                                                |
-| `bootMode`                       | `string`  | Select the method of initializing the hardware during boot. Defaults to UEFI. Legacy boot should only be used for hardware that does not support UEFI correctly. Set to UEFISecureBoot to turn secure boot on automatically after provisioning.                                                                              |
-| `consumerRef`                    | `object`  | ConsumerRef can be used to store information about something that is using a host. When it is not empty, the host is considered "in use". The common use case is a link to a Machine resource when the host is used by Cluster API.                                                                                          |
-| `customDeploy`                   | `object`  | A custom deploy procedure. This is an advanced feature that allows using a custom deploy step provided by a site-specific deployment ramdisk. Most users will want to use "image" instead. Setting this field triggers provisioning.                                                                                         |
-| `description`                    | `string`  | Description is a human-entered text used to help identify the host.                                                                                                                                                                                                                                                          |
-| `disablePowerOff`                | `boolean` | When set to true, power off of the node will be disabled, instead, a reboot will be used in place of power on/off                                                                                                                                                                                                            |
-| `externallyProvisioned`          | `boolean` | ExternallyProvisioned means something else has provisioned the image running on the host, and the operator should only manage the power status. This field is used for integration with already provisioned hosts and when pivoting hosts between clusters. If unsure, leave this field as false.                            |
-| `firmware`                       | `object`  | Firmware (BIOS) configuration for bare metal server. If set, the requested settings will be applied before the host is provisioned. Only some vendor drivers support this field. An alternative is to use HostFirmwareSettings resources that allow changing arbitrary values and support the generic Redfish-based drivers. |
-| `hardwareProfile`                | `string`  | What is the name of the hardware profile for this host? Hardware profiles are deprecated and should not be used. Use the separate fields Architecture and RootDeviceHints instead. Set to "empty" to prepare for the future version of the API without hardware profiles.                                                    |
-| `image`                          | `object`  | Image holds the details of the image to be provisioned. Populating the image will cause the host to start provisioning.                                                                                                                                                                                                      |
-| `inspectionMode`                 | `string`  | Specifies the mode for host inspection. "disabled" - no inspection will be performed "agent" - normal agent-based inspection will run                                                                                                                                                                                        |
-| `metaData`                       | `object`  | MetaData holds the reference to the Secret containing host metadata which is passed to the Config Drive. By default, metadata will be generated for the host, so most users do not need to set this field.                                                                                                                   |
-| `networkData`                    | `object`  | NetworkData holds the reference to the Secret containing network configuration which is passed to the Config Drive and interpreted by the first boot software such as cloud-init.                                                                                                                                            |
-| `online`                         | `boolean` | Should the host be powered on? If the host is currently in a stable state (e.g. provisioned), its power state will be forced to match this value.                                                                                                                                                                            |
-| `preprovisioningNetworkDataName` | `string`  | PreprovisioningNetworkDataName is the name of the Secret in the local namespace containing network configuration which is passed to the preprovisioning image, and to the Config Drive if not overridden by specifying NetworkData.                                                                                          |
-| `raid`                           | `object`  | RAID configuration for bare metal server. If set, the RAID settings will be applied before the host is provisioned. If not, the current settings will not be modified. Only one of the sub-fields hardwareRAIDVolumes and softwareRAIDVolumes can be set at the same time.                                                   |
-| `rootDeviceHints`                | `object`  | Provide guidance about how to choose the device for the image being provisioned. The default is currently to use /dev/sda as the root device.                                                                                                                                                                                |
-| `taints`                         | `array`   | Taints is the full, authoritative list of taints to apply to the corresponding Machine. This list will overwrite any modifications made to the Machine on an ongoing basis.                                                                                                                                                  |
-| `taints[]`                       | `object`  | The node this Taint is attached to has the "effect" on any pod that does not tolerate the Taint.                                                                                                                                                                                                                             |
-| `userData`                       | `object`  | UserData holds the reference to the Secret containing the user data which is passed to the Config Drive and interpreted by the first-boot software such as cloud-init. The format of user data is specific to the first-boot software.                                                                                       |
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>architecture</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>CPU architecture of the host, e.g. "x86_64" or "aarch64". If unset, eventually populated by inspection.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>automatedCleaningMode</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>When set to disabled, automated cleaning will be skipped during provisioning and deprovisioning.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>bmc</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>How do we connect to the BMC (Baseboard Management Controller) on the host?</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>bootMACAddress</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>The MAC address of the NIC used for provisioning the host. In case of network boot, this is the MAC address of the PXE booting interface. The MAC address of the BMC must never be used here!</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>bootMode</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>Select the method of initializing the hardware during boot. Defaults to UEFI. Legacy boot should only be used for hardware that does not support UEFI correctly. Set to UEFISecureBoot to turn secure boot on automatically after provisioning.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>consumerRef</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>ConsumerRef can be used to store information about something that is using a host. When it is not empty, the host is considered "in use". The common use case is a link to a Machine resource when the host is used by Cluster API.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>customDeploy</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>A custom deploy procedure. This is an advanced feature that allows using a custom deploy step provided by a site-specific deployment ramdisk. Most users will want to use "image" instead. Setting this field triggers provisioning.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>description</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>Description is a human-entered text used to help identify the host.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>disablePowerOff</code></p></td>
+<td style="text-align: left;"><p><code>boolean</code></p></td>
+<td style="text-align: left;"><p>When set to true, power off of the node will be disabled, instead, a reboot will be used in place of power on/off</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>externallyProvisioned</code></p></td>
+<td style="text-align: left;"><p><code>boolean</code></p></td>
+<td style="text-align: left;"><p>ExternallyProvisioned means something else has provisioned the image running on the host, and the operator should only manage the power status. This field is used for integration with already provisioned hosts and when pivoting hosts between clusters.</p>
+<p>This field can be set to true either: 1. During initial host creation (e.g., for pre-provisioned hosts) 2. After inspection completes when the host reaches Available state</p>
+<p>When used in environments with Cluster API Provider Metal3 (CAPM3), ensure hosts are labeled appropriately so CAPM3’s host selector can distinguish them from CAPM3-managed hosts. If unsure, leave this field as false.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>firmware</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>Firmware (BIOS) configuration for bare metal server. If set, the requested settings will be applied before the host is provisioned.</p>
+<p>Deprecated: no longer supported by any driver. An alternative is to use HostFirmwareSettings resources that allow changing arbitrary values and support the generic Redfish-based drivers.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>hardwareProfile</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>What is the name of the hardware profile for this host? Hardware profiles are deprecated and should not be used. Use the separate fields Architecture and RootDeviceHints instead. Set to "empty" to prepare for the future version of the API without hardware profiles.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>image</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>Image holds the details of the image to be provisioned. Populating the image will cause the host to start provisioning.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>inspectionMode</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>Specifies the mode for host inspection. "disabled" - no inspection will be performed "agent" - normal agent-based inspection will run</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>metaData</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>MetaData holds the reference to the Secret containing host metadata which is passed to the Config Drive. By default, metadata will be generated for the host, so most users do not need to set this field.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>networkData</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>NetworkData holds the reference to the Secret containing network configuration which is passed to the Config Drive and interpreted by the first boot software such as cloud-init.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>online</code></p></td>
+<td style="text-align: left;"><p><code>boolean</code></p></td>
+<td style="text-align: left;"><p>Should the host be powered on? If the host is currently in a stable state (e.g. provisioned), its power state will be forced to match this value.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>preprovisioningNetworkDataName</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>PreprovisioningNetworkDataName is the name of the Secret in the local namespace containing network configuration which is passed to the preprovisioning image, and to the Config Drive if not overridden by specifying NetworkData.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>raid</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>RAID configuration for bare metal server. If set, the RAID settings will be applied before the host is provisioned. If not, the current settings will not be modified. Only one of the sub-fields hardwareRAIDVolumes and softwareRAIDVolumes can be set at the same time.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>rootDeviceHints</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>Provide guidance about how to choose the device for the image being provisioned. The default is currently to use /dev/sda as the root device.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>taints</code></p></td>
+<td style="text-align: left;"><p><code>array</code></p></td>
+<td style="text-align: left;"><p>Taints is the full, authoritative list of taints to apply to the corresponding Machine. This list will overwrite any modifications made to the Machine on an ongoing basis.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>taints[]</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>The node this Taint is attached to has the "effect" on any pod that does not tolerate the Taint.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>userData</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>UserData holds the reference to the Secret containing the user data which is passed to the Config Drive and interpreted by the first-boot software such as cloud-init. The format of user data is specific to the first-boot software.</p></td>
+</tr>
+</tbody>
+</table>
 
 ## .spec.bmc
 
@@ -106,7 +215,9 @@ Required
 ## .spec.firmware
 
 Description
-Firmware (BIOS) configuration for bare metal server. If set, the requested settings will be applied before the host is provisioned. Only some vendor drivers support this field. An alternative is to use HostFirmwareSettings resources that allow changing arbitrary values and support the generic Redfish-based drivers.
+Firmware (BIOS) configuration for bare metal server. If set, the requested settings will be applied before the host is provisioned.
+
+Deprecated: no longer supported by any driver. An alternative is to use HostFirmwareSettings resources that allow changing arbitrary values and support the generic Redfish-based drivers.
 
 Type
 `object`
@@ -130,7 +241,7 @@ Required
 
 | Property       | Type     | Description                                                                                                                                                                                                        |
 |----------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `checksum`     | `string` | Checksum is the checksum for the image. Required for all formats except for "live-iso".                                                                                                                            |
+| `checksum`     | `string` | Checksum is the checksum for the image. Required for all formats except for "live-iso" and OCI images (oci://).                                                                                                    |
 | `checksumType` | `string` | ChecksumType is the checksum algorithm for the image, e.g md5, sha256 or sha512. The special value "auto" can be used to detect the algorithm from the checksum. If missing, MD5 is used. If in doubt, use "auto". |
 | `format`       | `string` | Format contains the format of the image (raw, qcow2, …​). When set to "live-iso", an ISO 9660 image referenced by the url will be live-booted and not deployed to disk.                                             |
 | `url`          | `string` | URL is a location of an image to deploy.                                                                                                                                                                           |
@@ -257,6 +368,8 @@ Required
 
 | Property            | Type      | Description                                                                                                                                                            |
 |---------------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `conditions`        | `array`   | Conditions defines current service state of the BareMetalHost.                                                                                                         |
+| `conditions[]`      | `object`  | Condition contains details for one aspect of the current state of this API Resource.                                                                                   |
 | `errorCount`        | `integer` | ErrorCount records how many times the host has encoutered an error since the last successful operation                                                                 |
 | `errorMessage`      | `string`  | The last error message reported by the provisioning subsystem.                                                                                                         |
 | `errorType`         | `string`  | ErrorType indicates the type of failure encountered when the OperationalStatus is OperationalStatusError                                                               |
@@ -269,6 +382,42 @@ Required
 | `poweredOn`         | `boolean` | The currently detected power state of the host. This field may get briefly out of sync with the actual state of the hardware while provisioning processes are running. |
 | `provisioning`      | `object`  | Information tracked by the provisioner.                                                                                                                                |
 | `triedCredentials`  | `object`  | The last credentials we sent to the provisioning backend.                                                                                                              |
+
+## .status.conditions
+
+Description
+Conditions defines current service state of the BareMetalHost.
+
+Type
+`array`
+
+## .status.conditions\[\]
+
+Description
+Condition contains details for one aspect of the current state of this API Resource.
+
+Type
+`object`
+
+Required
+- `lastTransitionTime`
+
+- `message`
+
+- `reason`
+
+- `status`
+
+- `type`
+
+| Property             | Type      | Description                                                                                                                                                                                                                                                                                                                     |
+|----------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lastTransitionTime` | `string`  | lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed. If that is not known, then using the time when the API field changed is acceptable.                                                                                            |
+| `message`            | `string`  | message is a human readable message indicating details about the transition. This may be an empty string.                                                                                                                                                                                                                       |
+| `observedGeneration` | `integer` | observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions\[x\].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.                                   |
+| `reason`             | `string`  | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
+| `status`             | `string`  | status of the condition, one of True, False, Unknown.                                                                                                                                                                                                                                                                           |
+| `type`               | `string`  | type of condition in CamelCase or in foo.example.com/CamelCase.                                                                                                                                                                                                                                                                 |
 
 ## .status.goodCredentials
 
@@ -308,7 +457,7 @@ Type
 |----------------|-----------|---------------------------------------------------------------------|
 | `cpu`          | `object`  | Details of the CPU(s) in the system.                                |
 | `firmware`     | `object`  | System firmware information.                                        |
-| `hostname`     | `string`  |                                                                     |
+| `hostname`     | `string`  | Name of the host at the inspection time.                            |
 | `nics`         | `array`   | List of network interfaces for the host.                            |
 | `nics[]`       | `object`  | NIC describes one network interface on the host.                    |
 | `ramMebibytes` | `integer` | The host’s amount of memory in Mebibytes.                           |
@@ -374,18 +523,19 @@ NIC describes one network interface on the host.
 Type
 `object`
 
-| Property    | Type      | Description                                                                                                                                                                                                  |
-|-------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `ip`        | `string`  | The IP address of the interface. This will be an IPv4 or IPv6 address if one is present. If both IPv4 and IPv6 addresses are present in a dual-stack environment, two nics will be output, one with each IP. |
-| `lldp`      | `object`  | LLDP data for this interface                                                                                                                                                                                 |
-| `mac`       | `string`  | The device MAC address                                                                                                                                                                                       |
-| `model`     | `string`  | The vendor and product IDs of the NIC, e.g. "0x8086 0x1572"                                                                                                                                                  |
-| `name`      | `string`  | The name of the network interface, e.g. "en0"                                                                                                                                                                |
-| `pxe`       | `boolean` | Whether the NIC is PXE Bootable                                                                                                                                                                              |
-| `speedGbps` | `integer` | The speed of the device in Gigabits per second                                                                                                                                                               |
-| `vlanId`    | `integer` | The untagged VLAN ID                                                                                                                                                                                         |
-| `vlans`     | `array`   | The VLANs available                                                                                                                                                                                          |
-| `vlans[]`   | `object`  | VLAN represents the name and ID of a VLAN.                                                                                                                                                                   |
+| Property     | Type      | Description                                                                                                                                                                                                  |
+|--------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `ip`         | `string`  | The IP address of the interface. This will be an IPv4 or IPv6 address if one is present. If both IPv4 and IPv6 addresses are present in a dual-stack environment, two nics will be output, one with each IP. |
+| `lldp`       | `object`  | LLDP data for this interface                                                                                                                                                                                 |
+| `mac`        | `string`  | The device MAC address                                                                                                                                                                                       |
+| `model`      | `string`  | The vendor and product IDs of the NIC, e.g. "0x8086 0x1572"                                                                                                                                                  |
+| `name`       | `string`  | The name of the network interface, e.g. "en0"                                                                                                                                                                |
+| `pciAddress` | `string`  | The NIC PCI address                                                                                                                                                                                          |
+| `pxe`        | `boolean` | Whether the NIC is PXE Bootable                                                                                                                                                                              |
+| `speedGbps`  | `integer` | The speed of the device in Gigabits per second                                                                                                                                                               |
+| `vlanId`     | `integer` | The untagged VLAN ID                                                                                                                                                                                         |
+| `vlans`      | `array`   | The VLANs available                                                                                                                                                                                          |
+| `vlans[]`    | `object`  | VLAN represents the name and ID of a VLAN.                                                                                                                                                                   |
 
 ## .status.hardware.nics\[\].lldp
 
@@ -600,7 +750,7 @@ Required
 
 | Property       | Type     | Description                                                                                                                                                                                                        |
 |----------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `checksum`     | `string` | Checksum is the checksum for the image. Required for all formats except for "live-iso".                                                                                                                            |
+| `checksum`     | `string` | Checksum is the checksum for the image. Required for all formats except for "live-iso" and OCI images (oci://).                                                                                                    |
 | `checksumType` | `string` | ChecksumType is the checksum algorithm for the image, e.g md5, sha256 or sha512. The special value "auto" can be used to detect the algorithm from the checksum. If missing, MD5 is used. If in doubt, use "auto". |
 | `format`       | `string` | Format contains the format of the image (raw, qcow2, …​). When set to "live-iso", an ISO 9660 image referenced by the url will be live-booted and not deployed to disk.                                             |
 | `url`          | `string` | URL is a location of an image to deploy.                                                                                                                                                                           |

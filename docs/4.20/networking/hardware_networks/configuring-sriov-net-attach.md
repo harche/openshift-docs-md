@@ -73,7 +73,7 @@ spec:
 
 - Optional: The capabilities to configure for this additional network. You can specify `'{ "ips": true }'` to enable IP address support or `'{ "mac": true }'` to enable MAC address support.
 
-# Additional resources
+<!-- -->
 
 - [Installing the SR-IOV Network Operator](../../networking/networking_operators/sr-iov-operator/installing-sriov-operator.xml#installing-sriov-operator)
 

@@ -173,6 +173,16 @@ Type
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Condition contains details for one aspect of the current state of this API Resource.</p></td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>supportedFeatures</code></p></td>
+<td style="text-align: left;"><p><code>array</code></p></td>
+<td style="text-align: left;"><p>SupportedFeatures is the set of features the GatewayClass support. It MUST be sorted in ascending alphabetical order by the Name key.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>supportedFeatures[]</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"></td>
+</tr>
 </tbody>
 </table>
 
@@ -213,6 +223,28 @@ Required
 | `reason`             | `string`  | reason contains a programmatic identifier indicating the reason for the condition’s last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty. |
 | `status`             | `string`  | status of the condition, one of True, False, Unknown.                                                                                                                                                                                                                                                                           |
 | `type`               | `string`  | type of condition in CamelCase or in foo.example.com/CamelCase.                                                                                                                                                                                                                                                                 |
+
+## .status.supportedFeatures
+
+Description
+SupportedFeatures is the set of features the GatewayClass support. It MUST be sorted in ascending alphabetical order by the Name key.
+
+Type
+`array`
+
+## .status.supportedFeatures\[\]
+
+Description
+
+Type
+`object`
+
+Required
+- `name`
+
+| Property | Type     | Description                                                                              |
+|----------|----------|------------------------------------------------------------------------------------------|
+| `name`   | `string` | FeatureName is used to describe distinct features that are covered by conformance tests. |
 
 # API endpoints
 

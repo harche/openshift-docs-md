@@ -478,6 +478,12 @@ If the `SecurityContextConstraints.supplementalGroups` field has value `RunAsAny
 
 Security context constraints (SCCs) have a priority field that affects the ordering when attempting to validate a request by the admission controller.
 
+<div class="warning">
+
+Setting an SCC priority greater than 0 for the default OpenShift Container Platform SCCs can cause critical cluster instability.
+
+</div>
+
 A priority value of `0` is the lowest possible priority. A nil priority is considered a `0`, or lowest, priority. Higher priority SCCs are moved to the front of the set when sorting.
 
 When the complete set of available SCCs is determined, the SCCs are ordered in the following manner:
@@ -676,6 +682,12 @@ If the default security context constraints (SCCs) do not satisfy your applicati
 <div class="important">
 
 Creating and modifying your own SCCs are advanced operations that might cause instability to your cluster. If you have questions about using your own SCCs, contact Red Hat Support. For information about contacting Red Hat support, see *Getting support*.
+
+</div>
+
+<div class="warning">
+
+Setting an SCC priority greater than 0 for the default OpenShift Container Platform SCCs can cause critical cluster instability.
 
 </div>
 

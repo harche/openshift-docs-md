@@ -11,12 +11,48 @@ Required
 
 # Specification
 
-| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
-|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
-| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
-| `spec`       | `object`                                                                             | spec defines the specification of AlertmanagerConfigSpec                                                                                                                                                                                                                                             |
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>apiVersion</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <a href="https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources">https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources</a></p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>kind</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <a href="https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds">https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds</a></p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>metadata</code></p></td>
+<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta"><code>ObjectMeta</code></a></p></td>
+<td style="text-align: left;"><p>Standard object’s metadata. More info: <a href="https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata">https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata</a></p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>spec</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>spec defines the specification of AlertmanagerConfigSpec</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>status</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>status defines the status subresource. It is under active development and is updated only when the "StatusForConfigurationResources" feature gate is enabled.</p>
+<p>Most recent observed status of the ServiceMonitor. Read-only. More info: <a href="https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status">https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status</a></p></td>
+</tr>
+</tbody>
+</table>
 
 ## .spec
 
@@ -131,7 +167,7 @@ Required
 
 | Property              | Type     | Description                                                                                                                                                                                                                                               |
 |-----------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `discordConfigs`      | `array`  | discordConfigs defines the list of Slack configurations.                                                                                                                                                                                                  |
+| `discordConfigs`      | `array`  | discordConfigs defines the list of Discord configurations.                                                                                                                                                                                                |
 | `discordConfigs[]`    | `object` | DiscordConfig configures notifications via Discord. See <https://prometheus.io/docs/alerting/latest/configuration/#discord_config>                                                                                                                        |
 | `emailConfigs`        | `array`  | emailConfigs defines the list of Email configurations.                                                                                                                                                                                                    |
 | `emailConfigs[]`      | `object` | EmailConfig configures notifications via Email.                                                                                                                                                                                                           |
@@ -166,7 +202,7 @@ Required
 ## .spec.receivers\[\].discordConfigs
 
 Description
-discordConfigs defines the list of Slack configurations.
+discordConfigs defines the list of Discord configurations.
 
 Type
 `array`
@@ -1016,23 +1052,24 @@ EmailConfig configures notifications via Email.
 Type
 `object`
 
-| Property       | Type      | Description                                                                                                                                                                                                                                         |
-|----------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `authIdentity` | `string`  | authIdentity defines the identity to use for SMTP authentication. This is typically used with PLAIN authentication mechanism.                                                                                                                       |
-| `authPassword` | `object`  | authPassword defines the secret’s key that contains the password to use for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.                                |
-| `authSecret`   | `object`  | authSecret defines the secret’s key that contains the CRAM-MD5 secret. This is used for CRAM-MD5 authentication mechanism. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. |
-| `authUsername` | `string`  | authUsername defines the username to use for SMTP authentication. This is used for SMTP AUTH when the server requires authentication.                                                                                                               |
-| `from`         | `string`  | from defines the sender address for email notifications. This appears as the "From" field in the email header.                                                                                                                                      |
-| `headers`      | `array`   | headers defines additional email header key/value pairs. These override any headers previously set by the notification implementation.                                                                                                              |
-| `headers[]`    | `object`  | KeyValue defines a (key, value) tuple.                                                                                                                                                                                                              |
-| `hello`        | `string`  | hello defines the hostname to identify to the SMTP server. This is used in the SMTP HELO/EHLO command during the connection handshake.                                                                                                              |
-| `html`         | `string`  | html defines the HTML body of the email notification. This allows for rich formatting in the email content.                                                                                                                                         |
-| `requireTLS`   | `boolean` | requireTLS defines the SMTP TLS requirement. Note that Go does not support unencrypted connections to remote SMTP endpoints.                                                                                                                        |
-| `sendResolved` | `boolean` | sendResolved defines whether or not to notify about resolved alerts.                                                                                                                                                                                |
-| `smarthost`    | `string`  | smarthost defines the SMTP host and port through which emails are sent. Format should be "hostname:port", e.g. "smtp.example.com:587".                                                                                                              |
-| `text`         | `string`  | text defines the plain text body of the email notification. This provides a fallback for email clients that don’t support HTML.                                                                                                                     |
-| `tlsConfig`    | `object`  | tlsConfig defines the TLS configuration for SMTP connections. This includes settings for certificates, CA validation, and TLS protocol options.                                                                                                     |
-| `to`           | `string`  | to defines the email address to send notifications to. This is the recipient address for alert notifications.                                                                                                                                       |
+| Property           | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                       |
+|--------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `authIdentity`     | `string`  | authIdentity defines the identity to use for SMTP authentication. This is typically used with PLAIN authentication mechanism.                                                                                                                                                                                                                                                                     |
+| `authPassword`     | `object`  | authPassword defines the secret’s key that contains the password to use for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.                                                                                                                                                                              |
+| `authSecret`       | `object`  | authSecret defines the secret’s key that contains the CRAM-MD5 secret. This is used for CRAM-MD5 authentication mechanism. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.                                                                                                                                               |
+| `authUsername`     | `string`  | authUsername defines the username to use for SMTP authentication. This is used for SMTP AUTH when the server requires authentication.                                                                                                                                                                                                                                                             |
+| `forceImplicitTLS` | `boolean` | forceImplicitTLS defines whether to force use of implicit TLS (direct TLS connection) for better security. true: force use of implicit TLS (direct TLS connection on any port) false: force disable implicit TLS (use explicit TLS/STARTTLS if required) nil (default): auto-detect based on port (465=implicit, other=explicit) for backward compatibility It requires Alertmanager \>= v0.31.0. |
+| `from`             | `string`  | from defines the sender address for email notifications. This appears as the "From" field in the email header.                                                                                                                                                                                                                                                                                    |
+| `headers`          | `array`   | headers defines additional email header key/value pairs. These override any headers previously set by the notification implementation.                                                                                                                                                                                                                                                            |
+| `headers[]`        | `object`  | KeyValue defines a (key, value) tuple.                                                                                                                                                                                                                                                                                                                                                            |
+| `hello`            | `string`  | hello defines the hostname to identify to the SMTP server. This is used in the SMTP HELO/EHLO command during the connection handshake.                                                                                                                                                                                                                                                            |
+| `html`             | `string`  | html defines the HTML body of the email notification. This allows for rich formatting in the email content.                                                                                                                                                                                                                                                                                       |
+| `requireTLS`       | `boolean` | requireTLS defines the SMTP TLS requirement. Note that Go does not support unencrypted connections to remote SMTP endpoints.                                                                                                                                                                                                                                                                      |
+| `sendResolved`     | `boolean` | sendResolved defines whether or not to notify about resolved alerts.                                                                                                                                                                                                                                                                                                                              |
+| `smarthost`        | `string`  | smarthost defines the SMTP host and port through which emails are sent. Format should be "hostname:port", e.g. "smtp.example.com:587".                                                                                                                                                                                                                                                            |
+| `text`             | `string`  | text defines the plain text body of the email notification. This provides a fallback for email clients that don’t support HTML.                                                                                                                                                                                                                                                                   |
+| `tlsConfig`        | `object`  | tlsConfig defines the TLS configuration for SMTP connections. This includes settings for certificates, CA validation, and TLS protocol options.                                                                                                                                                                                                                                                   |
+| `to`               | `string`  | to defines the email address to send notifications to. This is the recipient address for alert notifications.                                                                                                                                                                                                                                                                                     |
 
 ## .spec.receivers\[\].emailConfigs\[\].authPassword
 
@@ -3866,6 +3903,7 @@ Type
 | `serviceKey`              | `object`  | serviceKey defines the secret’s key that contains the PagerDuty service key (when using integration type "Prometheus"). Either this field or `routingKey` needs to be defined. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. |
 | `severity`                | `string`  | severity of the incident.                                                                                                                                                                                                                                                                               |
 | `source`                  | `string`  | source defines the unique location of the affected system.                                                                                                                                                                                                                                              |
+| `timeout`                 | `string`  | timeout is the maximum time allowed to invoke the pagerduty It requires Alertmanager \>= v0.30.0.                                                                                                                                                                                                       |
 | `url`                     | `string`  | url defines the URL to send requests to.                                                                                                                                                                                                                                                                |
 
 ## .spec.receivers\[\].pagerdutyConfigs\[\].details
@@ -4783,7 +4821,7 @@ Type
 |----------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `device`       | `string`  | device defines the name of a specific device to send the notification to. If not specified, the notification is sent to all user’s devices.                                                                                                                                                                            |
 | `expire`       | `string`  | expire defines how long your notification will continue to be retried for, unless the user acknowledges the notification. Only applies to priority 2 notifications.                                                                                                                                                    |
-| `html`         | `boolean` | html defines whether notification message is HTML or plain text. When true, the message can include HTML formatting tags.                                                                                                                                                                                              |
+| `html`         | `boolean` | html defines whether notification message is HTML or plain text. When true, the message can include HTML formatting tags. html and monospace formatting are mutually exclusive.                                                                                                                                        |
 | `httpConfig`   | `object`  | httpConfig defines the HTTP client configuration for Pushover API requests.                                                                                                                                                                                                                                            |
 | `message`      | `string`  | message defines the notification message content. This is the main body text of the Pushover notification.                                                                                                                                                                                                             |
 | `monospace`    | `boolean` | monospace optional HTML/monospace formatting for the message, see <https://pushover.net/api#html> html and monospace formatting are mutually exclusive.                                                                                                                                                                |
@@ -5647,28 +5685,28 @@ Required
 
 - `tokenID`
 
-| Property       | Type      | Description                                                                                                                                            |
-|----------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `actions`      | `array`   | actions defines interactive actions to include in the message. These appear as buttons that users can click to trigger responses.                      |
-| `actions[]`    | `object`  | RocketChatActionConfig defines actions for RocketChat messages.                                                                                        |
-| `apiURL`       | `string`  | apiURL defines the API URL for RocketChat. Defaults to <https://open.rocket.chat/> if not specified.                                                   |
-| `channel`      | `string`  | channel defines the channel to send alerts to. This can be a channel name (e.g., "#alerts") or a direct message recipient.                             |
-| `color`        | `string`  | color defines the message color displayed in RocketChat. This appears as a colored bar alongside the message.                                          |
-| `emoji`        | `string`  | emoji defines the emoji to be displayed as an avatar. If provided, this emoji will be used instead of the default avatar or iconURL.                   |
-| `fields`       | `array`   | fields defines additional fields for the message attachment. These appear as structured key-value pairs within the message.                            |
-| `fields[]`     | `object`  | RocketChatFieldConfig defines a field for RocketChat messages.                                                                                         |
-| `httpConfig`   | `object`  | httpConfig defines the HTTP client configuration for RocketChat API requests.                                                                          |
-| `iconURL`      | `string`  | iconURL defines the icon URL for the message avatar. This displays a custom image as the message sender’s avatar.                                      |
-| `imageURL`     | `string`  | imageURL defines the image URL to display within the message. This embeds an image directly in the message attachment.                                 |
-| `linkNames`    | `boolean` | linkNames defines whether to enable automatic linking of usernames and channels. When true, @username and \#channel references become clickable links. |
-| `sendResolved` | `boolean` | sendResolved defines whether or not to notify about resolved alerts.                                                                                   |
-| `shortFields`  | `boolean` | shortFields defines whether to use short fields in the message layout. When true, fields may be displayed side by side to save space.                  |
-| `text`         | `string`  | text defines the message text to send. This is optional because attachments can be used instead of or alongside text.                                  |
-| `thumbURL`     | `string`  | thumbURL defines the thumbnail URL for the message. This displays a small thumbnail image alongside the message content.                               |
-| `title`        | `string`  | title defines the message title displayed prominently in the message. This appears as bold text at the top of the message attachment.                  |
-| `titleLink`    | `string`  | titleLink defines the URL that the title will link to when clicked. This makes the message title clickable in the RocketChat interface.                |
-| `token`        | `object`  | token defines the sender token for RocketChat authentication. This is the personal access token or bot token used to authenticate API requests.        |
-| `tokenID`      | `object`  | tokenID defines the sender token ID for RocketChat authentication. This is the user ID associated with the token used for API requests.                |
+| Property       | Type      | Description                                                                                                                                                                                                                                                              |
+|----------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `actions`      | `array`   | actions defines interactive actions to include in the message. These appear as buttons that users can click to trigger responses.                                                                                                                                        |
+| `actions[]`    | `object`  | RocketChatActionConfig defines actions for RocketChat messages.                                                                                                                                                                                                          |
+| `apiURL`       | `string`  | apiURL defines the API URL for RocketChat. Defaults to <https://open.rocket.chat/> if not specified.                                                                                                                                                                     |
+| `channel`      | `string`  | channel defines the channel to send alerts to. This can be a channel name (e.g., "#alerts") or a direct message recipient.                                                                                                                                               |
+| `color`        | `string`  | color defines the message color displayed in RocketChat. This appears as a colored bar alongside the message.                                                                                                                                                            |
+| `emoji`        | `string`  | emoji defines the emoji to be displayed as an avatar. If provided, this emoji will be used instead of the default avatar or iconURL.                                                                                                                                     |
+| `fields`       | `array`   | fields defines additional fields for the message attachment. These appear as structured key-value pairs within the message.                                                                                                                                              |
+| `fields[]`     | `object`  | RocketChatFieldConfig defines a field for RocketChat messages.                                                                                                                                                                                                           |
+| `httpConfig`   | `object`  | httpConfig defines the HTTP client configuration for RocketChat API requests.                                                                                                                                                                                            |
+| `iconURL`      | `string`  | iconURL defines the icon URL for the message avatar. This displays a custom image as the message sender’s avatar.                                                                                                                                                        |
+| `imageURL`     | `string`  | imageURL defines the image URL to display within the message. This embeds an image directly in the message attachment.                                                                                                                                                   |
+| `linkNames`    | `boolean` | linkNames defines whether to enable automatic linking of usernames and channels. When true, @username and \#channel references become clickable links.                                                                                                                   |
+| `sendResolved` | `boolean` | sendResolved defines whether or not to notify about resolved alerts.                                                                                                                                                                                                     |
+| `shortFields`  | `boolean` | shortFields defines whether to use short fields in the message layout. When true, fields may be displayed side by side to save space.                                                                                                                                    |
+| `text`         | `string`  | text defines the message text to send. This is optional because attachments can be used instead of or alongside text.                                                                                                                                                    |
+| `thumbURL`     | `string`  | thumbURL defines the thumbnail URL for the message. This displays a small thumbnail image alongside the message content.                                                                                                                                                 |
+| `title`        | `string`  | title defines the message title displayed prominently in the message. This appears as bold text at the top of the message attachment.                                                                                                                                    |
+| `titleLink`    | `string`  | titleLink defines the URL that the title will link to when clicked. This makes the message title clickable in the RocketChat interface.                                                                                                                                  |
+| `token`        | `object`  | token defines the sender token for RocketChat authentication. This is the personal access token or bot token used to authenticate API requests. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. |
+| `tokenID`      | `object`  | tokenID defines the sender token ID for RocketChat authentication. This is the user ID associated with the token used for API requests. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.         |
 
 ## .spec.receivers\[\].rocketchatConfigs\[\].actions
 
@@ -6507,7 +6545,7 @@ Required
 ## .spec.receivers\[\].rocketchatConfigs\[\].token
 
 Description
-token defines the sender token for RocketChat authentication. This is the personal access token or bot token used to authenticate API requests.
+token defines the sender token for RocketChat authentication. This is the personal access token or bot token used to authenticate API requests. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.
 
 Type
 `object`
@@ -6524,7 +6562,7 @@ Required
 ## .spec.receivers\[\].rocketchatConfigs\[\].tokenID
 
 Description
-tokenID defines the sender token ID for RocketChat authentication. This is the user ID associated with the token used for API requests.
+tokenID defines the sender token ID for RocketChat authentication. This is the user ID associated with the token used for API requests. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.
 
 Type
 `object`
@@ -6571,12 +6609,14 @@ Type
 | `iconURL`      | `string`         | iconURL defines the URL to an image to use as the bot’s avatar.                                                                                                                                                                                                                                                                              |
 | `imageURL`     | `string`         | imageURL defines the URL to an image file that will be displayed inside the message attachment.                                                                                                                                                                                                                                              |
 | `linkNames`    | `boolean`        | linkNames enables automatic linking of channel names and usernames in the message. When true, @channel and @username will be converted to clickable links.                                                                                                                                                                                   |
+| `messageText`  | `string`         | messageText defines text content of the Slack message. If set, this is sent as the top-level 'text' field in the Slack payload. It requires Alertmanager \>= v0.31.0.                                                                                                                                                                        |
 | `mrkdwnIn`     | `array (string)` | mrkdwnIn defines which fields should be parsed as Slack markdown. Valid values include "pretext", "text", and "fields".                                                                                                                                                                                                                      |
 | `pretext`      | `string`         | pretext defines optional text that appears above the message attachment block.                                                                                                                                                                                                                                                               |
 | `sendResolved` | `boolean`        | sendResolved defines whether or not to notify about resolved alerts.                                                                                                                                                                                                                                                                         |
 | `shortFields`  | `boolean`        | shortFields determines whether fields are displayed in a compact format. When true, fields are shown side by side when possible.                                                                                                                                                                                                             |
 | `text`         | `string`         | text defines the main text content of the Slack message attachment.                                                                                                                                                                                                                                                                          |
 | `thumbURL`     | `string`         | thumbURL defines the URL to an image file that will be displayed as a thumbnail on the right side of the message attachment.                                                                                                                                                                                                                 |
+| `timeout`      | `string`         | timeout defines the maximum time to wait for a webhook request to complete, before failing the request and allowing it to be retried. It requires Alertmanager \>= v0.30.0.                                                                                                                                                                  |
 | `title`        | `string`         | title defines the title text displayed in the Slack message attachment.                                                                                                                                                                                                                                                                      |
 | `titleLink`    | `string`         | titleLink defines the URL that the title will link to when clicked.                                                                                                                                                                                                                                                                          |
 | `username`     | `string`         | username defines the slack bot user name.                                                                                                                                                                                                                                                                                                    |
@@ -9190,6 +9230,9 @@ VictorOpsConfig configures notifications via VictorOps. See <https://prometheus.
 
 Type
 `object`
+
+Required
+- `routingKey`
 
 | Property            | Type      | Description                                                                                                                                                                                                                  |
 |---------------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -12535,19 +12578,19 @@ route defines the Alertmanager route definition for alerts matching the resource
 Type
 `object`
 
-| Property              | Type                | Description                                                                                                                                                                                                                                                                               |
-|-----------------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `activeTimeIntervals` | `array (string)`    | activeTimeIntervals is a list of TimeInterval names when this route should be active.                                                                                                                                                                                                     |
-| `continue`            | `boolean`           | continue defines the boolean indicating whether an alert should continue matching subsequent sibling nodes. It will always be overridden to true for the first-level route by the Prometheus operator.                                                                                    |
-| `groupBy`             | `array (string)`    | groupBy defines the list of labels to group by. Labels must not be repeated (unique list). Special label "…​" (aggregate by all possible labels), if provided, must be the only element in the list.                                                                                       |
-| `groupInterval`       | `string`            | groupInterval defines how long to wait before sending an updated notification. Must match the regular expression\`^((<span class="0-9">)y)?((\[0-9\]</span>)w)?((<span class="0-9">)d)?((\[0-9\]</span>)h)?((<span class="0-9">)m)?((\[0-9\]</span>)s)?((\[0-9\]+)ms)?\$\` Example: "5m"  |
-| `groupWait`           | `string`            | groupWait defines how long to wait before sending the initial notification. Must match the regular expression\`^((<span class="0-9">)y)?((\[0-9\]</span>)w)?((<span class="0-9">)d)?((\[0-9\]</span>)h)?((<span class="0-9">)m)?((\[0-9\]</span>)s)?((\[0-9\]+)ms)?\$\` Example: "30s"    |
-| `matchers`            | `array`             | matchers defines the list of matchers that the alert’s labels should match. For the first level route, the operator removes any existing equality and regexp matcher on the `namespace` label and adds a `namespace: <object namespace>` matcher.                                         |
-| `matchers[]`          | `object`            | Matcher defines how to match on alert’s labels.                                                                                                                                                                                                                                           |
-| `muteTimeIntervals`   | `array (string)`    | muteTimeIntervals is a list of MuteTimeInterval names that will mute this route when matched,                                                                                                                                                                                             |
-| `receiver`            | `string`            | receiver defines the name of the receiver for this route. If not empty, it should be listed in the `receivers` field.                                                                                                                                                                     |
-| `repeatInterval`      | `string`            | repeatInterval defines how long to wait before repeating the last notification. Must match the regular expression\`^((<span class="0-9">)y)?((\[0-9\]</span>)w)?((<span class="0-9">)d)?((\[0-9\]</span>)h)?((<span class="0-9">)m)?((\[0-9\]</span>)s)?((\[0-9\]+)ms)?\$\` Example: "4h" |
-| `routes`              | `array (undefined)` | routes defines the child routes.                                                                                                                                                                                                                                                          |
+| Property              | Type                | Description                                                                                                                                                                                                                                       |
+|-----------------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `activeTimeIntervals` | `array (string)`    | activeTimeIntervals is a list of TimeInterval names when this route should be active.                                                                                                                                                             |
+| `continue`            | `boolean`           | continue defines the boolean indicating whether an alert should continue matching subsequent sibling nodes. It will always be overridden to true for the first-level route by the Prometheus operator.                                            |
+| `groupBy`             | `array (string)`    | groupBy defines the list of labels to group by. Labels must not be repeated (unique list). Special label "…​" (aggregate by all possible labels), if provided, must be the only element in the list.                                               |
+| `groupInterval`       | `string`            | groupInterval defines how long to wait before sending an updated notification. Must be greater than 0. Example: "5m"                                                                                                                              |
+| `groupWait`           | `string`            | groupWait defines how long to wait before sending the initial notification. Example: "30s"                                                                                                                                                        |
+| `matchers`            | `array`             | matchers defines the list of matchers that the alert’s labels should match. For the first level route, the operator removes any existing equality and regexp matcher on the `namespace` label and adds a `namespace: <object namespace>` matcher. |
+| `matchers[]`          | `object`            | Matcher defines how to match on alert’s labels.                                                                                                                                                                                                   |
+| `muteTimeIntervals`   | `array (string)`    | muteTimeIntervals is a list of MuteTimeInterval names that will mute this route when matched,                                                                                                                                                     |
+| `receiver`            | `string`            | receiver defines the name of the receiver for this route. If not empty, it should be listed in the `receivers` field.                                                                                                                             |
+| `repeatInterval`      | `string`            | repeatInterval defines how long to wait before repeating the last notification. Must be greater than 0. Example: "4h"                                                                                                                             |
+| `routes`              | `array (undefined)` | routes defines the child routes.                                                                                                                                                                                                                  |
 
 ## .spec.route.matchers
 
@@ -12667,6 +12710,87 @@ Type
 | `endTime`   | `string` | endTime defines the end time in 24hr format.     |
 | `startTime` | `string` | startTime defines the start time in 24hr format. |
 
+## .status
+
+Description
+status defines the status subresource. It is under active development and is updated only when the "StatusForConfigurationResources" feature gate is enabled.
+
+Most recent observed status of the ServiceMonitor. Read-only. More info: <https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status>
+
+Type
+`object`
+
+| Property     | Type     | Description                                                                                                                                         |
+|--------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| `bindings`   | `array`  | bindings defines the list of workload resources (Prometheus, PrometheusAgent, ThanosRuler or Alertmanager) which select the configuration resource. |
+| `bindings[]` | `object` | WorkloadBinding is a link between a configuration resource and a workload resource.                                                                 |
+
+## .status.bindings
+
+Description
+bindings defines the list of workload resources (Prometheus, PrometheusAgent, ThanosRuler or Alertmanager) which select the configuration resource.
+
+Type
+`array`
+
+## .status.bindings\[\]
+
+Description
+WorkloadBinding is a link between a configuration resource and a workload resource.
+
+Type
+`object`
+
+Required
+- `group`
+
+- `name`
+
+- `namespace`
+
+- `resource`
+
+| Property       | Type     | Description                                                                                                                                 |
+|----------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| `conditions`   | `array`  | conditions defines the current state of the configuration resource when bound to the referenced Workload object.                            |
+| `conditions[]` | `object` | ConfigResourceCondition describes the status of configuration resources linked to Prometheus, PrometheusAgent, Alertmanager or ThanosRuler. |
+| `group`        | `string` | group defines the group of the referenced resource.                                                                                         |
+| `name`         | `string` | name defines the name of the referenced object.                                                                                             |
+| `namespace`    | `string` | namespace defines the namespace of the referenced object.                                                                                   |
+| `resource`     | `string` | resource defines the type of resource being referenced (e.g. Prometheus, PrometheusAgent, ThanosRuler or Alertmanager).                     |
+
+## .status.bindings\[\].conditions
+
+Description
+conditions defines the current state of the configuration resource when bound to the referenced Workload object.
+
+Type
+`array`
+
+## .status.bindings\[\].conditions\[\]
+
+Description
+ConfigResourceCondition describes the status of configuration resources linked to Prometheus, PrometheusAgent, Alertmanager or ThanosRuler.
+
+Type
+`object`
+
+Required
+- `lastTransitionTime`
+
+- `status`
+
+- `type`
+
+| Property             | Type      | Description                                                                                                                                                                                                                                                                               |
+|----------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lastTransitionTime` | `string`  | lastTransitionTime defines the time of the last update to the current status property.                                                                                                                                                                                                    |
+| `message`            | `string`  | message defines the human-readable message indicating details for the condition’s last transition.                                                                                                                                                                                        |
+| `observedGeneration` | `integer` | observedGeneration defines the .metadata.generation that the condition was set based upon. For instance, if `.metadata.generation` is currently 12, but the `.status.conditions[].observedGeneration` is 9, the condition is out of date with respect to the current state of the object. |
+| `reason`             | `string`  | reason for the condition’s last transition.                                                                                                                                                                                                                                               |
+| `status`             | `string`  | status of the condition.                                                                                                                                                                                                                                                                  |
+| `type`               | `string`  | type of the condition being reported. Currently, only "Accepted" is supported.                                                                                                                                                                                                            |
+
 # API endpoints
 
 The following API endpoints are available:
@@ -12692,6 +12816,14 @@ The following API endpoints are available:
   - `PATCH`: partially update the specified AlertmanagerConfig
 
   - `PUT`: replace the specified AlertmanagerConfig
+
+- `/apis/monitoring.coreos.com/v1beta1/namespaces/{namespace}/alertmanagerconfigs/{name}/status`
+
+  - `GET`: read status of the specified AlertmanagerConfig
+
+  - `PATCH`: partially update status of the specified AlertmanagerConfig
+
+  - `PUT`: replace status of the specified AlertmanagerConfig
 
 ## /apis/monitoring.coreos.com/v1beta1/alertmanagerconfigs
 
@@ -12830,6 +12962,74 @@ HTTP method
 
 Description
 replace the specified AlertmanagerConfig
+
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
+
+Query parameters
+
+| Parameter | Type                                                                                                                                                    | Description |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `body`    | [`AlertmanagerConfig`](../monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1beta1.xml#alertmanagerconfig-monitoring-coreos-com-v1beta1) schema |             |
+
+Body parameters
+
+| HTTP code          | Reponse body                                                                                                                                            |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AlertmanagerConfig`](../monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1beta1.xml#alertmanagerconfig-monitoring-coreos-com-v1beta1) schema |
+| 201 - Created      | [`AlertmanagerConfig`](../monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1beta1.xml#alertmanagerconfig-monitoring-coreos-com-v1beta1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                   |
+
+HTTP responses
+
+## /apis/monitoring.coreos.com/v1beta1/namespaces/{namespace}/alertmanagerconfigs/{name}/status
+
+| Parameter | Type     | Description                    |
+|-----------|----------|--------------------------------|
+| `name`    | `string` | name of the AlertmanagerConfig |
+
+Global path parameters
+
+HTTP method
+`GET`
+
+Description
+read status of the specified AlertmanagerConfig
+
+| HTTP code          | Reponse body                                                                                                                                            |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AlertmanagerConfig`](../monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1beta1.xml#alertmanagerconfig-monitoring-coreos-com-v1beta1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                   |
+
+HTTP responses
+
+HTTP method
+`PATCH`
+
+Description
+partially update status of the specified AlertmanagerConfig
+
+| Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dryRun`          | `string` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `fieldValidation` | `string` | fieldValidation instructs the server on how to handle objects in the request (POST/PUT/PATCH) containing unknown or duplicate fields. Valid values are: - Ignore: This will ignore any unknown fields that are silently dropped from the object, and will ignore all but the last duplicate field that the decoder encounters. This is the default behavior prior to v1.23. - Warn: This will send a warning via the standard warning response header for each unknown field that is dropped from the object, and for each duplicate field that is encountered. The request will still succeed if there are no other errors, and will only persist the last of any duplicate fields. This is the default in v1.23+ - Strict: This will fail the request with a BadRequest error if any unknown fields would be dropped from the object, or if any duplicate fields are present. The error returned from the server will contain all unknown and duplicate fields encountered. |
+
+Query parameters
+
+| HTTP code          | Reponse body                                                                                                                                            |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200 - OK           | [`AlertmanagerConfig`](../monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1beta1.xml#alertmanagerconfig-monitoring-coreos-com-v1beta1) schema |
+| 401 - Unauthorized | Empty                                                                                                                                                   |
+
+HTTP responses
+
+HTTP method
+`PUT`
+
+Description
+replace status of the specified AlertmanagerConfig
 
 | Parameter         | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 |-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
