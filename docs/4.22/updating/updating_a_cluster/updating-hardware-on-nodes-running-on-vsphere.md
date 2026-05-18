@@ -38,9 +38,9 @@ To reduce the risk of downtime, it is recommended that control plane nodes be up
 
     ``` terminal
     NAME                    STATUS   ROLES    AGE   VERSION
-    control-plane-node-0    Ready    master   75m   v1.34.2
-    control-plane-node-1    Ready    master   75m   v1.34.2
-    control-plane-node-2    Ready    master   75m   v1.34.2
+    control-plane-node-0    Ready    master   75m   v1.35.4
+    control-plane-node-1    Ready    master   75m   v1.35.4
+    control-plane-node-2    Ready    master   75m   v1.35.4
     ```
 
     Note the names of your control plane nodes.
@@ -101,9 +101,9 @@ Multiple compute nodes can be updated in parallel given workloads are tolerant o
 
     ``` terminal
     NAME              STATUS   ROLES    AGE   VERSION
-    compute-node-0    Ready    worker   30m   v1.34.2
-    compute-node-1    Ready    worker   30m   v1.34.2
-    compute-node-2    Ready    worker   30m   v1.34.2
+    compute-node-0    Ready    worker   30m   v1.35.4
+    compute-node-1    Ready    worker   30m   v1.35.4
+    compute-node-2    Ready    worker   30m   v1.35.4
     ```
 
     Note the names of your compute nodes.

@@ -6,13 +6,19 @@ You can use the **Developer** perspective in the web console to update, rollback
 
 # Upgrading a Helm release
 
-You can upgrade a Helm release to upgrade to a new chart version or update your release configuration.
+You can upgrade a Helm release to use a new chart version or update your release configuration.
 
 1.  In the **Topology** view, select the Helm release to see the side panel.
 
-2.  Click **Actions** → **Upgrade Helm Release**.
+2.  Click **Actions \> Upgrade Helm Release**.
 
-3.  In the **Upgrade Helm Release** page, select the **Chart Version** you want to upgrade to, and then click **Upgrade** to create another Helm release. The **Helm Releases** page displays the two revisions.
+3.  On the **Upgrade Helm Release** page, if you can edit the **Chart Version** field, select the chart version you want to upgrade to, edit the values as needed, then click **Upgrade** to create a revision of the Helm release. The **Helm Releases** page shows both revisions.
+
+    <div class="note">
+
+    If you installed the Helm chart using a direct URL, you can’t change **Chart Version**. Instead, edit the values in **Form view** or **YAML view**.
+
+    </div>
 
 # Rolling back a Helm release
 

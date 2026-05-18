@@ -228,7 +228,9 @@ To troubleshoot a specific virtual machine (VM) without changing global settings
 
 ## Viewing guest system logs with the web console
 
-To diagnose and troubleshoot issues with a virtual machine (VM) guest, you can view the serial console logs by using the web console.
+To diagnose and troubleshoot issues with a virtual machine (VM) guest operating system, you can view the guest system logs by using the web console.
+
+Guest system logs capture serial console output from the VM’s boot process, kernel messages, and system-level events, which is useful when troubleshooting boot failures, kernel panics, or configuration issues that prevent standard access methods.
 
 - Guest system log access is enabled.
 
@@ -242,7 +244,9 @@ To diagnose and troubleshoot issues with a virtual machine (VM) guest, you can v
 
 ## Viewing guest system logs with the CLI
 
-To diagnose and troubleshoot issues with a virtual machine (VM) guest, you can view the serial console logs by running the `oc logs` command.
+To diagnose and troubleshoot issues with a virtual machine (VM) guest operating system, you can view the guest system logs by running the `oc logs` command.
+
+Guest system logs capture serial console output from the VM’s boot process, kernel messages, and system-level events, which is useful when troubleshooting boot failures, kernel panics, or configuration issues that prevent standard access methods.
 
 - Guest system log access is enabled.
 

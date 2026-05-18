@@ -285,7 +285,7 @@ Use `openshift-install` to monitor the progress of the single-node cluster insta
 
   ``` terminal
   NAME                         STATUS   ROLES           AGE     VERSION
-  control-plane.example.com    Ready    master,worker   10m     v1.34.2
+  control-plane.example.com    Ready    master,worker   10m     v1.35.4
   ```
 
 <!-- -->

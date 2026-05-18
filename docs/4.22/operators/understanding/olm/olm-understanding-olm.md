@@ -193,13 +193,13 @@ Operator compatibility with the underlying cluster can be expressed by a catalog
 During a cluster upgrade, the index image tag for the default Red Hat-provided catalog sources are updated automatically by the Cluster Version Operator (CVO) so that Operator Lifecycle Manager (OLM) pulls the updated version of the catalog. For example during an upgrade from OpenShift Container Platform 4.20 to 4.17, the `spec.image` field in the `CatalogSource` object for the `redhat-operators` catalog is updated from:
 
 ``` terminal
-registry.redhat.io/redhat/redhat-operator-index:v4.21
+registry.redhat.io/redhat/redhat-operator-index:v4.22
 ```
 
 to:
 
 ``` terminal
-registry.redhat.io/redhat/redhat-operator-index:v4.21
+registry.redhat.io/redhat/redhat-operator-index:v4.22
 ```
 
 However, the CVO does not automatically update image tags for custom catalogs. To ensure users are left with a compatible and supported Operator installation after a cluster upgrade, custom catalogs should also be kept updated to reference an updated index image.
@@ -238,7 +238,7 @@ metadata:
       "quay.io/example-org/example-catalog:v{kube_major_version}.{kube_minor_version}"
 spec:
   displayName: Example Catalog
-  image: quay.io/example-org/example-catalog:v1.34
+  image: quay.io/example-org/example-catalog:v1.35
   priority: -400
   publisher: Example Org
 ```
@@ -251,10 +251,10 @@ If the `spec.image` field is not set and the annotation does not resolve to a us
 
 </div>
 
-For an OpenShift Container Platform 4.17 cluster, which uses Kubernetes 1.34, the `olm.catalogImageTemplate` annotation in the preceding example resolves to the following image reference:
+For an OpenShift Container Platform 4.17 cluster, which uses Kubernetes 1.35, the `olm.catalogImageTemplate` annotation in the preceding example resolves to the following image reference:
 
 ``` terminal
-quay.io/example-org/example-catalog:v1.34
+quay.io/example-org/example-catalog:v1.35
 ```
 
 For future releases of OpenShift Container Platform, you can create updated index images for your custom catalogs that target the later Kubernetes version that is used by the later OpenShift Container Platform version. With the `olm.catalogImageTemplate` annotation set before the upgrade, upgrading the cluster to the later OpenShift Container Platform version would then automatically update the catalog’s index image as well.

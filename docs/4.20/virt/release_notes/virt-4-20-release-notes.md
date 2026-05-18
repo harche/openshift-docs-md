@@ -20,7 +20,7 @@ Learn more about [OpenShift Virtualization architecture and deployments](../../v
 
 OpenShift Virtualization 4.20 is supported for use on OpenShift Container Platform 4.17 clusters. To use the latest z-stream release of OpenShift Virtualization, you must first upgrade to the latest version of OpenShift Container Platform.
 
-The latest stable release of OpenShift Virtualization 4.20 is 4.20.11.
+The latest stable release of OpenShift Virtualization 4.20 is 4.20.14.
 
 ## Supported guest operating systems
 
@@ -261,3 +261,18 @@ Some features in this release are currently in Technology Preview. These experim
 ## IBM Z and IBM LinuxONE
 
 - VMs based on s390x architecture can only use the **IPL** boot mode. However, in the OpenShift Container Platform web console, the **Boot mode** list for s390x VMs incorrectly includes **BIOS**, **UEFI**, and **UEFI (secure)** boot modes. If you select one of these modes for an s390x-based VM, the operation fails. ([CNV-56889](https://issues.redhat.com/browse/CNV-56889))
+
+# Maintenance releases
+
+## OpenShift Virtualization 4.20.14 updates
+
+OpenShift Virtualization 4.17.14 is now available with updates to packages and images that fix several bugs and add enhancements.
+
+### New features and enhancements
+
+Migrate VM disks to different storage classes
+Before this update, installation of Migration Toolkit for Containers (MTC) was required before migrating VM disks to different storage classes. With this update, this requirement no longer exists because VM disk storage class migration is native to OpenShift Virtualization 4.20.14.
+
+In addition, you can select VMs from different namespaces for each bulk migration.
+
+[CNV-73518](https://issues.redhat.com/browse/CNV-73518)

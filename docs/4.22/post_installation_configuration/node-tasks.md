@@ -178,9 +178,9 @@ To add machines to a cluster, verify the status of the certificate signing reque
 
     ``` terminal
     NAME      STATUS    ROLES   AGE  VERSION
-    master-0  Ready     master  63m  v1.34.2
-    master-1  Ready     master  63m  v1.34.2
-    master-2  Ready     master  64m  v1.34.2
+    master-0  Ready     master  63m  v1.35.4
+    master-1  Ready     master  63m  v1.35.4
+    master-2  Ready     master  64m  v1.35.4
     ```
 
     The output lists all of the machines that you created.
@@ -301,11 +301,11 @@ To add machines to a cluster, verify the status of the certificate signing reque
 
     ``` terminal
     NAME      STATUS    ROLES   AGE  VERSION
-    master-0  Ready     master  73m  v1.34.2
-    master-1  Ready     master  73m  v1.34.2
-    master-2  Ready     master  74m  v1.34.2
-    worker-0  Ready     worker  11m  v1.34.2
-    worker-1  Ready     worker  11m  v1.34.2
+    master-0  Ready     master  73m  v1.35.4
+    master-1  Ready     master  73m  v1.35.4
+    master-2  Ready     master  74m  v1.35.4
+    worker-0  Ready     worker  11m  v1.35.4
+    worker-1  Ready     worker  11m  v1.35.4
     ```
 
     <div class="note">
@@ -552,13 +552,13 @@ The procedure in this section shows how to add a new Red Hat Enterprise Linux C
 
         ``` terminal
         NAME                           STATUS   ROLES    AGE     VERSION
-        ip-10-0-128-78.ec2.internal    Ready    worker   117m    v1.34.2
-        ip-10-0-146-113.ec2.internal   Ready    master   127m    v1.34.2
-        ip-10-0-153-35.ec2.internal    Ready    worker   118m    v1.34.2
-        ip-10-0-176-58.ec2.internal    Ready    master   126m    v1.34.2
-        ip-10-0-217-135.ec2.internal   Ready    worker   2m57s   v1.34.2
-        ip-10-0-225-248.ec2.internal   Ready    master   127m    v1.34.2
-        ip-10-0-245-59.ec2.internal    Ready    worker   116m    v1.34.2
+        ip-10-0-128-78.ec2.internal    Ready    worker   117m    v1.35.4
+        ip-10-0-146-113.ec2.internal   Ready    master   127m    v1.35.4
+        ip-10-0-153-35.ec2.internal    Ready    worker   118m    v1.35.4
+        ip-10-0-176-58.ec2.internal    Ready    master   126m    v1.35.4
+        ip-10-0-217-135.ec2.internal   Ready    worker   2m57s   v1.35.4
+        ip-10-0-225-248.ec2.internal   Ready    master   127m    v1.35.4
+        ip-10-0-245-59.ec2.internal    Ready    worker   116m    v1.35.4
         ```
 
         - This is new new node.

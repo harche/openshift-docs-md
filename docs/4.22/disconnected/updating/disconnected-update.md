@@ -256,7 +256,9 @@ If you upgraded a cluster, any existing ICSP objects remain stable, and both IDM
 
 <div class="note">
 
-If your cluster uses an `ImageDigestMirrorSet`, `ImageTagMirrorSet`, or `ImageContentSourcePolicy` object to configure repository mirroring, you can use only global pull secrets for mirrored registries. You cannot add a pull secret to a project.
+By default, if your cluster uses an `ImageDigestMirrorSet`, `ImageTagMirrorSet`, or `ImageContentSourcePolicy` object to configure repository mirroring, you must use a global pull secret for mirrored registries. You cannot add an image pull secret to a project.
+
+However, you can configure a cluster-wide `CRIOCredentialProviderConfig` object to enable project-scoped image pull secrets that you can use with mirrored repositories. For more information, see "Configuring project-scoped image pull secrets for mirrored registries".
 
 </div>
 
@@ -371,12 +373,12 @@ You can create postinstallation mirror configuration custom resources (CR) to re
 
         ``` terminal
         NAME                           STATUS                     ROLES    AGE  VERSION
-        ip-10-0-137-44.ec2.internal    Ready                      worker   7m   v1.34.2
-        ip-10-0-138-148.ec2.internal   Ready                      master   11m  v1.34.2
-        ip-10-0-139-122.ec2.internal   Ready                      master   11m  v1.34.2
-        ip-10-0-147-35.ec2.internal    Ready                      worker   7m   v1.34.2
-        ip-10-0-153-12.ec2.internal    Ready                      worker   7m   v1.34.2
-        ip-10-0-154-10.ec2.internal    Ready                      master   11m  v1.34.2
+        ip-10-0-137-44.ec2.internal    Ready                      worker   7m   v1.35.4
+        ip-10-0-138-148.ec2.internal   Ready                      master   11m  v1.35.4
+        ip-10-0-139-122.ec2.internal   Ready                      master   11m  v1.35.4
+        ip-10-0-147-35.ec2.internal    Ready                      worker   7m   v1.35.4
+        ip-10-0-153-12.ec2.internal    Ready                      worker   7m   v1.35.4
+        ip-10-0-154-10.ec2.internal    Ready                      master   11m  v1.35.4
         ```
 
     2.  Start the debugging process to access the node:

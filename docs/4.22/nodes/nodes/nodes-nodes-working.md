@@ -40,7 +40,7 @@ Bare pods, meaning those not backed by a replication controller, are unaffected 
 
         ``` terminal
         NAME        STATUS                     ROLES     AGE       VERSION
-        <node1>     Ready,SchedulingDisabled   worker    1d        v1.34.2
+        <node1>     Ready,SchedulingDisabled   worker    1d        v1.35.4
         ```
 
 2.  Evacuate the pods by using one of the following methods:

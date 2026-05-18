@@ -1,5 +1,11 @@
 You can run a custom secondary scheduler in OpenShift Container Platform by installing the Secondary Scheduler Operator, deploying the secondary scheduler, and setting the secondary scheduler in the pod definition.
 
+<div class="important">
+
+The Secondary Scheduler Operator is not currently available for OpenShift Container Platform 4.17. The Operator is planned to be released in the near future.
+
+</div>
+
 # Installing the Secondary Scheduler Operator
 
 You can install the Secondary Scheduler Operator for Red Hat OpenShift through the OpenShift Container Platform web console to configure a secondary scheduler.

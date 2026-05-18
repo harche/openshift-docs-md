@@ -982,12 +982,12 @@ Before you remove the label, make sure the node is associated with another MCP.
 
     ``` terminal
     NAME                                         STATUS                     ROLES                  AGE   VERSION
-    ip-10-0-148-79.us-west-1.compute.internal    Ready                      worker                 32m   v1.34.2
-    ip-10-0-155-125.us-west-1.compute.internal   Ready,SchedulingDisabled   worker                 35m   v1.34.2
-    ip-10-0-170-47.us-west-1.compute.internal    Ready                      control-plane,master   42m   v1.34.2
-    ip-10-0-174-77.us-west-1.compute.internal    Ready                      control-plane,master   42m   v1.34.2
-    ip-10-0-211-49.us-west-1.compute.internal    Ready                      control-plane,master   42m   v1.34.2
-    ip-10-0-218-151.us-west-1.compute.internal   Ready                      worker                 31m   v1.34.2
+    ip-10-0-148-79.us-west-1.compute.internal    Ready                      worker                 32m   v1.35.4
+    ip-10-0-155-125.us-west-1.compute.internal   Ready,SchedulingDisabled   worker                 35m   v1.35.4
+    ip-10-0-170-47.us-west-1.compute.internal    Ready                      control-plane,master   42m   v1.35.4
+    ip-10-0-174-77.us-west-1.compute.internal    Ready                      control-plane,master   42m   v1.35.4
+    ip-10-0-211-49.us-west-1.compute.internal    Ready                      control-plane,master   42m   v1.35.4
+    ip-10-0-218-151.us-west-1.compute.internal   Ready                      worker                 31m   v1.35.4
     ```
 
   - When the node is back in the `Ready` state, check that the node is using the base image:
@@ -1216,12 +1216,12 @@ You can verify that the custom layered image is applied by performing any of the
 
         ``` terminal
         NAME                                         STATUS                     ROLES                  AGE   VERSION
-        ip-10-0-148-79.us-west-1.compute.internal    Ready                      worker                 32m   v1.34.2
-        ip-10-0-155-125.us-west-1.compute.internal   Ready,SchedulingDisabled   worker                 35m   v1.34.2
-        ip-10-0-170-47.us-west-1.compute.internal    Ready                      control-plane,master   42m   v1.34.2
-        ip-10-0-174-77.us-west-1.compute.internal    Ready                      control-plane,master   42m   v1.34.2
-        ip-10-0-211-49.us-west-1.compute.internal    Ready                      control-plane,master   42m   v1.34.2
-        ip-10-0-218-151.us-west-1.compute.internal   Ready                      worker                 31m   v1.34.2
+        ip-10-0-148-79.us-west-1.compute.internal    Ready                      worker                 32m   v1.35.4
+        ip-10-0-155-125.us-west-1.compute.internal   Ready,SchedulingDisabled   worker                 35m   v1.35.4
+        ip-10-0-170-47.us-west-1.compute.internal    Ready                      control-plane,master   42m   v1.35.4
+        ip-10-0-174-77.us-west-1.compute.internal    Ready                      control-plane,master   42m   v1.35.4
+        ip-10-0-211-49.us-west-1.compute.internal    Ready                      control-plane,master   42m   v1.35.4
+        ip-10-0-218-151.us-west-1.compute.internal   Ready                      worker                 31m   v1.35.4
         ```
 
 2.  When the node is back in the `Ready` state, check that the node is using the custom layered image:
@@ -1319,12 +1319,12 @@ You can verify that the custom layered image is removed by performing any of the
 
     ``` terminal
     NAME                                         STATUS                     ROLES                  AGE   VERSION
-    ip-10-0-148-79.us-west-1.compute.internal    Ready                      worker                 32m   v1.34.2
-    ip-10-0-155-125.us-west-1.compute.internal   Ready,SchedulingDisabled   worker                 35m   v1.34.2
-    ip-10-0-170-47.us-west-1.compute.internal    Ready                      control-plane,master   42m   v1.34.2
-    ip-10-0-174-77.us-west-1.compute.internal    Ready                      control-plane,master   42m   v1.34.2
-    ip-10-0-211-49.us-west-1.compute.internal    Ready                      control-plane,master   42m   v1.34.2
-    ip-10-0-218-151.us-west-1.compute.internal   Ready                      worker                 31m   v1.34.2
+    ip-10-0-148-79.us-west-1.compute.internal    Ready                      worker                 32m   v1.35.4
+    ip-10-0-155-125.us-west-1.compute.internal   Ready,SchedulingDisabled   worker                 35m   v1.35.4
+    ip-10-0-170-47.us-west-1.compute.internal    Ready                      control-plane,master   42m   v1.35.4
+    ip-10-0-174-77.us-west-1.compute.internal    Ready                      control-plane,master   42m   v1.35.4
+    ip-10-0-211-49.us-west-1.compute.internal    Ready                      control-plane,master   42m   v1.35.4
+    ip-10-0-218-151.us-west-1.compute.internal   Ready                      worker                 31m   v1.35.4
     ```
 
 3.  When the node is back in the `Ready` state, check that the node is using the base image:

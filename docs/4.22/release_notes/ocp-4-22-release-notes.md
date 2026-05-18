@@ -4,7 +4,7 @@ Built on Red Hat Enterprise Linux (RHEL) and Kubernetes, OpenShift Container Pl
 
 # About this release
 
-OpenShift Container Platform ([RHBA-2026:1481](https://access.redhat.com/errata/RHBA-2026:1481)) is now available. This release uses [Kubernetes 1.34](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.34.md) with CRI-O runtime. New features, changes, and known issues that pertain to OpenShift Container Platform 4.17 are included in this topic.
+OpenShift Container Platform ([RHBA-2026:1481](https://access.redhat.com/errata/RHBA-2026:1481)) is now available. This release uses [Kubernetes 1.35](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.35.md) with CRI-O runtime. New features, changes, and known issues that pertain to OpenShift Container Platform 4.17 are included in this topic.
 
 OpenShift Container Platform 4.17 clusters are available at <https://console.redhat.com/openshift>. From the Red Hat Hybrid Cloud Console, you can deploy OpenShift Container Platform clusters to either on-premises or cloud environments.
 
@@ -49,6 +49,18 @@ Installing a cluster on Azure with a user-provisioned DNS was introduced in Open
 
 For more information, see [Enabling a user-managed DNS](../installing/installing_azure/ipi/installing-azure-customizations.xml#installation-azure-enabling-user-managed-DNS_installing-azure-customizations) and [Provisioning your own DNS records](../installing/installing_azure/ipi/installing-azure-customizations.xml#installation-azure-provisioning-own-dns-records_installing-azure-customizations).
 
+Installing a cluster on AWS European Sovereign Cloud (Technology Preview)
+You can now install OpenShift Container Platform on Amazon Web Services (AWS) in the European Sovereign Cloud (EUSC) region (`eusc-de-east-1`). The AWS EUSC region is separate and independent from other AWS regions, with all the infrastructure located within the European Union (EU). You must specify a custom Amazon Machine Image (AMI) in the `platform.aws.defaultMachinePlatform.amiID` field of your `install-config.yaml` file. Other limitations also apply. The AWS EUSC region is available as a Technology Preview feature.
+
+For more information, see [AWS EUSC](../installing/installing_aws/installing-aws-account.xml#installation-aws-eusc_region_installing-aws-account).
+
+Installing a cluster on Google Cloud with N4A machine types
+With this update, you can install a OpenShift Container Platform cluster on Google Cloud with N4A machine types.
+
+N4A Virtual Machines (VMs) use highly efficient Arm-based processors. N4A machines deliver exceptional performance compared to current-generation x86-based VMs, making them ideal for containerized applications and microservices on OpenShift Container Platform.
+
+For more information, see [Tested instance types for Google Cloud](../installing/installing_gcp/installing-gcp-customizations.xml#installation-gcp-tested-machine-types_installing-gcp-customizations) and [N4A machine series (Google documentation)](https://docs.cloud.google.com/compute/docs/general-purpose-machines#n4a_series).
+
 ## Machine Config Operator
 
 ## Machine management
@@ -68,19 +80,92 @@ $ oc get networkpolicies --all-namespaces
 
 The OpenShift Container Platform 4.17 release did not include these objects in all OpenShift Container Platform namespaces; later OpenShift Container Platform releases might include the objects in additional namespaces.
 
+IPv4 forwarding for specific network interfaces
+You can enable IPv4 forwarding on specific network interfaces by using the Kubernetes NMState Operator. By setting the `forwarding: true` field in a `NodeNetworkConfigurationPolicy` custom resource, you can configure individual interfaces to forward IP packets without enabling global IP forwarding on the cluster. This approach improves security by keeping global forwarding disabled while allowing forwarding only on the interfaces that require it, such as secondary interfaces used by MetalLB load balancers.
+
+For more information, see [Enable IP forwarding on specific interfaces](../networking/k8s_nmstate/k8s-nmstate-updating-node-network-config.xml#nw-nmstate-enable-per-interface-ip-forwarding_k8s-nmstate-updating-node-network-config).
+
+Kubernetes NMState Operator extends metrics support
+The Kubernetes NMState Operator can now collect metrics from the following Kubernetes components:
+
+- `kubernetes_nmstate_policies_status`, which tracks the active status of `NodeNetworkConfigurationPolicy` (NNCP) resources across the cluster.
+
+- `kubernetes_nmstate_enactments_status`, which tracks the active status of `NodeNetworkConfigurationEnactment` (NNCE) resources on a per-node basis.
+
+  For more information, see [Viewing metrics collected by the Kubernetes NMState Operator](../networking/networking_operators/k8s-nmstate-about-the-k8s-nmstate-operator.xml#viewing-stats-collected-kubernetes-nmstate-op_k8s-nmstate-about-the-k8s-nmstate-operator).
+
+Alternative interface names for network interfaces with the Kubernetes NMState Operator
+Assign alternative names to network interfaces by using the Kubernetes NMState Operator. Alternative names provide consistent, descriptive labels for interfaces across cluster nodes, simplifying automation in environments where interface names vary across nodes.
+
+For more information, see [Configure alternative network interface names](../networking/k8s_nmstate/k8s-nmstate-updating-node-network-config.xml#k8s-nmstate-alternative-interface-names_k8s-nmstate-updating-node-network-config).
+
+Ingress firewall configuration with the `commatrix` plugin
+The `commatrix` plugin generates `nftables` firewall rules in Butane format for deployment to cluster nodes. These rules restrict ingress traffic to only the flows required by deployed services, promoting a zero-trust security posture. The plugin also generates a `NodeDisruptionPolicy` patch to apply rule updates without node reboots.
+
+For more information, see [Generate nftables firewall rules in Butane format](../installing/install_config/configuring-firewall.xml#commatrix-generate-butane_configuring-firewall).
+
+<!-- -->
+
+MetalLB ConfigurationState resource reports controller and speaker configuration health
+You can now use the new `ConfigurationState` custom resource to verify that MetalLB has successfully applied your settings across the cluster. This feature provides a single, consistent location to identify configuration errors that were previously only visible by searching through individual node logs or FRR status reports
+
+MetalLB creates a `ConfigurationState` resource for the controller and for each speaker node. Each resource reports whether your configuration is valid and surfaces specific error details if validation fails, such as issues with `IPAddressPool`, `BGPPeer`, or `BFDProfile` objects. This centralized reporting helps you monitor system integrity and resolve networking conflicts more quickly.
+
+For more information, see [Checking MetalLB configuration status](../networking/ingress_load_balancing/metallb/monitoring-metallb-status.xml#nw-metallb-checking-configuration-status_monitor-metallb-config-status).
+
+<!-- -->
+
+Multi-network policy backend uses nftables
+With this release, the multi-network policy backend uses `nftables` instead of `iptables`. The `iptables` backend has been removed and there is no option to revert to it. The `MultiNetworkPolicy` API and user-facing configuration are unchanged, so your existing multi-network policies continue to work without modification.
+
+For more information, see [Configuring multi-network policy](../networking/multiple_networks/secondary_networks/configuring-multi-network-policy.xml#configuring-multi-network-policy).
+
 ## Nodes
 
 ## Operator development
 
 ## Postinstallation configuration
 
+Support for the PCI addresses of NICs in `BareMetalHost` hardware data
+With this release, the Peripheral Component Interconnect (PCI) address for each network interface controller (NIC) is available in two separate custom resources (CRs). The PCI address is located in the `status.hardware.nics[]` section of the `BareMetalHost` CR and in the `spec.hardware.nics[]` section of the `HardwareData` CR. While these are separate resources, the values in the `pciAddress` fields, for example `0000:00:03.0`, are identical.
+
+For more information, see [About the BareMetalHost resource](../installing/installing_bare_metal/bare-metal-postinstallation-configuration.xml#bmo-about-the-baremetalhost-resource_bare-metal-postinstallation-configuration) and [The BareMetalHost status](../installing/installing_bare_metal/bare-metal-postinstallation-configuration.xml#the-baremetalhost-status).
+
 ## Scalability and performance
 
+NUMA-aware scheduler supports clusters with up to 500 nodes
+With this release, you can scale the NUMA-aware secondary scheduler to support clusters with up to 500 nodes. The scheduler defaults to a `Burstable` quality of service (QoS) profile, which reduces baseline resource consumption while allowing the scheduler to scale up during peak loads.
+
+For more information, see [Topology-aware scheduler scalability](../scalability_and_performance/cnf-numa-aware-scheduling.xml#cnf-topology-aware-scheduler-scalability_numa-aware).
+
+<!-- -->
+
+CRI-O ExecCPUAffinity protects low-latency workloads from exec process interruption
+With this release, you can protect latency-sensitive workloads from performance degradation caused by `oc exec` and shell processes. When you apply a `PerformanceProfile`, the CRI-O `ExecCPUAffinity` feature automatically pins exec processes to a designated CPU within the container’s allocated set, preventing them from running on your workload CPUs. This feature is enabled by default for `Guaranteed` QoS pods with whole-integer CPU requests and requires no additional configuration. You can disable it per profile by adding the `performance.openshift.io/exec-cpu-affinity: "disable"` annotation to the `PerformanceProfile`.
+
+For more information, see [How `ExecCPUAffinity` prevents latency spikes from exec operations](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-exec-cpu-affinity_cnf-tuning-low-latency-nodes-with-perf-profile).
+
 ## Web console
+
+Support for integrated OCI chart interaction
+The OpenShift Container Platform web console now fully supports browsing, inspecting, and installing Open Container Initiative (OCI)-based Helm charts directly from configured repositories to provide functional parity with traditional HTTP(S) Helm charts. This enhancement removes the previous discovery-only limitation, enabling users to interact with and deploy OCI-based charts seamlessly within the console’s repository views.
+
+For more information, see [Configuring custom Helm chart repositories](../applications/working_with_helm_charts/configuring-custom-helm-chart-repositories.xml#configuring-custom-helm-chart-repositories).
 
 # Notable technical changes
 
 This section includes several technical changes for OpenShift Container Platform 4.17.
+
+Platform components and Operators now use dedicated service accounts
+Most OpenShift Container Platform platform components and Operators have been updated to use dedicated service accounts instead of the `default` service account. This change follows the principle of least privilege, simplifies security audits, and reduces the risk of accidental permission elevation by ensuring that platform identities are isolated from user workloads.
+
+The following dynamic tools continue to use the `default` service account to ensure operational efficiency:
+
+- `oc debug`: Uses the `default` service account to avoid the performance overhead of creating and removing unique service accounts for short-lived troubleshooting sessions.
+
+- `oc adm must-gather`: Uses the `default` service account to collect diagnostic data across the cluster without requiring extensive manual RBAC modifications.
+
+For more information, see [Default project service accounts and roles](../authentication/using-service-accounts-in-applications.xml#default-service-accounts-and-roles_using-service-accounts).
 
 # Deprecated and removed features
 
@@ -137,10 +222,11 @@ Node deprecated and removed tracker
 
 ## OpenShift CLI (oc) deprecated and removed features
 
-| Feature              | 4.20       | 4.21       | 4.22 |
-|----------------------|------------|------------|------|
-| oc-mirror plugin v1  | Deprecated | Deprecated |      |
-| Docker v2 registries | Deprecated | Deprecated |      |
+| Feature                         | 4.20                 | 4.21                 | 4.22       |
+|---------------------------------|----------------------|----------------------|------------|
+| oc-mirror plugin v1             | Deprecated           | Deprecated           |            |
+| Docker v2 registries            | Deprecated           | Deprecated           |            |
+| `oc adm release mirror` command | General Availability | General Availability | Deprecated |
 
 OpenShift CLI (oc) deprecated and removed tracker
 
@@ -162,9 +248,9 @@ Web console deprecated and removed tracker
 
 ## Workloads deprecated and removed features
 
-| Feature                    | 4.20       | 4.21       | 4.22 |
-|----------------------------|------------|------------|------|
-| `DeploymentConfig` objects | Deprecated | Deprecated |      |
+| Feature                    | 4.20       | 4.21       | 4.22       |
+|----------------------------|------------|------------|------------|
+| `DeploymentConfig` objects | Deprecated | Deprecated | Deprecated |
 
 Workloads deprecated and removed tracker
 
@@ -174,6 +260,11 @@ Deprecation of Fujitsu Integrated Remote Management Controller (iRMC) driver for
 As of OpenShift Container Platform 4.21, support for the Fujitsu iRMC baseboard management controller (BMC) driver has been deprecated and will be removed in a future release. If a `BareMetalHost` resource contains a BMC address with `irmc://` as its URI scheme, the resource must be updated to use another BMC scheme, such as `redfish://` or `ipmi://`. Once support for this driver is removed, hosts that use `irmc://` URI schemes will become unmanageable.
 
 For information about updating the `BareMetalHost` resource, see [Editing a BareMetalHost resource](../installing/installing_bare_metal/bare-metal-postinstallation-configuration.xml#bmo-editing-a-baremetalhost-resource_bare-metal-postinstallation-configuration).
+
+Deprecation of the `oc adm release mirror` command
+As of OpenShift Container Platform 4.22, using the `oc adm release mirror` command to mirror release images has been deprecated and will be removed in a future release.
+
+As an alternative, use the [oc-mirror plugin v2](../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2).
 
 # Removed features
 
@@ -197,6 +288,13 @@ The following issues are fixed for this release:
 
 ## OpenShift API Server
 
+## Web console
+
+Guided Tours respect a console capability setting
+In previous releases, the web console displayed Guided Tours by default, even in environments where users already know OpenShift Container Platform, such as shared clusters. In OpenShift Container Platform 4.22, cluster administrators can enable or disable Guided Tours by configuring the console `GuidedTourFeature` capability.
+
+[CONSOLE-4986](https://issues.redhat.com/browse/CONSOLE-4986)
+
 # Technology Preview features status
 
 Some features in this release are currently in Technology Preview. These experimental features are not intended for production use. Note the following scope of support on the Red Hat Customer Portal for these features:
@@ -217,10 +315,9 @@ In the following tables, features are marked with the following statuses:
 
 ## Authentication and authorization Technology Preview features
 
-| Feature                                                       | 4.20                 | 4.21                 | 4.22 |
-|---------------------------------------------------------------|----------------------|----------------------|------|
-| Pod security admission restricted enforcement                 | Technology Preview   | Technology Preview   |      |
-| Direct authentication with an external OIDC identity provider | General Availability | General Availability |      |
+| Feature                                       | 4.20               | 4.21               | 4.22               |
+|-----------------------------------------------|--------------------|--------------------|--------------------|
+| Pod security admission restricted enforcement | Technology Preview | Technology Preview | Technology Preview |
 
 Authentication and authorization Technology Preview tracker
 

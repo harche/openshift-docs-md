@@ -1399,6 +1399,17 @@ Metal<sup>3</sup> introduces the concept of the `BareMetalHost` resource, which 
 
 2.  The `BareMetalHost` status
 
+Hardware data is available in the `status.hardware` section of the `BareMetalHost` object and in the `HardwareData` object. You can access the `HardwareData` object by running the following command:
+
+``` terminal
+$ oc get hardwaredata <machine_name> -n openshift-machine-api
+```
+
+where:
+
+`<machine_name>`
+Specifies the name of a bare-metal host.
+
 ### The BareMetalHost spec
 
 The `spec` section of the `BareMetalHost` resource defines the desired state of the host.
@@ -1434,7 +1445,7 @@ The `spec` section of the `BareMetalHost` resource defines the desired state of 
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>bootMACAddress</code></p></td>
-<td style="text-align: left;"><p>The MAC address of the NIC used for provisioning the host.</p></td>
+<td style="text-align: left;"><p>The MAC address of the network interface controller (NIC) used for provisioning the host.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>bootMode</code></p></td>
@@ -1625,15 +1636,17 @@ The `BareMetalHost` status represents the host’s current state, and includes t
     speedGbps:
     vlans:
     vlanId:
+    pciAddress:
     pxe:</code></pre></td>
 <td style="text-align: left;"><p>The <code>hardware.nics</code> field contains a list of network interfaces for the host. The fields include:</p>
 <ul>
-<li><p><code>ip</code>: The IP address of the NIC, if one was assigned when the discovery agent ran.</p></li>
+<li><p><code>ip</code>: The IP address of the network interface controller (NIC), if one was assigned when the discovery agent ran.</p></li>
 <li><p><code>name</code>: A string identifying the network device. For example, <code>nic-1</code>.</p></li>
 <li><p><code>mac</code>: The MAC address of the NIC.</p></li>
 <li><p><code>speedGbps</code>: The speed of the device in Gbps.</p></li>
 <li><p><code>vlans</code>: A list holding all the VLANs available for this NIC.</p></li>
 <li><p><code>vlanId</code>: The untagged VLAN ID.</p></li>
+<li><p><code>pciAddress</code>: The PCI address of the NIC. For example, <code>0000:00:03.0</code>.</p></li>
 <li><p><code>pxe</code>: Whether the NIC is able to boot using PXE.</p></li>
 </ul></td>
 </tr>
@@ -1724,6 +1737,8 @@ The `BareMetalHost` status represents the host’s current state, and includes t
 </table>
 
 BareMetalHost status
+
+- [.spec.hardware.nics\[](../../rest_api/provisioning_apis/hardwaredata-metal3-io-v1alpha1.xml#spec-hardware-nics-2)\]
 
 ## Getting the BareMetalHost resource
 

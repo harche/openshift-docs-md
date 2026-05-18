@@ -1,10 +1,12 @@
-The Bare Metal as a Service (BMaaS) feature for OpenShift Container Platform enables you to provision and manage bare-metal hosts by using the Metal<sup>3</sup> API and the Bare Metal Operator (BMO). These hosts, external to the OpenShift Container Platform cluster, can run workloads that might not be suitable for containerization or virtualization. For example, workloads such as applications that require direct hardware access, conduct high-performance computing tasks or are legacy applications. BMaaS has the following capabilities:
+The Bare Metal as a Service (BMaaS) feature for OpenShift Container Platform enables you to provision and manage bare-metal hosts by using the Metal<sup>3</sup> API and the Bare Metal Operator (BMO). These hosts, external to the OpenShift Container Platform cluster, can run workloads that might not be suitable for containerization or virtualization.
+
+BMaaS has the following capabilities:
 
 - Provisioning of bare-metal hosts, including initial configuration.
 
 - Lifecycle management such as power management, firmware updates, and decommissioning by using the BMO.
 
-As standalone systems, these hosts operate independently of the OpenShift Container Platform cluster and support diverse workloads by integrating bare-metal resources with containerized and virtualized applications. BMaaS can run other operating systems, but only Red Hat Enterprise Linux (RHEL) and CentOS Stream 9 were tested.
+As standalone systems, these hosts operate independently of the OpenShift Container Platform cluster and support diverse workloads by integrating bare metal resources with containerized and virtualized applications. BMaaS can run other operating systems, but only Red Hat Enterprise Linux (RHEL) and CentOS Stream 9 were tested.
 
 <div class="important">
 
@@ -16,7 +18,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 # Prerequisites for using BMaaS
 
-To use the Bare Metal as a Service (BMaaS) Technology Preview, complete the following prerequisites:
+To use the Bare Metal as a Service (BMaaS) Technology Preview, complete the prerequisites. BMaaS lets you apply cloud-native management practices to bare-metal infrastructure, enabling automated provisioning and lifecycle management for workloads that require physical hardware.
 
 BareMetalHost Configuration
 All bare-metal hosts must use a Baseboard Management Controller (BMC) configured with the Redfish protocol and virtual media (`redfish-virtualmedia`) driver. Each bare-metal host requires a boot interface with a MAC address configured to receive an IP address lease.
@@ -229,7 +231,7 @@ To prevent accidental interference between Bare Metal as a Service (BMaaS) workl
 
 # Creating a BMC secret
 
-To deploy a bare-metal host, you must create a secret to access the baseboard management controller (BMC).
+To deploy a bare-metal host, you must create a secret to access the baseboard management controller (BMC). This means you can remotely provision or manage the physical hardware.
 
 1.  Create a BMC secret file by running the following command:
 
@@ -318,9 +320,9 @@ To deploy a bare-metal host, you must create a `BareMetalHost` resource.
 
 # Configuring users for BMaaS hosts
 
-Configure bare-metal host users and add them to a Kubernetes secret. Then, create and apply the secret to customize the host.
+Configure bare-metal host users and add them to a Kubernetes secret. Then, create and apply the secret to customize the host. With configured users you can access or manage the bare-metal host after it is provisioned.
 
-1.  Create a file named `<hostname>-user-data.yaml` with the following content:
+1.  Create a file named `<hostname>-user-data.yaml`, where `<hostname>` is the name of the bare-metal host, with the following content:
 
     ``` yaml
     users:
@@ -334,28 +336,25 @@ Configure bare-metal host users and add them to a Kubernetes secret. Then, creat
         lock_passwd: true|false
     ```
 
-    `<hostname>`
-    The name of the bare-metal host.
-
-    `<name>`
+    `users.name`
     The user name.
 
-    `<sudo_config>`
+    `users.sudo`
     The sudo configuration for the user.
 
-    `<key_type>`
+    `users.ssh_authorized_keys.<key_type>`
     The SSH key type.
 
-    `<key>`
+    `users.ssh_authorized_keys.<key>`
     The public SSH key to use when accessing this host as the `<name>` user.
 
-    `<shell_path>`
+    `users.shell`
     The shell to use when accessing the host.
 
-    `<groups>`
+    `users.groups`
     The groups the user belongs to.
 
-    `lock_passwd`
+    `users.lock_passwd`
     Whether the user password is locked. If `true`, the user cannot log in by using the password, but can still use SSH.
 
     <div class="formalpara-title">
@@ -443,7 +442,7 @@ The `networkData` field in the `BareMetalHost` custom resource (CR) allows you t
 
 # Deploying an image to the bare-metal host
 
-To deploy the image to the host, update the `image` field in the `spec` section of the `BareMetalHost` resource. Once you update the `image` field, provisioning begins immediately.
+To deploy the image to the host, update the `image` field in the `spec` section of the `BareMetalHost` resource. Once you update the `image` field, provisioning begins immediately. Deploying an image transforms bare hardware into a functional system ready to run your workloads, in an automated and repeatable way.
 
 - Update the `image` field in the `BareMetalHost` CR by running the following command:
 

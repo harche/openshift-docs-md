@@ -91,11 +91,7 @@ Switching between these load balancers does not delete the `IngressController` o
 
 <div class="warning">
 
-This procedure might cause the following issues:
-
-- An outage that can last several minutes due to new DNS records propagation, new load balancers provisioning, and other factors. IP addresses and canonical names of the Ingress Controller load balancer might change after applying this procedure.
-
-- Leaked load balancer resources due to a change in the annotation of the service.
+This procedure might cause an outage that can last several minutes due to new DNS records propagation, new load balancers provisioning, and other factors. IP addresses and canonical names of the Ingress Controller load balancer might change after applying this procedure.
 
 </div>
 
@@ -143,7 +139,27 @@ This procedure might cause the following issues:
     $ oc apply -f ingresscontroller.yaml
     ```
 
-    Expect several minutes of outages while the Ingress Controller updates.
+3.  Check that the `Progressing` condition of the Ingress Controller is set to `True` by running the following command:
+
+    ``` terminal
+    $ oc get ingresscontroller default -n openshift-ingress-operator -o jsonpath='{.status.conditions[?(@.type=="Progressing")]}'
+    ```
+
+4.  Delete the service associated with the Ingress Controller by running the following command:
+
+    ``` terminal
+    $ oc -n openshift-ingress delete svc/router-<name>
+    ```
+
+    - Replace `<name>` with the specific instance name of your Ingress Controller.
+
+      Expect several minutes of outages while the Ingress Controller updates.
+
+- Confirm that the Ingress Controller updated successfully by running the following command:
+
+  ``` terminal
+  $ oc get ingresscontroller -n openshift-ingress-operator default -o jsonpath="{.status.conditions}" | yq -PC
+  ```
 
 ## Switching the Ingress Controller from using a Network Load Balancer to a Classic Load Balancer
 
@@ -201,7 +217,27 @@ This procedure might cause an outage that can last several minutes due to new DN
     $ oc apply -f ingresscontroller.yaml
     ```
 
-    Expect several minutes of outages while the Ingress Controller updates.
+3.  Check that the `Progressing` condition of the Ingress Controller is set to `True` by running the following command:
+
+    ``` terminal
+    $ oc get ingresscontroller default -n openshift-ingress-operator -o jsonpath='{.status.conditions[?(@.type=="Progressing")]}'
+    ```
+
+4.  Delete the service associated with the Ingress Controller by running the following command:
+
+    ``` terminal
+    $ oc -n openshift-ingress delete svc/router-<name>
+    ```
+
+    - Replace `<name>` with the specific instance name of your Ingress Controller.
+
+      Expect several minutes of outages while the Ingress Controller updates.
+
+- Confirm that the Ingress Controller updated successfully by running the following command:
+
+  ``` terminal
+  $ oc get ingresscontroller -n openshift-ingress-operator default -o jsonpath="{.status.conditions}" | yq -PC
+  ```
 
 ## Replacing Ingress Controller Classic Load Balancer with Network Load Balancer
 
@@ -209,11 +245,7 @@ To improve performance and reduce latency for traffic in OpenShift Container Pla
 
 <div class="warning">
 
-This procedure might cause the following issues:
-
-- An outage that can last several minutes due to new DNS records propagation, new load balancers provisioning, and other factors. IP addresses and canonical names of the Ingress Controller load balancer might change after applying this procedure.
-
-- Leaked load balancer resources due to a change in the annotation of the service.
+This procedure might cause an outage that can last several minutes due to new DNS records propagation, new load balancers provisioning, and other factors. IP addresses and canonical names of the Ingress Controller load balancer might change after applying this procedure.
 
 </div>
 

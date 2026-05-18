@@ -127,7 +127,9 @@ source:
 
 <div class="note">
 
-If your cluster uses an `ImageDigestMirrorSet`, `ImageTagMirrorSet`, or `ImageContentSourcePolicy` object to configure repository mirroring, you can use only global pull secrets for mirrored registries. You cannot add a pull secret to a project.
+By default, if your cluster uses an `ImageDigestMirrorSet`, `ImageTagMirrorSet`, or `ImageContentSourcePolicy` object to configure repository mirroring, you must use a global pull secret for mirrored registries. You cannot add an image pull secret to a project.
+
+However, you can configure a cluster-wide `CRIOCredentialProviderConfig` object to enable project-scoped image pull secrets that you can use with mirrored repositories. For more information, see "Configuring project-scoped image pull secrets for mirrored registries".
 
 </div>
 
@@ -160,6 +162,10 @@ When using an input image from a mirrored registry, if you get a `build error: f
 - Create an input secret that contains the authentication credentials for the builder image’s repository and all known mirrors. In this case, create a pull secret for credentials to the image registry and its mirrors.
 
 - Use the input secret as the pull secret on the `BuildConfig` object.
+
+<!-- -->
+
+- [Configuring project-scoped image pull secrets for mirrored registries](../../openshift_images/image-configuration.xml#images-configuration-registry-mirror-project-secret_image-configuration)
 
 # Git source
 

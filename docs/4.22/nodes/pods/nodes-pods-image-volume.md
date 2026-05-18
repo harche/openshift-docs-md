@@ -1,8 +1,8 @@
-You can mount an Open Container Initiative (OCI)-compliant container image directly into a pod, making the files within the image accessible to the containers without the need to include them in the base image, which allows you to host the data in OCI-compliant registries.
+You can mount an Open Container Initiative (OCI)-compliant container image or artifact directly into a pod, making the OCI object accessible to the containers without the need to include them in the base image, which allows you to host the data in OCI-compliant registries.
 
 # Understanding image volumes
 
-You can use an *image volume* to mount an Open Container Initiative (OCI)-compliant container image directly into a pod, making the files within the image accessible to the containers without the need to include them in the base image. This means you can host the data in an OCI-compliant registry.
+You can you use an *image volume* to mount an Open Container Initiative (OCI)-compliant container image or artifact directly into a pod as a native volume source, making the OCI object accessible to the containers without the need to include them in the base image. OCI objects enable users to store and distribute arbitrary files and metadata through OCI-compliant container registries.
 
 By using an image volume in a pod, you can take advantage of the OCI image and distribution specification standards to accomplish several tasks including the following use cases:
 
@@ -12,11 +12,13 @@ By using an image volume in a pod, you can take advantage of the OCI image and d
 
 - You can use a public image for a malware scanner and mount it in a volume of private malware signatures, so that you can load those signatures without incorporating the image into a base image, which might not be allowed by the copyright on the public image.
 
-To mount an image volume, include a path to the image in your pod spec with an optional pull policy as described in *Adding an image volume to a pod*.
+- You can package and distribute binary artifacts and mount them directly into your pods, allowing you to streamline your CI/CD pipeline. This allows you to maintain a small set of base images by attaching the CI/CD artifacts to the image volumes instead.
+
+To mount an image volume, include a path to the image or artifact in your pod spec with an optional pull policy as described in *Adding an image volume to a pod*.
 
 # Adding an image volume to a pod
 
-To mount an Open Container Initiative (OCI)-compliant container image, use the `volume` parameter to include a path to the image in your pod spec with an optional pull policy. You can create the pod directly or use a controlling object, such as a deployment or replica set.
+To mount an Open Container Initiative (OCI)-compliant container image or artifact, use the `volume` parameter in your pod spec to include a path to the image or artifact, along with an optional pull policy. You can create the pod directly or use a controlling object, such as a deployment or replica set.
 
 1.  Create a YAML file similar to the following.
 
@@ -27,30 +29,60 @@ To mount an Open Container Initiative (OCI)-compliant container image, use the `
       name: image-volume
     spec:
       containers:
-      - name: shell
+      - name: image-volume-container
         command: ["sleep", "infinity"]
         image: debian
         volumeMounts:
-        - name: volume
-          mountPath: /volume
+        - name: image
+          mountPath: /image
+      - name: artifact-volume-container
+        image: busybox:latest
+        command: ["/bin/sh"]
+        args:
+        - -c
+        - trap 'exit 0' TERM INT; sleep infinity & wait
+        volumeMounts:
+        - name: artifact
+          mountPath: /artifact
       volumes:
-      - name: volume
+      - name: image
         image:
-          reference: quay.io/crio/image:v2
+          reference: quay.io/crio/busybox:1
           pullPolicy: Always
+      - name: artifact
+        image:
+          reference: quay.io/crio/artifact:singlefile
+          pullPolicy: IfNotPresent
     ```
 
-    - Specifies an OCI container image that is available on the host machine.
+    where:
 
-    - Specifies the path to the image.
+    `spec.containers`
+    Specifies the configuration for one or more containers.
 
-    - Specifies a pull policy, one of the following options:
+    `spec.containers.volumeMounts`
+    Specifies the name of the volume to mount and where to mount that volume. The first example indicates the container with the name `image-volume-container` should mount the `image` volume under the path `/image`.
 
-      - If `Always`, the kubelet always attempts to pull the image. If the pull fails, the kubelet sets the pod to `Failed`.
+    `spec.volumes`
+    Specifies the storage volumes that are available for the containers to use.
 
-      - If `Never`, the kubelet never pulls the image and only uses a local image. The pod becomes `Failed` if any layers of the image are not present locally, or if the manifest for that image is not already cached.
+    `spec.volumes.name`
+    Specifies a name for the volume.
 
-      - If `IfNotPresent` the kubelet pulls the image if it is not present. The pod becomes `Failed` if the image is not present and the pull fails. This is the default.
+    `spec.volumes.image`
+    Specifies an OCI container image or artifact that is available on the host machine.
+
+    `spec.volumes.image.reference`
+    Specifies the path to the OCI object.
+
+    `spec.volumes.image.pullPolicy`
+    Specifies a pull policy, one of the following options:
+
+    - If `Always`, the kubelet always attempts to pull the OCI object. If the pull fails, the kubelet sets the pod to `Failed`.
+
+    - If `Never`, the kubelet never pulls the image and only uses an OCI object. The pod becomes `Failed` if any layers of the image are not present locally, or if the manifest for that image is not already cached.
+
+    - If `IfNotPresent`, the kubelet pulls the OCI object if it is not present. The pod becomes `Failed` if the OCI object is not present and the pull fails. This is the default.
 
 2.  Create the pod by running the following command:
 
@@ -74,21 +106,42 @@ To mount an Open Container Initiative (OCI)-compliant container image, use the `
   Name:             image-volume
   Namespace:        default
   # ...
+  Containers:
+    image-volume-container:
+  # ...
+      Mounts:
+        /image from image (rw)
+        /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-svtzn (ro)
+    artifact-volume-container:
+  # ...
+      Mounts:
+        /artifact from artifact (rw)
+        /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-svtzn (ro)
+  # ...
   Volumes:
-    volume:
-      Type:        Image
-      Reference:   quay.io/crio/image:v2
+    image:
+      Type:        Image (a container image or OCI artifact)
+      Reference:   quay.io/crio/busybox:1
+      PullPolicy:  Always
+    artifact:
+      Type:        Image (a container image or OCI artifact)
+      Reference:   quay.io/crio/artifact:singlefile
       PullPolicy:  IfNotPresent
   # ...
   Events:
     Type    Reason          Age                From               Message
     ----    ------          ----               ----               -------
   # ...
-    Normal  Pulling         46s                kubelet            Pulling image "quay.io/crio/image:v2"
-    Normal  Pulled          44s                kubelet            Successfully pulled image "quay.io/crio/image:v2" in 2.261s (2.261s including waiting). Image size: 6707 bytes.
+    Normal  Pulling         10s (x3 over 15s)  kubelet            Pulling image "quay.io/crio/busybox:1"
+    Normal  Pulled          10s                kubelet            Successfully pulled image "quay.io/crio/busybox:1" in 555ms (555ms including waiting). Image size: 1468102 bytes.
+  # ...
+    Normal  Pulling         15s                kubelet            Pulling image "quay.io/crio/artifact:singlefile"
+    Normal  Pulled          13s                kubelet            Successfully pulled image "quay.io/crio/artifact:singlefile" in 1.493s (1.493s including waiting). Image size: 14 bytes.
   # ...
   ```
 
-  - Indicates that the image was mounted to the pod.
+  - The `Containers` stanza shows that the two containers were created with the configured volume mounts.
 
-  - Indicates that the image was successfully pulled.
+  - The `Volumes` stanza shows that the two volumes were created.
+
+  - The `Events` stanza shows that the images in the volumes were pulled.

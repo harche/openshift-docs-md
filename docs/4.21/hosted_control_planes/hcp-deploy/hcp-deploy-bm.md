@@ -1,10 +1,10 @@
-You can deploy hosted control planes by configuring a cluster to function as a management cluster. The management cluster is the OpenShift Container Platform cluster where the control planes are hosted. In some contexts, the management cluster is also known as the *hosting* cluster.
+To maximize hardware performance and maintain control over your physical infrastructure, you can deploy hosted control planes on bare metal by using the Agent platform. This deployment method reduces virtualization overhead and offers low-latency networking for performance-intensive workloads.
 
-<div class="note">
+# About hosted control planes on bare metal with the Agent platform
 
-The management cluster is not the same thing as the *managed* cluster. A managed cluster is a cluster that the hub cluster manages.
+You can deploy hosted control planes on bare-metal infrastructure with the Agent platform by configuring an OpenShift Container Platform cluster to function as a management cluster.
 
-</div>
+The management cluster is the OpenShift Container Platform cluster where the control planes are hosted. In some contexts, the management cluster is also known as the *hosting* cluster. The management cluster is not the same thing as the *managed* cluster. A managed cluster is a cluster that the hub cluster manages.
 
 The hosted control planes feature is enabled by default.
 
@@ -13,6 +13,8 @@ The multicluster engine Operator supports only the default `local-cluster`, whic
 A *hosted cluster* is an OpenShift Container Platform cluster with its API endpoint and control plane that are hosted on the management cluster. The hosted cluster includes the control plane and its corresponding data plane. You can use the multicluster engine Operator console or the hosted control plane command-line interface (`hcp`) to create a hosted cluster.
 
 The hosted cluster is automatically imported as a managed cluster. If you want to disable this automatic import feature, see "Disabling the automatic import of hosted clusters into multicluster engine Operator".
+
+- [Disabling the automatic import of hosted clusters into multicluster engine Operator](../../hosted_control_planes/hcp-import.xml#hcp-import-disable_hcp-import)
 
 # Preparing to deploy hosted control planes on bare metal
 
@@ -253,9 +255,13 @@ You can define a DNS name either during your initial setup or during postinstall
 
 Before you can create a hosted cluster on bare metal, you need an `InfraEnv` resource.
 
+On hosted control planes, the control-plane components run as pods on the management cluster while the data plane runs on dedicated nodes. You can use the Assisted Service to boot your hardware with a discovery ISO that adds your hardware to a hardware inventory.
+
+Later, when you create a hosted cluster, the hardware from the inventory is used to provision the data-plane nodes. The object that is used to get the discovery ISO is an `InfraEnv` resource. You need to create a `BareMetalHost` object that configures the cluster to boot the bare-metal node from the discovery ISO.
+
 ## Creating an InfraEnv resource and adding nodes
 
-On hosted control planes, the control-plane components run as pods on the management cluster while the data plane runs on dedicated nodes. You can use the Assisted Service to boot your hardware with a discovery ISO that adds your hardware to a hardware inventory. Later, when you create a hosted cluster, the hardware from the inventory is used to provision the data-plane nodes. The object that is used to get the discovery ISO is an `InfraEnv` resource. You need to create a `BareMetalHost` object that configures the cluster to boot the bare-metal node from the discovery ISO.
+To ensure that your hardware is provisioned correctly before you create a hosted cluster on bare metal, create an `InfraEnv` resource. You can create the resource and add nodes by using the command-line interface (CLI).
 
 1.  Create a namespace to store your hardware inventory by entering the following command:
 
@@ -359,53 +365,45 @@ On hosted control planes, the control-plane components run as pods on the manage
 
       2.  Boot the ISO. The node communicates with the Assisted Service and registers as an agent in the same namespace as the `InfraEnv` resource.
 
-      3.  For each agent, set the installation disk ID and hostname, and approve it to indicate that the agent is ready for use. Enter the following commands:
+      3.  For each agent, set the installation disk ID and hostname, and approve it to indicate that the agent is ready for use.
 
-          ``` terminal
-          $ oc -n <hosted_control_plane_namespace> get agents
-          ```
+          1.  Enter the following command to get the agents for your hosted control plane namespace:
 
-          <div class="formalpara-title">
+              ``` terminal
+              $ oc -n <hosted_control_plane_namespace> get agents
+              ```
 
-          **Example output**
+              In this example, two agents are listed.
 
-          </div>
+              <div class="formalpara-title">
 
-          ``` terminal
-          NAME                                   CLUSTER   APPROVED   ROLE          STAGE
-          86f7ac75-4fc4-4b36-8130-40fa12602218                        auto-assign
-          e57a637f-745b-496e-971d-1abbf03341ba                        auto-assign
-          ```
+              **Example output**
 
-          ``` terminal
-          $ oc -n <hosted_control_plane_namespace> \
-            patch agent 86f7ac75-4fc4-4b36-8130-40fa12602218 \
-            -p '{"spec":{"installation_disk_id":"/dev/sda","approved":true,"hostname":"worker-0.example.krnl.es"}}' \
-            --type merge
-          ```
+              </div>
 
-          ``` terminal
-          $ oc -n <hosted_control_plane_namespace> \
-            patch agent 23d0c614-2caa-43f5-b7d3-0b3564688baa -p \
-            '{"spec":{"installation_disk_id":"/dev/sda","approved":true,"hostname":"worker-1.example.krnl.es"}}' \
-            --type merge
-          ```
+              ``` terminal
+              NAME                                   CLUSTER   APPROVED   ROLE          STAGE
+              example-agent-1                        auto-assign
+              example-agent-2                        auto-assign
+              ```
 
-          ``` terminal
-          $ oc -n <hosted_control_plane_namespace> get agents
-          ```
+          2.  Enter the following command to set the installation disk ID and hostname for the first agent:
 
-          <div class="formalpara-title">
+              ``` terminal
+              $ oc -n <hosted_control_plane_namespace> \
+                patch agent example-agent-1 \
+                -p '{"spec":{"installation_disk_id":"/dev/sda","approved":true,"hostname":"worker-0.example.krnl.es"}}' \
+                --type merge
+              ```
 
-          **Example output**
+          3.  Enter the following command to set the installation disk ID and hostname for the second agent:
 
-          </div>
-
-          ``` terminal
-          NAME                                   CLUSTER   APPROVED   ROLE          STAGE
-          86f7ac75-4fc4-4b36-8130-40fa12602218             true       auto-assign
-          e57a637f-745b-496e-971d-1abbf03341ba             true       auto-assign
-          ```
+              ``` terminal
+              $ oc -n <hosted_control_plane_namespace> \
+                patch agent example-agent-2 -p \
+                '{"spec":{"installation_disk_id":"/dev/sda","approved":true,"hostname":"worker-1.example.krnl.es"}}' \
+                --type merge
+              ```
 
     - If you use the Metal3 Operator, you can automate the bare-metal host registration by creating the following objects:
 
@@ -599,13 +597,11 @@ To create an `InfraEnv` resource by using the console, complete the following st
 
 4.  After you create the `InfraEnv` resource, add bare-metal hosts from within the **InfraEnv** view by clicking **Add hosts** and selecting from the available options.
 
-## Additional resources
-
 - [Accessing the web console](../../web_console/web-console.xml#web-console-overview)
 
 # Creating a hosted cluster on bare metal
 
-You can create a hosted cluster on bare metal by using the command-line interface (CLI), the console, or by using a mirror registry.
+You can create a hosted cluster on bare metal with the Agent platform by using the command-line interface (CLI), the console, or by using a mirror registry.
 
 ## Creating a hosted cluster by using the CLI
 

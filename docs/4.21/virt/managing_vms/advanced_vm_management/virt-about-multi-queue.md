@@ -14,8 +14,6 @@ Enabling `virtio-net` multi-queue does not offer significant improvements when t
 
 - Each `virtio-net` queue consumes 64 KiB of kernel memory for the `vhost` driver.
 
-- Starting a VM with more than 16 CPUs results in no connectivity if `networkInterfaceMultiqueue` is set to `true`. ([CNV-16107](https://issues.redhat.com/browse/CNV-16107)).
-
 # Enabling multi-queue functionality
 
 You can enable multi-queue functionality for interfaces configured with a VirtIO model.

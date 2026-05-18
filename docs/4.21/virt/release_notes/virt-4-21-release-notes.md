@@ -16,8 +16,8 @@ The SVVP certification applies to:
 
 # New features and enhancements
 
-Remove the Migration Toolkit for Virtualization (MTV) Operator during the upgrade process
-With this update, cluster administrators can optionally remove the MTV Operator when they upgrade from previous OpenShift Virtualization versions to version 4.21. MTV is end-of-life and no longer needed in OpenShift Virtualization version 4.21 to support live storage migration.
+Remove the Migration Toolkit for Containers (MTC) Operator during the upgrade process
+With this update, cluster administrators can optionally remove the MTC Operator when they upgrade from previous OpenShift Virtualization versions to version 4.21. MTC is end-of-life and no longer needed in OpenShift Virtualization version 4.21 to support live storage migration.
 
 [CNV-50822](https://issues.redhat.com/browse/CNV-50822)
 
@@ -46,7 +46,7 @@ With this update, you can import VMs into OpenShift Virtualization, preserving t
 <!-- -->
 
 Migrate VM disks to different storage classes
-Previously, installation of Migration Toolkit for Virtualization (MTV) was required before migrating VM disks to different storage classes. This requirement no longer exists, as VM disk storage class migration is now native to OpenShift Virtualization.
+Previously, installation of Migration Toolkit for Containers (MTC) was required before migrating VM disks to different storage classes. This requirement no longer exists, as VM disk storage class migration is now native to OpenShift Virtualization.
 
 In addition, it is no longer a requirement that the VMs you select for each bulk migration be in the same namespace.
 

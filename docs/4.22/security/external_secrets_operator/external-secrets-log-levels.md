@@ -12,7 +12,7 @@ For the complete list of fields and allowed values, see the `ExternalSecretsConf
 
 # Setting a log level for the External Secrets Operator for Red Hat OpenShift
 
-Set the log level for the External Secrets Operator for Red Hat OpenShift to control the detail of log messages. By adjusting the verbosity, you can troubleshoot issues effectively and manage the volume of log data.
+You can configure the log verbosity for the lifecycle manager. You must adjust this setting to troubleshoot issues related to the installation, upgrade, or configuration of the operator itself, rather than secret synchronization.
 
 - You have access to the cluster with `cluster-admin` privileges.
 
@@ -55,7 +55,7 @@ Set the log level for the External Secrets Operator for Red Hat OpenShift to con
 
 # Setting a log level for the External Secrets Operator for Red Hat OpenShift operand
 
-Set the log level for the External Secrets Operator for Red Hat OpenShift operand to control the verbosity of log messages. By doing this task, you can adjust the amount of detail recorded for troubleshooting or monitoring purposes.
+You can troubleshoot common issues, such as secret synchronization failures, provider authentication errors, or data formatting problems, by configuring the log verbosity for the core controller.
 
 - You have access to the cluster with `cluster-admin` privileges.
 
@@ -78,23 +78,24 @@ Set the log level for the External Secrets Operator for Red Hat OpenShift operan
         logLevel: <log_level>
     ```
 
-    - Supports the value range of 1-5. The log level gets mapped to the following operand support levels:
+    where:
 
-      - 1 - warnings
+    log_level
+    Supports the value range of 1-5. The log level gets mapped to the following operand support levels:
 
-      - 2 - error logs
+    - 1 - warnings
 
-      - 3 - info logs
+    - 2 - error logs
 
-      - 4 and 5 - debug logs
+    - 3 - info logs
+
+    - 4 and 5 - debug logs
 
 3.  Save your changes and exit the editor.
 
 # Configuring cert-manager for the external-secrets certificate requirements
 
-Configure cert-manager to handle certificate management for the external-secrets webhook and plugins. This optional configuration automates certificate generation for plugins and eliminates the need for manual configuration.
-
-When `cert-manager` is not used, `external-secrets` defaults to its own certificate management. In this mode, it automatically generates the required certificates for the webhook, while you are responsible for manually configuring certificates for the plugins.
+You can optionally configure cert-manager to manage certificates for the External Secrets Operator for Red Hat OpenShift webhook and plugins. If you do not use cert-manager, the Operator automatically generates webhook certificates, but you must manually configure certificates for any plugins.
 
 - You have access to the cluster with `cluster-admin` privileges.
 
@@ -169,13 +170,15 @@ When `cert-manager` is not used, `external-secrets` defaults to its own certific
     $ oc delete secrets external-secrets-webhook -n external-secrets
     ```
 
+- [External Secrets Operator for Red hat OpenShift APIs](../external_secrets_operator/external-secrets-operator-api.xml#external-secrets-operator-api)
+
 - [cert-manager Operator for Red Hat Openshift](../cert_manager_operator/index.xml#cert-manager-operator-about)
 
 - [Installing the cert-manager-Operator for Red Hat Openshift](../cert_manager_operator/cert-manager-operator-install.xml#cert-manager-operator-install)
 
 # Configuring the bitwardenSecretManagerProvider plugin
 
-Configure the `bitwardenSecretManagerProvider` plugin to use Bitwarden Secrets Manager as a source for your secrets. By using this integration, you can sync external secrets to your OpenShift Container Platform cluster.
+You must configure the `bitwardenSecretManagerProvider` plugin to enable communication with the Bitwarden API. This configuration enables the Operator to authenticate and fetch secrets for synchronization.
 
 - You have access to the cluster with `cluster-admin` privileges.
 
@@ -210,21 +213,21 @@ Configure the `bitwardenSecretManagerProvider` plugin to use Bitwarden Secrets M
 
 4.  If you disable the plugin the following resources must be deleted manually by running the following commands:
 
-``` terminal
-$ oc delete deployments.apps bitwarden-sdk-server -n external-secrets
-```
+    ``` terminal
+    $ oc delete deployments.apps bitwarden-sdk-server -n external-secrets
+    ```
 
-``` terminal
-$ oc delete certificates.cert-manager.io bitwarden-tls-certs -n external-secrets
-```
+    ``` terminal
+    $ oc delete certificates.cert-manager.io bitwarden-tls-certs -n external-secrets
+    ```
 
-``` terminal
-$ oc delete service bitwarden-sdk-server -n external-secrets
-```
+    ``` terminal
+    $ oc delete service bitwarden-sdk-server -n external-secrets
+    ```
 
-``` terminal
-$ oc delete serviceaccounts bitwarden-sdk-server -n external-secrets
-```
+    ``` terminal
+    $ oc delete serviceaccounts bitwarden-sdk-server -n external-secrets
+    ```
 
 # Adding custom annotations to external-secrets resources
 

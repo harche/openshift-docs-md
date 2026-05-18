@@ -940,6 +940,28 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHBA-2026:16162 - OpenShift Container Platform 4.17.15 fixed issues advisory
+
+Issued: 13 May 2026
+
+OpenShift Container Platform release 4.17.15 is now available. The list of fixed issues that are included in the update is documented in the [RHBA-2026:16162](https://access.redhat.com/errata/RHBA-2026:16162) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:16154](https://access.redhat.com/errata/RHBA-2026:16154) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.15 --pullspecs
+```
+
+### Fixed issues
+
+There are no notable fixed issues in this release.
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHBA-2026:13813 - OpenShift Container Platform 4.17.14 fixed issues advisory
 
 Issued: 7 May 2026
@@ -1101,6 +1123,14 @@ You can view the container images in this release by running the following comma
 ``` terminal
 $ oc adm release info 4.21.9 --pullspecs
 ```
+
+### Enhancements
+
+This release contains the following enhancement:
+
+- This release introduces support for the CRI-O ExecCPUAffinity feature, which protects latency-sensitive workloads from performance degradation. This enhancement allows the `PerformanceProfile` to automatically pin `oc exec` and `oc shell` processes to a designated CPU within the container-allocated set, preventing them from interfering with workload CPUs.
+
+  This feature is enabled by default for `Guaranteed` Quality of Service (QoS) pods with whole-integer CPU requests and requires no additional configuration. This improvement ensures a more stable environment for high-performance applications by isolating execution processes. If necessary, you can disable this feature per profile by adding the `performance.openshift.io/exec-cpu-affinity: "disable"` annotation to the `PerformanceProfile`. For more information, see [How ExecCPUAffinity prevents latency spikes from exec operations](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-exec-cpu-affinity_cnf-tuning-low-latency-nodes-with-perf-profile).
 
 ### Fixed issues
 

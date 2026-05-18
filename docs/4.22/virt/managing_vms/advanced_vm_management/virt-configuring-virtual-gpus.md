@@ -25,6 +25,12 @@ To enable the IOMMU driver in the kernel, create the `MachineConfig` object and 
 
 - Your CPU hardware is Intel or AMD.
 
+  <div class="note">
+
+  Enabling IOMMU is not required on `s390x` architecture.
+
+  </div>
+
 - You enabled Intel Virtualization Technology for Directed I/O extensions or AMD IOMMU in the BIOS.
 
 - You have installed the OpenShift CLI (`oc`).

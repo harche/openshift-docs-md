@@ -1902,6 +1902,95 @@ For three-node cluster installations, follow these next steps:
 
 - Do not deploy any compute nodes when you create the Red Hat Enterprise Linux CoreOS (RHCOS) machines.
 
+## Local arbiter node configuration prerequisites
+
+To retain high availability (HA) while reducing infrastructure costs for your cluster, you can configure an OpenShift Container Platform cluster with two control plane nodes and one local arbiter node.
+
+A local arbiter node is a lower-cost, co-located machine that participates in control plane quorum decisions. Unlike a standard control plane node, the arbiter node does not run the full set of control plane services. You can use this configuration to maintain HA in your cluster with only two fully provisioned control plane nodes instead of three.
+
+<div class="important">
+
+You can configure a local arbiter node only. Remote arbiter nodes are not supported.
+
+</div>
+
+To deploy a cluster with two control plane nodes and one local arbiter node, you must define the following nodes in the `install-config.yaml` file:
+
+- 2 control plane nodes
+
+- 1 arbiter node
+
+The arbiter node must meet the following minimum system requirements:
+
+- 2 threads
+
+- 8 GB of RAM
+
+- 50 GB of SSD or equivalent storage
+
+The arbiter node must be located in a network environment with an end-to-end latency of less than 500 milliseconds, including disk I/O. In high-latency environments, you might need to apply the `etcd` slow profile.
+
+The control plane nodes must meet the following minimum system requirements:
+
+- 4 threads
+
+- 16 GB of RAM
+
+- 120 GB of SSD or equivalent storage
+
+Additionally, the control plane nodes must also have enough storage for the workload.
+
+## Configuring a local arbiter node by using user-provisioned infrastructure
+
+To retain high availability (HA) while reducing infrastructure costs for your cluster, you can configure an OpenShift Container Platform cluster with two control plane nodes and one local arbiter node.
+
+- You have downloaded OpenShift CLI (`oc`) and the installation program.
+
+- You have logged into the OpenShift CLI (`oc`).
+
+1.  Edit the `install-config.yaml` file to define the arbiter node alongside control plane nodes.
+
+    <div class="formalpara-title">
+
+    **Example `install-config.yaml` configuration for deploying an arbiter node**
+
+    </div>
+
+    ``` yaml
+    apiVersion: v1
+    baseDomain: devcluster.openshift.com
+    compute:
+      - architecture: amd64
+        hyperthreading: Enabled
+        name: worker
+        platform: {}
+        replicas: 0
+
+    arbiter:
+      architecture: amd64
+      hyperthreading: Enabled
+      replicas: 1
+      name: <Specifies a name for the arbiter machine pool>
+      platform:
+        baremetal: {}
+    controlPlane:
+      architecture: amd64
+      hyperthreading: Enabled
+      name: master
+      platform:
+        baremetal: {}
+      replicas: 2
+
+    platform:
+      none: {}
+    ```
+
+    Set the `arbiter.replicas` field to `1` for the arbiter pool. You cannot set this field to a value that is greater than 1.
+
+    For `controlPlane.replicas` field, when an arbiter pool is defined, two control plane replicas are valid.
+
+2.  Save the modified `install-config.yaml` file.
+
 # Creating the Kubernetes manifest and Ignition config files
 
 To customize cluster definitions and manually start machines, generate the Kubernetes manifest and Ignition config files. These assets provide the necessary instructions to configure the cluster infrastructure according to your specific deployment requirements.
@@ -4180,7 +4269,7 @@ To install OpenShift Container Platform, use Ignition configuration files to ini
 
     ``` terminal
     INFO Waiting up to 30m0s for the Kubernetes API at https://api.test.example.com:6443...
-    INFO API v1.34.2 up
+    INFO API v1.35.4 up
     INFO Waiting up to 30m0s for bootstrapping to complete...
     INFO It is now safe to remove the bootstrap resources
     ```
@@ -4254,9 +4343,9 @@ To add machines to a cluster, verify the status of the certificate signing reque
 
     ``` terminal
     NAME      STATUS    ROLES   AGE  VERSION
-    master-0  Ready     master  63m  v1.34.2
-    master-1  Ready     master  63m  v1.34.2
-    master-2  Ready     master  64m  v1.34.2
+    master-0  Ready     master  63m  v1.35.4
+    master-1  Ready     master  63m  v1.35.4
+    master-2  Ready     master  64m  v1.35.4
     ```
 
     The output lists all of the machines that you created.
@@ -4377,11 +4466,11 @@ To add machines to a cluster, verify the status of the certificate signing reque
 
     ``` terminal
     NAME      STATUS    ROLES   AGE  VERSION
-    master-0  Ready     master  73m  v1.34.2
-    master-1  Ready     master  73m  v1.34.2
-    master-2  Ready     master  74m  v1.34.2
-    worker-0  Ready     worker  11m  v1.34.2
-    worker-1  Ready     worker  11m  v1.34.2
+    master-0  Ready     master  73m  v1.35.4
+    master-1  Ready     master  73m  v1.35.4
+    master-2  Ready     master  74m  v1.35.4
+    worker-0  Ready     worker  11m  v1.35.4
+    worker-1  Ready     worker  11m  v1.35.4
     ```
 
     <div class="note">

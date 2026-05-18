@@ -1,5 +1,11 @@
 If you no longer need the Kube Descheduler Operator in your cluster, you can uninstall the Operator and remove its related resources.
 
+<div class="important">
+
+The Kube Descheduler Operator is not currently available for OpenShift Container Platform 4.17. The Operator is planned to be released in the near future.
+
+</div>
+
 # Uninstalling the descheduler
 
 If you no longer need the descheduler in your cluster, you can remove it by deleting the descheduler instance and uninstalling the Kube Descheduler Operator. You can also delete the `KubeDescheduler` CRD and `openshift-kube-descheduler-operator` namespace.

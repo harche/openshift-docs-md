@@ -631,9 +631,9 @@ Optional AWS configuration parameters are described in the following table:
 <tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   aws:
-    preserveBootstrapIgnition:</code></pre></td>
-<td style="text-align: left;"><p>Prevents the S3 bucket from being deleted after completion of bootstrapping.</p>
-<p><strong>Value:</strong> <code>true</code> or <code>false</code>. The default value is <code>false</code>, which results in the S3 bucket being deleted.</p></td>
+    bestEffortDeleteIgnition:</code></pre></td>
+<td style="text-align: left;"><p>An optional flag that determines whether to ignore errors when deleting Ignition objects from the S3 bucket. By default, the installation program fails if it cannot delete the Ignition objects.</p>
+<p><strong>Value:</strong> <code>true</code> or <code>false</code>. The default value is <code>false</code>, which causes the installation program to fail on S3 Ignition deletion errors.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><pre><code>platform:

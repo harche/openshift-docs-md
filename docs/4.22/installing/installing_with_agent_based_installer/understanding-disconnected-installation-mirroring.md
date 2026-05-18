@@ -14,6 +14,14 @@ To use mirror images for a disconnected installation with the Agent-based Instal
 
 You can mirror the release image by using the output of either the `oc adm release mirror` or `oc mirror` command. This is dependent on which command you used to set up the mirror registry.
 
+<div class="important">
+
+The `oc adm release mirror` command is deprecated as of OpenShift Container Platform 4.22 and will be removed in a future release.
+
+As an alternative, use the oc-mirror plugin v2.
+
+</div>
+
 The following example shows the output of the `oc adm release mirror` command.
 
 ``` terminal

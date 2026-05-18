@@ -1,5 +1,11 @@
 If you no longer need the Secondary Scheduler Operator for Red Hat OpenShift in your cluster, you can uninstall the Operator and remove its related resources.
 
+<div class="important">
+
+The Secondary Scheduler Operator is not currently available for OpenShift Container Platform 4.17. The Operator is planned to be released in the near future.
+
+</div>
+
 # Uninstalling the Secondary Scheduler Operator
 
 You can use the web console to uninstall the Secondary Scheduler Operator for Red Hat OpenShift if you no longer need the Operator in your cluster.

@@ -1,5 +1,11 @@
 You can run the descheduler in OpenShift Container Platform by installing the Kube Descheduler Operator and setting the required profiles and other customizations.
 
+<div class="important">
+
+The Kube Descheduler Operator is not currently available for OpenShift Container Platform 4.17. The Operator is planned to be released in the near future.
+
+</div>
+
 # Installing the descheduler
 
 The descheduler is not available by default. To enable the descheduler, you must install the Kube Descheduler Operator from the software catalog and enable one or more descheduler profiles.

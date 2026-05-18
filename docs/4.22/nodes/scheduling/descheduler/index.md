@@ -1,5 +1,11 @@
 While the [scheduler](../../../nodes/scheduling/nodes-scheduler-about.xml#nodes-scheduler-about) is used to determine the most suitable node to host a new pod, the descheduler can be used to evict a running pod so that the pod can be rescheduled onto a more suitable node.
 
+<div class="important">
+
+The Kube Descheduler Operator is not currently available for OpenShift Container Platform 4.17. The Operator is planned to be released in the near future.
+
+</div>
+
 # About the descheduler
 
 You can use the descheduler to evict pods based on specific strategies so that the pods are rescheduled onto more appropriate nodes.

@@ -1,14 +1,16 @@
 You can ensure your clusters only use container images that satisfy your organizational controls on external content. Before you install a cluster on infrastructure that you provision in a restricted network, you must mirror the required container images into that environment. By using the `oc adm` command, you can mirror release and catalog images in OpenShift. To mirror container images, you must have a registry for mirroring.
 
-<div class="note">
+<div class="important">
 
-The `oc adm release mirror` command is planned for deprecation in a future release. Additionally, when using this command, release image signatures are not automatically mirrored to the disconnected registry. Missing release signatures prevent cluster upgrades, as `ClusterImagePolicy` requires all release images to be verified. To ensure image signatures are correctly mirrored, it is recommended to use the oc-mirror v2 plugin.
+- The `oc adm release mirror` command is deprecated as of OpenShift Container Platform 4.22 and will be removed in a future release. As an alternative, use the oc-mirror plugin v2.
+
+- You must have access to the internet to obtain the necessary container images. In this procedure, you place your mirror registry on a mirror host that has access to both your network and the internet. If you do not have access to a mirror host, use the [Mirroring Operator catalogs for use with disconnected clusters](../disconnected/installing-mirroring-installation-images.xml#olm-mirror-catalog_installing-mirroring-installation-images) procedure to copy images to a device you can move across network boundaries with.
 
 </div>
 
-<div class="important">
+<div class="note">
 
-You must have access to the internet to obtain the necessary container images. In this procedure, you place your mirror registry on a mirror host that has access to both your network and the internet. If you do not have access to a mirror host, use the [Mirroring Operator catalogs for use with disconnected clusters](../disconnected/installing-mirroring-installation-images.xml#olm-mirror-catalog_installing-mirroring-installation-images) procedure to copy images to a device you can move across network boundaries with.
+When using the `oc adm release mirror` command, release image signatures are not automatically mirrored to the disconnected registry. Missing release signatures prevent cluster upgrades, as `ClusterImagePolicy` requires all release images to be verified. To ensure image signatures are correctly mirrored, it is recommended to use the oc-mirror v2 plugin.
 
 </div>
 
@@ -308,6 +310,14 @@ Do not use this image registry credentials file as the pull secret when you inst
 # Mirroring the OpenShift Container Platform image repository
 
 Mirror the OpenShift Container Platform image repository to your registry to use during cluster installation or upgrade. Complete the following steps on the mirror host.
+
+<div class="important">
+
+The `oc adm release mirror` command is deprecated as of OpenShift Container Platform 4.22 and will be removed in a future release.
+
+As an alternative, use the oc-mirror plugin v2.
+
+</div>
 
 - Your mirror host has access to the internet.
 

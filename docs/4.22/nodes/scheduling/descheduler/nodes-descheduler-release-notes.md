@@ -2,50 +2,10 @@ Review the Kube Descheduler Operator release notes to track its development and 
 
 The Kube Descheduler Operator allows you to evict pods so that they can be rescheduled on more appropriate nodes.
 
+<div class="important">
+
+The Kube Descheduler Operator is not currently available for OpenShift Container Platform 4.17. The Operator is planned to be released in the near future.
+
+</div>
+
 For more information, see [About the descheduler](../../../nodes/scheduling/descheduler/index.xml#nodes-descheduler-about_nodes-descheduler-about).
-
-# Release notes for Kube Descheduler Operator 5.3.2
-
-Review the release notes for Kube Descheduler Operator 5.3.2 to learn what is new and updated with this release.
-
-Issued: 12 February 2026
-
-The following advisory is available for the Kube Descheduler Operator 5.3.2:
-
-- [RHBA-2026:2641](https://access.redhat.com/errata/RHBA-2026:2641)
-
-## New features and enhancements
-
-- This release of the Kube Descheduler Operator updates the Kubernetes version to 1.34.
-
-# Release notes for Kube Descheduler Operator 5.3.1
-
-Review the release notes for Kube Descheduler Operator 5.3.1 to learn what is new and updated with this release.
-
-Issued: 4 December 2025
-
-The following advisory is available for the Kube Descheduler Operator 5.3.1:
-
-- [RHBA-2025:22737](https://access.redhat.com/errata/RHBA-2025:22737)
-
-## New features and enhancements
-
-- This release rebuilds the Kube Descheduler Operator to improve its image grade.
-
-# Release notes for Kube Descheduler Operator 5.3.0
-
-Review the release notes for Kube Descheduler Operator 5.3.0 to learn what is new and updated with this release.
-
-Issued: 29 October 2025
-
-The following advisory is available for the Kube Descheduler Operator 5.3.0:
-
-- [RHBA-2025:19249](https://access.redhat.com/errata/RHBA-2025:19249)
-
-## New features and enhancements
-
-- The descheduler profile `DevKubeVirtRelieveAndMigrate` has been renamed to `KubeVirtRelieveAndMigrate` and is now generally available. The updated profile improves VM eviction stability during live migrations by enabling background evictions and reducing oscillatory behavior. This profile is only available for use with OpenShift Virtualization.
-
-  For more information, see [Configuring descheduler evictions for virtual machines](../../../virt/managing_vms/advanced_vm_management/virt-enabling-descheduler-evictions.xml#virt-configuring-descheduler-evictions_virt-enabling-descheduler-evictions).
-
-- This release of the Kube Descheduler Operator updates the Kubernetes version to 1.33.

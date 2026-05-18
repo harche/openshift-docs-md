@@ -39,13 +39,13 @@ As a cluster administrator, you can preserve the old behavior by creating a temp
 
 # Preserving pre-4.19 live migration permissions during update
 
-Before you update to OpenShift Virtualization 4.21, you can create a temporary cluster role to preserve the previous live migration permissions until you are ready for the more restrictive default permissions to take effect.
+Before you update to OpenShift Virtualization 4.22, you can create a temporary cluster role to preserve the previous live migration permissions until you are ready for the more restrictive default permissions to take effect.
 
 - The OpenShift CLI (`oc`) is installed.
 
 - You have cluster administrator permissions.
 
-1.  Before updating to OpenShift Virtualization 4.21, create a temporary `ClusterRole` object. For example:
+1.  Before updating to OpenShift Virtualization 4.22, create a temporary `ClusterRole` object. For example:
 
     ``` yaml
     apiVersion: rbac.authorization.k8s.io/v1
@@ -84,7 +84,7 @@ Before you update to OpenShift Virtualization 4.21, you can create a temporary c
     $ oc apply -f <cluster_role_file_name>.yaml
     ```
 
-3.  Update OpenShift Virtualization to version 4.21.
+3.  Update OpenShift Virtualization to version 4.22.
 
 4.  Bind the `kubevirt.io:migrate` cluster role to trusted users or groups by running one of the following commands, replacing `<namespace>`, `<first_user>`, `<second_user>`, and `<group_name>` with your own values.
 

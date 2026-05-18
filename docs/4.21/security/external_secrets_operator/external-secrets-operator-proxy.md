@@ -8,73 +8,71 @@ The egress proxy can be configured in the `ExternalSecretsConfig` or the `Extern
 
 - You have created the `ExternalSecretsConfig` custom CR.
 
-<!-- -->
+1.  To set the proxy in the `ExternalSecretsConfig` resource, perform the following steps:
 
-- To set the proxy in the `ExternalSecretsConfig` resource, perform the following steps:
+    1.  Edit the `ExternalSecretsConfig` resource by running the following command:
 
-  1.  Edit the `ExternalSecretsConfig` resource by running the following command:
+        ``` terminal
+        $ oc edit externalsecretsconfigs.operator.openshift.io cluster
+        ```
 
-      ``` terminal
-      $ oc edit externalsecretsconfigs.operator.openshift.io cluster
-      ```
+    2.  Edit the `spec.appConfig.proxy` section to set the proxy values as follows:
 
-  2.  Edit the `spec.appConfig.proxy` section to set the proxy values as follows:
+        ``` yaml
+        apiVersion: operator.openshift.io/v1alpha1
+        kind: ExternalSecretsConfig
+        ...
+        spec:
+          appConfig:
+            proxy:
+              httpProxy: <http_proxy>
+              httpsProxy: <https_proxy>
+              noProxy: <no_proxy>
+        ```
 
-      ``` yaml
-      apiVersion: operator.openshift.io/v1alpha1
-      kind: ExternalSecretsConfig
-      ...
-      spec:
-        appConfig:
-          proxy:
-            httpProxy: <http_proxy>
-            httpsProxy: <https_proxy>
-            noProxy: <no_proxy>
-      ```
+        where:
 
-      where:
+        \<http_proxy\>
+        Specifies the proxy URL for the http requests.
 
-      \<http_proxy\>
-      Specifies the proxy URL for the http requests.
+        \<https_proxy\>
+        Specifies the proxy URL for the https requests.
 
-      \<https_proxy\>
-      Specifies the proxy URL for the https requests.
+        \<no_proxy\>
+        Specifies a comma-separated list of hostnames, CIDRs, IPs or a combination of these, for which the proxy should not be used.
 
-      \<no_proxy\>
-      Specifies a comma-separated list of hostnames, CIDRs, IPs or a combination of these, for which the proxy should not be used.
+2.  To set the proxy in the `ExternalSecretsManager` CR, perform the following steps.
 
-- To set the proxy in the `ExternalSecretsManager` CR, perform the following steps.
+    1.  Edit the `ExternalSecretsManager` CR by running the following command:
 
-  1.  Edit the `ExternalSecretsManager` CR by running the following command:
+        ``` terminal
+        $ oc edit externalsecretsmanagers.operator.openshift.io cluster
+        ```
 
-      ``` terminal
-      $ oc edit externalsecretsmanagers.operator.openshift.io cluster
-      ```
+    2.  Edit the `spec.globalConfig.proxy` section to set the proxy values as follows:
 
-  2.  Edit the `spec.globalConfig.proxy` section to set the proxy values as follows:
+        ``` yaml
+        apiVersion: operator.openshift.io/v1alpha1
+        kind: ExternalSecretsManager
+        ...
+        spec:
+          globalConfig:
+            proxy:
+              httpProxy: <http_proxy>
+              httpsProxy: <https_proxy>
+              noProxy: <no_proxy>
+        ```
 
-      ``` yaml
-      apiVersion: operator.openshift.io/v1alpha1
-      kind: ExternalSecretsManager
-      ...
-      spec:
-        globalConfig:
-          proxy:
-            httpProxy: <http_proxy>
-            httpsProxy: <https_proxy>
-            noProxy: <no_proxy>
-      ```
+        where:
 
-where:
+        \<http_proxy\>
+        Specifies the proxy URL for the http requests.
 
-\<http_proxy\>
-Specifies the proxy URL for the http requests.
+        \<https_proxy\>
+        Proxy URL for the https requests.
 
-\<https_proxy\>
-Proxy URL for the https requests.
-
-\<no_proxy\>
-Comma-separated list of hostnames, CIDRs, IPs or a combination of these for which the proxy should not be used.
+        \<no_proxy\>
+        Comma-separated list of hostnames, CIDRs, IPs or a combination of these for which the proxy should not be used.
 
 # Additional resources
 

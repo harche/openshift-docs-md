@@ -1816,7 +1816,7 @@ After you create all of the required infrastructure in Amazon Web Services (AWS)
 
       ``` terminal
       INFO Waiting up to 20m0s for the Kubernetes API at https://api.mycluster.example.com:6443...
-      INFO API v1.34.2 up
+      INFO API v1.35.4 up
       INFO Waiting up to 30m0s for bootstrapping to complete...
       INFO It is now safe to remove the bootstrap resources
       INFO Time elapsed: 1s
@@ -1893,9 +1893,9 @@ To add machines to a cluster, verify the status of the certificate signing reque
 
     ``` terminal
     NAME      STATUS    ROLES   AGE  VERSION
-    master-0  Ready     master  63m  v1.34.2
-    master-1  Ready     master  63m  v1.34.2
-    master-2  Ready     master  64m  v1.34.2
+    master-0  Ready     master  63m  v1.35.4
+    master-1  Ready     master  63m  v1.35.4
+    master-2  Ready     master  64m  v1.35.4
     ```
 
     The output lists all of the machines that you created.
@@ -2016,11 +2016,11 @@ To add machines to a cluster, verify the status of the certificate signing reque
 
     ``` terminal
     NAME      STATUS    ROLES   AGE  VERSION
-    master-0  Ready     master  73m  v1.34.2
-    master-1  Ready     master  73m  v1.34.2
-    master-2  Ready     master  74m  v1.34.2
-    worker-0  Ready     worker  11m  v1.34.2
-    worker-1  Ready     worker  11m  v1.34.2
+    master-0  Ready     master  73m  v1.35.4
+    master-1  Ready     master  73m  v1.35.4
+    master-2  Ready     master  74m  v1.35.4
+    worker-0  Ready     worker  11m  v1.35.4
+    worker-1  Ready     worker  11m  v1.35.4
     ```
 
     <div class="note">

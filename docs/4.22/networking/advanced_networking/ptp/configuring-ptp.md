@@ -4626,7 +4626,7 @@ This procedure configures a T-GM (Telecom Grandmaster) clock on single-node Open
 
     ``` terminal
     NAME                 STATUS   ROLES                         AGE     VERSION
-    mysno-sno.demo.lab   Ready    control-plane,master,worker   4h19m   v1.34.1
+    mysno-sno.demo.lab   Ready    control-plane,master,worker   4h19m   v1.35.4
     ```
 
     Then describe the NodePtpDevice using your node name:

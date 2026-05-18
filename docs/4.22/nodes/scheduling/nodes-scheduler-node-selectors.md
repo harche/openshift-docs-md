@@ -446,7 +446,7 @@ metadata:
 
           ``` terminal
           NAME                          STATUS   ROLES    AGE   VERSION
-          ip-10-0-142-25.ec2.internal   Ready    worker   17m   v1.34.2
+          ip-10-0-142-25.ec2.internal   Ready    worker   17m   v1.35.4
           ```
 
 2.  Add the matching node selector to a pod:
@@ -661,7 +661,7 @@ To add a default cluster-wide node selector:
 
           ``` terminal
           NAME                                       STATUS   ROLES    AGE   VERSION
-          ci-ln-l8nry52-f76d1-hl7m7-worker-c-vmqzp   Ready    worker   61s   v1.34.2
+          ci-ln-l8nry52-f76d1-hl7m7-worker-c-vmqzp   Ready    worker   61s   v1.35.4
           ```
 
     - Add labels directly to a node:
@@ -714,7 +714,7 @@ To add a default cluster-wide node selector:
 
           ``` terminal
           NAME                                       STATUS   ROLES    AGE   VERSION
-          ci-ln-l8nry52-f76d1-hl7m7-worker-b-tgq49   Ready    worker   17m   v1.34.2
+          ci-ln-l8nry52-f76d1-hl7m7-worker-b-tgq49   Ready    worker   17m   v1.35.4
           ```
 
 # Creating project-wide node selectors
@@ -888,7 +888,7 @@ To add a default project node selector:
 
           ``` terminal
           NAME                                       STATUS   ROLES    AGE   VERSION
-          ci-ln-l8nry52-f76d1-hl7m7-worker-c-vmqzp   Ready    worker   61s   v1.34.2
+          ci-ln-l8nry52-f76d1-hl7m7-worker-c-vmqzp   Ready    worker   61s   v1.35.4
           ```
 
     - Add labels directly to a node:
@@ -941,7 +941,7 @@ To add a default project node selector:
 
           ``` terminal
           NAME                                       STATUS   ROLES    AGE   VERSION
-          ci-ln-l8nry52-f76d1-hl7m7-worker-b-tgq49   Ready    worker   17m   v1.34.2
+          ci-ln-l8nry52-f76d1-hl7m7-worker-b-tgq49   Ready    worker   17m   v1.35.4
           ```
 
 - [Creating a project with a node selector and toleration](../../nodes/scheduling/nodes-scheduler-taints-tolerations.xml#nodes-scheduler-taints-tolerations-projects_nodes-scheduler-taints-tolerations)

@@ -309,12 +309,12 @@ You can verify the status of the cluster nodes after an installation.
 
     ``` terminal
     NAME                          STATUS   ROLES    AGE   VERSION
-    compute-1.example.com         Ready    worker   33m   v1.34.2
-    control-plane-1.example.com   Ready    master   41m   v1.34.2
-    control-plane-2.example.com   Ready    master   45m   v1.34.2
-    compute-2.example.com         Ready    worker   38m   v1.34.2
-    compute-3.example.com         Ready    worker   33m   v1.34.2
-    control-plane-3.example.com   Ready    master   41m   v1.34.2
+    compute-1.example.com         Ready    worker   33m   v1.35.4
+    control-plane-1.example.com   Ready    master   41m   v1.35.4
+    control-plane-2.example.com   Ready    master   45m   v1.35.4
+    compute-2.example.com         Ready    worker   38m   v1.35.4
+    compute-3.example.com         Ready    worker   33m   v1.35.4
+    control-plane-3.example.com   Ready    master   41m   v1.35.4
     ```
 
 2.  Review CPU and memory resource availability for each cluster node:

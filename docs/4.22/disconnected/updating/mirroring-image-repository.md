@@ -32,6 +32,14 @@ The following steps outline the high-level workflow on how to mirror images to a
 
     3.  Repeat these steps as needed to update your mirror registry.
 
+<div class="important">
+
+The `oc adm release mirror` command is deprecated as of OpenShift Container Platform 4.22 and will be removed in a future release.
+
+As an alternative, use the oc-mirror plugin v2.
+
+</div>
+
 Compared to using the `oc adm release mirror` command, the oc-mirror plugin has the following advantages:
 
 - It can mirror content other than container images.
@@ -49,6 +57,14 @@ See [Mirroring images for a disconnected installation by using the oc-mirror plu
 # Mirroring images using the oc adm release mirror command
 
 You can use the `oc adm release mirror` command to mirror images to your mirror registry.
+
+<div class="important">
+
+The `oc adm release mirror` command is deprecated as of OpenShift Container Platform 4.22 and will be removed in a future release.
+
+As an alternative, use the oc-mirror plugin v2.
+
+</div>
 
 ## Prerequisites
 

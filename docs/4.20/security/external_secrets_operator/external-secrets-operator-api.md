@@ -24,9 +24,7 @@ The `externalSecretsManagerList` object fetches the list of `externalSecretsMana
 
 # externalSecretsManager
 
-The `externalSecretsManager` object defines the configuration and information of deployments managed by the External Secrets Operator. Set the name to `cluster` as this allows only one instance of `externalSecretsManager` per cluster.
-
-You can configure global options by using `externalSecretsManager`. This serves as a centralized configuration for managing multiple controllers of the Operator. The Operator automatically creates the `externalSecretsManager` object during installation.
+The `externalSecretsManager` object defines the configuration and information of deployments managed by the External Secrets Operator. Set the name to `cluster` as this allows only one instance of `externalSecretsManager` per cluster. You can configure global options by using `externalSecretsManager`. This serves as a centralized configuration for managing multiple controllers of the Operator. The Operator automatically creates the `externalSecretsManager` object during installation.
 
 | Field        | Type                                                                                                    | Description                                                                                             | Default | Validation |
 |--------------|---------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|---------|------------|
@@ -60,10 +58,6 @@ Creating an `externalSecretsConfig` object triggers the deployment of the `exter
 | `metadata`   | [*ObjectMeta*](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.31/#objectmeta-v1-meta) | Refer to Kubernetes API documentation for details about the `metadata` fields.                          |         |            |
 | `spec`       | *object*                                                                                                | `spec` contains the specifications of the desired behavior of the `externalSecrets` object.             |         |            |
 | `status`     | *object*                                                                                                | `status` displays the most recently observed status of the `externalSecrets` object.                    |         |            |
-
-# Listing fields in External Secrets Operator for Red Hat OpenShift APIs
-
-The following fields apply to the External Secrets Operator for Red Hat OpenShift APIs.
 
 # externalSecretsManagerSpec
 
@@ -135,7 +129,7 @@ The `externalSecretsConfigStatus` field shows the most recently observed status 
 
 # globalConfig
 
-The `globalConfig` field configures the behavior of the External Secrets Operator.
+The `globalConfig` field defines the baseline behavior and deployment parameters for the External Secrets Operator for Red Hat OpenShift. Use this section to apply labels to all managed resources and configure the logging verbosity. It also provides infrastructure-level controls to govern where and how the Operator is scheduled, alongside proxy settings for network compatibility.
 
 <table>
 <colgroup>
@@ -267,7 +261,7 @@ The `controllerConfig` specifies the configurations used by the controller when 
 
 # controllerStatus
 
-The `controllerStatus` field contains the observed conditions of the controllers used by the Operator.
+The `controllerStatus` field tracks the health and synchronization state of the individual controllers managed by the Operator. It identifies each controller by name, details its current operational conditions, and verifies that the controller is processing the latest configuration version.
 
 | Field                | Type      | Description                                                                                             | Default | Validation                                     |
 |----------------------|-----------|---------------------------------------------------------------------------------------------------------|---------|------------------------------------------------|
@@ -277,7 +271,7 @@ The `controllerStatus` field contains the observed conditions of the controllers
 
 # applicationConfig
 
-The `applicationConfig` specifies the configurations for the `external-secrets` operand.
+The `applicationConfig` object customizes the runtime behavior and deployment constraints of the operand. Use this section to control observability, define the operational scope, and configure webhook specifics. Additionally, you can tailor the deployment to your infrastructure requirements.
 
 <table>
 <colgroup>
@@ -366,7 +360,7 @@ The `applicationConfig` specifies the configurations for the `external-secrets` 
 
 # bitwardenSecretManagerProvider
 
-The `bitwardenSecretManagerProvider` field enables the Bitwarden secrets manager provider and sets up the additional service required to connect to the Bitwarden server.
+To enable the Bitwarden secrets manager provider and set up the additional service required to connect to the Bitwarden server, you can configure the `bitwardenSecretManagerProvider` field.
 
 <table>
 <colgroup>
@@ -414,7 +408,7 @@ The `webhookConfig` field configures the specifics of the `external-secrets` app
 
 # certManagerConfig
 
-The `certManagerConfig` field configures the `cert-manager` Operator settings.
+You can integrate the External Secrets Operator for Red Hat OpenShift with cert-manager to secure internal webhooks. Use these settings to replace the default internal certificate management with cert-manager, specify custom issuers, and define certificate lifecycle and renewal policies.
 
 <table>
 <colgroup>
@@ -484,7 +478,7 @@ The `certProvidersConfig` defines the configuration for the certificate provider
 
 # objectReference
 
-The `ObjectReference` field refers to an object by its name, kind, and group.
+The `ObjectReference` object acts as a pointer to a specific Kubernetes resource. It uniquely identifies the target by requiring its name, and optionally, helps scope the reference to a specific resource type and API group.
 
 <table>
 <colgroup>
@@ -570,7 +564,7 @@ The `secretReference` field refers to a secret with the given name in the same n
 
 # condition
 
-The `condition` field holds information about the condition of the `external-secrets` deployment.
+The `condition` object reports the current health and operational state of the External Secrets Operator for Red Hat OpenShift deployment. It provides a standardized status check by detailing the specific type of condition, its current status, and a message to verify deployment success or troubleshooting errors.
 
 | Field     | Type                                                                                                              | Description                                                     | Default | Validation |
 |-----------|-------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------|---------|------------|
@@ -605,7 +599,7 @@ The `pluginsConfig` configures the optional plugins.
 
 # proxyConfig
 
-The `proxyConfig` holds the proxy configurations which are made available in the operand containers and managed by the Operator as environment variables.
+The `proxyConfig` object defines the network proxy settings that the Operator injects into managed containers as environment variables. Use this configuration to ensure proper connectivity in restricted network environments, or to bypass the proxy and connect directly.
 
 <table>
 <colgroup>

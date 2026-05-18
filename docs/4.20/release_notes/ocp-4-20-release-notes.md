@@ -1838,6 +1838,58 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHBA-2026:16163 - OpenShift Container Platform 4.17.22 fixed issues
+
+Issued: 13 May 2026
+
+OpenShift Container Platform release 4.17.22 is now available. The list of fixed issues that are included in the update is documented in the [RHBA-2026:16163](https://access.redhat.com/errata/RHBA-2026:16163) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:16156](https://access.redhat.com/errata/RHBA-2026:16156) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.20.22 --pullspecs
+```
+
+### Fixed issues
+
+There are no notable fixed issues for this release.
+
+### Updating
+
+To update an OpenShift Container Platform 4.20 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
+## RHBA-2026:13863 - OpenShift Container Platform 4.17.21 fixed issues
+
+Issued: 06 May 2026
+
+OpenShift Container Platform release 4.17.21 is now available. The list of fixed issues that are included in the update is documented in the [RHBA-2026:13863](https://access.redhat.com/errata/RHBA-2026:13863) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:13861](https://access.redhat.com/errata/RHBA-2026:13861) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.20.21 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, upgrading a cluster with many Network Attachment Definitions (NAD) sharing the same network name caused VMs using `ovn-k8s-cni-overlay localnet` NADs to lose connectivity. As a consequence, logical ports were not created for some VMs, disrupting network traffic. With this release, the upgrade logic correctly handles NAD configurations, facilitating consistent port creation. As a result, VMs maintain stable connectivity during and after cluster upgrades. ([OCPBUGS-78777](https://issues.redhat.com/browse/OCPBUGS-78777))
+
+- Before this update, `kube-apiserver` rollouts in user clusters with encrypted etcd caused TCP RST storms, resulting in application pod traffic drops. With this update, the issue is resolved, and `kube-apiserver` rollouts no longer cause traffic drops in encrypted clusters, improving service stability. ([OCPBUGS-81477](https://issues.redhat.com/browse/OCPBUGS-81477))
+
+- Before this update, an incorrect subnet configuration in the `metal3-static-ip-set` YAML file when switching from a managed to an unmanaged provisioning network prevented users from creating routes with an unmanaged provisioning network. With this update, the `metal3-static-ip-set` YAML file sets the correct subnet for an unmanaged provisioning network, resolving the issue and enabling successful route creation. ([OCPBUGS-81643](https://issues.redhat.com/browse/OCPBUGS-81643))
+
+- Before this update, the `machine-config-controller` used inflated leader election timings on Single Node OpenShift Container Platform, causing a 5 to 6 minute delay in acquiring leases after a non-graceful reboot. As a consequence, this lag stalled `MachineConfig` rendering and pool status updates during critical recovery periods. With this release, the controller uses default leader election settings on Single Node OpenShift Container Platform, facilitating a faster transition to an `active` state after a node recovery. As a result, lease acquisition time is reduced by over 50%, allowing cluster operations to resume promptly. ([OCPBUGS-83393](https://issues.redhat.com/browse/OCPBUGS-83393))
+
+- Before this update, the Ingress Operator did not correctly set the `trustBundleName` configuration when deploying the Istio tool, preventing many Istio instances from coexisting. As a consequence, running simultaneous instances caused configuration conflicts and deployment failures. With this release, the Ingress Operator correctly applies the `trustBundleName` configuration, facilitating a seamless coexistence between different Istio instances. As a result, users can now maintain many Istio deployments within the same cluster. A cluster administrator can then manually delete any legacy ConfigMap objects. ([OCPBUGS-84132](https://issues.redhat.com/browse/OCPBUGS-84132))
+
+### Updating
+
+To update an OpenShift Container Platform 4.20 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHBA-2026:12066 - OpenShift Container Platform 4.17.20 fixed issues
 
 Issued: 05 May 2026

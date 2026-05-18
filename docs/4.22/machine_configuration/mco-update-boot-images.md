@@ -335,6 +335,22 @@ When boot image management is enabled, the MCO automatically enables boot image 
 
 You can disable the boot image management feature so that the Machine Config Operator (MCO) no longer manages or updates the boot image in the affected machine sets. For example, you could disable this feature for the worker nodes in order to use a custom boot image that you do not want changed.
 
+<div class="note">
+
+If you are updating an Microsoft Azure or VMware vSphere cluster from OpenShift Container Platform 4.21 to 4.22, and you have not configured the `managedBootImages` parameter, the update is blocked with the message: `This cluster is Azure or vSphere but lacks a boot image configuration`. The update is intentionally blocked on Azure or vSphere clusters in order to alert you that the default boot image management behavior is changing between version 4.21 and 4.22 in order to enable boot images management by default on those platforms.
+
+To allow the update, perform one of the following tasks:
+
+- If you want to allow the feature to be enabled, acknowledge that you are aware of the change in the default behavior by patching the `admin-acks` config map by running the following command:
+
+  ``` terminal
+  $ oc -n openshift-config patch cm admin-acks --patch '{"data":{"ack-4.21-boot-image-opt-out-in-4.22":"true"}}' --type=merge
+  ```
+
+- If you do not want the boot image management feature enabled, explicitly disable the feature for worker machine sets by using the following procedure.
+
+</div>
+
 You disable the boot image management feature for the control plane or worker machine sets in your cluster by editing the `MachineConfiguration` object.
 
 <div class="note">
@@ -364,38 +380,69 @@ After disabling the feature, you can re-enable the feature at any time. For more
     $ oc edit MachineConfiguration cluster
     ```
 
-2.  Disable the feature for some or all of your machine sets:
+2.  Disable the feature for some or all of your machine sets by making one or both of the following changes:
 
-    ``` yaml
-    apiVersion: operator.openshift.io/v1
-    kind: MachineConfiguration
-    metadata:
-      name: cluster
-    spec:
-    # ...
-      managedBootImages:
-        machineManagers:
-        - apiGroup: machine.openshift.io
-          resource: machinesets
-          selection:
-            mode: None
-        - apiGroup: machine.openshift.io
-          resource: controlplanemachinesets
-          selection:
-            mode: None
-    ```
+    - Disable the feature for nodes in the worker machine sets by adding the following parameters:
 
-    where:
+      ``` yaml
+      apiVersion: operator.openshift.io/v1
+      kind: MachineConfiguration
+      metadata:
+        name: cluster
+      spec:
+      # ...
+        managedBootImages:
+          machineManagers:
+          - apiGroup: machine.openshift.io
+            resource: machinesets
+            selection:
+              mode: None
+      ```
 
-    `spec.managedBootImages`
-    Configures the boot image management feature.
+      where:
 
-    `spec.managedBootImages.machineManagers.selection.mode.None`
-    Specifies that the feature is disabled for all machine sets in the cluster. Set the selection mode to `None` for one or both of the following resources to disable the feature for that resource.
+      `spec.managedBootImages`
+      Specifies the parameters for the boot image management feature.
 
-    - `controlplanemachinesets`: Disable boot image management for control plane machine sets.
+      `spec.managedBootImages.machineManagers.apiGroup`
+      Specifies the API group. This must be `machine.openshift.io`.
 
-    - `machinesets`: Disables boot image management for worker machine sets.
+      `spec.managedBootImages.machineManagers.resource`
+      Specifies that the `selection.mode` parameter applies to worker nodes when a value of `machinesets` is set.
+
+      `spec.managedBootImages.machineManagers.selection.mode`
+      When `None`, specifies that the feature is disabled for the specified machine sets.
+
+    - Disable the feature for nodes in the control plane machine sets by adding the following parameters:
+
+      ``` yaml
+      apiVersion: operator.openshift.io/v1
+      kind: MachineConfiguration
+      metadata:
+        name: cluster
+      spec:
+      # ...
+        managedBootImages:
+          machineManagers:
+          - apiGroup: machine.openshift.io
+            resource: controlplanemachinesets
+            selection:
+              mode: None
+      ```
+
+      where:
+
+      `spec.managedBootImages`
+      Specifies the parameters for the boot image management feature.
+
+      `spec.managedBootImages.machineManagers.apiGroup`
+      Specifies the API group. This must be `machine.openshift.io`.
+
+      `spec.managedBootImages.machineManagers.resource`
+      Specifies that the `selection.mode` parameter applies to control plane nodes when a value of `controlplanemachinesets` is set.
+
+      `spec.managedBootImages.machineManagers.selection.mode`
+      When `None`, specifies that the feature is disabled for the specified machine sets.
 
 - View the current state of the boot image management feature by using the following command to view the machine configuration object:
 

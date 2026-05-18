@@ -18,7 +18,7 @@ With these settings, the update process starts automatically when a new Operator
 
 <div class="note">
 
-Each minor version of OpenShift Virtualization is supported only with the corresponding OpenShift Container Platform version. For example, you must run OpenShift Virtualization 4.21 on OpenShift Container Platform 4.21.
+Each minor version of OpenShift Virtualization is supported only with the corresponding OpenShift Container Platform version. For example, you must run OpenShift Virtualization 4.22 on OpenShift Container Platform 4.22.
 
 </div>
 
@@ -94,11 +94,11 @@ If an installed Operator has the approval strategy in its subscription set to **
 
 # Remove unused Operators and resources
 
-When updating OpenShift Virtualization to version 4.21, you can remove certain Operators and resources that are no longer required. This helps reclaim space and resources on your cluster.
+When updating OpenShift Virtualization to version 4.22, you can remove certain Operators and resources that are no longer required. This helps reclaim space and resources on your cluster.
 
 # RHEL 9 compatibility
 
-OpenShift Virtualization 4.21 is based on Red Hat Enterprise Linux (RHEL) 9.
+OpenShift Virtualization 4.22 is based on Red Hat Enterprise Linux (RHEL) 9.
 
 ## RHEL 9 machine type
 

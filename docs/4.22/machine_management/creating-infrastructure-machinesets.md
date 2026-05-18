@@ -1674,7 +1674,7 @@ You can deploy the router pod to a different compute machine set. By default, th
 
           ``` terminal
           NAME                          STATUS  ROLES         AGE   VERSION
-          ip-10-0-217-226.ec2.internal  Ready   infra,worker  17h   v1.34.2
+          ip-10-0-217-226.ec2.internal  Ready   infra,worker  17h   v1.35.4
           ```
 
           Because the role list includes `infra`, the pod is running on the correct node.
@@ -2089,15 +2089,15 @@ clusterresourceoverride-operator-6b8b8b656b-lvr62   1/1     Running   0         
 
 ``` terminal
 NAME                                        STATUS   ROLES                  AGE   VERSION
-ip-10-0-14-183.us-west-2.compute.internal   Ready    control-plane,master   65m   v1.34.2
-ip-10-0-2-39.us-west-2.compute.internal     Ready    worker                 58m   v1.34.2
-ip-10-0-20-140.us-west-2.compute.internal   Ready    control-plane,master   65m   v1.34.2
-ip-10-0-23-244.us-west-2.compute.internal   Ready    infra                  55m   v1.34.2
-ip-10-0-77-153.us-west-2.compute.internal   Ready    control-plane,master   65m   v1.34.2
-ip-10-0-99-108.us-west-2.compute.internal   Ready    worker                 24m   v1.34.2
-ip-10-0-24-233.us-west-2.compute.internal   Ready    infra                  55m   v1.34.2
-ip-10-0-88-109.us-west-2.compute.internal   Ready    worker                 24m   v1.34.2
-ip-10-0-67-453.us-west-2.compute.internal   Ready    infra                  55m   v1.34.2
+ip-10-0-14-183.us-west-2.compute.internal   Ready    control-plane,master   65m   v1.35.4
+ip-10-0-2-39.us-west-2.compute.internal     Ready    worker                 58m   v1.35.4
+ip-10-0-20-140.us-west-2.compute.internal   Ready    control-plane,master   65m   v1.35.4
+ip-10-0-23-244.us-west-2.compute.internal   Ready    infra                  55m   v1.35.4
+ip-10-0-77-153.us-west-2.compute.internal   Ready    control-plane,master   65m   v1.35.4
+ip-10-0-99-108.us-west-2.compute.internal   Ready    worker                 24m   v1.35.4
+ip-10-0-24-233.us-west-2.compute.internal   Ready    infra                  55m   v1.35.4
+ip-10-0-88-109.us-west-2.compute.internal   Ready    worker                 24m   v1.35.4
+ip-10-0-67-453.us-west-2.compute.internal   Ready    infra                  55m   v1.35.4
 ```
 
 1.  Move the Cluster Resource Override Operator pod by adding a node selector to the `Subscription` custom resource (CR) for the Cluster Resource Override Operator.

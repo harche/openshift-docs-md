@@ -203,7 +203,7 @@ Cluster network plugin. `OVNKubernetes` is the only supported plugin during inst
 
 <div class="note">
 
-After cluster installation, you can only modify the `clusterNetwork` IP address range.
+After cluster installation, you can only modify the `clusterNetwork` IP address range. The `serviceNetwork` range cannot be modified post-installation, either directly or by using the `ServiceCIDR` API.
 
 </div>
 

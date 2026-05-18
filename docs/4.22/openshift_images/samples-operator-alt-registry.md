@@ -257,6 +257,14 @@ Create a container image registry credentials file so that you can mirror images
 
 Mirror the OpenShift Container Platform image repository to your registry to use during cluster installation or upgrade. Complete the following steps on the mirror host.
 
+<div class="important">
+
+The `oc adm release mirror` command is deprecated as of OpenShift Container Platform 4.22 and will be removed in a future release.
+
+As an alternative, use the oc-mirror plugin v2.
+
+</div>
+
 - Your mirror host has access to the internet.
 
 - You configured a mirror registry to use in your restricted network and can access the certificate and credentials that you configured.

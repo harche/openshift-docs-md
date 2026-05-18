@@ -2537,10 +2537,12 @@ If etcd encryption is enabled during a backup, the `static_kuberesources_<dateti
 The following encryption types are supported for encrypting etcd data in OpenShift Container Platform:
 
 AES-CBC
-Uses AES-CBC with PKCS#7 padding and a 32 byte key to perform the encryption. The encryption keys are rotated weekly.
+Uses AES-CBC with PKCS#7 padding and a 32 byte key to perform the encryption.
 
 AES-GCM
-Uses AES-GCM with a random nonce and a 32 byte key to perform the encryption. The encryption keys are rotated weekly.
+Uses AES-GCM with a random nonce and a 32 byte key to perform the encryption.
+
+The etcd encryption keys are rotated every 7 days. Up to 10 historical encryption keys are preserved after rotation to facilitate the decryption of older backups and provide an extra layer of data recovery safety.
 
 ## Enabling etcd encryption
 

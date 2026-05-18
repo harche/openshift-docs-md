@@ -282,12 +282,12 @@ You can find information about available OpenShift Container Platform advisories
 
     ``` terminal
     NAME                           STATUS   ROLES    AGE   VERSION
-    ip-10-0-168-251.ec2.internal   Ready    master   82m   v1.34.2
-    ip-10-0-170-223.ec2.internal   Ready    master   82m   v1.34.2
-    ip-10-0-179-95.ec2.internal    Ready    worker   70m   v1.34.2
-    ip-10-0-182-134.ec2.internal   Ready    worker   70m   v1.34.2
-    ip-10-0-211-16.ec2.internal    Ready    master   82m   v1.34.2
-    ip-10-0-250-100.ec2.internal   Ready    worker   69m   v1.34.2
+    ip-10-0-168-251.ec2.internal   Ready    master   82m   v1.35.4
+    ip-10-0-170-223.ec2.internal   Ready    master   82m   v1.35.4
+    ip-10-0-179-95.ec2.internal    Ready    worker   70m   v1.35.4
+    ip-10-0-182-134.ec2.internal   Ready    worker   70m   v1.35.4
+    ip-10-0-211-16.ec2.internal    Ready    master   82m   v1.35.4
+    ip-10-0-250-100.ec2.internal   Ready    worker   69m   v1.35.4
     ```
 
 - [Performing a Control Plane Only update](../../updating/updating_a_cluster/control-plane-only-update.xml#control-plane-only-update)

@@ -71,7 +71,15 @@ Three service accounts are automatically created in each project:
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>default</code></p></td>
-<td style="text-align: left;"><p>Used to run all other pods unless they specify a different service account.</p></td>
+<td style="text-align: left;"><p>Used to run all other pods unless they specify a different service account.</p>
+<div class="important">
+<p>Access rights and security privileges tied to the <code>default</code> service account apply to every pod in the project that does not specify a different service account. To implement the principle of least privilege and improve auditability, create dedicated service accounts for your workloads instead of using the <code>default</code> service account.</p>
+<p>While most OpenShift Container Platform platform components and Operators use dedicated service accounts, the following dynamic tools continue to use the <code>default</code> service account to ensure operational efficiency:</p>
+<ul>
+<li><p><code>oc debug</code>: Uses the <code>default</code> service account to avoid the performance overhead of creating and removing unique service accounts for short-lived troubleshooting sessions.</p></li>
+<li><p><code>oc adm must-gather</code>: Uses the <code>default</code> service account to collect diagnostic data across the cluster without requiring extensive manual RBAC modifications.</p></li>
+</ul>
+</div></td>
 </tr>
 </tbody>
 </table>

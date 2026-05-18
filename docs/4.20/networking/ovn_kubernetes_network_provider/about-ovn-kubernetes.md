@@ -82,7 +82,7 @@ Red Hat does support the following postinstallation configurations that use the
 
 # OVN-Kubernetes IPv6 and dual-stack limitations
 
-IPv6 and dual-stack networking for the OVN-Kubernetes network plugin in {microshift-short} have specific limitations that affect gateway configuration, routing, and cluster stability.
+IPv6 and dual-stack networking for the OVN-Kubernetes network plugin have limitations that affect gateway configuration, routing, and cluster stability.
 
 - For clusters configured for dual-stack networking, both IPv4 and IPv6 traffic must use the same network interface as the default gateway.
 

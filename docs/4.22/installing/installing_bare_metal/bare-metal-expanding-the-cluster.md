@@ -442,11 +442,11 @@ Existing control plane `BareMetalHost` objects might have the `externallyProvisi
 
     ``` terminal
     NAME                           STATUS      ROLES     AGE   VERSION
-    control-plane-1.example.com    available   master    4m2s  v1.34.2
-    control-plane-2.example.com    available   master    141m  v1.34.2
-    control-plane-3.example.com    available   master    141m  v1.34.2
-    compute-1.example.com          available   worker    87m   v1.34.2
-    compute-2.example.com          available   worker    87m   v1.34.2
+    control-plane-1.example.com    available   master    4m2s  v1.35.4
+    control-plane-2.example.com    available   master    141m  v1.35.4
+    control-plane-3.example.com    available   master    141m  v1.35.4
+    compute-1.example.com          available   worker    87m   v1.35.4
+    compute-2.example.com          available   worker    87m   v1.35.4
     ```
 
     <div class="note">
@@ -660,11 +660,11 @@ Provisioning the bare metal node requires executing the following procedure from
 
     ``` terminal
     NAME                                                STATUS   ROLES           AGE     VERSION
-    openshift-master-1.openshift.example.com            Ready    master          30h     v1.34.2
-    openshift-master-2.openshift.example.com            Ready    master          30h     v1.34.2
-    openshift-master-3.openshift.example.com            Ready    master          30h     v1.34.2
-    openshift-worker-0.openshift.example.com            Ready    worker          30h     v1.34.2
-    openshift-worker-1.openshift.example.com            Ready    worker          30h     v1.34.2
+    openshift-master-1.openshift.example.com            Ready    master          30h     v1.35.4
+    openshift-master-2.openshift.example.com            Ready    master          30h     v1.35.4
+    openshift-master-3.openshift.example.com            Ready    master          30h     v1.35.4
+    openshift-worker-0.openshift.example.com            Ready    worker          30h     v1.35.4
+    openshift-worker-1.openshift.example.com            Ready    worker          30h     v1.35.4
     ```
 
 3.  Get the compute machine set.
@@ -716,12 +716,12 @@ Provisioning the bare metal node requires executing the following procedure from
 
     ``` terminal
     NAME                                          STATUS   ROLES   AGE     VERSION
-    openshift-master-1.openshift.example.com      Ready    master  30h     v1.34.2
-    openshift-master-2.openshift.example.com      Ready    master  30h     v1.34.2
-    openshift-master-3.openshift.example.com      Ready    master  30h     v1.34.2
-    openshift-worker-0.openshift.example.com      Ready    worker  30h     v1.34.2
-    openshift-worker-1.openshift.example.com      Ready    worker  30h     v1.34.2
-    openshift-worker-<num>.openshift.example.com  Ready    worker  3m27s   v1.34.2
+    openshift-master-1.openshift.example.com      Ready    master  30h     v1.35.4
+    openshift-master-2.openshift.example.com      Ready    master  30h     v1.35.4
+    openshift-master-3.openshift.example.com      Ready    master  30h     v1.35.4
+    openshift-worker-0.openshift.example.com      Ready    worker  30h     v1.35.4
+    openshift-worker-1.openshift.example.com      Ready    worker  30h     v1.35.4
+    openshift-worker-<num>.openshift.example.com  Ready    worker  3m27s   v1.35.4
     ```
 
     You can also check the kubelet.

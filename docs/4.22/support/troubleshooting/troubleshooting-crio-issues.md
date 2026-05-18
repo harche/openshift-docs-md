@@ -188,7 +188,7 @@ Follow this process to completely wipe the CRI-O storage and resolve the errors.
 
     ``` terminal
     NAME                 STATUS                  ROLES    AGE    VERSION
-    ci-ln-tkbxyft-f76d1-nvwhr-master-1  Ready, SchedulingDisabled   master   133m   v1.34.2
+    ci-ln-tkbxyft-f76d1-nvwhr-master-1  Ready, SchedulingDisabled   master   133m   v1.35.4
     ```
 
 10. Mark the node schedulable. You will know that the scheduling is enabled when `SchedulingDisabled` is no longer in status:
@@ -205,5 +205,5 @@ Follow this process to completely wipe the CRI-O storage and resolve the errors.
 
     ``` terminal
     NAME                  STATUS       ROLES    AGE    VERSION
-    ci-ln-tkbxyft-f76d1-nvwhr-master-1   Ready            master   133m   v1.34.2
+    ci-ln-tkbxyft-f76d1-nvwhr-master-1   Ready            master   133m   v1.35.4
     ```

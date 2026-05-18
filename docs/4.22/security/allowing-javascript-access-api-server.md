@@ -1,8 +1,8 @@
+By default, the cluster restricts API server requests to the web console for security. Because the default configuration only permits the web console, you must update the API Server configuration of the cluster to approve additional hostnames for API and OAuth access.
+
 # Allowing JavaScript-based access to the API server from additional hosts
 
-The default OpenShift Container Platform configuration only allows the web console to send requests to the API server.
-
-If you need to access the API server or OAuth server from a JavaScript application using a different hostname, you can configure additional hostnames to allow.
+If you need to access the API server or OAuth server from a JavaScript application by using a different hostname, you can configure additional hostnames to allow.
 
 - Access to the cluster as a user with the `cluster-admin` role.
 
@@ -31,20 +31,23 @@ If you need to access the API server or OAuth server from a JavaScript applicati
       - (?i)//my\.subdomain\.domain\.com(:|\z)
     ```
 
-    - The hostname is specified as a [Golang regular expression](https://github.com/google/re2/wiki/Syntax) that matches against CORS headers from HTTP requests against the API server and OAuth server.
+    where:
 
-      <div class="note">
+    `additionalCORSAllowedOrigins`
+    The hostname is specified as a [Golang regular expression](https://github.com/google/re2/wiki/Syntax) that matches against CORS headers from HTTP requests against the API server and OAuth server.
 
-      This example uses the following syntax:
+    <div class="note">
 
-      - The `(?i)` makes it case-insensitive.
+    This example uses the following syntax:
 
-      - The `//` pins to the beginning of the domain and matches the double slash following `http:` or `https:`.
+    - The `(?i)` makes it case-insensitive.
 
-      - The `\.` escapes dots in the domain name.
+    - The `//` pins to the beginning of the domain and matches the double slash following `http:` or `https:`.
 
-      - The `(:|\z)` matches the end of the domain name `(\z)` or a port separator `(:)`.
+    - The `\.` escapes dots in the domain name.
 
-      </div>
+    - The `(:|\z)` matches the end of the domain name `(\z)` or a port separator `(:)`.
+
+    </div>
 
 3.  Save the file to apply the changes.

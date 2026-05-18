@@ -980,9 +980,9 @@ If you do not need to prevent a Classic Load Balancer in the VPC cluster from ta
 
     ``` terminal
     NAME                   STATUS    ROLES     AGE       VERSION
-    node1.example.com      Ready     worker    7h        v1.34.2
-    node2.example.com      Ready     worker    7h        v1.34.2
-    node3.example.com      Ready     worker    7h        v1.34.2
+    node1.example.com      Ready     worker    7h        v1.35.4
+    node2.example.com      Ready     worker    7h        v1.35.4
+    node3.example.com      Ready     worker    7h        v1.35.4
     ```
 
 4.  Configure the Classic Load Balancer service by adding the cloud-based subnet information to the `annotations` field of the `Service` manifest:

@@ -247,7 +247,7 @@ When the configuration process completes on the host, access the cluster to veri
 
     ``` terminal
     NAME                                         STATUS   ROLES                  AGE     VERSION
-    node/sno-cluster-name.host.example.com       Ready    control-plane,master   5h15m   v1.34.2
+    node/sno-cluster-name.host.example.com       Ready    control-plane,master   5h15m   v1.35.4
     ```
 
 - [Using image pull secrets](../../../openshift_images/managing_images/using-image-pull-secrets.xml)

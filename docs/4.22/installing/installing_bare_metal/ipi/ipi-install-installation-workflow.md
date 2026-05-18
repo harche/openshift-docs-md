@@ -1477,9 +1477,9 @@ You can avoid the delay in setting hostnames by using DHCP to provide the hostna
 
 </div>
 
-# Configuring a local arbiter node
+# Local arbiter node configuration prerequisites
 
-You can configure an OpenShift Container Platform cluster with two control plane nodes and one local arbiter node so as to retain high availability (HA) while reducing infrastructure costs for your cluster.
+To retain high availability (HA) while reducing infrastructure costs for your cluster, you can configure an OpenShift Container Platform cluster with two control plane nodes and one local arbiter node.
 
 A local arbiter node is a lower-cost, co-located machine that participates in control plane quorum decisions. Unlike a standard control plane node, the arbiter node does not run the full set of control plane services. You can use this configuration to maintain HA in your cluster with only two fully provisioned control plane nodes instead of three.
 
@@ -1514,6 +1514,10 @@ The control plane nodes must meet the following minimum system requirements:
 - 120 GB of SSD or equivalent storage
 
 Additionally, the control plane nodes must also have enough storage for the workload.
+
+# Configuring a local arbiter node by using installer-provisioned infrastructure
+
+To retain high availability (HA) while reducing infrastructure costs for your cluster, you can configure an OpenShift Container Platform cluster with two control plane nodes and one local arbiter node.
 
 - You have downloaded OpenShift CLI (`oc`) and the installation program.
 
@@ -3741,6 +3745,14 @@ The following steps must be completed prior to hosting a mirrored registry on ba
 ## Mirroring the OpenShift Container Platform image repository for a disconnected registry
 
 Complete the following steps to mirror the OpenShift Container Platform image repository for a disconnected registry.
+
+<div class="important">
+
+The `oc adm release mirror` command is deprecated as of OpenShift Container Platform 4.22 and will be removed in a future release.
+
+As an alternative, use the oc-mirror plugin v2.
+
+</div>
 
 - Your mirror host has access to the internet.
 

@@ -1,4 +1,4 @@
-Migrate from the community External Secrets Operator to the External Secrets Operator for Red Hat OpenShift supported version. This conversion provides you with enterprise-grade support and seamless integration for managing external secrets.
+You can migrate from the community version of the External Secrets Operator. Migrating to External Secrets Operator for Red Hat OpenShift provides you with an officially supported product giving you access to enterprise-grade support. It also provides you with seamless integration from installation to upgrades.
 
 The following migration versions have been fully tested.
 
@@ -140,7 +140,7 @@ Remove the community External Secrets Operator that was installed by raw manifes
 
 # Installing the External Secrets Operator for Red Hat OpenShift
 
-Install the External Secrets Operator for Red Hat OpenShift after cleaning up the community version. This establishes the officially supported service for managing secrets in your cluster. For more information, see [Installing the External Secrets Operator for Red Hat OpenShift](https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/security_and_compliance/index#external-secrets-operator-install).
+Install the External Secrets Operator for Red Hat OpenShift after cleaning up the community version. This establishes the officially supported service for managing secrets in your cluster.
 
 # Creating the ExternalSecretsConfig Operator
 

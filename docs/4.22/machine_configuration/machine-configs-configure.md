@@ -290,12 +290,12 @@ In the following procedure, you create a `MachineConfig` object that identifies:
 
     ``` terminal
     NAME                           STATUS                     ROLES    AGE   VERSION
-    ip-10-0-136-161.ec2.internal   Ready                      worker   28m   v1.34.2
-    ip-10-0-136-243.ec2.internal   Ready                      master   34m   v1.34.2
-    ip-10-0-141-105.ec2.internal   Ready,SchedulingDisabled   worker   28m   v1.34.2
-    ip-10-0-142-249.ec2.internal   Ready                      master   34m   v1.34.2
-    ip-10-0-153-11.ec2.internal    Ready                      worker   28m   v1.34.2
-    ip-10-0-153-150.ec2.internal   Ready                      master   34m   v1.34.2
+    ip-10-0-136-161.ec2.internal   Ready                      worker   28m   v1.35.4
+    ip-10-0-136-243.ec2.internal   Ready                      master   34m   v1.35.4
+    ip-10-0-141-105.ec2.internal   Ready,SchedulingDisabled   worker   28m   v1.35.4
+    ip-10-0-142-249.ec2.internal   Ready                      master   34m   v1.35.4
+    ip-10-0-153-11.ec2.internal    Ready                      worker   28m   v1.35.4
+    ip-10-0-153-150.ec2.internal   Ready                      master   34m   v1.35.4
     ```
 
     You can see that scheduling on each worker node is disabled as the change is being applied.
@@ -437,12 +437,12 @@ When an OpenShift Container Platform cluster is installed or configured as a pos
 
     ``` terminal
     NAME                           STATUS                     ROLES    AGE   VERSION
-    ip-10-0-136-161.ec2.internal   Ready                      worker   28m   v1.34.2
-    ip-10-0-136-243.ec2.internal   Ready                      master   34m   v1.34.2
-    ip-10-0-141-105.ec2.internal   Ready,SchedulingDisabled   worker   28m   v1.34.2
-    ip-10-0-142-249.ec2.internal   Ready                      master   34m   v1.34.2
-    ip-10-0-153-11.ec2.internal    Ready                      worker   28m   v1.34.2
-    ip-10-0-153-150.ec2.internal   Ready                      master   34m   v1.34.2
+    ip-10-0-136-161.ec2.internal   Ready                      worker   28m   v1.35.4
+    ip-10-0-136-243.ec2.internal   Ready                      master   34m   v1.35.4
+    ip-10-0-141-105.ec2.internal   Ready,SchedulingDisabled   worker   28m   v1.35.4
+    ip-10-0-142-249.ec2.internal   Ready                      master   34m   v1.35.4
+    ip-10-0-153-11.ec2.internal    Ready                      worker   28m   v1.35.4
+    ip-10-0-153-150.ec2.internal   Ready                      master   34m   v1.35.4
     ```
 
     You can see that scheduling on each worker node is disabled as the change is being applied.
@@ -530,9 +530,9 @@ Although making the change is as simple as changing a machine config `kernelType
 
     ``` terminal
     NAME                                        STATUS  ROLES    AGE   VERSION
-    ip-10-0-143-147.us-east-2.compute.internal  Ready   worker   103m  v1.34.2
-    ip-10-0-146-92.us-east-2.compute.internal   Ready   worker   101m  v1.34.2
-    ip-10-0-169-2.us-east-2.compute.internal    Ready   worker   102m  v1.34.2
+    ip-10-0-143-147.us-east-2.compute.internal  Ready   worker   103m  v1.35.4
+    ip-10-0-146-92.us-east-2.compute.internal   Ready   worker   101m  v1.35.4
+    ip-10-0-169-2.us-east-2.compute.internal    Ready   worker   102m  v1.35.4
     ```
 
     ``` terminal
@@ -774,7 +774,7 @@ The following procedure describes how to use a machine config to add one or more
 
     ``` terminal
     NAME                                        STATUS  ROLES    AGE   VERSION
-    ip-10-0-169-2.us-east-2.compute.internal    Ready   worker   102m  v1.34.2
+    ip-10-0-169-2.us-east-2.compute.internal    Ready   worker   102m  v1.35.4
     ```
 
     ``` terminal

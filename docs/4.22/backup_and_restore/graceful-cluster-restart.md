@@ -64,9 +64,9 @@ You can restart your cluster after it has been shut down gracefully.
 
     ``` terminal
     NAME                           STATUS   ROLES                  AGE   VERSION
-    ip-10-0-168-251.ec2.internal   Ready    control-plane,master   75m   v1.34.2
-    ip-10-0-170-223.ec2.internal   Ready    control-plane,master   75m   v1.34.2
-    ip-10-0-211-16.ec2.internal    Ready    control-plane,master   75m   v1.34.2
+    ip-10-0-168-251.ec2.internal   Ready    control-plane,master   75m   v1.35.4
+    ip-10-0-170-223.ec2.internal   Ready    control-plane,master   75m   v1.35.4
+    ip-10-0-211-16.ec2.internal    Ready    control-plane,master   75m   v1.35.4
     ```
 
 5.  If the control plane nodes are *not* ready, then check whether there are any pending certificate signing requests (CSRs) that must be approved.
@@ -101,9 +101,9 @@ You can restart your cluster after it has been shut down gracefully.
 
     ``` terminal
     NAME                           STATUS   ROLES    AGE   VERSION
-    ip-10-0-179-95.ec2.internal    Ready    worker   64m   v1.34.2
-    ip-10-0-182-134.ec2.internal   Ready    worker   64m   v1.34.2
-    ip-10-0-250-100.ec2.internal   Ready    worker   64m   v1.34.2
+    ip-10-0-179-95.ec2.internal    Ready    worker   64m   v1.35.4
+    ip-10-0-182-134.ec2.internal   Ready    worker   64m   v1.35.4
+    ip-10-0-250-100.ec2.internal   Ready    worker   64m   v1.35.4
     ```
 
 7.  If the worker nodes are *not* ready, then check whether there are any pending certificate signing requests (CSRs) that must be approved.
@@ -167,12 +167,12 @@ You can restart your cluster after it has been shut down gracefully.
 
         ``` terminal
         NAME                           STATUS   ROLES                  AGE   VERSION
-        ip-10-0-168-251.ec2.internal   Ready    control-plane,master   82m   v1.34.2
-        ip-10-0-170-223.ec2.internal   Ready    control-plane,master   82m   v1.34.2
-        ip-10-0-179-95.ec2.internal    Ready    worker                 70m   v1.34.2
-        ip-10-0-182-134.ec2.internal   Ready    worker                 70m   v1.34.2
-        ip-10-0-211-16.ec2.internal    Ready    control-plane,master   82m   v1.34.2
-        ip-10-0-250-100.ec2.internal   Ready    worker                 69m   v1.34.2
+        ip-10-0-168-251.ec2.internal   Ready    control-plane,master   82m   v1.35.4
+        ip-10-0-170-223.ec2.internal   Ready    control-plane,master   82m   v1.35.4
+        ip-10-0-179-95.ec2.internal    Ready    worker                 70m   v1.35.4
+        ip-10-0-182-134.ec2.internal   Ready    worker                 70m   v1.35.4
+        ip-10-0-211-16.ec2.internal    Ready    control-plane,master   82m   v1.35.4
+        ip-10-0-250-100.ec2.internal   Ready    worker                 69m   v1.35.4
         ```
 
         If the cluster did not start properly, you might need to restore your cluster using an etcd backup. For more information, see "Restoring to a previous cluster state".

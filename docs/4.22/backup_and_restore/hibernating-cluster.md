@@ -68,12 +68,12 @@ You can hibernate a cluster for up to 90 days. The cluster can recover if certif
 
     ``` terminal
     NAME                                      STATUS  ROLES                 AGE   VERSION
-    ci-ln-812tb4k-72292-8bcj7-master-0        Ready   control-plane,master  32m   v1.34.2
-    ci-ln-812tb4k-72292-8bcj7-master-1        Ready   control-plane,master  32m   v1.34.2
-    ci-ln-812tb4k-72292-8bcj7-master-2        Ready   control-plane,master  32m   v1.34.2
-    Ci-ln-812tb4k-72292-8bcj7-worker-a-zhdvk  Ready   worker                19m   v1.34.2
-    ci-ln-812tb4k-72292-8bcj7-worker-b-9hrmv  Ready   worker                19m   v1.34.2
-    ci-ln-812tb4k-72292-8bcj7-worker-c-q8mw2  Ready   worker                19m   v1.34.2
+    ci-ln-812tb4k-72292-8bcj7-master-0        Ready   control-plane,master  32m   v1.35.4
+    ci-ln-812tb4k-72292-8bcj7-master-1        Ready   control-plane,master  32m   v1.35.4
+    ci-ln-812tb4k-72292-8bcj7-master-2        Ready   control-plane,master  32m   v1.35.4
+    Ci-ln-812tb4k-72292-8bcj7-worker-a-zhdvk  Ready   worker                19m   v1.35.4
+    ci-ln-812tb4k-72292-8bcj7-worker-b-9hrmv  Ready   worker                19m   v1.35.4
+    ci-ln-812tb4k-72292-8bcj7-worker-c-q8mw2  Ready   worker                19m   v1.35.4
     ```
 
     All nodes should show `Ready` in the `STATUS` column.
@@ -217,12 +217,12 @@ It can take around 45 minutes for the cluster to resume, depending on the size o
 
     ``` terminal
     NAME                                      STATUS  ROLES                 AGE   VERSION
-    ci-ln-812tb4k-72292-8bcj7-master-0        Ready   control-plane,master  32m   v1.34.2
-    ci-ln-812tb4k-72292-8bcj7-master-1        Ready   control-plane,master  32m   v1.34.2
-    ci-ln-812tb4k-72292-8bcj7-master-2        Ready   control-plane,master  32m   v1.34.2
-    Ci-ln-812tb4k-72292-8bcj7-worker-a-zhdvk  Ready   worker                19m   v1.34.2
-    ci-ln-812tb4k-72292-8bcj7-worker-b-9hrmv  Ready   worker                19m   v1.34.2
-    ci-ln-812tb4k-72292-8bcj7-worker-c-q8mw2  Ready   worker                19m   v1.34.2
+    ci-ln-812tb4k-72292-8bcj7-master-0        Ready   control-plane,master  32m   v1.35.4
+    ci-ln-812tb4k-72292-8bcj7-master-1        Ready   control-plane,master  32m   v1.35.4
+    ci-ln-812tb4k-72292-8bcj7-master-2        Ready   control-plane,master  32m   v1.35.4
+    Ci-ln-812tb4k-72292-8bcj7-worker-a-zhdvk  Ready   worker                19m   v1.35.4
+    ci-ln-812tb4k-72292-8bcj7-worker-b-9hrmv  Ready   worker                19m   v1.35.4
+    ci-ln-812tb4k-72292-8bcj7-worker-c-q8mw2  Ready   worker                19m   v1.35.4
     ```
 
     All nodes should show `Ready` in the `STATUS` column. It might take a few minutes for all nodes to become ready after approving the CSRs.

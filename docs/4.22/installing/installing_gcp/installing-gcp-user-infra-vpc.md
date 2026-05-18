@@ -2175,9 +2175,9 @@ To add machines to a cluster, verify the status of the certificate signing reque
 
     ``` terminal
     NAME      STATUS    ROLES   AGE  VERSION
-    master-0  Ready     master  63m  v1.34.2
-    master-1  Ready     master  63m  v1.34.2
-    master-2  Ready     master  64m  v1.34.2
+    master-0  Ready     master  63m  v1.35.4
+    master-1  Ready     master  63m  v1.35.4
+    master-2  Ready     master  64m  v1.35.4
     ```
 
     The output lists all of the machines that you created.
@@ -2298,11 +2298,11 @@ To add machines to a cluster, verify the status of the certificate signing reque
 
     ``` terminal
     NAME      STATUS    ROLES   AGE  VERSION
-    master-0  Ready     master  73m  v1.34.2
-    master-1  Ready     master  73m  v1.34.2
-    master-2  Ready     master  74m  v1.34.2
-    worker-0  Ready     worker  11m  v1.34.2
-    worker-1  Ready     worker  11m  v1.34.2
+    master-0  Ready     master  73m  v1.35.4
+    master-1  Ready     master  73m  v1.35.4
+    master-2  Ready     master  74m  v1.35.4
+    worker-0  Ready     worker  11m  v1.35.4
+    worker-1  Ready     worker  11m  v1.35.4
     ```
 
     <div class="note">

@@ -127,6 +127,14 @@ Before disconnecting your cluster, you must mirror, or copy, the images to a mir
 
 After the cluster is properly configured, you can mirror the images from your external repositories to the mirror repository.
 
+<div class="important">
+
+The `oc adm release mirror` command is deprecated as of OpenShift Container Platform 4.22 and will be removed in a future release.
+
+As an alternative, use the oc-mirror plugin v2.
+
+</div>
+
 1.  Mirror the Operator Lifecycle Manager (OLM) images:
 
     ``` terminal
@@ -475,12 +483,12 @@ Use the following commands to check the status of your cluster:
 
   ``` terminal
   NAME                                       STATUS   ROLES    AGE   VERSION
-  ci-ln-47ltxtb-f76d1-mrffg-master-0         Ready    master   42m   v1.34.2
-  ci-ln-47ltxtb-f76d1-mrffg-master-1         Ready    master   42m   v1.34.2
-  ci-ln-47ltxtb-f76d1-mrffg-master-2         Ready    master   42m   v1.34.2
-  ci-ln-47ltxtb-f76d1-mrffg-worker-a-gsxbz   Ready    worker   35m   v1.34.2
-  ci-ln-47ltxtb-f76d1-mrffg-worker-b-5qqdx   Ready    worker   35m   v1.34.2
-  ci-ln-47ltxtb-f76d1-mrffg-worker-c-rjkpq   Ready    worker   34m   v1.34.2
+  ci-ln-47ltxtb-f76d1-mrffg-master-0         Ready    master   42m   v1.35.4
+  ci-ln-47ltxtb-f76d1-mrffg-master-1         Ready    master   42m   v1.35.4
+  ci-ln-47ltxtb-f76d1-mrffg-master-2         Ready    master   42m   v1.35.4
+  ci-ln-47ltxtb-f76d1-mrffg-worker-a-gsxbz   Ready    worker   35m   v1.35.4
+  ci-ln-47ltxtb-f76d1-mrffg-worker-b-5qqdx   Ready    worker   35m   v1.35.4
+  ci-ln-47ltxtb-f76d1-mrffg-worker-c-rjkpq   Ready    worker   34m   v1.35.4
   ```
 
 # Disconnect the cluster from the network

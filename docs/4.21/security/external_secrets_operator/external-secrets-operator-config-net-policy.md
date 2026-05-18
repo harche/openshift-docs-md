@@ -69,7 +69,9 @@ You must configure custom policies through the `ExternalSecretsConfig` custom re
 
 # Default ingress and egress rules
 
-The following table summarizes the default ingress and egress rules.
+The ingress and egress rules are necessary to build a secure setup where every component acts with the least amount of privilege necessary. These rules protect your cluster by strictly blocking unnecessary traffic and only allowing the outbound connections needed to fetch secrets. They also permit the specific inbound connections required to validate webhooks and observe system performance.
+
+The following table summarizes the specific ports and protocols used by each component.
 
 | Component                           | Ingress ports | Egress ports | Description                                                                               |
 |-------------------------------------|---------------|--------------|-------------------------------------------------------------------------------------------|

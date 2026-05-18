@@ -120,6 +120,12 @@ To enable the IOMMU driver in the kernel, create the `MachineConfig` object and 
 
 - Your CPU hardware is Intel or AMD.
 
+  <div class="note">
+
+  Enabling IOMMU is not required on `s390x` architecture.
+
+  </div>
+
 - You enabled Intel Virtualization Technology for Directed I/O extensions or AMD IOMMU in the BIOS.
 
 - You have installed the OpenShift CLI (`oc`).
@@ -195,19 +201,33 @@ To enable the IOMMU driver in the kernel, create the `MachineConfig` object and 
 
 ## Binding PCI devices to the VFIO driver
 
-To bind PCI devices to the VFIO (Virtual Function I/O) driver, obtain the values for `vendor-ID` and `device-ID` from each device and create a list with the values. Add this list to the `MachineConfig` object.
+To bind PCI devices to the VFIO (Virtual Function I/O) driver, obtain the values for the vendor ID and the device ID from each device and create a list with the values. Add this list to the `MachineConfig` object.
 
 The `MachineConfig` Operator generates the `/etc/modprobe.d/vfio.conf` on the nodes with the PCI devices, and binds the PCI devices to the VFIO driver.
 
 - You added kernel arguments to enable IOMMU for the CPU.
 
+  <div class="note">
+
+  Enabling IOMMU is not required on `s390x` architecture.
+
+  </div>
+
 - You have installed the OpenShift CLI (`oc`).
 
-1.  Run the `lspci` command to obtain the `vendor-ID` and the `device-ID` for the PCI device.
+1.  Run the `lspci` command with the name of the GPU accelerator to obtain the vendor ID and the device ID for the PCI device.
+
+    <div class="note">
+
+    NVIDIA GPU is supported on `x86` and `aarch64` architectures, Intel QAT is supported on `x86` architecture, and IBM® Spyre is supported on `s390x` architecture.
+
+    </div>
 
     ``` terminal
-    $ lspci -nnv | grep -i nvidia
+    $ lspci -nnv | grep -i <gpu_accelerator>
     ```
+
+    Valid values for `<gpu_accelerator>` are `nvidia`, `qat`, and `spyre`.
 
     Example output:
 
@@ -239,7 +259,7 @@ The `MachineConfig` Operator generates the `/etc/modprobe.d/vfio.conf` on the no
         overwrite: true
         contents:
           inline: |
-            options vfio-pci ids=10de:1eb8
+            options vfio-pci ids=<vendor_id>:<device_id>
       - path: /etc/modules-load.d/vfio-pci.conf
         mode: 0644
         overwrite: true
@@ -247,19 +267,19 @@ The `MachineConfig` Operator generates the `/etc/modprobe.d/vfio.conf` on the no
           inline: vfio-pci
     ```
 
-    - `metadata.labels.machineconfiguration.openshift.io/role: worker` specifies that the new kernel argument is applied only to worker nodes.
+    - `metadata.labels.machineconfiguration.openshift.io/role: worker` specifies that the new kernel argument is applied only to compute nodes.
 
-    - `storage.files.contents.inline`, where the path is `/etc/modprobe.d/vfio.conf`, specifies the previously determined `vendor-ID` value (`10de`) and the `device-ID` value (`1eb8`) to bind a single device to the VFIO driver. You can add a list of multiple devices with their vendor and device information.
+    - `storage.files.contents.inline`, where the path is `/etc/modprobe.d/vfio.conf`, specifies the previously determined hexadecimal vendor ID and device ID values to bind a device to the VFIO driver. You can add a list of multiple devices with their vendor and device information.
 
-    - `storage.files.path`, where the `contents.inline` is `vfio-pci`, specifies the file that loads the `vfio-pci` kernel module on the worker nodes.
+    - `storage.files.path`, where the `contents.inline` is `vfio-pci`, specifies the file that loads the `vfio-pci` kernel module on the compute nodes.
 
-3.  Use Butane to generate a `MachineConfig` object file, `100-worker-vfiopci.yaml`, containing the configuration to be delivered to the worker nodes:
+3.  Use Butane to generate a `MachineConfig` object file, `100-worker-vfiopci.yaml`, containing the configuration to be delivered to the compute nodes:
 
     ``` terminal
     $ butane 100-worker-vfiopci.bu -o 100-worker-vfiopci.yaml
     ```
 
-4.  Apply the `MachineConfig` object to the worker nodes:
+4.  Apply the `MachineConfig` object to the compute nodes:
 
     ``` terminal
     $ oc apply -f 100-worker-vfiopci.yaml
@@ -288,7 +308,7 @@ The `MachineConfig` Operator generates the `/etc/modprobe.d/vfio.conf` on the no
 - Verify that the VFIO driver is loaded.
 
   ``` terminal
-  $ lspci -nnk -d 10de:
+  $ lspci -nnk -d <vendor_id>:
   ```
 
   The output confirms that the VFIO driver is being used.
@@ -339,7 +359,7 @@ To expose PCI host devices in the cluster, add details about the PCI devices to 
 
     - `spec.permittedHostDevices.pciHostDevices` specifies the list of PCI devices available on the node.
 
-    - `spec.permittedHostDevices.pciHostDevices.pciDeviceSelector` specifies the `vendor-ID` and the `device-ID` required to identify the PCI device.
+    - `spec.permittedHostDevices.pciHostDevices.pciDeviceSelector` specifies the vendor ID and the device ID required to identify the PCI device.
 
     - `spec.permittedHostDevices.pciHostDevices.resourceName` specifies the name of a PCI host device.
 
@@ -350,6 +370,22 @@ To expose PCI host devices in the cluster, add details about the PCI devices to 
       The above example snippet shows two PCI host devices that are named `nvidia.com/GV100GL_Tesla_V100` and `nvidia.com/TU104GL_Tesla_T4` added to the list of permitted host devices in the `HyperConverged` CR. These devices have been tested and verified to work with OpenShift Virtualization.
 
       </div>
+
+      Example configuration file for an IBM® Spyre device on `s390x` architecture:
+
+      ``` yaml
+      apiVersion: hco.kubevirt.io/v1beta1
+      kind: HyperConverged
+      metadata:
+        name: kubevirt-hyperconverged
+        namespace: openshift-cnv
+      spec:
+        permittedHostDevices:
+          pciHostDevices:
+          - pciDeviceSelector: "1014:06a8"
+            resourceName: "ibm.com/spyre"
+      # ...
+      ```
 
 3.  Save your changes and exit the editor.
 
@@ -390,6 +426,12 @@ To expose PCI host devices in the cluster, add details about the PCI devices to 
     pods:                           250
   ```
 
+  <div class="note">
+
+  When using an IBM® Spyre device on `s390x` architecture, the allocated device is shown as follows: `ibm.com/spyre: 1`.
+
+  </div>
+
 ## Removing PCI host devices from the cluster using the CLI
 
 To remove a PCI host device from the cluster, delete the information for that device from the `HyperConverged` custom resource (CR).
@@ -402,7 +444,7 @@ To remove a PCI host device from the cluster, delete the information for that de
     $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
     ```
 
-2.  Remove the PCI device information from the `spec.permittedHostDevices.pciHostDevices` array by deleting the `pciDeviceSelector`, `resourceName` and `externalResourceProvider` (if applicable) fields for the appropriate device. In this example, the `intel.com/qat` resource has been deleted.
+2.  Remove the PCI device information from the `spec.permittedHostDevices.pciHostDevices` array by deleting the `pciDeviceSelector`, `resourceName` and `externalResourceProvider` (if applicable), fields for the appropriate device. In this example, the user deletes the `nvidia.com/TU104GL_Tesla_T4`.
 
     Example configuration file:
 
@@ -417,14 +459,12 @@ To remove a PCI host device from the cluster, delete the information for that de
         pciHostDevices:
         - pciDeviceSelector: "10DE:1DB6"
           resourceName: "nvidia.com/GV100GL_Tesla_V100"
-        - pciDeviceSelector: "10DE:1EB8"
-          resourceName: "nvidia.com/TU104GL_Tesla_T4"
     # ...
     ```
 
 3.  Save your changes and exit the editor.
 
-- Verify that the PCI host device was removed from the node by running the following command. The example output shows that there are zero devices associated with the `intel.com/qat` resource name.
+- Verify that you removed the PCI host device from the node by running the following command. The example output shows that there are zero devices associated with the `nvidia.com/TU104GL_Tesla_T4` resource name.
 
   ``` terminal
   $ oc describe node <node_name>
@@ -443,8 +483,7 @@ To remove a PCI host device from the cluster, delete the information for that de
     hugepages-2Mi:                  0
     memory:                         131395264Ki
     nvidia.com/GV100GL_Tesla_V100   1
-    nvidia.com/TU104GL_Tesla_T4     1
-    intel.com/qat:                  0
+    nvidia.com/TU104GL_Tesla_T4     0
     pods:                           250
   Allocatable:
     cpu:                            63500m
@@ -456,8 +495,7 @@ To remove a PCI host device from the cluster, delete the information for that de
     hugepages-2Mi:                  0
     memory:                         130244288Ki
     nvidia.com/GV100GL_Tesla_V100   1
-    nvidia.com/TU104GL_Tesla_T4     1
-    intel.com/qat:                  0
+    nvidia.com/TU104GL_Tesla_T4     0
     pods:                           250
   ```
 
@@ -484,15 +522,17 @@ When a PCI device is available in a cluster, you can assign it to a virtual mach
           name: hostdevices1
   ```
 
-  - `spec.template.spec.domain.devices.hostDevices.deviceName` specifies the name of the PCI device that is permitted on the cluster as a host device. The virtual machine can access this host device.
+  - `spec.template.spec.domain.devices.hostDevices.deviceName` specifies the name of the PCI device that is permitted on the cluster as a host device. The virtual machine can access this host device. When using an IBM® Spyre device on `s390x` architecture, specify `ibm.com/spyre:`.
 
 <!-- -->
 
 - Use the following command to verify that the host device is available from the virtual machine.
 
   ``` terminal
-  $ lspci -nnk | grep NVIDIA
+  $ lspci -nnk | grep <gpu_accelerator>
   ```
+
+  Valid values for `<gpu_accelerator>` are `nvidia`, `qat`, and `spyre`.
 
   Example output:
 
@@ -507,3 +547,5 @@ When a PCI device is available in a cluster, you can assign it to a virtual mach
 - [Managing file permissions](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_basic_system_settings/assembly_managing-file-permissions_configuring-basic-system-settings)
 
 - [Machine Config Overview](../../../machine_configuration/index.xml#machine-config-overview)
+
+- [IBM® Spyre Accelerator User’s Guide](https://www.ibm.com/docs/en/systems-hardware/linuxone/9175-ML1?topic=library-spyre-accelerator-users-guide)
