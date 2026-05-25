@@ -4,6 +4,34 @@ Learn more about administrative tasks that cluster admins must perform to succes
 
 There are no Kubernetes API removals in this release.
 
+# Providing an administrator acknowledgment for Microsoft Azure or VMware vSphere clusters
+
+If you are updating a Microsoft Azure or VMware vSphere cluster from OpenShift Container Platform 4.21 to 4.22, and you have not configured the `managedBootImages` parameter, the update is blocked with a "*This cluster is Azure or vSphere but lacks a boot image configuration.*" message.
+
+The update is blocked intentionally on Azure or vSphere clusters in order to alert you that the default updated boot image behavior is changing between version 4.21 and 4.22 to enable updated boot images by default on those platforms.
+
+To allow the update, you must perform one of the following tasks:
+
+- If you want to allow the feature to be enabled, you must provide an administrator acknowledgment as described in the following procedure before you can update your cluster.
+
+- If you do not want the updated boot image feature enabled, you must explicitly disable the feature for compute nodes and then update your cluster. For more information, see "Disabling boot image management".
+
+<!-- -->
+
+- You must have access to the cluster as a user with the `cluster-admin` role.
+
+<!-- -->
+
+- Acknowledge that you are aware of the change in the default behavior by running the following command:
+
+  ``` terminal
+  $ oc -n openshift-config patch cm admin-acks --patch '{"data":{"ack-4.21-boot-image-opt-out-in-4.22":"true"}}' --type=merge
+  ```
+
+<!-- -->
+
+- [Disabling boot image management](../../nodes/nodes/nodes-update-boot-images.xml#mco-update-boot-images-disable_nodes-update-boot-images)
+
 # Assessing the risk of conditional updates
 
 A *conditional update* is an update target that is available but not recommended due to a known risk that applies to your cluster. The Cluster Version Operator (CVO) periodically queries the OpenShift Update Service (OSUS) for the most recent data about update recommendations, and some potential update targets might have risks associated with them.
@@ -39,6 +67,109 @@ There are several factors that affect the viability of an etcd restoration. For 
 - [Backing up etcd](../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd)
 
 - [Restoring to a previous cluster state](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
+
+# Using the oc adm upgrade recommend command to identify update risks
+
+To identify potential update risks before initiating a cluster update, you can use the `oc adm upgrade recommend` command.
+
+When you run the `oc adm upgrade recommend` command, the output displays the following information:
+
+- Any issues that cause the Cluster Version Operator to have a status of `Failing=True`
+
+- Any firing alerts that might be a cause for concern about a cluster update
+
+- Information about your current update channel and your cluster’s update service
+
+- Recommended target versions and any relevant known issues associated with each version
+
+You can use the information provided by the output to make informed decisions about the state of your cluster. Examples include whether any critical cluster issues should be addressed before attempting an update, or which specific target version would have less risk for your cluster.
+
+- You installed the latest version of OpenShift CLI (`oc`).
+
+<!-- -->
+
+- Identify potential update risks and view recommended update versions by running the following command:
+
+  ``` terminal
+  $ oc adm upgrade recommend
+  ```
+
+  <div class="formalpara-title">
+
+  **Example output**
+
+  </div>
+
+  ``` terminal
+  The following conditions found no cause for concern in updating this cluster to later releases: recommended/CriticalAlerts (AsExpected), recommended/NodeAlerts (AsExpected), recommended/PodDisruptionBudgetAlerts (AsExpected), recommended/PodImagePullAlerts (AsExpected), recommended/UpdatePrecheckAlerts (AsExpected)
+
+  Upstream update service is unset, so the cluster will use an appropriate default.
+  Channel: stable-4.21 (available channels: candidate-4.20, candidate-4.21, candidate-4.22, eus-4.20, fast-4.20, fast-4.21, stable-4.20, stable-4.21)
+
+  Updates to 4.21:
+    VERSION     ISSUES
+    4.21.14     no known issues relevant to this cluster
+    4.21.13     no known issues relevant to this cluster
+  And 2 older 4.21 updates you can see with '--show-outdated-releases' or '--version VERSION'.
+
+  Updates to 4.20:
+    VERSION     ISSUES
+    4.20.20     no known issues relevant to this cluster
+  ```
+
+## Adding custom alerts to oc adm upgrade recommend command output
+
+You can configure specific alerts to be checked by the `oc adm upgrade recommend` command, so that if they are firing they appear in the output of the command. To do this, add the `openShiftUpdatePrecheck` label to an alert and set it to true.
+
+1.  Edit a `PrometheusRule` custom resource (CR) by running the following command:
+
+    ``` terminal
+    $ oc edit prometheusrule <rule_name> -n <namespace>
+    ```
+
+    where:
+
+    `<rule_name>`
+    Specifies the name of the `PrometheusRule` CR.
+
+    `<namespace>`
+    Specifies the namespace that contains the CR.
+
+2.  Add the following snippet to the `labels` section of the alert you want to be checked by the `oc adm upgrade recommend` command:
+
+    ``` yaml
+    # ...
+         labels:
+           openShiftUpdatePrecheck: "true"
+    # ...
+    ```
+
+    <div class="formalpara-title">
+
+    **Example `PrometheusRule` CR with precheck label**
+
+    </div>
+
+    ``` yaml
+    apiVersion: monitoring.coreos.com/v1
+    kind: PrometheusRule
+    metadata:
+      name: storage-warning-alerts
+      namespace: openshift-monitoring
+    spec:
+      groups:
+      - name: disk-usage-warnings
+        rules:
+        - alert: VolumeNearingCapacity
+          expr: (kubelet_volume_stats_used_bytes / kubelet_volume_stats_capacity_bytes) > 0.85
+          for: 15m
+          labels:
+            severity: warning
+            openShiftUpdatePrecheck: "true"
+          annotations:
+            summary: "Storage volume is over 85% full"
+            description: "The volume {{ $labels.persistentvolumeclaim }} in namespace {{ $labels.namespace }} is currently {{ $value | humanizePercentage }} full. This may cause issues during pod restarts or cluster updates."
+    ```
 
 # Preparing for Gateway API management succession by the Ingress Operator
 
@@ -114,7 +245,7 @@ Updating or deleting Gateway API resources can result in downtime and loss of se
 
     </div>
 
-- [Gateway API implementation for OpenShift Container Platform](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/ingress-gateway-api.xml#nw-ingress-gateway-api-implementation)
+- [Gateway API implementation for OpenShift Container Platform](../../networking/ingress_load_balancing/configuring_gateway_api/understand-gateway-api.xml#gateway-api-implementation-specifics_understand-gateway-api)
 
 # Best practices for cluster updates
 

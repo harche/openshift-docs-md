@@ -279,13 +279,13 @@ Additionally, consider the following dynamic port ranges when managing ingress t
 
 To view or download the complete raw CSV content for an environment, see the following resources:
 
-- [OpenShift Container Platform on bare metal](https://raw.githubusercontent.com/openshift-kni/commatrix/release-4.21/docs/stable/raw/bm.csv)
+- [OpenShift Container Platform on bare metal](https://raw.githubusercontent.com/openshift-kni/commatrix/release-4.22/docs/stable/raw/bm.csv)
 
-- [Single-node OpenShift with other platforms](https://raw.githubusercontent.com/openshift-kni/commatrix/release-4.21/docs/stable/raw/none-sno.csv)
+- [Single-node OpenShift with other platforms](https://raw.githubusercontent.com/openshift-kni/commatrix/release-4.22/docs/stable/raw/none-sno.csv)
 
-- [OpenShift Container Platform on AWS](https://raw.githubusercontent.com/openshift-kni/commatrix/release-4.21/docs/stable/raw/aws.csv)
+- [OpenShift Container Platform on AWS](https://raw.githubusercontent.com/openshift-kni/commatrix/release-4.22/docs/stable/raw/aws.csv)
 
-- [Single-node OpenShift on AWS](https://raw.githubusercontent.com/openshift-kni/commatrix/release-4.21/docs/stable/raw/aws-sno.csv)
+- [Single-node OpenShift on AWS](https://raw.githubusercontent.com/openshift-kni/commatrix/release-4.22/docs/stable/raw/aws-sno.csv)
 
 <div class="note">
 
@@ -303,12 +303,12 @@ For base ingress flows to single-node OpenShift clusters, see the *Control plane
 
 </div>
 
-| <https://raw.githubusercontent.com/openshift-kni/commatrix/release-4.21/docs/stable/unique/common-master.csv> |
+| <https://raw.githubusercontent.com/openshift-kni/commatrix/release-4.22/docs/stable/unique/common-master.csv> |
 |---------------------------------------------------------------------------------------------------------------|
 
 Control plane node base flows
 
-| <https://raw.githubusercontent.com/openshift-kni/commatrix/release-4.21/docs/stable/unique/common-worker.csv> |
+| <https://raw.githubusercontent.com/openshift-kni/commatrix/release-4.22/docs/stable/unique/common-worker.csv> |
 |---------------------------------------------------------------------------------------------------------------|
 
 Worker node base flows
@@ -317,7 +317,7 @@ Worker node base flows
 
 In addition to the base network flows, the following matrix describes the ingress flows to OpenShift Container Platform services that are specific to OpenShift Container Platform on bare metal.
 
-| <https://raw.githubusercontent.com/openshift-kni/commatrix/release-4.21/docs/stable/unique/bm.csv> |
+| <https://raw.githubusercontent.com/openshift-kni/commatrix/release-4.22/docs/stable/unique/bm.csv> |
 |----------------------------------------------------------------------------------------------------|
 
 OpenShift Container Platform on bare metal
@@ -326,7 +326,7 @@ OpenShift Container Platform on bare metal
 
 In addition to the base network flows, the following matrix describes the ingress flows to OpenShift Container Platform services that are specific to single-node OpenShift configured with `platform: none` in the installation manifest.
 
-| <https://raw.githubusercontent.com/openshift-kni/commatrix/release-4.21/docs/stable/unique/none-sno.csv> |
+| <https://raw.githubusercontent.com/openshift-kni/commatrix/release-4.22/docs/stable/unique/none-sno.csv> |
 |----------------------------------------------------------------------------------------------------------|
 
 Single-node OpenShift with other platforms
@@ -335,7 +335,7 @@ Single-node OpenShift with other platforms
 
 In addition to the base network flows, the following matrix describes the ingress flows to OpenShift Container Platform services that are specific to OpenShift Container Platform on AWS.
 
-| <https://raw.githubusercontent.com/openshift-kni/commatrix/release-4.21/docs/stable/unique/aws.csv> |
+| <https://raw.githubusercontent.com/openshift-kni/commatrix/release-4.22/docs/stable/unique/aws.csv> |
 |-----------------------------------------------------------------------------------------------------|
 
 OpenShift Container Platform on AWS
@@ -344,7 +344,7 @@ OpenShift Container Platform on AWS
 
 In addition to the base network flows, the following matrix describes the ingress flows to OpenShift Container Platform services that are specific to single-node OpenShift on AWS.
 
-| <https://raw.githubusercontent.com/openshift-kni/commatrix/release-4.21/docs/stable/unique/aws-sno.csv> |
+| <https://raw.githubusercontent.com/openshift-kni/commatrix/release-4.22/docs/stable/unique/aws-sno.csv> |
 |---------------------------------------------------------------------------------------------------------|
 
 Single-node OpenShift on AWS

@@ -34,9 +34,9 @@ You can install a cluster on Google Cloud infrastructure that is provisioned by 
 
 You can install a cluster on Google Cloud infrastructure that you provision, by using one of the following methods:
 
-- **[Installing a cluster on Google Cloud with user-provisioned infrastructure](../../installing/installing_gcp/installing-gcp-user-infra.xml#installing-gcp-user-infra)**: You can install OpenShift Container Platform on Google Cloud infrastructure that you provide. You can use the provided Deployment Manager templates to assist with the installation.
+- **[Installing a cluster on Google Cloud with user-provisioned infrastructure](../../installing/installing_gcp/installing-gcp-user-infra.xml#installing-gcp-user-infra)**: You can install OpenShift Container Platform on Google Cloud infrastructure that you provide. You can use the provided Infrastructure Manager templates to assist with the installation.
 
-- **[Installing a cluster with shared VPC on user-provisioned infrastructure in Google Cloud](../../installing/installing_gcp/installing-gcp-user-infra-vpc.xml#installing-gcp-user-infra-vpc)**: You can use the provided Deployment Manager templates to create Google Cloud resources in a shared VPC infrastructure.
+- **[Installing a cluster with shared VPC on user-provisioned infrastructure in Google Cloud](../../installing/installing_gcp/installing-gcp-user-infra-vpc.xml#installing-gcp-user-infra-vpc)**: You can use the provided Infrastructure Manager templates to create Google Cloud resources in a shared VPC infrastructure.
 
 - **[Installing a cluster on Google Cloud in a restricted network with user-provisioned infrastructure](../../installing/installing_gcp/installing-restricted-networks-gcp.xml#installing-restricted-networks-gcp)**: You can install OpenShift Container Platform on Google Cloud in a restricted network with user-provisioned infrastructure. By creating an internal mirror of the installation release content, you can install a cluster that does not require an active internet connection to obtain the software components. You can also use this installation method to ensure that your clusters only use container images that satisfy your organizational controls on external content.
 

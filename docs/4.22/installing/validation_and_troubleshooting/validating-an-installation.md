@@ -460,7 +460,7 @@ As an administrator, you can access dashboards for core OpenShift Container Plat
 
 5.  Hover over each of the graphs within a dashboard to display detailed information about specific items.
 
-- See [About OpenShift Container Platform monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/about_monitoring/about-ocp-monitoring) for more information about the OpenShift Container Platform monitoring stack.
+- See [About OpenShift Container Platform monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/about_monitoring/about-ocp-monitoring) for more information about the OpenShift Container Platform monitoring stack.
 
 # Listing alerts that are firing
 
@@ -474,7 +474,7 @@ Alerts provide notifications when a set of defined conditions are true in an Ope
 
 3.  Select an alert to view more detailed information in the **Alert Details** page.
 
-- See [Managing alerts as an Administrator](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/managing_alerts/managing-alerts-as-an-administrator) for further details about alerting in OpenShift Container Platform.
+- See [Managing alerts as an Administrator](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/managing_alerts/managing-alerts-as-an-administrator) for further details about alerting in OpenShift Container Platform.
 
 # Next steps
 

@@ -309,7 +309,7 @@ You can use the command line interface (CLI) to update multiple virtual machines
       spec:
        containers:
        - name: kubevirt-api-lifecycle-automation
-         image: quay.io/openshift-virtualization/kubevirt-api-lifecycle-automation:v4.21
+         image: quay.io/openshift-virtualization/kubevirt-api-lifecycle-automation:v4.22
          imagePullPolicy: Always
          env:
          - name: MACHINE_TYPE_GLOB
@@ -335,7 +335,7 @@ You can use the command line interface (CLI) to update multiple virtual machines
 
     where:
 
-    `quay.io/openshift-virtualization/kubevirt-api-lifecycle-automation:v4.21`
+    `quay.io/openshift-virtualization/kubevirt-api-lifecycle-automation:v4.22`
     Specifies the pull URL for your image. Replace the image value in this example with your pull URL for the image.
 
     `MACHINE_TYPE_GLOB`

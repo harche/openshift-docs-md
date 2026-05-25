@@ -270,7 +270,7 @@ When a virtual machine (VM) terminates unexpectedly, you can use the `virtctl me
 
 - [How to provide log files to Red Hat Support (Red Hat Knowledgebase)](https://access.redhat.com/solutions/2112)
 
-- [About OpenShift Container Platform monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/about_monitoring/about-ocp-monitoring)
+- [About OpenShift Container Platform monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/about_monitoring/about-ocp-monitoring)
 
 - [Installing the QEMU guest agent on a Linux VM](../../virt/managing_vms/virt-installing-qemu-guest-agent.xml#virt-installing-qemu-guest-agent-on-linux-vm_virt-installing-qemu-guest-agent)
 
@@ -282,17 +282,17 @@ When a virtual machine (VM) terminates unexpectedly, you can use the `virtctl me
 
 - [Submitting a support case](../../support/getting-support.xml#support-submitting-a-case_getting-support)
 
-- [Modifying retention time and size for Prometheus metrics data](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_user_workload_monitoring/storing-and-recording-data-uwm#modifying-retention-time-and-size-for-prometheus-metrics-data_storing-and-recording-data-uwm)
+- [Modifying retention time and size for Prometheus metrics data](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/configuring_user_workload_monitoring/storing-and-recording-data-uwm#modifying-retention-time-and-size-for-prometheus-metrics-data_storing-and-recording-data-uwm)
 
-- [Configuring the Alertmanager to capture relevant alerts and to send alert notifications to a dedicated mailbox](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_user_workload_monitoring/storing-and-recording-data-uwm#modifying-retention-time-and-size-for-prometheus-metrics-data_storing-and-recording-data-uwm)
+- [Configuring the Alertmanager to capture relevant alerts and to send alert notifications to a dedicated mailbox](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/configuring_user_workload_monitoring/storing-and-recording-data-uwm#modifying-retention-time-and-size-for-prometheus-metrics-data_storing-and-recording-data-uwm)
 
-- [Modifying retention time and size for Prometheus metrics data](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_core_platform_monitoring/storing-and-recording-data#modifying-retention-time-and-size-for-prometheus-metrics-data_storing-and-recording-data)
+- [Modifying retention time and size for Prometheus metrics data](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/configuring_core_platform_monitoring/storing-and-recording-data#modifying-retention-time-and-size-for-prometheus-metrics-data_storing-and-recording-data)
 
-- [Configuring alerts and notifications](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_core_platform_monitoring/configuring-alerts-and-notifications)
+- [Configuring alerts and notifications](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/configuring_core_platform_monitoring/configuring-alerts-and-notifications)
 
 - [Downloading log files and diagnostic information](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/latest/html-single/troubleshooting_openshift_data_foundation/index#downloading-log-files-and-diagnostic-information_rhodf)
 
-- [Querying metrics for all projects with the monitoring dashboard](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/accessing_metrics/accessing-metrics-as-an-administrator#querying-metrics-for-all-projects-with-mon-dashboard_accessing-metrics-as-an-administrator)
+- [Querying metrics for all projects with the monitoring dashboard](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/accessing_metrics/accessing-metrics-as-an-administrator#querying-metrics-for-all-projects-with-mon-dashboard_accessing-metrics-as-an-administrator)
 
 - [Installing the latest VirtIO drivers](https://access.redhat.com/solutions/6957701)
 

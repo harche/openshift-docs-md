@@ -10,7 +10,7 @@ OpenShift Virtualization is certified in Microsoft’s Windows Server Virtualiza
 
 The SVVP certification applies to:
 
-- Red Hat Enterprise Linux CoreOS workers. In the Microsoft SVVP Catalog, they are named *Red Hat OpenShift Container Platform 4.20*.
+- Red Hat Enterprise Linux CoreOS workers. In the Microsoft SVVP Catalog, they are named *Red Hat OpenShift Container Platform 4.17*.
 
 - Intel and AMD CPUs.
 

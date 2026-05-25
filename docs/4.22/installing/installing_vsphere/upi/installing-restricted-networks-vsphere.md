@@ -590,6 +590,12 @@ For more information on chrony best practices, see the following resources:
 
 The Ignition config files contain a unique cluster identifier that you can use to uniquely identify your cluster in VMware vSphere. If you plan to use the cluster identifier as the name of your virtual machine folder, you must extract it.
 
+<div class="warning">
+
+Do not run the `openshift-install create manifests` command again after creating any Google Cloud resources. Running the command again generates a new cluster identifier, which will cause errors in existing resources. If you need to regenerate the manifests because you modified the `install-config.yaml` file, delete any Google Cloud resources you created and recreate them with the new cluster identifier.
+
+</div>
+
 - You obtained the OpenShift Container Platform installation program and the pull secret for your cluster.
 
 - You generated the Ignition config files for your cluster.
@@ -1188,7 +1194,7 @@ To add machines to a cluster, verify the status of the certificate signing reque
 
       <div class="note">
 
-      Some Operators might not become available until some CSRs are approved.
+      Some Operators might not become available until some CSRs are approved. Each node submits two CSRs, so you may need to run the command to approve CSRs multiple times.
 
       </div>
 

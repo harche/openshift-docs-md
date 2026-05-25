@@ -175,6 +175,12 @@ status:
       lastTransitionTime: "2025-01-12T10:00:00Z"
 ```
 
+<div class="note">
+
+For Google Cloud installations, you can use a custom DNS solution. You must manually create a DNS record for any gateways in Gateway API. For more information, see "Installing a cluster on Google Cloud with customizations".
+
+</div>
+
 # Query Gateway infrastructure status using the CLI
 
 To quickly check the health of your gateway infrastructure, query specific `status` fields using the OpenShift Container Platform CLI. You can validate your deployment, check route attachments, and retrieve IP addresses without parsing lengthy YAML manifests.
@@ -242,3 +248,7 @@ To quickly check the health of your gateway infrastructure, query specific `stat
     ```
 
     - `<gateway_name>`: Specify the name of your gateway.
+
+# Additional resources
+
+- [Installing a cluster on Google Cloud with customizations](../../../installing/installing_gcp/installing-gcp-customizations.xml#installation-gcp-provisioning-dns-records_installing-gcp-customizations)

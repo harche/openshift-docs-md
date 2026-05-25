@@ -791,7 +791,7 @@ Boot image updates are not required for Agent-based Installer clusters. The boot
       -o jsonpath='{.spec.provisioningOSDownloadURL}'
     ```
 
-    - If the output is non-empty, your cluster was installed with OpenShift Container Platform version 4.9 or earlier. Boot images are not managed by the the Cluster Version Operator (CVO) and could be significantly out of date. Follow the steps in this procedure to migrate to the current provisioning path.
+    - If the output is non-empty, your cluster was installed with OpenShift Container Platform version 4.9 or earlier. Boot images are not managed by the Cluster Version Operator (CVO) and could be significantly out of date. Follow the steps in this procedure to migrate to the current provisioning path.
 
     - If the output is empty, your cluster was installed with OpenShift Container Platform version 4.10 or later. Boot images are kept current by the Cluster Version Operator (CVO) and are not at risk of skew. Skew enforcement is disabled for this cluster. No further action on your part is required to maintain the boot image versioning.
 

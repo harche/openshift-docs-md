@@ -1104,6 +1104,8 @@ networking:
   - cidr: 10.128.0.0/14
     hostPrefix: 23
   networkType: OVNKubernetes
+  machineNetwork:
+  - cidr: 192.168.0.0/16
   serviceNetwork:
   - 172.30.0.0/16
 platform:
@@ -1154,7 +1156,7 @@ Specifies the number of control plane machines that you add to the cluster. Beca
 `metadata.name`
 Specifies the cluster name that you specified in your DNS records.
 
-`clusterNetwork.cidr`
+`networking.clusterNetwork.cidr`
 Specifies a block of IP addresses from which pod IP addresses are allocated. This block must not overlap with existing physical networks. These IP addresses are used for the pod network. If you need to access the pods from an external network, you must configure load balancers and routers to manage the traffic.
 
 <div class="note">
@@ -1163,13 +1165,16 @@ Class E CIDR range is reserved for a future use. To use the Class E CIDR range, 
 
 </div>
 
-`cidr.hostPrefix`
+`networking.clusterNetwork.hostPrefix`
 Specifies the subnet prefix length to assign to each individual node. For example, if `hostPrefix` is set to `23`, then each node is assigned a `/23` subnet out of the given `cidr`, which allows for 510 (2^(32 - 23) - 2) pod IP addresses. If you are required to provide access to nodes from an external network, configure load balancers and routers to manage the traffic.
 
-`networkType`
+`networking.networkType`
 Specifies the cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
 
-`serviceNetwork`
+`networking.machineNetwork`
+Optional. Specifies the IP address pool to use for machines in the cluster. You cannot change this value after installation. If you do not set this value, and you configure a cluster-wide proxy, you must manually add the machine network address pool or pools to the proxy configuration. For more information, see the *Configuring the cluster-wide proxy during installation* section.
+
+`networking.serviceNetwork`
 Specifies the IP address pool to use for service IP addresses. You can enter only one IP address pool. This block must not overlap with existing physical networks. If you need to access the services from an external network, configure load balancers and routers to manage the traffic.
 
 `platform`
@@ -1478,10 +1483,10 @@ To provision physical or virtual machines, install RHCOS by using a bootable ISO
     </div>
 
     ``` terminal
-    "location": "<url>/art/storage/releases/rhcos-4.21-aarch64/<release>/aarch64/rhcos-<release>-live.aarch64.iso",
-    "location": "<url>/art/storage/releases/rhcos-4.21-ppc64le/<release>/ppc64le/rhcos-<release>-live.ppc64le.iso",
-    "location": "<url>/art/storage/releases/rhcos-4.21-s390x/<release>/s390x/rhcos-<release>-live.s390x.iso",
-    "location": "<url>/art/storage/releases/rhcos-4.21/<release>/x86_64/rhcos-<release>-live.x86_64.iso",
+    "location": "<url>/art/storage/releases/rhcos-4.22-aarch64/<release>/aarch64/rhcos-<release>-live.aarch64.iso",
+    "location": "<url>/art/storage/releases/rhcos-4.22-ppc64le/<release>/ppc64le/rhcos-<release>-live.ppc64le.iso",
+    "location": "<url>/art/storage/releases/rhcos-4.22-s390x/<release>/s390x/rhcos-<release>-live.s390x.iso",
+    "location": "<url>/art/storage/releases/rhcos-4.22/<release>/x86_64/rhcos-<release>-live.x86_64.iso",
     ```
 
     <div class="important">
@@ -1626,18 +1631,18 @@ You can use PXE or iPXE booting to install RHCOS on the machines.
     </div>
 
     ``` terminal
-    "<url>/art/storage/releases/rhcos-4.21-aarch64/<release>/aarch64/rhcos-<release>-live-kernel-aarch64"
-    "<url>/art/storage/releases/rhcos-4.21-aarch64/<release>/aarch64/rhcos-<release>-live-initramfs.aarch64.img"
-    "<url>/art/storage/releases/rhcos-4.21-aarch64/<release>/aarch64/rhcos-<release>-live-rootfs.aarch64.img"
-    "<url>/art/storage/releases/rhcos-4.21-ppc64le/49.84.202110081256-0/ppc64le/rhcos-<release>-live-kernel-ppc64le"
-    "<url>/art/storage/releases/rhcos-4.21-ppc64le/<release>/ppc64le/rhcos-<release>-live-initramfs.ppc64le.img"
-    "<url>/art/storage/releases/rhcos-4.21-ppc64le/<release>/ppc64le/rhcos-<release>-live-rootfs.ppc64le.img"
-    "<url>/art/storage/releases/rhcos-4.21-s390x/<release>/s390x/rhcos-<release>-live-kernel-s390x"
-    "<url>/art/storage/releases/rhcos-4.21-s390x/<release>/s390x/rhcos-<release>-live-initramfs.s390x.img"
-    "<url>/art/storage/releases/rhcos-4.21-s390x/<release>/s390x/rhcos-<release>-live-rootfs.s390x.img"
-    "<url>/art/storage/releases/rhcos-4.21/<release>/x86_64/rhcos-<release>-live-kernel-x86_64"
-    "<url>/art/storage/releases/rhcos-4.21/<release>/x86_64/rhcos-<release>-live-initramfs.x86_64.img"
-    "<url>/art/storage/releases/rhcos-4.21/<release>/x86_64/rhcos-<release>-live-rootfs.x86_64.img"
+    "<url>/art/storage/releases/rhcos-4.22-aarch64/<release>/aarch64/rhcos-<release>-live-kernel-aarch64"
+    "<url>/art/storage/releases/rhcos-4.22-aarch64/<release>/aarch64/rhcos-<release>-live-initramfs.aarch64.img"
+    "<url>/art/storage/releases/rhcos-4.22-aarch64/<release>/aarch64/rhcos-<release>-live-rootfs.aarch64.img"
+    "<url>/art/storage/releases/rhcos-4.22-ppc64le/49.84.202110081256-0/ppc64le/rhcos-<release>-live-kernel-ppc64le"
+    "<url>/art/storage/releases/rhcos-4.22-ppc64le/<release>/ppc64le/rhcos-<release>-live-initramfs.ppc64le.img"
+    "<url>/art/storage/releases/rhcos-4.22-ppc64le/<release>/ppc64le/rhcos-<release>-live-rootfs.ppc64le.img"
+    "<url>/art/storage/releases/rhcos-4.22-s390x/<release>/s390x/rhcos-<release>-live-kernel-s390x"
+    "<url>/art/storage/releases/rhcos-4.22-s390x/<release>/s390x/rhcos-<release>-live-initramfs.s390x.img"
+    "<url>/art/storage/releases/rhcos-4.22-s390x/<release>/s390x/rhcos-<release>-live-rootfs.s390x.img"
+    "<url>/art/storage/releases/rhcos-4.22/<release>/x86_64/rhcos-<release>-live-kernel-x86_64"
+    "<url>/art/storage/releases/rhcos-4.22/<release>/x86_64/rhcos-<release>-live-initramfs.x86_64.img"
+    "<url>/art/storage/releases/rhcos-4.22/<release>/x86_64/rhcos-<release>-live-rootfs.x86_64.img"
     ```
 
     <div class="important">
@@ -2565,7 +2570,7 @@ To add machines to a cluster, verify the status of the certificate signing reque
 
       <div class="note">
 
-      Some Operators might not become available until some CSRs are approved.
+      Some Operators might not become available until some CSRs are approved. Each node submits two CSRs, so you may need to run the command to approve CSRs multiple times.
 
       </div>
 

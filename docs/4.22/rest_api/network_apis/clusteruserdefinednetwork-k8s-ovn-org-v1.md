@@ -102,25 +102,132 @@ Required
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;"><p><code>evpn</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>EVPN contains configuration for EVPN mode. This is only allowed when Transport is "EVPN".</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>layer2</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Layer2 is the Layer2 topology configuration.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>layer3</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Layer3 is the Layer3 topology configuration.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>localnet</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Localnet is the Localnet topology configuration.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>topology</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Topology describes network configuration.</p>
 <p>Allowed values are "Layer3", "Layer2" and "Localnet". Layer3 topology creates a layer 2 segment per node, each with a different subnet. Layer 3 routing is used to interconnect node subnets. Layer2 topology creates one logical switch shared by all nodes. Localnet topology is based on layer 2 topology, but also allows connecting to an existent (configured) physical network to provide north-south traffic to the workloads.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>transport</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>Transport describes the transport technology for pod-to-pod traffic. Allowed values are "NoOverlay" and "EVPN". - "NoOverlay": The network operates in no-overlay mode. - "EVPN": The network uses EVPN transport. When omitted, the network uses the default OVN overlay transport (e.g. Geneve, VXLAN) as configured by ovn-encap-type.</p></td>
+</tr>
+</tbody>
+</table>
+
+## .spec.network.evpn
+
+Description
+EVPN contains configuration for EVPN mode. This is only allowed when Transport is "EVPN".
+
+Type
+`object`
+
+Required
+- `vtep`
+
+| Property | Type     | Description                                                                                                                               |
+|----------|----------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| `ipVRF`  | `object` | IPVRF contains the IP-VRF configuration for Layer 3 EVPN. This field is required for Layer3 topology and optional for Layer2 topology.    |
+| `macVRF` | `object` | MACVRF contains the MAC-VRF configuration for Layer 2 EVPN. This field is required for Layer2 topology and forbidden for Layer3 topology. |
+| `vtep`   | `string` | VTEP is the name of the VTEP CR that defines VTEP IPs for EVPN.                                                                           |
+
+## .spec.network.evpn.ipVRF
+
+Description
+IPVRF contains the IP-VRF configuration for Layer 3 EVPN. This field is required for Layer3 topology and optional for Layer2 topology.
+
+Type
+`object`
+
+Required
+- `vni`
+
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>routeTarget</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>RouteTarget is the import/export route target for this VRF. If not specified, it will be auto-generated as "&lt;AS (Autonomous System)&gt;:&lt;VNI (Virtual Network Identifier)&gt;". Auto-generation will use 2-byte AS if VNI &gt; 65535, since 4-byte AS/IPv4 only allows 2-byte local admin.</p>
+<p>Follows FRR EVPN L3 Route-Target format (A.B.C.D:MN|EF:OPQR|GHJK:MN|<strong>:OPQR|</strong>:MN): - EF:OPQR = 2-byte AS (1-65535) : local admin (4 bytes, 1-4294967295) - GHJK:MN = 4-byte AS (65536-4294967295) : local admin (2 bytes, 1-65535) - A.B.C.D:MN = IPv4 address : local admin (2 bytes, 1-65535) - *:OPQR = wildcard AS : local admin (4 bytes, 1-4294967295) - for import matching - *:MN = wildcard AS : local admin (2 bytes, 1-65535) - for import matching</p>
+<p>The 6-byte value constraint (RFC 4360) means AS size + local admin size = 6 bytes.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>vni</code></p></td>
+<td style="text-align: left;"><p><code>integer</code></p></td>
+<td style="text-align: left;"><p>VNI is the Virtual Network Identifier for this VRF. VNI is a 24-bit field in the VXLAN header (RFC 7348), allowing values from 1 to 16777215. but in the future this could be having different limit for other dataplane implementations. Must be unique across all EVPN configurations in the cluster.</p></td>
+</tr>
+</tbody>
+</table>
+
+## .spec.network.evpn.macVRF
+
+Description
+MACVRF contains the MAC-VRF configuration for Layer 2 EVPN. This field is required for Layer2 topology and forbidden for Layer3 topology.
+
+Type
+`object`
+
+Required
+- `vni`
+
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>routeTarget</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>RouteTarget is the import/export route target for this VRF. If not specified, it will be auto-generated as "&lt;AS (Autonomous System)&gt;:&lt;VNI (Virtual Network Identifier)&gt;". Auto-generation will use 2-byte AS if VNI &gt; 65535, since 4-byte AS/IPv4 only allows 2-byte local admin.</p>
+<p>Follows FRR EVPN L3 Route-Target format (A.B.C.D:MN|EF:OPQR|GHJK:MN|<strong>:OPQR|</strong>:MN): - EF:OPQR = 2-byte AS (1-65535) : local admin (4 bytes, 1-4294967295) - GHJK:MN = 4-byte AS (65536-4294967295) : local admin (2 bytes, 1-65535) - A.B.C.D:MN = IPv4 address : local admin (2 bytes, 1-65535) - *:OPQR = wildcard AS : local admin (4 bytes, 1-4294967295) - for import matching - *:MN = wildcard AS : local admin (2 bytes, 1-65535) - for import matching</p>
+<p>The 6-byte value constraint (RFC 4360) means AS size + local admin size = 6 bytes.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>vni</code></p></td>
+<td style="text-align: left;"><p><code>integer</code></p></td>
+<td style="text-align: left;"><p>VNI is the Virtual Network Identifier for this VRF. VNI is a 24-bit field in the VXLAN header (RFC 7348), allowing values from 1 to 16777215. but in the future this could be having different limit for other dataplane implementations. Must be unique across all EVPN configurations in the cluster.</p></td>
 </tr>
 </tbody>
 </table>

@@ -174,18 +174,18 @@ If you are configuring DNS for a disconnected environment on a dual stack networ
 host-record=api-int.hub-dual.dns.base.domain.name,192.168.126.10
 host-record=api.hub-dual.dns.base.domain.name,192.168.126.10
 address=/apps.hub-dual.dns.base.domain.name/192.168.126.11
-dhcp-host=aa:aa:aa:aa:10:01,ocp-master-0,192.168.126.20
-dhcp-host=aa:aa:aa:aa:10:02,ocp-master-1,192.168.126.21
-dhcp-host=aa:aa:aa:aa:10:03,ocp-master-2,192.168.126.22
+dhcp-host=aa:aa:aa:aa:10:01,ocp-control-plane-0,192.168.126.20
+dhcp-host=aa:aa:aa:aa:10:02,ocp-control-plane-1,192.168.126.21
+dhcp-host=aa:aa:aa:aa:10:03,ocp-control-plane-2,192.168.126.22
 dhcp-host=aa:aa:aa:aa:10:06,ocp-installer,192.168.126.25
 dhcp-host=aa:aa:aa:aa:10:07,ocp-bootstrap,192.168.126.26
 
 host-record=api-int.hub-dual.dns.base.domain.name,2620:52:0:1306::2
 host-record=api.hub-dual.dns.base.domain.name,2620:52:0:1306::2
 address=/apps.hub-dual.dns.base.domain.name/2620:52:0:1306::3
-dhcp-host=aa:aa:aa:aa:10:01,ocp-master-0,[2620:52:0:1306::5]
-dhcp-host=aa:aa:aa:aa:10:02,ocp-master-1,[2620:52:0:1306::6]
-dhcp-host=aa:aa:aa:aa:10:03,ocp-master-2,[2620:52:0:1306::7]
+dhcp-host=aa:aa:aa:aa:10:01,ocp-control-plane-0,[2620:52:0:1306::5]
+dhcp-host=aa:aa:aa:aa:10:02,ocp-control-plane-1,[2620:52:0:1306::6]
+dhcp-host=aa:aa:aa:aa:10:03,ocp-control-plane-2,[2620:52:0:1306::7]
 dhcp-host=aa:aa:aa:aa:10:06,ocp-installer,[2620:52:0:1306::8]
 dhcp-host=aa:aa:aa:aa:10:07,ocp-bootstrap,[2620:52:0:1306::9]
 ```

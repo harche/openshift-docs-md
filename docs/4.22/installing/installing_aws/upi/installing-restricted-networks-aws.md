@@ -494,6 +494,12 @@ The installation configuration file transforms into the Kubernetes manifests. Th
 
 The Ignition config files contain a unique cluster identifier that you can use to uniquely identify your cluster in Amazon Web Services. The infrastructure name is also used to locate the appropriate AWS resources during an OpenShift Container Platform installation. The provided CloudFormation templates contain references to this infrastructure name, so you must extract it.
 
+<div class="warning">
+
+Do not run the `openshift-install create manifests` command again after creating any Google Cloud resources. Running the command again generates a new cluster identifier, which will cause errors in existing resources. If you need to regenerate the manifests because you modified the `install-config.yaml` file, delete any Google Cloud resources you created and recreate them with the new cluster identifier.
+
+</div>
+
 - You obtained the OpenShift Container Platform installation program and the pull secret for your cluster.
 
 - You generated the Ignition config files for your cluster.
@@ -618,7 +624,7 @@ If you do not use the provided CloudFormation template to create your AWS infras
 You can use the following CloudFormation template to deploy the VPC that you need for your OpenShift Container Platform cluster.
 
 ``` yaml
-link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/aws/cloudformation/01_vpc.yaml[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/aws/cloudformation/01_vpc.yaml[role=include]
 ```
 
 # Creating networking and load balancing components in AWS
@@ -786,7 +792,7 @@ If you do not use the provided CloudFormation template to create your AWS infras
 You can use the following CloudFormation template to deploy the networking objects and load balancers that you need for your OpenShift Container Platform cluster.
 
 ``` yaml
-link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/aws/cloudformation/02_cluster_infra.yaml[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/aws/cloudformation/02_cluster_infra.yaml[role=include]
 ```
 
 <div class="important">
@@ -910,7 +916,7 @@ If you do not use the provided CloudFormation template to create your AWS infras
 You can use the following CloudFormation template to deploy the security objects that you need for your OpenShift Container Platform cluster.
 
 ``` yaml
-link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/aws/cloudformation/03_cluster_security.yaml[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/aws/cloudformation/03_cluster_security.yaml[role=include]
 ```
 
 # Accessing RHCOS AMIs with stream metadata
@@ -1288,7 +1294,7 @@ If you do not use the provided CloudFormation template to create your bootstrap 
 You can use the following CloudFormation template to deploy the bootstrap machine that you need for your OpenShift Container Platform cluster.
 
 ``` yaml
-link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/aws/cloudformation/04_cluster_bootstrap.yaml[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/aws/cloudformation/04_cluster_bootstrap.yaml[role=include]
 ```
 
 - [RHCOS AMIs for the AWS infrastructure(AWS documentation)](../../../installing/installing_aws/upi/installing-aws-user-infra.xml#installation-aws-user-infra-rhcos-ami_installing-aws-user-infra)
@@ -1507,7 +1513,7 @@ If you do not use the provided CloudFormation template to create your control pl
 You can use the following CloudFormation template to deploy the control plane machines that you need for your OpenShift Container Platform cluster.
 
 ``` yaml
-link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/aws/cloudformation/05_cluster_master_nodes.yaml[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/aws/cloudformation/05_cluster_master_nodes.yaml[role=include]
 ```
 
 # Creating the worker nodes in AWS
@@ -1662,7 +1668,7 @@ If you do not use the provided CloudFormation template to create your worker nod
 You can deploy the compute machines that you need for your OpenShift Container Platform cluster by using the following CloudFormation template.
 
 ``` yaml
-link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/aws/cloudformation/06_cluster_worker_node.yaml[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/aws/cloudformation/06_cluster_worker_node.yaml[role=include]
 ```
 
 ## Creating the CloudFormation stack for compute machines
@@ -1829,7 +1835,7 @@ To add machines to a cluster, verify the status of the certificate signing reque
 
       <div class="note">
 
-      Some Operators might not become available until some CSRs are approved.
+      Some Operators might not become available until some CSRs are approved. Each node submits two CSRs, so you may need to run the command to approve CSRs multiple times.
 
       </div>
 

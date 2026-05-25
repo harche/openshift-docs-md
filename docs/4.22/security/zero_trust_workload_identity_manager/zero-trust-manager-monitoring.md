@@ -48,7 +48,7 @@ Enable user workload monitoring to track metrics for your user-defined projects.
 
 The status of the pods such as `prometheus-operator`, `prometheus-user-workload`, and `thanos-ruler-user-workload` must be `Running`.
 
-- [Setting up metrics collection for user-defined projects](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_user_workload_monitoring/configuring-metrics-uwm#setting-up-metrics-collection-for-user-defined-projects_configuring-metrics-uwm)
+- [Setting up metrics collection for user-defined projects](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/configuring_user_workload_monitoring/configuring-metrics-uwm#setting-up-metrics-collection-for-user-defined-projects_configuring-metrics-uwm)
 
 # Configuring metrics collection for SPIRE Server by using a ServiceMonitor
 
@@ -117,7 +117,7 @@ The SPIRE Server operand exposes metrics by default on port `9402` at the `/metr
 
 3.  Confirm that the **Status** column shows `Up` for the `spire-server-metrics` entry.
 
-- [Configuring user workload monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_user_workload_monitoring/preparing-to-configure-the-monitoring-stack-uwm)
+- [Configuring user workload monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/configuring_user_workload_monitoring/preparing-to-configure-the-monitoring-stack-uwm)
 
 # Configuring metrics collection for SPIRE Agent by using a Service Monitor
 
@@ -370,7 +370,7 @@ The SPIRE Server operand exposes metrics by default on port `9402` at the `/metr
 
 3.  Confirm that the **Status** column shows `Up` for the `zero-trust-workload-identity-manager` entry.
 
-- [Configuring user workload monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_user_workload_monitoring/preparing-to-configure-the-monitoring-stack-uwm)
+- [Configuring user workload monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/configuring_user_workload_monitoring/preparing-to-configure-the-monitoring-stack-uwm)
 
 # Querying metrics for the Zero Trust Workload Identity Manager
 
@@ -398,7 +398,7 @@ Query SPIRE Agent and SPIRE Server metrics using the OpenShift Container Platfor
     {job="spire-agent"}
     ```
 
-- [Accessing metrics](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/accessing_metrics/index)
+- [Accessing metrics](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/accessing_metrics/index)
 
 # Zero Trust Workload Identity Manager monitoring available metrics
 

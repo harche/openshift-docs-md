@@ -1,4 +1,4 @@
-The following information details the supported platform versions, Windows Server versions, and networking configurations for the Windows Machine Config Operator (WMCO). See the vSphere documentation for any information that is relevant to only that platform.
+You can review the following information for details on the supported platform versions, Windows Server versions, and networking configurations for the Windows Machine Config Operator (WMCO). See the vSphere documentation for any information that is relevant to only that platform.
 
 # WMCO supported installation method
 
@@ -25,6 +25,7 @@ The following table lists the [Windows Server versions](https://docs.microsoft.c
 <tr class="odd">
 <td style="text-align: left;"><p>Amazon Web Services (AWS)</p></td>
 <td style="text-align: left;"><ul>
+<li><p>Windows Server 2025, OS Build <a href="https://support.microsoft.com/en-us/topic/may-12-2026-kb5087539-os-build-26100-32860-fe3fd635-23fc-41bd-b7a7-00e57c1c4f91">10.0.26100</a> or later</p></li>
 <li><p>Windows Server 2022, OS Build <a href="https://support.microsoft.com/en-us/topic/april-25-2022-kb5012637-os-build-20348-681-preview-2233d69c-d4a5-4be9-8c24-04a450861a8d">20348.681</a> or later <sup>[1]</sup></p></li>
 <li><p>Windows Server 2019, version 1809</p></li>
 </ul></td>
@@ -32,27 +33,37 @@ The following table lists the [Windows Server versions](https://docs.microsoft.c
 <tr class="even">
 <td style="text-align: left;"><p>Microsoft Azure</p></td>
 <td style="text-align: left;"><ul>
+<li><p>Windows Server 2025, OS Build <a href="https://support.microsoft.com/en-us/topic/may-12-2026-kb5087539-os-build-26100-32860-fe3fd635-23fc-41bd-b7a7-00e57c1c4f91">10.0.26100</a> or later</p></li>
 <li><p>Windows Server 2022, OS Build <a href="https://support.microsoft.com/en-us/topic/april-25-2022-kb5012637-os-build-20348-681-preview-2233d69c-d4a5-4be9-8c24-04a450861a8d">20348.681</a> or later</p></li>
 <li><p>Windows Server 2019, version 1809</p></li>
 </ul></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>VMware vSphere</p></td>
-<td style="text-align: left;"><p>Windows Server 2022, OS Build <a href="https://support.microsoft.com/en-us/topic/april-25-2022-kb5012637-os-build-20348-681-preview-2233d69c-d4a5-4be9-8c24-04a450861a8d">20348.681</a> or later</p></td>
+<td style="text-align: left;"><ul>
+<li><p>Windows Server 2025, OS Build <a href="https://support.microsoft.com/en-us/topic/may-12-2026-kb5087539-os-build-26100-32860-fe3fd635-23fc-41bd-b7a7-00e57c1c4f91">10.0.26100</a> or later</p></li>
+<li><p>Windows Server 2022, OS Build <a href="https://support.microsoft.com/en-us/topic/april-25-2022-kb5012637-os-build-20348-681-preview-2233d69c-d4a5-4be9-8c24-04a450861a8d">20348.681</a> or later</p></li>
+</ul></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>Google Cloud</p></td>
-<td style="text-align: left;"><p>Windows Server 2022, OS Build <a href="https://support.microsoft.com/en-us/topic/april-25-2022-kb5012637-os-build-20348-681-preview-2233d69c-d4a5-4be9-8c24-04a450861a8d">20348.681</a> or later</p></td>
+<td style="text-align: left;"><ul>
+<li><p>Windows Server 2025, OS Build <a href="https://support.microsoft.com/en-us/topic/may-12-2026-kb5087539-os-build-26100-32860-fe3fd635-23fc-41bd-b7a7-00e57c1c4f91">10.0.26100</a> or later</p></li>
+<li><p>Windows Server 2022, OS Build <a href="https://support.microsoft.com/en-us/topic/april-25-2022-kb5012637-os-build-20348-681-preview-2233d69c-d4a5-4be9-8c24-04a450861a8d">20348.681</a> or later</p></li>
+</ul></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>Nutanix</p></td>
-<td style="text-align: left;"><p>Windows Server 2022, OS Build <a href="https://support.microsoft.com/en-us/topic/april-25-2022-kb5012637-os-build-20348-681-preview-2233d69c-d4a5-4be9-8c24-04a450861a8d">20348.681</a> or later</p></td>
+<td style="text-align: left;"><ul>
+<li><p>Windows Server 2025, OS Build <a href="https://support.microsoft.com/en-us/topic/may-12-2026-kb5087539-os-build-26100-32860-fe3fd635-23fc-41bd-b7a7-00e57c1c4f91">10.0.26100</a> or later</p></li>
+<li><p>Windows Server 2022, OS Build <a href="https://support.microsoft.com/en-us/topic/april-25-2022-kb5012637-os-build-20348-681-preview-2233d69c-d4a5-4be9-8c24-04a450861a8d">20348.681</a> or later</p></li>
+</ul></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>Bare metal or provider agnostic</p></td>
 <td style="text-align: left;"><ul>
+<li><p>Windows Server 2025, OS Build <a href="https://support.microsoft.com/en-us/topic/may-12-2026-kb5087539-os-build-26100-32860-fe3fd635-23fc-41bd-b7a7-00e57c1c4f91">10.0.26100</a> or later</p></li>
 <li><p>Windows Server 2022, OS Build <a href="https://support.microsoft.com/en-us/topic/april-25-2022-kb5012637-os-build-20348-681-preview-2233d69c-d4a5-4be9-8c24-04a450861a8d">20348.681</a> or later</p></li>
-<li><p>Windows Server 2019, version 1809</p></li>
 </ul></td>
 </tr>
 </tbody>
@@ -99,13 +110,17 @@ Platform networking support
 <tr class="odd">
 <td style="text-align: left;"><p>Default VXLAN port</p></td>
 <td style="text-align: left;"><ul>
+<li><p>Windows Server 2025, OS Build <a href="https://support.microsoft.com/en-us/topic/may-12-2026-kb5087539-os-build-26100-32860-fe3fd635-23fc-41bd-b7a7-00e57c1c4f91">10.0.26100</a> or later</p></li>
 <li><p>Windows Server 2022, OS Build <a href="https://support.microsoft.com/en-us/topic/april-25-2022-kb5012637-os-build-20348-681-preview-2233d69c-d4a5-4be9-8c24-04a450861a8d">20348.681</a> or later</p></li>
 <li><p>Windows Server 2019, version 1809</p></li>
 </ul></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>Custom VXLAN port</p></td>
-<td style="text-align: left;"><p>Windows Server 2022, OS Build <a href="https://support.microsoft.com/en-us/topic/april-25-2022-kb5012637-os-build-20348-681-preview-2233d69c-d4a5-4be9-8c24-04a450861a8d">20348.681</a> or later</p></td>
+<td style="text-align: left;"><ul>
+<li><p>Windows Server 2025, OS Build <a href="https://support.microsoft.com/en-us/topic/may-12-2026-kb5087539-os-build-26100-32860-fe3fd635-23fc-41bd-b7a7-00e57c1c4f91">10.0.26100</a> or later</p></li>
+<li><p>Windows Server 2022, OS Build <a href="https://support.microsoft.com/en-us/topic/april-25-2022-kb5012637-os-build-20348-681-preview-2233d69c-d4a5-4be9-8c24-04a450861a8d">20348.681</a> or later</p></li>
+</ul></td>
 </tr>
 </tbody>
 </table>

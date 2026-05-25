@@ -247,7 +247,7 @@ See "OpenShift Virtualization supported limits" in the Additional resources sect
 
 - [Installing a FIPS-compliant cluster](../../installing/overview/installing-fips.xml#installing-fips-mode_installing-fips)
 
-- [Configuring the default CPU model](../../virt/managing_vms/advanced_vm_management/virt-configuring-default-cpu-model.xml#virt-configuring-default-cpu-model)
+- [Configure CPU models](../../virt/managing_vms/cpu_models/virt-configuring-default-cpu-model.xml#virt-configuring-default-cpu-model)
 
 - [Deleting a virtual machine by using the web console](../../virt/managing_vms/virt-delete-vms.xml#virt-delete-vm-web_virt-delete-vms)
 

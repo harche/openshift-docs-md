@@ -240,6 +240,8 @@ Out of tree drivers are not supported. 5G RAN application components are not inc
 
 ## Host firmware tuning
 
+Tune host firmware settings for optimal performance during initial cluster deployment.
+
 New in this release
 - No reference design updates in this release
 
@@ -274,18 +276,14 @@ Engineering considerations
 
 ## Kubelet Settings
 
+Some CNF workloads make use of sysctls which are not in the list of system-wide safe sysctls.
+
 New in this release
 Support for configuring `systemReserved` settings (cpu and memory).
 
 Some CNF workloads make use of sysctls which are not in the list of system-wide safe sysctls. Generally, network sysctls are namespaced and you can enable them using the `kubeletconfig.experimental` annotation in the `PerformanceProfile` Custom Resource (CR).
 
-Additionally, the `systemReserved` memory can be configured through the same `kubeletconfig.experimental` annotation to reserve memory for system daemons and kernel processes. An example setting of these parameters as a string of JSON is shown here: .Example snippet showing allowedUnsafeSysctls and systemReserved
-
-<div class="formalpara-title">
-
-**Example snippet showing allowedUnsafeSysctls and systemReserved**
-
-</div>
+Additionally, the `systemReserved` memory can be configured through the same `kubeletconfig.experimental` annotation to reserve memory for system daemons and kernel processes. The following example shows `allowedUnsafeSysctls` and `systemReserved` configuration:
 
 ``` yaml
 apiVersion: performance.openshift.io/v2
@@ -314,6 +312,8 @@ For more information, see "Using sysctls in containers".
 - [Using sysctls in containers](../nodes/containers/nodes-containers-sysctls.xml#nodes-containers-sysctls-about)
 
 ## CPU partitioning and performance tuning
+
+The RAN DU use model includes cluster performance tuning using `PerformanceProfile` CRs for low-latency performance, and a `TunedPerformancePatch` CR that adds additional RAN-specific tuning.
 
 New in this release
 - There is now optional support for `acpi_idle` CPUIdle driver.
@@ -443,6 +443,8 @@ Engineering considerations
 
 ## PTP Operator
 
+Configure Precision Time Protocol (PTP) in cluster nodes.
+
 New in this release
 - OpenShift Container Platform 4.20 introduced unassisted holdover for boundary clocks and time synchronous clocks as a Technology Preview feature. This feature is now Generally Available (GA).
 
@@ -498,6 +500,8 @@ Engineering considerations
 
 ## SR-IOV Operator
 
+The SR-IOV Operator provisions and configures the SR-IOV CNI and device plugins.
+
 New in this release
 - No reference design updates in this release
 
@@ -538,6 +542,8 @@ Engineering considerations
 
 ## Logging
 
+Use logging to collect logs from the far edge node for remote analysis.
+
 New in this release
 - No reference design updates in this release
 
@@ -552,6 +558,8 @@ Engineering considerations
 - [About OpenShift logging](https://docs.redhat.com/en/documentation/red_hat_openshift_logging/6.2/html/about_openshift_logging/index)
 
 ## SRIOV-FEC Operator
+
+SRIOV-FEC Operator is an optional 3rd party Certified Operator supporting FEC accelerator hardware.
 
 New in this release
 - No reference design updates in this release
@@ -575,6 +583,8 @@ Engineering considerations
 
 ## Lifecycle Agent
 
+The Lifecycle Agent provides local lifecycle management services for image-based upgrade of single-node OpenShift clusters.
+
 New in this release
 - No reference design updates in this release
 
@@ -594,6 +604,8 @@ For more information about partition requirements, see "Configuring a shared con
 
 ## Local Storage Operator
 
+You can create persistent volumes that can be used as `PVC` resources by applications with the Local Storage Operator.
+
 New in this release
 - No reference design updates in this release
 
@@ -606,6 +618,8 @@ Engineering considerations
 - Refer to the device listing in `LocalVolume` CRs by the hardware path used to access each device to ensure correct allocation of disks and partitions, for example, `/dev/disk/by-path/<id>`. Logical names (for example, `/dev/sda`) are not guaranteed to be consistent across node reboots.
 
 ## Logical Volume Manager Storage
+
+Logical Volume Manager (LVM) Storage is an optional component that provides dynamic provisioning of block and file storage.
 
 New in this release
 - No reference design updates in this release
@@ -624,6 +638,8 @@ Engineering considerations
 - Ensure that sufficient disks or partitions are available for storage requirements.
 
 ## Workload partitioning
+
+Workload partitioning pins OpenShift Container Platform and Day 2 Operator pods that are part of the DU profile to the reserved CPU set and removes the reserved CPU from node accounting.
 
 New in this release
 - No reference design updates in this release
@@ -644,6 +660,8 @@ Engineering considerations
 - [Workload partitioning](../scalability_and_performance/enabling-workload-partitioning.xml#enabling-workload-partitioning)
 
 ## Cluster tuning
+
+Configure cluster capabilities and platform tuning to reduce the OpenShift Container Platform footprint for RAN DU deployments.
 
 New in this release
 - No reference design updates in this release
@@ -715,6 +733,8 @@ Engineering considerations
 
 ## Machine configuration
 
+Review the machine configuration limits, requirements, and options for telco RAN DU deployments.
+
 New in this release
 - No reference design updates in this release
 
@@ -743,6 +763,8 @@ Machine configuration options
 The following sections describe the various OpenShift Container Platform components and configurations that you use to configure the hub cluster with RHACM.
 
 ## Red Hat Advanced Cluster Management
+
+RHACM provides Multi Cluster Engine (MCE) installation and ongoing lifecycle management functionality for deployed clusters.
 
 New in this release
 - The CRI-O wipe disable `MachineConfig` CR is no longer needed as cri-o now handles unclean shutdowns by performing a quick check and repair.
@@ -778,6 +800,8 @@ Engineering considerations
 
 ## SiteConfig Operator
 
+The SiteConfig Operator is a template-driven solution designed to provision clusters through various installation methods.
+
 New in this release
 - No reference design updates in this release
 
@@ -806,6 +830,8 @@ Limits and requirements
 - A single hub cluster supports up to 3500 deployed single-node OpenShift clusters.
 
 ## Topology Aware Lifecycle Manager
+
+TALM is an Operator that runs only on the hub cluster for managing how changes like cluster upgrades, Operator upgrades, and cluster configuration are rolled out to the network.
 
 New in this release
 - No reference design updates in this release
@@ -843,6 +869,8 @@ Engineering considerations
 
 ## GitOps Operator and GitOps ZTP
 
+GitOps Operator and GitOps ZTP provide a GitOps-based infrastructure for managing cluster deployment and configuration.
+
 New in this release
 - No reference design updates in this release
 
@@ -879,6 +907,8 @@ Engineering considerations
 
 ## Agent-based installer
 
+The optional Agent-based Installer component provides installation capabilities without centralized infrastructure.
+
 New in this release
 - No reference design updates in this release
 
@@ -909,6 +939,8 @@ You can extract the complete set of RAN DU CRs from the `ztp-site-generate` cont
 
 ## Cluster tuning reference CRs
 
+The following table describes the cluster tuning custom resources (CRs) for the telco RAN DU reference configuration.
+
 | Component                   | Reference CR                                                              | Description                                                                                                                                                                                                    | Optional |
 |-----------------------------|---------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
 | Cluster capabilities        | `example-sno.yaml`                                                        | Representative ClusterInstance CR to install single-node OpenShift with the RAN DU profile                                                                                                                     | No       |
@@ -924,6 +956,8 @@ You can extract the complete set of RAN DU CRs from the `ztp-site-generate` cont
 Cluster tuning CRs
 
 ## Day 2 Operators reference CRs
+
+The following table describes the Day 2 Operator custom resources (CRs) for the telco RAN DU reference configuration.
 
 | Component                        | Reference CR                                                         | Description                                                                                                                                                                                                        | Optional |
 |----------------------------------|----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
@@ -989,6 +1023,8 @@ Day 2 Operators CRs
 
 ## Machine configuration reference CRs
 
+The following table describes the machine configuration custom resources (CRs) for the telco RAN DU reference configuration.
+
 | Component                                        | Reference CR                                                        | Description                                                                                                          | Optional |
 |--------------------------------------------------|---------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|----------|
 | Container runtime (crun)                         | `optional-extra-manifest/enable-crun-master.yaml`                   | Configures the container runtime (crun) for control plane nodes.                                                     | No       |
@@ -1048,11 +1084,7 @@ For further information about the `cluster-compare` plugin, see "Understanding t
     $ oc cluster-compare -r out/reference/metadata.yaml
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following is example output:
 
     ``` terminal
     ...
@@ -1112,25 +1144,25 @@ For further information about the `cluster-compare` plugin, see "Understanding t
     No patched CRs
     ```
 
-    - The CR under comparison. The plugin displays each CR with a difference from the corresponding template.
+    - `Cluster CR` identifies the CR under comparison. The plugin displays each CR with a difference from the corresponding template.
 
-    - The template matching with the CR for comparison.
+    - `Reference File` identifies the template matching with the CR for comparison.
 
     - The output in Linux diff format shows the difference between the template and the cluster CR.
 
-    - After the plugin reports the line diffs for each CR, the summary of differences are reported.
+    - `Summary` is reported after the plugin reports the line diffs for each CR.
 
-    - The number of CRs in the comparison with differences from the corresponding templates.
+    - `CRs with diffs` is the number of CRs in the comparison with differences from the corresponding templates.
 
-    - The number of CRs represented in the reference configuration, but missing from the live cluster.
+    - `CRs in reference missing from the cluster` is the number of CRs represented in the reference configuration, but missing from the live cluster.
 
-    - The list of CRs represented in the reference configuration, but missing from the live cluster.
+    - `Missing CRs` lists the CRs represented in the reference configuration, but missing from the live cluster.
 
-    - The CRs that did not match to a corresponding template in the reference configuration.
+    - `No CRs are unmatched to reference CRs` indicates CRs that did not match to a corresponding template in the reference configuration.
 
-    - The metadata hash identifies the reference configuration.
+    - `Metadata Hash` identifies the reference configuration.
 
-    - The list of patched CRs.
+    - `No patched CRs` lists the patched CRs.
 
 - [Understanding the cluster-compare plugin](../scalability_and_performance/cluster-compare/understanding-the-cluster-compare-plugin.xml#understanding-the-cluster-compare-plugin)
 

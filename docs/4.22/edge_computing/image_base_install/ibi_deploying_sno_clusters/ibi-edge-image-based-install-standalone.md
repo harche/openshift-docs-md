@@ -25,20 +25,14 @@ For more information about the specifications for the `image-based-config.yaml` 
 1.  Create a working directory by running the following:
 
     ``` terminal
-    $ mkdir ibi-config-iso-workdir
+    $ mkdir <working_directory>
     ```
 
-    - Replace `ibi-config-iso-workdir` with the name of your working directory.
+    where `<working_directory>` is the name of your working directory, for example `ibi-config-iso-workdir`.
 
 2.  Create the installation manifest:
 
-    1.  Create a YAML file that defines the `install-config` manifest:
-
-        <div class="formalpara-title">
-
-        **Example `install-config.yaml` file**
-
-        </div>
+    1.  Create a YAML file that defines the `install-config` manifest, as in the following example:
 
         ``` yaml
         apiVersion: v1
@@ -67,7 +61,7 @@ For more information about the specifications for the `image-based-config.yaml` 
         sshKey: 'ssh-rsa <your_ssh_pub_key>'
         ```
 
-        - For dual-stack networking, you can specify both IPv4 and IPv6 CIDRs using a list format. The first CIDR in the list is the primary address family and must match the primary address family of the seed cluster.
+        \+ For dual-stack networking, you can specify both IPv4 and IPv6 CIDRs using a list format in the `machineNetwork` field. The first CIDR in the list is the primary address family and must match the primary address family of the seed cluster.
 
         <div class="important">
 
@@ -87,11 +81,7 @@ For more information about the specifications for the `image-based-config.yaml` 
     $ openshift-install image-based create config-template --dir ibi-config-iso-workdir/
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    Example output:
 
     ``` terminal
     INFO Config-Template created in: ibi-config-iso-workdir
@@ -132,11 +122,7 @@ For more information about the specifications for the `image-based-config.yaml` 
 
 4.  Edit your configuration file:
 
-    <div class="formalpara-title">
-
-    **Example `image-based-config.yaml` file**
-
-    </div>
+    Example `image-based-config.yaml` file:
 
     ``` yaml
     #
@@ -188,11 +174,7 @@ For more information about the specifications for the `image-based-config.yaml` 
     $ openshift-install image-based create config-image --dir ibi-config-iso-workdir/
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    Example output:
 
     ``` terminal
     INFO Adding NMConnection file <ens1f0.nmconnection>
@@ -203,11 +185,7 @@ For more information about the specifications for the `image-based-config.yaml` 
 
     View the output in the working directory:
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    Example output:
 
     ``` terminal
     ibi-config-iso-workdir/
@@ -239,11 +217,7 @@ When the configuration process completes on the host, access the cluster to veri
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    Example output:
 
     ``` terminal
     NAME                                         STATUS   ROLES                  AGE     VERSION
@@ -331,11 +305,7 @@ Filenames for additional resources in the `extra-manifests` directory must not e
 
 </div>
 
-## Creating a resource in the extra-manifests folder
-
-You can create a resource in the `extra-manifests` folder of your working directory to add extra manifests to the image-based deployment for single-node OpenShift clusters.
-
-The following example adds an single-root I/O virtualization (SR-IOV) network to the deployment.
+The following example shows how to create a resource in the `extra-manifests` folder of your working directory to add an single-root I/O virtualization (SR-IOV) network to the deployment.
 
 <div class="note">
 

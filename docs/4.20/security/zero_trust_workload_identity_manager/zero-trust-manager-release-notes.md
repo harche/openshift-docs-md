@@ -2,13 +2,45 @@ The Zero Trust Workload Identity Manager leverages Secure Production Identity Fr
 
 These release notes track the development of Zero Trust Workload Identity Manager.
 
+# Zero Trust Workload Identity Manager 1.0.1
+
+Issued: 17 May 2026
+
+This release fixes some Common Vulnerabilities and Exposures (CVEs).
+
+The following advisories are available for the Zero Trust Workload Identity Manager:
+
+- [RHBA-2026:17483](https://access.redhat.com/errata/RHBA-2026:17483)
+
+- [RHSA-2026:17463](https://access.redhat.com/errata/RHSA-2026:17463)
+
+- [RHSA-2026:17462](https://access.redhat.com/errata/RHSA-2026:17462)
+
+- [RHSA-2026:17461](https://access.redhat.com/errata/RHSA-2026:17461)
+
+- [RHSA-2026:17460](https://access.redhat.com/errata/RHSA-2026:17460)
+
+- [RHSA-2026:17457](https://access.redhat.com/errata/RHSA-2026:17457)
+
+- [RHSA-2026:17456](https://access.redhat.com/errata/RHSA-2026:17456)
+
+## CVEs
+
+- [CVE-2026-21441](https://access.redhat.com/security/cve/cve-2026-21441)
+
+- [CVE-2025-61726](https://access.redhat.com/security/cve/cve-2025-61726)
+
+- [CVE-2025-61729](https://access.redhat.com/security/cve/cve-2025-61729)
+
+- [CVE-2025-68121](https://access.redhat.com/security/cve/cve-2025-68121)
+
 # Zero Trust Workload Identity Manager 1.0.0 (General Availability)
 
-Issued: 2025-12-17
+Issued: 12 December 2025
 
-This release introduces capabilities for enterprise readiness, security, and operational flexibility. It includes SPIRE federation for cross-cluster identity, PostgreSQL support for production persistence, and enhanced security through stricter constraints and API validation.
+This release introduces capabilities for enterprise readiness, security, and operational flexibility. The release includes SPIRE federation for cross-cluster identity, PostgreSQL support for production persistence, and enhanced security through stricter constraints and API validation.
 
-The following advisories are available for the Zero Trust Workload Identity Manager.
+The following advisories are available for the Zero Trust Workload Identity Manager:
 
 - [RHBA-2025:23438](https://access.redhat.com/errata/RHBA-2025:23438)
 
@@ -24,7 +56,7 @@ The following advisories are available for the Zero Trust Workload Identity Mana
 
 - [RHBA-2025:23446](https://access.redhat.com/errata/RHBA-2025:23446)
 
-Zero Trust Workload Identity Manager supports the following components and versions:git
+Zero Trust Workload Identity Manager supports the following components and versions:
 
 | Component                     | Version |
 |-------------------------------|---------|
@@ -43,7 +75,7 @@ The Operator now includes support for SPIRE federation, enabling workloads acros
 
   - Configuration of bundle endpoints using `https_spiffe` (TLS) or `https_web` (Web PKI) profiles.
 
-  - Automatic certificate management via the ACME protocol, such as Let’s Encrypt.
+  - Automatic certificate management via the ACME protocol. For example, `Let’s Encrypt`.
 
   - Automatic OpenShift Container Platform route creation for federation endpoints.
 
@@ -56,7 +88,7 @@ The Operator now includes support for SPIRE federation, enabling workloads acros
   - Ensure proper DNS resolution and network connectivity to federated trust domains.
 
 PostgreSQL database support
-SPIRE Server now supports PostgreSQL as an external database backend, accommodating production deployments that necessitate enterprise-grade data persistence and high availability (HA) clusters.
+SPIRE Server now supports PostgreSQL as an external database backend, accommodating production deployments that necessitate enterprise-grade data persistence and high availability.
 
 - Supported Types: `sqlite3` (default), `postgres`, `mysql`.
 
@@ -64,7 +96,7 @@ SPIRE Server now supports PostgreSQL as an external database backend, accommodat
 
   - For production, evaluation of migration from SQLite to PostgreSQL is recommended.
 
-  - Creation and configuration of Kubernetes secrets for database TLS certificates and credentials are required.
+  - Creation and configuration of Kubernetes Secrets for database TLS certificates and credentials are required.
 
 Configurable agent socket path and Container Storage Interface (CSI) plugin name
 The SPIRE Agent socket path and the SPIFFE CSI Driver plugin name are now configurable, providing operational flexibility for environments with specific directory requirements or co-existence with multiple SPIFFE deployments.
@@ -82,11 +114,11 @@ The SPIRE Agent socket path and the SPIFFE CSI Driver plugin name are now config
   - Ensure consistency between `socketPath` in the `SpireAgent` CR and `agentSocketPath` in the `SpiffeCSIDriver` CR.
 
 Workload attestors verification API
-A new API has been introduced to configure kubelet certificate verification for workload attestation, enhancing security and supporting various OpenShift configurations.
+A new API has been introduced to configure kubelet certificate verification for workload attestation, enhancing security and supporting various OpenShift Container Platform configurations.
 
 - Verification types:
 
-  - `auto` (default): Verification utilizes OpenShift defaults (`/etc/kubernetes/kubelet-ca.crt`).
+  - `auto` (default): Verification utilizes OpenShift Container Platform defaults (`/etc/kubernetes/kubelet-ca.crt`).
 
   - `hostCert`: Uses a custom CA certificate path.
 
@@ -113,7 +145,7 @@ Enhanced Security Context Constraints
 - The Operator and all operand containers are configured with the `ReadOnlyRootFilesystem` set to `true`.
 
 Enhanced API validation
-Comprehensive Common Expression Language (CEL) validation has been integrated into all custom resourcedDefinitions (CRDs) to prevent configuration errors during admission control.
+Comprehensive Common Expression Language (CEL) validation has been integrated into all Custom Resource Definitions (CRDs) to prevent configuration errors during admission control.
 
 - Key validations:
 
@@ -131,9 +163,9 @@ Common configuration consolidation
 Configuring log level and log format for the operands
 This release introduces flexible logging controls to improve observability and debugging across the platform:
 
-- SPIRE Components: Users can now configure the `logLevel` and `logFormat` parameters independently for `SpireServer`, `SpireAgent`, and `SpireOIDCDiscoveryProvider` directly within their CR specifications.
+- SPIRE Components: Users can now configure the `logLevel` (debug, info, warn, error) and `logFormat` (text, JSON) independently for `SpireServer`, `SpireAgent`, and `SpireOIDCDiscoveryProvider` directly within their CR specifications. The defaults are set to "info" for the `logLevel` and "text" for the `logFormat`.
 
-- Operator: The Operator log verbosity is now configurable via the `OPERATOR_LOG_LEVEL` environment variable using klog’s `textlogger`.
+- Operator: The Operator’s log verbosity is now configurable via the `OPERATOR_LOG_LEVEL` environment variable using klog’s `textlogger`.
 
 Refactor for create-only mode
 By setting the `CREATE_ONLY_MODE` environment variable, users can prevent the Operator from reconciling updates. This allows for manual resource modification without interference. If this mode is disabled, the Operator resumes enforcing the state and overwrites any manual changes.
@@ -148,17 +180,17 @@ Enhanced status reporting
 Operator metrics
 - Operator metrics are now exposed and secured with appropriate RBAC configuration.
 
-- Integration is supported with the OpenShift monitoring stack.
+- Integration is supported with the OpenShift Container Platform monitoring stack.
 
 ## Fixed issues
 
 Enhanced Security Context Constraints for SPIRE Agent
-Before this update, the SPIRE Agent and SPIFFE CSI Driver containers were running as root user, leading to potential security violations. With this release, Security Context Constraints (SCC) have been configured to ensure these components no longer run as root. While privileged container mode is still required for necessary capabilities, this change reduces potential security risks for the user.
+- Before this update, the SPIRE Agent and SPIFFE CSI Driver containers were running as root user, leading to potential security violations. With this release, Security Context Constraints (SCC) have been configured to ensure these components no longer run as root. While privileged container mode is still required for necessary capabilities, this change reduces potential security risks for the user.
 
-([SPIRE-60](https://issues.redhat.com/browse/SPIRE-60))
+  ([SPIRE-60](https://issues.redhat.com/browse/SPIRE-60))
 
 SpireServer updates now propagate without Operator restart
-- Before this update, the Operator failed to trigger reconciliation after updating the Operand CR spec. As a consequence, user updates to the `SpireServer` CR resources were not propagated to the StatefulSet pods, causing reconciliation to fail and changes to be ignored, leading to inconsistent resource allocation. With this release, the race condition between the manager and reconciler’s cache to trigger reconciliation after CR updates has been fixed. As a result, any patches applied to the `SpireServer` CRs reliably trigger reconciliation, ensuring updated values are applied to the StatefulSet pods without manual Operator restart.
+- Before this update, the Operator failed to trigger reconciliation after updating the operand CR spec. As a consequence, user updates to `SpireServer` CR resources were not propagated to the `StatefulSet`, causing reconciliation to fail and changes to be ignored, leading to inconsistent resource allocation. With this release, the race condition between the manager and reconciler’s cache to trigger reconciliation after CR updates has been fixed. As a result, post installation patch operations on `SpireServer` CRs reliably trigger reconciliation, ensuring updated values are applied to the StatefulSet without manual Operator restart.
 
   ([SPIRE-68](https://issues.redhat.com/browse/SPIRE-68))
 
@@ -168,12 +200,12 @@ Removed unnecessary security context constraint for OpenID Connect discovery pro
   ([SPIRE-190](https://issues.redhat.com/browse/SPIRE-190))
 
 Fixed ConfigMap Reconciliation for SPIRE Controller Manager
-Before this update, Spire-controller manager ConfigMap reconciliation failed due to an unhandled edge case in the previous implementation. As a consequence, users experienced configuration inconsistencies. With this release, the Spire-controller manager ConfigMap reconciliation issue has been resolved. As a result, users now experience seamless Spire-controller manager configuration.
+- Before this update, Spire-controller manager ConfigMap reconciliation failed due to an unhandled edge case in the previous implementation. As a consequence, users experienced configuration inconsistencies. With this release, the Spire-controller manager ConfigMap reconciliation issue has been resolved. As a result, end users now experience seamless Spire-controller manager configuration.
 
-([SPIRE-195](https://issues.redhat.com/browse/SPIRE-195))
+  ([SPIRE-195](https://issues.redhat.com/browse/SPIRE-195))
 
 OIDC discovery provider now restarts automatically on configuration changes
-- Before this update, the SPIRE OIDC discovery provider failed to automatically restart following `configmap` changes, leading to persistent authentication failures. With this release, updates to the CR now trigger an automatic pod restart, ensuring that `configmap` changes are applied immediately, providing a seamless experience for end users.
+- Before this update, the SPIRE OIDC discovery provider failed to automatically restart following `configmap` changes, leading to persistent authentication failures. With this release, updates to the CR now trigger an automatic pod restart, ensuring that `configmap` changes are applied immediately.
 
   ([SPIRE-225](https://issues.redhat.com/browse/SPIRE-225))
 
@@ -188,13 +220,11 @@ Corrected update rollback for DaemonSets, Deployments, and StatefulSets
 
   - Eliminated requeue logic for user input validation errors.
 
-# Zero Trust Workload Identity Manager 0.2.0
+# Zero Trust Workload Identity Manager 0.2.0 (General Availability)
 
-Issued: 2025-09-08
+Issued: 09 August 2025
 
-This release introduces supoort for the OIDC Discovery Provider route, as well as enabling Time-To-Live for the SPIRE bundle and enabling manual user configurations.
-
-The following advisories are available for the Zero Trust Workload Identity Manager.
+The following advisories are available for the Zero Trust Workload Identity Manager:
 
 - [RHBA-2025:15425](https://access.redhat.com/errata/RHBA-2025:15425)
 
@@ -207,7 +237,7 @@ The following advisories are available for the Zero Trust Workload Identity Mana
 ## New features and enhancements
 
 Support for the managed OIDC Discovery Provider Route
-- The Operator exposes the `SPIREOIDCDiscoveryProvider` spec through OpenShift Routes under the domain `*.apps.<cluster_domain>` for the selected default installation.
+- The Operator exposes the `SPIREOIDCDiscoveryProvider` spec through OpenShift Container Platform Routes under the domain `*.apps.<cluster_domain>` for the selected default installation.
 
 - The `managedRoute` and `externalSecretRef` fields have been added to the `spireOidcDiscoveryProvider` spec.
 
@@ -229,22 +259,20 @@ Enabling the custom Certificate Authority Time-To-Live for the SPIRE bundle
 Enabling Manual User Configurations
 - The Operator controller switches to `create-only` mode once the `ztwim.openshift.io/create-only=true` annotation is present on the Operator’s APIs. This allows resource creation while skipping the updates. A user can update the resources manually to test their configuration. This annotation supports APIs such as `SpireServer`, `SpireAgents`, `SpiffeCSIDriver`, `SpireOIDCDiscoveryProvider`, and `ZeroTrustWorkloadIdentityManager`.
 
-- When the annotation is applied, all derived resources including resources created and managed by the Operator.
+- When the annotation is applied, all derived resources including resources created and managed by the Operator are created but not updated.
 
-- Once the annotation is removed and the pod restarts, the Operator tries to come back to the required state. The annotation is applied only once during start or a restart.
+- After the annotation is removed and the pod restarts, the Operator tries to come back to the required state. The annotation is applied only once during start or a restart.
 
 ## Fixed issues
 
 JSON Web Token Issuer field now requires a valid URL
-- Before this update, the `JwtIssuer` field for both the `SpireServer` and the `SpireOidcDiscoveryProvider` did not need to be a URL causing an error in configurations. With this release, the user must manually enter an issuer URL in the `JwtIssuer` field in both custom resources.
+- Before this update, the `JwtIssuer` field for both the `SpireServer` and the `SpireOidcDiscoveryProvider` custom resources did not require the input to be a URL, frequently causing configuration errors. With this release, the validation has been updated, and users must now manually enter a valid issuer URL in the `JwtIssuer` field for both custom resources. As a result, misconfigurations caused by a malformed issuer values are prevented, ensuring a stable and reliable setup.
 
   ([SPIRE-117](https://issues.redhat.com/browse/SPIRE-117))
 
-# Zero Trust Workload Identity Manager 0.1.0
+# Zero Trust Workload Identity Manager 0.1.0 (General Availability)
 
-Issued: 2025-06-16
-
-This is the first release of Zero Trust Workload Identity Manager.
+Issued: 16 June 2025
 
 The following advisories are available for the Zero Trust Workload Identity Manager:
 
@@ -263,7 +291,3 @@ The following advisories are available for the Zero Trust Workload Identity Mana
 - [RHBA-2025:9101](https://access.redhat.com/errata/RHBA-2025:9101)
 
 - [RHBA-2025:9104](https://access.redhat.com/errata/RHBA-2025:9104)
-
-## New features and enhancements
-
-There are no new features and enhancements for this release.

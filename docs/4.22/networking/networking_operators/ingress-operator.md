@@ -1002,7 +1002,7 @@ The following procedure provides an example for scaling up the default Ingress C
 
 - [Installing the custom metrics autoscaler](../../nodes/cma/nodes-cma-autoscaling-custom-install.xml#nodes-cma-autoscaling-custom-install_nodes-cma-autoscaling-custom-install)
 
-- [Enabling monitoring for user-defined projects](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_user_workload_monitoring/preparing-to-configure-the-monitoring-stack-uwm#enabling-monitoring-for-user-defined-projects-uwm_preparing-to-configure-the-monitoring-stack-uwm)
+- [Enabling monitoring for user-defined projects](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/configuring_user_workload_monitoring/preparing-to-configure-the-monitoring-stack-uwm#enabling-monitoring-for-user-defined-projects-uwm_preparing-to-configure-the-monitoring-stack-uwm)
 
 - [Understanding custom metrics autoscaler trigger authentications](../../nodes/cma/nodes-cma-autoscaling-custom-trigger-auth.xml#nodes-cma-autoscaling-custom-trigger-auth)
 

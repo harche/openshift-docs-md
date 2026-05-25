@@ -83,7 +83,11 @@ You must use [Microsoft PowerShell](https://docs.microsoft.com/en-us/powershell/
 
 </div>
 
-1.  Select a compatible Windows Server version. Currently, the Windows Machine Config Operator (WMCO) stable version supports Windows Server 2022 Long-Term Servicing Channel with the OS-level container networking patch [KB5012637](https://support.microsoft.com/en-us/topic/april-25-2022-kb5012637-os-build-20348-681-preview-2233d69c-d4a5-4be9-8c24-04a450861a8d).
+1.  Select a compatible Windows Server version. Currently, the Windows Machine Config Operator (WMCO) stable version supports the following versions:
+
+    - Windows Server 2025 Long-Term Servicing Channel
+
+    - Windows Server 2022 Long-Term Servicing Channel with the OS-level container networking patch [KB5012637, Microsoft Windows documentation](https://support.microsoft.com/en-us/topic/april-25-2022-kb5012637-os-build-20348-681-preview-2233d69c-d4a5-4be9-8c24-04a450861a8d).
 
 2.  Create a new VM in the vSphere client using the VM golden image with a compatible Windows Server version. For more information about compatible versions, see the "Windows Machine Config Operator prerequisites" section of the "Red Hat OpenShift support for Windows Containers release notes."
 

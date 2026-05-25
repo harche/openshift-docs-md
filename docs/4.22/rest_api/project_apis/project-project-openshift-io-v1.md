@@ -12,13 +12,13 @@ Type
 
 # Specification
 
-| Property     | Type                                                                                       | Description                                                                                                                                                                                                                                                                                          |
-|--------------|--------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `apiVersion` | `string`                                                                                   | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
-| `kind`       | `string`                                                                                   | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata`   | [`ObjectMeta_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta_v2) | metadata is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                |
-| `spec`       | `object`                                                                                   | ProjectSpec describes the attributes on a Project                                                                                                                                                                                                                                                    |
-| `status`     | `object`                                                                                   | ProjectStatus is information about the current status of a Project                                                                                                                                                                                                                                   |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | metadata is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                |
+| `spec`       | `object`                                                                             | ProjectSpec describes the attributes on a Project                                                                                                                                                                                                                                                    |
+| `status`     | `object`                                                                             | ProjectStatus is information about the current status of a Project                                                                                                                                                                                                                                   |
 
 ## .spec
 
@@ -30,7 +30,7 @@ Type
 
 | Property     | Type             | Description                                                                                         |
 |--------------|------------------|-----------------------------------------------------------------------------------------------------|
-| `finalizers` | `array (string)` | Finalizers is an opaque list of values that must be empty to permanently remove object from storage |
+| `finalizers` | `array (string)` | finalizers is an opaque list of values that must be empty to permanently remove object from storage |
 
 ## .status
 
@@ -56,13 +56,13 @@ Type
 <tbody>
 <tr class="odd">
 <td style="text-align: left;"><p><code>conditions</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-NamespaceCondition_v2"><code>array (NamespaceCondition_v2)</code></a></p></td>
+<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-NamespaceCondition"><code>array (NamespaceCondition)</code></a></p></td>
 <td style="text-align: left;"><p>Represents the latest available observations of the project current state.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>phase</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>Phase is the current lifecycle phase of the project</p>
+<td style="text-align: left;"><p>phase is the current lifecycle phase of the project</p>
 <p>Possible enum values: - <code>"Active"</code> means the namespace is available for use in the system - <code>"Terminating"</code> means the namespace is undergoing graceful termination</p></td>
 </tr>
 </tbody>
@@ -174,11 +174,11 @@ delete a Project
 
 Query parameters
 
-| HTTP code          | Reponse body                                                                        |
-|--------------------|-------------------------------------------------------------------------------------|
-| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty                                                                               |
+| HTTP code          | Reponse body                                                                              |
+|--------------------|-------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v2) schema |
+| 202 - Accepted     | [`Status_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v2) schema |
+| 401 - Unauthorized | Empty                                                                                     |
 
 HTTP responses
 

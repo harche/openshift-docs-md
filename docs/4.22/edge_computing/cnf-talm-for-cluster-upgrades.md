@@ -1,6 +1,6 @@
 You can use the Topology Aware Lifecycle Manager (TALM) to manage the software lifecycle of multiple clusters. TALM uses Red Hat Advanced Cluster Management (RHACM) policies to perform changes on the target clusters.
 
-Using RHACM and `PolicyGenerator` CRs is the recommended approach for managing policies and deploying them to managed clusters. This replaces the use of `PolicyGenTemplate` CRs for this purpose. For more information about `PolicyGenerator` resources, see the RHACM [Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/governance/policy-deployment#integrate-policy-generator) documentation.
+Using RHACM and `PolicyGenerator` CRs is the recommended approach for managing policies and deploying them to managed clusters. This replaces the use of `PolicyGenTemplate` CRs for this purpose. For more information about `PolicyGenerator` resources, see the RHACM [Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html/governance/policy-deployment#integrate-policy-generator) documentation.
 
 # About the Topology Aware Lifecycle Manager configuration
 
@@ -42,7 +42,7 @@ Using the `PolicyGentemplate` CRD is the recommended method for automatic policy
 
 For policies that update an Operator subscription with manual approval, TALM provides additional functionality that approves the installation of the updated Operator.
 
-For more information about managed policies, see [Policy Overview](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/governance/index#policy-overview) in the RHACM documentation.
+For more information about managed policies, see [Policy Overview](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#policy-overview) in the RHACM documentation.
 
 - [About the PolicyGenerator CRD](../edge_computing/policygenerator_for_ztp/ztp-configuring-managed-clusters-policygenerator.xml#ztp-the-policygentemplate_ztp-configuring-managed-clusters-policygenerator)
 
@@ -1066,7 +1066,7 @@ spec:
   remediationAction: inform
 ```
 
-For more information about RHACM policies, see [Policy overview](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/governance/index#policy-overview).
+For more information about RHACM policies, see [Policy overview](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#policy-overview).
 
 - [About the PolicyGenerator CRD](../edge_computing/policygenerator_for_ztp/ztp-configuring-managed-clusters-policygenerator.xml#ztp-the-policygentemplate_ztp-configuring-managed-clusters-policygenerator)
 

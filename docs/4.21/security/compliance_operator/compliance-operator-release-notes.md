@@ -2,63 +2,65 @@ The Compliance Operator lets OpenShift Container Platform administrators describ
 
 These release notes track the development of the Compliance Operator in the OpenShift Container Platform.
 
-For an overview of the Compliance Operator, see [Understanding the Compliance Operator](../../security/compliance_operator/co-concepts/compliance-operator-understanding.xml#understanding-compliance-operator).
+# Release notes for OpenShift Compliance Operator 1.9.0
 
-To access the latest release, see [Updating the Compliance Operator](../../security/compliance_operator/co-management/compliance-operator-updating.xml#olm-preparing-upgrade_compliance-operator-updating).
+Release notes for OpenShift Compliance Operator 1.9.0.
 
-For more information on compliance support for all Red Hat products, see [Product Compliance](https://access.redhat.com/compliance).
-
-# OpenShift Compliance Operator 1.9.0
-
-The following advisory is available for the OpenShift Compliance Operator 1.9.0:
+The following Red Hat Security Advisory (RHSA) is available for the OpenShift Compliance Operator 1.9.0:
 
 - [RHSA-2026:8433 - OpenShift Compliance Operator 1.9.0 bug fix and enhancement update](https://access.redhat.com/errata/RHSA-2026:8433)
 
 ## New features and enhancements
 
-- With this update, the Compliance Operator has extended the Common Expression Language (CEL) scanner to `Rules`, in Technology Preview status. CEL does not replace the existing XCCDF (Extensible Configuration Checklist Description Format) profiles but extends the ability to comply with custom security policies. For more information, see ([CMP-4134](https://issues.redhat.com/browse/CMP-4134)).
+- With this update, the Compliance Operator has extended the Common Expression Language (CEL) scanner to `Rules`, in Technology Preview status. CEL does not replace the existing Extensible Configuration Checklist Description Format (XCCDF) profiles but extends the ability to comply with custom security policies. For more information, see ([CMP-4134](https://issues.redhat.com/browse/CMP-4134)).
 
 - With this release, the Compliance Operator now allows custom attributes defined in `ComplianceRule` objects to be automatically propagated to the corresponding `ComplianceCheckResult` objects. For more information, see ([CMP-3974](https://redhat.atlassian.net/browse/CMP-3974)).
 
-- With this release, the Compliance Operator now supports CIS OpenShift benchmark version 1.9.0. Version 1.7.0 is now deprecated. For more information, see ([CMP-3520](https://redhat.atlassian.net/browse/CMP-3520)).
+- With this release, the Compliance Operator now supports Center for Internet Security (CIS) OpenShift benchmark version 1.9.0. Version 1.7.0 is now deprecated. For more information, see ([CMP-3520](https://redhat.atlassian.net/browse/CMP-3520)).
 
-## Bug Fixes
+## Bug fixes
 
 - Before this release, Compliance Operator would create an unbound `ServiceAccount` token used for metrics access. This could raise a security concern over an unused token. With this release, the unbound `ServiceAccount` token is not created. For more information, see ([CMP-3743](https://issues.redhat.com/browse/CMP-3743)).
 
-- Before this release, File Integrity Operator (FIO) would fail when it is installed before Compliance Operator (CO) is installed and runs the first CO scan. With this release, FIO and CO run correctly when both are installed. For more information, see ([CMP-4112](https://issues.redhat.com/browse/CMP-4112)).
+- Before this release, File Integrity Operator (FIO) would fail when you installed FIO before Compliance Operator (CO) and CO ran the first scan. With this release, FIO and CO run correctly when both are installed. For more information, see ([CMP-4112](https://issues.redhat.com/browse/CMP-4112)).
 
-- Before this release, if `ScanSettings` were configured to disable result storage and a platform scan was then performed after the change, the scan would hang and time out. Now, if `ScanSettings` are configured to disable result storage, the platform scan will continue to completion. For more information, see ([CMP-4116](https://issues.redhat.com/browse/CMP-4116)).
+- Before this release, if you configured `ScanSettings` to disable result storage and then ran a platform scan, the scan would hang and time out. Now, if you configure `ScanSettings` to disable result storage, the platform scan continues to completion. For more information, see ([CMP-4116](https://issues.redhat.com/browse/CMP-4116)).
 
-- Previously, `ProfileBundle` objects could become stuck in a PENDING state indefinitely during Operator upgrades or content image changes. This would require manual intervention to resolve, such as deleting the `profileparser` deployment or restarting the Operator. With this release, the `ProfileBundle` controller now detects and automatically recovers from this condition with no user action required. This improvement is transparent and does not affect any APIs, custom resources, or configuration. For more information, see ([CMP-4117](https://issues.redhat.com/browse/CMP-4117)).
+- Before this release, `ProfileBundle` objects could become stuck in a PENDING state indefinitely during Operator upgrades or content image changes. This would require manual intervention to resolve, such as deleting the `profileparser` deployment or restarting the Operator. With this release, the `ProfileBundle` controller now detects and automatically recovers from this condition with no user action required. This improvement is transparent and does not affect any APIs, custom resources, or configuration. For more information, see ([CMP-4117](https://issues.redhat.com/browse/CMP-4117)).
 
-- Before this release, Compliance Operator rules did not add the proper annotation for rules selected in CIS profiles, which resulted in absence of the annotation and results not being displayed in ACS. Now, when annotations are added, the checks appear in the final ACS report and the compliance dashboard with the correct control tag. For more information, see ([CMP-4120](https://issues.redhat.com/browse/CMP-4120)).
+- Before this release, Compliance Operator rules did not add the proper annotation for rules selected in CIS profiles, which resulted in absence of the annotation and results not appearing in Red Hat Advanced Cluster Security (ACS). Now, when annotations are added, the checks appear in the final ACS report and the compliance dashboard with the correct control tag. For more information, see ([CMP-4120](https://issues.redhat.com/browse/CMP-4120)).
 
-# OpenShift Compliance Operator 1.8.2
+# Release notes for OpenShift Compliance Operator 1.8.2
 
-The following advisory is available for the OpenShift Compliance Operator 1.8.2:
+Release notes for OpenShift Compliance Operator 1.8.2.
+
+The following Red Hat Security Advisory (RHSA) is available for the OpenShift Compliance Operator 1.8.2:
 
 - [RHSA-2026:1859 - OpenShift Compliance Operator 1.8.2 bug fix and enhancement update](https://access.redhat.com/errata/RHSA-2026:1859)
 
-## Bug Fixes
+## Bug fixes
 
 - Red Hat recommends that customers upgrade to version 1.8.2 of Compliance Operator. For more information, see ([CVE-2025-68973](https://access.redhat.com/security/cve/cve-2025-68973)).
 
-# OpenShift Compliance Operator 1.8.1
+# Release notes for OpenShift Compliance Operator 1.8.1
 
-The following advisory is available for the OpenShift Compliance Operator 1.8.1:
+Release notes for OpenShift Compliance Operator 1.8.1.
+
+The following Red Hat Security Advisory (RHSA) is available for the OpenShift Compliance Operator 1.8.1:
 
 - [RHSA-2026:0737 - OpenShift Compliance Operator 1.8.1 bug fix and enhancement update](https://access.redhat.com/errata/RHSA-2026:0737)
 
-## Bug Fixes
+## Bug fixes
 
 - Before this release, Compliance Operator could cause a privilege escalation due to incorrect permissions on `/etc/passwd`. With this release, the permissions have been corrected. For more information, see ([CVE-2025-7195](https://access.redhat.com/security/cve/cve-2025-7195)).
 
 - Previously, Compliance Operator scans using rhcos4 profile would incorrectly return `NOT-APPLICABLE` scan results when using Red Hat Enterprise Linux CoreOS (RHCOS) 10 systems. With this release, scans using rhcos4 profiles return `COMPLIANT` and `NON-COMPLIANT` results. For more information, see ([CMP-4034](https://issues.redhat.com/browse/CMP-4034)).
 
-# OpenShift Compliance Operator 1.8.0
+# Release notes for OpenShift Compliance Operator 1.8.0
 
-The following advisory is available for the OpenShift Compliance Operator 1.8.0:
+Release notes for OpenShift Compliance Operator 1.8.0.
+
+The following Red Hat Security Advisory (RHSA) is available for the OpenShift Compliance Operator 1.8.0:
 
 - [RHSA-2025:21885 - OpenShift Compliance Operator 1.8.0 bug fix and enhancement update](https://access.redhat.com/errata/RHSA-2025:21885)
 
@@ -78,15 +80,15 @@ The following advisory is available for the OpenShift Compliance Operator 1.8.0:
 
 - With this release, automatic remediation for API server encryption now applies the appropriate encryption mode based on OpenShift version: AES-GCM for OpenShift 4.13.0 and higher versions, AES-CBC for earlier versions. Both encryption modes remain compliant across all OpenShift versions. For more information, see ([CMP-3248](https://issues.redhat.com/browse/CMP-3248)).
 
-- Prior to this release, Compliance Operator would remediate SSH settings on RHCOS hosts by deploying a fixed sshd_config file containing all SSH hardening settings. If the scan for corresponding rules failed, this could result in unintended configuration changes to SSH. With this release, Compliance Operator applies very specific remediations to SSH according to the rules shown in <https://github.com/ComplianceAsCode/content/blob/master/shared/macros/10-kubernetes.jinja#L1-L154>. For more information, see ([CMP-3553](https://issues.redhat.com/browse/CMP-3553)).
+- Before this release, Compliance Operator would remediate SSH settings on RHCOS hosts by deploying a fixed sshd_config file containing all SSH hardening settings. If the scan for corresponding rules failed, this could result in unintended configuration changes to SSH. With this release, Compliance Operator applies very specific remediations to SSH according to the ComplianceAsCode shared Kubernetes macros. For more information, see ([CMP-3553](https://issues.redhat.com/browse/CMP-3553)).
 
 - For prior versions of Compliance Operator, the log rotation function depended on finding the `logrotate` file in the `/etc/cron.daily` folder. With this release, Compliance Operator works with the `logrotate.timer` service. This provides reliable log rotation behavior from Compliance Operator.
 
 - For previous versions of Compliance Operator, it is possible for the `STIG ID` to be omitted from the compliance report. These omissions were caused by missing `stigref` and `stigid` values. With this release, the omissions have been corrected and now `STIG ID` reliably shows up in the compliance report.
 
-- Prior to this release, Compliance Operator STIG control CNTR-OS-000720 selected rule `rhcos4-audit-rules-suid-privilege-function`, but since the rule was not available in Compliance Operator, no output was generated. With this release, the rule, `rhcos4-audit-rules-suid-privilege-function` is now available in Compliance Operator and listed in the scan output. For more information, see ([CMP-3558](https://issues.redhat.com/browse/CMP-3558)).
+- Before this release, Compliance Operator STIG control `CNTR-OS-000720` selected rule `rhcos4-audit-rules-suid-privilege-function`, but since the rule was not available in Compliance Operator, no output was generated. With this release, the rule, `rhcos4-audit-rules-suid-privilege-function` is now available in Compliance Operator and listed in the scan output. For more information, see ([CMP-3558](https://issues.redhat.com/browse/CMP-3558)).
 
-- In previous versions of Compliance Operator, scanning with the `ocp4-stig` profile would fail for the rule `ocp4-stig-modified-audit-log-forwarding-uses-tls` even if TLS is enabled correctly. This would occur because the `tls://` field is no longer required by the `ClusterLogForwarder` resource, causing the scan output to show an incorrect `FAIL` result. With this release, the protocol prefix is not required and the scan output produces correct results. For more information, see ([routes-protected-by-tls compliance check failing when ODF 4.11 is installed](https://access.redhat.com/solutions/7016445)).
+- In previous versions of Compliance Operator, scanning with the `ocp4-stig` profile would fail for the rule `ocp4-stig-modified-audit-log-forwarding-uses-tls` even if TLS is enabled correctly. This would occur because the `tls://` field is no longer required by the `ClusterLogForwarder` resource, causing the scan output to show an incorrect `FAIL` result. With this release, the protocol prefix is not required and the scan output produces correct results. For more information, see ([routes-protected-by-tls compliance check failing when Red Hat OpenShift Data Foundation 4.11 is installed](https://access.redhat.com/solutions/7016445)).
 
 - Previously, there was no automated method to check if API servers were using unsupported configuration overrides as recommended by CIS Benchmark control 1.2.31 or 1.2.33. This release provides dedicated rules for checking for unsupported configuration overrides.
 
@@ -108,11 +110,13 @@ The following advisory is available for the OpenShift Compliance Operator 1.8.0:
 
 - In prior versions of Compliance Operator, creating `ComplianceScans` directly with custom content images failed during the profile deprecation check. With this release, Compliance Operator gracefully handles cases where the `ProfileBundle` cannot be determined, logging an informational message instead of failing the scan. For more information, see ([CMP-3613](https://issues.redhat.com/browse/CMP-3613)).
 
-- Previously, Compliance Operator scanned incorrectly flagged passthrough routes as NON-COMPLIANT with the `ocp4-routes-protected-by-tls` rule. With this release, passthrough routes are properly excluded from this rule because they delegate TLS termination to the backend application.
+- Previously, Compliance Operator scanned incorrectly flagged passthrough routes as noncompliant with the `ocp4-routes-protected-by-tls` rule. With this release, passthrough routes are properly excluded from this rule because they delegate TLS termination to the backend application.
 
-# OpenShift Compliance Operator 1.7.1
+# Release notes for OpenShift Compliance Operator 1.7.1
 
-The following advisory is available for the OpenShift Compliance Operator 1.7.1:
+Release notes for OpenShift Compliance Operator 1.7.1.
+
+The following Red Hat Bug Fix Advisory (RHBA) is available for the OpenShift Compliance Operator 1.7.1:
 
 - [RHBA-2025:14639 - OpenShift Compliance Operator 1.7.1 bug fix update](https://access.redhat.com/errata/RHBA-2025:14639)
 
@@ -126,9 +130,11 @@ The OpenShift Compliance Operator 1.7.1 supports PCI-DSS versions 3.2.1 and 4.0.
 
 - Previously, the Compliance Operator’s `pauser` container could be terminated due to running out of memory, showing the status `OOMKilled`. With this update, the memory limit for the `pauser` container is increased to prevent the error and improve overall stability. ([OCPBUGS-50924](https://issues.redhat.com/browse/OCPBUGS-50924))
 
-# OpenShift Compliance Operator 1.7.0
+# Release notes for OpenShift Compliance Operator 1.7.0
 
-The following advisory is available for the OpenShift Compliance Operator 1.7.0:
+Release notes for OpenShift Compliance Operator 1.7.0.
+
+The following Red Hat Bug Fix Advisory (RHBA) is available for the OpenShift Compliance Operator 1.7.0:
 
 - [RHBA-2025:3728 - OpenShift Compliance Operator 1.7.0 bug fix and enhancement update](https://access.redhat.com/errata/RHBA-2025:3728)
 
@@ -170,25 +176,31 @@ The following advisory is available for the OpenShift Compliance Operator 1.7.0:
 
 - Previously, the rule `file-groupowner-ovs-conf-db-hugetlbf` would fail unexpectedly. With this release, the rule fails only when this is the needed result. ([OCPBUGS-55190](http://issues.redhat.com/browse/OCPBUGS-55180))
 
-# OpenShift Compliance Operator 1.6.2
+# Release notes for OpenShift Compliance Operator 1.6.2
 
-The following advisory is available for the OpenShift Compliance Operator 1.6.2:
+Release notes for OpenShift Compliance Operator 1.6.2.
+
+The following Red Hat Bug Fix Advisory (RHBA) is available for the OpenShift Compliance Operator 1.6.2:
 
 - [RHBA-2025:2659 - OpenShift Compliance Operator 1.6.2 update](https://access.redhat.com/errata/RHBA-2025:2659)
 
 CVE-2024-45338 is resolved in the Compliance Operator 1.6.2 release. ([CVE-2024-45338](https://access.redhat.com/security/cve/cve-2024-45338))
 
-# OpenShift Compliance Operator 1.6.1
+# Release notes for OpenShift Compliance Operator 1.6.1
 
-The following advisory is available for the OpenShift Compliance Operator 1.6.1:
+Release notes for OpenShift Compliance Operator 1.6.1.
+
+The following Red Hat Bug Fix Advisory (RHBA) is available for the OpenShift Compliance Operator 1.6.1:
 
 - [RHBA-2024:10367 - OpenShift Compliance Operator 1.6.1 update](https://access.redhat.com/errata/RHBA-2024:10367)
 
 This update includes upgraded dependencies in underlying base images.
 
-# OpenShift Compliance Operator 1.6.0
+# Release notes for OpenShift Compliance Operator 1.6.0
 
-The following advisory is available for the OpenShift Compliance Operator 1.6.0:
+Release notes for OpenShift Compliance Operator 1.6.0.
+
+The following Red Hat Bug Fix Advisory (RHBA) is available for the OpenShift Compliance Operator 1.6.0:
 
 - [RHBA-2024:6761 - OpenShift Compliance Operator 1.6.0 bug fix and enhancement update](https://access.redhat.com/errata/RHBA-2024:6761)
 
@@ -220,15 +232,19 @@ The following advisory is available for the OpenShift Compliance Operator 1.6.0:
 
 - Previously, when upgrading to Compliance Operator 1.5.1, an incorrectly referenced secret in a `ServiceMonitor` configuration caused integration issues with the Prometheus Operator. With this update, the Compliance Operator will accurately reference the secret containing the token for `ServiceMonitor` metrics. ([OCPBUGS-39417](https://issues.redhat.com/browse/OCPBUGS-39417))
 
-# OpenShift Compliance Operator 1.5.1
+# Release notes for OpenShift Compliance Operator 1.5.1
 
-The following advisory is available for the OpenShift Compliance Operator 1.5.1:
+Release notes for OpenShift Compliance Operator 1.5.1.
+
+The following Red Hat Bug Fix Advisory (RHBA) is available for the OpenShift Compliance Operator 1.5.1:
 
 - [RHBA-2024:5956 - OpenShift Compliance Operator 1.5.1 bug fix and enhancement update](https://access.redhat.com/errata/RHBA-2024:5956)
 
-# OpenShift Compliance Operator 1.5.0
+# Release notes for OpenShift Compliance Operator 1.5.0
 
-The following advisory is available for the OpenShift Compliance Operator 1.5.0:
+Release notes for OpenShift Compliance Operator 1.5.0.
+
+The following Red Hat Bug Fix Advisory (RHBA) is available for the OpenShift Compliance Operator 1.5.0:
 
 - [RHBA-2024:3533 - OpenShift Compliance Operator 1.5.0 bug fix and enhancement update](https://access.redhat.com/errata/RHBA-2024:3533)
 
@@ -246,9 +262,11 @@ The following advisory is available for the OpenShift Compliance Operator 1.5.0:
 
 - With this release, namespaces can be excluded from the `ocp4-configure-network-policies-namespaces` check by setting the `ocp4-var-network-policies-namespaces-exempt-regex` variable in the tailored profile. ([**CMP-2543**](https://issues.redhat.com/browse/cmp-2543))
 
-# OpenShift Compliance Operator 1.4.1
+# Release notes for OpenShift Compliance Operator 1.4.1
 
-The following advisory is available for the OpenShift Compliance Operator 1.4.1:
+Release notes for OpenShift Compliance Operator 1.4.1.
+
+The following Red Hat Bug Fix Advisory (RHBA) is available for the OpenShift Compliance Operator 1.4.1:
 
 - [RHBA-2024:1830 - OpenShift Compliance Operator bug fix and enhancement update](https://access.redhat.com/errata/RHBA-2024:1830)
 
@@ -282,9 +300,11 @@ The following advisory is available for the OpenShift Compliance Operator 1.4.1:
 
 - Previously, on a HyperShift hosted cluster, a scan with the `ocp4-pci-dss profile` will run into an unrecoverable error due to a `filter cannot iterate` issue. With this release, the scan for the `ocp4-pci-dss` profile will reach `done` status and return either a `Compliance` or `Non-Compliance` test result. ([**OCPBUGS-33067**](https://issues.redhat.com/browse/OCPBUGS-33067))
 
-# OpenShift Compliance Operator 1.4.0
+# Release notes for OpenShift Compliance Operator 1.4.0
 
-The following advisory is available for the OpenShift Compliance Operator 1.4.0:
+Release notes for OpenShift Compliance Operator 1.4.0.
+
+The following Red Hat Bug Fix Advisory (RHBA) is available for the OpenShift Compliance Operator 1.4.0:
 
 - [RHBA-2023:7658 - OpenShift Compliance Operator bug fix and enhancement update](https://access.redhat.com/errata/RHBA-2023:7658)
 
@@ -312,9 +332,11 @@ The following advisory is available for the OpenShift Compliance Operator 1.4.0:
 
 - Previously, upgrades from Compliance Operator 1.3.1 to Compliance Operator 1.4.0 would cause OVS rules scan results to go from `PASS` to `NOT-APPLICABLE`. With this update, OVS rules scan results now show `PASS` ([**OCPBUGS-25323**](https://issues.redhat.com/browse/OCPBUGS-25323))
 
-# OpenShift Compliance Operator 1.3.1
+# Release notes for OpenShift Compliance Operator 1.3.1
 
-The following advisory is available for the OpenShift Compliance Operator 1.3.1:
+Release notes for OpenShift Compliance Operator 1.3.1.
+
+The following Red Hat Bug Fix Advisory (RHBA) is available for the OpenShift Compliance Operator 1.3.1:
 
 - [RHBA-2023:5669 - OpenShift Compliance Operator bug fix and enhancement update](https://access.redhat.com/errata/RHBA-2023:5669)
 
@@ -336,9 +358,11 @@ This update addresses a CVE in an underlying dependency.
 
 - On a cluster with Windows nodes, some rules will FAIL after auto remediation is applied because the Windows nodes are not skipped by the compliance scan. This differs from the expected results because the Windows nodes must be skipped when scanning. ([**OCPBUGS-7355**](https://issues.redhat.com/browse/OCPBUGS-7355))
 
-# OpenShift Compliance Operator 1.3.0
+# Release notes for OpenShift Compliance Operator 1.3.0
 
-The following advisory is available for the OpenShift Compliance Operator 1.3.0:
+Release notes for OpenShift Compliance Operator 1.3.0.
+
+The following Red Hat Bug Fix Advisory (RHBA) is available for the OpenShift Compliance Operator 1.3.0:
 
 - [RHBA-2023:5102 - OpenShift Compliance Operator enhancement update](https://access.redhat.com/errata/RHBA-2023:5102)
 
@@ -348,9 +372,11 @@ The following advisory is available for the OpenShift Compliance Operator 1.3.0:
 
 - Compliance Operator 1.3.0 now supports IBM Power® and IBM Z® for NIST 800-53 Moderate-Impact Baseline for OpenShift Container Platform platform and node profiles.
 
-# OpenShift Compliance Operator 1.2.0
+# Release notes for OpenShift Compliance Operator 1.2.0
 
-The following advisory is available for the OpenShift Compliance Operator 1.2.0:
+Release notes for OpenShift Compliance Operator 1.2.0.
+
+The following Red Hat Bug Fix Advisory (RHBA) is available for the OpenShift Compliance Operator 1.2.0:
 
 - [RHBA-2023:4245 - OpenShift Compliance Operator enhancement update](https://access.redhat.com/errata/RHBA-2023:4245)
 
@@ -368,9 +394,11 @@ The following advisory is available for the OpenShift Compliance Operator 1.2.0:
 
 - Additional clarity for auditing security context constraints (SCCs) is now available for the `scc-limit-container-allowed-capabilities` rule.
 
-# OpenShift Compliance Operator 1.1.0
+# Release notes for OpenShift Compliance Operator 1.1.0
 
-The following advisory is available for the OpenShift Compliance Operator 1.1.0:
+Release notes for OpenShift Compliance Operator 1.1.0.
+
+The following Red Hat Bug Fix Advisory (RHBA) is available for the OpenShift Compliance Operator 1.1.0:
 
 - [RHBA-2023:3630 - OpenShift Compliance Operator bug fix and enhancement update](https://access.redhat.com/errata/RHBA-2023:3630)
 
@@ -422,9 +450,11 @@ The following advisory is available for the OpenShift Compliance Operator 1.1.0:
 
 - Before this update, a new installation of OpenShift Container Platform with the latest Compliance Operator install failed on the `scheduler-no-bind-address` rule. With this update, the `scheduler-no-bind-address` rule has been disabled on newer versions of OpenShift Container Platform since the parameter was removed. ([**OCPBUGS-8347**](https://issues.redhat.com/browse/OCPBUGS-8347))
 
-# OpenShift Compliance Operator 1.0.0
+# Release notes for OpenShift Compliance Operator 1.0.0
 
-The following advisory is available for the OpenShift Compliance Operator 1.0.0:
+Release notes for OpenShift Compliance Operator 1.0.0.
+
+The following Red Hat Bug Fix Advisory (RHBA) is available for the OpenShift Compliance Operator 1.0.0:
 
 - [RHBA-2023:1682 - OpenShift Compliance Operator bug fix update](https://access.redhat.com/errata/RHBA-2023:1682)
 
@@ -436,13 +466,15 @@ The following advisory is available for the OpenShift Compliance Operator 1.0.0:
 
 - Before this update, the compliance_operator_compliance_scan_error_total metric had an ERROR label with a different value for each error message. With this update, the compliance_operator_compliance_scan_error_total metric does not increase in values. ([**OCPBUGS-1803**](https://issues.redhat.com/browse/OCPBUGS-1803))
 
-- Before this update, the `ocp4-api-server-audit-log-maxsize` rule would result in a `FAIL` state. With this update, the error message has been removed from the metric, decreasing the cardinality of the metric in line with best practices. ([**OCPBUGS-7520**](https://issues.redhat.com/browse/OCPBUGS-7520))
+- Before this update, the `ocp4-api-server-audit-log-maxsize` rule would result in a `FAIL` state. With this update, the error message has been removed from the metric, decreasing the cardinality of the metric consistent with best practices. ([**OCPBUGS-7520**](https://issues.redhat.com/browse/OCPBUGS-7520))
 
 - Before this update, the `rhcos4-enable-fips-mode` rule description was misleading that FIPS could be enabled after installation. With this update, the `rhcos4-enable-fips-mode` rule description clarifies that FIPS must be enabled at install time. ([**OCPBUGS-8358**](https://issues.redhat.com/browse/OCPBUGS-8358))
 
-# OpenShift Compliance Operator 0.1.61
+# Release notes for OpenShift Compliance Operator 0.1.61
 
-The following advisory is available for the OpenShift Compliance Operator 0.1.61:
+Release notes for OpenShift Compliance Operator 0.1.61.
+
+The following Red Hat Bug Fix Advisory (RHBA) is available for the OpenShift Compliance Operator 0.1.61:
 
 - [RHBA-2023:0557 - OpenShift Compliance Operator bug fix update](https://access.redhat.com/errata/RHBA-2023:0557)
 
@@ -480,9 +512,11 @@ The following advisory is available for the OpenShift Compliance Operator 0.1.61
 
 - Before this update, the `selinux_confinement_of_daemons` rule failed running on the kubelet because of the permissions necessary for the kubelet to run. With this update, the `selinux_confinement_of_daemons` rule is disabled. ([**OCPBUGS-6968**](https://issues.redhat.com/browse/OCPBUGS-6968))
 
-# OpenShift Compliance Operator 0.1.59
+# Release notes for OpenShift Compliance Operator 0.1.59
 
-The following advisory is available for the OpenShift Compliance Operator 0.1.59:
+Release notes for OpenShift Compliance Operator 0.1.59.
+
+The following Red Hat Bug Fix Advisory (RHBA) is available for the OpenShift Compliance Operator 0.1.59:
 
 - [RHBA-2022:8538 - OpenShift Compliance Operator bug fix update](https://access.redhat.com/errata/RHBA-2022:8538)
 
@@ -496,9 +530,11 @@ The following advisory is available for the OpenShift Compliance Operator 0.1.59
 
 - Previously, after the recent update to version 0.1.57, the `rerunner` service account (SA) was no longer owned by the cluster service version (CSV), which caused the SA to be removed during the Operator upgrade. Now, the CSV owns the `rerunner` SA in 0.1.59, and upgrades from any previous version will not result in a missing SA. ([**OCPBUGS-3452**](https://issues.redhat.com/browse/OCPBUGS-3452))
 
-# OpenShift Compliance Operator 0.1.57
+# Release notes for OpenShift Compliance Operator 0.1.57
 
-The following advisory is available for the OpenShift Compliance Operator 0.1.57:
+Release notes for OpenShift Compliance Operator 0.1.57.
+
+The following Red Hat Bug Fix Advisory (RHBA) is available for the OpenShift Compliance Operator 0.1.57:
 
 - [RHBA-2022:6657 - OpenShift Compliance Operator bug fix update](https://access.redhat.com/errata/RHBA-2022:6657)
 
@@ -538,9 +574,11 @@ The following advisory is available for the OpenShift Compliance Operator 0.1.57
 
 - Specifying **Install into all namespaces in the cluster** or setting the `WATCH_NAMESPACES` environment variable to `""` no longer affects all namespaces. Any API resources installed in namespaces not specified at the time of Compliance Operator installation is no longer be operational. API resources might require creation in the selected namespace, or the `openshift-compliance` namespace by default. This change improves the Compliance Operator’s memory usage.
 
-# OpenShift Compliance Operator 0.1.53
+# Release notes for OpenShift Compliance Operator 0.1.53
 
-The following advisory is available for the OpenShift Compliance Operator 0.1.53:
+Release notes for OpenShift Compliance Operator 0.1.53.
+
+The following Red Hat Bug Fix Advisory (RHBA) is available for the OpenShift Compliance Operator 0.1.53:
 
 - [RHBA-2022:5537 - OpenShift Compliance Operator bug fix update](https://access.redhat.com/errata/RHBA-2022:5537)
 
@@ -582,9 +620,11 @@ The following advisory is available for the OpenShift Compliance Operator 0.1.53
 
   ([**BZ#2092913**](https://bugzilla.redhat.com/show_bug.cgi?id=2092913))
 
-# OpenShift Compliance Operator 0.1.52
+# Release notes for OpenShift Compliance Operator 0.1.52
 
-The following advisory is available for the OpenShift Compliance Operator 0.1.52:
+Release notes for OpenShift Compliance Operator 0.1.52.
+
+The following Red Hat Bug Fix Advisory (RHBA) is available for the OpenShift Compliance Operator 0.1.52:
 
 - [RHBA-2022:4657 - OpenShift Compliance Operator bug fix update](https://access.redhat.com/errata/RHBA-2022:4657)
 
@@ -614,9 +654,11 @@ The following advisory is available for the OpenShift Compliance Operator 0.1.52
 
   ([**BZ#2092913**](https://bugzilla.redhat.com/show_bug.cgi?id=2092913))
 
-# OpenShift Compliance Operator 0.1.49
+# Release notes for OpenShift Compliance Operator 0.1.49
 
-The following advisory is available for the OpenShift Compliance Operator 0.1.49:
+Release notes for OpenShift Compliance Operator 0.1.49.
+
+The following Red Hat Bug Fix Advisory (RHBA) is available for the OpenShift Compliance Operator 0.1.49:
 
 - [RHBA-2022:1148 - OpenShift Compliance Operator bug fix and enhancement update](https://access.redhat.com/errata/RHBA-2022:1148)
 
@@ -640,15 +682,17 @@ The following advisory is available for the OpenShift Compliance Operator 0.1.49
 
 - Previously, remediations using the `sshd jinja` macros were hard-coded to specific sshd configurations. As a result, the configurations were inconsistent with the content the rules were checking for and the check would fail. Now, the sshd configuration is parameterized and the rules apply successfully. ([**BZ#2049141**](https://bugzilla.redhat.com/show_bug.cgi?id=2049141))
 
-- Previously, the `ocp4-cluster-version-operator-verify-integrity` always checked the first entry in the Cluter Version Operator (CVO) history. As a result, the upgrade would fail in situations where subsequent versions of OpenShift Container Platform would be verified. Now, the compliance check result for `ocp4-cluster-version-operator-verify-integrity` is able to detect verified versions and is accurate with the CVO history. ([**BZ#2053602**](https://bugzilla.redhat.com/show_bug.cgi?id=2053602))
+- Previously, the `ocp4-cluster-version-operator-verify-integrity` always checked the first entry in the Cluster Version Operator (CVO) history. As a result, the upgrade would fail in situations where subsequent versions of OpenShift Container Platform would be verified. Now, the compliance check result for `ocp4-cluster-version-operator-verify-integrity` is able to detect verified versions and is accurate with the CVO history. ([**BZ#2053602**](https://bugzilla.redhat.com/show_bug.cgi?id=2053602))
 
 - Previously, the `ocp4-api-server-no-adm-ctrl-plugins-disabled` rule did not check for a list of empty admission controller plugins. As a result, the rule would always fail, even if all admission plugins were enabled. Now, more robust checking of the `ocp4-api-server-no-adm-ctrl-plugins-disabled` rule accurately passes with all admission controller plugins enabled. ([**BZ#2058631**](https://bugzilla.redhat.com/show_bug.cgi?id=2058631))
 
 - Previously, scans did not contain platform checks for running against Linux worker nodes. As a result, running scans against worker nodes that were not Linux-based resulted in a never ending scan loop. Now, the scan schedules appropriately based on platform type and labels complete successfully. ([**BZ#2056911**](https://bugzilla.redhat.com/show_bug.cgi?id=2056911))
 
-# OpenShift Compliance Operator 0.1.48
+# Release notes for OpenShift Compliance Operator 0.1.48
 
-The following advisory is available for the OpenShift Compliance Operator 0.1.48:
+Release notes for OpenShift Compliance Operator 0.1.48.
+
+The following Red Hat Bug Fix Advisory (RHBA) is available for the OpenShift Compliance Operator 0.1.48:
 
 - [RHBA-2022:0416 - OpenShift Compliance Operator bug fix and enhancement update](https://access.redhat.com/errata/RHBA-2022:0416)
 
@@ -658,9 +702,11 @@ The following advisory is available for the OpenShift Compliance Operator 0.1.48
 
 - Previously, a manually created `MachineConfig` object for `KubeletConfig` prevented a `KubeletConfig` object from being generated for remediation, leaving the remediation in the `Pending` state. With this release, a `KubeletConfig` object is created by the remediation, regardless if there is a manually created `MachineConfig` object for `KubeletConfig`. As a result, `KubeletConfig` remediations now work as expected. ([**BZ#2040401**](https://bugzilla.redhat.com/show_bug.cgi?id=2040401))
 
-# OpenShift Compliance Operator 0.1.47
+# Release notes for OpenShift Compliance Operator 0.1.47
 
-The following advisory is available for the OpenShift Compliance Operator 0.1.47:
+Release notes for OpenShift Compliance Operator 0.1.47.
+
+The following Red Hat Bug Fix Advisory (RHBA) is available for the OpenShift Compliance Operator 0.1.47:
 
 - [RHBA-2022:0014 - OpenShift Compliance Operator bug fix and enhancement update](https://access.redhat.com/errata/RHBA-2022:0014)
 
@@ -684,9 +730,11 @@ The following advisory is available for the OpenShift Compliance Operator 0.1.47
 
 - Previously, when rendering remediations, the compliance operator would check that the remediation was well-formed by using a regular expression that was too strict. As a result, some remediations, such as those that render `sshd_config`, would not pass the regular expression check and therefore, were not created. The regular expression was found to be unnecessary and removed. Remediations now render correctly. ([**BZ#2033009**](https://bugzilla.redhat.com/show_bug.cgi?id=2033009))
 
-# OpenShift Compliance Operator 0.1.44
+# Release notes for OpenShift Compliance Operator 0.1.44
 
-The following advisory is available for the OpenShift Compliance Operator 0.1.44:
+Release notes for OpenShift Compliance Operator 0.1.44.
+
+The following Red Hat Bug Fix Advisory (RHBA) is available for the OpenShift Compliance Operator 0.1.44:
 
 - [RHBA-2021:4530 - OpenShift Compliance Operator bug fix and enhancement update](https://access.redhat.com/errata/RHBA-2021:4530)
 
@@ -736,9 +784,11 @@ The following advisory is available for the OpenShift Compliance Operator 0.1.44
 
 - Previously, when using tailored profiles, `TailoredProfile` variable values were allowed to be set using only a specific selection set. This restriction is now removed, and `TailoredProfile` variables can be set to any value.
 
-# Release Notes for Compliance Operator 0.1.39
+# Release notes for OpenShift Compliance Operator 0.1.39
 
-The following advisory is available for the OpenShift Compliance Operator 0.1.39:
+Release Notes for Compliance Operator 0.1.39.
+
+The following Red Hat Bug Fix Advisory (RHBA) is available for the OpenShift Compliance Operator 0.1.39:
 
 - [RHBA-2021:3214 - OpenShift Compliance Operator bug fix and enhancement update](https://access.redhat.com/errata/RHBA-2021:3214)
 
@@ -746,8 +796,12 @@ The following advisory is available for the OpenShift Compliance Operator 0.1.39
 
 - Previously, the Compliance Operator was unable to parse Payment Card Industry Data Security Standard (PCI DSS) references. Now, the Operator can parse compliance content that is provided with PCI DSS profiles.
 
-- Previously, the Compliance Operator was unable to execute rules for AU-5 control in the moderate profile. Now, permission is added to the Operator so that it can read **Prometheusrules.monitoring.coreos.com** objects and run the rules that cover AU-5 control in the moderate profile.
+- Previously, the Compliance Operator was unable to run rules for AU-5 control in the moderate profile. Now, permission is added to the Operator so that it can read **Prometheusrules.monitoring.coreos.com** objects and run the rules that cover AU-5 control in the moderate profile.
 
 # Additional resources
 
 - [Understanding the Compliance Operator](../../security/compliance_operator/co-concepts/compliance-operator-understanding.xml#understanding-compliance-operator)
+
+- [Updating the Compliance Operator](../../security/compliance_operator/co-management/compliance-operator-updating.xml#olm-preparing-upgrade_compliance-operator-updating)
+
+- [Product Compliance](https://access.redhat.com/compliance)

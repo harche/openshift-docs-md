@@ -154,4 +154,4 @@ Increasing the `cacheMaxFlows` might increase the memory usage of the eBPF agent
     `spec.agent.ebpf.cacheMaxFlows`
     Specifies the maximum number of flows to cache. If a `NetObservAgentFlowsDropped` alert occurs, increase this value from its current level.
 
-- [Creating alerting rules for user-defined projects](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/managing_alerts/managing-alerts-as-a-developer#creating-alerting-rules-for-user-defined-projects_managing-alerts-as-a-developer)
+- [Creating alerting rules for user-defined projects](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/managing_alerts/managing-alerts-as-a-developer#creating-alerting-rules-for-user-defined-projects_managing-alerts-as-a-developer)

@@ -4,7 +4,7 @@ You can provision OpenShift Container Platform clusters at scale with Red Hat A
 
 Using `PolicyGenTemplate` CRs to manage and deploy policies to managed clusters will be deprecated in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
 
-For more information about `PolicyGenerator` resources, see the RHACM [Integrating Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/governance/index#integrate-policy-generator) documentation.
+For more information about `PolicyGenerator` resources, see the RHACM [Integrating Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#integrate-policy-generator) documentation.
 
 </div>
 
@@ -370,7 +370,7 @@ You require Red Hat Advanced Cluster Management (RHACM) version 2.12 or later t
           baseDomain: "example.com"
           pullSecretRef:
             name: "assisted-deployment-pull-secret"
-          clusterImageSetNameRef: "openshift-4.21"
+          clusterImageSetNameRef: "openshift-4.22"
           sshPublicKey: "ssh-rsa AAAA..."
           clusterName: "example-ai-sno"
           networkType: "OVNKubernetes"
@@ -1066,7 +1066,7 @@ You can verify that the IPsec encryption is successfully applied in a managed Op
 
 ## ClusterInstance CR installation reference
 
-For a detailed API reference for the `ClusterInstance` custom resource, see [ClusterInstance API](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/apis/index#clusterinstance-api) in the Red Hat Advanced Cluster Management (RHACM) documentation.
+For a detailed API reference for the `ClusterInstance` custom resource, see [ClusterInstance API](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/apis/index#clusterinstance-api) in the Red Hat Advanced Cluster Management (RHACM) documentation.
 
 - [Customizing extra installation manifests in the GitOps ZTP pipeline](../edge_computing/ztp-advanced-install-ztp.xml#ztp-customizing-the-install-extra-manifests_ztp-advanced-install-ztp)
 

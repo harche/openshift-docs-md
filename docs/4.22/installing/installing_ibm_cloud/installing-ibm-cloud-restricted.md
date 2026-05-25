@@ -600,7 +600,7 @@ If an instance type for your platform meets the minimum requirements for cluster
 
 The following IBM Cloud® instance types have been tested with OpenShift Container Platform.
 
-<https://raw.githubusercontent.com/openshift/installer/release-4.21/docs/user/ibmcloud/tested_instance_types_x86_64.md>
+<https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/ibmcloud/tested_instance_types_x86_64.md>
 
 ## Sample customized install-config.yaml file for IBM Cloud
 

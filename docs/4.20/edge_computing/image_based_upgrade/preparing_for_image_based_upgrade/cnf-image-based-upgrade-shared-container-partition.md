@@ -25,7 +25,7 @@ You must complete this procedure at installation time.
         version: 3.2.0
       storage:
         disks:
-          - device: /dev/disk/by-path/pci-<root_disk>
+          - device: /dev/disk/by-path/<root_disk>
             partitions:
               - label: var-lib-containers
                 startMiB: <start_of_partition>
@@ -62,13 +62,13 @@ You must complete this procedure at installation time.
   where:
 
   `<root_disk>`
-  Specifies the root disk.
+  Specifies the root disk, for example `pci-0000:01:00.0-scsi-0:2:0:0`.
 
   `<start_of_partition>`
   Specifies the start of the partition in MiB. If the value is too small, the installation will fail.
 
   `<partition_size>`
-  Specifies a minimum size for the partition of 500 GB to ensure adequate disk space for precached images. If the value is too small, the deployments after installation will fail.
+  Specifies a minimum size for the partition of 500 GB (512000 MiB) to ensure adequate disk space for precached images. If the value is too small, the deployments after installation will fail.
 
 # Configuring a shared container directory between ostree stateroots when using GitOps ZTP
 

@@ -41,7 +41,7 @@ You can install a cluster with the support for configuring multi-architecture co
     </div>
 
     ``` terminal
-    ./openshift-install 4.21.0
+    ./openshift-install 4.22.0
     built from commit abc123etc
     release image quay.io/openshift-release-dev/ocp-release@sha256:abc123wxyzetc
     release architecture multi

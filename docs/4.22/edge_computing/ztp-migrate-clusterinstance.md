@@ -66,7 +66,7 @@ The following Git repository folder structure is used as a basis for this exampl
 │   │       ├── kustomization.yaml
 │   │       └── pull-secret.yaml
 │   ├── reference-manifest/
-│   │   └── 4.21/
+│   │   └── 4.22/
 │   ├──resources/
 │   │   ├── active-ocp-version.yaml
 │   │   └── kustomization.yaml
@@ -347,7 +347,7 @@ Migrate a single-node OpenShift cluster from using a `SiteConfig` CR to a `Clust
     ├── pre-reqs/
     │   └── sno1/
     ├── reference-manifest/
-    │   └── 4.21/
+    │   └── 4.22/
     └── resources/
     ```
 
@@ -577,7 +577,7 @@ Migrate a single-node OpenShift cluster from using a `SiteConfig` CR to a `Clust
     │       └── pull-secret.yaml
     ├── kustomization.yaml
     ├── reference-manifest/
-    │   └── 4.21/
+    │   └── 4.22/
     └── resources/
         ├── active-ocp-version.yaml
         └── kustomization.yaml

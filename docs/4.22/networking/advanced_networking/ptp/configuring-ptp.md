@@ -4872,7 +4872,7 @@ Troubleshoot common problems with the PTP Operator by performing the following s
     ``` terminal
     driver: ice
     version: 5.14.0-356.bz2232515.el9.x86_64
-    firmware-version: 4.21 0x8001778b 1.3346.0
+    firmware-version: 4.22 0x8001778b 1.3346.0
     ```
 
 6.  For GNSS-sourced grandmaster clocks, verify that the `linuxptp-daemon` container is receiving signal from the GNSS antenna. If the container is not receiving the GNSS signal, the `/dev/gnss0` file is not populated. To verify, run the following command:

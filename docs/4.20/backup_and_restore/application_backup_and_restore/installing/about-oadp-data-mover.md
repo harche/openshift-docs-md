@@ -76,29 +76,23 @@ The built-in Data Mover feature introduces three new API objects defined as CRDs
 
 - `BackupRepository`: Represents and manages the lifecycle of the backup repositories. OADP creates a backup repository per namespace when the first CSI snapshot backup or restore for a namespace is requested.
 
-# About incremental back up support
+# About incremental backup support
 
 OADP supports incremental backups of `block` and `Filesystem` persistent volumes for both containerized, and OpenShift Virtualization workloads. The following table summarizes the support for File System Backup (FSB), Container Storage Interface (CSI), and CSI Data Mover:
 
-| Volume mode | FSB - Restic                           | FSB - Kopia                            | CSI                | CSI Data Mover                         |
-|-------------|----------------------------------------|----------------------------------------|--------------------|----------------------------------------|
-| Filesystem  | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> | S <sup>\[1\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> |
-| Block       | N <sup>\[3\]</sup>                     | N <sup>\[3\]</sup>                     | S <sup>\[1\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> |
+| Volume mode | FSB - Restic                                   | FSB - Kopia                                    | CSI              | CSI Data Mover                                 |
+|-------------|------------------------------------------------|------------------------------------------------|------------------|------------------------------------------------|
+| Filesystem  | Backup supported, Incremental backup supported | Backup supported, Incremental backup supported | Backup supported | Backup supported, Incremental backup supported |
+| Block       | Not supported                                  | Not supported                                  | Backup supported | Backup supported, Incremental backup supported |
 
 OADP backup support matrix for containerized workloads
 
-| Volume mode | FSB - Restic       | FSB - Kopia        | CSI                | CSI Data Mover                         |
-|-------------|--------------------|--------------------|--------------------|----------------------------------------|
-| Filesystem  | N <sup>\[3\]</sup> | N <sup>\[3\]</sup> | S <sup>\[1\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> |
-| Block       | N <sup>\[3\]</sup> | N <sup>\[3\]</sup> | S <sup>\[1\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> |
+| Volume mode | FSB - Restic  | FSB - Kopia   | CSI              | CSI Data Mover                                 |
+|-------------|---------------|---------------|------------------|------------------------------------------------|
+| Filesystem  | Not supported | Not supported | Backup supported | Backup supported, Incremental backup supported |
+| Block       | Not supported | Not supported | Backup supported | Backup supported, Incremental backup supported |
 
 OADP backup support matrix for OpenShift Virtualization workloads
-
-1.  Backup supported
-
-2.  Incremental backup supported
-
-3.  Not supported
 
 <div class="note">
 

@@ -96,7 +96,7 @@ Use the `ztp-site-generate` container to extract reference custom resources (CRs
         baseDomain: "example.com"
         pullSecretRef:
           name: "assisted-deployment-pull-secret"
-        clusterImageSetNameRef: "openshift-4.21"
+        clusterImageSetNameRef: "openshift-4.22"
         sshPublicKey: "ssh-rsa AAAA..."
         clusterName: "example-ai-sno"
         networkType: "OVNKubernetes"

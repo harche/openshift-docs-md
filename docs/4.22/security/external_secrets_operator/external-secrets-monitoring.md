@@ -48,7 +48,7 @@ By default, the OpenShift Container Platform monitoring stack does not scrape me
 
 <!-- -->
 
-- [Setting up metrics collection for user-defined projects](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_user_workload_monitoring/configuring-metrics-uwm#setting-up-metrics-collection-for-user-defined-projects_configuring-metrics-uwm)
+- [Setting up metrics collection for user-defined projects](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/configuring_user_workload_monitoring/configuring-metrics-uwm#setting-up-metrics-collection-for-user-defined-projects_configuring-metrics-uwm)
 
 # Configuring metrics collection for External Secrets Operator for Red Hat OpenShift by using a ServiceMonitor
 
@@ -232,7 +232,7 @@ The External Secrets Operator for Red Hat OpenShift exposes metrics by default o
 
 3.  Confirm that the **Status** column shows `Up` for the `external-secrets-operator`.
 
-- [Configurable monitoring components](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_user_workload_monitoring/preparing-to-configure-the-monitoring-stack-uwm#configurable-monitoring-components_preparing-to-configure-the-monitoring-stack-uwm)
+- [Configurable monitoring components](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/configuring_user_workload_monitoring/preparing-to-configure-the-monitoring-stack-uwm#configurable-monitoring-components_preparing-to-configure-the-monitoring-stack-uwm)
 
 # Querying metrics for the External Secrets Operator for Red Hat OpenShift
 
@@ -252,7 +252,7 @@ As a cluster administrator, or as a user with view access to all namespaces, you
     {job="external-secrets-operator-controller-manager-metrics-service"}
     ```
 
-- [Accessing metrics](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/accessing_metrics/index)
+- [Accessing metrics](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/accessing_metrics/index)
 
 # Configuring metrics collection for External Secrets Operator for Red Hat OpenShift operands by using a ServiceMonitor
 
@@ -367,7 +367,7 @@ The External Secrets Operator for Red Hat OpenShift operands exposes metrics by 
 
 3.  Confirm that the **Status** column shows `Up` for the `external-secrets`, `external-secrets-cert-controller` and `external-secrets-webhook`.
 
-- [Configuring user workload monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_user_workload_monitoring/preparing-to-configure-the-monitoring-stack-uwm)
+- [Configuring user workload monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/configuring_user_workload_monitoring/preparing-to-configure-the-monitoring-stack-uwm)
 
 # Querying metrics for the external-secrets operand
 
@@ -395,4 +395,4 @@ As a cluster administrator, or as a user with view access to all namespaces, you
     {job="external-secrets-cert-controller-metrics"}
     ```
 
-- [Accessing metrics](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/accessing_metrics/index)
+- [Accessing metrics](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/accessing_metrics/index)

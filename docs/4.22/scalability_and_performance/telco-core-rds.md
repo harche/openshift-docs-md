@@ -655,7 +655,7 @@ For telco core clusters, storage support is provided by OpenShift Data Foundatio
 OpenShift Data Foundation supports separation of storage traffic using secondary CNI networks.
 
 Limits and requirements
-- In an IPv4/IPv6 dual-stack networking environment, OpenShift Data Foundation uses IPv4 addressing. For more information, see [IPv6 support](https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/4.21/html/planning_your_deployment/network-requirements_rhodf#ipv6-support_rhodf).
+- In an IPv4/IPv6 dual-stack networking environment, OpenShift Data Foundation uses IPv4 addressing. For more information, see [IPv6 support](https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/latest/html/planning_your_deployment/network-requirements_rhodf#ipv6-support_rhodf).
 
 Engineering considerations
 - OpenShift Data Foundation network traffic should be isolated from other traffic on a dedicated network, for example, by using VLAN isolation.
@@ -825,7 +825,7 @@ In addition to the default configuration, telco core clusters typically configur
 Engineering considerations
 - The Prometheus retention period is specified by the user. The value used is a tradeoff between operational requirements for maintaining historical data on the cluster against CPU and storage resources. Longer retention periods increase the need for storage and require additional CPU to manage the indexing of data.
 
-- [About OpenShift Container Platform monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/about_monitoring/about-ocp-monitoring)
+- [About OpenShift Container Platform monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/about_monitoring/about-ocp-monitoring)
 
 # Scheduling
 
@@ -1100,7 +1100,7 @@ You can extract the complete set of custom resources (CRs) for the telco core pr
     ```
 
     ``` terminal
-    $ podman run -it registry.redhat.io/openshift4/openshift-telco-core-rds-rhel9:v4.21 | base64 -d | tar xv -C out
+    $ podman run -it registry.redhat.io/openshift4/openshift-telco-core-rds-rhel9:v4.22 | base64 -d | tar xv -C out
     ```
 
 - The `out` directory has the following directory structure. You can view the telco core CRs in the `out/telco-core-rds/` directory by running the following command:
@@ -1211,7 +1211,7 @@ For further information about the `cluster-compare` plugin, see "Understanding t
     ```
 
     ``` terminal
-    $ podman run -it registry.redhat.io/openshift4/openshift-telco-core-rds-rhel9:v4.21 | base64 -d | tar xv -C out
+    $ podman run -it registry.redhat.io/openshift4/openshift-telco-core-rds-rhel9:v4.22 | base64 -d | tar xv -C out
     ```
 
     You can view the reference configuration in the `out/telco-core-rds/configuration/reference-crs-kube-compare` directory by running the following command:

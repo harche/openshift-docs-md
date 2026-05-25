@@ -1,6 +1,6 @@
 As a cluster administrator, you can use quotas and limit ranges to set constraints. These constraints limit the number of objects or the amount of compute resources that are used in your project.
 
-By using quotes and limits, you can better manage and allocate resoures across all projects. You can also ensure that no projects use more resources than is appropriate for the cluster size.
+By using quotes and limits, you can better manage and allocate resources across all projects. You can also ensure that no projects use more resources than is appropriate for the cluster size.
 
 A resource quota, defined by a `ResourceQuota` object, provides constraints that limit aggregate resource consumption per project. The quota can limit the quantity of objects that can be created in a project by type. Additinally, the quota can limit the total amount of compute resources and storage that might be consumed by resources in that project.
 
@@ -654,7 +654,7 @@ When you use a resource quota, OpenShift Container Platform charges an object ag
 
 To monitor usage statistics against defined hard limits, navigate to the **Quota** page in the web console. Alternatively, you can use the CLI to view detailed quota information for the project.
 
-1.  Get the list of quotas defined in the project by entering the following commmand:
+1.  Get the list of quotas defined in the project by entering the following command:
 
     <div class="formalpara-title">
 
@@ -926,10 +926,10 @@ where:
 Specifies the maximum size of an image that can be pushed to an internal registry.
 
 `limits.max.openshift.io/image-tags`
-Specifies the maximum number of unique image tags as defined in the specification for the image stream.
+Specifies the maximum number of unique references counted from tag definitions in the `imagestream.spec.tags` resource.
 
 `limits.max.openshift.io/images`
-Specifies the maximum number of unique image references as defined in the specification for the image stream status.
+Specifies the maximum number of unique image identities, or digests, recorded in the `imagestream.status.tags` resource.
 
 `type.max.cpu`
 Specifies the maximum amount of CPU that a pod can request on a node across all containers.
@@ -941,7 +941,7 @@ Specifies the maximum amount of memory that a pod can request on a node across a
 Specifies the maximum amount of ephemeral storage that a pod can request on a node across all containers.
 
 `min.cpu`
-Speciifes the minimum amount of CPU that a pod can request on a node across all containers. See the Supported Constraints table for important information.
+Specifies the minimum amount of CPU that a pod can request on a node across all containers. See the Supported Constraints table for important information.
 
 `min.memory`
 Specifies the minimum amount of memory that a pod can request on a node across all containers. If you do not set a `min` value or you set `min` to `0`, the result is no limit and the pod can consume more than the `max` memory value.
@@ -961,6 +961,7 @@ The following list shows resources that a container can consume:
 The following table shows the supported constraints for a container. If specified, the constraints must hold true for each container.
 
 <table>
+<caption>Supported constraints</caption>
 <colgroup>
 <col style="width: 27%" />
 <col style="width: 72%" />
@@ -990,6 +991,8 @@ The following table shows the supported constraints for a container. If specifie
 </tr>
 </tbody>
 </table>
+
+Supported constraints
 
 The following list shows default resources that a container can consume:
 
@@ -1051,9 +1054,15 @@ An image stream can consume the following resources:
 
 - `openshift.io/ImageStream`
 
-The `openshift.io/image-tags` resource represents unique stream limits. Possible references are an `ImageStreamTag`, an `ImageStreamImage`, or a `DockerImage`. You can use the `oc tag` and `oc import-image` commands or use image stream to create tags. No distinction exists between internal and external references. However, each unique reference that is tagged in an image stream specification is counted only once. The reference does not restrict pushes to an internal container image registry in any way, but the reference is useful for tag restriction.
+The `openshift.io/image-tags` limit bounds unique references derived from tag definitions in the `imagestream.spec.tags` resource. A reference can be an `ImageStreamTag`, an `ImageStreamImage`, or a `DockerImage`. You can use the `oc tag` and `oc import-image` commands to create tags. Internal and external references are not distinguished, and each unique reference in the spec is counted once. Updates that would exceed the limit are rejected, including updates from pushes to the internal registry that add or change tag definitions.
 
-The `openshift.io/images` resource represents unique image names that are recorded in image stream status. The resource helps restrict the number of images that can be pushed to the internal registry. Internal and external references are not distinguished.
+The `openshift.io/images` limit bounds unique image identities recorded in `imagestream.status.tags`. The name is equivalent to the digest for the image. It limits how many distinct images the stream can reference in status, including from registry pushes. Internal and external references are not distinguished.
+
+<div class="important">
+
+Do not read `openshift.io/image-tags` and `openshift.io/images` as "tag names versus images per tag." The first limit is computed from the `ImageStream` `spec.tags` resource. The second is computed from the `imagestream.status.tags` resource. Both limits can cause image stream updates to fail when a push or other operation would exceed them.
+
+</div>
 
 The following table shows the supported constraints for an image stream. If specified, the constraints must hold true for each image stream.
 

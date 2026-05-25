@@ -134,7 +134,11 @@ spec:
 
 - Specifies the secret name for the cluster. Do not change this value.
 
-- Specifies the image to use. Use an image from an existing default compute machine set for the cluster.
+- Specifies the image to use. Use an image from an existing default compute machine set for the cluster, one of the following options:
+
+  - `nutanix-windows-server-2022` for Windows Server 2022
+
+  - `nutanix-windows-server-2025` for Windows Server 2025
 
 - Specifies the cloud provider platform type. Do not change this value.
 

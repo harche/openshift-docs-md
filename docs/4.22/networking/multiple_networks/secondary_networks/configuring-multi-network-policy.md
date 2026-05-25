@@ -165,7 +165,6 @@ To define granular rules describing ingress or egress network traffic allowed fo
         ``` yaml
         apiVersion: k8s.cni.cncf.io/v1beta1
         kind: MultiNetworkPolicy
-        endif:: multi[]
         metadata:
           name: deny-by-default
           annotations:

@@ -80,6 +80,18 @@ Recommended cluster resources for the following topologies:
 
 Recommended cluster resources
 
+<div class="note">
+
+You can use as few as 4 vCPUs for an single-node OpenShift cluster.
+
+However, running single-node OpenShift on 4 vCPUs leaves very little "headroom" for user applications, and creates a high risk of resource contention and performance degradation.
+
+To ensure cluster stability at this threshold, you must take steps to minimize the total resource footprint of the cluster, such as limiting the amount of workloads running on the cluster or limiting cluster capabilities. For more information, see "Cluster capabilities".
+
+Otherwise, it is recommended to provide more compute resources to the cluster.
+
+</div>
+
 In the `install-config.yaml`, specify the platform on which to perform the installation. The following platforms are supported:
 
 - `baremetal`
@@ -109,6 +121,8 @@ In the `install-config.yaml`, specify the platform on which to perform the insta
   </div>
 
 <!-- -->
+
+- [Cluster capabilities](../../installing/overview/cluster-capabilities.xml#cluster-capabilities)
 
 - [Requirements for a cluster using the platform "none" option](../../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#installation-requirements-platform-none_preparing-to-install-with-agent-based-installer)
 

@@ -215,7 +215,7 @@ $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
 
       2.  Remove the external load balancers by deleting the corresponding lines in the control plane machine set custom resource (CR).
 
-          In the `spec.template.spec.providerSpec.value.loadBalancers` section of the CR, the `name` value for the external load balancer ends in `-ext`. Delete the line with the external load balancer `name` value and the the line with the external load balancer `type` value that accompanies it.
+          In the `spec.template.spec.providerSpec.value.loadBalancers` section of the CR, the `name` value for the external load balancer ends in `-ext`. Delete the line with the external load balancer `name` value and the line with the external load balancer `type` value that accompanies it.
 
           ``` yaml
           apiVersion: machine.openshift.io/v1

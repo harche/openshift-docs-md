@@ -61,7 +61,9 @@ Type
 # Config \[samples.operator.openshift.io/v1\]
 
 Description
-Config contains the configuration and detailed condition status for the Samples Operator. Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+Config contains the configuration and detailed condition status for the Samples Operator.
+
+Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
 
 Type
 `object`

@@ -87,6 +87,6 @@ Metrics marked with `*` in the **Name** and **Description** columns represent se
 
 MCO metrics
 
-- [About OpenShift Container Platform monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/about_monitoring/about-ocp-monitoring)
+- [About OpenShift Container Platform monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/about_monitoring/about-ocp-monitoring)
 
 - [Gathering data about your cluster](../support/gathering-cluster-data.xml#gathering-cluster-data)

@@ -1,10 +1,12 @@
-Learn about OpenShift Virtualization security and authorization.
+OpenShift Virtualization provides built-in security features and authorization policies to protect virtual machine workloads and ensure secure cluster operations across your environment.
+
+**Key points**
 
 - OpenShift Virtualization adheres to the `restricted` [Kubernetes pod security standards](https://kubernetes.io/docs/concepts/security/pod-security-standards/#restricted) profile, which aims to enforce the current best practices for pod security.
 
 - Virtual machine (VM) workloads run as unprivileged pods.
 
-- [Security context constraints](../../authentication/managing-security-context-constraints.xml#security-context-constraints-about_configuring-internal-oauth) (SCCs) are defined for the `kubevirt-controller` service account.
+- Security context constraints (SCCs) are defined for the `kubevirt-controller` service account. For more information about SSCs, see "Additional resources".
 
 - TLS certificates for OpenShift Virtualization components are renewed and rotated automatically.
 
@@ -38,7 +40,7 @@ Automatic TLS certificate rotation does not disrupt any operations. For example,
 
 # Authorization
 
-OpenShift Virtualization uses [role-based access control](../../authentication/using-rbac.xml#using-rbac) (RBAC) to define permissions for human users and service accounts. The permissions defined for service accounts control the actions that OpenShift Virtualization components can perform.
+OpenShift Virtualization uses role-based access control (RBAC) to define permissions for human users and service accounts. The permissions defined for service accounts control the actions that OpenShift Virtualization components can perform.
 
 You can also use RBAC roles to manage user access to virtualization features. For example, an administrator can create an RBAC role that provides the permissions required to launch a virtual machine. The administrator can then restrict access by binding the role to specific users.
 
@@ -229,6 +231,10 @@ $ oc get clusterrole kubevirt-controller -o yaml
 ```
 
 # Additional resources
+
+- [About Security context constraints](../../authentication/managing-security-context-constraints.xml#security-context-constraints-about_configuring-internal-oauth)
+
+- [Using RBAC to define and apply permissions](../../authentication/using-rbac.xml#using-rbac)
 
 - [Managing security context constraints](../../authentication/managing-security-context-constraints.xml#security-context-constraints-about_configuring-internal-oauth)
 

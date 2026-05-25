@@ -45,7 +45,7 @@ Specifies the allowable format for the keys in the `data` field must meet the gu
 `data.username`
 Specifies the value associated with keys in the `data` map. This value must be base64 encoded.
 
-`data.passsword`
+`data.password`
 Specifies the value associated with keys in the `data` map. This value must be base64 encoded.
 
 `stringData.hostname`

@@ -796,7 +796,7 @@ To add machines to a cluster, verify the status of the certificate signing reque
 
       <div class="note">
 
-      Some Operators might not become available until some CSRs are approved.
+      Some Operators might not become available until some CSRs are approved. Each node submits two CSRs, so you may need to run the command to approve CSRs multiple times.
 
       </div>
 

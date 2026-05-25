@@ -11,12 +11,12 @@ You can obtain the image by running one of the following commands in the cluster
 
 ``` terminal
 # For x86_64 image:
-$ oc adm release info quay.io/openshift-release-dev/ocp-release:4.21.0-x86_64 --image-for=driver-toolkit
+$ oc adm release info quay.io/openshift-release-dev/ocp-release:4.22.0-x86_64 --image-for=driver-toolkit
 ```
 
 ``` terminal
 # For ARM64 image:
-$ oc adm release info quay.io/openshift-release-dev/ocp-release:4.21.0-aarch64 --image-for=driver-toolkit
+$ oc adm release info quay.io/openshift-release-dev/ocp-release:4.22.0-aarch64 --image-for=driver-toolkit
 ```
 
 `kernelVersion`
@@ -25,7 +25,7 @@ Required field that provides the version of the kernel that the cluster is upgra
 You can obtain the version by running the following command in the cluster:
 
 ``` terminal
-$ podman run -it --rm $(oc adm release info quay.io/openshift-release-dev/ocp-release:4.21.0-x86_64 --image-for=driver-toolkit) cat /etc/driver-toolkit-release.json
+$ podman run -it --rm $(oc adm release info quay.io/openshift-release-dev/ocp-release:4.22.0-x86_64 --image-for=driver-toolkit) cat /etc/driver-toolkit-release.json
 ```
 
 `pushBuiltImage`

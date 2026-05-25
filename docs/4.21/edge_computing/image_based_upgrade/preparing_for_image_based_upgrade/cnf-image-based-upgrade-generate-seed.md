@@ -239,16 +239,20 @@ Use the Lifecycle Agent to generate a seed image from a managed cluster. The Ope
         apiVersion: v1
         kind: Secret
         metadata:
-          name: seedgen
+          name: <secret_name>
           namespace: openshift-lifecycle-agent
         type: Opaque
         data:
-          seedAuth: <encoded_AUTHFILE>
+          seedAuth: <encoded_authfile>
         ```
 
-        - The `Secret` resource must have the `name: seedgen` and `namespace: openshift-lifecycle-agent` fields.
+        where:
 
-        - Specifies a base64-encoded authfile for write-access to the registry for pushing the generated seed images.
+        `<secret_name>`
+        Specifies the name of the `Secret` resource. The value must be `seedgen`.
+
+        `<encoded_authfile>`
+        Specifies a base64-encoded authfile for write-access to the registry for pushing the generated seed images.
 
     3.  Apply the `Secret` by running the following command:
 
@@ -262,14 +266,18 @@ Use the Lifecycle Agent to generate a seed image from a managed cluster. The Ope
     apiVersion: lca.openshift.io/v1
     kind: SeedGenerator
     metadata:
-      name: seedimage
+      name: <seedgenerator_name>
     spec:
       seedImage: <seed_container_image>
     ```
 
-    - The `SeedGenerator` CR must be named `seedimage`.
+    where:
 
-    - Specify the container image URL, for example, `quay.io/example/seed-container-image:<tag>`. It is recommended to use the `<seed_cluster_name>:<ocp_version>` format.
+    `<seedgenerator_name>`
+    Specifies the name of the `SeedGenerator` CR. The value must be `seedimage`.
+
+    `<seed_container_image>`
+    Specifies the container image URL, for example, `quay.io/example/seed-container-image:<tag>`. It is recommended to use the `<seed_cluster_name>:<ocp_version>` format.
 
 4.  Generate the seed image by running the following command:
 
@@ -283,6 +291,12 @@ Use the Lifecycle Agent to generate a seed image from a managed cluster. The Ope
 
     </div>
 
+<div class="formalpara-title">
+
+**Next steps**
+
+</div>
+
 If you want to generate more seed images, you must provision a new seed cluster with the version that you want to generate a seed image from.
 
 - After the cluster recovers and it is available, you can check the status of the `SeedGenerator` CR by running the following command:
@@ -291,31 +305,25 @@ If you want to generate more seed images, you must provision a new seed cluster 
   $ oc get seedgenerator -o yaml
   ```
 
-<div class="formalpara-title">
+  The following example shows the output when the seed image generation is complete:
 
-**Example output**
-
-</div>
-
-``` yaml
-status:
-  conditions:
-  - lastTransitionTime: "2024-02-13T21:24:26Z"
-    message: Seed Generation completed
+  ``` yaml
+  status:
+    conditions:
+    - lastTransitionTime: "2024-02-13T21:24:26Z"
+      message: Seed Generation completed
+      observedGeneration: 1
+      reason: Completed
+      status: "False"
+      type: SeedGenInProgress
+    - lastTransitionTime: "2024-02-13T21:24:26Z"
+      message: Seed Generation completed
+      observedGeneration: 1
+      reason: Completed
+      status: "True"
+      type: SeedGenCompleted
     observedGeneration: 1
-    reason: Completed
-    status: "False"
-    type: SeedGenInProgress
-  - lastTransitionTime: "2024-02-13T21:24:26Z"
-    message: Seed Generation completed
-    observedGeneration: 1
-    reason: Completed
-    status: "True"
-    type: SeedGenCompleted
-  observedGeneration: 1
-```
-
-- The seed image generation is complete.
+  ```
 
 <!-- -->
 

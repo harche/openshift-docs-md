@@ -631,7 +631,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 
     ``` terminal
     NAMESPACE   NAME                     CLUSTER       DESIRED NODES   CURRENT NODES   AUTOSCALING   AUTOREPAIR   VERSION   UPDATINGVERSION   UPDATINGCONFIG   MESSAGE
-    clusters    democluster-us-east-1a   democluster   1               1               False         False        4.21.0    False             False
+    clusters    democluster-us-east-1a   democluster   1               1               False         False        4.22.0    False             False
     ```
 
     The `node-pool-name` is the `NAME` field in the output. In this example, the `node-pool-name` is `democluster-us-east-1a`.

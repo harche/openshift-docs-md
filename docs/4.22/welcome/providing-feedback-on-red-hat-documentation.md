@@ -2,9 +2,9 @@ To report an error or to improve our documentation, log in to your Red Hat Jira 
 
 1.  Click one of the following links:
 
-    - To create a [Jira issue](https://issues.redhat.com/secure/CreateIssueDetails!init.jspa?pid=12332330&summary=Documentation_issue&issuetype=1&components=12367614&priority=10200&versions=12436721) for OpenShift Container Platform
+    - To create a [Jira issue](https://redhat.atlassian.net/secure/CreateIssueDetails%21init.jspa?priority=10003&summary=%5BDoc%5D&pid=10325&issuetype=10016&components=14669) for OpenShift Container Platform
 
-    - To create a [Jira issue](https://issues.redhat.com/secure/CreateIssueDetails!init.jspa?pid=12323181&issuetype=1&priority=10200) for OpenShift Virtualization
+    - To create a [Jira issue](https://redhat.atlassian.net/secure/CreateIssueDetails%21init.jspa?priority=10003&summary=%5BDoc%5D&pid=10270&issuetype=10016&components=13563) for OpenShift Virtualization
 
 2.  Enter a brief description of the issue in the **Summary**.
 

@@ -28,27 +28,45 @@ OADP versions before 1.3.0 are not supported for back up and restore of OpenShif
 
 # Installing and configuring OADP with OpenShift Virtualization
 
-As a cluster administrator, you install OADP by installing the OADP Operator.
+As a cluster administrator, you can install the OpenShift API for Data Protection (OADP) with OpenShift Virtualization by installing the OADP Operator and configuring a backup location. You can then install the Data Protection Application.
 
-The latest version of the OADP Operator installs [Velero 1.16](https://velero.io/docs/v1.16).
+To install the OADP Operator in a restricted network environment, you must first disable the default software catalog sources and mirror the Operator catalog.
+
+<div class="note">
+
+OpenShift API for Data Protection with OpenShift Virtualization supports the following backup and restore storage options:
+
+- Container Storage Interface (CSI) backups
+
+- Container Storage Interface (CSI) backups with DataMover
+
+The following storage options are excluded:
+
+- File system backup and restore
+
+- Volume snapshot backup and restore
+
+The latest version of the OADP Operator installs Velero 1.16.
+
+</div>
+
+<div class="warning">
+
+Red Hat support is limited to only the following options:
+
+- CSI backups
+
+- CSI backups with DataMover.
+
+</div>
 
 - Access to the cluster as a user with the `cluster-admin` role.
 
 1.  Install the OADP Operator according to the instructions for your storage provider.
 
-2.  Install the Data Protection Application (DPA) with the `kubevirt` and `openshift` OADP plugins.
+2.  Install the Data Protection Application (DPA) with the `kubevirt` and `openshift` OADP plug-ins.
 
 3.  Back up virtual machines by creating a `Backup` custom resource (CR).
-
-    <div class="warning">
-
-    Red Hat support is limited to only the following options:
-
-    - CSI backups
-
-    - CSI backups with DataMover.
-
-    </div>
 
     You restore the `Backup` CR by creating a `Restore` CR.
 
@@ -925,35 +943,31 @@ You can also override the `imagePullPolicy` field by using the `spec.imagePullPo
   `imagePullPolicy`
   Specifies the value for `imagePullPolicy`. In this example, the `imagePullPolicy` field is set to `Never`.
 
-# About incremental back up support
+# About incremental backup support
 
 OADP supports incremental backups of `block` and `Filesystem` persistent volumes for both containerized, and OpenShift Virtualization workloads. The following table summarizes the support for File System Backup (FSB), Container Storage Interface (CSI), and CSI Data Mover:
 
-| Volume mode | FSB - Restic                           | FSB - Kopia                            | CSI                | CSI Data Mover                         |
-|-------------|----------------------------------------|----------------------------------------|--------------------|----------------------------------------|
-| Filesystem  | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> | S <sup>\[1\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> |
-| Block       | N <sup>\[3\]</sup>                     | N <sup>\[3\]</sup>                     | S <sup>\[1\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> |
+| Volume mode | FSB - Restic                                   | FSB - Kopia                                    | CSI              | CSI Data Mover                                 |
+|-------------|------------------------------------------------|------------------------------------------------|------------------|------------------------------------------------|
+| Filesystem  | Backup supported, Incremental backup supported | Backup supported, Incremental backup supported | Backup supported | Backup supported, Incremental backup supported |
+| Block       | Not supported                                  | Not supported                                  | Backup supported | Backup supported, Incremental backup supported |
 
 OADP backup support matrix for containerized workloads
 
-| Volume mode | FSB - Restic       | FSB - Kopia        | CSI                | CSI Data Mover                         |
-|-------------|--------------------|--------------------|--------------------|----------------------------------------|
-| Filesystem  | N <sup>\[3\]</sup> | N <sup>\[3\]</sup> | S <sup>\[1\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> |
-| Block       | N <sup>\[3\]</sup> | N <sup>\[3\]</sup> | S <sup>\[1\]</sup> | S <sup>\[1\]</sup>, I <sup>\[2\]</sup> |
+| Volume mode | FSB - Restic  | FSB - Kopia   | CSI              | CSI Data Mover                                 |
+|-------------|---------------|---------------|------------------|------------------------------------------------|
+| Filesystem  | Not supported | Not supported | Backup supported | Backup supported, Incremental backup supported |
+| Block       | Not supported | Not supported | Backup supported | Backup supported, Incremental backup supported |
 
 OADP backup support matrix for OpenShift Virtualization workloads
-
-1.  Backup supported
-
-2.  Incremental backup supported
-
-3.  Not supported
 
 <div class="note">
 
 The CSI Data Mover backups use Kopia regardless of `uploaderType`.
 
 </div>
+
+# Additional resources
 
 - [OADP plugins](../../../backup_and_restore/application_backup_and_restore/oadp-features-plugins.xml#oadp-plugins_oadp-features-plugins)
 
@@ -962,3 +976,5 @@ The CSI Data Mover backups use Kopia regardless of `uploaderType`.
 - [`Restore` CR](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/restoring-applications.xml#restoring-applications)
 
 - [Using Operator Lifecycle Manager in disconnected environments](../../../disconnected/using-olm.xml#olm-restricted-networks)
+
+- [Velero 1.16](https://velero.io/docs/v1.16)

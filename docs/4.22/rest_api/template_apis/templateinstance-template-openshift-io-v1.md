@@ -11,13 +11,13 @@ Required
 
 # Specification
 
-| Property     | Type                                                                                       | Description                                                                                                                                                                                                                                                                                          |
-|--------------|--------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `apiVersion` | `string`                                                                                   | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
-| `kind`       | `string`                                                                                   | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata`   | [`ObjectMeta_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta_v2) | metadata is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                |
-| `spec`       | `object`                                                                                   | TemplateInstanceSpec describes the desired state of a TemplateInstance.                                                                                                                                                                                                                              |
-| `status`     | `object`                                                                                   | TemplateInstanceStatus describes the current state of a TemplateInstance.                                                                                                                                                                                                                            |
+| Property     | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|--------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `kind`       | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`   | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | metadata is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                |
+| `spec`       | `object`                                                                             | TemplateInstanceSpec describes the desired state of a TemplateInstance.                                                                                                                                                                                                                              |
+| `status`     | `object`                                                                             | TemplateInstanceStatus describes the current state of a TemplateInstance.                                                                                                                                                                                                                            |
 
 ## .spec
 
@@ -51,7 +51,7 @@ Required
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>secret</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-LocalObjectReference_v2"><code>LocalObjectReference_v2</code></a></p></td>
+<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-LocalObjectReference"><code>LocalObjectReference</code></a></p></td>
 <td style="text-align: left;"><p>secret is a reference to a Secret object containing the necessary template parameters.</p></td>
 </tr>
 <tr class="odd">
@@ -106,7 +106,7 @@ Required
 | `kind`         | `string`                                                                                    | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds>                                                            |
 | `labels`       | `object (string)`                                                                           | labels is a optional set of labels that are applied to every object during the Template to Config transformation.                                                                                                                                                                                                                                               |
 | `message`      | `string`                                                                                    | message is an optional instructional message that will be displayed when this template is instantiated. This field should inform the user how to utilize the newly created resources. Parameter substitution will be performed on the message before being displayed so that generated credentials and other parameters can be included in the output.          |
-| `metadata`     | [`ObjectMeta_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta_v2)  | metadata is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                                                           |
+| `metadata`     | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta)        | metadata is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                                                           |
 | `objects`      | [`array (RawExtension)`](../objects/index.xml#io-k8s-apimachinery-pkg-runtime-RawExtension) | objects is an array of resources to include in this template. If a namespace value is hardcoded in the object, it will be removed during template instantiation, however if the namespace value is, or contains, a \${PARAMETER_REFERENCE}, the resolved value after parameter substitution will be respected and the object will be created in that namespace. |
 | `parameters`   | `array`                                                                                     | parameters is an optional array of Parameters used during the Template to Config transformation.                                                                                                                                                                                                                                                                |
 | `parameters[]` | `object`                                                                                    | Parameter defines a name/value variable that is to be processed during the Template to Config transformation.                                                                                                                                                                                                                                                   |
@@ -147,7 +147,7 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>description</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>Description of a parameter. Optional.</p></td>
+<td style="text-align: left;"><p>description of a parameter. Optional.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>displayName</code></p></td>
@@ -157,7 +157,7 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>from</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>From is an input value for the generator. Optional.</p></td>
+<td style="text-align: left;"><p>from is an input value for the generator. Optional.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>generate</code></p></td>
@@ -170,7 +170,7 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>Name must be set and it can be referenced in Template Items using ${PARAMETER_NAME}. Required.</p></td>
+<td style="text-align: left;"><p>name must be set and it can be referenced in Template Items using ${PARAMETER_NAME}. Required.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>required</code></p></td>
@@ -180,7 +180,7 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>value</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>Value holds the Parameter data. If specified, the generator will be ignored. The value replaces all occurrences of the Parameter ${Name} expression during the Template to Config transformation. Optional.</p></td>
+<td style="text-align: left;"><p>value holds the Parameter data. If specified, the generator will be ignored. The value replaces all occurrences of the Parameter ${Name} expression during the Template to Config transformation. Optional.</p></td>
 </tr>
 </tbody>
 </table>
@@ -197,7 +197,7 @@ Type
 |----------------|----------|-----------------------------------------------------------------------------------------------|
 | `conditions`   | `array`  | conditions represent the latest available observations of a TemplateInstance’s current state. |
 | `conditions[]` | `object` | TemplateInstanceCondition contains condition information for a TemplateInstance.              |
-| `objects`      | `array`  | Objects references the objects created by the TemplateInstance.                               |
+| `objects`      | `array`  | objects references the objects created by the TemplateInstance.                               |
 | `objects[]`    | `object` | TemplateInstanceObject references an object created by a TemplateInstance.                    |
 
 ## .status.conditions
@@ -229,16 +229,16 @@ Required
 
 | Property             | Type                                                                     | Description                                                                                          |
 |----------------------|--------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
-| `lastTransitionTime` | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | LastTransitionTime is the last time a condition status transitioned from one state to another.       |
-| `message`            | `string`                                                                 | Message is a human readable description of the details of the last transition, complementing reason. |
-| `reason`             | `string`                                                                 | Reason is a brief machine readable explanation for the condition’s last transition.                  |
-| `status`             | `string`                                                                 | Status of the condition, one of True, False or Unknown.                                              |
-| `type`               | `string`                                                                 | Type of the condition, currently Ready or InstantiateFailure.                                        |
+| `lastTransitionTime` | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | lastTransitionTime is the last time a condition status transitioned from one state to another.       |
+| `message`            | `string`                                                                 | message is a human readable description of the details of the last transition, complementing reason. |
+| `reason`             | `string`                                                                 | reason is a brief machine readable explanation for the condition’s last transition.                  |
+| `status`             | `string`                                                                 | status of the condition, one of True, False or Unknown.                                              |
+| `type`               | `string`                                                                 | type of the condition, currently Ready or InstantiateFailure.                                        |
 
 ## .status.objects
 
 Description
-Objects references the objects created by the TemplateInstance.
+objects references the objects created by the TemplateInstance.
 
 Type
 `array`
@@ -345,10 +345,10 @@ delete collection of TemplateInstance
 
 Query parameters
 
-| HTTP code          | Reponse body                                                                        |
-|--------------------|-------------------------------------------------------------------------------------|
-| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty                                                                               |
+| HTTP code          | Reponse body                                                                              |
+|--------------------|-------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v2) schema |
+| 401 - Unauthorized | Empty                                                                                     |
 
 HTTP responses
 
@@ -428,11 +428,11 @@ delete a TemplateInstance
 
 Query parameters
 
-| HTTP code          | Reponse body                                                                        |
-|--------------------|-------------------------------------------------------------------------------------|
-| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty                                                                               |
+| HTTP code          | Reponse body                                                                              |
+|--------------------|-------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v2) schema |
+| 202 - Accepted     | [`Status_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v2) schema |
+| 401 - Unauthorized | Empty                                                                                     |
 
 HTTP responses
 

@@ -218,7 +218,7 @@ You can configure OpenShift Container Platform to directly use an external OIDC 
 
         ``` terminal
         NAME             VERSION   AVAILABLE   PROGRESSING   DEGRADED   SINCE   MESSAGE
-        kube-apiserver   4.21.0    True        True          False      85m     NodeInstallerProgressing: 2 node are at revision 8; 1 node is at revision 10
+        kube-apiserver   4.22.0    True        True          False      85m     NodeInstallerProgressing: 2 node are at revision 8; 1 node is at revision 10
         ```
 
         The message in the preceding example shows that one node has progressed to the new revision and two nodes have not yet updated. It can take 20 minutes or more to roll out the new revision to all nodes, depending on the size of your cluster.
@@ -279,7 +279,11 @@ You can configure OpenShift Container Platform to directly use an external OIDC 
 
 - [Example OIDC provider configuration for CLI clients only](../authentication/external-auth.xml#external-auth-cli_external-auth)
 
+- [Configuring advanced direct authentication fields](../authentication/structured-auth-config-fields.xml#structured-auth-config-fields)
+
 ## OIDC provider configuration parameters
+
+Configure OIDC providers for external authentication by using these parameters to map JWT token claims to cluster identities, validate authentication tokens, and enable platform components to authenticate with identity providers.
 
 The following table lists all available OIDC provider parameters for direct authentication:
 
@@ -302,7 +306,7 @@ The following table lists all available OIDC provider parameters for direct auth
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>claimMappings.extra</code></p></td>
-<td style="text-align: left;"><p>An optional field for configuring the mappings used to construct the extra attribute for the cluster identity. When omitted, no extra attributes will be present on the cluster identity. Key values for extra mappings must be unique. A maximum of 32 extra attribute mappings may be provided.</p></td>
+<td style="text-align: left;"><p>An optional field for configuring the mappings used to construct the extra attribute for the cluster identity. When omitted, no extra attributes will be present on the cluster identity. Key values for extra mappings must be unique. A maximum of 32 extra attribute mappings can be provided.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>claimMappings.extra.key</code></p></td>
@@ -340,34 +344,46 @@ The following table lists all available OIDC provider parameters for direct auth
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>claimMappings.groups.claim</code></p></td>
-<td style="text-align: left;"><p>Configures the JWT token claim whose value is assigned to the cluster identity field associated with this mapping.</p></td>
+<td style="text-align: left;"><p>Optional parameter. JWT token claim used for groups mapping. Set either <code>claim</code> or <code>expression</code>, not both. Length: 1-256 characters.</p></td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;"><p><code>claimMappings.groups.expression</code></p></td>
+<td style="text-align: left;"><p>Optional parameter (Technology Preview). CEL expression that produces a string or string array from JWT token claims.</p>
+<p>Access claims by using the <code>claims</code> variable (for example, <code>claims.groups</code> or <code>claims.foo.bar</code> for nested claims).</p>
+<p>Set either <code>claim</code> or <code>expression</code>, not both. Length: 1-1024 characters.</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>claimMappings.groups.prefix</code></p></td>
 <td style="text-align: left;"><p>Configures the prefix that is applied to the cluster identity attribute during the process of mapping JWT claims to cluster identity attributes.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>claimMappings.uid</code></p></td>
 <td style="text-align: left;"><p>An optional field for configuring the claim mapping used to construct the UID for the cluster identity. When omitted, this means the user has no opinion and the platform is left to choose a default, which is subject to change over time. The current default is to use the <code>sub</code> claim.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>claimMappings.uid.claim</code></p></td>
 <td style="text-align: left;"><p>An optional field for specifying the JWT token claim that is used in the mapping. The value of this claim will be assigned to the field in which this mapping is associated. To specify the claim, use a single string value for <code>uid.claim</code>.</p>
 <p>You must set either <code>claim</code> or <code>expression</code>. Do not specify <code>claim</code> when <code>expression</code> is set. The value of <code>claim</code> must be at least 1 character and must not exceed 256 characters in length.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>claimMappings.uid.expression</code></p></td>
 <td style="text-align: left;"><p>An optional field for specifying a CEL expression that produces a string value from JWT token claims. When using <code>uid.expression</code> the expression must result in a single string value.</p>
 <p>CEL expressions have access to the token claims through a CEL variable, <code>claims</code>. The <code>claims</code> variable is a map of claim names to claim values. For example, you can access the <code>sub</code> claim value as <code>claims.sub</code>. Nested claims can be accessed using dot notation for example, <code>claims.foo.bar</code>.</p>
 <p>You must set either <code>claim</code> or <code>expression</code>. Do not specify <code>expression</code> when <code>claim</code> is set. The value of <code>expression</code> must be at least 1 character and must not exceed 1024 characters in length.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>claimMappings.username</code></p></td>
 <td style="text-align: left;"><p>Configures how the username of a cluster identity should be constructed from the claims in a JWT token issued by the identity provider.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>claimMappings.username.claim</code></p></td>
-<td style="text-align: left;"><p>Configures the JWT token claim whose value is assigned to the cluster identity field associated with this mapping.</p></td>
+<td style="text-align: left;"><p>Optional parameter. JWT token claim used for username mapping. Set either <code>claim</code> or <code>expression</code>, not both. Length: 1-256 characters.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>claimMappings.username.expression</code></p></td>
+<td style="text-align: left;"><p>Optional parameter (Technology Preview). CEL expression that produces a string value from JWT token claims. Must result in a single string.</p>
+<p>Access claims by using the <code>claims</code> variable (for example, <code>claims.email</code> or <code>claims.foo.bar</code> for nested claims).</p>
+<p>Set either <code>claim</code> or <code>expression</code>, not both. Length: 1-1024 characters.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>claimMappings.username.prefix</code></p></td>
@@ -390,29 +406,51 @@ The following table lists all available OIDC provider parameters for direct auth
 <td style="text-align: left;"><p>Configures the rules to be used by the Kubernetes API server for validating the claims in a JWT token issued by the identity provider. Validation rules are joined by an <code>AND</code> operation.</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>claimValidationRules.requiredClaim</code></p></td>
-<td style="text-align: left;"><p>Configures the required claim and value that the Kubernetes API server uses to validate if an incoming JWT is valid for this identity provider.</p></td>
+<td style="text-align: left;"><p><code>claimValidationRules.cel</code></p></td>
+<td style="text-align: left;"><p>Optional parameter (Technology Preview). Required when <code>type</code> is <code>CEL</code>. Contains <code>expression</code> (CEL expression to evaluate) and <code>message</code> (error text).</p></td>
 </tr>
 <tr class="even">
+<td style="text-align: left;"><p><code>claimValidationRules.cel.expression</code></p></td>
+<td style="text-align: left;"><p>Technology Preview. CEL expression that validates token claims. Must evaluate to <code>true</code> for authentication to succeed.</p>
+<p>Access claims by using the <code>claims</code> variable using dot notation (for example, <code>claims.sub</code> or <code>claims.foo.bar</code>).</p>
+<p>Constraints: 1-1024 characters.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>claimValidationRules.cel.message</code></p></td>
+<td style="text-align: left;"><p>Technology Preview. Error message displayed when validation fails. Constraints: 1-256 characters.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>claimValidationRules.requiredClaim</code></p></td>
+<td style="text-align: left;"><p>Configures the required claim and value that the Kubernetes API server uses to validate if an incoming JWT is valid for this identity provider. Required when <code>type</code> is set to <code>RequiredClaim</code>.</p></td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>claimValidationRules.requiredClaim.claim</code></p></td>
 <td style="text-align: left;"><p>Configures the name of the required claim. When taken from the JWT claims, the claim must be a string value. Must not be an empty string (<code>""</code>).</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>claimValidationRules.requiredClaim.requiredValue</code></p></td>
 <td style="text-align: left;"><p>Configures the value that <code>claim</code> must have when taken from the incoming JWT claims. If the value in the JWT claims does not match, the token is rejected for authentication. Must not be an empty string (<code>""</code>).</p></td>
 </tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>claimValidationRules.type</code></p></td>
-<td style="text-align: left;"><p>Configures the type of the validation rule. Allowed values are <code>RequiredClaim</code> and omitted (not provided or an empty string).</p>
-<p>When set to <code>RequiredClaim</code>, the Kubernetes API server is configured to validate that the incoming JWT contains the required claim and that its value matches the required value. The default value is <code>RequiredClaim</code>.</p></td>
-</tr>
 <tr class="odd">
+<td style="text-align: left;"><p><code>claimValidationRules.type</code></p></td>
+<td style="text-align: left;"><p>Validation rule type. Allowed values: <code>RequiredClaim</code> and <code>CEL</code>.</p>
+<ul>
+<li><p><code>RequiredClaim</code> - Validates that the JWT contains the required claim with the required value</p></li>
+<li><p><code>CEL</code> (Technology Preview) - Validates the JWT against a CEL expression</p></li>
+</ul></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>issuer</code></p></td>
 <td style="text-align: left;"><p>A required field that configures how the platform interacts with the identity provider and how tokens issued from the identity provider are evaluated by the Kubernetes API server.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>issuer.audiences</code></p></td>
 <td style="text-align: left;"><p>A required field that configures the acceptable audiences the JWT token, issued by the identity provider, must be issued to. At least one of the entries must match the <code>aud</code> claim in the JWT token. Must contain at least one entry and must not exceed 10 entries.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>issuer.discoveryURL</code></p></td>
+<td style="text-align: left;"><p>Optional parameter (Technology Preview). Custom OIDC discovery endpoint URL. Must be a valid HTTPS URL and differ from <code>issuer.issuerURL</code>.</p>
+<p>When not specified, OpenShift Container Platform constructs the discovery URL by using the standard OIDC format: <code>{issuerURL}/.well-known/openid-configuration</code>.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>issuer.issuerCertificateAuthority</code></p></td>
@@ -460,6 +498,20 @@ The following table lists all available OIDC provider parameters for direct auth
 <tr class="odd">
 <td style="text-align: left;"><p><code>oidcClients.extraScopes</code></p></td>
 <td style="text-align: left;"><p>Configures the extra scopes that should be requested by the platform component when making authentication requests to the identity provider. This is useful if you have configured claim mappings that require specific scopes to be requested beyond the standard OIDC scopes. When omitted, no additional scopes are requested.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>userValidationRules</code></p></td>
+<td style="text-align: left;"><p>Optional parameter (Technology Preview). Validation rules for user objects created from authenticated tokens. All rules must pass (AND operation).</p>
+<p>Each rule contains <code>expression</code> (must evaluate to <code>true</code>) and <code>message</code> (error text).</p>
+<p>Access user by using the <code>user</code> variable: <code>user.username</code> (string), <code>user.groups</code> (array), <code>user.uid</code> (string), <code>user.extra</code> (map).</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>userValidationRules[].expression</code></p></td>
+<td style="text-align: left;"><p>Required. CEL expression that validates the user object. Must evaluate to <code>true</code> for authentication to succeed. Constraints: 1-1024 characters, boolean result.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>userValidationRules[].message</code></p></td>
+<td style="text-align: left;"><p>Required. Error message displayed when validation fails.</p></td>
 </tr>
 </tbody>
 </table>
@@ -541,7 +593,7 @@ If necessary, you can disable direct authentication for your cluster and revert 
 
         ``` terminal
         NAME             VERSION   AVAILABLE   PROGRESSING   DEGRADED   SINCE   MESSAGE
-        kube-apiserver   4.21.0    True        True          False      85m     NodeInstallerProgressing: 2 node are at revision 12; 1 node is at revision 14
+        kube-apiserver   4.22.0    True        True          False      85m     NodeInstallerProgressing: 2 node are at revision 12; 1 node is at revision 14
         ```
 
         The message in the preceding example shows that one node has progressed to the new revision and two nodes have not yet updated. It can take 20 minutes or more to roll out the new revision to all nodes, depending on the size of your cluster.

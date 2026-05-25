@@ -380,7 +380,7 @@ Avoid storing all hosted cluster information in a shared namespace. If you creat
 
 ## Configuring the default ingress and DNS for hosted control planes on OpenShift Virtualization
 
-Every OpenShift Container Platform cluster includes a default application Ingress Controller, which must have an wildcard DNS record associated with it. By default, hosted clusters that are created by using the HyperShift KubeVirt provider automatically become a subdomain of the OpenShift Container Platform cluster that the KubeVirt virtual machines run on.
+Every OpenShift Container Platform cluster includes a default application Ingress Controller, which must have an wildcard DNS record associated with it. By default, hosted clusters that are created by using OpenShift Virtualization automatically become a subdomain of the OpenShift Container Platform cluster that the virtual machines run on.
 
 For example, your OpenShift Container Platform cluster might have the following default ingress DNS entry:
 
@@ -388,21 +388,13 @@ For example, your OpenShift Container Platform cluster might have the following 
 *.apps.mgmt-cluster.example.com
 ```
 
-As a result, a KubeVirt hosted cluster that is named `guest` and that runs on that underlying OpenShift Container Platform cluster has the following default ingress:
+As a result, a hosted cluster that is named `guest` and that runs on that underlying OpenShift Container Platform cluster has the following default ingress:
 
 ``` terminal
 *.apps.guest.apps.mgmt-cluster.example.com
 ```
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-For the default ingress DNS to work properly, the cluster that hosts the KubeVirt virtual machines must allow wildcard DNS routes.
-
-- You can configure this behavior by entering the following command:
+- For the default ingress DNS to work properly, the cluster that hosts the virtual machines must allow wildcard DNS routes. You can configure this behavior by entering the following command:
 
   ``` terminal
   $ oc patch ingresscontroller -n openshift-ingress-operator default \
@@ -410,11 +402,11 @@ For the default ingress DNS to work properly, the cluster that hosts the KubeVir
     -p '[{ "op": "add", "path": "/spec/routeAdmission", "value": {wildcardPolicy: "WildcardsAllowed"}}]'
   ```
 
-<div class="note">
+  <div class="note">
 
-When you use the default hosted cluster ingress, connectivity is limited to HTTPS traffic over port 443. Plain HTTP traffic over port 80 is rejected. This limitation applies to only the default ingress behavior.
+  When you use the default hosted cluster ingress, connectivity is limited to HTTPS traffic over port 443. Plain HTTP traffic over port 80 is rejected. This limitation applies to only the default ingress behavior.
 
-</div>
+  </div>
 
 ## Customizing ingress and DNS behavior
 

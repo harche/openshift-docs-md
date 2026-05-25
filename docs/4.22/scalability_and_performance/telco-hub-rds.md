@@ -849,7 +849,7 @@ You can extract the complete set of custom resources (CRs) for the telco hub pro
     ```
 
     ``` terminal
-    $ podman run -it registry.redhat.io/openshift4/openshift-telco-hub-rds-rhel9:v4.21 | base64 -d | tar xv -C out
+    $ podman run -it registry.redhat.io/openshift4/openshift-telco-hub-rds-rhel9:v4.22 | base64 -d | tar xv -C out
     ```
 
 - The `out` directory has the following directory structure. You can view the telco hub CRs in the `out/telco-hub-rds/` directory by running the following command:

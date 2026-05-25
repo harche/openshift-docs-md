@@ -4,7 +4,7 @@ This approach enables the preinstallation of configured and validated instances 
 
 <div class="note">
 
-To deploy a managed cluster using an imaged-based approach in combination with GitOps Zero Touch Provisioning (ZTP), you can use the SiteConfig operator. For more information, see [SiteConfig operator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/multicluster_engine_operator_with_red_hat_advanced_cluster_management/index#siteconfig-intro).
+To deploy a managed cluster using an imaged-based approach in combination with GitOps Zero Touch Provisioning (ZTP), you can use the SiteConfig operator.
 
 </div>
 
@@ -31,11 +31,13 @@ Using the `openshift-install` program
 For a single-node OpenShift cluster, use the `openshift-install` program only to manually create the live installation ISO that is common to all hosts. Then, use the program again to create the configuration ISO which ensures that the host is unique. For more information, see “Deploying managed single-node OpenShift using the openshift-install program”.
 
 Using the IBI Operator
-For managed single-node OpenShift clusters, you can use the `openshift-install` with the Image Based Install (IBI) Operator to scale up the operations. The program creates the live installation ISO and then the IBI Operator creates one configuration ISO for each host. For more information, see “Deploying single-node OpenShift using the IBI Operator”.
+For managed single-node OpenShift clusters, you can use the `openshift-install` with the Image Based Install (IBI) Operator to scale up the operations. The program creates the live installation ISO and then the IBI Operator creates one configuration ISO for each host. For more information, see "Deploying single-node OpenShift using the IBI Operator".
 
 ## Image-based installation for single-node OpenShift clusters
 
-Using the Lifecycle Agent, you can generate an OCI container image that encapsulates an instance of a single-node OpenShift cluster. This image is derived from a dedicated cluster that you can configure with the target OpenShift Container Platform version.
+Using the Lifecycle Agent, you can generate an OCI container image that encapsulates an instance of a single-node OpenShift cluster.
+
+This image is derived from a dedicated cluster that you can configure with the target OpenShift Container Platform version.
 
 You can reference this image in a live installation ISO to consistently preinstall configured and validated instances of single-node OpenShift to multiple hosts. This approach enables the preparation of hosts at a central location, for example in a factory or service depot, before shipping the preinstalled hosts to a remote site for rapid reconfiguration and deployment. The instructions for preinstalling a host are the same whether you deploy the host by using only the `openshift-install` program or using the program with the IBI Operator.
 
@@ -170,3 +172,5 @@ Minimum software requirements
 - [Multicluster architecture](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.12/html/about/welcome-to-red-hat-advanced-cluster-management-for-kubernetes#multicluster-architecture)
 
 - [Understanding the image-based upgrade for single-node OpenShift clusters](../../edge_computing/image_based_upgrade/cnf-understanding-image-based-upgrade.xml#cnf-understanding-image-based-upgrade)
+
+- [SiteConfig operator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html-single/multicluster_engine_operator_with_red_hat_advanced_cluster_management/index#siteconfig-intro)

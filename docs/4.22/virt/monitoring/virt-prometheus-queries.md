@@ -452,7 +452,7 @@ The number of failed migrations. Type: Gauge.
 
 - [Adding kernel arguments to nodes](../../machine_configuration/machine-configs-configure.xml#nodes-nodes-kernel-arguments_machine-configs-configure)
 
-- [About OpenShift Container Platform monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/about_monitoring/about-ocp-monitoring)
+- [About OpenShift Container Platform monitoring](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/about_monitoring/about-ocp-monitoring)
 
 - [Querying Prometheus](https://prometheus.io/docs/prometheus/latest/querying/basics/)
 

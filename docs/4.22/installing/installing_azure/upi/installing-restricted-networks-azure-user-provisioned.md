@@ -926,13 +926,13 @@ If an instance type for your platform meets the minimum requirements for cluster
 
 The following Microsoft Azure instance types have been tested with OpenShift Container Platform.
 
-<https://raw.githubusercontent.com/openshift/installer/release-4.21/docs/user/azure/tested_instance_types_x86_64.md>
+<https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/azure/tested_instance_types_x86_64.md>
 
 ## Tested instance types for Azure on 64-bit ARM infrastructures
 
 The following Microsoft Azure ARM64 instance types have been tested with OpenShift Container Platform.
 
-<https://raw.githubusercontent.com/openshift/installer/release-4.21/docs/user/azure/tested_instance_types_aarch64.md>
+<https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/azure/tested_instance_types_aarch64.md>
 
 # Using the Azure Marketplace offering
 
@@ -2013,7 +2013,7 @@ If you do not use the provided ARM template to create your Azure infrastructure,
 You can use the following Azure Resource Manager (ARM) template to deploy the VNet that you need for your OpenShift Container Platform cluster:
 
 ``` json
-link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/azure/01_vnet.json[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azure/01_vnet.json[role=include]
 ```
 
 # Deploying the RHCOS cluster image for the Azure infrastructure
@@ -2056,7 +2056,7 @@ You must use a valid Red Hat Enterprise Linux CoreOS (RHCOS) image for Microsof
 You can use the following Azure Resource Manager (ARM) template to deploy the stored Red Hat Enterprise Linux CoreOS (RHCOS) image that you need for your OpenShift Container Platform cluster:
 
 ``` json
-link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/azure/02_storage.json[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azure/02_storage.json[role=include]
 ```
 
 # Networking requirements for user-provisioned infrastructure
@@ -2156,7 +2156,7 @@ If you do not use the provided ARM template to create your Azure infrastructure,
 You can use the following Azure Resource Manager (ARM) template to deploy the networking objects and load balancers that you need for your OpenShift Container Platform cluster:
 
 ``` json
-link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/azure/03_infra.json[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azure/03_infra.json[role=include]
 ```
 
 # Creating the bootstrap machine in Azure
@@ -2212,7 +2212,7 @@ If you do not use the provided ARM template to create your bootstrap machine, yo
 You can use the following Azure Resource Manager (ARM) template to deploy the bootstrap machine that you need for your OpenShift Container Platform cluster:
 
 ``` json
-link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/azure/04_bootstrap.json[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azure/04_bootstrap.json[role=include]
 ```
 
 # Creating the control plane machines in Azure
@@ -2258,7 +2258,7 @@ If you do not use the provided ARM template to create your control plane machine
 You can use the following Azure Resource Manager (ARM) template to deploy the control plane machines that you need for your OpenShift Container Platform cluster:
 
 ``` json
-link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/azure/05_masters.json[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azure/05_masters.json[role=include]
 ```
 
 # Wait for bootstrap completion and remove bootstrap resources in Azure
@@ -2363,7 +2363,7 @@ If you do not use the provided ARM template to create your control plane machine
 You can use the following Azure Resource Manager (ARM) template to deploy the worker machines that you need for your OpenShift Container Platform cluster:
 
 ``` json
-link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/azure/06_workers.json[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azure/06_workers.json[role=include]
 ```
 
 # Installing the OpenShift CLI on Linux
@@ -2606,7 +2606,7 @@ To add machines to a cluster, verify the status of the certificate signing reque
 
       <div class="note">
 
-      Some Operators might not become available until some CSRs are approved.
+      Some Operators might not become available until some CSRs are approved. Each node submits two CSRs, so you may need to run the command to approve CSRs multiple times.
 
       </div>
 

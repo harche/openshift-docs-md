@@ -940,6 +940,38 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHSA-2026:17474 - OpenShift Container Platform 4.17.16 fixed issues advisory
+
+Issued: 19 May 2026
+
+OpenShift Container Platform release 4.17.16 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:17474](https://access.redhat.com/errata/RHSA-2026:17474) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:17472](https://access.redhat.com/errata/RHBA-2026:17472) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.16 --pullspecs
+```
+
+### Known issues
+
+- Booting the `Baremetalhost` object into the correct operating system repeatedly fails on certain Baseboard Management Controller (BMC) firmware versions because the SuperMicro ARS-111GL-NHR server boots into an existing hard drive instead of virtual media. This issue is caused by an unusual change of boot device names between `CD` and `USB CD` across firmware versions. As a consequence, the node inspection might fail. In this situation, try updating to the latest BMC and BIOS firmware or manually setting the `BootSourceOverrideTarget` parameter to `USB CD` instead of `CD` to successfully boot the node from the correct virtual media. ([OCPBUGS-82298](https://issues.redhat.com/browse/OCPBUGS-82298))
+
+### Fixed issues
+
+- Before this update, when going into holdover a new data set was defined for the `ts2phc` command as it started reporting offsets, which did not meet the minimum number of samples. As a consequence, the PTP Operator incorrectly reported a `FREERUN` clock state immediately. With this release, when going into holdover the offset is calculated based on the slope defined by the holdover thresholds. As a result, the offset steadily increases until it goes over the threshold. The clock state correctly transitions from `HOLDOVER` to `HOLDOVER OUT-OF-SPEC` and finally to `FREERUN`. ([OCPBUGS-77473](https://issues.redhat.com/browse/OCPBUGS-77473))
+
+- Before this update, IBM Cloud was unable to process new `SecurityGroup` rule types such as `any` and older versions of the Software Development Kit (SDK) for the Virtual Private Cloud (VPC) could not unmarshal a VPC with these new types. As a consequence, the installation program could not set up a new VPC or use an existing VPC with the `any` protocol type. With this release, the SDK for the VPC is updated to support the unmarshalling of the new types. As a result, the `SecurityGroup` rule bug is resolved and the installation program can create or use a VPC with the new `SecurityGroup` rule types. ([OCPBUGS-84225](https://redhat.atlassian.net/browse/OCPBUGS-84225))
+
+- Before this update, a race condition in the container stop path could have caused CRI-O to panic with a "send on closed channel" message when a second `StopContainer` call arrived after the first had already completed and closed the internal stop channel. As a consequence, the CRI-O process crashed, potentially leaving pods stuck in a terminating state. With this release, a `stopDone` guard is added to the `WaitOnStopTimeout` method so that it returns early after the stop life cycle is complete. As a result, concurrent `StopContainer` calls do not cause a panic by sending on a closed channel. ([OCPBUGS-84922](https://redhat.atlassian.net/browse/OCPBUGS-84922))
+
+- Before this update, pagination controls were not present at mobile resolutions because PatternFly expected both top and bottom pagination controls to be used. With this release, pagination controls are present regardless of the mobile resolution. ([OCPBUGS-84967](https://redhat.atlassian.net/browse/OCPBUGS-84967))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHBA-2026:16162 - OpenShift Container Platform 4.17.15 fixed issues advisory
 
 Issued: 13 May 2026

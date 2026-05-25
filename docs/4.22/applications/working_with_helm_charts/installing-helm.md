@@ -1,12 +1,10 @@
-The following section describes how to install Helm on different platforms using the CLI.
+Install the Helm CLI to manage software packages on your OpenShift Container Platform cluster from a local workstation.
 
 You can also find the URL to the latest binaries from the OpenShift Container Platform web console by clicking the **?** icon in the upper-right corner and selecting **Command Line Tools**.
 
-- You have installed Go, version 1.13 or higher.
-
 # On Linux
 
-1.  Download the Helm binary and add it to your path:
+1.  Download the Helm binary:
 
     - Linux (x86_64, amd64)
 
@@ -24,6 +22,12 @@ You can also find the URL to the latest binaries from the OpenShift Container Pl
 
       ``` terminal
       # curl -L https://mirror.openshift.com/pub/openshift-v4/clients/helm/latest/helm-linux-ppc64le -o /usr/local/bin/helm
+      ```
+
+    - Linux on ARM (arm64)
+
+      ``` terminal
+      # curl -L https://mirror.openshift.com/pub/openshift-v4/clients/helm/latest/helm-linux-arm64 -o /usr/local/bin/helm
       ```
 
 2.  Make the binary file executable:
@@ -48,23 +52,9 @@ You can also find the URL to the latest binaries from the OpenShift Container Pl
     version.BuildInfo{Version:"v3.0", GitCommit:"b31719aab7963acf4887a1c1e6d5e53378e34d93", GitTreeState:"clean", GoVersion:"go1.13.4"}
     ```
 
-# On Windows 7/8
+# On Windows
 
-1.  Download the latest [`.exe` file](https://mirror.openshift.com/pub/openshift-v4/clients/helm/latest/helm-windows-amd64.exe) and put in a directory of your preference.
-
-2.  Right click **Start** and click **Control Panel**.
-
-3.  Select **System and Security** and then click **System**.
-
-4.  From the menu on the left, select **Advanced systems settings** and click **Environment Variables** at the bottom.
-
-5.  Select **Path** from the **Variable** section and click **Edit**.
-
-6.  Click **New** and type the path to the folder with the `.exe` file into the field or click **Browse** and select the directory, and click **OK**.
-
-# On Windows 10
-
-1.  Download the latest [`.exe` file](https://mirror.openshift.com/pub/openshift-v4/clients/helm/latest/helm-windows-amd64.exe) and put in a directory of your preference.
+1.  Download the Helm binary: [`.exe` file](https://mirror.openshift.com/pub/openshift-v4/clients/helm/latest/helm-windows-amd64.exe).
 
 2.  Click **Search** and type `env` or `environment`.
 
@@ -74,13 +64,21 @@ You can also find the URL to the latest binaries from the OpenShift Container Pl
 
 5.  Click **New** and type the path to the directory with the exe file into the field or click **Browse** and select the directory, and click **OK**.
 
-# On MacOS
+# On macOS
 
-1.  Download the Helm binary and add it to your path:
+1.  Download the Helm binary:
 
-    ``` terminal
-    # curl -L https://mirror.openshift.com/pub/openshift-v4/clients/helm/latest/helm-darwin-amd64 -o /usr/local/bin/helm
-    ```
+    - For macOS on Intel (x86_64):
+
+      ``` terminal
+      # curl -L https://mirror.openshift.com/pub/openshift-v4/clients/helm/latest/helm-darwin-amd64 -o /usr/local/bin/helm
+      ```
+
+    - For macOS on ARM (Apple Silicon):
+
+      ``` terminal
+      # curl -L https://mirror.openshift.com/pub/openshift-v4/clients/helm/latest/helm-darwin-arm64 -o /usr/local/bin/helm
+      ```
 
 2.  Make the binary file executable:
 

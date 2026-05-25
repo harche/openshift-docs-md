@@ -346,6 +346,6 @@ If a template is disabled and overridden in the `spec.processor.metrics.healthRu
 
 - [Creating alerts](../../observability/network_observability/metrics-alerts-dashboards.xml#network-observability-netobserv-dashboard-high-traffic-alert_metrics-dashboards-alerts)
 
-- [Monitoring stack architecture](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/about_monitoring/monitoring-stack-architecture)
+- [Monitoring stack architecture](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/about_monitoring/monitoring-stack-architecture)
 
 - [Network Observability Operator runbooks](https://github.com/openshift/runbooks/tree/master/alerts/network-observability-operator)

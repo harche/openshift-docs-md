@@ -46,9 +46,19 @@ Installing OpenShift Container Platform on a single node alleviates some of the 
 
   | Profile | Compute | Memory       | Storage |
   |---------|---------|--------------|---------|
-  | Minimum | 8 vCPUs | 16 GB of RAM | 120 GB  |
+  | Minimum | 4 vCPUs | 16 GB of RAM | 120 GB  |
 
   Minimum resource requirements
+
+  <div class="important">
+
+  Running single-node OpenShift on 4 vCPUs leaves very little "headroom" for user applications, and creates a high risk of resource contention and performance degradation.
+
+  To ensure cluster stability at this threshold, you must take steps to minimize the total resource footprint of the cluster, such as limiting the amount of workloads running on the cluster or limiting cluster capabilities. For more information, see "Cluster capabilities".
+
+  Otherwise, it is recommended to provide more compute resources to the cluster.
+
+  </div>
 
   <div class="note">
 
@@ -81,3 +91,7 @@ Installing OpenShift Container Platform on a single node alleviates some of the 
   Without persistent IP addresses, communications between the `apiserver` and `etcd` might fail.
 
   </div>
+
+<!-- -->
+
+- [Cluster capabilities](../../installing/overview/cluster-capabilities.xml#cluster-capabilities)

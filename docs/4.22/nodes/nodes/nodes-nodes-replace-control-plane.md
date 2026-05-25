@@ -235,7 +235,7 @@ Finish removing the failed control plane node by deleting the machine of the unh
 
     ``` terminal
     NAME        VERSION   AVAILABLE   PROGRESSING   DEGRADED   SINCE   MESSAGE
-    baremetal   4.21.0    True        False         False      3d15h
+    baremetal   4.22.0    True        False         False      3d15h
     ```
 
 2.  Save the `BareMetalHost` object of the affected node to a file for later use by running the following command:

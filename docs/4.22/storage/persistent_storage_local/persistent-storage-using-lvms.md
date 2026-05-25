@@ -34,7 +34,7 @@ The prerequisites to install LVM Storage are as follows:
 
 <!-- -->
 
-- [Red Hat Advanced Cluster Management for Kubernetes: Installing while connected online](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/install/installing#installing-while-connected-online)
+- [Red Hat Advanced Cluster Management for Kubernetes: Installing while connected online](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html/install/installing#installing-while-connected-online)
 
 ## Installing LVM Storage by using the CLI
 
@@ -415,9 +415,177 @@ The default namespace for the LVM Storage Operator is `openshift-lvm-storage`.
 
 </div>
 
-- [Red Hat Advanced Cluster Management for Kubernetes: Installing while connected online](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/install/installing#installing-while-connected-online)
+- [Red Hat Advanced Cluster Management for Kubernetes: Installing while connected online](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html/install/installing#installing-while-connected-online)
 
 - [About the LVMCluster custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
+
+# Static and dynamic device discovery in LVM Storage
+
+You can use static or dynamic discovery policies to manage how block devices join your volume groups. Selecting the appropriate policy helps you automate storage expansion safely or preserve a locked, predictable storage footprint over time.
+
+Static
+The Operator creates the volume group by using devices it finds at installation time. The Operator ignores devices discovered after the volume group exists.
+
+Static discovery is the default policy for new volume groups. It eliminates operational risk by locking the device set after the Operator creates the volume group.
+
+Combined with explicit device paths, it provides a fully deterministic storage configuration.
+
+Without explicit paths, the Operator discovers devices only at creation time and then stops the set.
+
+Dynamic
+The Operator continuously discovers and adds devices to the volume group on each reconciliation cycle.
+
+Dynamic discovery remains the default for existing volume groups where the policy field is nil to maintain backward compatibility.
+
+However, this policy can lead to unexpected behavior in production environments. Devices that appear after the initial setup because of hardware changes, driver reloads, or kernel device renaming are automatically added to the volume group.
+
+This creates operational risk because the volume group composition becomes non-deterministic and depends on the runtime state of the node rather than explicit administrator intent.
+
+<div class="note">
+
+The Operator adds the `DeviceDiscoveryPolicy` field to the `DeviceClass` specification. If you explicitly set device paths in `deviceSelector.paths` or `deviceSelector.optionalPaths`, the cluster always uses those exact paths, and ignores your discovery policy setting.
+
+</div>
+
+The cluster status reports the effective policy by using `DeviceDiscoveryPolicyStatus`, which distinguishes three runtime states:
+
+| Status value     | Description                                                                                          |
+|------------------|------------------------------------------------------------------------------------------------------|
+| `Preconfigured`  | Explicit device paths configuration by using `deviceSelector`. Discovery policy is not applicable.   |
+| `RuntimeDynamic` | No explicit paths. Discovery policy is Dynamic. The Operator continuously discovers devices.         |
+| `RuntimeStatic`  | No explicit paths. Discovery policy is Static. The Operator discovers devices once at creation time. |
+
+Effective policy status values
+
+The following table shows the behavior matrix:
+
+| Explicit paths | Discovery policy            | Effective behavior                                                                             |
+|----------------|-----------------------------|------------------------------------------------------------------------------------------------|
+| Yes            | Any / nil                   | `Preconfigured`: The Operator honors the specified paths and ignores the discovery policy.     |
+| No             | `Static`                    | `RuntimeStatic`: The Operator locks the device set immediately after creating the volume group |
+| No             | `Dynamic`                   | `RuntimeDynamic`: continuous discovery every 30 seconds                                        |
+| No             | nil (new volume group)      | `RuntimeStatic`: defaults to Static                                                            |
+| No             | nil (existing volume group) | `RuntimeDynamic`: defaults to Dynamic for backward compatibility                               |
+
+Device discovery behavior by configuration
+
+## Static mode enforcement
+
+To guarantee that your storage footprint remains predictable, the system enforces `static` mode rules after discovering initial devices. If a volume group already exists and lacks explicit paths, any newly attached devices are automatically isolated on an exclusion list to prevent unintended volume expansions.
+
+This strict filtering behavior does not apply during the very first reconciliation cycle. During this initial pass, the Operator discovers all available devices to successfully create the volume group. Once created, the Operator locks the device set during all subsequent reconciliations.
+
+The discovery policy also controls whether the controller re-queues for periodic device scanning:
+
+| Configuration                  | Periodic requeue                                                                                          |
+|--------------------------------|-----------------------------------------------------------------------------------------------------------|
+| Explicit paths                 | No: paths define the exact device set; changes trigger reconciliation by using the `LVMVolumeGroup` watch |
+| Dynamic without explicit paths | Yes: every 30 seconds                                                                                     |
+| Static without explicit paths  | No: device set is locked after creation                                                                   |
+
+Requeue behavior by configuration
+
+## Validation rules for device discovery policy
+
+To ensure your storage cluster deploys successfully and avoids misconfiguration errors, the validating webhook enforces strict rules when you create or update an `LVMCluster` custom resource.
+
+Creation
+- If you define one device class without paths, a webhook warning appears. Avoid the default `Static` policy in production. Set `deviceDiscoveryPolicy` explicitly.
+
+- If multiple device classes are defined, every device class must specify device paths. Auto-discovery without paths is not allowed with many device classes. The cluster cannot determine which devices belong to which class.
+
+- If the `deviceDiscoveryPolicy` is empty and paths are missing, a webhook warning appears. Administrators must define the policy explicitly.
+
+Updates
+No specific update restrictions apply to the `deviceDiscoveryPolicy` field. You can change it at any time.
+
+The following table shows how the device discovery policy feature interacts with other features:
+
+| Feature                             | Interaction                                                                                                                                    |
+|-------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| `forceWipeDevicesAndDestroyAllData` | Works independently of the discovery policy. Devices are wiped before being added to the volume group, regardless of how they were discovered. |
+| Node selector                       | Works independently. The discovery policy applies only to the set of devices found on nodes matching the selector.                             |
+
+Device discovery policy feature interactions
+
+## LVMCluster custom resource examples
+
+You can configure the `deviceDiscoveryPolicy` field in your `LVMCluster` custom resource (CR) by using these examples to meet your specific storage requirements.
+
+Explicit device paths (recommended for production)
+``` yaml
+apiVersion: lvm.topolvm.io/v1alpha1
+kind: LVMCluster
+metadata:
+  name: my-lvmcluster
+spec:
+  storage:
+    deviceClasses:
+    - name: vg1
+      deviceSelector:
+        paths:
+        - /dev/disk/by-id/scsi-SATA_VBOX_HARDDISK_VB12345678-90abcdef
+        - /dev/disk/by-id/scsi-SATA_VBOX_HARDDISK_VBabcdef01-23456789
+      thinPoolConfig:
+        name: thin-pool-1
+        sizePercent: 90
+```
+
+The discovery policy is not relevant here. Explicit paths always define the device set.
+
+Static discovery without explicit paths
+``` yaml
+apiVersion: lvm.topolvm.io/v1alpha1
+kind: LVMCluster
+metadata:
+  name: my-lvmcluster
+spec:
+  storage:
+    deviceClasses:
+    - name: vg1
+      deviceDiscoveryPolicy: Static
+      thinPoolConfig:
+        name: thin-pool-1
+        sizePercent: 90
+```
+
+The Operator discovers and adds all available devices to the volume group during the initial reconciliation. After the Operator creates the volume group, it adds no new devices.
+
+Dynamic discovery without explicit paths (not recommended for production)
+``` yaml
+apiVersion: lvm.topolvm.io/v1alpha1
+kind: LVMCluster
+metadata:
+  name: my-lvmcluster
+spec:
+  storage:
+    deviceClasses:
+    - name: vg1
+      deviceDiscoveryPolicy: Dynamic
+      thinPoolConfig:
+        name: thin-pool-1
+        sizePercent: 90
+```
+
+The Operator continuously discovers and adds devices to the volume group every 30 seconds. This setting is useful for development and testing. However, it might introduce operational risks in production environments.
+
+## LVM cluster custom resource status reporting
+
+To view a list of excluded devices and the reason for their exclusion, use the `LVMVolumeGroupNodeStatus` custom resource (CR).
+
+If static device discovery excludes a device, the status report displays the error in the following format:
+
+``` text
+<device> was not part of <vg_name> at creation (static device discovery enabled)
+```
+
+The `VGStatus.DeviceDiscoveryPolicy` parameter reports the effective discovery policy as one of the following values:
+
+- `Preconfigured`
+
+- `RuntimeDynamic`
+
+- `RuntimeStatic`.
 
 # About the LVMCluster custom resource
 
@@ -1252,7 +1420,7 @@ After you have installed LVM Storage by using RHACM, you must create an `LVMClus
 
     - Namespace of the OpenShift Container Platform cluster on which LVM Storage is installed.
 
-- [Red Hat Advanced Cluster Management for Kubernetes: Installing while connected online](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/install/installing#installing-while-connected-online)
+- [Red Hat Advanced Cluster Management for Kubernetes: Installing while connected online](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html/install/installing#installing-while-connected-online)
 
 - [About the LVMCluster custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
 
@@ -2316,7 +2484,7 @@ openshift.io/cluster-monitoring=true
 
 <div class="important">
 
-For information about enabling cluster monitoring in RHACM, see [Observability](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/observability/index) and [Adding custom metrics](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/observability/index#adding-custom-metrics).
+For information about enabling cluster monitoring in RHACM, see [Observability](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/observability/index) and [Adding custom metrics](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/observability/index#adding-custom-metrics).
 
 </div>
 

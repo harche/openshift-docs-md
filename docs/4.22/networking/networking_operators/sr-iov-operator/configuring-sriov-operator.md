@@ -531,9 +531,9 @@ When the metrics exporter is enabled, the SR-IOV Network Operator deploys the me
 
 2.  Optional: Examine the SR-IOV virtual function (VF) metrics by using the OpenShift Container Platform web console. For more information, see "Querying metrics".
 
-- [Querying metrics for all projects with the monitoring dashboard](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/accessing_metrics/accessing-metrics-as-an-administrator#querying-metrics-for-all-projects-with-mon-dashboard_accessing-metrics-as-an-administrator)
+- [Querying metrics for all projects with the monitoring dashboard](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/accessing_metrics/accessing-metrics-as-an-administrator#querying-metrics-for-all-projects-with-mon-dashboard_accessing-metrics-as-an-administrator)
 
-- [Querying metrics for user-defined projects as a developer](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/accessing_metrics/accessing-metrics-as-a-developer#querying-metrics-for-user-defined-projects-with-mon-dashboard_accessing-metrics-as-a-developer)
+- [Querying metrics for user-defined projects as a developer](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/accessing_metrics/accessing-metrics-as-a-developer#querying-metrics-for-user-defined-projects-with-mon-dashboard_accessing-metrics-as-a-developer)
 
 - [Configuring an SR-IOV network device](../../../networking/hardware_networks/configuring-sriov-device.xml#configuring-sriov-device)
 

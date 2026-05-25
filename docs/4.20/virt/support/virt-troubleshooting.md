@@ -1,4 +1,4 @@
-To diagnose and resolve issues with virtual machines (VMs) and cluster components, you can troubleshoot OpenShift Virtualization by using the web console or the `oc` CLI tool. These practices help ensure your virtualized infrastructure remains healthy.
+To diagnose and resolve issues with virtual machine (VM) and cluster components, you can troubleshoot OpenShift Virtualization by using the web console or the OpenShift CLI (`oc`). These practices help ensure your virtualized infrastructure remains healthy.
 
 # Events
 

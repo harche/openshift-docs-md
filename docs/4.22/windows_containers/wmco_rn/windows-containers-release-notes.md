@@ -1,23 +1,21 @@
-This release of the Windows Machine Config Operator (WMCO) provides bug fixes for running Windows compute nodes in an OpenShift Container Platform cluster.
+You can review the release notes to learn about the changes introduced through each release of the Red Hat OpenShift support for Windows Containers and the Windows Machine Config Operator (WMCO).
 
-# Release notes for Red Hat Windows Machine Config Operator 10.21.0
+# Release notes for Red Hat Windows Machine Config Operator 10.22.0
 
-Issued: 03 February 2026
+Issued: DD Mm 2026
+
+You can review the following release notes to learn about the new features and bug fixes in the Windows Machine Config Operator (WMCO) version 10.22.0.
+
+The components of the WMCO version 10.22.0 were released in TBD.
 
 ## New features and improvements
 
-### Kubernetes upgrade
+Windows Server 2025 support
+The WMCO now supports Windows Server 2025, OS Build [10.0.26100](https://support.microsoft.com/en-us/topic/may-12-2026-kb5087539-os-build-26100-32860-fe3fd635-23fc-41bd-b7a7-00e57c1c4f91) or later for all supported platforms.
 
-The WMCO now uses Kubernetes version 1.34.
-
-### WICD can access only the node its running on
-
-The Windows Instance Config Daemon (WICD) on each Windows node now has permission to access only the node that it is installed on. The WICD having write access to only one node increases cluster security.
+Kubernetes upgrade
+The WMCO now uses Kubernetes version 1.35.
 
 ## Bug fixes
 
-- Before this update, during secret reconciliations, secret change data was being added to the logs on each reconciliation loop. As a result, the secret change data was persisting, causing the logs to grow in size with unrelated data. With this release, only the current secret change data is being logged. As a result, the size and complexity of the logs is reduced. ([**OCPBUGS-61122**](https://issues.redhat.com/browse/OCPBUGS-61122))
-
-- Before this update, the `hybridOverlay` service was not using the trusted CA bundle when connecting to OpenShift Container Platform, because the `--k8s-cacert` option was missing from the service command. Because of this, users could encounter trust issues or failures when the `hybridOverlay` service attempted to communicate securely with OpenShift Container Platform clusters using custom or internal CAs. With this release, the `hybridOverlay` service command now includes the `--k8s-cacert flag` pointing to the trusted CA bundle. As a result, the `hybridOverlay` service uses the trusted CA bundle for secure communication, preventing trust issues and ensuring compatibility with the cluster. ([**OCPBUGS-64719**](https://issues.redhat.com/browse/OCPBUGS-64719))
-
-- Before this update, an error message regarding a cache not being started was being printed to the logs at WMCO start up. This error had no impact on functionality. The check causing the error message has been removed, and it will no longer log the error. ([**OCPBUGS-62815**](https://issues.redhat.com/browse/OCPBUGS-62815))
+- Before this update, if you enabled the `ClusterAPIMachineManagement` feature gate by enabling the `TechPreviewNoUpgrade` feature set, OpenShift Container Platform provisioned the `openshift-cluster-api` namespace. However, the WMCO was not adding the `windows-user-data` secret to that namespace, which is required by Cluster API compute machine sets. Because of the missing secret, CAPI-provisioned Windows machines would not bootstrap, remaining stuck in the `Pending` phase, and never joining the cluster. With this release, the OpenShift Container Platform now detects whether the `openshift-cluster-api` namespace exists and mirrors the `windows-user-data` secret into that namespace. CAPI-provisioned Windows machines successfully receive the bootstrap secret, are no longer getting stuck in `Pending` state, and join the cluster as expected. ([OCPBUGS-38401](https://issues.redhat.com/browse/OCPBUGS-38401))

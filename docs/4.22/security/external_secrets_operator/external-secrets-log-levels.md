@@ -170,7 +170,7 @@ You can optionally configure cert-manager to manage certificates for the Externa
     $ oc delete secrets external-secrets-webhook -n external-secrets
     ```
 
-- [External Secrets Operator for Red hat OpenShift APIs](../external_secrets_operator/external-secrets-operator-api.xml#external-secrets-operator-api)
+- [External Secrets Operator for Red Hat OpenShift APIs](../external_secrets_operator/external-secrets-operator-api.xml#external-secrets-operator-api)
 
 - [cert-manager Operator for Red Hat Openshift](../cert_manager_operator/index.xml#cert-manager-operator-about)
 

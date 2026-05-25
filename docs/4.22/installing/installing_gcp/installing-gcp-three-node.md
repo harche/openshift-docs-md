@@ -36,7 +36,7 @@ Because application workloads run from control plane nodes, additional subscript
 
 2.  If you are deploying a cluster with user-provisioned infrastructure:
 
-    - After you create the Kubernetes manifest files, make sure that the `spec.mastersSchedulable` parameter is set to `true` in `cluster-scheduler-02-config.yml` file. You can locate this file in `<installation_directory>/manifests`. For more information, see "Creating the Kubernetes manifest and Ignition config files" in "Installing a cluster on user-provisioned infrastructure in Google Cloud by using Deployment Manager templates".
+    - After you create the Kubernetes manifest files, make sure that the `spec.mastersSchedulable` parameter is set to `true` in `cluster-scheduler-02-config.yml` file. You can locate this file in `<installation_directory>/manifests`. For more information, see "Creating the Kubernetes manifest and Ignition config files" in "Installing a cluster on user-provisioned infrastructure in Google Cloud by using Infrastructure Manager templates".
 
     - Do not create additional worker nodes.
 
@@ -59,8 +59,8 @@ Because application workloads run from control plane nodes, additional subscript
     status: {}
     ```
 
-# Next steps
+# Additional resources
 
 - [Installing a cluster on Google Cloud with customizations](../../installing/installing_gcp/installing-gcp-customizations.xml#installing-gcp-customizations)
 
-- [Installing a cluster on user-provisioned infrastructure in Google Cloud by using Deployment Manager templates](../../installing/installing_gcp/installing-gcp-user-infra.xml#installing-gcp-user-infra)
+- [Installing a cluster on user-provisioned infrastructure in Google Cloud by using Infrastructure Manager templates](../../installing/installing_gcp/installing-gcp-user-infra.xml#installing-gcp-user-infra)

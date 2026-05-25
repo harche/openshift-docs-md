@@ -568,6 +568,6 @@ Deploy a custom `AlertingRule` and `FlowMetric` configuration to monitor TCP fla
 
 - [Filtering eBPF flow data using a global rule](../../observability/network_observability/observing-network-traffic.xml#network-observability-filtering-ebpf-rule_nw-observe-network-traffic)
 
-- [Creating alerting rules for user-defined projects](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/managing_alerts/managing-alerts-as-a-developer#creating-alerting-rules-for-user-defined-projects_managing-alerts-as-a-developer)
+- [Creating alerting rules for user-defined projects](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/managing_alerts/managing-alerts-as-a-developer#creating-alerting-rules-for-user-defined-projects_managing-alerts-as-a-developer)
 
 - [Troubleshooting high cardinality metrics- Determining why Prometheus is consuming a lot of disk space](../../support/troubleshooting/investigating-monitoring-issues.xml#determining-why-prometheus-is-consuming-disk-space_investigating-monitoring-issues)

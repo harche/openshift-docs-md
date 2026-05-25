@@ -41,7 +41,9 @@ Serves as a lightweight container runtime that enforces security boundaries and 
 
 # Command-line host access
 
-Direct access to a host must be restricted to avoid modifying the host or accessing pods that should not be accessed. For users who need direct access to a host, it is recommended to use an external authenticator, like SSSD with LDAP, to manage access. This helps maintain consistency across the cluster through the Machine Config Operator.
+Configure an external authenticator to restrict direct access and prevent unauthorized modifications. The Machine Config Operator (MCO) manages these logins and maintains consistency across your cluster.
+
+Examples of external authenticators include lightweight directory access protocol (LDAP) and System Security Services Daemon (SSSD). If a node reboot leads to timeout issues, create a node disruption policy. With this policy, you can configure an external authenticator on a host without requiring a node reboot. For more information, see "Using node disruption policies to minimize disruption from machine config changes" in the *Additional resources* section.
 
 <div class="important">
 
@@ -49,10 +51,10 @@ Do not configure direct access to the root ID on any OpenShift Container Platfor
 
 </div>
 
-You can connect to a node in the cluster using the following methods:
+You can connect to a node in the cluster by using the following methods:
 
 Using debug pod
-This is the recommended method to access a node. To debug or connect to a node, run the following command:
+Red Hat recommends this method to access a node. To debug or connect to a node, run the following command:
 
 ``` terminal
 $ oc debug node/<worker_node_name>
@@ -67,7 +69,7 @@ After connecting to the node, run the following command to get access to the roo
 This gives you root access within a debug pod on the node. For more information, see "Starting debug pods with root access".
 
 Direct SSH
-Avoid using the root user. Instead, use the core user ID (or your own ID). To connect to the node using SSH, run the following command:
+Avoid using the root user. Instead, use the core user ID (or your own ID). To connect to the node by using SSH, run the following command:
 
 ``` terminal
 $ ssh core@<worker_node_name>
@@ -79,7 +81,7 @@ The core user ID is initially given `sudo` privileges within the cluster.
 
 </div>
 
-If you cannot connect to a node using SSH, see [How to connect to OpenShift Container Platform 4.x Cluster nodes using SSH bastion pod](https://access.redhat.com/solutions/4073041) to add your SSH key to the core user.
+If you cannot connect to a node by using SSH, add your SSH key to the core user. For more information, see "How to connect to OpenShift Container Platform 4.x Cluster nodes using SSH bastion pod" in the *Additional resources* section.
 
 After connecting to the node using SSH, run the following command to get access to the root shell:
 
@@ -96,7 +98,11 @@ Follow the best practices of your organization for securing console access.
 
 </div>
 
+- [Using node disruption policies to minimize disruption from machine config changes](../../../machine_configuration/machine-config-node-disruption.xml#machine-configs-configure_machine-config-node-disruption)
+
 - [Starting debug pods with root access](../../../support/troubleshooting/investigating-pod-issues.xml#starting-debug-pods-with-root-access_investigating-pod-issues)
+
+- [How to connect to OpenShift Container Platform 4.x Cluster nodes using SSH bastion pod](https://access.redhat.com/solutions/4073041)
 
 # Linux capabilities
 

@@ -188,7 +188,7 @@ $ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides":
 
 </div>
 
-If the etcd static pods do not roll out , you can manually force an etcd redeployment from the `cluster-etcd-operator` by running the following command:
+If the etcd static pods do not roll out, you can manually force an etcd redeployment from the `cluster-etcd-operator` by running the following command:
 
 ``` terminal
 $ oc patch etcd cluster -p='{"spec": {"forceRedeploymentReason": "recovery-'"$(date --rfc-3339=ns )"'"}}' --type=merge

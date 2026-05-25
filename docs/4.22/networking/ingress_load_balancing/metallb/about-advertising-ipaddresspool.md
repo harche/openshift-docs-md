@@ -40,12 +40,12 @@ The following table describes the parameters for the `BGPAdvertisements` CR:
 <tr class="odd">
 <td style="text-align: left;"><p><code>spec.aggregationLength</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
-<td style="text-align: left;"><p>Optional: Specifies the number of bits to include in a 32-bit CIDR mask. To aggregate the routes that the speaker advertises to BGP peers, the mask is applied to the routes for several service IP addresses and the speaker advertises the aggregated route. For example, with an aggregation length of <code>24</code>, the speaker can aggregate several <code>10.0.1.x/32</code> service IP addresses and advertise a single <code>10.0.1.0/24</code> route.</p></td>
+<td style="text-align: left;"><p>Optional: Specifies the number of bits to include in a 32-bit CIDR mask. To aggregate the routes that the speaker advertises to BGP peers, the mask is applied to the routes for several service IP addresses and the speaker advertises the aggregated route. For example, with an aggregation length of <code>24</code>, the speaker can aggregate several <code>10.0.1.x/32</code> service IP addresses and advertise a single <code>10.0.1.0/24</code> route. If this <code>BGPAdvertisement</code> resource uses <code>spec.serviceSelectors</code> to limit the advertisement to labeled services, you must omit <code>aggregationLength</code> or set it to <code>32</code>; you cannot set another aggregation length on this same resource together with labeled service selection.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>spec.aggregationLengthV6</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
-<td style="text-align: left;"><p>Optional: Specifies the number of bits to include in a 128-bit CIDR mask. For example, with an aggregation length of <code>124</code>, the speaker can aggregate several <code>fc00:f853:0ccd:e799::x/128</code> service IP addresses and advertise a single <code>fc00:f853:0ccd:e799::0/124</code> route.</p></td>
+<td style="text-align: left;"><p>Optional: Specifies the number of bits to include in a 128-bit CIDR mask. For example, with an aggregation length of <code>124</code>, the speaker can aggregate several <code>fc00:f853:0ccd:e799::x/128</code> service IP addresses and advertise a single <code>fc00:f853:0ccd:e799::0/124</code> route. If this <code>BGPAdvertisement</code> resource uses <code>spec.serviceSelectors</code> to limit the advertisement to labeled services, you must omit <code>aggregationLengthV6</code> or set it to <code>128</code>; you cannot set another aggregation length on this same resource together with labeled service selection.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>spec.communities</code></p></td>
@@ -54,11 +54,9 @@ The following table describes the parameters for the `BGPAdvertisements` CR:
 <ul>
 <li><p><code>NO_EXPORT</code>: <code>65535:65281</code></p></li>
 <li><p><code>NO_ADVERTISE</code>: <code>65535:65282</code></p></li>
-<li><p><code>NO_EXPORT_SUBCONFED</code>: <code>65535:65283</code></p>
-<div class="note">
-<p>You can also use community objects that are created along with the strings.</p>
-</div></li>
-</ul></td>
+<li><p><code>NO_EXPORT_SUBCONFED</code>: <code>65535:65283</code></p></li>
+</ul>
+<p>You can also use community objects that are created along with the strings.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>spec.localPref</code></p></td>
@@ -76,11 +74,16 @@ The following table describes the parameters for the `BGPAdvertisements` CR:
 <td style="text-align: left;"><p>Optional: A selector for the <code>IPAddressPools</code> that gets advertised with this advertisement. This is for associating the <code>IPAddressPool</code> to the advertisement based on the label assigned to the <code>IPAddressPool</code> instead of the name itself. If no <code>IPAddressPool</code> is selected by this or by the list, the advertisement is applied to all the <code>IPAddressPools</code>.</p></td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;"><p><code>spec.serviceSelectors</code></p></td>
+<td style="text-align: left;"><p><code>array (LabelSelector)</code></p></td>
+<td style="text-align: left;"><p>Optional: Kubernetes label selectors that determine which <code>LoadBalancer</code> services receive this advertisement’s BGP policy for routes from the selected pools. If you omit <code>spec.serviceSelectors</code> or specify an empty list, MetalLB applies this advertisement to every <code>LoadBalancer</code> service that draws an IP address from the pools listed in <code>spec.ipAddressPools</code> or matched by <code>spec.ipAddressPoolSelectors</code>. You can use selectors to limit the advertisement to labeled services. On this <code>BGPAdvertisement</code> resource, if you use <code>spec.serviceSelectors</code> to limit the advertisement to labeled services, labeled service selection and custom BGP route aggregation are mutually exclusive: omit <code>spec.aggregationLength</code> and <code>spec.aggregationLengthV6</code> or set them to <code>32</code> (IPv4) and <code>128</code> (IPv6). You cannot set other aggregation lengths on this same resource together with labeled service selection.</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.nodeSelectors</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional: By setting the <code>NodeSelectors</code> parameter, you can limit the nodes to announce as next hops for the load balancer IP. When empty, all the nodes are announced as next hops.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.peers</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional: Use a list to specify the <code>metadata.name</code> values for each <code>BGPPeer</code> resource that receives advertisements for the MetalLB service IP address. The MetalLB service IP address is assigned from the IP address pool. By default, the MetalLB service IP address is advertised to all configured <code>BGPPeer</code> resources. Set this parameter to limit the advertisement to specific <code>BGPpeer</code> resources.</p></td>
@@ -165,7 +168,7 @@ As you add more services and MetalLB assigns more load-balancer IP addresses fro
 
 ## Advertising an advanced address pool configuration with BGP
 
-Configure MetalLB to advertise an advanced address pool by using the BGP.
+Configure MetalLB to advertise an advanced address pool by using BGP attributes such as BGP communities, route aggregation, and local preference.
 
 - Install the OpenShift CLI (`oc`).
 
@@ -247,6 +250,124 @@ Configure MetalLB to advertise an advanced address pool by using the BGP.
         $ oc apply -f bgpadvertisement2.yaml
         ```
 
+## Apply different BGP advertisement policies on a shared IP address pool
+
+Use this procedure when many `BGPAdvertisement` resources reference the same `IPAddressPool` and each advertisement must apply different BGP settings to a different group of `LoadBalancer` services. You match services with `spec.serviceSelectors` so each advertisement applies only where its selectors match.
+
+- You created the `IPAddressPool` that your advertisements reference (for example, `doc-example-bgp-adv`).
+
+1.  Create two `BGPAdvertisement` resources that reference the same `IPAddressPool` but use different `serviceSelectors` and `localPref` values.
+
+    The following example uses two `LoadBalancer` services that share one pool and use the labels `app: web` and `app: api`. It does not include a catch-all `BGPAdvertisement` with no `serviceSelectors`; for that behavior, see the description of `spec.serviceSelectors` in "About the BGPAdvertisement custom resource".
+
+    <div class="note">
+
+    The label keys and values you set under `spec.serviceSelectors` must match the labels on each `LoadBalancer` service that should use this advertisement, and you must use the same keys and values consistently across both advertisement manifests in this procedure (for example, `app: web` and `app: api`). This procedure shows those selectors in the manifests first; add matching labels on your services in the next step. For how `spec.serviceSelectors` interacts with `spec.aggregationLength` on a `BGPAdvertisement` resource, see "About the BGPAdvertisement custom resource".
+
+    </div>
+
+    1.  Create a file, such as `bgpadvertisement-web.yaml`, with content similar to the following example:
+
+        ``` yaml
+        apiVersion: metallb.io/v1beta1
+        kind: BGPAdvertisement
+        metadata:
+          name: bgpadvertisement-web
+          namespace: metallb-system
+        spec:
+          ipAddressPools:
+          - doc-example-bgp-adv
+          localPref: 200
+          serviceSelectors:
+          - matchLabels:
+              app: web
+        ```
+
+        where:
+
+        `doc-example-bgp-adv`
+        Specifies the name of the `IPAddressPool` that both advertisements share.
+
+        `localPref`
+        Specifies the BGP local preference for routes that this advertisement controls for matching services.
+
+        `serviceSelectors`
+        Specifies label selectors so MetalLB applies this advertisement only to `LoadBalancer` services whose labels include `app: web`.
+
+    2.  Apply the configuration by running the following command:
+
+        ``` terminal
+        $ oc apply -f bgpadvertisement-web.yaml
+        ```
+
+    3.  Create a file, such as `bgpadvertisement-api.yaml`, with content similar to the following example:
+
+        ``` yaml
+        apiVersion: metallb.io/v1beta1
+        kind: BGPAdvertisement
+        metadata:
+          name: bgpadvertisement-api
+          namespace: metallb-system
+        spec:
+          ipAddressPools:
+          - doc-example-bgp-adv
+          localPref: 300
+          serviceSelectors:
+          - matchLabels:
+              app: api
+        ```
+
+        where:
+
+        `doc-example-bgp-adv`
+        Specifies the same shared `IPAddressPool` name as the first advertisement.
+
+        `localPref`
+        Specifies the BGP local preference for routes that this advertisement controls for matching services.
+
+        `serviceSelectors`
+        Specifies label selectors so MetalLB applies this advertisement only to `LoadBalancer` services whose labels include `app: api`.
+
+    4.  Apply the configuration by running the following command:
+
+        ``` terminal
+        $ oc apply -f bgpadvertisement-api.yaml
+        ```
+
+        A `LoadBalancer` service whose labels include `app: web` receives the BGP policy from `bgpadvertisement-web`, including `localPref` `200`. A service whose labels include `app: api` receives the BGP policy from `bgpadvertisement-api`, including `localPref` `300`. Each advertisement applies only to services that satisfy its `serviceSelectors`.
+
+        For the same pattern for Layer 2 advertisements on a shared pool, see **Apply different Layer 2 advertisement policies on a shared IP address pool**.
+
+2.  Add labels to each `LoadBalancer` service that must match the advertisements.
+
+    1.  Label the service that should match `app: web` by running the following command:
+
+        ``` terminal
+        $ oc label service <service_web_name> app=web -n <project>
+        ```
+
+        where:
+
+        `<service_web_name>`
+        Specifies the name of the `LoadBalancer` service.
+
+        `<project>`
+        Specifies the namespace that contains the service.
+
+    2.  Label the service that should match `app: api` by running the following command:
+
+        ``` terminal
+        $ oc label service <service_api_name> app=api -n <project>
+        ```
+
+        where:
+
+        `<service_api_name>`
+        Specifies the name of the `LoadBalancer` service.
+
+        `<project>`
+        Specifies the namespace that contains the service.
+
 # Advertising an IP address pool from a subset of nodes
 
 To advertise an IP address from an IP addresses pool, from a specific set of nodes only, use the `.spec.nodeSelector` specification in the `BGPAdvertisement` custom resource (CR). This specification associates a pool of IP addresses with a set of nodes in the cluster. This is useful when you have nodes on different subnets in a cluster and you want to advertise an IP addresses from an address pool from a specific subnet, for example a public-facing subnet only.
@@ -290,7 +411,7 @@ To advertise an IP address from an IP addresses pool, from a specific set of nod
 
 # About the L2Advertisement custom resource
 
-To configure how application services are announced over a Layer 2 network, define the properties in the `L2Advertisement` custom resource (CR). Establishing these parameters ensures that MetalLB correctly manages routing for your load-balancer IP addresses within the local network infrastructure
+To configure how application services are announced over a Layer 2 network, define the properties in the `L2Advertisement` custom resource (CR). Establishing these parameters ensures that MetalLB correctly manages routing for your load-balancer IP addresses within the local network infrastructure.
 
 The following table details parameters for the `l2Advertisements` CR:
 
@@ -330,6 +451,11 @@ The following table details parameters for the `l2Advertisements` CR:
 <td style="text-align: left;"><p>Optional: A selector for the <code>IPAddressPools</code> to advertise with this advertisement. This is for associating the <code>IPAddressPool</code> to the advertisement based on the label assigned to the <code>IPAddressPool</code> instead of the name itself. If no <code>IPAddressPool</code> is selected by this or by the list, the advertisement is applied to all the <code>IPAddressPools</code>.</p></td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;"><p><code>spec.serviceSelectors</code></p></td>
+<td style="text-align: left;"><p><code>array (LabelSelector)</code></p></td>
+<td style="text-align: left;"><p>Optional: Kubernetes label selectors that determine which <code>LoadBalancer</code> services receive this advertisement’s Layer 2 settings for addresses from the selected pools. If you omit <code>spec.serviceSelectors</code> or specify an empty list, MetalLB applies this advertisement to every <code>LoadBalancer</code> service that draws an IP address from the pools listed in <code>spec.ipAddressPools</code> or matched by <code>spec.ipAddressPoolSelectors</code>. You can use selectors to limit the advertisement to labeled services. On this <code>L2Advertisement</code> resource, if you use <code>spec.serviceSelectors</code> to limit the advertisement to labeled services, <code>LoadBalancer</code> services that use the <code>metallb.io/allow-shared-ip</code> annotation are not announced on Layer 2 when this advertisement matches those services. Do not combine that annotation with <code>serviceSelectors</code> for Layer 2.</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>spec.nodeSelectors</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional: <code>NodeSelectors</code> limits the nodes to announce as next hops for the load balancer IP. If empty, MetalLB announces all nodes as next hops.</p>
@@ -338,7 +464,7 @@ The following table details parameters for the `l2Advertisements` CR:
 <p>For more information about the support scope of Red Hat Technology Preview features, see <a href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.</p>
 </div></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>spec.interfaces</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Optional: The list of <code>interfaces</code> to announce the load balancer IP address.</p></td>
@@ -403,9 +529,7 @@ You can configure MetalLB so that the `IPAddressPool` is advertised with the L2 
 
 # Configuring MetalLB with an L2 advertisement and labels
 
-You can use the `ipAddressPoolSelectors` field in the `BGPAdvertisement` and `L2Advertisement` custom resource definitions to associate the `IPAddressPool` to the advertisement. This association is based on the label assigned to the `IPAddressPool` instead of the name itself.
-
-The example in the procedure shows how to configure MetalLB so that the `IPAddressPool` is advertised with the L2 protocol by configuring the `ipAddressPoolSelectors` field.
+You can use the `ipAddressPoolSelectors` field in the `L2Advertisement` custom resource definition to associate the `IPAddressPool` with the advertisement based on the label assigned to the pool instead of the pool name. The example configures MetalLB to advertise the pool over Layer 2 by using `ipAddressPoolSelectors`.
 
 - Install the OpenShift CLI (`oc`).
 
@@ -460,6 +584,116 @@ The example in the procedure shows how to configure MetalLB so that the `IPAddre
         ``` terminal
         $ oc apply -f l2advertisement.yaml
         ```
+
+# Apply different Layer 2 advertisement policies on a shared IP address pool
+
+Use this procedure when many `L2Advertisement` resources reference the same `IPAddressPool` and each advertisement must apply different Layer 2 settings to a different group of `LoadBalancer` services. You match services with `spec.serviceSelectors` so each advertisement applies only where its selectors match.
+
+- You created the `IPAddressPool` that your advertisements reference (for example, `doc-example-l2-label`).
+
+1.  Create two `L2Advertisement` resources that reference the same `IPAddressPool` but use different `serviceSelectors` so that each advertisement applies Layer 2 settings to a different group of services.
+
+    The following example uses two `LoadBalancer` services that share one pool and use the labels `app: web` and `app: api`. It does not include a catch-all `L2Advertisement` with no `serviceSelectors`; for that behavior, see the description of `spec.serviceSelectors` in "About the L2Advertisement custom resource". Each manifest lists `ipAddressPools` and `serviceSelectors`; add other fields such as `interfaces` or `nodeSelectors` when your deployment requires them.
+
+    <div class="note">
+
+    The label keys and values you set under `spec.serviceSelectors` must match the labels on each `LoadBalancer` service that should use this advertisement, and you must use the same keys and values consistently across both advertisement manifests in this procedure (for example, `app: web` and `app: api`). This procedure shows those selectors in the manifests first; add matching labels on your services in the next step. For how `spec.serviceSelectors` interacts with the `metallb.io/allow-shared-ip` annotation, see "About the L2Advertisement custom resource".
+
+    </div>
+
+    1.  Create a file, such as `l2advertisement-web.yaml`, with content similar to the following example:
+
+        ``` yaml
+        apiVersion: metallb.io/v1beta1
+        kind: L2Advertisement
+        metadata:
+          name: l2advertisement-web
+          namespace: metallb-system
+        spec:
+          ipAddressPools:
+          - doc-example-l2-label
+          serviceSelectors:
+          - matchLabels:
+              app: web
+        ```
+
+        where:
+
+        `doc-example-l2-label`
+        Specifies the name of the `IPAddressPool` that both Layer 2 advertisements share.
+
+        `serviceSelectors`
+        Specifies label selectors so MetalLB applies this advertisement only to `LoadBalancer` services whose labels include `app: web`.
+
+    2.  Apply the configuration by running the following command:
+
+        ``` terminal
+        $ oc apply -f l2advertisement-web.yaml
+        ```
+
+    3.  Create a file, such as `l2advertisement-api.yaml`, with content similar to the following example:
+
+        ``` yaml
+        apiVersion: metallb.io/v1beta1
+        kind: L2Advertisement
+        metadata:
+          name: l2advertisement-api
+          namespace: metallb-system
+        spec:
+          ipAddressPools:
+          - doc-example-l2-label
+          serviceSelectors:
+          - matchLabels:
+              app: api
+        ```
+
+        where:
+
+        `doc-example-l2-label`
+        Specifies the same shared `IPAddressPool` name as the first Layer 2 advertisement.
+
+        `serviceSelectors`
+        Specifies label selectors so MetalLB applies this advertisement only to `LoadBalancer` services whose labels include `app: api`.
+
+    4.  Apply the configuration by running the following command:
+
+        ``` terminal
+        $ oc apply -f l2advertisement-api.yaml
+        ```
+
+        A `LoadBalancer` service whose labels include `app: web` receives the Layer 2 settings from `l2advertisement-web`. A service whose labels include `app: api` receives the Layer 2 settings from `l2advertisement-api`. Each advertisement applies only to services that satisfy its `serviceSelectors`.
+
+        For the same pattern for BGP on a shared pool, see **Apply different BGP advertisement policies on a shared IP address pool**.
+
+2.  Add labels to each `LoadBalancer` service that must match the advertisements.
+
+    1.  Label the service that should match `app: web` by running the following command:
+
+        ``` terminal
+        $ oc label service <service_web_name> app=web -n <project>
+        ```
+
+        where:
+
+        `<service_web_name>`
+        Specifies the name of the `LoadBalancer` service.
+
+        `<project>`
+        Specifies the namespace that contains the service.
+
+    2.  Label the service that should match `app: api` by running the following command:
+
+        ``` terminal
+        $ oc label service <service_api_name> app=api -n <project>
+        ```
+
+        where:
+
+        `<service_api_name>`
+        Specifies the name of the `LoadBalancer` service.
+
+        `<project>`
+        Specifies the namespace that contains the service.
 
 # Configuring MetalLB with an L2 advertisement for selected interfaces
 

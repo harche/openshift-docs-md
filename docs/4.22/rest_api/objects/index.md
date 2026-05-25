@@ -336,7 +336,7 @@ Required
 | Property     | Type                                                                                                                            | Description                                                                                                                                                                                                                                                                                          |
 |--------------|---------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `apiVersion` | `string`                                                                                                                        | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
-| `items`      | [`array (DeploymentConfig)`](../workloads_apis/deploymentconfig-apps-openshift-io-v1.xml#deploymentconfig-apps-openshift-io-v1) | Items is a list of deployment configs                                                                                                                                                                                                                                                                |
+| `items`      | [`array (DeploymentConfig)`](../workloads_apis/deploymentconfig-apps-openshift-io-v1.xml#deploymentconfig-apps-openshift-io-v1) | items is a list of deployment configs                                                                                                                                                                                                                                                                |
 | `kind`       | `string`                                                                                                                        | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
 | `metadata`   | [`ListMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ListMeta)                                                | metadata is the standard list’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                  |
 
@@ -358,7 +358,7 @@ Required
 | Property     | Type                                                                                                                                               | Description                                                                                                                                                                                                                                                                                          |
 |--------------|----------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `apiVersion` | `string`                                                                                                                                           | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
-| `items`      | [`array (ClusterRoleBinding)`](../role_apis/clusterrolebinding-authorization-openshift-io-v1.xml#clusterrolebinding-authorization-openshift-io-v1) | Items is a list of ClusterRoleBindings                                                                                                                                                                                                                                                               |
+| `items`      | [`array (ClusterRoleBinding)`](../role_apis/clusterrolebinding-authorization-openshift-io-v1.xml#clusterrolebinding-authorization-openshift-io-v1) | items is a list of ClusterRoleBindings                                                                                                                                                                                                                                                               |
 | `kind`       | `string`                                                                                                                                           | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
 | `metadata`   | [`ListMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ListMeta)                                                                   | metadata is the standard list’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                  |
 
@@ -380,7 +380,7 @@ Required
 | Property     | Type                                                                                                                          | Description                                                                                                                                                                                                                                                                                          |
 |--------------|-------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `apiVersion` | `string`                                                                                                                      | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
-| `items`      | [`array (ClusterRole)`](../role_apis/clusterrole-authorization-openshift-io-v1.xml#clusterrole-authorization-openshift-io-v1) | Items is a list of ClusterRoles                                                                                                                                                                                                                                                                      |
+| `items`      | [`array (ClusterRole)`](../role_apis/clusterrole-authorization-openshift-io-v1.xml#clusterrole-authorization-openshift-io-v1) | items is a list of ClusterRoles                                                                                                                                                                                                                                                                      |
 | `kind`       | `string`                                                                                                                      | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
 | `metadata`   | [`ListMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ListMeta)                                              | metadata is the standard list’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                  |
 
@@ -402,7 +402,7 @@ Required
 | Property     | Type                                                                                                                          | Description                                                                                                                                                                                                                                                                                          |
 |--------------|-------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `apiVersion` | `string`                                                                                                                      | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
-| `items`      | [`array (RoleBinding)`](../role_apis/rolebinding-authorization-openshift-io-v1.xml#rolebinding-authorization-openshift-io-v1) | Items is a list of RoleBindings                                                                                                                                                                                                                                                                      |
+| `items`      | [`array (RoleBinding)`](../role_apis/rolebinding-authorization-openshift-io-v1.xml#rolebinding-authorization-openshift-io-v1) | items is a list of RoleBindings                                                                                                                                                                                                                                                                      |
 | `kind`       | `string`                                                                                                                      | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
 | `metadata`   | [`ListMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ListMeta)                                              | metadata is the standard list’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                  |
 
@@ -424,7 +424,7 @@ Required
 | Property     | Type                                                                                                     | Description                                                                                                                                                                                                                                                                                          |
 |--------------|----------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `apiVersion` | `string`                                                                                                 | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
-| `items`      | [`array (Role)`](../role_apis/role-authorization-openshift-io-v1.xml#role-authorization-openshift-io-v1) | Items is a list of Roles                                                                                                                                                                                                                                                                             |
+| `items`      | [`array (Role)`](../role_apis/role-authorization-openshift-io-v1.xml#role-authorization-openshift-io-v1) | items is a list of Roles                                                                                                                                                                                                                                                                             |
 | `kind`       | `string`                                                                                                 | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
 | `metadata`   | [`ListMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ListMeta)                         | metadata is the standard list’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                  |
 
@@ -490,7 +490,7 @@ Required
 | Property     | Type                                                                                         | Description                                                                                                                                                                                                                                                                                          |
 |--------------|----------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `apiVersion` | `string`                                                                                     | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
-| `items`      | [`array (Image)`](../image_apis/image-image-openshift-io-v1.xml#image-image-openshift-io-v1) | Items is a list of images                                                                                                                                                                                                                                                                            |
+| `items`      | [`array (Image)`](../image_apis/image-image-openshift-io-v1.xml#image-image-openshift-io-v1) | items is a list of images                                                                                                                                                                                                                                                                            |
 | `kind`       | `string`                                                                                     | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
 | `metadata`   | [`ListMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ListMeta)             | metadata is the standard list’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                  |
 
@@ -512,7 +512,7 @@ Required
 | Property     | Type                                                                                                           | Description                                                                                                                                                                                                                                                                                          |
 |--------------|----------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `apiVersion` | `string`                                                                                                       | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
-| `items`      | [`array (ImageStream)`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) | Items is a list of imageStreams                                                                                                                                                                                                                                                                      |
+| `items`      | [`array (ImageStream)`](../image_apis/imagestream-image-openshift-io-v1.xml#imagestream-image-openshift-io-v1) | items is a list of imageStreams                                                                                                                                                                                                                                                                      |
 | `kind`       | `string`                                                                                                       | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
 | `metadata`   | [`ListMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ListMeta)                               | metadata is the standard list’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                  |
 
@@ -534,7 +534,7 @@ Required
 | Property     | Type                                                                                                                    | Description                                                                                                                                                                                                                                                                                          |
 |--------------|-------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `apiVersion` | `string`                                                                                                                | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
-| `items`      | [`array (ImageStreamTag)`](../image_apis/imagestreamtag-image-openshift-io-v1.xml#imagestreamtag-image-openshift-io-v1) | Items is the list of image stream tags                                                                                                                                                                                                                                                               |
+| `items`      | [`array (ImageStreamTag)`](../image_apis/imagestreamtag-image-openshift-io-v1.xml#imagestreamtag-image-openshift-io-v1) | items is the list of image stream tags                                                                                                                                                                                                                                                               |
 | `kind`       | `string`                                                                                                                | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
 | `metadata`   | [`ListMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ListMeta)                                        | metadata is the standard list’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                  |
 
@@ -556,7 +556,7 @@ Required
 | Property     | Type                                                                                                  | Description                                                                                                                                                                                                                                                                                          |
 |--------------|-------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `apiVersion` | `string`                                                                                              | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
-| `items`      | [`array (ImageTag)`](../image_apis/imagetag-image-openshift-io-v1.xml#imagetag-image-openshift-io-v1) | Items is the list of image stream tags                                                                                                                                                                                                                                                               |
+| `items`      | [`array (ImageTag)`](../image_apis/imagetag-image-openshift-io-v1.xml#imagetag-image-openshift-io-v1) | items is the list of image stream tags                                                                                                                                                                                                                                                               |
 | `kind`       | `string`                                                                                              | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
 | `metadata`   | [`ListMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ListMeta)                      | metadata is the standard list’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                  |
 
@@ -688,7 +688,7 @@ Required
 | Property     | Type                                                                                                     | Description                                                                                                                                                                                                                                                                                          |
 |--------------|----------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `apiVersion` | `string`                                                                                                 | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
-| `items`      | [`array (Project)`](../project_apis/project-project-openshift-io-v1.xml#project-project-openshift-io-v1) | Items is the list of projects                                                                                                                                                                                                                                                                        |
+| `items`      | [`array (Project)`](../project_apis/project-project-openshift-io-v1.xml#project-project-openshift-io-v1) | items is the list of projects                                                                                                                                                                                                                                                                        |
 | `kind`       | `string`                                                                                                 | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
 | `metadata`   | [`ListMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ListMeta)                         | metadata is the standard list’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                  |
 
@@ -710,7 +710,7 @@ Required
 | Property     | Type                                                                                                                                                                        | Description                                                                                                                                                                                                                                                                                          |
 |--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `apiVersion` | `string`                                                                                                                                                                    | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
-| `items`      | [`array (AppliedClusterResourceQuota)`](../schedule_and_quota_apis/appliedclusterresourcequota-quota-openshift-io-v1.xml#appliedclusterresourcequota-quota-openshift-io-v1) | Items is a list of AppliedClusterResourceQuota                                                                                                                                                                                                                                                       |
+| `items`      | [`array (AppliedClusterResourceQuota)`](../schedule_and_quota_apis/appliedclusterresourcequota-quota-openshift-io-v1.xml#appliedclusterresourcequota-quota-openshift-io-v1) | items is a list of AppliedClusterResourceQuota                                                                                                                                                                                                                                                       |
 | `kind`       | `string`                                                                                                                                                                    | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
 | `metadata`   | [`ListMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ListMeta)                                                                                            | metadata is the standard list’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                  |
 
@@ -820,7 +820,7 @@ Required
 | Property     | Type                                                                                                           | Description                                                                                                                                                                                                                                                                                          |
 |--------------|----------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `apiVersion` | `string`                                                                                                       | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
-| `items`      | [`array (Template)`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) | Items is a list of templates                                                                                                                                                                                                                                                                         |
+| `items`      | [`array (Template)`](../template_apis/template-template-openshift-io-v1.xml#template-template-openshift-io-v1) | items is a list of templates                                                                                                                                                                                                                                                                         |
 | `kind`       | `string`                                                                                                       | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
 | `metadata`   | [`ListMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ListMeta)                               | metadata is the standard list’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                  |
 
@@ -1410,7 +1410,7 @@ Required
 | `kind`       | `string`                                                                         | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
 | `metadata`   | [`ListMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ListMeta) | More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                                            |
 
-# io.k8s.api.core.v1.ConfigMapVolumeSource_v2 schema
+# io.k8s.api.core.v1.ConfigMapVolumeSource schema
 
 Description
 Adapts a ConfigMap into a volume.
@@ -1426,7 +1426,7 @@ Type
 |---------------|--------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `defaultMode` | `integer`                                                                | defaultMode is optional: mode bits used to set permissions on created files by default. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. Defaults to 0644. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set.                      |
 | `items`       | [`array (KeyToPath)`](../objects/index.xml#io-k8s-api-core-v1-KeyToPath) | items if unspecified, each key-value pair in the Data field of the referenced ConfigMap will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the ConfigMap, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'. |
-| `name`        | `string`                                                                 | Name of the referent. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names>                                                                                                                                                                                                                                                                                                                                                                                        |
+| `name`        | `string`                                                                 | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names>                                                                                                                                                                                                             |
 | `optional`    | `boolean`                                                                | optional specify whether the ConfigMap or its keys must be defined                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
 # io.k8s.api.core.v1.CSIVolumeSource schema
@@ -1470,7 +1470,7 @@ Required
 | `kind`       | `string`                                                                         | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
 | `metadata`   | [`ListMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ListMeta) | Standard list metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds>                                                                                                                                                                 |
 
-# io.k8s.api.core.v1.EnvVar_v2 schema
+# io.k8s.api.core.v1.EnvVar schema
 
 Description
 EnvVar represents an environment variable present in a Container.
@@ -1483,30 +1483,11 @@ Required
 
 ## Schema
 
-| Property    | Type                                                                         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-|-------------|------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `name`      | `string`                                                                     | Name of the environment variable. Must be a C_IDENTIFIER.                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `value`     | `string`                                                                     | Variable references \$(VAR_NAME) are expanded using the previously defined environment variables in the container and any service environment variables. If a variable cannot be resolved, the reference in the input string will be unchanged. Double are reduced to a single \$, which allows for escaping the \$(VAR_NAME) syntax: i.e. "(VAR_NAME)" will produce the string literal "\$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Defaults to "". |
-| `valueFrom` | [`EnvVarSource_v2`](../objects/index.xml#io-k8s-api-core-v1-EnvVarSource_v2) | Source for the environment variable’s value. Cannot be used if value is not empty.                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-
-# io.k8s.api.core.v1.EnvVar_v3 schema
-
-Description
-EnvVar represents an environment variable present in a Container.
-
-Type
-`object`
-
-Required
-- `name`
-
-## Schema
-
-| Property    | Type                                                                         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-|-------------|------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `name`      | `string`                                                                     | Name of the environment variable. Must be a C_IDENTIFIER.                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `value`     | `string`                                                                     | Variable references \$(VAR_NAME) are expanded using the previously defined environment variables in the container and any service environment variables. If a variable cannot be resolved, the reference in the input string will be unchanged. Double are reduced to a single \$, which allows for escaping the \$(VAR_NAME) syntax: i.e. "(VAR_NAME)" will produce the string literal "\$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Defaults to "". |
-| `valueFrom` | [`EnvVarSource_v3`](../objects/index.xml#io-k8s-api-core-v1-EnvVarSource_v3) | Source for the environment variable’s value. Cannot be used if value is not empty.                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| Property    | Type                                                                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|-------------|------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`      | `string`                                                               | Name of the environment variable. May consist of any printable ASCII characters except '='.                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `value`     | `string`                                                               | Variable references \$(VAR_NAME) are expanded using the previously defined environment variables in the container and any service environment variables. If a variable cannot be resolved, the reference in the input string will be unchanged. Double are reduced to a single \$, which allows for escaping the \$(VAR_NAME) syntax: i.e. "(VAR_NAME)" will produce the string literal "\$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Defaults to "". |
+| `valueFrom` | [`EnvVarSource`](../objects/index.xml#io-k8s-api-core-v1-EnvVarSource) | Source for the environment variable’s value. Cannot be used if value is not empty.                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 
 # io.k8s.api.core.v1.EventList schema
 
@@ -1563,7 +1544,7 @@ Required
 | `kind`       | `string`                                                                           | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
 | `metadata`   | [`ListMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ListMeta)   | Standard list metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds>                                                                                                                                                                 |
 
-# io.k8s.api.core.v1.LocalObjectReference_v2 schema
+# io.k8s.api.core.v1.LocalObjectReference schema
 
 Description
 LocalObjectReference contains enough information to let you locate the referenced object inside the same namespace.
@@ -1573,11 +1554,11 @@ Type
 
 ## Schema
 
-| Property | Type     | Description                                                                                                       |
-|----------|----------|-------------------------------------------------------------------------------------------------------------------|
-| `name`   | `string` | Name of the referent. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
+| Property | Type     | Description                                                                                                                                                                                                                                                                                  |
+|----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`   | `string` | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names> |
 
-# io.k8s.api.core.v1.NamespaceCondition_v2 schema
+# io.k8s.api.core.v1.NamespaceCondition schema
 
 Description
 NamespaceCondition contains details about state of namespace.
@@ -1592,13 +1573,13 @@ Required
 
 ## Schema
 
-| Property             | Type                                                                     | Description                                           |
-|----------------------|--------------------------------------------------------------------------|-------------------------------------------------------|
-| `lastTransitionTime` | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) |                                                       |
-| `message`            | `string`                                                                 |                                                       |
-| `reason`             | `string`                                                                 |                                                       |
-| `status`             | `string`                                                                 | Status of the condition, one of True, False, Unknown. |
-| `type`               | `string`                                                                 | Type of namespace controller condition.               |
+| Property             | Type                                                                     | Description                                                             |
+|----------------------|--------------------------------------------------------------------------|-------------------------------------------------------------------------|
+| `lastTransitionTime` | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | Last time the condition transitioned from one status to another.        |
+| `message`            | `string`                                                                 | Human-readable message indicating details about last transition.        |
+| `reason`             | `string`                                                                 | Unique, one-word, CamelCase reason for the condition’s last transition. |
+| `status`             | `string`                                                                 | Status of the condition, one of True, False, Unknown.                   |
+| `type`               | `string`                                                                 | Type of namespace controller condition.                                 |
 
 # io.k8s.api.core.v1.NamespaceList schema
 
@@ -2267,7 +2248,7 @@ Required
 | `kind`       | `string`                                                                                    | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
 | `metadata`   | [`ListMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ListMeta)            | Standard list metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds>                                                                                                                                                                 |
 
-# io.k8s.api.core.v1.ResourceQuotaSpec_v2 schema
+# io.k8s.api.core.v1.ResourceQuotaSpec schema
 
 Description
 ResourceQuotaSpec defines the desired hard limits to enforce for Quota.
@@ -2280,7 +2261,7 @@ Type
 | Property        | Type                                                                                      | Description                                                                                                                                                                                                                                                                             |
 |-----------------|-------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `hard`          | [`object (Quantity)`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | hard is the set of desired hard limits for each named resource. More info: <https://kubernetes.io/docs/concepts/policy/resource-quotas/>                                                                                                                                                |
-| `scopeSelector` | [`ScopeSelector_v2`](../objects/index.xml#io-k8s-api-core-v1-ScopeSelector_v2)            | scopeSelector is also a collection of filters like scopes that must match each object tracked by a quota but expressed using ScopeSelectorOperator in combination with possible values. For a resource to match, both scopes AND scopeSelector (if specified in spec), must be matched. |
+| `scopeSelector` | [`ScopeSelector`](../objects/index.xml#io-k8s-api-core-v1-ScopeSelector)                  | scopeSelector is also a collection of filters like scopes that must match each object tracked by a quota but expressed using ScopeSelectorOperator in combination with possible values. For a resource to match, both scopes AND scopeSelector (if specified in spec), must be matched. |
 | `scopes`        | `array (string)`                                                                          | A collection of filters that must match each object tracked by a quota. If not specified, the quota matches all objects.                                                                                                                                                                |
 
 # io.k8s.api.core.v1.ResourceQuotaStatus schema
@@ -2298,7 +2279,7 @@ Type
 | `hard`   | [`object (Quantity)`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | Hard is the set of enforced hard limits for each named resource. More info: <https://kubernetes.io/docs/concepts/policy/resource-quotas/> |
 | `used`   | [`object (Quantity)`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | Used is the current observed total usage of the resource in the namespace.                                                                |
 
-# io.k8s.api.core.v1.ResourceRequirements_v2 schema
+# io.k8s.api.core.v1.ResourceRequirements schema
 
 Description
 ResourceRequirements describes the compute resource requirements.
@@ -2324,53 +2305,9 @@ Type
 <tbody>
 <tr class="odd">
 <td style="text-align: left;"><p><code>claims</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-ResourceClaim_v2"><code>array (ResourceClaim_v2)</code></a></p></td>
+<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-ResourceClaim"><code>array (ResourceClaim)</code></a></p></td>
 <td style="text-align: left;"><p>Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.</p>
-<p>This is an alpha field and requires enabling the DynamicResourceAllocation feature gate.</p>
-<p>This field is immutable. It can only be set for containers.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>limits</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity"><code>object (Quantity)</code></a></p></td>
-<td style="text-align: left;"><p>Limits describes the maximum amount of compute resources allowed. More info: <a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/</a></p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p><code>requests</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity"><code>object (Quantity)</code></a></p></td>
-<td style="text-align: left;"><p>Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: <a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/</a></p></td>
-</tr>
-</tbody>
-</table>
-
-# io.k8s.api.core.v1.ResourceRequirements_v3 schema
-
-Description
-ResourceRequirements describes the compute resource requirements.
-
-Type
-`object`
-
-## Schema
-
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Property</th>
-<th style="text-align: left;">Type</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><p><code>claims</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-ResourceClaim_v2"><code>array (ResourceClaim_v2)</code></a></p></td>
-<td style="text-align: left;"><p>Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.</p>
-<p>This is an alpha field and requires enabling the DynamicResourceAllocation feature gate.</p>
+<p>This field depends on the DynamicResourceAllocation feature gate.</p>
 <p>This field is immutable. It can only be set for containers.</p></td>
 </tr>
 <tr class="even">
@@ -2426,7 +2363,7 @@ Required
 | `kind`       | `string`                                                                         | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
 | `metadata`   | [`ListMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ListMeta) | Standard list metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds>                                                                                                                                                                 |
 
-# io.k8s.api.core.v1.SecretVolumeSource_v2 schema
+# io.k8s.api.core.v1.SecretVolumeSource schema
 
 Description
 Adapts a Secret into a volume.
@@ -2794,7 +2731,7 @@ Required
 | `kind`       | `string`                                                                                                        | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
 | `metadata`   | [`ListMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ListMeta)                                | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                                |
 
-# io.k8s.api.rbac.v1.AggregationRule_v2 schema
+# io.k8s.api.rbac.v1.AggregationRule schema
 
 Description
 AggregationRule describes how to locate ClusterRoles to aggregate into the ClusterRole
@@ -2804,9 +2741,9 @@ Type
 
 ## Schema
 
-| Property               | Type                                                                                                     | Description                                                                                                                                                                                  |
-|------------------------|----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `clusterRoleSelectors` | [`array (LabelSelector_v3)`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-LabelSelector_v3) | ClusterRoleSelectors holds a list of selectors which will be used to find ClusterRoles and create the rules. If any of the selectors match, then the ClusterRole’s permissions will be added |
+| Property               | Type                                                                                               | Description                                                                                                                                                                                  |
+|------------------------|----------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `clusterRoleSelectors` | [`array (LabelSelector)`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-LabelSelector) | ClusterRoleSelectors holds a list of selectors which will be used to find ClusterRoles and create the rules. If any of the selectors match, then the ClusterRole’s permissions will be added |
 
 # io.k8s.api.rbac.v1.ClusterRoleBindingList schema
 
@@ -3543,21 +3480,6 @@ Type
 | `matchExpressions` | [`array (LabelSelectorRequirement)`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-LabelSelectorRequirement) | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
 | `matchLabels`      | `object (string)`                                                                                                        | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
 
-# io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector_v4 schema
-
-Description
-A label selector is a label query over a set of resources. The result of matchLabels and matchExpressions are ANDed. An empty label selector matches all objects. A null label selector matches no objects.
-
-Type
-`object`
-
-## Schema
-
-| Property           | Type                                                                                                                           | Description                                                                                                                                                                                                                                                     |
-|--------------------|--------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `matchExpressions` | [`array (LabelSelectorRequirement_v2)`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-LabelSelectorRequirement_v2) | matchExpressions is a list of label selector requirements. The requirements are ANDed.                                                                                                                                                                          |
-| `matchLabels`      | `object (string)`                                                                                                              | matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed. |
-
 # io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelectorRequirement schema
 
 Description
@@ -3605,115 +3527,6 @@ Type
 `string`
 
 # io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta schema
-
-Description
-ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
-
-Type
-`object`
-
-## Schema
-
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Property</th>
-<th style="text-align: left;">Type</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><p><code>annotations</code></p></td>
-<td style="text-align: left;"><p><code>object (string)</code></p></td>
-<td style="text-align: left;"><p>Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects. More info: <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations">https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations</a></p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>creationTimestamp</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time"><code>Time</code></a></p></td>
-<td style="text-align: left;"><p>CreationTimestamp is a timestamp representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC.</p>
-<p>Populated by the system. Read-only. Null for lists. More info: <a href="https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata">https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata</a></p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p><code>deletionGracePeriodSeconds</code></p></td>
-<td style="text-align: left;"><p><code>integer</code></p></td>
-<td style="text-align: left;"><p>Number of seconds allowed for this object to gracefully terminate before it will be removed from the system. Only set when deletionTimestamp is also set. May only be shortened. Read-only.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>deletionTimestamp</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time"><code>Time</code></a></p></td>
-<td style="text-align: left;"><p>DeletionTimestamp is RFC 3339 date and time at which this resource will be deleted. This field is set by the server when a graceful deletion is requested by the user, and is not directly settable by a client. The resource is expected to be deleted (no longer visible from resource lists, and not reachable by name) after the time in this field, once the finalizers list is empty. As long as the finalizers list contains items, deletion is blocked. Once the deletionTimestamp is set, this value may not be unset or be set further into the future, although it may be shortened or the resource may be deleted prior to this time. For example, a user may request that a pod is deleted in 30 seconds. The Kubelet will react by sending a graceful termination signal to the containers in the pod. After that 30 seconds, the Kubelet will send a hard termination signal (SIGKILL) to the container and after cleanup, remove the pod from the API. In the presence of network partitions, this object may still exist after this timestamp, until an administrator or automated process can determine the resource is fully terminated. If not set, graceful deletion of the object has not been requested.</p>
-<p>Populated by the system when a graceful deletion is requested. Read-only. More info: <a href="https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata">https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata</a></p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p><code>finalizers</code></p></td>
-<td style="text-align: left;"><p><code>array (string)</code></p></td>
-<td style="text-align: left;"><p>Must be empty before the object is deleted from the registry. Each entry is an identifier for the responsible component that will remove the entry from the list. If the deletionTimestamp of the object is non-nil, entries in this list can only be removed. Finalizers may be processed and removed in any order. Order is NOT enforced because it introduces significant risk of stuck finalizers. finalizers is a shared field, any actor with permission can reorder it. If the finalizer list is processed in order, then this can lead to a situation in which the component responsible for the first finalizer in the list is waiting for a signal (field value, external system, or other) produced by a component responsible for a finalizer later in the list, resulting in a deadlock. Without enforced ordering finalizers are free to order amongst themselves and are not vulnerable to ordering changes in the list.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>generateName</code></p></td>
-<td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>GenerateName is an optional prefix, used by the server, to generate a unique name ONLY IF the Name field has not been provided. If this field is used, the name returned to the client will be different than the name passed. This value will also be combined with a unique suffix. The provided value has the same validation rules as the Name field, and may be truncated by the length of the suffix required to make the value unique on the server.</p>
-<p>If this field is specified and the generated name exists, the server will return a 409.</p>
-<p>Applied only if Name is not specified. More info: <a href="https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#idempotency">https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#idempotency</a></p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p><code>generation</code></p></td>
-<td style="text-align: left;"><p><code>integer</code></p></td>
-<td style="text-align: left;"><p>A sequence number representing a specific generation of the desired state. Populated by the system. Read-only.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>labels</code></p></td>
-<td style="text-align: left;"><p><code>object (string)</code></p></td>
-<td style="text-align: left;"><p>Map of string keys and values that can be used to organize and categorize (scope and select) objects. May match selectors of replication controllers and services. More info: <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels">https://kubernetes.io/docs/concepts/overview/working-with-objects/labels</a></p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p><code>managedFields</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ManagedFieldsEntry"><code>array (ManagedFieldsEntry)</code></a></p></td>
-<td style="text-align: left;"><p>ManagedFields maps workflow-id and version to the set of fields that are managed by that workflow. This is mostly for internal housekeeping, and users typically shouldn’t need to set or understand this field. A workflow can be the user’s name, a controller’s name, or the name of a specific apply path like "ci-cd". The set of fields is always in the version that the workflow used when modifying the object.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>name</code></p></td>
-<td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>Name must be unique within a namespace. Is required when creating resources, although some resources may allow a client to request the generation of an appropriate name automatically. Name is primarily intended for creation idempotence and configuration definition. Cannot be updated. More info: <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/names#names">https://kubernetes.io/docs/concepts/overview/working-with-objects/names#names</a></p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p><code>namespace</code></p></td>
-<td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>Namespace defines the space within which each name must be unique. An empty namespace is equivalent to the "default" namespace, but "default" is the canonical representation. Not all objects are required to be scoped to a namespace - the value of this field for those objects will be empty.</p>
-<p>Must be a DNS_LABEL. Cannot be updated. More info: <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces">https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces</a></p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>ownerReferences</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-OwnerReference"><code>array (OwnerReference)</code></a></p></td>
-<td style="text-align: left;"><p>List of objects depended by this object. If ALL objects in the list have been deleted, this object will be garbage collected. If this object is managed by a controller, then an entry in this list will point to this controller, with the controller field set to true. There cannot be more than one managing controller.</p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p><code>resourceVersion</code></p></td>
-<td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>An opaque value that represents the internal version of this object that can be used by clients to determine when objects have changed. May be used for optimistic concurrency, change detection, and the watch operation on a resource or set of resources. Clients must treat these values as opaque and passed unmodified back to the server. They may only be valid for a particular resource or set of resources.</p>
-<p>Populated by the system. Read-only. Value must be treated as opaque by clients and . More info: <a href="https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#concurrency-control-and-consistency">https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#concurrency-control-and-consistency</a></p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>selfLink</code></p></td>
-<td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>Deprecated: selfLink is a legacy read-only field that is no longer populated by the system.</p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p><code>uid</code></p></td>
-<td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>UID is the unique in time and space value for this object. It is typically generated by the server on successful creation of a resource and is not allowed to change on PUT operations.</p>
-<p>Populated by the system. Read-only. More info: <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/names#uids">https://kubernetes.io/docs/concepts/overview/working-with-objects/names#uids</a></p></td>
-</tr>
-</tbody>
-</table>
-
-# io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2 schema
 
 Description
 ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.

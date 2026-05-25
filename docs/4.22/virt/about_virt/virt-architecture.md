@@ -1,3 +1,5 @@
+OpenShift Virtualization architecture consists of several Operators and components that manage the lifecycle, storage, networking, and scheduling of virtual machine workloads within the cluster.
+
 The Operator Lifecycle Manager (OLM) deploys operator pods for each component of OpenShift Virtualization:
 
 - Compute: `virt-operator`

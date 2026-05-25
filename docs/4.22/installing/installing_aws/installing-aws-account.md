@@ -629,6 +629,16 @@ If you are managing your cloud provider credentials with mint mode, the IAM user
 
 - `ec2:DisassociateAddress`
 
+<!-- -->
+
+- `ec2:DescribeEgressOnlyInternetGateways`
+
+- `ec2:CreateEgressOnlyInternetGateway`
+
+<!-- -->
+
+- `ec2:DeleteEgressOnlyInternetGateway`
+
 # Creating an IAM user
 
 Before you install OpenShift Container Platform, you must create a secondary IAM administrative user and assign permissions to create the cluster.

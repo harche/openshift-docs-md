@@ -2250,4 +2250,4 @@ ip-10-0-67-453.us-west-2.compute.internal   Ready    infra                  55m 
 
 <!-- -->
 
-- [Moving monitoring components to different nodes](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_core_platform_monitoring/configuring-performance-and-scalability#moving-monitoring-components-to-different-nodes_configuring-performance-and-scalability)
+- [Moving monitoring components to different nodes](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/configuring_core_platform_monitoring/configuring-performance-and-scalability#moving-monitoring-components-to-different-nodes_configuring-performance-and-scalability)

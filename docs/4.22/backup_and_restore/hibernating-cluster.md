@@ -92,14 +92,14 @@ You can hibernate a cluster for up to 90 days. The cluster can recover if certif
 
     ``` terminal
     NAME                      VERSION   AVAILABLE  PROGRESSING  DEGRADED  SINCE   MESSAGE
-    authentication            4.21.0-0  True       False        False     51m
-    baremetal                 4.21.0-0  True       False        False     72m
-    cloud-controller-manager  4.21.0-0  True       False        False     75m
-    cloud-credential          4.21.0-0  True       False        False     77m
-    cluster-api               4.21.0-0  True       False        False     42m
-    cluster-autoscaler        4.21.0-0  True       False        False     72m
-    config-operator           4.21.0-0  True       False        False     72m
-    console                   4.21.0-0  True       False        False     55m
+    authentication            4.22.0-0  True       False        False     51m
+    baremetal                 4.22.0-0  True       False        False     72m
+    cloud-controller-manager  4.22.0-0  True       False        False     75m
+    cloud-credential          4.22.0-0  True       False        False     77m
+    cluster-api               4.22.0-0  True       False        False     42m
+    cluster-autoscaler        4.22.0-0  True       False        False     72m
+    config-operator           4.22.0-0  True       False        False     72m
+    console                   4.22.0-0  True       False        False     55m
     ...
     ```
 
@@ -245,14 +245,14 @@ It can take around 45 minutes for the cluster to resume, depending on the size o
 
     ``` terminal
     NAME                      VERSION   AVAILABLE  PROGRESSING  DEGRADED  SINCE   MESSAGE
-    authentication            4.21.0-0  True       False        False     51m
-    baremetal                 4.21.0-0  True       False        False     72m
-    cloud-controller-manager  4.21.0-0  True       False        False     75m
-    cloud-credential          4.21.0-0  True       False        False     77m
-    cluster-api               4.21.0-0  True       False        False     42m
-    cluster-autoscaler        4.21.0-0  True       False        False     72m
-    config-operator           4.21.0-0  True       False        False     72m
-    console                   4.21.0-0  True       False        False     55m
+    authentication            4.22.0-0  True       False        False     51m
+    baremetal                 4.22.0-0  True       False        False     72m
+    cloud-controller-manager  4.22.0-0  True       False        False     75m
+    cloud-credential          4.22.0-0  True       False        False     77m
+    cluster-api               4.22.0-0  True       False        False     42m
+    cluster-autoscaler        4.22.0-0  True       False        False     72m
+    config-operator           4.22.0-0  True       False        False     72m
+    console                   4.22.0-0  True       False        False     55m
     ...
     ```
 

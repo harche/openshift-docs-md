@@ -1204,7 +1204,7 @@ If you do not use the provided ARM template to create your Azure Stack Hub infra
 You can use the following Azure Resource Manager (ARM) template to deploy the VNet that you need for your OpenShift Container Platform cluster:
 
 ``` json
-link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/azurestack/01_vnet.json[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azurestack/01_vnet.json[role=include]
 ```
 
 # Deploying the RHCOS cluster image for the Azure Stack Hub infrastructure
@@ -1247,7 +1247,7 @@ You must use a valid Red Hat Enterprise Linux CoreOS (RHCOS) image for Microsof
 You can use the following Azure Resource Manager (ARM) template to deploy the stored Red Hat Enterprise Linux CoreOS (RHCOS) image that you need for your OpenShift Container Platform cluster:
 
 ``` json
-link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/azurestack/02_storage.json[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azurestack/02_storage.json[role=include]
 ```
 
 # Networking requirements for user-provisioned infrastructure
@@ -1368,7 +1368,7 @@ If you do not use the provided ARM template to create your Azure Stack Hub infra
 You can use the following Azure Resource Manager (ARM) template to deploy the networking objects and load balancers that you need for your OpenShift Container Platform cluster:
 
 ``` json
-link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/azurestack/03_infra.json[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azurestack/03_infra.json[role=include]
 ```
 
 # Creating the bootstrap machine in Azure Stack Hub
@@ -1434,7 +1434,7 @@ If you do not use the provided ARM template to create your bootstrap machine, yo
 You can use the following Azure Resource Manager (ARM) template to deploy the bootstrap machine that you need for your OpenShift Container Platform cluster:
 
 ``` json
-link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/azurestack/04_bootstrap.json[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azurestack/04_bootstrap.json[role=include]
 ```
 
 # Creating the control plane machines in Azure Stack Hub
@@ -1474,7 +1474,7 @@ If you do not use the provided ARM template to create your control plane machine
 You can use the following Azure Resource Manager (ARM) template to deploy the control plane machines that you need for your OpenShift Container Platform cluster:
 
 ``` json
-link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/azurestack/05_masters.json[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azurestack/05_masters.json[role=include]
 ```
 
 # Wait for bootstrap completion and remove bootstrap resources in Azure Stack Hub
@@ -1573,7 +1573,7 @@ If you do not use the provided ARM template to create your control plane machine
 You can use the following Azure Resource Manager (ARM) template to deploy the worker machines that you need for your OpenShift Container Platform cluster:
 
 ``` json
-link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/azurestack/06_workers.json[role=include]
+link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azurestack/06_workers.json[role=include]
 ```
 
 # Logging in to the cluster by using the CLI
@@ -1700,7 +1700,7 @@ To add machines to a cluster, verify the status of the certificate signing reque
 
       <div class="note">
 
-      Some Operators might not become available until some CSRs are approved.
+      Some Operators might not become available until some CSRs are approved. Each node submits two CSRs, so you may need to run the command to approve CSRs multiple times.
 
       </div>
 

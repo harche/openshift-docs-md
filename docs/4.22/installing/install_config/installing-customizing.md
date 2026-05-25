@@ -384,10 +384,10 @@ Before deploying kernel modules to your OpenShift Container Platform cluster, yo
       </div>
 
       ``` terminal
-      KVC: wrapper simple-kmod for 4.21.0-147.3.1.el8_1.x86_64
+      KVC: wrapper simple-kmod for 4.22.0-147.3.1.el8_1.x86_64
       Running userspace wrapper using the kernel module container...
       + podman run -i --rm --privileged
-         simple-kmod-dd1a7d4:4.21.0-147.3.1.el8_1.x86_64 spkut 44
+         simple-kmod-dd1a7d4:4.22.0-147.3.1.el8_1.x86_64 spkut 44
       simple-procfs-kmod number = 0
       simple-procfs-kmod number = 44
       ```

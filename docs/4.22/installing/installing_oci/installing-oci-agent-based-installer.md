@@ -169,9 +169,9 @@ You can also use the Agent-based Installer to generate or accept Zero Touch Prov
   </div>
 
   ``` terminal
-  ./openshift-install 4.21.0
+  ./openshift-install 4.22.0
   built from commit ae7977b7d1ca908674a0d45c5c243c766fa4b2ca
-  release image registry.ci.openshift.org/origin/release:4.21ocp-release@sha256:0da6316466d60a3a4535d5fed3589feb0391989982fba59d47d4c729912d6363
+  release image registry.ci.openshift.org/origin/release:4.22ocp-release@sha256:0da6316466d60a3a4535d5fed3589feb0391989982fba59d47d4c729912d6363
   release architecture amd64
   ```
 
@@ -498,9 +498,9 @@ After you deploy the compute instance on a self-managed node in your OpenShift C
 
   ``` terminal
   NAME           VERSION     AVAILABLE  PROGRESSING    DEGRADED   SINCE   MESSAGE
-  authentication 4.21.0-0    True       False          False      6m18s
-  baremetal      4.21.0-0    True       False          False      2m42s
-  network        4.21.0-0    True       True           False      5m58s  Progressing: …
+  authentication 4.22.0-0    True       False          False      6m18s
+  baremetal      4.22.0-0    True       False          False      2m42s
+  network        4.22.0-0    True       True           False      5m58s  Progressing: …
       …
   ```
 

@@ -83,33 +83,25 @@ You can use the OpenShift CLI (`oc`) to install the Lifecycle Agent.
     $ oc get csv -n openshift-lifecycle-agent
     ```
 
-    <div class="formalpara-title">
+    Example output:
 
-    **Example output**
+<!-- -->
 
-    </div>
-
-    ``` terminal
     NAME                              DISPLAY                     VERSION               REPLACES                           PHASE
-    lifecycle-agent.v4.17.0           Openshift Lifecycle Agent   4.17.0                Succeeded
-    ```
+    lifecycle-agent.v{product-version}.0           Openshift Lifecycle Agent   {product-version}.0                Succeeded
 
-2.  Verify that the Lifecycle Agent is up and running by running the following command:
+1.  Verify that the Lifecycle Agent is up and running by running the following command:
 
     ``` terminal
     $ oc get deploy -n openshift-lifecycle-agent
     ```
 
-    <div class="formalpara-title">
+    Example output:
 
-    **Example output**
+<!-- -->
 
-    </div>
-
-    ``` terminal
     NAME                                 READY   UP-TO-DATE   AVAILABLE   AGE
     lifecycle-agent-controller-manager   1/1     1            1           14s
-    ```
 
 # Installing the Lifecycle Agent by using the web console
 

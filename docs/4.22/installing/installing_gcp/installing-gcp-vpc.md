@@ -340,13 +340,13 @@ Some instance types require the use of Hyperdisk storage. If you use an instance
 
 </div>
 
-<https://raw.githubusercontent.com/openshift/installer/release-4.21/docs/user/gcp/tested_instance_types.md>
+<https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/gcp/tested_instance_types.md>
 
 ## Tested instance types for Google Cloud on 64-bit ARM infrastructures
 
 The following Google Cloud 64-bit ARM instance types have been tested with OpenShift Container Platform.
 
-<https://raw.githubusercontent.com/openshift/installer/release-4.21/docs/user/gcp/tested_instance_types_arm.md>
+<https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/gcp/tested_instance_types_arm.md>
 
 ## Using custom machine types
 

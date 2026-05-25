@@ -10,6 +10,16 @@ You can create a Windows `MachineSet` object to serve a specific purpose in your
 
   <div class="formalpara-title">
 
+  **Example Windows Server 2025 command**
+
+  </div>
+
+  ``` terminal
+  $ aws ec2 describe-images --region <aws_region_name> --filters "Name=name,Values=Windows_Server-2025*English*Core*Base*" "Name=is-public,Values=true" --query "reverse(sort_by(Images, &CreationDate))[*].{name: Name, id: ImageId}" --output table
+  ```
+
+  <div class="formalpara-title">
+
   **Example Windows Server 2022 command**
 
   </div>
@@ -20,7 +30,7 @@ You can create a Windows `MachineSet` object to serve a specific purpose in your
 
   <div class="formalpara-title">
 
-  **Example Windows Server 2019 command**
+  **Example Windows Server 2025 command**
 
   </div>
 

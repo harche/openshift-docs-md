@@ -1,4 +1,4 @@
-Learn about OpenShift Virtualization’s capabilities and support scope.
+OpenShift Virtualization provides a comprehensive virtualization solution that allows you to run and manage virtual machine workloads alongside container workloads in your OpenShift Container Platform cluster.
 
 # What you can do with OpenShift Virtualization
 
@@ -28,7 +28,7 @@ You can manage your cluster and virtualization resources by using the **Virtuali
 
 <div class="important">
 
-For supported and unsupported OVN-Kubernetes network plugin use cases, see "OVN-Kubernetes purpose".
+For supported and unsupported OVN-Kubernetes network plug-in use cases, see "OVN-Kubernetes purpose".
 
 </div>
 
@@ -40,11 +40,11 @@ When you deploy OpenShift Virtualization with OpenShift Data Foundation, you mus
 
 </div>
 
-You can use OpenShift Virtualization with [OVN-Kubernetes](../../networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.xml#about-ovn-kubernetes) or one of the other certified network plugins listed in [Certified OpenShift CNI Plug-ins](https://access.redhat.com/articles/5436171).
+You can use OpenShift Virtualization with OVN-Kubernetes or one of the other certified network plug-ins listed in "Certified OpenShift CNI Plug-ins".
 
-You can check your OpenShift Virtualization cluster for compliance issues by installing the [Compliance Operator](../../security/compliance_operator/co-concepts/compliance-operator-understanding.xml#understanding-compliance) and running a scan with the `ocp4-moderate` and `ocp4-moderate-node` [profiles](../../security/compliance_operator/co-scans/compliance-operator-supported-profiles.xml#compliance-operator-supported-profiles). The Compliance Operator uses OpenSCAP, a [NIST-certified tool](https://www.nist.gov/), to scan and enforce security policies.
+You can check your OpenShift Virtualization cluster for compliance issues by installing the Compliance Operator and running a scan with the `ocp4-moderate` and `ocp4-moderate-node` profiles. The Compliance Operator uses OpenSCAP, a NIST-certified tool, to scan and enforce security policies.
 
-For information about partnering with Independent Software Vendors (ISVs) and Services partners for specialized storage, networking, backup, and additional functionality, see [the Red Hat Ecosystem Catalog](https://red.ht/workswithvirt).
+For information about partnering with Independent Software Vendors (ISVs) and Services partners for specialized storage, networking, backup, and additional functionality, see the Red Hat Ecosystem Catalog.
 
 # Comparing OpenShift Virtualization to VMware vSphere
 
@@ -162,6 +162,12 @@ However, you should be aware that Single-node OpenShift does not support the fol
 
 # Additional resources
 
+- [OVN-Kubernetes](../../networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.xml#about-ovn-kubernetes)
+
+- [Compliance Operator](../../security/compliance_operator/co-concepts/compliance-operator-understanding.xml#understanding-compliance)
+
+- [Supported compliance profiles](../../security/compliance_operator/co-scans/compliance-operator-supported-profiles.xml#compliance-operator-supported-profiles)
+
 - [OpenShift Virtualization supported limits](../../virt/about_virt/virt-supported-limits.xml#virt-supported-limits)
 
 - [OVN-Kubernetes purpose](../../networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.xml#nw-ovn-kubernetes-purpose_about-ovn-kubernetes)
@@ -170,7 +176,13 @@ However, you should be aware that Single-node OpenShift does not support the fol
 
 - [About single-node OpenShift](../../installing/installing_sno/install-sno-preparing-to-install-sno.xml#install-sno-about-installing-on-a-single-node_install-sno-preparing)
 
-- [Assisted installer](https://cloud.redhat.com/blog/using-the-openshift-assisted-installer-service-to-deploy-an-openshift-cluster-on-metal-and-vsphere)
+- [Using the OpenShift Assisted Installer Service to Deploy an OpenShift Cluster on Bare Metal and vSphere](https://cloud.redhat.com/blog/using-the-openshift-assisted-installer-service-to-deploy-an-openshift-cluster-on-metal-and-vsphere)
+
+- [Certified OpenShift CNI Plug-ins](https://access.redhat.com/articles/5436171)
+
+- [NIST-certified tool](https://www.nist.gov/)
+
+- [Red Hat Ecosystem Catalog](https://red.ht/workswithvirt)
 
 - [Pod disruption budgets](../../nodes/pods/nodes-pods-priority.xml#priority-preemption-other_nodes-pods-priority)
 

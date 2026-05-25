@@ -1,5 +1,7 @@
 Accelerate the resolution of cluster and virtual machine (VM) issues by using the integrated diagnostic tools and support provided by OpenShift Virtualization.
 
+To gather debugging information, configure Prometheus and Alertmanager and collect `must-gather` data for OpenShift Container Platform and OpenShift Virtualization.
+
 # Opening a support case
 
 Open a support case with Red Hat Support when you encounter an issue that requires immediate assistance.

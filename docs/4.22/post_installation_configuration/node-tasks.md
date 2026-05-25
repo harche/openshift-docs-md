@@ -245,7 +245,7 @@ To add machines to a cluster, verify the status of the certificate signing reque
 
       <div class="note">
 
-      Some Operators might not become available until some CSRs are approved.
+      Some Operators might not become available until some CSRs are approved. Each node submits two CSRs, so you may need to run the command to approve CSRs multiple times.
 
       </div>
 
@@ -3995,7 +3995,7 @@ The TuneD bootloader plugin only supports Red Hat Enterprise Linux CoreOS (RHCO
 
 # Configuring the maximum number of pods per node
 
-You can use the `podsPerCore` and `maxPods` parameters in a kublet configuration to control the maximum number of pods that can be scheduled to a node. If you use both options, the lower of the two limits the number of pods on a node. Setting an appropriate maximum can help ensure your nodes run efficiently.
+You can use the `podsPerCore` and `maxPods` parameters in a kubelet configuration to control the maximum number of pods that can be scheduled to a node. If you use both options, the lower of the two limits the number of pods on a node. Setting an appropriate maximum can help ensure your nodes run efficiently.
 
 For example, if `podsPerCore` is set to `10` on a node with 4 processor cores, the maximum number of pods allowed on the node will be 40.
 

@@ -131,8 +131,8 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_gcp/installing-gcp-vpc.md">Installing a cluster on Google Cloud into an existing VPC</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_gcp/installing-gcp-shared-vpc.md">Installing a cluster on Google Cloud into a shared VPC</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_gcp/installing-gcp-private.md">Installing a private cluster on Google Cloud</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_gcp/installing-gcp-user-infra.md">Installing a cluster on Google Cloud using Deployment Manager templates</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_gcp/installing-gcp-user-infra-vpc.md">Installing a cluster into a shared VPC on Google Cloud using Deployment Manager templates</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_gcp/installing-gcp-user-infra.md">Installing a cluster on Google Cloud using Infrastructure Manager templates</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_gcp/installing-gcp-user-infra-vpc.md">Installing a cluster into a shared VPC on Google Cloud using Infrastructure Manager templates</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_gcp/installing-restricted-networks-gcp.md">Installing a cluster on Google Cloud in a disconnected environment with user-provisioned infrastructure</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_gcp/installing-gcp-three-node.md">Installing a three-node cluster on Google Cloud</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_gcp/installation-config-parameters-gcp.md">Installation configuration parameters for Google Cloud</a></div>
@@ -194,7 +194,7 @@
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=installing/installing_bare_metal/ipi/ipi-install-troubleshooting.md">Troubleshooting the installation</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_bare_metal/bare-metal-postinstallation-configuration.md">Postinstallation configuration</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_bare_metal/bare-metal-expanding-the-cluster.md">Expanding the cluster</a></div>
-<div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_bare_metal/bare-metal-using-bare-metal-as-a-service.md">Using bare metal as a service</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_bare_metal/bare-metal-using-bare-metal-as-a-service.md">Using Red Hat Bare Metal as a Service for OpenShift</a></div>
 <div style="padding-left:0px">&bull; <strong>Installing IBM Cloud Bare Metal (Classic)</strong></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_ibm_cloud_classic/install-ibm-cloud-prerequisites.md">Prerequisites for IBM Cloud (Classic)</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_ibm_cloud_classic/install-ibm-cloud-installation-workflow.md">Installation workflow for IBM Cloud Bare Metal (Classic)</a></div>
@@ -587,6 +587,7 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=authentication/identity_providers/configuring-google-identity-provider.md">Configuring a Google identity provider</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=authentication/identity_providers/configuring-oidc-identity-provider.md">Configuring an OpenID Connect identity provider</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=authentication/external-auth.md">Enabling direct authentication with an OIDC identity provider</a></div>
+<div style="padding-left:0px">&bull; <a href="viewer.html?doc=authentication/structured-auth-config-fields.md">Configuring advanced direct authentication fields</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=authentication/using-rbac.md">Using RBAC to define and apply permissions</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=authentication/remove-kubeadmin.md">Removing the kubeadmin user</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=authentication/understanding-and-creating-service-accounts.md">Understanding and creating service accounts</a></div>
@@ -740,8 +741,9 @@
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-load-balancer-allowed-source-ranges.md">Configuring ingress cluster traffic using load balancer allowed source ranges</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-patch-fields.md">Patching existing ingress objects</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_ingress_cluster_traffic/ingress-controller-dnsmgt.md">Configuring the Ingress Controller for manual DNS management</a></div>
-<div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_ingress_cluster_traffic/ingress-gateway-api.md">Gateway API with OpenShift Container Platform networking</a></div>
 <div style="padding-left:20px">&bull; <strong>Configuring Gateway API</strong></div>
+<div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_gateway_api/understand-gateway-api.md">Understand Gateway API</a></div>
+<div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_gateway_api/enable-gateway-api.md">Enable Gateway API</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_gateway_api/controlling-incoming-traffic-gateway-listeners.md">Controlling incoming traffic with Gateway listeners</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_gateway_api/assigning-network-addresses-gateways.md">Assigning network addresses to gateways</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/ingress_load_balancing/configuring_gateway_api/routing-http-requests-to-services.md">Routing HTTP requests to services</a></div>
@@ -1015,8 +1017,10 @@
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=machine_configuration/mco-update-boot-images.md">Boot image management</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=machine_configuration/mco-update-boot-skew-mgmt.md">Boot image skew enforcement</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=machine_configuration/mco-update-boot-images-manual.md">Manually updating the boot image</a></div>
+<div style="padding-left:0px">&bull; <a href="viewer.html?doc=machine_configuration/machine-config-custom-mcp.md">Creating custom machine config pools</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=machine_configuration/machine-configs-garbage-collection.md">Managing unused rendered machine configs</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=machine_configuration/mco-coreos-layering.md">Image mode for OpenShift</a></div>
+<div style="padding-left:0px">&bull; <a href="viewer.html?doc=machine_configuration/mco-image-streams.md">Setting the RHCOS version in a cluster</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=machine_configuration/machine-config-daemon-metrics.md">Machine Config Daemon metrics</a></div>
 <h3>Machine management</h3>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=machine_management/index.md">Overview of machine management</a></div>
@@ -1920,12 +1924,10 @@
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/managing_vms/advanced_vm_management/virt-working-with-resource-quotas-for-vms.md">Working with resource quotas for virtual machines</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/managing_vms/advanced_vm_management/virt-understanding-aaq-operator.md">Configuring the Application-Aware Quota Operator</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/managing_vms/advanced_vm_management/virt-specifying-nodes-for-vms.md">Specifying nodes for virtual machines</a></div>
-<div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/managing_vms/advanced_vm_management/virt-configuring-default-cpu-model.md">Configuring the default CPU model</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/managing_vms/advanced_vm_management/virt-uefi-mode-for-vms.md">UEFI mode for virtual machines</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/managing_vms/advanced_vm_management/virt-configuring-pxe-booting.md">Configuring PXE booting for virtual machines</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/managing_vms/advanced_vm_management/virt-using-huge-pages-with-vms.md">Using huge pages with virtual machines</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/managing_vms/advanced_vm_management/virt-dedicated-resources-vm.md">Enabling dedicated resources for a virtual machine</a></div>
-<div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/managing_vms/advanced_vm_management/virt-schedule-vms.md">Scheduling virtual machines</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/managing_vms/advanced_vm_management/virt-configuring-pci-passthrough.md">Configuring PCI passthrough</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/managing_vms/advanced_vm_management/virt-configuring-virtual-gpus.md">Configuring virtual GPUs</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/managing_vms/advanced_vm_management/virt-configuring-usb-host-passthrough.md">Configuring USB host passthrough</a></div>
@@ -1942,6 +1944,10 @@
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/managing_vms/virtual_disks/virt-configuring-shared-volumes-for-vms.md">Configuring shared volumes</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/managing_vms/virtual_disks/virt-migrating-storage-class.md">Migrating VM disks to a different storage class</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/managing_vms/virtual_disks/virt-inserting-cd-roms-in-virtual-machines.md">Inserting CD-ROMs in virtual machines</a></div>
+<div style="padding-left:20px">&bull; <strong>CPU models</strong></div>
+<div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/managing_vms/cpu_models/virt-choosing-cpu-models.md">Choose a CPU model</a></div>
+<div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/managing_vms/cpu_models/virt-configuring-default-cpu-model.md">Configure CPU models</a></div>
+<div style="padding-left:40px">&bull; <a href="viewer.html?doc=virt/managing_vms/cpu_models/virt-schedule-vms.md">Schedule virtual machines</a></div>
 <div style="padding-left:0px">&bull; <strong>Networking</strong></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/vm_networking/virt-networking-overview.md">Networking configuration overview</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/vm_networking/virt-connecting-vm-to-default-pod-network.md">Connecting a VM to the default pod network</a></div>

@@ -8,13 +8,13 @@ Type
 
 # Specification
 
-| Property      | Type                                                                                       | Description                                                                                                                                                                                                                                                                                          |
-|---------------|--------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `apiVersion`  | `string`                                                                                   | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
-| `description` | `string`                                                                                   | Description is the description to apply to a project                                                                                                                                                                                                                                                 |
-| `displayName` | `string`                                                                                   | DisplayName is the display name to apply to a project                                                                                                                                                                                                                                                |
-| `kind`        | `string`                                                                                   | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `metadata`    | [`ObjectMeta_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta_v2) | metadata is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                |
+| Property      | Type                                                                                 | Description                                                                                                                                                                                                                                                                                          |
+|---------------|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion`  | `string`                                                                             | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `description` | `string`                                                                             | description is the description to apply to a project                                                                                                                                                                                                                                                 |
+| `displayName` | `string`                                                                             | displayName is the display name to apply to a project                                                                                                                                                                                                                                                |
+| `kind`        | `string`                                                                             | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `metadata`    | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | metadata is the standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                                                                                                                                                |
 
 # API endpoints
 
@@ -34,10 +34,10 @@ HTTP method
 Description
 list objects of kind ProjectRequest
 
-| HTTP code          | Reponse body                                                                        |
-|--------------------|-------------------------------------------------------------------------------------|
-| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty                                                                               |
+| HTTP code          | Reponse body                                                                              |
+|--------------------|-------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v2) schema |
+| 401 - Unauthorized | Empty                                                                                     |
 
 HTTP responses
 

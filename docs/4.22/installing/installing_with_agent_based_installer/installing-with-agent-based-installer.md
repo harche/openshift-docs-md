@@ -61,7 +61,7 @@ Before installing an OpenShift Container Platform cluster using the Agent-based 
     </div>
 
     ``` terminal
-    ./openshift-install 4.21.0
+    ./openshift-install 4.22.0
     built from commit abc123def456
     release image quay.io/openshift-release-dev/ocp-release@sha256:123abc456def789ghi012jkl345mno678pqr901stu234vwx567yz0
     release architecture amd64

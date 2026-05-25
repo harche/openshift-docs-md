@@ -14,7 +14,7 @@ Before deploying your Windows workloads to the cluster, you must configure your 
 
 With multiple operating systems, and the ability to run multiple Windows OS variants in the same cluster, you must map your Windows pods to a base Windows OS variant by using a `RuntimeClass` object. For example, if you have multiple Windows nodes running on different Windows Server container versions, the cluster could schedule your Windows pods to an incompatible Windows OS variant. You must have `RuntimeClass` objects configured for each Windows OS variant on your cluster. Using a `RuntimeClass` object is also recommended if you have only one Windows OS variant available in your cluster.
 
-For more information, see Microsoft’s documentation on [Host and container version compatibility](https://docs.microsoft.com/en-us/virtualization/windowscontainers/deploy-containers/update-containers#host-and-container-version-compatibility).
+For more information, see Microsoft’s documentation on [Host and container version compatibility, Microsoft Windows documentation](https://docs.microsoft.com/en-us/virtualization/windowscontainers/deploy-containers/update-containers#host-and-container-version-compatibility).
 
 Also, it is recommended that you set the `spec.os.name.windows` parameter in your workload pods. The Windows Machine Config Operator (WMCO) uses this field to authoritatively identify the pod operating system for validation and is used to enforce Windows-specific pod security context constraints (SCCs). Currently, this parameter has no effect on pod scheduling. For more information about this parameter, see the [Kubernetes Pods documentation](https://kubernetes.io/docs/concepts/workloads/pods/#pod-os).
 
@@ -22,7 +22,7 @@ Also, it is recommended that you set the `spec.os.name.windows` parameter in you
 
 The container base image must be the same Windows OS version and build number that is running on the node where the conainer is to be scheduled.
 
-Also, if you upgrade the Windows nodes from one version to another, for example going from 20H2 to 2022, you must upgrade your container base image to match the new version. For more information, see [Windows container version compatibility](https://learn.microsoft.com/en-us/virtualization/windowscontainers/deploy-containers/version-compatibility?tabs=windows-server-2022%2Cwindows-11-21H2).
+Also, if you upgrade the Windows nodes from one version to another, for example going from 2022 to 2025, you must upgrade your container base image to match the new version. For more information, see [Windows container version compatibility, Microsoft Windows documentation](https://learn.microsoft.com/en-us/virtualization/windowscontainers/deploy-containers/version-compatibility?tabs=windows-server-2022%2Cwindows-11-21H2).
 
 </div>
 
@@ -44,13 +44,13 @@ Using a `RuntimeClass` object simplifies the use of scheduling mechanisms like t
     apiVersion: node.k8s.io/v1
     kind: RuntimeClass
     metadata:
-      name: windows2019
+      name: windows2025
     handler: 'runhcs-wcow-process'
     scheduling:
       nodeSelector:
         kubernetes.io/os: 'windows'
         kubernetes.io/arch: 'amd64'
-        node.kubernetes.io/windows-build: '10.0.17763'
+        node.kubernetes.io/windows-build: '10.0.26100'
       tolerations:
       - effect: NoSchedule
         key: os
@@ -66,9 +66,11 @@ Using a `RuntimeClass` object simplifies the use of scheduling mechanisms like t
 
     - Specify labels that must be present on nodes that support this runtime class. Pods using this runtime class can only be scheduled to a node matched by this selector. The node selector of the runtime class is merged with the existing node selector of the pod. Any conflicts prevent the pod from being scheduled to the node.
 
-      - For Windows 2019, specify the `node.kubernetes.io/windows-build: '10.0.17763'` label.
+      - For Windows 2025, specify the `node.kubernetes.io/windows-build: '10.0.26100'` label.
 
       - For Windows 2022, specify the `node.kubernetes.io/windows-build: '10.0.20348'` label.
+
+      - For Windows 2019, specify the `node.kubernetes.io/windows-build: '10.0.17763'` label.
 
     - Specify tolerations to append to pods, excluding duplicates, running with this runtime class during admission. This combines the set of nodes tolerated by the pod and the runtime class.
 
@@ -92,7 +94,7 @@ Using a `RuntimeClass` object simplifies the use of scheduling mechanisms like t
     metadata:
       name: my-windows-pod
     spec:
-      runtimeClassName: windows2019
+      runtimeClassName: windows2025
     # ...
     ```
 
@@ -157,7 +159,7 @@ spec:
     spec:
       containers:
       - name: windowswebserver
-        image: mcr.microsoft.com/windows/servercore:ltsc2019
+        image: mcr.microsoft.com/windows/servercore:ltsc2025
         imagePullPolicy: IfNotPresent
         command:
         - powershell.exe
@@ -169,14 +171,16 @@ spec:
             runAsUserName: "ContainerAdministrator"
       os:
         name: "windows"
-      runtimeClassName: windows2019
+      runtimeClassName: windows2025
 ```
 
 - Specify the container image to use: `mcr.microsoft.com/powershell:<tag>` or `mcr.microsoft.com/windows/servercore:<tag>`. The container image must match the Windows version running on the node.
 
-  - For Windows 2019, use the `ltsc2019` tag.
+  - For Windows 2025, use the `ltsc2025` tag.
 
   - For Windows 2022, use the `ltsc2022` tag.
+
+  - For Windows 2019, use the `ltsc2019` tag.
 
 - Specify the commands to execute on the container.
 

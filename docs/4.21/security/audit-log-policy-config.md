@@ -70,13 +70,16 @@ You can configure the audit log policy to use when logging requests that come to
         profile: WriteRequestBodies
     ```
 
-    - Set to `Default`, `WriteRequestBodies`, `AllRequestBodies`, or `None`. The default profile is `Default`.
+    where:
 
-      <div class="warning">
+    `profile`
+    Set to `Default`, `WriteRequestBodies`, `AllRequestBodies`, or `None`. The default profile is `Default`.
 
-      It is not recommended to disable audit logging by using the `None` profile unless you are fully aware of the risks of not logging data that can be beneficial when troubleshooting issues. If you disable audit logging and a support situation arises, you might need to enable audit logging and reproduce the issue in order to troubleshoot properly.
+    <div class="warning">
 
-      </div>
+    It is not recommended to disable audit logging by using the `None` profile unless you are fully aware of the risks of not logging data that can be beneficial when troubleshooting issues. If you disable audit logging and a support situation arises, you might need to enable audit logging and reproduce the issue in order to troubleshoot properly.
+
+    </div>
 
 3.  Save the file to apply the changes.
 
@@ -93,13 +96,13 @@ You can configure the audit log policy to use when logging requests that come to
   3 nodes are at revision 12
   ```
 
-  - In this example, the latest revision number is `12`.
+  In this example, the latest revision number is `12`.
 
-    If the output shows a message similar to one of the following messages, the update is still in progress. Wait a few minutes and try again.
+  If the output shows a message similar to one of the following messages, the update is still in progress. Wait a few minutes and try again.
 
-    - `3 nodes are at revision 11; 0 nodes have achieved new revision 12`
+  - `3 nodes are at revision 11; 0 nodes have achieved new revision 12`
 
-    - `2 nodes are at revision 11; 1 nodes are at revision 12`
+  - `2 nodes are at revision 11; 1 nodes are at revision 12`
 
 # Configuring the audit log policy with custom rules
 
@@ -138,9 +141,13 @@ If you set the top-level profile field to `None`, an API server, such as the Kub
         profile: Default
     ```
 
-    - Add one or more groups and specify the profile to use for that group. These custom rules take precedence over the top-level profile field. The custom rules are evaluated from top to bottom, and the first that matches is applied.
+    where:
 
-    - Set to `Default`, `WriteRequestBodies`, or `AllRequestBodies`. If you do not set this top-level profile field, it defaults to the `Default` profile.
+    `customRules`
+    Add one or more groups and specify the profile to use for that group. These custom rules take precedence over the top-level profile field. The custom rules are evaluated from top to bottom, and the first that matches is applied.
+
+    `profile`
+    Set to `Default`, `WriteRequestBodies`, or `AllRequestBodies`. If you do not set this top-level profile field, it defaults to the `Default` profile.
 
 3.  Save the file to apply the changes.
 
@@ -157,13 +164,13 @@ If you set the top-level profile field to `None`, an API server, such as the Kub
   3 nodes are at revision 12
   ```
 
-  - In this example, the latest revision number is `12`.
+  In this example, the latest revision number is `12`.
 
-    If the output shows a message similar to one of the following messages, the update is still in progress. Wait a few minutes and try again.
+  If the output shows a message similar to one of the following messages, the update is still in progress. Wait a few minutes and try again.
 
-    - `3 nodes are at revision 11; 0 nodes have achieved new revision 12`
+  - `3 nodes are at revision 11; 0 nodes have achieved new revision 12`
 
-    - `2 nodes are at revision 11; 1 nodes are at revision 12`
+  - `2 nodes are at revision 11; 1 nodes are at revision 12`
 
 # Disabling audit logging
 
@@ -216,10 +223,10 @@ It is not recommended to disable audit logging by using the `None` profile unles
   3 nodes are at revision 12
   ```
 
-  - In this example, the latest revision number is `12`.
+  In this example, the latest revision number is `12`.
 
-    If the output shows a message similar to one of the following messages, the update is still in progress. Wait a few minutes and try again.
+  If the output shows a message similar to one of the following messages, the update is still in progress. Wait a few minutes and try again.
 
-    - `3 nodes are at revision 11; 0 nodes have achieved new revision 12`
+  - `3 nodes are at revision 11; 0 nodes have achieved new revision 12`
 
-    - `2 nodes are at revision 11; 1 nodes are at revision 12`
+  - `2 nodes are at revision 11; 1 nodes are at revision 12`

@@ -1,3 +1,5 @@
+Back up and restore virtual machines by using the OpenShift API for Data Protection.
+
 <div class="important">
 
 Red Hat supports using OpenShift Virtualization 4.14 or later with OADP 1.3.x or later.
@@ -6,9 +8,11 @@ OADP versions earlier than 1.3.0 are not supported for back up and restore of Op
 
 </div>
 
-Back up and restore virtual machines by using the [OpenShift API for Data Protection](../../backup_and_restore/index.xml#application-backup-restore-operations-overview).
+# Installing and configuring OADP with OpenShift Virtualization
 
-You can install the OpenShift API for Data Protection (OADP) with OpenShift Virtualization by installing the OADP Operator and configuring a backup location. You can then install the Data Protection Application.
+As a cluster administrator, you can install the OpenShift API for Data Protection (OADP) with OpenShift Virtualization by installing the OADP Operator and configuring a backup location. You can then install the Data Protection Application.
+
+To install the OADP Operator in a restricted network environment, you must first disable the default software catalog sources and mirror the Operator catalog.
 
 <div class="note">
 
@@ -24,47 +28,29 @@ The following storage options are excluded:
 
 - Volume snapshot backup and restore
 
-For more information, see [Backing up applications with File System Backup: Kopia or Restic](../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-backing-up-applications-restic-doc.xml#oadp-backing-up-applications-restic-doc).
+The latest version of the OADP Operator installs Velero 1.16.
 
 </div>
 
-To install the OADP Operator in a restricted network environment, you must first disable the default software catalog sources and mirror the Operator catalog.
+<div class="warning">
 
-See [Using Operator Lifecycle Manager in disconnected environments](../../disconnected/using-olm.xml#olm-restricted-networks) for details.
+Red Hat support is limited to only the following options:
 
-# Installing and configuring OADP with OpenShift Virtualization
+- CSI backups
 
-As a cluster administrator, you install OADP by installing the OADP Operator.
+- CSI backups with DataMover.
 
-The latest version of the OADP Operator installs [Velero 1.16](https://velero.io/docs/v1.16).
+</div>
 
 - Access to the cluster as a user with the `cluster-admin` role.
 
 1.  Install the OADP Operator according to the instructions for your storage provider.
 
-2.  Install the Data Protection Application (DPA) with the `kubevirt` and `openshift` OADP plugins.
+2.  Install the Data Protection Application (DPA) with the `kubevirt` and `openshift` OADP plug-ins.
 
 3.  Back up virtual machines by creating a `Backup` custom resource (CR).
 
-    <div class="warning">
-
-    Red Hat support is limited to only the following options:
-
-    - CSI backups
-
-    - CSI backups with DataMover.
-
-    </div>
-
     You restore the `Backup` CR by creating a `Restore` CR.
-
-- [OADP plugins](../../backup_and_restore/application_backup_and_restore/oadp-features-plugins.xml#oadp-plugins_oadp-features-plugins)
-
-- [`Backup` custom resource (CR)](../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/backing-up-applications.xml#backing-up-applications)
-
-- [`Restore` CR](../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/restoring-applications.xml#restoring-applications)
-
-- [Using Operator Lifecycle Manager in disconnected environments](../../disconnected/using-olm.xml#olm-restricted-networks)
 
 # Installing the Data Protection Application
 
@@ -220,3 +206,17 @@ You install the Data Protection Application (DPA) by creating an instance of the
     NAME           PHASE       LAST VALIDATED   AGE     DEFAULT
     dpa-sample-1   Available   1s               3d16h   true
     ```
+
+# Additional resources
+
+- [Application backup and restore operations](../../backup_and_restore/index.xml#application-backup-restore-operations-overview)
+
+- [Backing up applications with File System Backup: Kopia or Restic](../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-backing-up-applications-restic-doc.xml#oadp-backing-up-applications-restic-doc)
+
+- [OADP plug-ins](../../backup_and_restore/application_backup_and_restore/oadp-features-plugins.xml#oadp-plugins_oadp-features-plugins)
+
+- [Backing up applications](../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/backing-up-applications.xml#backing-up-applications)
+
+- [Restoring applications](../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/restoring-applications.xml#restoring-applications)
+
+- [Using Operator Lifecycle Manager in disconnected environments](../../disconnected/using-olm.xml#olm-restricted-networks)

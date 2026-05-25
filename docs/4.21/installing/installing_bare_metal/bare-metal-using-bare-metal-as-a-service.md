@@ -1,24 +1,24 @@
-The Bare Metal as a Service (BMaaS) feature for OpenShift Container Platform enables you to provision and manage bare-metal hosts by using the Metal<sup>3</sup> API and the Bare Metal Operator (BMO). These hosts, external to the OpenShift Container Platform cluster, can run workloads that might not be suitable for containerization or virtualization.
+You can provision and manage bare-metal hosts by using the Metal<sup>3</sup> API and the Bare Metal Operator (BMO). These hosts, external to the OpenShift Container Platform cluster, can run workloads that might not be suitable for containerization or virtualization, such as legacy applications or applications that require direct hardware access.
 
-BMaaS has the following capabilities:
+Red Hat Bare Metal as a Service for OpenShift has the following capabilities:
 
 - Provisioning of bare-metal hosts, including initial configuration.
 
 - Lifecycle management such as power management, firmware updates, and decommissioning by using the BMO.
 
-As standalone systems, these hosts operate independently of the OpenShift Container Platform cluster and support diverse workloads by integrating bare metal resources with containerized and virtualized applications. BMaaS can run other operating systems, but only Red Hat Enterprise Linux (RHEL) and CentOS Stream 9 were tested.
+As standalone systems, these hosts operate independently of the OpenShift Container Platform cluster and support diverse workloads by integrating bare metal resources with containerized and virtualized applications. Red Hat Bare Metal as a Service for OpenShift can run other operating systems, but only Red Hat Enterprise Linux (RHEL) and CentOS Stream 9 were tested.
 
 <div class="important">
 
-BMaaS is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+Red Hat Bare Metal as a Service for OpenShift is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
 For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
 
-# Prerequisites for using BMaaS
+# Prerequisites for using Red Hat Bare Metal as a Service for OpenShift
 
-To use the Bare Metal as a Service (BMaaS) Technology Preview, complete the prerequisites. BMaaS lets you apply cloud-native management practices to bare-metal infrastructure, enabling automated provisioning and lifecycle management for workloads that require physical hardware.
+Red Hat Bare Metal as a Service for OpenShift lets you apply cloud-native management practices to bare-metal infrastructure, enabling automated provisioning and lifecycle management for workloads that require physical hardware. To use the Red Hat Bare Metal as a Service for OpenShift Technology Preview, complete the following prerequisites:
 
 BareMetalHost Configuration
 All bare-metal hosts must use a Baseboard Management Controller (BMC) configured with the Redfish protocol and virtual media (`redfish-virtualmedia`) driver. Each bare-metal host requires a boot interface with a MAC address configured to receive an IP address lease.
@@ -27,10 +27,10 @@ Network Requirements
 A DHCP server, separate from the OpenShift Container Platform and Metal<sup>3</sup> infrastructure, must be operational on the same Layer 2 network as the bare-metal hosts. The DHCP server must be configured to match the MAC addresses of the boot interfaces on the bare-metal hosts, enabling IP address assignment for communication with Metal<sup>3</sup> components.
 
 Cluster Privileges
-You must have `cluster-admin` privileges on the OpenShift Container Platform cluster to perform BMaaS configuration tasks.
+You must have `cluster-admin` privileges on the OpenShift Container Platform cluster to perform configuration tasks.
 
 Web server with images
-BMaaS does not provide images for deployment on hardware. You must configure a web server with the images and checksums you want to use. The `image` field of the `BareMetalHost` spec references these images during deployment. Ensure that the bare-metal hosts can reach the web server URL. The following is an example of an image and checksum you might include:
+Red Hat Bare Metal as a Service for OpenShift does not provide images for deployment on hardware. You must configure a web server with the images and checksums you want to use. The `image` field of the `BareMetalHost` spec references these images during deployment. Ensure that the bare-metal hosts can reach the web server URL. The following is an example of an image and checksum you might include:
 
 - `http://example.com/rhel9.qcow2`
 
@@ -40,7 +40,7 @@ BMaaS does not provide images for deployment on hardware. You must configure a w
 
 - `http://example.com/stream9.qcow2.sha512sum`
 
-These prerequisites ensure that BMaaS can provision and manage bare-metal hosts effectively.
+These prerequisites ensure that you can provision and manage bare-metal hosts effectively.
 
 # Using the Bare Metal Operator to manage resources across all namespaces
 
@@ -61,11 +61,11 @@ For the Bare Metal Operator (BMO) to manage `BareMetalHost` resources across all
 
 # Setting up a dedicated namespace
 
-To prevent accidental interference between Bare Metal as a Service (BMaaS) workloads and the OpenShift Container Platform infrastructure, set up a dedicated namespace. Repeat this procedure for every BMaaS project.
+To prevent accidental interference between Red Hat Bare Metal as a Service for OpenShift workloads and the OpenShift Container Platform infrastructure, set up a dedicated namespace. Repeat this procedure for every project where you intend to use Red Hat Bare Metal as a Service for OpenShift.
 
 - You have [configured an identify provider](https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html-single/authentication_and_authorization/index#configuring-identity-providers).
 
-1.  Configure a BMaaS `bmadmin` user in the identity provider and create a secret in OpenShift:
+1.  Configure a `bmadmin` user in the identity provider and create a secret in OpenShift:
 
     1.  Create the `bmadmin` user in the identity provider. For example, if using the `htpasswd` identity provider, run the following command:
 
@@ -178,7 +178,7 @@ To prevent accidental interference between Bare Metal as a Service (BMaaS) workl
 
     3.  Save and exit the editor.
 
-3.  Create a BMaaS `bmadmin` user by running the following command:
+3.  Create a `bmadmin` user by running the following command:
 
     ``` terminal
     $ oc create user <username>
@@ -187,7 +187,7 @@ To prevent accidental interference between Bare Metal as a Service (BMaaS) workl
     \<username\>
     The user name. Replace `<username>` with your username. The following examples use `bmadmin` as the username.
 
-4.  Create a dedicated `bmaas` namespace for BMaaS hosts by running the following command:
+4.  Create a dedicated `bmaas` namespace for Red Hat Bare Metal as a Service for OpenShift hosts by running the following command:
 
     ``` terminal
     $ oc new-project <namespace>
@@ -196,7 +196,7 @@ To prevent accidental interference between Bare Metal as a Service (BMaaS) workl
     `<namespace>`
     Replace \<namespace\> with the namespace name that you want to use. This example uses `bmaas`.
 
-5.  Assign the `edit` role to the BMaaS `bmadmin` user in the `bmaas` namespace by running the following command:
+5.  Assign the `edit` role to the `bmadmin` user in the `bmaas` namespace by running the following command:
 
     ``` terminal
     $ oc adm policy add-role-to-user edit <username> -n bmaas
@@ -214,7 +214,7 @@ To prevent accidental interference between Bare Metal as a Service (BMaaS) workl
     $ oc apply -f baremetal-operator/config/base/rbac/<role_filename>.yaml
     ```
 
-8.  Assign the custom RBAC roles to the BMaaS `bmadmin` user in the `bmaas` namespace by running the following command:
+8.  Assign the custom RBAC roles to the `bmadmin` user in the `bmaas` namespace by running the following command:
 
     ``` terminal
     $ oc adm policy add-role-to-user <role_name> bmadmin -n bmaas
@@ -318,7 +318,7 @@ To deploy a bare-metal host, you must create a `BareMetalHost` resource.
 
   The state progresses from **registering**, to **inspecting**, and finally to **available**.
 
-# Configuring users for BMaaS hosts
+# Configuring users for Red Hat Bare Metal as a Service for OpenShift hosts
 
 Configure bare-metal host users and add them to a Kubernetes secret. Then, create and apply the secret to customize the host. With configured users you can access or manage the bare-metal host after it is provisioned.
 

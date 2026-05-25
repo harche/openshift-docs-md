@@ -10,7 +10,7 @@ To create CSI-provisioned persistent volumes (PVs) that mount to GCP PD storage 
 
 - **GCP PD driver**: The driver enables you to create and mount GCP PD PVs.
 
-  GCP PD CSI driver supports the C3 instance type for bare metal and N4 machine series. The C3 instance type and N4 machine series support the hyperdisk-balanced disks. For more information, see Section *C3 instance type for bare metal and N4 machine series*.
+  GCP PD CSI driver supports the C3 instance type for bare metal and N4 machine series. The C3 instance type and N4 machine series support the hyperdisk-balanced disks and hyperdisk-balanced high-availability disks. For more information, see Section *C3 instance type for bare metal and N4 machine series*.
 
 <div class="note">
 
@@ -136,6 +136,24 @@ The GCP PD CSI driver support for the C3 instance type for bare metal and N4 mac
 - A GCP cluster with c3-standard-2, c3-standard-4, n4-standard-2, and n4-standard-4 nodes can erroneously exceed the maximum attachable disk number, which should be 16 ([JIRA link](https://issues.redhat.com/browse/OCPBUGS-39258)).
 
 - [Additional limitations](https://cloud.google.com/compute/docs/disks/hyperdisks#limitations).
+
+## Hyperdisk-balanced high availability disks overview
+
+OpenShift Container Platform supports Hyperdisk Balanced High Availability volumes.
+
+Hyperdisk Balanced High Availability volumes are useful for:
+
+- Protecting your applications from a zonal outage by synchronously replicating data across two zones in the same region
+
+- When you require write access to the same volume in multiple zones
+
+<div class="note">
+
+Volume Attributes Classes (VAC) does not work on Hyperdisk Balanced High Availability disks.
+
+</div>
+
+To set up Hyperdisk Balanced High Availability disks, see Section *Setting up hyperdisk-balanced disks*.
 
 ## Storage pools for hyperdisk-balanced disks overview
 
@@ -273,7 +291,7 @@ Complete the following steps to set up hyperdisk-balanced disks:
 
           - `pd.csi.storage.gke.io` specifies GCP CSI provisioner.
 
-          - Specifies using hyperdisk-balanced disks.
+          - Specifies using hyperdisk-balanced disks. To specify high availability hyperdisk-balanced disk, set the value to `hyperdisk-balanced-high-availability`.
 
           - Specifies the throughput value in MiBps using the "Mi" qualifier. For example, if your required throughput is 250 MiBps, specify "250Mi". If you do not specify a value, the capacity is based upon the disk type default.
 

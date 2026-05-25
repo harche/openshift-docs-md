@@ -817,7 +817,7 @@ spec:
   baseDomain: "example.domain.redhat.com"
   pullSecretRef:
     name: "assisted-deployment-pull-secret"
-  clusterImageSetNameRef: "openshift-4.21"
+  clusterImageSetNameRef: "openshift-4.22"
   sshPublicKey: "ssh-rsa ..."
   clusterName: "sno-worker-0"
   extraLabels:

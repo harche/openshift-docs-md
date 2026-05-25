@@ -388,7 +388,7 @@ Use the machine types included in the following charts for your AWS instances. I
 
 </div>
 
-<https://raw.githubusercontent.com/openshift/installer/release-4.21/docs/user/aws/tested_instance_types_x86_64.md>
+<https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/aws/tested_instance_types_x86_64.md>
 
 ## Tested instance types for AWS on 64-bit ARM infrastructures
 
@@ -400,7 +400,7 @@ Use the machine types included in the following charts for your AWS ARM instance
 
 </div>
 
-<https://raw.githubusercontent.com/openshift/installer/release-4.21/docs/user/aws/tested_instance_types_aarch64.md>
+<https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/aws/tested_instance_types_aarch64.md>
 
 ## Enabling a user-managed DNS
 

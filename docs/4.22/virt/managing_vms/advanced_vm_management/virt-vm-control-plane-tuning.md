@@ -1,4 +1,4 @@
-In OpenShift Virtualization, you can control how the control plane handles concurrency when you create or migrate virtual machines (VMs). For example, you can use the the `highBurst` profile with either the fixed `QPS` or `burst` rates to batch create virtual machines (VMs) in a batch, or tune migration settings in the `HyperConverged` custom resource (CR).
+In OpenShift Virtualization, you can control how the control plane handles concurrency when you create or migrate virtual machines (VMs). For example, you can use the `highBurst` profile with either the fixed `QPS` or `burst` rates to batch create virtual machines (VMs) in a batch, or tune migration settings in the `HyperConverged` custom resource (CR).
 
 # Configuring a highBurst profile
 

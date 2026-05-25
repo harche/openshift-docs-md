@@ -289,7 +289,7 @@ Before updating a cluster that uses the Cloud Credential Operator (CCO) in manua
     Recommended updates:
 
     VERSION IMAGE
-    4.21.0  quay.io/openshift-release-dev/ocp-release@sha256:6a899c54dda6b844bb12a247e324a0f6cde367e880b73ba110c056df6d018032
+    4.22.0  quay.io/openshift-release-dev/ocp-release@sha256:6a899c54dda6b844bb12a247e324a0f6cde367e880b73ba110c056df6d018032
     ...
     ```
 

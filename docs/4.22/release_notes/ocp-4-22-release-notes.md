@@ -28,6 +28,11 @@ This release adds improvements related to the following components and concepts:
 
 ## Authentication and authorization
 
+Advanced direct authentication fields (Technology Preview)
+You can configure advanced OIDC authentication scenarios using structured authentication fields and Common Expression Language (CEL) expressions. This feature exposes additional fields from the Kubernetes `AuthenticationConfiguration` API for flexible claim mapping and token validation. Use CEL expressions to define username and group claim fallback logic, add validation rules, and handle non-standard claim structures. This feature is available for both standalone clusters and hosted control planes.
+
+For more information, see [About advanced direct authentication fields](../authentication/structured-auth-config-fields.xml#structured-auth-config-about).
+
 ## Autoscaling
 
 ## Edge computing
@@ -61,7 +66,51 @@ N4A Virtual Machines (VMs) use highly efficient Arm-based processors. N4A machin
 
 For more information, see [Tested instance types for Google Cloud](../installing/installing_gcp/installing-gcp-customizations.xml#installation-gcp-tested-machine-types_installing-gcp-customizations) and [N4A machine series (Google documentation)](https://docs.cloud.google.com/compute/docs/general-purpose-machines#n4a_series).
 
+Installing a cluster using Red Hat Enterprise Linux (RHEL) 10
+With this update, you can install a cluster using RHEL version 10 as the base image for all machines in the cluster. This feature is available as a Technology Preview. To enable this feature, enable the `TechPreviewNoUpgrade` feature set and set the `osImageStream` parameter to `rhel-10` in your `install-config.yaml` file.
+
+For more information, see [Installation configuration parameters](../installing/install_config/installation-config-parameters-generic.xml#installation-config-parameters-generic).
+
+Adding custom alerts to `oc adm upgrade recommend` command output
+With this update, you can add the `openShiftUpdatePrecheck` label to alerts in a `PrometheusRule` custom resource (CR) so that, when you run the `oc adm upgrade recommend` command, any firing alerts with this label appear in the command output.
+
+For more information, see [Adding custom alerts to `oc adm upgrade recommend` command output](../updating/preparing_for_updates/updating-cluster-prepare.xml#oc-adm-upgrade-recommend-custom-alert_updating-cluster-prepare).
+
 ## Machine Config Operator
+
+Boot nodes into a custom machine config pool
+With this update, you can boot new nodes directly into a custom machine config pool. Before this update, you needed to create the node in the worker machine config pool, then move the node into the custom machine config pool, which requires a node reboot. By launching the node directly into the new pool, you save a node reboot cycle.
+
+For information, see [Creating a custom machine config pool with a new node](../machine_configuration/machine-config-custom-mcp.xml#machine-config-custom-mcp-automatic_machine-config-creating-custom-mcp).
+
+Boot image skew enforcement
+With this update, the Machine Config Operator (MCO) examines the boot image version reported in the `MachineConfiguration` object to determine if that boot image is appropriate for the cluster. If the boot image version is too old, the Operator reports that boot image version skew is detected and blocks cluster updates until you manually update the boot image or disable boot image skew enforcement.
+
+For more information, see [Boot image skew enforcement](../machine_configuration/mco-update-boot-skew-mgmt.xml#mco-update-boot-skew-mgmt).
+
+Boot image management for control plane nodes is generally available
+With this update, the boot image management feature for control plane nodes is generally available. With boot image management enabled, you can configure your cluster to update the node boot image whenever you update your cluster. Before this update, boot image management was supported for worker nodes only. Boot image management for control plane nodes was introduced in OpenShift Container Platform 4.21 for AWS, Google Cloud, and Azure clusters, and is now generally available for the platforms in 4.22. The boot image management feature for control plane nodes is not supported for VMware vSphere.
+
+For more information, see [Boot image management](../machine_configuration/mco-update-boot-images.xml#machine-configs-configure).
+
+Boot image management for worker nodes is now default for Azure and vSphere
+With this update, the boot image management feature for worker nodes is default behavior in Azure and vSphere clusters. As such, after updating to OpenShift Container Platform 4.22, the boot images in your cluster are automatically updated to version 4.22. With subsequent updates, the Machine Config Operator (MCO) again updates the boot images in your cluster. Any new nodes you create after updating are based on the new version. Current nodes are not affected by this feature.
+
+Before updating to 4.22, you must acknowledge this change or opt-out of this default behavior before proceeding. For information on opting out, see [Disabling boot image management](../machine_configuration/mco-update-boot-images.xml#mco-update-boot-images-disable_machine-configs-configure).
+
+For more information on the boot image management feature, see [Boot image management](../machine_configuration/mco-update-boot-images.xml#mco-update-boot-images_machine-configs-configure).
+
+Boot image update documentation
+With this update, the Machine Config Operator documentation contains procedures to update the boot image on compute nodes for most supported OpenShift Container Platform platforms.
+
+For OpenShift Container Platform platforms that do not support automatic boot image updating or for clusters configured with the boot image management feature disabled, you can manually update the boot image used by the compute nodes in your cluster.
+
+For more information, see [Manually updating the boot image](../machine_configuration/mco-update-boot-images-manual.xml#mco-update-boot-images-manual).
+
+`AppliedFilesAndOS` machine config node condition is now `AppliedFiles` and `AppliedOSImage` (Technology Preview)
+With this update, the `AppliedFilesAndOS` condition reported by the machine config node has been split into the `AppliedFiles` and `AppliedOSImage` conditions as a Technology Preview feature. The machine config nodes custom resource monitors the progress of machine configuration updates to nodes. The `AppliedFiles` condition reports whether MCO has updated files on the node. The `AppliedOSImage` condition reports whether the MCO has updated the operating system.
+
+For more information, see [About node status during updates](../machine_configuration/index.html#checking-mco-node-status_machine-config-overview).
 
 ## Machine management
 
@@ -70,9 +119,15 @@ For more information, see [Tested instance types for Google Cloud](../installing
 ## Networking
 
 Network policy enhancement
-OpenShift Container Platform now includes `NetworkPolicy` objects in some of its own namespaces by default. This inclusion improves overall security and better protects control plane components.
+To reduce the cluster attack surface and ensure predictable network behavior, OpenShift Container Platform now enforces least-privilege network policies on critical networking components. Starting in 4.22, OpenShift Container Platform includes default `NetworkPolicy` objects in some of its own namespaces. Specifically, the operators that manage cluster DNS and cluster Ingress automatically install and maintain default deny-all `NetworkPolicy` objects in their respective namespaces.
 
-Do not modify the `NetworkPolicy` objects that OpenShift Container Platform includes in its own namespaces by default. To check the namespaces that include the objects by default, you can run the following command:
+<div class="important">
+
+Because these namespaces now operate on a deny-by-default model, any unmanaged or custom pods running in these namespaces will have their network traffic blocked. Do not modify the default `NetworkPolicy` objects that OpenShift Container Platform includes in its own namespaces by default.
+
+</div>
+
+To check the namespaces that include the objects by default, you can run the following command:
 
 ``` terminal
 $ oc get networkpolicies --all-namespaces
@@ -120,7 +175,70 @@ With this release, the multi-network policy backend uses `nftables` instead of `
 
 For more information, see [Configuring multi-network policy](../networking/multiple_networks/secondary_networks/configuring-multi-network-policy.xml#configuring-multi-network-policy).
 
+Tune MetalLB advertisements for individual LoadBalancer services using service labels
+With MetalLB, you can now set `spec.serviceSelectors` on `BGPAdvertisement` and `L2Advertisement` custom resources (CRs). This allows you to match LoadBalancer services by label so each advertisement applies its own BGP or Layer 2 settings to the services you choose, even when those services use the same IPAddressPool.
+
+For more information, see [About advertising for the IP address pools](../networking/ingress_load_balancing/metallb/about-advertising-ipaddresspool.xml#about-advertise-for-ipaddress-pools).
+
+Immutable AWS Network Load Balancer for a service
+With this release, when deploying a service with the AWS Load Balancer the `service.beta.kubernetes.io/aws-load-balancer-type` annotation is immutable for existing services. To change the load balancer type, you must recreate the service.
+
 ## Nodes
+
+Image pull credential verification in multi-tenant clusters
+With this update, administrators can use the `imagePullCredentialsVerificationPolicy` parameter in a `KubeletConfig` custom resource to enforce credential verification for cached images. This parameter forces the kubelet to re-authenticate with the container registry before it deploys a pod, ensuring that the requesting namespace has valid access rights to the image.
+
+The underlying `KubeletEnsureSecretPulledImages` feature gate is enabled by default. Administrators can configure specific credential provider policies to balance security and stability:
+
+- `AlwaysVerify`: Enforces credential checks for all image pull requests.
+
+- `NeverVerifyAllowlistedImages`: Enforces credential checks for user workloads while exempting essential infrastructure images on an allowlist.
+
+  Before this update, multi-tenant OpenShift Container Platform clusters had a security vulnerability where the kubelet did not re-verify credentials for cached images. If one tenant pulled a private image, another tenant could deploy a pod by using that same cache without providing image pull secrets. To mitigate this previously, administrators relied on unsupported configurations. However, these workarounds caused cluster instability, risked control plane failures during registry outages, and blocked crucial cluster upgrades.
+
+  <div class="note">
+
+  Do not use the `NeverVerifyPreloadedImages` policy when the default `KubeletEnsureSecretPulledImages` feature gate is active, as the policy might not function as expected. Use the `NeverVerifyAllowlistedImages` policy instead.
+
+  </div>
+
+  For more information, see [Creating a KubeletConfig CRD to edit kubelet parameters](../machine_configuration/machine-configs-custom.xml#create-a-kubeletconfig-crd-to-edit-kubelet-parameters_machine-configs-custom).
+
+CPU resource enforcement is now enabled by default
+With this update, the `system-reserved-compressible` parameter is enabled for all clusters that do not use the reserved CPU feature. This addresses previous issues where the system reserved CPU exceeded the desired limit. This default can be overridden by configuring the `systemReservedCPU: ""` parameter in a kubelet configuration.
+
+For more information, see [How OpenShift Container Platform enforces system-reserved CPU](../nodes/nodes/nodes-nodes-resources-configuring.xml#system-reserved-compressible_nodes-nodes-resources-configuring).
+
+Mount an OCI image into a pod
+With this update, you can use an image volume to mount an Open Container Initiative (OCI)-compliant artifact directly into a pod. OCI artifacts enable users to store and distribute arbitrary files and metadata using OCI compliant container registries.
+
+For more information, see [Mounting OCI images and artifacts into a pod](../nodes/pods/nodes-pods-image-volume.xml#nodes-pods-image-volume).
+
+Configurable storage locations for CRI-O artifacts
+With this update, you can create additional, non-default artifact storage locations in CRI-O that your pods can pull from. By using storage locations for the CRI-O container engine other than the default for OCI artifacts, complete container images, or container image layers, you can reduce application startup time and make your applications run more efficiently.
+
+For more information, see [Additional CRI-O storage locations for faster container startup](../nodes/nodes/nodes-nodes-additional-crio-storage.xml#nodes-nodes-additional-crio-storage).
+
+Project-scoped image pull secrets for mirrored registries (Technology Preview)
+With this update, you can pull images from mirrored registries by using project-scoped pull secrets as a technology preview feature. Before this update, you needed to use node-level secrets when pulling from a mirrored registry because the kublet does not recognize the mirror configuration, which is configured at the container-runtime level.
+
+For more information, see [Configuring project-scoped image pull secrets for mirrored registries](../openshift_images/image-configuration.xml#images-configuration-registry-mirror-project-secret_image-configuration).
+
+Partitionable devices are now supported with dynamic resource allocation (Technology Preview)
+With this update, the dynamic resource allocation feature supports partitioning physical hardware into smaller, logical instances, such as Multi-Instance GPUs, based on workload demands. With this technology preview feature, you can safely and efficiently share GPUs across multiple pods.
+
+For more information, see [Allocating GPUs to pods by using DRA](../nodes/pods/nodes-pods-allocate-dra.xml#nodes-pods-allocate-dra).
+
+## OpenShift CLI (oc)
+
+Digest-based image pinning for the oc-mirror v2 plugin
+With this update, the oc-mirror v2 plugin pins Operator catalog images by their digest in your `ImageSetConfiguration` custom resource. Pinning by digest ensures that you always deploy the same Operator catalog image, regardless of any later changes to the upstream tags. For more information, see [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../disconnected/about-installing-oc-mirror-v2.xml#oc-mirror-workflows-partially-disconnected-v2_about-installing-oc-mirror-v2).
+
+Configuration of custom target repositories and tags for additional images by using the oc-mirror v2 plugin
+With this update, when using the oc-mirror v2 plugin, you can provide custom destination repository path and tag for specific images. By using the new `targetRepo` and `targetTag` fields within the `additionalImages` section of your `ImageSetConfiguration` custom resource, you can specify the target repository and tag for an image in your target mirror registry. For more information, see [ImageSet configuration parameters for oc-mirror plugin v2](../disconnected/about-installing-oc-mirror-v2.xml#oc-mirror-imageset-config-parameters-v2_about-installing-oc-mirror-v2).
+
+Availability of the `oc mirror list` command in oc-mirror v2 plugin
+With this update, you can use the list support feature with the oc-mirror v2 plugin. You can run the `oc mirror list` command to explore available platform and Operator content, including their specific versions, from remote and local registries. For more information, see [Creating the image set configuration](../disconnected/about-installing-oc-mirror-v2.xml#oc-mirror-building-image-set-config-v2_about-installing-oc-mirror-v2).
 
 ## Operator development
 
@@ -130,6 +248,32 @@ Support for the PCI addresses of NICs in `BareMetalHost` hardware data
 With this release, the Peripheral Component Interconnect (PCI) address for each network interface controller (NIC) is available in two separate custom resources (CRs). The PCI address is located in the `status.hardware.nics[]` section of the `BareMetalHost` CR and in the `spec.hardware.nics[]` section of the `HardwareData` CR. While these are separate resources, the values in the `pciAddress` fields, for example `0000:00:03.0`, are identical.
 
 For more information, see [About the BareMetalHost resource](../installing/installing_bare_metal/bare-metal-postinstallation-configuration.xml#bmo-about-the-baremetalhost-resource_bare-metal-postinstallation-configuration) and [The BareMetalHost status](../installing/installing_bare_metal/bare-metal-postinstallation-configuration.xml#the-baremetalhost-status).
+
+Expanding bare-metal clusters using OCI images and Red Hat Bare Metal as a Service for OpenShift (Technology Preview)
+With this update, you can expand your bare-metal cluster using Red Hat Bare Metal as a Service for OpenShift with images from an OCI registry as a Technology Preview feature. You can use images from public OCI registries or from the built-in cluster registry. For more information, see [Using Red Hat Bare Metal as a Service for OpenShift](../installing/installing_bare_metal/bare-metal-using-bare-metal-as-a-service.xml).
+
+## Red Hat Enterprise Linux CoreOS (RHCOS)
+
+RHCOS uses RHEL 9.8
+With this update, RHCOS uses Red Hat Enterprise Linux (RHEL) 9.8 packages in OpenShift Container Platform 4.22. These packages ensure that your OpenShift Container Platform instances receive the latest fixes, features, enhancements, hardware support, and driver updates.
+
+RHCOS 10.2 support (Technology Preview)
+With this update, you can configure your cluster to use RHCOS 10.2 as a Technology Preview feature. You can update the nodes in an existing non-production test cluster or install a new non-production test cluster. For more information, see [Setting the RHCOS version in a cluster](../machine_configuration/mco-image-streams.xml#mco-image-streams).
+
+Ignition update to version 2.26.1
+With this update, the Ignition utility is updated to version 2.26.1.
+
+Butane update to version 0.26.0
+With this update, the Butane utility is updated to version 0.26.0.
+
+Afterburn update to version 5.10.0
+With this update, the Afterburn utility is updated to version 5.10.0.
+
+coreos-installer update to version 0.26.0
+With this update, the coreos-installer utility is updated to version 0.26.0.
+
+Support for the numad package
+With this update, the numad package is supported. numad is an automatic NUMA affinity management daemon. It monitors NUMA topology and resource usage within a system that dynamically improves NUMA resource allocation, management, and system performance.
 
 ## Scalability and performance
 
@@ -145,12 +289,29 @@ With this release, you can protect latency-sensitive workloads from performance 
 
 For more information, see [How `ExecCPUAffinity` prevents latency spikes from exec operations](../scalability_and_performance/cnf-tuning-low-latency-nodes-with-perf-profile.xml#cnf-exec-cpu-affinity_cnf-tuning-low-latency-nodes-with-perf-profile).
 
+## Support
+
+Custom image configuration for the Support Log Gather
+With this update, you can collect diagnostic data by using custom images in the Support Log Gather. By pointing the `spec.imageStreamRef` field to an approved `ImageStream` tag, you can override the default image. The cluster administrators are responsible for creating and maintaining the list of allowed custom images by managing `ImageStream` resources in the Operator namespace. Each custom image requires its own `MustGather` custom resource and a service account with permissions to access the `ImageStream`. For more information, see [Configuring a Support Log Gather instance](../support/gathering-cluster-data.xml#support-log-gather-config-cli_gathering-cluster-data).
+
 ## Web console
 
 Support for integrated OCI chart interaction
 The OpenShift Container Platform web console now fully supports browsing, inspecting, and installing Open Container Initiative (OCI)-based Helm charts directly from configured repositories to provide functional parity with traditional HTTP(S) Helm charts. This enhancement removes the previous discovery-only limitation, enabling users to interact with and deploy OCI-based charts seamlessly within the console’s repository views.
 
 For more information, see [Configuring custom Helm chart repositories](../applications/working_with_helm_charts/configuring-custom-helm-chart-repositories.xml#configuring-custom-helm-chart-repositories).
+
+Azure Resource Group field for operator installations on Azure WIF clusters
+The operator installation page now includes a **Resource Group** field for operators who have the `token-auth-azure` annotation enabled on Azure Workload Identity Federation (WIF) clusters. As a result, operators who require an Azure resource group value, such as `ODF` (NooBaa), can complete their setup without manual workarounds.
+
+Install Helm charts from a direct URL
+In the web console, you can now install a Helm chart directly from a URL, without first adding the chart to a Helm chart repository or the console catalog. Both `oci://` and `https://` URLs are supported.
+
+<div class="warning">
+
+Installing a Helm chart from a direct URL bypasses the validation checks provided by the developer catalog. Install charts only from URLs you trust, because unverified charts can introduce security risks to your cluster. When possible, use charts from the developer catalog or a configured Helm repository instead.
+
+</div>
 
 # Notable technical changes
 
@@ -179,17 +340,17 @@ Images deprecated and removed tracker
 
 ## Installation deprecated and removed features
 
-| Feature                                                                                                                | 4.20                 | 4.21       | 4.22 |
-|------------------------------------------------------------------------------------------------------------------------|----------------------|------------|------|
-| `--cloud` parameter for `oc adm release extract`                                                                       | Deprecated           | Deprecated |      |
-| CoreDNS wildcard queries for the `cluster.local` domain                                                                | Deprecated           | Deprecated |      |
-| `compute.platform.openstack.rootVolume.type` for RHOSP                                                                 | Deprecated           | Deprecated |      |
-| `controlPlane.platform.openstack.rootVolume.type` for RHOSP                                                            | Deprecated           | Deprecated |      |
-| `ingressVIP` and `apiVIP` settings in the `install-config.yaml` file for installer-provisioned infrastructure clusters | Deprecated           | Deprecated |      |
-| `platform.aws.preserveBootstrapIgnition` parameter for Amazon Web Services (AWS)                                       | Deprecated           | Deprecated |      |
-| Installing a cluster on AWS with compute nodes in AWS Outposts                                                         | Deprecated           | Deprecated |      |
-| Deploying managed clusters using `SiteConfig` and the GitOps ZTP workflow                                              | Deprecated           | Removed    |      |
-| Installing a cluster using Fujitsu iRMC drivers on bare-metal machines                                                 | General Availability | Deprecated |      |
+| Feature                                                                                                                | 4.20                 | 4.21                 | 4.22       |
+|------------------------------------------------------------------------------------------------------------------------|----------------------|----------------------|------------|
+| `--cloud` parameter for `oc adm release extract`                                                                       | Deprecated           | Deprecated           | Deprecated |
+| CoreDNS wildcard queries for the `cluster.local` domain                                                                | Deprecated           | Deprecated           | Deprecated |
+| `compute.platform.openstack.rootVolume.type` for RHOSP                                                                 | Deprecated           | Deprecated           | Deprecated |
+| `controlPlane.platform.openstack.rootVolume.type` for RHOSP                                                            | Deprecated           | Deprecated           | Deprecated |
+| `ingressVIP` and `apiVIP` settings in the `install-config.yaml` file for installer-provisioned infrastructure clusters | Deprecated           | Deprecated           | Deprecated |
+| `platform.aws.preserveBootstrapIgnition` parameter for Amazon Web Services (AWS)                                       | Deprecated           | Deprecated           | Deprecated |
+| Installing a cluster on AWS with compute nodes in AWS Outposts                                                         | Deprecated           | Deprecated           | Deprecated |
+| Adding kernel modules to nodes with kvc                                                                                | General Availability | General Availability | Deprecated |
+| Installing a cluster using Fujitsu iRMC drivers on bare-metal machines                                                 | General Availability | Deprecated           | Deprecated |
 
 Installation deprecated and removed tracker
 
@@ -212,11 +373,12 @@ Networking deprecated and removed tracker
 
 ## Node deprecated and removed features
 
-| Feature                                                              | 4.20       | 4.21       | 4.22 |
-|----------------------------------------------------------------------|------------|------------|------|
-| `ImageContentSourcePolicy` (ICSP) objects                            | Deprecated | Deprecated |      |
-| Kubernetes topology label `failure-domain.beta.kubernetes.io/zone`   | Deprecated | Deprecated |      |
-| Kubernetes topology label `failure-domain.beta.kubernetes.io/region` | Deprecated | Deprecated |      |
+| Feature                                                              | 4.20               | 4.21               | 4.22       |
+|----------------------------------------------------------------------|--------------------|--------------------|------------|
+| `ImageContentSourcePolicy` (ICSP) objects                            | Deprecated         | Deprecated         | Deprecated |
+| Kubernetes topology label `failure-domain.beta.kubernetes.io/zone`   | Deprecated         | Deprecated         | Deprecated |
+| Kubernetes topology label `failure-domain.beta.kubernetes.io/region` | Deprecated         | Deprecated         | Deprecated |
+| Dynamic Accelerator Slicer (DAS) Operator                            | Technology Preview | Technology Preview | Removed    |
 
 Node deprecated and removed tracker
 
@@ -232,11 +394,19 @@ OpenShift CLI (oc) deprecated and removed tracker
 
 ## Operator lifecycle and development deprecated and removed features
 
-| Feature                                      | 4.20       | 4.21       | 4.22 |
-|----------------------------------------------|------------|------------|------|
-| SQLite database format for Operator catalogs | Deprecated | Deprecated |      |
+| Feature                                      | 4.20       | 4.21       | 4.22       |
+|----------------------------------------------|------------|------------|------------|
+| SQLite database format for Operator catalogs | Deprecated | Deprecated | Deprecated |
 
 Operator lifecycle and development deprecated and removed tracker
+
+## Red Hat Enterprise Linux CoreOS (RHCOS) deprecated and removed features
+
+| Feature                      | 4.20    | 4.21    | 4.22    |
+|------------------------------|---------|---------|---------|
+| WebAssembly (WASM) extension | Removed | Removed | Removed |
+
+RHCOS deprecated and removed tracker
 
 ## Web console deprecated and removed features
 
@@ -266,9 +436,17 @@ As of OpenShift Container Platform 4.22, using the `oc adm release mirror` comma
 
 As an alternative, use the [oc-mirror plugin v2](../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2).
 
+Deprecation of adding kernel modules to nodes with KVC
+As of OpenShift Container Platform 4.22, support for adding kernel modules to nodes with kmods-via-containers software (KVC) has been deprecated and will be removed in a future release.
+
 # Removed features
 
 This section includes removed features for OpenShift Container Platform 4.17.
+
+Deprecation and Removal of Dynamic Accelerator Slicer (DAS)
+The Dynamic Accelerator Slicer (DAS) Operator was introduced to allow dynamic GPU partitioning in OpenShift Container Platform until the Dynamic Resource Allocation (DRA) partitionable device feature is available. With the DRA feature available as a technology preview feature in OpenShift Container Platform 4.17, the DAS Operator has been deprecated and removed.
+
+For more information on DRA, see [Allocating GPUs to pods by using DRA](../nodes/pods/nodes-pods-allocate-dra.xml#nodes-pods-allocate-dra).
 
 # Fixed issues
 
@@ -334,45 +512,53 @@ Edge computing Technology Preview tracker
 
 ## Extensions Technology Preview features
 
-| Feature                                                                 | 4.20               | 4.21                 | 4.22 |
-|-------------------------------------------------------------------------|--------------------|----------------------|------|
-| OLM v1 runtime validation of container images using sigstore signatures | Technology Preview | Technology Preview   |      |
-| OLM v1 permissions preflight check for cluster extensions               | Technology Preview | Technology Preview   |      |
-| OLM v1 deploying a cluster extension in a specified namespace           | Technology Preview | Technology Preview   |      |
-| OLM v1 deploying a cluster extension that uses webhooks                 | Technology Preview | General Availability |      |
-| OLM v1 software catalog                                                 | Not Available      | Technology Preview   |      |
+| Feature                                                                 | 4.20               | 4.21                 | 4.22                 |
+|-------------------------------------------------------------------------|--------------------|----------------------|----------------------|
+| OLM v1 runtime validation of container images using sigstore signatures | Technology Preview | Technology Preview   | General Availability |
+| OLM v1 permissions preflight check for cluster extensions               | Technology Preview | Technology Preview   | Technology Preview   |
+| OLM v1 deploying a cluster extension in a specified namespace           | Technology Preview | Technology Preview   | Technology Preview   |
+| OLM v1 deploying a cluster extension that uses webhooks                 | Technology Preview | General Availability | General Availability |
+| OLM v1 software catalog                                                 | Not Available      | Technology Preview   | Technology Preview   |
 
 Extensions Technology Preview tracker
 
 ## Installation Technology Preview features
 
-| Feature                                                                            | 4.20                 | 4.21                 | 4.22 |
-|------------------------------------------------------------------------------------|----------------------|----------------------|------|
-| Adding kernel modules to nodes with kvc                                            | Technology Preview   | Technology Preview   |      |
-| Installing a cluster on Alibaba Cloud by using Assisted Installer                  | Technology Preview   | Technology Preview   |      |
-| Dedicated disk for etcd on Microsoft Azure                                         | Technology Preview   | Technology Preview   |      |
-| Mount shared entitlements in BuildConfigs in RHEL                                  | Technology Preview   | Technology Preview   |      |
-| OpenShift zones support for vSphere host groups                                    | Technology Preview   | Technology Preview   |      |
-| Selectable Cluster Inventory                                                       | Technology Preview   | Technology Preview   |      |
-| Enabling a user-provisioned DNS on Google Cloud                                    | Technology Preview   | General Availability |      |
-| Enabling a user-provisioned DNS on Microsoft Azure                                 | Not Available        | Technology Preview   |      |
-| Enabling a user-provisioned DNS on Amazon Web Services (AWS)                       | Not Available        | Technology Preview   |      |
-| Installing a cluster using Google Cloud private and restricted API endpoints       | Not Available        | General Availability |      |
-| Installing a cluster on VMware vSphere with multiple network interface controllers | General Availability | General Availability |      |
-| Using bare metal as a service                                                      | Technology Preview   | Technology Preview   |      |
-| Running firmware upgrades for hosts in deployed bare metal clusters                | Technology Preview   | General Availability |      |
-| Changing the CVO log level                                                         | Technology Preview   | Technology Preview   |      |
+| Feature                                                                            | 4.20                 | 4.21                 | 4.22                                                         |
+|------------------------------------------------------------------------------------|----------------------|----------------------|--------------------------------------------------------------|
+| Installing a cluster on Alibaba Cloud by using Assisted Installer                  | Technology Preview   | Technology Preview   | Technology Preview                                           |
+| Installing a cluster using Red Hat Enterprise Linux (RHEL) 10                      | Not Available        | Not Available        | Technology Preview                                           |
+| Dedicated disk for etcd on Microsoft Azure                                         | Technology Preview   | Technology Preview   | Technology Preview                                           |
+| Mount shared entitlements in BuildConfigs in RHEL                                  | Technology Preview   | Technology Preview   | General Availability (through Builds for OpenShift Operator) |
+| OpenShift zones support for vSphere host groups                                    | Technology Preview   | Technology Preview   | Technology Preview                                           |
+| Selectable Cluster Inventory                                                       |                      |                      |                                                              |
+| Enabling a user-provisioned DNS on Google Cloud                                    | Technology Preview   | General Availability | General Availability                                         |
+| Enabling a user-provisioned DNS on Microsoft Azure                                 | Not Available        | Technology Preview   | General Availability                                         |
+| Enabling a user-provisioned DNS on Amazon Web Services (AWS)                       | Not Available        | Technology Preview   | Technology Preview                                           |
+| Installing a cluster using Google Cloud private and restricted API endpoints       | Not Available        | General Availability | General Availability                                         |
+| Installing a cluster on VMware vSphere with multiple network interface controllers | General Availability | General Availability | General Availability                                         |
+| Using bare metal as a service                                                      | Technology Preview   | Technology Preview   | General Availability                                         |
+| Installing a cluster on Amazon Web Services (AWS) European Sovereign Cloud         | Not Available        | Not Available        | Technology Preview                                           |
+| Installing a cluster on Amazon Web Services (AWS) with dual-stack networking       | Not Available        | Not Available        | Technology Preview                                           |
+| Running firmware upgrades for hosts in deployed bare metal clusters                | Technology Preview   | General Availability | General Availability                                         |
+| Changing the CVO log level                                                         | Technology Preview   | Technology Preview   | Technology Preview                                           |
 
 Installation Technology Preview tracker
 
+<div class="note">
+
+Fleet Management supersedes Selectable Cluster Inventory in OpenShift Container Platform 4.20 and later releases. For more information see, the Red Hat Advanced Cluster Management for Kubernetes documentation for [Fleet Management](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/release_notes/index#console-new-features).
+
+</div>
+
 ## Machine Config Operator Technology Preview features
 
-| Feature                                                | 4.20               | 4.21                 | 4.22 |
-|--------------------------------------------------------|--------------------|----------------------|------|
-| Boot image management for Azure and vSphere            | Technology Preview | General Availability |      |
-| Boot image management for control plane nodes          | Not available      | Technology Preview   |      |
-| image mode for OpenShift status reporting improvements | Not available      | Technology Preview   |      |
-| Overriding storage or partition setup                  | Not available      | Technology Preview   |      |
+| Feature                                                | 4.20               | 4.21                 | 4.22                 |
+|--------------------------------------------------------|--------------------|----------------------|----------------------|
+| Boot image management for Azure and vSphere            | Technology Preview | General Availability | General Availability |
+| Boot image management for control plane nodes          | Not available      | Technology Preview   | General Availability |
+| Image mode for OpenShift status reporting improvements | Not available      | Technology Preview   | Technology Preview   |
+| Overriding storage or partition setup                  | Not available      | Technology Preview   | Technology Preview   |
 
 Machine Config Operator Technology Preview tracker
 
@@ -430,15 +616,23 @@ Networking Technology Preview tracker
 
 ## Node Technology Preview features
 
-| Feature                                           | 4.20                 | 4.21                 | 4.22 |
-|---------------------------------------------------|----------------------|----------------------|------|
-| `MaxUnavailableStatefulSet` featureset            | Technology Preview   | Technology Preview   |      |
-| sigstore support                                  | General Availability | General Availability |      |
-| Default sigstore `openshift` cluster image policy | Technology Preview   | General Availability |      |
-| Linux user namespace support                      | General Availability | General Availability |      |
-| Attribute-Based GPU Allocation                    | Technology Preview   | General Availability |      |
+| Feature                                                   | 4.20               | 4.21                 | 4.22                 |
+|-----------------------------------------------------------|--------------------|----------------------|----------------------|
+| `MaxUnavailableStatefulSet` featureset                    | Technology Preview | Technology Preview   | Technology Preview   |
+| Default sigstore `openshift` cluster image policy         | Technology Preview | General Availability | General Availability |
+| Attribute-Based GPU Allocation                            | Technology Preview | General Availability | General Availability |
+| Project-scoped image pull secrets for mirrored registries | Not Available      | Not Available        | Technology Preview   |
+| Partitionable device DRA support                          | Not Available      | Not Available        | Technology Preview   |
 
 Nodes Technology Preview tracker
+
+## Postinstallation configuration Technology Preview features
+
+| Feature                                                         | 4.20          | 4.21          | 4.22               |
+|-----------------------------------------------------------------|---------------|---------------|--------------------|
+| Expanding a bare metal cluster using images from OCI registries | Not Available | Not Available | Technology Preview |
+
+Postinstallation configuration Technology Preview tracker
 
 ## Red Hat OpenStack Platform (RHOSP) Technology Preview features
 

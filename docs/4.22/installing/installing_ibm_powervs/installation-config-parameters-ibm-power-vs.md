@@ -153,8 +153,7 @@ Only IPv4 addresses are supported.
   clusterNetwork:
     cidr:</code></pre></td>
 <td style="text-align: left;"><p>Required if you use <code>networking.clusterNetwork</code>. An IP address block.</p>
-<p>An IPv4 network.</p>
-<p><strong>Value:</strong> An IP address block in Classless Inter-Domain Routing (CIDR) notation. The prefix length for an IPv4 block is between <code>0</code> and <code>32</code>.</p></td>
+<p>An IPv4 network.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><pre><code>networking:
@@ -168,7 +167,6 @@ Only IPv4 addresses are supported.
 <td style="text-align: left;"><pre><code>networking:
   serviceNetwork:</code></pre></td>
 <td style="text-align: left;"><p>The IP address block for services. The default value is <code>172.30.0.0/16</code>.</p>
-<p>The OVN-Kubernetes network plugins supports only a single IP address block for the service network.</p>
 <p><strong>Value:</strong> An array with an IP address block in CIDR format. For example:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">networking</span><span class="kw">:</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">serviceNetwork</span><span class="kw">:</span></span>
@@ -192,6 +190,12 @@ Only IPv4 addresses are supported.
 <p>For example, <code>192.168.0.0/24</code>.</p>
 <div class="note">
 <p>Set the <code>networking.machineNetwork</code> to match the CIDR that the preferred NIC resides in.</p>
+<p>If you are installing a cluster on AWS with dual-stack networking, consider the following distinction:</p>
+<ul>
+<li><p>If the installation program creates the VPC, do not specify an IPv6 entry in <code>networking.machineNetwork</code>. The installation program will assign an IPv6 address to the VPC.</p></li>
+<li><p>If you provide existing dual-stack subnets using the <code>platform.aws.vpc.subnets</code> parameter, you must specify IPv6 entries corresponding to either the VPC CIDR or the CIDR of the subnets.</p></li>
+<li><p>In both cases, you must provide an IPv4 CIDR entry.</p></li>
+</ul>
 </div></td>
 </tr>
 <tr class="odd">
@@ -392,12 +396,17 @@ Optional installation configuration parameters are described in the following ta
 <p><strong>Value:</strong> Array of strings</p></td>
 </tr>
 <tr class="even">
+<td style="text-align: left;"><pre><code>osImageStream:</code></pre></td>
+<td style="text-align: left;"><p>Specifies the image stream that will be used for all machines in the cluster. <code>osImageStream</code> is a Technology Preview feature. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.</p>
+<p><strong>Value:</strong> String. Valid values are <code>rhel-9</code> or <code>rhel-10</code>.</p></td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"><pre><code>publish:</code></pre></td>
 <td style="text-align: left;"><p>How to publish or expose the user-facing endpoints of your cluster, such as the Kubernetes API, OpenShift routes.</p>
 <p><strong>Value:</strong> <code>Internal</code> or <code>External</code>. The default value is <code>External</code>.</p>
 <p>Setting this field to <code>Internal</code> is not supported on non-cloud platforms.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>sshKey:</code></pre></td>
 <td style="text-align: left;"><p>The SSH key to authenticate access to your cluster machines.</p>
 <div class="note">
@@ -405,70 +414,70 @@ Optional installation configuration parameters are described in the following ta
 </div>
 <p><strong>Value:</strong> For example, <code>sshKey: ssh-ed25519 AAAA..</code>.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   powervs:
     vpcRegion:</code></pre></td>
 <td style="text-align: left;"><p>Specifies the IBM Cloud® region in which to create VPC resources.</p>
 <p><strong>Value:</strong> String. For example, <code>existing_vpc_region</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   powervs:
     vpcSubnets:</code></pre></td>
 <td style="text-align: left;"><p>Specifies existing subnets by name where cluster resources are created.</p>
 <p><strong>Value:</strong> String. For example, <code>powervs_region_example_subnet</code>.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   powervs:
     vpcName:</code></pre></td>
 <td style="text-align: left;"><p>Specifies the IBM Cloud® name.</p>
 <p><strong>Value:</strong> String. For example, <code>existing_vpcName</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   powervs:
     serviceInstanceGUID:</code></pre></td>
 <td style="text-align: left;"><p>Specifies the ID of the Power IAAS instance created from the IBM Cloud® Catalog.</p>
 <p><strong>Value:</strong> String. For example, <code>existing_service_instance_GUID</code>.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   powervs:
     clusterOSImage:</code></pre></td>
 <td style="text-align: left;"><p>Specifies a pre-created IBM Power® Virtual Server boot image that overrides the default image for cluster nodes.</p>
 <p><strong>Value:</strong> String. For example, <code>existing_cluster_os_image</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   powervs:
     defaultMachinePlatform:</code></pre></td>
 <td style="text-align: left;"><p>Specifies the default configuration used when installing on IBM Power® Virtual Server for machine pools that do not define their own platform configuration.</p>
 <p><strong>Value:</strong> String. For example, <code>existing_machine_platform</code>.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   powervs:
     memoryGiB:</code></pre></td>
 <td style="text-align: left;"><p>Specifies the size of a virtual machine’s memory, in GB.</p>
 <p><strong>Value:</strong> The valid integer must be an integer number of GB that is at least <code>2</code> and no more than <code>64</code>, depending on the machine type.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   powervs:
     procType:</code></pre></td>
 <td style="text-align: left;"><p>Defines the processor sharing model for the instance.</p>
 <p><strong>Value:</strong> The valid values are <code>Capped</code>, <code>Dedicated</code>, and <code>Shared</code>.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   powervs:
     processors:</code></pre></td>
 <td style="text-align: left;"><p>Defines the processing units for the instance.</p>
 <p><strong>Value:</strong> The number of processors must be from <code>.5</code> to <code>32</code> cores. The processors must be in increments of <code>.25</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   powervs:
     tgName:</code></pre></td>

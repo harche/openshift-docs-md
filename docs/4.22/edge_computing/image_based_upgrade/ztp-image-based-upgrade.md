@@ -25,8 +25,8 @@ spec:
         - spoke6
   ibuSpec:
     seedImageRef:
-      image: quay.io/seed/image:4.21.0
-      version: 4.21.0
+      image: quay.io/seed/image:4.22.0
+      version: 4.22.0
       pullSecretRef:
         name: "<seed_pull_secret>"
     extraManifests:
@@ -444,8 +444,8 @@ For use cases when service interruption is not a concern, you can upgrade a set 
             - spoke6
       ibuSpec:
         seedImageRef:
-          image: quay.io/seed/image:4.21.0
-          version: 4.21.0
+          image: quay.io/seed/image:4.22.0
+          version: 4.22.0
           pullSecretRef:
             name: "<seed_pull_secret>"
         extraManifests:
@@ -632,8 +632,8 @@ Only certain action combinations are supported and listed in *Supported action c
             - spoke4
       ibuSpec:
         seedImageRef:
-          image: quay.io/seed/image:4.21.0-rc.1
-          version: 4.21.0-rc.1
+          image: quay.io/seed/image:4.22.0-rc.1
+          version: 4.22.0-rc.1
           pullSecretRef:
             name: "<seed_pull_secret>"
         extraManifests:

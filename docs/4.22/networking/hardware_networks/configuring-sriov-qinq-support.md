@@ -20,14 +20,6 @@ This demonstrates how QinQ enables finer traffic segmentation and isolation with
 
 The OpenShift Container Platform SR-IOV solution already supports setting the VLAN protocol on the `SriovNetwork` custom resource (CR). The virtual function (VF) can use this protocol to set the VLAN tag, also known as the outer tag. Pods can then use the VLAN CNI plugin to configure the inner tag.
 
-| NIC        | 802.1ad/802.1Q | 802.1Q/802.1Q |
-|------------|----------------|---------------|
-| Intel X710 | No             | Supported     |
-| Intel E810 | Supported      | Supported     |
-| Mellanox   | No             | Supported     |
-
-Supported network interface cards
-
 - [Configuration for an VLAN additional network](../../networking/multiple_networks/secondary_networks/creating-secondary-nwt-other-cni.xml#nw-multus-vlan-object_configuring-additional-network-cni)
 
 # Configuring QinQ support for SR-IOV enabled workloads

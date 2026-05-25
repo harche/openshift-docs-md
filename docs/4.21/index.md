@@ -196,7 +196,7 @@
     - [Troubleshooting the installation](installing/installing_bare_metal/ipi/ipi-install-troubleshooting.md)
   - [Postinstallation configuration](installing/installing_bare_metal/bare-metal-postinstallation-configuration.md)
   - [Expanding the cluster](installing/installing_bare_metal/bare-metal-expanding-the-cluster.md)
-  - [Using bare metal as a service](installing/installing_bare_metal/bare-metal-using-bare-metal-as-a-service.md)
+  - [Using Red Hat Bare Metal as a Service for OpenShift](installing/installing_bare_metal/bare-metal-using-bare-metal-as-a-service.md)
 - **Installing IBM Cloud Bare Metal (Classic)**
   - [Prerequisites for IBM Cloud (Classic)](installing/installing_ibm_cloud_classic/install-ibm-cloud-prerequisites.md)
   - [Installation workflow for IBM Cloud Bare Metal (Classic)](installing/installing_ibm_cloud_classic/install-ibm-cloud-installation-workflow.md)
@@ -2025,12 +2025,10 @@
     - [Working with resource quotas for virtual machines](virt/managing_vms/advanced_vm_management/virt-working-with-resource-quotas-for-vms.md)
     - [Configuring the Application-Aware Quota Operator](virt/managing_vms/advanced_vm_management/virt-understanding-aaq-operator.md)
     - [Specifying nodes for virtual machines](virt/managing_vms/advanced_vm_management/virt-specifying-nodes-for-vms.md)
-    - [Configuring the default CPU model](virt/managing_vms/advanced_vm_management/virt-configuring-default-cpu-model.md)
     - [UEFI mode for virtual machines](virt/managing_vms/advanced_vm_management/virt-uefi-mode-for-vms.md)
     - [Configuring PXE booting for virtual machines](virt/managing_vms/advanced_vm_management/virt-configuring-pxe-booting.md)
     - [Using huge pages with virtual machines](virt/managing_vms/advanced_vm_management/virt-using-huge-pages-with-vms.md)
     - [Enabling dedicated resources for a virtual machine](virt/managing_vms/advanced_vm_management/virt-dedicated-resources-vm.md)
-    - [Scheduling virtual machines](virt/managing_vms/advanced_vm_management/virt-schedule-vms.md)
     - [Configuring PCI passthrough](virt/managing_vms/advanced_vm_management/virt-configuring-pci-passthrough.md)
     - [Configuring virtual GPUs](virt/managing_vms/advanced_vm_management/virt-configuring-virtual-gpus.md)
     - [Configuring USB host passthrough](virt/managing_vms/advanced_vm_management/virt-configuring-usb-host-passthrough.md)
@@ -2047,6 +2045,10 @@
     - [Configuring shared volumes](virt/managing_vms/virtual_disks/virt-configuring-shared-volumes-for-vms.md)
     - [Migrating VM disks to a different storage class](virt/managing_vms/virtual_disks/virt-migrating-storage-class.md)
     - [Inserting CD-ROMs in virtual machines](virt/managing_vms/virtual_disks/virt-inserting-cd-roms-in-virtual-machines.md)
+  - **CPU models**
+    - [Choose a CPU model](virt/managing_vms/cpu_models/virt-choosing-cpu-models.md)
+    - [Configure CPU models](virt/managing_vms/cpu_models/virt-configuring-default-cpu-model.md)
+    - [Schedule virtual machines](virt/managing_vms/cpu_models/virt-schedule-vms.md)
 - **Networking**
   - [Networking configuration overview](virt/vm_networking/virt-networking-overview.md)
   - [Connecting a VM to the default pod network](virt/vm_networking/virt-connecting-vm-to-default-pod-network.md)

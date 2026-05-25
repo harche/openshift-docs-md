@@ -4,9 +4,9 @@ The following procedures are typically performed after you install OpenShift Vir
 
 - The hostpath provisioner is a local storage provisioner designed for OpenShift Virtualization. If you want to configure local storage for virtual machines, you must enable the hostpath provisioner first.
 
-- [Node placement rules for OpenShift Virtualization Operators, workloads, and controllers](../../virt/post_installation_configuration/virt-node-placement-virt-components.xml#virt-node-placement-virt-components)
+- Node placement rules for OpenShift Virtualization Operators, workloads, and controllers.
 
-- [Network configuration](../../virt/post_installation_configuration/virt-post-install-network-config.xml#virt-post-install-network-config):
+- Network configuration:
 
   - Installing the Kubernetes NMState and SR-IOV Operators
 
@@ -18,8 +18,16 @@ The following procedures are typically performed after you install OpenShift Vir
 
   - Enabling the creation of load balancer services by using the OpenShift Container Platform web console
 
-- [Storage configuration](../../virt/post_installation_configuration/virt-post-install-storage-config.xml#virt-post-install-storage-config):
+- Storage configuration:
 
   - Defining a default storage class for the Container Storage Interface (CSI)
 
   - Configuring local storage by using the Hostpath Provisioner (HPP)
+
+# Additional resources
+
+- [Specifying nodes for OpenShift Virtualization components](../../virt/post_installation_configuration/virt-node-placement-virt-components.xml#virt-node-placement-virt-components)
+
+- [Postinstallation network configuration](../../virt/post_installation_configuration/virt-post-install-network-config.xml#virt-post-install-network-config)
+
+- [Postinstallation storage configuration](../../virt/post_installation_configuration/virt-post-install-storage-config.xml#virt-post-install-storage-config)

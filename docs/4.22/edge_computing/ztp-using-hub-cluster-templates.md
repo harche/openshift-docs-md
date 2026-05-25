@@ -12,7 +12,7 @@ Policy templates are restricted to the same namespace as the namespace where the
 
 Using `PolicyGenTemplate` CRs to manage and deploy policies to managed clusters will be deprecated in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
 
-For more information about `PolicyGenerator` resources, see the RHACM [Integrating Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/governance/index#integrate-policy-generator) documentation.
+For more information about `PolicyGenerator` resources, see the RHACM [Integrating Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#integrate-policy-generator) documentation.
 
 </div>
 
@@ -20,7 +20,7 @@ For more information about `PolicyGenerator` resources, see the RHACM [Integrati
 
 - [Comparing RHACM PolicyGenerator and PolicyGenTemplate resource patching](../edge_computing/policygenerator_for_ztp/ztp-configuring-managed-clusters-policygenerator.xml#ztp-comparing-pgt-and-rhacm-pg-patching-strategies_ztp-configuring-managed-clusters-policygenerator)
 
-- [RHACM support for template processing in configuration policies](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/governance/index#template-processing)
+- [RHACM support for template processing in configuration policies](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#template-processing)
 
 # Specifying group and site configurations in group PolicyGenerator or PolicyGentemplate CRs
 

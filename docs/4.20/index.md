@@ -196,7 +196,7 @@
     - [Troubleshooting the installation](installing/installing_bare_metal/ipi/ipi-install-troubleshooting.md)
   - [Postinstallation configuration](installing/installing_bare_metal/bare-metal-postinstallation-configuration.md)
   - [Expanding the cluster](installing/installing_bare_metal/bare-metal-expanding-the-cluster.md)
-  - [Using bare metal as a service](installing/installing_bare_metal/bare-metal-using-bare-metal-as-a-service.md)
+  - [Using Red Hat Bare Metal as a Service for OpenShift](installing/installing_bare_metal/bare-metal-using-bare-metal-as-a-service.md)
 - **Installing IBM Cloud Bare Metal (Classic)**
   - [Prerequisites for IBM Cloud (Classic)](installing/installing_ibm_cloud_classic/install-ibm-cloud-prerequisites.md)
   - [Installation workflow for IBM Cloud Bare Metal (Classic)](installing/installing_ibm_cloud_classic/install-ibm-cloud-installation-workflow.md)

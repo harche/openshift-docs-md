@@ -16,6 +16,11 @@ The SVVP certification applies to:
 
 # New features and enhancements
 
+Support for IPv6 single-stack clusters is generally available
+With this release, support for IPv6 single-stack clusters is Generally Available (GA). OpenShift Virtualization supports single-stack IPv6 clusters for VMs that are connected to an OVN-Kubernetes localnet network, Linux bridge Container Network Interface (CNI) plugin, and Single Root I/O Virtualization (SR-IOV) network devices.
+
+[CNV-28924](https://redhat.atlassian.net/browse/CNV-28924)
+
 # Deprecated features
 
 The `HotplugVolume` feature gate is deprecated

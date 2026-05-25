@@ -153,6 +153,12 @@ The `must-gather` tool uses `oc adm inspect` internally. You can specify what to
   $ oc adm must-gather --dest-dir=apiserver-must-gather -- oc adm inspect clusteroperator/openshift-apiserver
   ```
 
+- To exclude rotated logs, such as `*.gz` or `*.1` files, from data collection, set the `REDUCE_LOGS` environment variable by running the following command:
+
+  ``` terminal
+  $ oc adm must-gather -- REDUCE_LOGS=skip_rotated_logs /usr/bin/gather
+  ```
+
 - To exclude logs entirely and significantly reduce the size of the `must-gather` archive, add a double dash (`--`) after `oc adm must-gather` command and add the `--no-logs` argument:
 
   ``` terminal
@@ -719,7 +725,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 
     ``` terminal
     NAME                                  DISPLAY                VERSION   REPLACES   PHASE
-    support-log-gather-operator.v4.21.0   support log gather     4.21.0               Succeeded
+    support-log-gather-operator.v4.22.0   support log gather     4.22.0               Succeeded
     ```
 
 ## Configuring a Support Log Gather instance
@@ -742,9 +748,11 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 - You have created a Kubernetes secret containing your Red Hat Customer Portal credentials. The secret must contain a username field and a password field.
 
-- You have created a service account.
+- If you are using a custom image, you have configured an `ImageStream` resource in the Operator namespace that references an approved custom image URL.
 
-1.  Create a YAML file for the `MustGather` CR, such as `support-log-gather.yaml`, that contains the following basic configuration::
+- You have created a service account. If you are using a custom image, you have created a service account with permissions to access the `ImageStream` resource.
+
+1.  Create a YAML file for the `MustGather` CR, such as `support-log-gather.yaml`, that contains the following configuration:
 
     <div class="formalpara-title">
 
@@ -759,8 +767,16 @@ For more information about the support scope of Red Hat Technology Preview featu
       name: example-mg
       namespace: must-gather-operator
     spec:
-      serviceAccountName: must-gather-operator
-      audit: true
+      serviceAccountName: my-service-account
+      gatherSpec:
+        command:
+        - "/usr/bin/custom-gather"
+        args:
+        - "--verbose"
+        - "--subsystem=network"
+      imageStreamRef:
+        name: "network-debug-tools"
+        tag: "v1.2"
       proxyConfig:
         httpProxy: "http://proxy.example.com:8080"
         httpsProxy: "https://proxy.example.com:8443"
@@ -837,35 +853,193 @@ For more information about the support scope of Red Hat Technology Preview featu
 
     When successful, the process must create an archive and upload it to the Red Hat Secure File Transfer Protocol (SFTP) server for the specified case.
 
+## Configurations for reducing the must-gather log size
+
+Large `must-gather` logs can take a significant amount of time to upload to support cases and also consume considerable cluster storage. You can optimize the size of the collected diagnostic data by applying specific configurations to your `MustGather` custom resource (CR).
+
+The following examples demonstrate different methods for reducing the must-gather log size:
+
+**Skipping rotated logs** You can exclude older, rotated log files, such as `*.gz` or `*.1` files, from the collection by setting the shell variable `REDUCE_LOGS=skip_rotated_logs` before running the `gather` script.
+
+<div class="formalpara-title">
+
+**Example `MustGather` CR configured to skip rotated logs**
+
+</div>
+
+``` yaml
+apiVersion: operator.openshift.io/v1alpha1
+kind: MustGather
+metadata:
+  name: full-mustgather
+spec:
+  serviceAccountName: must-gather-operator
+  gatherSpec:
+    command:
+      - /bin/sh
+      - -c
+      - |
+        REDUCE_LOGS=skip_rotated_logs gather
+  uploadTarget:
+    type: SFTP
+    sftp:
+      caseID: '02527285'
+      caseManagementAccountSecretRef:
+        name: sftp-access-rh-creds
+      internalUser: true
+```
+
+`REDUCE_LOGS=skip_rotated_logs gather`
+Sets the `REDUCE_LOGS` shell variable and executes the `gather` script. As a result, the script excludes the collection of rotated log files.
+
 - [Understanding and creating service accounts](../authentication/understanding-and-creating-service-accounts.xml#understanding-and-creating-service-accounts)
 
 ## Configuration parameters for MustGather custom resource
 
 You can manage your `MustGather` custom resource (CR) by creating a YAML file that specifies the parameters for data collection and the upload process. The following table provides an overview of the parameters that you can configure in the `MustGather` CR.
 
-| Parameter name                                               | Description                                                                                                                                                                                           | Type                                                                                                                                                            |
-|--------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `spec.audit`                                                 | Optional: Specifies whether to collect audit logs. The valid values are `true` and `false`. The default value is `false`.                                                                             | `boolean`                                                                                                                                                       |
-| `spec.mustGatherTimeout`                                     | Optional: Specifies the time limit for the `must-gather` command to complete.                                                                                                                         | The value must be a floating-point number with a time unit. The valid units are `s` (seconds), `m` (minutes), or `h` (hours). By default, no time is limit set. |
-| `spec.proxyConfig`                                           | Optional: Defines the proxy configuration to be used. The default value is set to the cluster-level proxy configuration.                                                                              | `Object`                                                                                                                                                        |
-| `spec.proxyConfig.httpProxy`                                 | Specifies the URL of the proxy for HTTP requests.                                                                                                                                                     | URL                                                                                                                                                             |
-| `spec.proxyConfig.httpsProxy`                                | Specifies the URL of the proxy for HTTPS requests.                                                                                                                                                    |                                                                                                                                                                 |
-| `spec.proxyConfig.noProxy`                                   | Specifies a comma-separated list of domains for which the proxy must not be used.                                                                                                                     | List of URLs                                                                                                                                                    |
-| `spec.retainResourcesOnCompletion`                           | Optional: Specifies whether to retain the `must-gather` job and its related resources after the completion of data collection. The valid values are `true` and `false`. The default value is `false`. | `boolean`                                                                                                                                                       |
-| `spec.serviceAccountName`                                    | Optional: Specifies the name of the service account. The default value is `default`.                                                                                                                  | `string`                                                                                                                                                        |
-| `spec.storage`                                               | Optional: Defines the storage configuration for the `must-gather` bundle.                                                                                                                             | `Object`                                                                                                                                                        |
-| `spec.storage.persistentVolume`                              | Defines the details of the persistent volume.                                                                                                                                                         | `Object`                                                                                                                                                        |
-| `spec.storage.persistentVolume.claim`                        | Defines the details of the persistent volume claim (PVC).                                                                                                                                             | `Object`                                                                                                                                                        |
-| `spec.storage.persistentVolume.claim.name`                   | Specifies the name of the PVC to be used for storage.                                                                                                                                                 | `string`                                                                                                                                                        |
-| `spec.storage.persistentVolume.subPath`                      | Optional: Specifies the path within the PVC to store the bundle.                                                                                                                                      | `string`                                                                                                                                                        |
-| `spec.storage.type`                                          | Defines the type of storage. The only supported value is `PersistentVolume`.                                                                                                                          | `string`                                                                                                                                                        |
-| `spec.uploadTarget`                                          | Optional: Defines the upload location for the `must-gather` bundle.                                                                                                                                   | `Object`                                                                                                                                                        |
-| `spec.uploadTarget.host`                                     | Optional: Specifies the destination server for the bundle upload. By default, the bundle is uploaded to `sftp.access.redhat.com`.                                                                     | By default, the bundle is uploaded to `sftp.access.redhat.com`.                                                                                                 |
-| `spec.uploadTarget.sftp.caseID`                              | Specifies the Red Hat Support case ID for which the diagnostic data is collected.                                                                                                                     | `string`                                                                                                                                                        |
-| `spec.uploadTarget.sftp.caseManagementAccountSecretRef`      | Defines the credentials required for authenticating and uploading the files to the Red Hat Customer Portal support case. The value must contain a `username` and `password` field.                    | `Object`                                                                                                                                                        |
-| `spec.uploadTarget.sftp.caseManagementAccountSecretRef.name` | Specifies the name of the Kubernetes secret that contains the credentials.                                                                                                                            | `string`                                                                                                                                                        |
-| `spec.uploadTarget.sftp.internalUser`                        | Optional: Specifies whether the user provided in the `caseManagementAccountSecretRef` is a Red Hat internal user. The valid values are `true` and `false`. The default value is `false`.              | `boolean`                                                                                                                                                       |
-| `spec.uploadTarget.type`                                     | Specifies the type of upload location for the `must-gather` bundle. The only supported value is `SFTP`.                                                                                               | `string`                                                                                                                                                        |
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 60%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter name</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>spec.gatherSpec.args</code></p></td>
+<td style="text-align: left;"><p>Optional: Specifies a list of command-line arguments. The Operator passes this value to the <code>args</code> field of the container. If you do not specify <code>spec.gatherSpec.command</code>, the specified arguments are appended to the default command of the Operator.</p></td>
+<td style="text-align: left;"><p>List of strings</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>spec.gatherSpec.audit</code></p></td>
+<td style="text-align: left;"><p>Optional: Specifies whether to collect audit logs. The valid values are <code>true</code> and <code>false</code>. You must not set this field if you are using a custom image, or <code>spec.gatherSpec.command</code> with the default image.</p></td>
+<td style="text-align: left;"><p><code>boolean</code></p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>spec.gatherSpec.command</code></p></td>
+<td style="text-align: left;"><p>Optional: Overrides the default command of the container. The Operator passes this value to the <code>command</code> field of the container.</p></td>
+<td style="text-align: left;"><p>List of strings</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>spec.gatherSpec.since</code></p></td>
+<td style="text-align: left;"><p>Optional: Specifies a time duration to restrict log collection to entries newer than the specified duration. By default, the controller collects all available logs. You can specify either <code>spec.gatherSpec.since</code> or <code>spec.gatherSpec.sinceTime</code>, but not both.</p></td>
+<td style="text-align: left;"><p>The value must be a number with a time unit. The valid units are <code>s</code> (seconds), <code>m</code> (minutes), or <code>h</code> (hours).</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>spec.gatherSpec.sinceTime</code></p></td>
+<td style="text-align: left;"><p>Optional: Specifies a timestamp to restrict log collection to entries newer than the specified timestamp. By default, the controller collects all available logs. You can specify either <code>spec.gatherSpec.since</code> or <code>spec.gatherSpec.sinceTime</code>, but not both.</p></td>
+<td style="text-align: left;"><p>The value must be in <a href="https://www.rfc-editor.org/rfc/rfc3339">RFC3339</a> format.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>spec.imageStreamRef</code></p></td>
+<td style="text-align: left;"><p>Optional: Overrides the default image by defining a specific custom image.</p>
+<div class="note">
+<p>Each <code>MustGather</code> CR supports only one custom image. To use multiple custom images, you must create a separate <code>MustGather</code> CR for each image.</p>
+</div></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>spec.imageStreamRef.name</code></p></td>
+<td style="text-align: left;"><p>Specifies the name of the <code>ImageStream</code> resource in the Operator namespace.</p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>spec.imageStreamRef.tag</code></p></td>
+<td style="text-align: left;"><p>Specifies the name of the tag within the <code>ImageStream</code> resource.</p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>spec.mustGatherTimeout</code></p></td>
+<td style="text-align: left;"><p>Optional: Specifies the time limit for the <code>must-gather</code> command to complete.</p></td>
+<td style="text-align: left;"><p>The value must be a number with a time unit. The valid units are <code>s</code> (seconds), <code>m</code> (minutes), or <code>h</code> (hours). By default, no time limit is set.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>spec.retainResourcesOnCompletion</code></p></td>
+<td style="text-align: left;"><p>Optional: Specifies whether to retain the <code>must-gather</code> job and its related resources after the completion of data collection. The valid values are <code>true</code> and <code>false</code>. The default value is <code>false</code>.</p></td>
+<td style="text-align: left;"><p><code>boolean</code></p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>spec.serviceAccountName</code></p></td>
+<td style="text-align: left;"><p>Optional: Specifies the name of the service account. The default value is <code>default</code>.</p>
+<div class="note">
+<p>Because the <code>default</code> service account has minimal permissions, you can specify the service account that you created.</p>
+</div></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>spec.storage</code></p></td>
+<td style="text-align: left;"><p>Optional: Defines the storage configuration for the <code>must-gather</code> bundle.</p></td>
+<td style="text-align: left;"><p><code>Object</code></p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>spec.storage.persistentVolume</code></p></td>
+<td style="text-align: left;"><p>Defines the details of the persistent volume.</p></td>
+<td style="text-align: left;"><p><code>Object</code></p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>spec.storage.persistentVolume.claim</code></p></td>
+<td style="text-align: left;"><p>Defines the details of the persistent volume claim (PVC).</p></td>
+<td style="text-align: left;"><p><code>Object</code></p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>spec.storage.persistentVolume.claim.name</code></p></td>
+<td style="text-align: left;"><p>Specifies the name of the PVC to be used for storage.</p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>spec.storage.persistentVolume.subPath</code></p></td>
+<td style="text-align: left;"><p>Optional: Specifies the path within the PVC to store the bundle.</p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>spec.storage.type</code></p></td>
+<td style="text-align: left;"><p>Defines the type of storage. The only supported value is <code>PersistentVolume</code>.</p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>spec.uploadTarget</code></p></td>
+<td style="text-align: left;"><p>Optional: Defines the upload location for the <code>must-gather</code> bundle.</p></td>
+<td style="text-align: left;"><p><code>Object</code></p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>spec.uploadTarget.sftp.caseID</code></p></td>
+<td style="text-align: left;"><p>Specifies the Red Hat Support case ID for which the diagnostic data is collected.</p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>spec.uploadTarget.sftp.caseManagementAccountSecretRef</code></p></td>
+<td style="text-align: left;"><p>Defines the credentials required for authenticating and uploading the files to the Red Hat Customer Portal support case. The value must contain a <code>username</code> and <code>password</code> field.</p></td>
+<td style="text-align: left;"><p><code>Object</code></p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>spec.uploadTarget.sftp.caseManagementAccountSecretRef.name</code></p></td>
+<td style="text-align: left;"><p>Specifies the name of the Kubernetes secret that contains the credentials.</p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>spec.uploadTarget.sftp.host</code></p></td>
+<td style="text-align: left;"><p>Optional: Specifies the destination server for the bundle upload. By default, the bundle is uploaded to <code>sftp.access.redhat.com</code>.</p></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>spec.uploadTarget.sftp.internalUser</code></p></td>
+<td style="text-align: left;"><p>Optional: Specifies whether the user provided in the <code>caseManagementAccountSecretRef</code> is a Red Hat internal user. The valid values are <code>true</code> and <code>false</code>. The default value is <code>false</code>.</p></td>
+<td style="text-align: left;"><p><code>boolean</code></p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>spec.uploadTarget.type</code></p></td>
+<td style="text-align: left;"><p>Specifies the type of upload location for the <code>must-gather</code> bundle. The only supported value is <code>SFTP</code>.</p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+</tr>
+</tbody>
+</table>
 
 <div class="note">
 

@@ -46,10 +46,10 @@ These configuration resources are cluster-scoped instances, named `cluster`, whi
 
 These configuration resources represent a single instance of a particular component. In some cases, you can request multiple instances by creating multiple instances of the resource. In other cases, the Operator can use only a specific resource instance name in a specific namespace. Reference the component-specific documentation for details on how and when you can create additional resource instances.
 
-| Resource name                             | Instance name | Namespace                    | Description                                                                                                                                                                                                             |
-|-------------------------------------------|---------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `alertmanager.monitoring.coreos.com`      | `main`        | `openshift-monitoring`       | Controls the [Alertmanager](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_core_platform_monitoring/configuring-alerts-and-notifications) deployment parameters. |
-| `ingresscontroller.operator.openshift.io` | `default`     | `openshift-ingress-operator` | Configures [Ingress Operator](../networking/networking_operators/ingress-operator.xml#configuring-ingress-controller) behavior such as domain, number of replicas, certificates, and controller placement.              |
+| Resource name                             | Instance name | Namespace                    | Description                                                                                                                                                                                                               |
+|-------------------------------------------|---------------|------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `alertmanager.monitoring.coreos.com`      | `main`        | `openshift-monitoring`       | Controls the [Alertmanager](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/configuring_core_platform_monitoring/configuring-alerts-and-notifications) deployment parameters. |
+| `ingresscontroller.operator.openshift.io` | `default`     | `openshift-ingress-operator` | Configures [Ingress Operator](../networking/networking_operators/ingress-operator.xml#configuring-ingress-controller) behavior such as domain, number of replicas, certificates, and controller placement.                |
 
 ## Informational Resources
 
@@ -3192,7 +3192,7 @@ $ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides":
 
 </div>
 
-If the etcd static pods do not roll out , you can manually force an etcd redeployment from the `cluster-etcd-operator` by running the following command:
+If the etcd static pods do not roll out, you can manually force an etcd redeployment from the `cluster-etcd-operator` by running the following command:
 
 ``` terminal
 $ oc patch etcd cluster -p='{"spec": {"forceRedeploymentReason": "recovery-'"$(date --rfc-3339=ns )"'"}}' --type=merge

@@ -18,4 +18,4 @@ Configure the `node-exporter` service to expose internal VM metrics and processe
 Configure readiness, liveness, and guest agent ping probes and a watchdog for VMs.
 
 [Runbooks](../../virt/monitoring/virt-runbooks.xml#virt-runbooks)
-Diagnose and resolve issues that trigger OpenShift Virtualization [alerts](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/monitoring_key_concepts/key-concepts#about-managing-alerts_key-concepts) in the OpenShift Container Platform web console.
+Diagnose and resolve issues that trigger OpenShift Virtualization [alerts](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/monitoring_key_concepts/key-concepts#about-managing-alerts_key-concepts) in the OpenShift Container Platform web console.

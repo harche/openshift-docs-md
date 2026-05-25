@@ -45,7 +45,7 @@ Required
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>metadata</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta_v2"><code>ObjectMeta_v2</code></a></p></td>
+<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta"><code>ObjectMeta</code></a></p></td>
 <td style="text-align: left;"><p>metadata is the standard object’s metadata. More info: <a href="https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata">https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata</a></p></td>
 </tr>
 <tr class="even">
@@ -388,8 +388,10 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>termination</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>termination indicates termination type.</p>
-<p>* edge - TLS termination is done by the router and http is used to communicate with the backend (default) * passthrough - Traffic is sent straight to the destination without the router providing TLS termination * reencrypt - TLS termination is done by the router and https is used to communicate with the backend</p>
+<td style="text-align: left;"><p>termination indicates the TLS termination type.</p>
+<p>* edge - TLS termination is done by the router and http is used to communicate with the backend (default)</p>
+<p>* passthrough - Traffic is sent straight to the destination without the router providing TLS termination</p>
+<p>* reencrypt - TLS termination is done by the router and https is used to communicate with the backend</p>
 <p>Note: passthrough termination is incompatible with httpHeader actions</p></td>
 </tr>
 </tbody>
@@ -457,9 +459,9 @@ Type
 
 | Property                  | Type     | Description                                                                                                                                                                           |
 |---------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `conditions`              | `array`  | Conditions is the state of the route, may be empty.                                                                                                                                   |
+| `conditions`              | `array`  | conditions is the state of the route, may be empty.                                                                                                                                   |
 | `conditions[]`            | `object` | RouteIngressCondition contains details for the current condition of this route on a particular router.                                                                                |
-| `host`                    | `string` | Host is the host string under which the route is exposed; this value is required                                                                                                      |
+| `host`                    | `string` | host is the host string under which the route is exposed; this value is required                                                                                                      |
 | `routerCanonicalHostname` | `string` | CanonicalHostname is the external host name for the router that can be used as a CNAME for the host requested for this route. This value is optional and may not be set in all cases. |
 | `routerName`              | `string` | Name is a name chosen by the router to identify itself; this value is required                                                                                                        |
 | `wildcardPolicy`          | `string` | Wildcard policy is the wildcard policy that was allowed where this route is exposed.                                                                                                  |
@@ -467,7 +469,7 @@ Type
 ## .status.ingress\[\].conditions
 
 Description
-Conditions is the state of the route, may be empty.
+conditions is the state of the route, may be empty.
 
 Type
 `array`
@@ -490,8 +492,8 @@ Required
 | `lastTransitionTime` | [`Time`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Time) | RFC 3339 date and time when this condition last transitioned                                             |
 | `message`            | `string`                                                                 | Human readable message indicating details about last transition.                                         |
 | `reason`             | `string`                                                                 | (brief) reason for the condition’s last transition, and is usually a machine and human readable constant |
-| `status`             | `string`                                                                 | Status is the status of the condition. Can be True, False, Unknown.                                      |
-| `type`               | `string`                                                                 | Type is the type of the condition. Currently only Admitted or UnservableInFutureVersions.                |
+| `status`             | `string`                                                                 | status is the status of the condition. Can be True, False, Unknown.                                      |
+| `type`               | `string`                                                                 | type is the type of the condition. Currently only Admitted or UnservableInFutureVersions.                |
 
 # API endpoints
 
@@ -583,10 +585,10 @@ delete collection of Route
 
 Query parameters
 
-| HTTP code          | Reponse body                                                                        |
-|--------------------|-------------------------------------------------------------------------------------|
-| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty                                                                               |
+| HTTP code          | Reponse body                                                                              |
+|--------------------|-------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v2) schema |
+| 401 - Unauthorized | Empty                                                                                     |
 
 HTTP responses
 
@@ -666,11 +668,11 @@ delete a Route
 
 Query parameters
 
-| HTTP code          | Reponse body                                                                        |
-|--------------------|-------------------------------------------------------------------------------------|
-| 200 - OK           | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 202 - Accepted     | [`Status`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status) schema |
-| 401 - Unauthorized | Empty                                                                               |
+| HTTP code          | Reponse body                                                                              |
+|--------------------|-------------------------------------------------------------------------------------------|
+| 200 - OK           | [`Status_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v2) schema |
+| 202 - Accepted     | [`Status_v2`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Status_v2) schema |
+| 401 - Unauthorized | Empty                                                                                     |
 
 HTTP responses
 

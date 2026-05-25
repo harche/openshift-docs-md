@@ -79,7 +79,37 @@ Required parameters
 
 You can customize your installation configuration based on the requirements of your existing network infrastructure. For example, you can expand the IP address block for the cluster network or configure different IP address blocks than the defaults.
 
-Only IPv4 addresses are supported.
+Consider the following information before you configure network parameters for your cluster:
+
+- If you use the Red Hat OpenShift Networking OVN-Kubernetes network plugin, both IPv4 and IPv6 address families are supported.
+
+- If you deployed nodes in an OpenShift Container Platform cluster with a network that supports both IPv4 and non-link-local IPv6 addresses, configure your cluster to use a dual-stack network.
+
+  - For clusters configured for dual-stack networking, both IPv4 and IPv6 traffic must use the same network interface as the default gateway. This ensures that in a multiple network interface controller (NIC) environment, a cluster can detect what NIC to use based on the available network interface. For more information, see "OVN-Kubernetes IPv6 and dual-stack limitations" in *About the OVN-Kubernetes network plugin*.
+
+  - To prevent network connectivity issues, do not install a single-stack IPv4 cluster on a host that supports dual-stack networking.
+
+If you configure your cluster to use both IP address families, review the following requirements:
+
+- Both IP families must use the same network interface for the default gateway.
+
+- Both IP families must have the default gateway.
+
+- You must specify IPv4 and IPv6 addresses in the same order for all network configuration parameters. For example, in the following configuration, IPv4 addresses are listed before IPv6 addresses:
+
+  ``` yaml
+  networking:
+    clusterNetwork:
+    - cidr: 10.128.0.0/14
+      hostPrefix: 23
+    - cidr: fd00:10:128::/56
+      hostPrefix: 64
+    serviceNetwork:
+    - 172.30.0.0/16
+    - fd00:172:16::/112
+  ```
+
+  If you are installing your cluster on AWS, the order of address families must match the `platform.aws.ipFamily` parameter. For example, if you specified the `DualStackIPv6Primary` parameter, you must list the IPv6 address first.
 
 <table>
 <caption>Network parameters</caption>
@@ -118,7 +148,9 @@ Only IPv4 addresses are supported.
 <div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">networking</span><span class="kw">:</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">clusterNetwork</span><span class="kw">:</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">cidr</span><span class="kw">:</span><span class="at"> 10.128.0.0/14</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hostPrefix</span><span class="kw">:</span><span class="at"> </span><span class="dv">23</span></span></code></pre></div></td>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hostPrefix</span><span class="kw">:</span><span class="at"> </span><span class="dv">23</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">cidr</span><span class="kw">:</span><span class="at"> fd01::/48</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hostPrefix</span><span class="kw">:</span><span class="at"> </span><span class="dv">64</span></span></code></pre></div></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><pre><code>networking:
@@ -126,7 +158,8 @@ Only IPv4 addresses are supported.
     cidr:</code></pre></td>
 <td style="text-align: left;"><p>Required if you use <code>networking.clusterNetwork</code>. An IP address block.</p>
 <p>An IPv4 network.</p>
-<p><strong>Value:</strong> An IP address block in Classless Inter-Domain Routing (CIDR) notation. The prefix length for an IPv4 block is between <code>0</code> and <code>32</code>.</p></td>
+<p>If you use the OVN-Kubernetes network plugin, you can specify IPv4 and IPv6 networks.</p>
+<p><strong>Value:</strong> An IP address block in Classless Inter-Domain Routing (CIDR) notation. The prefix length for an IPv4 block is between <code>0</code> and <code>32</code>. The prefix length for an IPv6 block is between <code>0</code> and <code>128</code>. For example, <code>10.128.0.0/14</code> or <code>fd01::/48</code>.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><pre><code>networking:
@@ -134,17 +167,19 @@ Only IPv4 addresses are supported.
     hostPrefix:</code></pre></td>
 <td style="text-align: left;"><p>The subnet prefix length to assign to each individual node. For example, if <code>hostPrefix</code> is set to <code>23</code> then each node is assigned a <code>/23</code> subnet out of the given <code>cidr</code>. A <code>hostPrefix</code> value of <code>23</code> provides 510 (2^(32 - 23) - 2) pod IP addresses.</p>
 <p><strong>Value:</strong> A subnet prefix.</p>
-<p>The default value is <code>23</code>.</p></td>
+<p>The default value is <code>23</code>.</p>
+<p>For an IPv4 network the default value is <code>23</code>. For an IPv6 network <code>hostPrefix</code> must be set to <code>64</code>, which is the default value.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><pre><code>networking:
   serviceNetwork:</code></pre></td>
 <td style="text-align: left;"><p>The IP address block for services. The default value is <code>172.30.0.0/16</code>.</p>
-<p>The OVN-Kubernetes network plugins supports only a single IP address block for the service network.</p>
+<p>If you use the OVN-Kubernetes network plugin, you can specify an IP address block for both of the IPv4 and IPv6 address families.</p>
 <p><strong>Value:</strong> An array with an IP address block in CIDR format. For example:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">networking</span><span class="kw">:</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">serviceNetwork</span><span class="kw">:</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="at">   </span><span class="kw">-</span><span class="at"> 172.30.0.0/16</span></span></code></pre></div></td>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="at">   </span><span class="kw">-</span><span class="at"> 172.30.0.0/16</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="at">   </span><span class="kw">-</span><span class="at"> fd02::/112</span></span></code></pre></div></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><pre><code>networking:
@@ -165,6 +200,12 @@ Only IPv4 addresses are supported.
 <p>For example, <code>10.0.0.0/16</code>.</p>
 <div class="note">
 <p>Set the <code>networking.machineNetwork</code> to match the CIDR that the preferred NIC resides in.</p>
+<p>If you are installing a cluster on AWS with dual-stack networking, consider the following distinction:</p>
+<ul>
+<li><p>If the installation program creates the VPC, do not specify an IPv6 entry in <code>networking.machineNetwork</code>. The installation program will assign an IPv6 address to the VPC.</p></li>
+<li><p>If you provide existing dual-stack subnets using the <code>platform.aws.vpc.subnets</code> parameter, you must specify IPv6 entries corresponding to either the VPC CIDR or the CIDR of the subnets.</p></li>
+<li><p>In both cases, you must provide an IPv4 CIDR entry.</p></li>
+</ul>
 </div></td>
 </tr>
 <tr class="odd">
@@ -366,18 +407,24 @@ Optional installation configuration parameters are described in the following ta
 <p><strong>Value:</strong> Array of strings</p></td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;"><pre><code>osImageStream:</code></pre></td>
+<td style="text-align: left;"><p>Specifies the image stream that will be used for all machines in the cluster. <code>osImageStream</code> is a Technology Preview feature. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.</p>
+<p><strong>Value:</strong> String. Valid values are <code>rhel-9</code> or <code>rhel-10</code>.</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   aws:
     lbType:</code></pre></td>
 <td style="text-align: left;"><p>Required to set the NLB load balancer type in AWS. Valid values are <code>Classic</code> or <code>NLB</code>. If no value is specified, the installation program defaults to <code>Classic</code>. The installation program sets the value provided here in the ingress cluster configuration object. If you do not specify a load balancer type for other Ingress Controllers, they use the type set in this parameter.</p>
-<p><strong>Value:</strong> <code>Classic</code> or <code>NLB</code>. The default value is <code>Classic</code>.</p></td>
+<p>If you installed your cluster using the <code>DualStackIPv4Primary</code> or <code>DualStackIPv6Primary</code> values for the <code>platform.aws.ipFamily</code> parameter, any services that have IPv6 addresses must use the NLB load balancer type. The classic load balancer (CLB) does not support IPv6.</p>
+<p><strong>Value:</strong> <code>Classic</code> or <code>NLB</code>. If you do not set the <code>platform.aws.ipFamily</code> parameter or set it to <code>IPv4</code>, the default value is <code>Classic</code>. If you set the <code>platform.aws.ipFamily</code> parameter to <code>DualStackIPv4Primary</code> or <code>DualStackIPv6Primary</code>, the default value is <code>NLB</code>.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>publish:</code></pre></td>
 <td style="text-align: left;"><p>How to publish or expose the user-facing endpoints of your cluster, such as the Kubernetes API, OpenShift routes.</p>
 <p><strong>Value:</strong> <code>Internal</code> or <code>External</code>. To deploy a private cluster that cannot be accessed from the internet, set the <code>publish</code> parameter to <code>Internal</code>. The default value is <code>External</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>sshKey:</code></pre></td>
 <td style="text-align: left;"><p>The SSH key to authenticate access to your cluster machines.</p>
 <div class="note">
@@ -674,16 +721,34 @@ Optional AWS configuration parameters are described in the following table:
 <tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   aws:
+    ipFamily:</code></pre></td>
+<td style="text-align: left;"><p>The IP address family for networks used by the cluster. Specify <code>IPv4`</code> for IPv4-only networking, <code>DualStackIPv4Primary</code> for dual-stack networking with IPv4 as the primary address family, or <code>DualStackIPv6Primary</code> for dual-stack networking with IPv6 as the primary address family. When using dual-stack, the VPC and subnets must be configured with both IPv4 and IPv6 CIDR blocks.</p>
+<p>Consider the following requirements if you use dual-stack networking:</p>
+<ul>
+<li><p>All API and Ingress load balancers must be Network Load Balancers (NLB). Classic Load Balancers (CLB) do not support IPv6 addressing.</p></li>
+<li><p>All machines in a dual-stack cluster must be Nitro-based and support IPv6 addressing.</p></li>
+<li><p>If you are installing a cluster using existing subnets, all provided subnets must be configured with dual-stack address pools.</p></li>
+<li><p>If you are installing a cluster using Local Zones, you must provide dual-stack subnets. The installation program cannot automatically provision dual-stack subnets in Local Zones.</p></li>
+<li><p>Installing a cluster using dual-stack networking is not supported in Wavelength Zones.</p></li>
+</ul>
+<div class="important">
+<p>Dual-stack networking on AWS is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process. For more information about the support scope of Red Hat Technology Preview features, see <a href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.</p>
+</div>
+<p><strong>Value:</strong> "IPv4", "DualStackIPv4Primary", or "DualStackIPv6Primary". The default value is "IPv4".</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><pre><code>platform:
+  aws:
     vpc:
       subnets:</code></pre></td>
 <td style="text-align: left;"><p>A list of subnets in an existing VPC to be used in place of automatically created subnets. You specify a subnet by providing the subnet ID and an optional list of roles that apply to that subnet. If you specify subnet IDs but do not specify roles for any subnet, the subnets' roles are decided automatically. If you do not specify any roles, you must ensure that any other subnets in your VPC have the <code>kubernetes.io/cluster/.: .</code> or <code>kubernetes.io/cluster/unmanaged: true</code> tags.</p>
-<p>The subnets must be part of the same <code>machineNetwork[].cidr</code> ranges that you specify.</p>
+<p>The subnets must be part of the same <code>networking.machineNetwork[].cidr</code> ranges that you specify. If you provide dual-stack subnets using this parameter, you must specify IPv6 entries in the <code>networking.machineNetwork[].cidr</code> parameter.</p>
 <p>For a public cluster, specify a public and a private subnet for each availability zone.</p>
 <p>For a private cluster, specify a private subnet for each availability zone.</p>
 <p>For clusters that use AWS Local Zones, you must add AWS Local Zone subnets to this list to ensure edge machine pool creation.</p>
 <p><strong>Value:</strong> List of pairs of <code>id</code> and <code>roles</code> parameters.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   aws:
     vpc:
@@ -692,7 +757,7 @@ Optional AWS configuration parameters are described in the following table:
 <td style="text-align: left;"><p>The ID of an existing subnet to be used in place of a subnet created by the installation program.</p>
 <p><strong>Value:</strong> String. The subnet ID must be a unique ID containing only alphanumeric characters, beginning with "subnet-". The ID must be exactly 24 characters long.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   aws:
     vpc:

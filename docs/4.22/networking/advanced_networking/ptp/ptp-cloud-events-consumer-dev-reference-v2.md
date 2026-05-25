@@ -477,7 +477,7 @@ You can monitor PTP fast events metrics from cluster nodes where the `linuxptp-d
 
 6.  Paste the PTP metric name into the **Expression** field, and click **Run queries**.
 
-- [Accessing metrics as a developer](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/accessing_metrics/accessing-metrics-as-a-developer)
+- [Accessing metrics as a developer](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/accessing_metrics/accessing-metrics-as-a-developer)
 
 # PTP fast event metrics reference
 

@@ -12,14 +12,26 @@ For example, you can use the CLI to complete the following operations:
 
 # List of CLI tools
 
-Review the primary command-line interface (CLI) tools available for OpenShift Container Platform, including tools for cluster administration, application development, and Operator management.
+Manage your OpenShift Container Platform cluster, applications, and Operators from the terminal using these primary command-line interface (CLI) tools:
 
-Use the following tools to manage your cluster from the terminal:
+- OpenShift CLI (`oc`): This is the most commonly used CLI tool by OpenShift Container Platform users. Cluster administrators and developers can use it to perform end-to-end operations across OpenShift Container Platform from the terminal, including working directly with project source code using command scripts.
 
-- [OpenShift CLI (`oc`)](../cli_reference/openshift_cli/getting-started-cli.xml#cli-getting-started): This is the most commonly used CLI tool by OpenShift Container Platform users. It helps both cluster administrators and developers to perform end-to-end operations across OpenShift Container Platform using the terminal. Unlike the web console, it allows the user to work directly with the project source code using command scripts.
+- Helm CLI (`helm`): Helm is a package manager for Kubernetes. The `helm` CLI provides commands to install, upgrade, and manage Helm charts on a cluster.
 
-- [Knative CLI (kn)](../cli_reference/kn-cli-tools.xml#kn-cli-tools): The Knative (`kn`) CLI tool provides simple and intuitive terminal commands that can be used to interact with OpenShift Serverless components, such as Knative Serving and Eventing.
+- opm CLI: The `opm` CLI tool helps Operator developers and cluster administrators create and maintain catalogs of Operators.
 
-- [Pipelines CLI (tkn)](../cli_reference/tkn_cli/installing-tkn.xml#installing-tkn): OpenShift Pipelines is a continuous integration and continuous delivery (CI/CD) solution in OpenShift Container Platform, which internally uses Tekton. The `tkn` CLI tool provides simple and intuitive commands to interact with OpenShift Pipelines using the terminal.
+- Knative CLI: The Knative (`kn`) CLI tool provides commands to interact with OpenShift Serverless components, such as Knative Serving and Eventing.
 
-- [opm CLI](../cli_reference/opm/cli-opm-install.xml#cli-opm-install): The `opm` CLI tool helps the Operator developers and cluster administrators to create and maintain the catalogs of Operators from the terminal.
+- Pipelines CLI (tkn): OpenShift Pipelines is a continuous integration and delivery (CI/CD) solution in OpenShift Container Platform, which internally uses Tekton. The `tkn` CLI tool provides commands to interact with OpenShift Pipelines.
+
+## Additional resources
+
+- [OpenShift Container Platform CLI (`oc`)](../cli_reference/openshift_cli/getting-started-cli.xml#cli-getting-started)
+
+- [Helm CLI (`helm`)](../applications/working_with_helm_charts/installing-helm.xml#installing-helm)
+
+- [`opm` CLI](../cli_reference/opm/cli-opm-install.xml#cli-opm-install)
+
+- [Knative CLI (`kn`)](../cli_reference/kn-cli-tools.xml#kn-cli-tools)
+
+- [OpenShift Pipelines CLI (`tkn`)](../cli_reference/tkn_cli/installing-tkn.xml#installing-tkn)

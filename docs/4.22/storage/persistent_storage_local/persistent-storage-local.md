@@ -790,7 +790,7 @@ To use these metrics, enable them by doing one of the following:
   $ oc label ns/openshift-local-storage openshift.io/cluster-monitoring=true
   ```
 
-For more information about metrics, see [Accessing metrics as an administrator](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/accessing_metrics/accessing-metrics-as-an-administrator).
+For more information about metrics, see [Accessing metrics as an administrator](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/accessing_metrics/accessing-metrics-as-an-administrator).
 
 # Deleting the Local Storage Operator resources
 

@@ -482,13 +482,13 @@ To uninstall the DPU Operator, you must first delete any running DPU workloads. 
 
         ``` terminal
         NAME                                DISPLAY        VERSION               REPLACES   PHASE
-        dpu-operator.v4.21.0-202503130333   DPU Operator   4.21.0-202503130333              Failed
+        dpu-operator.v4.22.0-202503130333   DPU Operator   4.22.0-202503130333              Failed
         ```
 
     2.  Delete the DPU Operator by running the following command:
 
         ``` terminal
-        $ oc delete csv dpu-operator.v4.21.0-202503130333 -n openshift-dpu-operator
+        $ oc delete csv dpu-operator.v4.22.0-202503130333 -n openshift-dpu-operator
         ```
 
 5.  Delete the namespace that was created for the DPU Operator by running the following command:

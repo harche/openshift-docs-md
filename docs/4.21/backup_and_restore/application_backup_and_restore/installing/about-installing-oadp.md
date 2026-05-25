@@ -78,7 +78,7 @@ The following AWS S3 compatible object storage providers are fully supported by 
 
 - NetApp ONTAP S3 Object Storage
 
-- [Scality ARTESCA S3 object storage](https://downloads.scality.com/artesca-ova/doc/general_introduction.html#)
+- Scality ARTESCA S3 object storage
 
 <div class="note">
 
@@ -121,6 +121,10 @@ For more information on the MCG, see [Accessing the Multicloud Object Gateway wi
 The following AWS S3 compatible object storage providers are known to work with Velero through the AWS plugin with a limited feature set:
 
 - Swift - It works for use as a backup storage location for backup storage, but is not compatible with Restic for filesystem-based volume backup and restore.
+
+## Additional resources
+
+- [Scality ARTESCA S3 object storage (Scality documentation)](https://downloads.scality.com/artesca-ova/doc/general_introduction.html#)
 
 # Configuring Multicloud Object Gateway (MCG) for disaster recovery on OpenShift Data Foundation
 
@@ -276,7 +280,7 @@ The following recommendations are based on observations of performance made in t
 
 2.  Large usage - use these settings for large usage situations, such as a large PV (500GB Usage), multiple namespaces (100+), or many pods within a single namespace (2000 pods+), and for optimal performance for backup and restore involving large datasets.
 
-3.  Restic resource usage corresponds to the amount of data, and type of data. For example, many small files or large amounts of data can cause Restic to use large amounts of resources. The [Velero](https://velero.io/docs/v1.11/customize-installation/#customize-resource-requests-and-limits/) documentation references 500m as a supplied default, for most of our testing we found a 200m request suitable with 1000m limit. As cited in the Velero documentation, exact CPU and memory usage is dependent on the scale of files and directories, in addition to environmental limitations.
+3.  Restic resource usage corresponds to the amount of data, and type of data. For example, many small files or large amounts of data can cause Restic to use large amounts of resources. The Velero documentation references 500m as a supplied default, for most of our testing we found a 200m request suitable with 1000m limit. As cited in the Velero documentation, exact CPU and memory usage is dependent on the scale of files and directories, in addition to environmental limitations.
 
 4.  Increasing the CPU has a significant impact on improving backup and restore times.
 
@@ -287,6 +291,10 @@ The following recommendations are based on observations of performance made in t
 The resource requirements listed throughout the guide are for average usage only. For large usage, adjust the settings as described in the table above.
 
 </div>
+
+## Additional resources
+
+- [Customize Velero Install (Velero documentation)](https://velero.io/docs/v1.11/customize-installation/#customize-resource-requests-and-limits/)
 
 ## NodeAgent CPU for large usage
 
@@ -306,4 +314,6 @@ Testing showed that running Kopia with 20 cores and 32 Gi memory supported backu
 
 In some environments, you might need to adjust Ceph MDS pod resources to avoid pod restarts, which occur when default settings cause resource saturation.
 
-For more information about how to set the pod resources limit in Ceph MDS pods, see [Changing the CPU and memory resources on the rook-ceph pods](https://docs.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/4.15/html/troubleshooting_openshift_data_foundation/changing-resources-for-the-openshift-data-foundation-components_rhodf#changing_the_cpu_and_memory_resources_on_the_rook_ceph_pods).
+### Additional resources
+
+- [Changing the CPU and memory resources on the rook-ceph pods](https://docs.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/latest/html/troubleshooting_openshift_data_foundation/changing-resources-for-the-openshift-data-foundation-components_rhodf#changing_the_cpu_and_memory_resources_on_the_rook_ceph_pods)

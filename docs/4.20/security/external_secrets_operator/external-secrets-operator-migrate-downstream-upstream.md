@@ -92,7 +92,7 @@ Remove the community External Secrets Operator that was installed using Helm. Th
 
     <div class="note">
 
-    Using `helm delete` might delete all Custom Resource Definitions (CRDs) and CRs. It is recommended to installl the downstream Operator first if the namespace `external-secrets-operator` is empty.
+    Using `helm delete` might delete all Custom Resource Definitions (CRDs) and CRs. It is recommended to install the downstream Operator first if the namespace `external-secrets-operator` is empty.
 
     </div>
 

@@ -111,6 +111,8 @@ If you configure your cluster to use both IP address families, review the follow
     - fd00:172:16::/112
   ```
 
+  If you are installing your cluster on AWS, the order of address families must match the `platform.aws.ipFamily` parameter. For example, if you specified the `DualStackIPv6Primary` parameter, you must list the IPv6 address first.
+
 <table>
 <caption>Network parameters</caption>
 <colgroup>
@@ -166,13 +168,12 @@ If you configure your cluster to use both IP address families, review the follow
     hostPrefix:</code></pre></td>
 <td style="text-align: left;"><p>The subnet prefix length to assign to each individual node. For example, if <code>hostPrefix</code> is set to <code>23</code> then each node is assigned a <code>/23</code> subnet out of the given <code>cidr</code>. A <code>hostPrefix</code> value of <code>23</code> provides 510 (2^(32 - 23) - 2) pod IP addresses.</p>
 <p><strong>Value:</strong> A subnet prefix.</p>
-<p>For an IPv4 network the default value is <code>23</code>. For an IPv6 network the default value is <code>64</code>. The default value is also the minimum value for IPv6.</p></td>
+<p>For an IPv4 network the default value is <code>23</code>. For an IPv6 network <code>hostPrefix</code> must be set to <code>64</code>, which is the default value.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><pre><code>networking:
   serviceNetwork:</code></pre></td>
 <td style="text-align: left;"><p>The IP address block for services. The default value is <code>172.30.0.0/16</code>.</p>
-<p>The OVN-Kubernetes network plugins supports only a single IP address block for the service network.</p>
 <p>If you use the OVN-Kubernetes network plugin, you can specify an IP address block for both of the IPv4 and IPv6 address families.</p>
 <p><strong>Value:</strong> An array with an IP address block in CIDR format. For example:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">networking</span><span class="kw">:</span></span>
@@ -199,6 +200,12 @@ If you configure your cluster to use both IP address families, review the follow
 <p>For example, <code>10.0.0.0/16</code> or <code>fd00::/48</code>.</p>
 <div class="note">
 <p>Set the <code>networking.machineNetwork</code> to match the CIDR that the preferred NIC resides in.</p>
+<p>If you are installing a cluster on AWS with dual-stack networking, consider the following distinction:</p>
+<ul>
+<li><p>If the installation program creates the VPC, do not specify an IPv6 entry in <code>networking.machineNetwork</code>. The installation program will assign an IPv6 address to the VPC.</p></li>
+<li><p>If you provide existing dual-stack subnets using the <code>platform.aws.vpc.subnets</code> parameter, you must specify IPv6 entries corresponding to either the VPC CIDR or the CIDR of the subnets.</p></li>
+<li><p>In both cases, you must provide an IPv4 CIDR entry.</p></li>
+</ul>
 </div></td>
 </tr>
 <tr class="odd">
@@ -398,12 +405,17 @@ Optional installation configuration parameters are described in the following ta
 <p><strong>Value:</strong> Array of strings</p></td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;"><pre><code>osImageStream:</code></pre></td>
+<td style="text-align: left;"><p>Specifies the image stream that will be used for all machines in the cluster. <code>osImageStream</code> is a Technology Preview feature. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.</p>
+<p><strong>Value:</strong> String. Valid values are <code>rhel-9</code> or <code>rhel-10</code>.</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>publish:</code></pre></td>
 <td style="text-align: left;"><p>How to publish or expose the user-facing endpoints of your cluster, such as the Kubernetes API, OpenShift routes.</p>
 <p><strong>Value:</strong> <code>Internal</code> or <code>External</code>. The default value is <code>External</code>.</p>
 <p>Setting this field to <code>Internal</code> is not supported on non-cloud platforms.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>sshKey:</code></pre></td>
 <td style="text-align: left;"><p>The SSH key to authenticate access to your cluster machines.</p>
 <div class="note">

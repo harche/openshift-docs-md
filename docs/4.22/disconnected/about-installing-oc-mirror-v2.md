@@ -281,12 +281,12 @@ Before you can use the oc-mirror plugin v2 to mirror images, you must create an 
   mirror:
     platform:
       channels:
-      - name: stable-4.21
-        minVersion: 4.21.2
-        maxVersion: 4.21.2
+      - name: stable-4.22
+        minVersion: 4.22.0
+        maxVersion: 4.22.0
       graph: true
     operators:
-      - catalog: registry.redhat.io/redhat/redhat-operator-index:v4.21
+      - catalog: registry.redhat.io/redhat/redhat-operator-index:v4.22
         packages:
          - name: aws-load-balancer-operator
          - name: 3scale-operator
@@ -1733,7 +1733,7 @@ The following table lists the available parameters for the \`ImageSetConfigurati
 <td style="text-align: left;"><p>Array of objects. For example:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="at"> </span><span class="fu">mirror</span><span class="kw">:</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">operators</span><span class="kw">:</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">catalog</span><span class="kw">:</span><span class="at"> registry.redhat.io/redhat/redhat-operator-index:v4.21</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">catalog</span><span class="kw">:</span><span class="at"> registry.redhat.io/redhat/redhat-operator-index:v4.22</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">packages</span><span class="kw">:</span></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> rhods-operator</span></span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">defaultChannel</span><span class="kw">:</span><span class="at"> fast</span></span>

@@ -561,15 +561,15 @@ The following new features are available with *mirror registry for Red Hat Open
 
 ## Mirror registry for Red Hat OpenShift 1.3 release notes
 
-To view the *mirror registry for Red Hat OpenShift* 1.3 release notes, see [Mirror registry for Red Hat OpenShift 1.3 release notes](https://docs.openshift.com/container-platform/4.20/installing/disconnected_install/installing-mirroring-creating-registry.html#mirror-registry-release-notes-1-3_installing-mirroring-creating-registry).
+To view the *mirror registry for Red Hat OpenShift* 1.3 release notes, see [Mirror registry for Red Hat OpenShift 1.3 release notes](https://docs.redhat.com/en/documentation/openshift_container_platform/4.13/html/disconnected_installation_mirroring/installing-mirroring-creating-registry#mirror-registry-release-notes-1-3_installing-mirroring-creating-registry).
 
 ## Mirror registry for Red Hat OpenShift 1.2 release notes
 
-To view the *mirror registry for Red Hat OpenShift* 1.2 release notes, see [Mirror registry for Red Hat OpenShift 1.2 release notes](https://docs.openshift.com/container-platform/4.15/installing/disconnected_install/installing-mirroring-creating-registry.html#mirror-registry-release-notes-1-2_installing-mirroring-creating-registry).
+To view the *mirror registry for Red Hat OpenShift* 1.2 release notes, see [Mirror registry for Red Hat OpenShift 1.2 release notes](https://docs.openshift.com/container-platform/4.13/installing/disconnected_install/installing-mirroring-creating-registry.html#mirror-registry-release-notes-1-2_installing-mirroring-creating-registry).
 
 ## Mirror registry for Red Hat OpenShift 1.1 release notes
 
-To view the *mirror registry for Red Hat OpenShift* 1.1 release notes, see [Mirror registry for Red Hat OpenShift 1.1 release notes](https://docs.openshift.com/container-platform/4.15/installing/disconnected_install/installing-mirroring-creating-registry.html#mirror-registry-release-notes-1-1_installing-mirroring-creating-registry).
+To view the *mirror registry for Red Hat OpenShift* 1.1 release notes, see [Mirror registry for Red Hat OpenShift 1.1 release notes](https://docs.openshift.com/container-platform/4.13/installing/disconnected_install/installing-mirroring-creating-registry.html#mirror-registry-release-notes-1-1_installing-mirroring-creating-registry).
 
 # Troubleshooting mirror registry for Red Hat OpenShift
 

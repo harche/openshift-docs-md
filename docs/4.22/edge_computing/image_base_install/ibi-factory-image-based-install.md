@@ -37,124 +37,114 @@ For more information about the specification for the `image-based-installation-c
     1.  Create a working directory by running the following:
 
         ``` terminal
-        $ mkdir ibi-iso-workdir
+        $ mkdir <working_directory>
         ```
 
-        - Replace `ibi-iso-workdir` with the name of your working directory.
+        where `<working_directory>` is the name of your working directory, for example `ibi-iso-workdir`.
 
     2.  Optional. Create an installation configuration template to use as a reference when configuring the `ImageBasedInstallationConfig` resource:
 
         ``` terminal
-        $ openshift-install image-based create image-config-template --dir ibi-iso-workdir
+        $ openshift-install image-based create image-config-template --dir <working_directory>
         ```
 
-        - If you do not specify a working directory, the command uses the current directory.
+        where `<working_directory>` is the name of your working directory, for example `ibi-iso-workdir`. If you do not specify a working directory, the command uses the current directory.
 
-          <div class="formalpara-title">
+        Example output:
 
-          **Example output**
+<!-- -->
 
-          </div>
+    INFO Image-Config-Template created in: ibi-iso-workdir
 
-          ``` terminal
-          INFO Image-Config-Template created in: ibi-iso-workdir
-          ```
+\+ The command creates the `image-based-installation-config.yaml` installation configuration template in your target directory:
 
-          The command creates the `image-based-installation-config.yaml` installation configuration template in your target directory:
+\+
 
-          ``` yaml
-          #
-          # Note: This is a sample ImageBasedInstallationConfig file showing
-          # which fields are available to aid you in creating your
-          # own image-based-installation-config.yaml file.
-          #
-          apiVersion: v1beta1
-          kind: ImageBasedInstallationConfig
-          metadata:
-            name: example-image-based-installation-config
-          # The following fields are required
-          seedImage: quay.io/openshift-kni/seed-image:4.21.0
-          seedVersion: 4.21.0
-          installationDisk: /dev/vda
-          pullSecret: '<your_pull_secret>'
-          # networkConfig is optional and contains the network configuration for the host in NMState format.
-          # See https://nmstate.io/examples.html for examples.
-          # networkConfig:
-          #   interfaces:
-          #     - name: eth0
-          #       type: ethernet
-          #       state: up
-          #       mac-address: 00:00:00:00:00:00
-          #       ipv4:
-          #         enabled: true
-          #         address:
-          #           - ip: 192.168.122.2
-          #             prefix-length: 23
-          #         dhcp: false
-          ```
+``` yaml
+#
+# Note: This is a sample ImageBasedInstallationConfig file showing
+# which fields are available to aid you in creating your
+# own image-based-installation-config.yaml file.
+#
+apiVersion: v1beta1
+kind: ImageBasedInstallationConfig
+metadata:
+  name: example-image-based-installation-config
+# The following fields are required
+seedImage: quay.io/openshift-kni/seed-image:4.22.0
+seedVersion: 4.22.0
+installationDisk: /dev/vda
+pullSecret: '<your_pull_secret>'
+# networkConfig is optional and contains the network configuration for the host in NMState format.
+# See https://nmstate.io/examples.html for examples.
+# networkConfig:
+#   interfaces:
+#     - name: eth0
+#       type: ethernet
+#       state: up
+#       mac-address: 00:00:00:00:00:00
+#       ipv4:
+#         enabled: true
+#         address:
+#           - ip: 192.168.122.2
+#             prefix-length: 23
+#         dhcp: false
+```
 
-    3.  Edit your installation configuration file:
+1.  Edit your installation configuration file:
 
-        <div class="formalpara-title">
+    Example `image-based-installation-config.yaml` file:
 
-        **Example `image-based-installation-config.yaml` file**
+<!-- -->
 
-        </div>
+    apiVersion: v1beta1
+    kind: ImageBasedInstallationConfig
+    metadata:
+      name: example-image-based-installation-config
+    seedImage: quay.io/repo-id/seed:latest
+    seedVersion: "4.22.0"
+    extraPartitionStart: "-240G"
+    installationDisk: /dev/disk/by-id/wwn-0x62c...
+    sshKey: 'ssh-ed25519 AAAA...'
+    pullSecret: '{"auths": ...}'
+    networkConfig:
+        interfaces:
+          - name: ens1f0
+            type: ethernet
+            state: up
+            ipv4:
+              enabled: true
+              dhcp: false
+              auto-dns: false
+              address:
+                - ip: 192.168.200.25
+                  prefix-length: 24
+            ipv6:
+              enabled: false
+        dns-resolver:
+          config:
+            server:
+              - 192.168.15.47
+              - 192.168.15.48
+        routes:
+          config:
+          - destination: 0.0.0.0/0
+            metric: 150
+            next-hop-address: 192.168.200.254
+            next-hop-interface: ens1f0
 
-        ``` yaml
-        apiVersion: v1beta1
-        kind: ImageBasedInstallationConfig
-        metadata:
-          name: example-image-based-installation-config
-        seedImage: quay.io/repo-id/seed:latest
-        seedVersion: "4.21.0"
-        extraPartitionStart: "-240G"
-        installationDisk: /dev/disk/by-id/wwn-0x62c...
-        sshKey: 'ssh-ed25519 AAAA...'
-        pullSecret: '{"auths": ...}'
-        networkConfig:
-            interfaces:
-              - name: ens1f0
-                type: ethernet
-                state: up
-                ipv4:
-                  enabled: true
-                  dhcp: false
-                  auto-dns: false
-                  address:
-                    - ip: 192.168.200.25
-                      prefix-length: 24
-                ipv6:
-                  enabled: false
-            dns-resolver:
-              config:
-                server:
-                  - 192.168.15.47
-                  - 192.168.15.48
-            routes:
-              config:
-              - destination: 0.0.0.0/0
-                metric: 150
-                next-hop-address: 192.168.200.254
-                next-hop-interface: ens1f0
-        ```
+1.  Create the live installation ISO by running the following command:
 
-    4.  Create the live installation ISO by running the following command:
+    ``` terminal
+    $ openshift-install image-based create image --dir ibi-iso-workdir
+    ```
 
-        ``` terminal
-        $ openshift-install image-based create image --dir ibi-iso-workdir
-        ```
+    Example output:
 
-        <div class="formalpara-title">
+<!-- -->
 
-        **Example output**
-
-        </div>
-
-        ``` terminal
-        INFO Consuming Image-based Installation ISO Config from target directory
-        INFO Creating Image-based Installation ISO with embedded ignition
-        ```
+    INFO Consuming Image-based Installation ISO Config from target directory
+    INFO Creating Image-based Installation ISO with embedded ignition
 
 - View the output in the working directory:
 
@@ -181,26 +171,23 @@ The `/var/lib/containers` partition requires at least 500 GB to ensure adequate 
 
 1.  Edit the `image-based-installation-config.yaml` file to configure additional partitions:
 
-    <div class="formalpara-title">
+    Example `image-based-installation-config.yaml` file:
 
-    **Example `image-based-installation-config.yaml` file**
+<!-- -->
 
-    </div>
-
-    ``` yaml
     apiVersion: v1beta1
     kind: ImageBasedInstallationConfig
     metadata:
       name: example-extra-partition
     seedImage: quay.io/repo-id/seed:latest
-    seedVersion: "4.21.0"
+    seedVersion: "4.22.0"
     installationDisk: /dev/sda
     pullSecret: '{"auths": ...}'
     # ...
-    skipDiskCleanup: true
+    skipDiskCleanup: <skip_disk_cleanup>
     coreosInstallerArgs:
        - "--save-partindex"
-       - "6"
+       - "<partition_index>"
     ignitionConfigOverride: |
       {
         "ignition": {
@@ -209,36 +196,23 @@ The `/var/lib/containers` partition requires at least 500 GB to ensure adequate 
         "storage": {
           "disks": [
             {
-              "device": "/dev/sda",
+              "device": "<installation_disk>",
               "partitions": [
                 {
-                  "label": "storage",
-                  "number": 6,
-                  "sizeMiB": 380000,
-                  "startMiB": 500000
+                  "label": "<partition_label>",
+                  "number": <partition_number>,
+                  "sizeMiB": <partition_size>,
+                  "startMiB": <starting_position>
                 }
               ]
             }
           ]
         }
       }
-    ```
 
-    - Specify `true` to skip disk formatting during the installation process.
+\+ where:
 
-    - Specify this argument to preserve a partition.
-
-    - The live installation ISO requires five partitions. Specify a number greater than five to identify the additional partition to preserve.
-
-    - Specify the installation disk on the target host.
-
-    - Specify the label for the partition.
-
-    - Specify the number for the partition.
-
-    - Specify the size of parition in MiB.
-
-    - Specify the starting position on the disk in MiB for the additional partition. You must specify a starting point larger that the partition for `var/lib/containers`.
+\+ `<skip_disk_cleanup>`:: Specifies whether to skip disk formatting during the installation process. Set to `true` to skip. `"--save-partindex"`:: Specifies the argument to preserve a partition. `<partition_index>`:: Specifies the additional partition to preserve. The live installation ISO requires five partitions. Set a number greater than five, for example `6`. `<installation_disk>`:: Specifies the installation disk on the target host, for example `/dev/sda`. `<partition_label>`:: Specifies the label for the partition, for example `storage`. `<partition_number>`:: Specifies the number for the partition, for example `6`. `<partition_size>`:: Specifies the size of partition in MiB, for example `380000`. `<starting_position>`:: Specifies the starting position on the disk in MiB for the additional partition. You must specify a starting point larger than the partition for `/var/lib/containers`, for example `500000`.
 
 - When you complete the preinstallation of the host with the live installation ISO, login to the target host and run the following command to view the partitions:
 
@@ -246,25 +220,23 @@ The `/var/lib/containers` partition requires at least 500 GB to ensure adequate 
   $ lsblk
   ```
 
-  <div class="formalpara-title">
+  Example output:
 
-  **Example output**
+<!-- -->
 
-  </div>
-
-  ``` terminal
-  sda    8:0    0  140G  0 disk
-  ├─sda1 8:1    0    1M  0 part
-  ├─sda2 8:2    0  127M  0 part
-  ├─sda3 8:3    0  384M  0 part /var/mnt/boot
-  ├─sda4 8:4    0  120G  0 part /var/mnt
-  ├─sda5 8:5    0  500G  0 part /var/lib/containers
-  └─sda6 8:6    0  380G  0 part
-  ```
+    sda    8:0    0  140G  0 disk
+    ├─sda1 8:1    0    1M  0 part
+    ├─sda2 8:2    0  127M  0 part
+    ├─sda3 8:3    0  384M  0 part /var/mnt/boot
+    ├─sda4 8:4    0  120G  0 part /var/mnt
+    ├─sda5 8:5    0  500G  0 part /var/lib/containers
+    └─sda6 8:6    0  380G  0 part
 
 # Provisioning the live installation ISO to a host
 
-Using your preferred method, boot the target bare-metal host from the `rhcos-ibi.iso` live installation ISO to preinstall single-node OpenShift.
+You can provision a live installation ISO to a bare-metal host to preinstall single-node OpenShift.
+
+- Using your preferred method, boot the target bare-metal host from the `rhcos-ibi.iso` live installation ISO to preinstall single-node OpenShift.
 
 1.  Login to the target host.
 
@@ -274,13 +246,10 @@ Using your preferred method, boot the target bare-metal host from the `rhcos-ibi
     $ journalctl -b
     ```
 
-    <div class="formalpara-title">
+    Example output:
 
-    **Example output**
+<!-- -->
 
-    </div>
-
-    ``` terminal
     Aug 13 17:01:44 10.46.26.129 install-rhcos-and-restore-seed.sh[2876]: time="2024-08-13T17:01:44Z" level=info msg="All the precaching threads have finished."
     Aug 13 17:01:44 10.46.26.129 install-rhcos-and-restore-seed.sh[2876]: time="2024-08-13T17:01:44Z" level=info msg="Total Images: 125"
     Aug 13 17:01:44 10.46.26.129 install-rhcos-and-restore-seed.sh[2876]: time="2024-08-13T17:01:44Z" level=info msg="Images Pulled Successfully: 125"
@@ -293,7 +262,6 @@ Using your preferred method, boot the target bare-metal host from the `rhcos-ibi
     Aug 13 17:01:44 10.46.26.129 systemd[1]: Finished SNO Image-based Installation.
     Aug 13 17:01:44 10.46.26.129 systemd[1]: Reached target Multi-User System.
     Aug 13 17:01:44 10.46.26.129 systemd[1]: Reached target Graphical Interface.
-    ```
 
 # Reference specifications for the image-based-installation-config.yaml manifest
 

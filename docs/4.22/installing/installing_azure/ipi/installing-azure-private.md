@@ -313,13 +313,13 @@ If an instance type for your platform meets the minimum requirements for cluster
 
 The following Microsoft Azure instance types have been tested with OpenShift Container Platform.
 
-<https://raw.githubusercontent.com/openshift/installer/release-4.21/docs/user/azure/tested_instance_types_x86_64.md>
+<https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/azure/tested_instance_types_x86_64.md>
 
 ## Tested instance types for Azure on 64-bit ARM infrastructures
 
 The following Microsoft Azure ARM64 instance types have been tested with OpenShift Container Platform.
 
-<https://raw.githubusercontent.com/openshift/installer/release-4.21/docs/user/azure/tested_instance_types_aarch64.md>
+<https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/azure/tested_instance_types_aarch64.md>
 
 ## Enabling trusted launch for Azure VMs
 

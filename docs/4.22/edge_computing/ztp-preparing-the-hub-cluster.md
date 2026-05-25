@@ -126,7 +126,7 @@ Use Red Hat Advanced Cluster Management (RHACM), Red Hat OpenShift GitOps, and
 
 <!-- -->
 
-- Install RHACM in the hub cluster. See [Installing RHACM in a disconnected environment](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/install/installing#install-on-disconnected-networks).
+- Install RHACM in the hub cluster. See [Installing RHACM in a disconnected environment](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html/install/installing#install-on-disconnected-networks).
 
 - Install GitOps and TALM in the hub cluster.
 
@@ -255,7 +255,7 @@ Red Hat Advanced Cluster Management (RHACM) uses the assisted service to deploy
 
 You can configure the hub cluster to use a disconnected mirror registry for a disconnected environment.
 
-- You have a disconnected hub cluster installation with Red Hat Advanced Cluster Management (RHACM) 2.15 installed.
+- You have a disconnected hub cluster installation with Red Hat Advanced Cluster Management (RHACM) 2.17 installed.
 
 - You have hosted the `rootfs` and `iso` images on an HTTP server. See the *Additional resources* section for guidance about *Mirroring the OpenShift Container Platform image repository*.
 
@@ -659,7 +659,7 @@ example/
 
 Using `PolicyGenTemplate` CRs to manage and deploy policies to managed clusters will be deprecated in an upcoming OpenShift Container Platform release. Equivalent and improved functionality is available using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
 
-For more information about `PolicyGenerator` resources, see the RHACM [Integrating Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/governance/index#integrate-policy-generator) documentation.
+For more information about `PolicyGenerator` resources, see the RHACM [Integrating Policy Generator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/governance/index#integrate-policy-generator) documentation.
 
 </div>
 
