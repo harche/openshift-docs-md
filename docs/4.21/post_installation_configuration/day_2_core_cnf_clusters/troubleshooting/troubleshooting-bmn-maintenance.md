@@ -42,15 +42,7 @@ Use SSH only if you cannot connect to the node with the `oc debug` command.
     # chroot /host
     ```
 
-    <div class="formalpara-title">
-
-    **Output**
-
-    </div>
-
-    ``` terminal
-    You are now logged in as root on the node
-    ```
+    You are now logged in as root on the node.
 
 4.  Optional: Use SSH to connect to the node by running the following command:
 
@@ -68,13 +60,15 @@ For scheduled hardware maintenance, you need to consider how to move your applic
   $ oc adm cordon <node_name>
   ```
 
-When the node is unschedulable, no pods can be scheduled on the node. For more information, see "Working with nodes".
+  When the node is unschedulable, no pods can be scheduled on the node. For more information, see "Working with nodes".
 
-<div class="note">
+  <div class="note">
 
-When moving CNF applications, you might need to verify ahead of time that there are enough additional worker nodes in the cluster due to anti-affinity and pod disruption budget.
+  When moving CNF applications, you might need to verify ahead of time that there are enough additional worker nodes in the cluster due to anti-affinity and pod disruption budget.
 
-</div>
+  </div>
+
+<!-- -->
 
 - [Working with nodes](../../../nodes/nodes/nodes-nodes-working.xml#nodes-nodes-working_nodes-nodes-working)
 

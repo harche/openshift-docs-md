@@ -1,6 +1,6 @@
 In OpenShift Virtualization, compute resources assigned to virtual machines (VMs) are backed by either guaranteed CPUs or time-sliced CPU shares.
 
-Guaranteed CPUs, also known as CPU reservation, dedicate CPU cores or threads to a specific workload, which makes them unavailable to any other workload. Assigning guaranteed CPUs to a VM ensures that the VM will have sole access to a reserved physical CPU. [Enable dedicated resources for VMs](../../../virt/managing_vms/advanced_vm_management/virt-dedicated-resources-vm.xml#virt-dedicated-resources-vm) to use a guaranteed CPU.
+Guaranteed CPUs, also known as CPU reservation, dedicate CPU cores or threads to a specific workload, which makes them unavailable to any other workload. Assigning guaranteed CPUs to a VM ensures that the VM will have sole access to a reserved physical CPU. Enable dedicated resources for VMs to use a guaranteed CPU.
 
 Time-sliced CPUs dedicate a slice of time on a shared physical CPU to each workload. You can specify the size of the slice during VM creation, or when the VM is offline. By default, each vCPU receives 100 milliseconds, or 1/10 of a second, of physical CPU time.
 
@@ -41,5 +41,7 @@ To change the default number of vCPUs mapped to each physical CPU, set the `vmiC
     When `vmiCPUAllocationRatio` is set to `1`, the maximum amount of vCPUs are requested for the pod.
 
 # Additional resources
+
+- [Enabling dedicated resources for virtual machines](../../../virt/managing_vms/advanced_vm_management/virt-dedicated-resources-vm.xml#virt-dedicated-resources-vm)
 
 - [Pod Quality of Service Classes](https://kubernetes.io/docs/concepts/workloads/pods/pod-qos/)

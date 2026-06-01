@@ -16,7 +16,7 @@ The **Getting started** tour introduces several key aspects of using OpenShift V
 
 - If you see the **Welcome to OpenShift Virtualization** dialog, click **Start Tour**.
 
-- Otherwise, go to **Virtualization** → **Overview** → **Settings** → **User** → **Getting started resources** → **Guided tour**.
+- Otherwise, go to **Virtualization** → **Settings** → **User** → **Getting started resources** → **Guided tour**.
 
 # Quick start tours
 

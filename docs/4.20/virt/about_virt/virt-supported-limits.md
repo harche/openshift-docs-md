@@ -1,6 +1,6 @@
 You can refer to tested object maximums when planning your OpenShift Container Platform environment for OpenShift Virtualization. However, approaching the maximum values can reduce performance and increase latency. Ensure that you plan for your specific use case and consider all factors that can impact cluster scaling.
 
-For more information about cluster configuration and options that impact performance, see the [OpenShift Virtualization - Tuning & Scaling Guide](https://access.redhat.com/articles/6994974) in the Red Hat Knowledgebase.
+For more information about cluster configuration and options that impact performance, see the "OpenShift Virtualization - Tuning & Scaling Guide" in the Red Hat Knowledgebase.
 
 # Tested maximums for OpenShift Virtualization
 

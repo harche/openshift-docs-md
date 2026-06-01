@@ -171,6 +171,7 @@
   - [Preparing installation assets for iSCSI booting](installing/installing_with_agent_based_installer/installing-using-iscsi.md)
   - [Preparing an Agent-based installed cluster for the multicluster engine for Kubernetes](installing/installing_with_agent_based_installer/preparing-an-agent-based-installed-cluster-for-mce.md)
   - [Installation configuration parameters for the Agent-based Installer](installing/installing_with_agent_based_installer/installation-config-parameters-agent.md)
+  - [Postinstallation tasks](installing/installing_with_agent_based_installer/agent-based-installer-postinstallation.md)
 - **Installing on a single node**
   - [Preparing to install OpenShift on a single node](installing/installing_sno/install-sno-preparing-to-install-sno.md)
   - [Installing OpenShift on a single node](installing/installing_sno/install-sno-installing-sno.md)
@@ -654,6 +655,8 @@
     - [Uninstalling the SR-IOV Operator](networking/networking_operators/sr-iov-operator/uninstalling-sriov-operator.md)
   - **DPU Operator**
     - [DPU Operator](networking/networking_operators/dpu-operator/dpu-operator.md)
+- **Network Observability Operator**
+  - [Network Observability Operator](networking/network_observability_operator/network-observability-operator.md)
 - **Network security**
   - [Understanding network policy APIs](networking/network_security/network-policy-apis.md)
   - **Admin network policy**

@@ -1,8 +1,10 @@
-This section explains `nodes` and `networks` peers. Administrators can use the examples in this section to design `AdminNetworkPolicy` and `BaselineAdminNetworkPolicy` to control northbound traffic in their cluster.
+To control northbound egress from pods to cluster nodes, the API, or external CIDR ranges in OpenShift Container Platform, you can use `nodes` and `networks` peers in `AdminNetworkPolicy` and `BaselineAdminNetworkPolicy` egress rules.
 
 # Northbound traffic controls for AdminNetworkPolicy and BaselineAdminNetworkPolicy
 
-In addition to supporting east-west traffic controls, ANP and BANP also allow administrators to control their northbound traffic leaving the cluster or traffic leaving the node to other nodes in the cluster. End-users can do the following:
+You can use `AdminNetworkPolicy` and `BaselineAdminNetworkPolicy` resources in OpenShift Container Platform to control your northbound traffic leaving the cluster or traffic leaving the node to other nodes in the cluster.
+
+`AdminNetworkPolicy and BaselineAdminNetworkPolicy` resources support the following egress traffic control scenarios in OpenShift Container Platform:
 
 - Implement egress traffic control towards cluster nodes using `nodes` egress peer
 
@@ -21,6 +23,12 @@ For ANP and BANP, `nodes` and `networks` peers can be specified for egress rules
 Using the `nodes` peer administrators can control egress traffic from pods to nodes in the cluster. A benefit of this is that you do not have to change the policy when nodes are added to or deleted from the cluster.
 
 The following example allows egress traffic to the Kubernetes API server on port `6443` by any of the namespaces with a `restricted`, `confidential`, or `internal` level of security using the node selector peer. It also denies traffic to all worker nodes in your cluster from any of the namespaces with a `restricted`, `confidential`, or `internal` level of security.
+
+<div class="formalpara-title">
+
+**Example of ANP `Allow` egress using `nodes` peer**
+
+</div>
 
 ``` yaml
 apiVersion: policy.networking.k8s.io/v1alpha1
@@ -63,13 +71,16 @@ spec:
         - internal
 ```
 
-- Specifies a node or set of nodes in the cluster using the `matchExpressions` field.
+where:
 
-- Specifies all the pods labeled with `dept: engr`.
+`spec.egress.to.nodes.matchExpressions`
+Specifies a node or set of nodes in the cluster using the `matchExpressions` field.
 
-- Specifies the subject of the ANP which includes any namespaces that match the labels used by the network policy. The example matches any of the namespaces with `restricted`, `confidential`, or `internal` level of `security`.
+`spec.egress.to.pods.namespaceSelector.matchLabels`
+Specifies all the pods labeled with `dept: engr`.
 
-- Specifies key/value pairs for `matchExpressions` field.
+`spec.subject.namespaces.matchExpressions`
+Specifies the subject of the ANP which includes any namespaces that match the labels used by the network policy. The example matches any of the namespaces with the `restricted`, `confidential`, or `internal` level of `security`.
 
 ## Using networks peer to control egress traffic towards external destinations
 
@@ -82,6 +93,12 @@ The following example uses `networks` peer and combines ANP and BANP policies to
 Use the empty selector ({}) in the `namespace` field for ANP and BANP with caution. When using an empty selector, it also selects OpenShift namespaces.
 
 If you use values of `0.0.0.0/0` in a ANP or BANP `Deny` rule, you must set a higher priority ANP `Allow` rule to necessary destinations before setting the `Deny` to `0.0.0.0/0`.
+
+</div>
+
+<div class="formalpara-title">
+
+**Example of ANP and BANP using `networks` peers**
 
 </div>
 
@@ -138,11 +155,13 @@ spec:
 ---
 ```
 
-- Use `networks` to specify a range of CIDR networks outside of the cluster.
+where:
 
-- Specifies the CIDR ranges for the intra-cluster traffic from your resources.
+- The `spec.egress.to.networks` field for the egress rule with the name `deny-egress-to-external-dns-servers` specifies a range of CIDR networks outside of the cluster.
 
-- Specifies a `Deny` egress to everything by setting `networks` values to `0.0.0.0/0`. Make sure you have a higher priority `Allow` rule to necessary destinations before setting a `Deny` to `0.0.0.0/0` because this will deny all traffic including to Kubernetes API and DNS servers.
+- The `spec.egress.to.networks` field for the egress rule with the name `allow-all-egress-to-intranet` specifies the CIDR ranges for the intra-cluster traffic from your resources.
+
+- The `spec.egress.to.networks` field for the egress rule in the BANP with the name `deny-all-egress-to-internet` specifies a `Deny` egress to everything by setting `networks` values to `0.0.0.0/0`. Make sure you have a higher priority `Allow` rule to necessary destinations before setting a `Deny` to `0.0.0.0/0` because this will deny all traffic including to Kubernetes API and DNS servers.
 
 Collectively the `network-as-egress-peer` ANP and `default` BANP using `networks` peers enforces the following egress policy:
 
@@ -157,6 +176,12 @@ Collectively the `network-as-egress-peer` ANP and `default` BANP using `networks
 ## Using nodes peer and networks peer together
 
 Cluster administrators can combine `nodes` and `networks` peer in your ANP and BANP policies.
+
+<div class="formalpara-title">
+
+**Example of `nodes` and `networks` peer**
+
+</div>
 
 ``` yaml
 apiVersion: policy.networking.k8s.io/v1alpha1
@@ -213,10 +238,16 @@ spec:
         apps: all-apps
 ```
 
-- Specifies the name of the policy.
+where:
 
-- For `nodes` and `networks` peers, you can only use northbound traffic controls in ANP as `egress`.
+`metadata.name`
+Specifies the name of the policy.
 
-- Specifies the priority of the ANP, determining the order in which they should be evaluated. Lower priority rules have higher precedence. ANP accepts values of 0-99 with 0 being the highest priority and 99 being the lowest.
+`spec.egress`
+For `nodes` and `networks` peers, you can only use northbound traffic controls in ANP as `egress`.
 
-- Specifies the set of pods in the cluster on which the rules of the policy are to be applied. In the example, any pods with the `apps: all-apps` label across all namespaces are the `subject` of the policy.
+`spec.priority`
+Specifies the priority of the ANP, determining the order in which they should be evaluated. Lower priority rules have higher precedence. ANP accepts values of 0-99 with 0 being the highest priority and 99 being the lowest.
+
+`spec.subject.namespaces.matchLabels`
+Specifies the set of pods in the cluster on which the rules of the policy are to be applied. In the example, any pods with the `apps: all-apps` label across all namespaces are the `subject` of the policy.

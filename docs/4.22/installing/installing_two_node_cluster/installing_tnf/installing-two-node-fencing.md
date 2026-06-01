@@ -19,7 +19,7 @@ The two-node OpenShift cluster with fencing requires the following hosts:
 
 Minimum required hosts
 
-The bootstrap and control plane machines must use Red Hat Enterprise Linux CoreOS (RHCOS) as the operating system. For instructions on installing RHCOS and starting the bootstrap process, see [Installing RHCOS and starting the OpenShift Container Platform bootstrap process](../../../installing/installing_bare_metal/upi/installing-bare-metal-network-customizations.xml#creating-machines-bare-metal_installing-bare-metal-network-customizations)
+The bootstrap and control plane machines must use Red Hat Enterprise Linux CoreOS (RHCOS) as the operating system. For instructions on installing RHCOS and starting the bootstrap process, see "Installing RHCOS and starting the OpenShift Container Platform bootstrap process".
 
 <div class="note">
 
@@ -381,6 +381,8 @@ You must create a manifest object to modify the cluster’s network configuratio
 For instructions on creating this manifest, "Creating a manifest file for a customized br-ex bridge".
 
 # Additional resources
+
+- [Installing RHCOS and starting the OpenShift Container Platform bootstrap process](../../../installing/installing_bare_metal/upi/installing-bare-metal-network-customizations.xml#creating-machines-bare-metal_installing-bare-metal-network-customizations)
 
 - [Creating a manifest file for a customized br-ex bridge](../../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#creating-manifest-file-customized-br-ex-bridge_ipi-install-installation-workflow)
 

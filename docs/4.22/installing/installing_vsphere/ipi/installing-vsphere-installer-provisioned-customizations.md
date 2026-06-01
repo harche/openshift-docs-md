@@ -93,14 +93,6 @@ The following table outlines an example of the relationship among regions, zones
 
 # VMware vSphere host group enablement
 
-<div class="important">
-
-OpenShift zones support for vSphere host groups is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
 When deploying an OpenShift Container Platform cluster to VMware vSphere, you can map your vSphere host groups onto OpenShift Container Platform failure domains. This is useful if you are using a stretched cluster configuration, where ESXi hosts are grouped into host groups by physical location.
 
 To enable this feature, you must meet the following requirements:
@@ -114,20 +106,6 @@ To enable this feature, you must meet the following requirements:
 - You must define multiple failure domains for your OpenShift Container Platform cluster in the `install-config.yaml` file.
 
 - You must grant the `Host.Inventory.EditCluster` privilege on the vSphere vCenter cluster object.
-
-- You must include the following parameters in your `install-config.yaml` file to enable this Technology Preview feature:
-
-  ``` yaml
-  featureSet: TechPreviewNoUpgrade
-  featureGate:
-    - "VSphereHostVMGroupZonal=true"
-  ```
-
-  <div class="note">
-
-  For further information on feature gates, see "Enabling features using feature gates".
-
-  </div>
 
 Review the following key terms, which correspond to parameters in your `install-config.yaml` file that you must configure to enable this feature:
 
@@ -147,11 +125,9 @@ Review the following key terms, which correspond to parameters in your `install-
 
 - [Deprecated VMware vSphere configuration parameters](../../../installing/installing_vsphere/installation-config-parameters-vsphere.xml#deprecated-parameters-vsphere_installation-config-parameters-vsphere)
 
-- [vSphereautomatic migration](../../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration-sc-vsphere_persistent-storage-csi-migration)
+- [vSphere automatic migration](../../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration-sc-vsphere_persistent-storage-csi-migration)
 
 - [VMware vSphere CSI Driver Operator](../../../storage/container_storage_interface/persistent-storage-csi-vsphere.xml#persistent-storage-csi-vsphere-top-aware_persistent-storage-csi-vsphere)
-
-- [Enabling features using feature gates](../../../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)
 
 # Creating the installation configuration file
 
@@ -567,14 +543,6 @@ The default `install-config.yaml` file configuration from the previous release o
 
 ## Configuring host groups for a VMware vCenter
 
-<div class="important">
-
-OpenShift zones support for vSphere host groups is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
 You can modify the default installation configuration file to deploy an OpenShift Container Platform cluster on a VMware vSphere stretched cluster, where ESXi hosts are grouped into host groups by physical location.
 
 The default `install-config.yaml` file configuration from previous releases of OpenShift Container Platform is deprecated. Though you can still use it, the OpenShift Container Platform installer will display a warning message that indicates the use of deprecated fields in the configuration file.
@@ -586,8 +554,6 @@ The default `install-config.yaml` file configuration from previous releases of O
 - You have granted the `Host.Inventory.EditCluster` privilege on the vSphere vCenter cluster object.
 
 - You have downloaded and installed the `govc` command line tool. Instructions can be found on the VMware documentation website. Note that `govc` is an open-source tool that is not maintained by the Red Hat support team.
-
-- You have enabled the `TechPreviewNoUpgrade` feature set. For more information, see "Enabling features using feature gates".
 
   <div class="important">
 
@@ -644,10 +610,6 @@ The default `install-config.yaml` file configuration from previous releases of O
     </div>
 
     ``` yaml
-    featureSet: TechPreviewNoUpgrade
-    featureGate:
-      - "VSphereHostVMGroupZonal=true"
-    # ...
     platform:
       vsphere:
         vcenters:
@@ -686,8 +648,6 @@ The default `install-config.yaml` file configuration from previous releases of O
             resourcePool: "/<data_center_1>/host/<cluster_1>/Resources/<resourcePool_1>"
             folder: "/<data_center_1>/vm/<folder_1>"
     ```
-
-- [Enabling features using feature gates](../../../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)
 
 ## Configuring multiple NICs
 
@@ -1114,7 +1074,7 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <tr class="even">
 <td style="text-align: left;"><p><code>gatewayConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>Optional: Specify a configuration object for customizing how egress traffic is sent to the node gateway. Valid values are <code>Shared</code> and <code>Local</code>. The default value is <code>Shared</code>. In the default setting, the Open vSwitch (OVS) outputs traffic directly to the node IP interface. In the <code>Local</code> setting, it traverses the host network; consequently, it gets applied to the routing table of the host.</p>
+<td style="text-align: left;"><p>Optional: Specify a configuration object for customizing how egress traffic is sent to the node gateway. Valid values are <code>Shared</code> and <code>Local</code>. The default value is <code>Shared</code>. In the default setting, the Open vSwitch (OVS) outputs traffic directly to the node IP interface. If you are using hardware offloading, Red Hat recommends to use the default <code>Shared</code> gateway mode to bypass the host routing plane. In the <code>Local</code> setting, it traverses the host network; consequently, it gets applied to the routing table of the host.</p>
 <div class="note">
 <p>While migrating egress traffic, you can expect some disruption to workloads and service traffic until the Cluster Network Operator (CNO) successfully rolls out the changes.</p>
 </div></td>

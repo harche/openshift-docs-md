@@ -2,7 +2,7 @@ To run Windows 11 or other workloads that require a Trusted Platform Module, you
 
 <div class="important">
 
-With OpenShift Virtualization 4.18 and newer, you can [export virtual machines](../../virt/managing_vms/virt-exporting-vms.xml#virt-exporting-vms) (VMs) with attached vTPM devices, [create snapshots of these VMs](../../virt/backup_restore/virt-backup-restore-snapshots.xml#virt-creating-vm-snapshot-cli_virt-backup-restore-snapshots), and [restore VMs from these snapshots](../../virt/backup_restore/virt-backup-restore-snapshots.xml#virt-restoring-vm-from-snapshot-cli_virt-backup-restore-snapshots). However, cloning a VM with a vTPM device attached to it or creating a new VM from its snapshot is not supported.
+With OpenShift Virtualization 4.18 and newer, you can export virtual machines (VMs) with attached vTPM devices, create snapshots of these VMs, and restore VMs from these snapshots. However, cloning a VM with a vTPM device attached to it or creating a new VM from its snapshot is not supported.
 
 </div>
 
@@ -88,3 +88,11 @@ When you add a virtual Trusted Platform Module (vTPM) device to a Windows VM, it
 3.  To apply your changes, save and exit the editor.
 
 4.  Optional: If you edited a running virtual machine, you must restart it for the changes to take effect.
+
+# Additional resources
+
+- [Exporting virtual machines](../../virt/managing_vms/virt-exporting-vms.xml#virt-exporting-vms)
+
+- [Creating a snapshot by using the CLI](../../virt/backup_restore/virt-backup-restore-snapshots.xml#virt-creating-vm-snapshot-cli_virt-backup-restore-snapshots)
+
+- [Restoring a virtual machine from a snapshot by using the CLI](../../virt/backup_restore/virt-backup-restore-snapshots.xml#virt-restoring-vm-from-snapshot-cli_virt-backup-restore-snapshots)

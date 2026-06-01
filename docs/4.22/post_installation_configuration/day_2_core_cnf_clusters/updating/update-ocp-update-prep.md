@@ -1,5 +1,13 @@
 On bare-metal hardware, you often must update the firmware to take on important security fixes, take on new functionality, or maintain compatibility with the new release of OpenShift Container Platform.
 
+# Disconnected environment considerations
+
+To update clusters in disconnected environments, you must update your offline image repository.
+
+- [API compatibility guidelines](../../../rest_api/overview/understanding-compatibility-guidelines.xml#api-compatibility-guidelines_compatibility-guidelines)
+
+- [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../../../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
+
 # Ensuring the host firmware is compatible with the update
 
 You are responsible for the firmware versions that you run in your clusters. Updating host firmware is not a part of the OpenShift Container Platform update process. It is not recommended to update firmware in conjunction with the OpenShift Container Platform version.
@@ -13,6 +21,12 @@ You should thoroughly test new firmware updates to ensure that they work as expe
 </div>
 
 # Ensuring that layered products are compatible with the update
+
+<div class="formalpara-title">
+
+**Procedure**
+
+</div>
 
 Verify that all layered products run on the version of OpenShift Container Platform that you are updating to before you begin the update. This generally includes all Operators.
 
@@ -66,11 +80,11 @@ Prepare `MachineConfigPool` (MCP) node labels to group nodes together in groups 
 
 You use the MCP node labels to pause and unpause the set of nodes during the update process so that you can do the update and reboot at a time of your choosing.
 
-## Staggering the cluster update
+**Staggering the cluster update**
 
 Sometimes there are problems during the update. Often the problem is related to hardware failure or nodes needing to be reset. Using MCP node labels, you can update nodes in stages by pausing the update at critical moments, tracking paused and unpaused nodes as you proceed. When a problem occurs, you use the nodes that are in an unpaused state to ensure that there are enough nodes running to keep all applications pods running.
 
-## Dividing worker nodes into MachineConfigPool groups
+**Dividing worker nodes into MachineConfigPool groups**
 
 How you divide worker nodes into MCPs can vary depending on how many nodes are in the cluster or how many nodes you assign to a node role. By default, the two roles in a cluster are control plane and worker roles.
 
@@ -302,14 +316,6 @@ The nodes do not reboot while being added into the `mcp` groups. The original wo
 - [Ensuring that CNF workloads run uninterrupted with pod disruption budgets](../../../post_installation_configuration/day_2_core_cnf_clusters/updating/update-cnf-update-prep.xml#update-pdb_update-cnf-update-prep)
 
 - [Ensuring that pods do not run on the same cluster node](../../../post_installation_configuration/day_2_core_cnf_clusters/updating/update-cnf-update-prep.xml#update-pod-anti-affinity_update-cnf-update-prep)
-
-# Disconnected environment considerations
-
-To update clusters in disconnected environments, you must update your offline image repository.
-
-- [API compatibility guidelines](../../../rest_api/overview/understanding-compatibility-guidelines.xml#api-compatibility-guidelines_compatibility-guidelines)
-
-- [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../../../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
 
 # Preparing the cluster platform for update
 

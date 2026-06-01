@@ -49,19 +49,13 @@ These labels are not applied to nodes that do not support KSM.
 
 You can allow OpenShift Virtualization to activate kernel samepage merging (KSM) on all nodes in your cluster by using the OpenShift Container Platform web console.
 
-1.  From the side menu, click **Virtualization** → **Overview**.
+1.  From the side menu, click **Virtualization** → **Settings**.
 
-2.  Select the **Settings** tab.
+2.  Select the **Cluster** tab.
 
-3.  Select the **Cluster** tab.
+3.  Expand **Resource management**.
 
-4.  Expand **Resource management**.
-
-5.  Enable or disable the feature for all nodes:
-
-    - Set **Kernel Samepage Merging (KSM)** to on.
-
-    - Set **Kernel Samepage Merging (KSM)** to off.
+4.  Enable or disable the feature for all nodes using the **Kernel Samepage Merging (KSM)** toggle button.
 
 # Configuring KSM activation by using the CLI
 

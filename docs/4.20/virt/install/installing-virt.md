@@ -96,7 +96,7 @@ To subscribe, configure `Namespace`, `OperatorGroup`, and `Subscription` objects
       source: redhat-operators
       sourceNamespace: openshift-marketplace
       name: kubevirt-hyperconverged
-      startingCSV: kubevirt-hyperconverged-operator.v4.20.14
+      startingCSV: kubevirt-hyperconverged-operator.v4.20.15
       channel: "stable"
     ```
 
@@ -128,7 +128,7 @@ You must verify that the subscription creation was successful before you can pro
 
     ``` terminal
     NAME                                       DISPLAY                    VERSION   REPLACES                                   PHASE
-    kubevirt-hyperconverged-operator.v4.20.14   OpenShift Virtualization   4.20.14    kubevirt-hyperconverged-operator.v4.19.0   Succeeded
+    kubevirt-hyperconverged-operator.v4.20.15   OpenShift Virtualization   4.20.15    kubevirt-hyperconverged-operator.v4.19.0   Succeeded
     ```
 
 2.  Check that the `HyperConverged` custom resource (CR) has the correct version. Run the following command and verify the output:
@@ -142,7 +142,7 @@ You must verify that the subscription creation was successful before you can pro
     ``` terminal
     {
     "name": "operator",
-    "version": "4.20.14"
+    "version": "4.20.15"
     }
     ```
 
@@ -214,7 +214,7 @@ You can deploy the OpenShift Virtualization Operator by using the `oc` CLI.
 
   ``` terminal
   NAME                                      DISPLAY                    VERSION   REPLACES   PHASE
-  kubevirt-hyperconverged-operator.v4.20.14   OpenShift Virtualization   4.20.14                Succeeded
+  kubevirt-hyperconverged-operator.v4.20.15   OpenShift Virtualization   4.20.15                Succeeded
   ```
 
 # Additional resources

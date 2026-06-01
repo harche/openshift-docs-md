@@ -35,7 +35,7 @@ You can bind more than one role to a user or group.
 
 For more information on RBAC, see "Using RBAC to define and apply permissions".
 
-**Operational RBAC considerations**
+## Operational RBAC considerations
 
 To reduce operational overhead, manage access through groups rather than handling individual user IDs across multiple clusters. By managing groups at an organizational level, you can streamline access control and simplify administration across your organization.
 
@@ -77,7 +77,7 @@ For information about configuring an identity provider, see "Understanding ident
 
 # Replacing the kubeadmin user with a cluster-admin user
 
-The `kubeadmin` user with the `cluster-admin` privileges is created on every cluster by default. To enhance the cluster security, you can replace the\`kubeadmin\` user with a `cluster-admin` user and then disable or remove the `kubeadmin` user.
+The `kubeadmin` user with the `cluster-admin` privileges is created on every cluster by default. To enhance the cluster security, you can replace the `kubeadmin` user with a `cluster-admin` user and then disable or remove the `kubeadmin` user.
 
 - You have created a user with `cluster-admin` privileges.
 
@@ -141,8 +141,10 @@ PSA also became available in OpenShift Container Platform version 4.11. While PS
 
 # Bare-metal infrastructure
 
+Bare-metal infrastructure for OpenShift Container Platform clusters in telco and finance industries requires specific hardware and network configurations.
+
 Hardware requirements
-In several industries, such as telco and finance, clusters are primarily built on bare-metal hardware. This means that the (op-system-first) operating system is installed directly on the physical machines, without using virtual machines. This reduces network connectivity complexity, minimizes latency, and optimizes CPU usage for applications.
+In several industries, such as telco and finance, clusters are primarily built on bare-metal hardware. This means that the Red Hat Enterprise Linux CoreOS (RHCOS) operating system is installed directly on the physical machines, without using virtual machines. This reduces network connectivity complexity, minimizes latency, and optimizes CPU usage for applications.
 
 Network requirements
 Networks in these industries sometimes require much higher bandwidth compared to standard IT networks. For example, Telco networks commonly use dual-port 25 GB connections or 100 GB network interface cards (NICs) to handle massive data throughput. Security is critical, requiring encrypted connections and secure endpoints to protect sensitive personal data.

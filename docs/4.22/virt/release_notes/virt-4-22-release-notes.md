@@ -4,22 +4,55 @@ These release notes describe new features and enhancements, Technology Preview f
 
 To view the supported guest operating systems for OpenShift Virtualization, see [Certified Guest Operating Systems in Red Hat OpenStack Platform, Red Hat Virtualization, OpenShift Virtualization and Red Hat Enterprise Linux with KVM](https://access.redhat.com/articles/973163#ocpvirt).
 
-# Microsoft Windows SVVP certification
-
-OpenShift Virtualization is certified in Microsoft’s Windows Server Virtualization Validation Program (SVVP) to run Windows Server workloads.
-
-The SVVP certification applies to:
-
-- Red Hat Enterprise Linux CoreOS workers. In the Microsoft SVVP Catalog, they are named *Red Hat OpenShift Container Platform 4.20*.
-
-- Intel and AMD CPUs.
-
 # New features and enhancements
+
+KubeVirt Redfish for VM management through the Redfish API (Technology Preview)
+KubeVirt Redfish exposes OpenShift Virtualization virtual machines through the standard Redfish API. Using KubeVirt Redfish, administrators can manage VM power states, boot configuration, and virtual media attachments. This feature is available as a Technology Preview.
+
+For more information, see [Install KubeVirt Redfish](../post_installation_configuration/virt-kubevirt-redfish.xml#proc_virt-installing-kubevirt-redfish_virt-kubevirt-redfish).
+
+<!-- -->
+
+Configure PSRP, WINRM, or SSH to manage Windows-detected hosts in OpenShift Virtualization
+You can set a connection method to secure the communication between Windows hosts running on OpenShift Virtualization and the Ansible environment. Configure PowerShell Remote Protocol (PSRP), Windows Remote Management (WINRM), or Secure Shell (SSH) as a connection method in Ansible automation tasks to manage Windows hosts. The Ansible inventory plugin uses the protocol to manage the Windows hosts.
+
+[CNV-73306](https://redhat.atlassian.net/browse/CNV-73306)
+
+<!-- -->
 
 Support for IPv6 single-stack clusters is generally available
 With this release, support for IPv6 single-stack clusters is Generally Available (GA). OpenShift Virtualization supports single-stack IPv6 clusters for VMs that are connected to an OVN-Kubernetes localnet network, Linux bridge Container Network Interface (CNI) plugin, and Single Root I/O Virtualization (SR-IOV) network devices.
 
 [CNV-28924](https://redhat.atlassian.net/browse/CNV-28924)
+
+Live update NAD reference for secondary VM networks
+The virtual machine (VM) administrator and the VM owner can change the Network Attachment Definition (NAD) of a running VM’s secondary network interface. Edit the `networkName` field in the VM custom resource (CR) to enter a NAD with a different VLAN. This triggers a live migration. The hot swap capability gives the flexibility to change VM networks, such as to a different VLAN, for a better link or an isolated segment while preserving the guest interface name and MAC address, without rebooting the VM.
+
+[CNV-72329](https://redhat.atlassian.net/browse/CNV-72329)
+
+Define physical networks from an existing node network configuration policy
+Define physical networks based on existing node network configuration policies (NNCPs) in the OpenShift Virtualization user interface. A physical network is a logical grouping of one or more network configurations that represent the NNCP. Cluster administrators can extend a physical network to a set of new nodes, configure a virtual machine that uses the physical network through an OVN-Kubernetes Localnet network, and create new node network configurations for VMs.
+
+[CNV-72621](https://redhat.atlassian.net/browse/CNV-72621)
+
+<!-- -->
+
+New default for PVC naming during VM restore and clone requests
+With this update, the `volumeRestorePolicy` default setting has been changed to `PrefixTargetName`. This means that the name of the target virtual machine (VM) is now used as a prefix for new PVC names created with VM restore and clone requests.
+
+[CNV-77397](https://redhat.atlassian.net/browse/CNV-77397)
+
+<!-- -->
+
+Removed deprecated label from localnet network attachment definition type
+The web console no longer displays a **Deprecated** label next to the localnet `NetworkAttachmentDefinition` (NAD) type. This change clarifies that localnet NAD functionality is not deprecated and remains fully supported. You can use either the NAD-based approach or the VM network wizard to create localnet networks for connecting virtual machines to physical networks.
+
+[OCPBUGS-83809](https://redhat.atlassian.net/browse/OCPBUGS-83809)
+
+Add an internal certificate authority or a self-signed certificate for virtual machine images
+Cluster administrators can create a custom certificate authority (CA) or a self-signed certificate for URL images in a cluster in the Add Volume dialog. As a result, you can secure access to HTTPS sources to be used to create a virtual machine (VM) in a streamlined user workflow, without switching to the command line interface (CLI) for manual patching.
+
+[CNV-79324](https://redhat.atlassian.net/browse/CNV-79324)
 
 # Deprecated features
 
@@ -60,6 +93,13 @@ Custom video device support in virtual machines (Technology Preview)
 You can now configure a custom video device type when creating a virtual machine. Configuring a custom device type overrides the default video configuration, and allows you to specify different video devices, based on your guest operating system requirements and performance needs. This capability is a Technology Preview feature.
 
 [CNV-71192](https://issues.redhat.com/browse/CNV-71192)
+
+<!-- -->
+
+Convert an existing VM to a template from the user interface (Technology Preview)
+Virtual machine (VM) owners can create, filter, and delete a user-generated template. You can create a template from an existing VM in the same project as the running VM or a different project from the OpenShift Virtualization user interface. To make sure that the data is consistent, stop the VM before you create a template. This capability is a Technology Preview feature.
+
+[CNV-81577](https://redhat.atlassian.net/browse/CNV-81577)
 
 # Known issues
 

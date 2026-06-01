@@ -1,12 +1,4 @@
-<div class="important">
-
-Two-node OpenShift cluster with fencing is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
-Use the following sections help you with recovering from issues in a two-node OpenShift cluster with fencing.
+You can troubleshoot and restore a two-node OpenShift Container Platform cluster with fencing (TNF) after a disruption event. Manually recover services when automated recovery is unavailable, replace degraded control plane nodes, and use the `fencing_validator` script to verify cluster health.
 
 # Manually recovering from a disruption event when automated recovery is unavailable
 
@@ -157,8 +149,6 @@ Do an etcd backup before proceeding to ensure that you can restore the cluster i
 </div>
 
 For information about verifying that both control plane nodes and etcd are operating correctly, see "Verifying etcd health in a two-node OpenShift cluster with fencing".
-
-# Additional resources
 
 - [Restoring etcd from a backup](../../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd-restoring_backing-up-etcd).
 
@@ -492,10 +482,6 @@ Do an etcd backup before proceeding to ensure that you can restore the cluster i
 
 For information about verifying that both control plane nodes and etcd are operating correctly, see "Verifying etcd health in a two-node OpenShift cluster with fencing".
 
-# Additional resources
-
-- [Restoring etcd from a backup](../../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd-restoring_backing-up-etcd).
-
 # Verifying etcd health in a two-node OpenShift cluster with fencing
 
 After completing node recovery or maintenance procedures, verify that both control plane nodes and etcd are operating correctly.
@@ -541,3 +527,217 @@ After completing node recovery or maintenance procedures, verify that both contr
     - The `kubelet` and `etcd` resources are running.
 
     - Fencing is correctly configured for both nodes.
+
+# Fencing validator script overview
+
+A two-node OpenShift Container Platform cluster with fencing (TNF) relies on the Shoot The Other Node In The Head (STONITH) mechanism to ensure data integrity during node failures. If the fencing subsystem is misconfigured, the cluster might fail to recover safely, resulting in data corruption or a split-brain scenario.
+
+Before the introduction of this utility, administrators or support engineers had to manually verify several subsystems, including:
+
+- Pacemaker status
+
+- STONITH device configurations
+
+- Daemon health
+
+- etcd quorum
+
+- Fencing secrets
+
+The `fencing_validator` script automates these manual checks into a single command, providing clear pass or fail results and descriptive error messages to reduce troubleshooting time and human error.
+
+The `fencing_validator` is a Bash-based diagnostic utility available on every control-plane node in a TNF OpenShift Container Platform cluster. As a health check tool for the fencing subsystem, it verifies that the STONITH stack is correctly configured and operational.
+
+The script is located at `/usr/local/bin/fencing_validator` on both control-plane nodes. The script is automatically installed by the Machine Config Operator (MCO). There is no manual installation step required.
+
+When you deploy a TNF cluster, the MCO renders a set of `MachineConfig` manifests specific to that topology. One of these manifests is `fencing-validator.yaml`, located in the MCO source at `templates/master/00-master/two-node-with-fencing/files/fencing-validator.yaml`. This `MachineConfig` writes the script to `/usr/local/bin/fencing_validator` with executable mode `0755` on every control-plane node. The script is available as soon as the node has finished applying its `MachineConfig`, that is, after initial deployment or after any MCO-driven reboot.
+
+<div class="important">
+
+The script is deployed on TNF clusters only. It does not appear on standard HA clusters, Single-node OpenShift, or Two-Node with Arbiter clusters.
+
+</div>
+
+You can use the script for the following:
+
+- Post-deployment validation: Use the utility to verify that the TNF configuration is correct and fully functional after deployment.
+
+- Troubleshooting: Identify the specific underlying issues when a TNF setup fails to operate as expected.
+
+- Pre-upgrade validation: Confirm the health of the fencing stack to ensure the cluster is stable enough to proceed with a version upgrade.
+
+- Support interactions: Execute the script and provide the output to support engineers to facilitate the rapid resolution of technical issues.
+
+## Fencing validator script prerequisites
+
+Use the `fencing_validator` script to verify your fencing configuration on a two-node OpenShift Container Platform cluster. This script, deployed automatically by the Machine Config Operator, ensures that power management interfaces are correctly configured to prevent data corruption during a node failure. To run it, ensure the `jq` utility is installed, and you have both Kubernetes API access (`oc`) and SSH access to the control-plane nodes.
+
+You can see what the script would do without actually performing any validation for TNF by running the following command:
+
+``` terminal
+$ oc debug node/<node_name> --chroot /host /usr/local/bin/fencing_validator --dry-run
+```
+
+## Command-line options for fencing validator script
+
+To quickly verify a high-availability configuration of your two-node OpenShift Container Platform cluster with fencing (TNF), you can review the available command-line options and environment variables for the `fencing_validator` script. This reference helps you customize your connection methods, set execution timeouts, and safely test node reboots to ensure your fencing mechanism is reliable before moving to production.
+
+You can see different command-line options for the `fencing_ validator` script by running the following command:
+
+``` terminal
+$ oc debug node/<node_name> --chroot /host /usr/local/bin/fencing_validator --help
+```
+
+The following table details command-line options for the `oc debug node` command:
+
+| Flag           | Description                                                                                                                                                                                                                                                                           |
+|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `--user`       | SSH username for remote node access. The default value is `core`. Optionally, you can use `SSH_USER` environment variable to set the value.                                                                                                                                           |
+| `--ssh-key`    | Path to SSH private key. Optionally, you can use the `SSH_KEY` environment variable to set the value.                                                                                                                                                                                 |
+| `--kubeconfig` | Path to kubeconfig file. Optionally, you can use the `KUBECONFIG` environment variable to set the value.                                                                                                                                                                              |
+| `--transport`  | How the script connects to the other node. The possible values are `auto`, `ssh`, and `ocdebug`. The default value is `auto`. Optionally, you can use the `TRANSPORT` environment variable to set the value. For more information, see "Transport mode for fencing validator script". |
+| `--timeout`    | Maximum wait time for recovery loops. Optionally, you can use the `TIMEOUT` environment variable to set the value. By default, it is 1200 seconds or 20 minutes.                                                                                                                      |
+| `--hosts`      | Comma-separated pair of node hostnames or IP addresses.                                                                                                                                                                                                                               |
+| `--host-a`     | Explicitly set the first node.                                                                                                                                                                                                                                                        |
+| `--host-b`     | Explicitly set the second node.                                                                                                                                                                                                                                                       |
+| `--disruptive` | Enable destructive fencing tests (reboots nodes). Optionally, you can use the `DISRUPTIVE` environment variable to set the value.                                                                                                                                                     |
+| `--dry-run`    | Show what could be the result of the `fencing_validator` script without doing actual validations. Optionally, you can use the `DRY_RUN` environment variable to set the value.                                                                                                        |
+| `-h`, `--help` | Show usage information.                                                                                                                                                                                                                                                               |
+
+You can set all the flags by using the following environment variables:
+
+- `IP_A / IP_B`: set host addresses directly
+
+- `OC_BIN`: custom `oc` binary path
+
+- `OC_REQ_TIMEOUT`: per-API-call timeout. The default value is 10 seconds.
+
+- `CMD_EXEC_TIMEOUT_SECS`: per-command timeout. The default value is 60 seconds.
+
+## Fencing validator script for non-disruptive checks
+
+To ensure your two-node OpenShift Container Platform cluster with fencing (TNF) remains highly available without risking downtime, you can run the `fencing_validator` script in validation mode. This script performs a series of read-only health checks to verify cluster quorum, daemon health, and STONITH device status without disrupting active services.
+
+The simplest way to run the script is from a debug session on either control plane node by running the following command:
+
+``` terminal
+$ oc debug node/<node_name> --chroot /host /usr/local/bin/fencing_validator
+```
+
+This command does not reboot or fence any nodes. These checks are read-only and safe to run at any time. They run the following non-disruptive checks and report the results:
+
+1.  **OpenShift version check** - Confirms the cluster is running OpenShift Container Platform 4.20.0 or later.
+
+2.  **Node count check** - Confirms exactly 2 control-plane nodes exist.
+
+3.  **Transport connectivity** - Establishes a connection to both nodes (via SSH or `oc debug`).
+
+4.  **STONITH device check** - Verifies that STONITH devices are present and enabled in Pacemaker.
+
+5.  **Pacemaker status** - Confirms both nodes are reporting ONLINE in the Pacemaker cluster.
+
+6.  **Daemon health** - Checks that `corosync`, `pacemaker`, and `pcsd` services are active on both nodes.
+
+7.  **etcd quorum** - Verifies that etcd has 2 healthy voting members and the cluster has quorum.
+
+8.  **Fencing secrets** - Confirms that the fencing credential secrets (used by STONITH to authenticate to the BMC/IPMI) exist and are correctly bound to each node.
+
+    When all non-disruptive checks pass, the output resembles the following:
+
+``` terminal
+[INFO]
+====
+OpenShift version: 4.20.0 - OK [INFO]  Detected 2 control-plane nodes [INFO]  Transport: ssh [OK]    STONITH devices found and enabled [OK]    Both nodes ONLINE in Pacemaker [OK]    All daemons healthy on both nodes [OK]    etcd quorum healthy (2/2 voters) [OK]    Fencing secrets correctly bound [INFO]  All non-disruptive checks passed When something fails:
+====
+```
+
+\+ When non-disruptive checks fail, the output resembles the following:
+
+``` terminal
+[INFO]
+====
+OpenShift version: 4.20.0 - OK [INFO]  Detected 2 control-plane nodes [INFO]  Transport: ssh [ERROR] No STONITH devices found - fencing is not configured
+====
+```
+
+## Fencing validator script for disruptive checks
+
+You can validate your cluster’s resilience and perform disruptive checks from a peer node by using the `fencing_validator` script. By executing these simulated failures, you can ensure your high-availability environment correctly isolates and recovers from errors.
+
+You can trigger the Shoot The Other Node In The Head (STONITH) action for the failed node and cut off its access to shared resources and prevent data corruption by running the following command:
+
+``` terminal
+$ pcs stonith fence <node>
+```
+
+You can check whether a two-node OpenShift Container Platform cluster with fencing (TNF) setup actually works by running the following command:
+
+``` terminal
+$ oc debug node/<node_name> --chroot /host /usr/local/bin/fencing_validator --disruptive
+```
+
+<div class="warning">
+
+The `--disruptive` flag fences each control plane node one at a time and verifies recovery. The `--disruptive` flag performs the STONITH fence operations such as power cycle or VM reset. It does not perform graceful shutdown, and causes temporary workload disruption.
+
+</div>
+
+The fencing validator script with `--disruptive` flag runs the following checks:
+
+1.  **Fence Node A** - Triggers STONITH to reboot the first control-plane node.
+
+2.  **Verify NotReady** - Waits for Kubernetes to report the node A as `NotReady`, which confirms the reboot happened.
+
+3.  **Verify recovery** - Waits for the node A to come back to the `Ready` state, rejoin the Pacemaker cluster as `ONLINE`, and for etcd to regain quorum.
+
+4.  **Post-recovery daemon check** - Re-checks all daemons are healthy after recovery.
+
+5.  **Fence Node B** - Triggers STONITH to reboot the second node.
+
+6.  . **Verify NotReady** - Waits for Kubernetes to report the node B as `NotReady`, which confirms the reboot happened.
+
+7.  **Verify recovery** - Waits for the node B to come back to the `Ready` state, rejoin the Pacemaker cluster as `ONLINE`, and for etcd to regain quorum.
+
+8.  **Post-recovery daemon check** - Re-checks all daemons are healthy after recovery.
+
+## Exit codes for fencing-validator script
+
+The `fencing_validator` script uses specific exit codes so automation and support tooling can programmatically determine what went wrong.
+
+The following table lists the specific exit codes that the `fencing_validator` script returns, mapping each numerical value to its corresponding diagnostic state to assist with automated troubleshooting.
+
+| Exit code | Description                                                              |
+|-----------|--------------------------------------------------------------------------|
+| 0         | All checks passed                                                        |
+| 1         | Generic or unexpected failure                                            |
+| 20        | STONITH devices are missing or not enabled                               |
+| 21        | One or both nodes are not ONLINE in Pacemaker                            |
+| 22        | One or more required daemons (corosync, pacemaker, pcsd) are not running |
+| 23        | etcd does not have quorum or not all members are healthy                 |
+| 26        | Fencing secrets are missing or do not match the expected nodes           |
+
+## Transport mode for fencing validator script
+
+The `fencing_validator` script connects to control-plane nodes to run validation commands. Use the `--transport` flag or the `TRANSPORT` environment variable to define the connection method.
+
+The `--transport` flag supports the following options:
+
+- `auto`: This is the default option. The script first attempts `SSH` to both nodes. If `SSH` succeeds, it uses `SSH` for the session. If `SSH` fails, it falls back to `oc debug`. If neither works on both nodes, the script exits with an error.
+
+- `ssh`: This option uses `SSH` to connect as the user defined by `--user`. The `--user` value defaults to `core`.
+
+  - Permissions: Requires password-less `sudo` access on all nodes.
+
+  - Automation: The script runs in `BatchMode`, disables interactive prompts, and skips host-key checking.
+
+  - Authentication: Use the `--ssh-key` flag to provide a specific SSH key for all connections.
+
+- `oc debug`: Connects by running the following command against each node:
+
+  ``` terminal
+  $ oc debug node/<node> --chroot /host
+  ```
+
+You do not need SSH access. The `fencing_validator` script only requires a valid `KUBECONFIG` with `cluster-admin` privileges.
+
+For non-disruptive checks, both transports behave identically. However, the transport mode is critical when using the `--disruptive` option. During these tests, the script dispatches the `fence` command asynchronously using `systemd-run` or no hup as a fallback. This fire-and-forget method ensures the command completes even if the `oc debug` session terminates when the node fences.

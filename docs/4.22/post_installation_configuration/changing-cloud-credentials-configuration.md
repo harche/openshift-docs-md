@@ -837,7 +837,7 @@ After installing an OpenShift Container Platform cluster with the CCO in mint mo
 
 <div class="note">
 
-Before performing a minor version cluster update (for example, updating from OpenShift Container Platform 4.20 to 4.17), you must reinstate the credential secret with the administrator-level credential. If the credential is not present, the update might be blocked.
+Before performing a minor version cluster update (for example, updating from OpenShift Container Platform 4.21 to 4.17), you must reinstate the credential secret with the administrator-level credential. If the credential is not present, the update might be blocked.
 
 </div>
 

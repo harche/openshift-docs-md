@@ -8,7 +8,7 @@ The Security Profiles Operator supports only Red Hat Enterprise Linux CoreOS (RH
 
 # Creating SELinux profiles
 
-Use the `SelinuxProfile` object to create profiles.
+Use the `SelinuxProfile` object to create SELinux profiles.
 
 The `SelinuxProfile` object has several features that allow for better security hardening and readability:
 
@@ -217,17 +217,22 @@ You can use the `ProfileBinding` resource to bind a security profile to the `Sec
       image: quay.io/security-profiles-operator/test-nginx-unprivileged:1.21
     ```
 
-    - The `kind:` variable refers to the kind of the profile.
+    where:
 
-    - The `name:` variable refers to the name of the profile.
+    `spec.profileRef.kind`
+    Specifies the kind of the profile.
 
-    - You can enable a default security profile by using a wildcard in the image attribute: `image: "*"`
+    `spec.profileRef.name`
+    Specifies the name of the profile.
 
-      <div class="important">
+    `spec.image`
+    Allows you to enable a default security profile by using a wildcard in the image attribute: `image: "*"`
 
-      Using the `image: "*"` wildcard attribute binds all new pods with a default security profile in a given namespace.
+    <div class="important">
 
-      </div>
+    Using the `image: "*"` wildcard attribute binds all new pods with a default security profile in a given namespace.
+
+    </div>
 
 2.  Label the namespace with `enable-binding=true` by running the following command:
 
@@ -278,7 +283,9 @@ You can use the `ProfileBinding` resource to bind a security profile to the `Sec
 
 ## Replicating controllers and SecurityContextConstraints
 
-When you deploy SELinux policies for replicating controllers, such as deployments or daemon sets, note that the `Pod` objects spawned by the controllers are not running with the identity of the user who creates the workload. Unless a `ServiceAccount` is selected, the pods might revert to using a restricted `SecurityContextConstraints` (SCC) which does not allow use of custom security policies.
+You can deploy SELinux policies for replicating controllers, such as deployments or daemon sets.
+
+Note that the `Pod` objects spawned by the controllers are not running with the identity of the user who creates the workload. Unless a `ServiceAccount` is selected, the pods might revert to using a restricted `SecurityContextConstraints` (SCC) which does not allow use of custom security policies.
 
 1.  Create a project by running the following command:
 
@@ -366,15 +373,15 @@ When you deploy SELinux policies for replicating controllers, such as deployment
             - containerPort: 8080
     ```
 
-    - The `.seLinuxOptions.type` must exist before the Deployment is created.
+    The `spec.template.spec.securityContext.seLinuxOptions.type` must exist before the Deployment is created.
 
-      <div class="note">
+    <div class="note">
 
-      The SELinux type is not specified in the workload and is handled by the SCC. When the pods are created by the deployment and the `ReplicaSet`, the pods will run with the appropriate profile.
+    The SELinux type is not specified in the workload and is handled by the SCC. When the pods are created by the deployment and the `ReplicaSet`, the pods will run with the appropriate profile.
 
-      </div>
+    </div>
 
-Ensure that your SCC is usable by only the correct service account. Refer to *Additional resources* for more information.
+    Ensure that your SCC is usable by only the correct service account. Refer to *Additional resources* for more information.
 
 # Recording profiles from workloads
 
@@ -607,7 +614,7 @@ In addition, the namespace must be labeled with `pod-security.kubernetes.io/enfo
 
 # Additional resources
 
-- [Managing security context constraints](../../authentication/managing-security-context-constraints.xml)
+- [Managing security context constraints](../../authentication/managing-security-context-constraints.xml#managing-pod-security-policies)
 
 - [Managing SCCs in OpenShift](https://cloud.redhat.com/blog/managing-sccs-in-openshift)
 

@@ -10,6 +10,12 @@ Corrupted `seccomp` profiles can disrupt your workloads. Ensure that the user ca
     $ oc -n openshift-security-profiles logs openshift-security-profiles-<id>
     ```
 
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
     ``` terminal
     I1019 19:34:14.942464       1 main.go:90] setup "msg"="starting openshift-security-profiles"  "buildDate"="2020-10-19T19:31:24Z" "compiler"="gc" "gitCommit"="a3ef0e1ea6405092268c18f240b62015c247dd9d" "gitTreeState"="dirty" "goVersion"="go1.15.1" "platform"="linux/amd64" "version"="0.2.0-dev"
     I1019 19:34:15.348389       1 listener.go:44] controller-runtime/metrics "msg"="metrics server is starting to listen"  "addr"=":8080"

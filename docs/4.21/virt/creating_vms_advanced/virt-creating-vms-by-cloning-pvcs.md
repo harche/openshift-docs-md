@@ -196,11 +196,16 @@ Cloning between different volume modes is not supported for smart-cloning.
       storage: {}
     ```
 
-    - Specify the name of the new data volume.
+    where:
 
-    - Specify the namespace of the source PVC.
+    `<datavolume>`
+    Specifies the name of the new data volume.
 
-    - Specify the name of the source PVC.
+    `<source_namespace>`
+    Specifies the namespace of the source PVC.
+
+    `<my_vm_disk>`
+    Specifies the name of the source PVC.
 
 2.  Create the data volume by running the following command:
 
@@ -269,15 +274,15 @@ You can create a virtual machine (VM) that clones the persistent volume claim (P
             name: imported-volume-h4qn8
     ```
 
-    - The VM name.
+    - `metadata.name` defines the VM name.
 
-    - The name of the source PVC.
+    - `spec.dataVolumeTemplates.spec.source.pvc.name` defines the name of the source PVC.
 
-    - The namespace of the source PVC.
+    - `spec.dataVolumeTemplates.spec.source.pvc.namespace` defines the namespace of the source PVC.
 
-    - If the PVC source has appropriate labels, the instance type is inferred from the selected `DataSource` object.
+    - `spec.instancetype.inferFromVolume` defines that if the PVC source has appropriate labels, the instance type is inferred from the selected `DataSource` object.
 
-    - If the PVC source has appropriate labels, the preference is inferred from the selected `DataSource` object.
+    - `spec.preference.inferFromVolume` defines that if the PVC source has appropriate labels, the preference is inferred from the selected `DataSource` object.
 
 3.  Create the virtual machine with the PVC-cloned data volume:
 

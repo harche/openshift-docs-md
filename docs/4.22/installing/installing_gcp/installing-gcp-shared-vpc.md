@@ -1,6 +1,6 @@
 In OpenShift Container Platform version 4.17, you can install a cluster into a shared Virtual Private Cloud (VPC) on Google Cloud. In this installation method, the cluster is configured to use a VPC from a different Google Cloud project. A shared VPC enables an organization to connect resources from multiple projects to a common VPC network. You can communicate within the organization securely and efficiently by using internal IP addresses from that network. For more information about shared VPC, see [Shared VPC overview in the Google Cloud documentation](https://cloud.google.com/vpc/docs/shared-vpc).
 
-The installation program provisions the rest of the required infrastructure, which you can further customize. To customize the installation, you modify parameters in the `install-config.yaml` file before you install the cluster.
+The installation program provisions the rest of the required infrastructure, which you can further customize. To customize the installation, change parameters in the `install-config.yaml` file before you install the cluster.
 
 # Prerequisites
 
@@ -782,7 +782,15 @@ Before upgrading a cluster that uses manually maintained credentials, you must e
 
 ## Configuring a Google Cloud cluster to use short-term credentials
 
-To install a cluster that is configured to use Google Cloud Workload Identity, you must configure the CCO utility and create the required Google Cloud resources for your cluster.
+To install a cluster that is configured to use Google Cloud Workload Identity, you must configure the Cloud Credential Operator (CCO) utility and create the required Google Cloud resources for your cluster.
+
+<div class="important">
+
+When installing a cluster on a shared Virtual Private Cloud (VPC) by using short-lived credentials, you must grant the `compute.subnetworks.use` permission in the host project to Day 2 Operator service accounts.
+
+After using the `ccoctl` utility to generate the Google Cloud credentials, manually grant this permission to the Cluster CAPI Operator and Machine API Operator service accounts.
+
+</div>
 
 ### Configuring the Cloud Credential Operator utility
 

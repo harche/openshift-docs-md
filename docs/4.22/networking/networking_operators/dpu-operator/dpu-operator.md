@@ -1,4 +1,4 @@
-As a cluster administrator, you can add the DPU Operator to your cluster to manage DPU devices and network attachments.
+As a cluster administrator, you can add the Data Processing Unit (DPU) Operator to your cluster to manage DPU devices and network attachments.
 
 <div class="important">
 
@@ -36,9 +36,9 @@ The NVIDIA BlueField-3 is not supported.
 
 # Installing the DPU Operator
 
-You can install the Data Processing Unit (DPU) Operator on both host and DPU clusters to manage device lifecycle and network attachments using the CLI or web console.
+You can install the Data Processing Unit (DPU) Operator on both host and DPU clusters to manage device lifecycle and network attachments by using the CLI or web console.
 
-Cluster administrators can install the DPU Operator on the host cluster and all DPU clusters using the OpenShift Container Platform CLI or the web console. The DPU Operator manages the lifecycle, DPU devices, and network attachments for all supported DPUs."
+Cluster administrators can install the DPU Operator on the host cluster and all DPU clusters by using the OpenShift Container Platform CLI or the web console. The DPU Operator manages the lifecycle, DPU devices, and network attachments for all supported DPUs.
 
 <div class="note">
 
@@ -214,7 +214,7 @@ To configure the DPU Operator follow these steps:
 
     - `metadata.name`: Specifies the name of the Custom Resource, which must be `dpu-operator-config`.
 
-    - `spec.logLevel`: Sets the desired logging verbosity in the operator container logs. The value `0` is the default setting.
+    - `spec.logLevel`: Sets the required logging verbosity in the Operator container logs. The value `0` is the default setting.
 
 3.  Create the resource by running the following command:
 
@@ -349,7 +349,7 @@ Follow this procedure to deploy a simple pod directly onto the DPU.
 
     - `metadata.name.annotations.k8s.v1.cni.cncf.io/networks`: The value `dpunfcni-conf` specifies the name of the `NetworkAttachmentDefinition` resource. The DPU Operator creates this resource during installation to configure the DPU networking.
 
-    - `spec.nodeSelector`: The `nodeSelector` is the primary mechanism for scheduling this workload. The DPU Operator creates and maintains the label: `dpu.config.openshift.io/dpuside: "dpu"`. This label ensures the pod is scheduled directly onto the DPU’s processing unit.
+    - `spec.nodeSelector`: The `nodeSelector` is the primary mechanism for scheduling this workload. The DPU Operator creates and maintains the label: `dpu.config.openshift.io/dpuside: "dpu"`. This label ensures the pod is scheduled directly onto the DPU processing unit.
 
     - `spec.containers.name`: The name of the container.
 
@@ -404,7 +404,7 @@ The `oc get dpu` command shows the current state of the DPU infrastructure. Foll
     worker-host-ptl-243            Ready    worker   3d23h  v1.32.9
     ```
 
-    This output shows three master nodes, and three worker nodes identified by the worker-host prefix, for example, `worker-host-ipu-219`. Each worker node contains a DPU identified by the ocpcluster-dpu prefix, for example, `ocpcluster-dpu-ipu-219`.
+    This output shows three control plane nodes, and three worker nodes identified by the worker-host prefix, for example, `worker-host-ipu-219`. Each worker node has a DPU identified by the ocpcluster-dpu prefix, for example, `ocpcluster-dpu-ipu-219`.
 
 2.  Run the following command to report on the status of the DPUs:
 
@@ -424,19 +424,25 @@ The `oc get dpu` command shows the current state of the DPU infrastructure. Foll
     marvell-dpu-ipu                      Marvell DPU                    true            worker-dpu-marvell-41   True
     ```
 
-    - `DPU PRODUCT`:Displays the vendor or type of DPU, for example, Intel or Marvell.
+    where:
 
-    - `DPU SIDE`:Indicates whether the DPU is operating on the host side (`false`) or the DPU side (`true`). Each physical DPU is represented twice.
+    `DPU PRODUCT`
+    Displays the vendor or type of DPU, for example, Intel or Marvell.
 
-    - `MODE NAME`:The name of the node where the DPU is located. This is the host worker node for `false` entries and the DPU node for `true` entries.
+    `DPU SIDE`
+    Indicates whether the DPU is operating on the host side (`false`) or the DPU side (`true`). Each physical DPU is represented twice.
 
-    - `STATUS`:Indicates whether the DPU is functioning correctly (`True`) or has issues (`False`).
+    `MODE NAME`
+    The name of the node where the DPU is located. This is the host worker node for `false` entries and the DPU node for `true` entries.
 
-      <div class="note">
+    `STATUS`
+    Indicates whether the DPU is functioning correctly (`True`) or has issues (`False`).
 
-      Run `oc get dpu -o yaml` to get more details about the status.
+    <div class="note">
 
-      </div>
+    Run `oc get dpu -o yaml` to get more details about the status.
+
+    </div>
 
 # Uninstalling the DPU Operator
 
@@ -448,7 +454,7 @@ To uninstall the DPU Operator, you must first delete any running DPU workloads. 
 
 - You have the DPU Operator installed.
 
-1.  Delete the `DpuOperatorConfig` CR that was created by running the following command
+1.  Delete the `DpuOperatorConfig` CR by running the following command:
 
     ``` terminal
     $ oc delete DpuOperatorConfig dpu-operator-config
@@ -474,11 +480,7 @@ To uninstall the DPU Operator, you must first delete any running DPU workloads. 
         $ oc get csv -n openshift-dpu-operator
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following example shows the output:
 
         ``` terminal
         NAME                                DISPLAY        VERSION               REPLACES   PHASE

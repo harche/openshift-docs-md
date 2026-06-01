@@ -98,7 +98,7 @@ To maintain high availability of your cluster, use separate physical hosts for t
 
 The bootstrap, control plane, and compute machines must use Red Hat Enterprise Linux CoreOS (RHCOS) as the operating system.
 
-Note that RHCOS is based on Red Hat Enterprise Linux (RHEL) 9.2 and inherits all of its hardware certifications and requirements. See [Red Hat Enterprise Linux technology capabilities and limits](https://access.redhat.com/articles/rhel-limits).
+Note that RHCOS is based on Red Hat Enterprise Linux (RHEL) 9.8 and inherits all of its hardware certifications and requirements. See [Red Hat Enterprise Linux technology capabilities and limits](https://access.redhat.com/articles/rhel-limits).
 
 ## Minimum resource requirements for cluster installation
 
@@ -118,7 +118,7 @@ Minimum resource requirements
 
 <div class="note">
 
-For OpenShift Container Platform version 4.19, RHCOS is based on RHEL version 9.6, which updates the micro-architecture requirements. The following list contains the minimum instruction set architectures (ISA) that each architecture requires:
+For OpenShift Container Platform version 4.22, RHCOS is based on RHEL version 9.8, which has the micro-architecture requirements. The following list contains the minimum instruction set architectures (ISA) that each architecture requires:
 
 - x86-64 architecture requires x86-64-v2 ISA
 
@@ -160,7 +160,7 @@ On your IBM Power® instance, set up:
 
 ### Disk storage for the IBM Power guest virtual machines
 
-- Local storage, or storage provisioned by the Virtual I/O Server using vSCSI, NPIV (N-Port ID Virtualization), Fibre Channel, Multipathing, or SSP (shared storage pools)
+- Local storage, or storage provisioned by the Virtual I/O Server using vSCSI, NPIV (N-Port ID Virtualization), Fibre Channel, Multi-Path, or SSP (shared storage pools)
 
 ### Network for the PowerVM guest virtual machines
 
@@ -186,7 +186,7 @@ On your IBM Power® instance, set up:
 
 ### Operating system requirements
 
-- One instance of an IBM Power®9 or IBM Power®10 processor-based system
+- One instance of an IBM Power®9, IBM Power®10 or IBM Power®11 processor-based system
 
 On your IBM Power® instance, set up:
 
@@ -647,7 +647,7 @@ listen ingress-router-80
 where:
 
 `listen api-server-6443`
-Port `6443` handles the Kubernetes API traffic and points to the control plane machines.
+Port `6443` handles the Kubernetes API traffic and points to the control plane machines. You must configure health checks on this port to ensure that the API server is available before routing traffic.
 
 `server bootstrap bootstrap.ocp4.example.com`
 The bootstrap entries must be in place before the OpenShift Container Platform cluster installation and they must be removed after the bootstrap process is complete.
@@ -663,7 +663,7 @@ Port `80` handles the HTTP traffic and points to the machines that run the Ingre
 
 <div class="note">
 
-If you are deploying a three-node cluster with zero compute nodes, the Ingress Controller pods run on the control plane nodes. In three-node cluster deployments, you must configure your application Ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes.
+If you are deploying a compact three-node cluster with zero compute nodes, the Ingress Controller pods run on the control plane nodes. In three-node cluster deployments, you must configure your application Ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes.
 
 </div>
 
@@ -1472,7 +1472,7 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <tr class="even">
 <td style="text-align: left;"><p><code>gatewayConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>Optional: Specify a configuration object for customizing how egress traffic is sent to the node gateway. Valid values are <code>Shared</code> and <code>Local</code>. The default value is <code>Shared</code>. In the default setting, the Open vSwitch (OVS) outputs traffic directly to the node IP interface. In the <code>Local</code> setting, it traverses the host network; consequently, it gets applied to the routing table of the host.</p>
+<td style="text-align: left;"><p>Optional: Specify a configuration object for customizing how egress traffic is sent to the node gateway. Valid values are <code>Shared</code> and <code>Local</code>. The default value is <code>Shared</code>. In the default setting, the Open vSwitch (OVS) outputs traffic directly to the node IP interface. If you are using hardware offloading, Red Hat recommends to use the default <code>Shared</code> gateway mode to bypass the host routing plane. In the <code>Local</code> setting, it traverses the host network; consequently, it gets applied to the routing table of the host.</p>
 <div class="note">
 <p>While migrating egress traffic, you can expect some disruption to workloads and service traffic until the Cluster Network Operator (CNO) successfully rolls out the changes.</p>
 </div></td>
@@ -2220,7 +2220,7 @@ You can use PXE booting to install RHCOS on the machines.
 
 - You have created the Ignition config files for your cluster.
 
-- You have configured suitable network, DNS and load balancing infrastructure.
+- You have configured a suitable network, DNS and load balancing infrastructure.
 
 - You have configured suitable PXE infrastructure.
 

@@ -52,10 +52,10 @@ Root: ./
 |installing/installing_ibm_cloud:{preparing-to-install-on-ibm-cloud.md,installing-ibm-cloud-account.md,configuring-iam-ibm-cloud.md,user-managed-encryption-ibm-cloud.md,installing-ibm-cloud-customizations.md,installing-ibm-cloud-vpc.md,installing-ibm-cloud-private.md,installing-ibm-cloud-restricted.md,installation-config-parameters-ibm-cloud-vpc.md,uninstalling-cluster-ibm-cloud.md}
 |installing/installing_nutanix:{preparing-to-install-on-nutanix.md,nutanix-failure-domains.md,installing-nutanix-installer-provisioned.md,installing-restricted-networks-nutanix-installer-provisioned.md,installing-nutanix-three-node.md,uninstalling-cluster-nutanix.md,installation-config-parameters-nutanix.md}
 |installing/installing_on_prem_assisted:{installing-on-prem-assisted.md}
-|installing/installing_with_agent_based_installer:{preparing-to-install-with-agent-based-installer.md,understanding-disconnected-installation-mirroring.md,installing-with-agent-basic.md,installing-with-agent-based-installer.md,installing-ove.md,prepare-pxe-assets-agent.md,installing-using-iscsi.md,preparing-an-agent-based-installed-cluster-for-mce.md,installation-config-parameters-agent.md}
+|installing/installing_with_agent_based_installer:{preparing-to-install-with-agent-based-installer.md,understanding-disconnected-installation-mirroring.md,installing-with-agent-basic.md,installing-with-agent-based-installer.md,installing-ove.md,prepare-pxe-assets-agent.md,installing-using-iscsi.md,preparing-an-agent-based-installed-cluster-for-mce.md,installation-config-parameters-agent.md,agent-based-installer-postinstallation.md}
 |installing/installing_sno:{install-sno-preparing-to-install-sno.md,install-sno-installing-sno.md}
 |installing/installing_two_node_cluster:{about-two-node-arbiter-installation.md}
-|installing/installing_two_node_cluster/installing_tnf:{installing-two-node-fencing.md,install-tnf.md,install-post-tnf.md}
+|installing/installing_two_node_cluster/installing_tnf:{installing-two-node-fencing.md,install-tnf.md,operating-a-degraded-tnf.md,install-post-tnf.md}
 |installing/installing_bare_metal:{preparing-to-install-on-bare-metal.md,bare-metal-postinstallation-configuration.md,bare-metal-expanding-the-cluster.md,bare-metal-using-bare-metal-as-a-service.md}
 |installing/installing_bare_metal/upi:{installing-bare-metal.md,installing-bare-metal-network-customizations.md,installing-restricted-networks-bare-metal.md,scaling-a-user-provisioned-cluster-with-the-bare-metal-operator.md,installation-config-parameters-bare-metal.md}
 |installing/installing_bare_metal/ipi:{ipi-install-overview.md,ipi-install-prerequisites.md,ipi-install-installation-workflow.md,ipi-install-installing-a-cluster.md,ipi-install-troubleshooting.md}
@@ -147,6 +147,7 @@ Root: ./
 |networking/networking_operators/metallb-operator:{about-metallb.md,metallb-operator-install.md,metallb-upgrading-operator.md}
 |networking/networking_operators/sr-iov-operator:{installing-sriov-operator.md,configuring-sriov-operator.md,uninstalling-sriov-operator.md}
 |networking/networking_operators/dpu-operator:{dpu-operator.md}
+|networking/network_observability_operator:{network-observability-operator.md}
 |networking/network_security:{network-policy-apis.md,logging-network-security.md,configuring-ipsec-ovn.md,zero-trust-networking.md}
 |networking/network_security/AdminNetworkPolicy:{ovn-k-anp.md,ovn-k-banp.md,ovn-k-anp-banp-metrics.md,ovn-k-egress-nodes-networks-peer.md,ovn-k-anp-troubleshooting.md,ovn-k-anp-recommended-practices.md}
 |networking/network_security/network_policy:{about-network-policy.md,creating-network-policy.md,viewing-network-policy.md,editing-network-policy.md,deleting-network-policy.md,default-network-policy.md,multitenant-network-policy.md}
@@ -163,8 +164,9 @@ Root: ./
 |networking/ingress_load_balancing/metallb:{metallb-configure-address-pools.md,about-advertising-ipaddresspool.md,metallb-configure-bgp-peers.md,metallb-configure-community-alias.md,metallb-configure-bfd-profiles.md,metallb-configure-services.md,metallb-configure-return-traffic.md,metallb-frr-k8s.md,monitoring-metallb-status.md,metallb-troubleshoot-support.md}
 |networking/configuring_network_settings:{configure-syscontrols-interface-tuning-cni.md,configuring-node-port-service-range.md,configuring-cluster-network-range.md,configuring-ipfailover.md,enable-cluster-wide-proxy.md,configuring-a-custom-pki.md}
 |networking/advanced_networking:{verifying-connectivity-endpoint.md,changing-cluster-network-mtu.md,network-bonding-considerations.md,using-sctp.md,associating-secondary-interfaces-metrics-to-network-attachments.md}
-|networking/advanced_networking/bgp_routing:{about-bgp-routing.md,enabling-bgp-routing.md,disabling-bgp-routing.md,migrating-frr-k8s-resources.md}
+|networking/advanced_networking/bgp_routing:{about-bgp-routing.md,enabling-bgp-routing.md,disabling-bgp-routing.md,no-overlay-mode-bgp-routing.md,migrating-frr-k8s-resources.md}
 |networking/advanced_networking/route_advertisements:{about-route-advertisements.md,enabling-route-advertisements.md,disabling-route-advertisements.md,example-route-advertisement-setup.md}
+|networking/advanced_networking/bgp_evpn_udn:{about-bgp-evpn-user-defined-networks.md}
 |networking/advanced_networking/ptp:{about-ptp.md,configuring-ptp.md,ptp-cloud-events-consumer-dev-reference-v2.md,ptp-events-rest-api-reference-v2.md}
 |networking/k8s_nmstate:{k8s-nmstate-updating-node-network-config.md,k8s-nmstate-troubleshooting-node-network.md}
 
@@ -215,7 +217,7 @@ Root: ./
 
 ### Building applications
 
-|applications:{index.md,odc-viewing-application-composition-using-topology-view.md,odc-exporting-applications.md,config-maps.md,odc-monitoring-project-and-application-metrics-using-developer-perspective.md,application-health.md,odc-editing-applications.md,pruning-objects.md,idling-applications.md,odc-deleting-applications.md,red-hat-marketplace.md}
+|applications:{index.md,odc-viewing-application-composition-using-topology-view.md,odc-exporting-applications.md,config-maps.md,odc-monitoring-project-and-application-metrics-using-developer-perspective.md,application-health.md,odc-editing-applications.md,pruning-objects.md,idling-applications.md,odc-deleting-applications.md}
 |applications/projects:{working-with-projects.md,creating-project-other-user.md,configuring-project-creation.md}
 |applications/creating_applications:{using-templates.md,odc-creating-applications-using-developer-perspective.md,creating-apps-from-installed-operators.md,creating-applications-using-cli.md,templates-using-ruby-on-rails.md}
 |applications/working_with_helm_charts:{understanding-helm.md,installing-helm.md,configuring-custom-helm-chart-repositories.md,odc-working-with-helm-releases.md}
@@ -248,6 +250,10 @@ Root: ./
 ### Hosted control planes
 
 |hosted_control_planes:{hcp-release-notes.md}
+
+### Virtualized control planes
+
+|vcp:{vcp-overview.md,vcp-prerequisites.md,vcp-preparing-environment.md,vcp-installing-cluster.md}
 
 ### Nodes
 
@@ -401,7 +407,7 @@ Root: ./
 |virt/release_notes:{virt-4-22-release-notes.md}
 |virt/getting_started:{virt-getting-started.md,virt-using-the-cli-tools.md}
 |virt/install:{preparing-cluster-for-virt.md,virt-requirements.md,installing-virt.md,uninstalling-virt.md,virt-install-ibm-cloud-bm-nodes.md}
-|virt/post_installation_configuration:{virt-post-install-config.md,virt-node-placement-virt-components.md,virt-post-install-network-config.md,virt-post-install-storage-config.md,virt-self-validation-checkups.md,virt-physical-cores-allocation-vms.md,virt-configuring-higher-vm-workload-density.md,virt-configuring-certificate-rotation.md}
+|virt/post_installation_configuration:{virt-post-install-config.md,virt-node-placement-virt-components.md,virt-post-install-network-config.md,virt-post-install-storage-config.md,virt-self-validation-checkups.md,virt-physical-cores-allocation-vms.md,virt-configuring-higher-vm-workload-density.md,virt-configuring-certificate-rotation.md,virt-kubevirt-redfish.md}
 |virt/updating:{upgrading-virt.md}
 |virt/creating_vm:{virt-creating-vms-from-instance-types.md,virt-creating-vms-from-templates.md,virt-configuring-ibm-secure-execution-vms-ibm-z.md,virt-creating-vms-aws-li-windows.md}
 |virt/creating_vms_advanced:{virt-creating-vms-from-rh-images-overview.md,virt-golden-image-heterogeneous-clusters.md,virt-creating-vms-from-web-images.md,virt-creating-vms-uploading-images.md,virt-cloning-vms.md,virt-creating-vms-from-cli.md,virt-creating-vms-from-container-disks.md,virt-creating-vms-by-cloning-pvcs.md}

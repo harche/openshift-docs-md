@@ -6,6 +6,8 @@ This example shows how you can configure data volume (DV) annotations to control
 
 If you want the importer pod to use both the default network from the cluster and the secondary Multus network, use the `k8s.v1.cni.cncf.io/networks: <network_name>` annotation.
 
+Multus network annotation example:
+
 ``` yaml
 apiVersion: cdi.kubevirt.io/v1beta1
 kind: DataVolume
@@ -16,4 +18,4 @@ metadata:
 # ...
 ```
 
-- Multus network annotation
+The `v1.multus-cni.io/default-network` annotation specifies the Multus network name.

@@ -10,7 +10,7 @@ To manage hosts effectively while maintaining security, avoid direct access when
 
 - Debug pod
 
-- Direct SSHs
+- Direct SSH
 
 - Console access
 

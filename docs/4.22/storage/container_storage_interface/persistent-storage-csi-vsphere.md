@@ -32,6 +32,8 @@ The following limitations apply to the vSphere Container Storage Interface (CSI)
 
 - Migrating persistent container volumes between datastores using the vSphere client interface is not supported with OpenShift Container Platform.
 
+- OpenShift Container Platform does not support restoring volume snapshots in a topology domain that does not have access to the datastore where the snapshot resides. You must manually schedule pods that use a persistent volume claim (PVC) that restore a snapshot to a region and zone with the snapshot. Using a shared datastore across all regions and zones meets this requirement.
+
 # vSphere storage policy
 
 The vSphere CSI Driver Operator storage class uses vSphere’s storage policy. OpenShift Container Platform automatically creates a storage policy that targets datastore configured in cloud configuration:
@@ -833,9 +835,19 @@ To disable or enable storage on vSphere:
 
 # Adding bare-metal nodes
 
-Adding bare-metal nodes to an OpenShift Container Platform cluster on vSphere is supported. However, if you add bare-metal nodes, you must remove the vSphere CSI Driver, otherwise the cluster is marked as degraded. For information about how to remove the driver and the consequences of doing this, see Section *Disabling and enabling storage on vSphere*.
+Adding bare-metal nodes to an OpenShift Container Platform cluster on vSphere is supported as a Technology Preview feature.
+
+However, if you add bare-metal nodes, you must remove the vSphere CSI Driver, otherwise the cluster is marked as degraded. For information about how to remove the driver and the consequences of doing this, see Section *Disabling and enabling storage on vSphere*.
 
 For information about how to add bare-metal nodes, under *Additional resources*, see Section *Adding bare-metal compute machines to a vSphere cluster*.
+
+<div class="important">
+
+Adding bare-metal nodes is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 - [Adding bare-metal compute machines to a vSphere cluster](../../machine_management/user_infra/adding-bare-metal-compute-vsphere-user-infra.xml)
 

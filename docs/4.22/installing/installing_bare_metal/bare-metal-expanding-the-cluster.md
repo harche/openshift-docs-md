@@ -24,19 +24,19 @@ Some administrators prefer to use static IP addresses so that each node’s IP a
 
 Preparing the bare metal node requires executing the following procedure from the provisioner node.
 
-1.  Get the `oc` binary:
+- You have downloaded the `oc` binary.
 
-    ``` terminal
-    $ curl -s https://mirror.openshift.com/pub/openshift-v4/clients/ocp/$VERSION/openshift-client-linux-$VERSION.tar.gz | tar zxvf - oc
-    ```
+- You have installed a bare-metal cluster.
 
-    ``` terminal
-    $ sudo cp oc /usr/local/bin
-    ```
+- If you intend to use DHCP to provide the new machine’s IP address, you have a DHCP server on your network.
 
-2.  Power off the bare metal node by using the baseboard management controller (BMC), and ensure it is off.
+- If you intend to use PXE to provide the boot image, you have a PXE server on your network.
 
-3.  Retrieve the user name and password of the bare metal node’s baseboard management controller. Then, create `base64` strings from the user name and password:
+- If you intend to install a machine of a different architecture than the control plane, your cluster uses the multi-architecture release image.
+
+1.  Power off the bare metal node by using the baseboard management controller (BMC), and ensure it is off.
+
+2.  Retrieve the user name and password of the bare metal node’s baseboard management controller. Then, create `base64` strings from the user name and password:
 
     ``` terminal
     $ echo -ne "root" | base64
@@ -46,7 +46,7 @@ Preparing the bare metal node requires executing the following procedure from th
     $ echo -ne "password" | base64
     ```
 
-4.  Create a configuration file for the bare metal node. Depending on whether you are using a static configuration or a DHCP server, use one of the following example `bmh.yaml` files, replacing values in the YAML to match your environment:
+3.  Create a configuration file for the bare metal node. Depending on whether you are using a static configuration or a DHCP server, use one of the following example `bmh.yaml` files, replacing values in the YAML to match your environment:
 
     ``` terminal
     $ vim bmh.yaml
@@ -110,6 +110,7 @@ Preparing the bare metal node requires executing the following procedure from th
         rootDeviceHints:
           deviceName: <root_device_hint>
         preprovisioningNetworkDataName: openshift-worker-<num>-network-config-secret
+        architecture: <architecture>
       ```
 
       - To configure the network interface for a newly created node, specify the name of the secret that contains the network configuration. Follow the `nmstate` syntax to define the network configuration for your node. See "Optional: Configuring host network interfaces in the install-config.yaml file" for details on configuring NMState syntax.
@@ -148,6 +149,8 @@ Preparing the bare metal node requires executing the following procedure from th
 
       - Optional: If you have configured the network interface for the newly created node, provide the network configuration secret name in the `preprovisioningNetworkDataName` of the BareMetalHost CR.
 
+      - Optional: If you want to deploy a machine of a different architecture than the control plane architecture, specify it here. Supported values are `aarch64` or `x86_64`.
+
     - **DHCP configuration** `bmh.yaml`:
 
       ``` yaml
@@ -179,6 +182,7 @@ Preparing the bare metal node requires executing the following procedure from th
         rootDeviceHints:
           deviceName: <root_device_hint>
         preprovisioningNetworkDataName: openshift-worker-<num>-network-config-secret
+        architecture: <architecture>
       ```
 
       - Replace `<num>` for the worker number of the bare metal node in the `name` fields, the `credentialsName` field, and the `preprovisioningNetworkDataName` field.
@@ -197,13 +201,15 @@ Preparing the bare metal node requires executing the following procedure from th
 
       - Optional: If you have configured the network interface for the newly created node, provide the network configuration secret name in the `preprovisioningNetworkDataName` of the BareMetalHost CR.
 
+      - Optional: If you want to deploy a machine of a different architecture than the control plane architecture, specify it here. Supported values are `aarch64` or `x86_64`.
+
     <div class="note">
 
     If the MAC address of an existing bare metal node matches the MAC address of a bare metal host that you are attempting to provision, then the Ironic installation will fail. If the host enrollment, inspection, cleaning, or other Ironic steps fail, the Bare Metal Operator retries the installation continuously. See "Diagnosing a host duplicate MAC address" for more information.
 
     </div>
 
-5.  Create the bare metal node:
+4.  Create the bare metal node:
 
     ``` terminal
     $ oc -n openshift-machine-api create -f bmh.yaml
@@ -223,7 +229,7 @@ Preparing the bare metal node requires executing the following procedure from th
 
     Where `<num>` will be the worker number.
 
-6.  Power up and inspect the bare metal node:
+5.  Power up and inspect the bare metal node:
 
     ``` terminal
     $ oc -n openshift-machine-api get bmh openshift-worker-<num>
@@ -242,15 +248,17 @@ Preparing the bare metal node requires executing the following procedure from th
     openshift-worker-<num>  available              true
     ```
 
-    <div class="note">
+6.  Add the new machine to the cluster by scaling the machine set.
 
-    To allow the worker node to join the cluster, scale the `machineset` object to the number of the `BareMetalHost` objects. You can scale nodes either manually or automatically. To scale nodes automatically, use the `metal3.io/autoscale-to-hosts` annotation for `machineset`.
+    1.  To manually scale the machine set, follow the procedure titled *Provisioning the bare metal node*.
 
-    </div>
+    2.  To automatically scale the machine set, follow the procedure titled *Automatically scaling machines to the number of available bare-metal hosts* in the *Scalability and Performance* section.
 
-- See [Optional: Configuring host network interfaces in the install-config.yaml file](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#configuring-host-network-interfaces-in-the-install-config-yaml-file_ipi-install-installation-workflow) for details on configuring the NMState syntax.
+- [Optional: Configuring host network interfaces in the install-config.yaml file](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#configuring-host-network-interfaces-in-the-install-config-yaml-file_ipi-install-installation-workflow)
 
-- See [Automatically scaling machines to the number of available bare-metal hosts](../../scalability_and_performance/managing-bare-metal-hosts.xml#automatically-scaling-machines-to-available-bare-metal-hosts_managing-bare-metal-hosts) for details on automatically scaling machines.
+- [Automatically scaling machines to the number of available bare-metal hosts](../../scalability_and_performance/managing-bare-metal-hosts.xml#automatically-scaling-machines-to-available-bare-metal-hosts_managing-bare-metal-hosts)
+
+- [Migrating to a cluster with multi-architecture compute machines](../../updating/updating_a_cluster/migrating-to-multi-payload.xml#migrating-to-multi-payload)
 
 # Replacing a bare-metal control plane node
 

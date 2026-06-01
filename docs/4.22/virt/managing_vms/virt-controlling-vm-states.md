@@ -1,4 +1,4 @@
-You can use [`virtctl`](../../virt/getting_started/virt-using-the-cli-tools.xml#virt-using-the-cli-tools) to manage virtual machine states and perform other actions from the CLI. For example, you can use `virtctl` to force stop a VM or expose a port.
+You can use `virtctl` to manage virtual machine states and perform other actions from the CLI. For example, you can use `virtctl` to force stop a VM or expose a port.
 
 You can stop, start, restart, reset, pause, and unpause virtual machines from the web console.
 
@@ -24,7 +24,7 @@ To allow users to manage virtual machine (VM) states by using the OpenShift Cont
           - virtualmachines/start
           - virtualmachines/stop
         verbs:
-          - put
+          - update
     # ...
     ```
 
@@ -64,7 +64,7 @@ To allow users to manage virtual machine (VM) states by using the OpenShift Cont
     PolicyRule:
       Resources  Non-Resource URLs  Resource Names  Verbs
       ---------  -----------------  --------------  -----
-      virtualmachines/start, virtualmachines/stop with subresources.kubevirt.io group  []  []  [put]
+      virtualmachines/start, virtualmachines/stop with subresources.kubevirt.io group  []  []  [update]
     ```
 
 5.  Create a `ClusterRoleBinding` object to bind the cluster role you have created to the target user or group:
@@ -133,9 +133,11 @@ To allow users to manage virtual machine (VM) states by using the OpenShift Cont
 
 The **Stop**, **Restart**, and **Pause** actions can display confirmation dialogs if confirmation is enabled. By default, confirmation is disabled.
 
-1.  In the **Virtualization** section of the OpenShift Container Platform web console, navigate to **Overview** → **Settings** → **Cluster** → **General settings**.
+1.  Click **Virtualization** → **Settings** → **Cluster** → **General settings**.
 
-2.  Toggle the **VirtualMachine actions confirmation** setting to On.
+2.  Click **VirtualMachine actions confirmation**.
+
+3.  Toggle the **VirtualMachine actions confirmation** setting to **On**.
 
 # Starting a virtual machine
 
@@ -360,3 +362,7 @@ You can start, stop, restart, pause, and unpause multiple virtual machines (VMs)
       2.  Click **Actions** and select the intended action from the menu.
 
       3.  If action confirmation is enabled, confirm the action in the confirmation dialog.
+
+# Additional resources
+
+- [Using the CLI tools](../../virt/getting_started/virt-using-the-cli-tools.xml#virt-using-the-cli-tools)

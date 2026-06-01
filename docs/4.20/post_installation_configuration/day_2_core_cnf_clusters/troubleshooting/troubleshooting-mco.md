@@ -34,4 +34,4 @@ To prevent the nodes from restarting for each machine config file, you can apply
     $ oc patch mcp/<mcp_name> --type merge --patch '{"spec":{"paused":false}}'
     ```
 
-This allows the nodes in your MCP to reboot into the new configurations.
+    This allows the nodes in your MCP to reboot into the new configurations.

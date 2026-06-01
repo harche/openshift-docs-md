@@ -46,17 +46,17 @@ You can create a network attachment definition (NAD) which describes how to atta
         }
     ```
 
-    - The Container Network Interface (CNI) specification version. The required value is `0.3.1`.
+    - `spec.config.cniVersion` defines the Container Network Interface (CNI) specification version. The required value is `0.3.1`.
 
-    - The name of the network. This attribute is not namespaced. For example, you can have a network named `l2-network` referenced from two different `NetworkAttachmentDefinition` objects that exist in two different namespaces. This feature is useful to connect VMs in different namespaces.
+    - `spec.config.name` defines the name of the network. This attribute is not namespaced. For example, you can have a network named `l2-network` referenced from two different `NetworkAttachmentDefinition` objects that exist in two different namespaces. This feature is useful to connect VMs in different namespaces.
 
-    - The name of the CNI plugin. The required value is `ovn-k8s-cni-overlay`.
+    - `spec.config.type` defines the name of the CNI plugin. The required value is `ovn-k8s-cni-overlay`.
 
-    - The topological configuration for the network. The required value is `layer2`.
+    - `spec.config.topology` defines the topological configuration for the network. The required value is `layer2`.
 
-    - Optional: The maximum transmission unit (MTU) value. If you do not set a value, the Cluster Network Operator (CNO) sets a default MTU value by calculating the difference among the underlay MTU of the primary network interface, the overlay MTU of the pod network, such as the Geneve (Generic Network Virtualization Encapsulation), and byte capacity of any enabled features, such as IPsec.
+    - `spec.config.mtu` is optional and defines the maximum transmission unit (MTU) value. If you do not set a value, the Cluster Network Operator (CNO) sets a default MTU value by calculating the difference among the underlay MTU of the primary network interface, the overlay MTU of the pod network, such as the Geneve (Generic Network Virtualization Encapsulation), and byte capacity of any enabled features, such as IPsec.
 
-    - The value of the `namespace` and `name` fields in the `metadata` stanza of the `NetworkAttachmentDefinition` object.
+    - `spec.config.netAttachDefName` defines the value of the `namespace` and `name` fields in the `metadata` stanza of the `NetworkAttachmentDefinition` object.
 
       <div class="note">
 

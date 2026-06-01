@@ -248,19 +248,15 @@ You configure a watchdog device for the virtual machine (VM).
     $ oc apply -f <file_name>.yaml
     ```
 
-<div class="important">
-
-<div class="title">
-
-Verification
-
-</div>
-
-This procedure is provided for testing watchdog functionality only and must not be run on production machines.
-
-</div>
+<!-- -->
 
 1.  Run the following command to verify that the VM is connected to the watchdog device:
+
+    <div class="important">
+
+    Verification steps are provided for testing watchdog functionality only and must not be run on production machines.
+
+    </div>
 
     ``` terminal
     $ lspci | grep watchdog -i

@@ -282,7 +282,15 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 ## Attaching a virtual machine to the primary user-defined network by using the CLI
 
-You can connect a virtual machine (VM) to the primary user-defined network (UDN) by using the CLI.
+You can connect a virtual machine (VM) to the primary user-defined network (UDN) by using the OpenShift CLI (`oc`).
+
+<div class="important">
+
+Using the passt binding plugin to attach a VM to the primary UDN is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -325,14 +333,6 @@ You can connect a virtual machine (VM) to the primary user-defined network (UDN)
     ``` terminal
     $ oc annotate hco kubevirt-hyperconverged -n kubevirt-hyperconverged hco.kubevirt.io/deployPasstNetworkBinding=true --overwrite
     ```
-
-    <div class="important">
-
-    Using the passt binding plugin to attach a VM to the primary UDN is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-    For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-    </div>
 
 3.  Apply the `VirtualMachine` manifest by running the following command:
 

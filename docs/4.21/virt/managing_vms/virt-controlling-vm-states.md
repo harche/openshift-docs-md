@@ -1,4 +1,4 @@
-You can use [`virtctl`](../../virt/getting_started/virt-using-the-cli-tools.xml#virt-using-the-cli-tools) to manage virtual machine states and perform other actions from the CLI. For example, you can use `virtctl` to force stop a VM or expose a port.
+You can use `virtctl` to manage virtual machine states and perform other actions from the CLI. For example, you can use `virtctl` to force stop a VM or expose a port.
 
 You can stop, start, restart, reset, pause, and unpause virtual machines from the web console.
 
@@ -24,7 +24,7 @@ To allow users to manage virtual machine (VM) states by using the OpenShift Cont
           - virtualmachines/start
           - virtualmachines/stop
         verbs:
-          - put
+          - update
     # ...
     ```
 
@@ -64,7 +64,7 @@ To allow users to manage virtual machine (VM) states by using the OpenShift Cont
     PolicyRule:
       Resources  Non-Resource URLs  Resource Names  Verbs
       ---------  -----------------  --------------  -----
-      virtualmachines/start, virtualmachines/stop with subresources.kubevirt.io group  []  []  [put]
+      virtualmachines/start, virtualmachines/stop with subresources.kubevirt.io group  []  []  [update]
     ```
 
 5.  Create a `ClusterRoleBinding` object to bind the cluster role you have created to the target user or group:
@@ -360,3 +360,7 @@ You can start, stop, restart, pause, and unpause multiple virtual machines (VMs)
       2.  Click **Actions** and select the intended action from the menu.
 
       3.  If action confirmation is enabled, confirm the action in the confirmation dialog.
+
+# Additional resources
+
+- [Using the CLI tools](../../virt/getting_started/virt-using-the-cli-tools.xml#virt-using-the-cli-tools)

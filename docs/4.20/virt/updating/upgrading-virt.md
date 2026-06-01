@@ -290,7 +290,7 @@ You can update OpenShift Virtualization directly to the latest z-stream release 
 
 </div>
 
-For more information about EUS versions, see the [OpenShift Container Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift).
+For more information about EUS versions, see the "OpenShift Container Platform Life Cycle Policy".
 
 ## Preventing workload updates during a Control Plane Only update
 
@@ -440,6 +440,8 @@ Use the candidate channel only for testing where you can delete and re-create th
 </div>
 
 # Additional resources
+
+- [OpenShift Container Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift)
 
 - [Performing a Control Plane Only update](../../updating/updating_a_cluster/control-plane-only-update.xml#control-plane-only-update)
 

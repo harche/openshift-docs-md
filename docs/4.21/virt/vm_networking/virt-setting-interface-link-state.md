@@ -56,9 +56,9 @@ You can set the link state of a primary or secondary virtual machine (VM) networ
     # ...
     ```
 
-    - The name of the interface.
+    - `spec.template.spec.domain.devices.interfaces.name` defines the name of the interface.
 
-    - The state of the interface. The possible values are:
+    - `spec.template.spec.domain.devices.interfaces.state` defines the state of the interface. The possible values are:
 
       - `up`: Represents an active network connection. This is the default if no value is specified.
 

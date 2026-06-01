@@ -258,6 +258,14 @@ To modify the network configuration for nodes in your OpenShift Container Platfo
 
 ## Updating the policy by using form
 
+You can update a `NodeNetworkConfigurationPolicy` object by using the form view in the web console.
+
+<div class="note">
+
+Addition of a VLAN interface using the form is not supported. To add a VLAN interface, you must use YAML to create the policy. Once added, you cannot edit the policy using form.
+
+</div>
+
 1.  Navigate to **Networking** → **NodeNetworkConfigurationPolicy**.
 
 2.  In the **NodeNetworkConfigurationPolicy** page, click the ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) icon placed next to the policy you want to edit, and click **Edit**.
@@ -266,13 +274,9 @@ To modify the network configuration for nodes in your OpenShift Container Platfo
 
 4.  Click **Save**.
 
-<div class="note">
-
-Addition of a VLAN interface using the form is not supported. To add a VLAN interface, you must use YAML to create the policy. Once added, you cannot edit the policy using form.
-
-</div>
-
 ## Updating the policy by using YAML
+
+You can update a `NodeNetworkConfigurationPolicy` object by editing the YAML in the web console.
 
 1.  Navigate to **Networking** → **NodeNetworkConfigurationPolicy**.
 
@@ -283,6 +287,8 @@ Addition of a VLAN interface using the form is not supported. To add a VLAN inte
 4.  Click **Save**.
 
 ## Deleting the policy
+
+You can delete a `NodeNetworkConfigurationPolicy` object when it is no longer needed.
 
 1.  Navigate to **Networking** → **NodeNetworkConfigurationPolicy**.
 
@@ -346,17 +352,17 @@ If you have two nodes and you apply an NNCP manifest with the `maxUnavailable` p
             - 8.8.8.8
     ```
 
-    - Name of the policy.
+    - `metadata.name` defines the name of the policy.
 
-    - Optional: If you do not include the `nodeSelector` parameter, the policy applies to all nodes in the cluster.
+    - `spec.nodeSelector` defines the nodes in the cluster the networking policy is applied to. If not defined, the default is all nodes.
 
-    - This example uses the `node-role.kubernetes.io/worker: ""` node selector to select all worker nodes in the cluster.
+    - `spec.nodeSelector.node-role.kubernetes.io/worker` uses the `node-role.kubernetes.io/worker: ""` node selector to select all worker nodes in the cluster.
 
-    - Optional: Specifies the maximum number of nmstate-enabled nodes that the policy configuration can be applied to concurrently. This parameter can be set to either a percentage value (string), for example, `"10%"`, or an absolute value (number), such as `3`.
+    - `spec.maxUnavailable` is optional and defines the maximum number of nmstate-enabled nodes that the policy configuration can be applied to concurrently. This parameter can be set to either a percentage value (string), for example, `"10%"`, or an absolute value (number), such as `3`.
 
-    - Optional: Human-readable description for the interface.
+    - `spec.desiredState.interfaces.description` is optional and defines a human-readable description for the interface.
 
-    - Optional: Specifies the search and server settings for the DNS server.
+    - `spec.desiredState.dns-resolver` is optional and defines the search and server settings for the DNS server.
 
 2.  Create the node network policy:
 
@@ -364,7 +370,10 @@ If you have two nodes and you apply an NNCP manifest with the `maxUnavailable` p
     $ oc apply -f br1-eth1-policy.yaml
     ```
 
-    - File name of the node network configuration policy manifest.
+    where:
+
+    `br1-eth1-policy.yaml`
+    Specifies the file name of the node network configuration policy manifest.
 
 - [Example for creating multiple interfaces in the same policy](../../networking/k8s_nmstate/k8s-nmstate-updating-node-network-config.xml#virt-example-nmstate-multiple-interfaces_k8s-nmstate-updating-node-network-config)
 
@@ -945,23 +954,23 @@ spec:
         enabled: true
 ```
 
-- Name of the policy.
+- `metadata.name` defines the name of the policy.
 
-- Optional: If you do not include the `nodeSelector` parameter, the policy applies to all nodes in the cluster.
+- `spec.nodeSelector` defines the nodes in the cluster the networking policy is applied to. If not defined, the default is all nodes.
 
-- This example uses a `hostname` node selector.
+- `spec.nodeSelector.kubernetes.io/hostname` uses a hostname node selector.
 
-- Name of the interface.
+- `spec.desiredState.interfaces.name` defines the name of the interface.
 
-- Optional: Human-readable description of the interface.
+- `spec.desiredState.interfaces.description` is optional and defines a human-readable description of the interface.
 
-- The type of interface. This example creates an Ethernet networking interface.
+- `spec.desiredState.interfaces.type` defines the type of interface. This example creates an Ethernet networking interface.
 
-- The requested state for the interface after creation.
+- `spec.desiredState.interfaces.state` defines the requested state for the interface after creation.
 
-- Optional: If you do not use `dhcp`, you can either set a static IP or leave the interface without an IP address.
+- `spec.desiredState.interfaces.ipv4.dhcp` is optional. If you do not use `dhcp`, you can either set a static IP or leave the interface without an IP address.
 
-- Enables `ipv4` in this example.
+- `spec.desiredState.interfaces.ipv4.enabled` defines that `ipv4` is enabled in this example.
 
 ## Example: Linux bridge interface node network configuration policy
 
@@ -994,27 +1003,27 @@ spec:
             - name: eth1
 ```
 
-- Name of the policy.
+- `metadata.name` defines the name of the policy.
 
-- Optional: If you do not include the `nodeSelector` parameter, the policy applies to all nodes in the cluster.
+- `spec.nodeSelector` defines the nodes in the cluster the networking policy is applied to. If not defined, the default is all nodes.
 
-- This example uses a `hostname` node selector.
+- `spec.nodeSelector.kubernetes.io/hostname` uses a hostname node selector.
 
-- Name of the interface.
+- `spec.desiredState.interfaces.name` defines the name of the interface.
 
-- Optional: Human-readable description of the interface.
+- `spec.desiredState.interfaces.description` is optional and defines a human-readable description of the interface.
 
-- The type of interface. This example creates a bridge.
+- `spec.desiredState.interfaces.type` defines the type of interface. This example creates a bridge.
 
-- The requested state for the interface after creation.
+- `spec.desiredState.interfaces.state` defines the requested state for the interface after creation.
 
-- Optional: If you do not use `dhcp`, you can either set a static IP or leave the interface without an IP address.
+- `spec.desiredState.interfaces.ipv4.dhcp` is optional. If you do not use `dhcp`, you can either set a static IP or leave the interface without an IP address.
 
-- Enables `ipv4` in this example.
+- `spec.desiredState.interfaces.ipv4.enabled` defines that `ipv4` is enabled in this example.
 
-- Disables `stp` in this example.
+- `spec.desiredState.interfaces.bridge.options.stp.enabled` defines that `stp` is disabled in this example.
 
-- The node NIC to which the bridge attaches.
+- `spec.desiredState.interfaces.bridge.port.name` defines the node NIC to which the bridge attaches.
 
 ## Example: VLAN interface node network configuration policy
 
@@ -1049,23 +1058,23 @@ spec:
         id: 102
 ```
 
-- Name of the policy.
+- `metadata.name` defines the name of the policy.
 
-- Optional: If you do not include the `nodeSelector` parameter, the policy applies to all nodes in the cluster.
+- `spec.nodeSelector` defines the nodes in the cluster the networking policy is applied to. If not defined, the default is all nodes.
 
-- This example uses a `hostname` node selector.
+- `spec.nodeSelector.kubernetes.io/hostname` uses a hostname node selector.
 
-- Name of the interface. When deploying on bare metal, only the `<interface_name>.<vlan_number>` VLAN format is supported.
+- `spec.desiredState.interfaces.name` defines the name of the interface. When deploying on bare metal, only the `<interface_name>.<vlan_number>` VLAN format is supported.
 
-- Optional: Human-readable description of the interface.
+- `spec.desiredState.interfaces.description` is optional and defines a human-readable description of the interface.
 
-- The type of interface. This example creates a VLAN.
+- `spec.desiredState.interfaces.type` defines the type of interface. This example creates a VLAN.
 
-- The requested state for the interface after creation.
+- `spec.desiredState.interfaces.state` defines the requested state for the interface after creation.
 
-- The node NIC to which the VLAN is attached.
+- `spec.desiredState.interfaces.vlan.base-iface` defines the node NIC to which the VLAN is attached.
 
-- The VLAN tag.
+- `spec.desiredState.interfaces.vlan.id` defines the VLAN tag.
 
 <!-- -->
 
@@ -1122,31 +1131,31 @@ spec:
       mtu: 1450
 ```
 
-- Name of the policy.
+- `metadata.name` defines the name of the policy.
 
-- Optional: If you do not include the `nodeSelector` parameter, the policy applies to all nodes in the cluster.
+- `spec.nodeSelector` defines the nodes in the cluster the networking policy is applied to. If not defined, the default is all nodes.
 
-- This example uses a `hostname` node selector.
+- `spec.nodeSelector.kubernetes.io/hostname` uses a hostname node selector.
 
-- Name of the interface.
+- `spec.desiredState.interfaces.name` defines the name of the interface.
 
-- Optional: Human-readable description of the interface.
+- `spec.desiredState.interfaces.description` is optional and defines a human-readable description of the interface.
 
-- The type of interface. This example creates a bond.
+- `spec.desiredState.interfaces.type` defines the type of interface. This example creates a bond.
 
-- The requested state for the interface after creation.
+- `spec.desiredState.interfaces.state` defines the requested state for the interface after creation.
 
-- Optional: If you do not use `dhcp`, you can either set a static IP or leave the interface without an IP address.
+- `spec.desiredState.interfaces.ipv4.dhcp` is optional. If you do not use `dhcp`, you can either set a static IP or leave the interface without an IP address.
 
-- Enables `ipv4` in this example.
+- `spec.desiredState.interfaces.ipv4.enabled` defines that `ipv4` is enabled in this example.
 
-- The driver mode for the bond. This example uses `active backup`.
+- `spec.desiredState.interfaces.link-aggregation.mode` defines the driver mode for the bond. This example uses `active backup`.
 
-- Optional: This example uses miimon to inspect the bond link every 140ms.
+- `spec.desiredState.interfaces.link-aggregation.options.miimon` is optional and defines that miimon is used to inspect the bond link every 140ms.
 
-- The subordinate node NICs in the bond.
+- `spec.desiredState.interfaces.link-aggregation.port` defines the subordinate node NICs in the bond.
 
-- Optional: The maximum transmission unit (MTU) for the bond. If not specified, this value is set to `1500` by default.
+- `spec.desiredState.interfaces.mtu` is optional and defines the maximum transmission unit (MTU) for the bond. If not specified, this value is set to `1500` by default.
 
 ## Example: Multiple interfaces in the same node network configuration policy
 
@@ -1193,33 +1202,33 @@ spec:
         enabled: true
 ```
 
-- Name of the policy.
+- `metadata.name` defines the name of the policy.
 
-- Optional: If you do not include the `nodeSelector` parameter, the policy applies to all nodes in the cluster.
+- `spec.nodeSelector` defines the nodes in the cluster the networking policy is applied to. If not defined, the default is all nodes.
 
-- This example uses `hostname` node selector.
+- `spec.nodeSelector.kubernetes.io/hostname` uses a hostname node selector.
 
-- Name of the interface.
+- `spec.desiredState.interfaces.name` defines the name of the interface.
 
-- Optional: Human-readable description of the interface.
+- `spec.desiredState.interfaces.description` is optional and defines a human-readable description of the interface.
 
-- The type of interface.
+- `spec.desiredState.interfaces.type` defines the type of interface.
 
-- The requested state for the interface after creation.
+- `spec.desiredState.interfaces.state` defines the requested state for the interface after creation.
 
-- The driver mode for the bond.
+- `spec.desiredState.interfaces.link-aggregation.mode` defines the driver mode for the bond.
 
-- Optional: This example uses miimon to inspect the bond link every 140ms.
+- `spec.desiredState.interfaces.link-aggregation.options.miimon` is optional and defines that miimon is used to inspect the bond link every 140ms.
 
-- The subordinate node NICs in the bond.
+- `spec.desiredState.interfaces.link-aggregation.port` defines the subordinate node NICs in the bond.
 
-- The node NIC to which the VLAN is attached.
+- `spec.desiredState.interfaces.vlan.base-iface` defines the node NIC to which the VLAN is attached.
 
-- The VLAN tag.
+- `spec.desiredState.interfaces.vlan.id` defines the VLAN tag.
 
-- Optional: If you do not use dhcp, you can either set a static IP or leave the interface without an IP address.
+- `spec.desiredState.interfaces.ipv4.dhcp` is optional. If you do not use dhcp, you can either set a static IP or leave the interface without an IP address.
 
-- Enables ipv4 in this example.
+- `spec.desiredState.interfaces.ipv4.enabled` defines that ipv4 is enabled in this example.
 
 ## Example: Node network configuration policy for virtual functions
 
@@ -1263,25 +1272,25 @@ spec:
              max-tx-rate: 200
 ```
 
-- Name of the policy.
+- `metadata.name` defines the name of the policy.
 
-- Optional: If you do not include the `nodeSelector` parameter, the policy applies to all nodes in the cluster.
+- `spec.nodeSelector` defines the nodes in the cluster the networking policy is applied to. If not defined, the default is all nodes.
 
-- This example applies to all nodes with the `worker` role.
+- `spec.nodeSelector.node-role.kubernetes.io/worker` defines that this example applies to all nodes with the `worker` role.
 
-- Name of the physical function (PF) network interface.
+- `spec.desiredState.interfaces.name` defines the name of the physical function (PF) network interface.
 
-- Optional: Human-readable description of the interface.
+- `spec.desiredState.interfaces.description` is optional and defines a human-readable description of the interface.
 
-- The type of interface.
+- `spec.desiredState.interfaces.type` defines the type of interface.
 
-- The requested state for the interface after configuration.
+- `spec.desiredState.interfaces.state` defines the requested state for the interface after configuration.
 
-- The total number of VFs.
+- `spec.desiredState.interfaces.ethernet.sr-iov.total-vfs` defines the total number of VFs.
 
-- Identifies the VF with an ID of `0`.
+- `spec.desiredState.interfaces.ethernet.sr-iov.vfs.id` defines the VF ID. In this example, the VF has an ID of `0`.
 
-- Sets a maximum transmission rate, in Mbps, for the VF. This sample value sets a rate of 200 Mbps.
+- `spec.desiredState.interfaces.ethernet.sr-iov.vfs.max-tx-rate` defines a maximum transmission rate, in Mbps, for the VF. This sample value sets a rate of 200 Mbps.
 
 The following YAML file is an example of a manifest that adds a VF for a network interface.
 
@@ -1321,35 +1330,33 @@ spec:
             - ens1f1v0
 ```
 
-- Name of the policy.
+- `metadata.name` defines the name of the policy.
 
-- Optional: If you do not include the `nodeSelector` parameter, the policy applies to all nodes in the cluster.
+- `spec.nodeSelector` defines the nodes in the cluster the networking policy is applied to. If not defined, the default is all nodes.
 
-- The example applies to all nodes with the `worker` role.
+- `spec.nodeSelector.node-role.kubernetes.io/worker` defines that the example applies to all nodes with the `worker` role.
 
-- Name of the VF network interface.
+- `spec.desiredState.interfaces[0].name` defines the name of the VF network interface.
 
-- Number of VFs to create.
+- `spec.desiredState.interfaces[0].ethernet.sr-iov.total-vfs` defines the number of VFs to create.
 
-- Setting to allow failover bonding between the active and backup VFs.
+- `spec.desiredState.interfaces[0].ethernet.sr-iov.vfs.trust` defines a setting to allow failover bonding between the active and backup VFs.
 
-- ID of the VLAN. The example uses hardward offloading to define a VLAN directly on the VF.
+- `spec.desiredState.interfaces[0].ethernet.sr-iov.vfs.vlan-id` defines the ID of the VLAN. The example uses hardware offloading to define a VLAN directly on the VF.
 
-- Name of the bonding network interface.
+- `spec.desiredState.interfaces[1].name` defines the name of the bonding network interface.
 
-- Optional: Human-readable description of the interface.
+- `spec.desiredState.interfaces[1].description` is optional and defines a human-readable description of the interface.
 
-- The type of interface.
+- `spec.desiredState.interfaces[1].type` defines the type of interface.
 
-- The requested state for the interface after configuration.
+- `spec.desiredState.interfaces[1].state` defines the requested state for the interface after configuration.
 
-- The bonding policy for the bond.
+- `spec.desiredState.interfaces[1].link-aggregation.mode` defines the bonding policy for the bond.
 
-- The primary attached bonding port.
+- `spec.desiredState.interfaces[1].link-aggregation.options.primary` defines the primary attached bonding port.
 
-- The ports for the bonded network interface.
-
-- In this example, the VLAN network interface is added as an additional interface to the bonded network interface.
+- `spec.desiredState.interfaces[1].link-aggregation.port` defines the ports for the bonded network interface. In this example, `ens1f1v0` is the VLAN network interface added as an additional interface to the bonded network interface.
 
 ## Example: Network interface with a VRF instance node network configuration policy
 
@@ -1387,17 +1394,17 @@ spec:
           route-table-id: 2
 ```
 
-- The name of the policy.
+- `metadata.name` defines the name of the policy.
 
-- This example applies the policy to all nodes with the label `vrf:true`.
+- `spec.nodeSelector.vrf` defines a node selector. This example applies the policy to all nodes with the label `vrf:true`.
 
-- The name of the interface.
+- `spec.desiredState.interfaces.name` defines the name of the interface.
 
-- The type of interface. This example creates a VRF instance.
+- `spec.desiredState.interfaces.type` defines the type of interface. This example creates a VRF instance.
 
-- The node interface to which the VRF attaches.
+- `spec.desiredState.interfaces.vrf.port` defines the node interface to which the VRF attaches.
 
-- The name of the route table ID for the VRF.
+- `spec.desiredState.interfaces.vrf.route-table-id` defines the route table ID for the VRF.
 
 <!-- -->
 
@@ -1530,42 +1537,17 @@ spec:
         config: "{{ capture.br1-routes.routes.running }}"
 ```
 
-- The name of the policy.
+- `metadata.name` defines the name of the policy.
 
-- Optional: If you do not include the `nodeSelector` parameter, the policy applies to all nodes in the cluster. This example uses the `node-role.kubernetes.io/worker: ""` node selector to select all worker nodes in the cluster.
+- `spec.nodeSelector` defines the nodes in the cluster the networking policy is applied to. If not defined, the default is all nodes. This example uses the `node-role.kubernetes.io/worker: ""` node selector to select all worker nodes in the cluster.
 
-- The reference to the node NIC to which the bridge attaches.
+- `spec.capture.eth1-nic` defines the reference to the node NIC to which the bridge attaches.
 
-- The type of interface. This example creates a bridge.
+- `spec.desiredState.interfaces.type` defines the type of interface. This example creates a bridge.
 
-- The IP address of the bridge interface. This value matches the IP address of the NIC which is referenced by the `spec.capture.eth1-nic` entry.
+- `spec.desiredState.interfaces.ipv4` defines the IP address of the bridge interface. This value matches the IP address of the NIC which is referenced by the `spec.capture.eth1-nic` entry.
 
-- The node NIC to which the bridge attaches.
-
-## Example: Node network configuration policy to enable LLDP reporting
-
-The following YAML file is an example of a `NodeNetworkConfigurationPolicy` manifest that enables the Link Layer Discovery Protocol (LLDP) listener for all ethernet ports in your OpenShift Container Platform cluster.
-
-Devices on a local area network can use LLDP to advertise their identity, capabilities, and neighbor information.
-
-``` yaml
-apiVersion: nmstate.io/v1
-kind: NodeNetworkConfigurationPolicy
-metadata:
-  name: enable-lldp-ethernets-up
-spec:
-  capture:
-    ethernets: interfaces.type=="ethernet"
-    ethernets-up: capture.ethernets | interfaces.state=="up"
-    ethernets-lldp: capture.ethernets-up | interfaces.lldp.enabled:=true
-  desiredState:
-    interfaces: "{{ capture.ethernets-lldp.interfaces }}"
-# ...
-```
-
-- Specifies the name of the node network configuration policy.
-
-- Specifies that LLDP is enabled for all ethernet ports that have the interface state set to `up`.
+- `spec.desiredState.interfaces.bridge.port.name` defines the node NIC to which the bridge attaches.
 
 <!-- -->
 
@@ -1597,7 +1579,10 @@ The following snippet statically configures an IP address on the Ethernet interf
 # ...
 ```
 
-- Replace this value with the static IP address for the interface.
+where:
+
+`192.168.122.250`
+Specifies the static IP address for the interface.
 
 ## No IP address
 

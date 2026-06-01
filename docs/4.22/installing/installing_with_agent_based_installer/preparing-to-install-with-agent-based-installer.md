@@ -4,6 +4,12 @@ The Agent-based installation method provides the flexibility to boot your on-pre
 
 The configuration is in the same format as for the installer-provisioned infrastructure and user-provisioned infrastructure installation methods. The Agent-based Installer can also optionally generate or accept Zero Touch Provisioning (ZTP) custom resources. ZTP allows you to provision new edge sites with declarative configurations of bare-metal equipment.
 
+<div class="note">
+
+To deploy clusters with virtualized control planes running on OpenShift Virtualization VMs, you can use KubeVirt Redfish to expose VMs as Redfish-compatible endpoints. For more information about using virtualized control planes, see "Using virtualized control planes".
+
+</div>
+
 | CPU architecture | Connected installation | Disconnected installation |
 |------------------|------------------------|---------------------------|
 | `64-bit x86`     | ✓                      | ✓                         |
@@ -12,6 +18,8 @@ The configuration is in the same format as for the installer-provisioned infrast
 | `s390x`          | ✓                      | ✓                         |
 
 Agent-based Installer supported architectures
+
+- [Understanding virtualized control planes](../../vcp/vcp-overview.xml#vcp-overview)
 
 # Understanding Agent-based Installer
 
@@ -72,11 +80,14 @@ You can install a disconnected OpenShift Container Platform cluster through the 
 
 Recommended cluster resources for the following topologies:
 
-| Topology            | Number of control plane nodes | Number of compute nodes | vCPU    | Memory       | Storage |
-|---------------------|-------------------------------|-------------------------|---------|--------------|---------|
-| Single-node cluster | 1                             | 0                       | 8 vCPUs | 16 GB of RAM | 120 GB  |
-| Compact cluster     | 3                             | 0 or 1                  | 8 vCPUs | 16 GB of RAM | 120 GB  |
-| HA cluster          | 3 to 5                        | 2 and above             | 8 vCPUs | 16 GB of RAM | 120 GB  |
+| Topology                                                               | Number of control plane nodes | Number of compute nodes | vCPU    | Memory       | Storage |
+|------------------------------------------------------------------------|-------------------------------|-------------------------|---------|--------------|---------|
+| Single-node cluster                                                    | 1                             | 0                       | 8 vCPUs | 16 GB of RAM | 120 GB  |
+| Two-Node OpenShift cluster with Arbiter (standard Control Plane nodes) | 2                             | 0                       | 4 vCPUs | 16 GB of RAM | 120 GB  |
+| Two-Node OpenShift cluster with Arbiter (Arbiter node)                 | 1                             | 0                       | 2 vCPUs | 8 GB of RAM  | 50 GB   |
+| Two-node OpenShift cluster with fencing (TNF)                          | 2                             | 0                       | 4 vCPUs | 16 GB of RAM | 120 GB  |
+| Compact cluster                                                        | 3                             | 0 or 1                  | 8 vCPUs | 16 GB of RAM | 120 GB  |
+| HA cluster                                                             | 3 to 5                        | 2 and above             | 8 vCPUs | 16 GB of RAM | 120 GB  |
 
 Recommended cluster resources
 
@@ -103,6 +114,16 @@ In the `install-config.yaml`, specify the platform on which to perform the insta
 - `external`
 
 - `none`
+
+For a two-node OpenShift Container Platform cluster with fencing (TNF), only the following platforms are supported:
+
+- `baremetal`
+
+- `external`
+
+- `none`
+
+  The `vsphere` and `nutanix` platforms are not supported for two-node clusters with fencing.
 
   <div class="important">
 
@@ -813,7 +834,7 @@ listen ingress-router-80
   server worker1 worker1.ocp4.example.com:80 check inter 1s
 ```
 
-- Port `6443` handles the Kubernetes API traffic and points to the control plane machines.
+- Port `6443` handles the Kubernetes API traffic and points to the control plane machines. You must configure health checks on this port to ensure that the API server is available before routing traffic.
 
 - Port `22623` handles the machine config server traffic and points to the control plane machines.
 
@@ -823,7 +844,7 @@ listen ingress-router-80
 
   <div class="note">
 
-  If you are deploying a three-node cluster with zero compute nodes, the Ingress Controller pods run on the control plane nodes. In three-node cluster deployments, you must configure your application Ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes.
+  If you are deploying a compact three-node cluster with zero compute nodes, the Ingress Controller pods run on the control plane nodes. In three-node cluster deployments, you must configure your application Ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes.
 
   </div>
 
@@ -1198,6 +1219,20 @@ The Agent-based Installer performs validation checks on user defined YAML files 
 
 - The `role` parameter in the `host` object must have a value of either `master` or `worker`.
 
+<!-- -->
+
+- When the `controlPlane.replicas` parameter is set to `2`, you must provide exactly 2 fencing credentials.
+
+- Each fencing credential must include `hostName`, `address`, `username`, and `password`.
+
+- The `address` field must contain a Redfish URL, that is, the string must contain "redfish". IPMI addresses are explicitly rejected.
+
+- All `hostName` values must be unique.
+
+- If you specify `certificateVerification`, the value must be either `Enabled` or `Disabled`.
+
+- Fencing credentials are valid only with `baremetal`, `external`, or `none` platforms. Other platforms result in a validation error.
+
 ## ZTP manifests
 
 - For IPv6, the only supported value for the `networkType` parameter is `OVNKubernetes`. The `OpenshiftSDN` value can be used only for IPv4.
@@ -1205,6 +1240,12 @@ The Agent-based Installer performs validation checks on user defined YAML files 
 <!-- -->
 
 - The `ReleaseImage` parameter must match the release defined in the installer.
+
+<div class="important">
+
+Zero Touch Provisioning (ZTP) is not supported for two-node clusters with fencing (TNF). Although you can use Red Hat Advanced Cluster Management (RHACM) for installations, the additional infrastructure components required for ZTP are not validated for this topology.
+
+</div>
 
 # Next steps
 

@@ -125,6 +125,20 @@ The following diagram demonstrates how a cluster administrator can use the CUDN 
 <figcaption>Tenant isolation using a ClusterUserDefinedNetwork CR</figcaption>
 </figure>
 
+## Considerations for ClusterUserDefinedNetwork transport
+
+Unlike the `UserDefinedNetwork` (UDN) custom resource (CR), the `ClusterUserDefinedNetwork` CR gives you more control over how pod traffic is carried on the cluster infrastructure and how it relates to networks outside the cluster.
+
+By default, pod-to-pod traffic on the CUDN CR uses a Geneve overlay. Pod IP addresses are not directly reachable from outside of the cluster. When workload traffic leaves the cluster through the designated egress gateway, source addresses are masqueraded to the node IP address of the node that forwards the traffic, similar to other pod networks.
+
+You can use route advertisements and the `RouteAdvertisements` CR so that routes for the CUDN are advertised on the provider network by using Border Gateway Protocol (BGP). Collectively, this configuration makes pod IP addresses reachable from outside the cluster. For information, see "About route advertisements".
+
+Additionally, you can set the `spec.network.transport` field to `EVPN` to attach a primary CUDN to an external BGP EVPN fabric instead of using only the default overlay behavior. Configuring EVPN requires additional objects and node networking beyond the CUDN CR. For more information, see "About BGP EVPN for primary cluster user-defined networks".
+
+- [About route advertisements](../../../networking/advanced_networking/route_advertisements/about-route-advertisements.xml#about-route-advertisements)
+
+- [About BGP EVPN for primary cluster user-defined networks](../../../networking/advanced_networking/bgp_evpn_udn/about-bgp-evpn-user-defined-networks.xml#about-bgp-evpn-user-defined-networks)
+
 ## Best practices for ClusterUserDefinedNetwork CRs
 
 To create and deploy a successful instance of the `ClusterUserDefinedNetwork` (CUDN) CR, administrators must follow best practices such as avoiding default and openshift-\* namespaces, use the proper namespace selector configuration, and ensure physical network parameter matching.
@@ -213,6 +227,7 @@ Based upon your use case, create your request by using either the `cluster-layer
               subnets:
                 - "2001:db8::/64"
                 - "10.100.0.0/16"
+            transport: <transport_protocol>
         ```
 
         where:
@@ -246,6 +261,9 @@ Based upon your use case, create your request by using either the `cluster-layer
 
         - `Layer2` subnets can be omitted. If omitted, users must configure static IP addresses for the pods. As a consequence, port security only prevents MAC spoofing. For more information, see "Configuring pods with a static IP address".
 
+        `spec.network.transport`
+        Specifies how pod traffic is carried on the cluster infrastructure for the `ClusterUserDefinedNetwork` CR. Accepted value is `EVPN`. Additional configuration is required when setting the `spec.network.transport` field. This field is optional. For more information, see "About BGP EVPN for primary cluster user-defined networks".
+
     2.  Create a YAML file, such as `cluster-layer-three-udn.yaml`, to define your request for a `Layer3` topology as in the following example:
 
         ``` yaml
@@ -266,6 +284,7 @@ Based upon your use case, create your request by using either the `cluster-layer
               subnets:
                 - cidr: 10.100.0.0/16
                   hostSubnet: 24
+            transport: <transport_protocol>
         ```
 
         where:
@@ -300,6 +319,9 @@ Based upon your use case, create your request by using either the `cluster-layer
           - `hostSubnet` specifies the nodes subnet prefix that the cluster subnet is split to.
 
           - For IPv6, only a `/64` length is supported for `hostSubnet`.
+
+        `spec.network.transport`
+        Specifies how pod traffic is carried on the cluster infrastructure for the `ClusterUserDefinedNetwork` CR. Accepted value is `EVPN`. Additional configuration is required when setting the `spec.network.transport` field. This field is optional. For more information, see "About BGP EVPN for primary cluster user-defined networks".
 
 3.  Apply your request by running the following command:
 
@@ -843,6 +865,12 @@ It is not recommended to set these fields without explicit need and understandin
 <td style="text-align: left;"><p>string</p></td>
 <td style="text-align: left;"><p>Specifies the name for a physical network interface. The value you specify must match the <code>network-name</code> parameter that you provided in your Open vSwitch (OVS) bridge mapping.</p></td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>spec.network.transport</code></p></td>
+<td style="text-align: left;"><p>N/A</p></td>
+<td style="text-align: left;"><p>string</p></td>
+<td style="text-align: left;"><p>Specifies how pod traffic is carried on the cluster infrastructure for the <code>ClusterUserDefinedNetwork</code> CR. Accepted value is <code>EVPN</code>. Additional configuration is required when setting the <code>spec.network.transport</code> field. For more information, see "About BGP EVPN for primary cluster user-defined networks".</p></td>
+</tr>
 </tbody>
 </table>
 
@@ -966,3 +994,7 @@ metadata:
 Open ports are accessible on the pod’s default network IP, not its UDN network IP.
 
 </div>
+
+# Additional resources
+
+- [About BGP EVPN for primary cluster user-defined networks](../../../networking/advanced_networking/bgp_evpn_udn/about-bgp-evpn-user-defined-networks.xml#about-bgp-evpn-user-defined-networks)

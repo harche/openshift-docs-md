@@ -88,11 +88,13 @@ You can select a dedicated network for live migration by using the OpenShift Con
 
 - You created a network attachment definition for the network.
 
-1.  Go to **Virtualization \> Overview** in the OpenShift Container Platform web console.
+1.  Go to **Virtualization → Settings** in the OpenShift Container Platform web console.
 
-2.  Click the **Settings** tab and then click **Live migration**.
+2.  On the **Cluster** tab, click **General settiings**.
 
-3.  Select the network from the **Live migration network** list.
+3.  Click **Live Migration**.
+
+4.  Select the network from the **Live migration network** list.
 
 # Additional resources
 

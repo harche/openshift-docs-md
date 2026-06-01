@@ -10,11 +10,17 @@ You can access and change VM disk images by using the `libguestfs` command-line 
 
 You can download the `virtctl` binary by using the OpenShift Container Platform web console and then install it on Red Hat Enterprise Linux (RHEL) 9 or later, Linux, Windows, or macOS.
 
-1.  Navigate to the **Virtualization → Overview** page in the web console.
+1.  Navigate to the **Virtualization** page in the web console.
 
-2.  Click the **Download virtctl** link to download the `virtctl` binary for your operating system.
+2.  Click the **Question Mark (?)** icon in the top right corner of screen.
 
-3.  Install `virtctl`:
+3.  Select **Command Line Tools** from the menu.
+
+4.  Locate the **virtctl - KubeVirt command line interface** section of the page.
+
+5.  Click the **Download virtctl** link to download the `virtctl` binary for your operating system.
+
+6.  Install `virtctl`:
 
     - For RHEL and other Linux operating systems:
 

@@ -319,14 +319,6 @@ You can customize the OpenShift Container Platform cluster you install on Nutani
 
         For these values, use the `imageContentSourcePolicy.yaml` file that was created when you mirrored the registry.
 
-    4.  Optionally, set the publishing strategy to `Internal`:
-
-        ``` yaml
-        publish: Internal
-        ```
-
-        By setting this option, you create an internal Ingress Controller and a private load balancer.
-
 4.  Optional: Update one or more of the default configuration parameters in the `install.config.yaml` file to customize the installation.
 
     For more information about the parameters, see "Installation configuration parameters".

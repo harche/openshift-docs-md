@@ -29,3 +29,7 @@ If you are using BGP routing in conjunction with the MetalLB Operator, the neces
     }
   }'
   ```
+
+# Additional resources
+
+- [Improve east-west performance by routing pods on the underlay with BGP](../bgp_routing/no-overlay-mode-bgp-routing.xml#no-overlay-mode-bgp-routing)

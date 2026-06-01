@@ -457,16 +457,21 @@ Type
 <td style="text-align: left;"><p>The number of replicas that have labels matching the labels of the machine template of the MachineSet.</p></td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;"><p><code>labelSelector</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>labelSelector is a label selector, in string format, for Machines corresponding to the MachineSet. It is exposed via the scale subresource as status.selector. When omitted, the MachineSet controller has not yet reconciled spec.selector into status.labelSelector. When present, it must not be empty and must not exceed 4096 characters.</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>observedGeneration</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>observedGeneration reflects the generation of the most recently observed MachineSet.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>readyReplicas</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>The number of ready replicas for this MachineSet. A machine is considered ready when the node has been created and is "Ready".</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>replicas</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>replicas is the most recently observed number of replicas.</p></td>

@@ -129,14 +129,6 @@ The following table outlines an example of the relationship among regions, zones
 
 # VMware vSphere host group enablement
 
-<div class="important">
-
-OpenShift zones support for vSphere host groups is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
 When deploying an OpenShift Container Platform cluster to VMware vSphere, you can map your vSphere host groups onto OpenShift Container Platform failure domains. This is useful if you are using a stretched cluster configuration, where ESXi hosts are grouped into host groups by physical location.
 
 To enable this feature, you must meet the following requirements:
@@ -150,20 +142,6 @@ To enable this feature, you must meet the following requirements:
 - You must define multiple failure domains for your OpenShift Container Platform cluster in the `install-config.yaml` file.
 
 - You must grant the `Host.Inventory.EditCluster` privilege on the vSphere vCenter cluster object.
-
-- You must include the following parameters in your `install-config.yaml` file to enable this Technology Preview feature:
-
-  ``` yaml
-  featureSet: TechPreviewNoUpgrade
-  featureGate:
-    - "VSphereHostVMGroupZonal=true"
-  ```
-
-  <div class="note">
-
-  For further information on feature gates, see "Enabling features using feature gates".
-
-  </div>
 
 Review the following key terms, which correspond to parameters in your `install-config.yaml` file that you must configure to enable this feature:
 
@@ -186,8 +164,6 @@ Review the following key terms, which correspond to parameters in your `install-
 - [vSphere automatic migration](../../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration-sc-vsphere_persistent-storage-csi-migration)
 
 - [VMware vSphere CSI Driver Operator](../../../storage/container_storage_interface/persistent-storage-csi-vsphere.xml#persistent-storage-csi-vsphere-top-aware_persistent-storage-csi-vsphere)
-
-- [Enabling features using feature gates](../../../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)
 
 # Creating the installation configuration file
 
@@ -331,14 +307,6 @@ You can customize the OpenShift Container Platform cluster you install on VMware
         ```
 
         For these values, use the `imageContentSources` that you recorded during mirror registry creation.
-
-    4.  Optionally, set the publishing strategy to `Internal`:
-
-        ``` yaml
-        publish: Internal
-        ```
-
-        By setting this option, you create an internal Ingress Controller and a private load balancer.
 
 4.  Make any other modifications to the `install-config.yaml` file that you require.
 
@@ -619,14 +587,6 @@ The default `install-config.yaml` file configuration from the previous release o
 
 ## Configuring host groups for a VMware vCenter
 
-<div class="important">
-
-OpenShift zones support for vSphere host groups is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
 You can modify the default installation configuration file to deploy an OpenShift Container Platform cluster on a VMware vSphere stretched cluster, where ESXi hosts are grouped into host groups by physical location.
 
 The default `install-config.yaml` file configuration from previous releases of OpenShift Container Platform is deprecated. Though you can still use it, the OpenShift Container Platform installer will display a warning message that indicates the use of deprecated fields in the configuration file.
@@ -638,8 +598,6 @@ The default `install-config.yaml` file configuration from previous releases of O
 - You have granted the `Host.Inventory.EditCluster` privilege on the vSphere vCenter cluster object.
 
 - You have downloaded and installed the `govc` command line tool. Instructions can be found on the VMware documentation website. Note that `govc` is an open-source tool that is not maintained by the Red Hat support team.
-
-- You have enabled the `TechPreviewNoUpgrade` feature set. For more information, see "Enabling features using feature gates".
 
   <div class="important">
 
@@ -696,10 +654,6 @@ The default `install-config.yaml` file configuration from previous releases of O
     </div>
 
     ``` yaml
-    featureSet: TechPreviewNoUpgrade
-    featureGate:
-      - "VSphereHostVMGroupZonal=true"
-    # ...
     platform:
       vsphere:
         vcenters:
@@ -738,8 +692,6 @@ The default `install-config.yaml` file configuration from previous releases of O
             resourcePool: "/<data_center_1>/host/<cluster_1>/Resources/<resourcePool_1>"
             folder: "/<data_center_1>/vm/<folder_1>"
     ```
-
-- [Enabling features using feature gates](../../../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)
 
 # Services for a user-managed load balancer
 

@@ -314,7 +314,7 @@ metadata:
 
 When determining a cluster’s next minor version (4.y+1), OLM v1 only considers major and minor versions (x and y) for comparisons. It ignores any *z-stream* versions (4.y.z), also known as patch releases, or pre-release versions.
 
-For example, if the cluster’s current version is `4.17.0`, the next minor version is `4.22`. If the current version is `4.17.0-rc1`, the next minor version is still `4.22`.
+For example, if the cluster’s current version is `4.17.0`, the next minor version is `4.23`. If the current version is `4.17.0-rc1`, the next minor version is still `4.23`.
 
 </div>
 

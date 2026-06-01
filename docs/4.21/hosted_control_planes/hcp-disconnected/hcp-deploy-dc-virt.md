@@ -1,10 +1,18 @@
-When you deploy hosted control planes in a disconnected environment, some of the steps differ depending on the platform you use. The following procedures are specific to deployments on OpenShift Virtualization.
+When you deploy hosted control planes in a disconnected environment, some of the steps differ depending on whether you use bare metal or OpenShift Virtualization.
 
-# Prerequisites
+To get started, you must meet the following requirements:
 
 - You have a disconnected OpenShift Container Platform environment serving as your management cluster.
 
-- You have an internal registry to mirror images on. For more information, see [About disconnected installation mirroring](../../disconnected/index.xml#installing-mirroring-disconnected-about).
+- You have an internal registry to mirror images on. For more information, see "About disconnected installation mirroring".
+
+<div class="note">
+
+A known limitation exists for hosted clusters on an OpenShift Container Platform management cluster that is version 4.21 or later. To avoid issues, you must mirror the 4.20.10 release payload from the `quay.io/openshift-release-dev/ocp-release:4.20.10-multi` image to the target mirror registry. This temporary limitation is expected to be resolved in a later release.
+
+</div>
+
+- [About disconnected installation mirroring](../../disconnected/index.xml#installing-mirroring-disconnected-about)
 
 # Configuring image mirroring for hosted control planes in a disconnected environment
 
@@ -187,7 +195,15 @@ Deploy the multicluster engine Operator by completing the steps in *Deploying mu
 
 # Deploying multicluster engine Operator for a disconnected installation of hosted control planes
 
-The multicluster engine for Kubernetes Operator plays a crucial role in deploying clusters across providers. If you do not have multicluster engine Operator installed, review the following documentation to understand the prerequisites and steps to install it:
+The multicluster engine for Kubernetes Operator is crucial in deploying clusters across providers. Ensure that you have multicluster engine Operator installed and configured for your deployment.
+
+If you do not have multicluster engine Operator installed, review the following documentation to understand the prerequisites and steps to install it:
+
+- "About cluster lifecycle with multicluster engine operator"
+
+- "Installing and upgrading multicluster engine operator"
+
+<!-- -->
 
 - [About cluster lifecycle with multicluster engine operator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#mce-intro)
 
@@ -195,7 +211,7 @@ The multicluster engine for Kubernetes Operator plays a crucial role in deployin
 
 # Configuring TLS certificates for a disconnected installation of hosted control planes
 
-To ensure proper function in a disconnected deployment, you need to configure the registry CA certificates in the management cluster and the worker nodes for the hosted cluster.
+To ensure proper function in a disconnected deployment, you need to configure the registry CA certificates in the management cluster and the compute nodes for the hosted cluster.
 
 ## Adding the registry CA to the management cluster
 
@@ -281,9 +297,9 @@ In order for the data plane workers in the hosted cluster to be able to retrieve
 
     - Specify the namespace where the `HostedCluster` object is created.
 
-# Creating a hosted cluster on OpenShift Virtualization
+# Creating a hosted cluster on OpenShift Virtualization in a disconnected environment
 
-A hosted cluster is an OpenShift Container Platform cluster with its control plane and API endpoint hosted on a management cluster. The hosted cluster includes the control plane and its corresponding data plane.
+As part of the process to deploy hosted control planes on OpenShift Virtualization in a disconnected environment, you need to create a hosted cluster. A hosted cluster is an OpenShift Container Platform cluster with its control plane and API endpoint hosted on a management cluster. The hosted cluster includes the control plane and its corresponding data plane.
 
 ## Requirements to deploy hosted control planes on OpenShift Virtualization
 
@@ -384,7 +400,7 @@ Avoid storing all hosted cluster information in a shared namespace. If you creat
 
 - [Labeling management cluster nodes](../../hosted_control_planes/hcp-prepare/hcp-distribute-workloads.xml#hcp-labels-taints_hcp-distribute-workloads)
 
-## Configuring the default ingress and DNS for hosted control planes on OpenShift Virtualization
+# Configuring the default ingress and DNS for hosted control planes on OpenShift Virtualization
 
 Every OpenShift Container Platform cluster includes a default application Ingress Controller, which must have an wildcard DNS record associated with it. By default, hosted clusters that are created by using OpenShift Virtualization automatically become a subdomain of the OpenShift Container Platform cluster that the virtual machines run on.
 
@@ -414,11 +430,13 @@ As a result, a hosted cluster that is named `guest` and that runs on that underl
 
   </div>
 
-## Customizing ingress and DNS behavior
+# Customize ingress and DNS behavior
 
-If you do not want to use the default ingress and DNS behavior, you can configure a KubeVirt hosted cluster with a unique base domain at creation time. This option requires manual configuration steps during creation and involves three main steps: cluster creation, load balancer creation, and wildcard DNS configuration.
+If you do not want to use the default ingress and DNS behavior, you can configure a hosted cluster on OpenShift Virtualization with a unique base domain at creation time.
 
-### Deploying a hosted cluster that specifies the base domain
+This option requires manual configuration steps during creation and involves three main steps: cluster creation, load balancer creation, and wildcard DNS configuration.
+
+# Deploying a hosted cluster that specifies the base domain
 
 To create a hosted cluster that specifies a base domain, complete the following steps.
 
@@ -512,7 +530,7 @@ If your hosted cluster is on bare metal, you might need MetalLB to set up load b
 
 </div>
 
-### Setting up the load balancer
+# Setting up the load balancer
 
 Set up the load balancer service that routes ingress traffic to the KubeVirt VMs and assigns a wildcard DNS entry to the load balancer IP address.
 
@@ -573,7 +591,7 @@ Set up the load balancer service that routes ingress traffic to the KubeVirt VMs
     $ oc create -f <file_name>.yaml
     ```
 
-### Setting up a wildcard DNS
+# Setting up a wildcard DNS
 
 Set up a wildcard DNS record or CNAME that references the external IP of the load balancer service.
 

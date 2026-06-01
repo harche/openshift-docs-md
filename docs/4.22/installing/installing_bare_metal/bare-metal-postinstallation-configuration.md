@@ -343,25 +343,29 @@ You can enable a `provisioning` network after installation using the Cluster Bar
 
 # Creating a manifest object that includes a customized br-ex bridge
 
-Consider using the default OVS br-ex bridge configuration if you require a standard environment with a single network interface controller (NIC) and standard OVS settings.
+Use the default OVS br-ex bridge configuration for standard environments. This configuration applies when you have a single network interface controller (NIC) and standard OVS settings.
 
-By default, OpenShift Container Platform automatically configures the Open vSwitch (OVS) `br-ex` bridge on bare-metal nodes. For advanced networking requirements, you can override the default behavior by creating a `NodeNetworkConfigurationPolicy` (NNCP) custom resource (CR) that includes an NMState configuration file.
+By default, OpenShift Container Platform automatically configures the Open vSwitch (OVS) `br-ex` bridge on bare-metal nodes. For advanced networking requirements, you can override this default behavior on bare-metal platforms. To do this, create an `NodeNetworkConfigurationPolicy` (NNCP) custom resource (CR) that includes an NMState configuration file.
 
-The Kubernetes NMState Operator uses the NMState configuration file to create a customized `br-ex` bridge network configuration on each node in your cluster.
+The Kubernetes NMState Operator uses the NMState configuration file to create a customized `br-ex` bridge network configuration. This configuration applies to each node in your cluster.
 
 <div class="important">
 
-After creating the `NodeNetworkConfigurationPolicy` CR, copy content from the NMState configuration file that was created during cluster installation into the NNCP CR. An incomplete NNCP CR can result in loss of network connectivity, because the NNCP overrides all existing policies.
+After creating the `NodeNetworkConfigurationPolicy` CR, copy content from the installation NMState configuration file into the NNCP CR. An incomplete NNCP CR can result in loss of network connectivity, because the NNCP overrides all existing policies.
 
 </div>
 
 Consider using the customized `br-ex` bridge configuration for any of the following tasks:
 
-- You want to make postinstallation changes to the bridge, such as changing the Open vSwitch (OVS) or OVN-Kubernetes `br-ex` bridge network. The default OVS `br-ex` bridge mechanism does not support making postinstallation changes to the bridge.
+- You need to modify the `br-ex` bridge after you installed the cluster.
 
-- You want to deploy the bridge on a different interface than the interface available on a host or server IP address.
+- You need to modify the maximum transmission unit (MTU) for your cluster.
 
-- You want to make advanced configurations to the bridge that are not possible with the default OVS `br-ex` bridge mechanism. Using the default mechanism for these configurations might result in the bridge failing to connect multiple network interfaces and facilitating data forwarding between the interfaces.
+- You need to update DNS values.
+
+- You need to modify attributes for a different bond interface, such as MIImon (Media Independent Interface Monitor), bonding mode, or Quality of Service (QoS).
+
+- You need to enable Link Layer Discovery Protocol (LLDP) to discover and troubleshoot switch connectivity.
 
 <div class="warning">
 
@@ -467,28 +471,28 @@ The following list of interface names are reserved and you cannot use the names 
   where:
 
   `metadata.name`
-  Name of the policy.
+  Specifies the name of the policy.
 
   `interfaces.name`
-  Name of the interface.
+  Specifies the name of the interface.
 
   `interfaces.type`
-  The type of ethernet.
+  Specifies the type of ethernet.
 
   `interfaces.state`
-  The requested state for the interface after creation.
+  Specifies the requested state for the interface after creation.
 
   `ipv4.enabled`
   Disables IPv4 and IPv6 in this example.
 
   `port.name`
-  The node NIC to which the bridge is attached.
+  Specifies the node NIC to which the bridge is attached.
 
   `address.ip`
   Shows the default IPv4 and IPv6 IP addresses. Ensure that you set the masquerade IPv4 and IPv6 IP addresses of your network.
 
   `auto-route-metric`
-  Set the parameter to `48` to ensure the `br-ex` default route always has the highest precedence (lowest metric). This configuration prevents routing conflicts with any other interfaces that are automatically configured by the `NetworkManager` service.
+  Set the parameter to `48` to ensure the `br-ex` default route always has the highest precedence (lowest metric). This configuration prevents routing conflicts with any other interfaces automatically configured by the `NetworkManager` service.
 
 <!-- -->
 
@@ -1428,10 +1432,14 @@ The `spec` section of the `BareMetalHost` resource defines the desired state of 
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;"><p><code>architecture</code></p></td>
+<td style="text-align: left;"><p>Specifies the CPU architecture of the underlying machine. Supported values are <code>aarch64</code> and <code>x86_64</code>. If this value is not specified, it will default to the architecture of the control plane. You can add <code>aarch64</code> machines to a cluster with <code>x86_64</code> control plane machines, but you cannot add <code>x86_64</code> machines to a cluster with <code>aarch64</code> control plane machines.</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>automatedCleaningMode</code></p></td>
 <td style="text-align: left;"><p>An interface to enable or disable automated cleaning during provisioning and de-provisioning. When set to <code>disabled</code>, it skips automated cleaning. When set to <code>metadata</code>, automated cleaning is enabled. The default setting is <code>metadata</code>.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>bmc:
   address:
   credentialsName:
@@ -1443,23 +1451,23 @@ The `spec` section of the `BareMetalHost` resource defines the desired state of 
 <li><p><code>disableCertificateVerification</code>: A boolean to skip certificate validation when set to <code>true</code>.</p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>bootMACAddress</code></p></td>
 <td style="text-align: left;"><p>The MAC address of the network interface controller (NIC) used for provisioning the host.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>bootMode</code></p></td>
 <td style="text-align: left;"><p>The boot mode of the host. It defaults to <code>UEFI</code>, but it can also be set to <code>legacy</code> for BIOS boot, or <code>UEFISecureBoot</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>consumerRef</code></p></td>
 <td style="text-align: left;"><p>A reference to another resource that is using the host. It could be empty if another resource is not currently using the host. For example, a <code>Machine</code> resource might use the host when the <code>machine-api</code> is using the host.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>description</code></p></td>
 <td style="text-align: left;"><p>A human-provided string to help identify the host.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>externallyProvisioned</code></p></td>
 <td style="text-align: left;"><p>A boolean indicating whether the host provisioning and deprovisioning are managed externally. When set:</p>
 <ul>
@@ -1467,7 +1475,7 @@ The `spec` section of the `BareMetalHost` resource defines the desired state of 
 <li><p>Hardware inventory will be monitored, but no provisioning or deprovisioning operations are performed on the host.</p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>firmware</code></p></td>
 <td style="text-align: left;"><p>Contains information about the BIOS configuration of bare metal hosts. Currently, <code>firmware</code> is only supported by iRMC, iDRAC, iLO4 and iLO5 BMCs. The sub fields are:</p>
 <ul>
@@ -1476,7 +1484,7 @@ The `spec` section of the `BareMetalHost` resource defines the desired state of 
 <li><p><code>virtualizationEnabled</code>: Supports the virtualization of platform hardware. Valid settings are <code>true</code> or <code>false</code>.</p></li>
 </ul></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>image:
   url:
   checksum:
@@ -1490,15 +1498,15 @@ The `spec` section of the `BareMetalHost` resource defines the desired state of 
 <li><p><code>format</code>: This is the disk format of the image. It can be one of <code>raw</code>, <code>qcow2</code>, <code>vdi</code>, <code>vmdk</code>, <code>live-iso</code> or be left unset. Setting it to <code>raw</code> enables raw image streaming in the Ironic agent for that image. Setting it to <code>live-iso</code> enables iso images to live boot without deploying to disk, and it ignores the <code>checksum</code> fields.</p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>networkData</code></p></td>
 <td style="text-align: left;"><p>A reference to the secret containing the network configuration data and its namespace, so that it can be attached to the host before the host boots to set up the network.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>online</code></p></td>
 <td style="text-align: left;"><p>A boolean indicating whether the host should be powered on (<code>true</code>) or off (<code>false</code>). Changing this value will trigger a change in the power state of the physical host.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>raid:
   hardwareRAIDVolumes:
   softwareRAIDVolumes:</code></pre></td>
@@ -1536,7 +1544,7 @@ The `spec` section of the `BareMetalHost` resource defines the desired state of 
      hardwareRAIDVolume: []</code></pre>
 <p>If you receive an error message indicating that the driver does not support RAID, set the <code>raid</code>, <code>hardwareRAIDVolumes</code> or <code>softwareRAIDVolumes</code> to nil. You might need to ensure the host has a RAID controller.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>rootDeviceHints:
   deviceName:
   hctl:

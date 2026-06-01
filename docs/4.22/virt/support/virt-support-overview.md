@@ -62,16 +62,15 @@ Monitor cluster and virtual machine (VM) health with the OpenShift Container Pla
 
 The OpenShift Container Platform web console displays resource usage, alerts, events, and trends for your cluster and for OpenShift Virtualization components and resources.
 
-| Page                                                                                        | Description                                                    |
-|---------------------------------------------------------------------------------------------|----------------------------------------------------------------|
-| **Overview** page                                                                           | Cluster details, status, alerts, inventory, and resource usage |
-| **Virtualization** → **Overview** tab                                                       | OpenShift Virtualization resources, usage, alerts, and status  |
-| **Virtualization** → **Top consumers** tab                                                  | Top consumers of CPU, memory, and storage                      |
-| **Virtualization** → **Migrations** tab                                                     | Progress of live migrations                                    |
-| **Virtualization** → **VirtualMachines** tab                                                | CPU, memory, and storage usage summary                         |
-| **Virtualization** → **VirtualMachines** → **VirtualMachine details** → **Metrics** tab     | VM resource usage, storage, network, and migration             |
-| **Virtualization** → **VirtualMachines** → **VirtualMachine details** → **Events** tab      | List of VM events                                              |
-| **Virtualization** → **VirtualMachines** → **VirtualMachine details** → **Diagnostics** tab | VM status conditions and volume snapshot status                |
+| Page                                                                                                               | Description                                                    |
+|--------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|
+| **Virtualization** → **VirtualMachines** → **Overview** page                                                       | Cluster details, status, alerts, inventory, and resource usage |
+| **Virtualization** → **VirtualMachines** → **Overview** → **Overview** tab                                         | OpenShift Virtualization resources, usage, alerts, and status  |
+| **Virtualization** → **Migrations** page                                                                           | Progress of live migrations                                    |
+| **Virtualization** → **VirtualMachines** → **Virtual machines** tab                                                | CPU, memory, and storage usage summary                         |
+| **Virtualization** → **VirtualMachines** → **Virtual machines** → **VirtualMachine details** → **Metrics** tab     | VM resource usage, storage, network, and migration             |
+| **Virtualization** → **VirtualMachines** → **Virtual machines** → **VirtualMachine details** → **Events** tab      | List of VM events                                              |
+| **Virtualization** → **VirtualMachines** → **Virtual machines** → **VirtualMachine details** → **Diagnostics** tab | VM status conditions and volume snapshot status                |
 
 Web console pages for monitoring and troubleshooting
 

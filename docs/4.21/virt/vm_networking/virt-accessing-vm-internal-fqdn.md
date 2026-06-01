@@ -29,13 +29,13 @@ To create a headless service in a namespace, add the `clusterIP: None` parameter
         targetPort: 1234
     ```
 
-    - The name of the service. This must match the `spec.subdomain` attribute in the `VirtualMachine` manifest file.
+    - `metadata.name` defines the name of the service. This must match the `spec.subdomain` attribute in the `VirtualMachine` manifest file.
 
-    - This service selector must match the `expose:me` label in the `VirtualMachine` manifest file.
+    - `spec.selector` defines the service selector that must match the `expose:me` label in the `VirtualMachine` manifest file.
 
-    - Specifies a headless service.
+    - `spec.clusterIP` defines a headless service.
 
-    - The list of ports that are exposed by the service. You must define at least one port. This can be any arbitrary value as it does not affect the headless service.
+    - `spec.ports` defines the list of ports that are exposed by the service. You must define at least one port. This can be any arbitrary value as it does not affect the headless service.
 
 2.  Save the `Service` manifest file.
 
@@ -77,11 +77,11 @@ If a headless service exists with a name that matches the subdomain, a unique DN
     # ...
     ```
 
-    - The `expose:me` label must match the `spec.selector` attribute of the `Service` manifest that you previously created.
+    - `spec.template.metadata.labels.expose` defines a label that must match the `spec.selector` attribute of the `Service` manifest that you previously created.
 
-    - If this attribute is not specified, the resulting DNS A record takes the form of `<vm.metadata.name>.<vm.spec.subdomain>.<vm.metadata.namespace>.svc.cluster.local`.
+    - `spec.template.spec.hostname` defines the hostname. If this attribute is not specified, the resulting DNS A record takes the form of `<vm.metadata.name>.<vm.spec.subdomain>.<vm.metadata.namespace>.svc.cluster.local`.
 
-    - The `spec.subdomain` attribute must match the `metadata.name` value of the `Service` object.
+    - `spec.template.spec.subdomain` defines the subdomain. The `spec.subdomain` attribute must match the `metadata.name` value of the `Service` object.
 
 2.  Save your changes and exit the editor.
 

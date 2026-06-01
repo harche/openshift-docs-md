@@ -8,7 +8,7 @@ A hot plugged disk remains attached to the VM even after reboot. You must unplug
 
 Each VM has a `virtio-scsi` controller so that hot plugged disks can use the SCSI bus. The `virtio-scsi` controller overcomes the limitations of VirtIO while retaining its performance advantages. It is highly scalable and supports hot plugging over 4 million disks.
 
-When you hot plug disks to the VirtIO (`virtio-blk`) bus, each disk uses a PCI Express (PCIe) slot in the VM. The number of PCIe slots is limited and pre-set automatically at the VM creation as specified in the [Available VirtIO Ports](https://kubevirt.io/user-guide/storage/hotplug_volumes/#available-virtio-ports) table. Therefore, you can use `virtio-blk` for a small number of disks that does not exceed the number of available slots.
+When you hot plug disks to the VirtIO (`virtio-blk`) bus, each disk uses a PCI Express (PCIe) slot in the VM. The number of PCIe slots is limited and pre-set automatically at the VM creation as specified in the "Available VirtIO Ports" table. Therefore, you can use `virtio-blk` for a small number of disks that does not exceed the number of available slots.
 
 </div>
 
@@ -74,3 +74,7 @@ The hot plugged disk remains attached to the VM until you unplug it.
   $ virtctl removevolume <virtual-machine|virtual-machine-instance> \
     --volume-name=<datavolume|PVC>
   ```
+
+# Additional resources
+
+- [Available VirtIO Ports](https://kubevirt.io/user-guide/storage/hotplug_volumes/#available-virtio-ports)

@@ -30,6 +30,12 @@ The OpenShift Container Platform documentation uses the term *container runtime*
 
 OpenShift Container Platform uses CRI-O as the container engine and runC or crun as the container runtime. The default container runtime is crun. Both container runtimes adhere to the [Open Container Initiative (OCI)](https://www.opencontainers.org/) runtime specifications.
 
+<div class="warning">
+
+Starting in OpenShift Container Platform 4.22, the runC container runtime is deprecated.
+
+</div>
+
 CRI-O is a Kubernetes-native container engine implementation that integrates closely with the operating system to deliver an efficient and optimized Kubernetes experience. The CRI-O container engine runs as a systemd service on each OpenShift Container Platform cluster node.
 
 crun, developed by Red Hat, is a fast and low-memory container runtime fully written in C. runC, developed by Docker and maintained by the Open Container Project, is a lightweight, portable container runtime written in Go.

@@ -52,7 +52,7 @@ Root: ./
 |installing/installing_ibm_cloud:{preparing-to-install-on-ibm-cloud.md,installing-ibm-cloud-account.md,configuring-iam-ibm-cloud.md,user-managed-encryption-ibm-cloud.md,installing-ibm-cloud-customizations.md,installing-ibm-cloud-vpc.md,installing-ibm-cloud-private.md,installing-ibm-cloud-restricted.md,installation-config-parameters-ibm-cloud-vpc.md,uninstalling-cluster-ibm-cloud.md}
 |installing/installing_nutanix:{preparing-to-install-on-nutanix.md,nutanix-failure-domains.md,installing-nutanix-installer-provisioned.md,installing-restricted-networks-nutanix-installer-provisioned.md,installing-nutanix-three-node.md,uninstalling-cluster-nutanix.md,installation-config-parameters-nutanix.md}
 |installing/installing_on_prem_assisted:{installing-on-prem-assisted.md}
-|installing/installing_with_agent_based_installer:{preparing-to-install-with-agent-based-installer.md,understanding-disconnected-installation-mirroring.md,installing-with-agent-basic.md,installing-with-agent-based-installer.md,installing-ove.md,prepare-pxe-assets-agent.md,installing-using-iscsi.md,preparing-an-agent-based-installed-cluster-for-mce.md,installation-config-parameters-agent.md}
+|installing/installing_with_agent_based_installer:{preparing-to-install-with-agent-based-installer.md,understanding-disconnected-installation-mirroring.md,installing-with-agent-basic.md,installing-with-agent-based-installer.md,installing-ove.md,prepare-pxe-assets-agent.md,installing-using-iscsi.md,preparing-an-agent-based-installed-cluster-for-mce.md,installation-config-parameters-agent.md,agent-based-installer-postinstallation.md}
 |installing/installing_sno:{install-sno-preparing-to-install-sno.md,install-sno-installing-sno.md}
 |installing/installing_two_node_cluster:{about-two-node-arbiter-installation.md}
 |installing/installing_two_node_cluster/installing_tnf:{installing-two-node-fencing.md,install-tnf.md,install-post-tnf.md}
@@ -145,6 +145,7 @@ Root: ./
 |networking/networking_operators/metallb-operator:{about-metallb.md,metallb-operator-install.md,metallb-upgrading-operator.md}
 |networking/networking_operators/sr-iov-operator:{installing-sriov-operator.md,configuring-sriov-operator.md,uninstalling-sriov-operator.md}
 |networking/networking_operators/dpu-operator:{dpu-operator.md}
+|networking/network_observability_operator:{network-observability-operator.md}
 |networking/network_security:{network-policy-apis.md,logging-network-security.md,configuring-ipsec-ovn.md,zero-trust-networking.md}
 |networking/network_security/AdminNetworkPolicy:{ovn-k-anp.md,ovn-k-banp.md,ovn-k-anp-banp-metrics.md,ovn-k-egress-nodes-networks-peer.md,ovn-k-anp-troubleshooting.md,ovn-k-anp-recommended-practices.md}
 |networking/network_security/network_policy:{about-network-policy.md,creating-network-policy.md,viewing-network-policy.md,editing-network-policy.md,deleting-network-policy.md,default-network-policy.md,multitenant-network-policy.md}

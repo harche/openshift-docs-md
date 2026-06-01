@@ -4,7 +4,7 @@ If you use a firewall, you must configure it so that OpenShift Container Platfor
 
 Before you install OpenShift Container Platform, you must configure your firewall to grant access to the sites that OpenShift Container Platform requires. When using a firewall, make additional configurations to the firewall so that OpenShift Container Platform can access the sites that it requires to function.
 
-There are no special configuration considerations for services running on only controller nodes compared to worker nodes.
+There are no special configuration considerations for services running on only controller nodes compared to compute nodes.
 
 <div class="note">
 
@@ -12,7 +12,7 @@ If your environment has a dedicated load balancer in front of your OpenShift Con
 
 </div>
 
-1.  Set the following registry URLs for your firewall’s allowlist:
+1.  Allowlist the following container registry URLs for cluster installation and upgrades:
 
     | URL                          | Port | Function                                                                                                                                                                                          |
     |------------------------------|------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -27,7 +27,6 @@ If your environment has a dedicated load balancer in front of your OpenShift Con
     | `cdn04.quay.io`              | 443  | Provides core container images                                                                                                                                                                    |
     | `cdn05.quay.io`              | 443  | Provides core container images                                                                                                                                                                    |
     | `cdn06.quay.io`              | 443  | Provides core container images                                                                                                                                                                    |
-    | `sso.redhat.com`             | 443  | The `https://console.redhat.com` site uses authentication from `sso.redhat.com`                                                                                                                   |
     | `icr.io`                     | 443  | Provides IBM Cloud Pak container images. This domain is only required if you use IBM Cloud Paks.                                                                                                  |
     | `cp.icr.io`                  | 443  | Provides IBM Cloud Pak container images. This domain is only required if you use IBM Cloud Paks.                                                                                                  |
 
@@ -35,11 +34,37 @@ If your environment has a dedicated load balancer in front of your OpenShift Con
 
     - You can use the wildcard `*.access.redhat.com` to simplify the configuration and ensure that all subdomains, including `registry.access.redhat.com`, are allowed.
 
-    - When you add a site, such as `quay.io`, to your allowlist, do not add a wildcard entry, such as `*.quay.io`, to your denylist. In most cases, image registries use a content delivery network (CDN) to serve images. If a firewall blocks access, image downloads are denied when the initial download request redirects to a hostname such as `cdn01.quay.io`.
+    - When adding a site such as `quay.io` to your allowlist, do not add a wildcard entry such as `*.quay.io` to your denylist. In most cases, image registries use a content delivery network (CDN) to serve images. If a firewall blocks access, image downloads are denied when the initial download request redirects to a hostname such as `cdn01.quay.io`.
 
-2.  Set your firewall’s allowlist to include any site that provides resources for a language or framework that your builds require.
+2.  Allowlist the following URLs to enable cluster access, authentication, and updates:
 
-3.  If you do not disable Telemetry, you must grant access to the following URLs to access Red Hat Lightspeed:
+    | URL                                   | Port | Function                                                                        |
+    |---------------------------------------|------|---------------------------------------------------------------------------------|
+    | `*.apps.<cluster_name>.<base_domain>` | 443  | Allowlist these URLs to enable cluster access, authentication, and updates.     |
+    | `api.openshift.com`                   | 443  | API endpoint for cluster tokens and update checks.                              |
+    | `console.redhat.com`                  | 443  | Authentication service for cluster tokens.                                      |
+    | `sso.redhat.com`                      | 443  | The `https://console.redhat.com` site uses authentication from `sso.redhat.com` |
+
+    For egress traffic, Operators require route access to perform health checks to establish a connection for reaching endpoints. The authentication and web console Operators connect to two routes to verify functionality. Cluster administrators who do not want to allow `*.apps.<cluster_name>.<base_domain>`, must allow the following routes:
+
+    - `oauth-openshift.apps.<cluster_name>.<base_domain>`
+
+    - `canary-openshift-ingress-canary.apps.<cluster_name>.<base_domain>`
+
+    - `console-openshift-console.apps.<cluster_name>.<base_domain>`, or the hostname that is specified in the `spec.route.hostname` field of the `consoles.operator/cluster` object if the field is not empty.
+
+3.  Allowlist the following registry URLs that host related artifacts for cluster installation and upgrades, such as installation content, release images, and client tools:
+
+    | URL                                        | Port | Function                                                                                                                                                                                           |
+    |--------------------------------------------|------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    | `mirror.openshift.com`                     | 443  | Required to access mirrored installation content and images. This site is also a source of release image signatures, although the Cluster Version Operator needs only a single functioning source. |
+    | `quayio-production-s3.s3.amazonaws.com`    | 443  | Required to access Quay image content in AWS.                                                                                                                                                      |
+    | `rhcos.mirror.openshift.com`               | 443  | Required to download Red Hat Enterprise Linux CoreOS (RHCOS) images.                                                                                                                               |
+    | `storage.googleapis.com/openshift-release` | 443  | A source of release image signatures, although the Cluster Version Operator needs only a single functioning source.                                                                                |
+
+4.  Set your firewall’s allowlist to include any site that provides resources for a language or framework that your builds require.
+
+5.  If you do not disable Telemetry, you must grant access to the following URLs to access Telemetry and Red Hat Lightspeed:
 
     | URL                          | Port | Function                                           |
     |------------------------------|------|----------------------------------------------------|
@@ -48,7 +73,7 @@ If your environment has a dedicated load balancer in front of your OpenShift Con
     | `infogw.api.openshift.com`   | 443  | Required for Telemetry                             |
     | `console.redhat.com`         | 443  | Required for Telemetry and for `insights-operator` |
 
-4.  If you use Alibaba Cloud, Amazon Web Services (AWS), Microsoft Azure, or Google Cloud to host your cluster, you must grant access to the URLs that offer the cloud provider API and DNS for that cloud:
+6.  If you use Alibaba Cloud, Amazon Web Services (AWS), Microsoft Azure, or Google Cloud to host your cluster, you must grant access to the URLs that offer the cloud provider API and DNS for that cloud:
 
     <table>
     <colgroup>
@@ -208,40 +233,19 @@ If your environment has a dedicated load balancer in front of your OpenShift Con
     </tbody>
     </table>
 
-5.  Allowlist the following URLs:
-
-    | URL                                        | Port | Function                                                                                                                                                                                           |
-    |--------------------------------------------|------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-    | `*.apps.<cluster_name>.<base_domain>`      | 443  | Required to access the default cluster routes unless you set an ingress wildcard during installation.                                                                                              |
-    | `api.openshift.com`                        | 443  | Required both for your cluster token and to check if updates are available for the cluster.                                                                                                        |
-    | `console.redhat.com`                       | 443  | Required for your cluster token.                                                                                                                                                                   |
-    | `mirror.openshift.com`                     | 443  | Required to access mirrored installation content and images. This site is also a source of release image signatures, although the Cluster Version Operator needs only a single functioning source. |
-    | `quayio-production-s3.s3.amazonaws.com`    | 443  | Required to access Quay image content in AWS.                                                                                                                                                      |
-    | `rhcos.mirror.openshift.com`               | 443  | Required to download Red Hat Enterprise Linux CoreOS (RHCOS) images.                                                                                                                               |
-    | `sso.redhat.com`                           | 443  | The `https://console.redhat.com` site uses authentication from `sso.redhat.com`                                                                                                                    |
-    | `storage.googleapis.com/openshift-release` | 443  | A source of release image signatures, although the Cluster Version Operator needs only a single functioning source.                                                                                |
-
-    Operators require route access to perform health checks. Specifically, the authentication and web console Operators connect to two routes to verify that the routes work. If you are the cluster administrator and do not want to allow `*.apps.<cluster_name>.<base_domain>`, then allow these routes:
-
-    - `oauth-openshift.apps.<cluster_name>.<base_domain>`
-
-    - `canary-openshift-ingress-canary.apps.<cluster_name>.<base_domain>`
-
-    - `console-openshift-console.apps.<cluster_name>.<base_domain>`, or the hostname that is specified in the `spec.route.hostname` field of the `consoles.operator/cluster` object if the field is not empty.
-
-6.  Allowlist the following URL for optional third-party content:
+7.  Allowlist the following URL for optional third-party content:
 
     | URL                           | Port | Function                                                     |
     |-------------------------------|------|--------------------------------------------------------------|
     | `registry.connect.redhat.com` | 443  | Required for all third-party images and certified operators. |
 
-7.  If you use a default Red Hat Network Time Protocol (NTP) server allow the following URLs:
+8.  If you use a default Red Hat Network Time Protocol (NTP) server, allow the following URLs. NTP operates on User Datagram Protocol (UDP) port 123, so this port must be opened on the firewall.
 
-    - `1.rhel.pool.ntp.org`
-
-    - `2.rhel.pool.ntp.org`
-
-    - `3.rhel.pool.ntp.org`
+    | URL                   | Port | Function                                        |
+    |-----------------------|------|-------------------------------------------------|
+    | `1.rhel.pool.ntp.org` | 123  | Provides NTP services for time synchronization. |
+    | `2.rhel.pool.ntp.org` | 123  | Provides NTP services for time synchronization. |
+    | `3.rhel.pool.ntp.org` | 123  | Provides NTP services for time synchronization. |
 
 <div class="note">
 

@@ -1,8 +1,16 @@
+To troubleshoot `AdminNetworkPolicy` and `BaselineAdminNetworkPolicy` resources in OpenShift Container Platform, you can review status conditions with `oc describe` and inspect OVN northbound database objects with `ovn-nbctl` commands.
+
 # Checking creation of ANP
 
 To check that your `AdminNetworkPolicy` (ANP) and `BaselineAdminNetworkPolicy` (BANP) are created correctly, check the status outputs of the following commands: `oc describe anp` or `oc describe banp`.
 
 A good status indicates `OVN DB plumbing was successful` and the `SetupSucceeded`.
+
+<div class="formalpara-title">
+
+**Example ANP with a good status**
+
+</div>
 
 ``` terminal
 ...
@@ -25,6 +33,12 @@ Type:                  Ready-In-Zone-ovn-worker2
 ```
 
 If plumbing is unsuccessful, an error is reported from the respective zone controller.
+
+<div class="formalpara-title">
+
+**Example of an ANP with a bad status and error message**
+
+</div>
 
 ```` terminal
 ...
@@ -60,9 +74,9 @@ Status:
 
 See the following section for `nbctl` commands to help troubleshoot unsuccessful policies.
 
-## Using nbctl commands for ANP and BANP
+# Using nbctl commands for ANP and BANP
 
-To troubleshoot an unsuccessful setup, start by looking at OVN Northbound database (nbdb) objects including `ACL`, `AdressSet`, and `Port_Group`. To view the nbdb, you need to be inside the pod on that node to view the objects in that node’s database.
+To inspect `AdminNetworkPolicy` and `BaselineAdminNetworkPolicy` resources in the OVN northbound database (nbdb) in OpenShift Container Platform, you can run `ovn-nbctl` from the `nbdb` container on an OVN-Kubernetes node. Use the commands in this procedure to examine `ACL`, `Address_Set`, and `Port_Group` objects.
 
 - Access to the cluster as a user with the `cluster-admin` role.
 
@@ -70,11 +84,11 @@ To troubleshoot an unsuccessful setup, start by looking at OVN Northbound databa
 
 <div class="note">
 
-To run ovn `nbctl` commands in a cluster, you must open a remote shell into the \`nbdb\`on the relevant node.
+To run ovn `nbctl` commands in a cluster, you must open a remote shell into the `nbdb` on the relevant node.
 
 </div>
 
-The following policy was used to generate outputs.
+The following `AdminNetworkPolicy` was used to generate outputs:
 
 ``` yaml
 apiVersion: policy.networking.k8s.io/v1alpha1
@@ -224,11 +238,19 @@ spec:
     $ ovn-nbctl find ACL 'external_ids{>=}{"k8s.ovn.org/owner-type"=AdminNetworkPolicy,"k8s.ovn.org/name"=cluster-control}'
     ```
 
-    Where; cluster-control
+    where:
+
+    `cluster-control`
     Specifies the name of the `AdminNetworkPolicy` you are troubleshooting.
 
-    AdminNetworkPolicy
+    `k8s.ovn.org/owner-type`
     Specifies the type: `AdminNetworkPolicy` or `BaselineAdminNetworkPolicy`.
+
+    <div class="formalpara-title">
+
+    **Example output for ACLs**
+
+    </div>
 
     ``` terminal
     _uuid               : 0d5e4722-b608-4bb1-b625-23c323cc9926
@@ -398,16 +420,24 @@ spec:
         $ ovn-nbctl find ACL 'external_ids{>=}{"k8s.ovn.org/owner-type"=AdminNetworkPolicy,direction=Ingress,"k8s.ovn.org/name"=cluster-control,gress-index="1"}'
         ```
 
-        Where; `cluster-control`
+        where:
+
+        `cluster-control`
         Specifies the `name` of your ANP.
 
         `Ingress`
         Specifies the `direction` of traffic either of type `Ingress` or `Egress`.
 
-        `1`
+        `gress-index`
         Specifies the rule you want to look at.
 
         For the example ANP named `cluster-control` at `priority` `34`, the following is an example output for `Ingress` `rule` 1:
+
+        <div class="formalpara-title">
+
+        **Example output**
+
+        </div>
 
         ``` terminal
         _uuid               : aa1a224d-7960-4952-bdfb-35246bafbac8
@@ -430,6 +460,12 @@ spec:
     ``` terminal
     $ ovn-nbctl find Address_Set 'external_ids{>=}{"k8s.ovn.org/owner-type"=AdminNetworkPolicy,"k8s.ovn.org/name"=cluster-control}'
     ```
+
+    <div class="formalpara-title">
+
+    **Example outputs for `Address_Set`**
+
+    </div>
 
     ``` terminal
     _uuid               : 56e89601-5552-4238-9fc3-8833f5494869
@@ -494,6 +530,12 @@ spec:
         $ ovn-nbctl find Address_Set 'external_ids{>=}{"k8s.ovn.org/owner-type"=AdminNetworkPolicy,direction=Egress,"k8s.ovn.org/name"=cluster-control,gress-index="5"}'
         ```
 
+        <div class="formalpara-title">
+
+        **Example outputs for `Address_Set`**
+
+        </div>
+
         ``` terminal
         _uuid               : 8fd3b977-6e1c-47aa-82b7-e3e3136c4a72
         addresses           : ["0.0.0.0/0"]
@@ -506,6 +548,12 @@ spec:
     ``` terminal
     $ ovn-nbctl find Port_Group 'external_ids{>=}{"k8s.ovn.org/owner-type"=AdminNetworkPolicy,"k8s.ovn.org/name"=cluster-control}'
     ```
+
+    <div class="formalpara-title">
+
+    **Example outputs for `Port_Group`**
+
+    </div>
 
     ``` terminal
     _uuid               : f50acf71-7488-4b9a-b7b8-c8a024e99d21

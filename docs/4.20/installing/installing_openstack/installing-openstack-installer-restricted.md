@@ -455,14 +455,6 @@ You can customize the OpenShift Container Platform cluster you install on Red H
 
         For these values, use the `imageContentSources` that you recorded during mirror registry creation.
 
-    4.  Optionally, set the publishing strategy to `Internal`:
-
-        ``` yaml
-        publish: Internal
-        ```
-
-        By setting this option, you create an internal Ingress Controller and a private load balancer.
-
 4.  Make any other modifications to the `install-config.yaml` file that you require.
 
     For more information about the parameters, see "Installation configuration parameters".

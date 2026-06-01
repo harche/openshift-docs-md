@@ -8,7 +8,7 @@ The Security Profiles Operator supports only Red Hat Enterprise Linux CoreOS (RH
 
 # Creating seccomp profiles
 
-Use the `SeccompProfile` object to create profiles.
+Use the `SeccompProfile` object to create seccomp profiles.
 
 `SeccompProfile` objects can restrict syscalls within a container, limiting the access of your application.
 
@@ -29,9 +29,9 @@ Use the `SeccompProfile` object to create profiles.
       defaultAction: SCMP_ACT_LOG
     ```
 
-The seccomp profile will be saved in `/var/lib/kubelet/seccomp/operator/<namespace>/<name>.json`.
+    The seccomp profile will be saved in `/var/lib/kubelet/seccomp/operator/<namespace>/<name>.json`.
 
-An `init` container creates the root directory of the Security Profiles Operator to run the Operator without `root` group or user ID privileges. A symbolic link is created from the rootless profile storage `/var/lib/openshift-security-profiles` to the default `seccomp` root path inside of the kubelet root `/var/lib/kubelet/seccomp/operator`.
+    An `init` container creates the root directory of the Security Profiles Operator to run the Operator without `root` group or user ID privileges. A symbolic link is created from the rootless profile storage `/var/lib/openshift-security-profiles` to the default `seccomp` root path inside of the kubelet root `/var/lib/kubelet/seccomp/operator`.
 
 # Applying seccomp profiles to a pod
 
@@ -160,17 +160,22 @@ You can use the `ProfileBinding` resource to bind a security profile to the `Sec
       image: quay.io/security-profiles-operator/test-nginx-unprivileged:1.21
     ```
 
-    - The `kind:` variable refers to the kind of the profile.
+    where:
 
-    - The `name:` variable refers to the name of the profile.
+    `spec.profileRef.kind`
+    Specifies the kind of the profile.
 
-    - You can enable a default security profile by using a wildcard in the image attribute: `image: "*"`
+    `spec.profileRef.name`
+    Specifies the name of the profile.
 
-      <div class="important">
+    `spec.image`
+    Allows you to enable a default security profile by using a wildcard in the image attribute: `image: "*"`
 
-      Using the `image: "*"` wildcard attribute binds all new pods with a default security profile in a given namespace.
+    <div class="important">
 
-      </div>
+    Using the `image: "*"` wildcard attribute binds all new pods with a default security profile in a given namespace.
+
+    </div>
 
 2.  Label the namespace with `enable-binding=true` by running the following command:
 
@@ -442,7 +447,7 @@ By default, each container instance records into a separate profile. The Securit
 
 # Additional resources
 
-- [Managing security context constraints](../../authentication/managing-security-context-constraints.xml)
+- [Managing security context constraints](../../authentication/managing-security-context-constraints.xml#managing-pod-security-policies)
 
 - [Managing SCCs in OpenShift](https://cloud.redhat.com/blog/managing-sccs-in-openshift)
 

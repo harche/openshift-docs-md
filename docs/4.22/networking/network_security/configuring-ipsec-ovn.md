@@ -36,7 +36,9 @@ The following list outlines key tasks in the IPsec documentation:
 
 # Modes of operation
 
-When using IPsec on your OpenShift Container Platform cluster, you can choose from the following operating modes:
+You can configure IPsec on OpenShift Container Platform clusters in `Disabled`, `External`, or `Full` pod-to-pod and external encryption modes. Each mode determines which traffic OVN-Kubernetes encrypts by default.
+
+The following table describes the different modes of operation:
 
 | Mode       | Description                                                                                                                                                                                                               | Default |
 |------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
@@ -46,13 +48,13 @@ When using IPsec on your OpenShift Container Platform cluster, you can choose fr
 
 IPsec modes of operation
 
-# Prerequisites
+# Prerequisites for IPsec encryption for external traffic
 
-For IPsec support for encrypting traffic to external hosts, ensure that you meet the following prerequisites:
+The following prerequisites are required to add certificates into the host NSS database and to configure IPsec to communicate with external hosts.
 
 - Set `routingViaHost=true` in the `ovnKubernetesConfig.gatewayConfig` specification of the OVN-Kubernetes network plugin.
 
-- Install the NMState Operator. This Operator is required for specifying the IPsec configuration. For more information, see [Kubernetes NMState Operator](../../networking/networking_operators/k8s-nmstate-about-the-k8s-nmstate-operator.xml#k8s-nmstate-about-the-k8s-nmstate-operator).
+- Install the NMState Operator. This Operator is required for specifying the IPsec configuration. For more information, see "Kubernetes NMState Operator".
 
   <div class="note">
 
@@ -60,13 +62,13 @@ For IPsec support for encrypting traffic to external hosts, ensure that you meet
 
   </div>
 
-- The Butane tool (`butane`) is installed. To install Butane, see [Installing Butane](../../installing/install_config/installing-customizing.xml#installation-special-config-butane-install_installing-customizing).
+# Additional resources
 
-These prerequisites are required to add certificates into the host NSS database and to configure IPsec to communicate with external hosts.
+- [Kubernetes NMState Operator](../../networking/networking_operators/k8s-nmstate-about-the-k8s-nmstate-operator.xml#k8s-nmstate-about-the-k8s-nmstate-operator)
 
 # Network connectivity requirements when IPsec is enabled
 
-You must configure the network connectivity between machines to allow OpenShift Container Platform cluster components to communicate. Each machine must be able to resolve the hostnames of all other machines in the cluster.
+When IPsec is enabled in OpenShift Container Platform, you must configure the network connectivity between machines to allow cluster components to communicate. Each machine must be able to resolve the hostnames of all other machines in the cluster.
 
 | Protocol | Port                | Description                                |
 |----------|---------------------|--------------------------------------------|
@@ -82,19 +84,15 @@ For IPsec encryption of pod-to-pod traffic, the following sections describe whic
 
 ## Types of network traffic flows encrypted by pod-to-pod IPsec
 
-With IPsec enabled, only the following network traffic flows between pods are encrypted:
+When pod-to-pod IPsec is enabled in OpenShift Container Platform, OVN-Kubernetes encrypts only selected traffic flows between pods on different nodes and from host-network pods. Other flows, such as traffic on the same node, remain unencrypted.
+
+The following network traffic flows between pods are encrypted when pod-to-pod IPsec is enabled:
 
 - Traffic between pods on different nodes on the cluster network
 
 - Traffic from a pod on the host network to a pod on the cluster network
 
-The following traffic flows are not encrypted:
-
-- Traffic between pods on the same node on the cluster network
-
-- Traffic between pods on the host network
-
-- Traffic from a pod on the cluster network to a pod on the host network
+The following traffic flows are not encrypted when pod-to-pod IPsec is enabled: \* Traffic between pods on the same node on the cluster network \* Traffic between pods on the host network \* Traffic from a pod on the cluster network to a pod on the host network
 
 The encrypted and unencrypted flows are illustrated in the following diagram:
 
@@ -104,9 +102,9 @@ The encrypted and unencrypted flows are illustrated in the following diagram:
 
 ## Encryption protocol and IPsec mode
 
-The encrypt cipher used is `AES-GCM-16-256`. The integrity check value (ICV) is `16` bytes. The key length is `256` bits.
+Pod-to-pod IPsec in OpenShift Container Platform uses `AES-GCM-16-256` in transport mode with a 256-bit key and a 16-byte integrity check value. *Transport mode* encrypts end-to-end communication by adding an Encapsulated Security Payload (ESP) header to the IP header of the original packet and encrypts the packet data.
 
-The IPsec mode used is *Transport mode*, a mode that encrypts end-to-end communication by adding an Encapsulated Security Payload (ESP) header to the IP header of the original packet and encrypts the packet data. OpenShift Container Platform does not currently use or support IPsec *Tunnel mode* for pod-to-pod communication.
+OpenShift Container Platform does not currently use or support IPsec *Tunnel mode* for pod-to-pod communication.
 
 ## Security certificate generation and rotation
 
@@ -148,9 +146,7 @@ Ensure that the following prohibitions are observed:
 
 # Enabling IPsec encryption
 
-As a cluster administrator you can enable pod-to-pod IPsec encryption between the cluster and external IPsec endpoints.
-
-You can configure IPsec in either of the following modes:
+To enable pod-to-pod and external IPsec encryption in OpenShift Container Platform, you can patch the cluster `Network` custom resource and set `ipsecConfig` mode to `Full` or `External`.
 
 - `Full`: Encryption for pod-to-pod and external traffic
 
@@ -185,30 +181,33 @@ If you enabled IPsec in `Full` mode, as a cluster administrator you can configur
         "defaultNetwork":{
           "ovnKubernetesConfig":{
             "ipsecConfig":{
-              "mode":"<mode">
+              "mode":"<mode>"
             }}}}}'
     ```
 
-    - Specify `External` to encrypt traffic to external hosts or specify `Full` to encrypt pod-to-pod traffic and, optionally, traffic to external hosts. By default, IPsec is disabled.
+    where:
 
-      <div class="formalpara-title">
+    `spec.defaultNetwork.ovnKubernetesConfig.ipsecConfig.mode`
+    Specifies `External` to encrypt traffic to external hosts or `Full` to encrypt pod-to-pod traffic and, optionally, traffic to external hosts. By default, IPsec is disabled.
 
-      **Example configuration that has IPsec enabled in `Full` mode and `encapsulation` set to `Always`**
+    <div class="formalpara-title">
 
-      </div>
+    **Example configuration that has IPsec enabled in `Full` mode and `encapsulation` set to `Always`**
 
-      ``` terminal
-      $ oc patch networks.operator.openshift.io cluster --type=merge -p \
-        '{
-        "spec":{
-          "defaultNetwork":{
-            "ovnKubernetesConfig":{
-              "ipsecConfig":{
-                "mode":"Full",
-                "full":{
-                  "encapsulation": "Always"
-                }}}}}}'
-      ```
+    </div>
+
+    ``` terminal
+    $ oc patch networks.operator.openshift.io cluster --type=merge -p \
+      '{
+      "spec":{
+        "defaultNetwork":{
+          "ovnKubernetesConfig":{
+            "ipsecConfig":{
+              "mode":"Full",
+              "full":{
+                "encapsulation": "Always"
+              }}}}}}'
+    ```
 
 2.  Encrypt external traffic with IPsec by completing the "Configuring IPsec encryption for external traffic" procedure.
 
@@ -248,13 +247,16 @@ If you enabled IPsec in `Full` mode, as a cluster administrator you can configur
     $ oc -n openshift-ovn-kubernetes rsh ovnkube-node-<XXXXX> ovn-nbctl --no-leader-only get nb_global . ipsec
     ```
 
-    where: `<XXXXX>` specifies the random sequence of letters for a pod from an earlier step.
+    where:
+
+    `<XXXXX>`
+    Specifies the random sequence of letters for a pod from an earlier step.
 
     Successful output from the command shows the status as `true`.
 
 # Configuring IPsec encryption for external traffic
 
-As a cluster administrator, to encrypt external traffic with IPsec you must configure IPsec for your network infrastructure, including providing PKCS#12 certificates. Because this procedure uses Butane to create machine configs, you must have the `butane` tool installed.
+To configure IPsec encryption for traffic between OpenShift Container Platform and external hosts, you can create Butane machine configs with PKCS#12 certificates and apply them to cluster nodes.
 
 <div class="note">
 
@@ -264,7 +266,7 @@ After you apply the machine config, the Machine Config Operator (MCO) reboots af
 
 - Install the OpenShift CLI (`oc`).
 
-- You have installed the `butane` tool on your local computer.
+- You have installed the `butane` tool on your local computer. For more information, see "Installing Butane".
 
 - You have installed the NMState Operator on the cluster.
 
@@ -526,9 +528,11 @@ After you apply the machine config, the Machine Config Operator (MCO) reboots af
 
 - [IPsec Encryption](https://nmstate.io/devel/yaml_api.html#ipsec-encryption)
 
+- [Installing Butane](../../installing/install_config/installing-customizing.xml#installation-special-config-butane-install_installing-customizing)
+
 # Disabling IPsec encryption for an external IPsec endpoint
 
-As a cluster administrator, you can remove an existing IPsec tunnel to an external host.
+To stop encrypting traffic to an external host in OpenShift Container Platform, you can remove the IPsec tunnel configuration from your cluster nodes.
 
 - Install the OpenShift CLI (`oc`).
 
@@ -572,7 +576,7 @@ As a cluster administrator, you can remove an existing IPsec tunnel to an extern
 
 # Disabling IPsec encryption
 
-As a cluster administrator, you can disable IPsec encryption.
+To disable IPsec encryption in OpenShift Container Platform, you can patch the cluster `Network` custom resource and set `ipsecConfig` mode to `Disabled`.
 
 - You installed the OpenShift CLI (`oc`).
 

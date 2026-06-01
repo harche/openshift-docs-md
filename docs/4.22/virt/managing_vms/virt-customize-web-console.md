@@ -1,4 +1,4 @@
-As a cluster administrator, you can customize the OpenShift Container Platform web console by integrating [dynamic plugins](../../web_console/dynamic-plugin/overview-dynamic-plugin.xml#overview-dynamic-plugin). Virtual machine (VM) owners can then use the actions provided by these plugins from different tabs on the **Virtualization** page.
+As a cluster administrator, you can customize the OpenShift Container Platform web console by integrating dynamic plugins. Virtual machine (VM) owners can then use the actions provided by these plugins from different tabs on the **Virtualization** page.
 
 # Enable bulk operations for virtual machines
 
@@ -160,5 +160,7 @@ As a cluster administrator, you can customize the OpenShift Container Platform w
 3.  Go to the **Create Virtual Machine** page and verify that your custom backup actions or tabs do not appear.
 
 # Additional resources
+
+- [Dynamic plugins overview](../../web_console/dynamic-plugin/overview-dynamic-plugin.xml#overview-dynamic-plugin)
 
 - [Getting started with dynamic plugins](../../web_console/dynamic-plugin/dynamic-plugins-get-started.xml#dynamic-plugins-get-started)

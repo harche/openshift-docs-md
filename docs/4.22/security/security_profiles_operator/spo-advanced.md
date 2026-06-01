@@ -1,8 +1,16 @@
-Use advanced tasks to enable metrics, configure webhooks, or restrict syscalls.
+You can use advanced Security Profiles Operator tasks to enable metrics, configure webhooks, or restrict syscalls.
 
 # Restrict the allowed syscalls in seccomp profiles
 
 The Security Profiles Operator does not restrict `syscalls` in `seccomp` profiles by default. You can define the list of allowed `syscalls` in the `spod` configuration.
+
+<div class="important">
+
+The Operator will install only the `seccomp` profiles, which have a subset of `syscalls` defined into the allowed list. All profiles not complying with this ruleset are rejected.
+
+When the list of allowed `syscalls` is modified in the `spod` configuration, the Operator will identify the already installed profiles which are noncompliant and remove them automatically.
+
+</div>
 
 - To define the list of `allowedSyscalls`, adjust the `spec` parameter by running the following command:
 
@@ -10,14 +18,6 @@ The Security Profiles Operator does not restrict `syscalls` in `seccomp` profile
   $ oc -n openshift-security-profiles patch spod spod --type merge \
       -p '{"spec":{"allowedSyscalls": ["exit", "exit_group", "futex", "nanosleep"]}}'
   ```
-
-<div class="important">
-
-The Operator will install only the `seccomp` profiles, which have a subset of `syscalls` defined into the allowed list. All profiles not complying with this ruleset are rejected.
-
-When the list of allowed `syscalls` is modified in the `spod` configuration, the Operator will identify the already installed profiles which are non-compliant and remove them automatically.
-
-</div>
 
 # Base syscalls for a container runtime
 
@@ -104,7 +104,7 @@ The default priority class name of the `spod` daemon pod is set to `system-node-
 
 # Using metrics
 
-The `openshift-security-profiles` namespace provides metrics endpoints, which are secured by the [kube-rbac-proxy](https://github.com/brancz/kube-rbac-proxy) container. All metrics are exposed by the `metrics` service within the `openshift-security-profiles` namespace.
+The `openshift-security-profiles` namespace provides metrics endpoints, which are secured by the `kube-rbac-proxy` container. All metrics are exposed by the `metrics` service within the `openshift-security-profiles` namespace.
 
 The Security Profiles Operator includes a cluster role and corresponding binding `spo-metrics-client` to retrieve the metrics from within the cluster. There are two metrics paths available:
 
@@ -171,81 +171,15 @@ The Security Profiles Operator includes a cluster role and corresponding binding
 
 The controller-runtime `metrics` and the DaemonSet endpoint `metrics-spod` provide a set of default metrics. Additional metrics are provided by the daemon, which are always prefixed with `security_profiles_operator_`.
 
-<table>
-<caption>Available controller-runtime metrics</caption>
-<colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Metric key</th>
-<th style="text-align: left;">Possible labels</th>
-<th style="text-align: left;">Type</th>
-<th style="text-align: left;">Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><p><code>seccomp_profile_total</code></p></td>
-<td style="text-align: left;"><p><code>operation={delete,update}</code></p></td>
-<td style="text-align: left;"><p>Counter</p></td>
-<td style="text-align: left;"><p>Amount of seccomp profile operations.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>seccomp_profile_audit_total</code></p></td>
-<td style="text-align: left;"><p><code>node</code>, <code>namespace</code>, <code>pod</code>, <code>container</code>, <code>executable</code>, <code>syscall</code></p></td>
-<td style="text-align: left;"><p>Counter</p></td>
-<td style="text-align: left;"><p>Amount of seccomp profile audit operations. Requires the log enricher to be enabled.</p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p><code>seccomp_profile_bpf_total</code></p></td>
-<td style="text-align: left;"><p><code>node</code>, <code>mount_namespace</code>, <code>profile</code></p></td>
-<td style="text-align: left;"><p>Counter</p></td>
-<td style="text-align: left;"><p>Amount of seccomp profile bpf operations. Requires the bpf recorder to be enabled.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>seccomp_profile_error_total</code></p></td>
-<td style="text-align: left;"><p><code>reason={</code><br />
-<code>SeccompNotSupportedOnNode,</code><br />
-<code>InvalidSeccompProfile,</code><br />
-<code>CannotSaveSeccompProfile,</code><br />
-<code>CannotRemoveSeccompProfile,</code><br />
-<code>CannotUpdateSeccompProfile,</code><br />
-<code>CannotUpdateNodeStatus</code><br />
-<code>}</code></p></td>
-<td style="text-align: left;"><p>Counter</p></td>
-<td style="text-align: left;"><p>Amount of seccomp profile errors.</p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p><code>selinux_profile_total</code></p></td>
-<td style="text-align: left;"><p><code>operation={delete,update}</code></p></td>
-<td style="text-align: left;"><p>Counter</p></td>
-<td style="text-align: left;"><p>Amount of SELinux profile operations.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>selinux_profile_audit_total</code></p></td>
-<td style="text-align: left;"><p><code>node</code>, <code>namespace</code>, <code>pod</code>, <code>container</code>, <code>executable</code>, <code>scontext</code>,<code>tcontext</code></p></td>
-<td style="text-align: left;"><p>Counter</p></td>
-<td style="text-align: left;"><p>Amount of SELinux profile audit operations. Requires the log enricher to be enabled.</p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p><code>selinux_profile_error_total</code></p></td>
-<td style="text-align: left;"><p><code>reason={</code><br />
-<code>CannotSaveSelinuxPolicy,</code><br />
-<code>CannotUpdatePolicyStatus,</code><br />
-<code>CannotRemoveSelinuxPolicy,</code><br />
-<code>CannotContactSelinuxd,</code><br />
-<code>CannotWritePolicyFile,</code><br />
-<code>CannotGetPolicyStatus</code><br />
-<code>}</code></p></td>
-<td style="text-align: left;"><p>Counter</p></td>
-<td style="text-align: left;"><p>Amount of SELinux profile errors.</p></td>
-</tr>
-</tbody>
-</table>
+| Metric key                    | Possible labels                                                                                                                                                                       | Type    | Purpose                                                                              |
+|-------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|--------------------------------------------------------------------------------------|
+| `seccomp_profile_total`       | `operation={delete,update}`                                                                                                                                                           | Counter | Amount of seccomp profile operations.                                                |
+| `seccomp_profile_audit_total` | `node`, `namespace`, `pod`, `container`, `executable`, `syscall`                                                                                                                      | Counter | Amount of seccomp profile audit operations. Requires the log enricher to be enabled. |
+| `seccomp_profile_bpf_total`   | `node`, `mount_namespace`, `profile`                                                                                                                                                  | Counter | Amount of seccomp profile bpf operations. Requires the bpf recorder to be enabled.   |
+| `seccomp_profile_error_total` | `reason={` `SeccompNotSupportedOnNode,` `InvalidSeccompProfile,` `CannotSaveSeccompProfile,` `CannotRemoveSeccompProfile,` `CannotUpdateSeccompProfile,` `CannotUpdateNodeStatus` `}` | Counter | Amount of seccomp profile errors.                                                    |
+| `selinux_profile_total`       | `operation={delete,update}`                                                                                                                                                           | Counter | Amount of SELinux profile operations.                                                |
+| `selinux_profile_audit_total` | `node`, `namespace`, `pod`, `container`, `executable`, `scontext`,`tcontext`                                                                                                          | Counter | Amount of SELinux profile audit operations. Requires the log enricher to be enabled. |
+| `selinux_profile_error_total` | `reason={` `CannotSaveSelinuxPolicy,` `CannotUpdatePolicyStatus,` `CannotRemoveSelinuxPolicy,` `CannotContactSelinuxd,` `CannotWritePolicyFile,` `CannotGetPolicyStatus` `}`          | Counter | Amount of SELinux profile errors.                                                    |
 
 Available controller-runtime metrics
 
@@ -345,6 +279,12 @@ You can use the Security Profiles Operator log enricher to trace an application.
     ``` terminal
     $ oc -n openshift-security-profiles logs -f ds/spod log-enricher
     ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
 
     ``` terminal
     …

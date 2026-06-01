@@ -1,8 +1,10 @@
+To set cluster-wide network rules that namespace owners can override with a `NetworkPolicy` object, you can configure a `BaselineAdminNetworkPolicy` (BANP) custom resource in OpenShift Container Platform.
+
 # BaselineAdminNetworkPolicy
 
-`BaselineAdminNetworkPolicy` (BANP) is a cluster-scoped custom resource definition (CRD). As a OpenShift Container Platform administrator, you can use BANP to setup and enforce optional baseline network policy rules that are overridable by users using `NetworkPolicy` objects if need be. Rule actions for BANP are `allow` or `deny`.
+To enforce `Allow` or `Deny` rules for selected namespaces in OpenShift Container Platform, you can create a single cluster-scoped `BaselineAdminNetworkPolicy` custom resource (CR) named `default` with ingress and egress subject rules.
 
-The `BaselineAdminNetworkPolicy` resource is a cluster singleton object that can be used as a guardrail policy incase a passed traffic policy does not match any `NetworkPolicy` objects in the cluster. A BANP can also be used as a default security model that provides guardrails that intra-cluster traffic is blocked by default and a user will need to use `NetworkPolicy` objects to allow known traffic. You must use `default` as the name when creating a BANP resource.
+The `BaselineAdminNetworkPolicy` (BANP) CR is a cluster singleton object that can be used as a guardrail policy in case a passed traffic policy does not match any `NetworkPolicy` objects in the cluster. A BANP can also be used as a default security model that provides guardrails that intra-cluster traffic is blocked by default and a user will need to use `NetworkPolicy` objects to allow known traffic. You must use `default` as the name when creating a BANP resource.
 
 A BANP allows administrators to specify:
 
@@ -13,6 +15,12 @@ A BANP allows administrators to specify:
 - A list of egress rules to be applied for all egress traffic from the `subject`.
 
 ## BaselineAdminNetworkPolicy example
+
+<div class="formalpara-title">
+
+**Example YAML file for BANP**
+
+</div>
 
 ``` yaml
 apiVersion: policy.networking.k8s.io/v1alpha1
@@ -48,21 +56,38 @@ spec:
             custom-banp: tenant-1
 ```
 
-- The policy name must be `default` because BANP is a singleton object.
+where:
 
-- Specify the namespace to apply the ANP to.
+`metadata.name`
+Specifies the name of the BANP resource. The policy name must be `default` because BANP is a singleton object.
 
-- BANP have both ingress and egress rules. BANP rules for `spec.ingress` and `spec.egress` fields accepts values of `Deny` and `Allow` for the `action` field.
+`spec.subject.namespaces.matchLabels`
+Specifies the namespace to apply the BANP to.
 
-- Specify a name for the `ingress.name`
+`spec.ingress.name`
+Specifies a name for ingress rules.
 
-- Specify the namespaces to select the pods from to apply the BANP resource.
+`spec.ingress.action`
+Specifies an ingress rule for the BANP. Accepts values of `Deny` and `Allow` for the `action` field.
 
-- Specify `podSelector.matchLabels` name of the pods to apply the BANP resource.
+`spec.ingress.from.pods.namespaceSelector.matchLabels`
+Specifies match labels to select pods within the namespaces selected by `namespaceSelector.matchLabels` as ingress peers.
+
+`spec.egress.action`
+Specifies an egress rule for the BANP. Accepts values of `Deny` and `Allow` for the `action` field.
+
+`spec.egress.to.pods.namespaceSelector.matchLabels`
+Specifies match labels to select pods within the namespaces selected by `namespaceSelector.matchLabels` as egress peers.
 
 ## BaselineAdminNetworkPolicy Deny example
 
 The following BANP singleton ensures that the administrator has set up a default deny policy for all ingress monitoring traffic coming into the tenants at `internal` security level. When combined with the "AdminNetworkPolicy Pass example", this deny policy acts as a guardrail policy for all ingress traffic that is passed by the ANP `pass-monitoring` policy.
+
+<div class="formalpara-title">
+
+**Example YAML file for a guardrail `Deny` rule**
+
+</div>
 
 ``` yaml
 apiVersion: policy.networking.k8s.io/v1alpha1
@@ -89,6 +114,12 @@ You can use an `AdminNetworkPolicy` resource with a `Pass` value for the `action
 As an administrator, if you apply both the "AdminNetworkPolicy `Pass` action example" and the "BaselineAdminNetwork Policy `Deny` example", tenants are then left with the ability to choose to create a `NetworkPolicy` resource that will be evaluated before the BANP.
 
 For example, Tenant 1 can set up the following `NetworkPolicy` resource to monitor ingress traffic:
+
+<div class="formalpara-title">
+
+**Example `NetworkPolicy`**
+
+</div>
 
 ``` yaml
 apiVersion: networking.k8s.io/v1

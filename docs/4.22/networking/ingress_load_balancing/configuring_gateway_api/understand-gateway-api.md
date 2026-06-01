@@ -36,6 +36,8 @@ Gateway API has the following limitations:
 
 - Resource overhead: While more flexible, Gateway API uses multiple resource types to achieve an outcome. For smaller applications, the simplicity of traditional Ingress might be a better fit.
 
+- On-premise infrastructure dependencies: On-premise deployments, such as bare metal or VMware vSphere environments, do not automatically provision network load balancers or manage external DNS records. To use Gateway API on an on-premise platform, you must explicitly deploy a load balancer controller, such as MetalLB, and manually map your DNS records to the provisioned gateway address.
+
 # Gateway API implementation specifics
 
 To ensure interoperability between external vendor implementations and your networking infrastructure in OpenShift Container Platform, the Ingress Operator manages the lifecycle of Gateway API custom resource definitions (CRDs). Understanding how these CRDs are managed helps you prevent disrupted workloads and security issues caused by incompatible vendor fields.

@@ -123,17 +123,11 @@ You can verify that you are updating to a viable release by running the `oc adm 
 
     </div>
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     Requested update to 4.15.33
     ```
 
-    - The `Requested update` value changes depending on your particular update.
+    The `Requested update` value changes depending on your particular update.
 
 <div class="formalpara-title">
 

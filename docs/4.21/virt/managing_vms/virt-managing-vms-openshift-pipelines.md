@@ -1,6 +1,6 @@
 Automate virtual machine (VM) provisioning and management in your CI/CD workflows with OpenShift Pipelines tasks designed for virtualization. These tasks allow you to create, configure, and manipulate VMs and their disks as part of your automated deployment pipelines, streamlining VM lifecycle management.
 
-[Red Hat OpenShift Pipelines](https://docs.openshift.com/pipelines/latest/about/understanding-openshift-pipelines.html) is a Kubernetes-native CI/CD framework that allows developers to design and run each step of the CI/CD pipeline in its own container.
+Red Hat OpenShift Pipelines is a Kubernetes-native CI/CD framework that allows developers to design and run each step of the CI/CD pipeline in its own container.
 
 By using OpenShift Pipelines tasks and the example pipeline, you can do the following:
 
@@ -10,9 +10,9 @@ By using OpenShift Pipelines tasks and the example pipeline, you can do the foll
 
 - Manipulate disk images with `libguestfs` tools.
 
-The tasks are located in [the task catalog (ArtifactHub)](https://artifacthub.io/packages/search?repo=redhat-tekton-tasks&sort=relevance&page=1).
+The tasks are located in the task catalog (ArtifactHub).
 
-The example Windows pipeline is located in [the pipeline catalog (ArtifactHub)](https://artifacthub.io/packages/tekton-pipeline/redhat-pipelines/windows-efi-installer).
+The example Windows pipeline is located in the pipeline catalog (ArtifactHub).
 
 # Prerequisites
 
@@ -20,7 +20,7 @@ The example Windows pipeline is located in [the pipeline catalog (ArtifactHub)](
 
 - You have installed the OpenShift CLI (`oc`).
 
-- You have [installed OpenShift Pipelines](https://docs.openshift.com/pipelines/latest/install_config/installing-pipelines.html).
+- You have installed OpenShift Pipelines.
 
 # Supported virtual machine tasks
 
@@ -48,7 +48,7 @@ Virtual machine creation in pipelines now utilizes `ClusterInstanceType` and `Cl
 
 # Windows EFI installer pipeline
 
-You can run the [Windows EFI installer pipeline](https://artifacthub.io/packages/tekton-pipeline/redhat-pipelines/windows-efi-installer) by using the web console or CLI.
+You can run the Windows EFI installer pipeline by using the web console or CLI.
 
 The Windows EFI installer pipeline installs Windows 10, Windows 11, or Windows Server 2022 into a new data volume from a Windows installation image (ISO file). A custom answer file is used to run the installation process.
 
@@ -140,6 +140,14 @@ You can clean up deprecated or unused resources associated with the Red Hat Ope
   If the Red Hat OpenShift Pipelines Operator custom resource definitions (CRDs) have already been removed, the command may return an error. You can safely ignore this, as all other matching resources will still be deleted.
 
 # Additional resources
+
+- [Understanding OpenShift Pipelines](https://docs.openshift.com/pipelines/latest/about/understanding-openshift-pipelines.html)
+
+- [Task catalog (ArtifactHub)](https://artifacthub.io/packages/search?repo=redhat-tekton-tasks&sort=relevance&page=1)
+
+- [Windows EFI installer pipeline (ArtifactHub)](https://artifacthub.io/packages/tekton-pipeline/redhat-pipelines/windows-efi-installer)
+
+- [Installing OpenShift Pipelines](https://docs.openshift.com/pipelines/latest/install_config/installing-pipelines.html)
 
 - [Creating CI/CD solutions for applications using Red Hat OpenShift Pipelines](https://docs.openshift.com/pipelines/latest/create/creating-applications-with-cicd-pipelines.html)
 

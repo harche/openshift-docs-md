@@ -38,7 +38,7 @@ The Cluster Network Addons Operator (CNAO) deploys a Domain Name Server (DNS) se
     # ...
     ```
 
-    - Enables the DNS server
+    Setting `deployKubeSecondaryDNS` to `true` enables the DNS server.
 
 3.  Save the file and exit the editor.
 
@@ -83,7 +83,7 @@ The Cluster Network Addons Operator (CNAO) deploys a Domain Name Server (DNS) se
     # ...
     ```
 
-    - Specify the external IP address exposed by the load balancer service.
+    Specify the external IP address exposed by the load balancer service in the `kubeSecondaryDNSNameServerIP` field.
 
 8.  Save the file and exit the editor.
 
@@ -159,7 +159,7 @@ You can access a running virtual machine (VM) attached to a secondary network in
             name: example-nic
     ```
 
-    - Note the name of the network interface.
+    Note the `name` of the network interface.
 
 2.  Connect to the VM by using the `ssh` command:
 

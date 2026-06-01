@@ -6,8 +6,6 @@ When considering what z-stream release to update to as part of a new y-stream up
 
 For example, if the cluster version is 4.15.32, you must update to 4.16 z-stream release that has all of the patches that are applied to 4.15.32.
 
-## About Kubernetes version skew
-
 Each cluster Operator supports specific API versions. Kubernetes APIs evolve over time, and newer versions can be deprecated or change existing APIs. This is referred to as "version skew". For every new release, you must review the API changes. The APIs might be compatible across several releases of an Operator, but compatibility is not guaranteed. To mitigate against problems that arise from version skew, follow a well-defined update strategy.
 
 - [Understanding API tiers](../../../rest_api/overview/understanding-api-support-tiers.xml#understanding-api-support-tiers)
@@ -133,7 +131,7 @@ You do not need to change the channel when performing a z-stream update.
     }
     ```
 
-### Changing the channel for an early EUS to EUS update
+## Changing the channel for an early EUS to EUS update
 
 The update path to a brand new release of OpenShift Container Platform is not available in either the EUS channel or the stable channel until 45 to 90 days after the initial GA of a minor release.
 

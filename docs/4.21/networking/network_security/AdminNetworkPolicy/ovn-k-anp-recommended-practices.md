@@ -1,12 +1,14 @@
-This section provides best practices for the `AdminNetworkPolicy` and `BaselineAdminNetworkPolicy` resources.
+To apply cluster-wide network policy in OpenShift Container Platform, you can follow recommended practices for `AdminNetworkPolicy` and `BaselineAdminNetworkPolicy` design, including priorities, actions, and selectors that avoid system namespaces.
 
 # Designing AdminNetworkPolicy
+
+You can use this reference when you design `AdminNetworkPolicy` and `BaselineAdminNetworkPolicy` resources in OpenShift Container Platform. It describes priority ranges, actions, selector rules, BANP patterns, and how these policies differ from `NetworkPolicy`.
 
 When building `AdminNetworkPolicy` (ANP) resources, you might consider the following when creating your policies:
 
 - You can create ANPs that have the same priority. If you do create two ANPs at the same priority, ensure that they do not apply overlapping rules to the same traffic. Only one rule per value is applied and there is no guarantee which rule is applied when there is more than one at the same priority value. Because there is no guarantee which policy takes precedence when overlapping ANPs are created, set ANPs at different priorities so that precedence is well defined.
 
-- Administrators must create ANP that apply to user namespaces not system namespaces.
+- Administrators must create ANPs that apply to user namespaces not system namespaces.
 
 <div class="important">
 
@@ -24,7 +26,7 @@ Applying ANP and `BaselineAdminNetworkPolicy` (BANP) to system namespaces (`defa
 
 - Ensure that the selectors across multiple rules do not overlap so that the same IPs do not appear in multiple policies, which can cause performance and scale limitations.
 
-- Avoid using `namedPorts` in conjunction with `PortNumber` and `PortRange` because this creates 6 ACLs and cause inefficiencies in your cluster.
+- Avoid using `namedPorts` in conjunction with `PortNumber` and `PortRange` because this creates 6 ACLs and causes inefficiencies in your cluster.
 
 ## Considerations for using BaselineAdminNetworkPolicy
 

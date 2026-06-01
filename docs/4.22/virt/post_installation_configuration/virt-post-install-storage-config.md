@@ -36,9 +36,9 @@ When you create a storage class, you set parameters that affect the dynamic prov
       storagePool: my-storage-pool
     ```
 
-    - `reclaimPolicy` specifies whether the underlying storage is deleted or retained when a user deletes a PVC. The two possible `reclaimPolicy` values are `Delete` and `Retain`. If you do not specify a value, the default value is `Delete`.
+    - `reclaimPolicy` defines whether the underlying storage is deleted or retained when a user deletes a PVC. The two possible `reclaimPolicy` values are `Delete` and `Retain`. If you do not specify a value, the default value is `Delete`.
 
-    - `volumeBindingMode` specifies the timing of PV creation. In this example, the `WaitForFirstConsumer` configuration delays PV creation until the scheduler assigns a pod to a specific node.
+    - `volumeBindingMode` defines the timing of PV creation. In this example, the `WaitForFirstConsumer` configuration delays PV creation until the scheduler assigns a pod to a specific node.
 
       <div class="note">
 
@@ -48,7 +48,7 @@ When you create a storage class, you set parameters that affect the dynamic prov
 
       </div>
 
-    - `parameters.storagePool` specifies the name of the storage pool defined in the HPP custom resource (CR).
+    - `parameters.storagePool` defines the name of the storage pool defined in the HPP custom resource (CR).
 
 2.  Save the file and exit.
 

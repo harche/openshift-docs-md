@@ -137,17 +137,21 @@ The `wasp-agent` component deploys an Open Container Initiative (OCI) hook to en
 
           - Web console
 
-            1.  In the OpenShift Container Platform web console, go to **Virtualization** → **Overview** → **Settings** → **General settings** → **Memory density**.
+            1.  In the OpenShift Container Platform web console, go to **Virtualization** → **Settings**.
 
-            2.  Set **Configure memory density** to on.
+            2.  Click **Cluster**.
 
-            3.  Expand the **Current memory density** line.
+            3.  Expand **Memory Density**.
 
-            4.  Set the density value by moving the **Requested memory density** slider. You can increase the density from 100% up to 400% in increments of 25%.
+            4.  Set **Configure memory density** to on.
+
+            5.  Expand the **Current memory density** line.
+
+            6.  Set the density value by moving the **Requested memory density** slider. You can increase the density from 100% up to 400% in increments of 25%.
 
                 The **Memory density** field shows the actual and requested values.
 
-            5.  Click **Save**.
+            7.  Click **Save**.
 
           - CLI
 

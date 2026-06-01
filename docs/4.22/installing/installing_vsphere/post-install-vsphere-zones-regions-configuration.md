@@ -178,14 +178,6 @@ The following table lists mandatory parameters for defining multiple regions and
 
 You can configure the `infrastructures.config.openshift.io` configuration resource to specify multiple host groups for your OpenShift Container Platform cluster that runs on a VMware vSphere instance. This is necessary if your vSphere instance is in a stretched cluster configuration, with your ESXi hosts and storage distributed across multiple physical data centers. Use this procedure if you did not already configure host groups for your OpenShift Container Platform cluster at installation, or if you need to update your OpenShift Container Platform cluster with additional host groups.
 
-<div class="important">
-
-OpenShift zones support for vSphere host groups is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
 - ESXi hosts are grouped into host groups, which are linked via VM-host affinity rules to corresponding virtual machine (VM) groups. See the following example `govc` commands for details:
 
   ``` terminal
@@ -215,8 +207,6 @@ For more information about the support scope of Red Hat Technology Preview featu
 - ESXi hosts within host groups have tags from the `openshift-zone` tag category.
 
 - `Host.Inventory.EditCluster` privilege is granted on the vSphere vCenter cluster object.
-
-- `TechPreviewNoUpgrade` feature set is enabled. For more information, "see Enabling features using feature gates".
 
 1.  Edit the infrastructure settings of your OpenShift Container Platform cluster.
 
@@ -398,5 +388,3 @@ For more information about the support scope of Red Hat Technology Preview featu
         ``` terminal
         $ oc create -f <name_of_machine_set_file>.yaml
         ```
-
-- [Enabling features using feature gates](../../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)

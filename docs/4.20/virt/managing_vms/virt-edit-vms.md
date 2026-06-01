@@ -1,6 +1,6 @@
 You can update virtual machine (VM) configuration details like CPU, memory, and networking by using the CLI or the OpenShift Container Platform web console. In the web console, you can modify settings on the **VirtualMachine details** page or by editing the YAML file directly.
 
-To edit a VM to configure disk sharing by using virtual disks or LUN, see [Configuring shared volumes for virtual machines](../../virt/managing_vms/virtual_disks/virt-configuring-shared-volumes-for-vms.xml#virt-configuring-shared-volumes-for-vms).
+To edit a VM to configure disk sharing by using virtual disks or LUN, see "Configuring shared volumes for virtual machines".
 
 # Changing the instance type of a VM by using the web console
 
@@ -402,6 +402,8 @@ Multiple I/O threads are supported only when `blockMultiQueue` is enabled and th
     </div>
 
 # Additional resources
+
+- [Configuring shared volumes for virtual machines](../../virt/managing_vms/virtual_disks/virt-configuring-shared-volumes-for-vms.xml#virt-configuring-shared-volumes-for-vms)
 
 - [Understanding config maps](../../nodes/pods/nodes-pods-configmaps.xml#nodes-pods-configmap-overview_builds-configmaps)
 

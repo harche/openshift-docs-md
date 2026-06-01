@@ -7,14 +7,14 @@ You can use VM templates to help you easily create VMs.
 Expedite creation with boot sources
 You can expedite VM creation by using templates that have an available boot source. Templates with a boot source are labeled **Available boot source** if they do not have a custom label.
 
-Templates without a boot source are labeled **Boot source required**. See [Managing automatic boot source updates](../../virt/storage/virt-automatic-bootsource-updates.xml#virt-automatic-bootsource-updates) for details.
+Templates without a boot source are labeled **Boot source required**. See "Managing automatic boot source updates" for details.
 
 Customize before starting the VM
 You can customize the disk source and VM parameters before you start the VM.
 
 <div class="note">
 
-If you copy a VM template with all its labels and annotations, your version of the template is marked as deprecated when a new version of the Scheduling, Scale, and Performance (SSP) Operator is deployed. You can remove this designation. See [Removing a deprecated designation from a customized VM template by using the web console](../../virt/creating_vm/virt-creating-vms-from-templates.xml#virt-customizing-vm-template-web_virt-creating-vms-from-templates).
+If you copy a VM template with all its labels and annotations, your version of the template is marked as deprecated when a new version of the Scheduling, Scale, and Performance (SSP) Operator is deployed. You can remove this designation. See "Removing a deprecated designation from a customized VM template by using the web console".
 
 </div>
 
@@ -126,3 +126,7 @@ You can enable dedicated resources for a virtual machine (VM) template in the Op
 4.  Select **Schedule this workload with dedicated resources (guaranteed policy)**.
 
 5.  Click **Save**.
+
+# Additional resources
+
+- [Managing automatic boot source updates](../../virt/storage/virt-automatic-bootsource-updates.xml#virt-automatic-bootsource-updates)

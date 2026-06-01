@@ -644,7 +644,7 @@ When you are installing a cluster to a [shared VPC](https://cloud.google.com/vpc
 
 <div class="important">
 
-You can use granular permissions for a Cloud Credential Operator that operates in either Manual or Mint credentials mode. For more information about the minimum permissions required for a standard installation that is configured with either of these credentials modes, see "Required Google Cloud permissions for installer-provisioned infrastructure".
+You can use granular permissions for a Cloud Credential Operator (CCO) that operates in either Manual or Mint credentials mode. For more information about the minimum permissions required for a standard installation that is configured with either of these credentials modes, see "Required Google Cloud permissions for installer-provisioned infrastructure".
 
 You cannot use granular permissions in Passthrough credentials mode. For more information about the minimum roles required, see "Required Google Cloud roles".
 
@@ -654,7 +654,9 @@ If you are not installing to a shared Virtual Private Cloud (VPC), you can skip 
 
 <div class="important">
 
-When installing a cluster on shared Virtual Private Cloud (VPC) infrastructure and you want to manually create credentials, grant the `compute.subnetworks.use` permission on the host project to the credentials that the Machine API Operator uses.
+When installing a cluster on a shared VPC by using short-lived credentials, you must grant the `compute.subnetworks.use` permission in the host project to Day 2 Operator service accounts.
+
+After using the `ccoctl` utility to generate the Google Cloud credentials, manually grant this permission to the Cluster CAPI Operator and Machine API Operator service accounts.
 
 </div>
 

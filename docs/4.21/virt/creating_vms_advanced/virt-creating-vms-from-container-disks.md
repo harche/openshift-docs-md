@@ -103,7 +103,7 @@ You can disable TLS (transport layer security) for one or more container registr
           - "private-registry-example-2:5000"
     ```
 
-    - Replace the examples in this list with valid registry hostnames.
+    Replace the examples in the `insecureRegistries` list with valid registry hostnames.
 
 # Creating a VM from a container disk by using the web console
 
@@ -168,13 +168,13 @@ You can create a virtual machine (VM) from a container disk by using the command
             name: vm-rhel-9-containerdisk-0
     ```
 
-    - The VM name.
+    - `metadata.name` defines the VM name.
 
-    - The instance type to use to control resource sizing of the VM.
+    - `spec.instancetype.name` defines the instance type to use to control resource sizing of the VM.
 
-    - The preference to use.
+    - `spec.preference.name` defines the preference to use.
 
-    - The URL of the container disk.
+    - `spec.template.spec.volumes.containerDisk.image` defines the URL of the container disk.
 
 3.  Create the VM by running the following command:
 

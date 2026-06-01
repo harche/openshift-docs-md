@@ -503,19 +503,19 @@ Do not run the `openshift-install create manifests` command again after creating
   $ jq -r .infraID <installation_directory>/metadata.json
   ```
 
-  - For `<installation_directory>`, specify the path to the directory that you stored the installation files in.
+  For `<installation_directory>`, specify the path to the directory that you stored the installation files in.
 
-    <div class="formalpara-title">
+  <div class="formalpara-title">
 
-    **Example output**
+  **Example output**
 
-    </div>
+  </div>
 
-    ``` terminal
-    openshift-vw9j6
-    ```
+  ``` terminal
+  $ openshift-vw9j6
+  ```
 
-  - The output of this command is your cluster name and a random string.
+  The output of this command is your cluster name and a random string.
 
 # Installing RHCOS and starting the OpenShift Container Platform bootstrap process
 

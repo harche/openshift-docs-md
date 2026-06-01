@@ -6,7 +6,7 @@ OpenShift Virtualization provides the scalable, enterprise-grade virtualization 
 
 <div class="note">
 
-If you have a Red Hat OpenShift Virtualization Engine subscription, you can run unlimited VMs on subscribed hosts, but you cannot run application instances in containers. For more information, see the subscription guide section about [Red Hat OpenShift Virtualization Engine and related products](https://www.redhat.com/en/resources/self-managed-openshift-subscription-guide#section-8).
+If you have a Red Hat OpenShift Virtualization Engine subscription, you can run unlimited VMs on subscribed hosts, but you cannot run application instances in containers. For more information, see the subscription guide section about "Red Hat OpenShift Virtualization Engine and related products".
 
 </div>
 
@@ -36,7 +36,7 @@ OpenShift Virtualization is designed and tested to work well with Red Hat OpenSh
 
 <div class="important">
 
-When you deploy OpenShift Virtualization with OpenShift Data Foundation, you must create a dedicated storage class for Windows virtual machine disks. See [Optimizing ODF PersistentVolumes for Windows VMs](https://access.redhat.com/articles/6978371) for details.
+When you deploy OpenShift Virtualization with OpenShift Data Foundation, you must create a dedicated storage class for Windows virtual machine disks. See "Optimizing ODF PersistentVolumes for Windows VMs" for details.
 
 </div>
 
@@ -115,7 +115,7 @@ Mapping of vSphere concepts to their closest OpenShift Virtualization counterpar
 
 # Supported cluster versions for OpenShift Virtualization
 
-OpenShift Virtualization 4.21 is supported for use on OpenShift Container Platform 4.17 clusters. To use the latest z-stream release of OpenShift Virtualization, you must first upgrade to the latest version of OpenShift Container Platform. The latest stable release of OpenShift Virtualization 4.21 is 4.21.6.
+OpenShift Virtualization 4.21 is supported for use on OpenShift Container Platform 4.17 clusters. To use the latest z-stream release of OpenShift Virtualization, you must first upgrade to the latest version of OpenShift Container Platform. The latest stable release of OpenShift Virtualization 4.21 is 4.21.8.
 
 # About volume and access modes for virtual machine disks
 
@@ -159,7 +159,11 @@ However, you should be aware that Single-node OpenShift does not support the fol
 
 # Additional resources
 
+- [Red Hat OpenShift Virtualization Engine and related products](https://www.redhat.com/en/resources/self-managed-openshift-subscription-guide#section-8)
+
 - [OVN-Kubernetes](../../networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.xml#about-ovn-kubernetes)
+
+- [Optimizing ODF PersistentVolumes for Windows VMs](https://access.redhat.com/articles/6978371)
 
 - [Compliance Operator](../../security/compliance_operator/co-concepts/compliance-operator-understanding.xml#understanding-compliance)
 

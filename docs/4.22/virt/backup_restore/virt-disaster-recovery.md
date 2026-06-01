@@ -4,7 +4,7 @@ OpenShift Virtualization supports using disaster recovery (DR) solutions to ensu
 
 The two primary DR methods for OpenShift Virtualization are Metropolitan Disaster Recovery (Metro-DR) and Regional-DR.
 
-For an overview of disaster recovery (DR) concepts, architecture, and planning considerations, see the [Red Hat OpenShift Virtualization disaster recovery guide](https://access.redhat.com/articles/7041594) in the Red Hat Knowledgebase.
+For an overview of disaster recovery (DR) concepts, architecture, and planning considerations, see the "Red Hat OpenShift Virtualization disaster recovery guide" in the Red Hat Knowledgebase.
 
 ## Metro-DR
 
@@ -115,6 +115,8 @@ For more information about using the Regional-DR solution for OpenShift Data Fou
 - [Regional-DR solution for OpenShift Data Foundation](https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/latest/html-single/configuring_openshift_data_foundation_disaster_recovery_for_openshift_workloads/index#rdr-solution)
 
 # Additional resources
+
+- [Red Hat OpenShift Virtualization disaster recovery guide](https://access.redhat.com/articles/7041594)
 
 - [Configuring OpenShift Data Foundation Disaster Recovery for OpenShift Workloads](https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/latest/html/configuring_openshift_data_foundation_disaster_recovery_for_openshift_workloads/index)
 

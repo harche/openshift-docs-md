@@ -2147,11 +2147,7 @@ You can activate the following feature set by using the `FeatureGate` CR:
 
   The following Technology Preview features are enabled by this feature set:
 
-  - `AdditionalRoutingCapabilities`
-
-  - `AdminNetworkPolicy`
-
-  - `AlibabaPlatform`
+  - `AdditionalStorageConfig`
 
   - `AutomatedEtcdBackup`
 
@@ -2162,6 +2158,8 @@ You can activate the following feature set by using the `FeatureGate` CR:
   - `AWSDedicatedHosts`
 
   - `AWSDualStackInstall`
+
+  - `AWSEuropeanSovereignCloudInstall`
 
   - `AWSServiceLBNetworkSecurityGroup`
 
@@ -2189,21 +2187,41 @@ You can activate the following feature set by using the `FeatureGate` CR:
 
   - `ClusterAPIMachineManagement`
 
+  - `ClusterAPIMachineManagementAWS`
+
+  - `ClusterAPIMachineManagementAzure`
+
+  - `ClusterAPIMachineManagementBareMetal`
+
+  - `ClusterAPIMachineManagementGCP`
+
+  - \`ClusterAPIMachineManagementOpenStack
+
+  - `ClusterAPIMachineManagementPowerVS`
+
+  - `ClusterAPIMachineManagementVSphere`
+
   - `ClusterMonitoringConfig`
+
+  - `ClusterUpdateAcceptRisks`
 
   - `ClusterVersionOperatorConfiguration`
 
-  - `ConsolePluginContentSecurityPolicy`
+  - `ConfigurablePKI`
 
-  - `CPMSMachineNamePrefix`
+  - `ConsolePluginContentSecurityPolicy`
 
   - `CRDCompatibilityRequirementOperator`
 
+  - `CRIOCredentialProviderConfig`
+
   - `DNSNameResolver`
+
+  - `DRAPartitionableDevices`
 
   - `DualReplica`
 
-  - `DyanmicServiceEndpointIBMCloud`
+  - `DynamicServiceEndpointIBMCloud`
 
   - `EtcdBackendQuota`
 
@@ -2215,21 +2233,15 @@ You can activate the following feature set by using the `FeatureGate` CR:
 
   - `ExternalOIDCWithUIDAndExtraClaimMappings`
 
-  - `GatewayAPI`
+  - `ExternalOIDCWithUpstreamParity`
 
-  - `GatewayAPIController`
-
-  - `GCPClusterHostedDNS`
-
-  - `GCPClusterHostedDNSInstall`
-
-  - `GCPDualStackInstall`
+  - `GatewayAPIWithoutOLM`
 
   - `GCPCustomAPIEndpoints`
 
   - `GCPCustomAPIEndpointsInstall`
 
-  - `HighlyAvailableArbiter`
+  - `GCPDualStackInstall`
 
   - `HyperShiftOnlyDynamicResourceAllocation`
 
@@ -2237,7 +2249,7 @@ You can activate the following feature set by using the `FeatureGate` CR:
 
   - `ImageStreamImportMode`
 
-  - `ImageVolume`
+  - `IngressControllerDynamicConfigurationManager`
 
   - `InsightsConfig`
 
@@ -2245,23 +2257,17 @@ You can activate the following feature set by using the `FeatureGate` CR:
 
   - `IrreconcilableMachineConfig`
 
-  - `KMSEncryptionProvider`
+  - `KMSEncryption`
 
   - `KMSv1`
 
   - `MachineAPIMigration`
 
-  - `MachineConfigNodes`
+  - `MachineAPIMigrationAWS`
 
-  - `ManagedBootImages`
-
-  - `ManagedBootImagesAWS`
-
-  - `ManagedBootImagesAzure`
+  - `MachineAPIMigrationOpenStack`
 
   - `ManagedBootImagesCPMS`
-
-  - `ManagedBootImagesvSphere`
 
   - `MaxUnavailableStatefulSet`
 
@@ -2277,21 +2283,21 @@ You can activate the following feature set by using the `FeatureGate` CR:
 
   - `MutatingAdmissionPolicy`
 
-  - `NetworkDiagnosticsConfig`
-
-  - `NetworkLiveMigration`
-
-  - `NetworkSegmentation`
-
   - `NewOLM`
 
+  - `NewOLMBoxCutterRuntime`
+
   - `NewOLMCatalogdAPIV1Metas`
+
+  - `NewOLMConfigAPI`
 
   - `NewOLMOwnSingleNamespace`
 
   - `NewOLMPreflightPermissionChecks`
 
   - `NewOLMWebhookProviderOpenshiftServiceCA`
+
+  - `NoOverlayMode`
 
   - `NoRegistryClusterInstall`
 
@@ -2304,14 +2310,6 @@ You can activate the following feature set by using the `FeatureGate` CR:
   - `OSStreams`
 
   - `OVNObservability`
-
-  - `PinnedImages`
-
-  - `PreconfiguredUDNAddresses`
-
-  - `ProcMountType`
-
-  - `RouteAdvertisements`
 
   - `RouteExternalCertificate`
 
@@ -2327,15 +2325,13 @@ You can activate the following feature set by using the `FeatureGate` CR:
 
   - `StoragePerformantSecurityPolicy`
 
-  - `TranslateStreamCloseWebsocketRequests`
+  - `TLSAdherence`
 
   - `UpgradeStatus`
 
   - `UserNamespacesPodSecurityStandards`
 
   - `UserNamespacesSupport`
-
-  - `VolumeAttributesClass`
 
   - `VolumeGroupSnapshot`
 

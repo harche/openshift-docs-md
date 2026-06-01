@@ -1,4 +1,4 @@
-Manage standalone virtual machine instances (VMIs) that were created independently outside of the OpenShift Virtualization environment through the web console by using `oc` or [`virtctl`](../../virt/getting_started/virt-using-the-cli-tools.xml#virt-using-the-cli-tools) commands from the command-line interface (CLI).
+Manage standalone virtual machine instances (VMIs) that were created independently outside of the OpenShift Virtualization environment through the web console by using `oc` or `virtctl` commands from the command-line interface (CLI).
 
 The `virtctl` command provides more virtualization options than the `oc` command. For example, you can use `virtctl` to pause a VM or expose a port.
 
@@ -115,3 +115,7 @@ You can delete a standalone virtual machine instance (VMI) from the web console.
 2.  Click **Actions** → **Delete VirtualMachineInstance**.
 
 3.  In the confirmation pop-up window, click **Delete** to permanently delete the standalone VMI.
+
+# Additional resources
+
+- [Using the CLI tools](../../virt/getting_started/virt-using-the-cli-tools.xml#virt-using-the-cli-tools)

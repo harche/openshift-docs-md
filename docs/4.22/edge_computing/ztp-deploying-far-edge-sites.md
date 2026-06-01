@@ -107,6 +107,14 @@ The target bare-metal host must meet the networking, firmware, and hardware requ
 
 </div>
 
+<div class="note">
+
+To deploy clusters with virtualized control planes running on OpenShift Virtualization VMs instead of physical servers, you can use KubeVirt Redfish to expose VMs as Redfish endpoints. For more information about using virtualized control planes, see "Understanding virtualized control planes".
+
+</div>
+
+- [Understanding virtualized control planes](../vcp/vcp-overview.xml#vcp-overview) for setup instructions
+
 # Creating the managed bare-metal host secrets
 
 Add the required `Secret` custom resources (CRs) for the managed bare-metal host to the hub cluster. You need a secret for the GitOps Zero Touch Provisioning (ZTP) pipeline to access the Baseboard Management Controller (BMC) and a secret for the assisted installer service to pull cluster installation images from the registry.

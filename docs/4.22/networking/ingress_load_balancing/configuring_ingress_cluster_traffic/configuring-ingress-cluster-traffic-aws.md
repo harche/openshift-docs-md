@@ -1,12 +1,10 @@
 OpenShift Container Platform provides methods for communicating from outside the cluster with services running in the cluster. This method uses load balancers on Amazon Web Services (AWS), specifically a Network Load Balancer (NLB) or a Classic Load Balancer (CLB). Both types of load balancers can forward the IP address of the client to the node, but a CLB requires proxy protocol support, which OpenShift Container Platform automatically enables.
 
-There are two ways to configure an Ingress Controller to use an NLB:
+There are two ways to switch an Ingress Controller from using a CLB to using an NLB. Use only one of these approaches for a given Ingress Controller; do not combine them.
 
-1.  By force replacing the Ingress Controller that is currently using a CLB. This deletes the `IngressController` object and an outage occurs while the new DNS records propagate and the NLB is being provisioned.
+1.  Force replace the Ingress Controller that is currently using a CLB. This deletes the `IngressController` object and an outage occurs while the new DNS records propagate and the NLB is being provisioned.
 
-2.  By editing an existing Ingress Controller that uses a CLB to then use an NLB. This changes the load balancer without having to delete and recreate the `IngressController` object.
-
-Both methods can be used to switch from an NLB to a CLB.
+2.  Edit the existing `IngressController` to set `spec.endpointPublishingStrategy.loadBalancer.providerParameters.aws.type` to `NLB`. Starting in OpenShift Container Platform 4.22, the cloud controller does not reprovision the load balancer automatically. The `IngressController` displays a `Progressing` condition stating that you must delete the router `Service` in the `openshift-ingress` namespace so that a new load balancer can be created. That interruption can change the load balancer hostname and IP addresses. Complete the subnets update procedure to read the `Progressing` condition and delete the router `Service`.
 
 You can configure these load balancers on a new or existing AWS cluster.
 
@@ -82,6 +80,24 @@ You can configure the default timeouts for a Classic Load Balancer (CLB) to exte
 # Configuring ingress cluster traffic on AWS using a Network Load Balancer
 
 To enable high-performance communication between external services and your OpenShift Container Platform cluster, configure an Amazon Web Services Network Load Balancer (NLB). You can set up an NLB on a new or existing AWS cluster to manage ingress traffic with low latency.
+
+# Dual-stack networking for the Ingress Controller load balancer on AWS
+
+On Amazon Web Services, an Ingress Controller must use a publishing `Service` type Network Load Balancer (NLB) to enable publishing over IPv4 and IPv6 when the cluster runs AWS dual-stack networking. A Classic Load Balancer (CLB) does not support the dual-stack publishing path.
+
+<div class="important">
+
+Dual-stack networking for OpenShift Container Platform on Amazon Web Services is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
+
+If your Ingress Controller uses an NLB and the cluster-scoped `Infrastructure` resource named `cluster` contains `DualStackIPv4Primary` or `DualStackIPv6Primary` in the `status.platformStatus.aws.ipFamily` field, the Ingress Operator sets the Ingress Controller load balancer `Service` to dual-stack IP families.
+
+The `Service` lists IPv4 first for `DualStackIPv4Primary` and IPv6 first for `DualStackIPv6Primary`.
+
+If the Ingress Controller uses a CLB and the cluster runs AWS dual-stack networking, the publishing load balancer stays IPv4-only. To expose the Ingress Controller over IPv4 and IPv6, you must configure the Ingress Controller to use an NLB.
 
 ## Switching the Ingress Controller from using a Classic Load Balancer to a Network Load Balancer
 
@@ -360,10 +376,6 @@ You can create an Ingress Controller backed by an Amazon Web Services Network Lo
     Before you can configure an Ingress Controller NLB on a new AWS cluster, you must complete the creating the installation configuration file procedure. For more information, see "Creating the installation configuration file".
 
     </div>
-
-# Additional resources
-
-- [Creating the installation configuration file](../../../installing/installing_aws/ipi/installing-aws-customizations.xml#installation-initializing_installing-aws-customizations)
 
 ## Configuring an Ingress Controller Network Load Balancer on a new AWS cluster
 
@@ -690,6 +702,14 @@ You can specify static IPs, otherwise known as elastic IPs, for your network loa
     ```
 
 # Additional resources
+
+- [Converting to a dual-stack cluster network](../../../networking/ovn_kubernetes_network_provider/converting-to-dual-stack.xml#nw-dual-stack-convert_converting-to-dual-stack)
+
+- [Enabling features using feature gates](../../../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)
+
+- [Creating the installation configuration file](../../../installing/installing_aws/ipi/installing-aws-customizations.xml#installation-initializing_installing-aws-customizations)
+
+- [Infrastructure cluster configuration API](../../../rest_api/config_apis/infrastructure-config-openshift-io-v1.xml#infrastructure-config-openshift-io-v1)
 
 - [Installing a cluster on AWS with network customizations](../../../installing/installing_aws/ipi/installing-aws-customizations.xml#installing-aws-customizations)
 

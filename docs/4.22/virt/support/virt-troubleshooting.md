@@ -138,15 +138,13 @@ If sensitive information such as credentials or other personally identifiable in
 
 To troubleshoot issues more easily, you can enable default access to virtual machine (VM) guest system logs by using the web console.
 
-1.  From the side menu, click **Virtualization** → **Overview**.
+1.  From the side menu, click **Virtualization** → **Settings**.
 
-2.  Click the **Settings** tab.
+2.  Click **Cluster** → **Guest management**.
 
-3.  Click **Cluster** → **Guest management**.
+3.  Set **Enable guest system log access** to on.
 
-4.  Set **Enable guest system log access** to on.
-
-5.  Optional: If you want to hide the VM user credentials that were set by using cloud-init, set **Hide guest credentials for non-privileged users** to on.
+4.  Optional: If you want to hide the VM user credentials that were set by using cloud-init, set **Hide guest credentials for non-privileged users** to on.
 
 ## Enabling default access to guest system logs with the CLI
 

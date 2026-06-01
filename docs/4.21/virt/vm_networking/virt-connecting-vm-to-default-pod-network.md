@@ -39,9 +39,9 @@ Enable masquerade mode and allow traffic to enter the virtual machine by editing
             pod: {}
     ```
 
-    - Connect using masquerade mode.
+    - `spec.template.spec.domain.devices.interfaces.masquerade` connects the virtual machine using masquerade mode.
 
-    - Optional: List the ports that you want to expose from the virtual machine, each specified by the `port` field. The `port` value must be a number between 0 and 65536. When the `ports` array is not used, all ports in the valid range are open to incoming traffic. In this example, incoming traffic is allowed on port `80`.
+    - `spec.template.spec.domain.devices.interfaces.ports` is optional and defines the list of ports that you want to expose from the virtual machine, each specified by the `port` field. The `port` value must be a number between 0 and 65536. When the `ports` array is not used, all ports in the valid range are open to incoming traffic. In this example, incoming traffic is allowed on port `80`.
 
       <div class="note">
 
@@ -99,13 +99,13 @@ When the virtual machine is running, incoming and outgoing traffic for the virtu
                     gateway6: fd10:0:2::1
     ```
 
-    - Connect using masquerade mode.
+    - `spec.template.spec.domain.devices.interfaces.masquerade` connects the virtual machine using masquerade mode.
 
-    - Allows incoming traffic on port 80 to the virtual machine.
+    - `spec.template.spec.domain.devices.interfaces.ports.port` allows incoming traffic on port 80 to the virtual machine.
 
-    - The static IPv6 address as determined by the `Network.pod.vmIPv6NetworkCIDR` field in the virtual machine instance configuration. The default value is `fd10:0:2::2/120`.
+    - `spec.template.spec.volumes.cloudInitNoCloud.networkData.ethernets.eth0.addresses` defines the static IPv6 address as determined by the `Network.pod.vmIPv6NetworkCIDR` field in the virtual machine instance configuration. The default value is `fd10:0:2::2/120`.
 
-    - The gateway IP address as determined by the `Network.pod.vmIPv6NetworkCIDR` field in the virtual machine instance configuration. The default value is `fd10:0:2::1`.
+    - `spec.template.spec.volumes.cloudInitNoCloud.networkData.ethernets.eth0.gateway6` defines the gateway IP address as determined by the `Network.pod.vmIPv6NetworkCIDR` field in the virtual machine instance configuration. The default value is `fd10:0:2::1`.
 
 2.  Create the virtual machine in the namespace:
 

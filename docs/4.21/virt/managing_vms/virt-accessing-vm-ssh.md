@@ -1,22 +1,18 @@
 You can use SSH to securely access your virtual machines (VMs) from the command line. To set up your SSH configuration, use one of the following methods:
 
-- [`virtctl ssh` command](../../virt/managing_vms/virt-accessing-vm-ssh.xml#using-virtctl-ssh_virt-accessing-vm-ssh)
+`virtctl ssh` command
+You create an SSH key pair, add the public key to a VM, and connect to the VM by running the `virtctl ssh` command with the private key.
 
-  You create an SSH key pair, add the public key to a VM, and connect to the VM by running the `virtctl ssh` command with the private key.
+You can add public SSH keys to Red Hat Enterprise Linux (RHEL) 9 VMs at runtime or at first boot to VMs with guest operating systems that can be configured by using a cloud-init data source.
 
-  You can add public SSH keys to Red Hat Enterprise Linux (RHEL) 9 VMs at runtime or at first boot to VMs with guest operating systems that can be configured by using a cloud-init data source.
+`virtctl port-forward` command
+You add the `virtctl port-foward` command to your `.ssh/config` file and connect to the VM by using OpenSSH.
 
-- [`virtctl port-forward` command](../../virt/managing_vms/virt-accessing-vm-ssh.xml#virt-using-virtctl-port-forward-command_virt-accessing-vm-ssh)
+Service
+You create a service, associate the service with the VM, and connect to the IP address and port exposed by the service.
 
-  You add the `virtctl port-foward` command to your `.ssh/config` file and connect to the VM by using OpenSSH.
-
-- [Service](../../virt/managing_vms/virt-accessing-vm-ssh.xml#using-services-ssh_virt-accessing-vm-ssh)
-
-  You create a service, associate the service with the VM, and connect to the IP address and port exposed by the service.
-
-- [Secondary network](../../virt/managing_vms/virt-accessing-vm-ssh.xml#using-secondary-networks-ssh_virt-accessing-vm-ssh)
-
-  You configure a secondary network, attach a virtual machine (VM) to the secondary network interface, and connect to the DHCP-allocated IP address.
+Secondary network
+You configure a secondary network, attach a virtual machine (VM) to the secondary network interface, and connect to the DHCP-allocated IP address.
 
 # Access configuration considerations
 
@@ -624,7 +620,7 @@ The key is added to the VM by the QEMU guest agent, which is installed automatic
     $ virtctl start vm example-vm -n example-namespace
     ```
 
-- Get the VM configuration:
+- Get the VM configuration by running the following command:
 
   ``` terminal
   $ oc describe vm example-vm -n example-namespace
@@ -832,7 +828,7 @@ You can create a service for a virtual machine (VM) by using the `virtctl` comma
 
 </div>
 
-After you create a service with `virtctl`, you must add `special: key` to the `spec.template.metadata.labels` stanza of the `VirtualMachine` manifest. See [Creating a service by using the command line](../../virt/managing_vms/virt-accessing-vm-ssh.xml#virt-creating-service-cli_virt-accessing-vm-ssh).
+After you create a service with `virtctl`, you must add `special: key` to the `spec.template.metadata.labels` stanza of the `VirtualMachine` manifest. See "Creating a service by using the command line".
 
 ### Creating a service by using the CLI
 
@@ -942,11 +938,11 @@ Secondary networks provide excellent performance because the traffic is not hand
 
 </div>
 
-See the [Multus](https://access.redhat.com/articles/6994974#networking-multus) and [SR-IOV](https://access.redhat.com/articles/6994974#networking-sriov) documentation in the [OpenShift Virtualization Tuning & Scaling Guide](https://access.redhat.com/articles/6994974) for additional information about networking options.
+For additional information about networking options, see the Multus and SR-IOV documentation in the "OpenShift Virtualization Tuning & Scaling Guide".
 
-- You configured a secondary network such as [Linux bridge](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-connecting-vm-to-linux-bridge) or [SR-IOV](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#virt-connecting-vm-to-sriov).
+- You configured a secondary network such as Linux bridge or SR-IOV.
 
-- You created a network attachment definition for a [Linux bridge network](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-creating-linux-bridge-nad-web_virt-connecting-vm-to-linux-bridge) or the SR-IOV Network Operator created a [network attachment definition](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#nw-sriov-additional-network_virt-connecting-vm-to-sriov) when you created an `SriovNetwork` object.
+- You created a network attachment definition for a Linux bridge network or the SR-IOV Network Operator created a network attachment definition when you created an `SriovNetwork` object.
 
 ## Configuring a VM network interface by using the web console
 
@@ -1011,6 +1007,20 @@ You can connect to a virtual machine (VM) attached to a secondary network by usi
 
 <div class="note">
 
-You can also [access a VM attached to a secondary network interface by using the cluster FQDN](../../virt/vm_networking/virt-accessing-vm-secondary-network-fqdn.xml#virt-accessing-vm-secondary-network-fqdn).
+You can also access a VM attached to a secondary network interface by using the cluster FQDN.
 
 </div>
+
+# Additional resources
+
+- [OpenShift Virtualization Tuning & Scaling Guide](https://access.redhat.com/articles/6994974)
+
+- [Connecting a virtual machine to a Linux bridge network](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-connecting-vm-to-linux-bridge)
+
+- [Connecting a virtual machine to an SR-IOV network](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#virt-connecting-vm-to-sriov)
+
+- [Creating a Linux bridge NAD by using the web console](../../virt/vm_networking/virt-connecting-vm-to-linux-bridge.xml#virt-creating-linux-bridge-nad-web_virt-connecting-vm-to-linux-bridge)
+
+- [Configuring SR-IOV additional network](../../virt/vm_networking/virt-connecting-vm-to-sriov.xml#nw-sriov-additional-network_virt-connecting-vm-to-sriov)
+
+- [Accessing a virtual machine by using its external FQDN](../../virt/vm_networking/virt-accessing-vm-secondary-network-fqdn.xml#virt-accessing-vm-secondary-network-fqdn)

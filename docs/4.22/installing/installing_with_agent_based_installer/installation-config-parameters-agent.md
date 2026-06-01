@@ -611,10 +611,6 @@ Additional VMware vSphere configuration parameters are described in the followin
     failureDomains:
       region:</code></pre></td>
 <td style="text-align: left;"><p>If you define multiple failure domains for your cluster, you must attach the tag to each vCenter data center. To define a region, use a tag from the <code>openshift-region</code> tag category. For a single vSphere data center environment, you do not need to attach a tag, but you must enter an alphanumeric value, such as <code>datacenter</code>, for the parameter. If you want to base your failure domains on host groups, attach these tags to your vSphere clusters instead of your data centers.</p>
-<div class="important">
-<p>OpenShift zones support for vSphere host groups is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.</p>
-<p>For more information about the support scope of Red Hat Technology Preview features, see <a href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.</p>
-</div>
 <p><strong>Value:</strong> String</p></td>
 </tr>
 <tr class="odd">
@@ -623,10 +619,6 @@ Additional VMware vSphere configuration parameters are described in the followin
     failureDomains:
       regionType:</code></pre></td>
 <td style="text-align: left;"><p>Specifies the <code>ComputeCluster</code> region type to enable host groups.</p>
-<div class="important">
-<p>OpenShift zones support for vSphere host groups is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.</p>
-<p>For more information about the support scope of Red Hat Technology Preview features, see <a href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.</p>
-</div>
 <p><strong>Value:</strong> String</p></td>
 </tr>
 <tr class="even">
@@ -643,10 +635,6 @@ Additional VMware vSphere configuration parameters are described in the followin
     failureDomains:
       zone:</code></pre></td>
 <td style="text-align: left;"><p>If you define multiple failure domains for your cluster, you must attach a tag to each vCenter cluster. To define a zone, use a tag from the <code>openshift-zone</code> tag category. For a single vSphere data center environment, you do not need to attach a tag, but you must enter an alphanumeric value, such as <code>cluster</code>, for the parameter. If you want to base your failure domains on host groups, define zones that correspond to your host groups instead of your clusters. Use these tags to associate each ESXi host with its host group.</p>
-<div class="important">
-<p>OpenShift zones support for vSphere host groups is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.</p>
-<p>For more information about the support scope of Red Hat Technology Preview features, see <a href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.</p>
-</div>
 <p><strong>Value:</strong> String</p></td>
 </tr>
 <tr class="even">
@@ -655,10 +643,6 @@ Additional VMware vSphere configuration parameters are described in the followin
     failureDomains:
       zoneType:</code></pre></td>
 <td style="text-align: left;"><p>Specifies the <code>HostGroup</code> zone type to enable host groups.</p>
-<div class="important">
-<p>OpenShift zones support for vSphere host groups is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.</p>
-<p>For more information about the support scope of Red Hat Technology Preview features, see <a href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.</p>
-</div>
 <p><strong>Value:</strong> String</p></td>
 </tr>
 <tr class="odd">
@@ -708,10 +692,6 @@ Additional VMware vSphere configuration parameters are described in the followin
       topology:
         hostGroup:</code></pre></td>
 <td style="text-align: left;"><p>Specifies the vSphere host group to associate with the failure domain.</p>
-<div class="important">
-<p>OpenShift zones support for vSphere host groups is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.</p>
-<p>For more information about the support scope of Red Hat Technology Preview features, see <a href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.</p>
-</div>
 <p><strong>Value:</strong> String</p></td>
 </tr>
 <tr class="even">

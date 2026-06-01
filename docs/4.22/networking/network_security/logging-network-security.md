@@ -1,4 +1,4 @@
-The OVN-Kubernetes network plugin uses Open Virtual Network (OVN) access control lists (ACLs) to manage `AdminNetworkPolicy`, `BaselineAdminNetworkPolicy`, `NetworkPolicy`, and `EgressFirewall` objects. Audit logging exposes `allow` and `deny` ACL events for `NetworkPolicy`, `EgressFirewall` and `BaselineAdminNetworkPolicy` custom resources (CR). Logging also exposes `allow`, `deny`, and `pass` ACL events for `AdminNetworkPolicy` (ANP) CR.
+The OVN-Kubernetes network plugin uses Open Virtual Network (OVN) access control lists (ACLs) to manage `AdminNetworkPolicy`, `BaselineAdminNetworkPolicy`, `NetworkPolicy`, and `EgressFirewall` objects. Audit logging exposes `Allow` and `Deny` ACL events for `NetworkPolicy`, `EgressFirewall` and `BaselineAdminNetworkPolicy` custom resources (CR). Logging also exposes `Allow`, `Deny`, and `Pass` ACL events for `AdminNetworkPolicy` (ANP) CR.
 
 <div class="note">
 
@@ -8,7 +8,9 @@ Audit logging is available for only the [OVN-Kubernetes network plugin](../../ne
 
 # Audit configuration
 
-The configuration for audit logging is specified as part of the OVN-Kubernetes cluster network provider configuration. The following YAML illustrates the default values for the audit logging:
+Audit logging configuration in OpenShift Container Platform is defined in the `policyAuditConfig` section of the cluster `Network` custom resource for OVN-Kubernetes. You can review these default settings to plan log destinations, file size limits, and rate limits before you enable logging.
+
+The following YAML illustrates the default values for the audit logging:
 
 <div class="formalpara-title">
 
@@ -98,9 +100,9 @@ The following table describes the configuration fields for audit logging.
 
 # Audit logging
 
-You can configure the destination for audit logs, such as a syslog server or a UNIX domain socket. Regardless of any additional configuration, an audit log is always saved to `/var/log/ovn/acl-audit-log.log` on each OVN-Kubernetes pod in the cluster.
+You can enable network policy audit logging in OpenShift Container Platform by annotating namespaces with the `k8s.ovn.org/acl-logging` key and configuring log destinations for the OVN-Kubernetes plugin.
 
-You can enable audit logging for each namespace by annotating each namespace configuration with a `k8s.ovn.org/acl-logging` section. In the `k8s.ovn.org/acl-logging` section, you must specify `allow`, `deny`, or both values to enable audit logging for a namespace.
+You can also configure the destination for audit logs, such as a syslog server or a UNIX domain socket. Regardless of any additional configuration, an audit log is always saved to `/var/log/ovn/acl-audit-log.log` on each OVN-Kubernetes pod in the cluster.
 
 <div class="note">
 
@@ -233,7 +235,7 @@ Audit logging namespace annotation for `k8s.ovn.org/acl-logging`
 
 # AdminNetworkPolicy audit logging
 
-Audit logging is enabled per `AdminNetworkPolicy` CR by annotating an ANP policy with the `k8s.ovn.org/acl-logging` key such as in the following example:
+You can enable audit logging for individual `AdminNetworkPolicy` custom resources in OpenShift Container Platform by annotating each policy with the `k8s.ovn.org/acl-logging` key. Use the resulting logs to verify how `Allow`, `Deny`, and `Pass` rules affect traffic between namespaces.
 
 ``` yaml
 apiVersion: policy.networking.k8s.io/v1alpha1
@@ -407,7 +409,7 @@ Audit logging AdminNetworkPolicy annotation
 
 # BaselineAdminNetworkPolicy audit logging
 
-Audit logging is enabled in the `BaselineAdminNetworkPolicy` CR by annotating an BANP policy with the `k8s.ovn.org/acl-logging` key such as in the following example:
+You can enable audit logging for `BaselineAdminNetworkPolicy` custom resources in OpenShift Container Platform by annotating each policy with the `k8s.ovn.org/acl-logging` key.
 
 ``` yaml
 apiVersion: policy.networking.k8s.io/v1alpha1
@@ -534,7 +536,7 @@ Audit logging BaselineAdminNetworkPolicy annotation
 
 # Configuring egress firewall and network policy auditing for a cluster
 
-As a cluster administrator, you can customize audit logging for your cluster.
+To customize egress firewall and network policy audit logging in OpenShift Container Platform, you can configure the `policyAuditConfig` section in the cluster `Network` custom resource. Adjust log destination, file size, and rate limits to control how ACL events are recorded.
 
 - Install the OpenShift CLI (`oc`).
 
@@ -748,7 +750,7 @@ As a cluster administrator, you can customize audit logging for your cluster.
 
 # Enabling egress firewall and network policy audit logging for a namespace
 
-As a cluster administrator, you can enable audit logging for a namespace.
+To enable egress firewall and network policy audit logging for a namespace in OpenShift Container Platform, you can add the `k8s.ovn.org/acl-logging` annotation with the `oc annotate` command. You can also apply a namespace YAML file that sets `Allow` and `Deny` log severity levels.
 
 - Install the OpenShift CLI (`oc`).
 
@@ -814,7 +816,7 @@ As a cluster administrator, you can enable audit logging for a namespace.
 
 # Disabling egress firewall and network policy audit logging for a namespace
 
-As a cluster administrator, you can disable audit logging for a namespace.
+To disable egress firewall and network policy audit logging for a namespace in OpenShift Container Platform, you can remove the `k8s.ovn.org/acl-logging` annotation with the `oc annotate` command. You can also apply a namespace YAML file that sets the annotation to `null`.
 
 - Install the OpenShift CLI (`oc`).
 

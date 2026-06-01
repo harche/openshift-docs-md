@@ -2,11 +2,11 @@ Export a virtual machine (VM) and its associated disks to import it into another
 
 You create a `VirtualMachineExport` custom resource (CR) by using the command-line interface.
 
-Alternatively, you can use the [`virtctl vmexport` command](../../virt/getting_started/virt-using-the-cli-tools.xml#vm-export-commands_virt-using-the-cli-tools) to create a `VirtualMachineExport` CR and to download exported volumes.
+Alternatively, you can use the `virtctl vmexport` command to create a `VirtualMachineExport` CR and to download exported volumes.
 
 <div class="note">
 
-You can migrate virtual machines between OpenShift Virtualization clusters by using the [Migration Toolkit for Virtualization](https://access.redhat.com/products/migration-toolkits-virtualization).
+You can migrate virtual machines between OpenShift Virtualization clusters by using the Migration Toolkit for Virtualization.
 
 </div>
 
@@ -269,3 +269,9 @@ After you export a virtual machine (VM) or snapshot, you can get the `VirtualMac
       ```
 
 - You can now create the `ConfigMap` and `VirtualMachine` objects on the target cluster by using the exported manifests.
+
+# Additional resources
+
+- [Migration Toolkit for Virtualization](https://access.redhat.com/products/migration-toolkits-virtualization)
+
+- [virtctl vmexport command](../../virt/getting_started/virt-using-the-cli-tools.xml#vm-export-commands_virt-using-the-cli-tools)

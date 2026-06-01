@@ -82,17 +82,17 @@ When the VM is created, the data volume with the image is imported into persiste
             name: imported-volume-6dcpf
     ```
 
-    - The VM name.
+    - `metadata.name` defines the VM name.
 
-    - The data volume name.
+    - `spec.dataVolumeTemplates.metadata.name` defines the data volume name.
 
-    - The URL of the image.
+    - `spec.dataVolumeTemplates.spec.source.http.url` defines the URL of the image.
 
-    - The size of the storage requested for the data volume.
+    - `spec.dataVolumeTemplates.spec.storage.resources.requests.storage` defines the size of the storage requested for the data volume.
 
-    - The instance type to use to control resource sizing of the VM.
+    - `spec.instancetype.name` defines the instance type to use to control resource sizing of the VM.
 
-    - The preference to use.
+    - `spec.preference.name` defines the preference to use.
 
 3.  Create the VM by running the following command:
 

@@ -44,11 +44,11 @@ Provided boot sources are updated automatically to the latest version of the ope
 
 You can configure a custom namespace for golden images in your cluster by using the OpenShift Container Platform web console.
 
-1.  In the web console, select **Virtualization** → **Overview**.
+1.  In the web console, select **Virtualization** → **Settings**.
 
-2.  Select the **Settings** tab.
+2.  On the **Cluster** tab, select **General settings** → **Templates and images management**.
 
-3.  On the **Cluster** tab, select **General settings** → **Bootable volumes project**.
+3.  Click **Bootable volumes project**.
 
 4.  Select a namespace to use for golden images.
 

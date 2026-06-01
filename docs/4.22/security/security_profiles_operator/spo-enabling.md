@@ -20,6 +20,8 @@ The Security Profiles Operator supports `x86_64` and `ppc64le` architecture.
 
 # Installing the Security Profiles Operator
 
+You can use the OpenShift Container Platform web console to install the Security Profiles Operator. This installs the Security Profiles Operator into the `openshift-security-profiles` namespace by default. You can also verify correct installation by using the OpenShift Container Platform web console.
+
 - You must have access to the web console as a user with `cluster-admin` privileges.
 
 1.  In the OpenShift Container Platform web console, navigate to **Ecosystem** → **Software Catalog**.
@@ -49,6 +51,8 @@ If the Operator is not installed successfully:
 2.  Navigate to the **Workloads** → **Pods** page and check the logs in any pods in the `openshift-security-profiles` project that are reporting issues.
 
 # Installing the Security Profiles Operator using the CLI
+
+You can install the OpenShift Container Platform Security Profiles Operator by using the command line interface.
 
 - You must have `cluster-admin` privileges.
 
@@ -125,11 +129,13 @@ If the Operator is not installed successfully:
     $ oc create -f subscription-object.yaml
     ```
 
-<div class="note">
+    <div class="note">
 
-If you are setting the global scheduler feature and enable `defaultNodeSelector`, you must create the namespace manually and update the annotations of the `openshift-security-profiles` namespace, or the namespace where the Security Profiles Operator was installed, with `openshift.io/node-selector: “”`. This removes the default node selector and prevents deployment failures.
+    If you are setting the global scheduler feature and enable `defaultNodeSelector`, you must create the namespace manually and update the annotations of the `openshift-security-profiles` namespace, or the namespace where the Security Profiles Operator was installed, with `openshift.io/node-selector: “”`. This removes the default node selector and prevents deployment failures.
 
-</div>
+    </div>
+
+<!-- -->
 
 1.  Verify the installation succeeded by inspecting the following CSV file:
 

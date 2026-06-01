@@ -6,7 +6,7 @@ If you do not configure your Windows VMs so that they are license-compliant, the
 
 # Creating a license-compliant AWS EC2 Windows VM by using the web console
 
-You can create license-compliant Windows virtual machines (VMs) by enabling the `dedicatedCpuPlacement` attribute. This attribute is enabled by default on instance types from the `d1` family. In the OpenShift Container Platform web console, you can create a compliant VM by selecting from a list of available bootable volumes.
+You can create license-compliant Windows virtual machines (VMs) by enabling the `dedicatedCpuPlacement` attribute. This attribute is enabled by default on **Dedicated vCPU** instance types. In the OpenShift Container Platform web console, you can create a compliant VM by selecting from a list of available bootable volumes.
 
 1.  In the OpenShift Container Platform web console, go to **Virtualization** → **Catalog**. The **InstanceTypes** tab opens by default.
 
@@ -16,7 +16,7 @@ You can create license-compliant Windows virtual machines (VMs) by enabling the 
 
 4.  Select a bootable volume from the list. If the list is truncated, click **Show all** to display the entire list. The bootable volume table contains the previously uploaded boot source.
 
-5.  In the **User provided** tab, select an instance type with a name that begins with `d1`. For example, `d1.2xmedium` for a Windows 11 VM.
+5.  In the **User provided** tab, select a **Dedicated vCPU** instance type.
 
 6.  Optional: You can mount a Windows driver disk by completing the following steps:
 

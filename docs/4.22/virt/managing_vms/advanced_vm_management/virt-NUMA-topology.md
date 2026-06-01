@@ -63,7 +63,7 @@ You can verify whether an already deployed VM is configured for vNUMA by checkin
 
   If any output other than an empty string is returned, vNUMA is enabled for the VM.
 
-- To verify vNUMA status in a GUI, check if the VM has a **vNUMA** badge in the OpenShift Container Platform web console. Go to **VirtualMachines** → **VirtualMachine details**, and check either the **Overview** or the **Configuration** tabs.
+- To verify vNUMA status in a GUI, check if the VM has a **vNUMA** badge in the OpenShift Container Platform web console. Go to **VirtualMachines** → **Virtual machines** → **VirtualMachine details**, and check either the **Overview** or the **Configuration** tabs.
 
 # Disabling the hot plug capability for VMs
 

@@ -32,7 +32,9 @@ If you did not originally set the requested certificates, you can determine the 
   $ openssl x509 -enddate -noout -in <cert_file_name>.pem
   ```
 
-For more information about determining how and when to renew your proxy certificates, see "Proxy certificates" in *Security and compliance*.
+  For more information about determining how and when to renew your proxy certificates, see "Proxy certificates" in *Security and compliance*.
+
+<!-- -->
 
 - [Proxy certificates](../../../security/certificate_types_descriptions/proxy-certificates.xml#cert-types-proxy-certificates)
 

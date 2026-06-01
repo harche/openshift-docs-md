@@ -6,8 +6,10 @@ If a node fails and machine health checks are not deployed on your cluster, virt
 Configuring remediating nodes
 You can configure remediating nodes by installing the Self Node Remediation Operator or the Fence Agents Remediation Operator from the software catalog and enabling machine health checks or node remediation checks.
 
-For more information on remediation, fencing, and maintaining nodes, see the [Workload Availability for Red Hat OpenShift](https://docs.redhat.com/en/documentation/workload_availability_for_red_hat_openshift/24.3) documentation.
+For more information on remediation, fencing, and maintaining nodes, see the "Workload Availability for Red Hat OpenShift" documentation.
 
 # Additional resources
+
+- [Workload Availability for Red Hat OpenShift](https://docs.redhat.com/en/documentation/workload_availability_for_red_hat_openshift/24.3)
 
 - [Delete a failed node to trigger virtual machine failover](../../../virt/nodes/virt-eviction-strategies.xml#virt-delete-failed-node-vm-failover_virt-eviction-strategies)

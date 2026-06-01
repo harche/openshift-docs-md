@@ -70,7 +70,7 @@ To maintain high availability of your cluster, use separate physical hosts for t
 
 The bootstrap and control plane machines must use Red Hat Enterprise Linux CoreOS (RHCOS) as the operating system. However, the compute machines can choose between Red Hat Enterprise Linux CoreOS (RHCOS), Red Hat Enterprise Linux (RHEL) 8.6 and later.
 
-Note that RHCOS is based on Red Hat Enterprise Linux (RHEL) 9.2 and inherits all of its hardware certifications and requirements. See [Red Hat Enterprise Linux technology capabilities and limits](https://access.redhat.com/articles/rhel-limits).
+Note that RHCOS is based on Red Hat Enterprise Linux (RHEL) 9.8 and inherits all of its hardware certifications and requirements. See [Red Hat Enterprise Linux technology capabilities and limits](https://access.redhat.com/articles/rhel-limits).
 
 ## Minimum resource requirements for cluster installation
 
@@ -92,7 +92,7 @@ Minimum resource requirements
 
 <div class="note">
 
-For OpenShift Container Platform version 4.19, RHCOS is based on RHEL version 9.6, which updates the micro-architecture requirements. The following list contains the minimum instruction set architectures (ISA) that each architecture requires:
+For OpenShift Container Platform version 4.22, RHCOS is based on RHEL version 9.8, which has the micro-architecture requirements. The following list contains the minimum instruction set architectures (ISA) that each architecture requires:
 
 - x86-64 architecture requires x86-64-v2 ISA
 
@@ -613,7 +613,7 @@ listen ingress-router-80
 where:
 
 `listen api-server-6443`
-Port `6443` handles the Kubernetes API traffic and points to the control plane machines.
+Port `6443` handles the Kubernetes API traffic and points to the control plane machines. You must configure health checks on this port to ensure that the API server is available before routing traffic.
 
 `server bootstrap bootstrap.ocp4.example.com`
 The bootstrap entries must be in place before the OpenShift Container Platform cluster installation and they must be removed after the bootstrap process is complete.
@@ -629,13 +629,13 @@ Port `80` handles the HTTP traffic and points to the machines that run the Ingre
 
 <div class="note">
 
-If you are deploying a three-node cluster with zero compute nodes, the Ingress Controller pods run on the control plane nodes. In three-node cluster deployments, you must configure your application Ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes.
+If you are deploying a compact three-node cluster with zero compute nodes, the Ingress Controller pods run on the control plane nodes. In three-node cluster deployments, you must configure your application Ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes.
 
 </div>
 
 # Creating a manifest object that includes a customized br-ex bridge
 
-By default, OpenShift Container Platform automatically configures the Open vSwitch (OVS) `br-ex` bridge. For advanced networking requirements, on a bare-metal platform you can override the default behavior by creating a `MachineConfig` object that includes an NMState configuration file.
+By default, OpenShift Container Platform automatically configures the Open vSwitch (OVS) `br-ex` bridge on bare-metal nodes. For advanced networking requirements, you can override this default behavior on bare-metal platforms. To do this, create a `MachineConfig` object that includes an NMState configuration file.
 
 Consider using the customized `br-ex` bridge configuration for any of the following tasks:
 
@@ -645,19 +645,19 @@ Consider using the customized `br-ex` bridge configuration for any of the follow
 
 - You need to update DNS values.
 
-- You need to modify attributes for a different bond interface, such as MIImon (Media Independent Interface Monitor), bonding mode, or Quality of Service (QoS).
+- You need to modify attributes for a different bond interface. Examples include MIImon (Media Independent Interface Monitor), bonding mode or Quality of Service (QoS).
 
 - You need to enable Link Layer Discovery Protocol (LLDP) to discover and troubleshoot switch connectivity.
 
-Consider using the default OVS br-ex bridge configuration if you require a standard environment with a single network interface controller (NIC) and standard OVS settings.
-
 <div class="note">
 
-If you require an environment with a single network interface controller (NIC) and default network settings, use the default OVS `br-ex` bridge mechanism.
+Use the default OVS `br-ex` bridge for standard environments.
+
+Use the default OVS `br-ex` bridge mechanism for single network interface controller (NIC) environments with default network settings.
 
 </div>
 
-After you install Red Hat Enterprise Linux CoreOS (RHCOS) and the system reboots, the Machine Config Operator injects Ignition configuration files into each node in your cluster, so that each node receives the `br-ex` bridge network configuration. To prevent configuration conflicts, the default OVS `br-ex` bridge mechanism is disabled.
+After you install Red Hat Enterprise Linux CoreOS (RHCOS) and the system reboots, the Machine Config Operator injects Ignition configuration files into each node. This operation ensures that each node receives the `br-ex` bridge network configuration. To prevent configuration conflicts, the default OVS `br-ex` bridge mechanism is disabled.
 
 <div class="warning">
 
@@ -760,7 +760,7 @@ The following list of interface names are reserved and you cannot use the names 
     The node NIC to which the bridge attaches.
 
     `auto-route-metric`
-    Set the parameter to `48` to ensure the `br-ex` default route always has the highest precedence (lowest metric). This configuration prevents routing conflicts with any other interfaces that are automatically configured by the `NetworkManager` service.
+    Set the parameter to `48` to ensure the `br-ex` default route always has the highest precedence (lowest metric). This configuration prevents routing conflicts with any other interfaces automatically configured by the `NetworkManager` service.
 
 2.  Use the `cat` command to base64-encode the contents of the NMState configuration:
 
@@ -773,7 +773,7 @@ The following list of interface names are reserved and you cannot use the names 
     `<nmstate_configuration>`
     Replace `<nmstate_configuration>` with the name of your NMState resource YAML file.
 
-3.  Create a `MachineConfig` manifest file and define a customized `br-ex` bridge network configuration analogous to the following example:
+3.  Create a `MachineConfig` manifest file and define a customized `br-ex` bridge network configuration analogous to the following example. The installation program automatically applies the updates from the `MachineConfig` object to your cluster.
 
     ``` yaml
     apiVersion: machineconfiguration.openshift.io/v1
@@ -804,15 +804,21 @@ The following list of interface names are reserved and you cannot use the names 
     where:
 
     `metadata.name`
-    The name of the policy.
+    Specifies the name of the policy.
 
     `contents.source`
     Writes the encoded base64 information to the specified path.
 
     `path`
-    For each node in your cluster, specify the hostname path to your node and the base-64 encoded Ignition configuration file data for the machine type. The `worker` role is the default role for nodes in your cluster. You must use the `.yml` extension for configuration files, such as `$(hostname -s).yml` when specifying the short hostname path for each node or all nodes in the `MachineConfig` manifest file.
+    For each node in your cluster, specify the hostname path to your node and the base-64 encoded Ignition configuration file data for the machine type. The `worker` role is the default role for nodes in your cluster. Use the `.yml` extension for configuration files. For example, use `$(hostname -s).yml` when specifying the short hostname path for each node or all nodes in the `MachineConfig` manifest file.
 
-    If you have a single global configuration specified in an `/etc/nmstate/openshift/cluster.yml` configuration file that you want to apply to all nodes in your cluster, you do not need to specify the short hostname path for each node, such as `/etc/nmstate/openshift/<node_hostname>.yml`. For example:
+    You can apply a single global configuration to all nodes by using the `/etc/nmstate/openshift/cluster.yml` configuration file. In this case, you do not need to specify individual hostname paths for each node, such as `/etc/nmstate/openshift/<node_hostname>.yml`.
+
+    <div class="formalpara-title">
+
+    **Example /etc/nmstate/openshift/cluster.yml configuration file**
+
+    </div>
 
     ``` yaml
     # ...
@@ -822,12 +828,6 @@ The following list of interface names are reserved and you cannot use the names 
             overwrite: true
             path: /etc/nmstate/openshift/cluster.yml
     # ...
-    ```
-
-4.  Apply the updates from the `MachineConfig` object to your cluster by entering the following command:
-
-    ``` terminal
-    $ oc apply -f <machine_config>.yml
     ```
 
 - Scaling compute nodes to apply the manifest object that includes a customized `br-ex` bridge to each compute node that exists in your cluster. For more information, see "Expanding the cluster" in the *Additional resources* section.
@@ -1859,7 +1859,7 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <tr class="even">
 <td style="text-align: left;"><p><code>gatewayConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
-<td style="text-align: left;"><p>Optional: Specify a configuration object for customizing how egress traffic is sent to the node gateway. Valid values are <code>Shared</code> and <code>Local</code>. The default value is <code>Shared</code>. In the default setting, the Open vSwitch (OVS) outputs traffic directly to the node IP interface. In the <code>Local</code> setting, it traverses the host network; consequently, it gets applied to the routing table of the host.</p>
+<td style="text-align: left;"><p>Optional: Specify a configuration object for customizing how egress traffic is sent to the node gateway. Valid values are <code>Shared</code> and <code>Local</code>. The default value is <code>Shared</code>. In the default setting, the Open vSwitch (OVS) outputs traffic directly to the node IP interface. If you are using hardware offloading, Red Hat recommends to use the default <code>Shared</code> gateway mode to bypass the host routing plane. In the <code>Local</code> setting, it traverses the host network; consequently, it gets applied to the routing table of the host.</p>
 <div class="note">
 <p>While migrating egress traffic, you can expect some disruption to workloads and service traffic until the Cluster Network Operator (CNO) successfully rolls out the changes.</p>
 </div></td>
@@ -2373,7 +2373,7 @@ You can use PXE or iPXE booting to install RHCOS on the machines.
 
 - You have created the Ignition config files for your cluster.
 
-- You have configured suitable network, DNS and load balancing infrastructure.
+- You have configured a suitable network, DNS and load balancing infrastructure.
 
 - You have configured suitable PXE or iPXE infrastructure.
 

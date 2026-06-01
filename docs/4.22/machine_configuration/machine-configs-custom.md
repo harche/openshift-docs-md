@@ -564,13 +564,19 @@ To change CRI-O settings using the `ContainerRuntimeConfig` CR:
 
 # Configuring the container runtime
 
-You can configure the container runtime used with new workloads on your nodes, based on which runtime you or your organization prefers. You can use either crun, which is considered a faster and more lightweight runtime, or runc, which is more widely used than crun.
+You can configure the container runtime used with new workloads on your nodes, based on which runtime you or your organization prefers. You can use either crun, which is considered a faster and more lightweight runtime, or runC, which is more widely used than crun.
 
-For information on crun and runc, see "About the container engine and container runtime".
+For information on crun and runC, see "About the container engine and container runtime".
+
+<div class="warning">
+
+Starting in OpenShift Container Platform 4.22, the runC container runtime is deprecated.
+
+</div>
 
 Starting in OpenShift Container Platform 4.18, crun is the default container runtime for new installations. You can change between the runtimes by using a `ContainerRuntimeConfig` object, as described in the following procedure. Changing the container runtime affects new workloads only. Existing workloads continue to use their existing container runtime.
 
-If you updated your cluster from OpenShift Container Platform 4.17, the runc container runtime remains unchanged as the default. During the upgrade, two `MachineConfig` objects, one for the control plane nodes and one for the worker nodes, were created to override the new default runtime. You can migrate the container runtime to crun, on a schedule of your choosing, by removing either or both of the `MachineConfig` objects.
+If you updated your cluster from OpenShift Container Platform 4.17, the runC container runtime remains unchanged as the default. During the upgrade, two `MachineConfig` objects, one for the control plane nodes and one for the worker nodes, were created to override the new default runtime. You can migrate the container runtime to crun, on a schedule of your choosing, by removing either or both of the `MachineConfig` objects.
 
 - If your cluster is updated from OpenShift Container Platform 4.17, you can use the crun container runtime by deleting the following `MachineConfig` objects:
 
@@ -586,7 +592,7 @@ If you updated your cluster from OpenShift Container Platform 4.17, the runc con
     $ oc delete machineconfig 00-override-master-generated-crio-default-container-runtime
     ```
 
-- For any OpenShift Container Platform 4.18 or greater cluster, you can configure crun or runc as the container runtime for specific nodes by creating a container runtime configuration:
+- For any OpenShift Container Platform 4.18 or greater cluster, you can configure crun or runC as the container runtime for specific nodes by creating a container runtime configuration:
 
   1.  Create a YAML file for the `ContainerRuntimeConfig` CR:
 

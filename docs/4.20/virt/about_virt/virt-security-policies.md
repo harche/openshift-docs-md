@@ -2,7 +2,7 @@ OpenShift Virtualization provides built-in security features and authorization p
 
 **Key points**
 
-- OpenShift Virtualization adheres to the `restricted` [Kubernetes pod security standards](https://kubernetes.io/docs/concepts/security/pod-security-standards/#restricted) profile, which aims to enforce the current best practices for pod security.
+- OpenShift Virtualization adheres to the `restricted` Kubernetes pod security standards profile, which aims to enforce the current best practices for pod security.
 
 - Virtual machine (VM) workloads run as unprivileged pods.
 
@@ -232,13 +232,13 @@ $ oc get clusterrole kubevirt-controller -o yaml
 
 # Additional resources
 
+- [Pod Security Standards](https://kubernetes.io/docs/concepts/security/pod-security-standards/#restricted)
+
 - [About Security context constraints](../../authentication/managing-security-context-constraints.xml#security-context-constraints-about_configuring-internal-oauth)
 
 - [Using RBAC to define and apply permissions](../../authentication/using-rbac.xml#using-rbac)
 
 - [Managing security context constraints](../../authentication/managing-security-context-constraints.xml#security-context-constraints-about_configuring-internal-oauth)
-
-- [Using RBAC to define and apply permissions](../../authentication/using-rbac.xml#using-rbac)
 
 - [Creating a cluster role](../../authentication/using-rbac.xml#creating-cluster-role_using-rbac)
 

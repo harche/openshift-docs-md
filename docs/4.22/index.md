@@ -171,6 +171,7 @@
   - [Preparing installation assets for iSCSI booting](installing/installing_with_agent_based_installer/installing-using-iscsi.md)
   - [Preparing an Agent-based installed cluster for the multicluster engine for Kubernetes](installing/installing_with_agent_based_installer/preparing-an-agent-based-installed-cluster-for-mce.md)
   - [Installation configuration parameters for the Agent-based Installer](installing/installing_with_agent_based_installer/installation-config-parameters-agent.md)
+  - [Postinstallation tasks](installing/installing_with_agent_based_installer/agent-based-installer-postinstallation.md)
 - **Installing on a single node**
   - [Preparing to install OpenShift on a single node](installing/installing_sno/install-sno-preparing-to-install-sno.md)
   - [Installing OpenShift on a single node](installing/installing_sno/install-sno-installing-sno.md)
@@ -179,6 +180,7 @@
   - **Two-node with Fencing**
     - [Preparing to install a two-node OpenShift cluster with fencing](installing/installing_two_node_cluster/installing_tnf/installing-two-node-fencing.md)
     - [Installing a two-node OpenShift cluster with fencing](installing/installing_two_node_cluster/installing_tnf/install-tnf.md)
+    - [Operating a degraded two-node OpenShift cluster with fencing](installing/installing_two_node_cluster/installing_tnf/operating-a-degraded-tnf.md)
     - [Post-installation troubleshooting and recovery](installing/installing_two_node_cluster/installing_tnf/install-post-tnf.md)
 - **Installing on bare metal**
   - [Preparing to install on bare metal](installing/installing_bare_metal/preparing-to-install-on-bare-metal.md)
@@ -665,6 +667,8 @@
     - [Uninstalling the SR-IOV Operator](networking/networking_operators/sr-iov-operator/uninstalling-sriov-operator.md)
   - **DPU Operator**
     - [DPU Operator](networking/networking_operators/dpu-operator/dpu-operator.md)
+- **Network Observability Operator**
+  - [Network Observability Operator](networking/network_observability_operator/network-observability-operator.md)
 - **Network security**
   - [Understanding network policy APIs](networking/network_security/network-policy-apis.md)
   - **Admin network policy**
@@ -796,12 +800,15 @@
     - [About BGP routing](networking/advanced_networking/bgp_routing/about-bgp-routing.md)
     - [Enabling BGP routing](networking/advanced_networking/bgp_routing/enabling-bgp-routing.md)
     - [Disabling BGP routing](networking/advanced_networking/bgp_routing/disabling-bgp-routing.md)
+    - [Improve east-west trafficperformance by routing pods on the underlay with BGP](networking/advanced_networking/bgp_routing/no-overlay-mode-bgp-routing.md)
     - [Migrating FRR-K8s custom resources](networking/advanced_networking/bgp_routing/migrating-frr-k8s-resources.md)
   - **Route advertisements**
     - [About route advertisements](networking/advanced_networking/route_advertisements/about-route-advertisements.md)
     - [Enabling route advertisements](networking/advanced_networking/route_advertisements/enabling-route-advertisements.md)
     - [Disabling route advertisements](networking/advanced_networking/route_advertisements/disabling-route-advertisements.md)
     - [Example route advertisements setup](networking/advanced_networking/route_advertisements/example-route-advertisement-setup.md)
+  - **BGP EVPN for user-defined networks**
+    - [About BGP EVPN for primary cluster user-defined networks](networking/advanced_networking/bgp_evpn_udn/about-bgp-evpn-user-defined-networks.md)
   - **Using PTP hardware**
     - [About PTP in OpenShift cluster nodes](networking/advanced_networking/ptp/about-ptp.md)
     - [Configuring PTP devices](networking/advanced_networking/ptp/configuring-ptp.md)
@@ -1036,7 +1043,6 @@
 - [Pruning objects to reclaim resources](applications/pruning-objects.md)
 - [Idling applications](applications/idling-applications.md)
 - [Deleting applications](applications/odc-deleting-applications.md)
-- [Using the Red Hat Marketplace](applications/red-hat-marketplace.md)
 
 ### Serverless
 
@@ -1136,6 +1142,13 @@
 ### Hosted control planes
 
 - [Hosted control planes release notes](hosted_control_planes/hcp-release-notes.md)
+
+### Virtualized control planes
+
+- [Understanding virtualized control planes](vcp/vcp-overview.md)
+- [Prerequisites for virtualized control planes](vcp/vcp-prerequisites.md)
+- [Preparing the environment for virtualized control planes](vcp/vcp-preparing-environment.md)
+- [Deploying a virtualized control plane](vcp/vcp-installing-cluster.md)
 
 ### Nodes
 
@@ -1958,6 +1971,7 @@
   - [Allocate physical cores for virtual machines](virt/post_installation_configuration/virt-physical-cores-allocation-vms.md)
   - [Configuring higher VM workload density](virt/post_installation_configuration/virt-configuring-higher-vm-workload-density.md)
   - [Configuring certificate rotation](virt/post_installation_configuration/virt-configuring-certificate-rotation.md)
+  - [Configuring KubeVirt Redfish for VM management](virt/post_installation_configuration/virt-kubevirt-redfish.md)
 - **Updating**
   - [Updating OpenShift Virtualization](virt/updating/upgrading-virt.md)
 - **Creating a virtual machine**

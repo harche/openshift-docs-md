@@ -51,7 +51,11 @@ If the VM is connected to the pod network, the pod network interface is the defa
   - To configure a dynamic IP address, specify the interface name and enable DHCP:
 
     ``` yaml
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachine
+    metadata:
+      name: <interface_name>
+      kind: VirtualMachine
     spec:
     # ...
       template:
@@ -64,14 +68,17 @@ If the VM is connected to the pod network, the pod network interface is the defa
                 ethernets:
                   eth1:
                     dhcp4: true
+        # ...
     ```
-
-    - Specify the interface name.
 
   - To configure a static IP, specify the interface name and the IP address:
 
     ``` yaml
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachine
+    metadata:
+      name: <interface_name>
+      kind: VirtualMachine
     spec:
     # ...
       template:
@@ -85,11 +92,8 @@ If the VM is connected to the pod network, the pod network interface is the defa
                   eth1:
                     addresses:
                     - 10.10.10.14/24
+        # ...
     ```
-
-    - Specify the interface name.
-
-    - Specify the static IP address.
 
 # Viewing the IP address of a virtual machine by using the web console
 

@@ -221,6 +221,8 @@ You can enable the SCSI `persistentReservation` feature gate and allow a LUN-bac
 
 The `persistentReservation` feature gate is disabled by default. You can enable the `persistentReservation` feature gate by using the web console or the command line.
 
+## Prerequisites
+
 - Cluster administrator privileges are required.
 
 - The volume access mode `ReadWriteMany` (RWX) is required if the VMs that are sharing disks are running on different nodes. If the VMs that are sharing disks are running on the same node, the `ReadWriteOnce` (RWO) volume access mode is sufficient.
@@ -251,6 +253,8 @@ You can enable the `persistentReservation` feature gate by using the command lin
     $ oc patch hyperconverged kubevirt-hyperconverged -n openshift-cnv --type json -p \
     '[{"op":"replace","path":"/spec/featureGates/persistentReservation", "value": true}]'
     ```
+
+# Additional resources
 
 - [Persistent reservation helper protocol](https://www.qemu.org/docs/master/interop/pr-helper.html)
 

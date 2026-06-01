@@ -13,15 +13,7 @@ Compatible platforms
 
 # Cloud platforms
 
-OpenShift Virtualization is compatible with various public cloud platforms, each with specific storage options and support levels.
-
-<div class="important">
-
-Installing OpenShift Virtualization on certain cloud platforms is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+OpenShift Virtualization is compatible with various public cloud platforms. Each platform has specific storage options available.
 
 <table>
 <colgroup>
@@ -48,7 +40,9 @@ For more information about the support scope of Red Hat Technology Preview featu
 <li><p>Portworx</p></li>
 <li><p>FSx (NetApp)</p></li>
 </ul></td>
-<td style="text-align: left;"><p>For more information, see "Installing a cluster on AWS with customizations" in the Additional resources section.</p></td>
+<td style="text-align: left;"><ul>
+<li><p>See "Installing a cluster on AWS with customizations" in the Additional resources section.</p></li>
+</ul></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>Red Hat OpenShift Service on AWS (ROSA)</p></td>
@@ -212,7 +206,7 @@ OpenShift Virtualization support for single-stack IPv6 clusters is limited to th
 
 <div class="important">
 
-Installing OpenShift Virtualization on certain cloud platforms is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+{FeatureName} is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
 For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 

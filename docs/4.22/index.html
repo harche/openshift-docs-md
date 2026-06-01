@@ -169,6 +169,7 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_with_agent_based_installer/installing-using-iscsi.md">Preparing installation assets for iSCSI booting</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_with_agent_based_installer/preparing-an-agent-based-installed-cluster-for-mce.md">Preparing an Agent-based installed cluster for the multicluster engine for Kubernetes</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_with_agent_based_installer/installation-config-parameters-agent.md">Installation configuration parameters for the Agent-based Installer</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_with_agent_based_installer/agent-based-installer-postinstallation.md">Postinstallation tasks</a></div>
 <div style="padding-left:0px">&bull; <strong>Installing on a single node</strong></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_sno/install-sno-preparing-to-install-sno.md">Preparing to install OpenShift on a single node</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_sno/install-sno-installing-sno.md">Installing OpenShift on a single node</a></div>
@@ -177,6 +178,7 @@
 <div style="padding-left:20px">&bull; <strong>Two-node with Fencing</strong></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=installing/installing_two_node_cluster/installing_tnf/installing-two-node-fencing.md">Preparing to install a two-node OpenShift cluster with fencing</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=installing/installing_two_node_cluster/installing_tnf/install-tnf.md">Installing a two-node OpenShift cluster with fencing</a></div>
+<div style="padding-left:40px">&bull; <a href="viewer.html?doc=installing/installing_two_node_cluster/installing_tnf/operating-a-degraded-tnf.md">Operating a degraded two-node OpenShift cluster with fencing</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=installing/installing_two_node_cluster/installing_tnf/install-post-tnf.md">Post-installation troubleshooting and recovery</a></div>
 <div style="padding-left:0px">&bull; <strong>Installing on bare metal</strong></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=installing/installing_bare_metal/preparing-to-install-on-bare-metal.md">Preparing to install on bare metal</a></div>
@@ -647,6 +649,8 @@
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/networking_operators/sr-iov-operator/uninstalling-sriov-operator.md">Uninstalling the SR-IOV Operator</a></div>
 <div style="padding-left:20px">&bull; <strong>DPU Operator</strong></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/networking_operators/dpu-operator/dpu-operator.md">DPU Operator</a></div>
+<div style="padding-left:0px">&bull; <strong>Network Observability Operator</strong></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=networking/network_observability_operator/network-observability-operator.md">Network Observability Operator</a></div>
 <div style="padding-left:0px">&bull; <strong>Network security</strong></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=networking/network_security/network-policy-apis.md">Understanding network policy APIs</a></div>
 <div style="padding-left:20px">&bull; <strong>Admin network policy</strong></div>
@@ -778,12 +782,15 @@
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/advanced_networking/bgp_routing/about-bgp-routing.md">About BGP routing</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/advanced_networking/bgp_routing/enabling-bgp-routing.md">Enabling BGP routing</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/advanced_networking/bgp_routing/disabling-bgp-routing.md">Disabling BGP routing</a></div>
+<div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/advanced_networking/bgp_routing/no-overlay-mode-bgp-routing.md">Improve east-west trafficperformance by routing pods on the underlay with BGP</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/advanced_networking/bgp_routing/migrating-frr-k8s-resources.md">Migrating FRR-K8s custom resources</a></div>
 <div style="padding-left:20px">&bull; <strong>Route advertisements</strong></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/advanced_networking/route_advertisements/about-route-advertisements.md">About route advertisements</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/advanced_networking/route_advertisements/enabling-route-advertisements.md">Enabling route advertisements</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/advanced_networking/route_advertisements/disabling-route-advertisements.md">Disabling route advertisements</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/advanced_networking/route_advertisements/example-route-advertisement-setup.md">Example route advertisements setup</a></div>
+<div style="padding-left:20px">&bull; <strong>BGP EVPN for user-defined networks</strong></div>
+<div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/advanced_networking/bgp_evpn_udn/about-bgp-evpn-user-defined-networks.md">About BGP EVPN for primary cluster user-defined networks</a></div>
 <div style="padding-left:20px">&bull; <strong>Using PTP hardware</strong></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/advanced_networking/ptp/about-ptp.md">About PTP in OpenShift cluster nodes</a></div>
 <div style="padding-left:40px">&bull; <a href="viewer.html?doc=networking/advanced_networking/ptp/configuring-ptp.md">Configuring PTP devices</a></div>
@@ -1004,7 +1011,6 @@
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=applications/pruning-objects.md">Pruning objects to reclaim resources</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=applications/idling-applications.md">Idling applications</a></div>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=applications/odc-deleting-applications.md">Deleting applications</a></div>
-<div style="padding-left:0px">&bull; <a href="viewer.html?doc=applications/red-hat-marketplace.md">Using the Red Hat Marketplace</a></div>
 <h3>Serverless</h3>
 <div style="padding-left:0px">&bull; <strong>About Serverless</strong></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=serverless/about/about-serverless.md">Serverless overview</a></div>
@@ -1094,6 +1100,11 @@
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=etcd/etcd-guidance-span.md">Guidance for clusters that span data centers</a></div>
 <h3>Hosted control planes</h3>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=hosted_control_planes/hcp-release-notes.md">Hosted control planes release notes</a></div>
+<h3>Virtualized control planes</h3>
+<div style="padding-left:0px">&bull; <a href="viewer.html?doc=vcp/vcp-overview.md">Understanding virtualized control planes</a></div>
+<div style="padding-left:0px">&bull; <a href="viewer.html?doc=vcp/vcp-prerequisites.md">Prerequisites for virtualized control planes</a></div>
+<div style="padding-left:0px">&bull; <a href="viewer.html?doc=vcp/vcp-preparing-environment.md">Preparing the environment for virtualized control planes</a></div>
+<div style="padding-left:0px">&bull; <a href="viewer.html?doc=vcp/vcp-installing-cluster.md">Deploying a virtualized control plane</a></div>
 <h3>Nodes</h3>
 <div style="padding-left:0px">&bull; <a href="viewer.html?doc=nodes/index.md">Overview of nodes</a></div>
 <div style="padding-left:0px">&bull; <strong>Working with pods</strong></div>
@@ -1886,6 +1897,7 @@
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/post_installation_configuration/virt-physical-cores-allocation-vms.md">Allocate physical cores for virtual machines</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/post_installation_configuration/virt-configuring-higher-vm-workload-density.md">Configuring higher VM workload density</a></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/post_installation_configuration/virt-configuring-certificate-rotation.md">Configuring certificate rotation</a></div>
+<div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/post_installation_configuration/virt-kubevirt-redfish.md">Configuring KubeVirt Redfish for VM management</a></div>
 <div style="padding-left:0px">&bull; <strong>Updating</strong></div>
 <div style="padding-left:20px">&bull; <a href="viewer.html?doc=virt/updating/upgrading-virt.md">Updating OpenShift Virtualization</a></div>
 <div style="padding-left:0px">&bull; <strong>Creating a virtual machine</strong></div>

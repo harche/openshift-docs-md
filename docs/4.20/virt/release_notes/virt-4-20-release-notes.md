@@ -1,6 +1,6 @@
 # Providing documentation feedback
 
-To report an error or to improve our documentation, log in to your [Red Hat Jira account](https://issues.redhat.com) and submit a [Jira issue](https://issues.redhat.com/secure/CreateIssueDetails!init.jspa?pid=12323181&issuetype=1&components=12333768&priority=10200&summary=%5BDoc%5D&customfield_12316142).
+To report an error or to improve our documentation, log in to your [Red Hat Jira account](https://redhat.atlassian.net/jira/) and submit a [Jira issue](https://redhat.atlassian.net/secure/CreateIssueDetails%21init.jspa?priority=10003&summary=%5BDoc%5D&pid=10270&issuetype=10016&components=13563).
 
 # About Red Hat OpenShift Virtualization
 
@@ -20,7 +20,7 @@ Learn more about [OpenShift Virtualization architecture and deployments](../../v
 
 OpenShift Virtualization 4.20 is supported for use on OpenShift Container Platform 4.17 clusters. To use the latest z-stream release of OpenShift Virtualization, you must first upgrade to the latest version of OpenShift Container Platform.
 
-The latest stable release of OpenShift Virtualization 4.20 is 4.20.14.
+The latest stable release of OpenShift Virtualization 4.20 is 4.20.15.
 
 ## Supported guest operating systems
 

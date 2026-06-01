@@ -84,6 +84,12 @@ When you run the `oc adm upgrade recommend` command, the output displays the fol
 
 You can use the information provided by the output to make informed decisions about the state of your cluster. Examples include whether any critical cluster issues should be addressed before attempting an update, or which specific target version would have less risk for your cluster.
 
+<div class="note">
+
+The `oc adm upgrade recommend` command is read-only and does not affect the state of the cluster. To request an update, use the `oc adm upgrade` command.
+
+</div>
+
 - You installed the latest version of OpenShift CLI (`oc`).
 
 <!-- -->
@@ -169,6 +175,91 @@ You can configure specific alerts to be checked by the `oc adm upgrade recommend
           annotations:
             summary: "Storage volume is over 85% full"
             description: "The volume {{ $labels.persistentvolumeclaim }} in namespace {{ $labels.namespace }} is currently {{ $value | humanizePercentage }} full. This may cause issues during pod restarts or cluster updates."
+    ```
+
+## Accepting risks with the oc adm upgrade recommend command
+
+You can use a command flag to explicitly accept update risks that are shown in the output of the `oc adm upgrade recommend` command.
+
+1.  Check for update risks by running the following command:
+
+    ``` terminal
+    $ oc adm upgrade recommend
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    The following conditions found no cause for concern in updating this cluster to later releases: recommended/CriticalAlerts (AsExpected), recommended/NodeAlerts (AsExpected), recommended/PodDisruptionBudgetAlerts (AsExpected), recommended/PodImagePullAlerts (AsExpected)
+
+    The following conditions found cause for concern in updating this cluster to later releases: recommended/UpdatePrecheckAlerts/TestAlert/0
+
+    recommended/UpdatePrecheckAlerts/TestAlert/0=False:
+
+      Reason: Alert:firing
+      Message: warning alert TestAlert firing, suggesting issues worth investigating before updating the cluster. Test alert for updates. The alert description is: Test alert for updates <alert does not have a runbook_url annotation>
+
+    Upstream update service is unset, so the cluster will use an appropriate default.
+    Channel: stable-4.21 (available channels: candidate-4.20, candidate-4.21, candidate-4.22, eus-4.20, fast-4.20, fast-4.21, stable-4.20, stable-4.21)
+
+    Updates to 4.21:
+      VERSION     ISSUES
+      4.21.14     no known issues relevant to this cluster
+      4.21.13     no known issues relevant to this cluster
+    And 2 older 4.21 updates you can see with '--show-outdated-releases' or '--version VERSION'.
+
+    Updates to 4.20:
+      VERSION     ISSUES
+      4.20.20     no known issues relevant to this cluster
+    ```
+
+    In this example, `TestAlert` is the name of the alert that is firing on the cluster and is considered a risk to a cluster update. Alerts that are identified as update risks might be changed over time.
+
+2.  Accept update risks by running the following command:
+
+    ``` terminal
+    $ oc adm upgrade recommend --accept <risk_name>
+    ```
+
+    Replace `<risk_name>` with the name of the risk you want to accept. You can accept multiple risks at once by separating each risk by a comma, for example `risk1,risk2,risk3`.
+
+    <div class="formalpara-title">
+
+    **Example command**
+
+    </div>
+
+    ``` terminal
+    $ oc adm upgrade recommend --accept TestAlert
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    The following conditions found no cause for concern in updating this cluster to later releases: recommended/CriticalAlerts (AsExpected), recommended/NodeAlerts (AsExpected), recommended/PodDisruptionBudgetAlerts (AsExpected), recommended/PodImagePullAlerts (AsExpected)
+
+    The following conditions found cause for concern in updating this cluster to later releases, but were explicitly accepted via --accept: recommended/UpdatePrecheckAlerts/TestAlert/0
+
+    Upstream update service is unset, so the cluster will use an appropriate default.
+    Channel: stable-4.21 (available channels: candidate-4.20, candidate-4.21, candidate-4.22, eus-4.20, fast-4.20, fast-4.21, stable-4.20, stable-4.21)
+
+    Updates to 4.21:
+      VERSION     ISSUES
+      4.21.14     no known issues relevant to this cluster
+      4.21.13     no known issues relevant to this cluster
+    And 2 older 4.21 updates you can see with '--show-outdated-releases' or '--version VERSION'.
+
+    Updates to 4.20:
+      VERSION     ISSUES
+      4.20.20     no known issues relevant to this cluster
     ```
 
 # Preparing for Gateway API management succession by the Ingress Operator

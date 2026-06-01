@@ -1,6 +1,6 @@
 You can configure the boot order of disks and network devices on your virtual machine (VM) by using the web console or the CLI.
 
-With **Boot Order** in the **Virtual Machine Overview** page, you can:
+With **Boot Order** in the **VirtualMachine details** page, you can:
 
 - Select a disk or network interface controller (NIC) and add it to the boot order list.
 
@@ -14,17 +14,21 @@ You can add items to a boot order list by using the web console.
 
 1.  Click **Virtualization** → **VirtualMachines** from the side menu.
 
-2.  Select a virtual machine to open the **VirtualMachine details** page.
+2.  Click the **Virtual machines** tab.
 
-3.  Click the **Details** tab.
+3.  Select a virtual machine to open the **VirtualMachine details** page.
 
-4.  Click the pencil icon that is located on the right side of **Boot Order**. If a YAML configuration does not exist, or if this is the first time that you are creating a boot order list, the following message displays: **No resource selected. VM will attempt to boot from disks by order of appearance in YAML file.**
+4.  Click the **Configuration** tab.
 
-5.  Click **Add Source** and select a bootable disk or network interface controller (NIC) for the virtual machine.
+5.  Expand **Boot management**.
 
-6.  Add any additional disks or NICs to the boot order list.
+6.  Click the pencil icon that is located on the right side of **Boot Order**. If a YAML configuration does not exist, or if this is the first time that you are creating a boot order list, the following message displays: **No resource selected. VM will attempt to boot from disks by order of appearance in YAML file.**
 
-7.  Click **Save**.
+7.  Click **Add Source** and select a bootable disk or network interface controller (NIC) for the virtual machine.
+
+8.  Add any additional disks or NICs to the boot order list.
+
+9.  Click **Save**.
 
     <div class="note">
 
@@ -40,19 +44,23 @@ You can edit the boot order list in the web console.
 
 1.  Click **Virtualization** → **VirtualMachines** from the side menu.
 
-2.  Select a virtual machine to open the **VirtualMachine details** page.
+2.  Click the **Virtual machines** tab.
 
-3.  Click the **Details** tab.
+3.  Select a virtual machine to open the **VirtualMachine details** page.
 
-4.  Click the pencil icon that is located on the right side of **Boot Order**.
+4.  Click the **Configuration** tab.
 
-5.  Choose the appropriate method to move the item in the boot order list:
+5.  Expand **Boot management**.
+
+6.  Click the pencil icon that is located on the right side of **Boot Order**.
+
+7.  Choose the appropriate method to move the item in the boot order list:
 
     - If you do not use a screen reader, hover over the arrow icon next to the item that you want to move, drag the item up or down, and drop it in a location of your choice.
 
     - If you use a screen reader, press the Up Arrow key or Down Arrow key to move the item in the boot order list. Then, press the **Tab** key to drop the item in a location of your choice.
 
-6.  Click **Save**.
+8.  Click **Save**.
 
     <div class="note">
 
@@ -107,13 +115,17 @@ Remove items from a boot order list by using the web console.
 
 1.  Click **Virtualization** → **VirtualMachines** from the side menu.
 
-2.  Select a virtual machine to open the **VirtualMachine details** page.
+2.  Click the **Virtual machines** tab.
 
-3.  Click the **Details** tab.
+3.  Select a virtual machine to open the **VirtualMachine details** page.
 
-4.  Click the pencil icon that is located on the right side of **Boot Order**.
+4.  Click the **Configuration** tab.
 
-5.  Click the **Remove** icon ![delete](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAABmJLR0QA/wD/AP+gvaeTAAAAlElEQVQokZXSTQ7BUBTF8V8r6QIsw8dMUmzGQqxDlDIwtw8xFquRqEFfpUqpk5zBffm/e89NbuRVcywwCPUVB5wanAQ7FC3OA/PU/gtceVuP8QsucMe0hyUmzYwfFOEWYxgejui3+BiYUdyh85vWHXcosILZH0un1ZS8w4esHivB5kvnLDCixj6p8jTGob4oT+NcAQ+QBUqLPgmv0gAAAABJRU5ErkJggg==) next to the item. The item is removed from the boot order list and saved in the list of available boot sources. If you remove all items from the boot order list, the following message displays: **No resource selected. VM will attempt to boot from disks by order of appearance in YAML file.**
+5.  Expand **Boot management**.
+
+6.  Click the pencil icon that is located on the right side of **Boot Order**.
+
+7.  Click the **Remove** icon ![delete](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAABmJLR0QA/wD/AP+gvaeTAAAAlElEQVQokZXSTQ7BUBTF8V8r6QIsw8dMUmzGQqxDlDIwtw8xFquRqEFfpUqpk5zBffm/e89NbuRVcywwCPUVB5wanAQ7FC3OA/PU/gtceVuP8QsucMe0hyUmzYwfFOEWYxgejui3+BiYUdyh85vWHXcosILZH0un1ZS8w4esHivB5kvnLDCixj6p8jTGob4oT+NcAQ+QBUqLPgmv0gAAAABJRU5ErkJggg==) next to the item. The item is removed from the boot order list and saved in the list of available boot sources. If you remove all items from the boot order list, the following message displays: **No resource selected. VM will attempt to boot from disks by order of appearance in YAML file.**
 
     <div class="note">
 

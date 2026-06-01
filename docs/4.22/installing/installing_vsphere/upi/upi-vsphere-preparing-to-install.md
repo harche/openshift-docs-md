@@ -427,7 +427,7 @@ listen ingress-router-80
 where:
 
 `listen api-server-6443`
-Port `6443` handles the Kubernetes API traffic and points to the control plane machines.
+Port `6443` handles the Kubernetes API traffic and points to the control plane machines. You must configure health checks on this port to ensure that the API server is available before routing traffic.
 
 `server bootstrap bootstrap.ocp4.example.com`
 The bootstrap entries must be in place before the OpenShift Container Platform cluster installation and they must be removed after the bootstrap process is complete.
@@ -443,7 +443,7 @@ Port `80` handles the HTTP traffic and points to the machines that run the Ingre
 
 <div class="note">
 
-If you are deploying a three-node cluster with zero compute nodes, the Ingress Controller pods run on the control plane nodes. In three-node cluster deployments, you must configure your application Ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes.
+If you are deploying a compact three-node cluster with zero compute nodes, the Ingress Controller pods run on the control plane nodes. In three-node cluster deployments, you must configure your application Ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes.
 
 </div>
 

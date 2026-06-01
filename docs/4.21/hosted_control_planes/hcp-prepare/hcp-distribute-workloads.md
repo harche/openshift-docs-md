@@ -1,4 +1,16 @@
-Before you get started with hosted control planes for OpenShift Container Platform, you must properly label nodes so that the pods of hosted clusters can be scheduled into infrastructure nodes. Node labeling is also important for the following reasons:
+In hosted control planes for OpenShift Container Platform, cluster management is separate from cluster workload. As you prepare your deployment, ensure you know how you want to distribute your hosted cluster workloads.
+
+<div class="important">
+
+Do not use the management cluster for your workload. Workloads must not run on nodes where control planes run.
+
+</div>
+
+# Node labeling for hosted control planes
+
+Before you get started with hosted control planes, you must properly label nodes so that the pods of hosted clusters can be scheduled into infrastructure nodes.
+
+Node labeling is also important for the following reasons:
 
 - To ensure high availability and proper workload deployment. For example, to avoid having the control plane workload count toward your OpenShift Container Platform subscription, you can set the `node-role.kubernetes.io/infra` label.
 
@@ -8,17 +20,13 @@ Before you get started with hosted control planes for OpenShift Container Platfo
 
   - Everything shared: Control planes for hosted clusters can run on any node that is designated for control planes.
 
-  - Request serving isolation: Serving pods are requested in their own dedicated nodes.
-
   - Nothing shared: Every control plane has its own dedicated nodes.
 
 For more information about dedicating a node to a single hosted cluster, see "Labeling management cluster nodes".
 
-<div class="important">
+- [Labeling management cluster nodes](../../hosted_control_planes/hcp-prepare/hcp-distribute-workloads.xml#hcp-labels-taints_hcp-distribute-workloads)
 
-Do not use the management cluster for your workload. Workloads must not run on nodes where control planes run.
-
-</div>
+- [Network isolation for hosted clusters](../../hosted_control_planes/hcp-networking.xml#hcp-isolation-overview_hcp-networking)
 
 # Labeling management cluster nodes
 
@@ -122,8 +130,6 @@ Tolerations on the hosted cluster spread only to the pods of the control plane. 
 
 You can configure hosted control planes to isolate network traffic or control plane pods.
 
-## Network policy isolation
-
 Each hosted control plane is assigned to run in a dedicated Kubernetes namespace. By default, the Kubernetes namespace denies all network traffic.
 
 The following network traffic is allowed through the network policy that is enforced by the Kubernetes Container Network Interface (CNI):
@@ -136,7 +142,7 @@ The following network traffic is allowed through the network policy that is enfo
 
 ## Control plane pod isolation
 
-In addition to network policies, each hosted control plane pod is run with the `restricted` security context constraint. This policy denies access to all host features and requires pods to be run with a UID and with SELinux context that is allocated uniquely to each namespace that hosts a customer control plane.
+In addition to network policies, each hosted control plane pod is run with the `restricted` security context constraint. This policy denies access to all host features and requires pods to be run with a unique identifier (UID) and with SELinux context that is allocated uniquely to each namespace that hosts a customer control plane.
 
 The policy ensures the following constraints:
 
@@ -146,7 +152,7 @@ The policy ensures the following constraints:
 
 - Pods must run as a user in a pre-allocated range of UIDs.
 
-- Pods must run with a pre-allocated MCS label.
+- Pods must run with a pre-allocated Multi-Category Security (MCS) label.
 
 - Pods cannot access the host network namespace.
 
@@ -160,10 +166,14 @@ The management components, such as `kubelet` and `crio`, on each management clus
 
 The following SELinux labels are used for key processes and sockets:
 
-- **kubelet**: `system_u:system_r:unconfined_service_t:s0`
+`kubelet`
+`system_u:system_r:unconfined_service_t:s0`
 
-- **crio**: `system_u:system_r:container_runtime_t:s0`
+`crio`
+`system_u:system_r:container_runtime_t:s0`
 
-- **crio.sock**: `system_u:object_r:container_var_run_t:s0`
+`crio.sock`
+`system_u:object_r:container_var_run_t:s0`
 
-- **\<example user container processes\>**: `system_u:system_r:container_t:s0:c14,c24`
+`<example user container processes>`
+`system_u:system_r:container_t:s0:c14,c24`
