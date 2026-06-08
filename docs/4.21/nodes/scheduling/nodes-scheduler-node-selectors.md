@@ -1,6 +1,4 @@
-A *node selector* specifies a map of key/value pairs that are defined using custom labels on nodes and selectors specified in pods.
-
-For the pod to be eligible to run on a node, the pod must have the same key/value node selector as the label on the node.
+You can use a *node selector* to specify a map of key/value pairs that you define by using custom labels on nodes and selectors specified in pods. For the pod to be eligible to run on a node, the pod must have the same key/value node selector as the label on the node.
 
 # About node selectors
 
@@ -67,32 +65,35 @@ metadata:
 #...
 ```
 
-- Labels to match the pod node selector.
+In this example, the `region: east` and `type: user-node` labels must match the pod node selector.
 
-  A pod has the `type: user-node,region: east` node selector:
+A pod has the `type: user-node,region: east` node selector:
 
-  <div class="formalpara-title">
+<div class="formalpara-title">
 
-  **Sample `Pod` object with node selectors**
+**Sample `Pod` object with node selectors**
 
-  </div>
+</div>
 
-  ``` yaml
-  apiVersion: v1
-  kind: Pod
-  metadata:
-    name: s1
-  #...
-  spec:
-    nodeSelector:
-      region: east
-      type: user-node
-  #...
-  ```
+``` yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: s1
+#...
+spec:
+  nodeSelector:
+    region: east
+    type: user-node
+#...
+```
 
-- Node selectors to match the node label. The node must have a label for each node selector.
+where:
 
-  When you create the pod using the example pod spec, it can be scheduled on the example node.
+`spec.nodeSelector`
+Specifies the node selectors to match the node label. The node must have a label for each node selector.
+
+When you create the pod using the example pod spec, it can be scheduled on the example node.
 
 Default cluster-wide node selectors
 With default cluster-wide node selectors, when you create a pod in that cluster, OpenShift Container Platform adds the default node selectors to the pod and schedules the pod on nodes with matching labels.
@@ -294,11 +295,7 @@ To add a node selector to existing pods, determine the controlling object for th
 $ oc describe pod router-default-66d5cf9464-7pwkc
 ```
 
-<div class="formalpara-title">
-
-**Example output**
-
-</div>
+The output appears similar to the following example:
 
 ``` terminal
 kind: Pod
@@ -376,11 +373,7 @@ metadata:
           $ oc edit MachineSet abc612-msrtw-worker-us-east-1c -n openshift-machine-api
           ```
 
-          <div class="formalpara-title">
-
-          **Example `MachineSet` object**
-
-          </div>
+          The output appears similar to the following example:
 
           ``` yaml
           apiVersion: machine.openshift.io/v1beta1
@@ -481,7 +474,10 @@ metadata:
       # ...
       ```
 
-      - Add the node selector.
+      where:
+
+      `spec.template.spec.nodeSelector`
+      Specifies the node selectors .
 
     - To add a node selector to a specific, new pod, add the selector to the `Pod` object directly:
 
@@ -524,13 +520,7 @@ You can add additional key/value pairs to a pod. But you cannot add a different 
 
 </div>
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To add a default cluster-wide node selector:
+The following procedure adds a default cluster-wide node selector.
 
 1.  Edit the Scheduler Operator CR to add the default cluster-wide node selectors:
 
@@ -555,9 +545,12 @@ To add a default cluster-wide node selector:
       mastersSchedulable: false
     ```
 
-    - Add a node selector with the appropriate `<key>:<value>` pairs.
+    where:
 
-      After making this change, wait for the pods in the `openshift-kube-apiserver` project to redeploy. This can take several minutes. The default cluster-wide node selector does not take effect until the pods redeploy.
+    `spec.defaultNodeSelector`
+    Specifies a node selector with the appropriate `<key>:<value>` pairs.
+
+    After making this change, wait for the pods in the `openshift-kube-apiserver` project to redeploy. This can take several minutes. The default cluster-wide node selector does not take effect until the pods redeploy.
 
 2.  Add labels to a node by using a compute machine set or editing the node directly:
 
@@ -569,34 +562,34 @@ To add a default cluster-wide node selector:
           $ oc patch MachineSet <name> --type='json' -p='[{"op":"add","path":"/spec/template/spec/metadata/labels", "value":{"<key>"="<value>","<key>"="<value>"}}]'  -n openshift-machine-api
           ```
 
-          - Add a `<key>/<value>` pair for each label.
+          Add a `<key>/<value>` pair for each label.
 
-            For example:
+          For example:
 
-            ``` terminal
-            $ oc patch MachineSet ci-ln-l8nry52-f76d1-hl7m7-worker-c --type='json' -p='[{"op":"add","path":"/spec/template/spec/metadata/labels", "value":{"type":"user-node","region":"east"}}]'  -n openshift-machine-api
-            ```
+          ``` terminal
+          $ oc patch MachineSet ci-ln-l8nry52-f76d1-hl7m7-worker-c --type='json' -p='[{"op":"add","path":"/spec/template/spec/metadata/labels", "value":{"type":"user-node","region":"east"}}]'  -n openshift-machine-api
+          ```
 
-            <div class="tip">
+          <div class="tip">
 
-            You can alternatively apply the following YAML to add labels to a compute machine set:
+          You can alternatively apply the following YAML to add labels to a compute machine set:
 
-            ``` yaml
-            apiVersion: machine.openshift.io/v1beta1
-            kind: MachineSet
-            metadata:
-              name: <machineset>
-              namespace: openshift-machine-api
-            spec:
-              template:
-                spec:
-                  metadata:
-                    labels:
-                      region: "east"
-                      type: "user-node"
-            ```
+          ``` yaml
+          apiVersion: machine.openshift.io/v1beta1
+          kind: MachineSet
+          metadata:
+            name: <machineset>
+            namespace: openshift-machine-api
+          spec:
+            template:
+              spec:
+                metadata:
+                  labels:
+                    region: "east"
+                    type: "user-node"
+          ```
 
-            </div>
+          </div>
 
       2.  Verify that the labels are added to the `MachineSet` object by using the `oc edit` command:
 
@@ -727,12 +720,6 @@ You add node selectors to a project by editing the `Namespace` object to add the
 
 A pod is not scheduled if the `Pod` object contains a node selector, but no project has a matching node selector. When you create a pod from that spec, you receive an error similar to the following message:
 
-<div class="formalpara-title">
-
-**Example error message**
-
-</div>
-
 ``` terminal
 Error from server (Forbidden): error when creating "pod.yaml": pods "pod-4" is forbidden: pod node label selector conflicts with its project node label selector
 ```
@@ -743,13 +730,7 @@ You can add additional key/value pairs to a pod. But you cannot add a different 
 
 </div>
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To add a default project node selector:
+The following procedure adds a default project node selector.
 
 1.  Create a namespace or edit an existing namespace to add the `openshift.io/node-selector` parameter:
 
@@ -786,7 +767,7 @@ To add a default project node selector:
       - kubernetes
     ```
 
-    - Add the `openshift.io/node-selector` with the appropriate `<key>:<value>` pairs.
+    Add the `openshift.io/node-selector` annotation with the appropriate `<key>:<value>` pairs.
 
 2.  Add labels to a node by using a compute machine set or editing the node directly:
 

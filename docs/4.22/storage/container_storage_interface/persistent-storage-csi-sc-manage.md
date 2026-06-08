@@ -119,19 +119,9 @@ In the preceding scenarios, PVCs remain in the pending state indefinitely. To re
 
 # Changing the default storage class
 
-Use the following procedure to change the default storage class.
-
-For example, if you have two defined storage classes, `gp3` and `standard`, and you want to change the default storage class from `gp3` to `standard`.
+Learn how to change the cluster’s default storage class, for example, reassigning the default status from `gp3` to `standard`.
 
 - Access to the cluster with cluster-admin privileges.
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To change the default storage class:
 
 1.  List the storage classes:
 
@@ -151,11 +141,11 @@ To change the default storage class:
     standard             ebs.csi.aws.com
     ```
 
-    - `(default)` indicates the default storage class.
+    The `(default)` indicates the default storage class.
 
-2.  Make the desired storage class the default.
+2.  Make the required storage class the default.
 
-    For the desired storage class, set the `storageclass.kubernetes.io/is-default-class` annotation to `true` by running the following command:
+    For the required storage class, set the `storageclass.kubernetes.io/is-default-class` annotation to `true` by running the following command:
 
     ``` terminal
     $ oc patch storageclass standard -p '{"metadata": {"annotations": {"storageclass.kubernetes.io/is-default-class": "true"}}}'
@@ -163,9 +153,9 @@ To change the default storage class:
 
     <div class="note">
 
-    You can have multiple default storage classes for a short time. However, you should ensure that only one default storage class exists eventually.
+    You can have many default storage classes for a short time. However, you must ensure that only one default storage class exists eventually.
 
-    With multiple default storage classes present, any persistent volume claim (PVC) requesting the default storage class (`pvc.spec.storageClassName`=nil) gets the most recently created default storage class, regardless of the default status of that storage class, and the administrator receives an alert in the alerts dashboard that there are multiple default storage classes, `MultipleDefaultStorageClasses`.
+    With many default storage classes present, any persistent volume claim (PVC) requesting the default storage class (`pvc.spec.storageClassName`=nil) gets the most recently created default storage class, regardless of the default status of that storage class. The administrator receives an alert in the alerts dashboard that there are many default storage classes, `MultipleDefaultStorageClasses`.
 
     </div>
 

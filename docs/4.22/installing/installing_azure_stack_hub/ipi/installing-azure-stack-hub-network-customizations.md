@@ -927,7 +927,7 @@ defaultNetwork:
 
 # Configuring hybrid networking with OVN-Kubernetes
 
-You can configure your cluster to use hybrid networking with the OVN-Kubernetes network plugin. This allows a hybrid cluster that supports different node networking configurations.
+To configure hybrid networking with OVN-Kubernetes, you can set `hybridOverlayConfig` during installation or patch the Cluster Network Operator (CNO) after installation.
 
 <div class="note">
 
@@ -943,10 +943,7 @@ This configuration is necessary to run both Linux and Windows nodes in the same 
     $ ./openshift-install create manifests --dir <installation_directory>
     ```
 
-    where:
-
-    `<installation_directory>`
-    Specifies the name of the directory that contains the `install-config.yaml` file for your cluster.
+    For the `<installation_directory>`, specify the name of the directory that contains the `install-config.yaml` file for your cluster.
 
 2.  Create a stub manifest file for the advanced network configuration that is named `cluster-network-03-config.yml` in the `<installation_directory>/manifests/` directory:
 
@@ -960,18 +957,9 @@ This configuration is necessary to run both Linux and Windows nodes in the same 
     EOF
     ```
 
-    where:
+    For `<installation_directory>`, specify the directory name that contains the `manifests/` directory for your cluster.
 
-    `<installation_directory>`
-    Specifies the directory name that contains the `manifests/` directory for your cluster.
-
-3.  Open the `cluster-network-03-config.yml` file in an editor and configure OVN-Kubernetes with hybrid networking, as in the following example:
-
-    <div class="formalpara-title">
-
-    **Specify a hybrid networking configuration**
-
-    </div>
+3.  Open the `cluster-network-03-config.yml` file in an editor and specify a hybrid networking configuration similar to the following example:
 
     ``` yaml
     apiVersion: operator.openshift.io/v1
@@ -988,15 +976,19 @@ This configuration is necessary to run both Linux and Windows nodes in the same 
             hybridOverlayVXLANPort: 9898
     ```
 
-    - Specify the CIDR configuration used for nodes on the additional overlay network. The `hybridClusterNetwork` CIDR must not overlap with the `clusterNetwork` CIDR.
+    where:
 
-    - Specify a custom VXLAN port for the additional overlay network. This is required for running Windows nodes in a cluster installed on vSphere, and must not be configured for any other cloud provider. The custom port can be any open port excluding the default `6081` port. For more information on this requirement, see [Pod-to-pod connectivity between hosts is broken](https://docs.microsoft.com/en-us/virtualization/windowscontainers/kubernetes/common-problems#pod-to-pod-connectivity-between-hosts-is-broken-on-my-kubernetes-cluster-running-on-vsphere) in the Microsoft documentation.
+    `spec.defaultNetwork.ovnKubernetesConfig.hybridOverlayConfig.hybridClusterNetwork`
+    Specifies the CIDR configuration used for nodes on the additional overlay network. The `hybridClusterNetwork` CIDR must not overlap with the `clusterNetwork` CIDR.
 
-      <div class="note">
+    `spec.defaultNetwork.ovnKubernetesConfig.hybridOverlayConfig.hybridOverlayVXLANPort`
+    Specifies a custom VXLAN port for the additional overlay network. This is required for running Windows nodes in a cluster installed on vSphere, and must not be configured for any other cloud provider. The custom port can be any open port excluding the default `6081` port. For more information on this requirement, see [Pod-to-pod connectivity between hosts is broken](https://docs.microsoft.com/en-us/virtualization/windowscontainers/kubernetes/common-problems#pod-to-pod-connectivity-between-hosts-is-broken-on-my-kubernetes-cluster-running-on-vsphere) in the Microsoft documentation.
 
-      Windows Server Long-Term Servicing Channel (LTSC): Windows Server 2019 is not supported on clusters with a custom `hybridOverlayVXLANPort` value because this Windows server version does not support selecting a custom VXLAN port.
+    <div class="note">
 
-      </div>
+    Windows Server Long-Term Servicing Channel (LTSC): Windows Server 2019 is not supported on clusters with a custom `hybridOverlayVXLANPort` value because this Windows server version does not support selecting a custom VXLAN port.
+
+    </div>
 
 4.  Save the `cluster-network-03-config.yml` file and quit the text editor.
 

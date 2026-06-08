@@ -30,11 +30,7 @@ To add a node selector to existing pods, determine the controlling object for th
 $ oc describe pod router-default-66d5cf9464-7pwkc
 ```
 
-<div class="formalpara-title">
-
-**Example output**
-
-</div>
+The output appears similar to the following example:
 
 ``` terminal
 kind: Pod
@@ -112,11 +108,7 @@ metadata:
           $ oc edit MachineSet abc612-msrtw-worker-us-east-1c -n openshift-machine-api
           ```
 
-          <div class="formalpara-title">
-
-          **Example `MachineSet` object**
-
-          </div>
+          The output appears similar to the following example:
 
           ``` yaml
           apiVersion: machine.openshift.io/v1beta1
@@ -217,7 +209,10 @@ metadata:
       # ...
       ```
 
-      - Add the node selector.
+      where:
+
+      `spec.template.spec.nodeSelector`
+      Specifies the node selectors .
 
     - To add a node selector to a specific, new pod, add the selector to the `Pod` object directly:
 

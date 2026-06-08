@@ -863,7 +863,7 @@ As network packets are processed, the eBPF hook enriches flow logs with metadata
 
 - Destination Port
 
-- [Conntrack Zone ID](https://lwn.net/Articles/370152/#:~:text=A%20zone%20is%20simply%20a,to%20seperate%20conntrack%20defragmentation%20queues.)
+- Conntrack Zone ID
 
 ## Working with endpoint translation (xlat)
 
@@ -914,6 +914,8 @@ You can use network observability and eBPF to enrich network flows from a Kubern
         - **Xlat Dst Kubernetes Object**
 
     3.  You can manage the display of additional **xlat** columns in **Manage columns**.
+
+- [Conntrack Zone ID](https://lwn.net/Articles/370152/#:~:text=A%20zone%20is%20simply%20a,to%20seperate%20conntrack%20defragmentation%20queues.)
 
 ## Working with user-defined networks
 

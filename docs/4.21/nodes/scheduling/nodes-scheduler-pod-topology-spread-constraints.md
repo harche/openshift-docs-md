@@ -1,4 +1,4 @@
-You can use pod topology spread constraints to provide fine-grained control over the placement of your pods across nodes, zones, regions, or other user-defined topology domains. Distributing pods across failure domains can help to achieve high availability and more efficient resource utilization.
+To achieve high availability and more efficient resource utilization, you can use pod topology spread constraints to control the placement of your pods across nodes, zones, regions, or other user-defined topology domains.
 
 # Example use cases
 
@@ -18,6 +18,8 @@ You can use pod topology spread constraints to provide fine-grained control over
 
 # Understanding skew and maxSkew
 
+You can configure skew to control the uneven distribution of pods across topology domains.
+
 Skew refers to the difference in the number of pods that match a specified label selector across different topology domains, such as zones or nodes.
 
 The skew is calculated for each domain by taking the absolute difference between the number of pods in that domain and the number of pods in the domain with the lowest amount of pods scheduled. Setting a `maxSkew` value guides the scheduler to maintain a balanced pod distribution.
@@ -34,7 +36,7 @@ Using the previous example skew calculation, the skew values exceed the default 
 
 # Example configurations for pod topology spread constraints
 
-You can specify which pods to group together, which topology domains they are spread among, and the acceptable skew.
+When configuring topology spread constraints, you can specify which pods to group together, which topology domains they are spread among, and the acceptable skew.
 
 The following examples demonstrate pod topology spread constraint configurations.
 
@@ -74,17 +76,22 @@ spec:
         drop: [ALL]
 ```
 
-- The maximum difference in number of pods between any two topology domains. The default is `1`, and you cannot specify a value of `0`.
+where:
 
-- The key of a node label. Nodes with this key and identical value are considered to be in the same topology.
+`spec.topologySpreadConstraints.maxSkew`
+Specifies the maximum difference in number of pods between any two topology domains. The default is `1`, and you cannot specify a value of `0`.
 
-- How to handle a pod if it does not satisfy the spread constraint. The default is `DoNotSchedule`, which tells the scheduler not to schedule the pod. Set to `ScheduleAnyway` to still schedule the pod, but the scheduler prioritizes honoring the skew to not make the cluster more imbalanced.
+`spec.topologySpreadConstraints.topologyKey`
+Specifies the key of a node label. Nodes with this key and identical value are considered to be in the same topology.
 
-- Pods that match this label selector are counted and recognized as a group when spreading to satisfy the constraint. Be sure to specify a label selector, otherwise no pods can be matched.
+`spec.topologySpreadConstraints.whenUnsatisfiable`
+Specifies how to handle a pod if it does not satisfy the spread constraint. The default is `DoNotSchedule`, which tells the scheduler not to schedule the pod. Set to `ScheduleAnyway` to still schedule the pod, but the scheduler prioritizes honoring the skew to not make the cluster more imbalanced.
 
-- Be sure that this `Pod` spec also sets its labels to match this label selector if you want it to be counted properly in the future.
+`spec.topologySpreadConstraints.labelSelector.matchLabels`
+Specifies {key,value} pairs for matching. Pods that match this label selector are counted and recognized as a group when spreading to satisfy the constraint. Be sure to specify a label selector, otherwise no pods can be matched. Be sure that this `Pod` spec also sets its labels to match this label selector if you want it to be counted properly in the future.
 
-- A list of pod label keys to select which pods to calculate spreading over.
+`spec.topologySpreadConstraints.matchLabelKeys`
+Specifies a list of pod label keys to select which pods to calculate spreading over.
 
 <div class="formalpara-title">
 

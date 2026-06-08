@@ -452,6 +452,108 @@ You can run a machine that is backed by a Dedicated Instance by using Machine AP
       tenancy: dedicated
   ```
 
+# Machine sets that place machines on Dedicated Hosts
+
+You can configure machine sets to place machines on Amazon Web Services (AWS) Dedicated Hosts. Dedicated Hosts are physical servers with instance capacity that is fully dedicated to your use. You can use Dedicated Hosts with your existing per-socket, per-core, or per-VM software licenses. With dynamic host allocation, the Machine API Operator requests a Dedicated Host from AWS and applies the specified tags to the Dedicated Host.
+
+<div class="important">
+
+AWS Dedicated Host support is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
+
+## Place machines on Dedicated Hosts by using machine sets
+
+You can configure a machine set to place machines on Amazon Web Services (AWS) Dedicated Hosts. With dynamic host allocation, the Machine API Operator requests a Dedicated Host from AWS and applies the specified tags to the Dedicated Host.
+
+<div class="important">
+
+AWS Dedicated Host support is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
+
+- Specify the following `placement` fields in your machine set YAML file:
+
+  ``` yaml
+  apiVersion: machine.openshift.io/v1beta1
+  kind: MachineSet
+  # ...
+  spec:
+    template:
+      spec:
+        providerSpec:
+          placement:
+            tenancy: host
+            host:
+              affinity: DedicatedHost
+              dedicatedHost:
+                allocationStrategy: Dynamic
+                dynamicHostAllocation:
+                  tags:
+                  - name: <tag_name>
+                    value: <tag_value>
+  ```
+
+  where:
+
+  `spec.template.spec.providerSpec.placement.host.dedicatedHost.dynamicHostAllocation.tags`
+  Optional: Specifies tags to apply to the dynamically allocated Dedicated Host. If you specify tags, you must specify both a key and a value. For `<tag_name>`, specify the tag key, for example `Environment`. For `<tag_value>`, specify the tag value, for example `production`.
+
+<!-- -->
+
+- Verify that the machine set exists by running the following command:
+
+  ``` terminal
+  $ oc get machineset -n openshift-machine-api
+  ```
+
+## Place machines on a specific Dedicated Host by using machine sets
+
+You can configure a machine set to place machines on a specific Amazon Web Services (AWS) Dedicated Host by specifying the host ID.
+
+<div class="important">
+
+AWS Dedicated Host support is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
+
+- Specify the following `placement` fields in your machine set YAML file:
+
+  ``` yaml
+  apiVersion: machine.openshift.io/v1beta1
+  kind: MachineSet
+  # ...
+  spec:
+    template:
+      spec:
+        providerSpec:
+          placement:
+            tenancy: host
+            host:
+              affinity: DedicatedHost
+              dedicatedHost:
+                id: <dedicated_host_id>
+  ```
+
+  where:
+
+  `<dedicated_host_id>`
+  Specifies the ID of the AWS Dedicated Host on which to place the machine, for example `h-0123456789abcdef0`.
+
+<!-- -->
+
+- Verify that the machine set exists by running the following command:
+
+  ``` terminal
+  $ oc get machineset -n openshift-machine-api
+  ```
+
 # Machine sets that deploy machines as Spot Instances
 
 You can save on costs by creating a compute machine set running on Amazon Web Services (AWS) that deploys machines as non-guaranteed Spot Instances. Spot Instances utilize unused AWS EC2 capacity and are less expensive than On-Demand Instances. You can use Spot Instances for workloads that can tolerate interruptions, such as batch or stateless, horizontally scalable workloads.

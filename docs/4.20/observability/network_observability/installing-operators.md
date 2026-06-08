@@ -285,7 +285,9 @@ spec:
         maxQuerySeries: 3000
 ```
 
-For more information about these settings, see the [LokiStack API reference](https://loki-operator.dev/docs/api.md/#loki-grafana-com-v1-IngestionLimitSpec).
+For more information about these settings, see "LokiStack API reference".
+
+- [LokiStack API reference](https://loki-operator.dev/docs/api.md/#loki-grafana-com-v1-IngestionLimitSpec)
 
 # Installing the Network Observability Operator
 
@@ -337,49 +339,11 @@ To confirm this was successful, when you navigate to **Observe** you should see 
 
 In the absence of **Application Traffic** within the OpenShift Container Platform cluster, default filters might show that there are "No results", which results in no visual flow. Beside the filter selections, select **Clear all filters** to see the flow.
 
-# Enabling multi-tenancy in network observability
-
-Enable multi-tenancy in network observability by configuring cluster roles and namespace roles to grant project administrators and developers granular, restricted access to flows and metrics in Loki and Prometheus.
-
-Access is enabled for project administrators. Project administrators who have limited access to some namespaces can access flows for only those namespaces.
-
-For Developers, multi-tenancy is available for both Loki and Prometheus but requires different access rights.
-
-- If you are using Loki, you have installed at least [Loki Operator version 5.7](https://catalog.redhat.com/software/containers/openshift-logging/loki-rhel8-operator/622b46bcae289285d6fcda39).
-
-- You must be logged in as a project administrator.
-
-<!-- -->
-
-- For per-tenant access, you must have the `netobserv-loki-reader` cluster role and the `netobserv-metrics-reader` namespace role to use the developer perspective. Run the following commands for this level of access:
-
-  ``` terminal
-  $ oc adm policy add-cluster-role-to-user netobserv-loki-reader <user_group_or_name>
-  ```
-
-  ``` terminal
-  $ oc adm policy add-role-to-user netobserv-metrics-reader <user_group_or_name> -n <namespace>
-  ```
-
-- For cluster-wide access, non-cluster-administrators must have the `netobserv-loki-reader`, `cluster-monitoring-view`, and `netobserv-metrics-reader` cluster roles. In this scenario, you can use either the admin perspective or the developer perspective. Run the following commands for this level of access:
-
-  ``` terminal
-  $ oc adm policy add-cluster-role-to-user netobserv-loki-reader <user_group_or_name>
-  ```
-
-  ``` terminal
-  $ oc adm policy add-cluster-role-to-user cluster-monitoring-view <user_group_or_name>
-  ```
-
-  ``` terminal
-  $ oc adm policy add-cluster-role-to-user netobserv-metrics-reader <user_group_or_name>
-  ```
-
-# Important Flow Collector configuration considerations
+## Important FlowCollector configuration considerations
 
 Review essential `FlowCollector` configuration options before initial deployment to avoid pod disruptions caused by later reconfiguration. Key settings include Kafka integration, enriched flow data exports, SR-IOV traffic monitoring, and advanced tracking for DNS and packet drops.
 
-When you create the `FlowCollector` instance, you can reconfigure it, but the pods are terminated and recreated again, which can be disruptive.
+Once you create the `FlowCollector` instance, you can reconfigure it, but the pods are terminated and recreated again, which can be disruptive.
 
 Therefore, you can consider configuring the following options when creating the `FlowCollector` for the first time.
 
@@ -473,6 +437,44 @@ There are two options to remove stored versions:
 
   The list of results should no longer show `v1alpha1` and only show the latest version, `v1beta1`.
 
+# Enabling multi-tenancy in network observability
+
+Enable multi-tenancy in network observability by configuring cluster roles and namespace roles to grant project administrators and developers granular, restricted access to flows and metrics in Loki and Prometheus.
+
+Access is enabled for project administrators. Project administrators who have limited access to some namespaces can access flows for only those namespaces.
+
+For Developers, multi-tenancy is available for both Loki and Prometheus but requires different access rights.
+
+- If you are using Loki, you have installed at least [Loki Operator version 5.7](https://catalog.redhat.com/software/containers/openshift-logging/loki-rhel8-operator/622b46bcae289285d6fcda39).
+
+- You must be logged in as a project administrator.
+
+<!-- -->
+
+- For per-tenant access, you must have the `netobserv-loki-reader` cluster role and the `netobserv-metrics-reader` namespace role to use the developer perspective. Run the following commands for this level of access:
+
+  ``` terminal
+  $ oc adm policy add-cluster-role-to-user netobserv-loki-reader <user_group_or_name>
+  ```
+
+  ``` terminal
+  $ oc adm policy add-role-to-user netobserv-metrics-reader <user_group_or_name> -n <namespace>
+  ```
+
+- For cluster-wide access, non-cluster-administrators must have the `netobserv-loki-reader`, `cluster-monitoring-view`, and `netobserv-metrics-reader` cluster roles. In this scenario, you can use either the admin perspective or the developer perspective. Run the following commands for this level of access:
+
+  ``` terminal
+  $ oc adm policy add-cluster-role-to-user netobserv-loki-reader <user_group_or_name>
+  ```
+
+  ``` terminal
+  $ oc adm policy add-cluster-role-to-user cluster-monitoring-view <user_group_or_name>
+  ```
+
+  ``` terminal
+  $ oc adm policy add-cluster-role-to-user netobserv-metrics-reader <user_group_or_name>
+  ```
+
 <!-- -->
 
 - [Kubernetes Storage Version Migrator Operator](../../operators/operator-reference.xml#cluster-kube-storage-version-migrator-operator_operator-reference)
@@ -481,13 +483,15 @@ There are two options to remove stored versions:
 
 The Kafka Operator is supported for large-scale environments. Kafka provides high-throughput and low-latency data feeds for forwarding network flow data in a more resilient, scalable way.
 
-You can install the Kafka Operator as [Red Hat AMQ Streams](https://access.redhat.com/documentation/en-us/red_hat_amq_streams/2.2) from the Operator Hub, just as the Loki Operator and Network Observability Operator were installed. Refer to "Configuring the FlowCollector resource with Kafka" to configure Kafka as a storage option.
+You can install the Kafka Operator as Red Hat AMQ Streams from the Operator Hub, just as the Loki Operator and Network Observability Operator were installed. Refer to "Configuring the FlowCollector resource with Kafka" to configure Kafka as a storage option.
 
 <div class="note">
 
 To uninstall Kafka, refer to the uninstallation process that corresponds with the method you used to install.
 
 </div>
+
+- [Red Hat AMQ Streams](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/2.2)
 
 - [Configuring the FlowCollector resource with Kafka](../../observability/network_observability/configuring-operator.xml#network-observability-flowcollector-kafka-config_network_observability)
 

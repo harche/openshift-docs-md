@@ -28,6 +28,8 @@ As a cluster administrator, you can modify the new project template to automatic
 
 ### Modifying the template for new projects
 
+To modify the default project template to customize the resources and settings applied when users create new projects, you can create a custom project template.
+
 As a cluster administrator, you can modify the default project template so that new projects are created using your custom requirements.
 
 To create your own custom project template:
@@ -91,7 +93,7 @@ To create your own custom project template:
 
 ### Adding network policies to the new project template
 
-As a cluster administrator, you can add network policies to the default template for new projects. OpenShift Container Platform will automatically create all the `NetworkPolicy` objects specified in the template in the project.
+You can add `NetworkPolicy` objects to the default project template so that new projects automatically include predefined network isolation rules. Applying network policies through templates helps enforce consistent network security controls across projects.
 
 - Your cluster uses a default container network interface (CNI) network plugin that supports `NetworkPolicy` objects, such as the OVN-Kubernetes.
 
@@ -163,7 +165,7 @@ As a cluster administrator, you can add network policies to the default template
         $ oc new-project <project>
         ```
 
-        - Replace `<project>` with the name for the project you are creating.
+        Replace `<project>` with the name of the project you want to create.
 
     2.  Confirm that the network policy objects in the new project template exist in the new project:
 

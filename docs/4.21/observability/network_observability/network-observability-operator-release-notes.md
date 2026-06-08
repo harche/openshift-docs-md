@@ -1,4 +1,4 @@
-Review new features, enhancements, fixed issues, and known issues for the Network Observability Operator. These release notes provide information to help you understand changes and security advisories in the latest operator release.
+Find information about new features, security advisories, fixed issues, and known issues for the Network Observability Operator, and stay informed about changes and performance enhancements in the latest version of the operator for OpenShift Container Platform.
 
 The Network Observability Operator enables administrators to observe and analyze network traffic flows for OpenShift Container Platform clusters.
 

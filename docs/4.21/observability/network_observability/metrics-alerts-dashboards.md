@@ -340,6 +340,14 @@ The following example shows how to generate metrics from the **Network events** 
 
 2.  You should begin seeing metrics filter in based on the metric you created along with the network policy specifications.
 
+<div class="important">
+
+High cardinality can affect the memory usage of Prometheus. You can check if specific labels have high cardinality in the network flows format. See "Network Flows format reference".
+
+</div>
+
+- [Network Flows format reference](../../observability/network_observability/json-flows-format-reference.xml#network-observability-flows-format_json_reference)
+
 # Configuring custom charts using FlowMetric API
 
 Generate custom charts for OpenShift Container Platform web console dashboards by defining the charts section of the `FlowMetric` custom resource.

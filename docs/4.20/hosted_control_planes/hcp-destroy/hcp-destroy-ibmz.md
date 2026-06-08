@@ -1,4 +1,4 @@
-You can destroy a hosted cluster on `x86` bare metal with IBM Z compute nodes and its managed cluster resource by using the command-line interface (CLI).
+You might want to remove a hosted cluster if you are no longer using it, you are trying to reduce resources, or the hosted cluster is experiencing issues that are difficult to resolve.
 
 # Destroying a hosted cluster on x86 bare metal with IBM Z compute nodes
 

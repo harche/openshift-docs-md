@@ -2,37 +2,33 @@ You can troubleshoot and restore a two-node OpenShift Container Platform cluster
 
 # Manually recovering from a disruption event when automated recovery is unavailable
 
-You might need to perform manual recovery steps if a disruption event prevents fencing from functioning correctly. In this case, you can run commands directly on the control plane nodes to recover the cluster. There are four main recovery scenarios, which should be attempted in the following order:
+You might need to perform manual recovery steps if a disruption event prevents fencing from functioning correctly. In this case, you can run commands directly on the control plane nodes to recover the cluster. There are five main recovery scenarios, which should be attempted in the following order:
 
 1.  Update fencing secrets: Refresh the Baseboard Management Console (BMC) credentials if they are incorrect or outdated.
 
 2.  Recover from a single-node failure: Restore functionality when only one control plane node is down.
 
-3.  Recover from a complete node failure: Restore functionality when both control plane nodes are down.
+3.  Recover from dual node power loss: Restore functionality when both control plane nodes are down and can be restarted.
 
-4.  Replace a control plane node that cannot be recovered: Replace the node to restore cluster functionality.
+4.  Restore corosync quorum after dual node power loss: Restore corosync quorum when both control plane nodes lost power but only one node can be restarted.
+
+5.  Replace a control plane node that cannot be recovered: Replace the node to restore cluster functionality.
 
 - You have administrative access to the control plane nodes.
 
 - You can connect to the nodes by using SSH.
 
-<div class="note">
-
-Do an etcd backup before proceeding to ensure that you can restore the cluster if any issues occur.
-
-</div>
-
 1.  Update the fencing secrets:
 
-    1.  If the Cluster API is unavilable, update fencing secret by running the following command on one of the cluster nodes:
+    1.  If the Cluster API is unavailable, update the fencing secret by running the following command on one of the cluster nodes:
 
         ``` terminal
         $ sudo pcs stonith update <node_name>_redfish username=<user_name> password=<password>
         ```
 
-        After the Cluster API recovers, or the Cluster API is already available, update fencing secret in the cluster to ensure it stays in sync, as described in the following step.
+        After the Cluster API recovers, or if the Cluster API is already available, update the fencing secret in the cluster to ensure it stays in sync, as described in the following step.
 
-    2.  Edit the username and password for the existing fencing secret for the control plane node by running the following commads:
+    2.  Edit the username and password for the existing fencing secret for the control plane node by running the following commands:
 
         ``` terminal
         $ oc project openshift-etcd
@@ -40,6 +36,55 @@ Do an etcd backup before proceeding to ensure that you can restore the cluster i
 
         ``` terminal
         $ oc edit secret <node_name>-fencing
+        $ oc edit secret fencing-credentials-<node_name>
+        ```
+
+        The secret contains the following data keys:
+
+        | Key                       | Description                                                                             | Changes during credential rotation? |
+        |---------------------------|-----------------------------------------------------------------------------------------|-------------------------------------|
+        | `username`                | BMC username                                                                            | Yes                                 |
+        | `password`                | BMC password                                                                            | Yes                                 |
+        | `address`                 | Full Redfish URL (for example, `redfish+https://192.168.1.10:443/redfish/v1/Systems/1`) | Only if BMC address changed         |
+        | `certificateVerification` | `Disabled` or `Enabled`                                                                 | Only if TLS settings changed        |
+
+        Data keys
+
+        <div class="note">
+
+        The `oc edit secret` command displays base64-encoded values. If you modify any of the values, the new values must also be base64-encoded.
+
+        </div>
+
+        Alternatively, you can use the following command to create or update the secret with literal strings:
+
+        ``` terminal
+        $ oc create secret generic fencing-credentials-<node_name> \
+          --from-literal=address='<redfish_address>' \
+          --from-literal=username='<new_username>' \
+          --from-literal=password='<new_password>' \
+          --from-literal=certificateVerification='<Disabled_or_Enabled>' \
+          --dry-run=client -o yaml | oc apply -f -
+        ```
+
+        All four keys must be present. The cluster etcd Operator rejects secrets with missing keys.
+
+    3.  Verify that the new credentials can reach the BMC by running the following command:
+
+        ``` terminal
+        $ sudo pcs stonith config <node_name>_redfish
+        ```
+
+    4.  Verify that no STONITH resources are blocked by running the following command:
+
+        ``` terminal
+        $ sudo pcs status --full
+        ```
+
+        The cluster etcd Operator performs this validation automatically when it applies credentials from the secret by using the following command:
+
+        ``` terminal
+        $ fence_redfish --action status
         ```
 
         If the cluster recovers after updating the fencing secrets, no further action is required. If the issue persists, proceed to the next step.
@@ -56,25 +101,25 @@ Do an etcd backup before proceeding to ensure that you can restore the cluster i
 
     2.  Run the following additional diagnostic commands, if necessary:
 
-        Reset the resources on your cluster and instruct Pacemaker to attempt to start them fresh by running the following command:
+        Reset the resources on your cluster by running the following command:
 
         ``` terminal
         $ sudo pcs resource cleanup
         ```
 
-        Review all Pacemaker activity on the node by running the following command:
+    3.  Review all Pacemaker activity on the node by running the following command:
 
         ``` terminal
         $ sudo journalctl -u pacemaker
         ```
 
-        Diagnose etcd resource startup issues by running the following command:
+    4.  Diagnose etcd resource startup issues by running the following command:
 
         ``` terminal
         $ sudo journalctl -u pacemaker | grep podman-etcd
         ```
 
-    3.  View the fencing configuration for the node by running the following command:
+    5.  View the fencing configuration for the node by running the following command:
 
         ``` terminal
         $ sudo pcs stonith config <node_name>_redfish
@@ -82,7 +127,27 @@ Do an etcd backup before proceeding to ensure that you can restore the cluster i
 
         If fencing is required but is not functioning, ensure that the Redfish fencing endpoint is accessible and verify that the credentials are correct.
 
-    4.  If etcd is not starting despite fencing being operational, restore etcd from a backup by running the following commands:
+        If you have verified the failed node is permanently inaccessible but automated fencing cannot function, verify the failed node meets ALL of the following conditions:
+
+        - The node is powered off and cannot be restarted.
+
+        - The node cannot access any shared storage or cluster resources.
+
+        - The node is completely isolated from the cluster network.
+
+    6.  Confirm the node is fenced by running the following command:
+
+        ``` terminal
+        $ sudo pcs stonith confirm <failed_node_name>
+        ```
+
+        <div class="warning">
+
+        If the failed node is accessible or can access shared resources, confirming fencing can cause data corruption and cluster failure.
+
+        </div>
+
+    7.  If etcd is not starting despite fencing being operational, restore etcd from a backup by running the following commands:
 
         ``` terminal
         $ sudo cp -r /var/lib/etcd-backup/* /var/lib/etcd/
@@ -94,7 +159,9 @@ Do an etcd backup before proceeding to ensure that you can restore the cluster i
 
         If the recovery is successful, no further action is required. If the issue persists, proceed to the next step.
 
-3.  Recover from a complete node failure:
+3.  Recover from dual node power loss where both nodes are recoverable:
+
+    This procedure applies when both control plane nodes lost power and both nodes can be restarted. If only one node can be restarted, proceed to step 4.
 
     1.  Power on both control plane nodes.
 
@@ -132,15 +199,212 @@ Do an etcd backup before proceeding to ensure that you can restore the cluster i
 
         If the recovery is successful, no further action is required. If the issue persists, perform manual recovery as described in the next step.
 
-4.  If you need to manually recover from an event when one of the nodes is not recoverable, follow the procedure in "Replacing control plane nodes in a two-node OpenShift cluster".
+4.  Restore corosync quorum after dual node power loss (single node recoverable):
 
-    When a cluster loses a single node, it enters the degraded mode. In this state, Pacemaker automatically unblocks quorum and allows the cluster to temporarily operate on the remaining node.
+    This procedure applies when both control plane nodes lost power and only one node can be restarted. In this scenario, the cluster has lost corosync quorum because the last known state showed both nodes were online before the power loss.
 
-    If both nodes fail, you must restart both nodes to reestablish quorum so that Pacemaker can resume normal cluster operations.
+    <div class="important">
 
-    If only one of the two nodes can be restarted, follow the node replacement procedure to manually reestablish quorum on the surviving node.
+    Perform this procedure only when both of the following conditions are met:
 
-    If manual recovery is still required and it fails, collect a must-gather and SOS report, and file a bug.
+    - Both control plane nodes lost power
+
+    - Only one control plane node can be restarted
+
+    </div>
+
+    This scenario typically occurs when you need to replace a control plane node (one node is not recoverable) and the surviving node lost power before the replacement procedure.
+
+    1.  Verify that only one node is online by running the following command on the surviving node:
+
+        ``` terminal
+        $ sudo pcs status --full
+        ```
+
+        The output shows only one node online. The sample output is as follows:
+
+        ``` terminal
+        Cluster name: TNF
+        Cluster Summary:
+          * Stack: corosync (Pacemaker is running)
+          * Current DC: NONE
+          * Last updated: Wed Apr 29 16:21:17 2026 on master-0.ostest.test.metalkube.org
+          * Last change:  Wed Apr 29 16:19:25 2026 by root via root on master-1.ostest.test.metalkube.org
+          * 2 nodes configured
+          * 6 resource instances configured
+
+        Node List:
+          * Node master-0.ostest.test.metalkube.org (1): UNCLEAN (offline)
+          * Node master-1.ostest.test.metalkube.org (2): UNCLEAN (offline)
+
+        Full List of Resources:
+          * Clone Set: kubelet-clone [kubelet]:
+            * kubelet   (systemd:kubelet):   Stopped
+            * kubelet   (systemd:kubelet):   Stopped
+          * master-0.ostest.test.metalkube.org_redfish  (stonith:fence_redfish):     Stopped
+          * master-1.ostest.test.metalkube.org_redfish  (stonith:fence_redfish):     Stopped
+          * Clone Set: etcd-clone [etcd]:
+            * etcd  (ocf:heartbeat:podman-etcd):     Stopped
+            * etcd  (ocf:heartbeat:podman-etcd):     Stopped
+
+        Tickets:
+
+        PCSD Status:
+          master-0.ostest.test.metalkube.org: Online
+          master-1.ostest.test.metalkube.org: Offline
+
+        Daemon Status:
+          corosync: active/enabled
+          pacemaker: active/enabled
+          pcsd: active/enabled
+        ```
+
+        The PCSD status shows that the master-0 node is Online, and the other is offline. BOTH nodes in the node list section are offline because neither has quorum.
+
+        ``` terminal
+        [core@master-0 ~]$   sudo pcs quorum status --debug
+        Running: /usr/sbin/corosync-quorumtool -p
+        Environment:
+          LC_ALL=C
+
+        Finished running: /usr/sbin/corosync-quorumtool -p
+        Return value: 2
+        --Debug Stdout Start--
+        Quorum information
+        ------------------
+        Date:             Wed Apr 29 16:25:55 2026
+        Quorum provider:  corosync_votequorum
+        Nodes:            1
+        Node ID:          1
+        Ring ID:          1.e
+        Quorate:          No
+
+        Votequorum information
+        ----------------------
+        Expected votes:   2
+        Highest expected: 2
+        Total votes:      1
+        Quorum:           1 Activity blocked
+        Flags:            2Node WaitForAll
+
+        Membership information
+        ----------------------
+            Nodeid      Votes    Qdevice Name
+                 1          1         NR master-0.ostest.test.metalkube.org (local)
+
+        --Debug Stdout End--
+        --Debug Stderr Start--
+
+        --Debug Stderr End--
+
+        Error: Unable to get quorum status:
+        ```
+
+    2.  Verify that the failed node is permanently inaccessible before proceeding.
+
+        Before confirming to Pacemaker that the failed node is fenced, you must ensure that the failed node meets ALL of the following conditions:
+
+        - The node is powered off and cannot be restarted
+
+        - The node cannot access any shared storage or cluster resources
+
+        - The node is completely isolated from the cluster network
+
+          If the failed node is accessible or can access shared resources, DO NOT proceed with this step. Confirming fencing for a node that is still active can cause data corruption and cluster failure.
+
+    3.  Confirm to Pacemaker that the failed node is fenced by running the following command:
+
+        ``` terminal
+        $ sudo pcs quorum unblock
+        ```
+
+        The command shows the following sample output:
+
+        ``` terminal
+        WARNING: If node 'master-1' is not powered off or it does have access to shared resources, data corruption and/or cluster failure may occur
+        Type 'yes' or 'y' to proceed, anything else to cancel:
+        ```
+
+        Replace \<failed_node_name\> with the name of the failed control plane node (for example, control-plane-1).
+
+    4.  Verify that quorum is restored by running the following command:
+
+        ``` terminal
+        $ sudo pcs quorum status
+        ```
+
+        The command shows the following sample output:
+
+        <div class="formalpara-title">
+
+        **Example output**
+
+        </div>
+
+        ``` terminal
+        Quorum information
+        ------------------
+        Date:             Fri Oct  3 14:15:31 2025
+        Quorum provider:  corosync_votequorum
+        Nodes:            1
+        Node ID:          1
+        Ring ID:          1.16
+        Quorate:          Yes
+
+        Votequorum information
+        ----------------------
+        Expected votes:   2
+        Highest expected: 2
+        Total votes:      1
+        Quorum:           1
+        Flags:            2Node Quorate
+        ```
+
+    5.  Wait 30 seconds for Pacemaker to process the fencing confirmation and begin recovery.
+
+    6.  Verify that etcd is running on the surviving node by running the following command:
+
+        ``` terminal
+        $ sudo pcs resource status etcd
+        ```
+
+        If etcd is not running, restart it by running the following command:
+
+        ``` terminal
+        $ sudo pcs resource cleanup etcd
+        ```
+
+        Wait up to 5 minutes for etcd to start. Check the status periodically by running the following command:
+
+        ``` terminal
+        $ sudo pcs resource status etcd
+        ```
+
+        The command shows that the `podman-etcd` resource is started. If the container is started successfully, you can see the logs by running the following command:
+
+        ``` terminal
+        $ sudo podman logs etcd
+        ```
+
+        If the container is not started, you can see the logs by running the following command:
+
+        ``` terminal
+        $ journalctl -u pacemaker | grep podman-etcd
+        ```
+
+        The relevant logs are placed at `/var/log/paceamaker/pacemaker.log`. The output must show that etcd is started on the surviving node.
+
+        After restoring corosync quorum and confirming etcd is running, proceed to step 5 to replace the failed control plane node.
+
+5.  If you need to manually recover from an event when one of the nodes is not recoverable, follow the procedure in "Replacing control plane nodes in a two-node OpenShift cluster".
+
+    When a cluster loses a single node, it enters degraded mode. In this state, Pacemaker automatically unblocks quorum and allows the cluster to temporarily operate on the remaining node.
+
+    If both nodes fail and both can be restarted, Pacemaker reestablishes quorum automatically when both nodes are online.
+
+    If only one node can be restarted, proceed to step 4 to restore corosync quorum manually.
+
+    If manual recovery is still required and it fails, collect a must-gather and sosreport, and file a bug.
 
 <div class="formalpara-title">
 

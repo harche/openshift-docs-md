@@ -16,7 +16,7 @@ Some organizations require the rotation of the service keys that authenticate th
 
 ## Rotating AWS OIDC bound service account signer keys
 
-If the Cloud Credential Operator (CCO) for your OpenShift Container Platform cluster on Amazon Web Services (AWS) is configured to operate in manual mode with STS, you can rotate the bound service account signer key.
+You can rotate the bound service account signer key for an OpenShift Container Platform cluster on Amazon Web Services (AWS) that uses the Cloud Credential Operator (CCO) in manual mode with STS.
 
 To rotate the key, you delete the existing key on your cluster, which causes the Kubernetes API server to create a new key. To reduce authentication failures during this process, you must immediately add the new public key to the existing issuer file. After the cluster is using the new key for authentication, you can remove any remaining keys.
 
@@ -271,7 +271,7 @@ The process to rotate OIDC bound service account signer keys is disruptive and t
 
 ## Rotating Google Cloud OIDC bound service account signer keys
 
-If the Cloud Credential Operator (CCO) for your OpenShift Container Platform cluster on Google Cloud is configured to operate in manual mode with GCP Workload Identity, you can rotate the bound service account signer key.
+You can rotate the bound service account signer key for an OpenShift Container Platform cluster on Google Cloud that uses the Cloud Credential Operator (CCO) in manual mode with GCP Workload Identity.
 
 To rotate the key, you delete the existing key on your cluster, which causes the Kubernetes API server to create a new key. To reduce authentication failures during this process, you must immediately add the new public key to the existing issuer file. After the cluster is using the new key for authentication, you can remove any remaining keys.
 
@@ -314,6 +314,7 @@ The process to rotate OIDC bound service account signer keys is disruptive and t
     ``` text
     CURRENT_ISSUER=$(oc get authentication cluster -o jsonpath='{.spec.serviceAccountIssuer}')
     GCP_BUCKET=$(echo ${CURRENT_ISSUER} | cut -d "/" -f4)
+    CLUSTER_NAME=${GCP_BUCKET%-*}
     ```
 
     <div class="note">
@@ -380,9 +381,21 @@ The process to rotate OIDC bound service account signer keys is disruptive and t
 
 7.  Download the existing `keys.json` file from the cloud provider by running the following command:
 
-    ``` terminal
-    $ gcloud storage cp gs://${GCP_BUCKET}/keys.json ${TEMPDIR}/jwks.current.json
-    ```
+    - For Google Cloud clusters that store OIDC keys in a public bucket, run the following command:
+
+      ``` terminal
+      $ gcloud storage cp gs://${GCP_BUCKET}/keys.json ${TEMPDIR}/jwks.current.json
+      ```
+
+    - For Google Cloud clusters that attach OIDC keys directly to the workload identity pool, run the following command:
+
+      ``` terminal
+      $ gcloud iam workload-identity-pools providers describe \
+        --format json \
+        --location global \
+        --workload-identity-pool ${CLUSTER_NAME} ${CLUSTER_NAME} \
+        | jq -r ".oidc.jwksJson" > ${TEMPDIR}/jwks.current.json
+      ```
 
 8.  Combine the two `keys.json` files by running the following command:
 
@@ -392,9 +405,20 @@ The process to rotate OIDC bound service account signer keys is disruptive and t
 
 9.  To enable authentication for the old and new keys during the rotation, upload the combined `keys.json` file to the cloud provider by running the following command:
 
-    ``` terminal
-    $ gcloud storage cp ${TEMPDIR}/jwks.combined.json gs://${GCP_BUCKET}/keys.json
-    ```
+    - For Google Cloud clusters that store OIDC keys in a public bucket, run the following command:
+
+      ``` terminal
+      $ gcloud storage cp ${TEMPDIR}/jwks.combined.json gs://${GCP_BUCKET}/keys.json
+      ```
+
+    - For Google Cloud clusters that attach OIDC keys directly to the workload identity pool, run the following command:
+
+      ``` terminal
+      $ gcloud iam workload-identity-pools providers update-oidc ${CLUSTER_NAME} \
+        --location=global \
+        --workload-identity-pool=${CLUSTER_NAME} \
+        --jwk-json-path=${TEMPDIR}/jwks.combined.json
+      ```
 
 10. Wait for the Kubernetes API server to update and use the new key. You can monitor the update progress by running the following command:
 
@@ -448,13 +472,24 @@ The process to rotate OIDC bound service account signer keys is disruptive and t
 
 14. Replace the combined `keys.json` file with the updated `keys.json` file on the cloud provider by running the following command:
 
-    ``` terminal
-    $ gcloud storage cp ${TEMPDIR}/jwks.new.json gs://${GCP_BUCKET}/keys.json
-    ```
+    - For Google Cloud clusters that store OIDC keys in a public bucket, run the following command:
+
+      ``` terminal
+      $ gcloud storage cp ${TEMPDIR}/jwks.new.json gs://${GCP_BUCKET}/keys.json
+      ```
+
+    - For Google Cloud clusters that attach OIDC keys directly to the workload identity pool, run the following command:
+
+      ``` terminal
+      $ gcloud iam workload-identity-pools providers update-oidc ${CLUSTER_NAME} \
+        --location=global \
+        --workload-identity-pool=${CLUSTER_NAME} \
+        --jwk-json-path=${TEMPDIR}/jwks.new.json
+      ```
 
 ## Rotating Azure OIDC bound service account signer keys
 
-If the Cloud Credential Operator (CCO) for your OpenShift Container Platform cluster on Microsoft Azure is configured to operate in manual mode with Microsoft Entra Workload ID, you can rotate the bound service account signer key.
+You can rotate the bound service account signer key for an OpenShift Container Platform cluster on Microsoft Azure that uses the Cloud Credential Operator (CCO) in manual mode with Microsoft Entra Workload ID.
 
 To rotate the key, you delete the existing key on your cluster, which causes the Kubernetes API server to create a new key. To reduce authentication failures during this process, you must immediately add the new public key to the existing issuer file. After the cluster is using the new key for authentication, you can remove any remaining keys.
 

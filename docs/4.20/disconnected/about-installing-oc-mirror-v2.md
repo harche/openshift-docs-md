@@ -181,15 +181,15 @@ Do not use this image registry credentials file as the pull secret when you inst
     }
     ```
 
-    1.  If the `$XDG_RUNTIME_DIR/containers` directory does not exist, create one by entering the following command:
+3.  If the `$XDG_RUNTIME_DIR/containers` directory does not exist, create one by entering the following command:
 
-        ``` terminal
-        $ mkdir -p $XDG_RUNTIME_DIR/containers
-        ```
+    ``` terminal
+    $ mkdir -p $XDG_RUNTIME_DIR/containers
+    ```
 
-    2.  Save the pull secret file as `$XDG_RUNTIME_DIR/containers/auth.json`.
+4.  Save the pull secret file as `$XDG_RUNTIME_DIR/containers/auth.json`.
 
-3.  Generate the base64-encoded user name and password or token for your mirror registry by running the following command:
+5.  Generate the base64-encoded user name and password or token for your mirror registry by running the following command:
 
     ``` terminal
     $ echo -n '<user_name>:<password>' | base64 -w0
@@ -207,7 +207,7 @@ Do not use this image registry credentials file as the pull secret when you inst
     BGVtbYk3ZHAtqXs=
     ```
 
-4.  Edit the JSON file and add a section that describes your registry to it:
+6.  Edit the JSON file and add a section that describes your registry to it:
 
     ``` json
       "auths": {

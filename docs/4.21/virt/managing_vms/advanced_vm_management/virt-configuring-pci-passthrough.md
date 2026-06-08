@@ -114,7 +114,7 @@ To remove a PCI host device from the cluster by using the CLI, delete the PCI de
 
 ## Adding kernel arguments to enable the IOMMU driver
 
-To enable the IOMMU driver in the kernel, create the `MachineConfig` object and add the kernel arguments.
+You must enable the Input-Output Memory Management Unit (IOMMU) driver before you can configure mediated devices. To enable the IOMMU driver in the kernel, create the `MachineConfig` object and add the kernel arguments.
 
 - You have cluster administrator permissions.
 

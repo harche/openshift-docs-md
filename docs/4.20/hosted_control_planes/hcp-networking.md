@@ -375,7 +375,7 @@ To set up a load balancer and wildcard DNS record for the `*.apps` domain, perfo
 In hosted clusters, you can configure internal OVN subnets to avoid routing conflicts, customize network architecture, or enable virtual private cloud (VPC) peering.
 
 Avoid CIDR conflicts
-Connect VPCs that host Red Hat OpenShift Service on AWS clusters with other VPCs that use the default OVN internal subnets of 100.88.0.0/16 and 100.64.0.0/16.
+Connect VPCs that host Red Hat OpenShift Service on AWS clusters with other VPCs that use the default OVN internal subnets of 100.88.0.0/16 and 100.64.0.0/16. To avoid a conflict on a `kubevirt` hosted cluster, the HyperShift Operator sets the OVN join subnet to `100.66.0.0/16` instead of `100.64.0.0/16` or `100.65.0.0/16`. The default CIDR for the OVN gateway router is `100.64.0.0/16`. The default CIDR for the user-defined network (UDN) join subnet is `100.65.0.0/16`.
 
 Customize network architecture
 Configure internal OVN subnets to align with your corporate network policies.

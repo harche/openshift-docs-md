@@ -232,7 +232,7 @@ When a virtual machine (VM) terminates unexpectedly, you can use the `virtctl me
 
     - The PVC must be large enough to contain the memory dump.
 
-      The formula for calculating the PVC size is `(VMMemorySize + 100Mi) * FileSystemOverhead`, where `100Mi` is the memory dump overhead, and `FileSystemOverhead` is defined in the `HCO` object.
+      The formula for calculating the PVC size is `(VMMemorySize + 100Mi) * (1 + FileSystemOverhead)`, where `100Mi` is the memory dump overhead, and `FileSystemOverhead` is defined in the `HCO` object.
 
 2.  Create a memory dump of the required VM:
 

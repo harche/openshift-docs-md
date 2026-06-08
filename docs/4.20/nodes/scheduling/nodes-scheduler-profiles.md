@@ -1,8 +1,8 @@
-You can configure OpenShift Container Platform to use a scheduling profile to schedule pods onto nodes within the cluster.
+You can use a scheduling profile to configure how the scheduler spreads pods across nodes to enforce low or high node utilization.
 
 # About scheduler profiles
 
-You can specify a scheduler profile to control how pods are scheduled onto nodes.
+You can use scheduler profiles to determine how the cluster distributes pods across nodes based on node resource utilization.
 
 The following scheduler profiles are available:
 
@@ -23,7 +23,7 @@ This is a low-latency profile that strives for the quickest scheduling cycle by 
 
 # Configuring a scheduler profile
 
-You can configure the scheduler to use a scheduler profile.
+To customize how the cluster distributes pods across your nodes based on resource use, you can configure a specific scheduler profile.
 
 - Access to the cluster as a user with the `cluster-admin` role.
 
@@ -47,6 +47,6 @@ You can configure the scheduler to use a scheduler profile.
     #...
     ```
 
-    - Set to `LowNodeUtilization`, `HighNodeUtilization`, or `NoScoring`.
+    Set `spec.profile` to `LowNodeUtilization`, `HighNodeUtilization`, or `NoScoring`.
 
 3.  Save the file to apply the changes.

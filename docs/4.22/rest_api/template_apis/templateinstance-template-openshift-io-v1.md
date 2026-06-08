@@ -51,7 +51,7 @@ Required
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>secret</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-LocalObjectReference"><code>LocalObjectReference</code></a></p></td>
+<td style="text-align: left;"><p><code>LocalObjectReference</code></p></td>
 <td style="text-align: left;"><p>secret is a reference to a Secret object containing the necessary template parameters.</p></td>
 </tr>
 <tr class="odd">

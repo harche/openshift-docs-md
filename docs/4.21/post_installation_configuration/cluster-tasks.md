@@ -236,13 +236,7 @@ You can add additional key/value pairs to a pod. But you cannot add a different 
 
 </div>
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To add a default cluster-wide node selector:
+The following procedure adds a default cluster-wide node selector.
 
 1.  Edit the Scheduler Operator CR to add the default cluster-wide node selectors:
 
@@ -267,9 +261,12 @@ To add a default cluster-wide node selector:
       mastersSchedulable: false
     ```
 
-    - Add a node selector with the appropriate `<key>:<value>` pairs.
+    where:
 
-      After making this change, wait for the pods in the `openshift-kube-apiserver` project to redeploy. This can take several minutes. The default cluster-wide node selector does not take effect until the pods redeploy.
+    `spec.defaultNodeSelector`
+    Specifies a node selector with the appropriate `<key>:<value>` pairs.
+
+    After making this change, wait for the pods in the `openshift-kube-apiserver` project to redeploy. This can take several minutes. The default cluster-wide node selector does not take effect until the pods redeploy.
 
 2.  Add labels to a node by using a compute machine set or editing the node directly:
 
@@ -281,34 +278,34 @@ To add a default cluster-wide node selector:
           $ oc patch MachineSet <name> --type='json' -p='[{"op":"add","path":"/spec/template/spec/metadata/labels", "value":{"<key>"="<value>","<key>"="<value>"}}]'  -n openshift-machine-api
           ```
 
-          - Add a `<key>/<value>` pair for each label.
+          Add a `<key>/<value>` pair for each label.
 
-            For example:
+          For example:
 
-            ``` terminal
-            $ oc patch MachineSet ci-ln-l8nry52-f76d1-hl7m7-worker-c --type='json' -p='[{"op":"add","path":"/spec/template/spec/metadata/labels", "value":{"type":"user-node","region":"east"}}]'  -n openshift-machine-api
-            ```
+          ``` terminal
+          $ oc patch MachineSet ci-ln-l8nry52-f76d1-hl7m7-worker-c --type='json' -p='[{"op":"add","path":"/spec/template/spec/metadata/labels", "value":{"type":"user-node","region":"east"}}]'  -n openshift-machine-api
+          ```
 
-            <div class="tip">
+          <div class="tip">
 
-            You can alternatively apply the following YAML to add labels to a compute machine set:
+          You can alternatively apply the following YAML to add labels to a compute machine set:
 
-            ``` yaml
-            apiVersion: machine.openshift.io/v1beta1
-            kind: MachineSet
-            metadata:
-              name: <machineset>
-              namespace: openshift-machine-api
-            spec:
-              template:
-                spec:
-                  metadata:
-                    labels:
-                      region: "east"
-                      type: "user-node"
-            ```
+          ``` yaml
+          apiVersion: machine.openshift.io/v1beta1
+          kind: MachineSet
+          metadata:
+            name: <machineset>
+            namespace: openshift-machine-api
+          spec:
+            template:
+              spec:
+                metadata:
+                  labels:
+                    region: "east"
+                    type: "user-node"
+          ```
 
-            </div>
+          </div>
 
       2.  Verify that the labels are added to the `MachineSet` object by using the `oc edit` command:
 

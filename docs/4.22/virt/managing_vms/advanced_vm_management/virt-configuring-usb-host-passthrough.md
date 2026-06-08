@@ -12,22 +12,7 @@ To do this, specify a resource name and USB device name for each device you want
 
 - You have installed the OpenShift CLI (`oc`).
 
-1.  Ensure that the `HostDevices` feature gate is enabled:
-
-    ``` terminal
-    $ oc get featuregate cluster -o yaml
-    ```
-
-    **Successful output**
-
-    ``` yaml
-      featureGates:
-    # ...
-        enabled:
-        - name: HostDevices
-    ```
-
-2.  Identify the USB device vendor and product:
+1.  Identify the USB device vendor and product:
 
     ``` terminal
     $ lsusb
@@ -64,13 +49,13 @@ To do this, specify a resource name and USB device name for each device you want
         Product ID: 0a60
       ```
 
-3.  Open the `HyperConverged` CR in your default editor by running the following command:
+2.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
     $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
     ```
 
-4.  Add the required USB device to the `permittedHostDevices` stanza of the `HyperConvered` CR. The following example adds a device with vendor ID `045e` and product ID `07a5`:
+3.  Add the required USB device to the `permittedHostDevices` stanza of the `HyperConvered` CR. The following example adds a device with vendor ID `045e` and product ID `07a5`:
 
     ``` yaml
     apiVersion: hco.kubevirt.io/v1beta1
@@ -111,7 +96,7 @@ You can configure virtual machine (VM) access to a USB device. This configuratio
     $ oc get hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
     ```
 
-    **Example output**
+    Example output:
 
     ``` yaml
     # ...
@@ -128,40 +113,43 @@ You can configure virtual machine (VM) access to a USB device. This configuratio
                   product: "b100"
     ```
 
-2.  Open the VM instance CR:
+2.  Open the VM CR:
 
     ``` terminal
-    $ oc edit vmi <vmi_usb>
+    $ oc edit vm <vm_name>
     ```
 
     where:
 
-    `<vmi_usb>`
-    Specifies the name of the `VirtualMachineInstance` CR.
+    `<vm_name>`
+    Specifies the name of the `VirtualMachine` CR.
 
 3.  Edit the CR by adding the USB device, as shown in the following example:
 
-    **Example configuration**
+    Example configuration:
 
     ``` yaml
     apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
+    kind: VirtualMachine
     metadata:
-      labels:
-        special: vmi-usb
-      name: vmi-usb
+      name: example-vm
     spec:
-      domain:
-        devices:
-          hostDevices:
-          - deviceName: kubevirt.io/peripherals
-            name: local-peripherals
+      template:
+        spec:
+          architecture: amd64
+          domain:
+            devices:
+              hostDevices:
+              - deviceName: kubevirt.io/peripherals
+                name: local-peripherals
     # ...
     ```
 
-    - `spec.domain.devices.hostDevices.name` defines the name of the USB device.
+    - `spec.template.spec.domain.devices.hostDevices.deviceName` specifies the resource name from the `HyperConverged` CR.
 
-4.  Apply the modifications to the VM configurations:
+    - `spec.template.spec.domain.devices.hostDevices.name` defines the name of the USB device.
+
+4.  Save and apply your changes:
 
     ``` terminal
     $ oc apply -f <filename>.yaml
@@ -169,5 +157,5 @@ You can configure virtual machine (VM) access to a USB device. This configuratio
 
     where:
 
-    \<filename\>
-    Specifies the name of the `VirtualMachineInstance` manifest YAML file.
+    `<filename>`
+    Specifies the name of the `VirtualMachine` manifest YAML file.

@@ -1,12 +1,10 @@
-Affinity is a property of pods that controls the nodes on which they prefer to be scheduled.
+You can use a node affinity to control which nodes your pod can be scheduled on based on node labels. Node affinity helps you ensure your applications run on nodes with specific capabilities or configurations.
 
 In OpenShift Container Platform node affinity is a set of rules used by the scheduler to determine where a pod can be placed. The rules are defined using custom labels on the nodes and label selectors specified in pods.
 
 # Understanding node affinity
 
-Node affinity allows a pod to specify an affinity towards a group of nodes it can be placed on. The node does not have control over the placement.
-
-For example, you could configure a pod to only run on a node with a specific CPU or in a specific availability zone.
+To specify a preference towards a group of nodes that a pod can be placed on, you can use a node affinity in the pod spec. For example, you could configure a pod to run only on a node with a specific CPU or in a specific availability zone. The node does not have control over the placement.
 
 There are two types of node affinity rules: *required* and *preferred*.
 
@@ -58,13 +56,22 @@ spec:
 # ...
 ```
 
-- The stanza to configure node affinity.
+where:
 
-- Defines a required rule.
+`spec.affinity.nodeAffinity`
+Specifies the stanza to configure node affinity.
 
-- The key/value pair (label) that must be matched to apply the rule.
+`spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution`
+Specifies a *required* rule. Configure the following `nodeSelectorTerms.matchExpressions` parameters:
 
-- The operator represents the relationship between the label on the node and the set of values in the `matchExpression` parameters in the `Pod` spec. This value can be `In`, `NotIn`, `Exists`, or `DoesNotExist`, `Lt`, or `Gt`.
+`key`
+Specifies the key of the key/value pair (label) that must be matched to apply the rule.
+
+`operator`
+Specifies the relationship between the label on the node and the set of values in the `matchExpression` parameters in the `Pod` spec. This value can be `In`, `NotIn`, `Exists`, or `DoesNotExist`, `Lt`, or `Gt`.
+
+`values`
+Specifies the value of the key/value pair (label) that must be matched to apply the rule.
 
 The following example is a node specification with a preferred rule that a node with a label whose key is `e2e-az-EastWest` and whose value is either `e2e-az-East` or `e2e-az-West` is preferred for the pod:
 
@@ -105,17 +112,25 @@ spec:
 # ...
 ```
 
-- The stanza to configure node affinity.
+where:
 
-- Defines a preferred rule.
+`spec.affinity.nodeAffinity`
+Specifies the stanza to configure node affinity.
 
-- Specifies a weight for a preferred rule. The node with highest weight is preferred.
+`spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution`
+Specifies a *preferred* rule. Configure a weight and the following `preference.matchExpression` parameters:
 
-- The key/value pair (label) that must be matched to apply the rule.
+`weight`
+Specifies a weight for a preferred rule. The node with highest weight is preferred.
 
-- The operator represents the relationship between the label on the node and the set of values in the `matchExpression` parameters in the `Pod` spec. This value can be `In`, `NotIn`, `Exists`, or `DoesNotExist`, `Lt`, or `Gt`.
+`key`
+Specifies the key of the key/value pair (label) that must be matched to apply the rule.
 
-There is no explicit *node anti-affinity* concept, but using the `NotIn` or `DoesNotExist` operator replicates that behavior.
+`operator`
+Specifies the relationship between the label on the node and the set of values in the `matchExpression` parameters in the `Pod` spec. This value can be `In`, `NotIn`, `Exists`, or `DoesNotExist`, `Lt`, or `Gt`. There is no explicit *node anti-affinity* concept, but using the `NotIn` or `DoesNotExist` operator replicates that behavior.
+
+`values`
+Specifies the value of the key/value pair (label) that must be matched to apply the rule.
 
 <div class="note">
 
@@ -131,13 +146,7 @@ If you are using node affinity and node selectors in the same pod configuration,
 
 # Configuring a required node affinity rule
 
-Required rules **must** be met before a pod can be scheduled on a node.
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
+You can use a *required* rule to instruct the scheduler that the rules **must** be met before a pod can be scheduled on a node.
 
 The following steps demonstrate a simple configuration that creates a node and a pod that the scheduler is required to place on the node.
 
@@ -198,13 +207,22 @@ The following steps demonstrate a simple configuration that creates a node and a
         #...
         ```
 
-        - Adds a pod affinity.
+        where:
 
-        - Configures the `requiredDuringSchedulingIgnoredDuringExecution` parameter.
+        `spec.affinity.nodeAffinity`
+        Specifies the stanza to configure node affinity.
 
-        - Specifies the `key` and `values` that must be met. If you want the new pod to be scheduled on the node you edited, use the same `key` and `values` parameters as the label in the node.
+        `spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution`
+        Specifies a *required* rule. Configure the following `nodeSelectorTerms.matchExpressions` parameters:
 
-        - Specifies an `operator`. The operator can be `In`, `NotIn`, `Exists`, or `DoesNotExist`. For example, use the operator `In` to require the label to be in the node.
+        `key`
+        Specifies the key of the key/value pair (label) that must be matched to apply the rule.
+
+        `operator`
+        Specifies the relationship between the label on the node and the set of values in the `matchExpression` parameters in the `Pod` spec. This value can be `In`, `NotIn`, `Exists`, or `DoesNotExist`, `Lt`, or `Gt`. There is no explicit *node anti-affinity* concept, but using the `NotIn` or `DoesNotExist` operator replicates that behavior.
+
+        `values`
+        Specifies the value of the key/value pair (label) that must be matched to apply the rule.
 
     2.  Create the pod:
 
@@ -214,15 +232,11 @@ The following steps demonstrate a simple configuration that creates a node and a
 
 # Configuring a preferred node affinity rule
 
-Preferred rules specify that, if the rule is met, the scheduler tries to enforce the rules, but does not guarantee enforcement.
+You can use a *preferred* rule to instruct the scheduler that if a matching node is not available, schedule the pod on a different node to ensure the workload application runs.
 
-<div class="formalpara-title">
+For a preferred rule, the scheduler tries to enforce the rule, but does not guarantee enforcement.
 
-**Procedure**
-
-</div>
-
-The following steps demonstrate a simple configuration that creates a node and a pod that the scheduler tries to place on the node.
+The following procedure demonstrates a simple configuration that creates a node and a pod that the scheduler tries to place on the node.
 
 1.  Add a label to a node using the `oc label node` command:
 
@@ -259,15 +273,25 @@ The following steps demonstrate a simple configuration that creates a node and a
         #...
         ```
 
-        - Adds a pod affinity.
+        where:
 
-        - Configures the `preferredDuringSchedulingIgnoredDuringExecution` parameter.
+        `spec.affinity.nodeAffinity`
+        Specifies the stanza to configure node affinity.
 
-        - Specifies a weight for the node, as a number 1-100. The node with highest weight is preferred.
+        `spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution`
+        Specifies a *preferred* rule. Configure a weight and the following `preference.matchExpressions` parameters. If you want the new pod to be scheduled on the node you edited, use the same `key` and `values` parameters as the label in the node.
 
-        - Specifies the `key` and `values` that must be met. If you want the new pod to be scheduled on the node you edited, use the same `key` and `values` parameters as the label in the node.
+        `weight`
+        Specifies a weight for the node, as a number 1-100. The node with highest weight is preferred.
 
-        - Specifies an `operator`. The operator can be `In`, `NotIn`, `Exists`, or `DoesNotExist`. For example, use the operator `In` to require the label to be in the node.
+        `key`
+        Specifies the key of the key/value pair (label) that must be matched to apply the rule.
+
+        `operator`
+        Specifies the relationship between the label on the node and the set of values in the `matchExpression` parameters in the `Pod` spec. This value can be `In`, `NotIn`, `Exists`, or `DoesNotExist`, `Lt`, or `Gt`. There is no explicit *node anti-affinity* concept, but using the `NotIn` or `DoesNotExist` operator replicates that behavior.
+
+        `values`
+        Specifies the value of the key/value pair (label) that must be matched to apply the rule.
 
     2.  Create the pod.
 
@@ -277,7 +301,9 @@ The following steps demonstrate a simple configuration that creates a node and a
 
 # Sample node affinity rules
 
-The following examples demonstrate node affinity.
+To use node affinity, the pod spec that you want to schedule on a node must have a node selector that matches a label on the node.
+
+The following examples demonstrate node affinity with or without matching labels.
 
 ## Node affinity with matching labels
 
@@ -453,9 +479,9 @@ The following example demonstrates node affinity for a node and pod without matc
 
 # Using node affinity to control where an Operator is installed
 
-By default, when you install an Operator, OpenShift Container Platform installs the Operator pod to one of your worker nodes randomly. However, there might be situations where you want that pod scheduled on a specific node or set of nodes.
+You can use affinities to schedule an Operator pod on a specific node or set of nodes.
 
-The following examples describe situations where you might want to schedule an Operator pod to a specific node or set of nodes:
+By default, when you install an Operator, OpenShift Container Platform installs the Operator pod on one of your compute nodes randomly. However, the following examples describe situations where you might want to schedule an Operator pod to a specific node or set of nodes:
 
 - If an Operator requires a particular platform, such as `amd64` or `arm64`
 
@@ -469,11 +495,7 @@ You can control where an Operator pod is installed by adding a node affinity con
 
 The following examples show how to use node affinity to install an instance of the Custom Metrics Autoscaler Operator to a specific node in the cluster:
 
-<div class="formalpara-title">
-
-**Node affinity example that places the Operator pod on a specific node**
-
-</div>
+The following node affinity example places the Operator pod on a specific node:
 
 ``` yaml
 apiVersion: operators.coreos.com/v1alpha1
@@ -498,13 +520,9 @@ spec:
 #...
 ```
 
-- A node affinity that requires the Operator’s pod to be scheduled on a node named `ip-10-0-163-94.us-west-2.compute.internal`.
+This node affinity requires the Operator’s pod be scheduled on a node named `ip-10-0-163-94.us-west-2.compute.internal`.
 
-<div class="formalpara-title">
-
-**Node affinity example that places the Operator pod on a node with a specific platform**
-
-</div>
+The following node affinity example places the Operator pod on a node with a specific platform:
 
 ``` yaml
 apiVersion: operators.coreos.com/v1alpha1
@@ -533,15 +551,9 @@ spec:
 #...
 ```
 
-- A node affinity that requires the Operator’s pod to be scheduled on a node with the `kubernetes.io/arch=arm64` and `kubernetes.io/os=linux` labels.
+This node affinity requires the Operator’s pod be scheduled on a node with the `kubernetes.io/arch=arm64` and `kubernetes.io/os=linux` labels.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To control the placement of an Operator pod, complete the following steps:
+To control the placement of an Operator pod, complete the following steps.
 
 1.  Install the Operator as usual.
 
@@ -572,7 +584,10 @@ To control the placement of an Operator pod, complete the following steps:
     #...
     ```
 
-    - Add a `nodeAffinity`.
+    where:
+
+    `spec.config.affinity`
+    Specifies a `nodeAffinity`.
 
 - To ensure that the pod is deployed on the specific node, run the following command:
 

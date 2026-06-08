@@ -940,6 +940,68 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHSA-2026:21709 - OpenShift Container Platform 4.17.18 fixed issues advisory
+
+Issued: 02 June 2026
+
+OpenShift Container Platform release 4.17.18 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:21709](https://access.redhat.com/errata/RHSA-2026:21709) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:21707](https://access.redhat.com/errata/RHBA-2026:21707) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.18 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, the lack of leader election on the hosted control plane ignition server controllers might have caused excessive resource requests during node pool reconciliation. As a consequence, excessive resource requests might have increased load on the registry hosting the image payload which increased the likelihood of errors processing the image payload. These errors might have caused excessive patching to the node pool token secrets. With this release, the image payload download errors were generalized to minimize patching of node pool token secrets. As a result, excessive resource requests do not occur. ([OCPBUGS-81671](https://issues.redhat.com/browse/OCPBUGS-81671))
+
+- Before this update, shared key access was enabled on the cluster storage account, preventing it from being migrated to identity-based access to Microsoft Azure Storage. As a consequence, shared key access caused security concerns and prevented migration. With this release, shared key access is automatically disabled when using a managed identity, facilitating a seamless transition to identity-based access. As a result, disabling shared key access improves security. ([OCPBUGS-82068](https://issues.redhat.com/browse/OCPBUGS-82068))
+
+- Before this update, the `HostFirmwareSetting` (HFS) resource was not applied when pre-provisioning single-node OpenShift while inspection was disabled. As a consequence, the HFS resource settings were not applied to single-node OpenShift in pre-provisioning scenarios where inspection was disabled. With this release, the Bare Metal Operator (BMO) correctly skips registration of the bare-metal host (BMH) when inspection is disabled. As a result, when you pre-provision single-node OpenShift, the HFS resource settings are properly applied when inspection is disabled. ([OCPBUGS-82141](https://issues.redhat.com/browse/OCPBUGS-82068))
+
+- Before this update, when you configured networking with the `agent-tui` parameter during an Assisted Installer workflow, the `NetworkManager` keyfiles created in that session were not automatically passed to the CoreOS installation program. As a consequence, the installation program could not identify the keyfiles as manually created configurations and the network configurations set up through the `agent-tui` parameter during installation did not persist into the installed OS. This issue caused nodes to have missing or incorrect network settings after the cluster was deployed. With this release, the agent detects manually-created `NetworkManager` keyfiles by comparing their modification times against the `agent-tui` start time (derived from the birth time of the `/var/log/agent` parameter). When these keyfiles are found, the `--copy-network` command is automatically appended to the CoreOS installation program arguments, which ensures the configurations are passed on to the installed system. ([OCPBUGS-85041](https://issues.redhat.com/browse/OCPBUGS-85041))
+
+- Before this update, when Prometheus was configured to scrape targets using client Transport Layer Security (TLS) certificates without a certificate authority (CA), rotating the client certificates caused Prometheus to crash with a `SIGSEGV` panic. Kubernetes restarted the pod, but Prometheus was down during that time. With this update, Prometheus correctly handles client certificate rotation when no CA is configured, preventing the crash and ensuring continuous metric collection. ([OCPBUGS-86250](https://issues.redhat.com/browse/OCPBUGS-86250))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
+## RHSA-2026:20034 - OpenShift Container Platform 4.17.17 fixed issues advisory
+
+Issued: 26 May 2026
+
+OpenShift Container Platform release 4.17.17 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:20034](https://access.redhat.com/errata/RHSA-2026:20034) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:20032](https://access.redhat.com/errata/RHBA-2026:20032) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.17 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, init containers in Tekton Pipelines finished too quickly for CRI-O to capture exit codes, causing intermittent failures in high-performance environments. As a consequence, these non-deterministic pipeline failures occurred. With this release, there is an improvement in the exit code handling of CRI-O for fast-completing init containers. As a result, high-performance Tekton Pipelines no longer intermittently fail due to non-deterministic exit code issues in init containers. ([OCPBUGS-82142](https://issues.redhat.com/browse/OCPBUGS-82142))
+
+- Before this update, control plane upgrades could not proceed in hosted control planes clusters with zero compute nodes. As a consequence, control plane upgrades failed, preventing application of critical security patches. With this release, the control plane upgrade with zero compute nodes issue is fixed in the Cluster Network Operator (CNO). As a result, this update applies critical updates and prevents outdated open virtual network (OVN) control plane images. ([OCPBUGS-84169](https://redhat.atlassian.net/browse/OCPBUGS-84169))
+
+- Before this update, a validation error occurred during user account creation, which assigned incorrect roles to new accounts. As a consequence, affected users could not access restricted cluster resources. With this release, the account creation process validates user inputs correctly. As a result, the system assigns the correct permissions to user accounts upon creation, users can now access their authorized resources. ([OCPBUGS-85270](https://redhat.atlassian.net/browse/OCPBUGS-85270))
+
+- Before this update, a wrong layer hierarchy occurred in the topology visual connector. As a consequence, the layer hierarchy prevented users from dragging and creating new visual connectors between resources. With this release, the topology connector renders a proper layer hierarchy wrapping. As a result, users can now create visual connectors between resources in the **Topology** view. ([OCPBUGS-85520](https://redhat.atlassian.net/browse/OCPBUGS-85520))
+
+- Before this update, a new cluster configured with a custom service account issuer incorrectly used the default issuer for the first 24 hours. As a consequence, application deployments failed during this 24-hour window because the applications could not obtain valid security tokens. With this release, the custom service account issuer is applied immediately upon cluster creation. As a result, service account tokens now generate correctly, allowing applications to deploy successfully without delay. ([OCPBUGS-85563](https://redhat.atlassian.net/browse/OCPBUGS-85563))
+
+- Before this update, the `Konnectivity` component of hosted control planes failed to add specific AWS ISO regions to the `NO_PROXY` list. As a consequence, the proxy routed cluster communication with these AWS domains instead of sending it directly, causing connectivity issues. With this release, `Konnectivity` component automatically adds AWS ISO domains to the `NO_PROXY` list of the Ingress Operator. As a result, this update resolves AWS ISO domain connectivity issues, enabling direct communication for the required endpoints. ([OCPBUGS-85781](https://redhat.atlassian.net/browse/OCPBUGS-85781))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHSA-2026:17474 - OpenShift Container Platform 4.17.16 fixed issues advisory
 
 Issued: 19 May 2026
@@ -962,7 +1024,7 @@ $ oc adm release info 4.21.16 --pullspecs
 
 - Before this update, when going into holdover a new data set was defined for the `ts2phc` command as it started reporting offsets, which did not meet the minimum number of samples. As a consequence, the PTP Operator incorrectly reported a `FREERUN` clock state immediately. With this release, when going into holdover the offset is calculated based on the slope defined by the holdover thresholds. As a result, the offset steadily increases until it goes over the threshold. The clock state correctly transitions from `HOLDOVER` to `HOLDOVER OUT-OF-SPEC` and finally to `FREERUN`. ([OCPBUGS-77473](https://issues.redhat.com/browse/OCPBUGS-77473))
 
-- Before this update, IBM Cloud was unable to process new `SecurityGroup` rule types such as `any` and older versions of the Software Development Kit (SDK) for the Virtual Private Cloud (VPC) could not unmarshal a VPC with these new types. As a consequence, the installation program could not set up a new VPC or use an existing VPC with the `any` protocol type. With this release, the SDK for the VPC is updated to support the unmarshalling of the new types. As a result, the `SecurityGroup` rule bug is resolved and the installation program can create or use a VPC with the new `SecurityGroup` rule types. ([OCPBUGS-84225](https://redhat.atlassian.net/browse/OCPBUGS-84225))
+- Before this update, IBM Cloud was unable to process new `SecurityGroup` rule types such as `any` and older versions of the Software Development Kit (SDK) for the Virtual Private Cloud (VPC) could not deserialize a VPC with these new types. As a consequence, the installation program could not set up a new VPC or use an existing VPC with the `any` protocol type. With this release, the SDK for the VPC is updated to support the deserialization of the new types. As a result, the `SecurityGroup` rule bug is resolved and the installation program can create or use a VPC with the new `SecurityGroup` rule types. ([OCPBUGS-84225](https://redhat.atlassian.net/browse/OCPBUGS-84225))
 
 - Before this update, a race condition in the container stop path could have caused CRI-O to panic with a "send on closed channel" message when a second `StopContainer` call arrived after the first had already completed and closed the internal stop channel. As a consequence, the CRI-O process crashed, potentially leaving pods stuck in a terminating state. With this release, a `stopDone` guard is added to the `WaitOnStopTimeout` method so that it returns early after the stop life cycle is complete. As a result, concurrent `StopContainer` calls do not cause a panic by sending on a closed channel. ([OCPBUGS-84922](https://redhat.atlassian.net/browse/OCPBUGS-84922))
 

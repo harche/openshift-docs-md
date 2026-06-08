@@ -1,8 +1,8 @@
-You can destroy a hosted cluster and its managed cluster resource on Amazon Web Services (AWS) by using the command-line interface (CLI).
+You might want to remove a hosted cluster if you are no longer using it, you are trying to reduce resources, or the hosted cluster is experiencing issues that are difficult to resolve.
 
 # Destroying a hosted cluster on AWS by using the CLI
 
-You can use the command-line interface (CLI) to destroy a hosted cluster on Amazon Web Services (AWS).
+To delete a hosted cluster and its managed cluster resource from hosted control planes on Amazon Web Services (AWS), use the command-line interface (CLI).
 
 1.  Delete the managed cluster resource on multicluster engine Operator by running the following command:
 
@@ -10,7 +10,7 @@ You can use the command-line interface (CLI) to destroy a hosted cluster on Amaz
     $ oc delete managedcluster <hosted_cluster_name>
     ```
 
-    - Replace `<hosted_cluster_name>` with the name of your cluster.
+    Replace `<hosted_cluster_name>` with the name of your cluster.
 
 2.  Delete the hosted cluster and its backend resources by running the following command:
 
@@ -20,18 +20,20 @@ You can use the command-line interface (CLI) to destroy a hosted cluster on Amaz
       --infra-id <infra_id> \
       --role-arn <arn_role> \
       --sts-creds <path_to_sts_credential_file> \
-      --base-domain <basedomain>
+      --base-domain <base_domain>
     ```
 
-    - Specify the name of your hosted cluster, for instance, `example`.
+    where:
 
-    - Specify the infrastructure name for your hosted cluster.
+    - `<hosted_cluster_name>` specifies the name of your hosted cluster, for example, `my-hosted-cluster`.
 
-    - Specify the Amazon Resource Name (ARN), for example, `arn:aws:iam::820196288204:role/myrole`.
+    - `<infra_id>` specifies the infrastructure name for your hosted cluster.
 
-    - Specify the path to your AWS Security Token Service (STS) credentials file, for example, `/home/user/sts-creds/sts-creds.json`.
+    - `<arn_role>` specifies the Amazon Resource Name (ARN), for example, `arn:aws:iam::820196288204:role/myrole`.
 
-    - Specify your base domain, for example, `example.com`.
+    - `<path_to_sts_credential_file>` specifies the path to your AWS Security Token Service (STS) credentials file, for example, `/home/user/sts-creds/sts-creds.json`.
+
+    - `<base_domain>` specifies your base domain, for example, `example.com`.
 
       <div class="important">
 

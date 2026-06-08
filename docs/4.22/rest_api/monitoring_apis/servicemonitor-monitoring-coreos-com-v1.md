@@ -422,7 +422,7 @@ Type
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p>relabelings defines the relabeling rules to apply the target’s metadata labels.</p>
 <p>The Operator automatically adds relabelings for a few standard Kubernetes fields.</p>
-<p>The original scrape job’s name is available via the <code>__tmp_prometheus_job_name</code> label.</p>
+<p>The original scrape job’s name is available via the <code>\__tmp_prometheus_job_name</code> label.</p>
 <p>More info: <a href="https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config">https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config</a></p></td>
 </tr>
 <tr class="odd">
@@ -1082,7 +1082,7 @@ relabelings defines the relabeling rules to apply the target’s metadata labels
 
 The Operator automatically adds relabelings for a few standard Kubernetes fields.
 
-The original scrape job’s name is available via the `__tmp_prometheus_job_name` label.
+The original scrape job’s name is available via the `\__tmp_prometheus_job_name` label.
 
 More info: <https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config>
 

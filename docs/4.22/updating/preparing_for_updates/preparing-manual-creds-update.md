@@ -533,6 +533,7 @@ On AWS clusters, some `ccoctl` commands make AWS API calls to create or modify A
       --credentials-requests-dir=<path_to_credentials_requests_directory> \
       --output-dir=<path_to_ccoctl_output_dir> \
       --public-key-file=<path_to_ccoctl_output_dir>/serviceaccount-signer.public \
+      --key-storage-method=<key_storage_method>
     ```
 
     - Specify the user-defined name for all created Google Cloud resources used for tracking.
@@ -546,6 +547,14 @@ On AWS clusters, some `ccoctl` commands make AWS API calls to create or modify A
     - Specify the path to the output directory.
 
     - Specify the path to the `serviceaccount-signer.public` file that you extracted from the cluster.
+
+    - Optional: Specify the method for storing OIDC JWK files. Accepted values are `public-bucket` and `pool-jwk-file`. The default value `public-bucket` creates a public GCS bucket to host the OIDC configuration and JWK files. The `pool-jwk-file` value attaches the JWK directly to the workload identity pool provider without creating a public bucket.
+
+      <div class="note">
+
+      If your cluster was previously configured with the `public-bucket` method and you switch to `pool-jwk-file`, the existing GCS bucket is no longer used. You can delete the old `<name>-oidc` bucket from your Google Cloud project to avoid retaining an unnecessary public resource.
+
+      </div>
 
     ``` terminal
     $ ccoctl ibmcloud create-service-id \

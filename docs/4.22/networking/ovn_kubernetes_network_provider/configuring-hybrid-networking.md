@@ -1,8 +1,8 @@
-As a cluster administrator, you can configure the Red Hat OpenShift Networking OVN-Kubernetes network plugin to allow Linux and Windows nodes to host Linux and Windows workloads, respectively.
+In OpenShift Container Platform, you can configure OVN-Kubernetes hybrid networking so Linux and Windows nodes run Linux and Windows workloads in the same cluster.
 
 # Configuring hybrid networking with OVN-Kubernetes
 
-You can configure your cluster to use hybrid networking with the OVN-Kubernetes network plugin. This allows a hybrid cluster that supports different node networking configurations.
+To configure hybrid networking with OVN-Kubernetes, you can set `hybridOverlayConfig` during installation or patch the Cluster Network Operator (CNO) after installation.
 
 <div class="note">
 
@@ -41,14 +41,14 @@ This configuration is necessary to run both Linux and Windows nodes in the same 
 
     where:
 
-    `cidr`
-    Specify the CIDR configuration used for nodes on the additional overlay network. This CIDR must not overlap with the cluster network CIDR.
+    `<cidr>`
+    Specifies the CIDR configuration used for nodes on the additional overlay network. This CIDR must not overlap with the cluster network CIDR.
 
-    `hostPrefix`
+    `<prefix>`
     Specifies the subnet prefix length to assign to each individual node. For example, if `hostPrefix` is set to `23`, then each node is assigned a `/23` subnet out of the given `cidr`, which allows for 510 (2^(32 - 23) - 2) pod IP addresses. If you are required to provide access to nodes from an external network, configure load balancers and routers to manage the traffic.
 
-    `hybridOverlayVXLANPort`
-    Specify a custom VXLAN port for the additional overlay network. This is required for running Windows nodes in a cluster installed on vSphere, and must not be configured for any other cloud provider. The custom port can be any open port excluding the default `6081` port. For more information on this requirement, see [Pod-to-pod connectivity between hosts is broken](https://docs.microsoft.com/en-us/virtualization/windowscontainers/kubernetes/common-problems#pod-to-pod-connectivity-between-hosts-is-broken-on-my-kubernetes-cluster-running-on-vsphere) in the Microsoft documentation.
+    `<overlay_port>`
+    Specifies a custom VXLAN port for the additional overlay network. This is required for running Windows nodes in a cluster installed on vSphere, and must not be configured for any other cloud provider. The custom port can be any open port excluding the default `6081` port. For more information on this requirement, see [Pod-to-pod connectivity between hosts is broken](https://docs.microsoft.com/en-us/virtualization/windowscontainers/kubernetes/common-problems#pod-to-pod-connectivity-between-hosts-is-broken-on-my-kubernetes-cluster-running-on-vsphere) in the Microsoft documentation.
 
     <div class="note">
 

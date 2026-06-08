@@ -18,7 +18,7 @@ The following requirements apply to hosted control planes:
 
 Because multicluster engine for Kubernetes Operator includes the HyperShift Operator, releases of hosted control planes align with releases of multicluster engine Operator. The support matrix includes details about supported clusters, platforms, and architectures, as well as information about updates and technology preview features.
 
-For more information, see [OpenShift Operator Life Cycles](https://access.redhat.com/support/policy/updates/openshift_operators).
+For more information, see "OpenShift Operator Life Cycles".
 
 ## Management cluster support
 
@@ -57,17 +57,15 @@ The following table shows the hosted cluster versions that you can create by usi
 
 <div class="note">
 
-Although the HyperShift Operator supports the hosted cluster versions in the following table, multicluster engine Operator supports only as far back as 2 versions earlier than the current version. For example, if the current hosted cluster version is 4.21, multicluster engine Operator supports as far back as version 4.19. If you want to use a hosted cluster version that is earlier than one of the versions that multicluster engine Operator supports, you can detach your hosted clusters from multicluster engine Operator to be unmanaged, or you can use an earlier version of multicluster engine Operator. For instructions to detach your hosted clusters from multicluster engine Operator, see [Removing a cluster from management](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#remove-managed-cluster) (RHACM documentation). For more information about multicluster engine Operator support, see [The multicluster engine for Kubernetes operator 2.11 Support Matrix](https://access.redhat.com/articles/7136929) (Red Hat Knowledgebase).
+Although the HyperShift Operator supports the hosted cluster versions in the following table, multicluster engine Operator supports only as far back as 2 versions earlier than the current version. For example, if the current hosted cluster version is 4.21, multicluster engine Operator supports as far back as version 4.19. If you want to use a hosted cluster version that is earlier than one of the versions that multicluster engine Operator supports, you can detach your hosted clusters from multicluster engine Operator to be unmanaged, or you can use an earlier version of multicluster engine Operator. For instructions to detach your hosted clusters from multicluster engine Operator, see "Removing a cluster from management" (RHACM documentation). For more information about multicluster engine Operator support, see "The multicluster engine for Kubernetes operator 2.11 Support Matrix" (Red Hat Knowledgebase).
 
 </div>
 
 | Hosted cluster version | HyperShift Operator in multicluster engine Operator 2.6 | HyperShift Operator in multicluster engine Operator 2.7 | HyperShift Operator in multicluster engine Operator 2.8 | HyperShift Operator in multicluster engine Operator 2.9 | HyperShift Operator in multicluster engine Operator 2.10 | HyperShift Operator in multicluster engine Operator 2.11 |
 |------------------------|---------------------------------------------------------|---------------------------------------------------------|---------------------------------------------------------|---------------------------------------------------------|----------------------------------------------------------|----------------------------------------------------------|
-| 4.14                   | Yes                                                     | Yes                                                     | Yes                                                     | Yes                                                     | Yes                                                      | Yes                                                      |
-| 4.15                   | Yes                                                     | Yes                                                     | Yes                                                     | Yes                                                     | Yes                                                      | Yes                                                      |
-| 4.16                   | Yes                                                     | Yes                                                     | Yes                                                     | Yes                                                     | Yes                                                      | Yes                                                      |
-| 4.17                   | No                                                      | Yes                                                     | Yes                                                     | Yes                                                     | Yes                                                      | Yes                                                      |
-| 4.18                   | No                                                      | No                                                      | Yes                                                     | Yes                                                     | Yes                                                      | Yes                                                      |
+| 4.14                   | Yes                                                     | Yes                                                     | Yes                                                     | No                                                      | No                                                       | No                                                       |
+| 4.16                   | Yes                                                     | Yes                                                     | Yes                                                     | Yes                                                     | No                                                       | No                                                       |
+| 4.18                   | No                                                      | No                                                      | Yes                                                     | Yes                                                     | Yes                                                      | No                                                       |
 | 4.19                   | No                                                      | No                                                      | No                                                      | Yes                                                     | Yes                                                      | Yes                                                      |
 | 4.20                   | No                                                      | No                                                      | No                                                      | No                                                      | Yes                                                      | Yes                                                      |
 | 4.21                   | No                                                      | No                                                      | No                                                      | No                                                      | No                                                       | Yes                                                      |
@@ -106,23 +104,24 @@ Required OpenShift Container Platform versions for platforms
 
 ## Multi-architecture support
 
-The following tables indicate the support status for hosted control planes on multiple architectures. If an architecture is not listed, it is not yet fully supported.
+The following tables indicate the supported architectures for hosted control planes, organized by platform. If an architecture is not listed, it is not yet fully supported.
 
-| Platform                           | Control planes | Compute nodes | OpenShift Container Platform version support | Status               |
-|------------------------------------|----------------|---------------|----------------------------------------------|----------------------|
-| AWS                                | 64-bit x86     | 64-bit x86    | 4.16 - 4.21                                  | General Availability |
-| AWS                                | 64-bit x86     | ARM64         | 4.17 - 4.21                                  | General Availability |
-| AWS                                | ARM64          | ARM64         | 4.17 - 4.21                                  | General Availability |
-| AWS                                | ARM64          | 64-bit x86    | 4.17 - 4.21                                  | General Availability |
-| Bare metal (Agent platform)        | 64-bit x86     | 64-bit x86    | 4.14 - 4.21                                  | General Availability |
-| Bare metal (Agent platform)        | 64-bit x86     | ARM64         | 4.21                                         | General Availability |
-| IBM Power                          | 64-bit x86     | ppc64le       | 4.17 - 4.21                                  | General Availability |
-| IBM Z                              | 64-bit x86     | s390x         | 4.17 - 4.21                                  | General Availability |
-| IBM Z                              | s390x          | s390x         | 4.20 - 4.21                                  | General Availability |
-| Non-bare-metal Agent machines      | 64-bit x86     | 64-bit x86    | 4.16 - 4.21                                  | Technology Preview   |
-| OpenShift Virtualization           | 64-bit x86     | 64-bit x86    | 4.14 - 4.21                                  | General Availability |
-| OpenShift Virtualization           | s390x          | s390x         | 4.21                                         | Technology Preview   |
-| Red Hat OpenStack Platform (RHOSP) | 64-bit x86     | 64-bit x86    | 4.19 - 4.21                                  | Technology Preview   |
+| Platform                                                | Control planes | Compute nodes | OpenShift Container Platform version support |
+|---------------------------------------------------------|----------------|---------------|----------------------------------------------|
+| AWS                                                     | 64-bit x86     | 64-bit x86    | 4.16 - 4.21                                  |
+| AWS                                                     | 64-bit x86     | ARM64         | 4.17 - 4.21                                  |
+| AWS                                                     | ARM64          | ARM64         | 4.17 - 4.21                                  |
+| AWS                                                     | ARM64          | 64-bit x86    | 4.17 - 4.21                                  |
+| Bare metal (Agent platform)                             | 64-bit x86     | 64-bit x86    | 4.14 - 4.21                                  |
+| Bare metal (Agent platform)                             | 64-bit x86     | ARM64         | 4.21                                         |
+| Non-bare-metal Agent machines (Technology Preview)      | 64-bit x86     | 64-bit x86    | 4.16 - 4.21                                  |
+| IBM Power                                               | 64-bit x86     | 64-bit x86    | 4.19 - 4.21                                  |
+| IBM Power                                               | 64-bit x86     | ppc64le       | 4.17 - 4.21                                  |
+| IBM Z                                                   | 64-bit x86     | 64-bit x86    | 4.17 - 4.21                                  |
+| IBM Z                                                   | 64-bit x86     | s390x         | 4.17 - 4.21                                  |
+| IBM Z                                                   | s390x          | s390x         | 4.20 - 4.21                                  |
+| OpenShift Virtualization                                | 64-bit x86     | 64-bit x86    | 4.14 - 4.21                                  |
+| Red Hat OpenStack Platform (RHOSP) (Technology Preview) | 64-bit x86     | 64-bit x86    | 4.19 - 4.21                                  |
 
 Multi-architecture support for hosted control planes
 
@@ -132,26 +131,34 @@ When you update to another version of the multicluster engine Operator, your hos
 
 <div class="note">
 
-Although the HyperShift Operator supports the hosted cluster versions in the following table, multicluster engine Operator supports only as far back as 2 versions earlier than the current version. For example, if the current hosted cluster version is 4.21, multicluster engine Operator supports as far back as version 4.19. If you want to use a hosted cluster version that is earlier than one of the versions that multicluster engine Operator supports, you can detach your hosted clusters from multicluster engine Operator to be unmanaged, or you can use an earlier version of multicluster engine Operator. For instructions to detach your hosted clusters from multicluster engine Operator, see [Removing a cluster from management](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#remove-managed-cluster) (RHACM documentation). For more information about multicluster engine Operator support, see [The multicluster engine for Kubernetes operator 2.11 Support Matrix](https://access.redhat.com/articles/7136929) (Red Hat Knowledgebase).
+Although the HyperShift Operator supports the hosted cluster versions in the following table, multicluster engine Operator supports only as far back as 2 versions earlier than the current version. For example, if the current hosted cluster version is 4.21, multicluster engine Operator supports as far back as version 4.19. If you want to use a hosted cluster version that is earlier than one of the versions that multicluster engine Operator supports, you can detach your hosted clusters from multicluster engine Operator to be unmanaged, or you can use an earlier version of multicluster engine Operator. For instructions to detach your hosted clusters from multicluster engine Operator, see "Removing a cluster from management" (RHACM documentation). For more information about multicluster engine Operator support, see "The multicluster engine for Kubernetes operator 2.11 Support Matrix" (Red Hat Knowledgebase).
 
 </div>
 
-| Updated multicluster engine Operator version | Supported hosted cluster version         |
-|----------------------------------------------|------------------------------------------|
-| Updated from 2.5 to 2.6                      | OpenShift Container Platform 4.14 - 4.15 |
-| Updated from 2.6 to 2.7                      | OpenShift Container Platform 4.14 - 4.16 |
-| Updated from 2.7 to 2.8                      | OpenShift Container Platform 4.14 - 4.17 |
-| Updated from 2.8 to 2.9                      | OpenShift Container Platform 4.14 - 4.18 |
-| Updated from 2.9 to 2.10                     | OpenShift Container Platform 4.14 - 4.19 |
-| Updated from 2.10 to 2.11                    | OpenShift Container Platform 4.14 - 4.20 |
+| multicluster engine Operator version | Supported hosted cluster version while updating |
+|--------------------------------------|-------------------------------------------------|
+| Updating from 2.5 to 2.6             | OpenShift Container Platform 4.14, 4.16         |
+| Updating from 2.6 to 2.7             | OpenShift Container Platform 4.14, 4.16         |
+| Updating from 2.7 to 2.8             | OpenShift Container Platform 4.14, 4.16         |
+| Updating from 2.8 to 2.9             | OpenShift Container Platform 4.16, 4.18         |
+| Updating from 2.9 to 2.10            | OpenShift Container Platform 4.18, 4.19         |
+| Updating from 2.10 to 2.11           | OpenShift Container Platform 4.19, 4.20         |
 
-Updated multicluster engine Operator version support for hosted clusters
+Hosted cluster version supported while updating multicluster engine Operator
 
 For example, if you have an OpenShift Container Platform 4.18 hosted cluster on the management cluster and you update from multicluster engine Operator 2.8 to 2.9, the hosted cluster can continue to run.
 
 ## Technology Preview features
 
 For a list of features in this release that have a Technology Preview status, see the "Technology Preview features status" section of the *Hosted control planes release notes*.
+
+- [OpenShift Operator Life Cycles](https://access.redhat.com/support/policy/updates/openshift_operators)
+
+- [Shared infrastructure between hosted and standalone control planes](../../hosted_control_planes/hcp-prepare/hcp-sizing-guidance.xml#hcp-shared-infra_hcp-sizing-guidance)
+
+- [Removing a cluster from management](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#remove-managed-cluster)
+
+- [The multicluster engine for Kubernetes operator 2.11 Support Matrix](https://access.redhat.com/articles/7136929)
 
 - [Technology Preview features status](../../hosted_control_planes/hcp-release-notes.xml#hcp-release-notes-technology-preview-tables_hcp-release-notes)
 
@@ -165,7 +172,7 @@ When running RHEL or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mod
 
 After you set up your management cluster in FIPS mode, the hosted cluster creation process runs on that management cluster.
 
-- [The multicluster engine for Kubernetes Operator 2.9 support matrix](https://access.redhat.com/articles/7120837)
+- [The multicluster engine for Kubernetes operator 2.11 Support Matrix](https://access.redhat.com/articles/7136929)
 
 - [Red Hat OpenShift Container Platform Operator Update Information Checker](https://access.redhat.com/labs/ocpouic/?operator=multicluster-engine&&upgrade_path=4.14%20to%204.16)
 

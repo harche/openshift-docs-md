@@ -6,16 +6,18 @@ The Red Hat telco RAN DU 4.17 solution has been validated using the following Re
 
 | Component                                | Software version |
 |------------------------------------------|------------------|
-| OpenShift Container Platform             | 4.21             |
-| Cluster Logging Operator                 | 6.2              |
-| Local Storage Operator                   | 4.21             |
-| OpenShift API for Data Protection (OADP) | 1.5              |
-| PTP Operator                             | 4.21             |
-| SR-IOV Operator                          | 4.21             |
-| SRIOV-FEC Operator                       | 2.11             |
-| Lifecycle Agent Operator                 | 4.21             |
+| OpenShift Container Platform             | 4.22             |
+| Cluster Logging Operator                 | 6.5              |
+| Local Storage Operator                   | 4.22             |
+| OpenShift API for Data Protection (OADP) | 1.6              |
+| PTP Operator                             | 4.22             |
+| SR-IOV Operator                          | 4.22             |
+| SRIOV-FEC Operator                       | 2.12             |
+| Lifecycle Agent Operator                 | 4.22             |
 
 Telco RAN DU managed cluster validated software components
+
+- Cluster Logging Operator will be updated to 6.6 when the aligned Cluster Logging Operator version is released.
 
 # Recommended hub cluster specifications and managed cluster limits for GitOps ZTP
 

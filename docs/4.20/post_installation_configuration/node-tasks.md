@@ -1961,7 +1961,7 @@ Understand and work with taints and tolerations.
 
 ## Understanding taints and tolerations
 
-A *taint* allows a node to refuse a pod to be scheduled unless that pod has a matching *toleration*.
+You can use a *taint* on a node to allow that node to refuse a pod to be scheduled unless that pod has a matching *toleration*.
 
 You apply taints to a node through the `Node` specification (`NodeSpec`) and apply tolerations to a pod through the `Pod` specification (`PodSpec`). When you apply a taint to a node, the scheduler cannot place a pod on that node unless the pod can tolerate the taint.
 
@@ -2149,7 +2149,9 @@ The following taints are built into OpenShift Container Platform:
 
 ## Adding taints and tolerations
 
-You add tolerations to pods and taints to nodes to allow the node to control which pods should or should not be scheduled on them. For existing pods and nodes, you should add the toleration to the pod first, then add the taint to the node to avoid pods being removed from the node before you can add the toleration.
+You can add tolerations to pods and taints to nodes to allow the node to control which pods should or should not be scheduled on that node.
+
+For existing pods and nodes, you should add the toleration to the pod first, then add the taint to the node to avoid pods being removed from the node before you can add the toleration.
 
 1.  Add a toleration to a pod by editing the `Pod` spec to include a `tolerations` stanza:
 
@@ -2175,36 +2177,40 @@ You add tolerations to pods and taints to nodes to allow the node to control whi
     #...
     ```
 
-    - The toleration parameters, as described in the **Taint and toleration components** table.
+    where:
 
-    - The `tolerationSeconds` parameter specifies how long a pod can remain bound to a node before being evicted.
+    `spec.tolerations`
+    Specifies the toleration parameters, as described in the **Taint and toleration components** table.
 
-      For example:
+    `` spec.tolerations.tolerationSeconds` ``
+    Specifies how long a pod can remain bound to a node before being evicted.
 
-      <div class="formalpara-title">
+    For example:
 
-      **Sample pod configuration file with an Exists operator**
+    <div class="formalpara-title">
 
-      </div>
+    **Sample pod configuration file with an Exists operator**
 
-      ``` yaml
-      apiVersion: v1
-      kind: Pod
-      metadata:
-        name: my-pod
-      #...
-      spec:
-         tolerations:
-          - key: "key1"
-            operator: "Exists"
-            effect: "NoExecute"
-            tolerationSeconds: 3600
-      #...
-      ```
+    </div>
 
-    - The `Exists` operator does not take a `value`.
+    ``` yaml
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: my-pod
+    #...
+    spec:
+       tolerations:
+        - key: "key1"
+          operator: "Exists"
+          effect: "NoExecute"
+          tolerationSeconds: 3600
+    #...
+    ```
 
-      This example places a taint on `node1` that has key `key1`, value `value1`, and taint effect `NoExecute`.
+    The `Exists` operator does not take a `value`.
+
+    This example places a taint on `node1` that has key `key1`, value `value1`, and taint effect `NoExecute`.
 
 2.  Add a taint to a node by using the following command with the parameters described in the **Taint and toleration components** table:
 
@@ -2248,7 +2254,9 @@ You add tolerations to pods and taints to nodes to allow the node to control whi
 
 ## Adding taints and tolerations using a compute machine set
 
-You can add taints to nodes using a compute machine set. All nodes associated with the `MachineSet` object are updated with the taint. Tolerations respond to taints added by a compute machine set in the same manner as taints added directly to the nodes.
+You can add taints to groups of nodes by using a compute machine set. All nodes associated with the `MachineSet` object are updated with the taint.
+
+Tolerations respond to taints added by a compute machine set in the same manner as taints added directly to the nodes.
 
 1.  Add a toleration to a pod by editing the `Pod` spec to include a `tolerations` stanza:
 
@@ -2274,32 +2282,36 @@ You can add taints to nodes using a compute machine set. All nodes associated wi
     #...
     ```
 
-    - The toleration parameters, as described in the **Taint and toleration components** table.
+    where:
 
-    - The `tolerationSeconds` parameter specifies how long a pod is bound to a node before being evicted.
+    `spec.tolerations`
+    Specifies the toleration parameters, as described in the **Taint and toleration components** table.
 
-      For example:
+    `spec.tolerations.tolerationSeconds`
+    Specifies how long a pod can remain bound to a node before being evicted.
 
-      <div class="formalpara-title">
+    For example:
 
-      **Sample pod configuration file with `Exists` operator**
+    <div class="formalpara-title">
 
-      </div>
+    **Sample pod configuration file with `Exists` operator**
 
-      ``` yaml
-      apiVersion: v1
-      kind: Pod
-      metadata:
-        name: my-pod
-      #...
-      spec:
-        tolerations:
-        - key: "key1"
-          operator: "Exists"
-          effect: "NoExecute"
-          tolerationSeconds: 3600
-      #...
-      ```
+    </div>
+
+    ``` yaml
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: my-pod
+    #...
+    spec:
+      tolerations:
+      - key: "key1"
+        operator: "Exists"
+        effect: "NoExecute"
+        tolerationSeconds: 3600
+    #...
+    ```
 
 2.  Add the taint to the `MachineSet` object:
 
@@ -2377,17 +2389,13 @@ You can add taints to nodes using a compute machine set. All nodes associated wi
 
 ## Binding a user to a node using taints and tolerations
 
-If you want to dedicate a set of nodes for exclusive use by a particular set of users, add a toleration to their pods. Then, add a corresponding taint to those nodes. The pods with the tolerations are allowed to use the tainted nodes or any other nodes in the cluster.
+You can use taints and tolerations to dedicate a set of nodes for exclusive use by a particular set of users.
+
+First, add a toleration to their pods. Then, add a corresponding taint to those nodes. The pods with the tolerations are allowed to use the tainted nodes or any other nodes in the cluster.
 
 If you want ensure the pods are scheduled to only those tainted nodes, also add a label to the same set of nodes and add a node affinity to the pods so that the pods can only be scheduled onto nodes with that label.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To configure a node so that users can use only that node:
+Use the following procedure to configure a node so that users can use only that node.
 
 1.  Add a corresponding taint to those nodes:
 
@@ -2421,17 +2429,11 @@ To configure a node so that users can use only that node:
 
 ## Controlling nodes with special hardware using taints and tolerations
 
-In a cluster where a small subset of nodes have specialized hardware, you can use taints and tolerations to keep pods that do not need the specialized hardware off of those nodes, leaving the nodes for pods that do need the specialized hardware. You can also require pods that need specialized hardware to use specific nodes.
+In a cluster that has specialized hardware, you can use taints and tolerations to either keep pods that do not need the specialized hardware off of those nodes or require pods that need specialized hardware to use specific nodes.
 
 You can achieve this by adding a toleration to pods that need the special hardware and tainting the nodes that have the specialized hardware.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To ensure nodes with specialized hardware are reserved for specific pods:
+Use the following procedure to ensure nodes with specialized hardware are reserved for specific pods.
 
 1.  Add a toleration to pods that need the special hardware.
 
@@ -2487,15 +2489,11 @@ To ensure nodes with specialized hardware are reserved for specific pods:
 
 ## Removing taints and tolerations
 
-You can remove taints from nodes and tolerations from pods as needed. You should add the toleration to the pod first, then add the taint to the node to avoid pods being removed from the node before you can add the toleration.
+You can remove taints from nodes and tolerations from pods as needed if you no longer want the scheduling behavior.
 
-<div class="formalpara-title">
+You should add the toleration to the pod first, then add the taint to the node to avoid pods being removed from the node before you can add the toleration.
 
-**Procedure**
-
-</div>
-
-To remove taints and tolerations:
+Use the following procedure to remove taints and tolerations.
 
 1.  To remove a taint from a node:
 

@@ -15,13 +15,9 @@ Refer to your hardware vendor’s documentation for functionality and support de
 Mediated device
 A physical device that is divided into one or more virtual devices. A vGPU is a type of mediated device (mdev); the performance of the physical GPU is divided among the virtual devices. You can assign mediated devices to one or more virtual machines (VMs), but the number of guests must be compatible with your GPU. Some GPUs do not support multiple guests.
 
-# Preparing hosts for mediated devices
-
-You must enable the Input-Output Memory Management Unit (IOMMU) driver before you can configure mediated devices.
-
 ## Adding kernel arguments to enable the IOMMU driver
 
-To enable the IOMMU driver in the kernel, create the `MachineConfig` object and add the kernel arguments.
+You must enable the Input-Output Memory Management Unit (IOMMU) driver before you can configure mediated devices. To enable the IOMMU driver in the kernel, create the `MachineConfig` object and add the kernel arguments.
 
 - You have cluster administrator permissions.
 
@@ -100,17 +96,7 @@ To enable the IOMMU driver in the kernel, create the `MachineConfig` object and 
       AMD: [ 0.000000] AMD-Vi: IOMMU Initialized
       ```
 
-# Configuring the NVIDIA GPU Operator
-
-You can use the NVIDIA GPU Operator to provision worker nodes for running GPU-accelerated virtual machines (VMs) in OpenShift Virtualization.
-
-<div class="note">
-
-The NVIDIA GPU Operator is supported only by NVIDIA. For more information, see [Obtaining Support from NVIDIA](https://access.redhat.com/solutions/5174941) in the Red Hat Knowledgebase.
-
-</div>
-
-## About using the NVIDIA GPU Operator
+# About using the NVIDIA GPU Operator
 
 You can use the NVIDIA GPU Operator with OpenShift Virtualization to rapidly provision worker nodes for running GPU-enabled virtual machines (VMs). The NVIDIA GPU Operator manages NVIDIA GPU resources in an OpenShift Container Platform cluster and automates tasks that are required when preparing nodes for GPU workloads.
 
@@ -199,65 +185,7 @@ When using the OpenShift Virtualization method, you still configure the GPU Oper
 
   - `spec.vfioManager.enabled` is set to `false` to prevent loading the `vfio-pci` driver. Instead, follow the OpenShift Virtualization documentation to configure PCI passthrough.
 
-- [Configuring PCI passthrough](../../../virt/managing_vms/advanced_vm_management/virt-configuring-pci-passthrough.xml#virt-configuring-pci-passthrough)
-
-# How vGPUs are assigned to nodes
-
-OpenShift Virtualization configures a single `mdev` type and the maximum number of instances of the selected `mdev` type for each physical device. The cluster architecture affects how devices are created and assigned to nodes.
-
-Large cluster with multiple cards per node
-On nodes with multiple cards that can support similar vGPU types, the relevant device types are created in a round-robin manner. For example:
-
-``` yaml
-# ...
-mediatedDevicesConfiguration:
-  mediatedDeviceTypes:
-  - nvidia-222
-  - nvidia-228
-  - nvidia-105
-  - nvidia-108
-# ...
-```
-
-In this scenario, each node has two cards, both of which support the following vGPU types:
-
-``` yaml
-nvidia-105
-# ...
-nvidia-108
-nvidia-217
-nvidia-299
-# ...
-```
-
-On each node, OpenShift Virtualization creates the following vGPUs:
-
-- 16 vGPUs of type nvidia-105 on the first card.
-
-- 2 vGPUs of type nvidia-108 on the second card.
-
-One node has a single card that supports more than one requested vGPU type
-OpenShift Virtualization uses the supported type that comes first on the `mediatedDeviceTypes` list.
-
-For example, the card on a node card supports `nvidia-223` and `nvidia-224`. The following `mediatedDeviceTypes` list is configured:
-
-``` yaml
-# ...
-mediatedDevicesConfiguration:
-  mediatedDeviceTypes:
-  - nvidia-22
-  - nvidia-223
-  - nvidia-224
-# ...
-```
-
-In this example, OpenShift Virtualization uses the `nvidia-223` type.
-
-# Managing mediated devices
-
-Before you can assign mediated devices to virtual machines, you must create the devices and expose them to the cluster. You can also reconfigure and remove mediated devices.
-
-## Creating and exposing mediated devices
+# Creating and exposing mediated devices
 
 As an administrator, you can create mediated devices and expose them to the cluster by editing the `HyperConverged` custom resource (CR). Before you edit the CR, explore a worker node to find the configuration values that are specific to your hardware devices.
 
@@ -389,25 +317,7 @@ As an administrator, you can create mediated devices and expose them to the clus
     | with_entries(select(.value != "0"))'
   ```
 
-## About changing and removing mediated devices
-
-As an administrator, you can change or remove mediated devices by editing the `HyperConverged` custom resource (CR).
-
-You can reconfigure or remove mediated devices in several ways:
-
-- Edit the `HyperConverged` CR and change the contents of the `mediatedDeviceTypes` stanza.
-
-- Change the node labels that match the `nodeMediatedDeviceTypes` node selector.
-
-- Remove the device information from the `spec.mediatedDevicesConfiguration` and `spec.permittedHostDevices` stanzas of the `HyperConverged` CR.
-
-  <div class="note">
-
-  If you remove the device information from the `spec.permittedHostDevices` stanza without also removing it from the `spec.mediatedDevicesConfiguration` stanza, you cannot create a new mediated device type on the same node. To properly remove mediated devices, remove the device information from both stanzas.
-
-  </div>
-
-## Removing mediated devices from the cluster
+# Removing mediated devices from the cluster
 
 To remove a mediated device from the cluster, delete the information for that device from the `HyperConverged` custom resource (CR).
 
@@ -443,11 +353,59 @@ To remove a mediated device from the cluster, delete the information for that de
 
 3.  Save your changes and exit the editor.
 
-# Using mediated devices
+# How vGPUs are assigned to nodes
 
-You can assign mediated devices to one or more virtual machines.
+OpenShift Virtualization configures a single `mdev` type and the maximum number of instances of the selected `mdev` type for each physical device. The cluster architecture affects how devices are created and assigned to nodes.
 
-## Assigning a vGPU to a VM by using the CLI
+Large cluster with multiple cards per node
+On nodes with multiple cards that can support similar vGPU types, the relevant device types are created in a round-robin manner. For example:
+
+``` yaml
+# ...
+mediatedDevicesConfiguration:
+  mediatedDeviceTypes:
+  - nvidia-222
+  - nvidia-228
+  - nvidia-105
+  - nvidia-108
+# ...
+```
+
+In this scenario, each node has two cards, both of which support the following vGPU types:
+
+``` yaml
+nvidia-105
+# ...
+nvidia-108
+nvidia-217
+nvidia-299
+# ...
+```
+
+On each node, OpenShift Virtualization creates the following vGPUs:
+
+- 16 vGPUs of type nvidia-105 on the first card.
+
+- 2 vGPUs of type nvidia-108 on the second card.
+
+One node has a single card that supports more than one requested vGPU type
+OpenShift Virtualization uses the supported type that comes first on the `mediatedDeviceTypes` list.
+
+For example, the card on a node card supports `nvidia-223` and `nvidia-224`. The following `mediatedDeviceTypes` list is configured:
+
+``` yaml
+# ...
+mediatedDevicesConfiguration:
+  mediatedDeviceTypes:
+  - nvidia-22
+  - nvidia-223
+  - nvidia-224
+# ...
+```
+
+In this example, OpenShift Virtualization uses the `nvidia-223` type.
+
+# Assigning a vGPU to a VM by using the CLI
 
 Assign mediated devices such as virtual GPUs (vGPUs) to virtual machines (VMs).
 
@@ -486,7 +444,7 @@ Assign mediated devices such as virtual GPUs (vGPUs) to virtual machines (VMs).
   $ lspci -nnk | grep <device_name>
   ```
 
-## Assigning a vGPU to a VM by using the web console
+# Assigning a vGPU to a VM by using the web console
 
 You can assign virtual GPUs to virtual machines by using the OpenShift Container Platform web console.
 
@@ -521,3 +479,11 @@ You can add hardware devices to virtual machines created from customized templat
 # Additional resources
 
 - [Enabling Intel VT-X and AMD-V Virtualization Hardware Extensions in BIOS](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/sect-troubleshooting-enabling_intel_vt_x_and_amd_v_virtualization_hardware_extensions_in_bios)
+
+- [MIG Support in OpenShift Container Platform](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/mig-ocp.html#)
+
+- [Configuring PCI passthrough](../../../virt/managing_vms/advanced_vm_management/virt-configuring-pci-passthrough.xml#virt-configuring-pci-passthrough)
+
+- [Obtaining Support from NVIDIA](https://access.redhat.com/solutions/5174941)
+
+- [MIG User Guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/supported-mig-profiles.html)

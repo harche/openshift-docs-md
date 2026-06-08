@@ -1,4 +1,4 @@
-A two-node OpenShift cluster with fencing provides high availability (HA) with a reduced hardware footprint. This configuration is designed for distributed or edge environments where deploying a full three-node control plane cluster is not practical.
+A two-node OpenShift Container Platform cluster with fencing provides high availability (HA) with a reduced hardware footprint. This configuration is designed for distributed or edge environments where deploying a full three-node control plane cluster is not practical.
 
 A two-node cluster does not include compute nodes. The two control plane machines run user workloads in addition to managing the cluster.
 
@@ -6,7 +6,7 @@ Fencing is managed by Pacemaker, which can isolate an unresponsive node by using
 
 <div class="note">
 
-You can deploy a two-node OpenShift cluster with fencing by using either the user-provisioned infrastructure method or the installer-provisioned infrastructure method.
+You can deploy a two-node OpenShift Container Platform cluster with fencing by using either the user-provisioned infrastructure method or the installer-provisioned infrastructure method.
 
 </div>
 
@@ -306,73 +306,6 @@ Required DNS records
 You can use the `dig` command to verify DNS resolution.
 
 </div>
-
-# Configuring an Ingress load balancer for a two-node cluster with fencing
-
-You must configure an external Ingress load balancer (LB) before you install a two-node OpenShift cluster with fencing. The Ingress LB forwards external application traffic to the Ingress Controller pods that run on the control plane nodes. Both nodes can actively receive traffic.
-
-- You have two control plane nodes with fencing enabled.
-
-- You have network connectivity from the load balancer to both control plane nodes.
-
-- You created DNS records for `api.<cluster_name>.<base_domain>` and `*.apps.<cluster_name>.<base_domain>`.
-
-- You have an external load balancer that supports health checks on endpoints.
-
-1.  Configure the load balancer to forward traffic for the following ports:
-
-    - `6443`: Kubernetes API server
-
-    - `80` and `443`: Application ingress
-
-      You must forward traffic to both control plane nodes.
-
-2.  Configure health checks on the load balancer. You must monitor the backend endpoints so that the load balancer only sends traffic to nodes that respond.
-
-3.  Configure the load balancer to forward traffic to both control plane nodes. The following example shows how to configure two control plane nodes:
-
-    ``` terminal
-    frontend api_frontend
-        bind *:6443
-        mode tcp
-        default_backend api_backend
-
-    backend api_backend
-        mode tcp
-        balance roundrobin
-        server cp0 <cp0_ip>:6443 check
-        server cp1 <cp1_ip>:6443 check
-
-    frontend ingress_frontend
-        bind *:80
-        bind *:443
-        mode tcp
-        default_backend ingress_backend
-
-    backend ingress_backend
-        mode tcp
-        balance roundrobin
-        server cp0 <cp0_ip>:80 check
-        server cp1 <cp1_ip>:80 check
-        server cp0 <cp0_ip>:443 check
-        server cp1 <cp1_ip>:443 check
-    ```
-
-4.  Verify the load balancer configuration:
-
-    1.  From an external client, run the following command:
-
-        ``` terminal
-        $ curl -k https://api.<cluster_name>.<base_domain>:6443/version
-        ```
-
-    2.  From an external client, access an application route by running the following command:
-
-        ``` terminal
-        $ curl https://<app>.<cluster_name>.<base_domain>
-        ```
-
-You can shut down a control plane node and verify that the load balancer stops sending traffic to that node while the other node continues to serve requests.
 
 # Creating a manifest object for a customized br-ex bridge
 

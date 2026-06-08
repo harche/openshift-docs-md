@@ -1,4 +1,4 @@
-Logical Volume Manager (LVM) Storage uses LVM2 through the TopoLVM CSI driver to dynamically provision local storage on a cluster with limited resources.
+Logical Volume Manager (LVM) Storage uses LVM2 through the `TopoLVM CSI` driver to dynamically provision local storage on a cluster with limited resources.
 
 You can create volume groups, persistent volume claims (PVCs), volume snapshots, and volume clones by using LVM Storage.
 
@@ -417,7 +417,7 @@ The default namespace for the LVM Storage Operator is `openshift-lvm-storage`.
 
 - [Red Hat Advanced Cluster Management for Kubernetes: Installing while connected online](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html/install/installing#installing-while-connected-online)
 
-- [About the LVMCluster custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
+- [About the `LVMCluster` custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
 
 # Static and dynamic device discovery in LVM Storage
 
@@ -741,6 +741,11 @@ The `LVMCluster` CR fields are described in the following table:
 <p>If any of these conditions are true, do not force wipe the disk. Instead, you must manually wipe the disk.</p></td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;"><p>deviceClasses.storageClassOptions</p></td>
+<td style="text-align: left;"><p>object</p></td>
+<td style="text-align: left;"><p>Optional. Allows customization of the StorageClass created for this device class, including reclaim policy, volume binding mode, additional parameters, and labels. For more information, see "StorageClass customization for LVMS device classes".</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>deviceClasses.thinPoolConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Contains the configuration to create a thin pool in the LVM volume group.</p>
@@ -753,18 +758,18 @@ The `LVMCluster` CR fields are described in the following table:
 <li><p>No support for thin metrics. Thick-provisioned devices only support volume group metrics.</p></li>
 </ul></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>thinPoolConfig.name</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specify a name for the thin pool.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>thinPoolConfig.sizePercent</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Specify the percentage of space in the LVM volume group for creating the thin pool.</p>
 <p>By default, this field is set to 90. The minimum value that you can set is 10, and the maximum value is 90.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>thinPoolConfig.overprovisionRatio</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Specify a factor by which you can provision additional storage based on the available storage in the thin pool.</p>
@@ -780,14 +785,14 @@ The `LVMCluster` CR fields are described in the following table:
 <pre><code>$ oc patch lvmcluster &lt;lvmcluster_name&gt; -p &lt;patch_file.yaml&gt;</code></pre>
 <p>To disable over-provisioning, set this field to 1.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>thinPoolConfig.chunkSize</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Specifies the statically calculated chunk size for the thin pool. This field is only used when the <code>ChunkSizeCalculationPolicy</code> field is set to <code>Static</code>. The value for this field must be configured in the range of 64 KiB to 1 GiB because of the underlying limitations of <code>lvm2</code>.</p>
 <p>If you do not configure this field and the <code>ChunkSizeCalculationPolicy</code> field is set to <code>Static</code>, the default chunk size is set to 128 KiB.</p>
 <p>For more information, see "Overview of chunk size".</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>thinPoolConfig.chunkSizeCalculationPolicy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies the policy to calculate the chunk size for the underlying volume group. You can set this field to either <code>Static</code> or <code>Host</code>. By default, this field is set to <code>Static</code>.</p>
@@ -795,14 +800,14 @@ The `LVMCluster` CR fields are described in the following table:
 <p>If this field is set to <code>Host</code>, the chunk size is calculated based on the configuration in the <code>lvm.conf</code> file.</p>
 <p>For more information, see "Limitations to configure the size of the devices used in LVM Storage".</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>thinPoolConfig.metadataSize</code></p></td>
 <td style="text-align: left;"><p><code>integer</code></p></td>
 <td style="text-align: left;"><p>Specifies the metadata size for the thin pool. You can configure this field only when the <code>MetadataSizeCalculationPolicy</code> field is set to <code>Static</code>.</p>
 <p>If this field is not configured, and the <code>MetadataSizeCalculationPolicy</code> field is set to <code>Static</code>, the default metadata size is set to 1 GiB.</p>
 <p>The value for this field must be configured in the range of 2 MiB to 16 GiB due to the underlying limitations of <code>lvm2</code>. You can only increase the value of this field during updates.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>thinPoolConfig.metadataSizeCalculationPolicy</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Specifies the policy to calculate the metadata size for the underlying volume group. You can set this field to either <code>Static</code> or <code>Host</code>. By default, this field is set to <code>Host</code>.</p>
@@ -822,7 +827,7 @@ The `LVMCluster` CR fields are described in the following table:
 
 - [About adding devices to a volume group](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-adding-devices-to-a-vg_logical-volume-manager-storage)
 
-- [Adding worker nodes to single-node OpenShift clusters](../../nodes/nodes/nodes-sno-worker-nodes.xml)
+- [Adding worker nodes to single-node OpenShift clusters](../../nodes/nodes/nodes-sno-worker-nodes.xml#nodes-sno-worker-nodes)
 
 ## Limitations to configure the size of the devices used in LVM Storage
 
@@ -1303,7 +1308,7 @@ You can only create a single instance of the `LVMCluster` custom resource (CR) o
     lvms-vg1      topolvm.io           Delete           24h
     ```
 
-- [About the LVMCluster custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
+- [About the `LVMCluster` custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
 
 ## Creating an LVMCluster CR by using the web console
 
@@ -1353,7 +1358,7 @@ You can only create a single instance of the `LVMCluster` custom resource (CR) o
 
 3.  Optional: To view the available volume snapshot classes created by LVM Storage for each device class, click **Storage** → **VolumeSnapshotClasses**.
 
-- [About the LVMCluster custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
+- [About the `LVMCluster` custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
 
 ## Creating an LVMCluster CR by using RHACM
 
@@ -1422,7 +1427,7 @@ After you have installed LVM Storage by using RHACM, you must create an `LVMClus
 
 - [Red Hat Advanced Cluster Management for Kubernetes: Installing while connected online](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html/install/installing#installing-while-connected-online)
 
-- [About the LVMCluster custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
+- [About the `LVMCluster` custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
 
 # Ways to delete an LVMCluster custom resource
 
@@ -1690,6 +1695,86 @@ If you have installed LVM Storage by using Red Hat Advanced Cluster Management 
 
   </div>
 
+## Deleting an LVMCluster
+
+When you delete an `LVMCluster` custom resource (CR), the Operator enforces deletion gates to prevent data loss. The gates that apply depend on the reclaim policy that is configured for the storage class.
+
+- You have administrative access to the cluster.
+
+- You have identified the reclaim policy in use: `Delete` or `Retain`.
+
+1.  Delete all Persistent Volume Claims (PVCs) that reference LVM `StorageClass` resources.
+
+    If PVCs that reference LVM StorageClasses still exist, the Operator blocks `LVMCluster` deletion and generates a `DeletionPending` event:
+
+    ``` terminal
+    found PVCs provisioned by LVMS, waiting 10s for their deletion
+    ```
+
+2.  Back up any data before deleting PVCs.
+
+    1.  List the PVCs that use the LVM StorageClass by running the following command:
+
+        ``` terminal
+        $ oc get pvc -A -o custom-columns='NAMESPACE:.metadata.namespace,NAME:.metadata.name,SC:.spec.storageClassName' | grep lvms-vg1
+        ```
+
+    2.  Delete the PVCs by running the following command:
+
+        ``` terminal
+        $ oc delete pvc <pvc_name> -n <namespace>
+        ```
+
+        With the `Delete` reclaim policy, deleting the PVCs automatically removes the persistent volumes (PVs) and on-disk logical volumes. After all PVCs are removed, `LVMCluster` deletion completes automatically. No further action is required.
+
+3.  If you use the `Retain` reclaim policy, delete the retained PVs.
+
+    After you delete PVCs, if the reclaim policy is `Retain`, the Operator blocks `LVMCluster` deletion and generates a `DeletionPending` event:
+
+    ``` terminal
+    found PVs with Retain policy from LVMS, waiting 10s for manual cleanup
+    ```
+
+    1.  List the retained PVs by running the following command:
+
+        ``` terminal
+        $ oc get pv -o custom-columns='NAME:.metadata.name,SC:.spec.storageClassName' | grep lvms-vg1
+        ```
+
+    2.  Delete the PVs by running the following command:
+
+        ``` terminal
+        $ oc delete pv <pv_name>
+        ```
+
+4.  If you are using the `Retain` reclaim policy, delete the TopoLVM `LogicalVolume` custom resources.
+
+    After you delete PV objects from Kubernetes, the underlying logical volumes remain on disk because the `Retain` policy preserved them. The VG Manager detects this and generates a `ManualCleanupRequired` event:
+
+    ``` terminal
+    Warning  ManualCleanupRequired  volume group vg1 has retained logical volumes [pvc-abc123]; manual cleanup required before deletion can proceed
+    ```
+
+5.  Deleting the `LogicalVolume` custom resources triggers on-disk logical volume cleanup.
+
+    1.  List the `LogicalVolume` custom resources by running the following command:
+
+        ``` terminal
+        $ oc get logicalvolumes
+        ```
+
+    2.  Delete the `LogicalVolume` custom resources for your device class by running the following command:
+
+        ``` terminal
+        $ oc delete logicalvolume <lv_name>
+        ```
+
+- Verify that the `LVMCluster` deletion completed by confirming the resource no longer exists by running the following command:
+
+  ``` terminal
+  $ oc get lvmcluster -A
+  ```
+
 # Provisioning storage
 
 After you have created the LVM volume groups using the `LVMCluster` custom resource (CR), you can provision the storage by creating persistent volume claims (PVCs).
@@ -1779,6 +1864,366 @@ To create a PVC, you must create a `PersistentVolumeClaim` object.
   lvm-block-1   Bound    pvc-e90169a8-fd71-4eea-93b8-817155f60e47   1Gi        RWO            lvms-vg1       5s
   ```
 
+# StorageClass customization for LVMS device classes
+
+You can customize the StorageClass for each device class by using the optional storageClassOptions field in the `LVMCluster` custom resource (CR).
+
+Before, Logical Volume Manager Storage (LVMS) automatically created a StorageClass for each device class without allowing modification. If you attempted to manually edit a generated StorageClass, the Operator overwrote your changes during the next reconciliation loop.
+
+The `storageClassOptions` field lets you control four properties of the generated StorageClass:
+
+- `reclaimPolicy`
+
+- `volumeBindingMode`
+
+- `additionalParameters`
+
+- `additionalLabels`
+
+If you omit `storageClassOptions`, LVMS creates the StorageClass with the same defaults as in previous versions. Existing `LVMCluster` configurations are fully compatible with earlier versions.
+
+<div class="note">
+
+No user action is required after upgrading. The `storageClassOptions` field is optional, and default values match the behavior before this feature was introduced.
+
+</div>
+
+## StorageClass options
+
+You can configure custom StorageClass behaviors by defining the `storageClassOptions` field in your device class specification.
+
+If you set an empty configuration (storageClassOptions: {}) or omit the field entirely, the Operator uses the following default settings:
+
+<table>
+<caption>StorageClass Options Reference</caption>
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 37%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Field</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Immutable</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>reclaimPolicy</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>Yes</p></td>
+<td style="text-align: left;"><p>Controls what happens to the PersistentVolume (PV) and its underlying logical volume when the PersistentVolumeClaim (PVC) is deleted.</p>
+<p>Allowed values: <code>Delete</code> (default), <code>Retain</code></p>
+<p>When set to <code>Retain</code>, deleting a PVC does not delete the PV or the underlying logical volume on disk. Data is preserved, useful for data protection scenarios where accidental PVC deletion must not cause data loss. Manual cleanup is required before you can delete the <code>LVMCluster</code>.</p>
+<p>When set to <code>Delete</code>, both the PV and the on-disk logical volume are removed when the PVC is deleted.</p></td>
+<td style="text-align: left;"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">storageClassOptions</span><span class="kw">:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">reclaimPolicy</span><span class="kw">:</span><span class="at"> Retain</span></span></code></pre></div></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>volumeBindingMode</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>Yes</p></td>
+<td style="text-align: left;"><p>Controls when volume binding and dynamic provisioning occur.</p>
+<p>Allowed values: <code>WaitForFirstConsumer</code> (default), <code>Immediate</code></p>
+<p><code>WaitForFirstConsumer</code> delays PV provisioning until a pod that uses the PVC is scheduled, enabling topology-aware scheduling where LVMS creates the PV on the node where the pod will run.</p>
+<p><code>Immediate</code> provisions and binds the PV as soon as the PVC is created, without waiting for a consumer pod. On multi-node clusters, PVs might be provisioned on nodes where the consuming pod cannot run. Use <code>Immediate</code> only on single-node clusters or when node affinity is managed externally.</p></td>
+<td style="text-align: left;"><div class="sourceCode" id="cb2"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">storageClassOptions</span><span class="kw">:</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">volumeBindingMode</span><span class="kw">:</span><span class="at"> Immediate</span></span></code></pre></div></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>additionalParameters</code></p></td>
+<td style="text-align: left;"><p><code>map[string]string</code></p></td>
+<td style="text-align: left;"><p>Yes</p></td>
+<td style="text-align: left;"><p>Adds custom key-value pairs to the <code>StorageClass .parameters</code> map.</p>
+<p>Default: <code>{}</code> (empty). Maximum entries: 16.</p>
+<p>StorageClass parameters are passed to the CSI driver (TopoLVM) during volume provisioning. TopoLVM recognizes only <code>topolvm.io/device-class</code> and <code>csi.storage.k8s.io/fstype</code>. Use <code>additionalParameters</code> for forward-compatibility or for parameters consumed by other Kubernetes components.</p>
+<p>The following keys are managed by LVMS and are rejected at admission:</p>
+<ul>
+<li><p><code>topolvm.io/device-class</code> — automatically set to the device class name</p></li>
+<li><p><code>csi.storage.k8s.io/fstype</code> — automatically set from the <code>fstype</code> field on the device class</p></li>
+</ul>
+<div class="important">
+<p>To change the filesystem type, use the <code>fstype</code> field on the device class directly. Do not use <code>additionalParameters</code>.</p>
+</div></td>
+<td style="text-align: left;"><div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">storageClassOptions</span><span class="kw">:</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">additionalParameters</span><span class="kw">:</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">custom-param-key</span><span class="kw">:</span><span class="at"> custom-param-value</span></span></code></pre></div></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>additionalLabels</code></p></td>
+<td style="text-align: left;"><p><code>map[string]string</code></p></td>
+<td style="text-align: left;"><p>No</p></td>
+<td style="text-align: left;"><p>Adds custom labels to the StorageClass metadata.</p>
+<p>Default: none. Maximum entries: 16.</p>
+<p>Use for organizational tagging, cluster policy integration, or monitoring. When you remove a label from <code>additionalLabels</code>, the operator removes it from the StorageClass during the next reconciliation. Labels added directly by other tools are not affected.</p>
+<p>The following label keys are reserved and cannot be set through <code>additionalLabels</code>:</p>
+<ul>
+<li><p><code>app.kubernetes.io/managed-by</code></p></li>
+<li><p><code>app.kubernetes.io/part-of</code></p></li>
+<li><p><code>app.kubernetes.io/name</code></p></li>
+<li><p><code>app.kubernetes.io/component</code></p></li>
+<li><p>Any key with the prefix <code>owned-by.topolvm.io/</code></p></li>
+</ul></td>
+<td style="text-align: left;"><div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">storageClassOptions</span><span class="kw">:</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">additionalLabels</span><span class="kw">:</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span><span class="at"> production</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">team</span><span class="kw">:</span><span class="at"> storage</span></span></code></pre></div></td>
+</tr>
+</tbody>
+</table>
+
+StorageClass Options Reference
+
+## Updating LVM cluster labels
+
+To organize and categorize your storage resources, you can update, remove, or clear custom storage class labels by patching the `LVMCluster` custom resource. Labels are the only configuration field that you can modify after cluster creation.
+
+1.  Patch the `LVMCluster` resource to update `additionalLabels` by running the following command:
+
+    ``` terminal
+    $ oc -n openshift-lvm-storage patch lvmcluster <name> --type=json \
+      -p '[{"op":"replace","path":"/spec/storage/deviceClasses/0/storageClassOptions/additionalLabels","value":{"environment":"staging"}}]'
+    ```
+
+2.  To remove a specific label, update `additionalLabels` without the label you want to remove. The Operator removes the label from the `StorageClass` during the next reconciliation.
+
+3.  To remove all custom labels, set `additionalLabels` to an empty map `{}`.
+
+    <div class="note">
+
+    The Operator preserves labels that you add directly to the `StorageClass`, for example with `oc label storageclass lvms-vg1 my-label=value`. The Operator prunes only the labels that you manage through the `additionalLabels` field in the `LVMCluster` custom resource (CR) when you remove them from the CR.
+
+    </div>
+
+## Sample LVM cluster configuration with storage class option
+
+Use these examples to configure `storageClassOptions` in your `LVMCluster` custom resource (CR) to meet your specific storage requirements.
+
+<div class="formalpara-title">
+
+**Default StorageClass behavior (no options)**
+
+</div>
+
+``` yaml
+apiVersion: lvm.topolvm.io/v1alpha1
+kind: LVMCluster
+metadata:
+  name: my-lvmcluster
+  namespace: openshift-lvm-storage
+spec:
+  storage:
+    deviceClasses:
+    - name: vg1
+      default: true
+      thinPoolConfig:
+        name: thin-pool-1
+        sizePercent: 90
+        overprovisionRatio: 10
+```
+
+This produces a `StorageClass` with `reclaimPolicy: Delete` and `volumeBindingMode: WaitForFirstConsumer`, which is the same as the behavior before this feature.
+
+<div class="formalpara-title">
+
+**Retain policy for data protection**
+
+</div>
+
+``` yaml
+apiVersion: lvm.topolvm.io/v1alpha1
+kind: LVMCluster
+metadata:
+  name: my-lvmcluster
+  namespace: openshift-lvm-storage
+spec:
+  storage:
+    deviceClasses:
+    - name: vg1
+      default: true
+      thinPoolConfig:
+        name: thin-pool-1
+        sizePercent: 90
+        overprovisionRatio: 10
+      storageClassOptions:
+        reclaimPolicy: Retain
+```
+
+<div class="formalpara-title">
+
+**Immediate binding for pre-provisioning**
+
+</div>
+
+``` yaml
+apiVersion: lvm.topolvm.io/v1alpha1
+kind: LVMCluster
+metadata:
+  name: my-lvmcluster
+  namespace: openshift-lvm-storage
+spec:
+  storage:
+    deviceClasses:
+    - name: vg1
+      default: true
+      thinPoolConfig:
+        name: thin-pool-1
+        sizePercent: 90
+        overprovisionRatio: 10
+      storageClassOptions:
+        volumeBindingMode: Immediate
+```
+
+<div class="formalpara-title">
+
+**All options configured together**
+
+</div>
+
+``` yaml
+apiVersion: lvm.topolvm.io/v1alpha1
+kind: LVMCluster
+metadata:
+  name: my-lvmcluster
+  namespace: openshift-lvm-storage
+spec:
+  storage:
+    deviceClasses:
+    - name: vg1
+      default: true
+      thinPoolConfig:
+        name: thin-pool-1
+        sizePercent: 90
+        overprovisionRatio: 10
+      storageClassOptions:
+        reclaimPolicy: Retain
+        volumeBindingMode: WaitForFirstConsumer
+        additionalParameters:
+          custom-key: custom-value
+        additionalLabels:
+          environment: production
+          team: storage
+```
+
+<div class="formalpara-title">
+
+**Multiple device classes with different options**
+
+</div>
+
+``` yaml
+apiVersion: lvm.topolvm.io/v1alpha1
+kind: LVMCluster
+metadata:
+  name: my-lvmcluster
+  namespace: openshift-lvm-storage
+spec:
+  storage:
+    deviceClasses:
+    - name: vg-fast
+      default: true
+      thinPoolConfig:
+        name: thin-pool-1
+        sizePercent: 90
+        overprovisionRatio: 10
+      deviceSelector:
+        paths:
+        - /dev/nvme0n1
+      storageClassOptions:
+        reclaimPolicy: Delete
+        volumeBindingMode: WaitForFirstConsumer
+        additionalLabels:
+          tier: fast
+    - name: vg-archive
+      thinPoolConfig:
+        name: thin-pool-1
+        sizePercent: 90
+        overprovisionRatio: 10
+      deviceSelector:
+        paths:
+        - /dev/sda
+      storageClassOptions:
+        reclaimPolicy: Retain
+        volumeBindingMode: WaitForFirstConsumer
+        additionalLabels:
+          tier: archive
+```
+
+For a device class named `vg1` with the full configuration, LVMS generates a `StorageClass` named `lvms-vg1` with the following structure:
+
+``` yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: lvms-vg1
+  annotations:
+    description: "Provides RWO and RWOP Filesystem & Block volumes"
+    storageclass.kubernetes.io/is-default-class: "true"
+  labels:
+    environment: production
+    team: storage
+provisioner: topolvm.io
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+parameters:
+  custom-key: custom-value
+  topolvm.io/device-class: vg1
+  csi.storage.k8s.io/fstype: xfs
+```
+
+The `StorageClass` name always follows the convention `lvms-<device_class_name>`.
+
+## Immutable fields of the storage class options
+
+After you create the `LVMCluster`, you cannot change the value of the some of the `storageClassOptions` fields such as `reclaimPolicy`, `volumeBindingMode`, and `additionalParameters`. This mirrors the behavior of Kubernetes StorageClasses, which do not allow changes to these fields after creation.
+
+If you attempt to modify an immutable field, the API server rejects the request:
+
+``` terminal
+Invalid value: "object": reclaimPolicy is immutable once set
+```
+
+There is no way to patch or update immutable fields in place. To change an immutable field, you must delete the `LVMCluster` and recreate it with the new values.
+
+For example, you cannot change the filesystem type through `additionalParameters`. The `csi.storage.k8s.io/fstype` parameter is managed by LVMS and is rejected at admission if set through `additionalParameters`. To use `ext4` instead of the default `xfs`, use the `fstype` field on the device class:
+
+``` yaml
+deviceClasses:
+- name: vg1
+  fstype: ext4
+```
+
+However, the `fstype` field is also immutable after creation.
+
+<div class="note">
+
+The deletion gates require all PVCs and, for the `Retain` policy, all PVs to be removed before the `LVMCluster` can be deleted. After you recreate the `LVMCluster` with the new values, new PVCs use the updated StorageClass configuration.
+
+</div>
+
+## Behaviors not controlled by StorageClass options
+
+Review these behaviors before you delete an LVMCluster. Although these behaviors relate to `storageClassOptions`, the `storageClassOptions` field does not control them.
+
+Volume expansion behavior
+Logical Volume Manager Storage (LVMS) always enables volume expansion by setting `allowVolumeExpansion: true` on generated StorageClasses. You cannot control this setting by using the `storageClassOptions` field. All LVMS volumes support online expansion.
+
+VolumeSnapshotClass management
+The `storageClassOptions` field only affects StorageClasses. When you configure thin provisioning, LVMS generates a `VolumeSnapshotClass` for each device class. This generated class always uses a fixed value `deletionPolicy: Delete`, regardless of the reclaimPolicy that you set in `storageClassOptions`.
+
+Additionally, LVMS does not apply the `additionalParameters` and `additionalLabels` fields to `VolumeSnapshotClasses`. If you need to retain snapshot data, you must manage it separately from the StorageClass reclaim policy.
+
+Default StorageClass annotation behavior
+The default field on a device class controls the `storageclass.kubernetes.io/is-default-class` annotation on the generated StorageClass.
+
+Setting `default: true` does not guarantee that the LVMS StorageClass becomes the cluster default. If another default StorageClass already exists on the cluster, for example, gp3-csi on AWS-based OpenShift Container Platform clusters, LVMS sets the annotation to `false` to prevent many cluster-wide defaults. Because the Operator actively manages this annotation, it reverts any manual, out-of-band changes during the next reconciliation loop.
+
 # Ways to scale up the storage of clusters
 
 OpenShift Container Platform supports additional worker nodes for clusters on bare metal user-provisioned infrastructure. You can scale up the storage of clusters either by adding new worker nodes with available storage or by adding new devices to the existing worker nodes.
@@ -1801,7 +2246,7 @@ LVM Storage adds only the supported devices. For information about unsupported d
 
 </div>
 
-- [Adding worker nodes to single-node OpenShift clusters](../../nodes/nodes/nodes-sno-worker-nodes.xml)
+- [Adding worker nodes to single-node OpenShift clusters](../../nodes/nodes/nodes-sno-worker-nodes.xml#nodes-sno-worker-nodes)
 
 - [Devices not supported by LVM Storage](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#lvms-unsupported-devices_logical-volume-manager-storage)
 
@@ -1866,7 +2311,7 @@ You can scale up the storage capacity of the worker nodes on a cluster by using 
 
 3.  Save the `LVMCluster` CR.
 
-- [About the LVMCluster custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
+- [About the `LVMCluster` custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
 
 - [Devices not supported by LVM Storage](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#lvms-unsupported-devices_logical-volume-manager-storage)
 
@@ -1937,7 +2382,7 @@ You can scale up the storage capacity of the worker nodes on a cluster by using 
 
 8.  Click **Save**.
 
-- [About the LVMCluster custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
+- [About the `LVMCluster` custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
 
 - [Devices not supported by LVM Storage](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#lvms-unsupported-devices_logical-volume-manager-storage)
 
@@ -2017,7 +2462,7 @@ You can scale up the storage capacity of worker nodes on the clusters by using R
 
 - [Red Hat Advanced Cluster Management for Kubernetes: Installing while connected online](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#installing-while-connected-online)
 
-- [About the LVMCluster custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
+- [About the `LVMCluster` custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
 
 - [Devices not supported by LVM Storage](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#lvms-unsupported-devices_logical-volume-manager-storage)
 
@@ -2895,9 +3340,9 @@ If you encounter the `storage class not found` error, check the `LVMCluster` cus
       $ oc logs -l app.kubernetes.io/component=vg-manager -n <namespace>
       ```
 
-- [About the LVMCluster custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
+- [About the `LVMCluster` custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
 
-- [Ways to create an LVMCluster custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-creating-lvmcluster-cr_logical-volume-manager-storage)
+- [Ways to create an `LVMCluster` custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-creating-lvmcluster-cr_logical-volume-manager-storage)
 
 ## Recovering from node failure
 

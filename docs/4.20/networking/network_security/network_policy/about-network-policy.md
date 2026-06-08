@@ -1,6 +1,10 @@
+To restrict traffic between workloads and improve application security, configure `NetworkPolicy` objects for your cluster. Network policies define the allowed ingress and egress connections for selected pods and help isolate applications within namespaces.
+
 As a developer, you can define network policies that restrict traffic to pods in your cluster.
 
 # About network policy
+
+To control traffic between workloads and improve network isolation, configure `NetworkPolicy` objects for your projects. Network policies define the allowed ingress and egress connections for selected pods and help secure applications in your cluster.
 
 By default, all pods in a project are accessible from other pods and network endpoints. To isolate one or more pods in a project, you can create `NetworkPolicy` objects in that project to indicate the allowed incoming connections. Project administrators can create and delete `NetworkPolicy` objects within their own project.
 
@@ -148,7 +152,7 @@ spec:
   - Ingress
 ```
 
-- `policy-group.network.openshift.io/ingress:""` label supports OVN-Kubernetes.
+The `policy-group.network.openshift.io/ingress:""` label supports OVN-Kubernetes.
 
 ## Using the allow-from-hostnetwork network policy
 
@@ -314,13 +318,11 @@ Specifies the name of the namespace where the policy is deployed.
 
 For more details, see "About network policy".
 
-# Next steps
+# Additional resources
 
 - [Creating a network policy](../../../networking/network_security/network_policy/creating-network-policy.xml#creating-network-policy)
 
-- Optional: [Defining a default network policy for projects](../../../networking/network_security/network_policy/default-network-policy.xml#default-network-policy)
-
-# Additional resources
+- [Defining a default network policy for projects](../../../networking/network_security/network_policy/default-network-policy.xml#default-network-policy)
 
 - [Projects and namespaces](../../../authentication/using-rbac.xml#rbac-projects-namespaces_using-rbac)
 

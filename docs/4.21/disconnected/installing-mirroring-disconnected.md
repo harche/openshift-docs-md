@@ -239,9 +239,7 @@ Do not use this image registry credentials file as the pull secret when you inst
 
         The `<directory_name>` is either `~/.docker` or `$XDG_RUNTIME_DIR/containers`, and `<auth_file>` is either `config.json` or `auth.json`
 
-<!-- -->
-
-1.  Generate the base64-encoded user name and password or token for your mirror registry by running the following command:
+4.  Generate the base64-encoded user name and password or token for your mirror registry by running the following command:
 
     ``` terminal
     $ echo -n '<user_name>:<password>' | base64 -w0
@@ -259,7 +257,7 @@ Do not use this image registry credentials file as the pull secret when you inst
     BGVtbYk3ZHAtqXs=
     ```
 
-2.  Edit the JSON file and add a section that describes your registry to it:
+5.  Edit the JSON file and add a section that describes your registry to it:
 
     ``` json
       "auths": {

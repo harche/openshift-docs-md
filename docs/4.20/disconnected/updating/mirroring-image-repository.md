@@ -243,25 +243,25 @@ Do not use this image registry credentials file as the pull secret when you inst
     }
     ```
 
-    1.  Optional: If using the oc-mirror plugin, save the file as either `~/.docker/config.json` or `$XDG_RUNTIME_DIR/containers/auth.json`:
+3.  Optional: If using the oc-mirror plugin, save the file as either `~/.docker/config.json` or `$XDG_RUNTIME_DIR/containers/auth.json`:
 
-        - If the `.docker` or `$XDG_RUNTIME_DIR/containers` directories do not exist, create one by entering the following command:
+    - If the `.docker` or `$XDG_RUNTIME_DIR/containers` directories do not exist, create one by entering the following command:
 
-          ``` terminal
-          $ mkdir -p <directory_name>
-          ```
+      ``` terminal
+      $ mkdir -p <directory_name>
+      ```
 
-          Where `<directory_name>` is either `~/.docker` or `$XDG_RUNTIME_DIR/containers`.
+      Where `<directory_name>` is either `~/.docker` or `$XDG_RUNTIME_DIR/containers`.
 
-        - Copy the pull secret to the appropriate directory by entering the following command:
+    - Copy the pull secret to the appropriate directory by entering the following command:
 
-          ``` terminal
-          $ cp <path>/<pull_secret_file_in_json> <directory_name>/<auth_file>
-          ```
+      ``` terminal
+      $ cp <path>/<pull_secret_file_in_json> <directory_name>/<auth_file>
+      ```
 
-          Where `<directory_name>` is either `~/.docker` or `$XDG_RUNTIME_DIR/containers`, and `<auth_file>` is either `config.json` or `auth.json`.
+      Where `<directory_name>` is either `~/.docker` or `$XDG_RUNTIME_DIR/containers`, and `<auth_file>` is either `config.json` or `auth.json`.
 
-3.  Generate the base64-encoded user name and password or token for your mirror registry by running the following command:
+4.  Generate the base64-encoded user name and password or token for your mirror registry by running the following command:
 
     ``` terminal
     $ echo -n '<user_name>:<password>' | base64 -w0
@@ -279,7 +279,7 @@ Do not use this image registry credentials file as the pull secret when you inst
     BGVtbYk3ZHAtqXs=
     ```
 
-4.  Edit the JSON file and add a section that describes your registry to it:
+5.  Edit the JSON file and add a section that describes your registry to it:
 
     ``` json
       "auths": {

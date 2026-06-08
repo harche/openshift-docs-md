@@ -1,3 +1,5 @@
+Before you use the egress router pod, you must understand how the pod works. Doing so can prevent situations such as creating large numbers of egress router pods that exceed the limits of your network hardware.
+
 # About an egress router pod
 
 The OpenShift Container Platform egress router pod redirects traffic to a specified remote server from a private source IP address that is not used for any other purpose. An egress router pod can send network traffic to servers that are set up to allow access only from specific IP addresses.
@@ -10,7 +12,7 @@ The egress router pod is not intended for every outgoing connection. Creating la
 
 <div class="important">
 
-The egress router image is not compatible with Amazon AWS, Azure Cloud, or any other cloud platform that does not support layer 2 manipulations due to their incompatibility with macvlan traffic.
+The egress router image is not compatible with Amazon Web Services (AWS), Microsoft Azure, or any other cloud platform that does not support layer 2 manipulations due to their incompatibility with macvlan traffic.
 
 </div>
 
@@ -49,7 +51,7 @@ If you delete an egress router custom resource, the Operator deletes the two obj
 An egress router pod adds an additional IP address and MAC address to the primary network interface of the node. As a result, you might need to configure your hypervisor or cloud provider to allow the additional address.
 
 Red Hat OpenStack Platform (RHOSP)
-If you deploy OpenShift Container Platform on RHOSP, you must allow traffic from the IP and MAC addresses of the egress router pod on your OpenStack environment. If you do not allow the traffic, then [communication will fail](https://access.redhat.com/solutions/2803331):
+If you deploy OpenShift Container Platform on RHOSP, you must allow traffic from the IP and MAC addresses of the egress router pod on your OpenStack environment. If you do not allow the traffic, see "OpenShift on OpenStack: Egress router not working" Knowledgebase article in the *Additional resources* section.
 
 ``` terminal
 $ openstack port set --allowed-address \
@@ -57,15 +59,15 @@ $ openstack port set --allowed-address \
 ```
 
 VMware vSphere
-If you are using VMware vSphere, see the [VMware documentation for securing vSphere standard switches](https://docs.vmware.com/en/VMware-vSphere/6.0/com.vmware.vsphere.security.doc/GUID-3507432E-AFEA-4B6B-B404-17A020575358.html). View and change VMware vSphere default settings by selecting the host virtual switch from the vSphere Web Client.
+If you are using VMware vSphere, see the VMware documentation for securing vSphere standard switches. View and change VMware vSphere default settings by selecting the host virtual switch from the vSphere Web Client. Specifically, ensure that you enable the following components:
 
-Specifically, ensure that the following are enabled:
+- MAC address changes
 
-- [MAC Address Changes](https://docs.vmware.com/en/VMware-vSphere/6.0/com.vmware.vsphere.security.doc/GUID-942BD3AA-731B-4A05-8196-66F2B4BF1ACB.html)
+- Forged transits
 
-- [Forged Transits](https://docs.vmware.com/en/VMware-vSphere/6.0/com.vmware.vsphere.security.doc/GUID-7DC6486F-5400-44DF-8A62-6273798A2F80.html)
+- Promiscuous Mode Operation
 
-- [Promiscuous Mode Operation](https://docs.vmware.com/en/VMware-vSphere/6.0/com.vmware.vsphere.security.doc/GUID-92F3AB1F-B4C5-4F25-A010-8820D7250350.html)
+For more information on these components, see the *Additional resources* section.
 
 ## Failover configuration
 
@@ -97,3 +99,13 @@ spec:
 # Additional resources
 
 - [Deploying an egress router in redirection mode](../../networking/ovn_kubernetes_network_provider/deploying-egress-router-ovn-redirection.xml#deploying-egress-router-ovn-redirection)
+
+- [OpenShift on OpenStack: Egress router not working](https://access.redhat.com/solutions/2803331)
+
+- [MAC Address Changes](https://docs.vmware.com/en/VMware-vSphere/6.0/com.vmware.vsphere.security.doc/GUID-942BD3AA-731B-4A05-8196-66F2B4BF1ACB.html)
+
+- [Forged Transits](https://docs.vmware.com/en/VMware-vSphere/6.0/com.vmware.vsphere.security.doc/GUID-7DC6486F-5400-44DF-8A62-6273798A2F80.html)
+
+- [Promiscuous Mode Operation](https://docs.vmware.com/en/VMware-vSphere/6.0/com.vmware.vsphere.security.doc/GUID-92F3AB1F-B4C5-4F25-A010-8820D7250350.html)
+
+- [VMware documentation for securing vSphere standard switches](https://docs.vmware.com/en/VMware-vSphere/6.0/com.vmware.vsphere.security.doc/GUID-3507432E-AFEA-4B6B-B404-17A020575358.html)

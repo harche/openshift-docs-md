@@ -1,10 +1,12 @@
+To control workload distribution, you can use pod affinity and anti-affinity rules to specify whether pods must be scheduled close to or separate from other pods.
+
 Affinity is a property of pods that controls the nodes on which they prefer to be scheduled. Anti-affinity is a property of pods that prevents a pod from being scheduled on a node.
 
 In OpenShift Container Platform, *pod affinity* and *pod anti-affinity* allow you to constrain which nodes your pod is eligible to be scheduled on based on the key-value labels on other pods.
 
 # Understanding pod affinity
 
-*Pod affinity* and *pod anti-affinity* allow you to constrain which nodes your pod is eligible to be scheduled on based on the key/value labels on other pods.
+You can use *pod affinity* and *pod anti-affinity* to constrain which nodes your pod is eligible to be scheduled on based on the key/value labels on other pods.
 
 - Pod affinity can tell the scheduler to locate a new pod on the same node as other pods if the label selector on the new pod matches the label on the current pod.
 
@@ -71,13 +73,22 @@ spec:
         drop: [ALL]
 ```
 
-- Stanza to configure pod affinity.
+where:
 
-- Defines a required rule.
+`spec.affinity.podAffinity`
+Specifies a stanza to configure pod affinity.
 
-- The key and value (label) that must be matched to apply the rule.
+`spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution`
+Specifies the parameters for a *required* rule. Configure the following `labelSelector.matchExpressions.key` parameters:
 
-- The operator represents the relationship between the label on the existing pod and the set of values in the `matchExpression` parameters in the specification for the new pod. Can be `In`, `NotIn`, `Exists`, or `DoesNotExist`.
+`key`
+Specifies the key of the key/value pair (label) that must be matched to apply the rule.
+
+`values`
+Specifies the value of the key/value pair (label) that must be matched to apply the rule.
+
+`operator`
+Specifies the relationship between the label on the existing pod and the set of values in the `matchExpression` parameters in the specification for the new pod. Can be `In`, `NotIn`, `Exists`, or `DoesNotExist`.
 
 <div class="formalpara-title">
 
@@ -116,15 +127,25 @@ spec:
         drop: [ALL]
 ```
 
-- Stanza to configure pod anti-affinity.
+where:
 
-- Defines a preferred rule.
+`spec.affinity.podAffinity`
+Specifies a stanza to configure pod affinity.
 
-- Specifies a weight for a preferred rule. The node with the highest weight is preferred.
+`spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution`
+Specifies the parameters for a *preferred* rule. Configure a weight and the following `podAffinityTerm.labelSelector.matchExpressions` parameters:
 
-- Description of the pod label that determines when the anti-affinity rule applies. Specify a key and value for the label.
+`weight`
+Specifies the weight for a preferred rule. The node with the highest weight is preferred.
 
-- The operator represents the relationship between the label on the existing pod and the set of values in the `matchExpression` parameters in the specification for the new pod. Can be `In`, `NotIn`, `Exists`, or `DoesNotExist`.
+`key`
+Specifies the key of the key/value pair (label) that must be matched to apply the rule.
+
+`values`
+Specifies the value of the key/value pair (label) that must be matched to apply the rule.
+
+`operator`
+Specifies the relationship between the label on the existing pod and the set of values in the `matchExpression` parameters in the specification for the new pod. Can be `In`, `NotIn`, `Exists`, or `DoesNotExist`.
 
 <div class="note">
 
@@ -134,7 +155,7 @@ If labels on a node change at runtime such that the affinity rules on a pod are 
 
 # Configuring a pod affinity rule
 
-The following steps demonstrate a simple two-pod configuration that creates pod with a label and a pod that uses affinity to allow scheduling with that pod.
+You can use the following example pod specifications to create a pod with a label and a pod that uses affinity to allow scheduling with that pod.
 
 <div class="note">
 
@@ -197,15 +218,27 @@ You cannot add an affinity directly to a scheduled pod.
         # ...
         ```
 
-        - Adds a pod affinity.
+        where:
 
-        - Configures the `requiredDuringSchedulingIgnoredDuringExecution` parameter or the `preferredDuringSchedulingIgnoredDuringExecution` parameter.
+        `spec.affinity.podAffinity`
+        Specifies a stanza to configure pod affinity.
 
-        - Specifies the `key` and `values` that must be met. If you want the new pod to be scheduled with the other pod, use the same `key` and `values` parameters as the label on the first pod.
+        `spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution`
+        Specifies the parameters for a *required* rule. Alternatively, you can configure a *preferred* rule by using the `preferredDuringSchedulingIgnoredDuringExecution` paarmeter.
 
-        - Specifies an `operator`. The operator can be `In`, `NotIn`, `Exists`, or `DoesNotExist`. For example, use the operator `In` to require the label to be in the node.
+        Configure the following `labelSelector.matchExpressions` parameters. If you want the new pod to be scheduled with the other pod, use the same `key` and `values` parameters as the label on the first pod.
 
-        - Specify a `topologyKey`, which is a prepopulated [Kubernetes label](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#interlude-built-in-node-labels) that the system uses to denote such a topology domain.
+        `key`
+        Specifies the key of the key/value pair (label) that must be matched to apply the rule.
+
+        `value`
+        Specifies the value of the key/value pair (label) that must be matched to apply the rule.
+
+        `operator`
+        Specifies the relationship between the label on the existing pod and the set of values in the `matchExpression` parameters in the specification for the new pod. Can be `In`, `NotIn`, `Exists`, or `DoesNotExist`.
+
+        `topologyKey`
+        Specifies a prepopulated Kubernetes label that the system uses to denote such a topology domain.
 
     2.  Create the pod.
 
@@ -214,6 +247,8 @@ You cannot add an affinity directly to a scheduled pod.
         ```
 
 # Configuring a pod anti-affinity rule
+
+To specify a preference to prevent a pod from being scheduling with another pod, you can create a pod with a label and a pod that uses an anti-affinity preferred rule.
 
 The following steps demonstrate a simple two-pod configuration that creates pod with a label and a pod that uses an anti-affinity preferred rule to attempt to prevent scheduling with that pod.
 
@@ -281,17 +316,30 @@ You cannot add an affinity directly to a scheduled pod.
         # ...
         ```
 
-        - Adds a pod anti-affinity.
+        where:
 
-        - Configures the `requiredDuringSchedulingIgnoredDuringExecution` parameter or the `preferredDuringSchedulingIgnoredDuringExecution` parameter.
+        `spec.affinity.podAffinity`
+        Specifies a stanza to configure pod affinity.
 
-        - For a preferred rule, specifies a weight for the node, 1-100. The node that with highest weight is preferred.
+        `spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution`
+        Specifies the parameters for a *preferred* rule. Alternatively, you can configure a *required* rule by using the `requiredDuringSchedulingIgnoredDuringExecution` parameter.
 
-        - Specifies the `key` and `values` that must be met. If you want the new pod to not be scheduled with the other pod, use the same `key` and `values` parameters as the label on the first pod.
+        Configure a weight and the following `podAffinityTerm.labelSelector.matchExpressions` parameters. If you want the new pod to be scheduled with the other pod, use the same `key` and `values` parameters as the label on the first pod.
 
-        - Specifies an `operator`. The operator can be `In`, `NotIn`, `Exists`, or `DoesNotExist`. For example, use the operator `In` to require the label to be in the node.
+        `weight`
+        For a preferred rule, specifies a weight for the node, as a number 1-100. The node with highest weight is preferred.
 
-        - Specifies a `topologyKey`, which is a prepopulated [Kubernetes label](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#interlude-built-in-node-labels) that the system uses to denote such a topology domain.
+        `key`
+        Specifies the key of the key/value pair (label) that must be matched to apply the rule.
+
+        `value`
+        Specifies the value of the key/value pair (label) that must be matched to apply the rule.
+
+        `operator`
+        Specifies the relationship between the label on the existing pod and the set of values in the `matchExpression` parameters in the specification for the new pod. Can be `In`, `NotIn`, `Exists`, or `DoesNotExist`.
+
+        `topologyKey`
+        Specifies a prepopulated Kubernetes label that the system uses to denote such a topology domain.
 
     2.  Create the pod.
 
@@ -301,7 +349,7 @@ You cannot add an affinity directly to a scheduled pod.
 
 # Sample pod affinity and anti-affinity rules
 
-The following examples demonstrate pod affinity and pod anti-affinity.
+Use these configuration examples to understand how matching labels, non-matching labels, and specific label selectors affect how the cluster schedules pods onto nodes.
 
 ## Pod Affinity
 
@@ -508,9 +556,9 @@ The following example demonstrates pod affinity for pods without matching labels
 
 # Using pod affinity and anti-affinity to control where an Operator is installed
 
-By default, when you install an Operator, OpenShift Container Platform installs the Operator pod to one of your worker nodes randomly. However, there might be situations where you want that pod scheduled on a specific node or set of nodes.
+You can use affinities to schedule an Operator pod on a specific node or set of nodes.
 
-The following examples describe situations where you might want to schedule an Operator pod to a specific node or set of nodes:
+By default, when you install an Operator, OpenShift Container Platform installs the Operator pod on one of your compute nodes randomly. However, the following examples describe situations where you might want to schedule an Operator pod to a specific node or set of nodes:
 
 - If an Operator requires a particular platform, such as `amd64` or `arm64`
 
@@ -524,11 +572,7 @@ You can control where an Operator pod is installed by adding a pod affinity or a
 
 The following example shows how to use pod anti-affinity to prevent the installation the Custom Metrics Autoscaler Operator from any node that has pods with a specific label:
 
-<div class="formalpara-title">
-
-**Pod affinity example that places the Operator pod on one or more specific nodes**
-
-</div>
+The following pod affinity example places the Operator pod on one or more specific nodes:
 
 ``` yaml
 apiVersion: operators.coreos.com/v1alpha1
@@ -554,13 +598,9 @@ spec:
 #...
 ```
 
-- A pod affinity that places the Operator’s pod on a node that has pods with the `app=test` label.
+This pod affinity places the Operator’s pod on a node that has pods with the `app=test` label.
 
-<div class="formalpara-title">
-
-**Pod anti-affinity example that prevents the Operator pod from one or more specific nodes**
-
-</div>
+The following pod anti-affinity example prevents the Operator pod from one or more specific nodes:
 
 ``` yaml
 apiVersion: operators.coreos.com/v1alpha1
@@ -586,15 +626,9 @@ spec:
 #...
 ```
 
-- A pod anti-affinity that prevents the Operator’s pod from being scheduled on a node that has pods with the `cpu=high` label.
+This pod anti-affinity prevents the Operator’s pod from being scheduled on a node that has pods with the `cpu=high` label.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To control the placement of an Operator pod, complete the following steps:
+To control the placement of an Operator pod, complete the following steps.
 
 1.  Install the Operator as usual.
 
@@ -627,7 +661,10 @@ To control the placement of an Operator pod, complete the following steps:
     #...
     ```
 
-    - Add a `podAffinity` or `podAntiAffinity`.
+    where:
+
+    `spec.config.affinity`
+    Specifies a `podAffinity` or `podAntiAffinity`.
 
 - To ensure that the pod is deployed on the specific node, run the following command:
 
@@ -645,3 +682,7 @@ To control the placement of an Operator pod, complete the following steps:
   NAME                                                  READY   STATUS    RESTARTS   AGE   IP            NODE                           NOMINATED NODE   READINESS GATES
   custom-metrics-autoscaler-operator-5dcc45d656-bhshg   1/1     Running   0          50s   10.131.0.20   ip-10-0-185-229.ec2.internal   <none>           <none>
   ```
+
+# Additional resources
+
+- [Node label (Kubernetes documentation)](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#built-in-node-labels)

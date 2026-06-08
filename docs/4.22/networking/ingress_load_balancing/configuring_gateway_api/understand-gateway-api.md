@@ -52,6 +52,18 @@ If you are updating your cluster from a previous OpenShift Container Platform ve
 
 </div>
 
+## Gateway API CRDs for `gateway.networking.x-k8s.io`
+
+In previous versions of OpenShift Container Platform, cluster security policies blocked the deployment of the Gateway API CRD for `gateway.networking.x-k8s.io`. Starting in OpenShift Container Platform 4.22, this restriction is removed, and you can deploy that CRD.
+
+<div class="note">
+
+Experimental Gateway API CRDs in the `gateway.networking.k8s.io` group remain restricted.
+
+You can install the `gateway.networking.x-k8s.io` CRD and related objects on the cluster because they are no longer blocked. The built-in Gateway API implementation managed by the Ingress Operator does not reconcile those objects in OpenShift Container Platform. Use a compatible third-party Gateway implementation if you need those APIs reconciled.
+
+</div>
+
 # Gateway API deployment topologies
 
 To effectively organize and secure your routing infrastructure, you must choose an appropriate deployment topology for your cluster. Gateway API is designed to accommodate two topologies: shared gateways or dedicated gateways. You can choose a topology based on its own advantages and different security implications.

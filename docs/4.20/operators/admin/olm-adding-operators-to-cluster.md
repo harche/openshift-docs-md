@@ -622,9 +622,9 @@ Using an installed Operator, users can create an application in the project, whi
 
 # Controlling where an Operator is installed
 
-By default, when you install an Operator, OpenShift Container Platform installs the Operator pod to one of your worker nodes randomly. However, there might be situations where you want that pod scheduled on a specific node or set of nodes.
+You can use affinities to schedule an Operator pod on a specific node or set of nodes.
 
-The following examples describe situations where you might want to schedule an Operator pod to a specific node or set of nodes:
+By default, when you install an Operator, OpenShift Container Platform installs the Operator pod on one of your compute nodes randomly. However, the following examples describe situations where you might want to schedule an Operator pod to a specific node or set of nodes:
 
 - If an Operator requires a particular platform, such as `amd64` or `arm64`
 
@@ -638,11 +638,7 @@ You can control where an Operator pod is installed by adding node affinity, pod 
 
 The following examples show how to use node affinity or pod anti-affinity to install an instance of the Custom Metrics Autoscaler Operator to a specific node in the cluster:
 
-<div class="formalpara-title">
-
-**Node affinity example that places the Operator pod on a specific node**
-
-</div>
+The following node affinity example places the Operator pod on a specific node:
 
 ``` yaml
 apiVersion: operators.coreos.com/v1alpha1
@@ -667,13 +663,9 @@ spec:
 #...
 ```
 
-- A node affinity that requires the Operator’s pod to be scheduled on a node named `ip-10-0-163-94.us-west-2.compute.internal`.
+This node affinity requires the Operator’s pod be scheduled on a node named `ip-10-0-163-94.us-west-2.compute.internal`.
 
-<div class="formalpara-title">
-
-**Node affinity example that places the Operator pod on a node with a specific platform**
-
-</div>
+The following node affinity example places the Operator pod on a node with a specific platform:
 
 ``` yaml
 apiVersion: operators.coreos.com/v1alpha1
@@ -702,13 +694,9 @@ spec:
 #...
 ```
 
-- A node affinity that requires the Operator’s pod to be scheduled on a node with the `kubernetes.io/arch=arm64` and `kubernetes.io/os=linux` labels.
+This node affinity requires the Operator’s pod be scheduled on a node with the `kubernetes.io/arch=arm64` and `kubernetes.io/os=linux` labels.
 
-<div class="formalpara-title">
-
-**Pod affinity example that places the Operator pod on one or more specific nodes**
-
-</div>
+The following pod affinity example places the Operator pod on one or more specific nodes:
 
 ``` yaml
 apiVersion: operators.coreos.com/v1alpha1
@@ -734,13 +722,9 @@ spec:
 #...
 ```
 
-- A pod affinity that places the Operator’s pod on a node that has pods with the `app=test` label.
+This pod affinity places the Operator’s pod on a node that has pods with the `app=test` label.
 
-<div class="formalpara-title">
-
-**Pod anti-affinity example that prevents the Operator pod from one or more specific nodes**
-
-</div>
+The following pod anti-affinity example prevents the Operator pod from one or more specific nodes:
 
 ``` yaml
 apiVersion: operators.coreos.com/v1alpha1
@@ -766,15 +750,9 @@ spec:
 #...
 ```
 
-- A pod anti-affinity that prevents the Operator’s pod from being scheduled on a node that has pods with the `cpu=high` label.
+This pod anti-affinity prevents the Operator’s pod from being scheduled on a node that has pods with the `cpu=high` label.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To control the placement of an Operator pod, complete the following steps:
+To control the placement of an Operator pod, complete the following steps.
 
 1.  Install the Operator as usual.
 
@@ -805,7 +783,10 @@ To control the placement of an Operator pod, complete the following steps:
     #...
     ```
 
-    - Add a `nodeAffinity`, `podAffinity`, or `podAntiAffinity`. See the Additional resources section that follows for information about creating the affinity.
+    where:
+
+    `spec.config.affinity`
+    Specifies a `nodeAffinity`, `podAffinity`, or `podAntiAffinity`. See the Additional resources section that follows for information about creating the affinity.
 
 - To ensure that the pod is deployed on the specific node, run the following command:
 

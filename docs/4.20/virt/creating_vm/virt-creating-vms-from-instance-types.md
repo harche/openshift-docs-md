@@ -416,9 +416,7 @@ You can create a VM from a list of available bootable volumes. You can add Linux
 
 After the VM is created, you can monitor the status on the **VirtualMachine details** page.
 
-- [Configuring a downward metrics device](../../virt/monitoring/virt-exposing-downward-metrics.xml#virt-configuring-downward-metrics_virt-exposing-downward-metrics)
-
-# Changing the instance type for a VM
+# Change the instance type for a VM
 
 As a cluster administrator or VM owner, you might want to change the instance type for an existing VM for the following reasons:
 
@@ -508,3 +506,7 @@ To change the instance type of a VM, change the `name` field in the VM spec. Thi
     "threads": 1
   }
   ```
+
+# Additional resources
+
+- [Configuring a downward metrics device](../../virt/monitoring/virt-exposing-downward-metrics.xml#virt-configuring-downward-metrics_virt-exposing-downward-metrics)

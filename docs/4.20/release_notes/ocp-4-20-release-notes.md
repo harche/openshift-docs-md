@@ -1838,6 +1838,50 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHSA-2026:21703 - OpenShift Container Platform 4.17.24 fixed issues and security update
+
+Issued: 3 June 2026
+
+OpenShift Container Platform release 4.17.24 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:21703](https://access.redhat.com/errata/RHSA-2026:21703) advisory. The RPM packages that are included in the update are provided by the [RHSA-2026:21701](https://access.redhat.com/errata/RHSA-2026:21701) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.20.24 --pullspecs
+```
+
+### Enhancements
+
+- With this release, the Insights Operator now collects the `opentelemetrycollectors.opentelemetry.io` custom resource (CR) to improve data retrieval efficiency and system performance.
+
+  To maintain security and prevent the collection of sensitive information, the Insights Operator observes the following constraints:
+
+  - `Resource Limit`: A maximum of five `OpenTelemetry Collector` CRs are collected from the cluster.
+
+  - `Data Masking`: Only the service subsection of the `spec.config` field is retained. The receivers, exporters, and other pipeline configuration details are omitted.
+
+  These improvements allow OpenShift Container Platform to better analyze the efficiency of the data gathering process and provide more precise environment insights.
+
+  ([OCPBUGS-86235](https://issues.redhat.com/browse/OCPBUGS-86235))
+
+### Fixed issues
+
+- Before this update, in agent-based installations (ABI) on Fibre Channel (FC) multipath systems, when `rootDeviceHints.wwn` was used, the disk selection logic picked a raw FC path instead of the multipath device. As a consequence, the image was written to a raw FC path (for example, `/dev/sdb`), and when multipathd reclaimed the device, mounting the partition failed with ENODEV: No such device, causing installation failure. With this release, the disk selection logic was updated to prefer multipath devices over raw FC paths, matching the behavior in the ZTP/BMAC controller path. As a result, agent-based installations on FC multipath systems using `rootDeviceHints.wwn` now correctly select the multipath device and complete successfully. ([OCPBUGS-81880](https://redhat.atlassian.net/browse/OCPBUGS-81880))
+
+- Before this update, a synchronization failure occurring after a disk-to-mirror operation caused the `ClusterCatalog`, `CatalogSource`, and `UpdateService` resources to generate an empty status field. This lack of data created a significant gap in observability, preventing administrators from verifying resource health and causing downstream automation to stall as it waited for valid status conditions. With this release, the reconciliation logic has been corrected to ensure status metadata is properly captured and applied during the mirroring process. ([OCPBUGS-84064](https://issues.redhat.com/browse/OCPBUGS-84064))
+
+- Before this update, control plane upgrades could not proceed in hosted control planes clusters with zero compute nodes. As a consequence, control plane upgrades failed, preventing application of critical security patches. With this release, the control plane upgrade with zero compute nodes issue is fixed in the Cluster Network Operator (CNO). As a result, this update applies critical updates and prevents outdated open virtual network (OVN) control plane images. ([OCPBUGS-84176](https://redhat.atlassian.net/browse/OCPBUGS-84176))
+
+- Before this update, a new cluster configured with a custom service account issuer incorrectly used the default issuer for the first 24 hours. As a consequence, application deployments failed during this 24-hour window because the applications could not obtain valid security tokens. With this release, the custom service account issuer is applied immediately upon cluster creation. As a result, service account tokens now generate correctly, allowing applications to deploy successfully without delay. ([OCPBUGS-85564](https://redhat.atlassian.net/browse/OCPBUGS-85564))
+
+- Before this update, when Prometheus was configured to scrape targets using client Transport Layer Security (TLS) certificates without a certificate authority (CA), rotating the client certificates caused Prometheus to crash with a `SIGSEGV` panic. Kubernetes restarted the pod, but Prometheus was down during that time. With this update, Prometheus correctly handles client certificate rotation when no CA is configured, preventing the crash and ensuring continuous metric collection. ([OCPBUGS-86251](https://redhat.atlassian.net/browse/OCPBUGS-86251))
+
+### Updating
+
+To update an OpenShift Container Platform 4.20 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHSA-2026:17468 - OpenShift Container Platform 4.17.23 fixed issues and security update
 
 Issued: 20 May 2026

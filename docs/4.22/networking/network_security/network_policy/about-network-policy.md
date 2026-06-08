@@ -1,148 +1,28 @@
+To restrict traffic between workloads and improve application security, configure `NetworkPolicy` objects for your cluster. Network policies define the allowed ingress and egress connections for selected pods and help isolate applications within namespaces.
+
 As a developer, you can define network policies that restrict traffic to pods in your cluster.
 
 # About network policy
 
+To control traffic between workloads and improve network isolation, configure `NetworkPolicy` objects for your projects. Network policies define the allowed ingress and egress connections for selected pods and help secure applications in your cluster.
+
 By default, all pods in a project are accessible from other pods and network endpoints. To isolate one or more pods in a project, you can create `NetworkPolicy` objects in that project to indicate the allowed incoming connections. Project administrators can create and delete `NetworkPolicy` objects within their own project.
 
-<div class="important">
+By default, all pods in a project are accessible from any network endpoint.
 
-From OpenShift Container Platform 4.22, OpenShift Container Platform now includes `NetworkPolicy` objects in some of its own namespaces by default. This inclusion improves overall security and better protects control plane components. Do not modify the `NetworkPolicy` objects that OpenShift Container Platform includes in its own namespaces by default. To check the namespaces that include the objects by default, you can run the following command:
+If a pod is matched by selectors in one or more `NetworkPolicy` objects, then the pod accepts only connections that are allowed by at least one of those `NetworkPolicy` objects. A pod that is not selected by any `NetworkPolicy` objects remains fully accessible.
 
-``` terminal
-$ oc get networkpolicies --all-namespaces
-```
-
-The OpenShift Container Platform 4.22 release does not include these objects in all OpenShift Container Platform namespaces; later OpenShift Container Platform releases might include the objects in additional namespaces.
-
-</div>
-
-If a pod is matched by selectors in one or more `NetworkPolicy` objects, then the pod will accept only connections that are allowed by at least one of those `NetworkPolicy` objects. A pod that is not selected by any `NetworkPolicy` objects is fully accessible.
-
-A network policy applies to only the Transmission Control Protocol (TCP), User Datagram Protocol (UDP), Internet Control Message Protocol (ICMP), and Stream Control Transmission Protocol (SCTP) protocols. Other protocols are not affected.
-
-<div class="warning">
-
-- A network policy does not apply to the host network namespace. Pods with host networking enabled are unaffected by network policy rules. However, pods connecting to the host-networked pods might be affected by the network policy rules.
-
-- Using the `namespaceSelector` field without the `podSelector` field set to `{}` will not include `hostNetwork` pods. You must use the `podSelector` set to `{}` with the `namespaceSelector` field in order to target `hostNetwork` pods when creating network policies.
-
-- Network policies cannot block traffic from localhost or from their resident nodes.
-
-- When creating a network policy, do not apply the `network.openshift.io/policy-group: ingress` label to custom namespace or projects. This label is Operator-managed and reserved for OpenShift Container Platform networking functions. It should not be altered on system-created namespaces.
-
-  Using this label can result in intermittent network connectivity drops, unintended application of system `NetworkPolicies` resource, or configuration drift as the operator attempts to reconcile the state. For custom traffic grouping, always use unique, user-defined labels as shown in the following procedure.
-
-</div>
-
-The following example `NetworkPolicy` objects demonstrate supporting different scenarios:
-
-- Deny all traffic:
-
-  To make a project deny by default, add a `NetworkPolicy` object that matches all pods but accepts no traffic:
-
-  ``` yaml
-  kind: NetworkPolicy
-  apiVersion: networking.k8s.io/v1
-  metadata:
-    name: deny-by-default
-  spec:
-    podSelector: {}
-    ingress: []
-  ```
-
-- Only allow connections from the OpenShift Container Platform Ingress Controller:
-
-  To make a project allow only connections from the OpenShift Container Platform Ingress Controller, add the following `NetworkPolicy` object.
-
-  ``` yaml
-  apiVersion: networking.k8s.io/v1
-  kind: NetworkPolicy
-  metadata:
-    name: allow-from-openshift-ingress
-  spec:
-    ingress:
-    - from:
-      - namespaceSelector:
-          matchLabels:
-            policy-group.network.openshift.io/ingress: ""
-    podSelector: {}
-    policyTypes:
-    - Ingress
-  ```
-
-- Only accept connections from pods within a project:
-
-  <div class="important">
-
-  To allow ingress connections from `hostNetwork` pods in the same namespace, you need to apply the `allow-from-hostnetwork` policy together with the `allow-same-namespace` policy.
-
-  </div>
-
-  To make pods accept connections from other pods in the same project, but reject all other connections from pods in other projects, add the following `NetworkPolicy` object:
-
-  ``` yaml
-  kind: NetworkPolicy
-  apiVersion: networking.k8s.io/v1
-  metadata:
-    name: allow-same-namespace
-  spec:
-    podSelector: {}
-    ingress:
-    - from:
-      - podSelector: {}
-  ```
-
-- Only allow HTTP and HTTPS traffic based on pod labels:
-
-  To enable only HTTP and HTTPS access to the pods with a specific label (`role=frontend` in following example), add a `NetworkPolicy` object similar to the following:
-
-  ``` yaml
-  kind: NetworkPolicy
-  apiVersion: networking.k8s.io/v1
-  metadata:
-    name: allow-http-and-https
-  spec:
-    podSelector:
-      matchLabels:
-        role: frontend
-    ingress:
-    - ports:
-      - protocol: TCP
-        port: 80
-      - protocol: TCP
-        port: 443
-  ```
-
-- Accept connections by using both namespace and pod selectors:
-
-  To match network traffic by combining namespace and pod selectors, you can use a `NetworkPolicy` object similar to the following:
-
-  ``` yaml
-  kind: NetworkPolicy
-  apiVersion: networking.k8s.io/v1
-  metadata:
-    name: allow-pod-and-namespace-both
-  spec:
-    podSelector:
-      matchLabels:
-        name: test-pods
-    ingress:
-      - from:
-        - namespaceSelector:
-            matchLabels:
-              project: project_name
-          podSelector:
-            matchLabels:
-              name: test-pods
-  ```
+## Policy additivity
 
 `NetworkPolicy` objects are additive, which means you can combine multiple `NetworkPolicy` objects together to satisfy complex network requirements.
 
-For example, for the `NetworkPolicy` objects defined in previous samples, you can define both `allow-same-namespace` and `allow-http-and-https` policies within the same project. Thus allowing the pods with the label `role=frontend`, to accept any connection allowed by each policy. That is, connections on any port from pods in the same namespace, and connections on ports `80` and `443` from pods in any namespace.
+For example, if you define both an `allow-same-namespace` policy and an `allow-http-and-https` policy within the same project, pods with the `role=frontend` label accept any connection allowed by either policy.
 
-## Using the allow-from-router network policy
+This means the pods accept:
 
-Use the following `NetworkPolicy` to allow external traffic regardless of the router configuration:
+- Connections on any port from pods in the same namespace.
+
+- Connections on ports `80` and `443` from pods in any namespace.
 
 ``` yaml
 apiVersion: networking.k8s.io/v1
@@ -160,27 +40,31 @@ spec:
   - Ingress
 ```
 
-- `policy-group.network.openshift.io/ingress:""` label supports OVN-Kubernetes.
+The `policy-group.network.openshift.io/ingress:""` label supports OVN-Kubernetes.
 
-## Using the allow-from-hostnetwork network policy
+To reduce the cluster attack surface and ensure predictable network behavior, OpenShift Container Platform enforces least-privilege network policies on critical networking components.
 
-Add the following `allow-from-hostnetwork` `NetworkPolicy` object to direct traffic from the host network pods.
+The operators that manage cluster DNS and cluster Ingress automatically install and maintain default "deny-all" `NetworkPolicy` objects in their respective namespaces.
 
-``` yaml
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: allow-from-hostnetwork
-spec:
-  ingress:
-  - from:
-    - namespaceSelector:
-        matchLabels:
-          policy-group.network.openshift.io/host-network: ""
-  podSelector: {}
-  policyTypes:
-  - Ingress
-```
+Traffic is controlled using targeted "allow" policies in the following namespaces:
+
+- DNS component namespaces (`openshift-dns` and `openshift-dns-operator`):
+
+  - Egress is limited to the API server and required DNS ports.
+
+  - Ingress is restricted to essential DNS traffic and metrics.
+
+- Ingress component namespaces (`openshift-ingress` and `openshift-ingress-operator`):
+
+  - Egress is limited to the API server, DNS ports, and route endpoints.
+
+  - Ingress is restricted to HTTP/HTTPS traffic and metrics.
+
+<div class="important">
+
+Do not run unmanaged or custom pods in these namespaces. Because these namespaces operate on a deny-by-default model, network traffic for any unmanaged containers running in these namespaces will be blocked.
+
+</div>
 
 # Optimizations for network policy with OVN-Kubernetes network plugin
 
@@ -326,13 +210,11 @@ Specifies the name of the namespace where the policy is deployed.
 
 For more details, see "About network policy".
 
-# Next steps
+# Additional resources
 
 - [Creating a network policy](../../../networking/network_security/network_policy/creating-network-policy.xml#creating-network-policy)
 
-- Optional: [Defining a default network policy for projects](../../../networking/network_security/network_policy/default-network-policy.xml#default-network-policy)
-
-# Additional resources
+- [Defining a default network policy for projects](../../../networking/network_security/network_policy/default-network-policy.xml#default-network-policy)
 
 - [Projects and namespaces](../../../authentication/using-rbac.xml#rbac-projects-namespaces_using-rbac)
 

@@ -908,10 +908,10 @@ Type
 
 ## Schema
 
-| Property   | Type                                                                                                                                   | Description |
-|------------|----------------------------------------------------------------------------------------------------------------------------------------|-------------|
-| `owned`    | [`array (APIServiceDescription)`](../objects/index.xml#com-github-operator-framework-api-pkg-operators-v1alpha1-APIServiceDescription) |             |
-| `required` | [`array (APIServiceDescription)`](../objects/index.xml#com-github-operator-framework-api-pkg-operators-v1alpha1-APIServiceDescription) |             |
+| Property   | Type                            | Description |
+|------------|---------------------------------|-------------|
+| `owned`    | `array (APIServiceDescription)` |             |
+| `required` | `array (APIServiceDescription)` |             |
 
 # com.github.operator-framework.api.pkg.operators.v1alpha1.CustomResourceDefinitions schema
 
@@ -925,10 +925,10 @@ Type
 
 ## Schema
 
-| Property   | Type                                                                                                                     | Description |
-|------------|--------------------------------------------------------------------------------------------------------------------------|-------------|
-| `owned`    | [`array (CRDDescription)`](../objects/index.xml#com-github-operator-framework-api-pkg-operators-v1alpha1-CRDDescription) |             |
-| `required` | [`array (CRDDescription)`](../objects/index.xml#com-github-operator-framework-api-pkg-operators-v1alpha1-CRDDescription) |             |
+| Property   | Type                     | Description |
+|------------|--------------------------|-------------|
+| `owned`    | `array (CRDDescription)` |             |
+| `required` | `array (CRDDescription)` |             |
 
 # com.github.operator-framework.api.pkg.operators.v1alpha1.InstallMode schema
 
@@ -1422,12 +1422,12 @@ Type
 
 ## Schema
 
-| Property      | Type                                                                     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-|---------------|--------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `defaultMode` | `integer`                                                                | defaultMode is optional: mode bits used to set permissions on created files by default. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. Defaults to 0644. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set.                      |
-| `items`       | [`array (KeyToPath)`](../objects/index.xml#io-k8s-api-core-v1-KeyToPath) | items if unspecified, each key-value pair in the Data field of the referenced ConfigMap will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the ConfigMap, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'. |
-| `name`        | `string`                                                                 | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names>                                                                                                                                                                                                             |
-| `optional`    | `boolean`                                                                | optional specify whether the ConfigMap or its keys must be defined                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| Property      | Type                | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+|---------------|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `defaultMode` | `integer`           | defaultMode is optional: mode bits used to set permissions on created files by default. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. Defaults to 0644. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set.                      |
+| `items`       | `array (KeyToPath)` | items if unspecified, each key-value pair in the Data field of the referenced ConfigMap will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the ConfigMap, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'. |
+| `name`        | `string`            | Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names>                                                                                                                                                                                                             |
+| `optional`    | `boolean`           | optional specify whether the ConfigMap or its keys must be defined                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
 # io.k8s.api.core.v1.CSIVolumeSource schema
 
@@ -1442,13 +1442,13 @@ Required
 
 ## Schema
 
-| Property               | Type                                                                                   | Description                                                                                                                                                                                                                                                                                                                                       |
-|------------------------|----------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `driver`               | `string`                                                                               | driver is the name of the CSI driver that handles this volume. Consult with your admin for the correct name as registered in the cluster.                                                                                                                                                                                                         |
-| `fsType`               | `string`                                                                               | fsType to mount. Ex. "ext4", "xfs", "ntfs". If not provided, the empty value is passed to the associated CSI driver which will determine the default filesystem to apply.                                                                                                                                                                         |
-| `nodePublishSecretRef` | [`LocalObjectReference`](../objects/index.xml#io-k8s-api-core-v1-LocalObjectReference) | nodePublishSecretRef is a reference to the secret object containing sensitive information to pass to the CSI driver to complete the CSI NodePublishVolume and NodeUnpublishVolume calls. This field is optional, and may be empty if no secret is required. If the secret object contains more than one secret, all secret references are passed. |
-| `readOnly`             | `boolean`                                                                              | readOnly specifies a read-only configuration for the volume. Defaults to false (read/write).                                                                                                                                                                                                                                                      |
-| `volumeAttributes`     | `object (string)`                                                                      | volumeAttributes stores driver-specific properties that are passed to the CSI driver. Consult your driver’s documentation for supported values.                                                                                                                                                                                                   |
+| Property               | Type                   | Description                                                                                                                                                                                                                                                                                                                                       |
+|------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `driver`               | `string`               | driver is the name of the CSI driver that handles this volume. Consult with your admin for the correct name as registered in the cluster.                                                                                                                                                                                                         |
+| `fsType`               | `string`               | fsType to mount. Ex. "ext4", "xfs", "ntfs". If not provided, the empty value is passed to the associated CSI driver which will determine the default filesystem to apply.                                                                                                                                                                         |
+| `nodePublishSecretRef` | `LocalObjectReference` | nodePublishSecretRef is a reference to the secret object containing sensitive information to pass to the CSI driver to complete the CSI NodePublishVolume and NodeUnpublishVolume calls. This field is optional, and may be empty if no secret is required. If the secret object contains more than one secret, all secret references are passed. |
+| `readOnly`             | `boolean`              | readOnly specifies a read-only configuration for the volume. Defaults to false (read/write).                                                                                                                                                                                                                                                      |
+| `volumeAttributes`     | `object (string)`      | volumeAttributes stores driver-specific properties that are passed to the CSI driver. Consult your driver’s documentation for supported values.                                                                                                                                                                                                   |
 
 # io.k8s.api.core.v1.EndpointsList schema
 
@@ -1483,11 +1483,11 @@ Required
 
 ## Schema
 
-| Property    | Type                                                                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-|-------------|------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `name`      | `string`                                                               | Name of the environment variable. May consist of any printable ASCII characters except '='.                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| `value`     | `string`                                                               | Variable references \$(VAR_NAME) are expanded using the previously defined environment variables in the container and any service environment variables. If a variable cannot be resolved, the reference in the input string will be unchanged. Double are reduced to a single \$, which allows for escaping the \$(VAR_NAME) syntax: i.e. "(VAR_NAME)" will produce the string literal "\$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Defaults to "". |
-| `valueFrom` | [`EnvVarSource`](../objects/index.xml#io-k8s-api-core-v1-EnvVarSource) | Source for the environment variable’s value. Cannot be used if value is not empty.                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| Property    | Type           | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|-------------|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`      | `string`       | Name of the environment variable. May consist of any printable ASCII characters except '='.                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `value`     | `string`       | Variable references \$(VAR_NAME) are expanded using the previously defined environment variables in the container and any service environment variables. If a variable cannot be resolved, the reference in the input string will be unchanged. Double are reduced to a single \$, which allows for escaping the \$(VAR_NAME) syntax: i.e. "(VAR_NAME)" will produce the string literal "\$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Defaults to "". |
+| `valueFrom` | `EnvVarSource` | Source for the environment variable’s value. Cannot be used if value is not empty.                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 
 # io.k8s.api.core.v1.EventList schema
 
@@ -1634,9 +1634,9 @@ Required
 
 ## Schema
 
-| Property            | Type                                                                                   | Description                                                  |
-|---------------------|----------------------------------------------------------------------------------------|--------------------------------------------------------------|
-| `nodeSelectorTerms` | [`array (NodeSelectorTerm)`](../objects/index.xml#io-k8s-api-core-v1-NodeSelectorTerm) | Required. A list of node selector terms. The terms are ORed. |
+| Property            | Type                       | Description                                                  |
+|---------------------|----------------------------|--------------------------------------------------------------|
+| `nodeSelectorTerms` | `array (NodeSelectorTerm)` | Required. A list of node selector terms. The terms are ORed. |
 
 # io.k8s.api.core.v1.ObjectReference schema
 
@@ -2000,17 +2000,17 @@ Type
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>awsElasticBlockStore</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-AWSElasticBlockStoreVolumeSource"><code>AWSElasticBlockStoreVolumeSource</code></a></p></td>
+<td style="text-align: left;"><p><code>AWSElasticBlockStoreVolumeSource</code></p></td>
 <td style="text-align: left;"><p>awsElasticBlockStore represents an AWS Disk resource that is attached to a kubelet’s host machine and then exposed to the pod. Deprecated: AWSElasticBlockStore is deprecated. All operations for the in-tree awsElasticBlockStore type are redirected to the ebs.csi.aws.com CSI driver. More info: <a href="https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore">https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore</a></p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>azureDisk</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-AzureDiskVolumeSource"><code>AzureDiskVolumeSource</code></a></p></td>
+<td style="text-align: left;"><p><code>AzureDiskVolumeSource</code></p></td>
 <td style="text-align: left;"><p>azureDisk represents an Azure Data Disk mount on the host and bind mount to the pod. Deprecated: AzureDisk is deprecated. All operations for the in-tree azureDisk type are redirected to the disk.csi.azure.com CSI driver.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>azureFile</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-AzureFilePersistentVolumeSource"><code>AzureFilePersistentVolumeSource</code></a></p></td>
+<td style="text-align: left;"><p><code>AzureFilePersistentVolumeSource</code></p></td>
 <td style="text-align: left;"><p>azureFile represents an Azure File Service mount on the host and bind mount to the pod. Deprecated: AzureFile is deprecated. All operations for the in-tree azureFile type are redirected to the file.csi.azure.com CSI driver.</p></td>
 </tr>
 <tr class="odd">
@@ -2020,12 +2020,12 @@ Type
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>cephfs</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-CephFSPersistentVolumeSource"><code>CephFSPersistentVolumeSource</code></a></p></td>
+<td style="text-align: left;"><p><code>CephFSPersistentVolumeSource</code></p></td>
 <td style="text-align: left;"><p>cephFS represents a Ceph FS mount on the host that shares a pod’s lifetime. Deprecated: CephFS is deprecated and the in-tree cephfs type is no longer supported.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>cinder</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-CinderPersistentVolumeSource"><code>CinderPersistentVolumeSource</code></a></p></td>
+<td style="text-align: left;"><p><code>CinderPersistentVolumeSource</code></p></td>
 <td style="text-align: left;"><p>cinder represents a cinder volume attached and mounted on kubelets host machine. Deprecated: Cinder is deprecated. All operations for the in-tree cinder type are redirected to the cinder.csi.openstack.org CSI driver. More info: <a href="https://examples.k8s.io/mysql-cinder-pd/README.md">https://examples.k8s.io/mysql-cinder-pd/README.md</a></p></td>
 </tr>
 <tr class="even">
@@ -2035,47 +2035,47 @@ Type
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>csi</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-CSIPersistentVolumeSource"><code>CSIPersistentVolumeSource</code></a></p></td>
+<td style="text-align: left;"><p><code>CSIPersistentVolumeSource</code></p></td>
 <td style="text-align: left;"><p>csi represents storage that is handled by an external CSI driver.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>fc</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-FCVolumeSource"><code>FCVolumeSource</code></a></p></td>
+<td style="text-align: left;"><p><code>FCVolumeSource</code></p></td>
 <td style="text-align: left;"><p>fc represents a Fibre Channel resource that is attached to a kubelet’s host machine and then exposed to the pod.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>flexVolume</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-FlexPersistentVolumeSource"><code>FlexPersistentVolumeSource</code></a></p></td>
+<td style="text-align: left;"><p><code>FlexPersistentVolumeSource</code></p></td>
 <td style="text-align: left;"><p>flexVolume represents a generic volume resource that is provisioned/attached using an exec based plugin. Deprecated: FlexVolume is deprecated. Consider using a CSIDriver instead.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>flocker</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-FlockerVolumeSource"><code>FlockerVolumeSource</code></a></p></td>
+<td style="text-align: left;"><p><code>FlockerVolumeSource</code></p></td>
 <td style="text-align: left;"><p>flocker represents a Flocker volume attached to a kubelet’s host machine and exposed to the pod for its usage. This depends on the Flocker control service being running. Deprecated: Flocker is deprecated and the in-tree flocker type is no longer supported.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>gcePersistentDisk</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-GCEPersistentDiskVolumeSource"><code>GCEPersistentDiskVolumeSource</code></a></p></td>
+<td style="text-align: left;"><p><code>GCEPersistentDiskVolumeSource</code></p></td>
 <td style="text-align: left;"><p>gcePersistentDisk represents a GCE Disk resource that is attached to a kubelet’s host machine and then exposed to the pod. Provisioned by an admin. Deprecated: GCEPersistentDisk is deprecated. All operations for the in-tree gcePersistentDisk type are redirected to the pd.csi.storage.gke.io CSI driver. More info: <a href="https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk">https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk</a></p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>glusterfs</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-GlusterfsPersistentVolumeSource"><code>GlusterfsPersistentVolumeSource</code></a></p></td>
+<td style="text-align: left;"><p><code>GlusterfsPersistentVolumeSource</code></p></td>
 <td style="text-align: left;"><p>glusterfs represents a Glusterfs volume that is attached to a host and exposed to the pod. Provisioned by an admin. Deprecated: Glusterfs is deprecated and the in-tree glusterfs type is no longer supported. More info: <a href="https://examples.k8s.io/volumes/glusterfs/README.md">https://examples.k8s.io/volumes/glusterfs/README.md</a></p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>hostPath</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-HostPathVolumeSource"><code>HostPathVolumeSource</code></a></p></td>
+<td style="text-align: left;"><p><code>HostPathVolumeSource</code></p></td>
 <td style="text-align: left;"><p>hostPath represents a directory on the host. Provisioned by a developer or tester. This is useful for single-node development and testing only! On-host storage is not supported in any way and WILL NOT WORK in a multi-node cluster. More info: <a href="https://kubernetes.io/docs/concepts/storage/volumes#hostpath">https://kubernetes.io/docs/concepts/storage/volumes#hostpath</a></p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>iscsi</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-ISCSIPersistentVolumeSource"><code>ISCSIPersistentVolumeSource</code></a></p></td>
+<td style="text-align: left;"><p><code>ISCSIPersistentVolumeSource</code></p></td>
 <td style="text-align: left;"><p>iscsi represents an ISCSI Disk resource that is attached to a kubelet’s host machine and then exposed to the pod. Provisioned by an admin.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>local</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-LocalVolumeSource"><code>LocalVolumeSource</code></a></p></td>
+<td style="text-align: left;"><p><code>LocalVolumeSource</code></p></td>
 <td style="text-align: left;"><p>local represents directly-attached storage with node affinity</p></td>
 </tr>
 <tr class="even">
@@ -2085,12 +2085,12 @@ Type
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>nfs</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-NFSVolumeSource"><code>NFSVolumeSource</code></a></p></td>
+<td style="text-align: left;"><p><code>NFSVolumeSource</code></p></td>
 <td style="text-align: left;"><p>nfs represents an NFS mount on the host. Provisioned by an admin. More info: <a href="https://kubernetes.io/docs/concepts/storage/volumes#nfs">https://kubernetes.io/docs/concepts/storage/volumes#nfs</a></p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>nodeAffinity</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-VolumeNodeAffinity"><code>VolumeNodeAffinity</code></a></p></td>
+<td style="text-align: left;"><p><code>VolumeNodeAffinity</code></p></td>
 <td style="text-align: left;"><p>nodeAffinity defines constraints that limit what nodes this volume can be accessed from. This field influences the scheduling of pods that use this volume. This field is mutable if MutablePVNodeAffinity feature gate is enabled.</p></td>
 </tr>
 <tr class="odd">
@@ -2101,27 +2101,27 @@ Type
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>photonPersistentDisk</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-PhotonPersistentDiskVolumeSource"><code>PhotonPersistentDiskVolumeSource</code></a></p></td>
+<td style="text-align: left;"><p><code>PhotonPersistentDiskVolumeSource</code></p></td>
 <td style="text-align: left;"><p>photonPersistentDisk represents a PhotonController persistent disk attached and mounted on kubelets host machine. Deprecated: PhotonPersistentDisk is deprecated and the in-tree photonPersistentDisk type is no longer supported.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>portworxVolume</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-PortworxVolumeSource"><code>PortworxVolumeSource</code></a></p></td>
+<td style="text-align: left;"><p><code>PortworxVolumeSource</code></p></td>
 <td style="text-align: left;"><p>portworxVolume represents a portworx volume attached and mounted on kubelets host machine. Deprecated: PortworxVolume is deprecated. All operations for the in-tree portworxVolume type are redirected to the pxd.portworx.com CSI driver when the CSIMigrationPortworx feature-gate is on.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>quobyte</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-QuobyteVolumeSource"><code>QuobyteVolumeSource</code></a></p></td>
+<td style="text-align: left;"><p><code>QuobyteVolumeSource</code></p></td>
 <td style="text-align: left;"><p>quobyte represents a Quobyte mount on the host that shares a pod’s lifetime. Deprecated: Quobyte is deprecated and the in-tree quobyte type is no longer supported.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>rbd</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-RBDPersistentVolumeSource"><code>RBDPersistentVolumeSource</code></a></p></td>
+<td style="text-align: left;"><p><code>RBDPersistentVolumeSource</code></p></td>
 <td style="text-align: left;"><p>rbd represents a Rados Block Device mount on the host that shares a pod’s lifetime. Deprecated: RBD is deprecated and the in-tree rbd type is no longer supported. More info: <a href="https://examples.k8s.io/volumes/rbd/README.md">https://examples.k8s.io/volumes/rbd/README.md</a></p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>scaleIO</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-ScaleIOPersistentVolumeSource"><code>ScaleIOPersistentVolumeSource</code></a></p></td>
+<td style="text-align: left;"><p><code>ScaleIOPersistentVolumeSource</code></p></td>
 <td style="text-align: left;"><p>scaleIO represents a ScaleIO persistent volume attached and mounted on Kubernetes nodes. Deprecated: ScaleIO is deprecated and the in-tree scaleIO type is no longer supported.</p></td>
 </tr>
 <tr class="odd">
@@ -2131,7 +2131,7 @@ Type
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>storageos</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-StorageOSPersistentVolumeSource"><code>StorageOSPersistentVolumeSource</code></a></p></td>
+<td style="text-align: left;"><p><code>StorageOSPersistentVolumeSource</code></p></td>
 <td style="text-align: left;"><p>storageOS represents a StorageOS volume that is attached to the kubelet’s host machine and mounted into the pod. Deprecated: StorageOS is deprecated and the in-tree storageos type is no longer supported. More info: <a href="https://examples.k8s.io/volumes/storageos/README.md">https://examples.k8s.io/volumes/storageos/README.md</a></p></td>
 </tr>
 <tr class="odd">
@@ -2147,7 +2147,7 @@ Type
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>vsphereVolume</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-VsphereVirtualDiskVolumeSource"><code>VsphereVirtualDiskVolumeSource</code></a></p></td>
+<td style="text-align: left;"><p><code>VsphereVirtualDiskVolumeSource</code></p></td>
 <td style="text-align: left;"><p>vsphereVolume represents a vSphere volume attached and mounted on kubelets host machine. Deprecated: VsphereVolume is deprecated. All operations for the in-tree vsphereVolume type are redirected to the csi.vsphere.vmware.com CSI driver.</p></td>
 </tr>
 </tbody>
@@ -2206,7 +2206,7 @@ Type
 | Property   | Type                                                                                 | Description                                                                                                                                                        |
 |------------|--------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `metadata` | [`ObjectMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ObjectMeta) | Standard object’s metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata>                              |
-| `spec`     | [`PodSpec`](../objects/index.xml#io-k8s-api-core-v1-PodSpec)                         | Specification of the desired behavior of the pod. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status> |
+| `spec`     | `PodSpec`                                                                            | Specification of the desired behavior of the pod. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status> |
 
 # io.k8s.api.core.v1.ReplicationControllerList schema
 
@@ -2261,7 +2261,7 @@ Type
 | Property        | Type                                                                                      | Description                                                                                                                                                                                                                                                                             |
 |-----------------|-------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `hard`          | [`object (Quantity)`](../objects/index.xml#io-k8s-apimachinery-pkg-api-resource-Quantity) | hard is the set of desired hard limits for each named resource. More info: <https://kubernetes.io/docs/concepts/policy/resource-quotas/>                                                                                                                                                |
-| `scopeSelector` | [`ScopeSelector`](../objects/index.xml#io-k8s-api-core-v1-ScopeSelector)                  | scopeSelector is also a collection of filters like scopes that must match each object tracked by a quota but expressed using ScopeSelectorOperator in combination with possible values. For a resource to match, both scopes AND scopeSelector (if specified in spec), must be matched. |
+| `scopeSelector` | `ScopeSelector`                                                                           | scopeSelector is also a collection of filters like scopes that must match each object tracked by a quota but expressed using ScopeSelectorOperator in combination with possible values. For a resource to match, both scopes AND scopeSelector (if specified in spec), must be matched. |
 | `scopes`        | `array (string)`                                                                          | A collection of filters that must match each object tracked by a quota. If not specified, the quota matches all objects.                                                                                                                                                                |
 
 # io.k8s.api.core.v1.ResourceQuotaStatus schema
@@ -2305,7 +2305,7 @@ Type
 <tbody>
 <tr class="odd">
 <td style="text-align: left;"><p><code>claims</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-api-core-v1-ResourceClaim"><code>array (ResourceClaim)</code></a></p></td>
+<td style="text-align: left;"><p><code>array (ResourceClaim)</code></p></td>
 <td style="text-align: left;"><p>Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.</p>
 <p>This field depends on the DynamicResourceAllocation feature gate.</p>
 <p>This field is immutable. It can only be set for containers.</p></td>
@@ -2375,12 +2375,12 @@ Type
 
 ## Schema
 
-| Property      | Type                                                                     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|---------------|--------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `defaultMode` | `integer`                                                                | defaultMode is Optional: mode bits used to set permissions on created files by default. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. Defaults to 0644. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set.                |
-| `items`       | [`array (KeyToPath)`](../objects/index.xml#io-k8s-api-core-v1-KeyToPath) | items If unspecified, each key-value pair in the Data field of the referenced Secret will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the Secret, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'. |
-| `optional`    | `boolean`                                                                | optional field specify whether the Secret or its keys must be defined                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `secretName`  | `string`                                                                 | secretName is the name of the secret in the pod’s namespace to use. More info: <https://kubernetes.io/docs/concepts/storage/volumes#secret>                                                                                                                                                                                                                                                                                                                                                        |
+| Property      | Type                | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+|---------------|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `defaultMode` | `integer`           | defaultMode is Optional: mode bits used to set permissions on created files by default. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. Defaults to 0644. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set.                |
+| `items`       | `array (KeyToPath)` | items If unspecified, each key-value pair in the Data field of the referenced Secret will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the Secret, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'. |
+| `optional`    | `boolean`           | optional field specify whether the Secret or its keys must be defined                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `secretName`  | `string`            | secretName is the name of the secret in the pod’s namespace to use. More info: <https://kubernetes.io/docs/concepts/storage/volumes#secret>                                                                                                                                                                                                                                                                                                                                                        |
 
 # io.k8s.api.core.v1.ServiceAccountList schema
 
@@ -2486,9 +2486,9 @@ Type
 
 ## Schema
 
-| Property                | Type                                                                                                                   | Description                                         |
-|-------------------------|------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------|
-| `matchLabelExpressions` | [`array (TopologySelectorLabelRequirement)`](../objects/index.xml#io-k8s-api-core-v1-TopologySelectorLabelRequirement) | A list of topology selector requirements by labels. |
+| Property                | Type                                       | Description                                         |
+|-------------------------|--------------------------------------------|-----------------------------------------------------|
+| `matchLabelExpressions` | `array (TopologySelectorLabelRequirement)` | A list of topology selector requirements by labels. |
 
 # io.k8s.api.core.v1.TypedLocalObjectReference schema
 
@@ -2741,9 +2741,9 @@ Type
 
 ## Schema
 
-| Property               | Type                                                                                               | Description                                                                                                                                                                                  |
-|------------------------|----------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `clusterRoleSelectors` | [`array (LabelSelector)`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-LabelSelector) | ClusterRoleSelectors holds a list of selectors which will be used to find ClusterRoles and create the rules. If any of the selectors match, then the ClusterRole’s permissions will be added |
+| Property               | Type                    | Description                                                                                                                                                                                  |
+|------------------------|-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `clusterRoleSelectors` | `array (LabelSelector)` | ClusterRoleSelectors holds a list of selectors which will be used to find ClusterRoles and create the rules. If any of the selectors match, then the ClusterRole’s permissions will be added |
 
 # io.k8s.api.rbac.v1.ClusterRoleBindingList schema
 
@@ -3101,12 +3101,12 @@ Type
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>additionalItems</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apiextensions-apiserver-pkg-apis-apiextensions-v1-JSONSchemaPropsOrBool">``</a></p></td>
+<td style="text-align: left;"><p>``</p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>additionalProperties</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apiextensions-apiserver-pkg-apis-apiextensions-v1-JSONSchemaPropsOrBool">``</a></p></td>
+<td style="text-align: left;"><p>``</p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
@@ -3121,7 +3121,7 @@ Type
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>default</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apiextensions-apiserver-pkg-apis-apiextensions-v1-JSON"><code>JSON</code></a></p></td>
+<td style="text-align: left;"><p><code>JSON</code></p></td>
 <td style="text-align: left;"><p>default is a default value for undefined object fields. Defaulting is a beta feature under the CustomResourceDefaulting feature gate. Defaulting requires spec.preserveUnknownFields to be false.</p></td>
 </tr>
 <tr class="even">
@@ -3131,7 +3131,7 @@ Type
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>dependencies</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apiextensions-apiserver-pkg-apis-apiextensions-v1-JSONSchemaPropsOrStringArray"><code>object (undefined)</code></a></p></td>
+<td style="text-align: left;"><p><code>object (undefined)</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
@@ -3141,12 +3141,12 @@ Type
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>enum</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apiextensions-apiserver-pkg-apis-apiextensions-v1-JSON"><code>array (JSON)</code></a></p></td>
+<td style="text-align: left;"><p><code>array (JSON)</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>example</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apiextensions-apiserver-pkg-apis-apiextensions-v1-JSON"><code>JSON</code></a></p></td>
+<td style="text-align: left;"><p><code>JSON</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
@@ -3161,7 +3161,7 @@ Type
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>externalDocs</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apiextensions-apiserver-pkg-apis-apiextensions-v1-ExternalDocumentation"><code>ExternalDocumentation</code></a></p></td>
+<td style="text-align: left;"><p><code>ExternalDocumentation</code></p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
@@ -3177,7 +3177,7 @@ Type
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>items</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apiextensions-apiserver-pkg-apis-apiextensions-v1-JSONSchemaPropsOrArray">``</a></p></td>
+<td style="text-align: left;"><p>``</p></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
@@ -3312,7 +3312,7 @@ Type
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>x-kubernetes-validations</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apiextensions-apiserver-pkg-apis-apiextensions-v1-ValidationRule"><code>array (ValidationRule)</code></a></p></td>
+<td style="text-align: left;"><p><code>array (ValidationRule)</code></p></td>
 <td style="text-align: left;"><p>x-kubernetes-validations describes a list of validation rules written in the CEL expression language.</p></td>
 </tr>
 </tbody>
@@ -3402,16 +3402,16 @@ Type
 
 ## Schema
 
-| Property                                           | Type                                                                                       | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-|----------------------------------------------------|--------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `apiVersion`                                       | `string`                                                                                   | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `dryRun`                                           | `array (string)`                                                                           | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `gracePeriodSeconds`                               | `integer`                                                                                  | The duration in seconds before the object should be deleted. Value must be non-negative integer. The value zero indicates delete immediately. If this value is nil, the default grace period for the specified type will be used. Defaults to a per object value if not specified. zero means delete immediately.                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| `ignoreStoreReadErrorWithClusterBreakingPotential` | `boolean`                                                                                  | if set to true, it will trigger an unsafe deletion of the resource in case the normal deletion flow fails with a corrupt object error. A resource is considered corrupt if it can not be retrieved from the underlying storage successfully because of a) its data can not be transformed e.g. decryption failure, or b) it fails to decode into an object. NOTE: unsafe deletion ignores finalizer constraints, skips precondition checks, and removes the object from the storage. WARNING: This may potentially break the cluster if the workload associated with the resource being unsafe-deleted relies on normal deletion flow. Use only if you REALLY know what you are doing. The default value is false, and the user must opt in to enable it |
-| `kind`                                             | `string`                                                                                   | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds>                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `orphanDependents`                                 | `boolean`                                                                                  | Deprecated: please use the PropagationPolicy, this field will be deprecated in 1.7. Should the dependent objects be orphaned. If true/false, the "orphan" finalizer will be added to/removed from the object’s finalizers list. Either this field or PropagationPolicy may be set, but not both.                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| `preconditions`                                    | [`Preconditions`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-Preconditions) | Must be fulfilled before a deletion is carried out. If not possible, a 409 Conflict status will be returned.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `propagationPolicy`                                | `string`                                                                                   | Whether and how garbage collection will be performed. Either this field or OrphanDependents may be set, but not both. The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy. Acceptable values are: 'Orphan' - orphan the dependents; 'Background' - allow the garbage collector to delete the dependents in the background; 'Foreground' - a cascading policy that deletes all dependents in the foreground.                                                                                                                                                                                                                                                                  |
+| Property                                           | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+|----------------------------------------------------|------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion`                                       | `string`         | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `dryRun`                                           | `array (string)` | When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `gracePeriodSeconds`                               | `integer`        | The duration in seconds before the object should be deleted. Value must be non-negative integer. The value zero indicates delete immediately. If this value is nil, the default grace period for the specified type will be used. Defaults to a per object value if not specified. zero means delete immediately.                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `ignoreStoreReadErrorWithClusterBreakingPotential` | `boolean`        | if set to true, it will trigger an unsafe deletion of the resource in case the normal deletion flow fails with a corrupt object error. A resource is considered corrupt if it can not be retrieved from the underlying storage successfully because of a) its data can not be transformed e.g. decryption failure, or b) it fails to decode into an object. NOTE: unsafe deletion ignores finalizer constraints, skips precondition checks, and removes the object from the storage. WARNING: This may potentially break the cluster if the workload associated with the resource being unsafe-deleted relies on normal deletion flow. Use only if you REALLY know what you are doing. The default value is false, and the user must opt in to enable it |
+| `kind`                                             | `string`         | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds>                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `orphanDependents`                                 | `boolean`        | Deprecated: please use the PropagationPolicy, this field will be deprecated in 1.7. Should the dependent objects be orphaned. If true/false, the "orphan" finalizer will be added to/removed from the object’s finalizers list. Either this field or PropagationPolicy may be set, but not both.                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `preconditions`                                    | `Preconditions`  | Must be fulfilled before a deletion is carried out. If not possible, a 409 Conflict status will be returned.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `propagationPolicy`                                | `string`         | Whether and how garbage collection will be performed. Either this field or OrphanDependents may be set, but not both. The default policy is decided by the existing finalizer set in the metadata.finalizers and the resource-specific default policy. Acceptable values are: 'Orphan' - orphan the dependents; 'Background' - allow the garbage collector to delete the dependents in the background; 'Foreground' - a cascading policy that deletes all dependents in the foreground.                                                                                                                                                                                                                                                                  |
 
 # io.k8s.apimachinery.pkg.apis.meta.v1.Duration schema
 
@@ -3596,7 +3596,7 @@ Type
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>managedFields</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ManagedFieldsEntry"><code>array (ManagedFieldsEntry)</code></a></p></td>
+<td style="text-align: left;"><p><code>array (ManagedFieldsEntry)</code></p></td>
 <td style="text-align: left;"><p>ManagedFields maps workflow-id and version to the set of fields that are managed by that workflow. This is mostly for internal housekeeping, and users typically shouldn’t need to set or understand this field. A workflow can be the user’s name, a controller’s name, or the name of a specific apply path like "ci-cd". The set of fields is always in the version that the workflow used when modifying the object.</p></td>
 </tr>
 <tr class="even">
@@ -3612,7 +3612,7 @@ Type
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>ownerReferences</code></p></td>
-<td style="text-align: left;"><p><a href="../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-OwnerReference"><code>array (OwnerReference)</code></a></p></td>
+<td style="text-align: left;"><p><code>array (OwnerReference)</code></p></td>
 <td style="text-align: left;"><p>List of objects depended by this object. If ALL objects in the list have been deleted, this object will be garbage collected. If this object is managed by a controller, then an entry in this list will point to this controller, with the controller field set to true. There cannot be more than one managing controller.</p></td>
 </tr>
 <tr class="odd">
@@ -3645,16 +3645,16 @@ Type
 
 ## Schema
 
-| Property     | Type                                                                                       | Description                                                                                                                                                                                                                                                                                          |
-|--------------|--------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `apiVersion` | `string`                                                                                   | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
-| `code`       | `integer`                                                                                  | Suggested HTTP return code for this status, 0 if not set.                                                                                                                                                                                                                                            |
-| `details`    | [`StatusDetails`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-StatusDetails) | Extended data associated with the reason. Each reason may define its own extended details. This field is optional and the data returned is not guaranteed to conform to any schema except that defined by the reason type.                                                                           |
-| `kind`       | `string`                                                                                   | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `message`    | `string`                                                                                   | A human-readable description of the status of this operation.                                                                                                                                                                                                                                        |
-| `metadata`   | [`ListMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ListMeta)           | Standard list metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds>                                                                                                                                                                 |
-| `reason`     | `string`                                                                                   | A machine-readable description of why this operation is in the "Failure" status. If this value is empty there is no information available. A Reason clarifies an HTTP status code but does not override it.                                                                                          |
-| `status`     | `string`                                                                                   | Status of the operation. One of: "Success" or "Failure". More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status>                                                                                                                            |
+| Property     | Type                                                                             | Description                                                                                                                                                                                                                                                                                          |
+|--------------|----------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                         | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `code`       | `integer`                                                                        | Suggested HTTP return code for this status, 0 if not set.                                                                                                                                                                                                                                            |
+| `details`    | `StatusDetails`                                                                  | Extended data associated with the reason. Each reason may define its own extended details. This field is optional and the data returned is not guaranteed to conform to any schema except that defined by the reason type.                                                                           |
+| `kind`       | `string`                                                                         | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `message`    | `string`                                                                         | A human-readable description of the status of this operation.                                                                                                                                                                                                                                        |
+| `metadata`   | [`ListMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ListMeta) | Standard list metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds>                                                                                                                                                                 |
+| `reason`     | `string`                                                                         | A machine-readable description of why this operation is in the "Failure" status. If this value is empty there is no information available. A Reason clarifies an HTTP status code but does not override it.                                                                                          |
+| `status`     | `string`                                                                         | Status of the operation. One of: "Success" or "Failure". More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status>                                                                                                                            |
 
 # io.k8s.apimachinery.pkg.apis.meta.v1.Status_v2 schema
 
@@ -3666,16 +3666,16 @@ Type
 
 ## Schema
 
-| Property     | Type                                                                                       | Description                                                                                                                                                                                                                                                                                          |
-|--------------|--------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `apiVersion` | `string`                                                                                   | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
-| `code`       | `integer`                                                                                  | Suggested HTTP return code for this status, 0 if not set.                                                                                                                                                                                                                                            |
-| `details`    | [`StatusDetails`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-StatusDetails) | Extended data associated with the reason. Each reason may define its own extended details. This field is optional and the data returned is not guaranteed to conform to any schema except that defined by the reason type.                                                                           |
-| `kind`       | `string`                                                                                   | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
-| `message`    | `string`                                                                                   | A human-readable description of the status of this operation.                                                                                                                                                                                                                                        |
-| `metadata`   | [`ListMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ListMeta)           | Standard list metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds>                                                                                                                                                                 |
-| `reason`     | `string`                                                                                   | A machine-readable description of why this operation is in the "Failure" status. If this value is empty there is no information available. A Reason clarifies an HTTP status code but does not override it.                                                                                          |
-| `status`     | `string`                                                                                   | Status of the operation. One of: "Success" or "Failure". More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status>                                                                                                                            |
+| Property     | Type                                                                             | Description                                                                                                                                                                                                                                                                                          |
+|--------------|----------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apiVersion` | `string`                                                                         | APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources>  |
+| `code`       | `integer`                                                                        | Suggested HTTP return code for this status, 0 if not set.                                                                                                                                                                                                                                            |
+| `details`    | `StatusDetails`                                                                  | Extended data associated with the reason. Each reason may define its own extended details. This field is optional and the data returned is not guaranteed to conform to any schema except that defined by the reason type.                                                                           |
+| `kind`       | `string`                                                                         | Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds> |
+| `message`    | `string`                                                                         | A human-readable description of the status of this operation.                                                                                                                                                                                                                                        |
+| `metadata`   | [`ListMeta`](../objects/index.xml#io-k8s-apimachinery-pkg-apis-meta-v1-ListMeta) | Standard list metadata. More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds>                                                                                                                                                                 |
+| `reason`     | `string`                                                                         | A machine-readable description of why this operation is in the "Failure" status. If this value is empty there is no information available. A Reason clarifies an HTTP status code but does not override it.                                                                                          |
+| `status`     | `string`                                                                         | Status of the operation. One of: "Success" or "Failure". More info: <https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status>                                                                                                                            |
 
 # io.k8s.apimachinery.pkg.apis.meta.v1.Time schema
 

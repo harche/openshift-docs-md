@@ -2,7 +2,9 @@ As a cluster administrator, you can create an egress firewall for a project that
 
 # How an egress firewall works in a project
 
-As a cluster administrator, you can use an *egress firewall* to limit the external hosts that some or all pods can access from within the cluster. An egress firewall supports the following scenarios:
+As a cluster administrator, you can use an *egress firewall* to limit the external hosts that some or all pods can access from within the cluster.
+
+An egress firewall supports the following scenarios:
 
 - A pod can only connect to internal hosts and cannot initiate connections to the public internet.
 
@@ -66,9 +68,7 @@ An egress firewall has the following limitations:
   \<cidrSelector\>
   Specifies a value of `0.0.0.0/0` to set a global deny rule that prevents access to the OpenShift Container Platform API servers.
 
-  To find the IP address for your API servers, run `oc get ep kubernetes -n default`.
-
-  For more information, see [BZ#1988324](https://bugzilla.redhat.com/show_bug.cgi?id=1988324).
+To find the IP address for your API servers, run `oc get ep kubernetes -n default`.
 
 - A maximum of one `EgressFirewall` object with a maximum of 8,000 rules can be defined per project.
 
@@ -96,9 +96,9 @@ If you use DNS names in any of your egress firewall policy rules, proper resolut
 
 ### Improved DNS resolution and resolving wildcard domain names
 
-There might be situations where the IP addresses associated with a DNS record change frequently, or you might want to specify wildcard domain names in your egress firewall policy rules.
+To support frequently changing IP addresses or wildcard domain names, the OVN-Kubernetes cluster manager creates a `DNSNameResolver` custom resource object for each unique DNS name used in your egress firewall policy rules.
 
-In this situation, the OVN-Kubernetes cluster manager creates a `DNSNameResolver` custom resource object for each unique DNS name used in your egress firewall policy rules. This custom resource stores the following information:
+This custom resource stores the following information:
 
 <div class="important">
 
@@ -134,7 +134,10 @@ where:
 Specifies the DNS name. This can be either a standard DNS name or a wildcard DNS name. For a wildcard DNS name, the DNS name resolution information contains all of the DNS names that match the wildcard DNS name.
 
 \<dnsName\>
-Specifies the resolved DNS name matching the `spec.name` field. If the `spec.name` field contains a wildcard DNS name, then multiple `dnsName` entries are created that contain the standard DNS names that match the wildcard DNS name when resolved. If the wildcard DNS name can also be successfully resolved, then this field also stores the wildcard DNS name. \<ip\> Specifies the current IP addresses associated with the DNS name.
+Specifies the resolved DNS name matching the `spec.name` field. If the `spec.name` field contains a wildcard DNS name, then multiple `dnsName` entries are created that contain the standard DNS names that match the wildcard DNS name when resolved. If the wildcard DNS name can also be successfully resolved, then this field also stores the wildcard DNS name.
+
+\<ip\>
+Specifies the current IP addresses associated with the DNS name.
 
 \<ttlSeconds\>
 Specifies the last time-to-live (TTL) duration.
@@ -231,8 +234,8 @@ Specifies an optional field that describes a collection of network ports and pro
 
 ``` yaml
 ports:
-- port:
-  protocol:
+- port: <port>
+  protocol: <protocol>
 ```
 
 where:

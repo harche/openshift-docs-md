@@ -1214,7 +1214,8 @@ You must have:
       --name=<name> \
       --region=<gcp_region> \
       --project=<gcp_project_id> \
-      --credentials-requests-dir=<path_to_credentials_requests_directory>
+      --credentials-requests-dir=<path_to_credentials_requests_directory> \
+      --key-storage-method=<key_storage_method>
     ```
 
     - Specify the user-defined name for all created Google Cloud resources used for tracking. If you plan to install the Google Cloud Filestore Container Storage Interface (CSI) Driver Operator, retain this value.
@@ -1224,6 +1225,8 @@ You must have:
     - Specify the Google Cloud project ID in which cloud resources will be created.
 
     - Specify the directory containing the files of `CredentialsRequest` manifests to create Google Cloud service accounts.
+
+    - Optional: Specify the method for storing OIDC JWK files. Accepted values are `public-bucket` and `pool-jwk-file`. The default value `public-bucket` creates a public GCS bucket to host the OIDC configuration and JWK files. The `pool-jwk-file` value attaches the JWK directly to the workload identity pool provider without creating a public bucket.
 
       <div class="note">
 

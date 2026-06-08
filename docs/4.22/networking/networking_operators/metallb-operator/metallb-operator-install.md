@@ -10,11 +10,15 @@ As a cluster administrator, you can install the MetalLB Operator by using the Op
 
 1.  In the OpenShift Container Platform web console, navigate to **Ecosystem** → **Software Catalog**.
 
-2.  Type a keyword into the **Filter by keyword** box or scroll to find the Operator you want. For example, type `metallb` to find the MetalLB Operator.
+2.  Type `metallb` in the **Filter by keyword** box to find the MetalLB Operator.
 
     You can also filter options by **Infrastructure Features**. For example, select **Disconnected** if you want to see Operators that work in disconnected environments, also known as restricted network environments.
 
-3.  On the **Install Operator** page, accept the defaults and click **Install**.
+3.  Click the **MetalLB Operator** tile, and then click **Install**.
+
+4.  On the **Install Operator** page, accept the defaults and click **Install**.
+
+5.  The web console displays the progress of the installation. When the installation is complete, click **View installed Operators**.
 
 <!-- -->
 
@@ -22,13 +26,13 @@ As a cluster administrator, you can install the MetalLB Operator by using the Op
 
     1.  Navigate to the **Ecosystem** → **Installed Operators** page.
 
-    2.  Check that the Operator is installed in the `openshift-operators` namespace and that its status is `Succeeded`.
+    2.  Check that the Operator is installed in the `metallb-system` namespace and that its status is `Succeeded`.
 
 2.  If the Operator is not installed successfully, check the status of the Operator and review the logs:
 
     1.  Navigate to the **Ecosystem** → **Installed Operators** page and inspect the `Status` column for any errors or failures.
 
-    2.  Navigate to the **Workloads** → **Pods** page and check the logs in any pods in the `openshift-operators` project that are reporting issues.
+    2.  Navigate to the **Workloads** → **Pods** page and check the logs in any pods in the `metallb-system` project that are reporting issues.
 
 # Installing from the software catalog using the CLI
 

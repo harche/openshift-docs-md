@@ -1,4 +1,4 @@
-As a cluster administrator, you can convert your IPv4 single-stack cluster to a dual-network cluster network that supports IPv4 and IPv6 address families. After converting to dual-stack networking, new and existing pods have dual-stack networking enabled.
+To enable IPv4 and IPv6 on your cluster network in OpenShift Container Platform, you can convert a single-stack cluster to dual-stack networking. After conversion, new and existing pods can use both address families when you re-create workloads as needed.
 
 <div class="important">
 
@@ -9,6 +9,8 @@ When using dual-stack networking where IPv6 is required, you cannot use IPv4-map
 - [OVN-Kubernetes purpose](../../networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.xml#nw-ovn-kubernetes-purpose_about-ovn-kubernetes)
 
 # Converting to a dual-stack cluster network
+
+To convert your cluster network from IPv4 single-stack to dual-stack in OpenShift Container Platform, you can patch the cluster network and, on installer-provisioned infrastructure, the infrastructure custom resources. You must re-create existing pods after conversion to receive IPv6 addresses.
 
 As a cluster administrator, you can convert your single-stack cluster network to a dual-stack cluster network.
 
@@ -32,11 +34,7 @@ On installer-provisioned infrastructure only, if you need to add IPv6 virtual IP
 
 If you already upgraded your cluster to OpenShift Container Platform 4.16 or later and you need to convert the single-stack cluster network to a dual-stack cluster network, you must specify an existing IPv4 `machineNetwork` network configuration from the `install-config.yaml` file for API and Ingress services in the YAML configuration patch file. This configuration ensures that IPv4 traffic exists in the same network interface as the default gateway.
 
-<div class="formalpara-title">
-
-**Example YAML configuration file with an added IPv4 address block for the `machineNetwork` network**
-
-</div>
+The following example adds an IPv4 address block for the `machineNetwork` network:
 
 ``` yaml
 - op: add
@@ -45,7 +43,10 @@ If you already upgraded your cluster to OpenShift Container Platform 4.16 or lat
   # ...
 ```
 
-- Ensure that you specify an address block for the `machineNetwork` network where your machines operate. You must select both API and Ingress IP addresses for the machine network.
+where:
+
+`/spec/platformSpec/baremetal/machineNetworks/-`
+Specifies an address block for the `machineNetwork` network where your machines operate. You must select both API and Ingress IP addresses for the machine network.
 
 </div>
 
@@ -72,9 +73,13 @@ If you already upgraded your cluster to OpenShift Container Platform 4.16 or lat
       value: fd02::/112
     ```
 
-    - Specify an object with the `cidr` and `hostPrefix` parameters. The host prefix must be `64` or greater. The IPv6 Classless Inter-Domain Routing (CIDR) prefix must be large enough to accommodate the specified host prefix.
+    where:
 
-    - Specify an IPv6 CIDR with a prefix of `112`. Kubernetes uses only the lowest 16 bits. For a prefix of `112`, IP addresses are assigned from `112` to `128` bits.
+    `/spec/clusterNetwork/-`
+    Specifies an object with the `cidr` and `hostPrefix` parameters. The host prefix must be `64` or greater. The IPv6 Classless Inter-Domain Routing (CIDR) prefix must be large enough to accommodate the specified host prefix.
+
+    `/spec/serviceNetwork/-`
+    Specifies an IPv6 CIDR with a prefix of `112`. Kubernetes uses only the lowest 16 bits. For a prefix of `112`, IP addresses are assigned from `112` to `128` bits.
 
 2.  Patch the cluster network configuration by entering the following command in your CLI:
 
@@ -83,17 +88,17 @@ If you already upgraded your cluster to OpenShift Container Platform 4.16 or lat
       --type='json' --patch-file <file>.yaml
     ```
 
-    - Where `file` specifies the name of your created YAML file.
+    For `<file>`, specify the name of the YAML file you created.
 
-      <div class="formalpara-title">
+    <div class="formalpara-title">
 
-      **Example output**
+    **Example output**
 
-      </div>
+    </div>
 
-      ``` text
-      network.config.openshift.io/cluster patched
-      ```
+    ``` text
+    network.config.openshift.io/cluster patched
+    ```
 
 3.  On installer-provisioned infrastructure where you added IPv6 VIPs for API and Ingress services, complete the following steps:
 
@@ -111,9 +116,13 @@ If you already upgraded your cluster to OpenShift Container Platform 4.16 or lat
           value: fd2e:6f44:5dd8::5
         ```
 
-        - Ensure that you specify an address block for the `machineNetwork` network where your machines operate. You must select both API and Ingress IP addresses for the machine network.
+        where:
 
-        - Ensure that you specify each file path according to your platform. The example demonstrates a file path on a bare-metal platform.
+        `/spec/platformSpec/baremetal/machineNetworks/-`
+        Specifies an address block for the `machineNetwork` network where your machines operate. You must select both API and Ingress IP addresses for the machine network.
+
+        `/spec/platformSpec/baremetal/apiServerInternalIPs/-`
+        Specifies each file path according to your platform. The example demonstrates a file path on a bare metal platform.
 
     2.  Patch the infrastructure by entering the following command in your CLI:
 
@@ -122,10 +131,7 @@ If you already upgraded your cluster to OpenShift Container Platform 4.16 or lat
           --type='json' --patch-file <file>.yaml
         ```
 
-        Where:
-
-        \<file\>
-        Specifies the name of your created YAML file.
+        For `<file>`, specify the name of the YAML file you created.
 
         <div class="formalpara-title">
 
@@ -214,7 +220,7 @@ If you already upgraded your cluster to OpenShift Container Platform 4.16 or lat
 
 # Converting to a single-stack cluster network
 
-As a cluster administrator, you can convert your dual-stack cluster network to a single-stack cluster network.
+To revert dual-stack networking in OpenShift Container Platform, you can edit the cluster network configuration and remove the IPv4 or IPv6 blocks you added during dual-stack conversion. You can convert back only to the same single-stack family you had before dual-stack (IPv4 or IPv6).
 
 <div class="important">
 

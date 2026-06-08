@@ -16,6 +16,8 @@ Without NUMA awareness, a VM’s virtual CPUs might run on one physical NUMA zon
 
 When you enable the NUMA functionality for OpenShift Virtualization VMs, you allow the host to pass its physical topology directly to the VM’s guest operating system (OS). The guest OS can then make intelligent, NUMA-aware decisions about scheduling and memory allocation. This ensures that process threads and memory are kept on the same physical NUMA node. By aligning the virtual topology with the physical one, you minimize latency and maximize performance.
 
+VM owners can enable NUMA with `ComputeExclusive` (CX) instance types, which are specifically designed for high-performance, compute-intensive workloads, and are configured to use NUMA features. For information about creating VMs using a CX instance type, see "Creating virtual machines from instance types".
+
 # Prerequisites
 
 Before you can enable NUMA functionality with OpenShift Virtualization VMs, you must ensure that your environment meets the following prerequisites.
@@ -36,12 +38,6 @@ Before you can enable NUMA functionality with OpenShift Virtualization VMs, you 
       cpuManagerPolicy: static
   # ...
   ```
-
-# Creating a VM with NUMA functionality enabled
-
-VM owners can enable NUMA with `ComputeExclusive` (CX) instance types, which are specifically designed for high-performance, compute-intensive workloads, and are configured to use NUMA features.
-
-For information about creating VMs using a CX instance type, see [Creating virtual machines from instance types](../../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types).
 
 # Verifying vNUMA status of a VM
 
@@ -67,9 +63,7 @@ You can verify whether an already deployed VM is configured for vNUMA by checkin
 
 # Disabling the hot plug capability for VMs
 
-*Hot plugging* is the ability to add resources like memory or CPU dynamically to a VM while it is running.
-
-Default OpenShift Virtualization hot plug multipliers can cause VMs to request an excessive number of sockets. For example, if your VM requests 10 sockets, the default hot plug behavior multiplies this by 4, which means that the total request is 40 sockets. This can exceed the recommended CPUs supported by the Kernel-based Virtual Machine (KVM), which can cause deployment failures.
+*Hot plugging* is the ability to dynamically add resources such as memory or CPU to a VM while it is running. Default OpenShift Virtualization hot plug multipliers can cause VMs to request an excessive number of sockets. For example, if your VM requests 10 sockets, the default hot plug behavior multiplies this by 4, which means that the total request is 40 sockets. This can exceed the recommended CPUs supported by the Kernel-based Virtual Machine (KVM), which can cause deployment failures.
 
 You can keep VM resource requests aligned with NUMA and optimize performance for resource-intensive workloads by disabling the VM’s default hot plug capability.
 
@@ -323,3 +317,5 @@ The following table outlines which policies are supported for different VM confi
 # Additional resources
 
 - [Topology Manager policies](../../../scalability_and_performance/using-cpu-manager.xml#using-cpu-manager_topology-manager-policies)
+
+- [Creating virtual machines from instance types](../../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types)

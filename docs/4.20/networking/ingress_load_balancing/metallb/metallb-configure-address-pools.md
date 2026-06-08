@@ -278,7 +278,7 @@ spec:
 # ...
 ```
 
-`spec.addresses`: Where `10.0.100.0/28` is the local network IP address followed by the `/28` network prefix.
+`spec.addresses`: This list defines the IP ranges that MetalLB manages. This specific example is a dual-stack configuration, meaning it provides both IPv4 and IPv6 addresses.
 
 Example of assigning IP address pools to services or namespaces
 You can assign IP addresses from an `IPAddressPool` to services and namespaces that you specify.

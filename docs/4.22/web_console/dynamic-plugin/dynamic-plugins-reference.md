@@ -1419,15 +1419,15 @@ A function that creates impersonation and multicluster related headers for API r
 
 It fetches a resource from the cluster, based on the provided options. If the name is provided it returns one resource else it returns all the resources matching the model. It returns a promise that resolves to the response as JSON object with a resource if the name is providedelse it returns all the resources matching the model. In case of failure, the promise gets rejected with HTTP error response.
 
-| Parameter Name        | Description                                                                                                                                                                                                                                                        |
-|-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `options`             | Which are passed as key-value pairs in the map                                                                                                                                                                                                                     |
-| `options.model`       | k8s model                                                                                                                                                                                                                                                          |
-| `options.name`        | The name of the resource, if not provided then it looks for all the resources matching the model.                                                                                                                                                                  |
-| `options.ns`          | The namespace to look into, should not be specified for cluster-scoped resources.                                                                                                                                                                                  |
-| `options.path`        | Appends as subpath if provided                                                                                                                                                                                                                                     |
-| `options.queryParams` | The query parameters to be included in the URL.                                                                                                                                                                                                                    |
-| `options.requestInit` | The fetch init object to use. This can have request headers, method, redirect, etc. See [Interface RequestInit](https://microsoft.github.io/PowerBI-JavaScript/interfaces/_node_modules_typedoc_node_modules_typescript_lib_lib_dom_d_.requestinit.html) for more. |
+| Parameter Name        | Description                                                                                       |
+|-----------------------|---------------------------------------------------------------------------------------------------|
+| `options`             | Which are passed as key-value pairs in the map                                                    |
+| `options.model`       | k8s model                                                                                         |
+| `options.name`        | The name of the resource, if not provided then it looks for all the resources matching the model. |
+| `options.ns`          | The namespace to look into, should not be specified for cluster-scoped resources.                 |
+| `options.path`        | Appends as subpath if provided                                                                    |
+| `options.queryParams` | The query parameters to be included in the URL.                                                   |
+| `options.requestInit` | The fetch init object to use. This can have request headers, method, redirect, etc.               |
 
 ## `k8sCreateResource`
 

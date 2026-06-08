@@ -618,6 +618,12 @@ Enabling IP forwarding for a specific interface provides more granular control, 
     $ oc patch network.operator cluster -p '{"spec":{"defaultNetwork":{"ovnKubernetesConfig":{"gatewayConfig":{"ipForwarding": "Global"}}}}}' --type=merge
     ```
 
+    <div class="note">
+
+    Setting `ipForwarding` to `Global` sets `net.ipv4.conf.default.forwarding = 1`. All interfaces on the node inherit this, resulting in settings like `net.ipv4.conf.tun0.forwarding = 1`. This configuration also skips installing the default drop firewall rules, allowing the node to act as a router that forwards traffic between interfaces.
+
+    </div>
+
 <!-- -->
 
 1.  After you apply the machine config, verify the changes by completing the following steps:

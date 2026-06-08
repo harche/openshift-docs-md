@@ -1,6 +1,8 @@
+In OpenShift Container Platform with OVN-Kubernetes, you can enable IP multicast on a per-project basis so pods can send and receive multicast traffic.
+
 # About multicast
 
-With IP multicast, data is broadcast to many IP addresses simultaneously.
+With IP multicast in OpenShift Container Platform, data is broadcast to many IP addresses simultaneously. With OVN-Kubernetes, multicast is off by default and is not affected by network policies when you enable it in a project.
 
 <div class="important">
 
@@ -16,7 +18,7 @@ Multicast traffic between OpenShift Container Platform pods is disabled by defau
 
 # Enabling multicast between pods
 
-You can enable multicast between pods for your project.
+To enable multicast between pods in a project, you can add the `k8s.ovn.org/multicast-enabled` annotation to the namespace by using the `oc annotate` command or a namespace manifest.
 
 - Install the OpenShift CLI (`oc`).
 

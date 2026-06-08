@@ -13,13 +13,9 @@ Refer to your hardware vendor’s documentation for functionality and support de
 Mediated device
 A physical device that is divided into one or more virtual devices. A vGPU is a type of mediated device (mdev); the performance of the physical GPU is divided among the virtual devices. You can assign mediated devices to one or more virtual machines (VMs), but the number of guests must be compatible with your GPU. Some GPUs do not support multiple guests.
 
-# Preparing hosts for mediated devices
-
-You must enable the Input-Output Memory Management Unit (IOMMU) driver before you can configure mediated devices.
-
 ## Adding kernel arguments to enable the IOMMU driver
 
-To enable the IOMMU driver in the kernel, create the `MachineConfig` object and add the kernel arguments.
+You must enable the Input-Output Memory Management Unit (IOMMU) driver before you can configure mediated devices. To enable the IOMMU driver in the kernel, create the `MachineConfig` object and add the kernel arguments.
 
 - You have cluster administrator permissions.
 
@@ -104,21 +100,17 @@ To enable the IOMMU driver in the kernel, create the `MachineConfig` object and 
       AMD: [ 0.000000] AMD-Vi: IOMMU Initialized
       ```
 
-# Configuring the NVIDIA GPU Operator
+# Using the NVIDIA GPU Operator
 
 You can use the NVIDIA GPU Operator to provision worker nodes for running GPU-accelerated virtual machines (VMs) in OpenShift Virtualization.
 
+The NVIDIA GPU Operator manages NVIDIA GPU resources in an OpenShift Container Platform cluster and automates tasks when preparing nodes for GPU workloads. The NVIDIA GPU Operator can also facilitate provisioning complex artificial intelligence and machine learning (AI/ML) workloads.
+
 <div class="note">
 
-The NVIDIA GPU Operator is supported only by NVIDIA. For more information, see [Obtaining Support from NVIDIA](https://access.redhat.com/solutions/5174941) in the Red Hat Knowledgebase.
+You can get support for the NVIDIA GPU Operator through NVIDIA. For more information, see "Obtaining Support from NVIDIA" in the Red Hat Knowledgebase.
 
 </div>
-
-## Using the NVIDIA GPU Operator
-
-You can use the NVIDIA GPU Operator with OpenShift Virtualization to accelerate the deployment of worker nodes for running GPU-enabled virtual machines (VMs). The NVIDIA GPU Operator manages NVIDIA GPU resources in an OpenShift Container Platform cluster and automates tasks when preparing nodes for GPU workloads.
-
-The NVIDIA GPU Operator can also facilitate provisioning complex artificial intelligence and machine learning (AI/ML) workloads.
 
 1.  Configure your `ClusterPolicy` manifest. Your `ClusterPolicy` manifest must match the provided example:
 
@@ -189,11 +181,11 @@ The NVIDIA GPU Operator can also facilitate provisioning complex artificial inte
 
 2.  Use the NVIDIA GPU Operator to configure mediated devices. For more information see [NVIDIA GPU Operator with OpenShift Virtualization](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/openshift-virtualization.html).
 
-## Labeling nodes with a MIG-backed vGPU profile
+# Labeling nodes with a MIG-backed vGPU profile
 
 If you have GPUs that support NVIDIA Multi-Instance GPU (MIG), you can select a MIG-backed vGPU instance instead of time-sliced vGPU instances. When you use MIG, you give a partition of dedicated hardware to selected VMs.
 
-- You have configured vGPU support. For more information see [MIG Support in OpenShift Container Platform](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/mig-ocp.html#).
+- You have configured vGPU support.
 
 - You have the NVIDIA GPU Operator version 25.10 or higher.
 
@@ -217,19 +209,7 @@ If you have GPUs that support NVIDIA Multi-Instance GPU (MIG), you can select a 
     $ oc label node worker_1 --overwrite nvidia.com/vgpu.config=A30-1-6C
     ```
 
-<!-- -->
-
-- [MIG User Guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/supported-mig-profiles.html)
-
-<!-- -->
-
-- [Configuring PCI passthrough](../../../virt/managing_vms/advanced_vm_management/virt-configuring-pci-passthrough.xml#virt-configuring-pci-passthrough)
-
-# Managing mediated devices
-
-Before you can assign mediated devices to virtual machines, you must create the devices and expose them to the cluster. You can also reconfigure and remove mediated devices.
-
-## Creating and exposing mediated devices
+# Creating and exposing mediated devices
 
 As an administrator, you can create mediated devices and expose them to the cluster by editing the `HyperConverged` custom resource (CR). Before you edit the CR, explore a worker node to find the configuration values that are specific to your hardware devices.
 
@@ -344,7 +324,7 @@ As an administrator, you can create mediated devices and expose them to the clus
     | with_entries(select(.value != "0"))'
   ```
 
-## Removing mediated devices from the cluster
+# Removing mediated devices from the cluster
 
 As a cluster administrator you can remove mediated devices from the cluster so that you can reallocate GPU hardware. To remove a mediated device from the cluster, delete the information for that device from the `HyperConverged` CR.
 
@@ -376,11 +356,7 @@ As a cluster administrator you can remove mediated devices from the cluster so t
 
 3.  Save your changes and exit the editor.
 
-# Using mediated devices
-
-You can assign mediated devices to one or more virtual machines.
-
-## Assigning a vGPU to a VM by using the CLI
+# Assigning a vGPU to a VM by using the CLI
 
 Assign mediated devices such as virtual GPUs (vGPUs) to virtual machines (VMs).
 
@@ -419,7 +395,7 @@ Assign mediated devices such as virtual GPUs (vGPUs) to virtual machines (VMs).
   $ lspci -nnk | grep <device_name>
   ```
 
-## Assigning a vGPU to a VM by using the web console
+# Assigning a vGPU to a VM by using the web console
 
 You can assign virtual GPUs to virtual machines by using the OpenShift Container Platform web console.
 
@@ -454,3 +430,11 @@ You can add hardware devices to virtual machines created from customized templat
 # Additional resources
 
 - [Enabling Intel VT-X and AMD-V Virtualization Hardware Extensions in BIOS](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/sect-troubleshooting-enabling_intel_vt_x_and_amd_v_virtualization_hardware_extensions_in_bios)
+
+- [MIG Support in OpenShift Container Platform](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/mig-ocp.html#)
+
+- [Configuring PCI passthrough](../../../virt/managing_vms/advanced_vm_management/virt-configuring-pci-passthrough.xml#virt-configuring-pci-passthrough)
+
+- [Obtaining Support from NVIDIA](https://access.redhat.com/solutions/5174941)
+
+- [MIG User Guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/supported-mig-profiles.html)

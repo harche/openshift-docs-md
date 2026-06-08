@@ -1,4 +1,4 @@
-You can destroy hosted clusters on bare metal by using the command-line interface (CLI) or the multicluster engine Operator web console.
+You might want to remove a hosted cluster if you are no longer using it, you are trying to reduce resources, or the hosted cluster is experiencing issues that are difficult to resolve.
 
 # Destroying a hosted cluster on bare metal by using the CLI
 
@@ -10,13 +10,13 @@ If you created a hosted cluster by using the command-line interface (CLI), you c
   $ oc delete -f <hosted_cluster_config>.yaml
   ```
 
-  - Specify the name of the configuration YAML file that was rendered when you created the hosted cluster.
+  Specify the name of the configuration YAML file that was rendered when you created the hosted cluster.
 
-    <div class="note">
+  <div class="note">
 
-    If you created the hosted cluster without specifying the `--render` and `--render-sensitive` flags in its configuration file, you must remove its back-end resources manually.
+  If you created the hosted cluster without specifying the `--render` and `--render-sensitive` flags in its configuration file, you must remove its back-end resources manually.
 
-    </div>
+  </div>
 
 # Destroying a hosted cluster on bare metal by using the web console
 

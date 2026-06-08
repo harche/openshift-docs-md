@@ -92,6 +92,12 @@ The virtual machine instance (VMI) is always present when a virtual machine (VM)
 `RerunOnFailure`
 The VMI is re-created on another node if the previous instance fails. The instance is not re-created if the VM stops successfully, such as when it is shut down.
 
+<div class="important">
+
+Setting `spec.runStrategy: RerunOnFailure` is an explicit command to start the VM. If the VM is intentionally stopped and you do not want it to start, do not change the run strategy value to `RerunOnFailure`.
+
+</div>
+
 `Manual`
 You control the VMI state manually with the `start`, `stop`, and `restart` virtctl client commands. The VM is not automatically restarted.
 

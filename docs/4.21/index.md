@@ -496,6 +496,7 @@
   - **Compliance Operator scan management**
     - [Supported compliance profiles](security/compliance_operator/co-scans/compliance-operator-supported-profiles.md)
     - [Compliance Operator scans](security/compliance_operator/co-scans/compliance-scans.md)
+    - [Propagating custom metadata to ComplianceCheckResult objects](security/compliance_operator/co-scans/compliance-operator-checkresult-custom-metadata.md)
     - [Tailoring the Compliance Operator](security/compliance_operator/co-scans/compliance-operator-tailor.md)
     - [Retrieving Compliance Operator raw results](security/compliance_operator/co-scans/compliance-operator-raw-results.md)
     - [Managing Compliance Operator remediation](security/compliance_operator/co-scans/compliance-operator-remediation.md)

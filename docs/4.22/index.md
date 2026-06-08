@@ -498,6 +498,7 @@
   - **Compliance Operator scan management**
     - [Supported compliance profiles](security/compliance_operator/co-scans/compliance-operator-supported-profiles.md)
     - [Compliance Operator scans](security/compliance_operator/co-scans/compliance-scans.md)
+    - [Propagating custom metadata to ComplianceCheckResult objects](security/compliance_operator/co-scans/compliance-operator-checkresult-custom-metadata.md)
     - [Tailoring the Compliance Operator](security/compliance_operator/co-scans/compliance-operator-tailor.md)
     - [Retrieving Compliance Operator raw results](security/compliance_operator/co-scans/compliance-operator-raw-results.md)
     - [Managing Compliance Operator remediation](security/compliance_operator/co-scans/compliance-operator-remediation.md)
@@ -1453,6 +1454,10 @@
   - **Deploying single-node OpenShift clusters**
     - [Deploying managed single-node OpenShift using the IBI Operator](edge_computing/image_base_install/ibi_deploying_sno_clusters/ibi-edge-image-based-install.md)
     - [Deploying single-node OpenShift using the installation program](edge_computing/image_base_install/ibi_deploying_sno_clusters/ibi-edge-image-based-install-standalone.md)
+- **Network reconfiguration for single-node OpenShift**
+  - [Understand single-node OpenShift network reconfiguration](edge_computing/sno_ip_configuration/cnf-understanding-sno-ip-configuration.md)
+  - [Perform single-node OpenShift network reconfiguration](edge_computing/sno_ip_configuration/cnf-configuring-sno-ip-configuration.md)
+  - [Troubleshoot single-node OpenShift network reconfiguration](edge_computing/sno_ip_configuration/cnf-troubleshooting-sno-ip-configuration.md)
 
 ### Specialized hardware and driver enablement
 
@@ -1469,7 +1474,6 @@
 - [AMD GPU Operator](hardware_accelerators/amd-gpu-operator.md)
 - [Intel Gaudi AI accelerators](hardware_accelerators/gaudi-ai-accelerator.md)
 - [Remote Direct Memory Access (RDMA)](hardware_accelerators/rdma-remote-direct-memory-access.md)
-- [Dynamic Accelerator Slicer (DAS) Operator](hardware_accelerators/das-about-dynamic-accelerator-slicer-operator.md)
 
 ### Backup and restore
 
@@ -2095,4 +2099,9 @@
   - [Backup and restore by using VM snapshots](virt/backup_restore/virt-backup-restore-snapshots.md)
   - [Backing up and restoring virtual machines](virt/backup_restore/virt-backup-restore-overview.md)
   - [Disaster recovery](virt/backup_restore/virt-disaster-recovery.md)
+
+### AI applications
+
+- **MCP server**
+  - [MCP server overview](ai_applications/mcp_server/mcp-server-overview.md)
 

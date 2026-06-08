@@ -264,13 +264,21 @@ You can use a command flag to explicitly accept update risks that are shown in t
 
 # Preparing for Gateway API management succession by the Ingress Operator
 
-Starting in OpenShift Container Platform 4.19, the Ingress Operator manages the lifecycle of any Gateway API custom resource definitions (CRDs). This means that you will be denied access to creating, updating, and deleting any CRDs within the API groups that are grouped under Gateway API.
+You can prepare your cluster for Gateway API management succession by removing existing unsupported definitions and installing compliant resources. This ensures a seamless update to OpenShift Container Platform 4.19 and prevents conflicts with the Ingress Operator.
+
+Starting in OpenShift Container Platform 4.19, the Ingress Operator manages the lifecycle of any Gateway API custom resource definitions (CRDs). This lifecycle control blocks you from creating, updating, or deleting CRDs within the `gateway.networking.k8s.io` API group.
+
+<div class="note">
+
+Starting in OpenShift Container Platform 4.22, deploying the Gateway API CRD `gateway.networking.x-k8s.io` is no longer restricted. You can deploy that CRD without interference from the Ingress Operator. Experimental Gateway API CRDs in the `gateway.networking.k8s.io` group remain restricted.
+
+</div>
 
 Updating from a version before 4.19 of OpenShift Container Platform where this management was not present requires you to replace or remove any Gateway API CRDs that already exist in the cluster so that they conform to the specific OpenShift Container Platform specification required by the Ingress Operator. OpenShift Container Platform version 4.19 requires Gateway API Standard version 1.2.1 CRDs.
 
 <div class="warning">
 
-Updating or deleting Gateway API resources can result in downtime and loss of service or data. Be sure you understand how this will affect your cluster before performing the steps in this procedure. If necessary, back up any Gateway API objects in YAML format in order to restore it later.
+Updating or deleting Gateway API resources can result in downtime and loss of service or data. Be sure you understand how this affects your cluster before performing the steps in this procedure. If necessary, back up any Gateway API objects in YAML format to restore them later.
 
 </div>
 
@@ -280,13 +288,13 @@ Updating or deleting Gateway API resources can result in downtime and loss of se
 
 - Optional: You have backed up any necessary Gateway API objects.
 
-  <div class="warning">
+<div class="warning">
 
-  Backup and restore can fail or result in data loss for any CRD fields that were present in the old definitions but are absent in the new definitions.
+Backup and restore can fail or result in data loss for any CRD fields that were present in the old definitions but are absent in the new definitions.
 
-  </div>
+</div>
 
-1.  List all the Gateway API CRDs that you need to remove by running the following command:
+1.  List all the Gateway API CRDs that you must remove by entering the following command:
 
     ``` terminal
     $ oc get crd | grep -F -e gateway.networking.k8s.io -e gateway.networking.x-k8s.io
@@ -306,23 +314,25 @@ Updating or deleting Gateway API resources can result in downtime and loss of se
     referencegrants.gateway.networking.k8s.io
     ```
 
-2.  Delete the Gateway API CRDs from the previous step by running the following command:
+    If the output lists custom resource definitions (CRDs) for `gateway.networking.x-k8s.io`, retain those resources. The subsequent step removes only CRDs that belong to the `gateway.networking.k8s.io` group.
+
+2.  Delete the Gateway API CRDs from the previous step by entering the following command:
 
     ``` terminal
-    $ oc delete crd gatewayclasses.networking.k8s.io && \
-    oc delete crd gateways.networking.k8s.io && \
+    $ oc delete crd gatewayclasses.gateway.networking.k8s.io && \
+    oc delete crd gateways.gateway.networking.k8s.io && \
     oc delete crd grpcroutes.gateway.networking.k8s.io && \
     oc delete crd httproutes.gateway.networking.k8s.io && \
-    oc delete crd referencesgrants.gateway.networking.k8s.io
+    oc delete crd referencegrants.gateway.networking.k8s.io
     ```
 
     <div class="important">
 
-    Deleting CRDs removes every custom resource that relies on them and can result in data loss. Back up any necessary data before deleting the Gateway API CRDs. Any controller that was previously managing the lifecycle of the Gateway API CRDs will fail to operate properly. Attempting to force its use in conjunction with the Ingress Operator to manage Gateway API CRDs might prevent the cluster update from succeeding.
+    Deleting CRDs removes every custom resource that relies on them and can result in data loss. Back up any necessary data before deleting the Gateway API CRDs. Any controller that was previously managing the lifecycle of the Gateway API CRDs ceases to function correctly. Attempting to force its use in conjunction with the Ingress Operator to manage Gateway API CRDs might prevent the cluster update from succeeding.
 
     </div>
 
-3.  Get the supported Gateway API CRDs by running the following command:
+3.  Get the supported Gateway API CRDs by entering the following command:
 
     ``` terminal
     $ oc apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.1/standard-install.yaml
@@ -330,7 +340,7 @@ Updating or deleting Gateway API resources can result in downtime and loss of se
 
     <div class="warning">
 
-    You can perform this step without deleting your CRDs. If your update to a CRD removes a field that is used by a custom resource, you can lose data. Updating a CRD a second time, to a version that re-adds a field, can cause any previously deleted data to reappear. Any third-party controller that depends on a specific Gateway API CRD version that is not supported in OpenShift Container Platform 4.17 will break upon updating that CRD to one supported by Red Hat.
+    You can perform this step without deleting your CRDs. If your update to a CRD removes a field that is used by a custom resource, you can lose data. Updating a CRD a second time, to a version that re-adds a field, can cause any previously deleted data to reappear. Any third-party controller that depends on a specific Gateway API CRD version that is not supported in OpenShift Container Platform 4.17 breaks upon updating that CRD to one supported by Red Hat.
 
     For more information on the OpenShift Container Platform implementation and the dead fields issue, see *Gateway API implementation for OpenShift Container Platform*.
 

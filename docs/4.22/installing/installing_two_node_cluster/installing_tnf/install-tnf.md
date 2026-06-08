@@ -54,7 +54,6 @@ controlPlane:
         certificateVerification: Enabled
 metadata:
   name: <cluster_name>
-featureSet: TechPreviewNoUpgrade
 platform:
   baremetal:
     apiVIPs:
@@ -89,8 +88,6 @@ sshKey: '<ssh_public_key>'
 - `fencing.credentials.certificateVerification`: Set this field to `Disabled` if your Redfish URL uses self-signed certificates, which is common for internally-hosted endpoints. Set this field to `Enabled` for URLs with valid CA-signed certificates.
 
 - `metadata.name`: The cluster name is used as a prefix for hostnames and DNS records.
-
-- `featureSet`: Set this field to `TechPreviewNoUpgrade` to enable two-node OpenShift cluster deployments.
 
 - `platform.baremetal.apiVIPs` and `platform.baremetal.ingressVIPs` : Virtual IPs for the API and Ingress endpoints. Ensure they are reachable by all nodes and external clients.
 
@@ -135,7 +132,6 @@ controlPlane:
         password: <password>
 metadata:
   name: <cluster_name>
-featureSet: TechPreviewNoUpgrade
 platform:
   none: {}
 pullSecret: '<pull_secret>'
@@ -149,8 +145,6 @@ sshKey: '<ssh_public_key>'
 - `fencing.credentials.hostname`: Provide BMC credentials for each control plane node.
 
 - `metadata.name`: Cluster name is used as a prefix for hostnames and DNS records.
-
-- `featureSet`: Enables a two-node OpenShift Container Platform cluster with fencing deployments.
 
 - `platform.none` Set the platform to `none` for user-provisioned infrastructure deployments. Bare-metal hosts are pre-provisioned outside of the installation program.
 

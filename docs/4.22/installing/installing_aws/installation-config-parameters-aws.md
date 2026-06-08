@@ -552,6 +552,46 @@ Optional AWS configuration parameters are described in the following table:
 <p><strong>Value:</strong> A list of valid AWS availability zones, such as <code>us-east-1c</code>, in a <a href="https://yaml.org/spec/1.2/spec.html#sequence//">YAML sequence</a>.</p></td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;"><pre><code>compute:
+  platform:
+    aws:
+      hostPlacement:
+        affinity:</code></pre></td>
+<td style="text-align: left;"><p>Specifies the affinity setting for placing compute machines on AWS Dedicated Hosts. When set to <code>DedicatedHost</code>, machines are pinned to the specific Dedicated Hosts listed in the <code>dedicatedHost</code> field. If a machine is stopped and restarted, the machine returns to the same physical host. When set to <code>AnyAvailable</code>, machines are not pinned to specific Dedicated Hosts. If a machine is stopped and restarted, AWS can place the machine on any available Dedicated Host that matches the instance type and availability zone.</p>
+<div class="important">
+<p>AWS Dedicated Host support is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.</p>
+<p>For more information about the support scope of Red Hat Technology Preview features, see <a href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.</p>
+</div>
+<p><strong>Value:</strong> <code>DedicatedHost</code> or <code>AnyAvailable</code>.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><pre><code>compute:
+  platform:
+    aws:
+      hostPlacement:
+        dedicatedHost:</code></pre></td>
+<td style="text-align: left;"><p>A list of AWS Dedicated Host entries for compute machines. Required when <code>hostPlacement.affinity</code> is set to <code>DedicatedHost</code>. Must be omitted when <code>hostPlacement.affinity</code> is set to <code>AnyAvailable</code>.</p>
+<div class="important">
+<p>AWS Dedicated Host support is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.</p>
+<p>For more information about the support scope of Red Hat Technology Preview features, see <a href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.</p>
+</div>
+<p><strong>Value:</strong> A list of objects.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><pre><code>compute:
+  platform:
+    aws:
+      hostPlacement:
+        dedicatedHost:
+        - id:</code></pre></td>
+<td style="text-align: left;"><p>The ID of the AWS Dedicated Host. The value must start with <code>h-</code> followed by 17 lowercase hexadecimal characters.</p>
+<div class="important">
+<p>AWS Dedicated Host support is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.</p>
+<p>For more information about the support scope of Red Hat Technology Preview features, see <a href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.</p>
+</div>
+<p><strong>Value:</strong> String, for example <code>h-015c6d3ffa1d43d38</code>.</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     aws:
@@ -559,7 +599,7 @@ Optional AWS configuration parameters are described in the following table:
 <td style="text-align: left;"><p>The AWS AMI used to boot control plane machines for the cluster. This is required for regions that require a custom RHCOS AMI.</p>
 <p><strong>Value:</strong> Any published or custom RHCOS AMI that belongs to the set AWS region. See <em>RHCOS AMIs for AWS infrastructure</em> for available AMI IDs.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     aws:
@@ -567,7 +607,7 @@ Optional AWS configuration parameters are described in the following table:
 <td style="text-align: left;"><p>The name of the IAM instance profile that you use for the machine. If you want the installation program to create the IAM instance profile for you, do not use the <code>iamProfile</code> parameter. You can specify either the <code>iamProfile</code> or <code>iamRole</code> parameter, but you cannot specify both.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     aws:
@@ -575,7 +615,7 @@ Optional AWS configuration parameters are described in the following table:
 <td style="text-align: left;"><p>The name of the IAM instance role that you use for the machine. When you specify an IAM role, the installation program creates an instance profile. If you want the installation program to create the IAM instance role for you, do not use the <code>iamRole</code> parameter. You can specify either the <code>iamRole</code> or <code>iamProfile</code> parameter, but you cannot specify both.</p>
 <p><strong>Value:</strong> String</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     aws:
@@ -584,7 +624,7 @@ Optional AWS configuration parameters are described in the following table:
 <td style="text-align: left;"><p>The Input/Output Operations Per Second (IOPS) that is reserved for the root volume on control plane machines.</p>
 <p><strong>Value:</strong> Integer, for example <code>4000</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     aws:
@@ -593,7 +633,7 @@ Optional AWS configuration parameters are described in the following table:
 <td style="text-align: left;"><p>The size in GiB of the root volume for control plane machines.</p>
 <p><strong>Value:</strong> Integer, for example <code>500</code>.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     aws:
@@ -602,7 +642,7 @@ Optional AWS configuration parameters are described in the following table:
 <td style="text-align: left;"><p>The type of the root volume for control plane machines.</p>
 <p><strong>Value:</strong> Valid <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html">AWS EBS volume type</a>, such as <code>io1</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     aws:
@@ -611,7 +651,7 @@ Optional AWS configuration parameters are described in the following table:
 <td style="text-align: left;"><p>The maximum throughput of the root volume. This throughput can be customized only for the gp3 volume type. The minimum value is 125 MiB/s and the maximum value is 2000 MiB/s.</p>
 <p><strong>Value:</strong> Integer, for example <code>1000</code>.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     aws:
@@ -620,7 +660,7 @@ Optional AWS configuration parameters are described in the following table:
 <td style="text-align: left;"><p>The Amazon Resource Name (key ARN) of a KMS key. This is required to encrypt operating system volumes of control plane nodes with a specific KMS key.</p>
 <p><strong>Value:</strong> Valid <a href="https://docs.aws.amazon.com/kms/latest/developerguide/find-cmk-id-arn.html">key ID and the key ARN</a>.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     aws:
@@ -628,7 +668,7 @@ Optional AWS configuration parameters are described in the following table:
 <td style="text-align: left;"><p>The EC2 instance type for the control plane machines.</p>
 <p><strong>Value:</strong> Valid AWS instance type, such as <code>m6i.xlarge</code>. See the "Tested instance types for AWS" table on the "Installing a cluster on AWS with customizations" page.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>controlPlane:
   platform:
     aws:
@@ -636,35 +676,35 @@ Optional AWS configuration parameters are described in the following table:
 <td style="text-align: left;"><p>The availability zones where the installation program creates machines for the control plane machine pool.</p>
 <p><strong>Value:</strong> A list of valid AWS availability zones, such as <code>us-east-1c</code>, in a <a href="https://yaml.org/spec/1.2/spec.html#sequence//">YAML sequence</a>.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   aws:
     amiID:</code></pre></td>
 <td style="text-align: left;"><p>The AWS AMI used to boot all machines for the cluster. If set, the AMI must belong to the same region as the cluster. This is required for regions that require a custom RHCOS AMI.</p>
 <p><strong>Value:</strong> Any published or custom RHCOS AMI that belongs to the set AWS region. See <em>RHCOS AMIs for AWS infrastructure</em> for available AMI IDs.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   aws:
     hostedZone:</code></pre></td>
 <td style="text-align: left;"><p>An existing Route 53 private hosted zone for the cluster. You can only use a pre-existing hosted zone when also supplying your own VPC. The hosted zone must already be associated with the user-provided VPC before installation. Also, the domain of the hosted zone must be the cluster domain or a parent of the cluster domain. If undefined, the installation program creates a new hosted zone.</p>
 <p><strong>Value:</strong> String, for example <code>Z3URY6TWQ91KVV</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   aws:
     hostedZoneRole:</code></pre></td>
 <td style="text-align: left;"><p>An Amazon Resource Name (ARN) for an existing IAM role in the account containing the specified hosted zone. The installation program and cluster operators assume this role when performing operations on the hosted zone. Use this parameter only when you are installing a cluster into a shared VPC.</p>
 <p><strong>Value:</strong> String, for example <code>arn:aws:iam::1234567890:role/shared-vpc-role</code>.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   aws:
     userProvisionedDNS:</code></pre></td>
 <td style="text-align: left;"><p>Enables user-provisioned DNS instead of the default cluster-provisioned DNS solution. If you use this feature, you must provide your own DNS solution that includes records for <code>api.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code> and <code>*.apps.&lt;cluster_name&gt;.&lt;base_domain&gt;.</code>. <code>userProvisionedDNS</code> is a Technology Preview feature.</p>
 <p><strong>Value:</strong> <code>Enabled</code> or <code>Disabled</code>. The default value is <code>Disabled</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   aws:
     region:</code></pre></td>
@@ -675,7 +715,7 @@ Optional AWS configuration parameters are described in the following table:
 <p>When running on ARM based AWS instances, ensure that you enter a region where AWS Graviton processors are available. See <a href="https://aws.amazon.com/ec2/graviton/#Global_availability">Global availability</a> map in the AWS documentation. Currently, AWS Graviton3 processors are only available in some regions.</p>
 </div></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   aws:
     serviceEndpoints:
@@ -684,7 +724,7 @@ Optional AWS configuration parameters are described in the following table:
 <td style="text-align: left;"><p>The AWS service endpoint name and URL. Custom endpoints are only required for cases where alternative AWS endpoints, such as FIPS, must be used. Custom API endpoints can be specified for EC2, S3, IAM, Elastic Load Balancing, Tagging, Route 53, and STS AWS services.</p>
 <p><strong>Value:</strong> Valid <a href="https://docs.aws.amazon.com/general/latest/gr/rande.html">AWS service endpoint</a> name and valid <a href="https://docs.aws.amazon.com/general/latest/gr/rande.html">AWS service endpoint</a> URL.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   aws:
     userTags:</code></pre></td>
@@ -694,14 +734,14 @@ Optional AWS configuration parameters are described in the following table:
 <p>You can add up to 25 user-defined tags during installation. The remaining 25 tags are reserved for OpenShift Container Platform.</p>
 </div></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   aws:
     propagateUserTags:</code></pre></td>
 <td style="text-align: left;"><p>A flag that directs in-cluster Operators to include the specified user tags in the tags of the AWS resources that the Operators create.</p>
 <p><strong>Value:</strong> Boolean values, for example <code>true</code> or <code>false</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   aws:
     publicIpv4Pool:</code></pre></td>
@@ -711,14 +751,14 @@ Optional AWS configuration parameters are described in the following table:
 <p>You can enable BYOIP only for customized installations that do not have any network restrictions.</p>
 </div></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   aws:
     bestEffortDeleteIgnition:</code></pre></td>
 <td style="text-align: left;"><p>An optional flag that determines whether to ignore errors when deleting Ignition objects from the S3 bucket. By default, the installation program fails if it cannot delete the Ignition objects.</p>
 <p><strong>Value:</strong> <code>true</code> or <code>false</code>. The default value is <code>false</code>, which causes the installation program to fail on S3 Ignition deletion errors.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   aws:
     ipFamily:</code></pre></td>
@@ -736,7 +776,7 @@ Optional AWS configuration parameters are described in the following table:
 </div>
 <p><strong>Value:</strong> "IPv4", "DualStackIPv4Primary", or "DualStackIPv6Primary". The default value is "IPv4".</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   aws:
     vpc:
@@ -748,7 +788,7 @@ Optional AWS configuration parameters are described in the following table:
 <p>For clusters that use AWS Local Zones, you must add AWS Local Zone subnets to this list to ensure edge machine pool creation.</p>
 <p><strong>Value:</strong> List of pairs of <code>id</code> and <code>roles</code> parameters.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   aws:
     vpc:
@@ -757,7 +797,7 @@ Optional AWS configuration parameters are described in the following table:
 <td style="text-align: left;"><p>The ID of an existing subnet to be used in place of a subnet created by the installation program.</p>
 <p><strong>Value:</strong> String. The subnet ID must be a unique ID containing only alphanumeric characters, beginning with "subnet-". The ID must be exactly 24 characters long.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   aws:
     vpc:

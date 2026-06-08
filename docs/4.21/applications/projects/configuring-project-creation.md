@@ -22,6 +22,8 @@ Access to the API is granted to developers with the `self-provisioner` role and 
 
 # Modifying the template for new projects
 
+To modify the default project template to customize the resources and settings applied when users create new projects, you can create a custom project template.
+
 As a cluster administrator, you can modify the default project template so that new projects are created using your custom requirements.
 
 To create your own custom project template:
