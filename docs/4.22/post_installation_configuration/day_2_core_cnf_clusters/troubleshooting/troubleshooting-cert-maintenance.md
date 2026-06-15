@@ -36,7 +36,7 @@ If you did not originally set the requested certificates, you can determine the 
 
 <!-- -->
 
-- [Proxy certificates](../../../security/certificate_types_descriptions/proxy-certificates.xml#cert-types-proxy-certificates)
+- [Proxy certificates](../../../security/certificate_types_descriptions/proxy-certificates.xml#proxy-certificates)
 
 ## User-provisioned API server certificates
 

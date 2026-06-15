@@ -1,6 +1,6 @@
-A *node selector* specifies a map of key-value pairs. The rules are defined using custom labels on nodes and selectors specified in pods.
+For a pod to be eligible to run on a specific node, you can include a *node selector* in the pod spec that has the indicated key-value pairs as the label on that node.
 
-For the pod to be eligible to run on a node, the pod must have the indicated key-value pairs as the label on the node.
+A *node selector* specifies a map of key-value pairs. The rules are defined using custom labels on nodes and selectors specified in pods.
 
 If you are using node affinity and node selectors in the same pod configuration, see the important considerations below.
 

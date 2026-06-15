@@ -940,6 +940,36 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHSA-2026:23241 - OpenShift Container Platform 4.17.19 fixed issues advisory
+
+Issued: 11 June 2026
+
+OpenShift Container Platform release 4.17.19 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:23241](https://access.redhat.com/errata/RHSA-2026:23241) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:23239](https://access.redhat.com/errata/RHBA-2026:23239) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.19 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, pagination controls were not present at mobile resolutions because PatternFly expected both top and bottom pagination controls to be used. With this release, pagination controls are present regardless of the mobile resolution. ([OCPBUGS-84967](https://redhat.atlassian.net/browse/OCPBUGS-84967))
+
+- Before this update, the manila container storage interface (CSI) driver node plugin sometimes crashed on startup if the Network File System (NFS) CSI plugin socket was not yet available. For example, this issue sometimes occurred after a node reboot. With this release, the manila CSI node DaemonSet waits for the NFS plugin socket to be ready before starting the driver, which prevents crash loops due to transient startup ordering. ([OCPBUGS-85572](https://redhat.atlassian.net/browse/OCPBUGS-85572))
+
+- Before this update, a change in the `controller-runtime` library in OpenShift Container Platform 4.21 caused logging to not be initialized for some of the controllers for the Operator. As a consequence, the Cluster Ingress Operator did not log controller initialization or reconciliation errors for the `gateway-labeler`, `gateway-service-dns`, and `gatewayclass` controllers. With this release, the Operator is updated to initialize logging for these controllers. As a result, the Operator logs initialization and reconciliation errors for these controllers. ([OCPBUGS-86027](https://issues.redhat.com/browse/OCPBUGS-86027))
+
+- Before this update, the `python3-perf` RPM package was incorrectly pinned to an old version. As a result, the RPM package was being flagged by security scanners for including more than 400 outstanding CVEs because the `python-3-perf` RPM package was built from the kernel RPM package. With this release, the pinning issue is resolved. As a result, the scanning result is clean. ([OCPBUGS-86513](https://issues.redhat.com/browse/OCPBUGS-86513))
+
+- Before this update, if an API server was temporarily unavailable because of an upgrade or network load, the `PerformanceProfile` status was not updated. As a consequence, the degraded condition might get stuck and never resolve, even after the cluster returned to a healthy state, because the Operator did not retry until the next reconcile event. With this release, the Operator schedules a retry of the status update until it succeeds, retrying approximately every 30 seconds. As a result, the stuck degraded status is temporary and is resolved automatically during the next retry. ([OCPBUGS-86809](https://issues.redhat.com/browse/OCPBUGS-86809))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHSA-2026:21709 - OpenShift Container Platform 4.17.18 fixed issues advisory
 
 Issued: 02 June 2026
@@ -955,8 +985,6 @@ $ oc adm release info 4.21.18 --pullspecs
 ```
 
 ### Fixed issues
-
-- Before this update, the lack of leader election on the hosted control plane ignition server controllers might have caused excessive resource requests during node pool reconciliation. As a consequence, excessive resource requests might have increased load on the registry hosting the image payload which increased the likelihood of errors processing the image payload. These errors might have caused excessive patching to the node pool token secrets. With this release, the image payload download errors were generalized to minimize patching of node pool token secrets. As a result, excessive resource requests do not occur. ([OCPBUGS-81671](https://issues.redhat.com/browse/OCPBUGS-81671))
 
 - Before this update, shared key access was enabled on the cluster storage account, preventing it from being migrated to identity-based access to Microsoft Azure Storage. As a consequence, shared key access caused security concerns and prevented migration. With this release, shared key access is automatically disabled when using a managed identity, facilitating a seamless transition to identity-based access. As a result, disabling shared key access improves security. ([OCPBUGS-82068](https://issues.redhat.com/browse/OCPBUGS-82068))
 

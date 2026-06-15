@@ -16,9 +16,9 @@ $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
 
 # Sample YAML for a compute machine set custom resource on vSphere
 
-To enable the Machine API to automate node provisioning on VMware vSphere infrastructure, define a `MachineSet` resource with parameters that are specific to VMware vSphere, for example data center, resource pool, and template.
+To enable the Machine API to automate node provisioning on VMware vSphere infrastructure, define a `MachineSet` resource with parameters that are specific to vSphere, for example data center, resource pool, and template.
 
-The sample YAML file defines a compute machine set that runs on VMware vSphere and creates nodes that are labeled with `node-role.kubernetes.io/<role>: ""`.
+The sample YAML file defines a compute machine set that runs on vSphere and creates nodes that are labeled with `node-role.kubernetes.io/<role>: ""`.
 
 In this sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<role>` is the node label to add.
 
@@ -99,11 +99,14 @@ Specifies the node label to add.
 `<disk_name>`
 Specifies one or more data disk definitions. For more information, see "Configuring data disks by using machine sets".
 
+`<image_name>`
+Specifies the image to use as a boot image for your nodes.
+
 `<vm_network_name>`
 Specifies the vSphere VM network to deploy the compute machine set to. This VM network must be where other compute machines reside in the cluster.
 
 `<vm_template_name>`
-Specifies the vSphere VM template to use, such as `user-5ddjd-rhcos`.
+Specifies the vSphere VM template to use as a boot image for your nodes, such as `user-5ddjd-rhcos`. You should use a template with the latest OpenShift Container Platform image when adding a new machine set.
 
 `<vcenter_data_center_name>`
 Specifies the vCenter datacenter to deploy the compute machine set on.
@@ -119,6 +122,8 @@ Specifies the vSphere resource pool for your VMs.
 
 `<vcenter_server_ip>`
 Specifies the vCenter server IP or fully qualified domain name.
+
+- [Manually updating the boot image](../../machine_configuration/mco-update-boot-images-manual.xml#mco-update-boot-images-manual)
 
 # Minimum required vCenter privileges for compute machine set management
 

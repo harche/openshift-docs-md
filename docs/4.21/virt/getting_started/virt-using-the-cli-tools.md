@@ -99,73 +99,20 @@ VM information commands
 
 You can use the following `virtctl create` commands to create manifests for virtual machines, instance types, and preferences.
 
-<table>
-<caption>VM manifest creation commands</caption>
-<colgroup>
-<col style="width: 66%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Command</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><dl>
-<dt><code>virtctl create vm</code></dt>
-<dd>
-&#10;</dd>
-</dl></td>
-<td style="text-align: left;"><p>Create a <code>VirtualMachine</code> (VM) manifest.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>virtctl create vm --name &lt;vm_name&gt;</code></p></td>
-<td style="text-align: left;"><p>Create a VM manifest, specifying a name for the VM.</p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p><code>virtctl create vm --user &lt;user_name&gt; --ssh-key|password-file=&lt;value&gt;</code></p></td>
-<td style="text-align: left;"><p>Create a VM manifest with a cloud-init configuration to create the selected user and either add an SSH public key from the supplied string, or a password from a file.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>virtctl create vm --access-cred type:password,src:&lt;secret&gt;</code></p></td>
-<td style="text-align: left;"><p>Create a VM manifest with a user and password combination injected from the selected secret.</p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p><code>virtctl create vm --access-cred type:ssh,src:&lt;secret&gt;,user:&lt;user_name&gt;</code></p></td>
-<td style="text-align: left;"><p>Create a VM manifest with an SSH public key injected from the selected secret.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>virtctl create vm --volume-sysprep src:&lt;config_map&gt;</code></p></td>
-<td style="text-align: left;"><p>Create a VM manifest, specifying a config map to use as the sysprep volume. The config map must contain a valid answer file named <code>unattend.xml</code> or <code>autounattend.xml</code>.</p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p><code>virtctl create vm --instancetype &lt;instancetype_name&gt;</code></p></td>
-<td style="text-align: left;"><p>Create a VM manifest that uses an existing cluster-wide instance type.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>virtctl create vm --instancetype=virtualmachineinstancetype/&lt;instancetype_name&gt;</code></p></td>
-<td style="text-align: left;"><p>Create a VM manifest that uses an existing namespaced instance type.</p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p><code>virtctl create instancetype --cpu &lt;cpu_value&gt; --memory &lt;memory_value&gt; --name &lt;instancetype_name&gt;</code></p></td>
-<td style="text-align: left;"><p>Create a manifest for a cluster-wide instance type.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>virtctl create instancetype --cpu &lt;cpu_value&gt; --memory &lt;memory_value&gt; --name &lt;instancetype_name&gt; --namespace &lt;namespace_value&gt;</code></p></td>
-<td style="text-align: left;"><p>Create a manifest for a namespaced instance type.</p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p><code>virtctl create preference --name &lt;preference_name&gt;</code></p></td>
-<td style="text-align: left;"><p>Create a manifest for a cluster-wide VM preference, specifying a name for the preference.</p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p><code>virtctl create preference --namespace &lt;namespace_value&gt;</code></p></td>
-<td style="text-align: left;"><p>Create a manifest for a namespaced VM preference.</p></td>
-</tr>
-</tbody>
-</table>
+| Command                                                                                                                          | Description                                                                                                                                                             |
+|----------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `virtctl create vm`                                                                                                              | Create a `VirtualMachine` (VM) manifest.                                                                                                                                |
+| `virtctl create vm --name <vm_name>`                                                                                             | Create a VM manifest, specifying a name for the VM.                                                                                                                     |
+| `virtctl create vm --user <user_name> --ssh-key|password-file=<value>`                                                           | Create a VM manifest with a cloud-init configuration to create the selected user and either add an SSH public key from the supplied string, or a password from a file.  |
+| `virtctl create vm --access-cred type:password,src:<secret>`                                                                     | Create a VM manifest with a user and password combination injected from the selected secret.                                                                            |
+| `virtctl create vm --access-cred type:ssh,src:<secret>,user:<user_name>`                                                         | Create a VM manifest with an SSH public key injected from the selected secret.                                                                                          |
+| `virtctl create vm --volume-sysprep src:<config_map>`                                                                            | Create a VM manifest, specifying a config map to use as the sysprep volume. The config map must contain a valid answer file named `unattend.xml` or `autounattend.xml`. |
+| `virtctl create vm --instancetype <instancetype_name>`                                                                           | Create a VM manifest that uses an existing cluster-wide instance type.                                                                                                  |
+| `virtctl create vm --instancetype=virtualmachineinstancetype/<instancetype_name>`                                                | Create a VM manifest that uses an existing namespaced instance type.                                                                                                    |
+| `virtctl create instancetype --cpu <cpu_value> --memory <memory_value> --name <instancetype_name>`                               | Create a manifest for a cluster-wide instance type.                                                                                                                     |
+| `virtctl create instancetype --cpu <cpu_value> --memory <memory_value> --name <instancetype_name> --namespace <namespace_value>` | Create a manifest for a namespaced instance type.                                                                                                                       |
+| `virtctl create preference --name <preference_name>`                                                                             | Create a manifest for a cluster-wide VM preference, specifying a name for the preference.                                                                               |
+| `virtctl create preference --namespace <namespace_value>`                                                                        | Create a manifest for a namespaced VM preference.                                                                                                                       |
 
 VM manifest creation commands
 

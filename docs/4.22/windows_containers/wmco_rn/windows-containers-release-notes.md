@@ -2,11 +2,11 @@ You can review the release notes to learn about the changes introduced through e
 
 # Release notes for Red Hat Windows Machine Config Operator 10.22.0
 
-Issued: DD Mm 2026
+Issued: 20 May 2026
 
 You can review the following release notes to learn about the new features and bug fixes in the Windows Machine Config Operator (WMCO) version 10.22.0.
 
-The components of the WMCO version 10.22.0 were released in TBD.
+The components of the WMCO version 10.22.0 were released in [RHBA-2026:19710](https://access.redhat.com/errata/RHBA-2026:19710).
 
 ## New features and improvements
 

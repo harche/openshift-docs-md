@@ -2,7 +2,9 @@ You can change the CPU or memory resource requests and limits assigned to a cont
 
 # About in-place pod resizing
 
-In-place pod resizing allows you to change the CPU and memory resources for containers within a running pod without application disruption. The standard methods for changing pod CPU and memory resources cause the pod to be re-created, potentially causing disruption. In-place pod resizing allows you to scale pod resources up or down without suffering the downtime or state loss associated with a pod restart.
+You can use in-place pod resizing to change the CPU and memory resources for containers within a running pod without suffering the downtime or state loss associated with a pod restart.
+
+The standard methods for changing pod CPU and memory resources cause the pod to be re-created, potentially causing disruption. You can use in-place pod resizing to scale pod resources up or down without application disruption.
 
 When using in-place pod resizing to change CPU or memory resources, you can control whether a pod is restarted by configuring a resize policy in the pod specification. The following example resize policy requires a pod restart upon changing the memory resources, but prevents a restart for CPU resource changes.
 
@@ -32,7 +34,10 @@ spec:
       restartPolicy: RestartContainer
 ```
 
-- Specifies a resize policy.
+where:
+
+`spec.containers.resizePolicy`
+Specifies a resize policy.
 
 <div class="note">
 
@@ -146,7 +151,7 @@ Note the following limitations:
 
 # Configuring in-place pod resizing
 
-In-place pod resizing requires that you add a resize policy to a pod specification.
+You can use in-place pod resizing to scale pod resources up or down without application disruption by adding a resize policy to a pod specification.
 
 You cannot add or modify a resize policy in an existing pod, but you can add or edit the policy in the pod’s owner object, such as a deployment, if the pod has an owner object.
 
@@ -171,11 +176,14 @@ You cannot add or modify a resize policy in an existing pod, but you can add or 
         # ...
         ```
 
-        - Specifies a resize policy. For CPU and/or memory resources specify one of the following values:
+        where:
 
-          - `NotRequired`: Apply any resource changes without restarting the pod. This is the default when using a resize policy.
+        `spec.containers.resizePolicy`
+        Specifies a resize policy. For CPU and/or memory resources specify one of the following values:
 
-          - `RestartContainer`: Apply any resource changes and restart the pod.
+        - `NotRequired`: Apply any resource changes without restarting the pod. This is the default when using a resize policy.
+
+        - `RestartContainer`: Apply any resource changes and restart the pod.
 
     2.  Create the object by running a command similar to the following:
 

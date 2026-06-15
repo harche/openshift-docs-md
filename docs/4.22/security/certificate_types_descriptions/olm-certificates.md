@@ -10,7 +10,7 @@ OLM does not update the certificates of Operators that it manages in proxy envir
 
 # Additional resources
 
-- [Proxy certificates](../../security/certificate_types_descriptions/proxy-certificates.xml#cert-types-proxy-certificates)
+- [Proxy certificates](../../security/certificate_types_descriptions/proxy-certificates.xml#proxy-certificates)
 
 - [Replacing the default ingress certificate](../../security/certificates/replacing-default-ingress-certificate.xml#replacing-default-ingress)
 

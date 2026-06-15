@@ -6,6 +6,11 @@ To view the supported guest operating systems for OpenShift Virtualization, see 
 
 # New features and enhancements
 
+Monitor node memory overcommit level for virtual machines
+Cluster administrators can balance workloads using the VM memory overcommit and utilization dashboard. The dashboard allows you to monitor whether clusters are underutilized or at risk due to memory overcommit, or to decide whether to expand a cluster.
+
+[CNV-44026](https://redhat.atlassian.net/browse/CNV-44026)
+
 KubeVirt Redfish for VM management through the Redfish API (Technology Preview)
 KubeVirt Redfish exposes OpenShift Virtualization virtual machines through the standard Redfish API. Using KubeVirt Redfish, administrators can manage VM power states, boot configuration, and virtual media attachments. This feature is available as a Technology Preview.
 
@@ -17,6 +22,13 @@ Configure PSRP, WINRM, or SSH to manage Windows-detected hosts in OpenShift Virt
 You can set a connection method to secure the communication between Windows hosts running on OpenShift Virtualization and the Ansible environment. Configure PowerShell Remote Protocol (PSRP), Windows Remote Management (WINRM), or Secure Shell (SSH) as a connection method in Ansible automation tasks to manage Windows hosts. The Ansible inventory plugin uses the protocol to manage the Windows hosts.
 
 [CNV-73306](https://redhat.atlassian.net/browse/CNV-73306)
+
+Configuring PCI passthrough for the IBM® Spyre Accelerator for VMs on IBM Z® and IBM® LinuxONE is generally available
+You can attach the IBM® Spyre Accelerator to VMs using PCI passthrough on IBM® z17 and IBM® LinuxONE Emperor 5 or later. The IBM® Spyre Accelerator enhances AI inferencing capabilities on IBM Z® and IBM® LinuxONE systems.
+
+For more information, see [Configuring PCI passthrough](../managing_vms/advanced_vm_management/virt-configuring-pci-passthrough.xml#virt-configuring-pci-passthrough).
+
+[CNV-83214](https://redhat.atlassian.net/browse/CNV-83214)
 
 <!-- -->
 
@@ -36,6 +48,11 @@ Define physical networks based on existing node network configuration policies (
 [CNV-72621](https://redhat.atlassian.net/browse/CNV-72621)
 
 <!-- -->
+
+Option to automatically clean up source PVCs after storage migration
+Virtual machine (VM) owners can now automatically clean up source persistent volume claims (PVCs) after a storage migration, reducing manual cleanup tasks. By default, OpenShift Virtualization retains the source PVCs so you can manually clean them up. You can deselect the option to keep source PVCs in the user interface to enable automatic cleanup after the migration completes.
+
+[CNV-73509](https://redhat.atlassian.net/browse/CNV-73509)
 
 Configure predictable PVC and DV names when cloning VMs
 Virtual machine (VM) owners and cluster administrators can configure predictable persistent volume claim (PVC) and data volume (DV) names when cloning a VM. Use the `volumeNamePolicy` to include the target VM name in the restored PVC names to maintain consistency and manageability of the storage resources. This improves compatibility with orchestrators that rely on the original DV name after restoration.
@@ -83,6 +100,11 @@ Removed deprecated label from localnet network attachment definition type
 The web console no longer displays a **Deprecated** label next to the localnet `NetworkAttachmentDefinition` (NAD) type. This change clarifies that localnet NAD functionality is not deprecated and remains fully supported. You can use either the NAD-based approach or the VM network wizard to create localnet networks for connecting virtual machines to physical networks.
 
 [OCPBUGS-83809](https://redhat.atlassian.net/browse/OCPBUGS-83809)
+
+Overview tab displays dynamic hierarchical view of VM data
+The **Overview** tab displays a dynamic, hierarchical view of VM data that adapts to your tree view selection, supporting both cluster and multi-cluster levels.
+
+[CNV-79560](https://redhat.atlassian.net/browse/CNV-79560)
 
 Add an internal certificate authority or a self-signed certificate for virtual machine images
 Cluster administrators can create a custom certificate authority (CA) or a self-signed certificate for URL images in a cluster in the Add Volume dialog. As a result, you can secure access to HTTPS sources to be used to create a virtual machine (VM) in a streamlined user workflow, without switching to the command line interface (CLI) for manual patching.
@@ -136,9 +158,25 @@ Virtual machine (VM) owners can create, filter, and delete a user-generated temp
 
 [CNV-81577](https://redhat.atlassian.net/browse/CNV-81577)
 
+<!-- -->
+
+Create virtual machines from in-cluster native templates (Technology Preview)
+Virtual machine (VM) owners can create VMs from the OpenShift Virtualization cluster native template custom resource. The VM template tracks a golden image that is updated periodically, reducing errors and ensuring uniformity in the virtualized environment. You can host the template in all namespaces that you can control.
+
+[CNV-73392](https://redhat.atlassian.net/browse/CNV-73392)
+
 # Known issues
 
 Some linked Jira tickets are accessible only with Red Hat credentials.
+
+Non-versioned HyperConverged commands default to v1 API
+In this release, the v1 API for the `HyperConverged` custom resource (CR) is introduced, in preparation for a future migration from v1beta1 to v1. Due to the way Kubernetes selects default API versions, non-versioned commands such as `oc get hco`, `oc edit hyperconverged`, and `oc patch hyperconverged` now default to the v1 API. As a consequence, these commands can behave unexpectedly or fail because the v1 API is not yet ready for production use.
+
+To work around this problem, use the fully versioned type name `hyperconvergeds.v1beta1.hco.kubevirt.io` when running commands against the `HyperConverged` CR. For example, use `oc get hyperconvergeds.v1beta1.hco.kubevirt.io` instead of `oc get hco`. For the `oc explain` command, use the `--api-version` flag: `oc explain --api-version=hco.kubevirt.io/v1beta1 hco.spec`. As a result, commands target the v1beta1 API as intended.
+
+[CNV-78892](https://redhat.atlassian.net/browse/CNV-78892)
+
+<!-- -->
 
 VMs using the cnv-bridge CNI fail to live migrate after updates from 4.12
 When you update from OpenShift Container Platform 4.12 to a newer minor version, virtual machines that use the `cnv-bridge` Container Network Interface (CNI) fail to live migrate. As a consequence, live migration fails for affected VMs.
@@ -146,6 +184,11 @@ When you update from OpenShift Container Platform 4.12 to a newer minor version,
 To work around this problem, change the `spec.config.type` field in your `NetworkAttachmentDefinition` manifest from `cnv-bridge` to `bridge` before you perform the update. As a result, live migration succeeds for VMs that use the updated network attachment definitions.
 
 [Known issue when migrating VMs that use the cnv-bridge CNI](https://access.redhat.com/solutions/7069807)
+
+VMs might lose ingress connectivity after live migration over an EVPN-enabled network
+When you live migrate a VM across OpenShift Container Platform clusters that leverage a Border Gateway Protocol Ethernet Virtual Private Network (BGP EVPN)-enabled user-defined network, the VM might lose ingress connectivity.
+
+[OCPBUGS-86503](https://redhat.atlassian.net/browse/OCPBUGS-86503)
 
 <!-- -->
 
@@ -183,13 +226,13 @@ To work around this problem, use user accounts instead of service accounts, beca
 
 [CNV-33835](https://issues.redhat.com/browse/CNV-33835)
 
-Upgrading to OpenShift Virtualization 4.21 when using wasp-agent
-If you are upgrading OpenShift Virtualization from version 4.20 to 4.21 and using `wasp-agent` to increase VM workload density, you must perform the following steps after you begin the upgrade:
+Upgrading to OpenShift Virtualization 4.22 when using wasp-agent
+If you are upgrading OpenShift Virtualization from version 4.20 to 4.22 and using `wasp-agent` to increase VM workload density, you must perform the following steps after you begin the upgrade:
 
-1.  Wait for the Machine Configuration Pool (MCP) to complete the updating of the infra nodes.
+1.  Wait for the Machine Configuration Pool (MCP) to complete updating the control-plane nodes.
 
 2.  Edit the `KubeletConfig` file to remove the `failSwapOn: false` key-value pair.
 
 3.  Wait for the MCP to finish updating the worker nodes.
 
-[CNV-75837](https://issues.redhat.com/browse/CNV-75837)
+[CNV-89504](https://redhat.atlassian.net/browse/CNV-89504)

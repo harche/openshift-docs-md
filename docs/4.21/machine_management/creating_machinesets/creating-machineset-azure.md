@@ -16,9 +16,11 @@ $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
 
 # Sample YAML for a compute machine set custom resource on Azure
 
-This sample YAML defines a compute machine set that runs in the `1` Microsoft Azure zone in a region and creates nodes that are labeled with `node-role.kubernetes.io/<role>: ""`.
+You can define a machine set YAML to provision nodes by specifying parameters such as `vmSize` and `image`. You can use this to automate and scale infrastructure consistently, to ensure compute nodes meet specific workload requirements within the cluster.
 
-In this sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<role>` is the node label to add.
+The sample YAML defines a compute machine set that runs in the `1` Microsoft Azure zone in a region and creates nodes that are labeled with `node-role.kubernetes.io/<role>: ""`. The YAML file specifies a taint to prevent user workloads from being scheduled on infra nodes. After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
+
+In the sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<role>` is the node label to add.
 
 ``` yaml
 apiVersion: machine.openshift.io/v1beta1
@@ -91,47 +93,55 @@ spec:
           zone: "1"
 ```
 
-- Specify the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI installed, you can obtain the infrastructure ID by running the following command:
+where:
 
-  ``` terminal
-  $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
-  ```
+`<infrastructure_id>`
+Specifies the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI installed, you can obtain the infrastructure ID by running the following command:
 
-  You can obtain the subnet by running the following command:
+``` terminal
+$ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
+```
 
-  ``` terminal
-  $  oc -n openshift-machine-api \
-      -o jsonpath='{.spec.template.spec.providerSpec.value.subnet}{"\n"}' \
-      get machineset/<infrastructure_id>-worker-centralus1
-  ```
+You can obtain the subnet by running the following command:
 
-  You can obtain the vnet by running the following command:
+``` terminal
+$  oc -n openshift-machine-api \
+    -o jsonpath='{.spec.template.spec.providerSpec.value.subnet}{"\n"}' \
+    get machineset/<infrastructure_id>-worker-centralus1
+```
 
-  ``` terminal
-  $  oc -n openshift-machine-api \
-      -o jsonpath='{.spec.template.spec.providerSpec.value.vnet}{"\n"}' \
-      get machineset/<infrastructure_id>-worker-centralus1
-  ```
+You can obtain the vnet by running the following command:
 
-- Specify the node label to add.
+``` terminal
+$  oc -n openshift-machine-api \
+    -o jsonpath='{.spec.template.spec.providerSpec.value.vnet}{"\n"}' \
+    get machineset/<infrastructure_id>-worker-centralus1
+```
 
-- Specify the infrastructure ID, node label, and region.
+`<role>`
+Specifies the node label to add.
 
-- Specify the image details for your compute machine set. If you want to use an Azure Marketplace image, see "Using the Azure Marketplace offering".
+`<infrastructure_id>-<role>-<region>`
+Specifies the infrastructure ID, node label, and region.
 
-- Specify an image that is compatible with your instance type. The Hyper-V generation V2 images created by the installation program have a `-gen2` suffix, while V1 images have the same name without the suffix.
+<div class="note">
 
-- Specify the region to place machines on.
+The value of the `spec.template.spec.providerSpec.value.image` parameter specifies the image details for your compute machine set. If you want to use an Azure Marketplace image, see "Using the Azure Marketplace offering".
 
-- Optional: Specify custom tags in your machine set. Provide the tag name in `<custom_tag_name>` field and the corresponding tag value in `<custom_tag_value>` field.
+The value of the `spec.template.spec.providerSpec.value.image.resourceID` parameter specifies an image that is compatible with your instance type. The Hyper-V generation V2 images created by the installation program have a `-gen2` suffix, while V1 images have the same name without the suffix.
 
-- Specify the zone within your region to place machines on. Ensure that your region supports the zone that you specify.
+The value of the `spec.template.spec.providerSpec.value.location` parameter specifies the region to place machines on.
 
-  <div class="important">
+</div>
 
-  If your region supports availability zones, you must specify the zone. Specifying the zone avoids volume node affinity failure when a pod requires a persistent volume attachment. To do this, you can create a compute machine set for each zone in the same region.
+`<custom_tag_name_1>`
+Optional: Specifies custom tags in your machine set. Provide the tag name in `<custom_tag_name>` field and the corresponding tag value in `<custom_tag_value>` field.
 
-  </div>
+<div class="note">
+
+The value of the `spec.template.spec.providerSpec.value.zone` parameter specifies the zone within your region to place machines on. Ensure that your region supports the zone that you specify. If your region supports availability zones, you must specify the zone. Specifying the zone avoids volume node affinity failure when a pod requires a persistent volume attachment. To do this, you can create a compute machine set for each zone in the same region.
+
+</div>
 
 # Creating a compute machine set
 
@@ -527,7 +537,7 @@ You can create a compute machine set running on Microsoft Azure that deploys mac
 
 ## Creating machines on Ephemeral OS disks by using compute machine sets
 
-You can launch machines on Ephemeral OS disks on Azure by editing your compute machine set YAML file.
+To improve performance and reduce storage costs, you can host the OS disk directly on the local storage of the virtual machines (VMs) rather than on remote Microsoft Azure Storage. You can launch machines on Ephemeral OS disks on Azure by editing your compute machine set YAML file.
 
 - Have an existing Microsoft Azure cluster.
 
@@ -555,15 +565,19 @@ You can launch machines on Ephemeral OS disks on Azure by editing your compute m
            ...
     ```
 
-    - These lines enable the use of Ephemeral OS disks.
+    where:
 
-    - Ephemeral OS disks are only supported for VMs or scale set instances that use the Standard LRS storage account type.
+    `providerSpec.value.osDisk.diskSettings`, `providerSpec.value.osDisk.diskSettings.ephemeralStorageLocation`, and `providerSpec.value.osDisk.cachingType`
+    Enables the use of Ephemeral OS disks.
 
-      <div class="important">
+    `providerSpec.value.osDisk.managedDisk.storageAccountType`
+    Ephemeral OS disks are only supported for VMs or scale set instances that use the Standard LRS storage account type.
 
-      The implementation of Ephemeral OS disk support in OpenShift Container Platform only supports the `CacheDisk` placement type. Do not change the `placement` configuration setting.
+    <div class="important">
 
-      </div>
+    The implementation of Ephemeral OS disk support in OpenShift Container Platform only supports the `CacheDisk` placement type. Do not change the `placement` configuration setting.
+
+    </div>
 
 3.  Create a compute machine set using the updated configuration:
 
@@ -575,7 +589,7 @@ You can launch machines on Ephemeral OS disks on Azure by editing your compute m
 
 # Machine sets that deploy machines with ultra disks as data disks
 
-You can create a machine set running on Azure that deploys machines with ultra disks. Ultra disks are high-performance storage that are intended for use with the most demanding data workloads.
+You can create a machine set running on Microsoft Azure that deploys machines with ultra disks. Ultra disks are high-performance storage that are intended for use with the most demanding data workloads.
 
 You can also create a persistent volume claim (PVC) that dynamically binds to a storage class backed by Azure ultra disks and mounts them to pods.
 
@@ -593,7 +607,7 @@ Data disks do not support the ability to specify disk throughput or disk IOPS. Y
 
 ## Creating machines with ultra disks by using machine sets
 
-You can deploy machines with ultra disks on Azure by editing your machine set YAML file.
+You can deploy machines with ultra disks on Microsoft Azure by editing your machine set YAML file.
 
 - Have an existing Microsoft Azure cluster.
 
@@ -605,9 +619,13 @@ You can deploy machines with ultra disks on Azure by editing your machine set YA
     --template='{{index .data.userData | base64decode}}' | jq > userData.txt
     ```
 
-    - Replace `<role>` with `worker`.
+    where:
 
-    - Specify `userData.txt` as the name of the new custom secret.
+    `<role>`
+    Replace with `worker`.
+
+    `userData.txt`
+    Specifies `userData.txt` as the name of the new custom secret.
 
 2.  In a text editor, open the `userData.txt` file and locate the final `}` character in the file.
 
@@ -648,21 +666,31 @@ You can deploy machines with ultra disks on Azure by editing your machine set YA
         }
         ```
 
-        - The configuration details for the disk that you want to attach to a node as an ultra disk.
+        where:
 
-        - Specify the `lun` value that is defined in the `dataDisks` stanza of the machine set you are using. For example, if the machine set contains `lun: 0`, specify `lun0`. You can initialize multiple data disks by specifying multiple `"disks"` entries in this configuration file. If you specify multiple `"disks"` entries, ensure that the `lun` value for each matches the value in the machine set.
+        `"disks"`
+        Specifies the configuration details for the disk that you want to attach to a node as an ultra disk.
 
-        - The configuration details for a new partition on the disk.
+        `"device"`
+        Specifies the `lun` value that is defined in the `dataDisks` stanza of the machine set you are using. For example, if the machine set contains `lun: 0`, specify `lun0`. You can initialize multiple data disks by specifying multiple `"disks"` entries in this configuration file. If you specify multiple `"disks"` entries, ensure that the `lun` value for each matches the value in the machine set.
 
-        - Specify a label for the partition. You might find it helpful to use hierarchical names, such as `lun0p1` for the first partition of `lun0`.
+        `"partitions"`
+        Specifies the configuration details for a new partition on the disk.
 
-        - Specify the total size in MiB of the partition.
+        `"label"`
+        Specifies a label for the partition. You might find it helpful to use hierarchical names, such as `lun0p1` for the first partition of `lun0`.
 
-        - Specify the filesystem to use when formatting a partition. Use the partition label to specify the partition.
+        `"sizeMiB"`
+        Specifies the total size in MiB of the partition.
 
-        - Specify a `systemd` unit to mount the partition at boot. Use the partition label to specify the partition. You can create multiple partitions by specifying multiple `"partitions"` entries in this configuration file. If you specify multiple `"partitions"` entries, you must specify a `systemd` unit for each.
+        `"filesystems"`
+        Specifies the filesystem to use when formatting a partition. Use the partition label to specify the partition.
 
-        - For `Where`, specify the value of `storage.filesystems.path`. For `What`, specify the value of `storage.filesystems.device`.
+        `"units"`
+        Specifies a `systemd` unit to mount the partition at boot. Use the partition label to specify the partition. You can create multiple partitions by specifying multiple `"partitions"` entries in this configuration file. If you specify multiple `"partitions"` entries, you must specify a `systemd` unit for each.
+
+        `"contents"`
+        Specifies the value of `storage.filesystems.path` for `Where`. Specifies the value of `storage.filesystems.device` for `What`.
 
 3.  Extract the disabling template value to a file called `disableTemplating.txt` by running the following command:
 
@@ -671,7 +699,7 @@ You can deploy machines with ultra disks on Azure by editing your machine set YA
     --template='{{index .data.disableTemplating | base64decode}}' | jq > disableTemplating.txt
     ```
 
-    - Replace `<role>` with `worker`.
+    Replace `<role>` with `worker`.
 
 4.  Combine the `userData.txt` file and `disableTemplating.txt` file to create a data secret file by running the following command:
 
@@ -681,7 +709,7 @@ You can deploy machines with ultra disks on Azure by editing your machine set YA
     --from-file=disableTemplating=disableTemplating.txt
     ```
 
-    - For `<role>-user-data-x5`, specify the name of the secret. Replace `<role>` with `worker`.
+    For `<role>-user-data-x5`, specify the name of the secret. Replace `<role>` with `worker`.
 
 5.  Copy an existing Azure `MachineSet` custom resource (CR) and edit it by running the following command:
 
@@ -689,7 +717,10 @@ You can deploy machines with ultra disks on Azure by editing your machine set YA
     $ oc edit machineset <machine_set_name>
     ```
 
-    where `<machine_set_name>` is the machine set that you want to provision machines with ultra disks.
+    where:
+
+    `<machine_set_name>`
+    Indicates the machine set that you want to provision machines with ultra disks.
 
 6.  Add the following lines in the positions indicated:
 
@@ -717,11 +748,19 @@ You can deploy machines with ultra disks on Azure by editing your machine set YA
                 name: <role>-user-data-x5
     ```
 
-    - Specify a label to use to select a node that is created by this machine set. This procedure uses `disk.ultrassd` for this value.
+    where:
 
-    - These lines enable the use of ultra disks. For `dataDisks`, include the entire stanza.
+    `spec.template.spec.metadata.labels.disk`
+    Specifies a label to use to select a node that is created by this machine set. The example uses `disk.ultrassd` for this value.
 
-    - Specify the user data secret created earlier. Replace `<role>` with `worker`.
+    `spec.template.spec.providerSpec.value.ultraSSDCapability`
+    Enables the use of ultra disks. For `dataDisks`, include the entire stanza.
+
+    `spec.template.spec.providerSpec.value.dataDisks`
+    Ensure you include the entire stanza for `dataDisks`.
+
+    `spec.template.spec.providerSpec.value.userDataSecret.name`
+    Specifies the user data secret created earlier. Replace `<role>` with `worker`.
 
 7.  Create a machine set using the updated configuration by running the following command:
 
@@ -775,7 +814,7 @@ You can deploy machines with ultra disks on Azure by editing your machine set YA
 
 ## Troubleshooting resources for machine sets that enable ultra disks
 
-Use the information in this section to understand and recover from issues you might encounter.
+You can recover from issues that you might encounter when you enable ultra disks for machine sets. Review fields, such as disk settings, and ensure that the parameters are correctly configured.
 
 ### Incorrect ultra disk configuration
 
@@ -991,7 +1030,7 @@ For more information about related features and functionality, see the Microsoft
 
 # Accelerated Networking for Microsoft Azure VMs
 
-Accelerated Networking uses single root I/O virtualization (SR-IOV) to provide Microsoft Azure VMs with a more direct path to the switch. This enhances network performance. This feature can be enabled during or after installation.
+Accelerated Networking uses single root I/O virtualization (SR-IOV) to provide Microsoft Azure VMs with a more direct path to the switch. This enhances network performance. You can enable this feature during or after installation.
 
 ## Limitations
 
@@ -1069,7 +1108,7 @@ You cannot change an existing Capacity Reservation configuration for a machine s
 
 # Adding a GPU node to an existing OpenShift Container Platform cluster
 
-You can copy and modify a default compute machine set configuration to create a GPU-enabled machine set and machines for the Azure cloud provider.
+To provide specialized hardware for compute-intensive workloads that require NVIDIA GPU acceleration, you can copy and modify a default compute machine set configuration to create a GPU-enabled machine set and machines for the Microsoft Azure cloud provider.
 
 The following table lists the validated instance types:
 
@@ -1081,11 +1120,11 @@ The following table lists the validated instance types:
 
 <div class="note">
 
-By default, Azure subscriptions do not have a quota for the Azure instance types with GPU. Customers have to request a quota increase for the Azure instance families listed above.
+By default, Microsoft Azure subscriptions do not have a quota for the Microsoft Azure instance types with GPU. Customers have to request a quota increase for the Microsoft Azure instance families in the preceding list.
 
 </div>
 
-1.  View the machines and machine sets that exist in the `openshift-machine-api` namespace by running the following command. Each compute machine set is associated with a different availability zone within the Azure region. The installer automatically load balances compute machines across availability zones.
+1.  View the machines and machine sets that exist in the `openshift-machine-api` namespace by running the following command. Each compute machine set is associated with a different availability zone within the Microsoft Azure region. The installation program automatically load balances compute machines across availability zones.
 
     ``` terminal
     $ oc get machineset -n openshift-machine-api
@@ -1347,7 +1386,7 @@ By default, Azure subscriptions do not have a quota for the Azure instance types
     machineset.machine.openshift.io/myclustername-nc4ast4-gpu-worker-centralus1 created
     ```
 
-8.  View the machines and machine sets that exist in the `openshift-machine-api` namespace by running the following command. Each compute machine set is associated with a different availability zone within the Azure region. The installer automatically load balances compute machines across availability zones.
+8.  View the machines and machine sets that exist in the `openshift-machine-api` namespace by running the following command. Each compute machine set is associated with a different availability zone within the Microsoft Azure region. The installation program automatically load balances compute machines across availability zones.
 
     ``` terminal
     $ oc get machineset -n openshift-machine-api

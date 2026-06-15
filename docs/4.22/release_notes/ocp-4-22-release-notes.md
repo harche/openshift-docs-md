@@ -4,7 +4,7 @@ Built on Red Hat Enterprise Linux (RHEL) and Kubernetes, OpenShift Container Pl
 
 # About this release
 
-OpenShift Container Platform ([RHBA-2026:449](https://access.redhat.com/errata/RHBA-2026:449)) is now available. This release uses [Kubernetes 1.35](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.35.md) with CRI-O runtime. New features, changes, and known issues that pertain to OpenShift Container Platform 4.17 are included in this topic.
+OpenShift Container Platform ([RHEA-2026:0449](https://access.redhat.com/errata/RHEA-2026:0449)) is now available. This release uses [Kubernetes 1.35](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.35.md) with CRI-O runtime. New features, changes, and known issues that pertain to OpenShift Container Platform 4.17 are included in this topic.
 
 OpenShift Container Platform 4.17 clusters are available at <https://console.redhat.com/openshift>. From the Red Hat Hybrid Cloud Console, you can deploy OpenShift Container Platform clusters to either on-premises or cloud environments.
 
@@ -537,9 +537,9 @@ With this update, the OpenShift Container Platform release image no longer inclu
 
 ## Images deprecated and removed features
 
-| Feature                  | 4.20       | 4.21       | 4.22 |
-|--------------------------|------------|------------|------|
-| Cluster Samples Operator | Deprecated | Deprecated |      |
+| Feature                  | 4.20       | 4.21       | 4.22       |
+|--------------------------|------------|------------|------------|
+| Cluster Samples Operator | Deprecated | Deprecated | Deprecated |
 
 Images deprecated and removed tracker
 
@@ -570,9 +570,9 @@ Machine management deprecated and removed tracker
 
 ## Networking deprecated and removed features
 
-| Feature  | 4.20       | 4.21       | 4.22 |
-|----------|------------|------------|------|
-| iptables | Deprecated | Deprecated |      |
+| Feature  | 4.20       | 4.21       | 4.22       |
+|----------|------------|------------|------------|
+| iptables | Deprecated | Deprecated | Deprecated |
 
 Networking deprecated and removed tracker
 
@@ -592,8 +592,8 @@ Node deprecated and removed tracker
 
 | Feature                         | 4.20                 | 4.21                 | 4.22       |
 |---------------------------------|----------------------|----------------------|------------|
-| oc-mirror plugin v1             | Deprecated           | Deprecated           |            |
-| Docker v2 registries            | Deprecated           | Deprecated           |            |
+| oc-mirror plugin v1             | Deprecated           | Deprecated           | Deprecated |
+| Docker v2 registries            | Deprecated           | Deprecated           | Deprecated |
 | `oc adm release mirror` command | General Availability | General Availability | Deprecated |
 
 OpenShift CLI (oc) deprecated and removed tracker
@@ -617,9 +617,9 @@ RHCOS deprecated and removed tracker
 
 ## Web console deprecated and removed features
 
-| Feature                                | 4.20       | 4.21       | 4.22 |
-|----------------------------------------|------------|------------|------|
-| `useModal` hook for dynamic plugin SDK | Deprecated | Deprecated |      |
+| Feature                                | 4.20       | 4.21       | 4.22       |
+|----------------------------------------|------------|------------|------------|
+| `useModal` hook for dynamic plugin SDK | Deprecated | Deprecated | Deprecated |
 
 Web console deprecated and removed tracker
 
@@ -936,6 +936,8 @@ The following issues are fixed for this release:
 
 - Before this update, a failure to update the `PerformanceProfile` status due to a temporarily unavailable API server during an upgrade or under network load could leave the profile in a `Degraded` condition. As a consequence, the degraded condition might get stuck and never resolve, even after the cluster returned to a healthy state, because the operator did not retry until the next reconcile event. With this update, the operator schedules a retry of the status update until it succeeds, retrying approximately every 30 seconds. As a result, the stuck degraded condition is temporary and resolves automatically during the next retry. ([OCPBUGS-62277](https://issues.redhat.com/browse/OCPBUGS-62277))
 
+- Previously, when a `MachineConfigPool` resource was paused, the NUMA Resources Operator could enter an infinite reconciliation loop. This prevented all node groups from completing their updates, including those not associated with the paused pool. With this update, paused `MachineConfigPool` resources no longer block the operator, and node groups backed by non-paused pools continue to reconcile normally. Additionally, the `NUMAResourcesOperator` custom resource status now reports a `MachineConfigPoolPaused` condition, providing visibility into which pools are paused and might require attention. As a result, workflows that involve paused `MachineConfigPool` resources, such as canary upgrades, no longer cause the NUMA Resources Operator to stall. ([OCPBUGS-84690](https://issues.redhat.com/browse/OCPBUGS-84690))
+
 ## Observability
 
 - Before this update, when you clicked on a link that included `monitoring/graph`, you were redirected to `monitoring/query-browser` and the query parameters were not re-encoded. As a consequence, invalid queries occurred. With this release, the parameters are re-encoded to produce valid queries. ([OCPBUGS-81567](https://redhat.atlassian.net/browse/OCPBUGS-81567))
@@ -1249,7 +1251,7 @@ This section includes several known issues for OpenShift Container Platform 4.17
 
 - A known issue exists where the `ovn-kubernetes-control-plane` Service Account (SA) fails to create the `RouteAdvertisement` CR that is needed in the `openshift-ovn-kubernetes` namespace to enable managed routing mode. As a consequence, no-overlay mode does not work in this configuration. There is currently no workaround available. ([OCPBUGS-83406](https://issues.redhat.com/browse/OCPBUGS-83406))
 
-- In this release, users encountering an issue when creating a CUDN (cluster user-defined network) with a transport mode set to `NoOverlay`, may find that their custom resource definition (CRD) lacks the necessary `NoOverlay` configuration fields. This omission results in network failure, impacting east-west traffic paths due to the missing `NoOverlay` field in the CRD. To resolve this issue, you can use default transport mode. (link:https://redhat.atlassian.net/browse/OCPBUGS-86761)
+- In this release, users encountering an issue when creating a CUDN (cluster user-defined network) with a transport mode set to `NoOverlay`, may find that their custom resource definition (CRD) lacks the necessary `NoOverlay` configuration fields. This omission results in network failure, impacting east-west traffic paths due to the missing `NoOverlay` field in the CRD. To resolve this issue, you can use default transport mode. ([OCPBUGS-86761](https://issues.redhat.com/browse/OCPBUGS-86761))
 
 - When you run Cloud-native Network Functions (CNF) latency tests on an OpenShift Container Platform cluster, the test might return results that exceed the latency threshold, such as 20 microseconds for cyclictest testing. This can result in intermittent test failures even when the cluster is correctly configured for low-latency workloads. As a workaround, revert the `stalld` backend to `sched_debug` to reduce the frequency and magnitude of latency spikes. ([OCPBUGS-86339](https://redhat.atlassian.net/browse/OCPBUGS-86339))
 
@@ -1261,7 +1263,7 @@ This section includes several known issues for OpenShift Container Platform 4.17
 
 - Deleting and recreating test workloads with a BlueField-3 NIC causes clock jumps due to inconsistent PTP synchronization. This disrupts time synchronization in test workloads. The time synchronization stabilizes when the workloads are stable. ([RHEL-93579](https://issues.redhat.com/browse/RHEL-93579))
 
-- Currently, Extended Update Support (EUS) to EUS image-based upgrades are not supported on clusters that have cert-manager installed. As a workaround, remove cert-manager before performing the image-based upgrade, and reinstall it after the upgrade completes. ([OCPBUGS-86967](https://issues.redhat.com/browse/OCPBUGS-86967))
+- Currently, Extended Update Support (EUS) to EUS image-based upgrades are not supported on clusters that have cert-manager installed. ([OCPBUGS-86967](https://issues.redhat.com/browse/OCPBUGS-86967))
 
 # Asynchronous errata updates
 

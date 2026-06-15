@@ -479,17 +479,7 @@ For Developers, multi-tenancy is available for both Loki and Prometheus but requ
 
 - [Kubernetes Storage Version Migrator Operator](../../operators/operator-reference.xml#cluster-kube-storage-version-migrator-operator_operator-reference)
 
-# Installing Kafka (optional)
-
-The Kafka Operator is supported for large-scale environments. Kafka provides high-throughput and low-latency data feeds for forwarding network flow data in a more resilient, scalable way.
-
-You can install the Kafka Operator as Red Hat AMQ Streams from the Operator Hub, just as the Loki Operator and Network Observability Operator were installed. Refer to "Configuring the FlowCollector resource with Kafka" to configure Kafka as a storage option.
-
-<div class="note">
-
-To uninstall Kafka, refer to the uninstallation process that corresponds with the method you used to install.
-
-</div>
+<!-- -->
 
 - [Red Hat AMQ Streams](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/2.2)
 

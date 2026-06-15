@@ -1,14 +1,20 @@
-You can use [sigstore](https://www.sigstore.dev/) with OpenShift Container Platform to improve supply chain security.
+To improve supply chain security, cluster administrators or application developers can use the sigstore framework with OpenShift Container Platform.
+
+Sigstore is a collection of open source tools that you can use individually or together to improve your software supply chain security by securely signing and verifying software artifacts.
 
 # About sigstore
 
-The sigstore project enables developers to sign-off on what they build and administrators to verify signatures and monitor workflows at scale. With the sigstore project, signatures can be stored in the same registry as the build images. A second server is not needed. The identity piece of a signature is tied to the OpenID Connect (OIDC) identity through the Fulcio certificate authority, which simplifies the signature process by allowing key-less signing. Additionally, sigstore includes Rekor, which records signature metadata to an immutable, tamper-resistant ledger.
+Cluster administrators or application developers can use the sigstore project to improve supply chain security. Developers can sign-off on what they build and administrators can verify those signatures and monitor workflows at scale.
+
+With the sigstore project, signatures can be stored in the same registry as the build images. A second server is not needed. The identity piece of a signature is tied to the OpenID Connect (OIDC) identity through the Fulcio certificate authority, which simplifies the signature process by allowing key-less signing. Additionally, sigstore includes Rekor, which records signature metadata to an immutable, tamper-resistant ledger.
 
 You can use the `ClusterImagePolicy` and `ImagePolicy` custom resource (CR) objects to enable and configure sigstore support at the cluster or namespace scope. These objects specify the images and repositories to be verified and how the signatures must be verified.
 
 # About configuring sigstore support
 
-You can use the `ClusterImagePolicy` and `ImagePolicy` custom resource (CR) objects to enable and configure sigstore support for the entire cluster or a specific namespace. These objects contain a policy that specifies the images and repositories to be verified by using sigstore tooling and how the signatures must be verified.
+You can use the `ClusterImagePolicy` and `ImagePolicy` custom resource (CR) objects to enable and configure sigstore support for the entire cluster or a specific namespace.
+
+The `ClusterImagePolicy` and `ImagePolicy` objects contain a policy that specifies the images and repositories to be verified by using sigstore tooling and how the signatures must be verified.
 
 - Cluster image policy. A cluster image policy object enables a cluster administrator to configure a sigstore signature verification policy for the entire cluster. When enabled, the Machine Config Operator (MCO) watches the `ClusterImagePolicy` object and updates the `/etc/containers/policy.json` and `/etc/containers/registries.d/sigstore-registries.yaml` files on all nodes in the cluster.
 
@@ -63,9 +69,9 @@ If a scoped image or repository in an image policy is nested under one of the sc
 `policy`
 Contains configuration to allow images from the sources listed in `scopes` to be verified, and defines how images not matching the verification policy are treated. You must configure a `rootOfTrust` and optionally, a `signedIdentity`.
 
-- `rootOfTrust`: Specifies the root of trust for the policy. Configure either a public key, a Bring Your Own Public Key Infrastructure (BYOPKI) certificate, or a [Fulcio certificate](https://docs.sigstore.dev/certificate_authority/overview/).
+- `rootOfTrust`: Specifies the root of trust for the policy. Configure either a public key, a Bring Your Own Public Key Infrastructure (BYOPKI) certificate, or a Fulcio certificate.
 
-  - `publicKey`: Indicates that the policy relies on a sigstore public key. You must specify a base64-encoded PEM format public key. You can optionally include [Rekor verification](https://docs.sigstore.dev/logging/overview/).
+  - `publicKey`: Indicates that the policy relies on a sigstore public key. You must specify a base64-encoded PEM format public key. You can optionally include Rekor verification.
 
   - `PKI` Indicates that the policy relies on a certificate from your own public key infrastructure (PKI) that is compatible with Cosign Bring Your Own Public Key Infrastructure (BYOPKI) verification. You must specify a base64-encoded PEM format public key. BYOPKI enables you to validate container images using an existing X.509 certificate while aligning with Cosign’s bring-your-own PKI signing workflow.
 
@@ -77,7 +83,7 @@ Contains configuration to allow images from the sources listed in `scopes` to be
 
     - The email of the Fulcio authentication configuration
 
-    - The [Rekor verification](https://docs.sigstore.dev/logging/overview/)
+    - The Rekor verification
 
 - `signedIdentity`: Specifies the approach used to verify the image in the signature and the actual image itself. To configure a signed identity, you must specify one of the following parameters as the match policy:
 
@@ -115,7 +121,9 @@ You can remove a policy by deleting the `ClusterImagePolicy` and `ImagePolicy` o
 
 # Creating a cluster image policy CR
 
-A `ClusterImagePolicy` custom resource (CR) enables a cluster administrator to configure a sigstore signature verification policy for the entire cluster. When enabled, the Machine Config Operator (MCO) watches the `ClusterImagePolicy` object and updates the `/etc/containers/policy.json` and `/etc/containers/registries.d/sigstore-registries.yaml` files on all the nodes in the cluster.
+A cluster administrator can use a `ClusterImagePolicy` custom resource (CR) to configure a sigstore signature verification policy for the entire cluster.
+
+When enabled, the Machine Config Operator (MCO) watches the `ClusterImagePolicy` object and updates the `/etc/containers/policy.json` and `/etc/containers/registries.d/sigstore-registries.yaml` files on all the nodes in the cluster.
 
 The following example shows general guidelines on how to configure a `ClusterImagePolicy` object. For more details on the parameters, see "About cluster and image policy parameters."
 
@@ -142,11 +150,7 @@ The default `ClusterImagePolicy` object, named `openshift`, provides sigstore su
 
 1.  Create a cluster image policy object similar to the following examples. See "About image policy parameters" for specific details on these parameters.
 
-    <div class="formalpara-title">
-
-    **Example cluster image policy object with a public key policy and the `MatchRepoDigestOrExact` match policy**
-
-    </div>
+    The following example cluster image policy object uses a public key policy and the `MatchRepoDigestOrExact` match policy:
 
     ``` yaml
     apiVersion: config.openshift.io/v1
@@ -166,35 +170,41 @@ The default `ClusterImagePolicy` object, named `openshift`, provides sigstore su
           matchPolicy: MatchRepoDigestOrExact
     ```
 
-    - Creates a `ClusterImagePolicy` object.
+    where:
 
-    - Defines a list of repositories or images assigned to this policy. In a cluster image policy, make sure that the policy does not block the deployment of the OpenShift Container Platform images in the `quay.io/openshift-release-dev/ocp-release` and `quay.io/openshift-release-dev/ocp-v4.0-art-dev` repositories. Images in these repositories are required for cluster operation.
+    `kind`
+    Specifies that the configuration is for a `ClusterImagePolicy` object.
 
-    - Specifies the parameters that define how the images are verified.
+    `spec.scopes`
+    Specifies a list of repositories or images assigned to this policy. In a cluster image policy, make sure that the policy does not block the deployment of the OpenShift Container Platform images in the `quay.io/openshift-release-dev/ocp-release` and `quay.io/openshift-release-dev/ocp-v4.0-art-dev` repositories. Images in these repositories are required for cluster operation.
 
-    - Defines a root of trust for the policy.
+    `spec.policy`
+    Specifies the parameters that define how the images are verified.
 
-    - Specifies the policy types that define the root of trust, either a public key, a BYOPKI certificate, or a [Fulcio certificate](https://docs.sigstore.dev/certificate_authority/overview/). This example uses a public key with Rekor verification.
+    `spec.policy.rootOfTrust`
+    Specifies a root of trust for the policy.
 
-    - For a public key policy, specifies a base64-encoded public key in the PEM format. The maximum length is 8192 characters.
+    `spec.policy.rootOfTrust.policyType`
+    Specifies the policy types that define the root of trust, either a public key, a BYOPKI certificate, or a [Fulcio certificate](https://docs.sigstore.dev/certificate_authority/overview/). This example uses a public key with Rekor verification.
 
-    - Optional: Specifies a base64-encoded Rekor public key in the PEM format. The maximum length is 8192 characters.
+    `spec.policy.rootOfTrust.publicKey.keyData`
+    For a public key policy, specifies a base64-encoded public key in the PEM format. The maximum length is 8192 characters.
 
-    - Optional: Specifies one of the following processes to verify the identity in the signature and the actual image identity:
+    `spec.policy.rootOfTrust.publicKey.rekorKeyData`
+    Specifies a base64-encoded Rekor public key in the PEM format. The maximum length is 8192 characters. This parameter is optional.
 
-      - `MatchRepoDigestOrExact`.
+    `spec.policy.signedIdentity`
+    Specifies the process to verify the identity in the signature and the actual image identity. This parameter is optional. Specify one of the following processes:
 
-      - `MatchRepository`.
+    - `MatchRepoDigestOrExact`.
 
-      - `ExactRepository`. The `exactRepository` parameter must be specified.
+    - `MatchRepository`.
 
-      - `RemapIdentity`. The `prefix` and `signedPrefix` parameters must be specified.
+    - `ExactRepository`. The `exactRepository` parameter must be specified.
 
-    <div class="formalpara-title">
+    - `RemapIdentity`. The `prefix` and `signedPrefix` parameters must be specified.
 
-    **Example cluster image policy object for a BYOPKI policy and the `MatchRepository` match policy**
-
-    </div>
+    The following example cluster image policy object uses a BYOPKI policy and the `MatchRepository` match policy:
 
     ``` yaml
     apiVersion: config.openshift.io/v1alpha1
@@ -217,31 +227,37 @@ The default `ClusterImagePolicy` object, named `openshift`, provides sigstore su
           matchPolicy: MatchRepository
     ```
 
-    - Creates a `ClusterImagePolicy` object.
+    where:
 
-    - Defines a list of repositories or images assigned to this policy. In a cluster image policy, make sure that the policy does not block the deployment of the OpenShift Container Platform images in the `quay.io/openshift-release-dev/ocp-release` and `quay.io/openshift-release-dev/ocp-v4.0-art-dev` repositories. Images in these repositories are required for cluster operation.
+    `kind`
+    Specifies that the configuration is for a `ClusterImagePolicy` object.
 
-    - Specifies the parameters that define how the images are verified.
+    `spec.scopes`
+    Specifies a list of repositories or images assigned to this policy. In a cluster image policy, make sure that the policy does not block the deployment of the OpenShift Container Platform images in the `quay.io/openshift-release-dev/ocp-release` and `quay.io/openshift-release-dev/ocp-v4.0-art-dev` repositories. Images in these repositories are required for cluster operation.
 
-    - Defines a root of trust for the policy.
+    `spec.policy`
+    Specifies the parameters that define how the images are verified.
 
-    - Specifies the policy types that define the root of trust, either a public key, a BYOPKI certificate, or a [Fulcio certificate](https://docs.sigstore.dev/certificate_authority/overview/). This example uses a BYOPKI certificate.
+    `spec.policy.rootOfTrust`
+    Specifies a root of trust for the policy.
 
-    - For a BYOPKI certificate, specify `caRootsData`. This parameter specifies a base64-encoded CA root certificate in the PEM format. The maximum length is 8192 characters. Optionally with `caIntermediatesData`, specifies a base64-encoded intermediate CA root certificate in the PEM format. The maximum length is 8192 characters.
+    `spec.policy.rootOfTrust.policyType`
+    Specifies the policy types that define the root of trust, either a public key, a BYOPKI certificate, or a Fulcio certificate. This example uses a BYOPKI certificate.
 
-    - Specifies a subject alternative name (SAN) to authenticate the user’s identity by using a hostname and an email address:
+    `spec.policy.rootOfTrust.pki`
+    For a BYOPKI certificate, specifies `caRootsData`. This parameter specifies a base64-encoded CA root certificate in the PEM format. The maximum length is 8192 characters. Optionally with `caIntermediatesData`, specifies a base64-encoded intermediate CA root certificate in the PEM format. The maximum length is 8192 characters.
 
-      - `email`. Specifies the email address specified when the certificate was generated.
+    `spec.policy.rootOfTrust.pki.pkiCertificateSubject`
+    Specifies a subject alternative name (SAN) to authenticate the user’s identity by using a hostname and an email address:
 
-      - `hostname`. Specifies the hostname specified when the certificate was generated.
+    - `email`. Specifies the email address specified when the certificate was generated.
 
-    - For a BYOPKI certificate, specify the `MatchRepository` parameter to verify the identity in the signature and the actual image identity. The default signed identity is `matchRepoDigestOrExact`, which requires a digest reference in the signature identity for verification. The signature identity in this case uses a repository reference, and does not include the image digest.
+    - `hostname`. Specifies the hostname specified when the certificate was generated.
 
-    <div class="formalpara-title">
+    `spec.policy.signedIdentity.matchPolicy`
+    For a BYOPKI certificate, specifies the `MatchRepository` parameter to verify the identity in the signature and the actual image identity. The default signed identity is `matchRepoDigestOrExact`, which requires a digest reference in the signature identity for verification. The signature identity in this case uses a repository reference, and does not include the image digest.
 
-    **Example cluster image policy object with a Fulcio certificate policy and the `remapIdentity` match policy**
-
-    </div>
+    The following example cluster image policy object uses a Fulcio certificate policy and the `remapIdentity` match policy:
 
     ``` yaml
     apiVersion: config.openshift.io/v1
@@ -267,37 +283,48 @@ The default `ClusterImagePolicy` object, named `openshift`, provides sigstore su
             signedPrefix: mirror-example.com
     ```
 
-    - Creates a `ClusterImagePolicy` object.
+    where:
 
-    - Defines a list of repositories or images assigned to this policy. In a cluster image policy, make sure that the policy does not block the deployment of the OpenShift Container Platform images in the `quay.io/openshift-release-dev/ocp-release` and `quay.io/openshift-release-dev/ocp-v4.0-art-dev` repositories. Images in these repositories are required for cluster operation.
+    `kind`
+    Specifies that the configuration is for a `ClusterImagePolicy` object.
 
-    - Specifies the parameters that define how the images are verified.
+    `spec.scopes`
+    Specifies a list of repositories or images assigned to this policy. In a cluster image policy, make sure that the policy does not block the deployment of the OpenShift Container Platform images in the `quay.io/openshift-release-dev/ocp-release` and `quay.io/openshift-release-dev/ocp-v4.0-art-dev` repositories. Images in these repositories are required for cluster operation.
 
-    - Defines a root of trust for the policy.
+    `spec.policy`
+    Specifies the parameters that define how the images are verified.
 
-    - Specifies the policy types that define the root of trust, either a public key, a BYOPKI certificate, or a [Fulcio certificate](https://docs.sigstore.dev/certificate_authority/overview/). This example uses a Fulcio certificate with required Rekor verification.
+    `spec.policy.rootOfTrust`
+    Specifies a root of trust for the policy.
 
-    - For a Fulcio certificate policy, the following parameters are required:
+    `spec.policy.rootOfTrust.policyType`
+    Specifies the policy types that define the root of trust, either a public key, a BYOPKI certificate, or a Fulcio certificate. This example uses a Fulcio certificate with required Rekor verification.
 
-      - `fulcioCAData`: Specifies a base64-encoded Fulcio certificate in the PEM format. The maximum length is 8192 characters.
+    `spec.policy.rootOfTrust.fulcioCAWithRekor`
+    For a Fulcio certificate policy, the following parameters are required:
 
-      - `fulcioSubject`: Specifies the OIDC issuer and the email of the Fulcio authentication configuration.
+    - `fulcioCAData`: Specifies a base64-encoded Fulcio certificate in the PEM format. The maximum length is 8192 characters.
 
-    - Specifies a base64-encoded Rekor public key in the PEM format. This parameter is required when the `policyType` is `FulcioCAWithRekor`. The maximum length is 8192 characters.
+    - `fulcioSubject`: Specifies the OIDC issuer and the email of the Fulcio authentication configuration.
 
-    - Optional: Specifies one of the following processes to verify the identity in the signature and the actual image identity.
+    - `rekorKeyData`: Specifies a base64-encoded Rekor public key in the PEM format. This parameter is required when the `policyType` is `FulcioCAWithRekor`. The maximum length is 8192 characters.
 
-      - `MatchRepoDigestOrExact`.
+    `spec.policy.signedIdentity.matchPolicy`
+    Specifies one of the following processes to verify the identity in the signature and the actual image identity. This parameter is optional.
 
-      - `MatchRepository`.
+    - `MatchRepoDigestOrExact`.
 
-      - `ExactRepository`. The `exactRepository` parameter must be specified.
+    - `MatchRepository`.
 
-      - `RemapIdentity`. The `prefix` and `signedPrefix` parameters must be specified.
+    - `ExactRepository`. The `exactRepository` parameter must be specified.
 
-    - For the `remapIdentity` match policy, specifies the prefix that should be matched against the scoped image prefix. If the two match, the scoped image prefix is replaced with the value of `signedPrefix`. The maximum length is 512 characters.
+    - `RemapIdentity`. The `prefix` and `signedPrefix` parameters must be specified.
 
-    - For the `remapIdentity` match policy, specifies the image prefix to be remapped, if needed. The maximum length is 512 characters.
+    `spec.policy.signedIdentity.remapIdentity.prefix`
+    For the `remapIdentity` match policy, specifies the prefix that should be matched against the scoped image prefix. If the two match, the scoped image prefix is replaced with the value of `signedPrefix`. The maximum length is 512 characters.
+
+    `spec.policy.signedIdentity.remapIdentity.signedPrefix`
+    For the `remapIdentity` match policy, specifies the image prefix to be remapped, if needed. The maximum length is 512 characters.
 
 2.  Create the cluster image policy object:
 
@@ -428,15 +455,16 @@ The default `ClusterImagePolicy` object, named `openshift`, provides sigstore su
           use-sigstore-attachments: true
       ```
 
-      - When `true`, specifies that sigstore signatures are going to be read along with the image.
+      where:
 
-<!-- -->
-
-- [About cluster and image policy parameters](../nodes/nodes-sigstore-using.xml#nodes-sigstore-configure-parameters_nodes-sigstore-using)
+      `docker.example.com.use-sigstore-attachments`
+      When `true`, specifies that sigstore signatures are going to be read along with the image.
 
 # Creating an image policy CR
 
-An `ImagePolicy` custom resource (CR) enables a cluster administrator or application developer to configure a sigstore signature verification policy for a specific namespace. The MCO watches `ImagePolicy` instances in different namespaces and updates the `/etc/crio/policies/<namespace>.json` and `/etc/containers/registries.d/sigstore-registries.yaml` files on all the nodes in the cluster.
+A cluster administrator or application developer can use an `ImagePolicy` custom resource (CR) to configure a sigstore signature verification policy for a specific namespace.
+
+The MCO watches `ImagePolicy` instances in different namespaces and updates the `/etc/crio/policies/<namespace>.json` and `/etc/containers/registries.d/sigstore-registries.yaml` files on all the nodes in the cluster.
 
 <div class="note">
 
@@ -446,7 +474,7 @@ If a scoped image or repository in an image policy is nested under one of the sc
 
 The following example shows general guidelines on how to configure an `ImagePolicy` object. For more details on the parameters, see "About cluster and image policy parameters".
 
-- You have a sigstore-supported public key infrastructure (PKI) key, a Bring Your Own Public Key Infrastructure (BYOPKI) certificate, or provide a [Cosign public and private key pair](https://docs.sigstore.dev/cosign/signing/overview/) for signing operations.
+- You have a sigstore-supported public key infrastructure (PKI) key, a Bring Your Own Public Key Infrastructure (BYOPKI) certificate, or provide a Cosign public and private key pair for signing operations.
 
 - You have a signing process in place to sign your images.
 
@@ -454,11 +482,7 @@ The following example shows general guidelines on how to configure an `ImagePoli
 
 1.  Create an image policy object similar to the following examples. See "About cluster and image policy parameters" for specific details on these parameters.
 
-    <div class="formalpara-title">
-
-    **Example image policy object with a public key policy and the `MatchRepository` match policy**
-
-    </div>
+    The following example image policy object uses a public key policy and the `MatchRepository` match policy:
 
     ``` yaml
     apiVersion: config.openshift.io/v1
@@ -479,37 +503,42 @@ The following example shows general guidelines on how to configure an `ImagePoli
           matchPolicy: MatchRepository
     ```
 
-    - Creates an `ImagePolicy` object.
+    `kind`
+    Specifies that the configuration is for a `ImagePolicy` object.
 
-    - Specifies the namespace where the image policy is applied.
+    `metadata.namespace`
+    Specifies the namespace where the image policy is applied.
 
-    - Defines a list of repositories or images assigned to this policy.
+    `spec.scopes`
+    Specifies a list of repositories or images assigned to this policy.
 
-    - Specifies the parameters that define how the images are verified.
+    `spec.policy`
+    Specifies the parameters that define how the images are verified.
 
-    - Defines a root of trust for the policy.
+    `spec.policy.rootOfTrust`
+    Specifies a root of trust for the policy.
 
-    - Specifies the policy types that define the root of trust, either a public key, a BYOPKI certificate, or a [Fulcio certificate](https://docs.sigstore.dev/certificate_authority/overview/). Here, a public key with Rekor verification.
+    `spec.policy.rootOfTrust.policyType`
+    Specifies the policy types that define the root of trust, either a public key, a BYOPKI certificate, or a Fulcio certificate. Here, a public key with Rekor verification.
 
-    - For a public key policy, specifies a base64-encoded public key in the PEM format. The maximum length is 8192 characters.
+    `spec.policy.rootOfTrust.publicKey.keyData`
+    For a public key policy, specifies a base64-encoded public key in the PEM format. The maximum length is 8192 characters.
 
-    - Optional: Specifies a base64-encoded Rekor public key in the PEM format. The maximum length is 8192 characters.
+    `spec.policy.rootOfTrust.publicKey.rekorKeyData`
+    Optional: Specifies a base64-encoded Rekor public key in the PEM format. The maximum length is 8192 characters.
 
-    - Optional: Specifies one of the following processes to verify the identity in the signature and the actual image identity:
+    `spec.policy.signedIdentity.matchPolicy`
+    Optional: Specifies one of the following processes to verify the identity in the signature and the actual image identity:
 
-      - `MatchRepoDigestOrExact`.
+    - `MatchRepoDigestOrExact`.
 
-      - `MatchRepository`.
+    - `MatchRepository`.
 
-      - `ExactRepository`. The `exactRepository` parameter must be specified.
+    - `ExactRepository`. The `exactRepository` parameter must be specified.
 
-      - `RemapIdentity`. The `prefix` and `signedPrefix` parameters must be specified.
+    - `RemapIdentity`. The `prefix` and `signedPrefix` parameters must be specified.
 
-    <div class="formalpara-title">
-
-    **Example image policy object for a BYOPKI policy and the `MatchRepository` match policy**
-
-    </div>
+    The following example image policy object uses a BYOPKI policy and the `MatchRepository` match policy:
 
     ``` yaml
     apiVersion: config.openshift.io/v1alpha1
@@ -533,33 +562,38 @@ The following example shows general guidelines on how to configure an `ImagePoli
           matchPolicy: MatchRepository
     ```
 
-    - Creates an `ImagePolicy` object.
+    `kind`
+    Specifies that the configuration is for a `ImagePolicy` object.
 
-    - Specifies the namespace where the image policy is applied.
+    `metadata.namespace`
+    Specifies the namespace where the image policy is applied.
 
-    - Defines a list of repositories or images assigned to this policy.
+    `spec.scopes`
+    Specifies a list of repositories or images assigned to this policy.
 
-    - Specifies the parameters that define how the images are verified.
+    `spec.policy`
+    Specifies the parameters that define how the images are verified.
 
-    - Defines a root of trust for the policy.
+    `spec.policy.rootOfTrust`
+    Specifies a root of trust for the policy.
 
-    - Specifies the policy types that define the root of trust, either a public key, a BYOPKI certificate, or a [Fulcio certificate](https://docs.sigstore.dev/certificate_authority/overview/). Here, a BYOPKI certificate.
+    `spec.policy.rootOfTrust.policyType`
+    Specifies the policy types that define the root of trust, either a public key, a BYOPKI certificate, or a Fulcio certificate. Here, a BYOPKI certificate.
 
-    - For a BYOPKI certificate, specify `caRootsData`. This parameter specifies a base64-encoded CA root certificate in the PEM format. The maximum length is 8192 characters. Optionally with `caIntermediatesData`, specifies a base64-encoded intermediate CA root certificate in the PEM format. The maximum length is 8192 characters.
+    `spec.policy.rootOfTrust.pki`
+    For a BYOPKI certificate, specifies `caRootsData`. This parameter specifies a base64-encoded CA root certificate in the PEM format. The maximum length is 8192 characters. Optionally with `caIntermediatesData`, specifies a base64-encoded intermediate CA root certificate in the PEM format. The maximum length is 8192 characters.
 
-    - Specifies a subject alternative name (SAN) to authenticate the user’s identity by using a hostname and an email address:
+    `spec.policy.rootOfTrust.pki.pkiCertificateSubject`
+    Specifies a subject alternative name (SAN) to authenticate the user’s identity by using a hostname and an email address:
 
-      - `email`. Specifies the email address specified when the certificate was generated.
+    - `email`. Specifies the email address specified when the certificate was generated.
 
-      - `hostname`. Specifies the hostname specified when the certificate was generated.
+    - `hostname`. Specifies the hostname specified when the certificate was generated.
 
-    - For a BYOPKI certificate, specify `MatchRepository` to verify the identity in the signature and the actual image identity. The default signed identity is `matchRepoDigestOrExact`, which requires digest specification. The signature in this case was not created for digested image.
+    `spec.policy.signedIdentity.matchPolicy`
+    For a BYOPKI certificate, specify `MatchRepository` to verify the identity in the signature and the actual image identity. The default signed identity is `matchRepoDigestOrExact`, which requires digest specification. The signature in this case was not created for digested image.
 
-    <div class="formalpara-title">
-
-    **Example image policy object with a Fulcio certificate policy and the `ExactRepository` match policy**
-
-    </div>
+    The following example image policy object uses a Fulcio certificate policy and the `ExactRepository` match policy:
 
     ``` yaml
     apiVersion: config.openshift.io/v1
@@ -585,37 +619,46 @@ The following example shows general guidelines on how to configure an `ImagePoli
             repository: quay.io/crio/signed
     ```
 
-    - Creates an `ImagePolicy` object.
+    `kind`
+    Specifies that the configuration is for a `ImagePolicy` object.
 
-    - Specifies the namespace where the image policy is applied.
+    `metadata.namespace`
+    Specifies the namespace where the image policy is applied.
 
-    - Defines a list of repositories or images assigned to this policy.
+    `spec.scopes`
+    Specifies a list of repositories or images assigned to this policy.
 
-    - Specifies the parameters that define how the images are verified.
+    `spec.policy`
+    Specifies the parameters that define how the images are verified.
 
-    - Defines a root of trust for the policy.
+    `spec.policy.rootOfTrust`
+    Specifies a root of trust for the policy.
 
-    - Specifies the policy types that define the root of trust, either a public key, a BYOPKI certificate, or a [Fulcio certificate](https://docs.sigstore.dev/certificate_authority/overview/). Here, a Fulcio certificate with required Rekor verification.
+    `spec.policy.rootOfTrust.policyType`
+    Specifies the policy types that define the root of trust, either a public key, a BYOPKI certificate, or a [Fulcio certificate](https://docs.sigstore.dev/certificate_authority/overview/). Here, a Fulcio certificate with required Rekor verification.
 
-    - For a Fulcio certificate policy, the following parameters are required:
+    `spec.policy.rootOfTrust.fulcioCAWithRekor`
+    For a Fulcio certificate policy, the following parameters are required:
 
-      - `fulcioCAData`: Specifies a base64-encoded Fulcio certificate in the PEM format. The maximum length is 8192 characters.
+    - `fulcioCAData`: Specifies a base64-encoded Fulcio certificate in the PEM format. The maximum length is 8192 characters.
 
-      - `fulcioSubject`: Specifies the OIDC issuer and the email of the Fulcio authentication configuration.
+    - `fulcioSubject`: Specifies the OIDC issuer and the email of the Fulcio authentication configuration.
 
-    - Specifies a base64-encoded Rekor public key in the PEM format. This parameter is required when the `policyType` is `FulcioCAWithRekor`. The maximum length is 8192 characters.
+    - `rekorKeyData`: Specifies a base64-encoded Rekor public key in the PEM format. This parameter is required when the `policyType` is `FulcioCAWithRekor`. The maximum length is 8192 characters.
 
-    - Optional: Specifies one of the following processes to verify the identity in the signature and the actual image identity:
+    `spec.policy.signedIdentity.matchPolicy`
+    Optional: Specifies one of the following processes to verify the identity in the signature and the actual image identity:
 
-      - `MatchRepoDigestOrExact`.
+    - `MatchRepoDigestOrExact`.
 
-      - `MatchRepository`.
+    - `MatchRepository`.
 
-      - `ExactRepository`. The `exactRepository` parameter must be specified.
+    - `ExactRepository`. The `exactRepository` parameter must be specified.
 
-      - `RemapIdentity`. The `prefix` and `signedPrefix` parameters must be specified.
+    - `RemapIdentity`. The `prefix` and `signedPrefix` parameters must be specified.
 
-    - For the `exactRepository` match policy, specifies the repository that contains the image identity and signature.
+    `spec.policy.signedIdentity.exactRepository.repository`
+    For the `exactRepository` match policy, specifies the repository that contains the image identity and signature.
 
 2.  Create the image policy object:
 
@@ -744,7 +787,10 @@ The following example shows general guidelines on how to configure an `ImagePoli
           use-sigstore-attachments: true
       ```
 
-      - When `true`, specifies that sigstore signatures are going to be read along with the image.
+      where:
+
+      `docker.example.com.use-sigstore-attachments`
+      When `true`, specifies that sigstore signatures are going to be read along with the image.
 
   5.  Check the crio log for sigstore signature verification by running the following command:
 
@@ -771,10 +817,18 @@ The following example shows general guidelines on how to configure an `ImagePoli
       # ...
       ```
 
-      - The `IsRunningImageAllowed` line confirms that image is allowed by the configured sigstore verification policy.
+      The `IsRunningImageAllowed` line confirms that image is allowed by the configured sigstore verification policy.
 
-      - The `Using transport \"docker\" specific policy section \"example.io/crio/signed\"" file="signature/policy_eval.go:150` line confirms that the image policy has been applied.
+      The `Using transport \"docker\" specific policy section \"example.io/crio/signed\"" file="signature/policy_eval.go:150` line confirms that the image policy has been applied.
 
-<!-- -->
+# Additional resources
+
+- [Sigstore](https://www.sigstore.dev/)
+
+- [Fulcio certificate (Sigstore documentation)](https://docs.sigstore.dev/certificate_authority/overview/)
+
+- [Rekor verification in the Sigstore documentation](https://docs.sigstore.dev/logging/overview/)
+
+- [Cosign public and private key pair (Sigstore documentation)](https://docs.sigstore.dev/cosign/signing/overview/)
 
 - [About cluster and image policy parameters](../nodes/nodes-sigstore-using.xml#nodes-sigstore-configure-parameters_nodes-sigstore-using)

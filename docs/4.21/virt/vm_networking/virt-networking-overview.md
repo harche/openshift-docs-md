@@ -261,4 +261,4 @@ You configure a secondary network, attach a VM to the secondary network interfac
 
 - [Manage MAC address pools for network interfaces](../../virt/vm_networking/virt-using-mac-address-pool-for-vms.xml#virt-using-mac-address-pool-for-vms)
 
-- [Configure SSH access to a virtual machine](../../virt/managing_vms/virt-accessing-vm-ssh.xml#virt-accessing-vm-ssh)
+- [SSH access for virtual machines](../../virt/managing_vms/ssh/virt-accessing-vm-ssh.xml#virt-accessing-vm-ssh)

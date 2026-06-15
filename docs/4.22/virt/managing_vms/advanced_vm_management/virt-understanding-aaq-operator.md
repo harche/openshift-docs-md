@@ -36,7 +36,7 @@ The AAQ Operator introduces two new API objects defined as custom resource defin
 
   - `spec.hard.requests.memory/vmi` defines the maximum amount of RAM that is allowed for VM workloads in the default namespace.
 
-- `ApplicationAwareClusterResourceQuota`: Mirrors the `ApplicationAwareResourceQuota` object at a cluster scope. It is compatible with the native `ClusterResourceQuota` API object and shares the same specification and status definitions. When creating an AAQ cluster quota, you can select multiple namespaces based on annotation selection, label selection, or both by editing the `spec.selector.labels` or `spec.selector.annotations` fields. You can only create an `ApplicationAwareClusterResourceQuota` object if the `spec.allowApplicationAwareClusterResourceQuota` field in the `HyperConverged` custom resource (CR) is set to `true`.
+- `ApplicationAwareClusterResourceQuota`: Mirrors the `ApplicationAwareResourceQuota` object at a cluster scope. It is compatible with the native `ClusterResourceQuota` API object and shares the same specification and status definitions. When creating an AAQ cluster quota, you can select multiple namespaces based on annotation selection, label selection, or both by editing the `spec.selector.labels` or `spec.selector.annotations` fields. You can only create an `ApplicationAwareClusterResourceQuota` object if the `spec.applicationAwareConfig.allowApplicationAwareClusterResourceQuota` field in the `HyperConverged` custom resource (CR) is set to `true`.
 
   Example manifest:
 
@@ -76,22 +76,35 @@ Pods that have the `spec.nodeName` field set to a specific node cannot use names
 
 </div>
 
-# Enabling the AAQ Operator
+# Enabling the Application Aware Quota Operator
 
-To deploy the AAQ Operator, set the `enableApplicationAwareQuota` field value to `true` in the `HyperConverged` custom resource (CR).
+Enable the Application Aware Quota (AAQ) operator to manage resource quotas to extend native resource management capabilities. Enabling AAQ from the web console eliminates the need to manually edit the HyperConverged custom resource by using the CLI.
 
-- You have access to the cluster as a user with `cluster-admin` privileges.
+- You have cluster administrator privileges.
 
-- You have installed the OpenShift CLI (`oc`).
+- The OpenShift Virtualization operator is installed and running.
+
+1.  In the OpenShift Container Platform web console, click **Virtualization** → **Settings**.
+
+2.  Under **Resource Management**, toggle the **Application Aware Quotas (AAQ)** to On.
+
+    The operator deployment begins automatically. The status changes from **Disabled** to **Enabled** after the operator pods are running.
+
+3.  Optional: Click the **Edit** icon next to the **Quota calculation method** field to change the calculation method.
+
+    A modal dialog is displayed with the following options:
+
+    - **Virtual resources**: Measures only the virtual CPU and memory allocated to virtual machines (VMs), excluding pod runtime overhead. This is the default option for virtualization workloads.
+
+    - **Virtual Machine Instance (VMI) pod usage**: Measures the total virtual CPU and memory consumption of the VM pod, including both the virtual machine and pod runtime overhead.
+
+    - **Dedicated virtual resources**: Measures the virtual CPU and memory resources assigned to virtual machines and their associated pods, tracking quota usage separately for each type.
+
+4.  Select your preferred quota calculation method and click **Save**.
 
 <!-- -->
 
-- Set the `enableApplicationAwareQuota` field value to `true` in the `HyperConverged` CR by running the following command:
-
-  ``` terminal
-  $ oc patch hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv \
-   --type json -p '[{"op": "add", "path": "/spec/enableApplicationAwareQuota", "value": true}]'
-  ```
+1.  Verify that a new **Quotas** option is displayed in the left navigation menu under **Virtualization**. This indicates that AAQ is ready for quota creation and management.
 
 # Configuring the AAQ Operator by using the CLI
 

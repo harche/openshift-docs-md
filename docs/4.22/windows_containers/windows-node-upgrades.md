@@ -10,7 +10,9 @@ You can update the WMCO in any of the following scenarios:
 
 # Windows Machine Config Operator updates
 
-When a new version of the Windows Machine Config Operator (WMCO) is released that is compatible with the current cluster version, the Operator is updated based on the update channel and subscription approval strategy it was installed with when using the Operator Lifecycle Manager (OLM). The WMCO update results in the Kubernetes components in the Windows machine being updated.
+When a new version of the Windows Machine Config Operator (WMCO) is released that is compatible with the current cluster version, the Operator is updated based on the update channel and subscription approval strategy it was installed with when using the Operator Lifecycle Manager (OLM).
+
+The WMCO update results in the Kubernetes components in the Windows machine being updated.
 
 <div class="note">
 
@@ -28,11 +30,11 @@ The WMCO is only responsible for updating Kubernetes components, not for Windows
 
 </div>
 
-- [Updating installed Operators](../operators/admin/olm-upgrading-operators.xml#olm-upgrading-operators).
-
 # Windows Machine Config Operator Control Plane Only update
 
-OpenShift Container Platform and Windows Machine Config Operator (WMCO) support updating from one EUS version to another EUS version of OpenShift Container Platform, in a process called a **Control Plane Only** update. After upgrading the cluster, the Windows nodes are updated from the starting EUS version to the new EUS version while keeping the Windows workloads in a healthy state with no disruptions.
+You can use the **Control Plane Only** process to update the OpenShift Container Platform from one EUS version to another EUS version of OpenShift Container Platform. After you update the cluster, the Windows nodes are updated the new EUS version.
+
+During the update, the Windows workloads are kept in a healthy state with no disruptions.
 
 <div class="important">
 
@@ -74,10 +76,6 @@ You can use the OpenShift Container Platform web console to perform a Control Pl
 
 3.  Install the new WMCO version by following the steps in "Installing the Windows Machine Config Operator using the web console."
 
-- [Performing a Control Plane Only update](../updating/updating_a_cluster/control-plane-only-update.xml#control-plane-only-update)
-
-- [Installing the Windows Machine Config Operator using the web console](../windows_containers/enabling-windows-container-workloads.xml#installing-wmco-using-web-console_enabling-windows-container-workloads)
-
 ## WMCO Control Plane Only update by using the CLI
 
 You can use the OpenShift CLI (`oc`) to perform a Control Plane Only update of the Windows Machine Config Operator (WMCO).
@@ -104,10 +102,12 @@ You can use the OpenShift CLI (`oc`) to perform a Control Plane Only update of t
 
 - On the Verify that the **Status** shows **Succeeded** to confirm successful installation of the WMCO.
 
-<!-- -->
+# Additional resources
 
-- [Deleting Operators from a cluster using the CLI](../operators/admin/olm-deleting-operators-from-cluster.xml#olm-deleting-operator-from-a-cluster-using-cli_olm-deleting-operators-from-a-cluster)
+- [Updating installed Operators](../operators/admin/olm-upgrading-operators.xml#olm-upgrading-operators)
 
 - [Performing a Control Plane Only update](../updating/updating_a_cluster/control-plane-only-update.xml#control-plane-only-update)
 
 - [Installing the Windows Machine Config Operator using the CLI](../windows_containers/enabling-windows-container-workloads.xml#installing-wmco-using-cli_enabling-windows-container-workloads)
+
+- [Deleting Operators from a cluster using the CLI](../operators/admin/olm-deleting-operators-from-cluster.xml#olm-deleting-operator-from-a-cluster-using-cli_olm-deleting-operators-from-a-cluster)

@@ -90,7 +90,7 @@ Migration Toolkit for Virtualization is not part of OpenShift Virtualization and
 
 - [Connect to a virtual machine console](../../virt/managing_vms/virt-accessing-vm-consoles.xml#virt-accessing-vm-consoles)
 
-- [Connect to a VM by using SSH](../../virt/managing_vms/virt-accessing-vm-ssh.xml#virt-accessing-vm-ssh)
+- [SSH access for virtual machines](../../virt/managing_vms/ssh/virt-accessing-vm-ssh.xml#virt-accessing-vm-ssh)
 
 - [Connect to the desktop viewer by using the web console](../../virt/managing_vms/virt-accessing-vm-consoles.xml#virt-connecting-desktop-viewer-web_virt-accessing-vm-consoles)
 

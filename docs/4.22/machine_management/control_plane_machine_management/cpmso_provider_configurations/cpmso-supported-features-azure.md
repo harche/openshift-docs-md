@@ -215,13 +215,13 @@ You can enable boot diagnostics on Microsoft Azure machines that your machine se
 
 # Machine sets that deploy machines with ultra disks as data disks
 
-You can create a machine set running on Azure that deploys machines with ultra disks. Ultra disks are high-performance storage that are intended for use with the most demanding data workloads.
+You can create a machine set running on Microsoft Azure that deploys machines with ultra disks. Ultra disks are high-performance storage that are intended for use with the most demanding data workloads.
 
 - [Microsoft Azure ultra disks documentation](https://docs.microsoft.com/en-us/azure/virtual-machines/disks-types#ultra-disks)
 
 ## Creating machines with ultra disks by using machine sets
 
-You can deploy machines with ultra disks on Azure by editing your machine set YAML file.
+You can deploy machines with ultra disks on Microsoft Azure by editing your machine set YAML file.
 
 - Have an existing Microsoft Azure cluster.
 
@@ -233,9 +233,13 @@ You can deploy machines with ultra disks on Azure by editing your machine set YA
     --template='{{index .data.userData | base64decode}}' | jq > userData.txt
     ```
 
-    - Replace `<role>` with `master`.
+    where:
 
-    - Specify `userData.txt` as the name of the new custom secret.
+    `<role>`
+    Replace with `master`.
+
+    `userData.txt`
+    Specifies `userData.txt` as the name of the new custom secret.
 
 2.  In a text editor, open the `userData.txt` file and locate the final `}` character in the file.
 
@@ -276,21 +280,31 @@ You can deploy machines with ultra disks on Azure by editing your machine set YA
         }
         ```
 
-        - The configuration details for the disk that you want to attach to a node as an ultra disk.
+        where:
 
-        - Specify the `lun` value that is defined in the `dataDisks` stanza of the machine set you are using. For example, if the machine set contains `lun: 0`, specify `lun0`. You can initialize multiple data disks by specifying multiple `"disks"` entries in this configuration file. If you specify multiple `"disks"` entries, ensure that the `lun` value for each matches the value in the machine set.
+        `"disks"`
+        Specifies the configuration details for the disk that you want to attach to a node as an ultra disk.
 
-        - The configuration details for a new partition on the disk.
+        `"device"`
+        Specifies the `lun` value that is defined in the `dataDisks` stanza of the machine set you are using. For example, if the machine set contains `lun: 0`, specify `lun0`. You can initialize multiple data disks by specifying multiple `"disks"` entries in this configuration file. If you specify multiple `"disks"` entries, ensure that the `lun` value for each matches the value in the machine set.
 
-        - Specify a label for the partition. You might find it helpful to use hierarchical names, such as `lun0p1` for the first partition of `lun0`.
+        `"partitions"`
+        Specifies the configuration details for a new partition on the disk.
 
-        - Specify the total size in MiB of the partition.
+        `"label"`
+        Specifies a label for the partition. You might find it helpful to use hierarchical names, such as `lun0p1` for the first partition of `lun0`.
 
-        - Specify the filesystem to use when formatting a partition. Use the partition label to specify the partition.
+        `"sizeMiB"`
+        Specifies the total size in MiB of the partition.
 
-        - Specify a `systemd` unit to mount the partition at boot. Use the partition label to specify the partition. You can create multiple partitions by specifying multiple `"partitions"` entries in this configuration file. If you specify multiple `"partitions"` entries, you must specify a `systemd` unit for each.
+        `"filesystems"`
+        Specifies the filesystem to use when formatting a partition. Use the partition label to specify the partition.
 
-        - For `Where`, specify the value of `storage.filesystems.path`. For `What`, specify the value of `storage.filesystems.device`.
+        `"units"`
+        Specifies a `systemd` unit to mount the partition at boot. Use the partition label to specify the partition. You can create multiple partitions by specifying multiple `"partitions"` entries in this configuration file. If you specify multiple `"partitions"` entries, you must specify a `systemd` unit for each.
+
+        `"contents"`
+        Specifies the value of `storage.filesystems.path` for `Where`. Specifies the value of `storage.filesystems.device` for `What`.
 
 3.  Extract the disabling template value to a file called `disableTemplating.txt` by running the following command:
 
@@ -299,7 +313,7 @@ You can deploy machines with ultra disks on Azure by editing your machine set YA
     --template='{{index .data.disableTemplating | base64decode}}' | jq > disableTemplating.txt
     ```
 
-    - Replace `<role>` with `master`.
+    Replace `<role>` with `master`.
 
 4.  Combine the `userData.txt` file and `disableTemplating.txt` file to create a data secret file by running the following command:
 
@@ -309,7 +323,7 @@ You can deploy machines with ultra disks on Azure by editing your machine set YA
     --from-file=disableTemplating=disableTemplating.txt
     ```
 
-    - For `<role>-user-data-x5`, specify the name of the secret. Replace `<role>` with `master`.
+    For `<role>-user-data-x5`, specify the name of the secret. Replace `<role>` with `master`.
 
 5.  Edit your control plane machine set CR by running the following command:
 
@@ -343,11 +357,16 @@ You can deploy machines with ultra disks on Azure by editing your machine set YA
                 name: <role>-user-data-x5
     ```
 
-    - Specify a label to use to select a node that is created by this machine set. This procedure uses `disk.ultrassd` for this value.
+    where:
 
-    - These lines enable the use of ultra disks. For `dataDisks`, include the entire stanza.
+    `spec.template.spec.metadata.labels.disk`
+    Specifies a label to use to select a node that is created by this machine set. The example uses `disk.ultrassd` for this value.
 
-    - Specify the user data secret created earlier. Replace `<role>` with `master`.
+    `spec.template.spec.providerSpec.value.ultraSSDCapability`
+    Enables the use of ultra disks. For `dataDisks`, include the entire stanza.
+
+    `spec.template.spec.providerSpec.value.userDataSecret.name`
+    Specifies the user data secret created earlier. Replace `<role>` with `master`.
 
 7.  Save your changes.
 
@@ -377,7 +396,7 @@ You can deploy machines with ultra disks on Azure by editing your machine set YA
 
 ## Troubleshooting resources for machine sets that enable ultra disks
 
-Use the information in this section to understand and recover from issues you might encounter.
+You can recover from issues that you might encounter when you enable ultra disks for machine sets. Review fields, such as disk settings, and ensure that the parameters are correctly configured.
 
 ### Incorrect ultra disk configuration
 
@@ -660,7 +679,7 @@ You cannot change an existing Capacity Reservation configuration for a machine s
 
 # Accelerated Networking for Microsoft Azure VMs
 
-Accelerated Networking uses single root I/O virtualization (SR-IOV) to provide Microsoft Azure VMs with a more direct path to the switch. This enhances network performance. This feature can be enabled after installation.
+Accelerated Networking uses single root I/O virtualization (SR-IOV) to provide Microsoft Azure VMs with a more direct path to the switch. This enhances network performance. You can enable this feature after installation.
 
 ## Limitations
 

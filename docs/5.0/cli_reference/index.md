@@ -1,0 +1,37 @@
+OpenShift Container Platform offers a set of command-line interface (CLI) tools that enable users to perform various administration and development operations from the terminal. These tools expose simple commands to manage the applications, as well as interact with each component of the system.
+
+For example, you can use the CLI to complete the following operations:
+
+- Manage clusters
+
+- Build, deploy, and manage applications
+
+- Manage deployment processes
+
+- Create and maintain Operator catalogs
+
+# List of CLI tools
+
+Manage your OpenShift Container Platform cluster, applications, and Operators from the terminal using these primary command-line interface (CLI) tools:
+
+- OpenShift CLI (`oc`): This is the most commonly used CLI tool by OpenShift Container Platform users. Cluster administrators and developers can use it to perform end-to-end operations across OpenShift Container Platform from the terminal, including working directly with project source code using command scripts.
+
+- Helm CLI (`helm`): Helm is a package manager for Kubernetes. The `helm` CLI provides commands to install, upgrade, and manage Helm charts on a cluster.
+
+- opm CLI: The `opm` CLI tool helps Operator developers and cluster administrators create and maintain catalogs of Operators.
+
+- Knative CLI: The Knative (`kn`) CLI tool provides commands to interact with OpenShift Serverless components, such as Knative Serving and Eventing.
+
+- Pipelines CLI (tkn): OpenShift Pipelines is a continuous integration and delivery (CI/CD) solution in OpenShift Container Platform, which internally uses Tekton. The `tkn` CLI tool provides commands to interact with OpenShift Pipelines.
+
+## Additional resources
+
+- [OpenShift Container Platform CLI (`oc`)](../cli_reference/openshift_cli/getting-started-cli.xml#cli-getting-started)
+
+- [Helm CLI (`helm`)](../applications/working_with_helm_charts/installing-helm.xml#installing-helm)
+
+- [`opm` CLI](../cli_reference/opm/cli-opm-install.xml#cli-opm-install)
+
+- [Knative CLI (`kn`)](../cli_reference/kn-cli-tools.xml#kn-cli-tools)
+
+- [OpenShift Pipelines CLI (`tkn`)](../cli_reference/tkn_cli/installing-tkn.xml#installing-tkn)

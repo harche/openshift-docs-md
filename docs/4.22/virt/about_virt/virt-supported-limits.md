@@ -14,12 +14,12 @@ The following maximums apply to virtual machines (VMs) running on OpenShift Virt
 |---------------------|--------------|-------------------|
 | Virtual CPUs        | 216 vCPUs    | 255 vCPUs         |
 | Memory              | 6 TB         | 16 TB             |
-| Single disk size    | 20 TB        | 100 TB            |
+| Single disk size    | 100 TB       | 100 TB            |
 | Hot-pluggable disks | 255 disks    | N/A               |
 
 <div class="note">
 
-Each VM must have at least 512 MB of memory.
+Each VM must have at least 512 MB of memory. The `fstype` in the guest operating system (OS) must support the maximum limits. Do not use preallocation in data volumes that are larger than 99 TB.
 
 </div>
 

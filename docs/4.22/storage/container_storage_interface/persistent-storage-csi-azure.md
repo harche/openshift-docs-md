@@ -244,7 +244,7 @@ For information about installing with user-managed encryption for Azure, see [En
 
 # Machine sets that deploy machines with ultra disks using PVCs
 
-You can create a machine set running on Azure that deploys machines with ultra disks. Ultra disks are high-performance storage that are intended for use with the most demanding data workloads.
+You can create a machine set running on Microsoft Azure that deploys machines with ultra disks. Ultra disks are high-performance storage that are intended for use with the most demanding data workloads.
 
 Both the in-tree plugin and CSI driver support using PVCs to enable ultra disks. You can also deploy machines with ultra disks as data disks without creating a PVC.
 
@@ -256,7 +256,7 @@ Both the in-tree plugin and CSI driver support using PVCs to enable ultra disks.
 
 ## Creating machines with ultra disks by using machine sets
 
-You can deploy machines with ultra disks on Azure by editing your machine set YAML file.
+You can deploy machines with ultra disks on Microsoft Azure by editing your machine set YAML file.
 
 - Have an existing Microsoft Azure cluster.
 
@@ -266,7 +266,10 @@ You can deploy machines with ultra disks on Azure by editing your machine set YA
     $ oc edit machineset <machine_set_name>
     ```
 
-    where `<machine_set_name>` is the machine set that you want to provision machines with ultra disks.
+    where:
+
+    `<machine_set_name>`
+    Indicates the machine set that you want to provision machines with ultra disks.
 
 2.  Add the following lines in the positions indicated:
 
@@ -284,9 +287,13 @@ You can deploy machines with ultra disks on Azure by editing your machine set YA
               ultraSSDCapability: Enabled
     ```
 
-    - Specify a label to use to select a node that is created by this machine set. This procedure uses `disk.ultrassd` for this value.
+    where:
 
-    - These lines enable the use of ultra disks.
+    `spec.template.spec.metadata.labels.disk`
+    Specifies a label to use to select a node that is created by this machine set. The example uses `disk.ultrassd` for this value.
+
+    `spec.template.spec.providerSpec.value.ultraSSDCapability`
+    Enables the use of ultra disks.
 
 3.  Create a machine set using the updated configuration by running the following command:
 
@@ -312,15 +319,22 @@ You can deploy machines with ultra disks on Azure by editing your machine set YA
     volumeBindingMode: WaitForFirstConsumer
     ```
 
-    - Specify the name of the storage class. This procedure uses `ultra-disk-sc` for this value.
+    where:
 
-    - Specify the number of IOPS for the storage class.
+    `metadata.name`
+    Specifies the name of the storage class. The example uses `ultra-disk-sc` for this value.
 
-    - Specify the throughput in MBps for the storage class.
+    `parameters.diskIopsReadWrite`
+    Specifies the number of Input/Output Operations Per Second (IOPS) for the storage class.
 
-    - For Azure Kubernetes Service (AKS) version 1.21 or later, use `disk.csi.azure.com`. For earlier versions of AKS, use `kubernetes.io/azure-disk`.
+    `parameters.diskMbpsReadWrite`
+    Specifies the throughput in MBps for the storage class.
 
-    - Optional: Specify this parameter to wait for the creation of the pod that will use the disk.
+    `provisioner`
+    For Microsoft Azure Kubernetes Service (AKS) version 1.21 or later, use `disk.csi.azure.com`. For earlier versions of AKS, use `kubernetes.io/azure-disk`.
+
+    `volumeBindingMode`
+    Optional parameter. Specifies this parameter to wait for the creation of the pod that will use the disk.
 
 5.  Create a persistent volume claim (PVC) to reference the `ultra-disk-sc` storage class that contains the following YAML definition:
 
@@ -338,11 +352,16 @@ You can deploy machines with ultra disks on Azure by editing your machine set YA
           storage: 4Gi
     ```
 
-    - Specify the name of the PVC. This procedure uses `ultra-disk` for this value.
+    where:
 
-    - This PVC references the `ultra-disk-sc` storage class.
+    `metadata.name`
+    Specifies the name of the PVC. The example uses `ultra-disk` for this value.
 
-    - Specify the size for the storage class. The minimum value is `4Gi`.
+    `spec.storageClassName`
+    Specifies the name of the storage class to use. The example uses `ultra-disk-sc` storage class.
+
+    `spec.resources.requests.storage`
+    Specifies the size for the storage class. The minimum value is `4Gi`.
 
 6.  Create a pod that contains the following YAML definition:
 
@@ -369,9 +388,13 @@ You can deploy machines with ultra disks on Azure by editing your machine set YA
             claimName: ultra-disk
     ```
 
-    - Specify the label of the machine set that enables the use of ultra disks. This procedure uses `disk.ultrassd` for this value.
+    where:
 
-    - This pod references the `ultra-disk` PVC.
+    `spec.nodeSelector.disk`
+    Specifies the label of the machine set that enables the use of ultra disks. The example uses `disk.ultrassd` for this value.
+
+    `spec.volumes.persistentVolumeClaim.claimName`
+    Specifies the name of the PVC to attach. This pod references the `ultra-disk` PVC.
 
 <!-- -->
 
@@ -419,7 +442,7 @@ You can deploy machines with ultra disks on Azure by editing your machine set YA
 
 ## Troubleshooting resources for machine sets that enable ultra disks
 
-Use the information in this section to understand and recover from issues you might encounter.
+You can recover from issues that you might encounter when you enable ultra disks for machine sets. Review fields, such as disk settings, and ensure that the parameters are correctly configured.
 
 ### Unable to mount a persistent volume claim backed by an ultra disk
 

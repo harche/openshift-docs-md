@@ -751,7 +751,7 @@
     - [Creating basic routes](networking/ingress_load_balancing/routes/creating-basic-routes.md)
     - [Securing routes](networking/ingress_load_balancing/routes/securing-routes.md)
     - [Configuring routes](networking/ingress_load_balancing/routes/nw-configuring-routes.md)
-    - [Creating advanced routes](networking/ingress_load_balancing/routes/creating-advanced-routes.md)
+    - [Securing routes through ingress objects](networking/ingress_load_balancing/routes/creating-advanced-routes.md)
   - **Configuring ingress cluster traffic**
     - [Overview](networking/ingress_load_balancing/configuring_ingress_cluster_traffic/overview-traffic.md)
     - [Configuring ExternalIPs for services](networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-externalip.md)
@@ -1320,6 +1320,7 @@
     - [Network Observability Operator release notes archive](observability/network_observability/release_notes_archive/network-observability-operator-release-notes-archive.md)
   - [Network observability overview](observability/network_observability/network-observability-overview.md)
   - [Installing the Network Observability Operator](observability/network_observability/installing-operators.md)
+  - [Scaling network flow collection with Kafka](observability/network_observability/network-observability-kafka-operator-scaling-network-flow-collection.md)
   - [Understanding Network Observability Operator](observability/network_observability/understanding-network-observability-operator.md)
   - [Configuring the Network Observability Operator](observability/network_observability/configuring-operator.md)
   - [Network observability per-tenant model](observability/network_observability/network-observability-per-tenant-model.md)
@@ -1327,6 +1328,7 @@
   - [Network observability DNS resolution analysis](observability/network_observability/network-observability-dns-resolution-analysis.md)
   - [Observing the network traffic](observability/network_observability/observing-network-traffic.md)
   - [Network observability health rules](observability/network_observability/network-observability-health-rules.md)
+  - [Monitoring TLS traffic](observability/network_observability/network-observability-monitoring-tls-traffic.md)
   - [Using metrics with dashboards and alerts](observability/network_observability/metrics-alerts-dashboards.md)
   - [Monitoring the Network Observability Operator](observability/network_observability/network-observability-operator-monitoring.md)
   - [Scheduling resources](observability/network_observability/network-observability-scheduling-resources.md)
@@ -1484,8 +1486,8 @@
 - **OADP Application backup and restore**
   - [Introduction to OpenShift API for Data Protection](backup_and_restore/application_backup_and_restore/oadp-intro.md)
   - **OADP release notes**
-    - [OADP 1.5 release notes](backup_and_restore/application_backup_and_restore/release-notes/oadp-1-5-release-notes.md)
-    - [Upgrading OADP 1.4 to 1.5](backup_and_restore/application_backup_and_restore/release-notes/oadp-upgrade-notes-1-5.md)
+    - [OADP 1.6 release notes](backup_and_restore/application_backup_and_restore/release-notes/oadp-1-6-release-notes.md)
+    - [Upgrading OADP 1.5 to 1.6](backup_and_restore/application_backup_and_restore/release-notes/oadp-upgrade-notes-1-6.md)
   - **OADP performance**
     - [OADP recommended network settings](backup_and_restore/application_backup_and_restore/oadp-performance/oadp-recommended-network-settings.md)
   - [OADP features and plugins](backup_and_restore/application_backup_and_restore/oadp-features-plugins.md)
@@ -1521,6 +1523,8 @@
   - **OADP backing up**
     - [Backing up applications](backup_and_restore/application_backup_and_restore/backing_up_and_restoring/backing-up-applications.md)
     - [Creating a Backup CR](backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-creating-backup-cr.md)
+    - [Parallel backup processing in OADP](backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-parallel-backup-processing-in-oadp.md)
+    - [Enabling parallel backup processing](backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-enabling-parallel-backup-processing.md)
     - [Backing up persistent volumes with CSI snapshots](backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-backing-up-pvs-csi-doc.md)
     - [Backing up applications with File System Backup](backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-backing-up-applications-restic-doc.md)
     - [Creating backup hooks](backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-creating-backup-hooks-doc.md)
@@ -1534,6 +1538,13 @@
     - [OADP Self-Service cluster admin use cases](backup_and_restore/application_backup_and_restore/oadp-self-service/oadp-self-service-cluster-admin-use-cases.md)
     - [OADP Self-Service namespace admin use cases](backup_and_restore/application_backup_and_restore/oadp-self-service/oadp-self-service-namespace-admin-use-cases.md)
     - [OADP Self-Service troubleshooting](backup_and_restore/application_backup_and_restore/oadp-self-service/oadp-self-service-troubleshooting.md)
+  - **OADP VMFR**
+    - [OADP VMFR](backup_and_restore/application_backup_and_restore/oadp-vmfr/oadp-vmfr.md)
+    - [Using OADP VMFR](backup_and_restore/application_backup_and_restore/oadp-vmfr/oadp-using-vmfr.md)
+    - [OADP VMFR end-to-end workflow](backup_and_restore/application_backup_and_restore/oadp-vmfr/oadp-vmfr-end-to-end.md)
+  - **OADP VMDP**
+    - [OADP VMDP](backup_and_restore/application_backup_and_restore/oadp-vmdp/oadp-vmdp.md)
+    - [Using OADP VMDP](backup_and_restore/application_backup_and_restore/oadp-vmdp/oadp-using-vmdp.md)
   - **OADP and ROSA**
     - [Backing up applications on ROSA STS using OADP](backup_and_restore/application_backup_and_restore/oadp-rosa/oadp-rosa-backing-up-applications.md)
   - **OADP and AWS STS**
@@ -1998,7 +2009,11 @@
   - [Install VirtIO drivers on Windows VMs](virt/managing_vms/virt-install-virtio-drivers-on-windows-vms.md)
   - [Update VirtIO drivers](virt/managing_vms/virt-update-virtio-drivers.md)
   - [Connecting to VM consoles](virt/managing_vms/virt-accessing-vm-consoles.md)
-  - [Configuring SSH access to VMs](virt/managing_vms/virt-accessing-vm-ssh.md)
+  - **SSH access**
+    - [SSH access for virtual machines](virt/managing_vms/ssh/virt-accessing-vm-ssh.md)
+    - [Configure SSH with the virtctl CLI tool](virt/managing_vms/ssh/virt-using-virtctl-ssh.md)
+    - [Use a secondary network for SSH access](virt/managing_vms/ssh/virt-using-secondary-networks-ssh.md)
+    - [Create a service to connect with SSH](virt/managing_vms/ssh/virt-using-services.md)
   - [Customize the web console](virt/managing_vms/virt-customize-web-console.md)
   - [Editing virtual machines](virt/managing_vms/virt-edit-vms.md)
   - [Editing boot order](virt/managing_vms/virt-edit-boot-order.md)

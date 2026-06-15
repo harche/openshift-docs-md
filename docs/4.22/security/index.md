@@ -32,7 +32,7 @@ You can also review more details about the types of certificates used by the clu
 
 - [User-provided certificates for the API server](../security/certificate_types_descriptions/user-provided-certificates-for-api-server.xml#cert-types-user-provided-certificates-for-the-api-server)
 
-- [Proxy certificates](../security/certificate_types_descriptions/proxy-certificates.xml#cert-types-proxy-certificates)
+- [Proxy certificates](../security/certificate_types_descriptions/proxy-certificates.xml#proxy-certificates)
 
 - [Service CA certificates](../security/certificate_types_descriptions/service-ca-certificates.xml#cert-types-service-ca-certificates)
 

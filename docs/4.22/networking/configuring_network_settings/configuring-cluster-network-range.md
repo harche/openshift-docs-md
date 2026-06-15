@@ -24,6 +24,8 @@ To expand the cluster network IP address range in OpenShift Container Platform t
 
 This change requires rolling out a new Operator configuration across the cluster, and can take up to 30 minutes to take effect.
 
+For clusters configured with cluster proxy, expanding the cluster network range also triggers a MachineConfigPool update that reboots all nodes. Plan this operation during a maintenance window to avoid service disruption.
+
 </div>
 
 - You have installed the OpenShift CLI (`oc`).

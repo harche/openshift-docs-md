@@ -193,15 +193,13 @@ Do not modify or delete an `SriovNetwork` object if it is attached to pods or vi
 
     - `spec.capabilities` an optional field that defines the capabilities to configure for this network.
 
-<!-- -->
-
-1.  To create the object, enter the following command. Replace `<name>` with a name for this additional network.
+2.  To create the object, enter the following command. Replace `<name>` with a name for this additional network.
 
     ``` terminal
     $ oc create -f <name>-sriov-network.yaml
     ```
 
-2.  Optional: To confirm that the `NetworkAttachmentDefinition` object associated with the `SriovNetwork` object that you created in the previous step exists, enter the following command. Replace `<namespace>` with the namespace you specified in the `SriovNetwork` object.
+3.  Optional: To confirm that the `NetworkAttachmentDefinition` object associated with the `SriovNetwork` object that you created in the previous step exists, enter the following command. Replace `<namespace>` with the namespace you specified in the `SriovNetwork` object.
 
     ``` terminal
     $ oc get net-attach-def -n <namespace>

@@ -1650,6 +1650,8 @@ This procedure requires Nutanix authentication credentials, which you need to ac
 
         Replace `<machineset_name>` with the name of your machine set.
 
+8.  If boot image skew enforcement in your cluster is set to the manual mode, update the version of the new boot image in the `MachineConfiguration` object as described in "Updating the boot image skew enforcement version".
+
 <!-- -->
 
 1.  Scale up a machine set to check that the new node is using the new boot image:
@@ -1968,6 +1970,8 @@ Updating control plane machine sets is not supported in RHOSP.
         Replace `<machineset_name>` with the name of your machine set.
 
         `IMAGE_NAME` is the environment variable you created in a previous step.
+
+7.  If boot image skew enforcement in your cluster is set to the manual mode, update the version of the new boot image in the `MachineConfiguration` object as described in "Updating the boot image skew enforcement version".
 
 <!-- -->
 

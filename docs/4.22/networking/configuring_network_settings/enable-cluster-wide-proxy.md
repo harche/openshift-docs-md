@@ -58,7 +58,7 @@ You can find the URL of the internal API server by running the `oc get infrastru
 
 <div class="important">
 
-If your installation type does not include setting the `networking.machineNetwork[].cidr` field, you must include the machine IP addresses manually in the `.status.noProxy` field to make sure that the traffic between nodes can bypass the proxy.
+If node IP addresses fall outside the specified `networking.machineNetwork[].cidr` range, you must add the IP addresses to the `noProxy` field. This configuration ensures that traffic between nodes can bypass the proxy.
 
 </div>
 

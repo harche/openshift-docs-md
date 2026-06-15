@@ -14,9 +14,11 @@ As a cluster administrator, you can install the MetalLB Operator by using the Op
 
     You can also filter options by **Infrastructure Features**. For example, select **Disconnected** if you want to see Operators that work in disconnected environments, also known as restricted network environments.
 
-3.  Click the **MetalLB Operator** tile, and then click **Install**.
+3.  Click the **MetalLB Operator** tile and click **Install**.
 
 4.  On the **Install Operator** page, accept the defaults and click **Install**.
+
+    The web console displays the **Installing Operator** page with a status update. Wait until the Operator installs before continuing.
 
 5.  The web console displays the progress of the installation. When the installation is complete, click **View installed Operators**.
 
@@ -75,11 +77,7 @@ It is recommended that when using the CLI you install the Operator in the `metal
     $ oc get operatorgroup -n metallb-system
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following is example output:
 
     ``` terminal
     NAME               AGE
@@ -108,7 +106,7 @@ It is recommended that when using the CLI you install the Operator in the `metal
     2.  To create the `Subscription` CR, run the following command:
 
         ``` terminal
-        $ oc create -f metallb-sub.yaml
+        $ oc apply -f metallb-sub.yaml
         ```
 
 5.  Optional: To ensure BGP and BFD metrics appear in Prometheus, you can label the namespace as in the following command:
@@ -125,21 +123,18 @@ It is recommended that when using the CLI you install the Operator in the `metal
 
 The verification steps assume the MetalLB Operator is installed in the `metallb-system` namespace.
 
-1.  Confirm the install plan is in the namespace:
+1.  Verify that the Operator installed successfully by running the following command. Wait until the `PHASE` displays `Succeeded`:
 
     ``` terminal
-    $ oc get installplan -n metallb-system
+    $ oc get clusterserviceversion -n metallb-system \
+      -o custom-columns=Name:.metadata.name,Phase:.status.phase
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following is example output:
 
     ``` terminal
-    NAME            CSV                                   APPROVAL    APPROVED
-    install-wzg94   metallb-operator.4.17.0-nnnnnnnnnnnn   Automatic   true
+    Name                                                Phase
+    metallb-operator.{product-version}.0-nnnnnnnnnnnn   Succeeded
     ```
 
     <div class="note">
@@ -148,11 +143,17 @@ The verification steps assume the MetalLB Operator is installed in the `metallb-
 
     </div>
 
-2.  To verify that the Operator is installed, enter the following command and then check that output shows `Succeeded` for the Operator:
+2.  Confirm that the install plan is in the namespace:
 
     ``` terminal
-    $ oc get clusterserviceversion -n metallb-system \
-      -o custom-columns=Name:.metadata.name,Phase:.status.phase
+    $ oc get installplan -n metallb-system
+    ```
+
+    The following is example output:
+
+    ``` terminal
+    NAME            CSV                                                 APPROVAL    APPROVED
+    install-wzg94   metallb-operator.4.17.0-nnnnnnnnnnnn   Automatic   true
     ```
 
 # Starting MetalLB on your cluster
@@ -177,7 +178,7 @@ To start MetalLB on your cluster after installing the MetalLB Operator in OpenSh
     EOF
     ```
 
-    - For the `metdata.namespace` parameter, substitute `metallb-system` with `openshift-operators` if you installed the MetalLB Operator using the web console.
+    - For the `metadata.namespace` parameter, substitute `metallb-system` with `openshift-operators` if you installed the MetalLB Operator using the web console.
 
 <div class="formalpara-title">
 
@@ -187,17 +188,19 @@ To start MetalLB on your cluster after installing the MetalLB Operator in OpenSh
 
 Confirm that the deployment for the MetalLB controller and the daemon set for the MetalLB speaker are running.
 
+<div class="note">
+
+It might take a few seconds for the controller deployment and speaker daemon set to become available after you create the `MetalLB` custom resource.
+
+</div>
+
 1.  Verify that the deployment for the controller is running:
 
     ``` terminal
     $ oc get deployment -n metallb-system controller
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following is example output:
 
     ``` terminal
     NAME         READY   UP-TO-DATE   AVAILABLE   AGE
@@ -210,18 +213,14 @@ Confirm that the deployment for the MetalLB controller and the daemon set for th
     $ oc get daemonset -n metallb-system speaker
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following is example output:
 
     ``` terminal
     NAME      DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
     speaker   6         6         6       6            6           kubernetes.io/os=linux   18m
     ```
 
-    The example output indicates 6 speaker pods. The number of speaker pods in your cluster might differ from the example output. Make sure the output indicates one pod for each node in your cluster.
+    The example output indicates six speaker pods. The number of speaker pods in your cluster might differ from the example output. Verify that the number of speaker pods equals the number of nodes in your cluster. For example, a single-node cluster has one speaker pod.
 
 # Deployment specifications for MetalLB
 

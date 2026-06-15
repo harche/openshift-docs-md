@@ -158,7 +158,7 @@ Specifies the `infra` role node label.
 
 <div class="note">
 
-The `spec.template.spec.providerSpec.value.ami.id` stanza specifies a valid Red Hat Enterprise Linux CoreOS (RHCOS) Amazon Machine Image (AMI) for your AWS zone for your OpenShift Container Platform nodes. If you want to use an AWS Marketplace image, you must complete the OpenShift Container Platform subscription from the [AWS Marketplace](https://aws.amazon.com/marketplace/fulfillment?productId=59ead7de-2540-4653-a8b0-fa7926d5c845) to obtain an AMI ID for your region.
+The `spec.template.spec.providerSpec.value.ami.id` stanza specifies a valid Red Hat Enterprise Linux CoreOS (RHCOS) Amazon Machine Image (AMI) for your AWS zone for your OpenShift Container Platform nodes. If you want to use an AWS Machine Image (AMI) for your AWS zone as a boot image for your OpenShift Container Platform nodes, you should use the latest image when adding a new machine set. If you want to use an AWS Marketplace image, you must complete the OpenShift Container Platform subscription from the [AWS Marketplace](https://aws.amazon.com/marketplace/fulfillment?productId=59ead7de-2540-4653-a8b0-fa7926d5c845) to obtain an AMI ID for your region.
 
 ``` terminal
 $ oc -n openshift-machine-api \
@@ -190,9 +190,11 @@ Machine sets running on AWS support non-guaranteed [Spot Instances](../machine_m
 
 ### Sample YAML for a compute machine set custom resource on Azure
 
-This sample YAML defines a compute machine set that runs in the `1` Microsoft Azure zone in a region and creates nodes that are labeled with `node-role.kubernetes.io/infra: ""`.
+You can define a machine set YAML to provision nodes by specifying parameters such as `vmSize` and `image`. You can use this to automate and scale infrastructure consistently, to ensure compute nodes meet specific workload requirements within the cluster.
 
-In this sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `infra` is the node label to add.
+The sample YAML defines a compute machine set that runs in the `1` Microsoft Azure zone in a region and creates nodes that are labeled with `node-role.kubernetes.io/infra: ""`. The YAML file specifies a taint to prevent user workloads from being scheduled on infra nodes. After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
+
+In the sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `infra` is the node label to add.
 
 ``` yaml
 apiVersion: machine.openshift.io/v1beta1
@@ -268,55 +270,58 @@ spec:
         effect: NoSchedule
 ```
 
-- Specify the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI installed, you can obtain the infrastructure ID by running the following command:
+where:
 
-  ``` terminal
-  $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
-  ```
+`<infrastructure_id>`
+Specifies the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI installed, you can obtain the infrastructure ID by running the following command:
 
-  You can obtain the subnet by running the following command:
+``` terminal
+$ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
+```
 
-  ``` terminal
-  $  oc -n openshift-machine-api \
-      -o jsonpath='{.spec.template.spec.providerSpec.value.subnet}{"\n"}' \
-      get machineset/<infrastructure_id>-worker-centralus1
-  ```
+You can obtain the subnet by running the following command:
 
-  You can obtain the vnet by running the following command:
+``` terminal
+$  oc -n openshift-machine-api \
+    -o jsonpath='{.spec.template.spec.providerSpec.value.subnet}{"\n"}' \
+    get machineset/<infrastructure_id>-worker-centralus1
+```
 
-  ``` terminal
-  $  oc -n openshift-machine-api \
-      -o jsonpath='{.spec.template.spec.providerSpec.value.vnet}{"\n"}' \
-      get machineset/<infrastructure_id>-worker-centralus1
-  ```
+You can obtain the vnet by running the following command:
 
-- Specify the `infra` node label.
+``` terminal
+$  oc -n openshift-machine-api \
+    -o jsonpath='{.spec.template.spec.providerSpec.value.vnet}{"\n"}' \
+    get machineset/<infrastructure_id>-worker-centralus1
+```
 
-- Specify the infrastructure ID, `infra` node label, and region.
+<div class="note">
 
-- Specify the image details for your compute machine set. If you want to use an Azure Marketplace image, see "Using the Azure Marketplace offering".
+The value of the `metadata.labels.machine.openshift.io/cluster-api-machine-role` parameter specifies the `infra` node label.
 
-- Specify an image that is compatible with your instance type. The Hyper-V generation V2 images created by the installation program have a `-gen2` suffix, while V1 images have the same name without the suffix.
+</div>
 
-- Specify the region to place machines on.
+`<infrastructure_id>-infra-<region>`
+Specifies the infrastructure ID, `infra` node label, and region.
 
-- Optional: Specify custom tags in your machine set. Provide the tag name in `<custom_tag_name>` field and the corresponding tag value in `<custom_tag_value>` field.
+<div class="note">
 
-- Specify the zone within your region to place machines on. Ensure that your region supports the zone that you specify.
+The value of the `spec.template.spec.providerSpec.value.image` parameter specifies the image details for your compute machine set. If you want to use an Azure Marketplace image, see "Using the Azure Marketplace offering".
 
-  <div class="important">
+The value of the `spec.template.spec.providerSpec.value.image.resourceID` parameter specifies an image that is compatible with your instance type. The Hyper-V generation V2 images created by the installation program have a `-gen2` suffix, while V1 images have the same name without the suffix.
 
-  If your region supports availability zones, you must specify the zone. Specifying the zone avoids volume node affinity failure when a pod requires a persistent volume attachment. To do this, you can create a compute machine set for each zone in the same region.
+The value of the `spec.template.spec.providerSpec.value.location` parameter specifies the region to place machines on.
 
-  </div>
+</div>
 
-- Specify a taint to prevent user workloads from being scheduled on infra nodes.
+`<custom_tag_name_1>`
+Optional: Specifies custom tags in your machine set. Provide the tag name in `<custom_tag_name>` field and the corresponding tag value in `<custom_tag_value>` field.
 
-  <div class="note">
+<div class="note">
 
-  After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
+The value of the `spec.template.spec.providerSpec.value.zone` parameter specifies the zone within your region to place machines on. Ensure that your region supports the zone that you specify. If your region supports availability zones, you must specify the zone. Specifying the zone avoids volume node affinity failure when a pod requires a persistent volume attachment. To do this, you can create a compute machine set for each zone in the same region.
 
-  </div>
+</div>
 
 Machine sets running on Azure support non-guaranteed [Spot VMs](../machine_management/creating_machinesets/creating-machineset-azure.xml#machineset-non-guaranteed-instance_creating-machineset-azure). You can save on costs by using Spot VMs at a lower price compared to standard VMs on Azure. You can [configure Spot VMs](../machine_management/creating_machinesets/creating-machineset-azure.xml#machineset-creating-non-guaranteed-instance_creating-machineset-azure) by adding `spotVMOptions` to the `MachineSet` YAML file.
 
@@ -444,6 +449,9 @@ The `spec.template.spec.providerSpec.value.zone` specifies the zone within your 
 `<availability_set>`
 Specifies the availability set for the cluster.
 
+`<image>`
+Specifies the boot image to use. You should use the use the latest image when adding a new machine set.
+
 <div class="note">
 
 Machine sets running on Azure Stack Hub do not support non-guaranteed Spot VMs.
@@ -523,7 +531,7 @@ Specifies the `<infra>` node label.
 Specifies the infrastructure ID, `<infra>` node label, and region.
 
 `<infrastructure_id>-rhcos`
-Specifies the custom Red Hat Enterprise Linux CoreOS (RHCOS) image that was used for cluster installation.
+Specifies the custom Red Hat Enterprise Linux CoreOS (RHCOS) image to use as a boot image for your nodes. You should use the use the latest image when adding a new machine set.
 
 `<infrastructure_id>-subnet-compute-<zone>`
 Specifies the infrastructure ID and zone within your region to place machines on. Be sure that your region supports the zone that you specify.
@@ -659,7 +667,7 @@ Specifies the infrastructure ID that is based on the cluster ID that you set whe
 Specifies the `<infra>` node label.
 
 `<path_to_image>`
-Specifies the path to the image that is used in current compute machine sets. To use a Google Cloud Marketplace image, specify the offer to use:
+Specifies the path to the image that is used as a boot image in current compute machine sets. You should use the use the latest image when adding a new machine set. To use a Google Cloud Marketplace image, specify the offer to use:
 
 - OpenShift Container Platform: `https://www.googleapis.com/compute/v1/projects/redhat-marketplace-public/global/images/redhat-coreos-ocp-413-x86-64-202305021736`
 
@@ -801,7 +809,7 @@ Specifies one or more Nutanix Prism categories to apply to compute machines. Thi
 Specifies a Nutanix Prism Element cluster configuration. In this example, the cluster type is `uuid`, so there is a `uuid` stanza.
 
 `<infrastructure_id>-rhcos`
-Specifies the image to use. Use an image from an existing default compute machine set for the cluster.
+Specifies the image to use as a boot image for your nodes. You should use the use the latest image when adding a new machine set.
 
 `16Gi`
 Specifies the amount of memory for the cluster in Gi.
@@ -916,6 +924,9 @@ $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
 `<infrastructure_id>-infra`
 Specifies the infrastructure ID and `infra` node label.
 
+`<glance_image_name_or_location>`
+Specifies the image to use as a boot image for your nodes. You should use the latest image when adding a new machine set.
+
 `<optional_UUID_of_server_group>`
 Sets a server group policy for the `MachineSet` YAML, by entering the value that is returned from [creating a server group](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html/command_line_interface_reference/server#server_group_create). For most deployments, `anti-affinity` or `soft-anti-affinity` policies are recommended.
 
@@ -931,11 +942,13 @@ The `spec.template.spec.providerSpec.value.networks` stanza is required for depl
 `<rhosp_subnet_UUID>`
 Specifies the RHOSP subnet that you want the endpoints of nodes to be published on. Usually, this is the same subnet that is used as the value of `machinesSubnet` in the `install-config.yaml` file.
 
+- [Manually updating the boot image](../machine_configuration/mco-update-boot-images-manual.xml#mco-update-boot-images-manual)
+
 ### Sample YAML for a compute machine set custom resource on vSphere
 
-To enable the Machine API to automate node provisioning on VMware vSphere infrastructure, define a `MachineSet` resource with parameters that are specific to VMware vSphere, for example data center, resource pool, and template.
+To enable the Machine API to automate node provisioning on VMware vSphere infrastructure, define a `MachineSet` resource with parameters that are specific to vSphere, for example data center, resource pool, and template.
 
-The sample YAML file defines a compute machine set that runs on VMware vSphere and creates nodes that are labeled with `node-role.kubernetes.io/infra: ""`.
+The sample YAML file defines a compute machine set that runs on vSphere and creates nodes that are labeled with `node-role.kubernetes.io/infra: ""`.
 
 In this sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `infra` is the node label to add.
 
@@ -1019,11 +1032,14 @@ Specifies the `infra` node label.
 `<disk_name>`
 Specifies one or more data disk definitions. For more information, see "Configuring data disks by using machine sets".
 
+`<image_name>`
+Specifies the image to use as a boot image for your nodes.
+
 `<vm_network_name>`
 Specifies the vSphere VM network to deploy the compute machine set to. This VM network must be where other compute machines reside in the cluster.
 
 `<vm_template_name>`
-Specifies the vSphere VM template to use, such as `user-5ddjd-rhcos`.
+Specifies the vSphere VM template to use as a boot image for your nodes, such as `user-5ddjd-rhcos`. You should use a template with the latest OpenShift Container Platform image when adding a new machine set.
 
 `<vcenter_data_center_name>`
 Specifies the vCenter datacenter to deploy the compute machine set on.
@@ -1048,6 +1064,8 @@ Specifies a taint to prevent user workloads from being scheduled on infra nodes.
 After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
 
 </div>
+
+- [Manually updating the boot image](../machine_configuration/mco-update-boot-images-manual.xml#mco-update-boot-images-manual)
 
 ## Creating a compute machine set
 
@@ -1874,15 +1892,11 @@ The monitoring stack includes multiple components, including Prometheus, Thanos 
 
 ## Moving the Vertical Pod Autoscaler Operator components
 
-The Vertical Pod Autoscaler Operator (VPA) consists of three components: the recommender, updater, and admission controller. The Operator and each component has its own pod in the VPA namespace on the control plane nodes. You can move the VPA Operator and component pods to infrastructure nodes by adding a node selector to the VPA subscription and the `VerticalPodAutoscalerController` CR.
+You can move the VPA Operator and component pods to infrastructure nodes by adding a node selector to the VPA subscription and the `VerticalPodAutoscalerController` CR.
+
+The Vertical Pod Autoscaler Operator (VPA) consists of three components: the recommender, updater, and admission controller. The Operator and each component has its own pod in the VPA namespace on the control plane nodes.
 
 The following example shows the default deployment of the VPA pods to the control plane nodes.
-
-<div class="formalpara-title">
-
-**Example output**
-
-</div>
 
 ``` terminal
 NAME                                                READY   STATUS    RESTARTS   AGE     IP            NODE                  NOMINATED NODE   READINESS GATES
@@ -1916,35 +1930,41 @@ vpa-updater-default-db8b58df-2nkvf                  1/1     Running   0         
               node-role.kubernetes.io/infra: ""
         ```
 
-        - Specifies the node role of an infra node.
+        where:
 
-          <div class="note">
+        `spec.config.nodeSelector.node-role.kubernetes.io/infra`
+        Specifies the node role of an infra node.
 
-          If the infra node uses taints, you need to add a toleration to the `Subscription` CR.
+        <div class="note">
 
-          For example:
+        If the infra node uses taints, you need to add a toleration to the `Subscription` CR.
 
-          ``` terminal
-          apiVersion: operators.coreos.com/v1alpha1
-          kind: Subscription
-          metadata:
-            labels:
-              operators.coreos.com/vertical-pod-autoscaler.openshift-vertical-pod-autoscaler: ""
-            name: vertical-pod-autoscaler
-          # ...
-          spec:
-            config:
-              nodeSelector:
-                node-role.kubernetes.io/infra: ""
-              tolerations:
-              - key: "node-role.kubernetes.io/infra"
-                operator: "Exists"
-                effect: "NoSchedule"
-          ```
+        For example:
 
-          </div>
+        ``` terminal
+        apiVersion: operators.coreos.com/v1alpha1
+        kind: Subscription
+        metadata:
+          labels:
+            operators.coreos.com/vertical-pod-autoscaler.openshift-vertical-pod-autoscaler: ""
+          name: vertical-pod-autoscaler
+        # ...
+        spec:
+          config:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+            - key: "node-role.kubernetes.io/infra"
+              operator: "Exists"
+              effect: "NoSchedule"
+        ```
 
-        - Specifies a toleration for a taint on the infra node.
+        where:
+
+        `spec.config.tolerations`
+        Specifies a toleration for a taint on the infra node.
+
+        </div>
 
 2.  Move each VPA component by adding node selectors to the `VerticalPodAutoscaler` custom resource (CR):
 
@@ -1982,63 +2002,73 @@ vpa-updater-default-db8b58df-2nkvf                  1/1     Running   0         
                 node-role.kubernetes.io/infra: ""
         ```
 
-        - Optional: Specifies the node role for the VPA admission pod.
+        where:
 
-        - Optional: Specifies the node role for the VPA recommender pod.
+        `spec.deploymentOverrides.admission.nodeselector`
+        Optional: Specifies the node role for the VPA admission pod.
 
-        - Optional: Specifies the node role for the VPA updater pod.
+        `spec.deploymentOverrides.recommender.nodeselector`
+        Optional: Specifies the node role for the VPA recommender pod.
 
-          <div class="note">
+        `spec.deploymentOverrides.updater.nodeselector`
+        Optional: Specifies the node role for the VPA updater pod.
 
-          If a target node uses taints, you need to add a toleration to the `VerticalPodAutoscalerController` CR.
+        <div class="note">
 
-          For example:
+        If a target node uses taints, you need to add a toleration to the `VerticalPodAutoscalerController` CR.
 
-          ``` terminal
-          apiVersion: autoscaling.openshift.io/v1
-          kind: VerticalPodAutoscalerController
-          metadata:
-            name: default
-            namespace: openshift-vertical-pod-autoscaler
-          # ...
-          spec:
-            deploymentOverrides:
-              admission:
-                container:
-                  resources: {}
-                nodeSelector:
-                  node-role.kubernetes.io/infra: ""
-                tolerations:
-                - key: "my-example-node-taint-key"
-                  operator: "Exists"
-                  effect: "NoSchedule"
-              recommender:
-                container:
-                  resources: {}
-                nodeSelector:
-                  node-role.kubernetes.io/infra: ""
-                tolerations:
-                - key: "my-example-node-taint-key"
-                  operator: "Exists"
-                  effect: "NoSchedule"
-              updater:
-                container:
-                  resources: {}
-                nodeSelector:
-                  node-role.kubernetes.io/infra: ""
-                tolerations:
-                - key: "my-example-node-taint-key"
-                  operator: "Exists"
-                  effect: "NoSchedule"
-          ```
+        For example:
 
-          </div>
+        ``` terminal
+        apiVersion: autoscaling.openshift.io/v1
+        kind: VerticalPodAutoscalerController
+        metadata:
+          name: default
+          namespace: openshift-vertical-pod-autoscaler
+        # ...
+        spec:
+          deploymentOverrides:
+            admission:
+              container:
+                resources: {}
+              nodeSelector:
+                node-role.kubernetes.io/infra: ""
+              tolerations:
+              - key: "my-example-node-taint-key"
+                operator: "Exists"
+                effect: "NoSchedule"
+            recommender:
+              container:
+                resources: {}
+              nodeSelector:
+                node-role.kubernetes.io/infra: ""
+              tolerations:
+              - key: "my-example-node-taint-key"
+                operator: "Exists"
+                effect: "NoSchedule"
+            updater:
+              container:
+                resources: {}
+              nodeSelector:
+                node-role.kubernetes.io/infra: ""
+              tolerations:
+              - key: "my-example-node-taint-key"
+                operator: "Exists"
+                effect: "NoSchedule"
+        ```
 
-        - Specifies a toleration for the admission controller pod for a taint on the infra node.
+        where:
 
-        - Specifies a toleration for the recommender pod for a taint on the infra node.
+        `spec.deploymentOverrides.admission.tolerations`
+        Specifies a toleration for the admission controller pod for a taint on the infra node.
 
-        - Specifies a toleration for the updater pod for a taint on the infra node.
+        `spec.deploymentOverrides.recommender.tolerations`
+        Specifies a toleration for the recommender pod for a taint on the infra node.
+
+        `spec.deploymentOverrides.updater.tolerations`
+        Specifies a toleration for the updater pod for a taint on the infra node.
+
+        </div>
 
 - You can verify the pods have moved by using the following command:
 

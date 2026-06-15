@@ -4,7 +4,9 @@ As a cluster administrator, you can configure the OVN-Kubernetes Container Netwo
 
 By using the OpenShift Container Platform egress IP address functionality, you can ensure that the traffic from one or more pods in one or more namespaces has a consistent source IP address for services outside the cluster network.
 
-For example, you might have a pod that periodically queries a database that is hosted on a server outside of your cluster. To enforce access requirements for the server, a packet filtering device is configured to allow traffic only from specific IP addresses. To ensure that you can reliably allow access to the server from only that specific pod, you can configure a specific egress IP address for the pod that makes the requests to the server.
+For example, you might have a pod that periodically queries a database that is hosted on a server outside of your cluster. To enforce access requirements for the server, a packet filtering device is configured to allow traffic only from specific IP addresses.
+
+To ensure that you can reliably allow access to the server from only that specific pod, you can configure a specific egress IP address for the pod that makes the requests to the server.
 
 An egress IP address assigned to a namespace is different from an egress router, which is used to send traffic to specific destinations.
 
@@ -16,9 +18,72 @@ Egress IP addresses must not be configured in any Linux network configuration fi
 
 </div>
 
+<div class="important">
+
+The assignment of egress IP addresses to control plane nodes with the EgressIP feature is not supported on a cluster provisioned on Amazon Web Services (AWS). For more information, see "BZ#2039656" in the *Additional resources* section.
+
+</div>
+
+The following example illustrates the annotation from nodes on several public cloud providers. The annotations are indented for readability.
+
+<div class="formalpara-title">
+
+**Example `cloud.network.openshift.io/egress-ipconfig` annotation on AWS**
+
+</div>
+
+``` yaml
+cloud.network.openshift.io/egress-ipconfig: [
+  {
+    "interface":"eni-078d267045138e436",
+    "ifaddr":{"ipv4":"10.0.128.0/18"},
+    "capacity":{"ipv4":14,"ipv6":15}
+  }
+]
+```
+
+The following sections describe the IP address capacity for supported public cloud environments for use in your capacity calculation.
+
+Amazon Web Services (AWS) IP address capacity limits
+On AWS, constraints on IP address assignments depend on the instance type configured. For more information, see "IP addresses per network interface per instance type" in the *Additional resources* section.
+
+Google Cloud IP address capacity limits
+On Google Cloud, the networking model implements additional node IP addresses through IP address aliasing, rather than IP address assignments. However, IP address capacity maps directly to IP aliasing capacity.
+
+The following capacity limits exist for IP aliasing assignment:
+
+- Per node, the maximum number of IP aliases, both IPv4 and IPv6, is 100.
+
+- Per VPC, the maximum number of IP aliases is unspecified, but OpenShift Container Platform scalability testing reveals the maximum to be approximately 15,000.
+
+For more information, see "Per instance" quotas and "Alias IP ranges overview" in the *Additional resources* section.
+
+Microsoft Azure IP address capacity limits
+On Azure, the following capacity limits exist for IP address assignment:
+
+- Per NIC, the maximum number of assignable IP addresses, for both IPv4 and IPv6, is 256.
+
+- Per virtual network, the maximum number of assigned IP addresses cannot exceed 65,536.
+
+For more information, see "Networking limits" in the *Additional resources* section.
+
+# Additional resources
+
+- [BZ#2039656 (Red Hat Bugzilla)](https://bugzilla.redhat.com/show_bug.cgi?id=2039656)
+
+- [Per instance (Google Cloud documentation)](https://cloud.google.com/vpc/docs/quota#per_instance)
+
+- [Alias IP ranges overview (Google Cloud documentation)](https://cloud.google.com/vpc/docs/alias-ip)
+
+- [Networking limits (Microsoft Azure documentation)](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits?toc=/azure/virtual-network/toc.json#networking-limits)
+
+- [IP addresses per network interface per instance type (AWS documentation)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html#AvailableIpPerENI)
+
 ## Platform support
 
-The Egress IP address feature that runs on a primary host network is supported on the following platforms:
+The Egress IP address feature that runs on a primary host network is supported on specific platforms.
+
+The following table shows supported platforms for egress IP on primary host networks:
 
 | Platform                                                         | Supported |
 |------------------------------------------------------------------|-----------|
@@ -45,21 +110,17 @@ The Egress IP address feature that runs on secondary host networks is supported 
 |------------|-----------|
 | Bare metal | Yes       |
 
-<div class="important">
-
-The assignment of egress IP addresses to control plane nodes with the EgressIP feature is not supported on a cluster provisioned on Amazon Web Services (AWS). ([**BZ#2039656**](https://bugzilla.redhat.com/show_bug.cgi?id=2039656)).
-
-</div>
-
 ## Public cloud platform considerations
 
-Typically, public cloud providers place a limit on egress IP addresses. This means that there is a constraint on the absolute number of assignable IP addresses per node for clusters provisioned on public cloud infrastructure. The maximum number of assignable IP addresses per node, or the *IP capacity*, can be described in the following formula:
+Typically, public cloud providers place a limit on egress IP addresses. You must understand the existence of a constraint on the absolute number of assignable IP addresses per node for clusters provisioned on public cloud infrastructure.
+
+The maximum number of assignable IP addresses per node, or the *IP capacity*, can be described in the following formula:
 
 ``` text
 IP capacity = public cloud default capacity - sum(current IP assignments)
 ```
 
-While the Egress IP addresses capability manages the IP address capacity per node, it is important to plan for this constraint in your deployments. For example, if a public cloud provider limits IP address capacity to 10 IP addresses per node, and you have 8 nodes, the total number of assignable IP addresses is only 80. To achieve a higher IP address capacity, you would need to allocate additional nodes. For example, if you needed 150 assignable IP addresses, you would need to allocate 7 additional nodes.
+While the Egress IP addresses capability manages the IP address capacity per node, ensure you plan for this constraint in your deployments. For example, if a public cloud provider limits IP address capacity to 10 IP addresses per node, and you have 8 nodes, the total number of assignable IP addresses is only 80. To achieve a higher IP address capacity, you would need to allocate additional nodes. For example, if you needed 150 assignable IP addresses, you would need to allocate 7 additional nodes.
 
 To confirm the IP capacity and subnets for any node in your public cloud environment, you can enter the `oc get node <node_name> -o yaml` command. The `cloud.network.openshift.io/egress-ipconfig` annotation includes capacity and subnet information for the node.
 
@@ -71,7 +132,7 @@ The annotation value is an array with a single object with fields that provide t
 
 - `capacity`: Specifies the IP address capacity for the node. On AWS, the IP address capacity is provided per IP address family. On Azure and Google Cloud, the IP address capacity includes both IPv4 and IPv6 addresses.
 
-Automatic attachment and detachment of egress IP addresses for traffic between nodes are available. This allows for traffic from many pods in namespaces to have a consistent source IP address to locations outside of the cluster. This also supports OpenShift SDN and OVN-Kubernetes, which is the default networking plugin in Red Hat OpenShift Networking in OpenShift Container Platform 4.17.
+Automatic attachment and detachment of egress IP addresses for traffic between nodes are available. Traffic from many pods in namespaces can have a consistent source IP address to locations outside of the cluster.
 
 <div class="note">
 
@@ -119,40 +180,56 @@ cloud.network.openshift.io/egress-ipconfig: [
 ]
 ```
 
-The following sections describe the IP address capacity for supported public cloud environments for use in your capacity calculation.
+## Considerations for using an egress IP address on additional network interfaces
 
-### Amazon Web Services (AWS) IP address capacity limits
+In OpenShift Container Platform, egress IP addresses provide administrators a way to control network traffic. Egress IP addresses can be used with a `br-ex` Open vSwitch (OVS) bridge interface and any physical interface that has IP connectivity enabled.
 
-On AWS, constraints on IP address assignments depend on the instance type configured. For more information, see [IP addresses per network interface per instance type](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html#AvailableIpPerENI)
+You can inspect your network interface type by running the following command:
 
-### Google Cloud IP address capacity limits
+``` terminal
+$ ip -details link show
+```
 
-On Google Cloud, the networking model implements additional node IP addresses through IP address aliasing, rather than IP address assignments. However, IP address capacity maps directly to IP aliasing capacity.
+The primary network interface is assigned a node IP address which also contains a subnet mask. Information for this node IP address can be retrieved from the Kubernetes node object for each node within your cluster by inspecting the `k8s.ovn.org/node-primary-ifaddr` annotation. In an IPv4 cluster, this annotation is similar to the following example: `"k8s.ovn.org/node-primary-ifaddr: {"ipv4":"192.168.111.23/24"}"`.
 
-The following capacity limits exist for IP aliasing assignment:
+If the egress IP address is not within the subnet of the primary network interface subnet, you can use an egress IP address on another Linux network interface that is not of the primary network interface type. By doing so, OpenShift Container Platform administrators are provided with a greater level of control over networking aspects such as routing, addressing, segmentation, and security policies. This feature provides users with the option to route workload traffic over specific network interfaces for purposes such as traffic segmentation or meeting specialized requirements.
 
-- Per node, the maximum number of IP aliases, both IPv4 and IPv6, is 100.
+If the egress IP address is not within the subnet of the primary network interface, then the selection of another network interface for egress traffic might occur if they are present on a node.
 
-- Per VPC, the maximum number of IP aliases is unspecified, but OpenShift Container Platform scalability testing reveals the maximum to be approximately 15,000.
+You can determine which other network interfaces might support egress IP address addresses by inspecting the `k8s.ovn.org/host-cidrs` Kubernetes node annotation. This annotation contains the addresses and subnet mask found for the primary network interface. The annotation also contains additional network interface addresses and subnet mask information. These addresses and subnet masks are assigned to network interfaces that use the longest prefix match routing mechanism to determine which network interface supports the egress IP address. For more information, see "Longest prefix match routing" in the *Additional resources* section.
 
-For more information, see [Per instance](https://cloud.google.com/vpc/docs/quota#per_instance) quotas and [Alias IP ranges overview](https://cloud.google.com/vpc/docs/alias-ip).
+<div class="note">
 
-### Microsoft Azure IP address capacity limits
+OVN-Kubernetes provides a mechanism to control and direct outbound network traffic from specific namespaces and pods. This ensures that it exits the cluster through a particular network interface and with a specific egress IP address.
 
-On Azure, the following capacity limits exist for IP address assignment:
+</div>
 
-- Per NIC, the maximum number of assignable IP addresses, for both IPv4 and IPv6, is 256.
+As an administrator who wants an egress IP address and traffic to route over a particular interface that is not the primary network interface, you must meet the following conditions:
 
-- Per virtual network, the maximum number of assigned IP addresses cannot exceed 65,536.
+- OpenShift Container Platform is installed on a bare-metal cluster. This feature is disabled within a cloud or a hypervisor environment.
 
-For more information, see [Networking limits](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits?toc=/azure/virtual-network/toc.json#networking-limits).
+- Your OpenShift Container Platform pods are not configured as *host-networked*.
+
+- You understand that if a network interface is removed or if the IP address and subnet mask which allows the egress IP address to be hosted on the interface is removed, reconfiguration of the egress IP address occurs. Consequently, the egress IP address might get assigned to another node and interface.
+
+- If you use an Egress IP address on a secondary network interface card (NIC), you must use the Node Tuning Operator to enable IP forwarding on the secondary NIC.
+
+- You configured a NIC with routes by ensuring a gateway exists in the main routing table. As a postinstallation task, Red Hat does not support configuring a NIC on a cluster that uses OVN-Kubernetes.
+
+- Routes associated with an egress interface get copied from the main routing table to the routing table that was created to support the Egress IP object.
+
+<!-- -->
+
+- [Longest prefix match routing (NetworkLessons documentation)](https://networklessons.com/cisco/ccna-200-301/longest-prefix-match-routing)
 
 ## Architectural diagram of an egress IP address configuration
 
-The following diagram depicts an egress IP address configuration. The diagram describes four pods in two different namespaces running on three nodes in a cluster. The nodes are assigned IP addresses from the `192.168.126.0/18` CIDR block on the host network.
+To better understand egress IP address configuration, reference the architectural diagram.
+
+The following diagram shows an egress IP address configuration. The diagram describes four pods in two different namespaces running on three nodes in a cluster. The nodes are assigned IP addresses from the `192.168.126.0/18` CIDR block on the host network.
 
 <figure>
-<img src="data:image/svg+xml;base64,PHN2ZyBpZD0iYWRmYTcxNDQtMjdhOC00N2NkLTg2OTUtZTVlODA3NDA3NGRjIiBkYXRhLW5hbWU9ImFydHdvcmsiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9Ijc2MCIgaGVpZ2h0PSI1MjYuMjE4Ij48ZGVmcz48c3R5bGU+LmIwMmJhNjUwLWQ3MmQtNDA5YS1hYjMwLWE0YzA0ZjYyYWQyYiwuYmQ1MjJhMzMtMTVmYy00ZGM3LWFhYmYtNGFhZGMwM2U2OTk0LC5lYmZhNjdiNi1lM2VmLTQ5YWItYjM5My04Nzc1YjYzZjdlZGIsLmY5ZDI3M2FhLWM0NTQtNDA3Ni1iYWIwLTJlMDFmYWZkZWNlNXtmaWxsOm5vbmV9LmIwMmJhNjUwLWQ3MmQtNDA5YS1hYjMwLWE0YzA0ZjYyYWQyYiwuYmQ1MjJhMzMtMTVmYy00ZGM3LWFhYmYtNGFhZGMwM2U2OTk0LC5lYmZhNjdiNi1lM2VmLTQ5YWItYjM5My04Nzc1YjYzZjdlZGJ7c3Ryb2tlOiMwNmN9LmIwMmJhNjUwLWQ3MmQtNDA5YS1hYjMwLWE0YzA0ZjYyYWQyYiwuYmQ1MjJhMzMtMTVmYy00ZGM3LWFhYmYtNGFhZGMwM2U2OTk0LC5lYmZhNjdiNi1lM2VmLTQ5YWItYjM5My04Nzc1YjYzZjdlZGIsLmY5ZDI3M2FhLWM0NTQtNDA3Ni1iYWIwLTJlMDFmYWZkZWNlNXtzdHJva2UtbGluZWNhcDpyb3VuZDtzdHJva2UtbGluZWpvaW46cm91bmR9LmIwMmJhNjUwLWQ3MmQtNDA5YS1hYjMwLWE0YzA0ZjYyYWQyYiwuZjlkMjczYWEtYzQ1NC00MDc2LWJhYjAtMmUwMWZhZmRlY2U1e3N0cm9rZS13aWR0aDoycHh9LmY5ZDI3M2FhLWM0NTQtNDA3Ni1iYWIwLTJlMDFmYWZkZWNlNXtzdHJva2U6IzRjYjZkNn0uYjcyZDNjYmMtNmJmYy00ZWZjLTkxN2ItOGRmOTU3YTUyMTY0e2ZpbGw6I2ZmZn0uYTdlMDNmYjQtNDQxYS00MmVkLWIxODYtZWI4YmZkMTMzMWYye2ZvbnQtc2l6ZToxMnB4O2ZvbnQtZmFtaWx5OlJlZEhhdFRleHQsJnF1b3Q7UmVkIEhhdCBUZXh0JnF1b3Q7LE92ZXJwYXNzLCZxdW90O0hlbHZldGljYSBOZXVlJnF1b3Q7LEFyaWFsLHNhbnMtc2VyaWY7Zm9udC13ZWlnaHQ6NTAwO2ZpbGw6IzE1MTUxNX0uYWM4MzAyYTEtZjliNS00ODU4LWJlMWQtYTc5ZTlhY2FjZGYyLC5lMTg4MTg2ZS03MmJlLTQwMTgtOWE0NC01MzVjMGEwMTQ4M2R7ZmlsbDojMTUxNTE1fS5hYjllOTU4NS05ZGNlLTQyMTUtYjlhNS1lNWY1MzQ5OGRiOGZ7ZmlsbDojZThlOGU4fS5hYzgzMDJhMS1mOWI1LTQ4NTgtYmUxZC1hNzllOWFjYWNkZjJ7Zm9udC1zaXplOjE0cHg7Zm9udC1mYW1pbHk6UmVkSGF0VGV4dCwmcXVvdDtSZWQgSGF0IFRleHQmcXVvdDssT3ZlcnBhc3MsJnF1b3Q7SGVsdmV0aWNhIE5ldWUmcXVvdDssQXJpYWwsc2Fucy1zZXJpZjtmb250LXdlaWdodDo3MDB9LmI4MTRiMDM2LWZjNmEtNDI5NC1iZWVmLWYyZWJjMzRmZTg0ZCwuZTE4ODE4NmUtNzJiZS00MDE4LTlhNDQtNTM1YzBhMDE0ODNke2ZvbnQtc2l6ZToxMXB4O2ZvbnQtZmFtaWx5OkxpYmVyYXRpb25Nb25vLCZxdW90O0xpYmVyYXRpb24gTW9ubyZxdW90OyxDb25zb2xhcyxNb25hY28sJnF1b3Q7QW5kYWxlIE1vbm8mcXVvdDssbW9ub3NwYWNlfS5iODE0YjAzNi1mYzZhLTQyOTQtYmVlZi1mMmViYzM0ZmU4NGR7Zm9udC13ZWlnaHQ6NDAwfS5iNTkyNjQwYi1jMzE2LTQ3NWUtYmNlNi1iN2EzNzg5ZjM2YTV7ZmlsbDojZDVkNWQ1fS5iZDUyMmEzMy0xNWZjLTRkYzctYWFiZi00YWFkYzAzZTY5OTR7c3Ryb2tlLWRhc2hhcnJheTozLjQgMy40fTwvc3R5bGU+PC9kZWZzPjxwYXRoIGNsYXNzPSJiMDJiYTY1MC1kNzJkLTQwOWEtYWIzMC1hNGMwNGY2MmFkMmIiIGQ9Ik00MjQuNzc0IDExNy41aDM0LjgxN3YzMjEuNzE4aC0zNC40OTgiLz48cGF0aCBjbGFzcz0iZjlkMjczYWEtYzQ1NC00MDc2LWJhYjAtMmUwMWZhZmRlY2U1IiBkPSJNNDI0LjYxNCA5Ny41MDFoMTY0Ljk3N3YzNjEuNzE3SDQyNC45MzMiLz48cGF0aCBjbGFzcz0iYjcyZDNjYmMtNmJmYy00ZWZjLTkxN2ItOGRmOTU3YTUyMTY0IiBkPSJNNDY0LjE4NSA0NDkuMDA1aDkxLjA1OHYyMC40MjZoLTkxLjA1OHoiLz48dGV4dCBjbGFzcz0iYTdlMDNmYjQtNDQxYS00MmVkLWIxODYtZWI4YmZkMTMzMWYyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NjcuMDg5IDQ2Mi45NDYpIj4xOTIuMTY4LjEyNi4xMDI8L3RleHQ+PHBhdGggY2xhc3M9ImFiOWU5NTg1LTlkY2UtNDIxNS1iOWE1LWU1ZjUzNDk4ZGI4ZiIgZD0iTS4wNyAzNzQuMjE4aDQyNXYxMzVILjA3eiIvPjx0ZXh0IGNsYXNzPSJhYzgzMDJhMS1mOWI1LTQ4NTgtYmUxZC1hNzllOWFjYWNkZjIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIwLjA3IDQwNi4xNDYpIj5Ob2RlIDM8dHNwYW4gY2xhc3M9ImI4MTRiMDM2LWZjNmEtNDI5NC1iZWVmLWYyZWJjMzRmZTg0ZCI+PHRzcGFuIHg9IjAiIHk9IjI2Ij5tZXRhOjwvdHNwYW4+PC90c3Bhbj48L3RleHQ+PHRleHQgY2xhc3M9ImUxODgxODZlLTcyYmUtNDAxOC05YTQ0LTUzNWMwYTAxNDgzZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjYuNjgyIDQ0NS4xNDUpIj5uYW1lOiBub2RlMzwvdGV4dD48dGV4dCBjbGFzcz0iZTE4ODE4NmUtNzJiZS00MDE4LTlhNDQtNTM1YzBhMDE0ODNkIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNi42NDUgNDU4LjE0NikiPmxhYmVsczo8L3RleHQ+PHRleHQgY2xhc3M9ImUxODgxODZlLTcyYmUtNDAxOC05YTQ0LTUzNWMwYTAxNDgzZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzMuMjE5IDQ3MS4xNDYpIj5rOHMub3ZuLm9yZy9lZ3Jlc3MtYXNzaWduYWJsZTogJnF1b3Q7JnF1b3Q7PC90ZXh0Pjx0ZXh0IGNsYXNzPSJhN2UwM2ZiNC00NDFhLTQyZWQtYjE4Ni1lYjhiZmQxMzMxZjIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ2Ny4wODkgMTUyLjkwNCkiPlBvZCBuZXR3b3JrPHRzcGFuIHg9IjAiIHk9IjE1Ij4xMC4xMjguMC4wLzE0PC90c3Bhbj48L3RleHQ+PHRleHQgY2xhc3M9ImE3ZTAzZmI0LTQ0MWEtNDJlZC1iMTg2LWViOGJmZDEzMzFmMiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTk3LjA4OSAxNTIuOTA0KSI+SW5mcmFzdHJ1Y3R1cmUgbmV0d29yazx0c3BhbiB4PSIwIiB5PSIxNSI+MTkyLjE2OC4xMjYuMC8xODwvdHNwYW4+PC90ZXh0PjxwYXRoIGNsYXNzPSJhYjllOTU4NS05ZGNlLTQyMTUtYjlhNS1lNWY1MzQ5OGRiOGYiIGQ9Ik02MzMuMDcgMjIwaDEyN3Y5NWgtMTI3eiIvPjx0ZXh0IGNsYXNzPSJhYzgzMDJhMS1mOWI1LTQ4NTgtYmUxZC1hNzllOWFjYWNkZjIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY1My4wNyAyNTEuNzg4KSI+RXh0ZXJuYWw8dHNwYW4geD0iMCIgeT0iMTUiPnNlcnZpY2U8L3RzcGFuPjwvdGV4dD48cGF0aCBjbGFzcz0iYjAyYmE2NTAtZDcyZC00MDlhLWFiMzAtYTRjMDRmNjJhZDJiIiBkPSJNNDU5LjU5MSAyNjBINDI1LjA3Ii8+PHBhdGggc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZmlsbD0ibm9uZSIgZD0iTTQ2OS41OTEgMjQwSDQyNS4wNyIvPjxwYXRoIGNsYXNzPSJmOWQyNzNhYS1jNDU0LTQwNzYtYmFiMC0yZTAxZmFmZGVjZTUiIGQ9Ik01ODkuNTkxIDI0MEg0MjUuMDdNNTg5LjU5MSAyNjcuNWgzMy44MDMiLz48cGF0aCBmaWxsPSIjNGNiNmQ2IiBkPSJNNjIxLjkzNSAyNzIuNDg2bDguNjM1LTQuOTg2LTguNjM1LTQuOTg2djkuOTcyeiIvPjxwYXRoIGNsYXNzPSJiNzJkM2NiYy02YmZjLTRlZmMtOTE3Yi04ZGY5NTdhNTIxNjQiIGQ9Ik00NjQuMTg1IDg3LjcwNmg4My41NTh2MjAuNDI2aC04My41NTh6Ii8+PHRleHQgY2xhc3M9ImE3ZTAzZmI0LTQ0MWEtNDJlZC1iMTg2LWViOGJmZDEzMzFmMiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDY3LjA4OSAxMDEuNjQ3KSI+MTkyLjE2OC4xMjYuMTA8L3RleHQ+PHBhdGggY2xhc3M9ImFiOWU5NTg1LTlkY2UtNDIxNS1iOWE1LWU1ZjUzNDk4ZGI4ZiIgZD0iTS4wNyA1NWg0MjV2MTM1SC4wN3oiLz48cGF0aCBjbGFzcz0iYjU5MjY0MGItYzMxNi00NzVlLWJjZTYtYjdhMzc4OWYzNmE1IiBkPSJNMzk0Ljk5NiA0NDQuMjE4SDI2NS4wN2wuMDc1LTcwSDM5NS4wN2wtLjA3NCA3MHoiLz48cGF0aCBjbGFzcz0iYWI5ZTk1ODUtOWRjZS00MjE1LWI5YTUtZTVmNTM0OThkYjhmIiBkPSJNMzk0Ljk5NiAzMzkuMjE4SDI2NS4wN2wuMDc1IDM1SDM5NS4wN2wtLjA3NC0zNXoiLz48cGF0aCBjbGFzcz0iYjU5MjY0MGItYzMxNi00NzVlLWJjZTYtYjdhMzc4OWYzNmE1IiBkPSJNMjY1LjEwNyA1NWgxMjkuOTI1djEzNUgyNjUuMTA3eiIvPjxwYXRoIGNsYXNzPSJhYjllOTU4NS05ZGNlLTQyMTUtYjlhNS1lNWY1MzQ5OGRiOGYiIGQ9Ik0zOTQuOTk2IDIwSDI2NS4wN2wuMDc1IDM1SDM5NS4wN2wtLjA3NC0zNXoiLz48cGF0aCBjbGFzcz0iZWJmYTY3YjYtZTNlZi00OWFiLWIzOTMtODc3NWI2M2Y3ZWRiIiBkPSJNMzg1LjA3IDE0MGgxLjUiLz48cGF0aCBjbGFzcz0iYmQ1MjJhMzMtMTVmYy00ZGM3LWFhYmYtNGFhZGMwM2U2OTk0IiBkPSJNMzg5Ljk3IDE0MGgxMS45Ii8+PHBhdGggY2xhc3M9ImViZmE2N2I2LWUzZWYtNDlhYi1iMzkzLTg3NzViNjNmN2VkYiIgZD0iTTQwMy41NyAxNDBoMS41di0xLjUiLz48cGF0aCBzdHJva2UtZGFzaGFycmF5PSIyLjggMi44IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0iIzA2YyIgZmlsbD0ibm9uZSIgZD0iTTQwNS4wNyAxMzUuN1Y5Ny45Ii8+PHBhdGggY2xhc3M9ImViZmE2N2I2LWUzZWYtNDlhYi1iMzkzLTg3NzViNjNmN2VkYiIgZD0iTTQwNS4wNyA5Ni41Vjk1aC0xLjUiLz48cGF0aCBjbGFzcz0iYmQ1MjJhMzMtMTVmYy00ZGM3LWFhYmYtNGFhZGMwM2U2OTk0IiBkPSJNNDAwLjE3IDk1aC0xMS45Ii8+PHBhdGggY2xhc3M9ImViZmE2N2I2LWUzZWYtNDlhYi1iMzkzLTg3NzViNjNmN2VkYiIgZD0iTTM4Ni41NyA5NWgtMS41TTQyNS4wNyAxMTcuNWgtMS41Ii8+PHBhdGggc3Ryb2tlLWRhc2hhcnJheT0iMy4zIDMuMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2U9IiMwNmMiIGZpbGw9Im5vbmUiIGQ9Ik00MjAuMjcgMTE3LjVoLTExLjU1Ii8+PHBhdGggY2xhc3M9ImViZmE2N2I2LWUzZWYtNDlhYi1iMzkzLTg3NzViNjNmN2VkYiIgZD0iTTQwNy4wNyAxMTcuNWgtMS41Ii8+PHBhdGggY2xhc3M9ImI3MmQzY2JjLTZiZmMtNGVmYy05MTdiLThkZjk1N2E1MjE2NCIgZD0iTTI3NS4wNyAzOTQuMjE4aDExMHY0MGgtMTEweiIvPjx0ZXh0IGNsYXNzPSJhN2UwM2ZiNC00NDFhLTQyZWQtYjE4Ni1lYjhiZmQxMzMxZjIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMxNS4yNTEgNDE3LjU0MikiPnBvZDQ8L3RleHQ+PHBhdGggY2xhc3M9ImI3MmQzY2JjLTZiZmMtNGVmYy05MTdiLThkZjk1N2E1MjE2NCIgZD0iTTI3NS4wNyAxMjBoMTEwdjQwaC0xMTB6Ii8+PHRleHQgY2xhc3M9ImE3ZTAzZmI0LTQ0MWEtNDJlZC1iMTg2LWViOGJmZDEzMzFmMiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzE1LjczNiAxNDMuMzIzKSI+cG9kMjwvdGV4dD48cGF0aCBjbGFzcz0iYjcyZDNjYmMtNmJmYy00ZWZjLTkxN2ItOGRmOTU3YTUyMTY0IiBkPSJNMjc1LjA3IDc1aDExMHY0MGgtMTEweiIvPjx0ZXh0IGNsYXNzPSJhN2UwM2ZiNC00NDFhLTQyZWQtYjE4Ni1lYjhiZmQxMzMxZjIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMxNy4xMDQgOTguMzIzKSI+cG9kMTwvdGV4dD48dGV4dCBjbGFzcz0iYWM4MzAyYTEtZjliNS00ODU4LWJlMWQtYTc5ZTlhY2FjZGYyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMC4wNyA4Ni45MjgpIj5Ob2RlIDE8dHNwYW4gY2xhc3M9ImI4MTRiMDM2LWZjNmEtNDI5NC1iZWVmLWYyZWJjMzRmZTg0ZCI+PHRzcGFuIHg9IjAiIHk9IjI2Ij5tZXRhOjwvdHNwYW4+PC90c3Bhbj48L3RleHQ+PHRleHQgY2xhc3M9ImUxODgxODZlLTcyYmUtNDAxOC05YTQ0LTUzNWMwYTAxNDgzZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjYuNjgyIDEyNS45MjgpIj5uYW1lOiBub2RlMTwvdGV4dD48dGV4dCBjbGFzcz0iZTE4ODE4NmUtNzJiZS00MDE4LTlhNDQtNTM1YzBhMDE0ODNkIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNi42NDUgMTM4LjkyOCkiPmxhYmVsczo8L3RleHQ+PHRleHQgY2xhc3M9ImUxODgxODZlLTcyYmUtNDAxOC05YTQ0LTUzNWMwYTAxNDgzZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzMuMjE5IDE1MS45MjgpIj5rOHMub3ZuLm9yZy9lZ3Jlc3MtYXNzaWduYWJsZTogJnF1b3Q7JnF1b3Q7PC90ZXh0Pjx0ZXh0IGNsYXNzPSJhN2UwM2ZiNC00NDFhLTQyZWQtYjE4Ni1lYjhiZmQxMzMxZjIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI5Ni4xMTcgNDMuNTMxKSI+bmFtZXNwYWNlMTwvdGV4dD48dGV4dCBjbGFzcz0iYTdlMDNmYjQtNDQxYS00MmVkLWIxODYtZWI4YmZkMTMzMWYyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyOTQuNzQ5IDM2Mi43NDIpIj5uYW1lc3BhY2UyPC90ZXh0PjxnPjx0ZXh0IHRyYW5zZm9ybT0idHJhbnNsYXRlKDY3MS4wMTIgNTA5LjIzNSkiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiNmM2YzZjMiIGZvbnQtZmFtaWx5PSJSZWRIYXRUZXh0LCZxdW90O1JlZCBIYXQgVGV4dCZxdW90OyxPdmVycGFzcywmcXVvdDtIZWx2ZXRpY2EgTmV1ZSZxdW90OyxBcmlhbCxzYW5zLXNlcmlmIj4xMjFfT3BlblNoaWZ0XzEwMjA8L3RleHQ+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgNDg2LjIxOGg3NjB2NDBIMHoiLz48L2c+PGc+PHBhdGggY2xhc3M9ImFiOWU5NTg1LTlkY2UtNDIxNS1iOWE1LWU1ZjUzNDk4ZGI4ZiIgZD0iTS4wNyAyMjBoNDI1djk1SC4wN3oiLz48dGV4dCBjbGFzcz0iYWM4MzAyYTEtZjliNS00ODU4LWJlMWQtYTc5ZTlhY2FjZGYyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMC4wNyAyNTEuOTI4KSI+Tm9kZSAyPHRzcGFuIGNsYXNzPSJiODE0YjAzNi1mYzZhLTQyOTQtYmVlZi1mMmViYzM0ZmU4NGQiPjx0c3BhbiB4PSIwIiB5PSIyNiI+bWV0YTo8L3RzcGFuPjwvdHNwYW4+PC90ZXh0Pjx0ZXh0IGNsYXNzPSJlMTg4MTg2ZS03MmJlLTQwMTgtOWE0NC01MzVjMGEwMTQ4M2QiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI2LjY4MiAyOTAuOTI4KSI+bmFtZTogbm9kZTI8L3RleHQ+PC9nPjxwYXRoIGNsYXNzPSJiNTkyNjQwYi1jMzE2LTQ3NWUtYmNlNi1iN2EzNzg5ZjM2YTUiIGQ9Ik0zOTQuOTk2IDI5MEgyNjUuMDdsLjA3NS03MEgzOTUuMDdsLS4wNzQgNzB6Ii8+PHBhdGggY2xhc3M9ImFiOWU5NTg1LTlkY2UtNDIxNS1iOWE1LWU1ZjUzNDk4ZGI4ZiIgZD0iTTM5NC45OTYgMTkwSDI2NS4wN2wuMDc1IDMwSDM5NS4wN2wtLjA3NC0zMHoiLz48Zz48cGF0aCBjbGFzcz0iZWJmYTY3YjYtZTNlZi00OWFiLWIzOTMtODc3NWI2M2Y3ZWRiIiBkPSJNNDI1LjA3IDI2MGgtMS41Ii8+PHBhdGggc3Ryb2tlLWRhc2hhcnJheT0iMi44NDYgMi44NDYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSIjMDZjIiBmaWxsPSJub25lIiBkPSJNNDIwLjcyNCAyNjBoLTMyLjczMSIvPjxwYXRoIGNsYXNzPSJlYmZhNjdiNi1lM2VmLTQ5YWItYjM5My04Nzc1YjYzZjdlZGIiIGQ9Ik0zODYuNTcgMjYwaC0xLjUiLz48L2c+PHBhdGggY2xhc3M9ImI3MmQzY2JjLTZiZmMtNGVmYy05MTdiLThkZjk1N2E1MjE2NCIgZD0iTTI3NS4wNyAyNDBoMTEwdjQwaC0xMTB6Ii8+PHRleHQgY2xhc3M9ImE3ZTAzZmI0LTQ0MWEtNDJlZC1iMTg2LWViOGJmZDEzMzFmMiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzE1LjUxNCAyNjMuMzIzKSI+cG9kMzwvdGV4dD48L3N2Zz4=" alt="Architectural diagram for the egress IP feature." />
+<img src="data:image/svg+xml;base64,PHN2ZyBpZD0iYWRmYTcxNDQtMjdhOC00N2NkLTg2OTUtZTVlODA3NDA3NGRjIiBkYXRhLW5hbWU9ImFydHdvcmsiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9Ijc2MCIgaGVpZ2h0PSI1MjYuMjE4Ij48ZGVmcz48c3R5bGU+LmIwMmJhNjUwLWQ3MmQtNDA5YS1hYjMwLWE0YzA0ZjYyYWQyYiwuYmQ1MjJhMzMtMTVmYy00ZGM3LWFhYmYtNGFhZGMwM2U2OTk0LC5lYmZhNjdiNi1lM2VmLTQ5YWItYjM5My04Nzc1YjYzZjdlZGIsLmY5ZDI3M2FhLWM0NTQtNDA3Ni1iYWIwLTJlMDFmYWZkZWNlNXtmaWxsOm5vbmV9LmIwMmJhNjUwLWQ3MmQtNDA5YS1hYjMwLWE0YzA0ZjYyYWQyYiwuYmQ1MjJhMzMtMTVmYy00ZGM3LWFhYmYtNGFhZGMwM2U2OTk0LC5lYmZhNjdiNi1lM2VmLTQ5YWItYjM5My04Nzc1YjYzZjdlZGJ7c3Ryb2tlOiMwNmN9LmIwMmJhNjUwLWQ3MmQtNDA5YS1hYjMwLWE0YzA0ZjYyYWQyYiwuYmQ1MjJhMzMtMTVmYy00ZGM3LWFhYmYtNGFhZGMwM2U2OTk0LC5lYmZhNjdiNi1lM2VmLTQ5YWItYjM5My04Nzc1YjYzZjdlZGIsLmY5ZDI3M2FhLWM0NTQtNDA3Ni1iYWIwLTJlMDFmYWZkZWNlNXtzdHJva2UtbGluZWNhcDpyb3VuZDtzdHJva2UtbGluZWpvaW46cm91bmR9LmIwMmJhNjUwLWQ3MmQtNDA5YS1hYjMwLWE0YzA0ZjYyYWQyYiwuZjlkMjczYWEtYzQ1NC00MDc2LWJhYjAtMmUwMWZhZmRlY2U1e3N0cm9rZS13aWR0aDoycHh9LmY5ZDI3M2FhLWM0NTQtNDA3Ni1iYWIwLTJlMDFmYWZkZWNlNXtzdHJva2U6IzRjYjZkNn0uYjcyZDNjYmMtNmJmYy00ZWZjLTkxN2ItOGRmOTU3YTUyMTY0e2ZpbGw6I2ZmZn0uYTdlMDNmYjQtNDQxYS00MmVkLWIxODYtZWI4YmZkMTMzMWYye2ZvbnQtc2l6ZToxMnB4O2ZvbnQtZmFtaWx5OlJlZEhhdFRleHQsJnF1b3Q7UmVkIEhhdCBUZXh0JnF1b3Q7LE92ZXJwYXNzLCZxdW90O0hlbHZldGljYSBOZXVlJnF1b3Q7LEFyaWFsLHNhbnMtc2VyaWY7Zm9udC13ZWlnaHQ6NTAwO2ZpbGw6IzE1MTUxNX0uYWM4MzAyYTEtZjliNS00ODU4LWJlMWQtYTc5ZTlhY2FjZGYyLC5lMTg4MTg2ZS03MmJlLTQwMTgtOWE0NC01MzVjMGEwMTQ4M2R7ZmlsbDojMTUxNTE1fS5hYjllOTU4NS05ZGNlLTQyMTUtYjlhNS1lNWY1MzQ5OGRiOGZ7ZmlsbDojZThlOGU4fS5hYzgzMDJhMS1mOWI1LTQ4NTgtYmUxZC1hNzllOWFjYWNkZjJ7Zm9udC1zaXplOjE0cHg7Zm9udC1mYW1pbHk6UmVkSGF0VGV4dCwmcXVvdDtSZWQgSGF0IFRleHQmcXVvdDssT3ZlcnBhc3MsJnF1b3Q7SGVsdmV0aWNhIE5ldWUmcXVvdDssQXJpYWwsc2Fucy1zZXJpZjtmb250LXdlaWdodDo3MDB9LmI4MTRiMDM2LWZjNmEtNDI5NC1iZWVmLWYyZWJjMzRmZTg0ZCwuZTE4ODE4NmUtNzJiZS00MDE4LTlhNDQtNTM1YzBhMDE0ODNke2ZvbnQtc2l6ZToxMXB4O2ZvbnQtZmFtaWx5OkxpYmVyYXRpb25Nb25vLCZxdW90O0xpYmVyYXRpb24gTW9ubyZxdW90OyxDb25zb2xhcyxNb25hY28sJnF1b3Q7QW5kYWxlIE1vbm8mcXVvdDssbW9ub3NwYWNlfS5iODE0YjAzNi1mYzZhLTQyOTQtYmVlZi1mMmViYzM0ZmU4NGR7Zm9udC13ZWlnaHQ6NDAwfS5iNTkyNjQwYi1jMzE2LTQ3NWUtYmNlNi1iN2EzNzg5ZjM2YTV7ZmlsbDojZDVkNWQ1fS5iZDUyMmEzMy0xNWZjLTRkYzctYWFiZi00YWFkYzAzZTY5OTR7c3Ryb2tlLWRhc2hhcnJheTozLjQgMy40fTwvc3R5bGU+PC9kZWZzPjxwYXRoIGNsYXNzPSJiMDJiYTY1MC1kNzJkLTQwOWEtYWIzMC1hNGMwNGY2MmFkMmIiIGQ9Ik00MjQuNzc0IDExNy41aDM0LjgxN3YzMjEuNzE4aC0zNC40OTgiLz48cGF0aCBjbGFzcz0iZjlkMjczYWEtYzQ1NC00MDc2LWJhYjAtMmUwMWZhZmRlY2U1IiBkPSJNNDI0LjYxNCA5Ny41MDFoMTY0Ljk3N3YzNjEuNzE3SDQyNC45MzMiLz48cGF0aCBjbGFzcz0iYjcyZDNjYmMtNmJmYy00ZWZjLTkxN2ItOGRmOTU3YTUyMTY0IiBkPSJNNDY0LjE4NSA0NDkuMDA1aDkxLjA1OHYyMC40MjZoLTkxLjA1OHoiLz48dGV4dCBjbGFzcz0iYTdlMDNmYjQtNDQxYS00MmVkLWIxODYtZWI4YmZkMTMzMWYyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NjcuMDg5IDQ2Mi45NDYpIj4xOTIuMTY4LjEyNi4xMDI8L3RleHQ+PHBhdGggY2xhc3M9ImFiOWU5NTg1LTlkY2UtNDIxNS1iOWE1LWU1ZjUzNDk4ZGI4ZiIgZD0iTS4wNyAzNzQuMjE4aDQyNXYxMzVILjA3eiIvPjx0ZXh0IGNsYXNzPSJhYzgzMDJhMS1mOWI1LTQ4NTgtYmUxZC1hNzllOWFjYWNkZjIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIwLjA3IDQwNi4xNDYpIj5Ob2RlIDM8dHNwYW4gY2xhc3M9ImI4MTRiMDM2LWZjNmEtNDI5NC1iZWVmLWYyZWJjMzRmZTg0ZCI+PHRzcGFuIHg9IjAiIHk9IjI2Ij5tZXRhOjwvdHNwYW4+PC90c3Bhbj48L3RleHQ+PHRleHQgY2xhc3M9ImUxODgxODZlLTcyYmUtNDAxOC05YTQ0LTUzNWMwYTAxNDgzZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjYuNjgyIDQ0NS4xNDUpIj5uYW1lOiBub2RlMzwvdGV4dD48dGV4dCBjbGFzcz0iZTE4ODE4NmUtNzJiZS00MDE4LTlhNDQtNTM1YzBhMDE0ODNkIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNi42NDUgNDU4LjE0NikiPmxhYmVsczo8L3RleHQ+PHRleHQgY2xhc3M9ImUxODgxODZlLTcyYmUtNDAxOC05YTQ0LTUzNWMwYTAxNDgzZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzMuMjE5IDQ3MS4xNDYpIj5rOHMub3ZuLm9yZy9lZ3Jlc3MtYXNzaWduYWJsZTogJnF1b3Q7JnF1b3Q7PC90ZXh0Pjx0ZXh0IGNsYXNzPSJhN2UwM2ZiNC00NDFhLTQyZWQtYjE4Ni1lYjhiZmQxMzMxZjIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ2Ny4wODkgMTUyLjkwNCkiPlBvZCBuZXR3b3JrPHRzcGFuIHg9IjAiIHk9IjE1Ij4xMC4xMjguMC4wLzE0PC90c3Bhbj48L3RleHQ+PHRleHQgY2xhc3M9ImE3ZTAzZmI0LTQ0MWEtNDJlZC1iMTg2LWViOGJmZDEzMzFmMiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTk3LjA4OSAxNTIuOTA0KSI+SW5mcmFzdHJ1Y3R1cmUgbmV0d29yazx0c3BhbiB4PSIwIiB5PSIxNSI+MTkyLjE2OC4xMjYuMC8xODwvdHNwYW4+PC90ZXh0PjxwYXRoIGNsYXNzPSJhYjllOTU4NS05ZGNlLTQyMTUtYjlhNS1lNWY1MzQ5OGRiOGYiIGQ9Ik02MzMuMDcgMjIwaDEyN3Y5NWgtMTI3eiIvPjx0ZXh0IGNsYXNzPSJhYzgzMDJhMS1mOWI1LTQ4NTgtYmUxZC1hNzllOWFjYWNkZjIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY1My4wNyAyNTEuNzg4KSI+RXh0ZXJuYWw8dHNwYW4geD0iMCIgeT0iMTUiPnNlcnZpY2U8L3RzcGFuPjwvdGV4dD48cGF0aCBjbGFzcz0iYjAyYmE2NTAtZDcyZC00MDlhLWFiMzAtYTRjMDRmNjJhZDJiIiBkPSJNNDU5LjU5MSAyNjBINDI1LjA3Ii8+PHBhdGggc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZmlsbD0ibm9uZSIgZD0iTTQ2OS41OTEgMjQwSDQyNS4wNyIvPjxwYXRoIGNsYXNzPSJmOWQyNzNhYS1jNDU0LTQwNzYtYmFiMC0yZTAxZmFmZGVjZTUiIGQ9Ik01ODkuNTkxIDI0MEg0MjUuMDdNNTg5LjU5MSAyNjcuNWgzMy44MDMiLz48cGF0aCBmaWxsPSIjNGNiNmQ2IiBkPSJNNjIxLjkzNSAyNzIuNDg2bDguNjM1LTQuOTg2LTguNjM1LTQuOTg2djkuOTcyeiIvPjxwYXRoIGNsYXNzPSJiNzJkM2NiYy02YmZjLTRlZmMtOTE3Yi04ZGY5NTdhNTIxNjQiIGQ9Ik00NjQuMTg1IDg3LjcwNmg4My41NTh2MjAuNDI2aC04My41NTh6Ii8+PHRleHQgY2xhc3M9ImE3ZTAzZmI0LTQ0MWEtNDJlZC1iMTg2LWViOGJmZDEzMzFmMiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDY3LjA4OSAxMDEuNjQ3KSI+MTkyLjE2OC4xMjYuMTA8L3RleHQ+PHBhdGggY2xhc3M9ImFiOWU5NTg1LTlkY2UtNDIxNS1iOWE1LWU1ZjUzNDk4ZGI4ZiIgZD0iTS4wNyA1NWg0MjV2MTM1SC4wN3oiLz48cGF0aCBjbGFzcz0iYjU5MjY0MGItYzMxNi00NzVlLWJjZTYtYjdhMzc4OWYzNmE1IiBkPSJNMzk0Ljk5NiA0NDQuMjE4SDI2NS4wN2wuMDc1LTcwSDM5NS4wN2wtLjA3NCA3MHoiLz48cGF0aCBjbGFzcz0iYWI5ZTk1ODUtOWRjZS00MjE1LWI5YTUtZTVmNTM0OThkYjhmIiBkPSJNMzk0Ljk5NiAzMzkuMjE4SDI2NS4wN2wuMDc1IDM1SDM5NS4wN2wtLjA3NC0zNXoiLz48cGF0aCBjbGFzcz0iYjU5MjY0MGItYzMxNi00NzVlLWJjZTYtYjdhMzc4OWYzNmE1IiBkPSJNMjY1LjEwNyA1NWgxMjkuOTI1djEzNUgyNjUuMTA3eiIvPjxwYXRoIGNsYXNzPSJhYjllOTU4NS05ZGNlLTQyMTUtYjlhNS1lNWY1MzQ5OGRiOGYiIGQ9Ik0zOTQuOTk2IDIwSDI2NS4wN2wuMDc1IDM1SDM5NS4wN2wtLjA3NC0zNXoiLz48cGF0aCBjbGFzcz0iZWJmYTY3YjYtZTNlZi00OWFiLWIzOTMtODc3NWI2M2Y3ZWRiIiBkPSJNMzg1LjA3IDE0MGgxLjUiLz48cGF0aCBjbGFzcz0iYmQ1MjJhMzMtMTVmYy00ZGM3LWFhYmYtNGFhZGMwM2U2OTk0IiBkPSJNMzg5Ljk3IDE0MGgxMS45Ii8+PHBhdGggY2xhc3M9ImViZmE2N2I2LWUzZWYtNDlhYi1iMzkzLTg3NzViNjNmN2VkYiIgZD0iTTQwMy41NyAxNDBoMS41di0xLjUiLz48cGF0aCBzdHJva2UtZGFzaGFycmF5PSIyLjggMi44IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0iIzA2YyIgZmlsbD0ibm9uZSIgZD0iTTQwNS4wNyAxMzUuN1Y5Ny45Ii8+PHBhdGggY2xhc3M9ImViZmE2N2I2LWUzZWYtNDlhYi1iMzkzLTg3NzViNjNmN2VkYiIgZD0iTTQwNS4wNyA5Ni41Vjk1aC0xLjUiLz48cGF0aCBjbGFzcz0iYmQ1MjJhMzMtMTVmYy00ZGM3LWFhYmYtNGFhZGMwM2U2OTk0IiBkPSJNNDAwLjE3IDk1aC0xMS45Ii8+PHBhdGggY2xhc3M9ImViZmE2N2I2LWUzZWYtNDlhYi1iMzkzLTg3NzViNjNmN2VkYiIgZD0iTTM4Ni41NyA5NWgtMS41TTQyNS4wNyAxMTcuNWgtMS41Ii8+PHBhdGggc3Ryb2tlLWRhc2hhcnJheT0iMy4zIDMuMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2U9IiMwNmMiIGZpbGw9Im5vbmUiIGQ9Ik00MjAuMjcgMTE3LjVoLTExLjU1Ii8+PHBhdGggY2xhc3M9ImViZmE2N2I2LWUzZWYtNDlhYi1iMzkzLTg3NzViNjNmN2VkYiIgZD0iTTQwNy4wNyAxMTcuNWgtMS41Ii8+PHBhdGggY2xhc3M9ImI3MmQzY2JjLTZiZmMtNGVmYy05MTdiLThkZjk1N2E1MjE2NCIgZD0iTTI3NS4wNyAzOTQuMjE4aDExMHY0MGgtMTEweiIvPjx0ZXh0IGNsYXNzPSJhN2UwM2ZiNC00NDFhLTQyZWQtYjE4Ni1lYjhiZmQxMzMxZjIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMxNS4yNTEgNDE3LjU0MikiPnBvZDQ8L3RleHQ+PHBhdGggY2xhc3M9ImI3MmQzY2JjLTZiZmMtNGVmYy05MTdiLThkZjk1N2E1MjE2NCIgZD0iTTI3NS4wNyAxMjBoMTEwdjQwaC0xMTB6Ii8+PHRleHQgY2xhc3M9ImE3ZTAzZmI0LTQ0MWEtNDJlZC1iMTg2LWViOGJmZDEzMzFmMiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzE1LjczNiAxNDMuMzIzKSI+cG9kMjwvdGV4dD48cGF0aCBjbGFzcz0iYjcyZDNjYmMtNmJmYy00ZWZjLTkxN2ItOGRmOTU3YTUyMTY0IiBkPSJNMjc1LjA3IDc1aDExMHY0MGgtMTEweiIvPjx0ZXh0IGNsYXNzPSJhN2UwM2ZiNC00NDFhLTQyZWQtYjE4Ni1lYjhiZmQxMzMxZjIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMxNy4xMDQgOTguMzIzKSI+cG9kMTwvdGV4dD48dGV4dCBjbGFzcz0iYWM4MzAyYTEtZjliNS00ODU4LWJlMWQtYTc5ZTlhY2FjZGYyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMC4wNyA4Ni45MjgpIj5Ob2RlIDE8dHNwYW4gY2xhc3M9ImI4MTRiMDM2LWZjNmEtNDI5NC1iZWVmLWYyZWJjMzRmZTg0ZCI+PHRzcGFuIHg9IjAiIHk9IjI2Ij5tZXRhOjwvdHNwYW4+PC90c3Bhbj48L3RleHQ+PHRleHQgY2xhc3M9ImUxODgxODZlLTcyYmUtNDAxOC05YTQ0LTUzNWMwYTAxNDgzZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjYuNjgyIDEyNS45MjgpIj5uYW1lOiBub2RlMTwvdGV4dD48dGV4dCBjbGFzcz0iZTE4ODE4NmUtNzJiZS00MDE4LTlhNDQtNTM1YzBhMDE0ODNkIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNi42NDUgMTM4LjkyOCkiPmxhYmVsczo8L3RleHQ+PHRleHQgY2xhc3M9ImUxODgxODZlLTcyYmUtNDAxOC05YTQ0LTUzNWMwYTAxNDgzZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzMuMjE5IDE1MS45MjgpIj5rOHMub3ZuLm9yZy9lZ3Jlc3MtYXNzaWduYWJsZTogJnF1b3Q7JnF1b3Q7PC90ZXh0Pjx0ZXh0IGNsYXNzPSJhN2UwM2ZiNC00NDFhLTQyZWQtYjE4Ni1lYjhiZmQxMzMxZjIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI5Ni4xMTcgNDMuNTMxKSI+bmFtZXNwYWNlMTwvdGV4dD48dGV4dCBjbGFzcz0iYTdlMDNmYjQtNDQxYS00MmVkLWIxODYtZWI4YmZkMTMzMWYyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyOTQuNzQ5IDM2Mi43NDIpIj5uYW1lc3BhY2UyPC90ZXh0PjxnPjx0ZXh0IHRyYW5zZm9ybT0idHJhbnNsYXRlKDY3MS4wMTIgNTA5LjIzNSkiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiNmM2YzZjMiIGZvbnQtZmFtaWx5PSJSZWRIYXRUZXh0LCZxdW90O1JlZCBIYXQgVGV4dCZxdW90OyxPdmVycGFzcywmcXVvdDtIZWx2ZXRpY2EgTmV1ZSZxdW90OyxBcmlhbCxzYW5zLXNlcmlmIj4xMjFfT3BlblNoaWZ0XzEwMjA8L3RleHQ+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgNDg2LjIxOGg3NjB2NDBIMHoiLz48L2c+PGc+PHBhdGggY2xhc3M9ImFiOWU5NTg1LTlkY2UtNDIxNS1iOWE1LWU1ZjUzNDk4ZGI4ZiIgZD0iTS4wNyAyMjBoNDI1djk1SC4wN3oiLz48dGV4dCBjbGFzcz0iYWM4MzAyYTEtZjliNS00ODU4LWJlMWQtYTc5ZTlhY2FjZGYyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMC4wNyAyNTEuOTI4KSI+Tm9kZSAyPHRzcGFuIGNsYXNzPSJiODE0YjAzNi1mYzZhLTQyOTQtYmVlZi1mMmViYzM0ZmU4NGQiPjx0c3BhbiB4PSIwIiB5PSIyNiI+bWV0YTo8L3RzcGFuPjwvdHNwYW4+PC90ZXh0Pjx0ZXh0IGNsYXNzPSJlMTg4MTg2ZS03MmJlLTQwMTgtOWE0NC01MzVjMGEwMTQ4M2QiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI2LjY4MiAyOTAuOTI4KSI+bmFtZTogbm9kZTI8L3RleHQ+PC9nPjxwYXRoIGNsYXNzPSJiNTkyNjQwYi1jMzE2LTQ3NWUtYmNlNi1iN2EzNzg5ZjM2YTUiIGQ9Ik0zOTQuOTk2IDI5MEgyNjUuMDdsLjA3NS03MEgzOTUuMDdsLS4wNzQgNzB6Ii8+PHBhdGggY2xhc3M9ImFiOWU5NTg1LTlkY2UtNDIxNS1iOWE1LWU1ZjUzNDk4ZGI4ZiIgZD0iTTM5NC45OTYgMTkwSDI2NS4wN2wuMDc1IDMwSDM5NS4wN2wtLjA3NC0zMHoiLz48Zz48cGF0aCBjbGFzcz0iZWJmYTY3YjYtZTNlZi00OWFiLWIzOTMtODc3NWI2M2Y3ZWRiIiBkPSJNNDI1LjA3IDI2MGgtMS41Ii8+PHBhdGggc3Ryb2tlLWRhc2hhcnJheT0iMi44NDYgMi44NDYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSIjMDZjIiBmaWxsPSJub25lIiBkPSJNNDIwLjcyNCAyNjBoLTMyLjczMSIvPjxwYXRoIGNsYXNzPSJlYmZhNjdiNi1lM2VmLTQ5YWItYjM5My04Nzc1YjYzZjdlZGIiIGQ9Ik0zODYuNTcgMjYwaC0xLjUiLz48L2c+PHBhdGggY2xhc3M9ImI3MmQzY2JjLTZiZmMtNGVmYy05MTdiLThkZjk1N2E1MjE2NCIgZD0iTTI3NS4wNyAyNDBoMTEwdjQwaC0xMTB6Ii8+PHRleHQgY2xhc3M9ImE3ZTAzZmI0LTQ0MWEtNDJlZC1iMTg2LWViOGJmZDEzMzFmMiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzE1LjUxNCAyNjMuMzIzKSI+cG9kMzwvdGV4dD48L3N2Zz4=" alt="Architectural diagram for the egress IP feature" />
 </figure>
 
 Both Node 1 and Node 3 are labeled with `k8s.ovn.org/egress-assignable: ""` and thus available for the assignment of egress IP addresses.
@@ -213,47 +290,9 @@ status:
 
 For the configuration in the previous example, OpenShift Container Platform assigns both egress IP addresses to the available nodes. The `status` field reflects whether and where the egress IP addresses are assigned.
 
-## Considerations for using an egress IP address on additional network interfaces
-
-In OpenShift Container Platform, egress IP addresses provide administrators a way to control network traffic. Egress IP addresses can be used with a `br-ex` Open vSwitch (OVS) bridge interface and any physical interface that has IP connectivity enabled.
-
-You can inspect your network interface type by running the following command:
-
-``` terminal
-$ ip -details link show
-```
-
-The primary network interface is assigned a node IP address which also contains a subnet mask. Information for this node IP address can be retrieved from the Kubernetes node object for each node within your cluster by inspecting the `k8s.ovn.org/node-primary-ifaddr` annotation. In an IPv4 cluster, this annotation is similar to the following example: `"k8s.ovn.org/node-primary-ifaddr: {"ipv4":"192.168.111.23/24"}"`.
-
-If the egress IP address is not within the subnet of the primary network interface subnet, you can use an egress IP address on another Linux network interface that is not of the primary network interface type. By doing so, OpenShift Container Platform administrators are provided with a greater level of control over networking aspects such as routing, addressing, segmentation, and security policies. This feature provides users with the option to route workload traffic over specific network interfaces for purposes such as traffic segmentation or meeting specialized requirements.
-
-If the egress IP address is not within the subnet of the primary network interface, then the selection of another network interface for egress traffic might occur if they are present on a node.
-
-You can determine which other network interfaces might support egress IP address addresses by inspecting the `k8s.ovn.org/host-cidrs` Kubernetes node annotation. This annotation contains the addresses and subnet mask found for the primary network interface. It also contains additional network interface addresses and subnet mask information. These addresses and subnet masks are assigned to network interfaces that use the [longest prefix match routing](https://networklessons.com/cisco/ccna-200-301/longest-prefix-match-routing) mechanism to determine which network interface supports the egress IP address.
-
-<div class="note">
-
-OVN-Kubernetes provides a mechanism to control and direct outbound network traffic from specific namespaces and pods. This ensures that it exits the cluster through a particular network interface and with a specific egress IP address.
-
-</div>
-
-As an administrator who wants an egress IP address and traffic to route over a particular interface that is not the primary network interface, you must meet the following conditions:
-
-- OpenShift Container Platform is installed on a bare-metal cluster. This feature is disabled within a cloud or a hypervisor environment.
-
-- Your OpenShift Container Platform pods are not configured as *host-networked*.
-
-- You understand that if a network interface is removed or if the IP address and subnet mask which allows the egress IP address to be hosted on the interface is removed, reconfiguration of the egress IP address occurs. Consequently, the egress IP address might get assigned to another node and interface.
-
-- If you use an Egress IP address on a secondary network interface card (NIC), you must use the Node Tuning Operator to enable IP forwarding on the secondary NIC.
-
-- You configured a NIC with routes by ensuring a gateway exists in the main routing table. As a postinstallation task, Red Hat does not support configuring a NIC on a cluster that uses OVN-Kubernetes.
-
-- Routes associated with an egress interface get copied from the main routing table to the routing table that was created to support the Egress IP object.
-
 # EgressIP object
 
-View the following YAML files to better understand how you can effectively configure an `EgressIP` object to better meet your needs.
+You can view YAML files to better understand how you can effectively configure an `EgressIP` object to better meet your needs.
 
 When the `EgressIP` namespace selector matches the label on multiple namespaces, consider the following behaviors:
 
@@ -290,16 +329,16 @@ spec:
 where:
 
 `<name>`
-The name for the `EgressIPs` object.
+Specifies the name for the `EgressIPs` object.
 
 `<egressIPs>`
-An array of one or more IP addresses.
+Specifies an array of one or more IP addresses.
 
 `<namespaceSelector>`
-One or more selectors for the namespaces to associate the egress IP addresses with.
+Specifies one or more selectors for the namespaces to associate the egress IP addresses with.
 
 `<podSelector>`
-Optional parameter. One or more selectors for pods in the specified namespaces to associate egress IP addresses with. Applying these selectors allows for the selection of a subset of pods within a namespace.
+Optional parameter. Specifies one or more selectors for pods in the specified namespaces to associate egress IP addresses with. Applying these selectors allows for the selection of a subset of pods within a namespace.
 
 The following YAML describes the stanza for the namespace selector:
 
@@ -318,7 +357,7 @@ namespaceSelector:
 where:
 
 `<namespaceSelector>`
-One or more matching rules for namespaces. If more than one match rule is provided, all matching namespaces are selected.
+Specifies one or more matching rules for namespaces. If more than one match rule is provided, all matching namespaces are selected.
 
 The following YAML describes the optional stanza for the pod selector:
 
@@ -337,7 +376,7 @@ podSelector:
 where:
 
 `<podSelector>`
-Optional parameter. One or more matching rules for pods in the namespaces that match the specified `namespaceSelector` rules. If specified, only pods that match are selected. Others pods in the namespace are not selected.
+Optional parameter. Specifies one or more matching rules for pods in the namespaces that match the specified `namespaceSelector` rules. If specified, only pods that match are selected. Others pods in the namespace are not selected.
 
 In the following example, the `EgressIP` object associates the `192.168.126.11` and `192.168.126.102` egress IP addresses with pods that have the `app` label set to `web` and are in the namespaces that have the `env` label set to `prod`:
 
@@ -391,7 +430,9 @@ spec:
 
 # Assignment of egress IPs to a namespace, nodes, and pods
 
-To assign one or more egress IPs to a namespace or specific pods in a namespace, the following conditions must be satisfied:
+To assign one or more egress IPs to a namespace or specific pods in a namespace, you must meet certain conditions.
+
+These conditions are listed as follows:
 
 - At least one node in your cluster must have the `k8s.ovn.org/egress-assignable: ""` label.
 
@@ -401,7 +442,7 @@ To assign one or more egress IPs to a namespace or specific pods in a namespace,
 
 If you create `EgressIP` objects prior to labeling any nodes in your cluster for egress IP assignment, OpenShift Container Platform might assign every egress IP address to the first node with the `k8s.ovn.org/egress-assignable: ""` label.
 
-To ensure that egress IP addresses are widely distributed across nodes in the cluster, always apply the label to the nodes you intent to host the egress IP addresses before creating any `EgressIP` objects.
+To ensure that egress IP addresses are widely distributed across nodes in the cluster, always apply the label to the nodes you intend to host the egress IP addresses before creating any `EgressIP` objects.
 
 </div>
 
@@ -427,11 +468,11 @@ Additionally, if an `EgressIP` object specifies multiple egress IP addresses, th
 
 You can assign one or more egress IP addresses to a namespace or to specific pods in a namespace.
 
-- Install the OpenShift CLI (`oc`).
+- The OpenShift CLI (`oc`) is installed.
 
-- Log in to the cluster as a cluster administrator.
+- You are logged in to the cluster as a cluster administrator.
 
-- Configure at least one node to host an egress IP address.
+- At least one node is configured to host an egress IP address.
 
 1.  Create an `EgressIP` object.
 
@@ -451,6 +492,7 @@ You can assign one or more egress IP addresses to a namespace or to specific pod
           namespaceSelector:
             matchLabels:
               env: qa
+        # ...
         ```
 
 2.  To create the object, enter the following command.
@@ -476,7 +518,7 @@ You can assign one or more egress IP addresses to a namespace or to specific pod
 
 3.  Optional: Store the `<egressips_name>.yaml` file so that you can make changes later.
 
-4.  Add labels to the namespace that requires egress IP addresses. To add a label to the namespace of an `EgressIP` object defined in step 1, run the following command:
+4.  Add labels to the namespace that requires egress IP addresses. To add a label to the namespace of an `EgressIP` object defined in a previous step, run the following command:
 
     ``` terminal
     $ oc label ns <namespace> env=qa
@@ -528,11 +570,11 @@ To ensure traffic uses the correct external path, `egressIP` traffic on a node w
 
 ## Configuring the EgressIP failover time limit
 
-Follow this procedure to configure the `reachabilityTotalTimeoutSeconds` parameter and control how quickly the system detects a failing `egressIP` node and initiates a failover.
+You can configure the `reachabilityTotalTimeoutSeconds` parameter to control how quickly the system detects a failing `egressIP` node and initiates a failover.
 
-- Install the OpenShift CLI (`oc`).
+- You installed the OpenShift CLI (`oc`).
 
-- Log in to the cluster as a cluster administrator.
+- You logged in to the cluster as a cluster administrator.
 
 1.  Edit the `Network` custom resource by running the following command:
 
@@ -596,9 +638,9 @@ The following table summarizes the acceptable values and their implications:
 
 You can apply the `k8s.ovn.org/egress-assignable=""` label to a node in your cluster so that OpenShift Container Platform can assign one or more egress IP addresses to the node.
 
-- Install the OpenShift CLI (`oc`).
+- You installed the OpenShift CLI (`oc`).
 
-- Log in to the cluster as a cluster administrator.
+- You logged in to the cluster as a cluster administrator.
 
 <!-- -->
 
@@ -608,22 +650,23 @@ You can apply the `k8s.ovn.org/egress-assignable=""` label to a node in your clu
   $ oc label nodes <node_name> k8s.ovn.org/egress-assignable=""
   ```
 
-  - The name of the node to label.
+  `<node_name>`
+  Specifies the name of the node to label.
 
-    <div class="tip">
+  <div class="tip">
 
-    You can alternatively apply the following YAML to add the label to a node:
+  You can alternatively apply the following YAML to add the label to a node:
 
-    ``` yaml
-    apiVersion: v1
-    kind: Node
-    metadata:
-      labels:
-        k8s.ovn.org/egress-assignable: ""
-      name: <node_name>
-    ```
+  ``` yaml
+  apiVersion: v1
+  kind: Node
+  metadata:
+    labels:
+      k8s.ovn.org/egress-assignable: ""
+    name: <node_name>
+  ```
 
-    </div>
+  </div>
 
 # Configuring dual-stack networking for an EgressIP object
 
@@ -683,7 +726,7 @@ Red Hat does not support creating two `EgressIP` objects to represent dual-stac
 
 2.  Run a `curl` request from inside a pod to an external server. This action verifies that outbound traffic correctly uses an address that you specified in the `EgressIP` object.
 
-    ``` source
+    ``` terminal
     $ curl <ipv_address>
     ```
 

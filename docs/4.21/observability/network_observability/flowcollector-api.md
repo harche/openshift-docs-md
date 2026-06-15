@@ -107,36 +107,41 @@ Type
 <p><code>Direct</code> is not recommended on large clusters as it is less memory efficient.</p></td>
 </tr>
 <tr class="even">
+<td style="text-align: left;"><p><code>execution</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p><code>execution</code> defines configuration related to the execution of the flow collection process.</p></td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"><p><code>exporters</code></p></td>
 <td style="text-align: left;"><p><code>array</code></p></td>
 <td style="text-align: left;"><p><code>exporters</code> defines additional optional exporters for custom consumption or storage.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>kafka</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Kafka configuration, allowing to use Kafka as a broker as part of the flow collection pipeline. Available when the <code>spec.deploymentModel</code> is <code>Kafka</code>.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>loki</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>loki</code>, the flow store, client settings.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>namespace</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
 <td style="text-align: left;"><p>Namespace where Network Observability pods are deployed.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>networkPolicy</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>networkPolicy</code> defines network policy settings for Network Observability components isolation.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>processor</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>processor</code> defines the settings of the component that receives the flows from the agent, enriches them, generates metrics, and forwards them to the Loki persistence layer and/or any available exporter.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>prometheus</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>prometheus</code> defines Prometheus settings, such as querier configuration used to fetch metrics from the Console plugin.</p></td>
@@ -221,6 +226,8 @@ Type
 <p>This feature requires mounting the kernel debug filesystem, so the eBPF agent pods must run as privileged via <code>spec.agent.ebpf.privileged</code>. It requires using the OVN-Kubernetes network plugin with the Observability feature.<br />
 </p>
 <p>- <code>IPSec</code>, to track flows between nodes with IPsec encryption.<br />
+</p>
+<p>- <code>TLSTracking</code>, to track TLS usage.<br />
 </p></td>
 </tr>
 <tr class="even">
@@ -656,6 +663,18 @@ Type
 | `limits`   | `integer-or-string` | Limits describes the maximum amount of compute resources allowed. More info: <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/>                                                                                                                                                                                |
 | `requests` | `integer-or-string` | Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/> |
 
+## .spec.execution
+
+Description
+`execution` defines configuration related to the execution of the flow collection process.
+
+Type
+`object`
+
+| Property | Type     | Description                                                                                                                                                                                                                                                                                                     |
+|----------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `mode`   | `string` | `mode` is the flow collection process execution desired mode: `Running` or `OnHold`. When `OnHold`, the operator deletes all managed services and workloads, with the exception of the static console plugin, and the operator itself. It allows to use minimal cluster resources without losing configuration. |
+
 ## .spec.exporters
 
 Description
@@ -717,12 +736,13 @@ Required
 
 - `topic`
 
-| Property  | Type     | Description                                                                                                            |
-|-----------|----------|------------------------------------------------------------------------------------------------------------------------|
-| `address` | `string` | Address of the Kafka server                                                                                            |
-| `sasl`    | `object` | SASL authentication configuration. \[Unsupported (\*)\].                                                               |
-| `tls`     | `object` | TLS client configuration. When using TLS, verify that the address matches the Kafka port used for TLS, generally 9093. |
-| `topic`   | `string` | Kafka topic to use. It must exist. Network Observability does not create it.                                           |
+| Property      | Type     | Description                                                                                                                                                                                 |
+|---------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `address`     | `string` | Address of the Kafka server                                                                                                                                                                 |
+| `compression` | `string` | Compression codec to use when producing messages to Kafka. Accepted values are: `none` (default), `gzip`, `snappy`, `lz4`, `zstd`.                                                          |
+| `sasl`        | `object` | SASL authentication configuration. \[Unsupported (\*)\].                                                                                                                                    |
+| `tls`         | `object` | TLS and mTLS client configuration. When using TLS, verify that the address matches the Kafka port used for TLS, generally 9093. We recommend the use of mTLS for higher security standards. |
+| `topic`       | `string` | Kafka topic to use. It must exist. Network Observability does not create it.                                                                                                                |
 
 ## .spec.exporters\[\].kafka.sasl
 
@@ -771,7 +791,7 @@ Type
 ## .spec.exporters\[\].kafka.tls
 
 Description
-TLS client configuration. When using TLS, verify that the address matches the Kafka port used for TLS, generally 9093.
+TLS and mTLS client configuration. When using TLS, verify that the address matches the Kafka port used for TLS, generally 9093. We recommend the use of mTLS for higher security standards.
 
 Type
 `object`
@@ -945,12 +965,13 @@ Required
 
 - `topic`
 
-| Property  | Type     | Description                                                                                                            |
-|-----------|----------|------------------------------------------------------------------------------------------------------------------------|
-| `address` | `string` | Address of the Kafka server                                                                                            |
-| `sasl`    | `object` | SASL authentication configuration. \[Unsupported (\*)\].                                                               |
-| `tls`     | `object` | TLS client configuration. When using TLS, verify that the address matches the Kafka port used for TLS, generally 9093. |
-| `topic`   | `string` | Kafka topic to use. It must exist. Network Observability does not create it.                                           |
+| Property      | Type     | Description                                                                                                                                                                                 |
+|---------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `address`     | `string` | Address of the Kafka server                                                                                                                                                                 |
+| `compression` | `string` | Compression codec to use when producing messages to Kafka. Accepted values are: `none` (default), `gzip`, `snappy`, `lz4`, `zstd`.                                                          |
+| `sasl`        | `object` | SASL authentication configuration. \[Unsupported (\*)\].                                                                                                                                    |
+| `tls`         | `object` | TLS and mTLS client configuration. When using TLS, verify that the address matches the Kafka port used for TLS, generally 9093. We recommend the use of mTLS for higher security standards. |
+| `topic`       | `string` | Kafka topic to use. It must exist. Network Observability does not create it.                                                                                                                |
 
 ## .spec.kafka.sasl
 
@@ -999,7 +1020,7 @@ Type
 ## .spec.kafka.tls
 
 Description
-TLS client configuration. When using TLS, verify that the address matches the Kafka port used for TLS, generally 9093.
+TLS and mTLS client configuration. When using TLS, verify that the address matches the Kafka port used for TLS, generally 9093. We recommend the use of mTLS for higher security standards.
 
 Type
 `object`
@@ -1461,10 +1482,10 @@ Description
 Type
 `object`
 
-| Property               | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-|------------------------|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `additionalNamespaces` | `array (string)` | `additionalNamespaces` contains additional namespaces allowed to connect to the Network Observability namespace. It provides flexibility in the network policy configuration, but if you need a more specific configuration, you can disable it and install your own instead.                                                                                                                                                                                         |
-| `enable`               | `boolean`        | Deploys network policies on the namespaces used by Network Observability (main and privileged). These network policies better isolate the Network Observability components to prevent undesired connections from and to them. This option is enabled by default when using with OVNKubernetes, and disabled otherwise (it has not been tested with other CNIs). When disabled, you can manually create the network policies for the Network Observability components. |
+| Property               | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+|------------------------|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `additionalNamespaces` | `array (string)` | `additionalNamespaces` contains additional namespaces allowed to connect to the Network Observability namespace. It provides flexibility in the network policy configuration, but if you need a more specific configuration, you can disable it and install your own instead.                                                                                                                                                                                                                                                                                                                                                               |
+| `enable`               | `boolean`        | Deploys network policies on the namespaces used by Network Observability (main and privileged). These network policies better isolate the Network Observability components to prevent undesired connections from and to them. Because it cannot be tested with all CNIs, this option is only enabled by default when Network Observability runs in a known supported environment, and it is disabled by default otherwise. When disabled, it is highly recommended to create network policies manually, to prevent undesired accesses. More information: <https://github.com/netobserv/netobserv-operator/blob/main/docs/NetworkPolicy.md>. |
 
 ## .spec.processor
 
@@ -1578,16 +1599,21 @@ Type
 <td style="text-align: left;"><p><code>resources</code> are the compute resources required by this container. For more information, see <a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/</a></p></td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;"><p><code>service</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>Service configuration, only used when <code>spec.deploymentModel</code> is <code>Service</code>.</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>slicesConfig</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p>Global configuration managing FlowCollectorSlices custom resources.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>subnetLabels</code></p></td>
 <td style="text-align: left;"><p><code>object</code></p></td>
 <td style="text-align: left;"><p><code>subnetLabels</code> allows to define custom labels on subnets and IPs or to enable automatic labeling of recognized subnets in OpenShift Container Platform, which is used to identify cluster external traffic. When a subnet matches the source or destination IP of a flow, a corresponding field is added: <code>SrcSubnetLabel</code> or <code>DstSubnetLabel</code>.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>unmanagedReplicas</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
 <td style="text-align: left;"><p>If <code>unmanagedReplicas</code> is <code>true</code>, the operator will not reconcile <code>consumerReplicas</code>. This is useful when using a pod autoscaler.</p></td>
@@ -1603,19 +1629,19 @@ Description
 Type
 `object`
 
-| Property                         | Type              | Description                                                                                                                                                                                                                                                                                                             |
-|----------------------------------|-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `conversationEndTimeout`         | `string`          | `conversationEndTimeout` is the time to wait after a network flow is received, to consider the conversation ended. This delay is ignored when a FIN packet is collected for TCP flows (see `conversationTerminatingTimeout` instead).                                                                                   |
-| `conversationHeartbeatInterval`  | `string`          | `conversationHeartbeatInterval` is the time to wait between "tick" events of a conversation                                                                                                                                                                                                                             |
-| `conversationTerminatingTimeout` | `string`          | `conversationTerminatingTimeout` is the time to wait from detected FIN flag to end a conversation. Only relevant for TCP flows.                                                                                                                                                                                         |
-| `dropUnusedFields`               | `boolean`         | `dropUnusedFields` \[deprecated (\*)\] this setting is not used anymore.                                                                                                                                                                                                                                                |
-| `enableKubeProbes`               | `boolean`         | `enableKubeProbes` is a flag to enable or disable Kubernetes liveness and readiness probes                                                                                                                                                                                                                              |
-| `env`                            | `object (string)` | `env` allows passing custom environment variables to underlying components. Useful for passing some very concrete performance-tuning options, such as `GOGC` and `GOMAXPROCS`, that should not be publicly exposed as part of the FlowCollector descriptor, as they are only useful in edge debug or support scenarios. |
-| `healthPort`                     | `integer`         | `healthPort` is a collector HTTP port in the Pod that exposes the health check API                                                                                                                                                                                                                                      |
-| `port`                           | `integer`         | Port of the flow collector (host port). By convention, some values are forbidden. It must be greater than 1024 and different from 4500, 4789 and 6081.                                                                                                                                                                  |
-| `profilePort`                    | `integer`         | `profilePort` allows setting up a Go pprof profiler listening to this port                                                                                                                                                                                                                                              |
-| `scheduling`                     | `object`          | scheduling controls how the pods are scheduled on nodes.                                                                                                                                                                                                                                                                |
-| `secondaryNetworks`              | `array`           | Defines secondary networks to be checked for resources identification. To guarantee a correct identification, indexed values must form an unique identifier across the cluster. If the same index is used by several resources, those resources might be incorrectly labeled.                                           |
+| Property                         | Type              | Description                                                                                                                                                                                                                                                                                                                                                                              |
+|----------------------------------|-------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `conversationEndTimeout`         | `string`          | `conversationEndTimeout` is the time to wait after a network flow is received, to consider the conversation ended. This delay is ignored when a FIN packet is collected for TCP flows (see `conversationTerminatingTimeout` instead).                                                                                                                                                    |
+| `conversationHeartbeatInterval`  | `string`          | `conversationHeartbeatInterval` is the time to wait between "tick" events of a conversation                                                                                                                                                                                                                                                                                              |
+| `conversationTerminatingTimeout` | `string`          | `conversationTerminatingTimeout` is the time to wait from detected FIN flag to end a conversation. Only relevant for TCP flows.                                                                                                                                                                                                                                                          |
+| `dropUnusedFields`               | `boolean`         | `dropUnusedFields` \[deprecated (\*)\] this setting is not used anymore.                                                                                                                                                                                                                                                                                                                 |
+| `enableKubeProbes`               | `boolean`         | `enableKubeProbes` is a flag to enable or disable Kubernetes liveness and readiness probes                                                                                                                                                                                                                                                                                               |
+| `env`                            | `object (string)` | `env` allows passing custom environment variables to underlying components. Useful for passing some very concrete performance-tuning options, such as `GOGC` and `GOMAXPROCS`, that should not be publicly exposed as part of the FlowCollector descriptor, as they are only useful in edge debug or support scenarios.                                                                  |
+| `healthPort`                     | `integer`         | `healthPort` is a collector HTTP port in the Pod that exposes the health check API                                                                                                                                                                                                                                                                                                       |
+| `port`                           | `integer`         | Port of the flow collector (host port). By convention, some values are forbidden. It must be greater than 1024 and different from 4500, 4789 and 6081.                                                                                                                                                                                                                                   |
+| `profilePort`                    | `integer`         | `profilePort` allows setting up a Go pprof profiler listening to this port                                                                                                                                                                                                                                                                                                               |
+| `scheduling`                     | `object`          | scheduling controls how the pods are scheduled on nodes.                                                                                                                                                                                                                                                                                                                                 |
+| `secondaryNetworks`              | `array`           | Defines secondary networks to be checked for resources identification. To guarantee a correct identification, indexed values must form an unique identifier across the cluster. If the same index is used by several resources, those resources might be incorrectly labeled. If not provided and `spec.agent.ebpf.privileged` is `true`, secondary networks are detected automatically. |
 
 ## .spec.processor.advanced.scheduling
 
@@ -1666,12 +1692,10 @@ Type
 Required
 - `index`
 
-- `name`
-
 | Property | Type             | Description                                                                                                                                                                                                                                                           |
 |----------|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `index`  | `array (string)` | `index` is a list of fields to use for indexing the pods. They should form a unique Pod identifier across the cluster. Can be any of: `MAC`, `IP`, `Interface`. Fields absent from the 'k8s.v1.cni.cncf.io/network-status' annotation must not be added to the index. |
-| `name`   | `string`         | `name` should match the network name as visible in the pods annotation 'k8s.v1.cni.cncf.io/network-status'.                                                                                                                                                           |
+| `name`   | `string`         | Deprecated: `name` is unused.                                                                                                                                                                                                                                         |
 
 ## .spec.processor.deduper
 
@@ -1753,12 +1777,13 @@ Description
 Type
 `object`
 
-| Property        | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-|-----------------|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `disableAlerts` | `array (string)` | `disableAlerts` is a list of alert groups that should be disabled from the default set of alerts. Possible values are: `NetObservNoFlows`, `NetObservLokiError`, `PacketDropsByKernel`, `PacketDropsByDevice`, `IPsecErrors`, `NetpolDenied`, `LatencyHighTrend`, `DNSErrors`, `DNSNxDomain`, `ExternalEgressHighTrend`, `ExternalIngressHighTrend`, `Ingress5xxErrors`, `IngressHTTPLatencyTrend`. More information on alerts: <https://github.com/netobserv/network-observability-operator/blob/main/docs/HealthRules.md>                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `healthRules`   | `array`          | `healthRules` is a list of health rules to be created for Prometheus, organized by templates and variants. Each health rule can be configured to generate either alerts or recording rules based on the mode field. More information on health rules: <https://github.com/netobserv/network-observability-operator/blob/main/docs/HealthRules.md>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| `includeList`   | `array (string)` | `includeList` is a list of metric names to specify which ones to generate. The names correspond to the names in Prometheus without the prefix. For example, `namespace_egress_packets_total` shows up as `netobserv_namespace_egress_packets_total` in Prometheus. Note that the more metrics you add, the bigger is the impact on Prometheus workload resources. Metrics enabled by default are: `namespace_flows_total`, `node_ingress_bytes_total`, `node_egress_bytes_total`, `workload_ingress_bytes_total`, `workload_egress_bytes_total`, `namespace_drop_packets_total` (when `PacketDrop` feature is enabled), `namespace_rtt_seconds` (when `FlowRTT` feature is enabled), `namespace_dns_latency_seconds` (when `DNSTracking` feature is enabled), `namespace_network_policy_events_total` (when `NetworkEvents` feature is enabled). More information, with full list of available metrics: <https://github.com/netobserv/network-observability-operator/blob/main/docs/Metrics.md> |
-| `server`        | `object`         | Metrics server endpoint configuration for Prometheus scraper                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| Property                | Type             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+|-------------------------|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `additionalIncludeList` | `array (string)` | `additionalIncludeList` is a list of metric names to include in addition to the default metrics. Unlike `includeList`, this appends to the default list rather than replacing it. This field is mutually exclusive with `includeList`. If `includeList` is set, `additionalIncludeList` is ignored. The names correspond to the names in Prometheus without the prefix. For example, `namespace_egress_packets_total` shows up as `netobserv_namespace_egress_packets_total` in Prometheus. Note that the more metrics you add, the bigger is the impact on Prometheus workload resources. More information, with full list of available metrics: <https://github.com/netobserv/network-observability-operator/blob/main/docs/Metrics.md>                                                                                                                                                                                                                                                       |
+| `disableAlerts`         | `array (string)` | `disableAlerts` is a list of alert groups that should be disabled from the default set of alerts. Possible values are: `NetObservNoFlows`, `NetObservLokiError`, `PacketDropsByKernel`, `PacketDropsByDevice`, `IPsecErrors`, `NetpolDenied`, `LatencyHighTrend`, `DNSErrors`, `DNSNxDomain`, `ExternalEgressHighTrend`, `ExternalIngressHighTrend`, `Ingress5xxErrors`, `IngressHTTPLatencyTrend`. More information on alerts: <https://github.com/netobserv/network-observability-operator/blob/main/docs/HealthRules.md>                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `healthRules`           | `array`          | `healthRules` is a list of health rules to be created for Prometheus, organized by templates and variants. Each health rule can be configured to generate either alerts or recording rules based on the mode field. More information on health rules: <https://github.com/netobserv/network-observability-operator/blob/main/docs/HealthRules.md>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `includeList`           | `array (string)` | `includeList` is a list of metric names to specify which ones to generate. The names correspond to the names in Prometheus without the prefix. For example, `namespace_egress_packets_total` shows up as `netobserv_namespace_egress_packets_total` in Prometheus. Note that the more metrics you add, the bigger is the impact on Prometheus workload resources. Metrics enabled by default are: `namespace_flows_total`, `node_ingress_bytes_total`, `node_egress_bytes_total`, `workload_ingress_bytes_total`, `workload_egress_bytes_total`, `namespace_drop_packets_total` (when `PacketDrop` feature is enabled), `namespace_rtt_seconds` (when `FlowRTT` feature is enabled), `namespace_dns_latency_seconds` (when `DNSTracking` feature is enabled), `namespace_network_policy_events_total` (when `NetworkEvents` feature is enabled). More information, with full list of available metrics: <https://github.com/netobserv/network-observability-operator/blob/main/docs/Metrics.md> |
+| `server`                | `object`         | Metrics server endpoint configuration for Prometheus scraper                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 
 ## .spec.processor.metrics.healthRules
 
@@ -1933,6 +1958,115 @@ Type
 |------------|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `limits`   | `integer-or-string` | Limits describes the maximum amount of compute resources allowed. More info: <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/>                                                                                                                                                                                |
 | `requests` | `integer-or-string` | Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/> |
+
+## .spec.processor.service
+
+Description
+Service configuration, only used when `spec.deploymentModel` is `Service`.
+
+Type
+`object`
+
+Required
+- `tlsType`
+
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>providedCertificates</code></p></td>
+<td style="text-align: left;"><p><code>object</code></p></td>
+<td style="text-align: left;"><p>TLS or mTLS configuration when <code>type</code> is set to <code>Provided</code>.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>tlsType</code></p></td>
+<td style="text-align: left;"><p><code>string</code></p></td>
+<td style="text-align: left;"><p>Select the type of TLS configuration:<br />
+</p>
+<p>- <code>Disabled</code> to not configure TLS for the endpoint. Disabling TLS results in a less secure deployment model.<br />
+</p>
+<p>- <code>Provided</code> to manually provide the key and certificate references.<br />
+</p>
+<p>- <code>Auto</code> (default) to enable automatically based on the running environment.<br />
+</p>
+<p>- <code>Auto-mTLS</code> to preconfigure mTLS. [Unsupported (*)].<br />
+</p>
+<p>See also: <a href="https://github.com/netobserv/netobserv-operator/blob/main/docs/TLS.md">https://github.com/netobserv/netobserv-operator/blob/main/docs/TLS.md</a>.</p></td>
+</tr>
+</tbody>
+</table>
+
+## .spec.processor.service.providedCertificates
+
+Description
+TLS or mTLS configuration when `type` is set to `Provided`.
+
+Type
+`object`
+
+| Property     | Type     | Description                                                                  |
+|--------------|----------|------------------------------------------------------------------------------|
+| `caFile`     | `object` | Reference to the CA file.                                                    |
+| `clientCert` | `object` | TLS client certificate reference, used for mTLS. Leave unset for simple TLS. |
+| `serverCert` | `object` | TLS server certificate reference.                                            |
+
+## .spec.processor.service.providedCertificates.caFile
+
+Description
+Reference to the CA file.
+
+Type
+`object`
+
+| Property    | Type     | Description                                                                                                                                                                                                                                                              |
+|-------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `file`      | `string` | File name within the config map or secret.                                                                                                                                                                                                                               |
+| `name`      | `string` | Name of the config map or secret containing the file.                                                                                                                                                                                                                    |
+| `namespace` | `string` | Namespace of the config map or secret containing the file. If omitted, the default is to use the same namespace as where Network Observability is deployed. If the namespace is different, the config map or the secret is copied so that it can be mounted as required. |
+| `type`      | `string` | Type for the file reference: `configmap` or `secret`.                                                                                                                                                                                                                    |
+
+## .spec.processor.service.providedCertificates.clientCert
+
+Description
+TLS client certificate reference, used for mTLS. Leave unset for simple TLS.
+
+Type
+`object`
+
+| Property    | Type     | Description                                                                                                                                                                                                                                                                  |
+|-------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `certFile`  | `string` | `certFile` defines the path to the certificate file name within the config map or secret.                                                                                                                                                                                    |
+| `certKey`   | `string` | `certKey` defines the path to the certificate private key file name within the config map or secret. Omit when the key is not necessary.                                                                                                                                     |
+| `name`      | `string` | Name of the config map or secret containing certificates.                                                                                                                                                                                                                    |
+| `namespace` | `string` | Namespace of the config map or secret containing certificates. If omitted, the default is to use the same namespace as where Network Observability is deployed. If the namespace is different, the config map or the secret is copied so that it can be mounted as required. |
+| `type`      | `string` | Type for the certificate reference: `configmap` or `secret`.                                                                                                                                                                                                                 |
+
+## .spec.processor.service.providedCertificates.serverCert
+
+Description
+TLS server certificate reference.
+
+Type
+`object`
+
+| Property    | Type     | Description                                                                                                                                                                                                                                                                  |
+|-------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `certFile`  | `string` | `certFile` defines the path to the certificate file name within the config map or secret.                                                                                                                                                                                    |
+| `certKey`   | `string` | `certKey` defines the path to the certificate private key file name within the config map or secret. Omit when the key is not necessary.                                                                                                                                     |
+| `name`      | `string` | Name of the config map or secret containing certificates.                                                                                                                                                                                                                    |
+| `namespace` | `string` | Namespace of the config map or secret containing certificates. If omitted, the default is to use the same namespace as where Network Observability is deployed. If the namespace is different, the config map or the secret is copied so that it can be mounted as required. |
+| `type`      | `string` | Type for the certificate reference: `configmap` or `secret`.                                                                                                                                                                                                                 |
 
 ## .spec.processor.slicesConfig
 
@@ -2115,7 +2249,7 @@ Required
 <tr class="odd">
 <td style="text-align: left;"><p><code>enable</code></p></td>
 <td style="text-align: left;"><p><code>boolean</code></p></td>
-<td style="text-align: left;"><p>When <code>enable</code> is <code>true</code>, the Console plugin queries flow metrics from Prometheus instead of Loki whenever possible. It is enbaled by default: set it to <code>false</code> to disable this feature. The Console plugin can use either Loki or Prometheus as a data source for metrics (see also <code>spec.loki</code>), or both. Not all queries are transposable from Loki to Prometheus. Hence, if Loki is disabled, some features of the plugin are disabled as well, such as getting per-pod information or viewing raw flows. If both Prometheus and Loki are enabled, Prometheus takes precedence and Loki is used as a fallback for queries that Prometheus cannot handle. If they are both disabled, the Console plugin is not deployed.</p></td>
+<td style="text-align: left;"><p>When <code>enable</code> is <code>true</code>, the Console plugin queries flow metrics from Prometheus instead of Loki whenever possible. It is enabled by default: set it to <code>false</code> to disable this feature. The Console plugin can use either Loki or Prometheus as a data source for metrics (see also <code>spec.loki</code>), or both. Not all queries are transposable from Loki to Prometheus. Hence, if Loki is disabled, some features of the plugin are disabled as well, such as getting per-pod information or viewing raw flows. If both Prometheus and Loki are enabled, Prometheus takes precedence and Loki is used as a fallback for queries that Prometheus cannot handle. If they are both disabled, the Console plugin is not deployed.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>manual</code></p></td>

@@ -1,3 +1,5 @@
+In an OpenShift Container Platform cluster, nodes, pods, and application containers are foundational components that you use to create and manage workloads.
+
 # About nodes
 
 A node is a virtual or bare-metal machine in a Kubernetes cluster. Worker nodes host your application containers, grouped as pods. The control plane nodes run services that are required to control the Kubernetes cluster. In OpenShift Container Platform, the control plane nodes contain more than just the Kubernetes services for managing the OpenShift Container Platform cluster.

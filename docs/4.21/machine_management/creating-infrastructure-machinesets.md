@@ -190,9 +190,11 @@ Machine sets running on AWS support non-guaranteed [Spot Instances](../machine_m
 
 ### Sample YAML for a compute machine set custom resource on Azure
 
-This sample YAML defines a compute machine set that runs in the `1` Microsoft Azure zone in a region and creates nodes that are labeled with `node-role.kubernetes.io/infra: ""`.
+You can define a machine set YAML to provision nodes by specifying parameters such as `vmSize` and `image`. You can use this to automate and scale infrastructure consistently, to ensure compute nodes meet specific workload requirements within the cluster.
 
-In this sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `infra` is the node label to add.
+The sample YAML defines a compute machine set that runs in the `1` Microsoft Azure zone in a region and creates nodes that are labeled with `node-role.kubernetes.io/infra: ""`. The YAML file specifies a taint to prevent user workloads from being scheduled on infra nodes. After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
+
+In the sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `infra` is the node label to add.
 
 ``` yaml
 apiVersion: machine.openshift.io/v1beta1
@@ -268,55 +270,58 @@ spec:
         effect: NoSchedule
 ```
 
-- Specify the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI installed, you can obtain the infrastructure ID by running the following command:
+where:
 
-  ``` terminal
-  $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
-  ```
+`<infrastructure_id>`
+Specifies the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI installed, you can obtain the infrastructure ID by running the following command:
 
-  You can obtain the subnet by running the following command:
+``` terminal
+$ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
+```
 
-  ``` terminal
-  $  oc -n openshift-machine-api \
-      -o jsonpath='{.spec.template.spec.providerSpec.value.subnet}{"\n"}' \
-      get machineset/<infrastructure_id>-worker-centralus1
-  ```
+You can obtain the subnet by running the following command:
 
-  You can obtain the vnet by running the following command:
+``` terminal
+$  oc -n openshift-machine-api \
+    -o jsonpath='{.spec.template.spec.providerSpec.value.subnet}{"\n"}' \
+    get machineset/<infrastructure_id>-worker-centralus1
+```
 
-  ``` terminal
-  $  oc -n openshift-machine-api \
-      -o jsonpath='{.spec.template.spec.providerSpec.value.vnet}{"\n"}' \
-      get machineset/<infrastructure_id>-worker-centralus1
-  ```
+You can obtain the vnet by running the following command:
 
-- Specify the `infra` node label.
+``` terminal
+$  oc -n openshift-machine-api \
+    -o jsonpath='{.spec.template.spec.providerSpec.value.vnet}{"\n"}' \
+    get machineset/<infrastructure_id>-worker-centralus1
+```
 
-- Specify the infrastructure ID, `infra` node label, and region.
+<div class="note">
 
-- Specify the image details for your compute machine set. If you want to use an Azure Marketplace image, see "Using the Azure Marketplace offering".
+The value of the `metadata.labels.machine.openshift.io/cluster-api-machine-role` parameter specifies the `infra` node label.
 
-- Specify an image that is compatible with your instance type. The Hyper-V generation V2 images created by the installation program have a `-gen2` suffix, while V1 images have the same name without the suffix.
+</div>
 
-- Specify the region to place machines on.
+`<infrastructure_id>-infra-<region>`
+Specifies the infrastructure ID, `infra` node label, and region.
 
-- Optional: Specify custom tags in your machine set. Provide the tag name in `<custom_tag_name>` field and the corresponding tag value in `<custom_tag_value>` field.
+<div class="note">
 
-- Specify the zone within your region to place machines on. Ensure that your region supports the zone that you specify.
+The value of the `spec.template.spec.providerSpec.value.image` parameter specifies the image details for your compute machine set. If you want to use an Azure Marketplace image, see "Using the Azure Marketplace offering".
 
-  <div class="important">
+The value of the `spec.template.spec.providerSpec.value.image.resourceID` parameter specifies an image that is compatible with your instance type. The Hyper-V generation V2 images created by the installation program have a `-gen2` suffix, while V1 images have the same name without the suffix.
 
-  If your region supports availability zones, you must specify the zone. Specifying the zone avoids volume node affinity failure when a pod requires a persistent volume attachment. To do this, you can create a compute machine set for each zone in the same region.
+The value of the `spec.template.spec.providerSpec.value.location` parameter specifies the region to place machines on.
 
-  </div>
+</div>
 
-- Specify a taint to prevent user workloads from being scheduled on infra nodes.
+`<custom_tag_name_1>`
+Optional: Specifies custom tags in your machine set. Provide the tag name in `<custom_tag_name>` field and the corresponding tag value in `<custom_tag_value>` field.
 
-  <div class="note">
+<div class="note">
 
-  After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
+The value of the `spec.template.spec.providerSpec.value.zone` parameter specifies the zone within your region to place machines on. Ensure that your region supports the zone that you specify. If your region supports availability zones, you must specify the zone. Specifying the zone avoids volume node affinity failure when a pod requires a persistent volume attachment. To do this, you can create a compute machine set for each zone in the same region.
 
-  </div>
+</div>
 
 Machine sets running on Azure support non-guaranteed [Spot VMs](../machine_management/creating_machinesets/creating-machineset-azure.xml#machineset-non-guaranteed-instance_creating-machineset-azure). You can save on costs by using Spot VMs at a lower price compared to standard VMs on Azure. You can [configure Spot VMs](../machine_management/creating_machinesets/creating-machineset-azure.xml#machineset-creating-non-guaranteed-instance_creating-machineset-azure) by adding `spotVMOptions` to the `MachineSet` YAML file.
 
@@ -1874,15 +1879,11 @@ The monitoring stack includes multiple components, including Prometheus, Thanos 
 
 ## Moving the Vertical Pod Autoscaler Operator components
 
-The Vertical Pod Autoscaler Operator (VPA) consists of three components: the recommender, updater, and admission controller. The Operator and each component has its own pod in the VPA namespace on the control plane nodes. You can move the VPA Operator and component pods to infrastructure nodes by adding a node selector to the VPA subscription and the `VerticalPodAutoscalerController` CR.
+You can move the VPA Operator and component pods to infrastructure nodes by adding a node selector to the VPA subscription and the `VerticalPodAutoscalerController` CR.
+
+The Vertical Pod Autoscaler Operator (VPA) consists of three components: the recommender, updater, and admission controller. The Operator and each component has its own pod in the VPA namespace on the control plane nodes.
 
 The following example shows the default deployment of the VPA pods to the control plane nodes.
-
-<div class="formalpara-title">
-
-**Example output**
-
-</div>
 
 ``` terminal
 NAME                                                READY   STATUS    RESTARTS   AGE     IP            NODE                  NOMINATED NODE   READINESS GATES
@@ -1916,35 +1917,41 @@ vpa-updater-default-db8b58df-2nkvf                  1/1     Running   0         
               node-role.kubernetes.io/infra: ""
         ```
 
-        - Specifies the node role of an infra node.
+        where:
 
-          <div class="note">
+        `spec.config.nodeSelector.node-role.kubernetes.io/infra`
+        Specifies the node role of an infra node.
 
-          If the infra node uses taints, you need to add a toleration to the `Subscription` CR.
+        <div class="note">
 
-          For example:
+        If the infra node uses taints, you need to add a toleration to the `Subscription` CR.
 
-          ``` terminal
-          apiVersion: operators.coreos.com/v1alpha1
-          kind: Subscription
-          metadata:
-            labels:
-              operators.coreos.com/vertical-pod-autoscaler.openshift-vertical-pod-autoscaler: ""
-            name: vertical-pod-autoscaler
-          # ...
-          spec:
-            config:
-              nodeSelector:
-                node-role.kubernetes.io/infra: ""
-              tolerations:
-              - key: "node-role.kubernetes.io/infra"
-                operator: "Exists"
-                effect: "NoSchedule"
-          ```
+        For example:
 
-          </div>
+        ``` terminal
+        apiVersion: operators.coreos.com/v1alpha1
+        kind: Subscription
+        metadata:
+          labels:
+            operators.coreos.com/vertical-pod-autoscaler.openshift-vertical-pod-autoscaler: ""
+          name: vertical-pod-autoscaler
+        # ...
+        spec:
+          config:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+            - key: "node-role.kubernetes.io/infra"
+              operator: "Exists"
+              effect: "NoSchedule"
+        ```
 
-        - Specifies a toleration for a taint on the infra node.
+        where:
+
+        `spec.config.tolerations`
+        Specifies a toleration for a taint on the infra node.
+
+        </div>
 
 2.  Move each VPA component by adding node selectors to the `VerticalPodAutoscaler` custom resource (CR):
 
@@ -1982,63 +1989,73 @@ vpa-updater-default-db8b58df-2nkvf                  1/1     Running   0         
                 node-role.kubernetes.io/infra: ""
         ```
 
-        - Optional: Specifies the node role for the VPA admission pod.
+        where:
 
-        - Optional: Specifies the node role for the VPA recommender pod.
+        `spec.deploymentOverrides.admission.nodeselector`
+        Optional: Specifies the node role for the VPA admission pod.
 
-        - Optional: Specifies the node role for the VPA updater pod.
+        `spec.deploymentOverrides.recommender.nodeselector`
+        Optional: Specifies the node role for the VPA recommender pod.
 
-          <div class="note">
+        `spec.deploymentOverrides.updater.nodeselector`
+        Optional: Specifies the node role for the VPA updater pod.
 
-          If a target node uses taints, you need to add a toleration to the `VerticalPodAutoscalerController` CR.
+        <div class="note">
 
-          For example:
+        If a target node uses taints, you need to add a toleration to the `VerticalPodAutoscalerController` CR.
 
-          ``` terminal
-          apiVersion: autoscaling.openshift.io/v1
-          kind: VerticalPodAutoscalerController
-          metadata:
-            name: default
-            namespace: openshift-vertical-pod-autoscaler
-          # ...
-          spec:
-            deploymentOverrides:
-              admission:
-                container:
-                  resources: {}
-                nodeSelector:
-                  node-role.kubernetes.io/infra: ""
-                tolerations:
-                - key: "my-example-node-taint-key"
-                  operator: "Exists"
-                  effect: "NoSchedule"
-              recommender:
-                container:
-                  resources: {}
-                nodeSelector:
-                  node-role.kubernetes.io/infra: ""
-                tolerations:
-                - key: "my-example-node-taint-key"
-                  operator: "Exists"
-                  effect: "NoSchedule"
-              updater:
-                container:
-                  resources: {}
-                nodeSelector:
-                  node-role.kubernetes.io/infra: ""
-                tolerations:
-                - key: "my-example-node-taint-key"
-                  operator: "Exists"
-                  effect: "NoSchedule"
-          ```
+        For example:
 
-          </div>
+        ``` terminal
+        apiVersion: autoscaling.openshift.io/v1
+        kind: VerticalPodAutoscalerController
+        metadata:
+          name: default
+          namespace: openshift-vertical-pod-autoscaler
+        # ...
+        spec:
+          deploymentOverrides:
+            admission:
+              container:
+                resources: {}
+              nodeSelector:
+                node-role.kubernetes.io/infra: ""
+              tolerations:
+              - key: "my-example-node-taint-key"
+                operator: "Exists"
+                effect: "NoSchedule"
+            recommender:
+              container:
+                resources: {}
+              nodeSelector:
+                node-role.kubernetes.io/infra: ""
+              tolerations:
+              - key: "my-example-node-taint-key"
+                operator: "Exists"
+                effect: "NoSchedule"
+            updater:
+              container:
+                resources: {}
+              nodeSelector:
+                node-role.kubernetes.io/infra: ""
+              tolerations:
+              - key: "my-example-node-taint-key"
+                operator: "Exists"
+                effect: "NoSchedule"
+        ```
 
-        - Specifies a toleration for the admission controller pod for a taint on the infra node.
+        where:
 
-        - Specifies a toleration for the recommender pod for a taint on the infra node.
+        `spec.deploymentOverrides.admission.tolerations`
+        Specifies a toleration for the admission controller pod for a taint on the infra node.
 
-        - Specifies a toleration for the updater pod for a taint on the infra node.
+        `spec.deploymentOverrides.recommender.tolerations`
+        Specifies a toleration for the recommender pod for a taint on the infra node.
+
+        `spec.deploymentOverrides.updater.tolerations`
+        Specifies a toleration for the updater pod for a taint on the infra node.
+
+        </div>
 
 - You can verify the pods have moved by using the following command:
 

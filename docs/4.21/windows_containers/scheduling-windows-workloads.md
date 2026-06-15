@@ -1,4 +1,4 @@
-You can schedule Windows workloads to Windows compute nodes.
+You can use the Windows Machine Config Operator (WMCO) to schedule Windows workloads to Windows compute nodes.
 
 # Prerequisites
 
@@ -10,33 +10,31 @@ You can schedule Windows workloads to Windows compute nodes.
 
 # Windows pod placement
 
-Before deploying your Windows workloads to the cluster, you must configure your Windows node scheduling so pods are assigned correctly. Since you have a machine hosting your Windows node, it is managed the same as a Linux-based node. Likewise, scheduling a Windows pod to the appropriate Windows node is completed similarly, using mechanisms like taints, tolerations, and node selectors.
+Before deploying your Windows workloads to the cluster, you must configure your Windows node scheduling so pods are assigned correctly.
+
+The machine hosting your Windows node is managed the same as a Linux-based node. Likewise, scheduling a Windows pod to the appropriate Windows node is completed similarly, using mechanisms like taints, tolerations, and node selectors.
 
 With multiple operating systems, and the ability to run multiple Windows OS variants in the same cluster, you must map your Windows pods to a base Windows OS variant by using a `RuntimeClass` object. For example, if you have multiple Windows nodes running on different Windows Server container versions, the cluster could schedule your Windows pods to an incompatible Windows OS variant. You must have `RuntimeClass` objects configured for each Windows OS variant on your cluster. Using a `RuntimeClass` object is also recommended if you have only one Windows OS variant available in your cluster.
 
-For more information, see Microsoft’s documentation on [Host and container version compatibility](https://docs.microsoft.com/en-us/virtualization/windowscontainers/deploy-containers/update-containers#host-and-container-version-compatibility).
+For more information, see "Host and container version compatibility" in the Microsoft Windows documentation, which is linked in the "Additional resources" section.
 
-Also, it is recommended that you set the `spec.os.name.windows` parameter in your workload pods. The Windows Machine Config Operator (WMCO) uses this field to authoritatively identify the pod operating system for validation and is used to enforce Windows-specific pod security context constraints (SCCs). Currently, this parameter has no effect on pod scheduling. For more information about this parameter, see the [Kubernetes Pods documentation](https://kubernetes.io/docs/concepts/workloads/pods/#pod-os).
+Also, it is recommended that you set the `spec.os.name.windows` parameter in your workload pods. The Windows Machine Config Operator (WMCO) uses this field to authoritatively identify the pod operating system for validation and is used to enforce Windows-specific pod security context constraints (SCCs). Currently, this parameter has no effect on pod scheduling. For more information about this parameter, see the Kubernetes Pod OS documentation.
 
 <div class="important">
 
 The container base image must be the same Windows OS version and build number that is running on the node where the conainer is to be scheduled.
 
-Also, if you upgrade the Windows nodes from one version to another, for example going from 20H2 to 2022, you must upgrade your container base image to match the new version. For more information, see [Windows container version compatibility](https://learn.microsoft.com/en-us/virtualization/windowscontainers/deploy-containers/version-compatibility?tabs=windows-server-2022%2Cwindows-11-21H2).
+Also, if you upgrade the Windows nodes from one version to another, for example going from 20H2 to 2022, you must upgrade your container base image to match the new version. For more information, see Windows container version compatibility in the Microsoft Windows documentation.
 
 </div>
 
-## Additional resources
-
-- [Controlling pod placement using the scheduler](../nodes/scheduling/nodes-scheduler-about.xml#nodes-scheduler-about)
-
-- [Controlling pod placement using node taints](../nodes/scheduling/nodes-scheduler-taints-tolerations.xml#nodes-scheduler-taints-tolerations)
-
-- [Placing pods on specific nodes using node selectors](../nodes/scheduling/nodes-scheduler-node-selectors.xml#nodes-scheduler-node-selectors)
-
 # Creating a RuntimeClass object to encapsulate scheduling mechanisms
 
-Using a `RuntimeClass` object simplifies the use of scheduling mechanisms like taints and tolerations; you deploy a runtime class that encapsulates your taints and tolerations and then apply it to your pods to schedule them to the appropriate node. Creating a runtime class is also necessary in clusters that support multiple operating system variants.
+To deploy Windows workloads, you must create a `RuntimeClass` object to map your Windows pods to a base Windows OS variant.
+
+Using a `RuntimeClass` object simplifies the use of scheduling mechanisms like taints and tolerations; you deploy a runtime class that encapsulates your taints and tolerations and then apply it to your pods to schedule them to the appropriate node.
+
+Creating a runtime class is also necessary in clusters that support multiple operating system variants.
 
 1.  Create a `RuntimeClass` object YAML file. For example, `runtime-class.yaml`:
 
@@ -62,15 +60,20 @@ Using a `RuntimeClass` object simplifies the use of scheduling mechanisms like t
         value: "Windows"
     ```
 
-    - Specify the `RuntimeClass` object name, which is defined in the pods you want to be managed by this runtime class.
+    where:
 
-    - Specify labels that must be present on nodes that support this runtime class. Pods using this runtime class can only be scheduled to a node matched by this selector. The node selector of the runtime class is merged with the existing node selector of the pod. Any conflicts prevent the pod from being scheduled to the node.
+    `metadata.name`
+    Specifies the `RuntimeClass` object name, which is defined in the pods you want to be managed by this runtime class.
 
-      - For Windows 2019, specify the `node.kubernetes.io/windows-build: '10.0.17763'` label.
+    `scheduling.nodeSelector`
+    Specifies labels that must be present on nodes that support this runtime class. Pods using this runtime class can only be scheduled to a node matched by this selector. The node selector of the runtime class is merged with the existing node selector of the pod. Any conflicts prevent the pod from being scheduled to the node.
 
-      - For Windows 2022, specify the `node.kubernetes.io/windows-build: '10.0.20348'` label.
+    - For Windows 2019, specify the `node.kubernetes.io/windows-build: '10.0.17763'` label.
 
-    - Specify tolerations to append to pods, excluding duplicates, running with this runtime class during admission. This combines the set of nodes tolerated by the pod and the runtime class.
+    - For Windows 2022, specify the `node.kubernetes.io/windows-build: '10.0.20348'` label.
+
+    `scheduling.tolerations`
+    Specifies tolerations to append to pods, excluding duplicates, running with this runtime class during admission. This combines the set of nodes tolerated by the pod and the runtime class.
 
 2.  Create the `RuntimeClass` object:
 
@@ -96,11 +99,14 @@ Using a `RuntimeClass` object simplifies the use of scheduling mechanisms like t
     # ...
     ```
 
-    - Specify the runtime class to manage the scheduling of your pod.
+    where:
+
+    `spec.runtimeClassName`
+    Specifies the runtime class to manage the scheduling of your pod.
 
 # Sample Windows container workload deployment
 
-You can deploy Windows container workloads to your cluster once you have a Windows compute node available.
+You can deploy Windows container workloads to your cluster after you have a Windows compute node available.
 
 <div class="note">
 
@@ -172,25 +178,32 @@ spec:
       runtimeClassName: windows2019
 ```
 
-- Specify the container image to use: `mcr.microsoft.com/powershell:<tag>` or `mcr.microsoft.com/windows/servercore:<tag>`. The container image must match the Windows version running on the node.
+where:
 
-  - For Windows 2019, use the `ltsc2019` tag.
+`spec.template.spec.containers.image`
+Specifies the container image to use: `mcr.microsoft.com/powershell:<tag>` or `mcr.microsoft.com/windows/servercore:<tag>`. The container image must match the Windows version running on the node.
 
-  - For Windows 2022, use the `ltsc2022` tag.
+- For Windows 2019, use the `ltsc2019` tag.
 
-- Specify the commands to execute on the container.
+- For Windows 2022, use the `ltsc2022` tag.
 
-  - For the `mcr.microsoft.com/powershell:<tag>` container image, you must define the command as `pwsh.exe`.
+`spec.template.spec.containers.command`
+Specifies the commands to execute on the container.
 
-  - For the `mcr.microsoft.com/windows/servercore:<tag>` container image, you must define the command as `powershell.exe`.
+- For the `mcr.microsoft.com/powershell:<tag>` container image, you must define the command as `pwsh.exe`.
 
-- Specify the runtime class you created for the Windows operating system variant on your cluster.
+- For the `mcr.microsoft.com/windows/servercore:<tag>` container image, you must define the command as `powershell.exe`.
+
+`spec.template.spec.runtimeClassName`
+Specifies the runtime class you created for the Windows operating system variant on your cluster.
 
 # Support for Windows CSI drivers
 
-Red Hat OpenShift support for Windows Containers installs [CSI Proxy](https://github.com/kubernetes-csi/csi-proxy) on all Windows nodes in the cluster. CSI Proxy is a plug-in that enables CSI drivers to perform storage operations on the node.
+You can use the CSI PROXY plug-in to perform storage operations on the nodes in your cluster.
 
-To use persistent storage with Windows workloads, you must deploy a specific Windows CSI driver daemon set, as described in your storage provider’s documentation. By default, the WMCO does not automatically create the Windows CSI driver daemon set. See the list of [production drivers](https://kubernetes-csi.github.io/docs/drivers.html#production-drivers) in the Kubernetes CSI Developer Documentation.
+Red Hat OpenShift support for Windows Containers installs CSI Proxy, which is a plug-in that enables CSI drivers for performing storage operations, on all Windows nodes in the cluster. For more information, see the CSI Proxy link in the "Additional resources" section.
+
+To use persistent storage with Windows workloads, you must deploy a specific Windows CSI driver daemon set, as described in your storage provider’s documentation. By default, the WMCO does not automatically create the Windows CSI driver daemon set. See the list of production drivers in the Kubernetes CSI Developer Documentation by using the link in the "Additional resources" section.
 
 <div class="note">
 
@@ -271,3 +284,19 @@ This guidance is relevant to fully automated, installer-provisioned infrastructu
   ``` terminal
   $ oc get machines.machine.openshift.io
   ```
+
+# Additional resources
+
+- [Host and container version compatibility (Microsoft Windows documentation)](https://docs.microsoft.com/en-us/virtualization/windowscontainers/deploy-containers/update-containers#host-and-container-version-compatibility)
+
+- [Pod OS (Kubernetes documentation)](https://kubernetes.io/docs/concepts/workloads/pods/#pod-os)
+
+- [Windows container version compatibility (Microsoft Windows documentation)](https://learn.microsoft.com/en-us/virtualization/windowscontainers/deploy-containers/version-compatibility?tabs=windows-server-2022%2Cwindows-11-21H2)
+
+- [Production Drivers (Kubernetes CSI Developer Documentation)](https://kubernetes-csi.github.io/docs/drivers.html#production-drivers)
+
+- [Controlling pod placement using the scheduler](../nodes/scheduling/nodes-scheduler-about.xml#nodes-scheduler-about)
+
+- [Controlling pod placement using node taints](../nodes/scheduling/nodes-scheduler-taints-tolerations.xml#nodes-scheduler-taints-tolerations)
+
+- [Placing pods on specific nodes using node selectors](../nodes/scheduling/nodes-scheduler-node-selectors.xml#nodes-scheduler-node-selectors)

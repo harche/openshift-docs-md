@@ -356,6 +356,8 @@ You can configure MetalLB so that the `IPAddressPool` is advertised with the L2 
 
 - Log in as a user with `cluster-admin` privileges.
 
+- Install the MetalLB Operator and start MetalLB.
+
 1.  Create an IP address pool.
 
     1.  Create a file, such as `ipaddresspool.yaml`, with content like the following example:
@@ -368,10 +370,11 @@ You can configure MetalLB so that the `IPAddressPool` is advertised with the L2 
           name: doc-example-l2
         spec:
           addresses:
-            - 4.4.4.0/24
+            - <ip_address_range>
           autoAssign: false
-        # ...
         ```
+
+        - `<ip_address_range>` specifies a range of IP addresses that are routable on your network, for example `4.4.4.0/24`.
 
     2.  Apply the configuration for the IP address pool:
 
@@ -392,7 +395,6 @@ You can configure MetalLB so that the `IPAddressPool` is advertised with the L2 
         spec:
           ipAddressPools:
            - doc-example-l2
-          # ...
         ```
 
     2.  Apply the configuration:
@@ -400,6 +402,34 @@ You can configure MetalLB so that the `IPAddressPool` is advertised with the L2 
         ``` terminal
         $ oc apply -f l2advertisement.yaml
         ```
+
+<!-- -->
+
+1.  Verify that the IP address pool is created:
+
+    ``` terminal
+    $ oc get ipaddresspool -n metallb-system
+    ```
+
+    The following is example output:
+
+    ``` terminal
+    NAME             AUTO ASSIGN   AVOID BUGGY IPS   ADDRESSES
+    doc-example-l2   false         false             ["4.4.4.0/24"]
+    ```
+
+2.  Verify that the L2 advertisement is created:
+
+    ``` terminal
+    $ oc get l2advertisement -n metallb-system
+    ```
+
+    The following is example output:
+
+    ``` terminal
+    NAME              IPADDRESSPOOLS     IPADDRESSPOOL SELECTORS   INTERFACES
+    l2advertisement   ["doc-example-l2"]
+    ```
 
 # Configuring MetalLB with an L2 advertisement and labels
 

@@ -9,15 +9,7 @@ The following table lists the platforms on which boot image management is availa
 | Microsoft Azure           | Enabled by default  | Disabled by default        |
 | VMware vSphere            | Enabled by default  | Not supported              |
 
-For all other platforms, the MCO does not update the boot image with each cluster update.
-
-<div class="important">
-
-Boot image management for control plane nodes is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+For all other platforms, the MCO does not automatically update the boot image with each cluster update. For clusters where automatic updates are disabled or not supported, you can manually update the boot image on your cluster. See "Manually updating the boot image" for information. The method to update or specify the image varies by platform.
 
 # About boot image management
 
@@ -36,7 +28,7 @@ The following table lists the platforms on which boot image management is availa
 | Microsoft Azure           | Enabled by default  | Disabled by default        |
 | VMware vSphere            | Enabled by default  | Not supported              |
 
-For all other platforms, the MCO does not update the boot image with each cluster update.
+For all other platforms, the MCO does not automatically update the boot image with each cluster update. For clusters where automatic updates are disabled or not supported, you can manually update the boot image on your cluster. See "Manually updating the boot image" for information. The method to update or specify the image varies by platform.
 
 </div>
 
@@ -146,7 +138,7 @@ The following table lists the platforms on which boot image management is availa
 | Microsoft Azure           | Enabled by default  | Disabled by default        |
 | VMware vSphere            | Enabled by default  | Not supported              |
 
-For all other platforms, the MCO does not update the boot image with each cluster update.
+For all other platforms, the MCO does not automatically update the boot image with each cluster update. For clusters where automatic updates are disabled or not supported, you can manually update the boot image on your cluster. See "Manually updating the boot image" for information. The method to update or specify the image varies by platform.
 
 </div>
 
@@ -288,7 +280,7 @@ The following table lists the platforms on which boot image management is availa
 | Microsoft Azure           | Enabled by default  | Disabled by default        |
 | VMware vSphere            | Enabled by default  | Not supported              |
 
-For all other platforms, the MCO does not update the boot image with each cluster update.
+For all other platforms, the MCO does not automatically update the boot image with each cluster update. For clusters where automatic updates are disabled or not supported, you can manually update the boot image on your cluster. See "Manually updating the boot image" for information. The method to update or specify the image varies by platform.
 
 </div>
 
@@ -303,8 +295,6 @@ Because the boot image management feature for worker nodes is default for the Go
 Enabling the feature updates the boot image to the Red Hat Enterprise Linux CoreOS (RHCOS) boot image version appropriate for your cluster. If the cluster is again updated to a new OpenShift Container Platform version in the future, the boot image is updated again. New nodes created after enabling the feature use the updated boot image. This feature has no effect on existing nodes.
 
 When boot image management is enabled, the MCO automatically enables boot image skew enforcement to ensure that the boot image version is compliant for your cluster. For more information, see "Boot image skew enforcement".
-
-- If you are enabling boot image management for control plane machine sets, you enabled the required Technology Preview features for your cluster by editing the `FeatureGate` CR named `cluster`.
 
 1.  Edit the `MachineConfiguration` object, named `cluster`, by using the following command:
 
@@ -490,3 +480,5 @@ When boot image management is enabled, the MCO automatically enables boot image 
 - [Disabling boot image management](../../machine_configuration/mco-update-boot-images.xml#mco-update-boot-images-disable_machine-configs-configure)
 
 - [Enabling boot image management](../../machine_configuration/mco-update-boot-images.xml#mco-update-boot-images-configuring_machine-configs-configure)
+
+- [Manually updating the boot image](../../machine_configuration/mco-update-boot-images-manual.xml#mco-update-boot-images-manual)

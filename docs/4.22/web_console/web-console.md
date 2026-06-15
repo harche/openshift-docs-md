@@ -13,14 +13,11 @@ The web console runs as a pod on the control plane node. The static assets requi
 After you install OpenShift Container Platform using the `openshift-install create cluster` command, you can find the web console URL and login credentials for the installed cluster in the CLI output of the installation program. For example:
 
 ``` terminal
-**Example output**:
-----
 INFO Install complete!
 INFO Run 'export KUBECONFIG=<your working directory>/auth/kubeconfig' to manage the cluster with 'oc', the OpenShift CLI.
 INFO The cluster is ready when 'oc login -u kubeadmin -p <provided>' succeeds (wait a few minutes).
 INFO Access the OpenShift web-console here: https://console-openshift-console.apps.demo1.openshift4-beta-abcorp.com
 INFO Login to the console with user: kubeadmin, password: <provided>
-----
 ```
 
 Use those details to log in and access the web console.

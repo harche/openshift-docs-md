@@ -18,7 +18,7 @@ You can follow the optional step in the procedure to enable IP forwarding alongs
 
 <!-- -->
 
-- You are logged in as a user with admin privileges.
+- You are logged in as a user with administrator privileges.
 
 1.  Back up the existing network configuration by running the following command:
 
@@ -59,7 +59,7 @@ You can follow the optional step in the procedure to enable IP forwarding alongs
     # ...
     ```
 
-    - A value of `true` means that egress traffic gets routed through a specific local gateway on the node that hosts the pod. A value of `false` for the parameter means that a group of nodes share a single gateway so traffic does not get routed through a single host.
+    - `routingViaHost`:: Specifies a value of `true` means that egress traffic gets routed through a specific local gateway on the node that hosts the pod. A value of `false` for the parameter means that a group of nodes share a single gateway so traffic does not get routed through a single host.
 
 4.  Optional: Enable IP forwarding globally by running the following command:
 

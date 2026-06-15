@@ -145,6 +145,6 @@ Video device support by architecture
 
 # Additional resources
 
-- [Configuring SSH access to virtual machines](../../virt/managing_vms/virt-accessing-vm-ssh.xml#virt-accessing-vm-ssh)
+- [SSH access for virtual machines](../../virt/managing_vms/ssh/virt-accessing-vm-ssh.xml#virt-accessing-vm-ssh)
 
 - [Creating virtual machines from instance types](../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types)

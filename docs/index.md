@@ -5,7 +5,7 @@
 
 ## Available Versions
 
-- [**4.22 (latest)**](4.22/index.md)
+- [**5.0 (latest)**](5.0/index.md)
+- [4.22](4.22/index.md)
 - [4.21](4.21/index.md)
-- [4.20](4.20/index.md)
 

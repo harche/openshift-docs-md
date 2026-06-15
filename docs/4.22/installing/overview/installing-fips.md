@@ -2,13 +2,13 @@ You can install an OpenShift Container Platform cluster in FIPS mode.
 
 OpenShift Container Platform is designed for FIPS. When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
 
-For more information about the NIST validation program, see [Cryptographic Module Validation Program](https://csrc.nist.gov/Projects/cryptographic-module-validation-program/validated-modules). For the latest NIST status for the individual versions of RHEL cryptographic libraries that have been submitted for validation, see [Compliance Activities and Government Standards](https://access.redhat.com/articles/2918071#fips-140-2-and-fips-140-3-2).
+For more information about the NIST validation program, see "Cryptographic Module Validation Program" in the *Additional resources* section. For the latest NIST status for the individual versions of RHEL cryptographic libraries that have been submitted for validation, see "Compliance Activities and Government Standards" in the *Additional resources* section.
 
 <div class="important">
 
 To enable FIPS mode for your cluster, you must run the installation program from a RHEL 9 computer that is configured to operate in FIPS mode, and you must use a FIPS-capable version of the installation program. See the section titled *Obtaining a FIPS-capable installation program using \`oc adm extract\`*.
 
-For more information about configuring FIPS mode on RHEL, see [Installing the system in FIPS mode](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/security_hardening/assembly_installing-the-system-in-fips-mode_security-hardening).
+For more information about configuring FIPS mode on RHEL, see "Installing the system in FIPS mode" in the *Additional resources* section.
 
 </div>
 
@@ -41,6 +41,14 @@ OpenShift Container Platform requires the use of a FIPS-capable installation bin
 
 2.  Proceed with cluster installation, replacing all instances of the `openshift-install` command with `openshift-install-fips`.
 
+# Additional resources
+
+- [Cryptographic Module Validation Program](https://csrc.nist.gov/Projects/cryptographic-module-validation-program/validated-modules)
+
+- [Compliance Activities and Government Standards](https://access.redhat.com/articles/2918071#fips-140-2-and-fips-140-3-2)
+
+- [Installing the system in FIPS mode](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/security_hardening/assembly_installing-the-system-in-fips-mode_security-hardening)
+
 - [Extracting the OpenShift Container Platform installation program](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#retrieving-the-openshift-installer_ipi-install-installation-workflow)
 
 # Obtaining a FIPS-capable installation program using the public OpenShift mirror
@@ -61,7 +69,9 @@ OpenShift Container Platform requires the use of a FIPS-capable installation bin
 
 # FIPS validation in OpenShift Container Platform
 
-OpenShift Container Platform uses certain FIPS validated or Modules In Process modules within RHEL and RHCOS for the operating system components that it uses. See [RHEL core crypto components](https://access.redhat.com/articles/3655361). For example, when users use SSH to connect to OpenShift Container Platform clusters and containers, those connections are properly encrypted.
+OpenShift Container Platform uses certain FIPS validated or Modules In Process modules within RHEL and RHCOS for the operating system components that it uses.
+
+For more information, see "RHEL core crypto components" in the *Additional resources* section. For example, when users use SSH to connect to OpenShift Container Platform clusters and containers, those connections are properly encrypted.
 
 OpenShift Container Platform components are written in Go and built with Red Hat’s golang compiler. When you enable FIPS mode for your cluster, all OpenShift Container Platform components that require cryptographic signing call RHEL and RHCOS cryptographic libraries.
 
@@ -76,23 +86,26 @@ OpenShift Container Platform components are written in Go and built with Red Hat
 
 FIPS mode attributes and limitations in OpenShift Container Platform 4.17
 
+- [RHEL core crypto components](https://access.redhat.com/articles/3655361)
+
 # FIPS support in components that the cluster uses
 
 Although the OpenShift Container Platform cluster itself uses FIPS validated or Modules In Process modules, ensure that the systems that support your OpenShift Container Platform cluster use FIPS validated or Modules In Process modules for cryptography.
 
-## etcd
+etcd
+To ensure that the secrets that are stored in etcd use FIPS validated or Modules In Process encryption, boot the node in FIPS mode. After you install the cluster in FIPS mode, you can encrypt the etcd data by using the FIPS-approved `aes cbc` cryptographic algorithm.
 
-To ensure that the secrets that are stored in etcd use FIPS validated or Modules In Process encryption, boot the node in FIPS mode. After you install the cluster in FIPS mode, you can [encrypt the etcd data](../../etcd/etcd-encrypt.xml#etcd-encrypt) by using the FIPS-approved `aes cbc` cryptographic algorithm.
+Storage
+For local storage, use RHEL-provided disk encryption or Container Native Storage that uses RHEL-provided disk encryption. By storing all data in volumes that use RHEL-provided disk encryption and enabling FIPS mode for your cluster, both data at rest and data in motion, or network data, are protected by FIPS validated or Modules In Process encryption. You can configure your cluster to encrypt the root filesystem of each node. For more information, see "Customizing nodes" in the *Additional resources* section.
 
-## Storage
-
-For local storage, use RHEL-provided disk encryption or Container Native Storage that uses RHEL-provided disk encryption. By storing all data in volumes that use RHEL-provided disk encryption and enabling FIPS mode for your cluster, both data at rest and data in motion, or network data, are protected by FIPS validated or Modules In Process encryption. You can configure your cluster to encrypt the root filesystem of each node, as described in [Customizing nodes](../../installing/install_config/installing-customizing.xml#installing-customizing).
-
-## Runtimes
-
+Runtimes
 To ensure that containers know that they are running on a host that is using FIPS validated or Modules In Process cryptography modules, use CRI-O to manage your runtimes.
 
-# Installing a cluster in FIPS mode
+- [Encrypt the etcd data](../../etcd/etcd-encrypt.xml#etcd-encrypt)
+
+- [Customizing nodes](../../installing/install_config/installing-customizing.xml#installing-customizing)
+
+# Installation of a cluster in FIPS mode
 
 To install a cluster in FIPS mode, follow the instructions to install a customized cluster on your preferred infrastructure. Ensure that you set `fips: true` in the `install-config.yaml` file before you deploy your cluster.
 
@@ -130,4 +143,6 @@ If you are using Azure File storage, you cannot enable FIPS mode.
 
 </div>
 
-To apply `AES CBC` encryption to your etcd data store, follow the [Encrypting etcd data](../../etcd/etcd-encrypt.xml#etcd-encrypt) process after you install your cluster.
+To apply `AES CBC` encryption to your etcd data store, follow the "Encrypting etcd data" process after you install your cluster.
+
+- [Encrypting etcd data](../../etcd/etcd-encrypt.xml#etcd-encrypt)

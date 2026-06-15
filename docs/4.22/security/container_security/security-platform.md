@@ -140,4 +140,4 @@ You can configure custom serving certificates for the public hostnames of the AP
 
 - [Certificate types and descriptions](../../security/certificate_types_descriptions/user-provided-certificates-for-api-server.xml#cert-types-user-provided-certificates-for-the-api-server)
 
-- [Proxy certificates](../../security/certificate_types_descriptions/proxy-certificates.xml#cert-types-proxy-certificates)
+- [Proxy certificates](../../security/certificate_types_descriptions/proxy-certificates.xml#proxy-certificates)

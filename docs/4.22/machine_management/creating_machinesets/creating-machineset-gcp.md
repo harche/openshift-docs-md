@@ -118,7 +118,7 @@ Specifies the infrastructure ID that is based on the cluster ID that you set whe
 Specifies the node label to add.
 
 `<path_to_image>`
-Specifies the path to the image that is used in current compute machine sets. To use a Google Cloud Marketplace image, specify the offer to use:
+Specifies the path to the image that is used as a boot image in current compute machine sets. You should use the use the latest image when adding a new machine set. To use a Google Cloud Marketplace image, specify the offer to use:
 
 - OpenShift Container Platform: `https://www.googleapis.com/compute/v1/projects/redhat-marketplace-public/global/images/redhat-coreos-ocp-413-x86-64-202305021736`
 
@@ -134,6 +134,8 @@ Specifies the name of the Google Cloud project that you use for your cluster.
 
 `<serviceAccounts>`
 Specifies a single service account. Multiple service accounts are not supported.
+
+- [Manually updating the boot image](../../machine_configuration/mco-update-boot-images-manual.xml#mco-update-boot-images-manual)
 
 # Creating a compute machine set
 
