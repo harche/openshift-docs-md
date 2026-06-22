@@ -30,31 +30,27 @@ You can submit a support case to Red Hat Support by using the Customer Support 
 
 ## Creating a Jira issue
 
-To report an issue with your environment to Red Hat Support, create a Jira issue in the OpenShift Virtualization (CNV) Jira project.
+To report a bug, use the Red Hat Issue Router (RHIR), which is available in the Customer Portal Labs.
 
-1.  Log in to Red Hat Atlassian Jira.
+1.  Access the RHIR.
 
-2.  Access the **Create Issue** page.
+2.  In the list of all OpenShift Virtualization components, find the component for which you want to report an issue.
 
-3.  Select OpenShift Virtualization (CNV) as the **Project**.
+3.  Click the **Report a bug** link of the component.
 
-4.  Select **Bug** as the **Issue Type**.
+4.  On the **Create issue** page, fill out the form:
 
-5.  Click **Next**.
+    1.  Complete the **Summary** and **Description** fields. In the **Description** field, include a detailed description of the issue.
 
-6.  Complete the **Summary** and **Description** fields. In the **Description** field, include a detailed description of the issue.
+    2.  Submit any collected troubleshooting information:
 
-7.  Submit any collected troubleshooting information.
+        1.  Add any textual troubleshooting information, such as command outputs, in the **Description** field.
 
-    1.  Add any textual troubleshooting information, such as command outputs, in the **Description** field.
+        2.  Add troubleshooting files using the **Attachment** field.
 
-    2.  Add troubleshooting files using the **Attachment** field.
+5.  Click **Create** at the bottom of the page.
 
-8.  Select the appropriate component from **Components**.
-
-9.  Click **Create**.
-
-10. Review the details of the bug you created.
+6.  Review the details of the bug you created.
 
 # Web console monitoring
 
@@ -83,4 +79,8 @@ Web console pages for monitoring and troubleshooting
 
 - [Using the `must-gather` tool for OpenShift Virtualization](../../virt/support/virt-collecting-virt-data.xml#virt-using-virt-must-gather_virt-collecting-virt-data)
 
-- [Collecting data about virtual machines](../../virt/support/virt-collecting-virt-data.xml#virt-collecting-data-about-vms_virt-collecting-virt-data)
+- [Red Hat Issue Router](https://access.redhat.com/labs/rhir/?product=cnv)
+
+- [Red Hat Jira account](https://redhat.atlassian.net/jira)
+
+- [Create issue](https://redhat.atlassian.net/secure/CreateIssueDetails%21init.jspa?priority=10200&summary=%5BDoc%5D&pid=10270&issuetype=10016&components=12333768)

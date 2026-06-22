@@ -1,6 +1,6 @@
-For workloads using pod-level bonding with SR-IOV virtual functions (VFs), despite an upstream switch failure, an underlying physical function (PF) might still report an `up` state. This creates a silent failure, as attached VFs remain up and pods continue to send traffic to a dead endpoint, causing packet loss.
+For workloads by using pod-level bonding with SR-IOV virtual functions (VFs), despite an upstream switch failure, an underlying physical function (PF) might still report an `up` state. This creates a silent failure, as attached VFs remain up and pods continue to send traffic to a dead endpoint, causing packet loss.
 
-The PF Status Relay Operator solves this issue by using Link Aggregation Control Protocol (LACP) as an active health check. In this configuration, each physical function (PF) is placed in its own single-member LACP bond with the upstream switch. When the Operator detects an LACP failure on a PF’s bond, it changes the link state of the attached VFs from `auto` to `disabled`. This action triggers the pod’s `active-backup` bond to fail over to its backup network path, maintaining high availability.
+The PF Status Relay Operator solves this issue by using Link Aggregation Control Protocol (LACP) as an active health check. In this configuration, each physical function (PF) is in its own single-member LACP bond with the upstream switch. When the Operator detects an LACP failure on a PF bond, it changes the link state of the attached VFs from `auto` to `disabled`. This action triggers the pod’s `active-backup` bond to fail over to its backup network path, maintaining high availability.
 
 <div class="important">
 
@@ -12,7 +12,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 # Installing the PF Status Relay Operator using the CLI
 
-Install the PF Status Relay Operator to enable OpenShift Container Platform to use Link Aggregation Control Protocol (LACP) as an active health check on physical functions (PFs).
+Install the PF Status Relay Operator to enable OpenShift Container Platform to use Link Aggregation Control Protocol (LACP) as an active health check on physical functions.
 
 - You configured LACP on your upstream switch.
 
@@ -75,7 +75,7 @@ Install the PF Status Relay Operator to enable OpenShift Container Platform to u
 
 # Installing the PF Status Relay Operator using the web console
 
-Install the PF Status Relay Operator to enable OpenShift Container Platform to use Link Aggregation Control Protocol (LACP) as an active health check on physical functions (PFs).
+Install the PF Status Relay Operator to enable OpenShift Container Platform to use Link Aggregation Control Protocol (LACP) as an active health check on physical functions.
 
 - You configured LACP on your upstream switch.
 
@@ -97,7 +97,7 @@ Install the PF Status Relay Operator to enable OpenShift Container Platform to u
 
 # Configuring the PF Status Relay Operator for LACP state monitoring on SR-IOV networks
 
-Use the PF Status Relay Operator to enable Link Aggregation Control Protocol (LACP) state monitoring for workloads using pod-level bonding with SR-IOV networks. The Operator monitors the LACP state on physical functions (PF) and changes the link state for attached virtual functions (VF) when it detects an upstream failure. With this approach, you can detect failures on VFs attached to a PF to ensure a timely fail over to backup network path, ensuring high availability for your workloads.
+Use the PF Status Relay Operator to enable Link Aggregation Control Protocol (LACP) state monitoring for workloads by using pod-level bonding with SR-IOV networks. The Operator monitors the LACP state on physical functions (PF) and changes the link state for attached virtual functions (VF) when it detects an upstream failure. With this approach, you can detect failures on VFs attached to a PF to ensure a timely failover to a backup network path, ensuring high availability for your workloads.
 
 The following scenario demonstrates how to configure and verify LACP state monitoring for SR-IOV networks:
 
@@ -105,7 +105,7 @@ The following scenario demonstrates how to configure and verify LACP state monit
 
 - Define SR-IOV network policies to create virtual functions (VFs) on the bonded interfaces.
 
-- Deploy the PF Status Relay Operator to monitor PFs and monitor the LACP state.
+- Deploy the PF Status Relay Operator to monitor physical functions and the LACP state.
 
 - Verify that pods using these VFs automatically fail over to a backup network path in case of upstream switch failure.
 
@@ -139,10 +139,10 @@ The following scenario demonstrates how to configure and verify LACP state monit
         pod-security.kubernetes.io/enforce: privileged
         pod-security.kubernetes.io/warn: privileged
         security.openshift.io/scc.podSecurityLabelSync: "false"
-      name: sriov-operator-tests
+      name: <namespace>
     ```
 
-    - The namespace where you deploy the high-availability pod.
+    - `<namespace>` specifies the namespace where you deploy the high-availability pod.
 
 2.  Apply the namespace by running the following command:
 
@@ -167,7 +167,7 @@ The following scenario demonstrates how to configure and verify LACP state monit
           name: example-bond-f0
         spec:
           nodeSelector:
-            kubernetes.io/hostname: worker-0
+            kubernetes.io/hostname: <node_name>
           desiredState:
             interfaces:
               - name: example-bond-f0
@@ -182,20 +182,20 @@ The following scenario demonstrates how to configure and verify LACP state monit
                     lacp_rate: 'fast'
                     min_links: '1'
                   port:
-                    - ens5f0
+                    - <pf_name>
               - name: ens5f0
                 type: ethernet
                 state: up
                 mtu: 9216
         ```
 
-        - The node where the bonded interface is created.
+        - `<node_name>` specifies the node where the bonded interface is created.
 
-        - You must set the LACP mode to `802.3ad` to enable LACP on the bond.
+        - `mode: 802.3ad` sets the LACP mode to enable LACP on the bond.
 
-        - You must set the LACP rate `fast` on the interface and on the switch. The `fast` rate sends LACP packets every second.
+        - `lacp_rate: 'fast'` sets the LACP rate on the interface. You must also set the rate to `fast` on the switch. The `fast` rate sends LACP packets every second.
 
-        - The PF that you want to include in the bond.
+        - `<pf_name>` specifies the PF that you want to include in the bond.
 
     2.  Create a YAML file that defines the `NodeNetworkConfigurationPolicy` resource for the `ens5f1` interface on the `worker-0` node:
 
@@ -212,7 +212,7 @@ The following scenario demonstrates how to configure and verify LACP state monit
           name: example-bond-f1
         spec:
           nodeSelector:
-            kubernetes.io/hostname: worker-0
+            kubernetes.io/hostname: <node_name>
           desiredState:
             interfaces:
               - name: example-bond-f1
@@ -227,20 +227,20 @@ The following scenario demonstrates how to configure and verify LACP state monit
                     lacp_rate: 'fast'
                     min_links: '1'
                   port:
-                    - ens5f1
+                    - <pf_name>
               - name: ens5f1
                 type: ethernet
                 state: up
                 mtu: 9216
         ```
 
-        - The node where the bonded interface is created.
+        - `<node_name>` specifies the node where the bonded interface is created.
 
-        - You must set the LACP mode to `802.3ad` to enable LACP on the bond.
+        - `mode: 802.3ad` sets the LACP mode to enable LACP on the bond.
 
-        - You must set the LACP rate `fast` on the interface and on the switch. The `fast` rate sends LACP packets every second.
+        - `lacp_rate: 'fast'` sets the LACP rate on the interface. You must also set the rate to `fast` on the switch. The `fast` rate sends LACP packets every second.
 
-        - The PF that you want to include in the bond.
+        - `<pf_name>` specifies the PF that you want to include in the bond.
 
     3.  Apply the resources by running the following commands:
 
@@ -269,21 +269,21 @@ The following scenario demonstrates how to configure and verify LACP state monit
           deviceType: netdevice
           nicSelector:
             pfNames:
-              - ens5f0
+              - <pf_name>
           nodeSelector:
-            kubernetes.io/hostname: worker-0
-          numVfs: 10
+            kubernetes.io/hostname: <node_name>
+          numVfs: <num_vfs>
           priority: 99
-          resourceName: resourceport0
+          resourceName: <resource_name>
         ```
 
-        - The PF to create the VFs from.
+        - `<pf_name>` specifies the PF to create the VFs from.
 
-        - The node where the VFs are created.
+        - `<node_name>` specifies the node where the VFs are created.
 
-        - The number of VFs to create on the PF.
+        - `<num_vfs>` specifies the number of VFs to create on the PF.
 
-        - The resource name used by pods to request these VFs.
+        - `<resource_name>` specifies the resource name used by pods to request these VFs.
 
     2.  Create a YAML file that defines the `SriovNetworkNodePolicy` resource for the `ens5f1` interface on the `worker-0` node:
 
@@ -303,21 +303,21 @@ The following scenario demonstrates how to configure and verify LACP state monit
           deviceType: netdevice
           nicSelector:
             pfNames:
-              - ens5f1
+              - <pf_name>
           nodeSelector:
-            kubernetes.io/hostname: worker-0
-          numVfs: 10
+            kubernetes.io/hostname: <node_name>
+          numVfs: <num_vfs>
           priority: 99
-          resourceName: resourceport1
+          resourceName: <resource_name>
         ```
 
-        - The PF to create the VFs from.
+        - `<pf_name>` specifies the PF to create the VFs from.
 
-        - The node where the VFs are created.
+        - `<node_name>` specifies the node where the VFs are created.
 
-        - The number of VFs to create on the PF.
+        - `<num_vfs>` specifies the number of VFs to create on the PF.
 
-        - The resource name used by pods to request these VFs.
+        - `<resource_name>` specifies the resource name used by pods to request these VFs.
 
     3.  Apply the resources by running the following commands:
 
@@ -346,24 +346,24 @@ The following scenario demonstrates how to configure and verify LACP state monit
           name: pflacpmonitor-worker-0
         spec:
           interfaces:
-            - ens5f0
-            - ens5f1
-          pollingInterval: 1000
+            - <pf_name>
+            - <pf_name>
+          pollingInterval: <polling_interval>
           nodeSelector:
-            kubernetes.io/hostname: worker-0
+            kubernetes.io/hostname: <node_name>
         ```
 
-        - The list of PFs to monitor.
+        - `<pf_name>` specifies the physical functions to monitor.
 
-        - The polling interval in milliseconds to check the LACP status on the monitored interfaces. The minimum value is `1000`.
+        - `<polling_interval>` specifies the polling interval in milliseconds to check the LACP status on the monitored interfaces. The minimum value is `1000`.
 
-        - The node for the target interfaces.
+        - `<node_name>` specifies the node for the target interfaces.
 
-          <div class="important">
+        <div class="important">
 
-          Use only one `PFLACPMonitor` custom resource to monitor each network interface on a node. If you create multiple resources that target the same interface, the PF Status Relay Operator will not process the conflicting configurations.
+        Use only one `PFLACPMonitor` custom resource to monitor each network interface on a node. If you create multiple resources that target the same interface, the PF Status Relay Operator will not process the conflicting configurations.
 
-          </div>
+        </div>
 
     2.  Apply the `PFLACPMonitor` resource by running the following command:
 
@@ -523,7 +523,7 @@ The following scenario demonstrates how to configure and verify LACP state monit
               command: ["/bin/sleep", "3650d"]
         ```
 
-        - The annotation requests three networks: two SR-IOV VFs, `net1` and `net2` and one bond, `bond0`, which uses them.
+        - The `k8s.v1.cni.cncf.io/networks` annotation requests three networks: two SR-IOV VFs, `net1` and `net2`, and one bond, `bond0`, which uses them.
 
     4.  Apply the `Pod` resource by running the following command:
 
@@ -585,7 +585,7 @@ The following scenario demonstrates how to configure and verify LACP state monit
 
     3.  Exit the pod shell.
 
-    4.  Simulate an LACP failure on your upstream physical switch. To simulate this scenario, you can filter LACP traffic on the switch port that you want to test the failure on. This ensures that the physical link remains up while the LACP pollings fails. The command to do this is vendor-dependent.
+    4.  Simulate an LACP failure on your upstream physical switch. To simulate this scenario, you can filter LACP traffic on the switch port that you want to test the failure on. This ensures that the physical link remains up while the LACP polling fails. The command to do this is vendor-dependent.
 
     5.  Verify the failover inside the pod by logging back into the `client-bond` pod and checking the bond status again:
 

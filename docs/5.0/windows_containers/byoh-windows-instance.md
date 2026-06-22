@@ -1,8 +1,8 @@
-Bring-Your-Own-Host (BYOH) allows for users to repurpose Windows Server VMs and bring them to OpenShift Container Platform. BYOH Windows instances benefit users looking to mitigate major disruptions in the event that a Windows server goes offline.
+You can create Bring-Your-Own-Host (BYOH) Windows instances to repurpose Windows Server VMs and bring them to OpenShift Container Platform. By using BYOH Windows instances, you can mitigate major disruptions if a Windows server goes offline.
 
 # Configuring a BYOH Windows instance
 
-Creating a BYOH Windows instance requires creating a config map in the Windows Machine Config Operator (WMCO) namespace.
+To create a Bring-Your-Own-Host (BYOH) Windows instance, you must create a config map in the Windows Machine Config Operator (WMCO) namespace.
 
 <div class="formalpara-title">
 
@@ -67,13 +67,18 @@ Windows instances deployed by the WMCO are configured with the containerd contai
         username=core
     ```
 
-    - The address that the WMCO uses to reach the instance over SSH, either a DNS name or an IPv4 address. A DNS PTR record must exist for this address. It is recommended that you use a DNS name with your BYOH instance if your organization uses DHCP to assign IP addresses. If not, you need to update the `windows-instances` ConfigMap whenever the instance is assigned a new IP address.
+    where:
 
-    - The name of the administrator user created in the prerequisites.
+    `data`
+    Specifies the address that the WMCO uses to reach the instance over SSH, either a DNS name or an IPv4 address. A DNS PTR record must exist for this address. You should use a DNS name with your BYOH instance if your organization uses DHCP to assign IP addresses. If not, you need to update the `windows-instances` ConfigMap whenever the instance is assigned a new IP address.
+
+    Also, specify the user name of the administrator user created in the prerequisites.
 
 # Removing BYOH Windows instances
 
-You can remove BYOH instances attached to the cluster by deleting the instance’s entry in the config map. Deleting an instance reverts that instance back to its state prior to adding to the cluster. Any logs and container runtime artifacts are not added to these instances.
+You can remove a Bring-Your-Own-Host (BYOH) instance that is attached to the cluster by deleting the instance’s entry in the BYOH config map. Deleting an instance reverts that instance back to its previous state, before it was added to the cluster.
+
+Any logs and container runtime artifacts are not added to these instances.
 
 For an instance to be cleanly removed, it must be accessible with the current private key provided to WMCO. For example, to remove the `10.1.42.1` instance from the previous example, the config map would be changed to the following:
 

@@ -119,11 +119,13 @@ In the preceding scenarios, PVCs remain in the pending state indefinitely. To re
 
 # Changing the default storage class
 
-Learn how to change the cluster’s default storage class, for example, reassigning the default status from `gp3` to `standard`.
+Change the default storage class to ensure new persistent volume claims (PVCs) automatically use your preferred storage backend. This helps you optimize costs, align with infrastructure changes, or ensure consistent storage types across new deployments without requiring users to specify a storage class for each claim.
+
+In this example, you have two defined storage classes, `gp3` and `standard`, and you want to change the default storage class from `gp3` to `standard`.
 
 - Access to the cluster with cluster-admin privileges.
 
-1.  List the storage classes:
+1.  List the storage classes by running the following command:
 
     ``` terminal
     $ oc get storageclass
@@ -141,7 +143,7 @@ Learn how to change the cluster’s default storage class, for example, reassign
     standard             ebs.csi.aws.com
     ```
 
-    The `(default)` indicates the default storage class.
+    The text `(default)` indicates the default storage class. In this example `gp3` is the current default storage class.
 
 2.  Make the required storage class the default.
 
@@ -167,7 +169,7 @@ Learn how to change the cluster’s default storage class, for example, reassign
     $ oc patch storageclass gp3 -p '{"metadata": {"annotations": {"storageclass.kubernetes.io/is-default-class": "false"}}}'
     ```
 
-4.  Verify the changes:
+4.  Verify the changes by running the following command:
 
     ``` terminal
     $ oc get storageclass
@@ -184,3 +186,5 @@ Learn how to change the cluster’s default storage class, for example, reassign
     gp3                  ebs.csi.aws.com
     standard (default)   ebs.csi.aws.com
     ```
+
+    The `standard` storage class is now the default.

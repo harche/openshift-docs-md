@@ -12,8 +12,10 @@ With container-based isolation, you use shared compute nodes, and isolation is e
 VM-based isolation
 With VM-based isolation, you run hosted control plane pods inside VMs; for example, on OpenShift Virtualization. This type of isolation is useful if you require VM-based isolation over container-based isolation for a multitenant management cluster. You add a hypervisor boundary between hosted clusters that share a management cluster. Control plane pods are pinned to dedicated VMs.
 
+To achieve VM-based isolation, you follow a "shared-nothing" approach, where each control plane has its own dedicated node. The management cluster must be an OpenShift Container Platform cluster on a VM so that the VM compute nodes can be used with the "shared-nothing" annotations to dedicate them to specific hosted control planes. Those hosted control planes will not share kernel space with control planes from other hosted clusters that are on the same management cluster.
+
 Physical isolation
-With physical isolation, you follow a "shared-nothing" approach, where each control plane has its own dedicated node. Nodes for a specific hosted cluster are tainted and labeled with a specific `hypershift.openshift.io/hosted-cluster` value. Security involves the use of a network policy and physical network access control lists (ACLs) across hosted clusters.
+With physical isolation, you also follow a "shared-nothing" approach. Nodes for a specific hosted cluster are tainted and labeled with a specific `hypershift.openshift.io/hosted-cluster` value. Security involves the use of a network policy and physical network access control lists (ACLs) across hosted clusters.
 
 For more information, see "Control plane isolation" and "Distributing hosted cluster workloads".
 
@@ -72,6 +74,8 @@ The following SELinux labels are used for key processes and sockets:
 
 `<example user container processes>`
 `system_u:system_r:container_t:s0:c14,c24`
+
+To achieve physical or virtual machine (VM) isolation, you need to use a "shared-nothing" approach, where each control plane has its own dedicated node. Nodes for a specific hosted cluster are tainted and labeled with a specific `hypershift.openshift.io/hosted-cluster` value. Security involves the use of a network policy and physical network access control lists (ACLs) across hosted clusters.
 
 # Ingress and egress requirements for hosted control planes
 

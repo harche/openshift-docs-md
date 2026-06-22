@@ -14,7 +14,7 @@ Before you acknowledge the update, verify that you are not using any of the Kube
 
 <!-- -->
 
-- Complete the administrative acknowledgment to start the cluster update by running the following command:
+- Check the cluster update status to determine if administrative acknowledgment is required by running the following command:
 
   ``` terminal
   $ oc adm upgrade
@@ -22,11 +22,7 @@ Before you acknowledge the update, verify that you are not using any of the Kube
 
   If the cluster update does not complete successfully, more details about the update failure are provided in the `Reason` and `Message` sections.
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
+  Example output:
 
   ``` terminal
   Cluster version is 4.15.45
@@ -68,11 +64,7 @@ Before you acknowledge the update, verify that you are not using any of the Kube
   $ oc get configmap admin-acks -n openshift-config -o json | jq .data
   ```
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
+  If the acknowledgment was successful, the output shows the acknowledged API removals for each update:
 
   ``` terminal
   {
@@ -118,10 +110,12 @@ You can verify that you are updating to a viable release by running the `oc adm 
     </div>
 
     ``` terminal
-    Requested update to 4.15.33
+    Requested update to <version>
     ```
 
-    The `Requested update` value changes depending on your particular update.
+    \+ where:
+
+    \+ `<version>`:: Specifies the version number for your particular update, such as `4.15.33`.
 
 - [Selecting the target release](../../../post_installation_configuration/day_2_core_cnf_clusters/updating/update-api.xml#update-selecting-the-target-release_update-api)
 

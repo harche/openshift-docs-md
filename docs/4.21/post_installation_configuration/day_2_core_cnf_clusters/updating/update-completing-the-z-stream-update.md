@@ -27,10 +27,12 @@ You can verify that you are updating to a viable release by running the `oc adm 
     </div>
 
     ``` terminal
-    Requested update to 4.15.33
+    Requested update to <version>
     ```
 
-    The `Requested update` value changes depending on your particular update.
+    \+ where:
+
+    \+ `<version>`:: Specifies the version number for your particular update, such as `4.15.33`.
 
 - [Selecting the target release](../../../post_installation_configuration/day_2_core_cnf_clusters/updating/update-api.xml#update-selecting-the-target-release_update-api)
 

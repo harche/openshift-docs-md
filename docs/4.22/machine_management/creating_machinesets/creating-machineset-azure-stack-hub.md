@@ -136,11 +136,17 @@ Specifies the availability set for the cluster.
 `<image>`
 Specifies the boot image to use. You should use the use the latest image when adding a new machine set.
 
+<div class="note">
+
+Machine sets running on Azure Stack Hub do not support non-guaranteed Spot VMs.
+
+</div>
+
 - [Manually updating the boot image](../../machine_configuration/mco-update-boot-images-manual.xml#mco-update-boot-images-manual)
 
 # Creating a compute machine set
 
-In addition to the compute machine sets created by the installation program, you can create your own compute machine sets to dynamically manage the machine compute resources for specific workloads of your choice. Use the OpenShift Container Platform CLI to automate node provisioning.
+To dynamically manage machine compute resources, you can create your own compute machine sets in addition to the compute machine sets created by the installation program. Use the OpenShift Container Platform CLI to automate node provisioning.
 
 - Deploy an OpenShift Container Platform cluster.
 

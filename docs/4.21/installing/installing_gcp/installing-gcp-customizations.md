@@ -34,9 +34,9 @@ If your cluster cannot have direct internet access, you can perform a restricted
 
 # Generating a key pair for cluster node SSH access
 
-To enable secure, passwordless SSH access to your cluster nodes, provide an SSH public key during the OpenShift Container Platform installation. This ensures that the installation program automatically configures the Red Hat Enterprise Linux CoreOS (RHCOS) nodes for remote authentication through the `core` user.
+During an OpenShift Container Platform installation, you can provide an SSH public key to the installation program. The key is passed to the Red Hat Enterprise Linux CoreOS (RHCOS) nodes through their Ignition config files and is used to authenticate SSH access to the nodes. The key is added to the `~/.ssh/authorized_keys` list for the `core` user on each node, which enables password-less authentication.
 
-The SSH public key gets added to the `~/.ssh/authorized_keys` list for the `core` user on each node. After the key is passed to the Red Hat Enterprise Linux CoreOS (RHCOS) nodes through their Ignition config files, you can use the key pair to SSH in to the RHCOS nodes as the user `core`. To access the nodes through SSH, the private key identity must be managed by SSH for your local user.
+The key is added to the `~/.ssh/authorized_keys` list for the `core` user on each node, which enables password-less authentication. After the key is passed to the nodes, you can use the key pair to SSH in to the RHCOS nodes as the user `core`. To access the nodes through SSH, the private key identity must be managed by SSH for your local user.
 
 If you want to SSH in to your cluster nodes to perform installation debugging or disaster recovery, you must provide the SSH public key during the installation process. The `./openshift-install gather` command also requires the SSH public key to be in place on the cluster nodes.
 
@@ -516,7 +516,7 @@ Specifies parameters that apply to the infrastructure platform that hosts the cl
 
 ## Configuring the cluster-wide proxy during installation
 
-To enable internet access in environments that deny direct connections, configure a cluster-wide proxy in the `install-config.yaml` file. This configuration ensures that the new OpenShift Container Platform cluster routes traffic through the specified HTTP or HTTPS proxy.
+Production environments can deny direct access to the internet and instead have an HTTP or HTTPS proxy available. You can configure a new OpenShift Container Platform cluster to use a proxy by configuring the proxy settings in the `install-config.yaml` file.
 
 - You have an existing `install-config.yaml` file.
 
@@ -1241,11 +1241,11 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
       -a ~/.pull-secret
     ```
 
-    - For `<rhel_version>`, specify the value that corresponds to the version of Red Hat Enterprise Linux (RHEL) that the host uses. If no value is specified, `ccoctl.rhel8` is used by default. The following values are valid:
+    For `<rhel_version>`, specify the value that corresponds to the version of Red Hat Enterprise Linux (RHEL) that the host uses. If no value is specified, `ccoctl.rhel8` is used by default. The following values are valid:
 
-      - `rhel8`: Specify this value for hosts that use RHEL 8.
+    - `rhel8`: Specify this value for hosts that use RHEL 8.
 
-      - `rhel9`: Specify this value for hosts that use RHEL 9.
+    - `rhel9`: Specify this value for hosts that use RHEL 9.
 
     <div class="note">
 
@@ -1328,17 +1328,22 @@ You must have:
       --to=<path_to_directory_for_credentials_requests>
     ```
 
-    - The `--included` parameter includes only the manifests that your specific cluster configuration requires.
+    where:
 
-    - Specify the location of the `install-config.yaml` file.
+    `--included`
+    Specifies to include only the manifests that your specific cluster configuration requires.
 
-    - Specify the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
+    `<path_to_directory_with_installation_configuration>`
+    Specifies the location of the `install-config.yaml` file.
 
-      <div class="note">
+    `<path_to_directory_for_credentials_requests>`
+    Specifies the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
 
-      This command might take a few moments to run.
+    <div class="note">
 
-      </div>
+    This command might take a few moments to run.
+
+    </div>
 
 3.  Use the `ccoctl` tool to process all `CredentialsRequest` objects by running the following command:
 
@@ -1350,19 +1355,25 @@ You must have:
       --credentials-requests-dir=<path_to_credentials_requests_directory>
     ```
 
-    - Specify the user-defined name for all created Google Cloud resources used for tracking. If you plan to install the Google Cloud Filestore Container Storage Interface (CSI) Driver Operator, retain this value.
+    where:
 
-    - Specify the Google Cloud region in which cloud resources will be created.
+    `<name>`
+    Specifies the user-defined name for all created Google Cloud resources used for tracking. If you plan to install the Google Cloud Filestore Container Storage Interface (CSI) Driver Operator, retain this value.
 
-    - Specify the Google Cloud project ID in which cloud resources will be created.
+    `<gcp_region>`
+    Specifies the Google Cloud region in which cloud resources will be created.
 
-    - Specify the directory containing the files of `CredentialsRequest` manifests to create Google Cloud service accounts.
+    `<gcp_project_id>`
+    Specifies the Google Cloud project ID in which cloud resources will be created.
 
-      <div class="note">
+    `<path_to_credentials_requests_directory>`
+    Specifies the directory containing the files of `CredentialsRequest` manifests to create Google Cloud service accounts.
 
-      If your cluster uses Technology Preview features that are enabled by the `TechPreviewNoUpgrade` feature set, you must include the `--enable-tech-preview` parameter.
+    <div class="note">
 
-      </div>
+    If your cluster uses Technology Preview features that are enabled by the `TechPreviewNoUpgrade` feature set, you must include the `--enable-tech-preview` parameter.
+
+    </div>
 
 - To verify that the OpenShift Container Platform secrets are created, list the files in the `<path_to_ccoctl_output_dir>/manifests` directory:
 

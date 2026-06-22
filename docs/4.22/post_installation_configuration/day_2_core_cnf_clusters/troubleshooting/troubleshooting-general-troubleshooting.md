@@ -24,12 +24,6 @@ Get information about your cluster so that you can more accurately find potentia
     $ oc get clusterversion,clusteroperator,node
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
     clusterversion.config.openshift.io/version   4.16.11   True        False         62d     Cluster version is 4.16.11
@@ -75,7 +69,7 @@ Get information about your cluster so that you can more accurately find potentia
     node/ctrl-plane-2   Ready    control-plane,master,worker   62d   v1.29.7
     ```
 
-For more information, see "oc get" and "Reviewing pod status".
+    For more information, see "oc get" and "Reviewing pod status".
 
 - [oc get](../../../cli_reference/openshift_cli/developer-cli-commands.xml#oc-get)
 
@@ -91,12 +85,6 @@ Get logs from the pod so that you can review the logs for issues.
     $ oc get pod
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     NAME        READY   STATUS    RESTARTS          AGE
     busybox-1   1/1     Running   168 (34m ago)     7d
@@ -111,7 +99,7 @@ Get logs from the pod so that you can review the logs for issues.
     $ oc logs -n <namespace> busybox-1
     ```
 
-For more information, see "oc logs", "Logging", and "Inspecting pod and container logs".
+    For more information, see "oc logs", "Logging", and "Inspecting pod and container logs".
 
 - [oc logs](../../../cli_reference/openshift_cli/developer-cli-commands.xml#oc-logs)
 
@@ -168,7 +156,7 @@ You can review the events in a given namespace to find potential issues.
     $ oc get events -n <namespace> --sort-by=".metadata.creationTimestamp"
     ```
 
-    - Adding the `--sort-by=".metadata.creationTimestamp"` flag places the most recent events at the end of the output.
+    The `--sort-by=".metadata.creationTimestamp"` flag places the most recent events at the end of the output.
 
 2.  Optional: If the events within your specified namespace do not provide enough information, expand your query to all namespaces by running the following command:
 
@@ -176,21 +164,15 @@ You can review the events in a given namespace to find potential issues.
     $ oc get events -A --sort-by=".metadata.creationTimestamp"
     ```
 
-    - The `--sort-by=".metadata.creationTimestamp"` flag places the most recent events at the end of the output.
+    The `--sort-by=".metadata.creationTimestamp"` flag places the most recent events at the end of the output.
 
-      To filter the results of all events from a cluster, you can use the `grep` command. For example, if you are looking for errors, the errors can appear in two different sections of the output: the `TYPE` or `MESSAGE` sections. With the `grep` command, you can search for keywords, such as `error` or `failed`.
+    To filter the results of all events from a cluster, you can use the `grep` command. For example, if you are looking for errors, the errors can appear in two different sections of the output: the `TYPE` or `MESSAGE` sections. With the `grep` command, you can search for keywords, such as `error` or `failed`.
 
 3.  For example, search for a message that contains `warning` or `error` by running the following command:
 
     ``` terminal
     $ oc get events -A | grep -Ei "warning|error"
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     NAMESPACE    LAST SEEN   TYPE      REASON          OBJECT              MESSAGE
@@ -203,7 +185,7 @@ You can review the events in a given namespace to find potential issues.
     $ oc delete events -n <namespace> --all
     ```
 
-For more information, see "Watching cluster events".
+    For more information, see "Watching cluster events".
 
 - [Watching cluster events](../../../security/container_security/security-monitoring.xml#security-monitoring-events_security-monitoring)
 
@@ -223,7 +205,9 @@ In pods that run a low-latency application, latency issues can occur when you ru
   $ oc rsh -n <namespace> busybox-1
   ```
 
-For more information, see "oc rsh" and "Accessing running pods".
+  For more information, see "oc rsh" and "Accessing running pods".
+
+<!-- -->
 
 - [oc rsh](../../../cli_reference/openshift_cli/developer-cli-commands.xml#oc-rsh)
 
@@ -241,12 +225,6 @@ To avoid interfering with running traffic, you can use a secondary pod that is a
     $ oc get pod
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     NAME        READY   STATUS    RESTARTS          AGE
     busybox-1   1/1     Running   168 (34m ago)     7d
@@ -261,12 +239,6 @@ To avoid interfering with running traffic, you can use a secondary pod that is a
     $ oc debug -n <namespace> busybox-1
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     Starting pod/busybox-1-debug, command was: sleep 3600
     Pod IP: 10.133.2.11
@@ -274,7 +246,7 @@ To avoid interfering with running traffic, you can use a secondary pod that is a
 
     If you do not see a shell prompt, press Enter.
 
-For more information, see "oc debug" and "Starting debug pods with root access".
+    For more information, see "oc debug" and "Starting debug pods with root access".
 
 - [oc debug](../../../cli_reference/openshift_cli/developer-cli-commands.xml#oc-debug)
 
@@ -296,7 +268,9 @@ In pods that run a low-latency application, the `oc exec` command can cause late
   $ oc exec -it <pod> -- <command>
   ```
 
-For more information, see "oc exec" and "Executing remote commands in containers".
+  For more information, see "oc exec" and "Executing remote commands in containers".
+
+<!-- -->
 
 - [oc exec](../../../cli_reference/openshift_cli/developer-cli-commands.xml#oc-exec)
 

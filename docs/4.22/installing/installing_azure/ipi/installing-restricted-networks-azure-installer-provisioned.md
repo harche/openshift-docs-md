@@ -753,7 +753,7 @@ Specifies parameters that apply to the infrastructure platform that hosts the cl
 
 ## Configuring the cluster-wide proxy during installation
 
-To enable internet access in environments that deny direct connections, configure a cluster-wide proxy in the `install-config.yaml` file. This configuration ensures that the new OpenShift Container Platform cluster routes traffic through the specified HTTP or HTTPS proxy.
+Production environments can deny direct access to the internet and instead have an HTTP or HTTPS proxy available. You can configure a new OpenShift Container Platform cluster to use a proxy by configuring the proxy settings in the `install-config.yaml` file.
 
 - You have an existing `install-config.yaml` file.
 

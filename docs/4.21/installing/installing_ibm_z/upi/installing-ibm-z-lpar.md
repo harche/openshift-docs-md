@@ -28,7 +28,7 @@ Be sure to also review this site list if you are configuring a proxy.
 
 # Preparing the user-provisioned infrastructure
 
-To ensure a successful deployment and meet cluster requirements in OpenShift Container Platform, prepare your user-provisioned infrastructure before starting the installation. Configuring your compute, network, and storage components in advance provides the stable foundation necessary for the installation program to function correctly.
+Before you install OpenShift Container Platform on user-provisioned infrastructure, you must prepare the underlying infrastructure.
 
 This section provides details about the high-level steps required to set up your cluster infrastructure in preparation for an OpenShift Container Platform installation. This includes configuring IP networking and network connectivity for your cluster nodes, preparing a web server for the Ignition files, enabling the required ports through your firewall, and setting up the required DNS and load balancing infrastructure.
 
@@ -183,7 +183,7 @@ If you are deploying a three-node cluster with zero compute nodes, the Ingress C
 
 # Manually creating the installation configuration file
 
-To customise your OpenShift Container Platform deployment and meet specific network requirements, manually create the installation configuration file. This ensures that the installation program uses your tailored settings rather than default values during the setup process.
+Installing the cluster requires that you manually create the installation configuration file.
 
 - You have an SSH public key on your local machine for use with the installation program. You can use the key for SSH authentication onto your cluster nodes for debugging and disaster recovery.
 
@@ -304,14 +304,11 @@ Class E CIDR range is reserved for a future use. To use the Class E CIDR range, 
 
 </div>
 
-`networking.clusterNetwork.hostPrefix`
+`networking.cidr.hostPrefix`
 Specifies the subnet prefix length to assign to each individual node. For example, if `hostPrefix` is set to `23`, then each node is assigned a `/23` subnet out of the given `cidr`, which allows for 510 (2^(32 - 23) - 2) pod IP addresses. If you are required to provide access to nodes from an external network, configure load balancers and routers to manage the traffic.
 
 `networking.networkType`
 Specifies the cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
-
-`networking.machineNetwork`
-Optional. Specifies the IP address pool to use for machines in the cluster. You cannot change this value after installation. If you do not set this value, and you configure a cluster-wide proxy, you must manually add the machine network address pool or pools to the proxy configuration. For more information, see the *Configuring the cluster-wide proxy during installation* section.
 
 `networking.serviceNetwork`
 Specifies the IP address pool to use for service IP addresses. You can enter only one IP address pool. This block must not overlap with existing physical networks. If you need to access the services from an external network, configure load balancers and routers to manage the traffic.
@@ -350,7 +347,7 @@ For production OpenShift Container Platform clusters on which you want to perfor
 
 ## Configuring the cluster-wide proxy during installation
 
-To enable internet access in environments that deny direct connections, configure a cluster-wide proxy in the `install-config.yaml` file. This configuration ensures that the new OpenShift Container Platform cluster routes traffic through the specified HTTP or HTTPS proxy.
+Production environments can deny direct access to the internet and instead have an HTTP or HTTPS proxy available. You can configure a new OpenShift Container Platform cluster to use a proxy by configuring the proxy settings in the `install-config.yaml` file.
 
 - You have an existing `install-config.yaml` file.
 
@@ -938,7 +935,7 @@ defaultNetwork:
 
 # Creating the Kubernetes manifest and Ignition config files
 
-To customize cluster definitions and manually start machines, generate the Kubernetes manifest and Ignition config files. These assets provide the necessary instructions to configure the cluster infrastructure according to your specific deployment requirements.
+To customize cluster definitions and manually start machines, generate the Kubernetes manifest and Ignition config files.
 
 The installation configuration file transforms into the Kubernetes manifests. The manifests wrap into the Ignition configuration files, which are later used to configure the cluster machines.
 
@@ -1534,7 +1531,7 @@ As an optional task, you can configure VLANs on individual interfaces by using t
 
 ### Bonding multiple network interfaces to a single interface
 
-As an optional task, you can bond multiple network interfaces to a single interface by using the `bond=` option. By completing this task, you can eliminate a single point of failure for your network environment.
+As an optional task, you can bond multiple network interfaces to a single interface by using the `bond=` option.
 
 The following example demonstrates editing the `/etc/config/network` file and specifying the following syntax for bonding multiple network interfaces to a single interface:
 
@@ -1553,18 +1550,18 @@ When you create a bonded interface using the `bond=` command, you must specify h
 - To configure the bonded interface to use DHCP, edit the `/etc/config/network` file by setting the IP address for the bond to `dhcp`. For example:
 
   ``` terminal
-  bond=bond0:em1,em2:mode=active-backup
   ip=bond0:dhcp
   ```
 
 - To configure the bonded interface to use a static IP address, edit the `/etc/config/network` file entering the specific IP address you want and related information. For example:
 
   ``` terminal
-  bond=bond0:em1,em2:mode=active-backup,fail_over_mac=1
-  ip=10.10.10.2::10.10.10.254:255.255.255.0:core0.example.com:bond0:none
+  bond=bond0:em1,em2:mode=active-backup
+  ip=10.10.10.2::10.10.10.254:255.255.255.0:core0.example.com:bond0:none::AA:BB:CC:DD:EE:FF ip=em1:none::AA:BB:CC:DD:EE:FF
+  ip=em2:none::AA:BB:CC:DD:EE:FF
   ```
 
-  Always set the `fail_over_mac=1` option in active-backup mode to avoid problems when shared OSA/RoCE cards are used.
+  IBM Z supports value `1` for the `fail_over_mac` parameter, so always set the `fail_over_mac=1` option in active-backup mode to avoid problems when shared OSA/RoCE cards are used.
 
 - You can configure VLANs on bonded interfaces by editing the `/etc/config/network` file and specifying the `vlan=` parameter to use DHCP. For example:
 
@@ -1584,7 +1581,7 @@ When you create a bonded interface using the `bond=` command, you must specify h
 
 ### Using network teaming
 
-You can use network teaming as an alternative to bonding by using the `team=` parameter. Consider this task for servers that need highly customizable network logic and better performance in virtualized or high-traffic environments.
+You can use network teaming as an alternative to bonding by using the `team=` parameter.
 
 1.  Optional: You can use network teaming as an alternative to bonding by using the `team=` parameter.
 
@@ -1696,7 +1693,7 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 # Approving the certificate signing requests for your machines
 
-To add machines to a cluster, verify the status of the certificate signing requests (CSRs) generated for each machine. If manual approval is required, approve the client requests first, followed by the server requests.
+You can add machines to a cluster by verifying the status of the Certificate Signing Requests (CSRs) generated for each machine. If manual approval is required, approve the client requests first, followed by the server requests.
 
 - You added machines to your cluster.
 
@@ -1749,7 +1746,7 @@ To add machines to a cluster, verify the status of the certificate signing reque
 
     <div class="note">
 
-    Because the CSRs rotate automatically, approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. Then, subsequent serving certificate renewal requests are automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. Then, subsequent serving certificate renewal requests are automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
 
     </div>
 

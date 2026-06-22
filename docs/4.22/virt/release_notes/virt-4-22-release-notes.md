@@ -6,15 +6,19 @@ To view the supported guest operating systems for OpenShift Virtualization, see 
 
 # New features and enhancements
 
+Extended Upgrade Support enables 36-month lifecycle for OpenShift Virtualization clusters
+OpenShift Virtualization now supports a 36-month cluster lifecycle policy with optional Extended Upgrade Support (EUS) add-ons. With EUS, you can remain on the same release for up to 36 months, enabling stable production environments for mission-critical applications.
+
+For more information about EUS add-on subscriptions, see [OpenShift Container Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift).
+
+[CNV-73922](https://redhat.atlassian.net/browse/CNV-73922)
+
+<!-- -->
+
 Monitor node memory overcommit level for virtual machines
 Cluster administrators can balance workloads using the VM memory overcommit and utilization dashboard. The dashboard allows you to monitor whether clusters are underutilized or at risk due to memory overcommit, or to decide whether to expand a cluster.
 
 [CNV-44026](https://redhat.atlassian.net/browse/CNV-44026)
-
-KubeVirt Redfish for VM management through the Redfish API (Technology Preview)
-KubeVirt Redfish exposes OpenShift Virtualization virtual machines through the standard Redfish API. Using KubeVirt Redfish, administrators can manage VM power states, boot configuration, and virtual media attachments. This feature is available as a Technology Preview.
-
-For more information, see [Install KubeVirt Redfish](../post_installation_configuration/virt-kubevirt-redfish.xml#proc_virt-installing-kubevirt-redfish_virt-kubevirt-redfish).
 
 <!-- -->
 
@@ -49,6 +53,11 @@ Define physical networks based on existing node network configuration policies (
 
 <!-- -->
 
+Insert and eject CD-ROMs in a live VM
+OpenShift Virtualization support for declarative hot plug of CD-ROM storage devices in live virtual machines (VMs) is generally available. You can insert and eject CD-ROM storage in running VMs by enabling the `DeclarativeHotplugVolumes` feature gate in the `HyperConverged` custom resource (CR) without restarting the VM.
+
+[CNV-68916](https://redhat.atlassian.net/browse/CNV-68916)
+
 Option to automatically clean up source PVCs after storage migration
 Virtual machine (VM) owners can now automatically clean up source persistent volume claims (PVCs) after a storage migration, reducing manual cleanup tasks. By default, OpenShift Virtualization retains the source PVCs so you can manually clean them up. You can deselect the option to keep source PVCs in the user interface to enable automatic cleanup after the migration completes.
 
@@ -68,11 +77,6 @@ New default for PVC naming during VM restore and clone requests
 With this update, the `volumeRestorePolicy` default setting has been changed to `PrefixTargetName`. This means that the name of the target virtual machine (VM) is now used as a prefix for new PVC names created with VM restore and clone requests.
 
 [CNV-77397](https://redhat.atlassian.net/browse/CNV-77397)
-
-Insert and eject CD-ROMs in a live VM
-OpenShift Virtualization support for declarative hot plug of CD-ROM storage devices in live virtual machines (VMs) is generally available. You can insert and eject CD-ROM storage in running VMs by enabling the `DeclarativeHotplugVolumes` feature gate in the `HyperConverged` custom resource (CR) without restarting the VM.
-
-[CNV-68916](https://redhat.atlassian.net/browse/CNV-68916)
 
 <!-- -->
 
@@ -96,11 +100,6 @@ Administrators can hide the YAML tab on virtual machines (VM) and other resource
 
 [CNV-74216](https://redhat.atlassian.net/browse/CNV-74216)
 
-Removed deprecated label from localnet network attachment definition type
-The web console no longer displays a **Deprecated** label next to the localnet `NetworkAttachmentDefinition` (NAD) type. This change clarifies that localnet NAD functionality is not deprecated and remains fully supported. You can use either the NAD-based approach or the VM network wizard to create localnet networks for connecting virtual machines to physical networks.
-
-[OCPBUGS-83809](https://redhat.atlassian.net/browse/OCPBUGS-83809)
-
 Overview tab displays dynamic hierarchical view of VM data
 The **Overview** tab displays a dynamic, hierarchical view of VM data that adapts to your tree view selection, supporting both cluster and multi-cluster levels.
 
@@ -111,7 +110,25 @@ Cluster administrators can create a custom certificate authority (CA) or a self-
 
 [CNV-79324](https://redhat.atlassian.net/browse/CNV-79324)
 
+<!-- -->
+
+Recording rule names updated to conform to Prometheus best practices
+Recording rule names have been updated to follow the naming convention `<level>:<metric>:<operations>`. This aligns with the Prometheus best practices on naming rules, and helps users to distinguish between recording rules and metrics. For information about which rule names have changed, see the Knowledgebase article [Updates to OpenShift Virtualization 4.22 recording rules naming](https://access.redhat.com/articles/7144047).
+
+[CNV-89006](https://redhat.atlassian.net/browse/CNV-89006)
+
 # Deprecated features
+
+Recording rules deprecated
+The following recording rules are deprecated:
+
+- `kubevirt_vm_created_total`
+
+- `kubevirt_cnao_kubemacpool_duplicate_macs`
+
+  If you reference these recording rules in custom alerts or dashboards, remove them before upgrading to a future release.
+
+[CNV-89006](https://redhat.atlassian.net/browse/CNV-89006)
 
 The `HotplugVolume` feature gate is deprecated
 The `HotplugVolume` feature gate, which allows you to add storage without restarting your VM, is deprecated and will be removed in a future release. This feature gate will be replaced by `DeclarativeHotplugVolumes`.
@@ -133,11 +150,23 @@ In previous versions, cluster and project administrators could use a predefined 
 
 [CNV-77646](https://issues.redhat.com/browse/CNV-77646)
 
+Removed deprecated label from localnet network attachment definition type
+The web console no longer displays a **Deprecated** label next to the localnet `NetworkAttachmentDefinition` (NAD) type. This change clarifies that localnet NAD functionality is not deprecated and remains fully supported. You can use either the NAD-based approach or the VM network wizard to create localnet networks for connecting virtual machines to physical networks.
+
+[OCPBUGS-83809](https://redhat.atlassian.net/browse/OCPBUGS-83809)
+
 # Technology Preview features
 
 Some features in this release are currently in Technology Preview. These experimental features are not intended for production use. Note the following scope of support on the Red Hat Customer Portal for these features:
 
 [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview)
+
+KubeVirt Redfish for VM management through the Redfish API (Technology Preview)
+KubeVirt Redfish exposes OpenShift Virtualization virtual machines through the standard Redfish API. Using KubeVirt Redfish, administrators can manage VM power states, boot configuration, and virtual media attachments. This feature is available as a Technology Preview.
+
+For more information, see [Install KubeVirt Redfish](../post_installation_configuration/virt-kubevirt-redfish.xml#proc_virt-installing-kubevirt-redfish_virt-kubevirt-redfish).
+
+<!-- -->
 
 Golden image support for heterogeneous clusters (Technology Preview)
 Golden image support is available for heterogeneous clusters, which enables you to create and use golden images for virtual machines in environments with differing node configurations. This capability is a Technology Preview feature.
@@ -164,6 +193,22 @@ Create virtual machines from in-cluster native templates (Technology Preview)
 Virtual machine (VM) owners can create VMs from the OpenShift Virtualization cluster native template custom resource. The VM template tracks a golden image that is updated periodically, reducing errors and ensuring uniformity in the virtualized environment. You can host the template in all namespaces that you can control.
 
 [CNV-73392](https://redhat.atlassian.net/browse/CNV-73392)
+
+<!-- -->
+
+Dual stream support for OpenShift Virtualization clusters (Technology Preview)
+You can provision OpenShift Virtualization clusters that run Red Hat Enterprise Linux CoreOS (RHCOS) version 9.8 and version 10.2 in OpenShift Container Platform 4.22. RHCOS 9.8 is the default operating system. VM live migration between RHCOS 9.x and RHCOS 10.x worker nodes is supported in OpenShift Container Platform 4.22.
+
+[CNV-49964](https://redhat.atlassian.net/browse/CNV-49964)
+
+# Fixed issues
+
+The following issues are fixed for this release.
+
+Service account volumes preserved during VM migration
+Before this update, migrating a virtual machine (VM) invalidated any service account volumes attached to that VM. As a consequence, workloads that relied on service account tokens failed after migration. With this release, service account volumes are preserved during VM migration. As a result, workloads that use service account tokens continue to function correctly after live migration.
+
+[CNV-33835](https://issues.redhat.com/browse/CNV-33835)
 
 # Known issues
 
@@ -216,15 +261,6 @@ Live migration fails if a virtual machine name exceeds 47 characters. As a conse
 To work around this problem, use VM names that are 47 characters or fewer when you create VMs that you plan to live migrate.
 
 [CNV-61066](https://issues.redhat.com/browse/CNV-61066)
-
-<!-- -->
-
-Service account volume becomes invalid after VM migration
-OpenShift Virtualization links a service account token in use by a pod to that specific pod by creating a disk image that contains the token. If you migrate a VM, the service account volume becomes invalid for the migrated VM. As a consequence, workloads that rely on that service account token can fail after migration.
-
-To work around this problem, use user accounts instead of service accounts, because user account tokens are not bound to a specific pod.
-
-[CNV-33835](https://issues.redhat.com/browse/CNV-33835)
 
 Upgrading to OpenShift Virtualization 4.22 when using wasp-agent
 If you are upgrading OpenShift Virtualization from version 4.20 to 4.22 and using `wasp-agent` to increase VM workload density, you must perform the following steps after you begin the upgrade:

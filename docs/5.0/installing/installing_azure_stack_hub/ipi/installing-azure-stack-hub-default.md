@@ -52,7 +52,7 @@ You must download the RHCOS virtual hard disk (VHD) cluster image and upload it 
 
 # Manually creating the installation configuration file
 
-To customise your OpenShift Container Platform deployment and meet specific network requirements, manually create the installation configuration file. This ensures that the installation program uses your tailored settings rather than default values during the setup process.
+Installing the cluster requires that you manually create the installation configuration file.
 
 - You have an SSH public key on your local machine for use with the installation program. You can use the key for SSH authentication onto your cluster nodes for debugging and disaster recovery.
 

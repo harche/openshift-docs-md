@@ -582,7 +582,7 @@ To learn more about these APIs, see the AWS documentation for [importing snapsho
 
 # Manually creating the installation configuration file
 
-To customise your OpenShift Container Platform deployment and meet specific network requirements, manually create the installation configuration file. This ensures that the installation program uses your tailored settings rather than default values during the setup process.
+Installing the cluster requires that you manually create the installation configuration file.
 
 - You have an SSH public key on your local machine for use with the installation program. You can use the key for SSH authentication onto your cluster nodes for debugging and disaster recovery.
 
@@ -740,7 +740,7 @@ Use the machine types included in the following charts for your AWS ARM instance
 
 ## Configuring the cluster-wide proxy during installation
 
-To enable internet access in environments that deny direct connections, configure a cluster-wide proxy in the `install-config.yaml` file. This configuration ensures that the new OpenShift Container Platform cluster routes traffic through the specified HTTP or HTTPS proxy.
+Production environments can deny direct access to the internet and instead have an HTTP or HTTPS proxy available. You can configure a new OpenShift Container Platform cluster to use a proxy by configuring the proxy settings in the `install-config.yaml` file.
 
 - You have an existing `install-config.yaml` file.
 

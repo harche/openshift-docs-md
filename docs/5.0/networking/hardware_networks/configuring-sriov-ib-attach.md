@@ -97,7 +97,7 @@ You can configure the following IP address assignment types in the `ipRanges` pa
 
   where:
 
-  `<podname>`
+  `<pod_name>`
   The name of the pod.
 
 ## Configuration of IP address assignment for a network attachment
@@ -143,10 +143,10 @@ The following table describes the configuration for static IP address assignment
 
 The `addresses` array requires objects with the following fields:
 
-| Field     | Type     | Description                                                                                                                                                                                             |
-|-----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `address` | `string` | An IP address and network prefix that you specify. For example, if you specify `10.10.21.10/24`, the secondary network gets assigned an IP address of `10.10.21.10` and the netmask of `255.255.255.0`. |
-| `gateway` | `string` | The default gateway to route egress network traffic to.                                                                                                                                                 |
+| Field     | Type     | Description                                                                                                                                                                                               |
+|-----------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `address` | `string` | An IP address and network prefix that you specify. For example, if you specify `10.10.21.10/24`, the secondary network gets assigned an IP address of `10.10.21.10` and the `netmask` of `255.255.255.0`. |
+| `gateway` | `string` | The default gateway to route egress network traffic to.                                                                                                                                                   |
 
 `ipam.addresses[]` array
 
@@ -239,12 +239,12 @@ The Whereabouts CNI plugin also supports overlapping IP address ranges and confi
 
 The following table describes the configuration objects for dynamic IP address assignment with Whereabouts:
 
-| Field          | Type     | Description                                                                                                                                                                                                                                                      |
-|----------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `type`         | `string` | The IPAM address type. The value `whereabouts` is required.                                                                                                                                                                                                      |
-| `range`        | `string` | An IP address and range in CIDR notation. IP addresses are assigned from within this range of addresses.                                                                                                                                                         |
-| `exclude`      | `array`  | Optional: A list of zero or more IP addresses and ranges in CIDR notation. IP addresses within an excluded address range are not assigned.                                                                                                                       |
-| `network_name` | `string` | Optional: Helps ensure that each group or domain of pods gets its own set of IP addresses, even if they share the same range of IP addresses. Setting this field is important for keeping networks separate and organized, notably in multi-tenant environments. |
+| Field          | Type     | Description                                                                                                                                                                                                                                                     |
+|----------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `type`         | `string` | The IPAM address type. The value `whereabouts` is required.                                                                                                                                                                                                     |
+| `range`        | `string` | An IP address and range in CIDR notation. IP addresses are assigned from within this range of addresses.                                                                                                                                                        |
+| `exclude`      | `array`  | Optional: A list of zero or more IP addresses and ranges in CIDR notation. IP addresses within an excluded address range are not assigned.                                                                                                                      |
+| `network_name` | `string` | Optional: Helps ensure that each group or domain of pods gets its own set of IP addresses, even if they share the same range of IP addresses. Setting this field is important for keeping networks separate and organized, notably in multitenant environments. |
 
 `ipam` whereabouts configuration parameters
 

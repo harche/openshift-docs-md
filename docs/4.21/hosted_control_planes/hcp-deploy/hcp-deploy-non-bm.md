@@ -1,4 +1,4 @@
-You can deploy hosted control planes by configuring a cluster to function as a hosting cluster. The hosting cluster is an OpenShift Container Platform cluster where the control planes are hosted. The hosting cluster is also known as the management cluster.
+To maintain infrastructure flexibility while using existing virtualization layers, you can deploy hosted control planes on non-bare-metal Agent machines. You can use the management benefits of the Agent platform when running on virtualized environments or other cloud-based virtual machines.
 
 <div class="important">
 
@@ -7,6 +7,8 @@ Hosted control planes on non-bare-metal agent machines is a Technology Preview f
 For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
+
+You can deploy hosted control planes by configuring a cluster to function as a hosting cluster. The hosting cluster is an OpenShift Container Platform cluster where the control planes are hosted. The hosting cluster is also known as the management cluster.
 
 <div class="note">
 
@@ -21,6 +23,8 @@ The multicluster engine Operator supports only the default `local-cluster` manag
 A *hosted cluster* is an OpenShift Container Platform cluster with its API endpoint and control plane that are hosted on the hosting cluster. The hosted cluster includes the control plane and its corresponding data plane. You can use the multicluster engine Operator console or the `hcp` command-line interface (CLI) to create a hosted cluster.
 
 The hosted cluster is automatically imported as a managed cluster. If you want to disable this automatic import feature, see "Disabling the automatic import of hosted clusters into multicluster engine Operator".
+
+- [Disabling the automatic import of hosted clusters into multicluster engine Operator](../../hosted_control_planes/hcp-import.xml#hcp-import-disable_hcp-import)
 
 # Preparing to deploy hosted control planes on non-bare-metal agent machines
 
@@ -129,8 +133,6 @@ The Agent platform does not create any infrastructure, but it has the following 
 - [Manually enabling the hosted control planes feature](../../hosted_control_planes/hcp-prepare/hcp-enable-disable.xml#hcp-enable-manual_hcp-enable-disable)
 
 - [Disabling the hosted control planes feature](../../hosted_control_planes/hcp-prepare/hcp-enable-disable.xml#hcp-disable_hcp-enable-disable)
-
-- [Configuring Ansible Automation Platform jobs to run on hosted clusters](4/html/clusters/cluster_mce_overview#ansible-config-hosted-cluster)
 
 # Configuring DNS on non-bare-metal agent machines
 

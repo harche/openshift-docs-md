@@ -6,6 +6,10 @@ You can create a Windows `MachineSet` object to serve a specific purpose in your
 
 - You are using a supported Windows Server as the operating system image.
 
+- You must prepare your vSphere environment for Windows container workloads by creating the vSphere Windows VM golden image. See "Creating the vSphere Windows VM golden image" in this section.
+
+- You must enable communication with the internal API server for the WMCO. See "Enabling communication with the internal API server for the WMCO on vSphere" in this section.
+
 # Machine API overview
 
 The Machine API performs all node host provisioning management actions after the cluster installation finishes. Because of this system, OpenShift Container Platform offers an elastic, dynamic provisioning method on top of public or private cloud infrastructure.
@@ -51,13 +55,9 @@ The `MachineHealthCheck` resource detects when a machine is unhealthy, deletes i
 
 In OpenShift Container Platform version 3.11, you could not roll out a multi-zone architecture easily because the cluster did not manage machine provisioning. Beginning with OpenShift Container Platform version 4.1, this process is easier. Each compute machine set is scoped to a single zone, so the installation program sends out compute machine sets across availability zones on your behalf. And then because your compute is dynamic, and in the face of a zone failure, you always have a zone for when you must rebalance your machines. In global Azure regions that do not have multiple availability zones, you can use availability sets to ensure high availability. The autoscaler provides best-effort balancing over the life of a cluster.
 
-# Preparing your vSphere environment for Windows container workloads
+# Creating the vSphere Windows VM golden image
 
-You must prepare your vSphere environment for Windows container workloads by creating the vSphere Windows VM golden image and enabling communication with the internal API server for the WMCO.
-
-## Creating the vSphere Windows VM golden image
-
-Create a vSphere Windows virtual machine (VM) golden image.
+You must prepare your vSphere environment for Windows container workloads by creating the vSphere Windows VM golden image.
 
 - You have created a private/public key pair, which is used to configure key-based authentication in the OpenSSH server. The private key must be configured in the Windows Machine Config Operator (WMCO) namespace so that the WMCO can communicate with the Windows VM.
 
@@ -147,87 +147,94 @@ You must use [Microsoft PowerShell](https://docs.microsoft.com/en-us/powershell/
     C:\> C:\Windows\System32\Sysprep\sysprep.exe /generalize /oobe /shutdown /unattend:<path_to_unattend.xml>
     ```
 
-    - Specify the path to your `unattend.xml` file.
+    Replace `<path_to_unattend.xml>` with the path to your `unattend.xml` file.
 
-      <div class="note">
+    <div class="note">
 
-      There is a limit on how many times you can run the `sysprep` command on a Windows image. Consult Microsoft’s [documentation](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/sysprep--generalize--a-windows-installation#limits-on-how-many-times-you-can-run-sysprep) for more information.
+    There is a limit on how many times you can run the `sysprep` command on a Windows image. Consult Microsoft’s [documentation](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/sysprep--generalize--a-windows-installation#limits-on-how-many-times-you-can-run-sysprep) for more information.
 
-      </div>
+    </div>
 
-      An example `unattend.xml` is provided, which maintains all the changes needed for the WMCO. You must modify this example; it cannot be used directly.
+    An example `unattend.xml` is provided, which maintains all the changes needed for the WMCO. You must modify this example; it cannot be used directly.
 
-      ``` xml
-      <?xml version="1.0" encoding="UTF-8"?>
-      <unattend xmlns="urn:schemas-microsoft-com:unattend">
-         <settings pass="specialize">
-            <component xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-               <InputLocale>0409:00000409</InputLocale>
-               <SystemLocale>en-US</SystemLocale>
-               <UILanguage>en-US</UILanguage>
-               <UILanguageFallback>en-US</UILanguageFallback>
-               <UserLocale>en-US</UserLocale>
-            </component>
-            <component xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Microsoft-Windows-Security-SPP-UX" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-               <SkipAutoActivation>true</SkipAutoActivation>
-            </component>
-            <component xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Microsoft-Windows-SQMApi" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-               <CEIPEnabled>0</CEIPEnabled>
-            </component>
-            <component xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-               <ComputerName>winhost</ComputerName>
-            </component>
-         </settings>
-         <settings pass="oobeSystem">
-            <component xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-               <AutoLogon>
-                  <Enabled>false</Enabled>
-               </AutoLogon>
-               <OOBE>
-                  <HideEULAPage>true</HideEULAPage>
-                  <HideLocalAccountScreen>true</HideLocalAccountScreen>
-                  <HideOEMRegistrationScreen>true</HideOEMRegistrationScreen>
-                  <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
-                  <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
-                  <NetworkLocation>Work</NetworkLocation>
-                  <ProtectYourPC>1</ProtectYourPC>
-                  <SkipMachineOOBE>true</SkipMachineOOBE>
-                  <SkipUserOOBE>true</SkipUserOOBE>
-               </OOBE>
-               <RegisteredOrganization>Organization</RegisteredOrganization>
-               <RegisteredOwner>Owner</RegisteredOwner>
-               <DisableAutoDaylightTimeSet>false</DisableAutoDaylightTimeSet>
-               <TimeZone>Eastern Standard Time</TimeZone>
-               <UserAccounts>
-                  <AdministratorPassword>
-                     <Value>MyPassword</Value>
-                     <PlainText>true</PlainText>
-                  </AdministratorPassword>
-               </UserAccounts>
-            </component>
-         </settings>
-      </unattend>
-      ```
+    <div class="formalpara-title">
 
-      - Specify the `ComputerName`, which must follow the [Kubernetes' names specification](https://kubernetes.io/docs/concepts/overview/working-with-objects/names). These specifications also apply to Guest OS customization performed on the resulting template while creating new VMs.
+    **Example `unattend.xml`**
 
-      - Disable the automatic logon to avoid the security issue of leaving an open terminal with Administrator privileges at boot. This is the default value and must not be changed.
+    </div>
 
-      - Replace the `MyPassword` placeholder with the password for the Administrator account. This prevents the built-in Administrator account from having a blank password by default. Follow Microsoft’s [best practices for choosing a password](https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/password-must-meet-complexity-requirements).
+    ``` xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <unattend xmlns="urn:schemas-microsoft-com:unattend">
+       <settings pass="specialize">
+          <component xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+             <InputLocale>0409:00000409</InputLocale>
+             <SystemLocale>en-US</SystemLocale>
+             <UILanguage>en-US</UILanguage>
+             <UILanguageFallback>en-US</UILanguageFallback>
+             <UserLocale>en-US</UserLocale>
+          </component>
+          <component xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Microsoft-Windows-Security-SPP-UX" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+             <SkipAutoActivation>true</SkipAutoActivation>
+          </component>
+          <component xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Microsoft-Windows-SQMApi" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+             <CEIPEnabled>0</CEIPEnabled>
+          </component>
+          <component xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+             <ComputerName>winhost</ComputerName>
+          </component>
+       </settings>
+       <settings pass="oobeSystem">
+          <component xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+             <AutoLogon>
+                <Enabled>false</Enabled>
+             </AutoLogon>
+             <OOBE>
+                <HideEULAPage>true</HideEULAPage>
+                <HideLocalAccountScreen>true</HideLocalAccountScreen>
+                <HideOEMRegistrationScreen>true</HideOEMRegistrationScreen>
+                <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
+                <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
+                <NetworkLocation>Work</NetworkLocation>
+                <ProtectYourPC>1</ProtectYourPC>
+                <SkipMachineOOBE>true</SkipMachineOOBE>
+                <SkipUserOOBE>true</SkipUserOOBE>
+             </OOBE>
+             <RegisteredOrganization>Organization</RegisteredOrganization>
+             <RegisteredOwner>Owner</RegisteredOwner>
+             <DisableAutoDaylightTimeSet>false</DisableAutoDaylightTimeSet>
+             <TimeZone>Eastern Standard Time</TimeZone>
+             <UserAccounts>
+                <AdministratorPassword>
+                   <Value>MyPassword</Value>
+                   <PlainText>true</PlainText>
+                </AdministratorPassword>
+             </UserAccounts>
+          </component>
+       </settings>
+    </unattend>
+    ```
 
-      After the Sysprep tool has completed, the Windows VM will power off. You must not use or power on this VM anymore.
+    where:
 
-10. Convert the Windows VM to [a template in vCenter](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-5B3737CC-28DB-4334-BD18-6E12011CDC9F.html).
+    `<ComputerName>`
+    Replace the `winhost` placeholder with a computer name, which must follow the Kubernetes' names specification. These specifications also apply to Guest OS customization performed on the resulting template while creating new VMs. For more information, see "Object Names and IDs specification (Kubernetes documentation)" in the *Additional resources* section.
 
-### Additional resources
+    `<AutoLogon>.<Enabled>`
+    When `false`, automatic logon is disabled to avoid the security issue of leaving an open terminal with Administrator privileges at boot. This is the default value and must not be changed.
 
-- [Configuring a secret for the Windows Machine Config Operator](../../windows_containers/enabling-windows-container-workloads.xml#configuring-secret-for-wmco_enabling-windows-container-workloads)
+    `<UserAccounts>.<AdministratorPassword>.<Value>`
+    Replace the `MyPassword` placeholder with the password for the Administrator account. This prevents the built-in Administrator account from having a blank password by default. Follow Microsoft’s best practices for choosing a password. For more information on Microsoft’s best practices, see "Password must meet complexity requirements (Microsoft documentation)" in the *Additional resources* section.
 
-- [VMware vSphere infrastructure requirements](../../installing/installing_vsphere/ipi/ipi-vsphere-installation-reqs.xml#installation-vsphere-infrastructure_ipi-vsphere-installation-reqs)
+    After the Sysprep tool has completed, the Windows VM will power off. You must not use or power on this VM anymore.
 
-## Enabling communication with the internal API server for the WMCO on vSphere
+10. Convert the Windows VM to a template in vCenter. For more information, see "vSphere Virtual Machine Administration (vSphere documentation)" in the *Additional resources* section.
 
-The Windows Machine Config Operator (WMCO) downloads the Ignition config files from the internal API server endpoint. You must enable communication with the internal API server so that your Windows virtual machine (VM) can download the Ignition config files, and the kubelet on the configured VM can only communicate with the internal API server.
+# Enabling communication with the internal API server for the WMCO on vSphere
+
+You must enable communication with the internal API server so that your Windows virtual machine (VM) can download the Ignition config files, and the kubelet on the configured VM can only communicate with the internal API server.
+
+The Windows Machine Config Operator (WMCO) can download the Ignition config files from the internal API server endpoint only after communication with the server is enabled.
 
 - You have installed a cluster on vSphere.
 
@@ -235,15 +242,15 @@ The Windows Machine Config Operator (WMCO) downloads the Ignition config files f
 
 - Add a new DNS entry for `api-int.<cluster_name>.<base_domain>` that points to the external API server URL `api.<cluster_name>.<base_domain>`. This can be a CNAME or an additional A record.
 
-<div class="note">
+  <div class="note">
 
-The external API endpoint was already created as part of the initial cluster installation on vSphere.
+  The external API endpoint was already created as part of the initial cluster installation on vSphere.
 
-</div>
+  </div>
 
 # Sample YAML for a Windows MachineSet object on vSphere
 
-This sample YAML defines a Windows `MachineSet` object running on VMware vSphere that the Windows Machine Config Operator (WMCO) can react upon.
+You can define a Windows `MachineSet` object running on VMware vSphere by creating a YAML file similar to the following example, which the Windows Machine Config Operator (WMCO) can react upon.
 
 ``` yaml
 apiVersion: machine.openshift.io/v1beta1
@@ -296,19 +303,41 @@ spec:
              server: <vcenter_server_ip>
 ```
 
-- Specify the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. You can obtain the infrastructure ID by running the following command:
+where:
 
-  ``` terminal
-  $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
-  ```
+`metadata.labels`
+For the `machine.openshift.io/cluster-api-cluster` label, replace `<infrastructure_id>` with the infrastructure ID. You can obtain the infrastructure ID by running the following command: Specify the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. You can obtain the infrastructure ID by running the following command:
 
-- Specify the Windows compute machine set name. The compute machine set name cannot be more than 9 characters long, due to the way machine names are generated in vSphere.
+``` terminal
+$ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
+```
 
-- Configure the compute machine set as a Windows machine.
+`metadata.name`
+Replace the infrastructure ID, worker label, and zone.
 
-- Configure the Windows node as a compute machine.
+`spec.selector.matchLabels`
+Replace the parameters for the following labels:
 
-- Specify the size of the vSphere Virtual Machine Disk (VMDK).
+- `machine.openshift.io/cluster-api-cluster`. Replace the infrastructure ID.
+
+- `machine.openshift.io/cluster-api-machineset`. Specify the Windows compute machine set name. The compute machine set name cannot be more than 9 characters long, due to the way machine names are generated in vSphere.
+
+`spec.template.metadata.labels`
+Replace the parameters for the following labels:
+
+- `machine.openshift.io/cluster-api-cluster`. Replace the infrastructure ID.
+
+- `machine.openshift.io/cluster-api-machineset`. Specify the Windows compute machine set name. The compute machine set name cannot be more than 9 characters long, due to the way machine names are generated in vSphere.
+
+- `machine.openshift.io/os-id: Windows`. When set to `Windows`, configures the compute machine set as a Windows machine.
+
+`spec.template.spec.metadata.labels`
+When set to `node-role.kubernetes.io/worker`, configures the node as a compute machine.
+
+`spec.template.spec.providerSpec`
+Specify the following parameters:
+
+- `value.diskGiB`. Specifies the size of the vSphere Virtual Machine Disk (VMDK).
 
   <div class="note">
 
@@ -316,9 +345,9 @@ spec:
 
   </div>
 
-- Specify the vSphere VM network to deploy the compute machine set to. This VM network must be where other Linux compute machines reside in the cluster.
+- `value.network.devices.networkName`. Specifies the vSphere VM network to deploy the compute machine set to. This VM network must be where other Linux compute machines reside in the cluster.
 
-- Specify the full path of the Windows vSphere VM template to use, such as `golden-images/windows-server-template`. The name must be unique.
+- `value.template`. Specifies the full path of the Windows vSphere VM template to use, such as `golden-images/windows-server-template`. The name must be unique.
 
   <div class="important">
 
@@ -326,21 +355,21 @@ spec:
 
   </div>
 
-- The `windows-user-data` is created by the WMCO when the first Windows machine is configured. After that, the `windows-user-data` is available for all subsequent compute machine sets to consume.
+- `value.userDataSecret.name`. The `windows-user-data` is created by the WMCO when the first Windows machine is configured. After that, the `windows-user-data` is available for all subsequent compute machine sets to consume.
 
-- Specify the vCenter data center to deploy the compute machine set on.
+- `value.workspace.datacenter`. Specifies the vCenter data center to deploy the compute machine set on.
 
-- Specify the vCenter datastore to deploy the compute machine set on.
+- `value.workspace.datastore`. Specifies the vCenter datastore to deploy the compute machine set on.
 
-- Specify the path to the vSphere VM folder in vCenter, such as `/dc1/vm/user-inst-5ddjd`.
+- `value.workspace.folder`. Specifies the path to the vSphere VM folder in vCenter, such as `/dc1/vm/user-inst-5ddjd`.
 
-- Optional: Specify the vSphere resource pool for your Windows VMs.
+- `value.workspace.resourcePool`. Specifies the vSphere resource pool for your Windows VMs. This parameter is optional.
 
-- Specify the vCenter server IP or fully qualified domain name.
+- `value.workspace.server`. Specifies the vCenter server IP or fully qualified domain name. This parameter is optional.
 
 # Creating a compute machine set
 
-In addition to the compute machine sets created by the installation program, you can create your own compute machine sets to dynamically manage the machine compute resources for specific workloads of your choice. Use the OpenShift Container Platform CLI to automate node provisioning.
+To dynamically manage machine compute resources, you can create your own compute machine sets in addition to the compute machine sets created by the installation program. Use the OpenShift Container Platform CLI to automate node provisioning.
 
 - Deploy an OpenShift Container Platform cluster.
 
@@ -467,4 +496,14 @@ In addition to the compute machine sets created by the installation program, you
 
 # Additional resources
 
+- [Configuring a secret for the Windows Machine Config Operator](../../windows_containers/enabling-windows-container-workloads.xml#configuring-secret-for-wmco_enabling-windows-container-workloads)
+
+- [VMware vSphere infrastructure requirements](../../installing/installing_vsphere/ipi/ipi-vsphere-installation-reqs.xml#installation-vsphere-infrastructure_ipi-vsphere-installation-reqs)
+
 - [Overview of machine management](../../machine_management/index.xml#overview-of-machine-management)
+
+- [Object Names and IDs specification (Kubernetes documentation)](https://kubernetes.io/docs/concepts/overview/working-with-objects/names)
+
+- [Password must meet complexity requirements (Microsoft documentation)](https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/password-must-meet-complexity-requirements)
+
+- [vSphere Virtual Machine Administration (vSphere documentation)](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/7-0/vsphere-virtual-machine-administration.html)

@@ -55,7 +55,7 @@ In OpenShift Container Platform version 3.11, you could not roll out a multi-zon
 
 # Sample YAML for a Windows MachineSet object on Nutanix
 
-This sample YAML defines a Windows `MachineSet` object running on Nutanix that the Windows Machine Config Operator (WMCO) can react upon.
+You can define a Windows `MachineSet` object running on Nutanix by creating a YAML file similar to the following example that the Windows Machine Config Operator (WMCO) can react upon.
 
 ``` yaml
 apiVersion: machine.openshift.io/v1beta1
@@ -110,19 +110,41 @@ spec:
           vcpusPerSocket: 1
 ```
 
-- Specify the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. You can obtain the infrastructure ID by running the following command:
+where:
 
-  ``` terminal
-  $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
-  ```
+`metadata.labels.machine.openshift.io/cluster-api-cluster`
+Replace `<infrastructure_id>` with the infrastructure ID. You can obtain the infrastructure ID by running the following command:
 
-- Specify the infrastructure ID, worker label, and zone.
+``` terminal
+$ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
+```
 
-- Configure the compute machine set as a Windows machine.
+`metadata.name`
+Replace the infrastructure ID, worker label, and zone.
 
-- Configure the Windows node as a compute machine.
+`spec.selector.matchLabels`
+Replace the parameters for the following labels:
 
-- Specifies the boot type that the compute machines use. For more information about boot types, see [Understanding UEFI, Secure Boot, and TPM in the Virtualized Environment](https://portal.nutanix.com/page/documents/kbs/details?targetId=kA07V000000H3K9SAK). Valid values are `Legacy`, `SecureBoot`, or `UEFI`. The default is `Legacy`.
+- `machine.openshift.io/cluster-api-cluster`. Replace the infrastructure ID.
+
+- `machine.openshift.io/cluster-api-machineset`. Replace the infrastructure ID, worker label, and zone.
+
+`spec.template.metadata.labels`
+Replace the parameters for the following labels:
+
+- `machine.openshift.io/cluster-api-cluster`. Replace the infrastructure ID.
+
+- `machine.openshift.io/cluster-api-machineset`. Replace the infrastructure ID, worker label, and zone.
+
+- `machine.openshift.io/os-id: Windows`. When set to `Windows`, configures the compute machine set as a Windows machine.
+
+`spec.template.spec.metadata.labels`
+When set to `node-role.kubernetes.io/worker`, configures the node as a compute machine.
+
+`spec.template.spec.providerSpec`
+Specify the following parameters:
+
+- `value.bootType`. Specifies the boot type that the compute machines use. Valid values are `Legacy`, `SecureBoot`, or `UEFI`. The default is `Legacy`. For more information about boot types, see "Understanding UEFI, Secure Boot, and TPM in the Virtualized Environment (Nutanix documentaiton)" in the *Additional resources* section.
 
   <div class="note">
 
@@ -130,29 +152,29 @@ spec:
 
   </div>
 
-- Specifies a Nutanix Prism Element cluster configuration. In this example, the cluster type is `uuid`, so there is a `uuid` stanza.
+- `value.cluster`. Specifies a Nutanix Prism Element cluster configuration. In this example, the cluster type is `uuid`, so there is a `uuid` stanza. Replace `<cluster_uuid>` with the cluster UUID.
 
-- Specifies the secret name for the cluster. Do not change this value.
+- `value.credentialsSecret.name`. Specifies the secret name for the cluster. Do not change this value.
 
-- Specifies the image to use. Use an image from an existing default compute machine set for the cluster.
+- `value.image`. Specifies the image to use. Replace `<image_id>` with an image from an existing default compute machine set for the cluster.
 
-- Specifies the cloud provider platform type. Do not change this value.
+- `value.kind`. Specifies the cloud provider platform type. Do not change this value.
 
-- Specifies the amount of memory for the cluster in Gi.
+- `value.memorySize`. Specifies the amount of memory for the cluster in Gi.
 
-- Specifies a subnet configuration. In this example, the subnet type is `uuid`, so there is a `uuid` stanza.
+- `value.subnets`. Specifies a subnet configuration. In this example, the subnet type is `uuid`, so there is a `uuid` stanza. Replace `<subnet_uuid>` with the subnet UUID.
 
-- Specifies the size of the system disk in Gi.
+- `value.systemDiskSize`. Specifies the size of the system disk in Gi.
 
-- Specifies the name of the secret in the user data YAML file that is in the `openshift-machine-api` namespace. Use the value that installation program populates in the default compute machine set.
+- `value.userDataSecret.name`. Specifies the name of the secret in the user data YAML file that is in the `openshift-machine-api` namespace. Use the value that installation program populates in the default compute machine set.
 
-- Specifies the number of vCPU sockets.
+- `value.vcpuSockets`. Specifies the number of vCPU sockets.
 
-- Specifies the number of vCPUs per socket.
+- `value.vcpusPerSocket`. Specifies the number of vCPUs per socket.
 
 # Creating a compute machine set
 
-In addition to the compute machine sets created by the installation program, you can create your own compute machine sets to dynamically manage the machine compute resources for specific workloads of your choice. Use the OpenShift Container Platform CLI to automate node provisioning.
+To dynamically manage machine compute resources, you can create your own compute machine sets in addition to the compute machine sets created by the installation program. Use the OpenShift Container Platform CLI to automate node provisioning.
 
 - Deploy an OpenShift Container Platform cluster.
 
@@ -277,4 +299,6 @@ In addition to the compute machine sets created by the installation program, you
 
 # Additional resources
 
-- [Overview of machine management](../../machine_management/index.xml#overview-of-machine-management).
+- [Overview of machine management](../../machine_management/index.xml#overview-of-machine-management)
+
+- [Understanding UEFI, Secure Boot, and TPM in the Virtualized Environment (Nutanix documenation)](https://portal.nutanix.com/page/documents/kbs/details?targetId=kA07V000000H3K9SAK)

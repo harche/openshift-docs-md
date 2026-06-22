@@ -29,51 +29,62 @@ spec:
   capabilities: <capabilities>
 ```
 
-- A name for the object. The SR-IOV Network Operator creates a `NetworkAttachmentDefinition` object with same name.
+`metadata.name`
+Specifies a name for the object. The SR-IOV Network Operator creates a `NetworkAttachmentDefinition` object with same name.
 
-- The namespace where the SR-IOV Network Operator is installed. You can also install the SR-IOV Network Operator in any namespace.
+`metadata.namespace`
+Specifies the namespace where the SR-IOV Network Operator is installed. You can also install the SR-IOV Network Operator in any namespace.
 
-- The value for the `spec.resourceName` parameter from the `SriovNetworkNodePolicy` object that defines the SR-IOV hardware for this additional network.
+`spec.resourceName`
+Specifies the value for the `spec.resourceName` parameter from the `SriovNetworkNodePolicy` object that defines the SR-IOV hardware for this additional network.
 
-- The target namespace for the SriovNetwork object. Only pods in the target namespace can attach to the additional network. When installing the SR-IOV Network Operator in a namespace other than `openshift-sriov-network-operator`, you must not configure this field..
+`spec.networkNamespace`
+Specifies the target namespace for the `SriovNetwork` object. Only pods in the target namespace can attach to the additional network. When installing the SR-IOV Network Operator in a namespace other than `openshift-sriov-network-operator`, you must not configure this field.
 
-- Optional: Specifies the VLAN ID to assign to an additional network. The default value of `0` means that an additional network has no VLAN ID tag. Supported VLAN ID values range from `1` to `4094`.
+`spec.vlan`
+Optional: Specifies the VLAN ID to assign to an additional network. The default value of `0` means that an additional network has no VLAN ID tag. Supported VLAN ID values range from `1` to `4094`.
 
-- Optional: The spoof check mode of the VF. The allowed values are the strings `"on"` and `"off"`.
+`spec.spoofChk`
+Optional: Specifies the spoof check mode of the VF. The allowed values are the strings `"on"` and `"off"`.
 
-  <div class="important">
+<div class="important">
 
-  You must enclose the value you specify in quotes or the object is rejected by the SR-IOV Network Operator.
+You must enclose the value you specify in quotes or the object is rejected by the SR-IOV Network Operator.
 
-  </div>
+</div>
 
-- A configuration object for the IPAM CNI plugin as a YAML block scalar. The plugin manages IP address assignment for the attachment definition.
+`spec.ipam`
+Specifies a configuration object for the IPAM CNI plugin as a YAML block scalar. The plugin manages IP address assignment for the attachment definition.
 
-- Optional: The link state of virtual function (VF). Allowed value are `enable`, `disable` and `auto`.
+`spec.linkState`
+Optional: Specifies the link state of virtual function (VF). Allowed values are `enable`, `disable`, and `auto`.
 
-- Optional: A maximum transmission rate, in Mbps, for the VF.
+`spec.maxTxRate`
+Optional: Specifies a maximum transmission rate, in Mbps, for the VF.
 
-- Optional: A minimum transmission rate, in Mbps, for the VF. This value must be less than or equal to the maximum transmission rate.
+`spec.minTxRate`
+Optional: Specifies a minimum transmission rate, in Mbps, for the VF. This value must be less than or equal to the maximum transmission rate.
 
-  <div class="note">
+<div class="note">
 
-  Intel NICs do not support the `minTxRate` parameter. For more information, see [BZ#1772847](https://bugzilla.redhat.com/show_bug.cgi?id=1772847).
+Intel NICs do not support the `minTxRate` parameter. For more information, see [BZ#1772847](https://bugzilla.redhat.com/show_bug.cgi?id=1772847).
 
-  </div>
+</div>
 
-- Optional: An IEEE 802.1p priority level for the VF. The default value is `0`.
+`spec.vlanQoS`
+Optional: Specifies an IEEE 802.1p priority level for the VF. The default value is `0`.
 
-- Optional: The trust mode of the VF. The allowed values are the strings `"on"` and `"off"`.
+`spec.trust`
+Optional: Specifies the trust mode of the VF. The allowed values are the strings `"on"` and `"off"`.
 
-  <div class="important">
+<div class="important">
 
-  You must enclose the value that you specify in quotes, or the SR-IOV Network Operator rejects the object.
+You must enclose the value that you specify in quotes, or the SR-IOV Network Operator rejects the object.
 
-  </div>
+</div>
 
-- Optional: The capabilities to configure for this additional network. You can specify `'{ "ips": true }'` to enable IP address support or `'{ "mac": true }'` to enable MAC address support.
-
-<!-- -->
+`spec.capabilities`
+Optional: Specifies the capabilities to configure for this additional network. You can specify `'{ "ips": true }'` to enable IP address support or `'{ "mac": true }'` to enable MAC address support.
 
 - [Installing the SR-IOV Network Operator](../../networking/networking_operators/sr-iov-operator/installing-sriov-operator.xml#installing-sriov-operator)
 
@@ -130,7 +141,7 @@ You can configure the following IP address assignment types in the `ipRanges` pa
 
   where:
 
-  `<podname>`
+  `<pod_name>`
   The name of the pod.
 
 ## Configuration of IP address assignment for a network attachment
@@ -176,10 +187,10 @@ The following table describes the configuration for static IP address assignment
 
 The `addresses` array requires objects with the following fields:
 
-| Field     | Type     | Description                                                                                                                                                                                             |
-|-----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `address` | `string` | An IP address and network prefix that you specify. For example, if you specify `10.10.21.10/24`, the secondary network gets assigned an IP address of `10.10.21.10` and the netmask of `255.255.255.0`. |
-| `gateway` | `string` | The default gateway to route egress network traffic to.                                                                                                                                                 |
+| Field     | Type     | Description                                                                                                                                                                                               |
+|-----------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `address` | `string` | An IP address and network prefix that you specify. For example, if you specify `10.10.21.10/24`, the secondary network gets assigned an IP address of `10.10.21.10` and the `netmask` of `255.255.255.0`. |
+| `gateway` | `string` | The default gateway to route egress network traffic to.                                                                                                                                                   |
 
 `ipam.addresses[]` array
 
@@ -272,12 +283,12 @@ The Whereabouts CNI plugin also supports overlapping IP address ranges and confi
 
 The following table describes the configuration objects for dynamic IP address assignment with Whereabouts:
 
-| Field          | Type     | Description                                                                                                                                                                                                                                                      |
-|----------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `type`         | `string` | The IPAM address type. The value `whereabouts` is required.                                                                                                                                                                                                      |
-| `range`        | `string` | An IP address and range in CIDR notation. IP addresses are assigned from within this range of addresses.                                                                                                                                                         |
-| `exclude`      | `array`  | Optional: A list of zero or more IP addresses and ranges in CIDR notation. IP addresses within an excluded address range are not assigned.                                                                                                                       |
-| `network_name` | `string` | Optional: Helps ensure that each group or domain of pods gets its own set of IP addresses, even if they share the same range of IP addresses. Setting this field is important for keeping networks separate and organized, notably in multi-tenant environments. |
+| Field          | Type     | Description                                                                                                                                                                                                                                                     |
+|----------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `type`         | `string` | The IPAM address type. The value `whereabouts` is required.                                                                                                                                                                                                     |
+| `range`        | `string` | An IP address and range in CIDR notation. IP addresses are assigned from within this range of addresses.                                                                                                                                                        |
+| `exclude`      | `array`  | Optional: A list of zero or more IP addresses and ranges in CIDR notation. IP addresses within an excluded address range are not assigned.                                                                                                                      |
+| `network_name` | `string` | Optional: Helps ensure that each group or domain of pods gets its own set of IP addresses, even if they share the same range of IP addresses. Setting this field is important for keeping networks separate and organized, notably in multitenant environments. |
 
 `ipam` whereabouts configuration parameters
 
@@ -410,7 +421,7 @@ To do this, add the VRF configuration to the optional `metaPlugins` parameter of
 
 <div class="note">
 
-Applications that use VRFs need to bind to a specific device. The common usage is to use the `SO_BINDTODEVICE` option for a socket. `SO_BINDTODEVICE` binds the socket to a device that is specified in the passed interface name, for example, `eth1`. To use `SO_BINDTODEVICE`, the application must have `CAP_NET_RAW` capabilities.
+Applications that use VRF instances need to bind to a specific device. The common usage is to use the `SO_BINDTODEVICE` option for a socket. `SO_BINDTODEVICE` binds the socket to a device that is specified in the passed interface name, for example, `eth1`. To use `SO_BINDTODEVICE`, the application must have `CAP_NET_RAW` capabilities.
 
 Using a VRF through the `ip vrf exec` command is not supported in OpenShift Container Platform pods. To use VRF, bind applications directly to the VRF interface.
 
@@ -1062,7 +1073,7 @@ The procedure requires that you create SR-IOV resources and then parallel drain 
     $ oc create -f sriov-nw-pool.yaml
     ```
 
-3.  Create the `sriov-test` namespace by running the following comand:
+3.  Create the `sriov-test` namespace by running the following command:
 
     ``` terminal
     $ oc create namespace sriov-test
@@ -1189,17 +1200,20 @@ To exclude advertising the SR-IOV network resource’s Non-Uniform Memory Access
           excludeTopology: true
         ```
 
-        - The resource name of the SR-IOV network device plugin. This YAML uses a sample `resourceName` value.
+        `spec.resourceName`
+        Specifies the resource name of the SR-IOV network device plugin. This YAML uses a sample `resourceName` value.
 
-        - Identify the device for the Operator to configure by using the network interface controller (NIC selector).
+        `spec.nicSelector`
+        Identifies the device for the Operator to configure by using the network interface controller (NIC selector).
 
-        - To exclude advertising the NUMA node for the SR-IOV network resource to the Topology Manager, set the value to `true`. The default value is `false`.
+        `spec.excludeTopology`
+        Excludes advertising the NUMA node for the SR-IOV network resource to the Topology Manager. Set the value to `true`. The default value is `false`.
 
-          <div class="note">
+        <div class="note">
 
-          If many `SriovNetworkNodePolicy` resources target the same SR-IOV network resource, the `SriovNetworkNodePolicy` resources must have the same value as the `excludeTopology` specification. Otherwise, the conflicting policy is rejected.
+        If many `SriovNetworkNodePolicy` resources target the same SR-IOV network resource, the `SriovNetworkNodePolicy` resources must have the same value as the `excludeTopology` specification. Otherwise, the conflicting policy is rejected.
 
-          </div>
+        </div>
 
     2.  Create the `SriovNetworkNodePolicy` resource by running the following command. Successful output lists the name of the `SriovNetworkNodePolicy` resource and the `created` status.
 
@@ -1215,7 +1229,7 @@ To exclude advertising the SR-IOV network resource’s Non-Uniform Memory Access
         apiVersion: sriovnetwork.openshift.io/v1
         kind: SriovNetwork
         metadata:
-          name: sriov-numa-0-network
+          name: <sriov_network_name>
           namespace: openshift-sriov-network-operator
         spec:
           resourceName: sriovnuma0
@@ -1226,13 +1240,17 @@ To exclude advertising the SR-IOV network resource’s Non-Uniform Memory Access
             }
         ```
 
-        - Replace `sriov-numa-0-network` with the name for the SR-IOV network resource.
+        `metadata.name`
+        Specifies the name for the SR-IOV network resource.
 
-        - Specify the resource name for the `SriovNetworkNodePolicy` CR from the previous step. This YAML uses a sample `resourceName` value.
+        `spec.resourceName`
+        Specifies the resource name for the `SriovNetworkNodePolicy` CR from the earlier step. This YAML uses a sample `resourceName` value.
 
-        - Enter the namespace for your SR-IOV network resource.
+        `spec.networkNamespace`
+        Specifies the namespace for your SR-IOV network resource.
 
-        - Enter the IP address management configuration for the SR-IOV network.
+        `spec.ipam`
+        Specifies the IP address management configuration for the SR-IOV network.
 
     2.  Create the `SriovNetwork` resource by running the following command. Successful output lists the name of the `SriovNetwork` resource and the `created` status.
 
@@ -1253,7 +1271,7 @@ To exclude advertising the SR-IOV network resource’s Non-Uniform Memory Access
             k8s.v1.cni.cncf.io/networks: |-
               [
                 {
-                  "name": "sriov-numa-0-network",
+                  "name": "<sriov_network_name>",
                 }
               ]
         spec:
@@ -1264,7 +1282,8 @@ To exclude advertising the SR-IOV network resource’s Non-Uniform Memory Access
             command: ["sleep", "infinity"]
         ```
 
-        - This is the name of the `SriovNetwork` resource that uses the `SriovNetworkNodePolicy` resource.
+        `metadata.annotations."k8s.v1.cni.cncf.io/networks"`
+        Specifies the name of the `SriovNetwork` resource that uses the `SriovNetworkNodePolicy` resource.
 
     2.  Create the `Pod` resource by running the following command. The expected output shows the name of the `Pod` resource and the `created` status.
 
@@ -1280,11 +1299,7 @@ To exclude advertising the SR-IOV network resource’s Non-Uniform Memory Access
     $ oc get pod <pod_name>
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following is example output:
 
     ``` terminal
     NAME                                     READY   STATUS    RESTARTS   AGE
@@ -1311,11 +1326,7 @@ To exclude advertising the SR-IOV network resource’s Non-Uniform Memory Access
         $ lscpu | grep NUMA
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         NUMA node(s):                    2
@@ -1327,11 +1338,7 @@ To exclude advertising the SR-IOV network resource’s Non-Uniform Memory Access
         $ cat /proc/self/status | grep Cpus
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         Cpus_allowed:    ffff

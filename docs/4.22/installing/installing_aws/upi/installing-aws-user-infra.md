@@ -231,7 +231,7 @@ Generate and customize the installation configuration file that the installation
 
 ## Configuring the cluster-wide proxy during installation
 
-To enable internet access in environments that deny direct connections, configure a cluster-wide proxy in the `install-config.yaml` file. This configuration ensures that the new OpenShift Container Platform cluster routes traffic through the specified HTTP or HTTPS proxy.
+Production environments can deny direct access to the internet and instead have an HTTP or HTTPS proxy available. You can configure a new OpenShift Container Platform cluster to use a proxy by configuring the proxy settings in the `install-config.yaml` file.
 
 - You have an existing `install-config.yaml` file.
 
@@ -307,7 +307,7 @@ To enable internet access in environments that deny direct connections, configur
 
 ## Creating the Kubernetes manifest and Ignition config files
 
-To customize cluster definitions and manually start machines, generate the Kubernetes manifest and Ignition config files. These assets provide the necessary instructions to configure the cluster infrastructure according to your specific deployment requirements.
+To customize cluster definitions and manually start machines, generate the Kubernetes manifest and Ignition config files.
 
 The installation configuration file transforms into the Kubernetes manifests. The manifests wrap into the Ignition configuration files, which are later used to configure the cluster machines.
 
@@ -1877,7 +1877,7 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 # Approving the certificate signing requests for your machines
 
-To add machines to a cluster, verify the status of the certificate signing requests (CSRs) generated for each machine. If manual approval is required, approve the client requests first, followed by the server requests.
+You can add machines to a cluster by verifying the status of the Certificate Signing Requests (CSRs) generated for each machine. If manual approval is required, approve the client requests first, followed by the server requests.
 
 - You added machines to your cluster.
 
@@ -1933,7 +1933,7 @@ To add machines to a cluster, verify the status of the certificate signing reque
 
     <div class="note">
 
-    Because the CSRs rotate automatically, approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. Then, subsequent serving certificate renewal requests are automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. Then, subsequent serving certificate renewal requests are automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
 
     </div>
 

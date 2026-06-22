@@ -418,6 +418,8 @@ For information about verifying that both control plane nodes and etcd are opera
 
 - [Verifying etcd health in a two-node OpenShift cluster with fencing](../installing_tnf/install-post-tnf.xml#installation-verifying-etcd-health_install-post-tnf)
 
+- [Gathering an sosreport for OpenShift Container Platform](../../../support/gathering-cluster-data.xml#about-sosreport_gathering-cluster-data)
+
 # Replacing control plane nodes in a two-node OpenShift cluster with fencing
 
 You can replace a failed control plane node in a two-node OpenShift cluster. The replacement node must use the same host name and IP address as the failed node.

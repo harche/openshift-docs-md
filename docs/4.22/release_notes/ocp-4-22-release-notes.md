@@ -1231,6 +1231,8 @@ This section includes several known issues for OpenShift Container Platform 4.17
 
 - Currently, the `topo-aware-scheduler` provided by the NUMA Resources Operator (NRO) does not support Kubernetes priority-based preemption. When all NUMA zones on available nodes are fully consumed by lower-priority pods, a high-priority pod with a `PreemptLowerPriority` policy remains in `Pending` state indefinitely instead of preempting the lower-priority pods. As a consequence, workloads that depend on priority-based preemption for scheduling recovery do not function correctly when using the `topo-aware-scheduler`. ([OCPBUGS-77930](https://issues.redhat.com/browse/OCPBUGS-77930))
 
+- On OpenShift Container Platform 4.22 clusters running on IBM Z®, the `oc adm top pods` command might fail to display metrics, and tools such as `crictl inspect` and other components that rely on container metrics might return errors. This issue occurs due to a regression introduced with CRI-O 1.35, where a bug in the `goccy/go-json` library causes malformed JSON output on `s390x` systems. As a result, components such as kubelet, cAdvisor, and monitoring or debugging tools that depend on container metrics might not function as expected. This issue does not affect other architectures or earlier CRI-O versions. As a workaround, avoid relying on affected metrics APIs on `s390x` clusters. ([OCPBUGS-87805](https://redhat.atlassian.net/browse/OCPBUGS-87805))
+
 - Currently, on clusters with SR-IOV network virtual functions configured, a race condition might occur between system services responsible for network device renaming and the TuneD service managed by the Node Tuning Operator. As a result, the TuneD profile might become degraded after the node restarts, leading to performance degradation. As a workaround, restart the TuneD pod to restore the profile state. ([OCPBUGS-41934](https://issues.redhat.com/browse/OCPBUGS-41934))
 
 - Currently, pods that use a `guaranteed` QoS class and request whole CPUs might not restart automatically after a node reboot or kubelet restart. The issue might occur in nodes configured with a static CPU Manager policy and using the `full-pcpus-only` specification, and when most or all CPUs on the node are already allocated by such workloads. As a workaround, manually delete and re-create the affected pods. ([OCPBUGS-43280](https://issues.redhat.com/browse/OCPBUGS-43280))
@@ -1282,3 +1284,59 @@ This section will continue to be updated over time to provide notes on enhanceme
 For any OpenShift Container Platform release, always review the instructions on [updating your cluster](../updating/updating_a_cluster/updating-cluster-web-console.xml#updating-cluster-web-console) properly.
 
 </div>
+
+## RHSA-2026:25206 - OpenShift Container Platform 4.17.1 fixed issues and security update
+
+Issued: 16 June 2026
+
+OpenShift Container Platform release 4.17.1 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:25206](https://access.redhat.com/errata/RHSA-2026:25206) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:25204](https://access.redhat.com/errata/RHBA-2026:25204) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.22.1 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, when servicing a bare-metal host, the `service_disable_ramdisk` parameter remained set to `False` even if all servicing steps were performed out-of-band. As a result, the bare-metal host underwent an unnecessary reboot. With this release, the Ironic code has been modified to automatically set `service_disable_ramdisk` to `True` when all servicing steps are out-of-band.([OCPBUGS-84369](https://issues.redhat.com/browse/OCPBUGS-84369))
+
+- Before this update, pagination controls were not present at mobile resolutions, because PatternFly expects both top and bottom pagination controls to be in use. With this release, pagination controls are present regardless of resolution. ([OCPBUGS-84963](https://issues.redhat.com/browse/OCPBUGS-84963))
+
+- Before this update, the `MachineSet` custom resoutce (CR) scale subresource lacked a valid selector, preventing autoscalers such as the Horizontal Pod Autoscaler (HPA) and the Kubernetes Event-driven Autoscaling (KEDA) from scaling the machine set. With this release, the `MachineSet` CR exposes an active label selector on the scale subresource, enabling scaling using autoscalers that require the label selector to be populated. ([OCPBUGS-85102](https://issues.redhat.com/browse/OCPBUGS-85102))
+
+- Before this update, the Manila Container Storage Interface (CSI) driver node plugin could crash on startup if the Network File System (NFS) CSI plugin socket was not yet available, for example, after a node reboot. With this release, the Manila CSI node `DaemonSet` waits for the NFS plugin socket to be ready before starting the driver, preventing crash loops due to transient startup ordering. ([OCPBUGS-85532](https://issues.redhat.com/browse/OCPBUGS-85532))
+
+- Before this update, there was a race condition between network namespace management and the optional container mount namespace segmentation. Pods would become stuck and unable to restart. With this release, the race condition is solved by initializing the network namespace infrastructure before the container mount namespace. ([OCPBUGS-85962](https://issues.redhat.com/browse/OCPBUGS-85962))
+
+- Before this update, if a `PerformanceProfile` status or its associated conditions failed to update because the API server was temporarily unavailable, the degraded condition might get stuck and never be resolved, even when the cluster was healthy. With this release, the Node Tuning Operator schedules a retry of the status update until it succeeds. ([OCPBUGS-86024](https://issues.redhat.com/browse/OCPBUGS-86024))
+
+- Before this update, the Control Plane Operator used Secret and ConfigMap custom resource names as Kubernetes volume names when building the `metrics-proxy` deployment. Because Kubernetes volume names must conform to RFC 1123 DNS label rules, which do not allow dots, the `metrics-proxy` deployment failed to create when a `ServiceMonitor` object referenced a ConfigMap with dots in its name, such as `openshift-service-ca.crt`. With this update, the Control Plane Operator sanitizes volume names by replacing dots with dashes while preserving the original resource names in the ConfigMap and Secret source references and mount paths. As a result, the `metrics-proxy` deployment is created successfully regardless of dots in referenced resource names. ([OCPBUGS-86026](https://issues.redhat.com/browse/OCPBUGS-86026))
+
+- Before this update, the `CertificateRevocationController` object verified certificate revocation through the Kubernetes API Server (KAS) service load balancer, which routes to a single pod. In high availability (HA) deployments with three KAS replicas, the check could hit a pod that had loaded the updated trust bundle while others did not, causing premature state transitions in the revocation flow. With this release, the controller has been updated to verify certificate trust and revocation against every individual KAS pod by IP, rather than through the service. Certificate revocation now completes reliably in HA deployments by confirming all KAS pods have propagated the change. ([OCPBUGS-86039](https://issues.redhat.com/browse/OCPBUGS-86039))
+
+- Before this update, the web console repeatedly downloaded the full OpenAPI v2 schema at startup, after API discovery and every 5 minutes without using HTTP conditional request headers. With this release, the console caches the `ETag` from the OpenAPI responses and sends an `If-None-Match` request header on subsequent requests. When the schema has not changed, the server returns a `304 Not Modified` response, avoiding redundant network transfers and JSON parsing. ([OCPBUGS-86222](https://issues.redhat.com/browse/OCPBUGS-86222))
+
+- Before this update, users without any projects saw a `Restricted access` error when navigating to certain resource list pages such as **Pods**, **PodDisruptionBudgets**, **RoleBindings, VolumeSnapshots**, and **Helm**. With this release, these pages now correctly display an empty state instead of the misleading "403" error. ([OCPBUGS-86227](https://issues.redhat.com/browse/OCPBUGS-86227))
+
+- Before this update, Prometheus dashboard queries used a hard-coded 15-second polling interval regardless of how long queries took to complete. On slow or large clusters, rapid re-polling added an unnecessary load on Prometheus because new requests fired before previous ones finished. With this release, the fixed 15-second interval has been replaced with an adaptive delay based on an exponential moving average of response times. The polling interval dynamically adjusts up to 60 seconds for slow queries while maintaining the 15-second baseline for fast ones. As a result, dashboard polling adapts to cluster performance, reducing unnecessary Prometheus loads on slow clusters without affecting fast ones. ([OCPBUGS-86239](https://issues.redhat.com/browse/OCPBUGS-86239))
+
+- Before this update, when a user applied a `MachineConfig` object to install extensions, the Machine Config Operator (MCO) did not validate that all packages were installed. This would lead to situations where users believed their extension installation was successful, but packages were actually missing. If one or more packages was not present, the node and associated `MachineConfigPool`, degraded. With this release, the post node reboot validates that all packages associated with the user-required extension were successfully installed before reporting a successful update. ([OCPBUGS-86262](https://issues.redhat.com/browse/OCPBUGS-86262))
+
+- Before this update, when the `configure-ovs.sh` script created the `br-ex` bridge, the link layer discovery protocol (LLDP) settings from the underlying interface were not preserved. As a result, there was no supported way to enable LLDP on the bridge. With this release, LLDP settings are now persisted so that LLDP can be enabled in a supported fashion. ([OCPBUGS-86297](https://issues.redhat.com/browse/OCPBUGS-86297))
+
+- Before this update, the macOS **Option** key was treated as a Meta key instead of a compose key in the pod terminal. As a consequence, characters that rely on **Option** key combinations, such as `@`, `{`, `}`, `|`, `\`, and `~`, could not be entered. With this release, the terminal correctly identifies macOS, so the **Option** key functions as a compose key. ([OCPBUGS-86580](https://issues.redhat.com/browse/OCPBUGS-86580))
+
+- Before this update, Vital Product Data (VPD) would incorrectly identify that a custom resource (CR) pool would require additional privileges instead of just being `read-only`. With this release, the evaluation logic within the VPD mechanism has been corrected to properly recognize and validate `read-only` access requirements for CR pools. ([OCPBUGS-86866](https://issues.redhat.com/browse/OCPBUGS-86866))
+
+- Before this update, the collection and emission of SELinux conflict metrics was inefficient and consumed excessive system resources. As a consequence, cluster performance degraded during metric collection cycles, leading to delayed reporting and high processor usage. With this release, the collection and emission logic has been optimized to streamline data processing. As a result, metric collection is now significantly faster, improving overall cluster performance and responsiveness. ([OCPBUGS-86898](https://issues.redhat.com/browse/OCPBUGS-86898))
+
+- Before this update, cluster restore operations did not validate snapshot integrity or verify hashes before executing destructive actions. As a consequence, corrupt or hashless snapshots could be applied to the cluster, resulting in data overwrites that could leave the system in an unrecoverable state. With this release, a validation step has been added to check snapshot integrity before any destructive operations are performed. As a result, corrupt snapshots are safely rejected early in the process, preventing cluster failure and ensuring data integrity.([OCPBUGS-86960](https://issues.redhat.com/browse/OCPBUGS-86960))
+
+- Before this update, when running `oc-mirror` in `mirror-to-disk` mode, Operator catalog tags were resolved during collection and mirroring. If a catalog was updated on the registry between these phases, the tag would point to a different digest. This caused a mismatch that prevented `oc-mirror` from locating the catalog in the local working directory during `disk-to-mirror` operations in air-gapped environments. This in turn, resulted in authentication failures when `oc-mirror` tried to fetch from the external registry. With this release, the Operator catalog images are pinned to their resolved digests during workflow initialization before collection starts. As a result, the same digest is used consistently across all phases, allowing `disk-to-mirror` workflows to complete successfully in air-gapped environments without attempting to access external registries. ([OCPBUGS-87806](https://issues.redhat.com/browse/OCPBUGS-87806))
+
+### Updating
+
+To update an OpenShift Container Platform 4.22 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).

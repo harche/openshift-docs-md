@@ -1,22 +1,16 @@
-This feature allows drivers to automatically detach volumes when a node goes down non-gracefully.
+Automatic volume detachment after non-graceful node shutdowns prevents volumes from remaining attached to failed nodes, enabling faster workload recovery by allowing pods to reschedule and reattach volumes on healthy nodes without manual intervention.
 
 # Overview
 
-A graceful node shutdown occurs when the kubelet’s node shutdown manager detects the upcoming node shutdown action. Non-graceful shutdowns occur when the kubelet does not detect a node shutdown action, which can occur because of system or hardware failures. Also, the kubelet may not detect a node shutdown action when the shutdown command does not trigger the Inhibitor Locks mechanism used by the kubelet on Linux, or because of a user error, for example, if the shutdownGracePeriod and shutdownGracePeriodCriticalPods details are not configured correctly for that node.
+Non-graceful node shutdowns from hardware failures or system crashes leave volumes attached to failed nodes, blocking pod rescheduling. Applying an out-of-service taint triggers automatic volume detachment from failed nodes, enabling workload recovery without manual volume management.
 
-With this feature, when a non-graceful node shutdown occurs, you can manually add an `out-of-service` taint on the node to allow volumes to automatically detach from the node.
+A graceful node shutdown occurs when the kubelet’s node shutdown manager detects the upcoming node shutdown action. Non-graceful shutdowns occur when the kubelet does not detect a node shutdown action, which can occur because of system or hardware failures. Also, the kubelet might not detect a node shutdown action when the shutdown command does not trigger the Inhibitor Locks mechanism used by the kubelet on Linux, or because of a user error, for example, if the shutdownGracePeriod and shutdownGracePeriodCriticalPods details are not configured correctly for that node.
 
 # Adding an out-of-service taint manually for automatic volume detachment
 
+After non-graceful shutdowns, to trigger automatic volume detachment and enable pod rescheduling, apply an out-of-service taint to the node. This recovers workloads faster than manually detaching volumes from failed nodes.
+
 - Access to the cluster with cluster-admin privileges.
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To allow volumes to detach automatically from a node after a non-graceful node shutdown:
 
 1.  After a node is detected as unhealthy, shut down the worker node.
 
@@ -26,7 +20,7 @@ To allow volumes to detach automatically from a node after a non-graceful node s
     $ oc get node <node_name>
     ```
 
-    - \<node_name\> = name of the node that shut down non-gracefully
+    - Use the `<node_name>` to specify the node that shut down non-gracefully.
 
       <div class="important">
 
@@ -46,17 +40,17 @@ To allow volumes to detach automatically from a node after a non-graceful node s
     $ oc adm taint node <node_name> node.kubernetes.io/out-of-service=nodeshutdown:NoExecute
     ```
 
-    - \<node_name\> = name of the node that shut down non-gracefully
+    - Use the `<node_name>` to specify the node that shut down non-gracefully.
 
       After the taint is applied, the volumes detach from the shutdown node allowing their disks to be attached to a different node.
 
+      The resulting YAML file resembles the following example file:
+
       <div class="formalpara-title">
 
-      **Example**
+      **Example node YAML file with out-of-service taint applied**
 
       </div>
-
-      The resulting YAML file resembles the following:
 
       ``` yaml
       spec:
@@ -74,4 +68,4 @@ To allow volumes to detach automatically from a node after a non-graceful node s
     $ oc adm taint node <node_name> node.kubernetes.io/out-of-service=nodeshutdown:NoExecute-
     ```
 
-    - \<node_name\> = name of the node that shut down non-gracefully
+    - Use the `<node_name>` to specify the node that shut down non-gracefully

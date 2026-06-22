@@ -259,7 +259,7 @@ By default, this configuration is stored in the `worker-user-data` secret in the
 
 # Creating a compute machine set
 
-In addition to the compute machine sets created by the installation program, you can create your own compute machine sets to dynamically manage the machine compute resources for specific workloads of your choice. Use the OpenShift Container Platform CLI to automate node provisioning.
+To dynamically manage machine compute resources, you can create your own compute machine sets in addition to the compute machine sets created by the installation program. Use the OpenShift Container Platform CLI to automate node provisioning.
 
 <div class="note">
 
@@ -405,24 +405,24 @@ Clusters that are installed with user-provisioned infrastructure have a differen
                   server: <vcenter_server_address>
         ```
 
-where:
+        where:
 
-`vsphere-cloud-credentials`
-Specifies the name of the secret in the `openshift-machine-api` namespace that contains the required vCenter credentials.
+        `vsphere-cloud-credentials`
+        Specifies the name of the secret in the `openshift-machine-api` namespace that contains the required vCenter credentials.
 
-`<disk_name>`
-Specifies the collection of data disk definitions. For more information, see "Configuring data disks by using machine sets".
+        `<disk_name>`
+        Specifies the collection of data disk definitions. For more information, see "Configuring data disks by using machine sets".
 
-`<vm_template_name>`
-Specifies the name of the RHCOS VM template for your cluster that was created during installation.
+        `<vm_template_name>`
+        Specifies the name of the RHCOS VM template for your cluster that was created during installation.
 
-`worker-user-data`
-Specifies the name of the secret in the `openshift-machine-api` namespace that contains the required Ignition configuration credentials.
+        `worker-user-data`
+        Specifies the name of the secret in the `openshift-machine-api` namespace that contains the required Ignition configuration credentials.
 
-`<vcenter_server_address>`
-Specifies the IP address or fully qualified domain name (FQDN) of the vCenter server.
+        `<vcenter_server_address>`
+        Specifies the IP address or fully qualified domain name (FQDN) of the vCenter server.
 
-1.  Create a `MachineSet` CR by running the following command:
+3.  Create a `MachineSet` CR by running the following command:
 
     ``` terminal
     $ oc create -f <file_name>.yaml

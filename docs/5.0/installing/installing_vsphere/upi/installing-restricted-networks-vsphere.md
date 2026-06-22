@@ -127,7 +127,7 @@ The following table outlines an example of the relationship among regions, zones
 
 # Manually creating the installation configuration file
 
-To customise your OpenShift Container Platform deployment and meet specific network requirements, manually create the installation configuration file. This ensures that the installation program uses your tailored settings rather than default values during the setup process.
+Installing the cluster requires that you manually create the installation configuration file.
 
 <div class="important">
 
@@ -253,7 +253,7 @@ Specifies the parameters that apply to the configuration of the platform hosting
 
 ## Configuring the cluster-wide proxy during installation
 
-To enable internet access in environments that deny direct connections, configure a cluster-wide proxy in the `install-config.yaml` file. This configuration ensures that the new OpenShift Container Platform cluster routes traffic through the specified HTTP or HTTPS proxy.
+Production environments can deny direct access to the internet and instead have an HTTP or HTTPS proxy available. You can configure a new OpenShift Container Platform cluster to use a proxy by configuring the proxy settings in the `install-config.yaml` file.
 
 - You have an existing `install-config.yaml` file.
 
@@ -450,7 +450,7 @@ The default `install-config.yaml` file configuration from the previous release o
 
 # Creating the Kubernetes manifest and Ignition config files
 
-To customize cluster definitions and manually start machines, generate the Kubernetes manifest and Ignition config files. These assets provide the necessary instructions to configure the cluster infrastructure according to your specific deployment requirements.
+To customize cluster definitions and manually start machines, generate the Kubernetes manifest and Ignition config files.
 
 The installation configuration file transforms into the Kubernetes manifests. The manifests wrap into the Ignition configuration files, which are later used to configure the cluster machines.
 

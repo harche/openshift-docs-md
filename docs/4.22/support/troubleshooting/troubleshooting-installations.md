@@ -943,7 +943,7 @@ You can check Operator status at the end of an installation. Retrieve diagnostic
 
 # Gathering logs from a failed installation
 
-If you gave an SSH key to your installation program, you can gather data about your failed installation.
+If you provided an SSH key to your installation program, you can gather data about your failed installation.
 
 <div class="note">
 
@@ -981,9 +981,9 @@ You use a different command to gather logs about an unsuccessful installation th
 
       where:
 
-      - `installation_directory`:: Specify the same directory you specified when you ran `./openshift-install create cluster`. This directory contains the OpenShift Container Platform definition files that the installation program creates.
+      - `installation_directory`:: Specifies the same directory you specified when you ran `./openshift-install create cluster`. This directory contains the OpenShift Container Platform definition files that the installation program creates.
 
-      - `<bootstrap_address>`:: Specify the fully qualified domain name or IP address of the cluster’s bootstrap machine.
+      - `<bootstrap_address>`:: Specifies the fully qualified domain name or IP address of the cluster’s bootstrap machine.
 
       - `<master_*_address>`:: For each control plane, or master, machine in your cluster, replace this placeholder with its fully qualified domain name or IP address.
 
@@ -1004,7 +1004,7 @@ You use a different command to gather logs about an unsuccessful installation th
       INFO Bootstrap gather logs captured here "<installation_directory>/log-bundle-<timestamp>.tar.gz"
       ```
 
-      If you open a Red Hat support case about your installation failure, include the compressed logs in the case.
+      If you open a Red Hat support case about your installation failure, include the compressed logs when opening a Red Hat support case.
 
 # Additional resources
 

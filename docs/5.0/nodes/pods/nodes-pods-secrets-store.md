@@ -1883,83 +1883,81 @@ Other cloud providers might work, but have not been tested yet. Additional cloud
         $ oc create -f deployment.yaml
         ```
 
-<!-- -->
+- Verify that all of the `vault` pods are running properly by running the following command:
 
-1.  Verify that all of the `vault` pods are running properly by running the following command:
+  ``` terminal
+  $ oc get pods -n vault
+  ```
 
-    ``` terminal
-    $ oc get pods -n vault
-    ```
+  <div class="formalpara-title">
 
-    <div class="formalpara-title">
+  **Example output**
 
-    **Example output**
+  </div>
 
-    </div>
+  ``` terminal
+  NAME                       READY   STATUS    RESTARTS   AGE
+  vault-0                    1/1     Running   0          43m
+  vault-csi-provider-87rgw   2/2     Running   0          19m
+  vault-csi-provider-bd6hp   2/2     Running   0          19m
+  vault-csi-provider-smlv7   2/2     Running   0          19m
+  ```
 
-    ``` terminal
-    NAME                       READY   STATUS    RESTARTS   AGE
-    vault-0                    1/1     Running   0          43m
-    vault-csi-provider-87rgw   2/2     Running   0          19m
-    vault-csi-provider-bd6hp   2/2     Running   0          19m
-    vault-csi-provider-smlv7   2/2     Running   0          19m
-    ```
+- Verify that all of the `secrets-store-csi-driver` pods are running by running the following command:
 
-2.  Verify that all of the `secrets-store-csi-driver` pods are running by running the following command:
+  ``` terminal
+  $ oc get pods -n openshift-cluster-csi-drivers | grep -E "secrets"
+  ```
 
-    ``` terminal
-    $ oc get pods -n openshift-cluster-csi-drivers | grep -E "secrets"
-    ```
+  <div class="formalpara-title">
 
-    <div class="formalpara-title">
+  **Example output**
 
-    **Example output**
+  </div>
 
-    </div>
+  ``` terminal
+  secrets-store-csi-driver-node-46d2g                  3/3     Running   0             45m
+  secrets-store-csi-driver-node-d2jjn                  3/3     Running   0             45m
+  secrets-store-csi-driver-node-drmt4                  3/3     Running   0             45m
+  secrets-store-csi-driver-node-j2wlt                  3/3     Running   0             45m
+  secrets-store-csi-driver-node-v9xv4                  3/3     Running   0             45m
+  secrets-store-csi-driver-node-vlz28                  3/3     Running   0             45m
+  secrets-store-csi-driver-operator-84bd699478-fpxrw   1/1     Running   0             47m
+  ```
 
-    ``` terminal
-    secrets-store-csi-driver-node-46d2g                  3/3     Running   0             45m
-    secrets-store-csi-driver-node-d2jjn                  3/3     Running   0             45m
-    secrets-store-csi-driver-node-drmt4                  3/3     Running   0             45m
-    secrets-store-csi-driver-node-j2wlt                  3/3     Running   0             45m
-    secrets-store-csi-driver-node-v9xv4                  3/3     Running   0             45m
-    secrets-store-csi-driver-node-vlz28                  3/3     Running   0             45m
-    secrets-store-csi-driver-operator-84bd699478-fpxrw   1/1     Running   0             47m
-    ```
+- Verify that you can access the secrets from your HashiCorp Vault in the pod volume mount:
 
-    1.  Verify that you can access the secrets from your HashiCorp Vault in the pod volume mount:
+  1.  List the secrets in the pod mount by running the following command:
 
-3.  List the secrets in the pod mount by running the following command:
+      ``` terminal
+      $ oc exec busybox-deployment-<hash> -n my-namespace -- ls /mnt/secrets-store/
+      ```
 
-    ``` terminal
-    $ oc exec busybox-deployment-<hash> -n my-namespace -- ls /mnt/secrets-store/
-    ```
+      <div class="formalpara-title">
 
-    <div class="formalpara-title">
+      **Example output**
 
-    **Example output**
+      </div>
 
-    </div>
+      ``` terminal
+      testSecret1
+      ```
 
-    ``` terminal
-    testSecret1
-    ```
+  2.  View a secret in the pod mount by running the following command:
 
-4.  View a secret in the pod mount by running the following command:
+      ``` terminal
+      $ oc exec busybox-deployment-<hash> -n my-namespace -- cat /mnt/secrets-store/testSecret1
+      ```
 
-    ``` terminal
-    $ oc exec busybox-deployment-<hash> -n my-namespace -- cat /mnt/secrets-store/testSecret1
-    ```
+      <div class="formalpara-title">
 
-    <div class="formalpara-title">
+      **Example output**
 
-    **Example output**
+      </div>
 
-    </div>
-
-    ``` terminal
-    my-secret-value
-    ```
+      ``` terminal
+      my-secret-value
+      ```
 
 # Enabling synchronization of mounted content as Kubernetes secrets
 

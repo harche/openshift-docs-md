@@ -30,7 +30,7 @@ While this document refers only to IBM Z®, all information in it also applies t
 
 # Preparing the user-provisioned infrastructure
 
-To ensure a successful deployment and meet cluster requirements in OpenShift Container Platform, prepare your user-provisioned infrastructure before starting the installation. Configuring your compute, network, and storage components in advance provides the stable foundation necessary for the installation program to function correctly.
+Before you install OpenShift Container Platform on user-provisioned infrastructure, you must prepare the underlying infrastructure.
 
 This section provides details about the high-level steps required to set up your cluster infrastructure in preparation for an OpenShift Container Platform installation. This includes configuring IP networking and network connectivity for your cluster nodes, enabling the required ports through your firewall, and setting up the required DNS and load balancing infrastructure.
 
@@ -203,7 +203,7 @@ If you are deploying a compact three-node cluster with zero compute nodes, the I
 
 # Manually creating the installation configuration file
 
-To customise your OpenShift Container Platform deployment and meet specific network requirements, manually create the installation configuration file. This ensures that the installation program uses your tailored settings rather than default values during the setup process.
+Installing the cluster requires that you manually create the installation configuration file.
 
 - You have an SSH public key on your local machine for use with the installation program. You can use the key for SSH authentication onto your cluster nodes for debugging and disaster recovery.
 
@@ -324,14 +324,11 @@ Class E CIDR range is reserved for a future use. To use the Class E CIDR range, 
 
 </div>
 
-`networking.clusterNetwork.hostPrefix`
+`networking.cidr.hostPrefix`
 Specifies the subnet prefix length to assign to each individual node. For example, if `hostPrefix` is set to `23`, then each node is assigned a `/23` subnet out of the given `cidr`, which allows for 510 (2^(32 - 23) - 2) pod IP addresses. If you are required to provide access to nodes from an external network, configure load balancers and routers to manage the traffic.
 
 `networking.networkType`
 Specifies the cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
-
-`networking.machineNetwork`
-Optional. Specifies the IP address pool to use for machines in the cluster. You cannot change this value after installation. If you do not set this value, and you configure a cluster-wide proxy, you must manually add the machine network address pool or pools to the proxy configuration. For more information, see the *Configuring the cluster-wide proxy during installation* section.
 
 `networking.serviceNetwork`
 Specifies the IP address pool to use for service IP addresses. You can enter only one IP address pool. This block must not overlap with existing physical networks. If you need to access the services from an external network, configure load balancers and routers to manage the traffic.
@@ -370,7 +367,7 @@ For production OpenShift Container Platform clusters on which you want to perfor
 
 ## Configuring the cluster-wide proxy during installation
 
-To enable internet access in environments that deny direct connections, configure a cluster-wide proxy in the `install-config.yaml` file. This configuration ensures that the new OpenShift Container Platform cluster routes traffic through the specified HTTP or HTTPS proxy.
+Production environments can deny direct access to the internet and instead have an HTTP or HTTPS proxy available. You can configure a new OpenShift Container Platform cluster to use a proxy by configuring the proxy settings in the `install-config.yaml` file.
 
 - You have an existing `install-config.yaml` file.
 
@@ -961,7 +958,7 @@ defaultNetwork:
 
 # Creating the Kubernetes manifest and Ignition config files
 
-To customize cluster definitions and manually start machines, generate the Kubernetes manifest and Ignition config files. These assets provide the necessary instructions to configure the cluster infrastructure according to your specific deployment requirements.
+To customize cluster definitions and manually start machines, generate the Kubernetes manifest and Ignition config files.
 
 The installation configuration file transforms into the Kubernetes manifests. The manifests wrap into the Ignition configuration files, which are later used to configure the cluster machines.
 
@@ -1660,7 +1657,7 @@ As an optional task, you can configure VLANs on individual interfaces by using t
 
 ### Using network teaming
 
-You can use network teaming as an alternative to bonding by using the `team=` parameter. Consider this task for servers that need highly customizable network logic and better performance in virtualized or high-traffic environments.
+You can use network teaming as an alternative to bonding by using the `team=` parameter.
 
 1.  Optional: You can use network teaming as an alternative to bonding by using the `team=` parameter.
 

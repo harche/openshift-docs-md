@@ -1121,7 +1121,7 @@ You can integrate the `balance-slb` mode interface into primary or secondary net
 
 # Preparing the user-provisioned infrastructure
 
-To ensure a successful deployment and meet cluster requirements in OpenShift Container Platform, prepare your user-provisioned infrastructure before starting the installation. Configuring your compute, network, and storage components in advance provides the stable foundation necessary for the installation program to function correctly.
+Before you install OpenShift Container Platform on user-provisioned infrastructure, you must prepare the underlying infrastructure.
 
 This section provides details about the high-level steps required to set up your cluster infrastructure in preparation for an OpenShift Container Platform installation. This includes configuring IP networking and network connectivity for your cluster nodes, enabling the required ports through your firewall, and setting up the required DNS and load balancing infrastructure.
 
@@ -1205,7 +1205,7 @@ After preparation, your cluster infrastructure must meet the requirements outlin
 
 # Validating DNS resolution for user-provisioned infrastructure
 
-To prevent network-related installation failures and ensure node connectivity in OpenShift Container Platform, validate your DNS configuration before deploying on user-provisioned infrastructure. This verification confirms that all required records resolve correctly, providing the stable foundation necessary for cluster communication.
+To prevent network-related installation failures and ensure node connectivity in OpenShift Container Platform, validate your DNS configuration before deploying on user-provisioned infrastructure.
 
 <div class="important">
 
@@ -1364,9 +1364,9 @@ The validation steps detailed in this section must succeed before you install yo
 
 # Generating a key pair for cluster node SSH access
 
-To enable secure, passwordless SSH access to your cluster nodes, provide an SSH public key during the OpenShift Container Platform installation. This ensures that the installation program automatically configures the Red Hat Enterprise Linux CoreOS (RHCOS) nodes for remote authentication through the `core` user.
+During an OpenShift Container Platform installation, you can provide an SSH public key to the installation program. The key is passed to the Red Hat Enterprise Linux CoreOS (RHCOS) nodes through their Ignition config files and is used to authenticate SSH access to the nodes. The key is added to the `~/.ssh/authorized_keys` list for the `core` user on each node, which enables password-less authentication.
 
-The SSH public key gets added to the `~/.ssh/authorized_keys` list for the `core` user on each node. After the key is passed to the Red Hat Enterprise Linux CoreOS (RHCOS) nodes through their Ignition config files, you can use the key pair to SSH in to the RHCOS nodes as the user `core`. To access the nodes through SSH, the private key identity must be managed by SSH for your local user.
+The key is added to the `~/.ssh/authorized_keys` list for the `core` user on each node, which enables password-less authentication. After the key is passed to the nodes, you can use the key pair to SSH in to the RHCOS nodes as the user `core`. To access the nodes through SSH, the private key identity must be managed by SSH for your local user.
 
 If you want to SSH in to your cluster nodes to perform installation debugging or disaster recovery, you must provide the SSH public key during the installation process. The `./openshift-install gather` command also requires the SSH public key to be in place on the cluster nodes.
 
@@ -1622,7 +1622,7 @@ Download and install the new version of `oc`.
 
 # Manually creating the installation configuration file
 
-To customise your OpenShift Container Platform deployment and meet specific network requirements, manually create the installation configuration file. This ensures that the installation program uses your tailored settings rather than default values during the setup process.
+Installing the cluster requires that you manually create the installation configuration file.
 
 - You have an SSH public key on your local machine for use with the installation program. You can use the key for SSH authentication onto your cluster nodes for debugging and disaster recovery.
 
@@ -1741,14 +1741,11 @@ Class E CIDR range is reserved for a future use. To use the Class E CIDR range, 
 
 </div>
 
-`networking.clusterNetwork.hostPrefix`
+`networking.cidr.hostPrefix`
 Specifies the subnet prefix length to assign to each individual node. For example, if `hostPrefix` is set to `23`, then each node is assigned a `/23` subnet out of the given `cidr`, which allows for 510 (2^(32 - 23) - 2) pod IP addresses. If you are required to provide access to nodes from an external network, configure load balancers and routers to manage the traffic.
 
 `networking.networkType`
 Specifies the cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
-
-`networking.machineNetwork`
-Optional. Specifies the IP address pool to use for machines in the cluster. You cannot change this value after installation. If you do not set this value, and you configure a cluster-wide proxy, you must manually add the machine network address pool or pools to the proxy configuration. For more information, see the *Configuring the cluster-wide proxy during installation* section.
 
 `networking.serviceNetwork`
 Specifies the IP address pool to use for service IP addresses. You can enter only one IP address pool. This block must not overlap with existing physical networks. If you need to access the services from an external network, configure load balancers and routers to manage the traffic.
@@ -1793,7 +1790,7 @@ For production OpenShift Container Platform clusters on which you want to perfor
 
 ## Configuring the cluster-wide proxy during installation
 
-To enable internet access in environments that deny direct connections, configure a cluster-wide proxy in the `install-config.yaml` file. This configuration ensures that the new OpenShift Container Platform cluster routes traffic through the specified HTTP or HTTPS proxy.
+Production environments can deny direct access to the internet and instead have an HTTP or HTTPS proxy available. You can configure a new OpenShift Container Platform cluster to use a proxy by configuring the proxy settings in the `install-config.yaml` file.
 
 <div class="note">
 
@@ -1909,7 +1906,7 @@ For three-node cluster installations, follow these next steps:
 
 # Creating the Kubernetes manifest and Ignition config files
 
-To customize cluster definitions and manually start machines, generate the Kubernetes manifest and Ignition config files. These assets provide the necessary instructions to configure the cluster infrastructure according to your specific deployment requirements.
+To customize cluster definitions and manually start machines, generate the Kubernetes manifest and Ignition config files.
 
 The installation configuration file transforms into the Kubernetes manifests. The manifests wrap into the Ignition configuration files, which are later used to configure the cluster machines.
 
@@ -2014,7 +2011,7 @@ Whether to use an ISO or PXE install depends on your situation. A PXE install re
 
 ## Installing RHCOS by using an ISO image
 
-To provision physical or virtual machines, install RHCOS by using a bootable ISO image. By using this method, you can deploy the operating system directly from local media or a virtual drive.
+To provision physical or virtual machines, install RHCOS by using a bootable ISO image.
 
 - You have created the Ignition config files for your cluster.
 
@@ -2369,7 +2366,9 @@ You can use PXE or iPXE booting to install RHCOS on the machines.
 
 ## Advanced RHCOS installation configuration
 
-To apply advanced configurations unavailable through default installation methods, manually provision Red Hat Enterprise Linux CoreOS (RHCOS) nodes for OpenShift Container Platform. This approach enables granular control over the node infrastructure to meet specific deployment requirements.
+To apply advanced configurations unavailable through default installation methods, manually provision Red Hat Enterprise Linux CoreOS (RHCOS) nodes for OpenShift Container Platform.
+
+This approach enables granular control over the node infrastructure to meet specific deployment requirements.
 
 - Passing kernel arguments to the live installer
 
@@ -2381,7 +2380,7 @@ The advanced configuration topics for manual Red Hat Enterprise Linux CoreOS (R
 
 ### Using advanced networking options for PXE and ISO installations
 
-To configure connectivity in environments that do not support the default DHCP, apply advanced networking options such as static IP addresses. These configurations ensure OpenShift Container Platform nodes can successfully gather configuration settings during PXE and ISO installations.
+Networking for OpenShift Container Platform nodes uses DHCP by default to gather all necessary configuration settings. You can set up static IP addresses or configure special settings.
 
 To set up static IP addresses or configure special settings, such as bonding, you can do one of the following:
 
@@ -2420,7 +2419,7 @@ To configure an ISO installation, use the following procedure.
 
 ### Disk partitioning
 
-During Red Hat Enterprise Linux CoreOS (RHCOS) installation, OpenShift Container Platform applies a default partition layout that automatically expands the root file system to fill available space. By understanding this default configuration, you can override partitioning settings to customize the layout for specific node architecture requirements.
+Disk partitions are created on OpenShift Container Platform cluster nodes during the Red Hat Enterprise Linux CoreOS (RHCOS) installation. Each RHCOS node of a particular architecture uses the same partition layout, unless you override the default partitioning configuration.
 
 During the RHCOS installation, the size of the root file system is increased to use any remaining available space on the target device.
 
@@ -2605,7 +2604,7 @@ coreos.inst.save_partindex=6
 
 ### Identifying Ignition configs
 
-To manually install RHCOS, identify the distinct Ignition configuration types and their specific deployment purposes. By understanding these configurations, you can provide the correct provisioning instructions for your infrastructure requirements.
+When doing an RHCOS manual installation, there are two types of Ignition configs that you can provide: Permanent install Ignition config and live install Ignition config.
 
 When manually installing RHCOS, you can provide the following two types of Ignition configs:
 
@@ -2629,7 +2628,7 @@ For PXE or ISO boots, you can create the Ignition config and `APPEND` the `ignit
 
 ### Default console configuration
 
-To ensure consistent system access, review the default console settings applied to Red Hat Enterprise Linux CoreOS (RHCOS) nodes. While the configuration accommodates most virtualized and bare-metal setups, specific platforms might require adjustments, particularly to enable the serial console on bare-metal hardware.
+Red Hat Enterprise Linux CoreOS (RHCOS) nodes installed from an OpenShift Container Platform 4.17 boot image use a default console that is meant to accomodate most virtualized and bare metal setups. Different cloud and virtualization platforms may use different default settings depending on the chosen architecture.
 
 Bare-metal installations use the kernel default settings which typically means the graphical console is the primary console and the serial console is disabled.
 
@@ -2657,7 +2656,7 @@ For advanced customization, perform console configuration using the `coreos-inst
 
 ### Enabling the serial console for PXE and ISO installations
 
-By default, the Red Hat Enterprise Linux CoreOS (RHCOS) serial console is disabled and all output is written to the graphical console. You can enable the serial console for an ISO installation and reconfigure the bootloader so that output is sent to both the serial console and the graphical console.
+By default, the Red Hat Enterprise Linux CoreOS (RHCOS) serial console is disabled and all output is written to the graphical console. You can enable the serial console for PXE and ISO installations.
 
 1.  Boot the ISO installer.
 
@@ -2665,8 +2664,8 @@ By default, the Red Hat Enterprise Linux CoreOS (RHCOS) serial console is disab
 
     ``` terminal
     $ coreos-installer install \
-    --console=tty0 \//
-    --console=ttyS0,<options> \//
+    --console=tty0 \
+    --console=ttyS0,<options> \
     --ignition-url=http://host/worker.ign /dev/disk/by-id/scsi-<serial_number>
     ```
 
@@ -2808,7 +2807,7 @@ Custom CA certificates affect how Ignition fetches remote resources, but they do
 
 ### Modifying a live install ISO image with customized network settings
 
-You can embed a NetworkManager keyfile into the live ISO image and pass it through to the installed system with the `--network-keyfile` flag of the `customize` subcommand. By doing this task, you can apply persistent network configurations to the installed system.
+You can embed a NetworkManager keyfile into the live ISO image and pass it through to the installed system with the `--network-keyfile` flag of the `customize` subcommand.
 
 <div class="warning">
 
@@ -3056,7 +3055,7 @@ Custom CA certificates affect how Ignition fetches remote resources, but they do
 
 ### Modifying a live install PXE environment with customized network settings
 
-You can embed a NetworkManager keyfile into the live PXE environment and pass it through to the installed system with the `--network-keyfile` flag of the `customize` subcommand. By doing this task, you can apply persistent network configurations to the installed system.
+You can embed a NetworkManager keyfile into the live PXE environment and pass it through to the installed system with the `--network-keyfile` flag of the `customize` subcommand.
 
 <div class="warning">
 
@@ -3376,7 +3375,7 @@ As an optional task, you can configure VLANs on individual interfaces by using t
 
 ### Bonding multiple network interfaces to a single interface
 
-As an optional task, you can bond multiple network interfaces to a single interface by using the `bond=` option. By completing this task, you can eliminate a single point of failure for your network environment.
+As an optional task, you can bond multiple network interfaces to a single interface by using the `bond=` option.
 
 The following example demonstrates editing the `/etc/config/network` file and specifying the following syntax for bonding multiple network interfaces to a single interface:
 
@@ -3395,20 +3394,18 @@ When you create a bonded interface using the `bond=` command, you must specify h
 - To configure the bonded interface to use DHCP, edit the `/etc/config/network` file by setting the IP address for the bond to `dhcp`. For example:
 
   ``` terminal
-  bond=bond0:em1,em2:mode=active-backup
   ip=bond0:dhcp
   ```
 
 - To configure the bonded interface to use a static IP address, edit the `/etc/config/network` file entering the specific IP address you want and related information. For example:
 
   ``` terminal
-  bond=bond0:em1,em2:mode=active-backup
   ip=10.10.10.2::10.10.10.254:255.255.255.0:core0.example.com:bond0:none
   ```
 
 ### Bonding multiple SR-IOV network interfaces to a dual port NIC interface
 
-You can bond multiple SR-IOV network interfaces to a dual port NIC interface by using the `bond=` option. This task provides high availability capabilities to your network by preventing a single physical port from becoming a single point of failure. Ensure you apply the procedure tasks to each node.
+You can bond multiple SR-IOV network interfaces to a dual port NIC interface by using the `bond=` option. Ensure you apply the procedure tasks to each node.
 
 1.  Create the SR-IOV virtual functions (VFs) following the guidance in [Managing SR-IOV devices](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/configuring_and_managing_virtualization/managing-virtual-devices_configuring-and-managing-virtualization#managing-sr-iov-devices_managing-virtual-devices). Follow the procedure in the "Attaching SR-IOV networking devices to virtual machines" section.
 
@@ -3426,7 +3423,9 @@ You can bond multiple SR-IOV network interfaces to a dual port NIC interface by 
 
         ``` terminal
         bond=bond0:eno1f0,eno2f0:mode=active-backup
-        ip=bond0:dhcp
+        ip=bond0:dhcp::AA:BB:CC:DD:EE:FF
+        ip=eno1f0:none::AA:BB:CC:DD:EE:FF
+        ip=eno2f0:none::AA:BB:CC:DD:EE:FF
         ```
 
       - To configure the bonded interface to use a static IP address, enter the specific IP address you want and related information. For example:
@@ -4241,7 +4240,7 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 # Approving the certificate signing requests for your machines
 
-To add machines to a cluster, verify the status of the certificate signing requests (CSRs) generated for each machine. If manual approval is required, approve the client requests first, followed by the server requests.
+You can add machines to a cluster by verifying the status of the Certificate Signing Requests (CSRs) generated for each machine. If manual approval is required, approve the client requests first, followed by the server requests.
 
 - You added machines to your cluster.
 
@@ -4297,7 +4296,7 @@ To add machines to a cluster, verify the status of the certificate signing reque
 
     <div class="note">
 
-    Because the CSRs rotate automatically, approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. Then, subsequent serving certificate renewal requests are automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. Then, subsequent serving certificate renewal requests are automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
 
     </div>
 

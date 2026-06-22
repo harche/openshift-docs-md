@@ -32,6 +32,8 @@ Supported network interface cards
 
 # Configuring QinQ support for SR-IOV enabled workloads
 
+Configure QinQ support for SR-IOV enabled workloads to enable double VLAN tagging on your cluster.
+
 - You have installed the OpenShift CLI (`oc`).
 
 - You have access to the cluster as a user with the `cluster-admin` role.
@@ -90,15 +92,15 @@ Supported network interface cards
           namespace: openshift-sriov-network-operator
         spec:
           ipam: '{}'
-          vlan: 171
-          vlanProto: "802.1ad"
+          vlan: <vlan_id>
+          vlanProto: <vlan_protocol>
           networkNamespace: default
           resourceName: resource810
         ```
 
-        - Sets the S-tag VLAN tag to `171`.
+        - `<vlan_id>` specifies the S-tag VLAN tag, for example `171`.
 
-        - Specifies the VLAN protocol to assign to the virtual function (VF). Supported values are `802.1ad` and `802.1q`. The default value is `802.1q`.
+        - `<vlan_protocol>` specifies the VLAN protocol to assign to the virtual function (VF). Supported values are `802.1ad` and `802.1q`. The default value is `802.1q`.
 
     2.  Create the object by running the following command:
 
@@ -122,13 +124,13 @@ Supported network interface cards
             "cniVersion": "0.3.1",
             "type": "vlan",
             "linkInContainer": true,
-            "master": "net1",
+            "master": "<vf_interface>",
             "vlanId": 100,
             "ipam": {"type": "static"}
           }'
         ```
 
-        - Specifies the VF interface inside the pod. The default name is `net1` as the name is not set in the pod annotation.
+        - `<vf_interface>` specifies the VF interface inside the pod. The default name is `net1` because the name is not set in the pod annotation.
 
     2.  Apply the YAML file by running the following command:
 

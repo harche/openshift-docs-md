@@ -900,11 +900,11 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
       -a ~/.pull-secret
     ```
 
-    - For `<rhel_version>`, specify the value that corresponds to the version of Red Hat Enterprise Linux (RHEL) that the host uses. If no value is specified, `ccoctl.rhel8` is used by default. The following values are valid:
+    For `<rhel_version>`, specify the value that corresponds to the version of Red Hat Enterprise Linux (RHEL) that the host uses. If no value is specified, `ccoctl.rhel8` is used by default. The following values are valid:
 
-      - `rhel8`: Specify this value for hosts that use RHEL 8.
+    - `rhel8`: Specify this value for hosts that use RHEL 8.
 
-      - `rhel9`: Specify this value for hosts that use RHEL 9.
+    - `rhel9`: Specify this value for hosts that use RHEL 9.
 
     <div class="note">
 
@@ -1479,7 +1479,7 @@ You can verify that a cluster uses short-term security credentials for individua
     -o jsonpath=''
   ```
 
-  An output that contains the `azure_client_id` and `azure_federated_token_file` felids confirms that the components are assuming the Azure client ID.
+  An output that contains the `azure_client_id` and `azure_federated_token_file` fields confirms that the components are assuming the Azure client ID.
 
 - Azure clusters: Verify that the pod identity webhook is running by running the following command:
 

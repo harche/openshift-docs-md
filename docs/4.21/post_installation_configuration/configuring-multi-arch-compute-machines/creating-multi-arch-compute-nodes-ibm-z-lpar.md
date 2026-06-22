@@ -148,7 +148,7 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines ru
 
 # Approving the certificate signing requests for your machines
 
-To add machines to a cluster, verify the status of the certificate signing requests (CSRs) generated for each machine. If manual approval is required, approve the client requests first, followed by the server requests.
+You can add machines to a cluster by verifying the status of the Certificate Signing Requests (CSRs) generated for each machine. If manual approval is required, approve the client requests first, followed by the server requests.
 
 - You added machines to your cluster.
 
@@ -204,7 +204,7 @@ To add machines to a cluster, verify the status of the certificate signing reque
 
     <div class="note">
 
-    Because the CSRs rotate automatically, approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. Then, subsequent serving certificate renewal requests are automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. Then, subsequent serving certificate renewal requests are automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
 
     </div>
 

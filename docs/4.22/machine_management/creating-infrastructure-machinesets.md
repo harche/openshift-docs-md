@@ -1,3 +1,9 @@
+To reduce subscription costs, you can use infrastructure machine sets to create machines that host only infrastructure components, such as the default router, the integrated container image registry, cluster metrics, and monitoring. These infrastructure machines are not counted toward the total number of subscriptions that are required to run the environment.
+
+For information about infrastructure nodes and which components can run on infrastructure nodes, see the "Red Hat OpenShift control plane and infrastructure nodes" section in the OpenShift sizing and subscription guide for enterprise Kubernetes document.
+
+To create an infrastructure node, see "Creating a compute machine set", "Creating an infrastructure node", or "Creating an infrastructure node". Use the sample compute machine set for your cloud to deploy an infrastructure machine set. Modify the sample configuration file with the details of your environment.
+
 <div class="important">
 
 You can use the advanced machine management and scaling capabilities only in clusters where the Machine API is operational. Clusters with user-provisioned infrastructure require additional validation and configuration to use the Machine API.
@@ -12,11 +18,9 @@ $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
 
 </div>
 
-You can use infrastructure machine sets to create machines that host only infrastructure components, such as the default router, the integrated container image registry, and the components for cluster metrics and monitoring. These infrastructure machines are not counted toward the total number of subscriptions that are required to run the environment.
-
 # OpenShift Container Platform infrastructure components
 
-You can review the following information to understand which components you can move to an infrastructure node. Components that you move to an infrastructure node do not need to be accounted for during sizing.
+To reduce subscription costs, you can review the following information to understand which components you can move to an infrastructure node. Components that you move to an infrastructure node do not need to be accounted for during sizing.
 
 Each self-managed Red Hat OpenShift subscription includes entitlements for OpenShift Container Platform and other OpenShift-related components. These entitlements are included for running OpenShift Container Platform control plane and infrastructure workloads and do not need to be accounted for during sizing.
 
@@ -50,17 +54,11 @@ To qualify as an infrastructure node and use the included entitlement, only comp
 
 Any node that runs any other container, pod, or component is a worker node that your subscription must cover.
 
-For information about infrastructure nodes and which components can run on infrastructure nodes, see the "Red Hat OpenShift control plane and infrastructure nodes" section in the [OpenShift sizing and subscription guide for enterprise Kubernetes](https://www.redhat.com/en/resources/openshift-subscription-sizing-guide) document.
+For information about infrastructure nodes and which components can run on infrastructure nodes, see the "Red Hat OpenShift control plane and infrastructure nodes" section in the OpenShift sizing and subscription guide for enterprise Kubernetes document.
 
-For information about infrastructure nodes and which components can run on infrastructure nodes, see the "Red Hat OpenShift control plane and infrastructure nodes" section in the [OpenShift sizing and subscription guide for enterprise Kubernetes](https://www.redhat.com/en/resources/openshift-subscription-sizing-guide) document.
+- [OpenShift sizing and subscription guide for enterprise Kubernetes](https://www.redhat.com/en/resources/openshift-subscription-sizing-guide)
 
-To create an infrastructure node, you can [use a machine set](../machine_management/creating-infrastructure-machinesets.xml#machineset-creating_creating-infrastructure-machinesets), [label the node](../machine_management/creating-infrastructure-machinesets.xml#creating-an-infra-node_creating-infrastructure-machinesets), or [use a machine config pool](../machine_management/creating-infrastructure-machinesets.xml#creating-infra-machines_creating-infrastructure-machinesets).
-
-## Creating infrastructure machine sets for different clouds
-
-Use the sample compute machine set for your cloud.
-
-### Sample YAML for a compute machine set custom resource on AWS
+# Sample YAML for a compute machine set custom resource on AWS
 
 The sample YAML defines a compute machine set that runs in the `us-east-1a` Amazon Web Services (AWS) Local Zone and creates nodes that are labeled with `node-role.kubernetes.io/infra: ""`.
 
@@ -186,9 +184,11 @@ Custom tags can also be specified during installation in the `install-config.yam
 
 </div>
 
-Machine sets running on AWS support non-guaranteed [Spot Instances](../machine_management/creating_machinesets/creating-machineset-aws.xml#machineset-non-guaranteed-instance_creating-machineset-aws). You can save on costs by using Spot Instances at a lower price compared to On-Demand Instances on AWS. [Configure Spot Instances](../machine_management/creating_machinesets/creating-machineset-aws.xml#machineset-creating-non-guaranteed-instance_creating-machineset-aws) by adding `spotMarketOptions` to the `MachineSet` YAML file.
+Machine sets running on AWS support non-guaranteed Spot Instances. You can save on costs by using Spot Instances at a lower price compared to On-Demand Instances on AWS. For more information, see "Machine sets that deploy machines as Spot Instances".
 
-### Sample YAML for a compute machine set custom resource on Azure
+- [Machine sets that deploy machines as Spot Instances](../machine_management/creating_machinesets/creating-machineset-aws.xml#machineset-non-guaranteed-instance_creating-machineset-aws)
+
+# Sample YAML for a compute machine set custom resource on Azure
 
 You can define a machine set YAML to provision nodes by specifying parameters such as `vmSize` and `image`. You can use this to automate and scale infrastructure consistently, to ensure compute nodes meet specific workload requirements within the cluster.
 
@@ -323,11 +323,11 @@ The value of the `spec.template.spec.providerSpec.value.zone` parameter specifie
 
 </div>
 
-Machine sets running on Azure support non-guaranteed [Spot VMs](../machine_management/creating_machinesets/creating-machineset-azure.xml#machineset-non-guaranteed-instance_creating-machineset-azure). You can save on costs by using Spot VMs at a lower price compared to standard VMs on Azure. You can [configure Spot VMs](../machine_management/creating_machinesets/creating-machineset-azure.xml#machineset-creating-non-guaranteed-instance_creating-machineset-azure) by adding `spotVMOptions` to the `MachineSet` YAML file.
+- [Machine sets that deploy machines as Spot VMs](../machine_management/creating_machinesets/creating-machineset-azure.xml#machineset-non-guaranteed-instance_creating-machineset-azure)
 
 - [Using the Azure Marketplace offering](../machine_management/creating_machinesets/creating-machineset-azure.xml#installation-azure-marketplace-subscribe_creating-machineset-azure)
 
-### Sample YAML for a compute machine set custom resource on Azure Stack Hub
+# Sample YAML for a compute machine set custom resource on Azure Stack Hub
 
 You can create a machine set on Microsoft Azure Stack Hub. By defining a YAML configuration with specific cluster IDs and provider details, you can automate the provisioning of specialized nodes.
 
@@ -458,7 +458,7 @@ Machine sets running on Azure Stack Hub do not support non-guaranteed Spot VMs.
 
 </div>
 
-### Sample YAML for a compute machine set custom resource on IBM Cloud
+# Sample YAML for a compute machine set custom resource on IBM Cloud
 
 You can use the sample YAML file to automate the provisioning of compute or infrastructure nodes within a specific Virtual Private Cloud (VPC). The sample YAML defines a compute machine set that runs in a specified IBM Cloud® zone in a region and creates nodes that are labeled with `node-role.kubernetes.io/infra: ""`.
 
@@ -560,13 +560,13 @@ After adding the `NoSchedule` taint on the infrastructure node, existing DNS pod
 
 </div>
 
-### Sample YAML for a compute machine set custom resource on Google Cloud
+# Sample YAML for a compute machine set custom resource on Google Cloud
 
 The sample YAML defines a compute machine set for Google Cloud, enabling the automated provisioning of nodes within a specific VPC. When you apply this configuration by using the OpenShift Container Platform CLI, you can ensure consistent scaling, scheduling, and infrastructure ID labeling for compute resources in your cluster.
 
 The sample YAML defines a compute machine set that runs in Google Cloud and creates nodes that are labeled with `node-role.kubernetes.io/infra: ""`, where `infra` is the node label to add.
 
-#### Values obtained by using the OpenShift CLI
+## Values obtained by using the OpenShift CLI
 
 In the following example, you can obtain some of the values for your cluster by using the OpenShift Container Platform CLI.
 
@@ -693,9 +693,11 @@ After adding the `NoSchedule` taint on the infrastructure node, existing DNS pod
 
 </div>
 
-Machine sets running on Google Cloud support non-guaranteed [preemptible VM instances](../machine_management/creating_machinesets/creating-machineset-gcp.xml#machineset-non-guaranteed-instance_creating-machineset-gcp). You can save on costs by using preemptible VM instances at a lower price compared to normal instances on Google Cloud. You can [configure preemptible VM instances](../machine_management/creating_machinesets/creating-machineset-gcp.xml#machineset-creating-non-guaranteed-instance_creating-machineset-gcp) by adding `preemptible` to the `MachineSet` YAML file.
+Machine sets running on Google Cloud support non-guaranteed preemptible VM instances. You can save on costs by using preemptible VM instances at a lower price compared to normal instances on Google Cloud. You can configure preemptible VM instances by adding `preemptible` to the `MachineSet` YAML file.
 
-### Sample YAML for a compute machine set custom resource on Nutanix
+- [Machine sets that deploy machines as preemptible VM instances](../machine_management/creating_machinesets/creating-machineset-gcp.xml#machineset-non-guaranteed-instance_legacy-preempt)
+
+# Sample YAML for a compute machine set custom resource on Nutanix
 
 You can use a YAML file to automate node provisioning and ensure workloads are scheduled correctly based on role and infrastructure requirements.
 
@@ -705,7 +707,7 @@ The sample YAML defines a Nutanix compute machine set that creates nodes that ar
 
 In the sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<infra>` is the node label to add.
 
-#### Values obtained by using the OpenShift CLI
+## Values obtained by using the OpenShift CLI
 
 In the following example, you can obtain some of the values for your cluster by using the OpenShift CLI (`oc`).
 
@@ -841,7 +843,7 @@ After adding the `NoSchedule` taint on the infrastructure node, existing DNS pod
 
 </div>
 
-### Sample YAML for a compute machine set custom resource on RHOSP
+# Sample YAML for a compute machine set custom resource on RHOSP
 
 To enable the Machine API to automate the scaling and management of compute nodes, define a `MachineSet` resource with Red Hat OpenStack Platform (RHOSP) parameters, for example, image and network IDs.
 
@@ -942,9 +944,7 @@ The `spec.template.spec.providerSpec.value.networks` stanza is required for depl
 `<rhosp_subnet_UUID>`
 Specifies the RHOSP subnet that you want the endpoints of nodes to be published on. Usually, this is the same subnet that is used as the value of `machinesSubnet` in the `install-config.yaml` file.
 
-- [Manually updating the boot image](../machine_configuration/mco-update-boot-images-manual.xml#mco-update-boot-images-manual)
-
-### Sample YAML for a compute machine set custom resource on vSphere
+# Sample YAML for a compute machine set custom resource on vSphere
 
 To enable the Machine API to automate node provisioning on VMware vSphere infrastructure, define a `MachineSet` resource with parameters that are specific to vSphere, for example data center, resource pool, and template.
 
@@ -1067,9 +1067,9 @@ After adding the `NoSchedule` taint on the infrastructure node, existing DNS pod
 
 - [Manually updating the boot image](../machine_configuration/mco-update-boot-images-manual.xml#mco-update-boot-images-manual)
 
-## Creating a compute machine set
+# Creating a compute machine set
 
-In addition to the compute machine sets created by the installation program, you can create your own compute machine sets to dynamically manage the machine compute resources for specific workloads of your choice. Use the OpenShift Container Platform CLI to automate node provisioning.
+To dynamically manage machine compute resources, you can create your own compute machine sets in addition to the compute machine sets created by the installation program. Use the OpenShift Container Platform CLI to automate node provisioning.
 
 - Deploy an OpenShift Container Platform cluster.
 
@@ -1192,49 +1192,47 @@ In addition to the compute machine sets created by the installation program, you
 
   When the new compute machine set is available, the `DESIRED` and `CURRENT` values match. If the compute machine set is not available, wait a few minutes and run the command again.
 
-## Creating an infrastructure node
+# Creating an infrastructure node
 
-You can use labels to configure compute nodes as infrastructure nodes, where you can move infrastructure resources. After you create the infrastructure nodes, you can move appropriate workloads to those nodes by using taints and tolerations.
+To reduce subscription costs, you can use labels to configure compute nodes as infrastructure nodes, where you can move infrastructure resources.
 
-<div class="important">
-
-See "Creating infrastructure machine sets" for installer-provisioned infrastructure environments or for any cluster where the control plane nodes are managed by the machine API.
-
-</div>
+After you create the infrastructure nodes, you can move appropriate workloads to those nodes by using taints and tolerations.
 
 You can optionally create a default cluster-wide node selector. The default node selector is applied to pods created in all namespaces and creates an intersection with any existing node selectors on a pod, which additionally constrains the pod’s selector.
 
 <div class="important">
 
-If the default node selector key conflicts with the key of a pod’s label, then the default node selector is not applied.
+- See "Creating infrastructure machine sets" for installer-provisioned infrastructure environments or for any cluster where the control plane nodes are managed by the Machine API.
 
-However, do not set a default node selector that might cause a pod to become unschedulable. For example, setting the default node selector to a specific node role, such as `node-role.kubernetes.io/infra=""`, when a pod’s label is set to a different node role, such as `node-role.kubernetes.io/master=""`, can cause the pod to become unschedulable. For this reason, use caution when setting the default node selector to specific node roles.
+- If the default node selector key conflicts with the key of a pod’s label, then the default node selector is not applied.
 
-You can alternatively use a project node selector to avoid cluster-wide node selector key conflicts.
+  However, do not set a default node selector that might cause a pod to become unschedulable. For example, setting the default node selector to a specific node role, such as `node-role.kubernetes.io/infra=""`, when a pod’s label is set to a different node role, such as `node-role.kubernetes.io/master=""`, can cause the pod to become unschedulable. For this reason, use caution when setting the default node selector to specific node roles.
+
+  You can alternatively use a project node selector to avoid cluster-wide node selector key conflicts.
 
 </div>
 
-1.  Add a label to the compute nodes that you want to act as infrastructure nodes:
+1.  Add a label to the compute nodes that you want to act as infrastructure nodes by running the following command:
 
     ``` terminal
     $ oc label node <node-name> node-role.kubernetes.io/infra=""
     ```
 
-2.  Check to see if applicable nodes now have the `infra` role:
+2.  Check to see if applicable nodes now have the `infra` role by running the following command:
 
     ``` terminal
     $ oc get nodes
     ```
 
-3.  Optional: Create a default cluster-wide node selector:
+3.  Optional: Create a default cluster-wide node selector.
 
-    1.  Edit the `Scheduler` object:
+    1.  Edit the `Scheduler` object by running the following command:
 
         ``` terminal
         $ oc edit scheduler cluster
         ```
 
-    2.  Add the `defaultNodeSelector` field with the appropriate node selector:
+    2.  Add the `defaultNodeSelector` field with the appropriate node selector by running the following command:
 
         ``` yaml
         apiVersion: config.openshift.io/v1
@@ -1250,13 +1248,15 @@ You can alternatively use a project node selector to avoid cluster-wide node sel
 
     3.  Save the file to apply the changes.
 
-    You can now move infrastructure resources to the new infrastructure nodes. Also, remove any workloads that you do not want, or that do not belong, on the new infrastructure node. See the list of workloads supported for use on infrastructure nodes in "OpenShift Container Platform infrastructure components".
+    You can now move infrastructure resources to the new infrastructure nodes and remove any workloads that you do not want, or that do not belong, on the new infrastructure node. See the list of workloads supported for use on infrastructure nodes in "OpenShift Container Platform infrastructure components".
 
-- [Moving resources to infrastructure machine sets](#moving-resources-to-infrastructure-machinesets)
+- [OpenShift Container Platform infrastructure components](../machine_management/creating-infrastructure-machinesets.xml#infrastructure-components_creating-infrastructure-machinesets)
 
-## Creating a machine config pool for infrastructure machines
+- [Moving resources to infrastructure machine sets](../machine_management/creating-infrastructure-machinesets.xml#moving-resources-to-infrastructure-machinesets_creating-infrastructure-machinesets)
 
-If you need infrastructure machines to have dedicated configurations, you must create an infra pool.
+# Creating a machine config pool for infrastructure machines
+
+You can create a machine configuration pool for infrastructure machines to apply dedicated configuration to infra machines. You might want to apply dedicated configuration to infra machines because they run distinct workloads from other nodes in the cluster.
 
 <div class="important">
 
@@ -1264,27 +1264,18 @@ Creating a custom machine configuration pool overrides default worker pool confi
 
 </div>
 
-1.  Add a label to the node you want to assign as the infra node with a specific label:
+1.  Add a label to the node you want to assign as the infra node by running the following command:
 
     ``` terminal
-    $ oc label node <node_name> <label>
+    $ oc label node <node_name> node-role.kubernetes.io/infra=
     ```
 
-    ``` terminal
-    $ oc label node ci-ln-n8mqwr2-f76d1-xscn2-worker-c-6fmtx node-role.kubernetes.io/infra=
-    ```
+    where:
 
-2.  Create a machine config pool that contains both the worker role and your custom role as machine config selector:
+    `<node_name>`
+    Specifies the name of the node you want to assign as an infra node.
 
-    ``` terminal
-    $ cat infra.mcp.yaml
-    ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+2.  Create a YAML file that defines the machine config pool, as in the following example:
 
     ``` yaml
     apiVersion: machineconfiguration.openshift.io/v1
@@ -1300,9 +1291,9 @@ Creating a custom machine configuration pool overrides default worker pool confi
           node-role.kubernetes.io/infra: ""
     ```
 
-    - Add the worker role and your custom role.
+    - Add the worker role and your custom role in the `spec.machineConfigSelector.matchExpressions[]` field.
 
-    - Add the label you added to the node as a `nodeSelector`.
+    - Add the label you added to the node in the `spec.nodeSelector.matchLabels` field.
 
       <div class="note">
 
@@ -1310,13 +1301,13 @@ Creating a custom machine configuration pool overrides default worker pool confi
 
       </div>
 
-3.  After you have the YAML file, you can create the machine config pool:
+3.  After you have the YAML file, you can create the machine config pool by specifying the file you created in the following command:
 
     ``` terminal
-    $ oc create -f infra.mcp.yaml
+    $ oc create -f <filename>
     ```
 
-4.  Check the machine configs to ensure that the infrastructure configuration rendered successfully:
+4.  Check the machine configs to ensure that the infrastructure configuration rendered successfully by running the following command:
 
     ``` terminal
     $ oc get machineconfig
@@ -1332,27 +1323,8 @@ Creating a custom machine configuration pool overrides default worker pool confi
     NAME                                                        GENERATEDBYCONTROLLER                      IGNITIONVERSION   CREATED
     00-master                                                   365c1cfd14de5b0e3b85e0fc815b0060f36ab955   3.5.0             31d
     00-worker                                                   365c1cfd14de5b0e3b85e0fc815b0060f36ab955   3.5.0             31d
-    01-master-container-runtime                                 365c1cfd14de5b0e3b85e0fc815b0060f36ab955   3.5.0             31d
-    01-master-kubelet                                           365c1cfd14de5b0e3b85e0fc815b0060f36ab955   3.5.0             31d
-    01-worker-container-runtime                                 365c1cfd14de5b0e3b85e0fc815b0060f36ab955   3.5.0             31d
-    01-worker-kubelet                                           365c1cfd14de5b0e3b85e0fc815b0060f36ab955   3.5.0             31d
-    99-master-1ae2a1e0-a115-11e9-8f14-005056899d54-registries   365c1cfd14de5b0e3b85e0fc815b0060f36ab955   3.5.0             31d
-    99-master-ssh                                                                                          3.2.0             31d
-    99-worker-1ae64748-a115-11e9-8f14-005056899d54-registries   365c1cfd14de5b0e3b85e0fc815b0060f36ab955   3.5.0             31d
-    99-worker-ssh                                                                                          3.2.0             31d
+    # ...
     rendered-infra-4e48906dca84ee702959c71a53ee80e7             365c1cfd14de5b0e3b85e0fc815b0060f36ab955   3.5.0             23m
-    rendered-master-072d4b2da7f88162636902b074e9e28e            5b6fb8349a29735e48446d435962dec4547d3090   3.5.0             31d
-    rendered-master-3e88ec72aed3886dec061df60d16d1af            02c07496ba0417b3e12b78fb32baf6293d314f79   3.5.0             31d
-    rendered-master-419bee7de96134963a15fdf9dd473b25            365c1cfd14de5b0e3b85e0fc815b0060f36ab955   3.5.0             17d
-    rendered-master-53f5c91c7661708adce18739cc0f40fb            365c1cfd14de5b0e3b85e0fc815b0060f36ab955   3.5.0             13d
-    rendered-master-a6a357ec18e5bce7f5ac426fc7c5ffcd            365c1cfd14de5b0e3b85e0fc815b0060f36ab955   3.5.0             7d3h
-    rendered-master-dc7f874ec77fc4b969674204332da037            5b6fb8349a29735e48446d435962dec4547d3090   3.5.0             31d
-    rendered-worker-1a75960c52ad18ff5dfa6674eb7e533d            5b6fb8349a29735e48446d435962dec4547d3090   3.5.0             31d
-    rendered-worker-2640531be11ba43c61d72e82dc634ce6            5b6fb8349a29735e48446d435962dec4547d3090   3.5.0             31d
-    rendered-worker-4e48906dca84ee702959c71a53ee80e7            365c1cfd14de5b0e3b85e0fc815b0060f36ab955   3.5.0             7d3h
-    rendered-worker-4f110718fe88e5f349987854a1147755            365c1cfd14de5b0e3b85e0fc815b0060f36ab955   3.5.0             17d
-    rendered-worker-afc758e194d6188677eb837842d3b379            02c07496ba0417b3e12b78fb32baf6293d314f79   3.5.0             31d
-    rendered-worker-daa08cc1e8f5fcdeba24de60cd955cc3            365c1cfd14de5b0e3b85e0fc815b0060f36ab955   3.5.0             13d
     ```
 
     You should see a new machine config, with the `rendered-infra-*` prefix.
@@ -1365,7 +1337,7 @@ Creating a custom machine configuration pool overrides default worker pool confi
 
     </div>
 
-    1.  Create a machine config:
+    1.  Create a YAML file that defines the machine config pool, as in the following example:
 
         ``` terminal
         $ cat infra.mc.yaml
@@ -1383,7 +1355,7 @@ Creating a custom machine configuration pool overrides default worker pool confi
         metadata:
           name: 51-infra
           labels:
-            machineconfiguration.openshift.io/role: infra
+            machineconfiguration.openshift.io/role: <role>
         spec:
           config:
             ignition:
@@ -1396,15 +1368,18 @@ Creating a custom machine configuration pool overrides default worker pool confi
                   source: data:,infra
         ```
 
-        - Add the label you added to the node as a `nodeSelector`.
+        where:
 
-    2.  Apply the machine config to the infra-labeled nodes:
+        `role`
+        Specifies the label you added to the node as a `nodeSelector`.
+
+    2.  Apply the machine config to the infra-labeled nodes by running the following command:
 
         ``` terminal
         $ oc create -f infra.mc.yaml
         ```
 
-6.  Confirm that your new machine config pool is available:
+6.  Confirm that your new machine config pool is available by running the following command:
 
     ``` terminal
     $ oc get mcp
@@ -1423,19 +1398,15 @@ Creating a custom machine configuration pool overrides default worker pool confi
     worker   rendered-worker-60e35c2e99f42d976e084fa94da4d0fc   True      False      False      2              2                   2                     0                      91m
     ```
 
-    In this example, a worker node was changed to an infra node.
+    In this example, the role of the node was changes from `worker` to `infra`.
 
-- [Node configuration management with machine config pools](../architecture/control-plane.xml#architecture-machine-config-pools_control-plane).
+- [Node configuration management with machine config pools](../architecture/control-plane.xml#architecture-machine-config-pools_control-plane)
 
-# Assigning machine set resources to infrastructure nodes
+# Binding infrastructure node workloads using taints and tolerations
 
-After creating an infrastructure machine set, the `worker` and `infra` roles are applied to new infra nodes. Nodes with the `infra` role applied are not counted toward the total number of subscriptions that are required to run the environment, even when the `worker` role is also applied.
+To avoid user workloads being inadvertently assigned to an infra node, you can apply a taint to the infra node and tolerations for the pods you want to control. After creating an infrastructure machine set, the `worker` and `infra` roles are applied to new infra nodes.
 
-However, with an infra node being assigned as a worker, there is a chance user workloads could get inadvertently assigned to an infra node. To avoid this, you can apply a taint to the infra node and tolerations for the pods you want to control.
-
-## Binding infrastructure node workloads using taints and tolerations
-
-If you have an infrastructure node that has the `infra` and `worker` roles assigned, you must configure the node so that user workloads are not assigned to it.
+Nodes with the `infra` role applied are not counted toward the total number of subscriptions that are required to run the environment, even when the `worker` role is also applied. If you have an infrastructure node that has the `infra` and `worker` roles assigned, you must configure the node so that user workloads are not assigned to it.
 
 <div class="important">
 
@@ -1447,7 +1418,7 @@ It is recommended that you preserve the dual `infra,worker` label that is create
 
 1.  Add a taint to the infrastructure node to prevent scheduling user workloads on it:
 
-    1.  Determine if the node has the taint:
+    1.  Determine if the node has the taint by running the following command:
 
         ``` terminal
         $ oc describe nodes <node_name>
@@ -1470,7 +1441,7 @@ It is recommended that you preserve the dual `infra,worker` label that is create
 
         This example shows that the node has a taint. You can proceed with adding a toleration to your pod in the next step.
 
-    2.  If you have not configured a taint to prevent scheduling user workloads on it:
+    2.  If you have not configured a taint to prevent scheduling user workloads on it, configure a taint by running the following command:
 
         ``` terminal
         $ oc adm taint nodes <node_name> <key>=<value>:<effect>
@@ -1502,9 +1473,7 @@ It is recommended that you preserve the dual `infra,worker` label that is create
 
         </div>
 
-        These examples place a taint on `node1` that has the `node-role.kubernetes.io/infra` key and the `NoSchedule` taint effect. Nodes with the `NoSchedule` effect schedule only pods that tolerate the taint, but allow existing pods to remain scheduled on the node.
-
-        If you added a `NoSchedule` taint to the infrastructure node, any pods that are controlled by a daemon set on that node are marked as `misscheduled`. You must either delete the pods or add a toleration to the pods as shown in the Red Hat Knowledgebase solution [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171). Note that you cannot add a toleration to a daemon set object that is managed by an operator.
+        These examples place a taint on `node1` that has the `node-role.kubernetes.io/infra` key and the `NoSchedule` taint effect. Nodes with the `NoSchedule` effect schedule only pods that tolerate the taint, but allow existing pods to remain scheduled on the node. If you added a `NoSchedule` taint to the infrastructure node, any pods that are controlled by a daemon set on that node are marked as `misscheduled`. You must either delete the pods or add a toleration to the pods as shown in the Red Hat Knowledgebase solution [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171). Note that you cannot add a toleration to a daemon set object that is managed by an operator.
 
         <div class="note">
 
@@ -1524,79 +1493,93 @@ It is recommended that you preserve the dual `infra,worker` label that is create
     spec:
     # ...
       tolerations:
-        - key: node-role.kubernetes.io/infra
-          value: reserved
-          effect: NoSchedule
+        - key: <node_taint_key>
+          value: <node_taint_value>
+          effect: <taint_effect>
           operator: Equal
     ```
 
-    - Specify the key that you added to the node.
+    where:
 
-    - Specify the value of the key-value pair taint that you added to the node.
+    `<node_taint_key>`
+    Specifies the key that you added to the taint on the node.
 
-    - Specify the effect that you added to the node.
+    `<node_taint_value>`
+    Specifies the value of the key-value pair taint that you added to the node.
 
-    - Specify the `Equal` Operator to require a taint with the key `node-role.kubernetes.io/infra` to be present on the node.
+    `<taint_effect>`
+    Specifies the effect that you added to the node.
 
-      This toleration matches the taint created by the `oc adm taint` command. A pod with this toleration can be scheduled onto the infrastructure node.
+    `Equal`
+    Specifies that a taint with a key matching `<node_taint_key>` is required to be present on the node.
 
-      <div class="note">
+    This toleration matches the taint created by the `oc adm taint` command. A pod with this toleration can be scheduled onto the infrastructure node.
 
-      Moving pods for an Operator installed via OLM to an infrastructure node is not always possible. The capability to move Operator pods depends on the configuration of each Operator.
+    <div class="note">
 
-      </div>
+    Moving pods for an Operator installed via OLM to an infrastructure node is not always possible. The capability to move Operator pods depends on the configuration of each Operator.
+
+    </div>
 
 3.  Schedule the pod to the infrastructure node by using a scheduler. See the documentation for "Controlling pod placement using the scheduler" for details.
 
 4.  Remove any workloads that you do not want, or that do not belong, on the new infrastructure node. See the list of workloads supported for use on infrastructure nodes in "OpenShift Container Platform infrastructure components".
 
-- [Controlling pod placement using the scheduler](../nodes/scheduling/nodes-scheduler-about.xml#nodes-scheduler-about).
+- [OpenShift Container Platform infrastructure components](../machine_management/creating-infrastructure-machinesets.xml#infrastructure-components_creating-infrastructure-machinesets)
 
-- [Moving resources to infrastructure machine sets](#moving-resources-to-infrastructure-machinesets).
+- [Controlling pod placement using the scheduler](../nodes/scheduling/nodes-scheduler-about.xml#nodes-scheduler-about)
 
-- [Understanding taints and tolerations](../nodes/scheduling/nodes-scheduler-taints-tolerations.xml#nodes-scheduler-taints-tolerations-about_nodes-scheduler-taints-tolerations).
+- [Moving resources to infrastructure machine sets](../machine_management/creating-infrastructure-machinesets.xml#moving-resources-to-infrastructure-machinesets_creating-infrastructure-machinesets)
+
+- [Understanding taints and tolerations](../nodes/scheduling/nodes-scheduler-taints-tolerations.xml#nodes-scheduler-taints-tolerations-about_nodes-scheduler-taints-tolerations)
 
 # Moving resources to infrastructure machine sets
 
-Some of the infrastructure resources are deployed in your cluster by default. You can move them to the infrastructure machine sets that you created by adding the infrastructure node selector, as shown:
+Some of the infrastructure resources are deployed in your cluster by default. You can move them to the infrastructure machine sets that you created by adding the infrastructure node selector.
 
-``` yaml
-apiVersion: imageregistry.operator.openshift.io/v1
-kind: Config
-metadata:
-  name: cluster
-# ...
-spec:
-  nodePlacement:
-    nodeSelector:
-      matchLabels:
-        node-role.kubernetes.io/infra: ""
-    tolerations:
-    - effect: NoSchedule
-      key: node-role.kubernetes.io/infra
-      value: reserved
-    - effect: NoExecute
-      key: node-role.kubernetes.io/infra
-      value: reserved
-```
+Applying a specific node selector to all infrastructure components causes OpenShift Container Platform to schedule those workloads on nodes with that label.
 
-- Add a `nodeSelector` parameter with the appropriate value to the component you want to move. You can use a `nodeSelector` in the format shown or use `<key>: <value>` pairs, based on the value specified for the node. If you added a taint to the infrasructure node, also add a matching toleration.
+1.  Add a `nodeSelector` parameter with the appropriate value to the component you want to move. You can use a `nodeSelector` in the format shown or use `<key>: <value>` pairs, based on the value specified for the node. See the following example:
 
-Applying a specific node selector to all infrastructure components causes OpenShift Container Platform to [schedule those workloads on nodes with that label](../machine_management/creating-infrastructure-machinesets.xml#moving-resources-to-infrastructure-machinesets).
+    ``` yaml
+    apiVersion: imageregistry.operator.openshift.io/v1
+    kind: Config
+    metadata:
+      name: cluster
+    # ...
+    spec:
+      nodePlacement:
+        nodeSelector:
+          matchLabels:
+            node-role.kubernetes.io/infra: ""
+        tolerations:
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/infra
+          value: reserved
+        - effect: NoExecute
+          key: node-role.kubernetes.io/infra
+          value: reserved
+    ```
+
+2.  If you added a taint to the infrastructure node, also add a matching toleration.
 
 ## Moving the router
 
-You can deploy the router pod to a different compute machine set. By default, the pod is deployed to a worker node.
+Deploying the router pod on an infrastructure node can reduce your OpenShift Container Platform subscription size. Move the router pod by editing the `IngressController` object in the `openshift-ingress-operator` namespace. By default, the pod is deployed to a worker node.
 
 - Configure additional compute machine sets in your OpenShift Container Platform cluster.
 
-1.  View the `IngressController` custom resource for the router Operator:
+1.  View the `IngressController` custom resource for the router Operator by running the following command:
 
     ``` terminal
     $ oc get ingresscontroller default -n openshift-ingress-operator -o yaml
     ```
 
-    The command output resembles the following text:
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
 
     ``` yaml
     apiVersion: operator.openshift.io/v1
@@ -1624,11 +1607,17 @@ You can deploy the router pod to a different compute machine set. By default, th
       selector: ingresscontroller.operator.openshift.io/deployment-ingresscontroller=default
     ```
 
-2.  Edit the `ingresscontroller` resource and change the `nodeSelector` to use the `infra` label:
+2.  Edit the `ingresscontroller` resource and change the `nodeSelector` to use the `infra` label by running the following command:
 
     ``` terminal
     $ oc edit ingresscontroller default -n openshift-ingress-operator
     ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
 
     ``` yaml
     apiVersion: operator.openshift.io/v1
@@ -1652,103 +1641,64 @@ You can deploy the router pod to a different compute machine set. By default, th
     # ...
     ```
 
-    - Add a `nodeSelector` parameter with the appropriate value to the component you want to move. You can use a `nodeSelector` parameter in the format shown or use `<key>: <value>` pairs, based on the value specified for the node. If you added a taint to the infrastructure node, also add a matching toleration.
+    Add a `nodeSelector` parameter with the appropriate value to the component you want to move. You can use a `nodeSelector` parameter in the format shown or use `<key>: <value>` pairs, based on the value specified for the node. If you added a taint to the infrastructure node, also add a matching toleration.
 
-3.  Confirm that the router pod is running on the `infra` node.
+- Confirm that the router pod is running on the `infra` node.
 
-    1.  View the list of router pods and note the node name of the running pod:
+  1.  View the list of router pods and note the node name of the running pod by running the following command:
 
-        ``` terminal
-        $ oc get pod -n openshift-ingress -o wide
-        ```
+      ``` terminal
+      $ oc get pod -n openshift-ingress -o wide
+      ```
 
-        <div class="formalpara-title">
+      <div class="formalpara-title">
 
-        **Example output**
+      **Example output**
 
-        </div>
+      </div>
 
-        ``` terminal
-        NAME                              READY     STATUS        RESTARTS   AGE       IP           NODE                           NOMINATED NODE   READINESS GATES
-        router-default-86798b4b5d-bdlvd   1/1      Running       0          28s       10.130.2.4   ip-10-0-217-226.ec2.internal   <none>           <none>
-        router-default-955d875f4-255g8    0/1      Terminating   0          19h       10.129.2.4   ip-10-0-148-172.ec2.internal   <none>           <none>
-        ```
+      ``` terminal
+      NAME                              READY     STATUS        RESTARTS   AGE       IP           NODE                           NOMINATED NODE   READINESS GATES
+      router-default-86798b4b5d-bdlvd   1/1      Running       0          28s       10.130.2.4   ip-10-0-217-226.ec2.internal   <none>           <none>
+      router-default-955d875f4-255g8    0/1      Terminating   0          19h       10.129.2.4   ip-10-0-148-172.ec2.internal   <none>           <none>
+      ```
 
-        In this example, the running pod is on the `ip-10-0-217-226.ec2.internal` node.
+      In this example, the running pod is on the `ip-10-0-217-226.ec2.internal` node.
 
-    2.  View the node status of the running pod:
+  2.  View the node status of the running pod by running the following command:
 
-        ``` terminal
-        $ oc get node <node_name>
-        ```
+      ``` terminal
+      $ oc get node <node_name>
+      ```
 
-        - Specify the `<node_name>` that you obtained from the pod list.
+      Specify the `<node_name>` that you obtained from the pod list.
 
-          <div class="formalpara-title">
+      <div class="formalpara-title">
 
-          **Example output**
+      **Example output**
 
-          </div>
+      </div>
 
-          ``` terminal
-          NAME                          STATUS  ROLES         AGE   VERSION
-          ip-10-0-217-226.ec2.internal  Ready   infra,worker  17h   v1.35.4
-          ```
+      ``` terminal
+      NAME                          STATUS  ROLES         AGE   VERSION
+      ip-10-0-217-226.ec2.internal  Ready   infra,worker  17h   v1.35.4
+      ```
 
-          Because the role list includes `infra`, the pod is running on the correct node.
+      Because the role list includes `infra`, the pod is running on the correct node.
 
 ## Moving the default registry
 
-You configure the registry Operator to deploy its pods to different nodes.
+Deploying the registry pod on an infrastructure node can reduce your OpenShift Container Platform subscription size. Move the registry pod by editing the `configs.imageregistry.operator.openshift.io/cluster` config object.
 
 - Configure additional compute machine sets in your OpenShift Container Platform cluster.
 
-1.  View the `config/instance` object:
-
-    ``` terminal
-    $ oc get configs.imageregistry.operator.openshift.io/cluster -o yaml
-    ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
-    ``` yaml
-    apiVersion: imageregistry.operator.openshift.io/v1
-    kind: Config
-    metadata:
-      creationTimestamp: 2019-02-05T13:52:05Z
-      finalizers:
-      - imageregistry.operator.openshift.io/finalizer
-      generation: 1
-      name: cluster
-      resourceVersion: "56174"
-      selfLink: /apis/imageregistry.operator.openshift.io/v1/configs/cluster
-      uid: 36fd3724-294d-11e9-a524-12ffeee2931b
-    spec:
-      httpSecret: d9a012ccd117b1e6616ceccb2c3bb66a5fed1b5e481623
-      logging: 2
-      managementState: Managed
-      proxy: {}
-      replicas: 1
-      requests:
-        read: {}
-        write: {}
-      storage:
-        s3:
-          bucket: image-registry-us-east-1-c92e88cad85b48ec8b312344dff03c82-392c
-          region: us-east-1
-    status:
-    ...
-    ```
-
-2.  Edit the `config/instance` object:
+1.  Edit the `configs.imageregistry.operator.openshift.io/cluster` object by running the following command:
 
     ``` terminal
     $ oc edit configs.imageregistry.operator.openshift.io/cluster
     ```
+
+2.  Add a `nodeSelector` parameter with the appropriate value to the component you want to move, as shown in the following example.
 
     ``` yaml
     apiVersion: imageregistry.operator.openshift.io/v1
@@ -1767,27 +1717,30 @@ You configure the registry Operator to deploy its pods to different nodes.
         value: reserved
     ```
 
-    - Add a `nodeSelector` parameter with the appropriate value to the component you want to move. You can use a `nodeSelector` parameter in the format shown or use `<key>: <value>` pairs, based on the value specified for the node. If you added a taint to the infrasructure node, also add a matching toleration.
+    You can use a `nodeSelector` parameter in the format shown or use `<key>: <value>` pairs, based on the value specified for the node. If you added a taint to the infrastructure node, also add a matching toleration.
 
-3.  Verify the registry pod has been moved to the infrastructure node.
+- Verify the registry pod has been moved to the infrastructure node.
 
-    1.  Run the following command to identify the node where the registry pod is located:
+  1.  Identify the node where the registry pod is located by running the following command:
 
-        ``` terminal
-        $ oc get pods -o wide -n openshift-image-registry
-        ```
+      ``` terminal
+      $ oc get pods -o wide -n openshift-image-registry
+      ```
 
-    2.  Confirm the node has the label you specified:
+  2.  Confirm the node has the label you specified:
 
-        ``` terminal
-        $ oc describe node <node_name>
-        ```
+      ``` terminal
+      $ oc describe node <node_name>
+      ```
 
-        Review the command output and confirm that `node-role.kubernetes.io/infra` is in the `LABELS` list.
+      where:
+
+      `<node_name>`
+      Specifies the name of the node that you modified. Review the command output and confirm that `node-role.kubernetes.io/infra` is in the `LABELS` list.
 
 ## Moving the monitoring solution
 
-The monitoring stack includes multiple components, including Prometheus, Thanos Querier, and Alertmanager. The Cluster Monitoring Operator manages this stack. To redeploy the monitoring stack to infrastructure nodes, you can create and apply a custom config map.
+Redeploy the monitoring stack to infrastructure nodes to reduce your subscription requirements. Create and apply a custom config map to move the monitoring stack to infrastructure nodes. The monitoring stack includes Prometheus, Thanos Querier, and Alertmanager, and is managed by the Cluster Monitoring Operator (CMO).
 
 - You have access to the cluster as a user with the `cluster-admin` cluster role.
 
@@ -1795,7 +1748,7 @@ The monitoring stack includes multiple components, including Prometheus, Thanos 
 
 - You have installed the OpenShift CLI (`oc`).
 
-1.  Edit the `cluster-monitoring-config` config map and change the `nodeSelector` to use the `infra` label:
+1.  Edit the `cluster-monitoring-config` config map and change the `nodeSelector` to use the `infra` label by running the following command:
 
     ``` terminal
     $ oc edit configmap cluster-monitoring-config -n openshift-monitoring
@@ -1874,15 +1827,15 @@ The monitoring stack includes multiple components, including Prometheus, Thanos 
             effect: NoSchedule
     ```
 
-    - Add a `nodeSelector` parameter with the appropriate value to the component you want to move. You can use a `nodeSelector` parameter in the format shown or use `<key>: <value>` pairs, based on the value specified for the node. If you added a taint to the infrastructure node, also add a matching toleration.
+    Add a `nodeSelector` parameter with the appropriate value to the component you want to move. You can use a `nodeSelector` parameter in the format shown or use `<key>: <value>` pairs, based on the value specified for the node. If you added a taint to the infrastructure node, also add a matching toleration.
 
-2.  Watch the monitoring pods move to the new machines:
+2.  Watch the monitoring pods move to the new machines by running the following command:
 
     ``` terminal
     $ watch 'oc get pod -n openshift-monitoring -o wide'
     ```
 
-3.  If a component has not moved to the `infra` node, delete the pod with this component:
+3.  If a component has not moved to the `infra` node, delete the pod with this component by running the following command:
 
     ``` terminal
     $ oc delete pod -n openshift-monitoring <pod>
@@ -2281,3 +2234,13 @@ ip-10-0-67-453.us-west-2.compute.internal   Ready    infra                  55m 
 <!-- -->
 
 - [Moving monitoring components to different nodes](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/configuring_core_platform_monitoring/configuring-performance-and-scalability#moving-monitoring-components-to-different-nodes_configuring-performance-and-scalability)
+
+# Additional resources
+
+- [OpenShift sizing and subscription guide for enterprise Kubernetes](https://www.redhat.com/en/resources/openshift-subscription-sizing-guide)
+
+- [Create an infrastructure machine set](../machine_management/creating-infrastructure-machinesets.xml#machineset-creating_creating-infrastructure-machinesets)
+
+- [Label an infrastructure node](../machine_management/creating-infrastructure-machinesets.xml#creating-an-infra-node_creating-infrastructure-machinesets)
+
+- [Use a machine config pool](../machine_management/creating-infrastructure-machinesets.xml#creating-infra-machines_creating-infrastructure-machinesets)

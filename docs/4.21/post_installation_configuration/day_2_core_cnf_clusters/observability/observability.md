@@ -2,7 +2,9 @@ OpenShift Container Platform generates a large amount of data, such as performan
 
 Unless explicitly stated, the material in this document refers to both Edge and Core deployments.
 
-# Understanding the monitoring stack
+# Monitoring stack components
+
+The monitoring stack in OpenShift Container Platform consists of several integrated components that collect, analyze, store, and alert on metrics.
 
 The monitoring stack uses the following components:
 
@@ -311,7 +313,11 @@ OpenShift Container Platform clusters at the edge must keep the footprint of the
     pod/observability-thanos-store-shard-2-0                       1/1     Running   0          1d
     ```
 
-    - A dashboard is accessible at the grafana route listed. You can use this to view metrics across all managed clusters.
+    <div class="note">
+
+    A dashboard is accessible at the grafana route listed. You can use this to view metrics across all managed clusters.
+
+    </div>
 
 For more information on observability in Red Hat Advanced Cluster Management, see [Observability](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.12/html/observability/index).
 
@@ -321,30 +327,28 @@ OpenShift Container Platform includes a large number of alert rules, which can c
 
 ## Viewing default alerts
 
-Review all of the alert rules in a cluster.
+To review all of the alert rules in a cluster, run the following command:
 
-- To review all the alert rules in a cluster, run the following command:
+``` terminal
+$ oc get cm -n openshift-monitoring prometheus-k8s-rulefiles-0 -o yaml
+```
 
-  ``` terminal
-  $ oc get cm -n openshift-monitoring prometheus-k8s-rulefiles-0 -o yaml
-  ```
+Rules can include a description and provide a link to additional information and mitigation steps. For example, see the rule for `etcdHighFsyncDurations`:
 
-  Rules can include a description and provide a link to additional information and mitigation steps. For example, see the rule for `etcdHighFsyncDurations`:
-
-  ``` terminal
-        - alert: etcdHighFsyncDurations
-          annotations:
-            description: 'etcd cluster "{{ $labels.job }}": 99th percentile fsync durations
-              are {{ $value }}s on etcd instance {{ $labels.instance }}.'
-            runbook_url: https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/etcdHighFsyncDurations.md
-            summary: etcd cluster 99th percentile fsync durations are too high.
-          expr: |
-            histogram_quantile(0.99, rate(etcd_disk_wal_fsync_duration_seconds_bucket{job=~".*etcd.*"}[5m]))
-            > 1
-          for: 10m
-          labels:
-            severity: critical
-  ```
+``` terminal
+      - alert: etcdHighFsyncDurations
+        annotations:
+          description: 'etcd cluster "{{ $labels.job }}": 99th percentile fsync durations
+            are {{ $value }}s on etcd instance {{ $labels.instance }}.'
+          runbook_url: https://github.com/openshift/runbooks/blob/master/alerts/cluster-etcd-operator/etcdHighFsyncDurations.md
+          summary: etcd cluster 99th percentile fsync durations are too high.
+        expr: |
+          histogram_quantile(0.99, rate(etcd_disk_wal_fsync_duration_seconds_bucket{job=~".*etcd.*"}[5m]))
+          > 1
+        for: 10m
+        labels:
+          severity: critical
+```
 
 ## Alert notifications
 
@@ -366,7 +370,7 @@ Sends a notification to either a Slack channel or an individual user.
 
 # Workload monitoring
 
-By default, OpenShift Container Platform does not collect metrics for application workloads. You can configure a cluster to collect workload metrics.
+By default, OpenShift Container Platform does not collect metrics for application workloads. You can configure a cluster to collect workload metrics and create alerts for user workloads.
 
 - You have defined endpoints to gather workload metrics on the cluster.
 
@@ -383,7 +387,7 @@ By default, OpenShift Container Platform does not collect metrics for applicatio
         enableUserWorkload: true
     ```
 
-    - Set to `true` to enable workload monitoring.
+    Set `enableUserWorkload` to `true` to enable workload monitoring.
 
 2.  Apply the `ConfigMap` CR by running the following command:
 
@@ -412,9 +416,9 @@ By default, OpenShift Container Platform does not collect metrics for applicatio
           app: ui
     ```
 
-    - Use endpoints to define workload metrics.
+    - `endpoints` specifies the workload metrics endpoints to scrape.
 
-    - Prometheus scrapes the path `/metrics` by default. You can define a custom path here.
+    - `path` specifies a custom scrape path. Prometheus scrapes the `/metrics` path by default.
 
 4.  Apply the `ServiceMonitor` CR by running the following command:
 
@@ -422,35 +426,11 @@ By default, OpenShift Container Platform does not collect metrics for applicatio
     $ oc apply -f monitoringServiceMonitor.yaml
     ```
 
-Prometheus scrapes the `/metrics` path by default. However, you can define a custom path. The vendor of the application must decide whether to expose the endpoint for scraping, with metrics that they deem relevant.
+    The vendor of the application must decide whether to expose the endpoint for scraping, with metrics that they deem relevant.
 
-## Creating a workload alert
+5.  To enable alerts for user workloads, verify that the `cluster-monitoring-config` ConfigMap has `enableUserWorkload: true` set. If you completed step 1, this is already configured.
 
-You can enable alerts for user workloads on a cluster.
-
-1.  Create a `ConfigMap` CR, and save it as `monitoringConfigMap.yaml`, as in the following example:
-
-    ``` yaml
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: cluster-monitoring-config
-      namespace: openshift-monitoring
-    data:
-      config.yaml: |
-        enableUserWorkload: true
-    # ...
-    ```
-
-    - Set to `true` to enable workload monitoring.
-
-2.  Apply the `ConfigMap` CR by running the following command:
-
-    ``` terminal
-    $ oc apply -f monitoringConfigMap.yaml
-    ```
-
-3.  Create a YAML file for alerting rules, `monitoringAlertRule.yaml`, as in the following example:
+6.  Create a YAML file for alerting rules and save it as `monitoringAlertRule.yaml`, as in the following example:
 
     ``` yaml
     apiVersion: monitoring.coreos.com/v1
@@ -467,7 +447,7 @@ You can enable alerts for user workloads on a cluster.
     # ...
     ```
 
-4.  Apply the alert rule by running the following command:
+7.  Apply the alert rule by running the following command:
 
     ``` terminal
     $ oc apply -f monitoringAlertRule.yaml

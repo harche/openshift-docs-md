@@ -2,29 +2,13 @@ To attach a storage device to a virtual machine (VM) without rebooting the VM, y
 
 This also makes it possible to install an operating system from a CD-ROM in the VM.
 
-<div class="important">
-
-Inserting and ejecting CD-ROMs in running VMs is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
 # Inserting a CD-ROM in a live VM by using the command line
 
 To make data on a CD-ROM storage device available to a running virtual machine (VM), create a virtual CD-ROM drive in the VM and insert the CD-ROM into the drive as an ISO image.
 
 Setting up a virtual CD-ROM drive requires rebooting the VM, but afterwards, you can insert and eject ISO images in the drive while the VM is running.
 
-<div class="important">
-
-Inserting and ejecting CD-ROMs in running VMs is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
-- The `DeclarativeHotplugVolumes` feature gate must be enabled. To ensure this, the `HyperConverged` CR must contain the `declarativeHotplugVolumes: true` line in the `spec.featureGates` configuration section:
+- The `DeclarativeHotplugVolumes` feature gate is enabled. To ensure this, the `HyperConverged` CR must contain the `declarativeHotplugVolumes: true` line in the `spec.featureGates` configuration section:
 
   ``` yaml
   apiVersion: hco.kubevirt.io/v1beta1
@@ -37,7 +21,13 @@ For more information about the support scope of Red Hat Technology Preview featu
         declarativeHotplugVolumes: true
   ```
 
-- The `HotplugVolumes` feature gate must be disabled. This feature gate is required for using ephemeral volumes, but is incompatible with `DeclarativeHotplugVolumes`.
+  <div class="note">
+
+  The `DeclarativeHotplugVolumes` feature gate does not support hot plugging ephemeral volumes.
+
+  </div>
+
+- The `HotplugVolumes` feature gate is disabled. It is incompatible with `DeclarativeHotplugVolumes` and is deprecated.
 
   ``` yaml
   apiVersion: hco.kubevirt.io/v1beta1
@@ -114,15 +104,7 @@ To make data on a CD-ROM storage device available to a running virtual machine (
 
 Setting up a virtual CD-ROM drive requires rebooting the VM, but you can insert and eject ISO images in the drive while the VM is running.
 
-<div class="important">
-
-Inserting and ejecting CD-ROMs in running VMs is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
-- The `DeclarativeHotplugVolumes` feature gate must be enabled. To ensure this, the `HyperConverged` CR must contain the `declarativeHotplugVolumes: true` line in the `spec.featureGates` configuration section:
+- The `DeclarativeHotplugVolumes` feature gate is enabled. To ensure this, the `HyperConverged` CR must contain the `declarativeHotplugVolumes: true` line in the `spec.featureGates` configuration section:
 
   ``` yaml
   apiVersion: hco.kubevirt.io/v1beta1
@@ -135,7 +117,13 @@ For more information about the support scope of Red Hat Technology Preview featu
         declarativeHotplugVolumes: true
   ```
 
-- The `HotplugVolumes` feature gate must be disabled. This feature gate is required for using ephemeral volumes, but is incompatible with `DeclarativeHotplugVolumes`.
+  <div class="note">
+
+  The `DeclarativeHotplugVolumes` feature gate does not support hot plugging ephemeral volumes.
+
+  </div>
+
+- The `HotplugVolumes` feature gate is disabled. It is incompatible with `DeclarativeHotplugVolumes` and is deprecated.
 
   ``` yaml
   apiVersion: hco.kubevirt.io/v1beta1

@@ -12,16 +12,13 @@ Some of the following cluster Operators can be disabled prior to installation. F
 
 # Cluster Baremetal Operator
 
-<div class="note">
+The Cluster Baremetal Operator is an optional cluster capability that can be disabled by cluster administrators during installation.
 
-The Cluster Baremetal Operator is an optional cluster capability that can be disabled by cluster administrators during installation. For more information about optional cluster capabilities, see "Cluster capabilities" in *Installing*.
-
-</div>
+For more information about optional cluster capabilities, see "Cluster capabilities".
 
 The Cluster Baremetal Operator (CBO) deploys all the components necessary to take a bare-metal server to a fully functioning worker node ready to run OpenShift Container Platform compute nodes. The CBO ensures that the metal3 deployment, which consists of the Bare Metal Operator (BMO) and Ironic containers, runs on one of the control plane nodes within the OpenShift Container Platform cluster. The CBO also listens for OpenShift Container Platform updates to resources that it watches and takes appropriate action.
 
-## Project
-
+Project
 [cluster-baremetal-operator](https://github.com/openshift/cluster-baremetal-operator)
 
 - [Bare-metal capability](../installing/overview/cluster-capabilities.xml#cluster-bare-metal-operator_cluster-capabilities)
@@ -32,12 +29,10 @@ The Cloud Credential Operator (CCO) manages cloud provider credentials as Kubern
 
 By setting different values for the `credentialsMode` parameter in the `install-config.yaml` file, the CCO can be configured to operate in several different modes. If no mode is specified, or the `credentialsMode` parameter is set to an empty string (`""`), the CCO operates in its default mode.
 
-## Project
+Project
+See "openshift-cloud-credential-operator" in the *Additional resources* section.
 
-[openshift-cloud-credential-operator](https://github.com/openshift/cloud-credential-operator)
-
-## CRDs
-
+CRDs
 - `credentialsrequests.cloudcredential.openshift.io`
 
   - Scope: Namespaced
@@ -46,8 +41,7 @@ By setting different values for the `credentialsMode` parameter in the `install-
 
   - Validation: Yes
 
-## Configuration objects
-
+Configuration objects
 No configuration required.
 
 ## Additional resources
@@ -88,7 +82,7 @@ The Cluster Autoscaler Operator manages deployments of the OpenShift Cluster Aut
 
 The status of this Operator is General Availability for Amazon Web Services (AWS), Google Cloud, IBM Cloud®, global Microsoft Azure, Microsoft Azure Stack Hub, Nutanix, Red Hat OpenStack Platform (RHOSP), and VMware vSphere.
 
-The Operator is available as a [Technology Preview](https://access.redhat.com/support/offerings/techpreview) for IBM Power® Virtual Server.
+The Operator is available as a Technology Preview for IBM Power® Virtual Server.
 
 </div>
 
@@ -102,9 +96,8 @@ The Cloud Controller Manager Operator includes the following components:
 
 By default, the Operator exposes Prometheus metrics through the `metrics` service.
 
-## Project
-
-[cluster-cloud-controller-manager-operator](https://github.com/openshift/cluster-cloud-controller-manager-operator)
+Project
+See "cluster-cloud-controller-manager-operator" in the *Additional resources* section.
 
 # Cluster CAPI Operator
 
@@ -210,17 +203,12 @@ The Cluster Config Operator performs the following tasks related to `config.open
 
 # Cluster CSI Snapshot Controller Operator
 
-<div class="note">
-
 The Cluster CSI Snapshot Controller Operator is an optional cluster capability that can be disabled by cluster administrators during installation. For more information about optional cluster capabilities, see "Cluster capabilities" in *Installing*.
-
-</div>
 
 The Cluster CSI Snapshot Controller Operator installs and maintains the CSI Snapshot Controller. The CSI Snapshot Controller is responsible for watching the `VolumeSnapshot` CRD objects and manages the creation and deletion lifecycle of volume snapshots.
 
-## Project
-
-[cluster-csi-snapshot-controller-operator](https://github.com/openshift/cluster-csi-snapshot-controller-operator)
+Project
+`cluster-csi-snapshot-controller-operator`
 
 - [CSI snapshot controller capability](../installing/overview/cluster-capabilities.xml#cluster-csi-snapshot-controller-operator_cluster-capabilities)
 
@@ -306,11 +294,7 @@ The Cluster Network Operator installs and upgrades the networking components on 
 
 # Cluster Samples Operator
 
-<div class="note">
-
 The Cluster Samples Operator is an optional cluster capability that can be disabled by cluster administrators during installation. For more information about optional cluster capabilities, see "Cluster capabilities" in *Installing*.
-
-</div>
 
 The Cluster Samples Operator manages the sample image streams and templates stored in the `openshift` namespace.
 
@@ -336,9 +320,8 @@ The samples resource includes a finalizer, which cleans up the following upon it
 
 Upon deletion of the samples resource, the Cluster Samples Operator recreates the resource using the default configuration.
 
-## Project
-
-[cluster-samples-operator](https://github.com/openshift/cluster-samples-operator)
+Project
+`cluster-samples-operator`
 
 - [OpenShift samples capability](../installing/overview/cluster-capabilities.xml#cluster-samples-operator_cluster-capabilities)
 
@@ -472,12 +455,10 @@ $ oc edit etcd cluster
 
 The Ingress Operator configures and manages the OpenShift Container Platform router.
 
-## Project
+Project
+`openshift-ingress-operator`
 
-[openshift-ingress-operator](https://github.com/openshift/cluster-ingress-operator)
-
-## CRDs
-
+CRDs
 - `clusteringresses.ingress.openshift.io`
 
   - Scope: Namespaced
@@ -486,8 +467,7 @@ The Ingress Operator configures and manages the OpenShift Container Platform rou
 
   - Validation: No
 
-## Configuration objects
-
+Configuration objects
 - Cluster config
 
   - Type Name: `clusteringresses.ingress.openshift.io`
@@ -500,8 +480,7 @@ The Ingress Operator configures and manages the OpenShift Container Platform rou
     $ oc get clusteringresses.ingress.openshift.io -n openshift-ingress-operator default -o yaml
     ```
 
-## Notes
-
+Notes
 The Ingress Operator sets up the router in the `openshift-ingress` project and creates the deployment for the router:
 
 ``` terminal
@@ -528,24 +507,17 @@ map[cidr:10.128.0.0/14 hostPrefix:23]
 
 # Insights Operator
 
-<div class="note">
-
 The Insights Operator is an optional cluster capability that can be disabled by cluster administrators during installation. For more information about optional cluster capabilities, see "Cluster capabilities" in *Installing*.
-
-</div>
 
 The Insights Operator gathers OpenShift Container Platform configuration data and sends it to Red Hat. The data is used to produce proactive insights recommendations about potential issues that a cluster might be exposed to. These insights are communicated to cluster administrators through the Red Hat Lightspeed advisor service on [console.redhat.com](https://console.redhat.com/).
 
-## Project
+Project
+`insights-operator`
 
-[insights-operator](https://github.com/openshift/insights-operator)
-
-## Configuration
-
+Configuration
 No configuration is required.
 
-## Notes
-
+Notes
 Insights Operator complements OpenShift Container Platform Telemetry.
 
 - [Insights capability](../installing/overview/cluster-capabilities.xml#insights-operator_cluster-capabilities)
@@ -678,17 +650,12 @@ To ensure that the machine config server endpoints, ports 22623 and 22624, are s
 
 # Marketplace Operator
 
-<div class="note">
-
 The Marketplace Operator is an optional cluster capability that can be disabled by cluster administrators if it is not needed. For more information about optional cluster capabilities, see "Cluster capabilities" in *Installing*.
-
-</div>
 
 The Marketplace Operator simplifies the process for bringing off-cluster Operators to your cluster by using a set of default Operator Lifecycle Manager (OLM) catalogs on the cluster. When the Marketplace Operator is installed, it creates the `openshift-marketplace` namespace. OLM ensures catalog sources installed in the `openshift-marketplace` namespace are available for all namespaces on the cluster.
 
-## Project
-
-[operator-marketplace](https://github.com/operator-framework/operator-marketplace)
+Project
+`operator-marketplace`
 
 - [Marketplace capability](../installing/overview/cluster-capabilities.xml#marketplace-operator_cluster-capabilities)
 
@@ -718,9 +685,8 @@ In earlier versions of OpenShift Container Platform, the Performance Addon Opera
 
 </div>
 
-## Project
-
-[cluster-node-tuning-operator](https://github.com/openshift/cluster-node-tuning-operator)
+Project
+`cluster-node-tuning-operator`
 
 ## Additional resources
 

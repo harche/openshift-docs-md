@@ -30,7 +30,7 @@ You can create a Windows `MachineSet` object to serve a specific purpose in your
 
   <div class="formalpara-title">
 
-  **Example Windows Server 2025 command**
+  **Example Windows Server 2019 command**
 
   </div>
 
@@ -43,7 +43,7 @@ You can create a Windows `MachineSet` object to serve a specific purpose in your
   \<aws_region_name\>
   Specifies the name of your AWS region.
 
-- For disconnected clusters, the Windows AMI must have the EC2LaunchV2 agent version 2.0.2107 or later installed. For more information, see the [Install the latest version of EC2Launch v2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2launch-v2-install.html) in the AWS documentation.
+- For disconnected clusters, the Windows AMI must have the EC2LaunchV2 agent version 2.0.2107 or later installed. For more information, see "Install the latest version of EC2Launch v2 (AWS documentation)" in the *Additional references* section.
 
 # Machine API overview
 
@@ -92,7 +92,9 @@ In OpenShift Container Platform version 3.11, you could not roll out a multi-zon
 
 # Sample YAML for a Windows MachineSet object on AWS
 
-This sample YAML defines a Windows `MachineSet` object running on Amazon Web Services (AWS) that the Windows Machine Config Operator (WMCO) can react upon.
+You can add Windows nodes to an Amazon Web Services (AWS) cluster by defining a Windows `MachineSet` object that the Windows Machine Config Operator (WMCO) can react upon.
+
+The following example is a YAML file for creating a `MachineSet` object for AWS.
 
 ``` yaml
 apiVersion: machine.openshift.io/v1beta1
@@ -162,35 +164,65 @@ spec:
             namespace: openshift-machine-api
 ```
 
-- Specify the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. You can obtain the infrastructure ID by running the following command:
+where:
 
-  ``` terminal
-  $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
-  ```
+`metadata.labels`
+For the `machine.openshift.io/cluster-api-cluster` label, replace `<infrastructure_id>` with the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. You can obtain the infrastructure ID by running the following command:
 
-- Specify the infrastructure ID, worker label, and zone.
+``` terminal
+$ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
+```
 
-- Configure the compute machine set as a Windows machine.
+`metadata.name`
+Replace the infrastructure ID, worker label, and zone.
 
-- Configure the Windows node as a compute machine.
+`spec.selector.matchLabels`
+Replace the parameters for the following labels:
 
-- Specify the AMI ID of a supported Windows image with a container runtime installed.
+- `machine.openshift.io/cluster-api-cluster`. Replace the infrastructure ID.
+
+- `machine.openshift.io/cluster-api-machineset`. Replace the infrastructure ID, worker label, and zone.
+
+`spec.template.metadata.labels`
+Replace the parameters for the following labels:
+
+- `machine.openshift.io/cluster-api-cluster`. Replace the infrastructure ID.
+
+- `machine.openshift.io/cluster-api-machineset`. Replace the infrastructure ID, worker label, and zone.
+
+- `machine.openshift.io/os-id: Windows`. When set to `Windows`, configures the compute machine set as a Windows machine.
+
+`spec.template.spec.metadata.labels`
+When set to `node-role.kubernetes.io/worker`, configures the node as a compute machine.
+
+`spec.template.spec.providerSpec`
+Specify the following parameters:
+
+- `value.ami.id`. Specify the AMI ID of a supported Windows image with a container runtime installed.
 
   <div class="note">
 
-  For disconnected clusters, the Windows AMI must have the EC2LaunchV2 agent version 2.0.2107 or later installed. For more information, see the [Install the latest version of EC2Launch v2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2launch-v2-install.html) in the AWS documentation.
+  For disconnected clusters, the Windows AMI must have the EC2LaunchV2 agent version 2.0.2107 or later installed. For more information, see the [Install the latest version of EC2Launch v2 (AWS documentation)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2launch-v2-install.html).
 
   </div>
 
-- Specify the AWS zone, like `us-east-1a`.
+- `value.iamInstanceProfile.id`. Replace the infrastructure ID.
 
-- Specify the AWS region, like `us-east-1`.
+- `value.placement.availabilityZone`. Specifies the AWS zone, such as `us-east-1a`.
 
-- Created by the WMCO when it is configuring the first Windows machine. After that, the `windows-user-data` is available for all subsequent compute machine sets to consume.
+- `value.placement.region`. Specifies the AWS region, such as `us-east-1`.
+
+- `value.securityGroups.filters.values`. Replace the infrastructure ID.
+
+- `value.subnet.filters.values`. Replace the infrastructure ID and zone.
+
+- `value.tags.name`. Replace the infrastructure ID.
+
+- `value.userDataSecret.name`. Specifies the name of the secret in the user data YAML file that is in the `openshift-machine-api` namespace. Use the value that installation program populates in the default compute machine set.
 
 # Creating a compute machine set
 
-In addition to the compute machine sets created by the installation program, you can create your own compute machine sets to dynamically manage the machine compute resources for specific workloads of your choice. Use the OpenShift Container Platform CLI to automate node provisioning.
+To dynamically manage machine compute resources, you can create your own compute machine sets in addition to the compute machine sets created by the installation program. Use the OpenShift Container Platform CLI to automate node provisioning.
 
 - Deploy an OpenShift Container Platform cluster.
 
@@ -318,3 +350,5 @@ In addition to the compute machine sets created by the installation program, you
 # Additional resources
 
 - [Overview of machine management](../../machine_management/index.xml#overview-of-machine-management)
+
+- [Install the latest version of EC2Launch v2 (AWS documentation)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2launch-v2-install.html)

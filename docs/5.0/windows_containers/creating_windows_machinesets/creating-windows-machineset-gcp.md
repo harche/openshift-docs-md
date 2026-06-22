@@ -53,7 +53,9 @@ In OpenShift Container Platform version 3.11, you could not roll out a multi-zon
 
 # Sample YAML for a Windows MachineSet object on Google Cloud
 
-This sample YAML file defines a Windows `MachineSet` object running on Google Cloud that the Windows Machine Config Operator (WMCO) can use.
+You can add Windows nodes to a Google Cloud cluster by defining a Windows `MachineSet` object that the Windows Machine Config Operator (WMCO) can react upon.
+
+The following example is a YAML file for creating a `MachineSet` object for Google Cloud.
 
 ``` yaml
 apiVersion: machine.openshift.io/v1beta1
@@ -112,31 +114,57 @@ spec:
           zone: <zone>
 ```
 
-- Specify the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. You can obtain the infrastructure ID by running the following command:
+where:
 
-  ``` terminal
-  $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
-  ```
+`metadata.labels`
+For the `machine.openshift.io/cluster-api-cluster` label, replace `<infrastructure_id>` with the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. You can obtain the infrastructure ID by running the following command:
 
-- Specify the infrastructure ID, worker label, and zone suffix (such as `a`).
+``` terminal
+$ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
+```
 
-- Configure the machine set as a Windows machine.
+`metadata.name`
+Replace the infrastructure ID, worker label, and zone suffix, such as `a`.
 
-- Configure the Windows node as a compute machine.
+`spec.selector.matchLabels`
+Replace the parameters for the following labels:
 
-- Specify the full path to an image of a supported version of Windows Server.
+- `machine.openshift.io/cluster-api-cluster`. Replace the infrastructure ID.
 
-- Specify the Google Cloud project that this cluster was created in.
+- `machine.openshift.io/cluster-api-machineset`. Replace the infrastructure ID, worker label, and zone suffix.
 
-- Specify the Google Cloud region, such as `us-central1`.
+`spec.template.metadata.labels`
+Replace the parameters for the following labels:
 
-- Created by the WMCO when it configures the first Windows machine. After that, the `windows-user-data` is available for all subsequent machine sets to consume.
+- `machine.openshift.io/cluster-api-cluster`. Replace the infrastructure ID.
 
-- Specify the zone within the chosen region, such as `us-central1-a`.
+- `machine.openshift.io/cluster-api-machineset`. Replace the infrastructure ID, worker label, and zone suffix.
+
+- `machine.openshift.io/os-id: Windows`. When set to `Windows`, configures the compute machine set as a Windows machine.
+
+`spec.template.spec.metadata.labels`
+When set to `node-role.kubernetes.io/worker`, configures the node as a compute machine.
+
+`spec.template.spec.providerSpec`
+Specify the following parameters:
+
+- `value.disks.image`. Specifies the full path to an image of a supported version of Windows Server.
+
+- `value.networkInterfaces.network`. Replace the infrastructure ID.
+
+- `value.networkInterfaces.subnetwork`. Replace the infrastructure ID.
+
+- `value.projectID`. Specifies the Google Cloud project that this cluster was created in.
+
+- `value.region`. Specifies the Google Cloud region, such as `us-central1`.
+
+- `value.userDataSecret.name`. Specifies the name of the secret in the user data YAML file that is in the `openshift-machine-api` namespace. Use the value that installation program populates in the default compute machine set.
+
+- `value.zone`. Specifies the zone within the chosen region, such as `us-central1-a`.
 
 # Creating a compute machine set
 
-In addition to the compute machine sets created by the installation program, you can create your own compute machine sets to dynamically manage the machine compute resources for specific workloads of your choice. Use the OpenShift Container Platform CLI to automate node provisioning.
+To dynamically manage machine compute resources, you can create your own compute machine sets in addition to the compute machine sets created by the installation program. Use the OpenShift Container Platform CLI to automate node provisioning.
 
 - Deploy an OpenShift Container Platform cluster.
 

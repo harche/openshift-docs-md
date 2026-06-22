@@ -316,10 +316,10 @@ Returns the total amount of storage writes (in bytes) of the virtual machine’s
 
 The following queries can track data restored from storage snapshots:
 
-`kubevirt_vmsnapshot_disks_restored_from_source`
+`vm:kubevirt_vmsnapshot_disks_restored:sum`
 Returns the total number of virtual machine disks restored from the source virtual machine. Type: Gauge.
 
-`kubevirt_vmsnapshot_disks_restored_from_source_bytes`
+`vm:kubevirt_vmsnapshot_restored_bytes:sum`
 Returns the amount of space in bytes restored from the source virtual machine. Type: Gauge.
 
 **Examples of storage snapshot data queries**
@@ -327,13 +327,13 @@ Returns the amount of space in bytes restored from the source virtual machine. T
 - The following query returns the total number of virtual machine disks restored from the source virtual machine:
 
   ``` promql
-  kubevirt_vmsnapshot_disks_restored_from_source{vm_name="simple-vm", vm_namespace="default"}
+  vm:kubevirt_vmsnapshot_disks_restored:sum{vm_name="simple-vm", vm_namespace="default"}
   ```
 
 - The following query returns the amount of space in bytes restored from the source virtual machine:
 
   ``` promql
-  kubevirt_vmsnapshot_disks_restored_from_source_bytes{vm_name="simple-vm", vm_namespace="default"}
+  vm:kubevirt_vmsnapshot_restored_bytes:sum{vm_name="simple-vm", vm_namespace="default"}
   ```
 
 The following queries can determine the I/O performance of storage devices:

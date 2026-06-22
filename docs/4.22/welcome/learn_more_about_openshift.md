@@ -325,3 +325,57 @@ OpenShift Container Platform is a platform for developing and deploying containe
 </tr>
 </tbody>
 </table>
+
+# Hosted control planes
+
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Learn about hosted control planes</th>
+<th style="text-align: left;">Optional additional resources</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><a href="../hosted_control_planes/index.xml#hosted-control-planes-overview">Hosted control planes overview</a></p></td>
+<td style="text-align: left;"><p><a href="../hosted_control_planes/index.xml#hosted-control-planes-version-support_hcp-overview">Versioning for hosted control planes</a></p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>Preparing to deploy</p></td>
+<td style="text-align: left;"><ul>
+<li><p><a href="../hosted_control_planes/hcp-prepare/hcp-requirements.xml#hcp-requirements">Requirements for hosted control planes</a></p></li>
+<li><p><a href="../hosted_control_planes/hcp-prepare/hcp-sizing-guidance.xml#hcp-sizing-guidance">Sizing guidance for hosted control planes</a></p></li>
+<li><p><a href="../hosted_control_planes/hcp-prepare/hcp-override-resource-util.xml#hcp-override-resource-util">Overriding resource utilization measurements</a></p></li>
+<li><p><a href="../hosted_control_planes/hcp-prepare/hcp-cli.xml#hcp-cli">Installing the hosted control planes command-line interface</a></p></li>
+<li><p><a href="../hosted_control_planes/hcp-prepare/hcp-distribute-workloads.xml#hcp-distribute-workloads">Distributing hosted cluster workloads</a></p></li>
+<li><p><a href="../hosted_control_planes/hcp-prepare/hcp-enable-disable.xml#hcp-enable-disable">Enabling or disabling the hosted control planes feature</a></p></li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p>Deploying hosted control planes</p></td>
+<td style="text-align: left;"><ul>
+<li><p><a href="../hosted_control_planes/hcp-deploy/hcp-deploy-virt.xml#hcp-deploy-virt">Deploying hosted control planes on OpenShift Virtualization</a></p></li>
+<li><p><a href="../hosted_control_planes/hcp-deploy/hcp-deploy-aws.xml#hcp-deploy-aws">Deploying hosted control planes on AWS</a></p></li>
+<li><p><a href="../hosted_control_planes/hcp-deploy/hcp-deploy-bm.xml#hcp-deploy-bm">Deploying hosted control planes on bare metal</a></p></li>
+<li><p><a href="../hosted_control_planes/hcp-deploy/hcp-deploy-non-bm.xml#hcp-deploy-non-bm">Deploying hosted control planes on non-bare-metal agent machines</a></p></li>
+<li><p><a href="../hosted_control_planes/hcp-deploy/hcp-deploy-ibmz.xml#hcp-deploy-ibmz">Deploying hosted control planes on IBM Z</a></p></li>
+<li><p><a href="../hosted_control_planes/hcp-deploy/hcp-deploy-ibm-power.xml#hcp-deploy-ibm-power">Deploying hosted control planes on IBM Power</a></p></li>
+</ul></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p>Deploying hosted control planes in a disconnected environment</p></td>
+<td style="text-align: left;"><ul>
+<li><p><a href="../hosted_control_planes/hcp-disconnected/hcp-deploy-dc-bm.xml#hcp-deploy-dc-bm">Deploying hosted control planes on bare metal in a disconnected environment</a></p></li>
+<li><p><a href="../hosted_control_planes/hcp-disconnected/hcp-deploy-dc-virt.xml#hcp-deploy-dc-virt">Deploying hosted control planes on OpenShift Virtualization in a disconnected environment</a></p></li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><a href="../hosted_control_planes/hcp-troubleshooting.xml#hcp-troubleshooting">Troubleshooting hosted control planes</a></p></td>
+<td style="text-align: left;"><p><a href="../hosted_control_planes/hcp-troubleshooting.xml#hosted-control-planes-troubleshooting_hcp-troubleshooting">Gathering information to troubleshoot hosted control planes</a></p></td>
+</tr>
+</tbody>
+</table>

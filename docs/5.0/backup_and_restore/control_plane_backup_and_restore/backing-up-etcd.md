@@ -194,11 +194,14 @@ Follow these steps to create a single etcd backup by creating and applying a cus
           - ReadWriteOnce
         resources:
           requests:
-            storage: 200Gi
+            storage: <storage_amount>
         volumeMode: Filesystem
       ```
 
-      - The amount of storage available to the PVC. Adjust this value for your requirements.
+      where:
+
+      `<storage_amount>`
+      Specifies the amount of storage available to the PVC. Adjust this value for your requirements, such as `200Gi`.
 
   2.  Apply the PVC by running the following command:
 
@@ -238,10 +241,13 @@ Follow these steps to create a single etcd backup by creating and applying a cus
         name: etcd-single-backup
         namespace: openshift-etcd
       spec:
-        pvcName: etcd-backup-pvc
+        pvcName: <pvc_name>
       ```
 
-      - The name of the PVC to save the backup to. Adjust this value according to your environment.
+      where:
+
+      `<pvc_name>`
+      Specifies the name of the PVC to save the backup to. Adjust this value according to your environment, such as `etcd-backup-pvc`.
 
   5.  Apply the CR to start a single backup:
 
@@ -277,7 +283,7 @@ Follow these steps to create a single etcd backup by creating and applying a cus
         name: etcd-backup-pv-fs
       spec:
         capacity:
-          storage: 100Gi
+          storage: <storage_amount>
         volumeMode: Filesystem
         accessModes:
         - ReadWriteOnce
@@ -292,12 +298,16 @@ Follow these steps to create a single etcd backup by creating and applying a cus
             - key: kubernetes.io/hostname
                operator: In
                values:
-               - <example_master_node>
+               - <node_name>
       ```
 
-      - The amount of storage available to the PV. Adjust this value for your requirements.
+      where:
 
-      - Replace this value with the node to attach this PV to.
+      `<storage_amount>`
+      Specifies the amount of storage available to the PV. Adjust this value for your requirements, such as `100Gi`.
+
+      `<node_name>`
+      Specifies the node to attach this PV to. Replace with the actual node name, such as `master-0`.
 
   4.  Verify the creation of the PV by running the following command:
 
@@ -330,10 +340,13 @@ Follow these steps to create a single etcd backup by creating and applying a cus
         volumeMode: Filesystem
         resources:
           requests:
-            storage: 10Gi
+            storage: <storage_amount>
       ```
 
-      - The amount of storage available to the PVC. Adjust this value for your requirements.
+      where:
+
+      `<storage_amount>`
+      Specifies the amount of storage available to the PVC. Adjust this value for your requirements, such as `10Gi`.
 
   6.  Apply the PVC by running the following command:
 
@@ -350,10 +363,13 @@ Follow these steps to create a single etcd backup by creating and applying a cus
         name: etcd-single-backup
         namespace: openshift-etcd
       spec:
-        pvcName: etcd-backup-pvc
+        pvcName: <pvc_name>
       ```
 
-      - The name of the persistent volume claim (PVC) to save the backup to. Adjust this value according to your environment.
+      where:
+
+      `<pvc_name>`
+      Specifies the name of the persistent volume claim (PVC) to save the backup to. Adjust this value according to your environment, such as `etcd-backup-pvc`.
 
   8.  Apply the CR to start a single backup:
 

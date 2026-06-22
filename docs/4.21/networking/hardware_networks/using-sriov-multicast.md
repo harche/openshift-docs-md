@@ -4,7 +4,7 @@ Before you perform any tasks in the following documentation, ensure that you [in
 
 # High performance multicast
 
-The OVN-Kubernetes network plugin supports multicast between pods on the default network. This is best used for low-bandwidth coordination or service discovery, and not high-bandwidth applications. For applications such as streaming media, like Internet Protocol television (IPTV) and multipoint videoconferencing, you can utilize Single Root I/O Virtualization (SR-IOV) hardware to provide near-native performance.
+The OVN-Kubernetes network plugin supports multicast between pods on the default network. This is best used for low-bandwidth coordination or service discovery, and not high-bandwidth applications. For applications such as streaming media, such as Internet Protocol television (IPTV) and multipoint videoconferencing, you can use Single Root I/O Virtualization (SR-IOV) hardware to provide near-native performance.
 
 When using additional SR-IOV interfaces for multicast:
 
@@ -14,7 +14,7 @@ When using additional SR-IOV interfaces for multicast:
 
 # Configuring an SR-IOV interface for multicast
 
-The follow procedure creates an example SR-IOV interface for multicast.
+The following procedure creates an example SR-IOV interface for multicast.
 
 - Install the OpenShift CLI (`oc`).
 
@@ -86,4 +86,4 @@ The follow procedure creates an example SR-IOV interface for multicast.
         command: [ "sleep", "infinity"]
     ```
 
-    - The `NET_ADMIN` capability is required only if your application needs to assign the multicast IP address to the SR-IOV interface. Otherwise, it can be omitted.
+    - The `NET_ADMIN` capability is required only if your application needs to assign the multicast IP address to the SR-IOV interface. Otherwise, you can omit it.

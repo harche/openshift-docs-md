@@ -8,9 +8,9 @@ This approach offers several key advantages that enhance the user experience:
 
 - Increased Autonomy and Control: Application owners gain direct control over their network configurations, eliminating the need for a cluster administrator to create `SriovNetwork` objects on their behalf.
 
-- Enhanced Security: By allowing users to manage resources within their own namespaces, the feature improves security and provides better separation between applications. This also helps avoid the unintentional misconfiguration of other applications' NetworkAttachmentDefinition objects.
+- Enhanced Security: By allowing users to manage resources within their own namespaces, the feature improves security and provides better separation between applications. This also helps avoid the unintentional incorrect configuration of other applications' NetworkAttachmentDefinition objects.
 
-- Simplified Permissions: Managing `SriovNetwork` resources directly in their own namespaces simplifies user permissions. This streamlines the workflow and reduces the operational overhead for developers.
+- Simplified Permissions: Managing `SriovNetwork` resources directly in their own namespaces simplifies user permissions. This streamlines the workflow and reduces the operational burden for developers.
 
 ## Configuring SriovNetwork in application namespaces
 
@@ -134,11 +134,7 @@ As an application owner you need to have administrator privileges on the applica
 
     Where `sriov-app` is the application namespace where the `SriovNetwork` object is created.
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following is example output:
 
     ``` terminal
     NAME           AGE

@@ -50,11 +50,11 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
       -a ~/.pull-secret
     ```
 
-    - For `<rhel_version>`, specify the value that corresponds to the version of Red Hat Enterprise Linux (RHEL) that the host uses. If no value is specified, `ccoctl.rhel8` is used by default. The following values are valid:
+    For `<rhel_version>`, specify the value that corresponds to the version of Red Hat Enterprise Linux (RHEL) that the host uses. If no value is specified, `ccoctl.rhel8` is used by default. The following values are valid:
 
-      - `rhel8`: Specify this value for hosts that use RHEL 8.
+    - `rhel8`: Specify this value for hosts that use RHEL 8.
 
-      - `rhel9`: Specify this value for hosts that use RHEL 9.
+    - `rhel9`: Specify this value for hosts that use RHEL 9.
 
     <div class="note">
 

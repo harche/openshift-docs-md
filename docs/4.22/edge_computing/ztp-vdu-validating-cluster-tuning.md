@@ -311,11 +311,7 @@ You can check that clusters are running the correct configuration. The following
     $ oc get operatorhub cluster -o yaml
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following example output shows that all default sources are disabled:
 
     ``` yaml
     spec:
@@ -328,39 +324,27 @@ You can check that clusters are running the correct configuration. The following
     $ oc get catalogsource -A -o jsonpath='{range .items[*]}{.metadata.name}{" -- "}{.metadata.annotations.target\.workload\.openshift\.io/management}{"\n"}{end}'
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     certified-operators -- {"effect": "PreferredDuringScheduling"}
     community-operators -- {"effect": "PreferredDuringScheduling"}
-    ran-operators
+    ran-operators --
     redhat-marketplace -- {"effect": "PreferredDuringScheduling"}
     redhat-operators -- {"effect": "PreferredDuringScheduling"}
     ```
 
-    - `CatalogSource` resources that are not annotated are also returned. In this example, the `ran-operators` `CatalogSource` resource is not annotated and does not have the `PreferredDuringScheduling` annotation.
+    In this output, `CatalogSource` resources that are not annotated are also returned. The `ran-operators` `CatalogSource` resource is not annotated and does not have the `PreferredDuringScheduling` annotation.
 
-      <div class="note">
+    <div class="note">
 
-      In a properly configured vDU cluster, only a single annotated catalog source is listed.
+    In a properly configured vDU cluster, only a single annotated catalog source is listed.
 
-      </div>
+    </div>
 
 3.  Check that all applicable OpenShift Container Platform Operator namespaces are annotated for workload partitioning. This includes all Operators installed with core OpenShift Container Platform and the set of additional Operators included in the reference DU tuning configuration. Run the following command:
 
     ``` terminal
     $ oc get namespaces -A -o jsonpath='{range .items[*]}{.metadata.name}{" -- "}{.metadata.annotations.workload\.openshift\.io/allowed}{"\n"}{end}'
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     default --
@@ -383,12 +367,6 @@ You can check that clusters are running the correct configuration. The following
         ``` terminal
         $ oc get -n openshift-logging ClusterLogForwarder instance -o yaml
         ```
-
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
 
         ``` yaml
         apiVersion: logging.openshift.io/v1
@@ -428,12 +406,6 @@ You can check that clusters are running the correct configuration. The following
         $ oc get -n openshift-logging clusterloggings.logging.openshift.io instance -o yaml
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
-
         ``` yaml
         apiVersion: logging.openshift.io/v1
         kind: ClusterLogging
@@ -463,12 +435,6 @@ You can check that clusters are running the correct configuration. The following
     $ oc get consoles.operator.openshift.io cluster -o jsonpath="{ .spec.managementState }"
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     Removed
     ```
@@ -488,12 +454,6 @@ You can check that clusters are running the correct configuration. The following
     ``` terminal
     sh-4.4# systemctl status chronyd
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     ● chronyd.service - NTP client/server
@@ -516,12 +476,6 @@ You can check that clusters are running the correct configuration. The following
         ``` terminal
         $ oc -n openshift-ptp rsh -c linuxptp-daemon-container ${PTP_POD_NAME} pmc -u -f /var/run/ptp4l.0.config -b 0 'GET PORT_DATA_SET'
         ```
-
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
 
         ``` terminal
         sending: GET PORT_DATA_SET
@@ -555,12 +509,6 @@ You can check that clusters are running the correct configuration. The following
         $ oc -n openshift-ptp rsh -c linuxptp-daemon-container ${PTP_POD_NAME} pmc -u -f /var/run/ptp4l.0.config -b 0 'GET TIME_STATUS_NP'
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
-
         ``` terminal
         sending: GET TIME_STATUS_NP
           3cecef.fffe.7a7020-0 seq 0 RESPONSE MANAGEMENT TIME_STATUS_NP
@@ -574,21 +522,17 @@ You can check that clusters are running the correct configuration. The following
             gmIdentity                 3c2c30.ffff.670e00
         ```
 
+        In this output:
+
         - `master_offset` should be between -100 and 100 ns.
 
-        - Indicates that the PTP clock is synchronized to a master, and the local clock is not the grandmaster clock.
+        - `gmPresent` indicates that the PTP clock is synchronized to a primary clock, and the local clock is not the grandmaster clock.
 
     4.  Check that the expected `master offset` value corresponding to the value in `/var/run/ptp4l.0.config` is found in the `linuxptp-daemon-container` log:
 
         ``` terminal
         $ oc logs $PTP_POD_NAME -n openshift-ptp -c linuxptp-daemon-container
         ```
-
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
 
         ``` terminal
         phc2sys[56020.341]: [ptp4l.1.config] CLOCK_REALTIME phc offset  -1731092 s2 freq -1546242 delay    497
@@ -604,12 +548,6 @@ You can check that clusters are running the correct configuration. The following
         $ oc get sriovoperatorconfig -n openshift-sriov-network-operator default -o jsonpath="{.spec.disableDrain}{'\n'}"
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
-
         ``` terminal
         true
         ```
@@ -620,12 +558,6 @@ You can check that clusters are running the correct configuration. The following
         $ oc get SriovNetworkNodeStates -n openshift-sriov-network-operator -o jsonpath="{.items[*].status.syncStatus}{'\n'}"
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
-
         ``` terminal
         Succeeded
         ```
@@ -635,12 +567,6 @@ You can check that clusters are running the correct configuration. The following
         ``` terminal
         $ oc get SriovNetworkNodeStates -n openshift-sriov-network-operator -o yaml
         ```
-
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
 
         ``` yaml
         apiVersion: v1
@@ -699,12 +625,6 @@ You can check that clusters are running the correct configuration. The following
     ``` terminal
     $ oc get PerformanceProfile openshift-node-performance-profile -o yaml
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` yaml
     apiVersion: performance.openshift.io/v2
@@ -774,12 +694,6 @@ You can check that clusters are running the correct configuration. The following
     $ oc get performanceprofile openshift-node-performance-profile -o jsonpath="{range .status.conditions[*]}{ @.type }{' -- '}{@.status}{'\n'}{end}"
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     Available -- True
     Upgradeable -- True
@@ -792,12 +706,6 @@ You can check that clusters are running the correct configuration. The following
     ``` terminal
     $ oc get tuneds.tuned.openshift.io -n openshift-cluster-node-tuning-operator performance-patch -o yaml
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` yaml
     apiVersion: tuned.openshift.io/v1
@@ -832,19 +740,13 @@ You can check that clusters are running the correct configuration. The following
         profile: performance-patch
     ```
 
-    - The cpu list in `cmdline=nohz_full=` will vary based on your hardware configuration.
+    The CPU list in `cmdline=nohz_full=` will vary based on your hardware configuration.
 
 12. Check that cluster networking diagnostics are disabled by running the following command:
 
     ``` terminal
     $ oc get networks.operator.openshift.io cluster -o jsonpath='{.spec.disableNetworkDiagnostics}'
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     true
@@ -856,12 +758,6 @@ You can check that clusters are running the correct configuration. The following
     $ oc describe machineconfig container-mount-namespace-and-kubelet-conf-master | grep OPENSHIFT_MAX_HOUSEKEEPING_INTERVAL_DURATION
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     Environment="OPENSHIFT_MAX_HOUSEKEEPING_INTERVAL_DURATION=60s"
     ```
@@ -871,12 +767,6 @@ You can check that clusters are running the correct configuration. The following
     ``` terminal
     $ oc get configmap cluster-monitoring-config -n openshift-monitoring -o jsonpath="{ .data.config\.yaml }"
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     grafana:
@@ -904,12 +794,6 @@ You can check that clusters are running the correct configuration. The following
     ``` terminal
     $ oc get performanceprofile -o jsonpath="{ .items[0].spec.cpu.reserved }"
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     0-3

@@ -1387,17 +1387,6 @@ The `BareMetalHost` resource contains two sections:
 
 2.  The `BareMetalHost` status
 
-Hardware data is available in the `status.hardware` section of the `BareMetalHost` object and in the `HardwareData` object. You can access the `HardwareData` object by running the following command:
-
-``` terminal
-$ oc get hardwaredata <machine_name> -n openshift-machine-api
-```
-
-where:
-
-`<machine_name>`
-Specifies the name of a bare-metal host.
-
 ### The `BareMetalHost` spec
 
 The `spec` section of the `BareMetalHost` resource defines the desired state of the host.

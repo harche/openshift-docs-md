@@ -304,7 +304,7 @@ For more information, see "Applying existing AWS security groups to the cluster"
 
 # Manually creating the installation configuration file
 
-To customise your OpenShift Container Platform deployment and meet specific network requirements, manually create the installation configuration file. This ensures that the installation program uses your tailored settings rather than default values during the setup process.
+Installing the cluster requires that you manually create the installation configuration file.
 
 - You have an SSH public key on your local machine for use with the installation program. You can use the key for SSH authentication onto your cluster nodes for debugging and disaster recovery.
 
@@ -506,7 +506,7 @@ platform:
 
 ## Configuring the cluster-wide proxy during installation
 
-To enable internet access in environments that deny direct connections, configure a cluster-wide proxy in the `install-config.yaml` file. This configuration ensures that the new OpenShift Container Platform cluster routes traffic through the specified HTTP or HTTPS proxy.
+Production environments can deny direct access to the internet and instead have an HTTP or HTTPS proxy available. You can configure a new OpenShift Container Platform cluster to use a proxy by configuring the proxy settings in the `install-config.yaml` file.
 
 - You have an existing `install-config.yaml` file.
 
@@ -923,11 +923,11 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
       -a ~/.pull-secret
     ```
 
-    - For `<rhel_version>`, specify the value that corresponds to the version of Red Hat Enterprise Linux (RHEL) that the host uses. If no value is specified, `ccoctl.rhel8` is used by default. The following values are valid:
+    For `<rhel_version>`, specify the value that corresponds to the version of Red Hat Enterprise Linux (RHEL) that the host uses. If no value is specified, `ccoctl.rhel8` is used by default. The following values are valid:
 
-      - `rhel8`: Specify this value for hosts that use RHEL 8.
+    - `rhel8`: Specify this value for hosts that use RHEL 8.
 
-      - `rhel9`: Specify this value for hosts that use RHEL 9.
+    - `rhel9`: Specify this value for hosts that use RHEL 9.
 
     <div class="note">
 
@@ -1020,17 +1020,22 @@ You must have:
       --to=<path_to_directory_for_credentials_requests>
     ```
 
-    - The `--included` parameter includes only the manifests that your specific cluster configuration requires.
+    where:
 
-    - Specify the location of the `install-config.yaml` file.
+    `--included`
+    Specifies to include only the manifests that your specific cluster configuration requires.
 
-    - Specify the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
+    `<path_to_directory_with_installation_configuration>`
+    Specifies the location of the `install-config.yaml` file.
 
-      <div class="note">
+    `<path_to_directory_for_credentials_requests>`
+    Specifies the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
 
-      This command might take a few moments to run.
+    <div class="note">
 
-      </div>
+    This command might take a few moments to run.
+
+    </div>
 
 3.  Use the `ccoctl` tool to process all `CredentialsRequest` objects by running the following command:
 
@@ -1044,23 +1049,31 @@ You must have:
       --permissions-boundary-arn=<policy_arn>
     ```
 
-    - Specify the name used to tag any cloud resources that are created for tracking.
+    where:
 
-    - Specify the AWS region in which cloud resources will be created.
+    `<name>`
+    Specifies the name used to tag any cloud resources that are created for tracking.
 
-    - Specify the directory containing the files for the component `CredentialsRequest` objects.
+    `<aws_region>`
+    Specifies the AWS region in which cloud resources will be created.
 
-    - Optional: Specify the directory in which you want the `ccoctl` utility to create objects. By default, the utility creates objects in the directory in which the commands are run.
+    `<path_to_credentials_requests_directory>`
+    Specifies the directory containing the files for the component `CredentialsRequest` objects.
 
-    - Optional: By default, the `ccoctl` utility stores the OpenID Connect (OIDC) configuration files in a public S3 bucket and uses the S3 URL as the public OIDC endpoint. To store the OIDC configuration in a private S3 bucket that is accessed by the IAM identity provider through a public CloudFront distribution URL instead, use the `--create-private-s3-bucket` parameter.
+    `<path_to_ccoctl_output_dir>`
+    Specifies the directory in which you want the `ccoctl` utility to create objects. By default, the utility creates objects in the directory in which the commands are run. This parameter is optional.
 
-    - Optional: Specify the Amazon Resource Name (ARN) of the AWS IAM policy to use as the permissions boundary for the IAM roles created by the `ccoctl` utility.
+    `--create-private-s3-bucket`
+    Specifies that the OpenID Connect (OIDC) configuration files should be stored in a private S3 bucket that is accessed by the IAM identity provider through a public CloudFront distribution URL. Note that by default, the `ccoctl` utility stores the OIDC configuration files in a public S3 bucket and uses the S3 URL as the public OIDC endpoint. This parameter is optional.
 
-      <div class="note">
+    `<policy_arn>`
+    Specifies the Amazon Resource Name (ARN) of the AWS IAM policy to use as the permissions boundary for the IAM roles created by the `ccoctl` utility. This parameter is optional.
 
-      If your cluster uses Technology Preview features that are enabled by the `TechPreviewNoUpgrade` feature set, you must include the `--enable-tech-preview` parameter.
+    <div class="note">
 
-      </div>
+    If your cluster uses Technology Preview features that are enabled by the `TechPreviewNoUpgrade` feature set, you must include the `--enable-tech-preview` parameter.
+
+    </div>
 
 - To verify that the OpenShift Container Platform secrets are created, list the files in the `<path_to_ccoctl_output_dir>/manifests` directory:
 

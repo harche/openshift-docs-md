@@ -22,7 +22,7 @@ After adding the `NoSchedule` taint on the infrastructure node, existing DNS pod
 
 # OpenShift Container Platform infrastructure components
 
-You can review the following information to understand which components you can move to an infrastructure node. Components that you move to an infrastructure node do not need to be accounted for during sizing.
+To reduce subscription costs, you can review the following information to understand which components you can move to an infrastructure node. Components that you move to an infrastructure node do not need to be accounted for during sizing.
 
 Each self-managed Red Hat OpenShift subscription includes entitlements for OpenShift Container Platform and other OpenShift-related components. These entitlements are included for running OpenShift Container Platform control plane and infrastructure workloads and do not need to be accounted for during sizing.
 
@@ -56,51 +56,49 @@ To qualify as an infrastructure node and use the included entitlement, only comp
 
 Any node that runs any other container, pod, or component is a worker node that your subscription must cover.
 
-For information about infrastructure nodes and which components can run on infrastructure nodes, see the "Red Hat OpenShift control plane and infrastructure nodes" section in the [OpenShift sizing and subscription guide for enterprise Kubernetes](https://www.redhat.com/en/resources/openshift-subscription-sizing-guide) document.
+For information about infrastructure nodes and which components can run on infrastructure nodes, see the "Red Hat OpenShift control plane and infrastructure nodes" section in the OpenShift sizing and subscription guide for enterprise Kubernetes document.
 
 ## Creating an infrastructure node
 
-You can use labels to configure compute nodes as infrastructure nodes, where you can move infrastructure resources. After you create the infrastructure nodes, you can move appropriate workloads to those nodes by using taints and tolerations.
+To reduce subscription costs, you can use labels to configure compute nodes as infrastructure nodes, where you can move infrastructure resources.
 
-<div class="important">
-
-See "Creating infrastructure machine sets" for installer-provisioned infrastructure environments or for any cluster where the control plane nodes are managed by the machine API.
-
-</div>
+After you create the infrastructure nodes, you can move appropriate workloads to those nodes by using taints and tolerations.
 
 You can optionally create a default cluster-wide node selector. The default node selector is applied to pods created in all namespaces and creates an intersection with any existing node selectors on a pod, which additionally constrains the pod’s selector.
 
 <div class="important">
 
-If the default node selector key conflicts with the key of a pod’s label, then the default node selector is not applied.
+- See "Creating infrastructure machine sets" for installer-provisioned infrastructure environments or for any cluster where the control plane nodes are managed by the Machine API.
 
-However, do not set a default node selector that might cause a pod to become unschedulable. For example, setting the default node selector to a specific node role, such as `node-role.kubernetes.io/infra=""`, when a pod’s label is set to a different node role, such as `node-role.kubernetes.io/master=""`, can cause the pod to become unschedulable. For this reason, use caution when setting the default node selector to specific node roles.
+- If the default node selector key conflicts with the key of a pod’s label, then the default node selector is not applied.
 
-You can alternatively use a project node selector to avoid cluster-wide node selector key conflicts.
+  However, do not set a default node selector that might cause a pod to become unschedulable. For example, setting the default node selector to a specific node role, such as `node-role.kubernetes.io/infra=""`, when a pod’s label is set to a different node role, such as `node-role.kubernetes.io/master=""`, can cause the pod to become unschedulable. For this reason, use caution when setting the default node selector to specific node roles.
+
+  You can alternatively use a project node selector to avoid cluster-wide node selector key conflicts.
 
 </div>
 
-1.  Add a label to the compute nodes that you want to act as infrastructure nodes:
+1.  Add a label to the compute nodes that you want to act as infrastructure nodes by running the following command:
 
     ``` terminal
     $ oc label node <node-name> node-role.kubernetes.io/infra=""
     ```
 
-2.  Check to see if applicable nodes now have the `infra` role:
+2.  Check to see if applicable nodes now have the `infra` role by running the following command:
 
     ``` terminal
     $ oc get nodes
     ```
 
-3.  Optional: Create a default cluster-wide node selector:
+3.  Optional: Create a default cluster-wide node selector.
 
-    1.  Edit the `Scheduler` object:
+    1.  Edit the `Scheduler` object by running the following command:
 
         ``` terminal
         $ oc edit scheduler cluster
         ```
 
-    2.  Add the `defaultNodeSelector` field with the appropriate node selector:
+    2.  Add the `defaultNodeSelector` field with the appropriate node selector by running the following command:
 
         ``` yaml
         apiVersion: config.openshift.io/v1
@@ -116,7 +114,7 @@ You can alternatively use a project node selector to avoid cluster-wide node sel
 
     3.  Save the file to apply the changes.
 
-    You can now move infrastructure resources to the new infrastructure nodes. Also, remove any workloads that you do not want, or that do not belong, on the new infrastructure node. See the list of workloads supported for use on infrastructure nodes in "OpenShift Container Platform infrastructure components".
+    You can now move infrastructure resources to the new infrastructure nodes and remove any workloads that you do not want, or that do not belong, on the new infrastructure node. See the list of workloads supported for use on infrastructure nodes in "OpenShift Container Platform infrastructure components".
 
 # Additional resources
 

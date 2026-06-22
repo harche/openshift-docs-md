@@ -53,7 +53,9 @@ In OpenShift Container Platform version 3.11, you could not roll out a multi-zon
 
 # Sample YAML for a Windows MachineSet object on Azure
 
-This sample YAML defines a Windows `MachineSet` object running on Microsoft Azure that the Windows Machine Config Operator (WMCO) can react upon.
+You can add Windows nodes to an Microsoft Azure cluster by defining a Windows `MachineSet` object that the Windows Machine Config Operator (WMCO) can react upon.
+
+The following example is a YAML file for creating a `MachineSet` object for Azure.
 
 ``` yaml
 apiVersion: machine.openshift.io/v1beta1
@@ -112,29 +114,55 @@ spec:
           zone: "<zone>"
 ```
 
-- Specify the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. You can obtain the infrastructure ID by running the following command:
+where:
 
-  ``` terminal
-  $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
-  ```
+`metadata.labels`
+For the `machine.openshift.io/cluster-api-cluster` label, replace `<infrastructure_id>` with the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. You can obtain the infrastructure ID by running the following command:
 
-- Specify the Windows compute machine set name. Windows machine names on Azure cannot be more than 15 characters long. Therefore, the compute machine set name cannot be more than 9 characters long, due to the way machine names are generated from it.
+``` terminal
+$ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
+```
 
-- Configure the compute machine set as a Windows machine.
+`metadata.name`
+Replace `<windows_machine_set_name>` with the Windows compute machine set name. Windows machine names on Azure cannot be more than 15 characters long. Therefore, the compute machine set name cannot be more than 9 characters long, due to the way machine names are generated from it.
 
-- Configure the Windows node as a compute machine.
+`spec.selector.matchLabels`
+Replace the parameters for the following labels:
 
-- Specify a `WindowsServer` image offering that defines the `2019-Datacenter-with-Containers` SKU.
+- `machine.openshift.io/cluster-api-cluster`. Replace the infrastructure ID.
 
-- Specify the Azure region, like `centralus`.
+- `machine.openshift.io/cluster-api-machineset`. Replace the Windows compute machine set name.
 
-- Created by the WMCO when it is configuring the first Windows machine. After that, the `windows-user-data` is available for all subsequent compute machine sets to consume.
+`spec.template.metadata.labels`
+Replace the parameters for the following labels:
 
-- Specify the zone within your region to place machines on. Be sure that your region supports the zone that you specify.
+- `machine.openshift.io/cluster-api-cluster`. Replace the infrastructure ID.
+
+- `machine.openshift.io/cluster-api-machineset`. Replace the Windows compute machine set name.
+
+- `machine.openshift.io/os-id: Windows`. When set to `Windows`, configures the compute machine set as a Windows machine.
+
+`spec.template.spec.metadata.labels`
+When set to `node-role.kubernetes.io/worker`, configures the node as a compute machine.
+
+`spec.template.spec.providerSpec`
+Specify the following parameters:
+
+- `value.image`. Specifies a `WindowsServer` image offering that defines the `2019-Datacenter-with-Containers` SKU.
+
+- `value.location`. Specifies the Azure region, such as `centralus`.
+
+- `value.networkResourceGroup`. Replace the infrastructure ID.
+
+- `value.resourceGroup`. Replace the infrastructure ID.
+
+- `value.userDataSecret.name`. Specifies the name of the secret in the user data YAML file that is in the `openshift-machine-api` namespace. Use the value that installation program populates in the default compute machine set.
+
+- `value.zone`. Specifies the zone within your region to place machines on. Be sure that your region supports the zone that you specify.
 
 # Creating a compute machine set
 
-In addition to the compute machine sets created by the installation program, you can create your own compute machine sets to dynamically manage the machine compute resources for specific workloads of your choice. Use the OpenShift Container Platform CLI to automate node provisioning.
+To dynamically manage machine compute resources, you can create your own compute machine sets in addition to the compute machine sets created by the installation program. Use the OpenShift Container Platform CLI to automate node provisioning.
 
 - Deploy an OpenShift Container Platform cluster.
 

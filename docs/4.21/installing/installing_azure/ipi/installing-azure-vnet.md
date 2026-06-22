@@ -573,7 +573,7 @@ Specifies parameters that apply to the infrastructure platform that hosts the cl
 
 ## Configuring the cluster-wide proxy during installation
 
-To enable internet access in environments that deny direct connections, configure a cluster-wide proxy in the `install-config.yaml` file. This configuration ensures that the new OpenShift Container Platform cluster routes traffic through the specified HTTP or HTTPS proxy.
+Production environments can deny direct access to the internet and instead have an HTTP or HTTPS proxy available. You can configure a new OpenShift Container Platform cluster to use a proxy by configuring the proxy settings in the `install-config.yaml` file.
 
 - You have an existing `install-config.yaml` file.
 
@@ -883,11 +883,11 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
       -a ~/.pull-secret
     ```
 
-    - For `<rhel_version>`, specify the value that corresponds to the version of Red Hat Enterprise Linux (RHEL) that the host uses. If no value is specified, `ccoctl.rhel8` is used by default. The following values are valid:
+    For `<rhel_version>`, specify the value that corresponds to the version of Red Hat Enterprise Linux (RHEL) that the host uses. If no value is specified, `ccoctl.rhel8` is used by default. The following values are valid:
 
-      - `rhel8`: Specify this value for hosts that use RHEL 8.
+    - `rhel8`: Specify this value for hosts that use RHEL 8.
 
-      - `rhel9`: Specify this value for hosts that use RHEL 9.
+    - `rhel9`: Specify this value for hosts that use RHEL 9.
 
     <div class="note">
 
@@ -972,17 +972,22 @@ You must have:
       --to=<path_to_directory_for_credentials_requests>
     ```
 
-    - The `--included` parameter includes only the manifests that your specific cluster configuration requires.
+    where:
 
-    - Specify the location of the `install-config.yaml` file.
+    `--included`
+    Specifies to include only the manifests that your specific cluster configuration requires.
 
-    - Specify the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
+    `<path_to_directory_with_installation_configuration>`
+    Specifies the location of the `install-config.yaml` file.
 
-      <div class="note">
+    `<path_to_directory_for_credentials_requests>`
+    Specifies the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
 
-      This command might take a few moments to run.
+    <div class="note">
 
-      </div>
+    This command might take a few moments to run.
+
+    </div>
 
 3.  To enable the `ccoctl` utility to detect your Azure credentials automatically, log in to the Azure CLI by running the following command:
 
@@ -1005,31 +1010,42 @@ You must have:
       --preserve-existing-roles
     ```
 
-    - Specify the user-defined name for all created Azure resources used for tracking.
+    where:
 
-    - Optional: Specify the directory in which you want the `ccoctl` utility to create objects. By default, the utility creates objects in the directory in which the commands are run.
+    `<azure_infra_name>`
+    Specifies the user-defined name for all created Azure resources used for tracking.
 
-    - Specify the Azure region in which cloud resources will be created.
+    `<ccoctl_output_dir>`
+    Specifies the directory in which you want the `ccoctl` utility to create objects. By default, the utility creates objects in the directory in which the commands are run. This parameter is optional.
 
-    - Specify the Azure subscription ID to use.
+    `<azure_region>`
+    Specifies the Azure region in which cloud resources will be created.
 
-    - Specify the directory containing the files for the component `CredentialsRequest` objects.
+    `<azure_subscription_id>`
+    Specifies the Azure subscription ID to use.
 
-    - Specify the name of the resource group containing the cluster’s base domain Azure DNS zone.
+    `<path_to_credentials_requests_directory>`
+    Specifies the directory containing the files for the component `CredentialsRequest` objects.
 
-    - Specify the Azure tenant ID to use.
+    `<azure_dns_zone_resource_group_name>`
+    Specifies the name of the resource group containing the cluster’s base domain Azure DNS zone.
 
-    - Optional: Specify the virtual network resource group if it is different from the cluster resource group.
+    `<azure_tenant_id>`
+    Specifies the Azure tenant ID to use.
 
-    - Optional: Specify this flag to ensure that any custom role assignments you define on managed identities are not removed during OpenShift Container Platform updates.
+    `<azure_resource_group>`
+    Specifies the virtual network resource group if it is different from the cluster resource group. This parameter is optional.
 
-      <div class="note">
+    `--preserve-existing-roles`
+    Specifies that any custom role assignments you define on managed identities are not removed during OpenShift Container Platform updates. This parameter is optional.
 
-      If your cluster uses Technology Preview features that are enabled by the `TechPreviewNoUpgrade` feature set, you must include the `--enable-tech-preview` parameter.
+    <div class="note">
 
-      To see additional optional parameters and explanations of how to use them, run the `azure create-all --help` command.
+    If your cluster uses Technology Preview features that are enabled by the `TechPreviewNoUpgrade` feature set, you must include the `--enable-tech-preview` parameter.
 
-      </div>
+    To see additional optional parameters and explanations of how to use them, run the `azure create-all --help` command.
+
+    </div>
 
 - To verify that the OpenShift Container Platform secrets are created, list the files in the `<path_to_ccoctl_output_dir>/manifests` directory:
 

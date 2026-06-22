@@ -10,7 +10,7 @@ Hot unplugging is not supported for Single Root I/O Virtualization (SR-IOV) inte
 
 Each VirtIO interface uses one of the limited Peripheral Connect Interface (PCI) slots in the VM. There are a total of 32 slots available. The PCI slots are also used by other devices and must be reserved in advance, therefore slots might not be available on-demand.
 
-OpenShift Virtualization reserves up to four slots for hot plugging interfaces. This includes any existing plugged network interfaces. For example, if your VM has two existing plugged interfaces, you can hot plug two more network interfaces.
+OpenShift Virtualization reserves up to six slots for hot plugging interfaces.
 
 <div class="note">
 

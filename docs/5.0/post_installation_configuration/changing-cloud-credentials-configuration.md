@@ -1514,7 +1514,7 @@ You can verify that a cluster uses short-term security credentials for individua
     -o jsonpath=''
   ```
 
-  An output that contains the `azure_client_id` and `azure_federated_token_file` felids confirms that the components are assuming the Azure client ID.
+  An output that contains the `azure_client_id` and `azure_federated_token_file` fields confirms that the components are assuming the Azure client ID.
 
 - Azure clusters: Verify that the pod identity webhook is running by running the following command:
 

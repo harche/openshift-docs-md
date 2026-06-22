@@ -35,10 +35,11 @@ This procedure applies only to Mellanox devices.
       nodeSelector:
         matchLabels:
           node-role.kubernetes.io/worker: ""
-      rdmaMode: exclusive
+      rdmaMode: <rdma_mode>
     ```
 
-    - Set RDMA network namespace mode to `exclusive`.
+    `spec.rdmaMode`
+    Specifies the RDMA network namespace mode. Set to `exclusive`.
 
 2.  Create the `SriovNetworkPoolConfig` resource by running the following command:
 
@@ -62,7 +63,7 @@ This procedure applies only to Mellanox devices.
       namespace: openshift-sriov-network-operator
     spec:
       deviceType: netdevice
-      isRdma: true
+      isRdma: <is_rdma>
       nicSelector:
         pfNames: ["ens3f0np0"]
       nodeSelector:
@@ -72,7 +73,8 @@ This procedure applies only to Mellanox devices.
       resourceName: sriov_nic_pf1
     ```
 
-    - Activate RDMA mode.
+    `spec.isRdma`
+    Specifies whether to activate RDMA mode. Set to `true`.
 
 4.  Create the `SriovNetworkNodePolicy` resource by running the following command:
 
@@ -100,11 +102,12 @@ This procedure applies only to Mellanox devices.
         ipam: |-
       metaPlugins: |
         {
-          "type": "rdma"
+          "type": "<plugin_type>"
         }
     ```
 
-    - Create the RDMA plugin.
+    `spec.metaPlugins.type`
+    Specifies the type of meta plugin. Set to `rdma` to create the RDMA plugin.
 
 6.  Create the `SriovNetwork` resource by running the following command:
 

@@ -2063,6 +2063,7 @@
   - [Using DPDK with SR-IOV](virt/vm_networking/virt-using-dpdk-with-sriov.md)
   - [Connecting a VM to an OVN-Kubernetes layer 2 secondary network](virt/vm_networking/virt-connecting-vm-to-ovn-secondary-network.md)
   - [Hot plugging secondary network interfaces](virt/vm_networking/virt-hot-plugging-network-interfaces.md)
+  - [Hot swapping a virtual machine secondary network](virt/vm_networking/virt-hot-swap-vm-secondary-network.md)
   - [Setting VM interface link state](virt/vm_networking/virt-setting-interface-link-state.md)
   - [Connecting a VM to a service mesh](virt/vm_networking/virt-connecting-vm-to-service-mesh.md)
   - [Configuring physical networks](virt/vm_networking/virt-configuring-physical-networks.md)
