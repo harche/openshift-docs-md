@@ -1,4 +1,4 @@
-RHEL images are golden images. They are published as container disks in a secure registry. The Containerized Data Importer (CDI) polls and imports the container disks into your cluster and stores them in the `openshift-virtualization-os-images` project as snapshots or persistent volume claims (PVCs). You can optionally use a custom namespace for golden images.
+RHEL golden images are published as container disks in a secure registry. The Containerized Data Importer (CDI) polls imports golden images into your cluster and stores them in the `openshift-virtualization-os-images` project as snapshots or persistent volume claims (PVCs).
 
 RHEL images are automatically updated. You can disable and re-enable automatic updates for these images. For more information, see "Additional resources".
 

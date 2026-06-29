@@ -2,6 +2,8 @@ Before you deploy an OpenShift Container Platform cluster on Microsoft Azure, yo
 
 # Available installation configuration parameters for Azure
 
+To customize your cluster installation, configuration parameters are available to use in the `install-config.yaml` file.
+
 The following tables specify the required, optional, and Azure-specific installation configuration parameters that you can set as part of the installation process.
 
 <div class="important">

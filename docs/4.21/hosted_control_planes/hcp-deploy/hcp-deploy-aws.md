@@ -44,7 +44,7 @@ To ensure successful deployment of hosted control planes on Amazon Web Services 
 
 - [Manually enabling the hosted control planes feature](../../hosted_control_planes/hcp-prepare/hcp-enable-disable.xml#hcp-enable-manual_hcp-enable-disable)
 
-- [Disabling the hosted control planes feature](../../hosted_control_planes/hcp-prepare/hcp-enable-disable.xml#hcp-disable_hcp-enable-disable)
+- [Disabling the hosted control planes feature](../../hosted_control_planes/hcp-prepare/hcp-enable-disable.xml#hcp-disable-feature_hcp-enable-disable)
 
 - [Deploying the SR-IOV Operator for hosted control planes](../../networking/networking_operators/sr-iov-operator/configuring-sriov-operator.xml#sriov-operator-hosted-control-planes_configuring-sriov-operator)
 

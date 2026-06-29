@@ -133,11 +133,16 @@ The `spec.template.spec.providerSpec.value.zone` specifies the zone within your 
 `<availability_set>`
 Specifies the availability set for the cluster.
 
+`<image>`
+Specifies the boot image to use. You should use the use the latest image when adding a new machine set.
+
 <div class="note">
 
 Machine sets running on Azure Stack Hub do not support non-guaranteed Spot VMs.
 
 </div>
+
+- [Manually updating the boot image](../../machine_configuration/mco-update-boot-images-manual.xml#mco-update-boot-images-manual)
 
 # Creating a compute machine set
 

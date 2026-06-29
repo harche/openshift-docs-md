@@ -1138,6 +1138,10 @@
   - [Replacing an unhealthy etcd member](etcd/etcd-backup-restore/replace-unhealthy-etcd-member.md)
   - [Disaster recovery](etcd/etcd-backup-restore/etcd-disaster-recovery.md)
 - [Enabling etcd encryption](etcd/etcd-encrypt.md)
+- **External encryption key management**
+  - [About KMS](etcd/KMS_v2/index.md)
+  - [Configuring KMS](etcd/KMS_v2/kms-configuring.md)
+  - [Disabling KMS](etcd/KMS_v2/kms-disabling.md)
 - [Guidance for clusters that span data centers](etcd/etcd-guidance-span.md)
 
 ### Hosted control planes
@@ -1351,26 +1355,7 @@
 - **Distributed Tracing**
   - [About the Distributed Tracing Platform](observability/distr_tracing/distr-tracing-tempo-architecture.md)
 - **Red Hat build of OpenTelemetry**
-  - [Release notes for the Red Hat build of OpenTelemetry](observability/otel/otel-rn.md)
   - [About the Red Hat build of OpenTelemetry](observability/otel/otel-architecture.md)
-  - [Installing the Red Hat build of OpenTelemetry](observability/otel/otel-installing.md)
-  - **Configuring the Collector**
-    - [Collector options](observability/otel/otel-collector/otel-collector-configuration-intro.md)
-    - [Receivers](observability/otel/otel-collector/otel-collector-receivers.md)
-    - [Processors](observability/otel/otel-collector/otel-collector-processors.md)
-    - [Exporters](observability/otel/otel-collector/otel-collector-exporters.md)
-    - [Connectors](observability/otel/otel-collector/otel-collector-connectors.md)
-    - [Extensions](observability/otel/otel-collector/otel-collector-extensions.md)
-  - [Configuring the instrumentation](observability/otel/otel-configuration-of-instrumentation.md)
-  - [Sending traces, logs, and metrics to the Collector](observability/otel/otel-sending-traces-logs-and-metrics-to-otel-collector.md)
-  - [Configuring metrics for the monitoring stack](observability/otel/otel-configuring-metrics-for-monitoring-stack.md)
-  - [Forwarding telemetry data](observability/otel/otel-forwarding-telemetry-data.md)
-  - [Configuring the Collector metrics](observability/otel/otel-configuring-otelcol-metrics.md)
-  - [Receiving telemetry data](observability/otel/otel-receiving-telemetry-data.md)
-  - [Troubleshooting the Red Hat build of OpenTelemetry](observability/otel/otel-troubleshooting.md)
-  - [Migrating to the Red Hat build of OpenTelemetry](observability/otel/otel-migrating.md)
-  - [Upgrading the Red Hat build of OpenTelemetry](observability/otel/otel-updating.md)
-  - [Removing the Red Hat build of OpenTelemetry](observability/otel/otel-removing.md)
 - **Network Observability**
   - [Network Observability Operator release notes](observability/network_observability/network-observability-operator-release-notes.md)
   - **Network Observability Operator release notes archive**

@@ -21,9 +21,15 @@ The `KubeVirtRelieveAndMigrate` profile evicts pods from high-cost nodes to redu
 
 - **Node maintenance**: A higher number of containers on a node increases resource consumption and maintenance costs.
 
-The profile enables the `LowNodeUtilization` strategy with the `EvictionsInBackground` alpha feature. The profile also exposes the following customization fields:
+The profile enables the `LowNodeUtilization` strategy with the alpha-level `EvictionsInBackground` feature. By default, the profile uses the `PrometheusCPUMemoryCombinedProfile` utilization metric. This metric combines CPU and memory utilization with pressure stall information (PSI) for both dimensions for comprehensive node load balancing.
 
-- `devActualUtilizationProfile`: Enables load-aware descheduling.
+The profile also exposes the following customization fields:
+
+- `devActualUtilizationProfile`: Enables load-aware descheduling. You can configure the following utilization profiles:
+
+  - `PrometheusCPUMemoryCombinedProfile` (default): Balances nodes based on CPU utilization, CPU PSI pressure, memory utilization, and memory PSI pressure. This profile is ideal for environments with memory overcommit enabled, as it spreads the load and prevents resource contention.
+
+  - `PrometheusCPUCombined`: Balances nodes based on CPU utilization and CPU PSI pressure only. Use this profile in environments without memory overcommit, where memory allocations are strictly guaranteed and CPU pressure is the primary driver for workload distribution.
 
 - `devLowNodeUtilizationThresholds`: Sets experimental thresholds for the `LowNodeUtilization` strategy. Do not use this field with `devDeviationThresholds`.
 
@@ -52,7 +58,7 @@ spec:
   profileCustomizations:
     devEnableSoftTainter: true
     devDeviationThresholds: AsymmetricLow
-    devActualUtilizationProfile: PrometheusCPUCombined
+    devActualUtilizationProfile: PrometheusCPUMemoryCombinedProfile
 ```
 
 The `KubeVirtRelieveAndMigrate` profile requires PSI metrics to be enabled on all worker nodes. You can enable this by applying the following `MachineConfig` custom resource (CR):

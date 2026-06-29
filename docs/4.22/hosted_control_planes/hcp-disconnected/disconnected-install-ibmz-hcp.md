@@ -14,19 +14,23 @@ To work with disconnected registries in the hosted control planes, you must firs
 
 # Prerequisites to deploy hosted control planes on IBM Z in a disconnected environment
 
-- A mirror registry. For more information, see "Creating a mirror registry with mirror registry for Red Hat OpenShift".
+To deploy hosted control planes on IBM Z in a disconnected environment, you must meet a few prerequisites.
+
+You need the following resources:
+
+- A mirror registry. For more information, see "Mirror registry for Red Hat OpenShift introduction".
 
 - A mirrored image for a disconnected installation. For more information, see "Mirroring images for a disconnected installation using the oc-mirror plugin".
 
 <!-- -->
 
-- [Creating a mirror registry with mirror registry for Red Hat OpenShift](../../disconnected/installing-mirroring-creating-registry.xml#mirror-registry-introduction_installing-mirroring-creating-registry)
+- [Mirror registry for Red Hat OpenShift introduction](../../disconnected/installing-mirroring-creating-registry.xml#mirror-registry-introduction_installing-mirroring-creating-registry)
 
 - [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
 
 # Adding credentials and the registry certificate authority to the management cluster
 
-To pull the mirror registry images from the management cluster, you must first add credentials and the certificate authority of the mirror registry to the management cluster. Use the following procedure:
+To pull the mirror registry images from the management cluster, you must first add credentials and the certificate authority of the mirror registry to the management cluster.
 
 1.  Create a `ConfigMap` with the certificate of the mirror registry by running the following command:
 
@@ -36,7 +40,7 @@ To pull the mirror registry images from the management cluster, you must first a
 
     <div class="formalpara-title">
 
-    **Example registry-config.yaml file**
+    **Example output**
 
     </div>
 
@@ -50,6 +54,7 @@ To pull the mirror registry images from the management cluster, you must first a
       <mirror_registry>: |
         -----BEGIN CERTIFICATE-----
         -----END CERTIFICATE-----
+    #...
     ```
 
 2.  Patch the `image.config.openshift.io` cluster-wide object to include the following entries:
@@ -81,9 +86,9 @@ To pull the mirror registry images from the management cluster, you must first a
           },
         ```
 
-        - Provide the name of the mirror registry.
+        - `<mirror_registry>` specifies the name of the mirror registry.
 
-        - Provide the credentials for the mirror registry to allow fetch of images.
+        - `<credentials>` specifies the credentials for the mirror registry to allow fetch of images.
 
     3.  Update the pull secret on the cluster by running the following command:
 
@@ -143,7 +148,7 @@ When you use a mirror registry for images, agents need to trust the registry’s
             insecure = false
     ```
 
-    - Where: `<mirror_registry>` is the name of the mirror registry.
+    Replace `<mirror_registry>` with the name of the mirror registry.
 
 2.  Patch the `AgentServiceConfig` resource to include the `ConfigMap` resource that you created. If the `AgentServiceConfig` resource is not present, create the `AgentServiceConfig` resource with the following content embedded into it:
 
@@ -155,7 +160,7 @@ When you use a mirror registry for images, agents need to trust the registry’s
 
 # Adding the registry certificate authority to the hosted cluster
 
-When you are deploying hosted control planes on IBM Z in a disconnected environment, include the `additional-trust-bundle` and `image-content-sources` resources. Those resources allow the hosted cluster to inject the certificate authority into the data plane workers so that the images are pulled from the registry.
+When you are deploying hosted control planes on IBM Z in a disconnected environment, include the `additional-trust-bundle` and `image-content-sources` resources. The hosted cluster uses those resources to inject the certificate authority into the data plane compute nodes so that the images are pulled from the registry.
 
 1.  Create the `icsp.yaml` file with the `image-content-sources` information.
 
@@ -181,32 +186,34 @@ When you are deploying hosted control planes on IBM Z in a disconnected environm
 
     ``` terminal
     $ hcp create cluster agent \
-        --name=<hosted_cluster_name> \
-        --pull-secret=<path_to_pull_secret> \
-        --agent-namespace=<hosted_control_plane_namespace> \
-        --base-domain=<basedomain> \
-        --api-server-address=api.<hosted_cluster_name>.<basedomain> \
-        --etcd-storage-class=<etcd_storage_class> \
-        --ssh-key  <path_to_ssh_public_key> \
+        --name=my-hosted-cluster \
+        --pull-secret=/user/name/pullsecret \
+        --agent-namespace=clusters-hosted \
+        --base-domain=example.com \
+        --api-server-address=api.my-hosted-cluster.example.com \
+        --etcd-storage-class=lvm-storageclass \
+        --ssh-key ~/.ssh/id_rsa.pub \
         --namespace <hosted_cluster_namespace> \
         --control-plane-availability-policy SingleReplica \
-        --release-image=quay.io/openshift-release-dev/ocp-release:<ocp_release_image> \
+        --release-image=quay.io/openshift-release-dev/ocp-release:4.22.0-multi \
         --additional-trust-bundle <path for cert> \
         --image-content-sources icsp.yaml
     ```
 
-    - Replace `<hosted_cluster_name>` with the name of your hosted cluster.
+    - `--name` specifies the name of your hosted cluster.
 
-    - Replace the path to your pull secret, for example, `/user/name/pullsecret`.
+    - `--pull-secret` specifies the path to your pull secret.
 
-    - Replace `<hosted_control_plane_namespace>` with the name of the hosted control plane namespace, for example, `clusters-hosted`.
+    - `--agent-namespace` specifies the name of the hosted control plane namespace.
 
-    - Replace the name with your base domain, for example, `example.com`.
+    - `--base-domain` specifies the name of your base domain.
 
-    - Replace the etcd storage class name, for example, `lvm-storageclass`.
+    - `--etcd-storage-class` specifies the etcd storage class name.
 
-    - Replace the path to your SSH public key. The default file path is `~/.ssh/id_rsa.pub`.
+    - `--ssh-key` specifies the path to your SSH public key. The default file path is `~/.ssh/id_rsa.pub`.
 
-    - Replace with the supported OpenShift Container Platform version that you want to use, for example, `4.22.0-multi`.
+    - `--namespace` specifies the name of the hosted cluster namespace.
 
-    - Replace the path to Certificate Authority of mirror registry.
+    - `--release-image` specifies the supported OpenShift Container Platform version that you want to use.
+
+    - `--additional-trust-bundle` specifies the path to the Certificate Authority of the mirror registry.

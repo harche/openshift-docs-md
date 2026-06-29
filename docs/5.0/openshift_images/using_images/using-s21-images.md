@@ -1,10 +1,4 @@
-To create containerized applications in OpenShift Container Platform without manually configuring runtime environments, you can use Source-to-Image (S2I) images. S2I images are runtime base images for languages like Node.js, Python, and Java that you can insert your code into.
-
-You can use the [Red Hat Software Collections](https://access.redhat.com/documentation/en-us/red_hat_software_collections/3/html-single/using_red_hat_software_collections_container_images/index) images as a foundation for applications that rely on specific runtime environments such as Node.js, Perl, or Python.
-
-You can use the [Introduction to source-to-image for OpenShift](https://docs.redhat.com/en/documentation/red_hat_build_of_openjdk/11/html/using_source-to-image_for_openshift_with_red_hat_build_of_openjdk_11/openjdk-overview-s2i-openshift) documentation as a reference for runtime environments that use Java.
-
-S2I images are also available though the [Cluster Samples Operator](../../openshift_images/configuring-samples-operator.xml#configuring-samples-operator).
+To create containerized applications in OpenShift Container Platform without manually configuring runtime environments, you can use Source-to-Image (S2I) images. S2I images are runtime base images for languages such as Node.js, Python, and Java that you can insert your code into. You can use Red Hat Software Collections images as a foundation for applications that rely on specific runtime environments, and access S2I images through the Cluster Samples Operator.
 
 # Accessing S2I builder images in the OpenShift Container Platform Developer Console
 
@@ -38,6 +32,10 @@ Buildah then creates the container image.
 
 # Additional resources
 
+- [Red Hat Software Collections container images](https://access.redhat.com/documentation/en-us/red_hat_software_collections/3/html-single/using_red_hat_software_collections_container_images/index)
+
+- [Introduction to source-to-image for OpenShift with Red Hat build of OpenJDK](https://docs.redhat.com/en/documentation/red_hat_build_of_openjdk/11/html/using_source-to-image_for_openshift_with_red_hat_build_of_openjdk_11/openjdk-overview-s2i-openshift)
+
 - [Configuring the Cluster Samples Operator](../../openshift_images/configuring-samples-operator.xml#configuring-samples-operator)
 
 - [Using build strategies](../../cicd/builds/build-strategies.xml#builds-strategy-s2i-build_build-strategies)
@@ -47,5 +45,3 @@ Buildah then creates the container image.
 - [Creating images from source code with source-to-image](../../openshift_images/create-images.xml#images-create-s2i_create-images)
 
 - [About testing source-to-image images](../../openshift_images/create-images.xml#images-test-s2i_create-images)
-
-- [Creating images from source code with source-to-image](../../openshift_images/create-images.xml#images-create-s2i_create-images)

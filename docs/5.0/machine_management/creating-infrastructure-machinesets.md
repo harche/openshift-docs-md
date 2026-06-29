@@ -156,7 +156,7 @@ Specifies the `infra` role node label.
 
 <div class="note">
 
-The `spec.template.spec.providerSpec.value.ami.id` stanza specifies a valid Red Hat Enterprise Linux CoreOS (RHCOS) Amazon Machine Image (AMI) for your AWS zone for your OpenShift Container Platform nodes. If you want to use an AWS Marketplace image, you must complete the OpenShift Container Platform subscription from the [AWS Marketplace](https://aws.amazon.com/marketplace/fulfillment?productId=59ead7de-2540-4653-a8b0-fa7926d5c845) to obtain an AMI ID for your region.
+The `spec.template.spec.providerSpec.value.ami.id` stanza specifies a valid Red Hat Enterprise Linux CoreOS (RHCOS) Amazon Machine Image (AMI) for your AWS zone for your OpenShift Container Platform nodes. If you want to use an AWS Machine Image (AMI) for your AWS zone as a boot image for your OpenShift Container Platform nodes, you should use the latest image when adding a new machine set. If you want to use an AWS Marketplace image, you must complete the OpenShift Container Platform subscription from the [AWS Marketplace](https://aws.amazon.com/marketplace/fulfillment?productId=59ead7de-2540-4653-a8b0-fa7926d5c845) to obtain an AMI ID for your region.
 
 ``` terminal
 $ oc -n openshift-machine-api \
@@ -306,7 +306,7 @@ Specifies the infrastructure ID, `infra` node label, and region.
 
 <div class="note">
 
-The value of the `spec.template.spec.providerSpec.value.image` parameter specifies the image details for your compute machine set. If you want to use an Azure Marketplace image, see "Using the Azure Marketplace offering".
+The value of the `spec.template.spec.providerSpec.value.image` parameter specifies the image details of the boot image for your nodes. You should use the use the latest image when adding a new machine set. If you want to use an Azure Marketplace image, see "Using the Azure Marketplace offering".
 
 The value of the `spec.template.spec.providerSpec.value.image.resourceID` parameter specifies an image that is compatible with your instance type. The Hyper-V generation V2 images created by the installation program have a `-gen2` suffix, while V1 images have the same name without the suffix.
 
@@ -449,6 +449,9 @@ The `spec.template.spec.providerSpec.value.zone` specifies the zone within your 
 `<availability_set>`
 Specifies the availability set for the cluster.
 
+`<image>`
+Specifies the boot image to use. You should use the use the latest image when adding a new machine set.
+
 <div class="note">
 
 Machine sets running on Azure Stack Hub do not support non-guaranteed Spot VMs.
@@ -528,7 +531,7 @@ Specifies the `<infra>` node label.
 Specifies the infrastructure ID, `<infra>` node label, and region.
 
 `<infrastructure_id>-rhcos`
-Specifies the custom Red Hat Enterprise Linux CoreOS (RHCOS) image that was used for cluster installation.
+Specifies the custom Red Hat Enterprise Linux CoreOS (RHCOS) image to use as a boot image for your nodes. You should use the use the latest image when adding a new machine set.
 
 `<infrastructure_id>-subnet-compute-<zone>`
 Specifies the infrastructure ID and zone within your region to place machines on. Be sure that your region supports the zone that you specify.
@@ -664,7 +667,7 @@ Specifies the infrastructure ID that is based on the cluster ID that you set whe
 Specifies the `<infra>` node label.
 
 `<path_to_image>`
-Specifies the path to the image that is used in current compute machine sets. To use a Google Cloud Marketplace image, specify the offer to use:
+Specifies the path to the image that is used as a boot image in current compute machine sets. You should use the use the latest image when adding a new machine set. To use a Google Cloud Marketplace image, specify the offer to use:
 
 - OpenShift Container Platform: `https://www.googleapis.com/compute/v1/projects/redhat-marketplace-public/global/images/redhat-coreos-ocp-413-x86-64-202305021736`
 
@@ -808,7 +811,7 @@ Specifies one or more Nutanix Prism categories to apply to compute machines. Thi
 Specifies a Nutanix Prism Element cluster configuration. In this example, the cluster type is `uuid`, so there is a `uuid` stanza.
 
 `<infrastructure_id>-rhcos`
-Specifies the image to use. Use an image from an existing default compute machine set for the cluster.
+Specifies the image to use as a boot image for your nodes. You should use the use the latest image when adding a new machine set.
 
 `16Gi`
 Specifies the amount of memory for the cluster in Gi.
@@ -923,6 +926,9 @@ $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
 `<infrastructure_id>-infra`
 Specifies the infrastructure ID and `infra` node label.
 
+`<glance_image_name_or_location>`
+Specifies the image to use as a boot image for your nodes. You should use the latest image when adding a new machine set.
+
 `<optional_UUID_of_server_group>`
 Sets a server group policy for the `MachineSet` YAML, by entering the value that is returned from [creating a server group](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html/command_line_interface_reference/server#server_group_create). For most deployments, `anti-affinity` or `soft-anti-affinity` policies are recommended.
 
@@ -940,9 +946,9 @@ Specifies the RHOSP subnet that you want the endpoints of nodes to be published 
 
 # Sample YAML for a compute machine set custom resource on vSphere
 
-To enable the Machine API to automate node provisioning on VMware vSphere infrastructure, define a `MachineSet` resource with parameters that are specific to VMware vSphere, for example data center, resource pool, and template.
+To enable the Machine API to automate node provisioning on VMware vSphere infrastructure, define a `MachineSet` resource with parameters that are specific to vSphere, for example data center, resource pool, and template.
 
-The sample YAML file defines a compute machine set that runs on VMware vSphere and creates nodes that are labeled with `node-role.kubernetes.io/infra: ""`.
+The sample YAML file defines a compute machine set that runs on vSphere and creates nodes that are labeled with `node-role.kubernetes.io/infra: ""`.
 
 In this sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `infra` is the node label to add.
 
@@ -1026,11 +1032,14 @@ Specifies the `infra` node label.
 `<disk_name>`
 Specifies one or more data disk definitions. For more information, see "Configuring data disks by using machine sets".
 
+`<image_name>`
+Specifies the image to use as a boot image for your nodes.
+
 `<vm_network_name>`
 Specifies the vSphere VM network to deploy the compute machine set to. This VM network must be where other compute machines reside in the cluster.
 
 `<vm_template_name>`
-Specifies the vSphere VM template to use, such as `user-5ddjd-rhcos`.
+Specifies the vSphere VM template to use as a boot image for your nodes, such as `user-5ddjd-rhcos`. You should use a template with the latest OpenShift Container Platform image when adding a new machine set.
 
 `<vcenter_data_center_name>`
 Specifies the vCenter datacenter to deploy the compute machine set on.
@@ -2040,13 +2049,7 @@ vpa-updater-default-db8b58df-2nkvf                  1/1     Running   0         
 
 By default, the Cluster Resource Override Operator installation process creates an Operator pod and two Cluster Resource Override pods on nodes in the `clusterresourceoverride-operator` namespace. You can move these pods to other nodes, such as infrastructure nodes, as needed.
 
-The following examples shows the Cluster Resource Override pods are deployed to control plane nodes and the Cluster Resource Override Operator pod is deployed to a worker node.
-
-<div class="formalpara-title">
-
-**Example Cluster Resource Override pods**
-
-</div>
+The following example shows that the Cluster Resource Override pods are deployed to control plane nodes.
 
 ``` terminal
 NAME                                                READY   STATUS    RESTARTS   AGE   IP            NODE                                        NOMINATED NODE   READINESS GATES
@@ -2055,11 +2058,7 @@ clusterresourceoverride-786b8c898c-vn2lf            1/1     Running   0         
 clusterresourceoverride-operator-6b8b8b656b-lvr62   1/1     Running   0          56m   10.131.0.33   ip-10-0-2-39.us-west-2.compute.internal     <none>           <none>
 ```
 
-<div class="formalpara-title">
-
-**Example node list**
-
-</div>
+The following example shows that the Cluster Resource Override Operator pod is deployed to a worker node.
 
 ``` terminal
 NAME                                        STATUS   ROLES                  AGE   VERSION

@@ -42,8 +42,7 @@ Each etcd pod of a 3-node cluster has its own persistent volume claim (PVC) to s
     $ oc get pods -l app=etcd -n clusters-<hosted_cluster_name>
     ```
 
-    `<hosted_cluster_name>`
-    Specifies the hosted cluster of the etcd instance.
+    Replace `<hosted_cluster_name>` with the name of the hosted cluster of the etcd instance.
 
     <div class="formalpara-title">
 
@@ -66,8 +65,7 @@ Each etcd pod of a 3-node cluster has its own persistent volume claim (PVC) to s
     $ oc delete pods <etcd_pod_name> -n clusters-<hosted_cluster_name>
     ```
 
-    `<etcd_pod_name>`
-    Specifies the failing pod.
+    Replace `<etcd_pod_name>` with the name of the failing pod.
 
 - Verify that a new etcd pod is up and running by entering the following command:
 

@@ -2,6 +2,8 @@ Before you deploy an OpenShift Container Platform cluster, you create the `insta
 
 # Available installation configuration parameters
 
+To customize your cluster installation, configuration parameters are available to use in the `install-config.yaml` file.
+
 The following tables specify the required, network, and optional installation configuration parameters that you can set as part of the installation process.
 
 ## Required configuration parameters

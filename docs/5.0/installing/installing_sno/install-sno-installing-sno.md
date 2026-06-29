@@ -1,4 +1,6 @@
-You can install single-node OpenShift by using either the web-based Assisted Installer or the `coreos-installer` tool to generate a discovery ISO image. The discovery ISO image writes the Red Hat Enterprise Linux CoreOS (RHCOS) system configuration to the target installation disk, so that you can run a single-cluster node to meet your needs.
+You can install single-node OpenShift by using either the web-based Assisted Installer or the `coreos-installer` tool to generate a discovery ISO image.
+
+The discovery ISO image writes the Red Hat Enterprise Linux CoreOS (RHCOS) system configuration to the target installation disk, so that you can run a single-cluster node to meet your needs.
 
 Consider using single-node OpenShift when you want to run a cluster in a low-resource or an isolated environment for testing, troubleshooting, training, or small-scale project purposes.
 
@@ -6,7 +8,9 @@ Consider using single-node OpenShift when you want to run a cluster in a low-res
 
 To install OpenShift Container Platform on a single node, use the web-based Assisted Installer wizard to guide you through the process and manage the installation.
 
-See the [Assisted Installer for OpenShift Container Platform](https://access.redhat.com/documentation/en-us/assisted_installer_for_openshift_container_platform/) documentation for details and configuration options.
+See "Installing OpenShift Container Platform with the Assisted Installer" for details and configuration options.
+
+- [Installing OpenShift Container Platform with the Assisted Installer](https://docs.redhat.com/en/documentation/assisted_installer_for_openshift_container_platform/2026/html/installing_openshift_container_platform_with_the_assisted_installer/index)
 
 ## Generating the discovery ISO with the Assisted Installer
 
@@ -86,7 +90,7 @@ To install OpenShift Container Platform on a single node, first generate the ins
 
 ## Generating the installation ISO with coreos-installer
 
-Installing OpenShift Container Platform on a single node requires an installation ISO, which you can generate with the following procedure.
+You can install OpenShift Container Platform on a single node by generating an installation ISO.
 
 - Install `podman`.
 
@@ -102,7 +106,7 @@ See "Requirements for installing OpenShift on a single node" for networking requ
     $ export OCP_VERSION=<ocp_version>
     ```
 
-    - Replace `<ocp_version>` with the current version, for example, `latest-4.17`
+    Replace `<ocp_version>` with the current version, for example, `latest-4.17`
 
 2.  Set the target cluster architecture:
 
@@ -110,7 +114,7 @@ See "Requirements for installing OpenShift on a single node" for networking requ
     $ export ARCH=<architecture>
     ```
 
-    - Replace `<architecture>` with the target host architecture, for example, `aarch64` or `x86_64`.
+    Replace `<architecture>` with the target host architecture, for example, `aarch64` or `x86_64`.
 
 3.  Set the installation host architecture:
 
@@ -191,23 +195,34 @@ See "Requirements for installing OpenShift on a single node" for networking requ
       <ssh_key>
     ```
 
-    - Add the cluster domain name.
+    where:
 
-    - Set the `compute` replicas to `0`. This makes the control plane node schedulable.
+    `baseDomain`
+    Specifies the cluster domain name.
 
-    - Set the `controlPlane` replicas to `1`. In conjunction with the previous `compute` setting, this setting ensures the cluster runs on a single node.
+    `compute.replicas`
+    Specifies the value of `compute.replicas` as `0`. This makes the control plane node schedulable.
 
-    - Set the `metadata` name to the cluster name.
+    `controlPlane.replicas`
+    Specifies the value of `controlPlane.replicas` as `1`. In conjunction with the previous `compute` setting, this setting ensures the cluster runs on a single node.
 
-    - Set the `networking` details. OVN-Kubernetes is the only allowed network plugin type for single-node clusters.
+    `metadata.name`
+    Specifies the `metadata` name to the cluster name.
 
-    - Set the `cidr` value to match the subnet of the single-node OpenShift cluster.
+    `networking`
+    Specifies the `networking` details. OVN-Kubernetes is the only allowed network plugin type for single-node clusters.
 
-    - Set the path to the installation disk drive, for example, `/dev/disk/by-id/wwn-0x64cd98f04fde100024684cf3034da5c2`.
+    `machineNetwork.cidr`
+    Specifies the `cidr` value to match the subnet of the cluster.
 
-    - Copy the [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret) and add the contents to this configuration setting.
+    `installationDisk`
+    Specifies the path to the installation disk drive, for example, `/dev/disk/by-id/wwn-0x64cd98f04fde100024684cf3034da5c2`.
 
-    - Add the public SSH key from the administration host so that you can log in to the cluster after installation.
+    `pullSecret`
+    Specifies the `pullSecret` parameter. Copy the [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret) and add the contents to this configuration setting.
+
+    `sshKey`
+    Specifies the `sshKey` parameter. Add the public SSH key from the administration host so that you can log in to the cluster after installation.
 
 9.  Generate OpenShift Container Platform assets by running the following commands:
 
@@ -241,15 +256,15 @@ See "Requirements for installing OpenShift on a single node" for networking requ
 
     </div>
 
-- See [Requirements for installing OpenShift on a single node](../../installing/installing_sno/install-sno-preparing-to-install-sno.xml#preparing-to-install-sno) for more information about installing OpenShift Container Platform on a single node.
+- [Requirements for installing OpenShift on a single node](../../installing/installing_sno/install-sno-preparing-to-install-sno.xml#preparing-to-install-sno)
 
-- See [Cluster capabilities](../../installing/overview/cluster-capabilities.xml#cluster-capabilities) for more information about enabling cluster capabilities that were disabled before installation.
+- [Cluster capabilities](../../installing/overview/cluster-capabilities.xml#cluster-capabilities)
 
-- See [Optional cluster capabilities in OpenShift Container Platform 4.17](../../installing/overview/cluster-capabilities.xml#explanation_of_capabilities_cluster-capabilities) for more information about the features provided by each capability.
+- [Optional cluster capabilities in OpenShift Container Platform 4.17](../../installing/overview/cluster-capabilities.xml#explanation_of_capabilities_cluster-capabilities)
 
 ## Monitoring the cluster installation using openshift-install
 
-Use `openshift-install` to monitor the progress of the single-node cluster installation.
+Use the `openshift-install` binary to monitor the progress of the single-node cluster installation.
 
 - Ensure that the boot drive order in the server BIOS settings defaults to booting the server from the target installation disk.
 
@@ -449,9 +464,9 @@ See "Requirements for installing OpenShift on a single node" for networking requ
   <node_name>             Ready    control-plane,master,worker   10m     v1.34.2
   ```
 
-# Installing single-node OpenShift on cloud providers
+# Additional requirements for installing single-node OpenShift on a cloud provider
 
-## Additional requirements for installing single-node OpenShift on a cloud provider
+Compared to installing a high-availability cluster, there are additional requirements for installing single-node OpenShift.
 
 The documentation for installer-provisioned installation on cloud providers is based on a high availability cluster consisting of three control plane nodes. When referring to the documentation, consider the differences between the requirements for a single-node OpenShift cluster and a high availability cluster.
 
@@ -477,7 +492,9 @@ The documentation for installer-provisioned installation on cloud providers is b
 
 - [Cluster capabilities](../../installing/overview/cluster-capabilities.xml#cluster-capabilities)
 
-## Supported cloud providers for single-node OpenShift
+# Supported cloud providers for single-node OpenShift
+
+You can install a single-node cluster on several supported cloud providers.
 
 The following table contains a list of supported cloud providers and CPU architectures.
 
@@ -489,21 +506,21 @@ The following table contains a list of supported cloud providers and CPU archite
 
 Supported cloud providers
 
-## Installing single-node OpenShift on AWS
+# Installing single-node OpenShift on AWS
 
 Installing a single-node cluster on AWS requires installer-provisioned installation using the "Installing a cluster on AWS with customizations" procedure.
 
 - [Installing a cluster on AWS with customizations](../../installing/installing_aws/ipi/installing-aws-customizations.xml#installing-aws-customizations)
 
-## Installing single-node OpenShift on Azure
+# Installing single-node OpenShift on Azure
 
-Installing a single node cluster on Azure requires installer-provisioned installation using the "Installing a cluster on Azure with customizations" procedure.
+Installing a single-node cluster on Azure requires installer-provisioned installation using the "Installing a cluster on Azure with customizations" procedure.
 
 - [Installing a cluster on Azure with customizations](../../installing/installing_azure/ipi/installing-azure-customizations.xml#installing-azure-customizations)
 
-## Installing single-node OpenShift on Google Cloud
+# Installing single-node OpenShift on Google Cloud
 
-Installing a single node cluster on Google Cloud requires installer-provisioned installation using the "Installing a cluster on Google Cloud with customizations" procedure.
+Installing a single-node cluster on Google Cloud requires installer-provisioned installation using the "Installing a cluster on Google Cloud with customizations" procedure.
 
 - [Installing a cluster on Google Cloud with customizations](../../installing/installing_gcp/installing-gcp-customizations.xml#installing-gcp-customizations)
 
@@ -590,7 +607,9 @@ Ensure that you have the latest firmware version of iDRAC that is compatible wit
 
 # Creating a custom live RHCOS ISO for remote server access
 
-In some cases, you cannot attach an external disk drive to a server, however, you need to access the server remotely to provision a node. It is recommended to enable SSH access to the server. You can create a live RHCOS ISO with SSHd enabled and with predefined credentials so that you can access the server after it boots.
+In some cases, you cannot attach an external disk drive to a server, however, you need to access the server remotely to provision a node. It is recommended to enable SSH access to the server.
+
+You can create a live RHCOS ISO with SSHd enabled and with predefined credentials so that you can access the server after it boots.
 
 - You installed the `butane` utility.
 
@@ -614,7 +633,7 @@ In some cases, you cannot attach an external disk drive to a server, however, yo
             - '<ssh_key>'
     ```
 
-    - The `core` user has sudo privileges.
+    For the `passwd.users.name` parameter, the `core` user has sudo privileges.
 
 4.  Run the `butane` utility to create the Ignition file using the following command:
 
@@ -660,13 +679,15 @@ In some cases, you cannot attach an external disk drive to a server, however, yo
 
 # Installing single-node OpenShift with IBM Z and IBM LinuxONE
 
+You can install a single-node OpenShift cluster with IBM Z and IBM LinuxONE by performing a user-provisioned installation.
+
 Installing a single-node cluster on IBM Z® and IBM® LinuxONE requires user-provisioned installation using one of the following procedures:
 
-- [Installing a cluster with z/VM on IBM Z® and IBM® LinuxONE](../../installing/installing_ibm_z/upi/installing-ibm-z.xml#installing-ibm-z)
+- "Installing a cluster with z/VM on IBM Z® and IBM® LinuxONE"
 
-- [Installing a cluster with RHEL KVM on IBM Z® and IBM® LinuxONE](../../installing/installing_ibm_z/upi/installing-ibm-z-kvm.xml#installing-ibm-z-kvm)
+- "Installing a cluster with RHEL KVM on IBM Z® and IBM® LinuxONE"
 
-- [Installing a cluster in an LPAR on IBM Z® and IBM® LinuxONE](../../installing/installing_ibm_z/upi/installing-ibm-z-lpar.xml#installing-ibm-z-lpar)
+- "Installing a cluster in an LPAR on IBM Z® and IBM® LinuxONE"
 
 <div class="note">
 
@@ -674,7 +695,7 @@ Installing a single-node cluster on IBM Z® simplifies installation for developm
 
 </div>
 
-## Hardware requirements
+You must meet the following hardware requirements when installing a single-node cluster on IBM Z® and IBM® LinuxONE:
 
 - The equivalent of two Integrated Facilities for Linux (IFL), which are SMT2 enabled, for each cluster.
 
@@ -686,7 +707,15 @@ You can use dedicated or shared IFLs to assign sufficient compute resources. Res
 
 </div>
 
+- [Installing a cluster with z/VM on IBM Z® and IBM® LinuxONE](../../installing/installing_ibm_z/upi/installing-ibm-z.xml#installing-ibm-z)
+
+- [Installing a cluster with RHEL KVM on IBM Z® and IBM® LinuxONE](../../installing/installing_ibm_z/upi/installing-ibm-z-kvm.xml#installing-ibm-z-kvm)
+
+- [Installing a cluster in an LPAR on IBM Z® and IBM® LinuxONE](../../installing/installing_ibm_z/upi/installing-ibm-z-lpar.xml#installing-ibm-z-lpar)
+
 ## Installing single-node OpenShift with z/VM on IBM Z and IBM LinuxONE
+
+You can install single-node OpenShift with z/VM on IBM Z and IBM LinuxONE.
 
 - You have installed `podman`.
 
@@ -696,7 +725,7 @@ You can use dedicated or shared IFLs to assign sufficient compute resources. Res
     $ OCP_VERSION=<ocp_version>
     ```
 
-    - Replace `<ocp_version>` with the current version. For example, `latest-4.17`.
+    Replace `<ocp_version>` with the current version. For example, `latest-4.17`.
 
 2.  Set the host architecture by running the following command:
 
@@ -704,7 +733,7 @@ You can use dedicated or shared IFLs to assign sufficient compute resources. Res
     $ ARCH=<architecture>
     ```
 
-    - Replace `<architecture>` with the target host architecture `s390x`.
+    Replace `<architecture>` with the target host architecture `s390x`.
 
 3.  Download the OpenShift Container Platform client (`oc`) and make it available for use by entering the following commands:
 
@@ -1368,6 +1397,8 @@ $ virt-install \
 
 # Installing single-node OpenShift with IBM Power
 
+You can install a single-node OpenShift cluster with IBM Power by performing a user-provisioned installation.
+
 Installing a single-node cluster on IBM Power® requires user-provisioned installation using the "Installing a cluster with IBM Power®" procedure.
 
 <div class="note">
@@ -1376,7 +1407,7 @@ Installing a single-node cluster on IBM Power® simplifies installation for deve
 
 </div>
 
-## Hardware requirements
+You must meet the following hardware requirements when installing a single-node cluster on IBM Z® and IBM® LinuxONE:
 
 - The equivalent of two Integrated Facilities for Linux (IFL), which are SMT2 enabled, for each cluster.
 

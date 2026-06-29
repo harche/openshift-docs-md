@@ -87,10 +87,12 @@ Specifies the node label to add.
 Specifies the infrastructure ID, node label, and region.
 
 `rhcos-<infrastructure_id>`
-Specifies the custom Red Hat Enterprise Linux CoreOS (RHCOS) image that was used for cluster installation.
+Specifies the custom Red Hat Enterprise Linux CoreOS (RHCOS) image to use as a boot image for your nodes. You should use the use the latest image when adding a new machine set.
 
 `<ibm_power_vs_service_instance_id>`
 Specifies the infrastructure ID within your region to place machines on.
+
+- [Manually updating the boot image](../../machine_configuration/mco-update-boot-images-manual.xml#mco-update-boot-images-manual)
 
 # Creating a compute machine set
 

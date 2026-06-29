@@ -12,7 +12,7 @@ A *hosted cluster* is an OpenShift Container Platform cluster with its API endpo
 
 # Prerequisites for OpenStack
 
-Before you create a hosted cluster on Red Hat OpenStack Platform (RHOSP), ensure that you meet the following requirements:
+Before you create a hosted cluster on Red Hat OpenStack Platform (RHOSP), ensure that you meet the prerequisites.
 
 - You have administrative access to a management OpenShift Container Platform cluster version 4.17 or greater. This cluster can run on bare metal, RHOSP, or a supported public cloud.
 
@@ -26,7 +26,7 @@ Before you create a hosted cluster on Red Hat OpenStack Platform (RHOSP), ensur
 
   - When ingress is configured with an Octavia load balance, the RHOSP Octavia service is running in the cloud that hosts the guest cluster.
 
-- A valid [pull secret](https://console.redhat.com/openshift/install/platform-agnostic/user-provisioned) file is present for the `quay.io/openshift-release-dev` repository.
+- A valid pull secret file is present for the `quay.io/openshift-release-dev` repository.
 
 - The default external network for the management cluster is reachable from the guest cluster. The `kube-apiserver` load-balancer type service is created on this network.
 
@@ -36,9 +36,13 @@ Before you create a hosted cluster on Red Hat OpenStack Platform (RHOSP), ensur
 
   - `<base_domain>` is the parent DNS domain under which your cluster’s applications live.
 
+<!-- -->
+
+- [Pull secret](https://console.redhat.com/openshift/install/platform-agnostic/user-provisioned)
+
 # Preparing the management cluster for etcd local storage
 
-In a Hosted Control Plane (HCP) deployment on Red Hat OpenStack Platform (RHOSP), you can improve etcd performance by using local ephemeral storage that is provisioned with the TopoLVM CSI driver instead of relying on the default Cinder-based Persistent Volume Claims (PVCs).
+In a hosted control planes deployment on Red Hat OpenStack Platform (RHOSP), you can improve etcd performance by using local ephemeral storage that is provisioned with the TopoLVM CSI driver instead of relying on the default Cinder-based Persistent Volume Claims (PVCs).
 
 - You have access to a management cluster with HyperShift installed.
 
@@ -154,7 +158,7 @@ In a Hosted Control Plane (HCP) deployment on Red Hat OpenStack Platform (RHOSP
     standard-csi (default)  cinder.csi.openstack.org  Delete          WaitForFirstConsumer  true                   56m
     ```
 
-You can now deploy a hosted cluster with a performant etcd configuration. The deployment process is described in "Creating a hosted cluster on OpenStack".
+    You can now deploy a hosted cluster with a performant etcd configuration. The deployment process is described in "Creating a hosted cluster on OpenStack".
 
 # Creating a floating IP for ingress
 
@@ -181,15 +185,17 @@ If you want to make ingress available in a hosted cluster without manual interve
   `<external_network_id>`
   Specifies the ID of the external network.
 
-<div class="note">
+  <div class="note">
 
-If you specify a floating IP address by using the `--openstack-ingress-floating-ip` flag without creating it in advance, the `cloud-provider-openstack` component attempts to create it automatically. This process only succeeds if the Neutron API policy permits creating a floating IP address with a specific IP address.
+  If you specify a floating IP address by using the `--openstack-ingress-floating-ip` flag without creating it in advance, the `cloud-provider-openstack` component attempts to create it automatically. This process only succeeds if the Neutron API policy permits creating a floating IP address with a specific IP address.
 
-</div>
+  </div>
 
 # Uploading the RHCOS image to OpenStack
 
-If you want to specify the RHCOS image to use when deploying node pools on hosted control planes and Red Hat OpenStack Platform (RHOSP) deployment, upload the image to the RHOSP cloud. If you do not upload the image, the OpenStack Resource Controller (ORC) downloads an image from the OpenShift Container Platform mirror and deletes the image after deletion of the hosted cluster.
+If you want to specify the RHCOS image to use when deploying node pools on hosted control planes and Red Hat OpenStack Platform (RHOSP) deployment, upload the image to the RHOSP cloud.
+
+If you do not upload the image, the OpenStack Resource Controller (ORC) downloads an image from the OpenShift Container Platform mirror and deletes the image after deletion of the hosted cluster.
 
 - You downloaded the RHCOS image from the OpenShift Container Platform mirror.
 
@@ -237,11 +243,11 @@ You can create a hosted cluster on Red Hat OpenStack Platform (RHOSP) by using 
     --etcd-storage-class lvms-etcd-class
   ```
 
-<div class="note">
+  <div class="note">
 
-Many options are available at cluster creation. For RHOSP-specific options, see "Options for creating a Hosted Control Planes cluster on OpenStack". For general options, see the `hcp` documentation.
+  Many options are available at cluster creation. For RHOSP-specific options, see "Options for creating a Hosted Control Planes cluster on OpenStack". For general options, see the `hcp` documentation.
 
-</div>
+  </div>
 
 1.  Verify that the hosted cluster is ready by running the following command on it:
 
@@ -288,13 +294,13 @@ Many options are available at cluster creation. For RHOSP-specific options, see 
         $ df -h /var/lib
         ```
 
-<div class="note">
+        <div class="note">
 
-The RHOSP resources that the cluster API provider creates are tagged with the label `openshiftClusterID=<infraID>`.
+        The RHOSP resources that the cluster API provider creates are tagged with the label `openshiftClusterID=<infraID>`.
 
-You can define additional tags for the resources as values in the `HostedCluster.Spec.Platform.OpenStack.Tags` field of a YAML manifest that you use to create the hosted cluster. After you scale up the node pool, the tags apply to resources.
+        You can define additional tags for the resources as values in the `HostedCluster.Spec.Platform.OpenStack.Tags` field of a YAML manifest that you use to create the hosted cluster. After you scale up the node pool, the tags apply to resources.
 
-</div>
+        </div>
 
 ## Options for creating a Hosted Control Planes cluster on OpenStack
 

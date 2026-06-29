@@ -10,6 +10,8 @@ You can use the [podman](https://access.redhat.com/documentation/en-us/red_hat_e
 
 Because applications develop over time, a single image name can actually refer to many different versions of the same image. Each different image is referred to uniquely by its hash, a long hexadecimal number such as `fd44297e2ddb050ec4f…​`, which is usually shortened to 12 characters, such as `fd44297e2ddb`.
 
+# Additional resources
+
 - [Creating images](../openshift_images/create-images.xml#creating-images)
 
 - [Managing images](../openshift_images/managing_images/managing-images-overview.xml#managing-images-overview)
@@ -115,7 +117,7 @@ Using image streams has several significant benefits:
 
 - Users that lack permission to read or list images on the cluster level can still retrieve the images tagged in a project using image streams.
 
-<!-- -->
+# Additional resources
 
 - [Managing image streams](../openshift_images/image-streams-manage.xml#managing-image-streams)
 

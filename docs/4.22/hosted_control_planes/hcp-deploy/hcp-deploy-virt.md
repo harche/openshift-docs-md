@@ -1,4 +1,6 @@
-With hosted control planes and OpenShift Virtualization, you can create OpenShift Container Platform clusters with worker nodes that are hosted by KubeVirt virtual machines. Hosted control planes on OpenShift Virtualization provides several benefits:
+With hosted control planes and OpenShift Virtualization, you can create OpenShift Container Platform clusters with worker nodes that are hosted by KubeVirt virtual machines.
+
+Hosted control planes on OpenShift Virtualization provides several benefits:
 
 - Enhances resource usage by packing hosted control planes and hosted clusters in the same underlying bare-metal infrastructure
 
@@ -14,7 +16,7 @@ You can use the hosted control plane command-line interface, `hcp`, to create an
 
 - [Disabling the automatic import of hosted clusters into multicluster engine Operator](../../hosted_control_planes/hcp-import.xml#hcp-import-disable_hcp-import)
 
-- [Enabling or disabling the hosted control planes feature](../../hosted_control_planes/hcp-prepare/hcp-enable-disable.xml)
+- [Enabling or disabling the hosted control planes feature](../../hosted_control_planes/hcp-prepare/hcp-enable-disable.xml#hcp-enable-disable)
 
 - [Configuring Ansible Automation Platform jobs to run on hosted clusters](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#ansible-config-hosted-cluster)
 
@@ -101,7 +103,7 @@ You must meet the following prerequisites to create an OpenShift Container Platf
 
 ## Firewall and port requirements
 
-Ensure that you meet the firewall and port requirements so that ports can communicate between the management cluster, the control plane, and hosted clusters:
+Ensure that you meet the firewall and port requirements so that ports can communicate between the management cluster, the control plane, and hosted clusters.
 
 - The `kube-apiserver` service runs on port 6443 by default and requires ingress access for communication between the control plane components.
 
@@ -179,9 +181,103 @@ While live migration can protect VMs from disruption in normal circumstances, ev
 
 When the VMs in a node pool cannot be live migrated, workload disruption might occur on the hosted cluster during maintenance on the management cluster. By default, the hosted control planes controllers try to drain the workloads that are hosted on KubeVirt VMs that cannot be live migrated before the VMs are stopped. Draining the hosted cluster nodes before stopping the VMs allows pod disruption budgets to protect workload availability within the hosted cluster.
 
-# Creating a hosted cluster with the KubeVirt platform
+# Configuring MetalLB
 
-With OpenShift Container Platform 4.14 and later, you can create a cluster with KubeVirt, to include creating with an external infrastructure.
+Before you can create a hosted cluster on the KubeVirt platform, you must have the MetalLB load balancer configured.
+
+- You have installed the MetalLB Operator. For more information, see "Installing the MetalLB Operator".
+
+1.  Create a `MetalLB` resource by saving the following sample YAML content in the `configure-metallb.yaml` file:
+
+    ``` yaml
+    apiVersion: metallb.io/v1beta1
+    kind: MetalLB
+    metadata:
+      name: metallb
+      namespace: metallb-system
+    ```
+
+2.  Apply the YAML content by entering the following command:
+
+    ``` terminal
+    $ oc apply -f configure-metallb.yaml
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    metallb.metallb.io/metallb created
+    ```
+
+3.  Create a `IPAddressPool` resource by saving the following sample YAML content in the `create-ip-address-pool.yaml` file:
+
+    ``` yaml
+    apiVersion: metallb.io/v1beta1
+    kind: IPAddressPool
+    metadata:
+      name: metallb
+      namespace: metallb-system
+    spec:
+      addresses:
+      - 192.168.216.32-192.168.216.122
+    ```
+
+    Create an address pool with an available range of IP addresses within the node network. Replace the IP address range with an unused pool of available IP addresses in your network.
+
+4.  Apply the YAML content by entering the following command:
+
+    ``` terminal
+    $ oc apply -f create-ip-address-pool.yaml
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    ipaddresspool.metallb.io/metallb created
+    ```
+
+5.  Create a `L2Advertisement` resource by saving the following sample YAML content in the `l2advertisement.yaml` file:
+
+    ``` yaml
+    apiVersion: metallb.io/v1beta1
+    kind: L2Advertisement
+    metadata:
+      name: l2advertisement
+      namespace: metallb-system
+    spec:
+      ipAddressPools:
+       - metallb
+    ```
+
+6.  Apply the YAML content by entering the following command:
+
+    ``` terminal
+    $ oc apply -f l2advertisement.yaml
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    l2advertisement.metallb.io/metallb created
+    ```
+
+- [Installing the MetalLB Operator](../../networking/networking_operators/metallb-operator/metallb-operator-install.xml#metallb-operator-install_metallb-operator-install)
+
+# Hosted clusters with the KubeVirt platform
+
+With OpenShift Container Platform 4.14 or later, you can create a hosted cluster with KubeVirt by using the command-line interface (CLI), the console, or by using external infrastructure.
 
 ## Creating a hosted cluster with the KubeVirt platform by using the CLI
 
@@ -470,9 +566,11 @@ You can define a DNS name either during your initial setup or during postinstall
 
   If you remove the `kubeAPIServerDNSName` parameter from the specification for the `HostedCluster` object, all newly generated secrets and the `CustomKubeconfig` reference are removed from the cluster and from the `status` parameter.
 
-# Customizing ingress and DNS behavior
+# Customized ingress and DNS behavior
 
-If you do not want to use the default ingress and DNS behavior, you can configure a KubeVirt hosted cluster with a unique base domain at creation time. This option requires manual configuration steps during creation and involves three main steps: cluster creation, load balancer creation, and wildcard DNS configuration.
+If you do not want to use the default ingress and DNS behavior, you can configure a KubeVirt hosted cluster with a unique base domain at creation time.
+
+This option requires manual configuration steps during creation and involves three main steps: cluster creation, load balancer creation, and wildcard DNS configuration.
 
 ## Deploying a hosted cluster that specifies the base domain
 
@@ -695,109 +793,9 @@ Set up a wildcard DNS record or CNAME that references the external IP of the loa
 
   Replace `<4.x.0>` with the supported OpenShift Container Platform version that you want to use.
 
-# Configuring MetalLB
+# Additional networks, guaranteed CPUs, and VM scheduling for node pools
 
-You must install the MetalLB Operator before you configure MetalLB.
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-Complete the following steps to configure MetalLB on your hosted cluster:
-
-1.  Create a `MetalLB` resource by saving the following sample YAML content in the `configure-metallb.yaml` file:
-
-    ``` yaml
-    apiVersion: metallb.io/v1beta1
-    kind: MetalLB
-    metadata:
-      name: metallb
-      namespace: metallb-system
-    ```
-
-2.  Apply the YAML content by entering the following command:
-
-    ``` terminal
-    $ oc apply -f configure-metallb.yaml
-    ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
-    ``` terminal
-    metallb.metallb.io/metallb created
-    ```
-
-3.  Create a `IPAddressPool` resource by saving the following sample YAML content in the `create-ip-address-pool.yaml` file:
-
-    ``` yaml
-    apiVersion: metallb.io/v1beta1
-    kind: IPAddressPool
-    metadata:
-      name: metallb
-      namespace: metallb-system
-    spec:
-      addresses:
-      - 192.168.216.32-192.168.216.122
-    ```
-
-    - Create an address pool with an available range of IP addresses within the node network. Replace the IP address range with an unused pool of available IP addresses in your network.
-
-4.  Apply the YAML content by entering the following command:
-
-    ``` terminal
-    $ oc apply -f create-ip-address-pool.yaml
-    ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
-    ``` terminal
-    ipaddresspool.metallb.io/metallb created
-    ```
-
-5.  Create a `L2Advertisement` resource by saving the following sample YAML content in the `l2advertisement.yaml` file:
-
-    ``` yaml
-    apiVersion: metallb.io/v1beta1
-    kind: L2Advertisement
-    metadata:
-      name: l2advertisement
-      namespace: metallb-system
-    spec:
-      ipAddressPools:
-       - metallb
-    ```
-
-6.  Apply the YAML content by entering the following command:
-
-    ``` terminal
-    $ oc apply -f l2advertisement.yaml
-    ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
-    ``` terminal
-    l2advertisement.metallb.io/metallb created
-    ```
-
-- [Installing the MetalLB Operator](../../networking/networking_operators/metallb-operator/metallb-operator-install.xml#metallb-operator-install_metallb-operator-install)
-
-# Configuring additional networks, guaranteed CPUs, and VM scheduling for node pools
-
-If you need to configure additional networks for node pools, request a guaranteed CPU access for Virtual Machines (VMs), or manage scheduling of KubeVirt VMs, see the following procedures.
+You can configure additional networks for node pools, request a guaranteed CPU access for Virtual Machines (VMs), or manage scheduling of KubeVirt VMs.
 
 ## Adding multiple networks to a node pool
 
@@ -859,19 +857,19 @@ You can add your additional network as a default network for the nodes by disabl
     --additional-network name:<namespace>/<network_name>
   ```
 
-  - Specify the name of your hosted cluster, for example, `my-hosted-cluster`.
+  - `--name` specifies the name of your hosted cluster, for example, `my-hosted-cluster`.
 
-  - Specify your worker node count, for example, `2`.
+  - `--node-pool-replicas` specifies your worker node count, for example, `2`.
 
-  - Specify the path to your pull secret, for example, `/user/name/pullsecret`.
+  - `--pull-secret` specifies the path to your pull secret, for example, `/user/name/pullsecret`.
 
-  - Specify the memory value, for example, `8Gi`.
+  - `--memory` specifies the memory value, for example, `8Gi`.
 
-  - Specify the CPU value, for example, `2`.
+  - `--cores` specifies the CPU value, for example, `2`.
 
-  - The `--attach-default-network false` argument disables the default pod network.
+  - `--attach-default-network false` disables the default pod network.
 
-  - Specify the additional network that you want to add to your nodes, for example, `name:my-namespace/my-network`.
+  - `--additional-network` specifies the additional network that you want to add to your nodes, for example, `name:my-namespace/my-network`.
 
 ## Requesting guaranteed CPU resources
 
@@ -889,17 +887,17 @@ By default, KubeVirt VMs might share their CPUs with other workloads on a node. 
     --qos-class Guaranteed
   ```
 
-  - Specify the name of your hosted cluster, for example, `my-hosted-cluster`.
+  - `--name` specifies the name of your hosted cluster, for example, `my-hosted-cluster`.
 
-  - Specify your worker node count, for example, `2`.
+  - `--node-pool-replicas` specifies your worker node count, for example, `2`.
 
-  - Specify the path to your pull secret, for example, `/user/name/pullsecret`.
+  - `--pull-secret` specifies the path to your pull secret, for example, `/user/name/pullsecret`.
 
-  - Specify the memory value, for example, `8Gi`.
+  - `--memory` specifies the memory value, for example, `8Gi`.
 
-  - Specify the CPU value, for example, `2`.
+  - `--cores` specifies the CPU value, for example, `2`.
 
-  - The `--qos-class Guaranteed` argument guarantees that the specified number of CPU resources are assigned to VMs.
+  - `--qos-class Guaranteed` guarantees that the specified number of CPU resources are assigned to VMs.
 
 ## Scheduling KubeVirt VMs on a set of nodes
 

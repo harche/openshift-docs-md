@@ -2,17 +2,13 @@ When the `--enable-uwm-telemetry-remote-write` option is enabled, user workload 
 
 # Resolving user workload monitoring issues
 
-If you installed multicluster engine Operator on OpenShift Container Platform clusters that are not connected to the internet, when you try to run the user workload monitoring feature of the HyperShift Operator by entering the following command, the feature fails with an error:
+If you installed multicluster engine Operator on OpenShift Container Platform clusters that are not connected to the internet, when you try to run the user workload monitoring feature, it might fail with an error.
+
+For example, when you try to run the user workload monitoring feature by entering the following command, it fails with an error:
 
 ``` terminal
 $ oc get events -n hypershift
 ```
-
-<div class="formalpara-title">
-
-**Example error**
-
-</div>
 
 ``` terminal
 LAST SEEN   TYPE      REASON           OBJECT                MESSAGE
@@ -42,7 +38,7 @@ To resolve the error, you must disable the user workload monitoring option by cr
 
 # Verifying the status of the hosted control plane feature
 
-The hosted control plane feature is enabled by default.
+The hosted control plane feature is enabled by default. However, if you are not sure that it is enabled, you can run a command to verify its status.
 
 1.  If the feature is disabled and you want to enable it, enter the following command. Replace `<multiclusterengine>` with the name of your multicluster engine Operator instance:
 
@@ -65,22 +61,28 @@ The hosted control plane feature is enabled by default.
 
     </div>
 
-        NAME               AVAILABLE   DEGRADED   PROGRESSING
-        hypershift-addon   True        False
+    ``` terminal
+    NAME               AVAILABLE   DEGRADED   PROGRESSING
+    hypershift-addon   True        False
+    ```
 
 3.  To avoid a timeout during this process, enter the following commands:
 
-    ``` terminal
-    $ oc wait --for=condition=Degraded=True managedclusteraddons/hypershift-addon \
-      -n local-cluster --timeout=5m
-    ```
+    1.  To avoid a timeout when the condition is `Degraded`, enter the following command:
 
-    ``` terminal
-    $ oc wait --for=condition=Available=True managedclusteraddons/hypershift-addon \
-      -n local-cluster --timeout=5m
-    ```
+        ``` terminal
+        $ oc wait --for=condition=Degraded=True managedclusteraddons/hypershift-addon \
+          -n local-cluster --timeout=5m
+        ```
 
-    When the process is complete, the `hypershift-addon` managed cluster add-on and the HyperShift Operator are installed, and the `local-cluster` managed cluster is available to host and manage hosted clusters.
+    2.  To avoid a timeout when the condition is `Available`, enter the following command:
+
+        ``` terminal
+        $ oc wait --for=condition=Available=True managedclusteraddons/hypershift-addon \
+          -n local-cluster --timeout=5m
+        ```
+
+        When the process is complete, the `hypershift-addon` managed cluster add-on and the HyperShift Operator are installed, and the `local-cluster` managed cluster is available to host and manage hosted clusters.
 
 # Configuring the hypershift-addon managed cluster add-on to run on an infrastructure node
 

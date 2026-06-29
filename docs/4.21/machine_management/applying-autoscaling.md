@@ -293,12 +293,6 @@ Configure a priority expander to control which machine set expands when the clus
 
 3.  Create a `cluster-autoscaler-priority-expander.yml` YAML file that defines a config map similar to the following:
 
-    <div class="formalpara-title">
-
-    **Example priority expander config map**
-
-    </div>
-
     ``` yaml
     apiVersion: v1
     kind: ConfigMap

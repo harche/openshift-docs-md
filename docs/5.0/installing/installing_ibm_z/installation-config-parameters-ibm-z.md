@@ -8,6 +8,8 @@ While this document refers only to IBM Z®, all information in it also applies t
 
 # Available installation configuration parameters for IBM Z
 
+To customize your cluster installation, configuration parameters are available to use in the `install-config.yaml` file.
+
 The following tables specify the required, optional, and IBM Z-specific installation configuration parameters that you can set as part of the installation process.
 
 <div class="important">

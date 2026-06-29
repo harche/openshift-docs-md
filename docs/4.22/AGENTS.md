@@ -246,6 +246,7 @@ Root: ./
 
 |etcd:{etcd-overview.md,etcd-practices.md,etcd-performance.md,etcd-encrypt.md,etcd-guidance-span.md}
 |etcd/etcd-backup-restore:{etcd-backup.md,replace-unhealthy-etcd-member.md,etcd-disaster-recovery.md}
+|etcd/KMS_v2:{index.md,kms-configuring.md,kms-disabling.md}
 
 ### Hosted control planes
 
@@ -295,8 +296,7 @@ Root: ./
 |observability/monitoring:{about-ocp-monitoring.md}
 |observability/logging:{about-logging.md}
 |observability/distr_tracing:{distr-tracing-tempo-architecture.md}
-|observability/otel:{otel-rn.md,otel-architecture.md,otel-installing.md,otel-configuration-of-instrumentation.md,otel-sending-traces-logs-and-metrics-to-otel-collector.md,otel-configuring-metrics-for-monitoring-stack.md,otel-forwarding-telemetry-data.md,otel-configuring-otelcol-metrics.md,otel-receiving-telemetry-data.md,otel-troubleshooting.md,otel-migrating.md,otel-updating.md,otel-removing.md}
-|observability/otel/otel-collector:{otel-collector-configuration-intro.md,otel-collector-receivers.md,otel-collector-processors.md,otel-collector-exporters.md,otel-collector-connectors.md,otel-collector-extensions.md}
+|observability/otel:{otel-architecture.md}
 |observability/network_observability:{network-observability-operator-release-notes.md,network-observability-overview.md,installing-operators.md,network-observability-kafka-operator-scaling-network-flow-collection.md,understanding-network-observability-operator.md,configuring-operator.md,network-observability-per-tenant-model.md,network-observability-network-policy.md,network-observability-dns-resolution-analysis.md,observing-network-traffic.md,network-observability-health-rules.md,network-observability-monitoring-tls-traffic.md,metrics-alerts-dashboards.md,network-observability-operator-monitoring.md,network-observability-scheduling-resources.md,network-observability-secondary-networks.md,flowcollector-api.md,flowmetric-api.md,json-flows-format-reference.md,troubleshooting-network-observability.md}
 |observability/network_observability/release_notes_archive:{network-observability-operator-release-notes-archive.md}
 |observability/network_observability/netobserv_cli:{netobserv-cli-install.md,netobserv-cli-using.md,netobserv-cli-reference.md}

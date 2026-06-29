@@ -2,6 +2,8 @@ Before you deploy an OpenShift Container Platform cluster on vSphere, you can co
 
 # Available installation configuration parameters for vSphere
 
+To customize your cluster installation, configuration parameters are available to use in the `install-config.yaml` file.
+
 The following tables specify the required, optional, and vSphere-specific installation configuration parameters that you can set as part of the installation process.
 
 <div class="important">

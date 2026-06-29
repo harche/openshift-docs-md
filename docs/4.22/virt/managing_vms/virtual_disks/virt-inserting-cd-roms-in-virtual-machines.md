@@ -27,19 +27,6 @@ Setting up a virtual CD-ROM drive requires rebooting the VM, but afterwards, you
 
   </div>
 
-- The `HotplugVolumes` feature gate is disabled. It is incompatible with `DeclarativeHotplugVolumes` and is deprecated.
-
-  ``` yaml
-  apiVersion: hco.kubevirt.io/v1beta1
-  kind: HyperConverged
-  metadata:
-    name: kubevirt-hyperconverged
-    namespace: openshift-cnv
-  spec:
-      featureGates:
-          HotplugVolumes: false
-  ```
-
 - You have an ISO image of a CD-ROM available in the cluster.
 
 1.  Run the following command to edit the configuration of the VM in which you want to insert the CD-ROM:
@@ -122,19 +109,6 @@ Setting up a virtual CD-ROM drive requires rebooting the VM, but you can insert 
   The `DeclarativeHotplugVolumes` feature gate does not support hot plugging ephemeral volumes.
 
   </div>
-
-- The `HotplugVolumes` feature gate is disabled. It is incompatible with `DeclarativeHotplugVolumes` and is deprecated.
-
-  ``` yaml
-  apiVersion: hco.kubevirt.io/v1beta1
-  kind: HyperConverged
-  metadata:
-    name: kubevirt-hyperconverged
-    namespace: openshift-cnv
-  spec:
-      featureGates:
-          HotplugVolumes: false
-  ```
 
 1.  In the OpenShift Container Platform web console, go to **Virtualization** → **VirtualMachines**.
 

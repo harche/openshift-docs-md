@@ -2,7 +2,7 @@ Image streams in OpenShift Container Platform provide a layer of abstraction ove
 
 The main advantage of using image streams is the automation they enable for your continuous integration and continuous delivery (CI/CD) pipelines. For example:
 
-- Image streams allow OpenShift Container Platform resources like Builds and Deployments to "watch" them.
+- Image streams allow OpenShift Container Platform resources such as Builds and Deployments to "watch" them.
 
 - When a new image is added to the stream, or when an existing tag is modified to point to a new image, the watching resources receive notifications.
 

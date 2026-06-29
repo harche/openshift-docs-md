@@ -2,6 +2,8 @@ Before you deploy an OpenShift Container Platform cluster on Red Hat OpenStack 
 
 # Available installation configuration parameters for OpenStack
 
+To customize your cluster installation, configuration parameters are available to use in the `install-config.yaml` file.
+
 The following tables specify the required, optional, and OpenStack-specific installation configuration parameters that you can set as part of the installation process.
 
 <div class="important">
@@ -626,13 +628,20 @@ Optional RHOSP configuration parameters are described in the following table:
 <tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   openstack:
+    apiVIPs:</code></pre></td>
+<td style="text-align: left;"><p>IP address on the machine network to assign to the API VIP. If multiple addresses are present, they must consist of exactly one IPv4 and one IPv6 address.</p>
+<p><strong>Value:</strong> An array of strings. For example, <code>[ "192.168.1.10", "2001:db8::10" ]</code>.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><pre><code>platform:
+  openstack:
     clusterOSImage:</code></pre></td>
 <td style="text-align: left;"><p>The location from which the installation program downloads the RHCOS image.</p>
 <p>You must set this parameter to perform an installation in a restricted network.</p>
 <p><strong>Value:</strong> An HTTP or HTTPS URL, optionally with an SHA-256 checksum.</p>
 <p>For example, <code>http://mirror.example.com/images/rhcos-43.81.201912131630.0-openstack.x86_64.qcow2.gz?sha256=ffebbd68e8a1f2a245ca19522c16c86f67f9ac8e4e0c1f0a812b068b16f7265d</code>. The value can also be the name of an existing Glance image, for example <code>my-rhcos</code>.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   openstack:
     clusterOSImageProperties:</code></pre></td>
@@ -640,12 +649,12 @@ Optional RHOSP configuration parameters are described in the following table:
 <p>You can use this property to exceed the default persistent volume (PV) limit for RHOSP of 26 PVs per node. To exceed the limit, set the <code>hw_scsi_model</code> property value to <code>virtio-scsi</code> and the <code>hw_disk_bus</code> value to <code>scsi</code>.</p>
 <p>You can also use this property to enable the QEMU guest agent by including the <code>hw_qemu_guest_agent</code> property with a value of <code>yes</code>.</p>
 <p><strong>Value:</strong> A set of string properties. For example:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">clusterOSImageProperties</span><span class="kw">:</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hw_scsi_model</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;virtio-scsi&quot;</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hw_disk_bus</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;scsi&quot;</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hw_qemu_guest_agent</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;yes&quot;</span></span></code></pre></div></td>
+<div class="sourceCode" id="cb12"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">clusterOSImageProperties</span><span class="kw">:</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hw_scsi_model</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;virtio-scsi&quot;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hw_disk_bus</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;scsi&quot;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hw_qemu_guest_agent</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;yes&quot;</span></span></code></pre></div></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   openstack:
     controlPlanePort:
@@ -653,7 +662,7 @@ Optional RHOSP configuration parameters are described in the following table:
 <td style="text-align: left;"><p>Subnets for the machines to use.</p>
 <p><strong>Value:</strong> A list of subnet names or UUIDs to use in cluster installation.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   openstack:
     controlPlanePort:
@@ -661,26 +670,33 @@ Optional RHOSP configuration parameters are described in the following table:
 <td style="text-align: left;"><p>A network for the machines to use.</p>
 <p><strong>Value:</strong> The UUID or name of an RHOSP network to use in cluster installation.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>platform:
   openstack:
     defaultMachinePlatform:</code></pre></td>
 <td style="text-align: left;"><p>The default machine pool platform configuration.</p>
 <p><strong>Value:</strong></p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>   <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;ml.large&quot;</span><span class="fu">,</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>   <span class="dt">&quot;rootVolume&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;size&quot;</span><span class="fu">:</span> <span class="dv">30</span><span class="fu">,</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;performance&quot;</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">}</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div></td>
+<div class="sourceCode" id="cb16"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>   <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;ml.large&quot;</span><span class="fu">,</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>   <span class="dt">&quot;rootVolume&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;size&quot;</span><span class="fu">:</span> <span class="dv">30</span><span class="fu">,</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;performance&quot;</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">}</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>platform:
   openstack:
     ingressFloatingIP:</code></pre></td>
 <td style="text-align: left;"><p>An existing floating IP address to associate with the Ingress port. To use this property, you must also define the <code>platform.openstack.externalNetwork</code> property.</p>
 <p><strong>Value:</strong> An IP address, for example <code>128.0.0.1</code>.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><pre><code>platform:
+  openstack:
+    ingressVIPs:</code></pre></td>
+<td style="text-align: left;"><p>An IP address or addresses on the machine network to assign to the ingress VIP. If multiple addresses are provided, they must consist of exactly one IPv4 and one IPv6 address.</p>
+<p><strong>Value:</strong> An array of strings. For example, <code>[ "192.168.1.11", "2001:db8::11" ]</code>.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><pre><code>platform:

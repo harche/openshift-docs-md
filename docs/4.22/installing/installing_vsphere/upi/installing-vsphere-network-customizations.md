@@ -402,7 +402,7 @@ The default `install-config.yaml` file configuration from the previous release o
 
 # Network configuration phases
 
-There are two phases prior to OpenShift Container Platform installation where you can customize the network configuration.
+There are two phases prior to OpenShift Container Platform installation where you can customize the network configuration. Customize settings in the `install-config.yaml` file and in the Cluster Network Operator manifest across two configuration phases.
 
 Phase 1
 You can customize the following network-related fields in the `install-config.yaml` file before you create the manifest files:
@@ -438,9 +438,7 @@ During phase 2, you cannot override the values that you specified in phase 1 in 
 
 # Specifying advanced network configuration
 
-You can use advanced network configuration for your network plugin to integrate your cluster into your existing network environment.
-
-You can specify advanced network configuration only before you install the cluster.
+To integrate your OpenShift Container Platform cluster with your existing network environment, you can specify advanced network configuration in a manifest before you install the cluster. Advanced network configuration can be configured only during cluster installation.
 
 <div class="important">
 
@@ -456,7 +454,7 @@ Customizing your network configuration by modifying the OpenShift Container Plat
     $ ./openshift-install create manifests --dir <installation_directory>
     ```
 
-    - `<installation_directory>` specifies the name of the directory that contains the `install-config.yaml` file for your cluster.
+    The `<installation_directory>` specifies the name of the directory that contains the `install-config.yaml` file for your cluster.
 
 2.  Create a stub manifest file for the advanced network configuration that is named `cluster-network-03-config.yml` in the `<installation_directory>/manifests/` directory:
 
@@ -1518,7 +1516,7 @@ Now you can use the Ignition config files as input to the vSphere installation p
 
 # Waiting for the bootstrap process to complete
 
-To install OpenShift Container Platform, use Ignition configuration files to initialize the bootstrap process after the cluster nodes boot into RHCOS. You must wait for this process to complete to ensure the cluster is fully installed.
+The OpenShift Container Platform bootstrap process begins after the cluster nodes first boot into the persistent RHCOS environment that has been installed to disk. The configuration information provided through the Ignition config files is used to initialize the bootstrap process and install OpenShift Container Platform on the machines. You must wait for the bootstrap process to complete.
 
 - You have created the Ignition config files for your cluster.
 
@@ -1607,7 +1605,7 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 # Approving the certificate signing requests for your machines
 
-You can add machines to a cluster by verifying the status of the Certificate Signing Requests (CSRs) generated for each machine. If manual approval is required, approve the client requests first, followed by the server requests.
+When you add machines to a cluster, two pending certificate signing requests (CSRs) are generated for each machine that you added. You must confirm that these CSRs are approved or, if necessary, approve them yourself. The client requests must be approved first, followed by the server requests.
 
 - You added machines to your cluster.
 
@@ -1763,7 +1761,7 @@ You can add machines to a cluster by verifying the status of the Certificate Sig
 
 ## Initial Operator configuration
 
-To ensure all Operators become available, configure the required Operators immediately after the control plane initialises. This configuration is essential for stabilizing the cluster environment following the installation.
+After the control plane initializes, you must immediately configure some Operators so that they all become available.
 
 - Your control plane has initialized.
 

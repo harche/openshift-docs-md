@@ -46,7 +46,9 @@ The following resources are unavailable when direct authentication is configured
 
 ## Direct authentication identity providers
 
-Direct authentication has been tested with the following OpenID Connect (OIDC) identity providers:
+Direct authentication has been tested with multiple OpenID Connect (OIDC) identity providers.
+
+The following identity providers have been tested:
 
 - Active Directory Federation Services for Windows Server
 
@@ -66,13 +68,15 @@ Direct authentication has been tested with the following OpenID Connect (OIDC) i
 
 <div class="note">
 
-Red Hat does not test all factors associated with third-party identity provider functionality. For more information about third-party support, see the [Red Hat third-party support policy](https://access.redhat.com/third-party-software-support).
+Red Hat does not test all factors associated with third-party identity provider functionality.
 
 </div>
 
+- [Red Hat third-party support policy](https://access.redhat.com/third-party-software-support)
+
 # Configuring an external OIDC identity provider for direct authentication
 
-You can configure OpenShift Container Platform to directly use an external OIDC identity provider to issue tokens for authentication.
+Configure OpenShift Container Platform to use an external OIDC identity provider for direct authentication, enabling users to log in with existing corporate credentials while bypassing the built-in OAuth server for streamlined single sign-on.
 
 - You have configured your external authentication provider.
 
@@ -100,11 +104,11 @@ You can configure OpenShift Container Platform to directly use an external OIDC 
 
     ``` terminal
     $ oc create secret generic console-secret \
-        --from-literal=clientSecret=<secret_value> \
+        --from-literal=clientSecret=<secret_value> \//
         -n openshift-config
     ```
 
-    - Replace `<secret_value>` with the value of the secret for the `console-test` client in your identity provider.
+    Replace `<secret_value>` with the value of the secret for the `console-test` client in your identity provider.
 
 3.  Optional: Create a config map that contains the provider’s certificate authority bundle by running the following command:
 
@@ -113,7 +117,7 @@ You can configure OpenShift Container Platform to directly use an external OIDC 
         -n openshift-config
     ```
 
-    - Specify the path to your provider’s `ca-bundle.crt` file.
+    Specify the path to your provider’s `ca-bundle.crt` file.
 
 4.  Edit the authentication configuration by running the following command:
 
@@ -168,37 +172,49 @@ You can configure OpenShift Container Platform to directly use an external OIDC 
             - profile
     ```
 
-    - Must be set to `OIDC` to indicate to use an external OIDC identity provider.
+    where:
 
-    - Must be set to `null` when `type` is set to `OIDC`.
+    `spec.type`
+    Specifies the authentication type. Must be set to `OIDC` to indicate to use an external OIDC identity provider.
 
-    - The OIDC provider configuration. Currently, only one OIDC provider configuration is allowed.
+    `spec.webhookTokenAuthenticator`
+    Specifies the webhook token authenticator configuration. Must be set to `null` when `type` is set to `OIDC`.
 
-    - An optional field for configuring the mappings used to construct the extra attributes for the cluster identity.
+    `spec.oidcProviders`
+    Specifies the OIDC provider configuration. Currently, only one OIDC provider configuration is allowed.
 
-    - The name of the claim to construct group names for the cluster identity.
+    `spec.oidcProviders.claimMappings.extra`
+    Specifies the mappings used to construct the extra attributes for the cluster identity. This field is optional.
 
-    - An optional field for configuring the claim mapping used to construct the uid for the cluster identity.
+    `spec.oidcProviders.claimMappings.groups.claim`
+    Specifies the name of the claim to construct group names for the cluster identity.
 
-    - The name of the claim to construct usernames for the cluster identity.
+    `spec.oidcProviders.claimMappings.uid`
+    Specifies the claim mapping used to construct the UID for the cluster identity. This field is optional.
 
-    - The list of audiences that this authentication provider issues tokens for.
+    `spec.oidcProviders.claimMappings.username.claim`
+    Specifies the name of the claim to construct usernames for the cluster identity.
 
-    - The name of the config map that contains the `ca-bundle.crt` key. If unset, system trust is used instead.
+    `spec.oidcProviders.issuer.audiences`
+    Specifies the list of audiences that this authentication provider issues tokens for.
 
-    - The URL for the token issuer.
+    `spec.oidcProviders.issuer.issuerCertificateAuthority.name`
+    Specifies the name of the config map that contains the `ca-bundle.crt` key. If unset, system trust is used instead.
 
-    - The name for external OIDC provider.
+    `spec.oidcProviders.issuer.issuerURL`
+    Specifies the URL for the token issuer.
 
-    - The client ID that your provider uses for the OpenShift CLI (`oc`).
+    `spec.oidcProviders.name`
+    Specifies the name for external OIDC provider.
 
-    - The client ID that your provider uses for the OpenShift Container Platform web console.
+    `spec.oidcProviders.oidcClients.clientID`
+    Specifies the client ID that your provider uses. Configure separate entries for the OpenShift CLI (`oc`) and the OpenShift Container Platform web console.
 
-    - The name of the secret that stores the secret value for the console client.
+    `spec.oidcProviders.oidcClients.clientSecret.name`
+    Specifies the name of the secret that stores the secret value for the console client.
 
-    - The extra scopes to request. Some providers, such as GitLab, might require extra scopes in order to log in through the web console properly.
-
-      For more details on all available parameters, see "OIDC provider configuration parameters".
+    `spec.oidcProviders.oidcClients.extraScopes`
+    Specifies the extra scopes to request. Some providers, such as GitLab, might require extra scopes in order to log in through the web console properly.
 
 6.  Exit and save the changes to apply the new configuration.
 
@@ -239,23 +255,29 @@ You can configure OpenShift Container Platform to directly use an external OIDC 
             --oidc-certificate-authority my-directory/ca-bundle.crt
         ```
 
-        - Specify `oc-oidc` as the exec plugin type. Only a value of `oc-oidc` is allowed.
+        where:
 
-        - Specify the issuer URL for your identity provider.
+        `--exec-plugin`
+        Specifies the exec plugin type. Only a value of `oc-oidc` is allowed.
 
-        - Specify client ID for the OpenShift CLI (`oc`).
+        `--issuer-url`
+        Specifies the issuer URL for your identity provider.
 
-        - Specify the path to the `ca-bundle.crt` file on your local machine.
+        `--client-id`
+        Specifies the client ID for the OpenShift CLI (`oc`).
 
-          <div class="formalpara-title">
+        `--oidc-certificate-authority`
+        Specifies the path to the `ca-bundle.crt` file on your local machine.
 
-          **Example output**
+        <div class="formalpara-title">
 
-          </div>
+        **Example output**
 
-          ``` terminal
-          Please visit the following URL in your browser: http://localhost:8080
-          ```
+        </div>
+
+        ``` terminal
+        Please visit the following URL in your browser: http://localhost:8080
+        ```
 
     2.  Open <http://localhost:8080> in a browser.
 
@@ -557,7 +579,7 @@ spec:
 
 # Disabling direct authentication
 
-If necessary, you can disable direct authentication for your cluster and revert back to authenticating with the built-in OpenShift OAuth server.
+Disable direct authentication to revert your cluster back to using the built-in OpenShift OAuth server for authentication when external OIDC integration is no longer needed.
 
 - You have access to the `kubeconfig` file generated by the installation program for the cluster.
 
@@ -573,9 +595,13 @@ If necessary, you can disable direct authentication for your cluster and revert 
     '
     ```
 
-    - Sets `type` to `""` to use the built-in OpenShift OAuth server. A value of `IntegratedOAuth` is also equivalent.
+    where:
 
-    - Removes the `oidcProviders` configuration.
+    `spec.type`
+    Specifies the authentication type. Set to `""` to use the built-in OpenShift OAuth server. A value of `IntegratedOAuth` is also equivalent.
+
+    `spec.oidcProviders`
+    Specifies the OIDC provider configuration. Set to `null` to remove the external OIDC provider configuration.
 
 3.  Wait for the cluster to roll out new revisions to all nodes.
 

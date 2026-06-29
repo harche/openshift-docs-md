@@ -63,9 +63,9 @@ You can verify whether an already deployed VM is configured for vNUMA by checkin
 
 # Disabling the hot plug capability for VMs
 
-*Hot plugging* is the ability to dynamically add resources such as memory or CPU to a VM while it is running. Default OpenShift Virtualization hot plug multipliers can cause VMs to request an excessive number of sockets. For example, if your VM requests 10 sockets, the default hot plug behavior multiplies this by 4, which means that the total request is 40 sockets. This can exceed the recommended CPUs supported by the Kernel-based Virtual Machine (KVM), which can cause deployment failures.
-
 You can keep VM resource requests aligned with NUMA and optimize performance for resource-intensive workloads by disabling the VM’s default hot plug capability.
+
+*Hot plugging* is the ability to dynamically add resources such as memory or CPU to a VM while it is running. Default OpenShift Virtualization hot plug multipliers can cause VMs to request an excessive number of sockets. For example, if your VM requests 10 sockets, the default hot plug behavior multiplies this by 4, which means that the total request is 40 sockets. This can exceed the recommended CPUs supported by the Kernel-based Virtual Machine (KVM), which can cause deployment failures.
 
 ## Disabling the CPU hot plug by instance type
 

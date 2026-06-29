@@ -1,4 +1,4 @@
-You can use the Cluster Samples Operator with an alternate registry by first creating a mirror registry. Before you create the mirror registry, you must prepare the mirror host.
+You can use the Cluster Samples Operator with an alternate registry by preparing a mirror host and creating a mirror registry.
 
 # About the mirror registry
 

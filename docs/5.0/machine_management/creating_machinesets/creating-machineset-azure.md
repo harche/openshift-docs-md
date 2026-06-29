@@ -126,7 +126,7 @@ Specifies the infrastructure ID, node label, and region.
 
 <div class="note">
 
-The value of the `spec.template.spec.providerSpec.value.image` parameter specifies the image details for your compute machine set. If you want to use an Azure Marketplace image, see "Using the Azure Marketplace offering".
+The value of the `spec.template.spec.providerSpec.value.image` parameter specifies the image details of the boot image for your nodes. You should use the use the latest image when adding a new machine set. If you want to use an Azure Marketplace image, see "Using the Azure Marketplace offering".
 
 The value of the `spec.template.spec.providerSpec.value.image.resourceID` parameter specifies an image that is compatible with your instance type. The Hyper-V generation V2 images created by the installation program have a `-gen2` suffix, while V1 images have the same name without the suffix.
 
@@ -142,6 +142,8 @@ Optional: Specifies custom tags in your machine set. Provide the tag name in `<c
 The value of the `spec.template.spec.providerSpec.value.zone` parameter specifies the zone within your region to place machines on. Ensure that your region supports the zone that you specify. If your region supports availability zones, you must specify the zone. Specifying the zone avoids volume node affinity failure when a pod requires a persistent volume attachment. To do this, you can create a compute machine set for each zone in the same region.
 
 </div>
+
+- [Manually updating the boot image](../../machine_configuration/mco-update-boot-images-manual.xml#mco-update-boot-images-manual)
 
 # Creating a compute machine set
 

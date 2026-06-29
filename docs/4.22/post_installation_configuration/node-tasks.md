@@ -199,9 +199,13 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines fo
 
 2.  Use the PXE or iPXE infrastructure to create the required compute machines for your cluster.
 
+- [How does one set up a serial terminal and/or console in Red Hat Enterprise Linux? (Red Hat Knowledgebase article)](https://access.redhat.com/articles/7212)
+
+- [`IMAGE_GZIP` option in iPXE (iPXE documentation)](https://ipxe.org/buildcfg/image_gzip)
+
 ## Approving the certificate signing requests for your machines
 
-You can add machines to a cluster by verifying the status of the Certificate Signing Requests (CSRs) generated for each machine. If manual approval is required, approve the client requests first, followed by the server requests.
+When you add machines to a cluster, two pending certificate signing requests (CSRs) are generated for each machine that you added. You must confirm that these CSRs are approved or, if necessary, approve them yourself. The client requests must be approved first, followed by the server requests.
 
 - You added machines to your cluster.
 

@@ -58,27 +58,28 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines fo
 
     </div>
 
-7.  Run the `coreos-installer` command and specify the options that meet your installation requirements. At a minimum, you must specify the URL that points to the Ignition config file for the node type, and the device that you are installing to:
+7.  Run the `coreos-installer` command by using `sudo`. The `core` user does not have the root privileges required to perform the installation. Specify the options that meet your installation requirements. At a minimum, you must specify the URL that points to the Ignition config file for the node type, and the device that you are installing to.
 
     ``` terminal
     $ sudo coreos-installer install --ignition-url=http://<HTTP_server>/<node_type>.ign <device> --ignition-hash=sha512-<digest>
     ```
 
-    - You must run the `coreos-installer` command by using `sudo`, because the `core` user does not have the required root privileges to perform the installation.
+    where:
 
-    - The `--ignition-hash` option is required when the Ignition config file is obtained through an HTTP URL to validate the authenticity of the Ignition config file on the cluster node. `<digest>` is the Ignition config file SHA512 digest obtained in a preceding step.
+    `<digest>`
+    Specifies the Ignition config file SHA512 digest obtained through an HTTP URL to validate the authenticity of the Ignition config file on the cluster node.
 
-      <div class="note">
+    <div class="note">
 
-      If you want to provide your Ignition config files through an HTTPS server that uses TLS, you can add the internal certificate authority (CA) to the system trust store before running `coreos-installer`.
+    If you want to provide your Ignition config files through an HTTPS server that uses TLS, you can add the internal certificate authority (CA) to the system trust store before running `coreos-installer`.
 
-      </div>
+    </div>
 
-      The following example initializes a compute node installation to the `/dev/sda` device. The Ignition config file for the compute node is obtained from an HTTP web server with the IP address 192.168.1.2:
+    The following example initializes a compute node installation to the `/dev/sda` device. The Ignition config file for the compute node is obtained from an HTTP web server with the IP address 192.168.1.2:
 
-      ``` terminal
-      $ sudo coreos-installer install --ignition-url=http://192.168.1.2:80/installation_directory/worker.ign /dev/sda --ignition-hash=sha512-a5a2d43879223273c9b60af66b44202a1d1248fc01cf156c46d4a79f552b6bad47bc8cc78ddf0116e80c59d2ea9e32ba53bc807afbca581aa059311def2c3e3b
-      ```
+    ``` terminal
+    $ sudo coreos-installer install --ignition-url=http://192.168.1.2:80/installation_directory/worker.ign /dev/sda --ignition-hash=sha512-a5a2d43879223273c9b60af66b44202a1d1248fc01cf156c46d4a79f552b6bad47bc8cc78ddf0116e80c59d2ea9e32ba53bc807afbca581aa059311def2c3e3b
+    ```
 
 8.  Monitor the progress of the RHCOS installation on the console of the machine.
 
@@ -113,15 +114,28 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines fo
               KERNEL http://<HTTP_server>/rhcos-<version>-live-kernel-<architecture>
               APPEND initrd=http://<HTTP_server>/rhcos-<version>-live-initramfs.<architecture>.img coreos.inst.install_dev=/dev/sda coreos.inst.ignition_url=http://<HTTP_server>/worker.ign coreos.live.rootfs_url=http://<HTTP_server>/rhcos-<version>-live-rootfs.<architecture>.img
 
-      - Specify the location of the live `kernel` file that you uploaded to your HTTP server.
+      where:
 
-      - Specify locations of the RHCOS files that you uploaded to your HTTP server. The `initrd` parameter value is the location of the live `initramfs` file, the `coreos.inst.ignition_url` parameter value is the location of the worker Ignition config file, and the `coreos.live.rootfs_url` parameter value is the location of the live `rootfs` file. The `coreos.inst.ignition_url` and `coreos.live.rootfs_url` parameters only support HTTP and HTTPS.
+      `KERNEL`
+      Specifies the location of the live `kernel` file that you uploaded to your HTTP server.
 
-        <div class="note">
+      `APPEND`
+      Specifies the locations of the RHCOS files that you uploaded to your HTTP server:
 
-        This configuration does not enable serial console access on machines with a graphical console. To configure a different console, add one or more `console=` arguments to the `APPEND` line. For example, add `console=tty0 console=ttyS0` to set the first PC serial port as the primary console and the graphical console as a secondary console. For more information, see [How does one set up a serial terminal and/or console in Red Hat Enterprise Linux?](https://access.redhat.com/articles/7212).
+      `initrd`
+      Specifies the location of the live `initramfs` file.
 
-        </div>
+      `coreos.inst.ignition_url`
+      Specifies the location of the worker Ignition config file. This parameter supports only HTTP and HTTPS.
+
+      `coreos.live.rootfs_url`
+      Specifies the location of the live `rootfs` file. This parameter supports only HTTP and HTTPS.
+
+      <div class="note">
+
+      This configuration does not enable serial console access on machines with a graphical console. To configure a different console, add one or more `console=` arguments to the `APPEND` line. For example, add `console=tty0 console=ttyS0` to set the first PC serial port as the primary console and the graphical console as a secondary console. For more information on setting up a serial terminal and/or console in RHCOS, see "How does one set up a serial terminal and/or console in Red Hat Enterprise Linux?".
+
+      </div>
 
     - For iPXE (`x86_64` + `ppc64le`):
 
@@ -129,23 +143,36 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines fo
           initrd --name main http://<HTTP_server>/rhcos-<version>-live-initramfs.<architecture>.img
           boot
 
-      - Specify the locations of the RHCOS files that you uploaded to your HTTP server. The `kernel` parameter value is the location of the `kernel` file, the `initrd=main` argument is needed for booting on UEFI systems, the `coreos.live.rootfs_url` parameter value is the location of the `rootfs` file, and the `coreos.inst.ignition_url` parameter value is the location of the worker Ignition config file.
+      where:
 
-      - If you use multiple NICs, specify a single interface in the `ip` option. For example, to use DHCP on a NIC that is named `eno1`, set `ip=eno1:dhcp`.
+      `kernel`
+      Specifies the location of the `kernel` file that you uploaded to your HTTP server.
 
-      - Specify the location of the `initramfs` file that you uploaded to your HTTP server.
+      `initrd=main`
+      Specifies an argument that is required for booting on UEFI systems.
 
-        <div class="note">
+      `coreos.live.rootfs_url`
+      Specifies the location of the `rootfs` file that you uploaded to your HTTP server.
 
-        This configuration does not enable serial console access on machines with a graphical console To configure a different console, add one or more `console=` arguments to the `kernel` line. For example, add `console=tty0 console=ttyS0` to set the first PC serial port as the primary console and the graphical console as a secondary console. For more information, see [How does one set up a serial terminal and/or console in Red Hat Enterprise Linux?](https://access.redhat.com/articles/7212) and "Enabling the serial console for PXE and ISO installation" in the "Advanced RHCOS installation configuration" section.
+      `coreos.inst.ignition_url`
+      Specifies the location of the worker Ignition config file that you uploaded to your HTTP server.
 
-        </div>
+      `initrd --name main`
+      Specifies the location of the `initramfs` file that you uploaded to your HTTP server.
 
-        <div class="note">
+      <div class="note">
 
-        To network boot the CoreOS `kernel` on `ppc64le` architecture, you need to use a version of iPXE build with the `IMAGE_GZIP` option enabled. See [`IMAGE_GZIP` option in iPXE](https://ipxe.org/buildcfg/image_gzip).
+      - If you use multiple NICs, specify a single interface in the `ip` option. For example, to use DHCP on a NIC named `eno1`, set `ip=eno1:dhcp`.
 
-        </div>
+      - This configuration does not enable serial console access on machines with a graphical console To configure a different console, add one or more `console=` arguments to the `kernel` line. For example, add `console=tty0 console=ttyS0` to set the first PC serial port as the primary console and the graphical console as a secondary console. For more information on setting up a serial terminal and/or console in RHCOS, see "How does one set up a serial terminal and/or console in Red Hat Enterprise Linux?" in the Additional resources section and "Enabling the serial console for PXE and ISO installation" in the "Advanced RHCOS installation configuration" section.
+
+      </div>
+
+      <div class="note">
+
+      To network boot the CoreOS `kernel` on `ppc64le` architecture, you need to use a version of iPXE build with the `IMAGE_GZIP` option enabled. For more information, see "IMAGE_GZIP option in iPXE".
+
+      </div>
 
     - For PXE (with UEFI and GRUB as second stage) on `ppc64le`:
 
@@ -154,17 +181,31 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines fo
               initrd rhcos-<version>-live-initramfs.<architecture>.img
           }
 
-      - Specify the locations of the RHCOS files that you uploaded to your HTTP/TFTP server. The `kernel` parameter value is the location of the `kernel` file on your TFTP server. The `coreos.live.rootfs_url` parameter value is the location of the `rootfs` file, and the `coreos.inst.ignition_url` parameter value is the location of the worker Ignition config file on your HTTP Server.
+      where:
 
-      - If you use multiple NICs, specify a single interface in the `ip` option. For example, to use DHCP on a NIC that is named `eno1`, set `ip=eno1:dhcp`.
+      `linux`
+      Specifies the location of the live `kernel` file on your TFTP server.
 
-      - Specify the location of the `initramfs` file that you uploaded to your TFTP server.
+      `coreos.live.rootfs_url`
+      Specifies the location of the live `rootfs` file.
+
+      `coreos.inst.ignition_url`
+      Specifies the location of the worker Ignition config file.
+
+      `initrd`
+      Specifies the location of the live `initramfs` file on your TFTP server.
+
+      <div class="note">
+
+      If you use multiple NICs, specify a single interface in the `ip` option. For example, to use DHCP on a NIC named `eno1`, set `ip=eno1:dhcp`.
+
+      </div>
 
 2.  Use the PXE or iPXE infrastructure to create the required compute machines for your cluster.
 
 # Approving the certificate signing requests for your machines
 
-To add machines to a cluster, verify the status of the certificate signing requests (CSRs) generated for each machine. If manual approval is required, approve the client requests first, followed by the server requests.
+When you add machines to a cluster, two pending certificate signing requests (CSRs) are generated for each machine that you added. You must confirm that these CSRs are approved or, if necessary, approve them yourself. The client requests must be approved first, followed by the server requests.
 
 - You added machines to your cluster.
 
@@ -220,7 +261,7 @@ To add machines to a cluster, verify the status of the certificate signing reque
 
     <div class="note">
 
-    Because the CSRs rotate automatically, approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. Then, subsequent serving certificate renewal requests are automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. Then, subsequent serving certificate renewal requests are automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
 
     </div>
 

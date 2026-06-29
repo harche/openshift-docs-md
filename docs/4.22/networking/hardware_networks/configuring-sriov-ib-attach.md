@@ -143,10 +143,10 @@ The following table describes the configuration for static IP address assignment
 
 The `addresses` array requires objects with the following fields:
 
-| Field     | Type     | Description                                                                                                                                                                                               |
-|-----------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `address` | `string` | An IP address and network prefix that you specify. For example, if you specify `10.10.21.10/24`, the secondary network gets assigned an IP address of `10.10.21.10` and the `netmask` of `255.255.255.0`. |
-| `gateway` | `string` | The default gateway to route egress network traffic to.                                                                                                                                                   |
+| Field     | Type     | Description                                                                                                                                                                                                 |
+|-----------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `address` | `string` | An IP address and network prefix that you specify. For example, if you specify `10.10.21.10/24`, the secondary network gets assigned an IP address of `10.10.21.10` and the subnet mask of `255.255.255.0`. |
+| `gateway` | `string` | The default gateway to route egress network traffic to.                                                                                                                                                     |
 
 `ipam.addresses[]` array
 

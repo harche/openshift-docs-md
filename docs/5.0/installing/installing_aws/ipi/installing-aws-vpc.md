@@ -853,40 +853,45 @@ The Cloud Credential Operator (CCO) can be put into manual mode prior to install
       --to=<path_to_directory_for_credentials_requests>
     ```
 
-    - The `--included` parameter includes only the manifests that your specific cluster configuration requires.
+    where:
 
-    - Specify the location of the `install-config.yaml` file.
+    `--included`
+    Specifies only the manifests that your specific cluster configuration requires.
 
-    - Specify the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
+    `<path_to_directory_with_installation_configuration>`
+    Specifies the location of the `install-config.yaml` file.
 
-      This command creates a YAML file for each `CredentialsRequest` object.
+    `<path_to_directory_for_credentials_requests>`
+    Specifies the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
 
-      <div class="formalpara-title">
+    This command creates a YAML file for each `CredentialsRequest` object.
 
-      **Sample `CredentialsRequest` object**
+    <div class="formalpara-title">
 
-      </div>
+    **Sample `CredentialsRequest` object**
 
-      ``` yaml
-      apiVersion: cloudcredential.openshift.io/v1
-      kind: CredentialsRequest
-      metadata:
-        name: <component_credentials_request>
-        namespace: openshift-cloud-credential-operator
-        ...
-      spec:
-        providerSpec:
-          apiVersion: cloudcredential.openshift.io/v1
-          kind: AWSProviderSpec
-          statementEntries:
-          - effect: Allow
-            action:
-            - iam:GetUser
-            - iam:GetUserPolicy
-            - iam:ListAccessKeys
-            resource: "*"
-        ...
-      ```
+    </div>
+
+    ``` yaml
+    apiVersion: cloudcredential.openshift.io/v1
+    kind: CredentialsRequest
+    metadata:
+      name: <component_credentials_request>
+      namespace: openshift-cloud-credential-operator
+      ...
+    spec:
+      providerSpec:
+        apiVersion: cloudcredential.openshift.io/v1
+        kind: AWSProviderSpec
+        statementEntries:
+        - effect: Allow
+          action:
+          - iam:GetUser
+          - iam:GetUserPolicy
+          - iam:ListAccessKeys
+          resource: "*"
+      ...
+    ```
 
 5.  Create YAML files for secrets in the `openshift-install` manifests directory that you generated previously. The secrets must be stored using the namespace and secret name defined in the `spec.secretRef` for each `CredentialsRequest` object.
 
@@ -937,11 +942,11 @@ The Cloud Credential Operator (CCO) can be put into manual mode prior to install
       aws_secret_access_key: <base64_encoded_aws_secret_access_key>
     ```
 
-<div class="important">
+    <div class="important">
 
-Before upgrading a cluster that uses manually maintained credentials, you must ensure that the CCO is in an upgradeable state.
+    Before upgrading a cluster that uses manually maintained credentials, you must ensure that the CCO is in an upgradeable state.
 
-</div>
+    </div>
 
 ## Configuring an AWS cluster to use short-term credentials
 
@@ -1089,11 +1094,11 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
       -a ~/.pull-secret
     ```
 
-    - For `<rhel_version>`, specify the value that corresponds to the version of Red Hat Enterprise Linux (RHEL) that the host uses. If no value is specified, `ccoctl.rhel8` is used by default. The following values are valid:
+    For `<rhel_version>`, specify the value that corresponds to the version of Red Hat Enterprise Linux (RHEL) that the host uses. If no value is specified, `ccoctl.rhel8` is used by default. The following values are valid:
 
-      - `rhel8`: Specify this value for hosts that use RHEL 8.
+    - `rhel8`: Specify this value for hosts that use RHEL 8.
 
-      - `rhel9`: Specify this value for hosts that use RHEL 9.
+    - `rhel9`: Specify this value for hosts that use RHEL 9.
 
     <div class="note">
 
@@ -1186,17 +1191,22 @@ You must have:
       --to=<path_to_directory_for_credentials_requests>
     ```
 
-    - The `--included` parameter includes only the manifests that your specific cluster configuration requires.
+    where:
 
-    - Specify the location of the `install-config.yaml` file.
+    `--included`
+    Specifies to include only the manifests that your specific cluster configuration requires.
 
-    - Specify the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
+    `<path_to_directory_with_installation_configuration>`
+    Specifies the location of the `install-config.yaml` file.
 
-      <div class="note">
+    `<path_to_directory_for_credentials_requests>`
+    Specifies the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
 
-      This command might take a few moments to run.
+    <div class="note">
 
-      </div>
+    This command might take a few moments to run.
+
+    </div>
 
 3.  Use the `ccoctl` tool to process all `CredentialsRequest` objects by running the following command:
 
@@ -1210,23 +1220,31 @@ You must have:
       --permissions-boundary-arn=<policy_arn>
     ```
 
-    - Specify the name used to tag any cloud resources that are created for tracking.
+    where:
 
-    - Specify the AWS region in which cloud resources will be created.
+    `<name>`
+    Specifies the name used to tag any cloud resources that are created for tracking.
 
-    - Specify the directory containing the files for the component `CredentialsRequest` objects.
+    `<aws_region>`
+    Specifies the AWS region in which cloud resources will be created.
 
-    - Optional: Specify the directory in which you want the `ccoctl` utility to create objects. By default, the utility creates objects in the directory in which the commands are run.
+    `<path_to_credentials_requests_directory>`
+    Specifies the directory containing the files for the component `CredentialsRequest` objects.
 
-    - Optional: By default, the `ccoctl` utility stores the OpenID Connect (OIDC) configuration files in a public S3 bucket and uses the S3 URL as the public OIDC endpoint. To store the OIDC configuration in a private S3 bucket that is accessed by the IAM identity provider through a public CloudFront distribution URL instead, use the `--create-private-s3-bucket` parameter.
+    `<path_to_ccoctl_output_dir>`
+    Specifies the directory in which you want the `ccoctl` utility to create objects. By default, the utility creates objects in the directory in which the commands are run. This parameter is optional.
 
-    - Optional: Specify the Amazon Resource Name (ARN) of the AWS IAM policy to use as the permissions boundary for the IAM roles created by the `ccoctl` utility.
+    `--create-private-s3-bucket`
+    Specifies that the OpenID Connect (OIDC) configuration files should be stored in a private S3 bucket that is accessed by the IAM identity provider through a public CloudFront distribution URL. Note that by default, the `ccoctl` utility stores the OIDC configuration files in a public S3 bucket and uses the S3 URL as the public OIDC endpoint. This parameter is optional.
 
-      <div class="note">
+    `<policy_arn>`
+    Specifies the Amazon Resource Name (ARN) of the AWS IAM policy to use as the permissions boundary for the IAM roles created by the `ccoctl` utility. This parameter is optional.
 
-      If your cluster uses Technology Preview features that are enabled by the `TechPreviewNoUpgrade` feature set, you must include the `--enable-tech-preview` parameter.
+    <div class="note">
 
-      </div>
+    If your cluster uses Technology Preview features that are enabled by the `TechPreviewNoUpgrade` feature set, you must include the `--enable-tech-preview` parameter.
+
+    </div>
 
 - To verify that the OpenShift Container Platform secrets are created, list the files in the `<path_to_ccoctl_output_dir>/manifests` directory:
 
@@ -1442,7 +1460,7 @@ To implement short-term security credentials managed outside the cluster for ind
 
 # Deploying the cluster
 
-You can install OpenShift Container Platform on a compatible cloud platform.
+To deploy your OpenShift Container Platform cluster, you can initialize installation by running the `openshift-install create cluster` command from the directory that contains the installation program. The installation program provisions infrastructure and completes cluster setup.
 
 <div class="important">
 
@@ -1487,34 +1505,34 @@ When the cluster deployment completes successfully:
 
 - Credential information also outputs to `<installation_directory>/.openshift_install.log`.
 
-<div class="important">
+  <div class="important">
 
-Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
+  Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
 
-</div>
+  </div>
 
-<div class="formalpara-title">
+  <div class="formalpara-title">
 
-**Example output**
+  **Example output**
 
-</div>
+  </div>
 
-``` terminal
-...
-INFO Install complete!
-INFO To access the cluster as the system:admin user when using 'oc', run 'export KUBECONFIG=/home/myuser/install_dir/auth/kubeconfig'
-INFO Access the OpenShift web-console here: https://console-openshift-console.apps.mycluster.example.com
-INFO Login to the console with user: "kubeadmin", and password: "password"
-INFO Time elapsed: 36m22s
-```
+  ``` terminal
+  ...
+  INFO Install complete!
+  INFO To access the cluster as the system:admin user when using 'oc', run 'export KUBECONFIG=/home/myuser/install_dir/auth/kubeconfig'
+  INFO Access the OpenShift web-console here: https://console-openshift-console.apps.mycluster.example.com
+  INFO Login to the console with user: "kubeadmin", and password: "password"
+  INFO Time elapsed: 36m22s
+  ```
 
-<div class="important">
+  <div class="important">
 
-- The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
+  - The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
-- It is recommended that you use Ignition config files within 12 hours after they are generated because the 24-hour certificate rotates from 16 to 22 hours after the cluster is installed. By using the Ignition config files within 12 hours, you can avoid installation failure if the certificate update runs during installation.
+  - It is recommended that you use Ignition config files within 12 hours after they are generated because the 24-hour certificate rotates from 16 to 22 hours after the cluster is installed. By using the Ignition config files within 12 hours, you can avoid installation failure if the certificate update runs during installation.
 
-</div>
+  </div>
 
 # Provisioning your own DNS records
 

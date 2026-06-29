@@ -1,7 +1,7 @@
 You can use the following APIs with OADP:
 
 Velero API
-Velero API documentation is maintained by Velero and is not maintained by Red Hat. For more information, see [API types](https://velero.io/docs/main/api-types/) (Velero documentation).
+Velero API documentation is maintained by Velero and is not maintained by Red Hat.
 
 OADP API
 The following are the OADP APIs:
@@ -25,8 +25,6 @@ The following are the OADP APIs:
 - `Features`
 
 - `DataMover`
-
-  For more information, see in [OADP Operator](https://pkg.go.dev/github.com/openshift/oadp-operator)(Go documentation).
 
 # DataProtectionApplicationSpec type
 
@@ -153,10 +151,6 @@ The following are `PodConfig` OADP APIs:
 
 PodConfig
 
-- [OADP plugins](../../backup_and_restore/application_backup_and_restore/oadp-features-plugins.xml#oadp-features-plugins)
-
-- [Complete schema definitions for the type `PodConfig`](https://pkg.go.dev/github.com/openshift/oadp-operator/api/v1alpha1#PodConfig)(Go documentation)
-
 # Features type
 
 The following are `Features` OADP APIs:
@@ -180,3 +174,13 @@ The following are `DataMover` OADP APIs:
 | `timeout`        | [string](https://pkg.go.dev/builtin#string) | A user-supplied duration string for `VolumeSnapshotBackup` and `VolumeSnapshotRestore` to complete. Default is `10m` (10 minutes). A duration string is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as `300ms`, `-1.5h`, or `2h45m`. Valid time units are `ns`, `us` (or `µs`), `ms`, `s`, `m`, and `h`. |
 
 DataMover
+
+# Additional resources
+
+- [Velero API types](https://velero.io/docs/main/api-types/)
+
+- [OADP Operator (Go documentation)](https://pkg.go.dev/github.com/openshift/oadp-operator)
+
+- [OADP plugins](../../backup_and_restore/application_backup_and_restore/oadp-features-plugins.xml#oadp-features-plugins)
+
+- [Complete schema definitions for the type `PodConfig`](https://pkg.go.dev/github.com/openshift/oadp-operator/api/v1alpha1#PodConfig)

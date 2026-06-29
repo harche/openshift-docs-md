@@ -133,11 +133,13 @@ By default, pod-to-pod traffic on the CUDN CR uses a Geneve overlay. Pod IP addr
 
 You can use route advertisements and the `RouteAdvertisements` CR so that routes for the CUDN are advertised on the provider network by using Border Gateway Protocol (BGP). Collectively, this configuration makes pod IP addresses reachable from outside the cluster. For information, see "About route advertisements".
 
-Additionally, you can set the `spec.network.transport` field to `EVPN` to attach a primary CUDN to an external BGP EVPN fabric instead of using only the default overlay behavior. Configuring EVPN requires additional objects and node networking beyond the CUDN CR. For more information, see "About BGP EVPN for primary cluster user-defined networks".
+Additionally, you can set `spec.network.transport` to `NoOverlay` to route layer 3 pod traffic on the underlay with BGP instead of Geneve encapsulation, or to `EVPN` to attach a primary CUDN to an external BGP EVPN fabric instead of using only the default overlay behavior. Configuring either transport requires additional objects and node networking beyond the CUDN CR. For more information, see "Improve east-west performance by routing pods on the underlay with BGP" and "About BGP EVPN for primary cluster user-defined networks".
 
 - [About route advertisements](../../../networking/advanced_networking/route_advertisements/about-route-advertisements.xml#about-route-advertisements)
 
 - [About BGP EVPN for primary cluster user-defined networks](../../../networking/advanced_networking/bgp_evpn_udn/about-bgp-evpn-user-defined-networks.xml#about-bgp-evpn-user-defined-networks)
+
+- [Improve east-west performance by routing pods on the underlay with BGP](../../../networking/advanced_networking/bgp_routing/no-overlay-mode-bgp-routing.xml#no-overlay-mode-bgp-routing)
 
 ## Best practices for ClusterUserDefinedNetwork CRs
 
@@ -869,7 +871,7 @@ It is not recommended to set these fields without explicit need and understandin
 <td style="text-align: left;"><p><code>spec.network.transport</code></p></td>
 <td style="text-align: left;"><p>N/A</p></td>
 <td style="text-align: left;"><p>string</p></td>
-<td style="text-align: left;"><p>Specifies how pod traffic is carried on the cluster infrastructure for the <code>ClusterUserDefinedNetwork</code> CR. Accepted value is <code>EVPN</code>. Additional configuration is required when setting the <code>spec.network.transport</code> field. For more information, see "About BGP EVPN for primary cluster user-defined networks".</p></td>
+<td style="text-align: left;"><p>Specifies how pod traffic is carried on the cluster infrastructure for the <code>ClusterUserDefinedNetwork</code> CR. Accepted values are <code>EVPN</code> and <code>NoOverlay</code>. Additional configuration is required when setting the <code>spec.network.transport</code> field. For more information, see "About BGP EVPN for primary cluster user-defined networks" and "Improve east-west performance by routing pods on the underlay with BGP".</p></td>
 </tr>
 </tbody>
 </table>
@@ -998,3 +1000,5 @@ Open ports are accessible on the pod’s default network IP, not its UDN network
 # Additional resources
 
 - [About BGP EVPN for primary cluster user-defined networks](../../../networking/advanced_networking/bgp_evpn_udn/about-bgp-evpn-user-defined-networks.xml#about-bgp-evpn-user-defined-networks)
+
+- [Improve east-west performance by routing pods on the underlay with BGP](../../../networking/advanced_networking/bgp_routing/no-overlay-mode-bgp-routing.xml#no-overlay-mode-bgp-routing)

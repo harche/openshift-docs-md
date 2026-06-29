@@ -120,7 +120,9 @@ You can use Butane to produce a `MachineConfig` object so that you can configure
     $ oc create -f 99-worker-custom.yaml
     ```
 
-- [Adding kernel modules to nodes](../../installing/install_config/installing-customizing.xml#installation-special-config-kmod_installing-customizing)
+# Additional resources
+
+- [The addition of kernel modules to nodes](../../installing/install_config/installing-customizing.xml#installation-special-config-kmod_installing-customizing)
 
 - [Encrypting and mirroring disks during installation](../../installing/install_config/installing-customizing.xml#installation-special-config-storage_installing-customizing)
 
@@ -170,11 +172,13 @@ For a listing of arguments you can pass to a RHEL 8 kernel at boot time, see [Ke
 
 You can now continue on to create the cluster.
 
-# Adding kernel modules to nodes
+# The addition of kernel modules to nodes
 
-For most common hardware, the Linux kernel includes the device driver modules needed to use that hardware when the computer starts up. For some hardware, however, modules are not available in Linux. Therefore, you must find a way to provide those modules to each host computer. This procedure describes how to do that for nodes in an OpenShift Container Platform cluster.
+For most common hardware, the Linux kernel includes the device driver modules needed to use that hardware when the computer starts up. For some hardware, however, modules are not available in Linux. You must find a way to provide those modules to each host computer.
 
-When a kernel module is first deployed by following these instructions, the module is made available for the current kernel. If a new kernel is installed, the kmods-via-containers software will rebuild and deploy the module so a compatible version of that module is available with the new kernel.
+A subsequent procedure describes how to provide modules for nodes in an OpenShift Container Platform cluster.
+
+When a kernel module is first deployed by following these instructions, the module is made available for the current kernel. If a new kernel is installed, the `kmods-via-containers` software rebuilds and deploys the module so a compatible version of that module is available with the new kernel.
 
 The way that this feature is able to keep the module up to date on each node is by:
 
@@ -182,21 +186,23 @@ The way that this feature is able to keep the module up to date on each node is 
 
 - If a new kernel is detected, the service rebuilds the module and installs it to the kernel
 
-For information on the software needed for this procedure, see the [kmods-via-containers](https://github.com/kmods-via-containers/kmods-via-containers) github site.
+For information on the software needed for this procedure, see "kmods-via-containers".
 
-A few important issues to keep in mind:
+The following list details some important items before you start the procedure:
 
-- This procedure is Technology Preview.
+- The procedure is Technology Preview.
 
 - Software tools and examples are not yet available in official RPM form and can only be obtained for now from unofficial `github.com` sites noted in the procedure.
 
 - Third-party kernel modules you might add through these procedures are not supported by Red Hat.
 
-- In this procedure, the software needed to build your kernel modules is deployed in a RHEL 8 container. Keep in mind that modules are rebuilt automatically on each node when that node gets a new kernel. For that reason, each node needs access to a `yum` repository that contains the kernel and related packages needed to rebuild the module. That content is best provided with a valid RHEL subscription.
+- The software needed to build your kernel modules is deployed in a RHEL 8 container. Remember that modules are rebuilt automatically on each node when that node gets a new kernel. For that reason, each node needs access to a `yum` repository that contains the kernel and related packages needed to rebuild the module. That content is best provided with a valid RHEL subscription.
 
-## Building and testing the kernel module container
+# Building and testing the kernel module container
 
-Before deploying kernel modules to your OpenShift Container Platform cluster, you can test the process on a separate RHEL system. Gather the kernel module’s source code, the KVC framework, and the kmod-via-containers software. Then build and test the module. To do that on a RHEL 8 system, do the following:
+Before deploying kernel modules to your OpenShift Container Platform cluster, you can test the process on a separate RHEL system.
+
+Before testing the process, gather the source code for the kernal module, the KVC framework, and the `kmod-via-containers` software. You can then build and test a module on a RHEL system.
 
 1.  Register a RHEL 8 system:
 
@@ -216,7 +222,7 @@ Before deploying kernel modules to your OpenShift Container Platform cluster, yo
     # yum install podman make git -y
     ```
 
-4.  Clone the `kmod-via-containers` repository:
+4.  Clone the `kmod-via-containers` repository.
 
     1.  Create a folder for the repository:
 
@@ -337,7 +343,7 @@ Before deploying kernel modules to your OpenShift Container Platform cluster, yo
     simple_kmod            16384  0
     ```
 
-12. Optional. Use other methods to check that the `simple-kmod` example is working:
+12. Optional. Use other methods to check that the `simple-kmod` example is working.
 
     - Look for a "Hello world" message in the kernel ring buffer with `dmesg`:
 
@@ -392,27 +398,35 @@ Before deploying kernel modules to your OpenShift Container Platform cluster, yo
       simple-procfs-kmod number = 44
       ```
 
-Going forward, when the system boots this service will check if a new kernel is running. If there is a new kernel, the service builds a new version of the kernel module and then loads it. If the module is already built, it will just load it.
+<div class="formalpara-title">
 
-## Provisioning a kernel module to OpenShift Container Platform
+**Results**
 
-Depending on whether or not you must have the kernel module in place when OpenShift Container Platform cluster first boots, you can set up the kernel modules to be deployed in one of two ways:
+</div>
 
-- **Provision kernel modules at cluster install time (day-1)**: You can create the content as a `MachineConfig` object and provide it to `openshift-install` by including it with a set of manifest files.
+After the system boots, the service checks if a new kernel is running. If there is a new kernel, the service builds a new version of the kernel module and then loads it. If the module is already built, it will just load it.
 
-- **Provision kernel modules via Machine Config Operator (day-2)**: If you can wait until the cluster is up and running to add your kernel module, you can deploy the kernel module software via the Machine Config Operator (MCO).
+# Provisioning a kernel module to OpenShift Container Platform
 
-In either case, each node needs to be able to get the kernel packages and related software packages at the time that a new kernel is detected. There are a few ways you can set up each node to be able to obtain that content.
+Depending on whether or not you must have the kernel module in place when OpenShift Container Platform cluster first boots, you can set up the kernel modules to be deployed in one of two ways.
+
+These two ways are listed as follows:
+
+- Provision kernel modules at cluster install time (day-1): You can create the content as a `MachineConfig` object and provide it to `openshift-install` by including it with a set of manifest files.
+
+- Provision kernel modules via Machine Config Operator (day-2): Deploy the kernel module software by using the Machine Config Operator (MCO) after the cluster is running.
+
+Regardless of the provisioning method, each node must be able to obtain the kernel packages and related software packages when a new kernel is detected. You can configure each node to obtain this content in one of the following ways:
 
 - Provide RHEL entitlements to each node.
 
-- Get RHEL entitlements from an existing RHEL host, from the `/etc/pki/entitlement` directory and copy them to the same location as the other files you provide when you build your Ignition config.
+- Copy RHEL entitlements from the `/etc/pki/entitlement` directory on an existing RHEL host to the same location as the other files. These other files were provided when you built your Ignition config. when you build your Ignition config.
 
-- Inside the Dockerfile, add pointers to a `yum` repository containing the kernel and other packages. This must include new kernel packages as they are needed to match newly installed kernels.
+- Add pointers to a `yum` repository containing the kernel and other packages in the Docker file. The pointer must include new kernel packages as they are needed to match newly installed kernels.
 
-### Provision kernel modules via a MachineConfig object
+## Provisioning kernel modules by using a MachineConfig object
 
-By packaging kernel module software with a `MachineConfig` object, you can deliver that software to worker or control plane nodes at installation time or via the Machine Config Operator.
+Package kernel module software with a `MachineConfig` object to deliver that software to compute or control plane nodes at installation time or through the Machine Config Operator (MCO).
 
 1.  Register a RHEL 8 system:
 
@@ -454,7 +468,7 @@ By packaging kernel module software with a `MachineConfig` object, you can deliv
 
 6.  Get your module software. In this example, `kvc-simple-kmod` is used.
 
-7.  Create a fakeroot directory and populate it with files that you want to deliver via Ignition, using the repositories cloned earlier:
+7.  Create a fakeroot directory and populate it with files that you want to deliver through Ignition, using the repositories cloned earlier:
 
     1.  Create the directory:
 
@@ -516,7 +530,7 @@ By packaging kernel module software with a `MachineConfig` object, you can deliv
           enabled: true
     ```
 
-    - To deploy on control plane nodes, change `worker` to `master`. To deploy on both control plane and worker nodes, perform the remainder of these instructions once for each node type.
+    `metadata.labels.machineconfiguration.openshift.io/role`: Specifies the node role. To deploy on control plane nodes, change `worker` to `master`. To deploy on both control plane and compute nodes, perform the remainder of these instructions once for each node type.
 
 10. Use Butane to generate a machine config YAML file, `99-simple-kmod.yaml`, containing the files and configuration to be delivered:
 
@@ -532,7 +546,7 @@ By packaging kernel module software with a `MachineConfig` object, you can deliv
 
     Your nodes will start the `kmods-via-containers@simple-kmod.service` service and the kernel modules will be loaded.
 
-12. To confirm that the kernel modules are loaded, you can log in to a node (using `oc debug node/<openshift-node>`, then `chroot /host`). To list the modules, use the `lsmod` command:
+12. To confirm that the kernel modules are loaded, list the modules by running the following command:
 
     ``` terminal
     $ lsmod | grep simple_
@@ -548,6 +562,14 @@ By packaging kernel module software with a `MachineConfig` object, you can deliv
     simple_procfs_kmod     16384  0
     simple_kmod            16384  0
     ```
+
+    <div class="note">
+
+    You can log in to a node running the `` oc debug node/<openshift-node>`command and then the `chroot /host `` command.
+
+    </div>
+
+- [kmods-via-containers (GitHub)](https://github.com/kmods-via-containers/kmods-via-containers)
 
 # Encrypting and mirroring disks during installation
 
@@ -1325,7 +1347,7 @@ For more information on chrony best practices, see the following resources:
 
 - [Basic chrony NTP troubleshooting](https://docs.redhat.com/en/documentation/red_hat_ceph_storage/8/html-single/troubleshooting_guide/basic-chrony-NTP-troubleshooting_diag#basic-chrony-NTP-troubleshooting_diag)
 
-# Additional resources
+<!-- -->
 
 - For information on Butane, see [Creating machine configs with Butane](../../installing/install_config/installing-customizing.xml#installation-special-config-butane_installing-customizing).
 

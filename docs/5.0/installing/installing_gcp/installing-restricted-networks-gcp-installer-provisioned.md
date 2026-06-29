@@ -900,37 +900,42 @@ The Cloud Credential Operator (CCO) can be put into manual mode prior to install
       --to=<path_to_directory_for_credentials_requests>
     ```
 
-    - The `--included` parameter includes only the manifests that your specific cluster configuration requires.
+    where:
 
-    - Specify the location of the `install-config.yaml` file.
+    `--included`
+    Specifies only the manifests that your specific cluster configuration requires.
 
-    - Specify the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
+    `<path_to_directory_with_installation_configuration>`
+    Specifies the location of the `install-config.yaml` file.
 
-      This command creates a YAML file for each `CredentialsRequest` object.
+    `<path_to_directory_for_credentials_requests>`
+    Specifies the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
 
-      <div class="formalpara-title">
+    This command creates a YAML file for each `CredentialsRequest` object.
 
-      **Sample `CredentialsRequest` object**
+    <div class="formalpara-title">
 
-      </div>
+    **Sample `CredentialsRequest` object**
 
-      ``` yaml
-      apiVersion: cloudcredential.openshift.io/v1
-      kind: CredentialsRequest
-      metadata:
-        name: <component_credentials_request>
-        namespace: openshift-cloud-credential-operator
-        ...
-      spec:
-        providerSpec:
-          apiVersion: cloudcredential.openshift.io/v1
-          kind: GCPProviderSpec
-          predefinedRoles:
-          - roles/storage.admin
-          - roles/iam.serviceAccountUser
-          skipServiceCheck: true
-        ...
-      ```
+    </div>
+
+    ``` yaml
+    apiVersion: cloudcredential.openshift.io/v1
+    kind: CredentialsRequest
+    metadata:
+      name: <component_credentials_request>
+      namespace: openshift-cloud-credential-operator
+      ...
+    spec:
+      providerSpec:
+        apiVersion: cloudcredential.openshift.io/v1
+        kind: GCPProviderSpec
+        predefinedRoles:
+        - roles/storage.admin
+        - roles/iam.serviceAccountUser
+        skipServiceCheck: true
+      ...
+    ```
 
 6.  Create YAML files for secrets in the `openshift-install` manifests directory that you generated previously. The secrets must be stored using the namespace and secret name defined in the `spec.secretRef` for each `CredentialsRequest` object.
 
@@ -973,11 +978,11 @@ The Cloud Credential Operator (CCO) can be put into manual mode prior to install
       service_account.json: <base64_encoded_gcp_service_account_file>
     ```
 
-<div class="important">
+    <div class="important">
 
-Before upgrading a cluster that uses manually maintained credentials, you must ensure that the CCO is in an upgradeable state.
+    Before upgrading a cluster that uses manually maintained credentials, you must ensure that the CCO is in an upgradeable state.
 
-</div>
+    </div>
 
 ## Configuring a Google Cloud cluster to use short-term credentials
 
@@ -1091,11 +1096,11 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
       -a ~/.pull-secret
     ```
 
-    - For `<rhel_version>`, specify the value that corresponds to the version of Red Hat Enterprise Linux (RHEL) that the host uses. If no value is specified, `ccoctl.rhel8` is used by default. The following values are valid:
+    For `<rhel_version>`, specify the value that corresponds to the version of Red Hat Enterprise Linux (RHEL) that the host uses. If no value is specified, `ccoctl.rhel8` is used by default. The following values are valid:
 
-      - `rhel8`: Specify this value for hosts that use RHEL 8.
+    - `rhel8`: Specify this value for hosts that use RHEL 8.
 
-      - `rhel9`: Specify this value for hosts that use RHEL 9.
+    - `rhel9`: Specify this value for hosts that use RHEL 9.
 
     <div class="note">
 
@@ -1178,17 +1183,22 @@ You must have:
       --to=<path_to_directory_for_credentials_requests>
     ```
 
-    - The `--included` parameter includes only the manifests that your specific cluster configuration requires.
+    where:
 
-    - Specify the location of the `install-config.yaml` file.
+    `--included`
+    Specifies to include only the manifests that your specific cluster configuration requires.
 
-    - Specify the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
+    `<path_to_directory_with_installation_configuration>`
+    Specifies the location of the `install-config.yaml` file.
 
-      <div class="note">
+    `<path_to_directory_for_credentials_requests>`
+    Specifies the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
 
-      This command might take a few moments to run.
+    <div class="note">
 
-      </div>
+    This command might take a few moments to run.
+
+    </div>
 
 3.  Use the `ccoctl` tool to process all `CredentialsRequest` objects by running the following command:
 
@@ -1201,21 +1211,28 @@ You must have:
       --key-storage-method=<key_storage_method>
     ```
 
-    - Specify the user-defined name for all created Google Cloud resources used for tracking. If you plan to install the Google Cloud Filestore Container Storage Interface (CSI) Driver Operator, retain this value.
+    where:
 
-    - Specify the Google Cloud region in which cloud resources will be created.
+    `<name>`
+    Specifies the user-defined name for all created Google Cloud resources used for tracking. If you plan to install the Google Cloud Filestore Container Storage Interface (CSI) Driver Operator, retain this value.
 
-    - Specify the Google Cloud project ID in which cloud resources will be created.
+    `<gcp_region>`
+    Specifies the Google Cloud region in which cloud resources will be created.
 
-    - Specify the directory containing the files of `CredentialsRequest` manifests to create Google Cloud service accounts.
+    `<gcp_project_id>`
+    Specifies the Google Cloud project ID in which cloud resources will be created.
 
-    - Optional: Specify the method for storing OIDC JWK files. Accepted values are `public-bucket` and `pool-jwk-file`. The default value `public-bucket` creates a public GCS bucket to host the OIDC configuration and JWK files. The `pool-jwk-file` value attaches the JWK directly to the workload identity pool provider without creating a public bucket.
+    `<path_to_credentials_requests_directory>`
+    Specifies the directory containing the files of `CredentialsRequest` manifests to create Google Cloud service accounts.
 
-      <div class="note">
+    `<key_storage_method>`
+    Specifies the method for storing OIDC JWK files. Accepted values are `public-bucket` and `pool-jwk-file`. The default value `public-bucket` creates a public GCS bucket to host the OIDC configuration and JWK files. The `pool-jwk-file` value attaches the JWK directly to the workload identity pool provider without creating a public bucket. This parameter is optional.
 
-      If your cluster uses Technology Preview features that are enabled by the `TechPreviewNoUpgrade` feature set, you must include the `--enable-tech-preview` parameter.
+    <div class="note">
 
-      </div>
+    If your cluster uses Technology Preview features that are enabled by the `TechPreviewNoUpgrade` feature set, you must include the `--enable-tech-preview` parameter.
+
+    </div>
 
 - To verify that the OpenShift Container Platform secrets are created, list the files in the `<path_to_ccoctl_output_dir>/manifests` directory:
 
@@ -1494,7 +1511,7 @@ To implement short-term security credentials managed outside the cluster for ind
 
 # Deploying the cluster
 
-You can install OpenShift Container Platform on a compatible cloud platform.
+To deploy your OpenShift Container Platform cluster, you can initialize installation by running the `openshift-install create cluster` command from the directory that contains the installation program. The installation program provisions infrastructure and completes cluster setup.
 
 <div class="important">
 
@@ -1545,34 +1562,34 @@ When the cluster deployment completes successfully:
 
 - Credential information also outputs to `<installation_directory>/.openshift_install.log`.
 
-<div class="important">
+  <div class="important">
 
-Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
+  Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
 
-</div>
+  </div>
 
-<div class="formalpara-title">
+  <div class="formalpara-title">
 
-**Example output**
+  **Example output**
 
-</div>
+  </div>
 
-``` terminal
-...
-INFO Install complete!
-INFO To access the cluster as the system:admin user when using 'oc', run 'export KUBECONFIG=/home/myuser/install_dir/auth/kubeconfig'
-INFO Access the OpenShift web-console here: https://console-openshift-console.apps.mycluster.example.com
-INFO Login to the console with user: "kubeadmin", and password: "password"
-INFO Time elapsed: 36m22s
-```
+  ``` terminal
+  ...
+  INFO Install complete!
+  INFO To access the cluster as the system:admin user when using 'oc', run 'export KUBECONFIG=/home/myuser/install_dir/auth/kubeconfig'
+  INFO Access the OpenShift web-console here: https://console-openshift-console.apps.mycluster.example.com
+  INFO Login to the console with user: "kubeadmin", and password: "password"
+  INFO Time elapsed: 36m22s
+  ```
 
-<div class="important">
+  <div class="important">
 
-- The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
+  - The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
-- It is recommended that you use Ignition config files within 12 hours after they are generated because the 24-hour certificate rotates from 16 to 22 hours after the cluster is installed. By using the Ignition config files within 12 hours, you can avoid installation failure if the certificate update runs during installation.
+  - It is recommended that you use Ignition config files within 12 hours after they are generated because the 24-hour certificate rotates from 16 to 22 hours after the cluster is installed. By using the Ignition config files within 12 hours, you can avoid installation failure if the certificate update runs during installation.
 
-</div>
+  </div>
 
 # Provisioning your own DNS records
 

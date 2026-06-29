@@ -311,21 +311,21 @@ If an instance type for your platform meets the minimum requirements for cluster
 
 ## Tested instance types for Azure
 
-The following Microsoft Azure instance types have been tested with OpenShift Container Platform.
+There are several Microsoft Azure instance types tested with OpenShift Container Platform. Choose a listed instance type when you install a cluster on 64-bit x86 infrastructure.
 
 <https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/azure/tested_instance_types_x86_64.md>
 
 ## Tested instance types for Azure on 64-bit ARM infrastructures
 
-The following Microsoft Azure ARM64 instance types have been tested with OpenShift Container Platform.
+There are several Microsoft Azure ARM64 instance types tested with OpenShift Container Platform. Choose a listed instance type when you install a cluster on 64-bit ARM infrastructure.
 
 <https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/azure/tested_instance_types_aarch64.md>
 
 ## Enabling trusted launch for Azure VMs
 
-You can enable two trusted launch features when installing your cluster on Azure: [secure boot](https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch#secure-boot) and [virtualized Trusted Platform Modules](https://learn.microsoft.com/en-us/windows/security/hardware-security/tpm/trusted-platform-module-overview).
+To enable trusted launch on Azure virtual machines for your OpenShift Container Platform cluster, you can configure secure boot and virtualized Trusted Platform Modules in the `install-config.yaml` file. Apply the settings to control plane nodes, compute nodes, or all nodes as needed.
 
-For more information about the sizes of virtual machines that support the trusted launch features, see [Virtual machine sizes](https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch#virtual-machines-sizes).
+For more information about the sizes of virtual machines that support the trusted launch features, secure boot, and virtualized Trusted Platform Modules, see the Additional resources section.
 
 <div class="important">
 
@@ -384,7 +384,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 ## Enabling confidential VMs
 
-You can enable confidential VMs when installing your cluster. You can enable confidential VMs for compute nodes, control plane nodes, or all nodes.
+To enable confidential VMs on Azure for your OpenShift Container Platform cluster, you can configure the `install-config.yaml` file before deployment. Apply the settings to control plane nodes, compute nodes, or all nodes as needed.
 
 You can use confidential VMs with the following VM sizes:
 
@@ -697,35 +697,40 @@ The Cloud Credential Operator (CCO) can be put into manual mode prior to install
       --to=<path_to_directory_for_credentials_requests>
     ```
 
-    - The `--included` parameter includes only the manifests that your specific cluster configuration requires.
+    where:
 
-    - Specify the location of the `install-config.yaml` file.
+    `--included`
+    Specifies only the manifests that your specific cluster configuration requires.
 
-    - Specify the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
+    `<path_to_directory_with_installation_configuration>`
+    Specifies the location of the `install-config.yaml` file.
 
-      This command creates a YAML file for each `CredentialsRequest` object.
+    `<path_to_directory_for_credentials_requests>`
+    Specifies the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
 
-      <div class="formalpara-title">
+    This command creates a YAML file for each `CredentialsRequest` object.
 
-      **Sample `CredentialsRequest` object**
+    <div class="formalpara-title">
 
-      </div>
+    **Sample `CredentialsRequest` object**
 
-      ``` yaml
-      apiVersion: cloudcredential.openshift.io/v1
-      kind: CredentialsRequest
-      metadata:
-        name: <component_credentials_request>
-        namespace: openshift-cloud-credential-operator
-        ...
-      spec:
-        providerSpec:
-          apiVersion: cloudcredential.openshift.io/v1
-          kind: AzureProviderSpec
-          roleBindings:
-          - role: Contributor
-        ...
-      ```
+    </div>
+
+    ``` yaml
+    apiVersion: cloudcredential.openshift.io/v1
+    kind: CredentialsRequest
+    metadata:
+      name: <component_credentials_request>
+      namespace: openshift-cloud-credential-operator
+      ...
+    spec:
+      providerSpec:
+        apiVersion: cloudcredential.openshift.io/v1
+        kind: AzureProviderSpec
+        roleBindings:
+        - role: Contributor
+      ...
+    ```
 
 5.  Create YAML files for secrets in the `openshift-install` manifests directory that you generated previously. The secrets must be stored using the namespace and secret name defined in the `spec.secretRef` for each `CredentialsRequest` object.
 
@@ -777,11 +782,11 @@ The Cloud Credential Operator (CCO) can be put into manual mode prior to install
       azure_region: <base64_encoded_azure_region>
     ```
 
-<div class="important">
+    <div class="important">
 
-Before upgrading a cluster that uses manually maintained credentials, you must ensure that the CCO is in an upgradeable state.
+    Before upgrading a cluster that uses manually maintained credentials, you must ensure that the CCO is in an upgradeable state.
 
-</div>
+    </div>
 
 ## Configuring an Azure cluster to use short-term credentials
 
@@ -879,11 +884,11 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
       -a ~/.pull-secret
     ```
 
-    - For `<rhel_version>`, specify the value that corresponds to the version of Red Hat Enterprise Linux (RHEL) that the host uses. If no value is specified, `ccoctl.rhel8` is used by default. The following values are valid:
+    For `<rhel_version>`, specify the value that corresponds to the version of Red Hat Enterprise Linux (RHEL) that the host uses. If no value is specified, `ccoctl.rhel8` is used by default. The following values are valid:
 
-      - `rhel8`: Specify this value for hosts that use RHEL 8.
+    - `rhel8`: Specify this value for hosts that use RHEL 8.
 
-      - `rhel9`: Specify this value for hosts that use RHEL 9.
+    - `rhel9`: Specify this value for hosts that use RHEL 9.
 
     <div class="note">
 
@@ -968,17 +973,22 @@ You must have:
       --to=<path_to_directory_for_credentials_requests>
     ```
 
-    - The `--included` parameter includes only the manifests that your specific cluster configuration requires.
+    where:
 
-    - Specify the location of the `install-config.yaml` file.
+    `--included`
+    Specifies to include only the manifests that your specific cluster configuration requires.
 
-    - Specify the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
+    `<path_to_directory_with_installation_configuration>`
+    Specifies the location of the `install-config.yaml` file.
 
-      <div class="note">
+    `<path_to_directory_for_credentials_requests>`
+    Specifies the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
 
-      This command might take a few moments to run.
+    <div class="note">
 
-      </div>
+    This command might take a few moments to run.
+
+    </div>
 
 3.  To enable the `ccoctl` utility to detect your Azure credentials automatically, log in to the Azure CLI by running the following command:
 
@@ -1001,31 +1011,42 @@ You must have:
       --preserve-existing-roles
     ```
 
-    - Specify the user-defined name for all created Azure resources used for tracking.
+    where:
 
-    - Optional: Specify the directory in which you want the `ccoctl` utility to create objects. By default, the utility creates objects in the directory in which the commands are run.
+    `<azure_infra_name>`
+    Specifies the user-defined name for all created Azure resources used for tracking.
 
-    - Specify the Azure region in which cloud resources will be created.
+    `<ccoctl_output_dir>`
+    Specifies the directory in which you want the `ccoctl` utility to create objects. By default, the utility creates objects in the directory in which the commands are run. This parameter is optional.
 
-    - Specify the Azure subscription ID to use.
+    `<azure_region>`
+    Specifies the Azure region in which cloud resources will be created.
 
-    - Specify the directory containing the files for the component `CredentialsRequest` objects.
+    `<azure_subscription_id>`
+    Specifies the Azure subscription ID to use.
 
-    - Specify the name of the resource group containing the cluster’s base domain Azure DNS zone.
+    `<path_to_credentials_requests_directory>`
+    Specifies the directory containing the files for the component `CredentialsRequest` objects.
 
-    - Specify the Azure tenant ID to use.
+    `<azure_dns_zone_resource_group_name>`
+    Specifies the name of the resource group containing the cluster’s base domain Azure DNS zone.
 
-    - Optional: Specify the virtual network resource group if it is different from the cluster resource group.
+    `<azure_tenant_id>`
+    Specifies the Azure tenant ID to use.
 
-    - Optional: Specify this flag to ensure that any custom role assignments you define on managed identities are not removed during OpenShift Container Platform updates.
+    `<azure_resource_group>`
+    Specifies the virtual network resource group if it is different from the cluster resource group. This parameter is optional.
 
-      <div class="note">
+    `--preserve-existing-roles`
+    Specifies that any custom role assignments you define on managed identities are not removed during OpenShift Container Platform updates. This parameter is optional.
 
-      If your cluster uses Technology Preview features that are enabled by the `TechPreviewNoUpgrade` feature set, you must include the `--enable-tech-preview` parameter.
+    <div class="note">
 
-      To see additional optional parameters and explanations of how to use them, run the `azure create-all --help` command.
+    If your cluster uses Technology Preview features that are enabled by the `TechPreviewNoUpgrade` feature set, you must include the `--enable-tech-preview` parameter.
 
-      </div>
+    To see additional optional parameters and explanations of how to use them, run the `azure create-all --help` command.
+
+    </div>
 
 - To verify that the OpenShift Container Platform secrets are created, list the files in the `<path_to_ccoctl_output_dir>/manifests` directory:
 
@@ -1097,7 +1118,7 @@ To implement short-term security credentials managed outside the cluster for ind
     # ...
     ```
 
-    - This value must match the user-defined name for Azure resources that was specified with the `--name` argument of the `ccoctl azure create-all` command.
+    The `<azure_infra_name>` value must match the user-defined name for Azure resources that was specified with the `--name` argument of the `ccoctl azure create-all` command.
 
 3.  If you have not previously created installation manifest files, do so by running the following command:
 
@@ -1211,7 +1232,7 @@ Use the following guide to prepare your private Microsoft Azure cluster for inst
 
 # Deploying the cluster
 
-You can install OpenShift Container Platform on a compatible cloud platform.
+To deploy your OpenShift Container Platform cluster, you can initialize installation by running the `openshift-install create cluster` command from the directory that contains the installation program. The installation program provisions infrastructure and completes cluster setup.
 
 <div class="important">
 
@@ -1274,7 +1295,11 @@ You can run the `create cluster` command of the installation program only once, 
 
     - If you are using a user-assigned managed identity,leave this value blank.
 
-If previously not detected, the installation program creates an `osServicePrincipal.json` configuration file and stores this file in the `~/.azure/` directory on your computer. This ensures that the installation program can load the profile when it is creating an OpenShift Container Platform cluster on the target platform.
+      <div class="note">
+
+      If previously not detected, the installation program creates an `osServicePrincipal.json` configuration file and stores this file in the `~/.azure/` directory on your computer. This ensures that the installation program can load the profile when it is creating an OpenShift Container Platform cluster on the target platform.
+
+      </div>
 
 <div class="formalpara-title">
 
@@ -1288,34 +1313,34 @@ When the cluster deployment completes successfully:
 
 - Credential information also outputs to `<installation_directory>/.openshift_install.log`.
 
-<div class="important">
+  <div class="important">
 
-Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
+  Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
 
-</div>
+  </div>
 
-<div class="formalpara-title">
+  <div class="formalpara-title">
 
-**Example output**
+  **Example output**
 
-</div>
+  </div>
 
-``` terminal
-...
-INFO Install complete!
-INFO To access the cluster as the system:admin user when using 'oc', run 'export KUBECONFIG=/home/myuser/install_dir/auth/kubeconfig'
-INFO Access the OpenShift web-console here: https://console-openshift-console.apps.mycluster.example.com
-INFO Login to the console with user: "kubeadmin", and password: "password"
-INFO Time elapsed: 36m22s
-```
+  ``` terminal
+  ...
+  INFO Install complete!
+  INFO To access the cluster as the system:admin user when using 'oc', run 'export KUBECONFIG=/home/myuser/install_dir/auth/kubeconfig'
+  INFO Access the OpenShift web-console here: https://console-openshift-console.apps.mycluster.example.com
+  INFO Login to the console with user: "kubeadmin", and password: "password"
+  INFO Time elapsed: 36m22s
+  ```
 
-<div class="important">
+  <div class="important">
 
-- The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
+  - The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
-- It is recommended that you use Ignition config files within 12 hours after they are generated because the 24-hour certificate rotates from 16 to 22 hours after the cluster is installed. By using the Ignition config files within 12 hours, you can avoid installation failure if the certificate update runs during installation.
+  - It is recommended that you use Ignition config files within 12 hours after they are generated because the 24-hour certificate rotates from 16 to 22 hours after the cluster is installed. By using the Ignition config files within 12 hours, you can avoid installation failure if the certificate update runs during installation.
 
-</div>
+  </div>
 
 # Provisioning your own DNS records
 

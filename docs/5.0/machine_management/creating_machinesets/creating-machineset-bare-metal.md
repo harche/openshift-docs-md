@@ -87,7 +87,11 @@ Specifies the image checksum, the URL that you edit to use the API VIP address, 
 `<image_url>`
 Specifies the image URL, the URL that you edit to use the API VIP address, in the following format: `http://172.22.0.3:6181/images/rhcos-<version>.<architecture>.qcow2`.
 
+You should use the latest image when adding a new machine set.
+
 </div>
+
+- [Manually updating the boot image](../../machine_configuration/mco-update-boot-images-manual.xml#mco-update-boot-images-manual)
 
 # Creating a compute machine set
 

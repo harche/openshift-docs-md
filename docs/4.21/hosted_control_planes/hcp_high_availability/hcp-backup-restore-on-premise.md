@@ -1,4 +1,4 @@
-You can back up and restore etcd on a hosted cluster in an on-premise environment to fix failures.
+You can back up and restore etcd for hosted control planes in an on-premise environment to fix failures.
 
 # Backing up and restoring etcd on a hosted cluster in an on-premise environment
 

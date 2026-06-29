@@ -2,20 +2,6 @@ Configure OADP timeout parameters for Restic, Velero, Data Mover, CSI snapshots,
 
 Ensure that you balance timeout extensions in a logical manner so that you do not configure excessively long timeouts that might hide underlying issues in the process. Consider and monitor an appropriate timeout value that meets the needs of the process and the overall system performance.
 
-Review the following OADP timeout instructions:
-
-- [Restic timeout](../../../backup_and_restore/application_backup_and_restore/troubleshooting/oadp-timeouts.xml#restic-timeout_oadp-timeouts)
-
-- [Velero resource timeout](../../../backup_and_restore/application_backup_and_restore/troubleshooting/oadp-timeouts.xml#velero-timeout_oadp-timeouts)
-
-- [Data Mover timeout](../../../backup_and_restore/application_backup_and_restore/troubleshooting/oadp-timeouts.xml#datamover-timeout_oadp-timeouts)
-
-- [CSI snapshot timeout](../../../backup_and_restore/application_backup_and_restore/troubleshooting/oadp-timeouts.xml#csisnapshot-timeout_oadp-timeouts)
-
-- [Item operation timeout - backup](../../../backup_and_restore/application_backup_and_restore/troubleshooting/oadp-timeouts.xml#item-operation-timeout-backup_oadp-timeouts)
-
-- [Item operation timeout - restore](../../../backup_and_restore/application_backup_and_restore/troubleshooting/oadp-timeouts.xml#item-operation-timeout-restore_oadp-timeouts)
-
 # Implementing restic timeout
 
 Configure the Restic timeout parameter to prevent backup failures for large persistent volumes or long-running backup operations. This helps you avoid timeout errors when backing up data greater than 500GB or when backups exceed the default one-hour limit.
@@ -189,3 +175,17 @@ Configure the `ItemOperationTimeout` parameter in the `Backup` custom resource (
    itemOperationTimeout: 1h
   # ...
   ```
+
+# Additional resources
+
+- [Restic timeout](../../../backup_and_restore/application_backup_and_restore/troubleshooting/oadp-timeouts.xml#restic-timeout_oadp-timeouts)
+
+- [Velero resource timeout](../../../backup_and_restore/application_backup_and_restore/troubleshooting/oadp-timeouts.xml#velero-timeout_oadp-timeouts)
+
+- [Data Mover timeout](../../../backup_and_restore/application_backup_and_restore/troubleshooting/oadp-timeouts.xml#datamover-timeout_oadp-timeouts)
+
+- [CSI snapshot timeout](../../../backup_and_restore/application_backup_and_restore/troubleshooting/oadp-timeouts.xml#csisnapshot-timeout_oadp-timeouts)
+
+- [Item operation timeout - backup](../../../backup_and_restore/application_backup_and_restore/troubleshooting/oadp-timeouts.xml#item-operation-timeout-backup_oadp-timeouts)
+
+- [Item operation timeout - restore](../../../backup_and_restore/application_backup_and_restore/troubleshooting/oadp-timeouts.xml#item-operation-timeout-restore_oadp-timeouts)

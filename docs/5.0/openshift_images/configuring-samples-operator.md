@@ -1,4 +1,4 @@
-The Cluster Samples Operator, which operates in the `openshift` namespace, installs and updates the Red Hat Enterprise Linux (RHEL)-based OpenShift Container Platform image streams and OpenShift Container Platform templates.
+You can configure the Cluster Samples Operator to manage the installation and updates of Red Hat Enterprise Linux (RHEL)-based OpenShift Container Platform image streams and templates in the `openshift` namespace.
 
 <div class="important">
 

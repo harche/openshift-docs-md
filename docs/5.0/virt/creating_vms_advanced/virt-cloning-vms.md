@@ -22,9 +22,15 @@ You can clone an existing VM by using the web console.
 
 5.  On the **Clone VirtualMachine** page, enter the name of the new VM.
 
-6.  (Optional) Select the **Start cloned VM** checkbox to start the cloned VM.
+6.  Optional: Select the **Start cloned VM** checkbox to start the cloned VM.
 
-7.  Click **Clone**.
+7.  Optional: In the **Volume name policy** section, select how cloned persistent volume claims (PVCs) are named:
+
+    - **Randomize names** - The cloned PVC names are randomly generated. This is the default setting.
+
+    - **Prefix target name** - The cloned PVC names use the target VM name as a prefix.
+
+8.  Click **Clone**.
 
 # Creating a VM from an existing snapshot by using the web console
 
@@ -40,11 +46,17 @@ You can create a new VM by copying an existing snapshot.
 
 5.  Select **Create VirtualMachine**.
 
-6.  Enter the name of the virtual machine.
+6.  Enter the name of the VM.
 
-7.  (Optional) Select the **Start this VirtualMachine after creation** checkbox to start the new virtual machine.
+7.  Optional: Select the **Start this VM after creation** checkbox to start the new VM.
 
-8.  Click **Create**.
+8.  Optional: In the **Volume name policy** section, select how cloned persistent volume claims (PVCs) are named:
+
+    - **Randomize names** - The cloned PVC names are randomly generated. This is the default setting.
+
+    - **Prefix target name** - The cloned PVC names use the target VM name as a prefix.
+
+9.  Click **Create**.
 
 # Additional resources
 

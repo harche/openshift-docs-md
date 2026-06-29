@@ -2049,13 +2049,7 @@ vpa-updater-default-db8b58df-2nkvf                  1/1     Running   0         
 
 By default, the Cluster Resource Override Operator installation process creates an Operator pod and two Cluster Resource Override pods on nodes in the `clusterresourceoverride-operator` namespace. You can move these pods to other nodes, such as infrastructure nodes, as needed.
 
-The following examples shows the Cluster Resource Override pods are deployed to control plane nodes and the Cluster Resource Override Operator pod is deployed to a worker node.
-
-<div class="formalpara-title">
-
-**Example Cluster Resource Override pods**
-
-</div>
+The following example shows that the Cluster Resource Override pods are deployed to control plane nodes.
 
 ``` terminal
 NAME                                                READY   STATUS    RESTARTS   AGE   IP            NODE                                        NOMINATED NODE   READINESS GATES
@@ -2064,11 +2058,7 @@ clusterresourceoverride-786b8c898c-vn2lf            1/1     Running   0         
 clusterresourceoverride-operator-6b8b8b656b-lvr62   1/1     Running   0          56m   10.131.0.33   ip-10-0-2-39.us-west-2.compute.internal     <none>           <none>
 ```
 
-<div class="formalpara-title">
-
-**Example node list**
-
-</div>
+The following example shows that the Cluster Resource Override Operator pod is deployed to a worker node.
 
 ``` terminal
 NAME                                        STATUS   ROLES                  AGE   VERSION

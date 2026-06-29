@@ -571,7 +571,7 @@ You can use the Cloud Credential Operator (CCO) utility (`ccoctl`) to create the
 
 # Network configuration phases
 
-There are two phases prior to OpenShift Container Platform installation where you can customize the network configuration.
+There are two phases prior to OpenShift Container Platform installation where you can customize the network configuration. Customize settings in the `install-config.yaml` file and in the Cluster Network Operator manifest across two configuration phases.
 
 Phase 1
 You can customize the following network-related fields in the `install-config.yaml` file before you create the manifest files:
@@ -607,9 +607,7 @@ During phase 2, you cannot override the values that you specified in phase 1 in 
 
 # Specifying advanced network configuration
 
-You can use advanced network configuration for your network plugin to integrate your cluster into your existing network environment.
-
-You can specify advanced network configuration only before you install the cluster.
+To integrate your OpenShift Container Platform cluster with your existing network environment, you can specify advanced network configuration in a manifest before you install the cluster. Advanced network configuration can be configured only during cluster installation.
 
 <div class="important">
 
@@ -625,7 +623,7 @@ Customizing your network configuration by modifying the OpenShift Container Plat
     $ ./openshift-install create manifests --dir <installation_directory>
     ```
 
-    - `<installation_directory>` specifies the name of the directory that contains the `install-config.yaml` file for your cluster.
+    The `<installation_directory>` specifies the name of the directory that contains the `install-config.yaml` file for your cluster.
 
 2.  Create a stub manifest file for the advanced network configuration that is named `cluster-network-03-config.yml` in the `<installation_directory>/manifests/` directory:
 
@@ -1143,7 +1141,7 @@ defaultNetwork:
 
 # Deploying the cluster
 
-You can install OpenShift Container Platform on a compatible cloud platform.
+To deploy your OpenShift Container Platform cluster, you can initialize installation by running the `openshift-install create cluster` command from the directory that contains the installation program. The installation program provisions infrastructure and completes cluster setup.
 
 <div class="important">
 
@@ -1182,34 +1180,34 @@ When the cluster deployment completes successfully:
 
 - Credential information also outputs to `<installation_directory>/.openshift_install.log`.
 
-<div class="important">
+  <div class="important">
 
-Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
+  Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
 
-</div>
+  </div>
 
-<div class="formalpara-title">
+  <div class="formalpara-title">
 
-**Example output**
+  **Example output**
 
-</div>
+  </div>
 
-``` terminal
-...
-INFO Install complete!
-INFO To access the cluster as the system:admin user when using 'oc', run 'export KUBECONFIG=/home/myuser/install_dir/auth/kubeconfig'
-INFO Access the OpenShift web-console here: https://console-openshift-console.apps.mycluster.example.com
-INFO Login to the console with user: "kubeadmin", and password: "password"
-INFO Time elapsed: 36m22s
-```
+  ``` terminal
+  ...
+  INFO Install complete!
+  INFO To access the cluster as the system:admin user when using 'oc', run 'export KUBECONFIG=/home/myuser/install_dir/auth/kubeconfig'
+  INFO Access the OpenShift web-console here: https://console-openshift-console.apps.mycluster.example.com
+  INFO Login to the console with user: "kubeadmin", and password: "password"
+  INFO Time elapsed: 36m22s
+  ```
 
-<div class="important">
+  <div class="important">
 
-- The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
+  - The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
-- It is recommended that you use Ignition config files within 12 hours after they are generated because the 24-hour certificate rotates from 16 to 22 hours after the cluster is installed. By using the Ignition config files within 12 hours, you can avoid installation failure if the certificate update runs during installation.
+  - It is recommended that you use Ignition config files within 12 hours after they are generated because the 24-hour certificate rotates from 16 to 22 hours after the cluster is installed. By using the Ignition config files within 12 hours, you can avoid installation failure if the certificate update runs during installation.
 
-</div>
+  </div>
 
 # Installing the OpenShift CLI on Linux
 

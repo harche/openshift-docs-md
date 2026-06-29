@@ -286,7 +286,7 @@ With this release, Border Gateway Protocol Ethernet Virtual Private Network (BGP
 For more information, see [About BGP EVPN for primary cluster user-defined networks](../networking/advanced_networking/bgp_evpn_udn/about-bgp-evpn-user-defined-networks.xml#about-bgp-evpn-user-defined-networks).
 
 NoOverlay mode with BGP routing
-With this release, no-overlay mode with Border Gateway Protocol (BGP) routing is available as a Technology Preview feature on bare-metal clusters that use OVN-Kubernetes. No-overlay mode forwards layer 3 pod traffic on the underlay network using BGP-learned routes instead of Geneve encapsulation, which can improve east-west performance. You can enable no-overlay mode on the default layer 3cluster network and on primary `ClusterUserDefinedNetwork` resources.
+With this release, no-overlay mode with Border Gateway Protocol (BGP) routing is available as a Technology Preview feature on bare-metal clusters that use OVN-Kubernetes. No-overlay mode forwards layer 3 pod traffic on the underlay network using BGP-learned routes instead of Geneve encapsulation, which can improve east-west performance. You can enable no-overlay mode on the default layer 3 cluster network and on primary `ClusterUserDefinedNetwork` resources.
 
 For more information, see [Improve east-west performance by routing pods on the underlay with BGP](../networking/advanced_networking/bgp_routing/no-overlay-mode-bgp-routing.xml#no-overlay-mode-bgp-routing).
 
@@ -1305,7 +1305,7 @@ $ oc adm release info 4.22.1 --pullspecs
 
 - Before this update, pagination controls were not present at mobile resolutions, because PatternFly expects both top and bottom pagination controls to be in use. With this release, pagination controls are present regardless of resolution. ([OCPBUGS-84963](https://issues.redhat.com/browse/OCPBUGS-84963))
 
-- Before this update, the `MachineSet` custom resoutce (CR) scale subresource lacked a valid selector, preventing autoscalers such as the Horizontal Pod Autoscaler (HPA) and the Kubernetes Event-driven Autoscaling (KEDA) from scaling the machine set. With this release, the `MachineSet` CR exposes an active label selector on the scale subresource, enabling scaling using autoscalers that require the label selector to be populated. ([OCPBUGS-85102](https://issues.redhat.com/browse/OCPBUGS-85102))
+- Before this update, the `MachineSet` custom resource (CR) scale subresource lacked a valid selector, preventing autoscalers such as the Horizontal Pod Autoscaler (HPA) and the Kubernetes Event-driven Autoscaling (KEDA) from scaling the machine set. With this release, the `MachineSet` CR exposes an active label selector on the scale subresource, enabling scaling using autoscalers that require the label selector to be populated. ([OCPBUGS-85102](https://issues.redhat.com/browse/OCPBUGS-85102))
 
 - Before this update, the Manila Container Storage Interface (CSI) driver node plugin could crash on startup if the Network File System (NFS) CSI plugin socket was not yet available, for example, after a node reboot. With this release, the Manila CSI node `DaemonSet` waits for the NFS plugin socket to be ready before starting the driver, preventing crash loops due to transient startup ordering. ([OCPBUGS-85532](https://issues.redhat.com/browse/OCPBUGS-85532))
 

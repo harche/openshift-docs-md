@@ -1,6 +1,8 @@
+The OpenShift Container Platform Control Plane includes a built-in OAuth server for user authentication. You can configure token duration, inactivity timeouts, and customize the OAuth server URL.
+
 # OpenShift Container Platform OAuth server
 
-The OpenShift Container Platform Control Plane includes a built-in OAuth server. Users obtain OAuth access tokens to authenticate themselves to the API.
+The OpenShift Container Platform Control Plane includes a built-in OAuth server that issues access tokens for API authentication using configured identity providers.
 
 When a person requests a new OAuth token, the OAuth server uses the configured identity provider to determine the identity of the person making the request.
 
@@ -8,22 +10,30 @@ It then determines what user that identity maps to, creates an access token for 
 
 # OAuth token request flows and responses
 
-The OAuth server supports standard [authorization code grant](https://tools.ietf.org/html/rfc6749#section-4.1) and the [implicit grant](https://tools.ietf.org/html/rfc6749#section-4.2) OAuth authorization flows.
+The OAuth server supports standard authorization code grant and implicit grant flows, with specific server responses for token requests using the implicit grant flow with WWW-Authenticate challenges.
 
 When requesting an OAuth token using the implicit grant flow (`response_type=token`) with a client_id configured to request `WWW-Authenticate challenges` (like `openshift-challenging-client`), these are the possible server responses from `/oauth/authorize`, and how they should be handled:
 
-| Status | Content                                                                                                                                                    | Client response                                                                                                                                            |
-|--------|------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 302    | `Location` header containing an `access_token` parameter in the URL fragment ([RFC 6749 section 4.2.2](https://tools.ietf.org/html/rfc6749#section-4.2.2)) | Use the `access_token` value as the OAuth token.                                                                                                           |
-| 302    | `Location` header containing an `error` query parameter ([RFC 6749 section 4.1.2.1](https://tools.ietf.org/html/rfc6749#section-4.1.2.1))                  | Fail, optionally surfacing the `error` (and optional `error_description`) query values to the user.                                                        |
-| 302    | Other `Location` header                                                                                                                                    | Follow the redirect, and process the result using these rules.                                                                                             |
-| 401    | `WWW-Authenticate` header present                                                                                                                          | Respond to challenge if type is recognized (e.g. `Basic`, `Negotiate`, etc), resubmit request, and process the result using these rules.                   |
-| 401    | `WWW-Authenticate` header missing                                                                                                                          | No challenge authentication is possible. Fail and show response body (which might contain links or details on alternate methods to obtain an OAuth token). |
-| Other  | Other                                                                                                                                                      | Fail, optionally surfacing response body to the user.                                                                                                      |
+| Status | Content                                                                                               | Client response                                                                                                                                            |
+|--------|-------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 302    | `Location` header containing an `access_token` parameter in the URL fragment (RFC 6749 section 4.2.2) | Use the `access_token` value as the OAuth token.                                                                                                           |
+| 302    | `Location` header containing an `error` query parameter (RFC 6749 section 4.1.2.1)                    | Fail, optionally surfacing the `error` (and optional `error_description`) query values to the user.                                                        |
+| 302    | Other `Location` header                                                                               | Follow the redirect, and process the result using these rules.                                                                                             |
+| 401    | `WWW-Authenticate` header present                                                                     | Respond to challenge if type is recognized (e.g. `Basic`, `Negotiate`, etc), resubmit request, and process the result using these rules.                   |
+| 401    | `WWW-Authenticate` header missing                                                                     | No challenge authentication is possible. Fail and show response body (which might contain links or details on alternate methods to obtain an OAuth token). |
+| Other  | Other                                                                                                 | Fail, optionally surfacing response body to the user.                                                                                                      |
+
+- [Authorization Code Grant](https://tools.ietf.org/html/rfc6749#section-4.1)
+
+- [Implicit Grant](https://tools.ietf.org/html/rfc6749#section-4.2)
+
+- [Access Token Response](https://tools.ietf.org/html/rfc6749#section-4.2.2)
+
+- [Error Response](https://tools.ietf.org/html/rfc6749#section-4.1.2.1)
 
 # Options for the internal OAuth server
 
-Several configuration options are available for the internal OAuth server.
+The internal OAuth server provides configuration options for token duration and grant strategies to control authentication behavior.
 
 ## OAuth token duration options
 
@@ -51,7 +61,7 @@ You can apply the following default methods:
 
 # Configuring the internal OAuth server’s token duration
 
-You can configure default options for the internal OAuth server’s token duration.
+Configure the internal OAuth server to extend or reduce access token validity beyond the default 24-hour lifetime.
 
 <div class="important">
 
@@ -73,7 +83,10 @@ If the default time is insufficient, then this can be modified using the followi
         accessTokenMaxAgeSeconds: 172800
     ```
 
-    - Set `accessTokenMaxAgeSeconds` to control the lifetime of access tokens. The default lifetime is 24 hours, or 86400 seconds. This attribute cannot be negative. If set to zero, the default lifetime is used.
+    where:
+
+    `spec.tokenConfig.accessTokenMaxAgeSeconds`
+    Specifies the lifetime of access tokens in seconds. The default lifetime is 24 hours, or 86400 seconds. This attribute cannot be negative. If set to zero, the default lifetime is used.
 
 2.  Apply the new configuration file:
 
@@ -109,7 +122,9 @@ If the default time is insufficient, then this can be modified using the followi
 
 # Configuring token inactivity timeout for the internal OAuth server
 
-You can configure OAuth tokens to expire after a set period of inactivity. By default, no token inactivity timeout is set.
+Configure the internal OAuth server to automatically expire tokens after a set period of inactivity, improving security by invalidating idle sessions.
+
+By default, no token inactivity timeout is set.
 
 <div class="note">
 
@@ -141,7 +156,10 @@ If the token inactivity timeout is also configured in your OAuth client, that va
             accessTokenInactivityTimeout: 400s
         ```
 
-        - Set a value with the appropriate units, for example `400s` for 400 seconds, or `30m` for 30 minutes. The minimum allowed timeout value is `300s`.
+        where:
+
+        `spec.tokenConfig.accessTokenInactivityTimeout`
+        Specifies the token inactivity timeout with appropriate units, for example `400s` for 400 seconds, or `30m` for 30 minutes. The minimum allowed timeout value is `300s`.
 
     2.  Save the file to apply the changes.
 
@@ -209,7 +227,7 @@ If the token inactivity timeout is also configured in your OAuth client, that va
 
 # Customizing the internal OAuth server URL
 
-You can customize the internal OAuth server URL by setting the custom hostname and TLS certificate in the `spec.componentRoutes` field of the cluster `Ingress` configuration.
+Customize the internal OAuth server URL to use a custom hostname and TLS certificate by configuring the cluster Ingress component routes.
 
 <div class="warning">
 
@@ -219,7 +237,7 @@ If you update the internal OAuth server URL, you might break trust from componen
 $ oc login -u <username> -p <password> --certificate-authority=<path_to_ca.crt>
 ```
 
-- For self-signed certificates, the `ca.crt` file must contain the custom CA certificate, otherwise the login will not succeed.
+\+ For self-signed certificates, the `ca.crt` file must contain the custom CA certificate, otherwise the login will not succeed.
 
 The Cluster Authentication Operator publishes the OAuth server’s serving certificate in the `oauth-serving-cert` config map in the `openshift-config-managed` namespace. You can find the certificate in the `data.ca-bundle.crt` key of the config map.
 
@@ -257,17 +275,21 @@ The Cluster Authentication Operator publishes the OAuth server’s serving certi
             name: <secret_name>
     ```
 
-    - The custom hostname.
+    where:
 
-    - Reference to a secret in the `openshift-config` namespace that contains a TLS certificate (`tls.crt`) and key (`tls.key`). This is required if the domain for the custom hostname suffix does not match the cluster domain suffix. The secret is optional if the suffix matches.
+    `spec.componentRoutes.hostname`
+    Specifies the custom hostname for the OAuth server.
+
+    `spec.componentRoutes.servingCertKeyPairSecret.name`
+    Specifies the name of a secret in the `openshift-config` namespace that contains a TLS certificate (`tls.crt`) and key (`tls.key`). This is required if the domain for the custom hostname suffix does not match the cluster domain suffix. The secret is optional if the suffix matches.
 
 3.  Save the file to apply the changes.
 
 # OAuth server metadata
 
-Applications running in OpenShift Container Platform might have to discover information about the built-in OAuth server. For example, they might have to discover what the address of the `<namespace_route>` is without manual configuration. To aid in this, OpenShift Container Platform implements the IETF [OAuth 2.0 Authorization Server Metadata](https://tools.ietf.org/html/draft-ietf-oauth-discovery-10) draft specification.
+Applications can discover OAuth server information such as endpoints and supported features using the OAuth 2.0 Authorization Server Metadata specification.
 
-Thus, any application running inside the cluster can issue a `GET` request to ***https://openshift.default.svc/.well-known/oauth-authorization-server*** to fetch the following information:
+Any application running inside the cluster can issue a `GET` request to ***https://openshift.default.svc/.well-known/oauth-authorization-server*** to fetch the following information:
 
     {
       "issuer": "https://<namespace_route>",
@@ -294,21 +316,46 @@ Thus, any application running inside the cluster can issue a `GET` request to **
       ]
     }
 
-- The authorization server’s issuer identifier, which is a URL that uses the `https` scheme and has no query or fragment components. This is the location where `.well-known` [RFC 5785](https://tools.ietf.org/html/rfc5785) resources containing information about the authorization server are published.
+\+ where:
 
-- URL of the authorization server’s authorization endpoint. See [RFC 6749](https://tools.ietf.org/html/rfc6749).
+`issuer`
+Specifies the authorization server’s issuer identifier, which is a URL that uses the `https` scheme and has no query or fragment components. This is the location where `.well-known` RFC 5785 resources containing information about the authorization server are published.
 
-- URL of the authorization server’s token endpoint. See [RFC 6749](https://tools.ietf.org/html/rfc6749).
+`authorization_endpoint`
+Specifies the URL of the authorization server’s authorization endpoint.
 
-- JSON array containing a list of the OAuth 2.0 [RFC 6749](https://tools.ietf.org/html/rfc6749) scope values that this authorization server supports. Note that not all supported scope values are advertised.
+`token_endpoint`
+Specifies the URL of the authorization server’s token endpoint.
 
-- JSON array containing a list of the OAuth 2.0 `response_type` values that this authorization server supports. The array values used are the same as those used with the `response_types` parameter defined by "OAuth 2.0 Dynamic Client Registration Protocol" in [RFC 7591](https://tools.ietf.org/html/rfc7591).
+`scopes_supported`
+Specifies a JSON array containing a list of the OAuth 2.0 RFC 6749 scope values that this authorization server supports. Note that not all supported scope values are advertised.
 
-- JSON array containing a list of the OAuth 2.0 grant type values that this authorization server supports. The array values used are the same as those used with the `grant_types` parameter defined by `OAuth 2.0 Dynamic Client Registration Protocol` in [RFC 7591](https://tools.ietf.org/html/rfc7591).
+`response_types_supported`
+Specifies a JSON array containing a list of the OAuth 2.0 `response_type` values that this authorization server supports. The array values used are the same as those used with the `response_types` parameter defined by OAuth 2.0 Dynamic Client Registration Protocol in RFC 7591.
 
-- JSON array containing a list of PKCE [RFC 7636](https://tools.ietf.org/html/rfc7636) code challenge methods supported by this authorization server. Code challenge method values are used in the `code_challenge_method` parameter defined in [Section 4.3 of RFC 7636](https://tools.ietf.org/html/rfc7636#section-4.3). The valid code challenge method values are those registered in the IANA `PKCE Code Challenge Methods` registry. See [IANA OAuth Parameters](http://www.iana.org/assignments/oauth-parameters).
+`grant_types_supported`
+Specifies a JSON array containing a list of the OAuth 2.0 grant type values that this authorization server supports. The array values used are the same as those used with the `grant_types` parameter defined by OAuth 2.0 Dynamic Client Registration Protocol in RFC 7591.
+
+`code_challenge_methods_supported`
+Specifies a JSON array containing a list of PKCE RFC 7636 code challenge methods supported by this authorization server. Code challenge method values are used in the `code_challenge_method` parameter defined in Section 4.3 of RFC 7636. The valid code challenge method values are those registered in the IANA PKCE Code Challenge Methods registry.
+
+- [OAuth 2.0 Authorization Server Metadata](https://tools.ietf.org/html/draft-ietf-oauth-discovery-10)
+
+- [RFC 5785 - Defining Well-Known Uniform Resource Identifiers](https://tools.ietf.org/html/rfc5785)
+
+- [RFC 6749 - The OAuth 2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749)
+
+- [RFC 7591 - OAuth 2.0 Dynamic Client Registration Protocol](https://tools.ietf.org/html/rfc7591)
+
+- [RFC 7636 - Proof Key for Code Exchange by OAuth Public Clients](https://tools.ietf.org/html/rfc7636)
+
+- [RFC 7636 Section 4.3 - Client Creates a Code Challenge](https://tools.ietf.org/html/rfc7636#section-4.3)
+
+- [IANA OAuth Parameters](http://www.iana.org/assignments/oauth-parameters)
 
 # Troubleshooting OAuth API events
+
+Use service account event messages to diagnose OAuth configuration issues when the API server returns `unexpected condition` errors that are otherwise difficult to debug.
 
 In some cases the API server returns an `unexpected condition` error message that is difficult to debug without direct access to the API master log. The underlying reason for the error is purposely obscured in order to avoid providing an unauthenticated user with information about the server’s state.
 

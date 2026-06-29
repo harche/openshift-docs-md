@@ -10,21 +10,15 @@ For guidance on tasks such as creating a SR-IOV network, network policies, netwo
 
 Bonding enables multiple network interfaces to be aggregated into a single logical "bonded" interface. Bond Container Network Interface (Bond-CNI) brings bond capability into containers.
 
-Bond-CNI can be created using Single Root I/O Virtualization (SR-IOV) virtual functions and placing them in the container network namespace.
+Bond-CNI can be created by using Single Root I/O Virtualization (SR-IOV) virtual functions and placing them in the container network namespace.
 
-OpenShift Container Platform only supports Bond-CNI using SR-IOV virtual functions. The SR-IOV Network Operator provides the SR-IOV CNI plugin needed to manage the virtual functions. Other CNIs or types of interfaces are not supported.
+OpenShift Container Platform only supports Bond-CNI by using SR-IOV virtual functions. The SR-IOV Network Operator provides the SR-IOV CNI plugin needed to manage the virtual functions. Other CNI plugins or types of interfaces are not supported.
 
-- The SR-IOV Network Operator must be installed and configured to obtain virtual functions in a container.
+# Creating a bond network attachment definition
 
-- To configure SR-IOV interfaces, an SR-IOV network and policy must be created for each interface.
+After the SR-IOV virtual functions are available, you can create a bond network attachment definition.
 
-- The SR-IOV Network Operator creates a network attachment definition for each SR-IOV interface, based on the SR-IOV network and policy defined.
-
-- The `linkState` is set to the default value `auto` for the SR-IOV virtual function.
-
-## Creating a bond network attachment definition
-
-Now that the SR-IOV virtual functions are available, you can create a bond network attachment definition.
+The following YAML example shows a bond network attachment definition:
 
 ``` yaml
 apiVersion: "k8s.cni.cncf.io/v1"
@@ -57,13 +51,13 @@ apiVersion: "k8s.cni.cncf.io/v1"
       }'
 ```
 
-- The cni-type is always set to `bond`.
+- The `type` field is always set to `bond`.
 
-- The `mode` attribute specifies the bonding mode.
+- The `mode` field specifies the bonding mode.
 
   <div class="note">
 
-  The bonding modes supported are:
+  The supported bonding modes are:
 
   - `balance-rr` - 0
 
@@ -75,15 +69,25 @@ apiVersion: "k8s.cni.cncf.io/v1"
 
   </div>
 
-- The `failover` attribute is mandatory for active-backup mode and must be set to 1.
+- The `failOverMac` field is mandatory for active-backup mode and must be set to `1`.
 
-- The `linksInContainer=true` flag informs the Bond CNI that the required interfaces are to be found inside the container. By default, Bond CNI looks for these interfaces on the host which does not work for integration with SRIOV and Multus.
+- The `linksInContainer` field must be set to `true` to inform the Bond CNI that the required interfaces are inside the container. By default, Bond CNI looks for these interfaces on the host, which does not work for integration with SR-IOV and Multus.
 
-- The `links` section defines which interfaces will be used to create the bond. By default, Multus names the attached interfaces as: "net", plus a consecutive number, starting with one.
+- The `links` field defines which interfaces to use for the bond. By default, Multus names the attached interfaces as "net" plus a consecutive number, starting with one.
 
-## Creating a pod using a bond interface
+# Creating a pod using a bond interface
 
-1.  Test the setup by creating a pod with a YAML file named for example `podbonding.yaml` with content similar to the following:
+You can create a pod that uses a bond interface by applying a YAML configuration that references SR-IOV and bond network attachments.
+
+- The SR-IOV Network Operator must be installed and configured to obtain virtual functions in a container.
+
+- To configure SR-IOV interfaces, an SR-IOV network and policy must be created for each interface.
+
+- The SR-IOV Network Operator creates a network attachment definition for each SR-IOV interface, based on the SR-IOV network and policy defined.
+
+- The `linkState` is set to the default value `auto` for the SR-IOV virtual function.
+
+1.  Create a pod with a YAML file named for example `podbonding.yaml` with content similar to the following:
 
     ``` yaml
     apiVersion: v1
@@ -100,9 +104,9 @@ apiVersion: "k8s.cni.cncf.io/v1"
             command: ["/bin/bash", "-c", "sleep INF"]
     ```
 
-    - Note the network annotation: it contains two SR-IOV network attachments, and one bond network attachment. The bond attachment uses the two SR-IOV interfaces as bonded port interfaces.
+    The network annotation has two SR-IOV network attachments and one bond network attachment. The bond attachment uses the two SR-IOV interfaces as bonded port interfaces.
 
-2.  Apply the yaml by running the following command:
+2.  Apply the YAML by running the following command:
 
     ``` terminal
     $ oc apply -f podbonding.yaml
@@ -110,7 +114,7 @@ apiVersion: "k8s.cni.cncf.io/v1"
 
 3.  Inspect the pod interfaces with the following command:
 
-    ``` yaml
+    ``` terminal
     $ oc rsh -n demo bondpod1
     sh-4.4#
     sh-4.4# ip a
@@ -132,19 +136,19 @@ apiVersion: "k8s.cni.cncf.io/v1"
     link/ether 9e:23:69:42:fb:8a brd ff:ff:ff:ff:ff:ff
     ```
 
-    - The bond interface is automatically named `net3`. To set a specific interface name add `@name` suffix to the pod’s `k8s.v1.cni.cncf.io/networks` annotation.
+    - The bond interface is automatically named `net3`. To set a specific interface name, add the `@name` suffix to the pod’s `k8s.v1.cni.cncf.io/networks` annotation.
 
     - The `net1` interface is based on an SR-IOV virtual function.
 
     - The `net2` interface is based on an SR-IOV virtual function.
 
-      <div class="note">
+    <div class="note">
 
-      If no interface names are configured in the pod annotation, interface names are assigned automatically as `net<n>`, with `<n>` starting at `1`.
+    If no interface names are configured in the pod annotation, interface names are assigned automatically as `net<n>`, with `<n>` starting at `1`.
 
-      </div>
+    </div>
 
-4.  Optional: If you want to set a specific interface name for example `bond0`, edit the `k8s.v1.cni.cncf.io/networks` annotation and set `bond0` as the interface name as follows:
+4.  Optional: If you want to set a specific interface name, for example `bond0`, edit the `k8s.v1.cni.cncf.io/networks` annotation and set `bond0` as the interface name as follows:
 
     ``` terminal
     annotations:

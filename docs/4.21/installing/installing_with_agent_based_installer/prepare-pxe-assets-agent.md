@@ -2,7 +2,7 @@ You can create the assets needed to PXE boot an OpenShift Container Platform clu
 
 The assets you create in these procedures will deploy a single-node OpenShift Container Platform installation. You can use these procedures as a basis and modify configurations according to your requirements.
 
-See [Installing an OpenShift Container Platform cluster with the Agent-based Installer](../../installing/installing_with_agent_based_installer/installing-with-agent-based-installer.xml#installing-with-agent-based-installer) to learn about more configurations available with the Agent-based Installer.
+See "Installing an OpenShift Container Platform cluster with the Agent-based Installer" to learn about more configurations available with the Agent-based Installer.
 
 # Prerequisites for preparing PXE assets
 
@@ -690,3 +690,7 @@ Use this procedure only for IBM Z® clusters running in an LPAR.
 5.  Repeat the procedure for all other machines in the cluster.
 
 - [Installing a cluster in an LPAR on IBM Z and IBM LinuxONE](../../installing/installing_ibm_z/upi/installing-ibm-z-lpar.xml#installing-ibm-z-lpar)
+
+# Additional resources
+
+- [Installing an OpenShift Container Platform cluster with the Agent-based Installer](../../installing/installing_with_agent_based_installer/installing-with-agent-based-installer.xml#installing-with-agent-based-installer)

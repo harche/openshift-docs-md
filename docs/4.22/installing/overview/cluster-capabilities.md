@@ -401,7 +401,7 @@ If you disable the samples capability, users cannot access the image streams, sa
 
 OLM (Classic) provides the features for the `OperatorLifecycleManager` capability.
 
-Operator Lifecycle Manager (OLM) Classic helps users install, update, and manage the lifecycle of Kubernetes native applications (Operators) and their associated services running across their OpenShift Container Platform clusters. It is part of the [Operator Framework](https://operatorframework.io/), an open source toolkit designed to manage Operators in an effective, automated, and scalable way.
+Operator Lifecycle Manager (OLM) Classic helps users install, update, and manage the lifecycle of Kubernetes native applications (Operators) and their associated services running across their OpenShift Container Platform clusters. Operator Lifecycle Manager (OLM) Classic forms part of the Operator Framework, an open source toolkit designed to manage Operators in an effective, automated, and scalable way.
 
 If an Operator requires any of the following APIs, then you must enable the `OperatorLifecycleManager` capability:
 
@@ -423,6 +423,8 @@ The `marketplace` capability depends on the `OperatorLifecycleManager` capabilit
 
 - [Operator Lifecycle Manager concepts and resources](../../operators/understanding/olm/olm-understanding-olm.xml#olm-understanding-olm)
 
+- [Operator Framework](https://operatorframework.io/)
+
 ## Operator Lifecycle Manager (OLM) v1 capability
 
 OLM v1 provides the features for the `OperatorLifecycleManagerV1` capability.
@@ -439,39 +441,39 @@ The `olm` cluster Operator informs cluster administrators if there are any insta
 
 </div>
 
-### Components
-
 Operator Lifecycle Manager (OLM) v1 comprises the following component projects:
 
-Operator Controller
-The central component of OLM v1 that extends Kubernetes with an API through which users can install and manage the lifecycle of Operators and extensions. It consumes information from catalogd.
+- Operator Controller: The central component of OLM v1 that extends Kubernetes with an API through which users can install and manage the lifecycle of Operators and extensions. It consumes information from catalogd.
 
-Catalogd
-A Kubernetes extension that unpacks file-based catalog (FBC) content packaged and shipped in container images for consumption by on-cluster clients. As a component of the OLM v1 microservices architecture, catalogd hosts metadata for Kubernetes extensions packaged by the authors of the extensions, and as a result helps users discover installable content.
+- Catalogd: A Kubernetes extension that unpacks file-based catalog (FBC) content packaged and shipped in container images for consumption by on-cluster clients. As a component of the OLM v1 microservices architecture, catalogd hosts metadata for Kubernetes extensions packaged by the authors of the extensions, and as a result helps users discover installable content.
 
-### CRDs
+- CRDs:
 
-- `clusterextension.olm.operatorframework.io`
+  - `clusterextension.olm.operatorframework.io`
 
-  - Scope: Cluster
+    - Scope: Cluster
 
-  - CR: `ClusterExtension`
+    - CR: `ClusterExtension`
 
-- `clustercatalog.olm.operatorframework.io`
+  - `clustercatalog.olm.operatorframework.io`
 
-  - Scope: Cluster
+    - Scope: Cluster
 
-  - CR: `ClusterCatalog`
+    - CR: `ClusterCatalog`
 
-### Project
+- See the following projects in the *Additional resources* section:
 
-- [operator-framework/operator-controller](https://github.com/operator-framework/operator-controller)
+  - `operator-framework/operator-controller`
 
-- [operator-framework/catalogd](https://github.com/operator-framework/catalogd)
+  - `operator-framework/catalogd`
 
 <!-- -->
 
 - [Extensions overview](../../extensions/index.xml#olmv1-about)
+
+- [operator-framework/operator-controller](https://github.com/operator-framework/operator-controller)
+
+- [operator-framework/catalogd](https://github.com/operator-framework/catalogd)
 
 # Viewing the cluster capabilities
 
@@ -512,7 +514,7 @@ As a cluster administrator, you can enable cluster capabilities any time after a
   $ oc patch clusterversion version --type merge -p '{"spec":{"capabilities":{"baselineCapabilitySet":"vCurrent"}}}'
   ```
 
-  - For `baselineCapabilitySet` you can specify `vCurrent`, `v4.17`, or `None`.
+  For `baselineCapabilitySet` you can specify `vCurrent`, `v4.17`, or `None`.
 
 # Enabling the cluster capabilities by setting additional enabled capabilities
 
@@ -542,30 +544,30 @@ As a cluster administrator, you can enable cluster capabilities any time after a
     $ oc patch clusterversion/version --type merge -p '{"spec":{"capabilities":{"additionalEnabledCapabilities":["openshift-samples", "marketplace"]}}}'
     ```
 
-<div class="important">
+    <div class="important">
 
-It is not possible to disable a capability which is already enabled in a cluster. The cluster version Operator (CVO) continues to reconcile the capability which is already enabled in the cluster.
+    You cannot disable a capability that is already enabled in a cluster. The cluster version Operator (CVO) continues to reconcile the capability which is already enabled in the cluster.
 
-</div>
+    </div>
 
-If you try to disable a capability, then CVO shows the divergent spec:
+    If you try to disable a capability, then CVO shows the divergent spec:
 
-``` terminal
-$ oc get clusterversion version -o jsonpath='{.status.conditions[?(@.type=="ImplicitlyEnabledCapabilities")]}{"\n"}'
-```
+    ``` terminal
+    $ oc get clusterversion version -o jsonpath='{.status.conditions[?(@.type=="ImplicitlyEnabledCapabilities")]}{"\n"}'
+    ```
 
-<div class="formalpara-title">
+    <div class="formalpara-title">
 
-**Example output**
+    **Example output**
 
-</div>
+    </div>
 
-``` terminal
-{"lastTransitionTime":"2022-07-22T03:14:35Z","message":"The following capabilities could not be disabled: openshift-samples","reason":"CapabilitiesImplicitlyEnabled","status":"True","type":"ImplicitlyEnabledCapabilities"}
-```
+    ``` terminal
+    {"lastTransitionTime":"2022-07-22T03:14:35Z","message":"The following capabilities could not be disabled: openshift-samples","reason":"CapabilitiesImplicitlyEnabled","status":"True","type":"ImplicitlyEnabledCapabilities"}
+    ```
 
-<div class="note">
+    <div class="note">
 
-During the cluster upgrades, it is possible that a given capability could be implicitly enabled. If a resource was already running on the cluster before the upgrade, then any capabilities that is part of the resource will be enabled. For example, during a cluster upgrade, a resource that is already running on the cluster has been changed to be part of the `marketplace` capability by the system. Even if a cluster administrator does not explicitly enabled the `marketplace` capability, it is implicitly enabled by the system.
+    During the cluster upgrades, it is possible that a given capability could be implicitly enabled. If a resource was already running on the cluster before the upgrade, then any capabilities that is part of the resource will be enabled. For example, during a cluster upgrade, a resource that is already running on the cluster has been changed to be part of the `marketplace` capability by the system. Even if a cluster administrator does not explicitly enabled the `marketplace` capability, it is implicitly enabled by the system.
 
-</div>
+    </div>

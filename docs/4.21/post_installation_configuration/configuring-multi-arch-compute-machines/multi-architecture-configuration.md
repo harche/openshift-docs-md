@@ -10,7 +10,7 @@ Configuring multi-architecture compute machines involves some additional conside
 
   <div class="important">
 
-  Review the information in the "guidelines for deploying OpenShift Container Platform on non-tested platforms" before you attempt to install an OpenShift Container Platform cluster in virtualized or cloud environments.
+  See "Deploying OpenShift 4.x on non-tested platforms using the bare metal install method" before you attempt to install an OpenShift Container Platform cluster in virtualized or cloud environments.
 
   </div>
 
@@ -103,7 +103,7 @@ Before you can start adding compute nodes of different architectures to your clu
 
 - [Assigning pods to nodes](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)
 
-- [guidelines for deploying OpenShift Container Platform on non-tested platforms](https://access.redhat.com/articles/4207611)
+- [Deploying OpenShift 4.x on non-tested platforms using the bare metal install method (Red Hat Knowledgebase article)](https://access.redhat.com/articles/4207611)
 
 - [Cluster capabilities](../../installing/overview/cluster-capabilities.xml#cluster-capabilities)
 

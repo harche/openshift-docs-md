@@ -1,24 +1,42 @@
-You can install the multicluster engine Operator and deploy a hub cluster with the Agent-based OpenShift Container Platform Installer. The following procedure is partially automated and requires manual steps after the initial cluster is deployed.
+You can install the multicluster engine Operator and deploy a hub cluster with the Agent-based Installer.
+
+The following procedure is partially automated and requires manual steps after the initial cluster is deployed.
 
 # Prerequisites
 
+Before installing the multicluster engine Operator and deploying a hub cluster with the Agent-based Installer, you must complete several prerequisites.
+
+The following prerequisites must be completed:
+
 - You have read the following documentation:
 
-  - [Cluster lifecycle with multicluster engine operator overview](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.9/html/clusters/cluster_mce_overview).
+  - "Cluster lifecycle with multicluster engine operator overview"
 
-  - [Persistent storage using local volumes](../../storage/persistent_storage_local/persistent-storage-local.xml#persistent-storage-using-local-volume).
+  - "Persistent storage using local volumes"
 
-  - [Using GitOps ZTP to provision clusters at the network far edge](../../edge_computing/ztp-deploying-far-edge-clusters-at-scale.xml#about-ztp_ztp-deploying-far-edge-clusters-at-scale).
+  - "Using GitOps ZTP to provision clusters at the network far edge"
 
-  - [Preparing to install with the Agent-based Installer](../../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#preparing-to-install-with-agent-based-installer).
+  - "Preparing to install with the Agent-based Installer"
 
-  - [About disconnected installation mirroring](../../disconnected/index.xml#installing-mirroring-disconnected-about).
+  - "About disconnected installation mirroring"
 
 - You have access to the internet to obtain the necessary container images.
 
 - You have installed the OpenShift CLI (`oc`).
 
 - If you are installing in a disconnected environment, you must have a configured local mirror registry for disconnected installation mirroring.
+
+<!-- -->
+
+- [Cluster lifecycle with multicluster engine operator overview](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.9/html/clusters/cluster_mce_overview)
+
+- [Persistent storage using local volumes](../../storage/persistent_storage_local/persistent-storage-local.xml#persistent-storage-using-local-volume)
+
+- [Using GitOps ZTP to provision clusters at the network far edge](../../edge_computing/ztp-deploying-far-edge-clusters-at-scale.xml#about-ztp_ztp-deploying-far-edge-clusters-at-scale)
+
+- [Preparing to install with the Agent-based Installer](../../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#preparing-to-install-with-agent-based-installer)
+
+- [About disconnected installation mirroring](../../disconnected/index.xml#installing-mirroring-disconnected-about)
 
 # Preparing an Agent-based cluster deployment for the multicluster engine for Kubernetes Operator while disconnected
 
@@ -63,27 +81,31 @@ To mirror your OpenShift Container Platform image repository to your mirror regi
               - name: local-storage-operator
     ```
 
-    - Specify the maximum size, in GiB, of each file within the image set.
+    where:
 
-    - Set the back-end location to receive the image set metadata. This location can be a registry or local directory. It is required to specify `storageConfig` values.
+    `archiveSize`
+    Specifies the maximum size, in GiB, of each file within the image set.
 
-    - Set the registry URL for the storage backend.
+    `storageConfig`
+    Specifies the back-end location to receive the image set metadata. This location can be a registry or local directory. It is required to specify `storageConfig` values.
 
-    - Set the channel that contains the OpenShift Container Platform images for the version you are installing.
+    `storageConfig.imageURL`
+    Specifies the registry URL for the storage backend.
 
-    - Set the Operator catalog that contains the OpenShift Container Platform images that you are installing.
+    `channels.name`
+    Specifies the channel that contains the OpenShift Container Platform images for the version you are installing.
 
-    - Specify only certain Operator packages and channels to include in the image set. Remove this field to retrieve all packages in the catalog.
+    `operators.catalog`
+    Specifies the Operator catalog that contains the OpenShift Container Platform images that you are installing.
 
-    - The multicluster engine packages and channels.
+    `packages`
+    Specifies only certain Operator packages and channels to include in the image set. Remove this field to retrieve all packages in the catalog. In this example, a `package.name` value of `multicluster-engine` includes the multicluster engine packages and channels, and `local-storage-operator` includes the LSO packages and channels.
 
-    - The LSO packages and channels.
+    <div class="note">
 
-      <div class="note">
+    This file is required by the `oc mirror` command when mirroring content.
 
-      This file is required by the `oc mirror` command when mirroring content.
-
-      </div>
+    </div>
 
 3.  To mirror a specific OpenShift Container Platform image repository, the multicluster engine, and the LSO, run the following command:
 

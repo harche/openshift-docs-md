@@ -84,7 +84,7 @@ Specifies the node label to add.
 Specifies the infrastructure ID, node label, and region.
 
 `<infrastructure_id>-rhcos`
-Specifies the custom Red Hat Enterprise Linux CoreOS (RHCOS) image that was used for cluster installation.
+Specifies the custom Red Hat Enterprise Linux CoreOS (RHCOS) image to use as a boot image for your nodes. You should use the use the latest image when adding a new machine set.
 
 `<infrastructure_id>-subnet-compute-<zone>`
 Specifies the infrastructure ID and zone within your region to place machines on. Be sure that your region supports the zone that you specify.
@@ -103,6 +103,8 @@ Specifies the VPC name.
 
 `<zone>`
 Specifies the zone within your region to place machines on. Be sure that your region supports the zone that you specify.
+
+- [Manually updating the boot image](../../machine_configuration/mco-update-boot-images-manual.xml#mco-update-boot-images-manual)
 
 # Creating a compute machine set
 

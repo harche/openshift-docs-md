@@ -95,6 +95,9 @@ Specifies the node label to add.
 `<infrastructure_id>-<role>`
 Specifies the infrastructure ID and node label.
 
+`<glance_image_name_or_location>`
+Specifies the image to use as a boot image for your nodes. You should use the latest image when adding a new machine set.
+
 `<optional_UUID_of_server_group>`
 Sets a server group policy for the `MachineSet` YAML by entering the value that is returned from [creating a server group](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html/command_line_interface_reference/server#server_group_create). For most deployments, `anti-affinity` or `soft-anti-affinity` policies are recommended.
 
@@ -109,6 +112,8 @@ The `spec.template.spec.providerSpec.value.networks` stanza is required for depl
 
 `<rhosp_subnet_UUID>`
 Specifies the RHOSP subnet that you want the endpoints of nodes to be published on. Usually, this is the same subnet that is used as the value of `machinesSubnet` in the `install-config.yaml` file.
+
+- [Manually updating the boot image](../../machine_configuration/mco-update-boot-images-manual.xml#mco-update-boot-images-manual)
 
 # Sample YAML for a compute machine set custom resource that uses SR-IOV on RHOSP
 
@@ -210,6 +215,9 @@ spec:
 
 where:
 
+`<glance_image_name_or_location>`
+Specifies the image to use as a boot image for your nodes. You should use the latest image when adding a new machine set.
+
 `<radio_network_UUID>`
 Specifies a network UUID for each port.
 
@@ -257,6 +265,8 @@ Optionally, you can add tags to ports as part of their `tags` lists.
 </div>
 
 - [Preparing to install a cluster that uses SR-IOV or OVS-DPDK on OpenStack](../../installing/installing_openstack/installing-openstack-nfv-preparing.xml#installing-openstack-nfv-preparing)
+
+- [Manually updating the boot image](../../machine_configuration/mco-update-boot-images-manual.xml#mco-update-boot-images-manual)
 
 # Sample YAML for SR-IOV deployments where port security is disabled
 

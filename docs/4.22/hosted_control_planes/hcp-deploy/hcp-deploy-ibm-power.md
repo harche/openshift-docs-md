@@ -1,4 +1,4 @@
-You can deploy hosted control planes by configuring a cluster to function as a hosting cluster. This configuration provides an efficient and scalable solution for managing many clusters. The hosting cluster is an OpenShift Container Platform cluster that hosts control planes. The hosting cluster is also known as the *management* cluster.
+You can deploy hosted control planes on IBM Power by configuring a cluster to function as a hosting cluster. This configuration provides an efficient and scalable solution for managing many clusters. The hosting cluster is an OpenShift Container Platform cluster that hosts control planes. The hosting cluster is also known as the *management* cluster.
 
 <div class="note">
 
@@ -15,6 +15,8 @@ You must start each IBM Power host with a Discovery image that the central infra
 When you create a hosted cluster with the Agent platform, HyperShift installs the Agent Cluster API provider in the hosted control plane namespace.
 
 # Prerequisites to configure hosted control planes on IBM Power
+
+Ensure you meet the prerequisites to configure hosted control planes on IBM Power.
 
 - The multicluster engine for Kubernetes Operator version 2.7 and later installed on an OpenShift Container Platform cluster. The multicluster engine Operator is automatically installed when you install Red Hat Advanced Cluster Management (RHACM). You can also install the multicluster engine Operator without RHACM as an Operator from the OpenShift Container Platform software catalog.
 
@@ -40,11 +42,11 @@ The hosted control planes feature is enabled by default. If you disabled the fea
 
 - [Manually enabling the hosted control planes feature](../../hosted_control_planes/hcp-prepare/hcp-enable-disable.xml#hcp-enable-manual_hcp-enable-disable)
 
-- [Disabling the hosted control planes feature](../../hosted_control_planes/hcp-prepare/hcp-enable-disable.xml#hcp-disable_hcp-enable-disable)
+- [Disabling the hosted control planes feature](../../hosted_control_planes/hcp-prepare/hcp-enable-disable.xml#hcp-disable-feature_hcp-enable-disable)
 
 # IBM Power infrastructure requirements
 
-The Agent platform does not create any infrastructure, but requires the following resources for infrastructure:
+The Agent platform does not create any infrastructure, but requires resources for infrastructure.
 
 - Agents: An *Agent* represents a host that boots with a Discovery image and that you can provision as an OpenShift Container Platform node.
 
@@ -87,7 +89,7 @@ api-int               IN A 1xx.2x.2xx.1xx
 ;EOF
 ```
 
-- The record refers to the IP address of the API load balancer that handles ingress and egress traffic for hosted control planes.
+The `api` record refers to the IP address of the API load balancer that handles ingress and egress traffic for hosted control planes.
 
 For IBM Power, add IP addresses that correspond to the IP address of the agent.
 
@@ -534,7 +536,7 @@ After you enable the Assisted Installer as an add-on to multicluster engine Oper
     https://console-openshift-console.apps.<hosted_cluster_namespace>.<base_domain>
     ```
 
-- [Requirements for hosted control planes](../../hosted_control_planes/hcp-prepare/hcp-requirements.xml)
+- [Requirements for hosted control planes](../../hosted_control_planes/hcp-prepare/hcp-requirements.xml#hcp-requirements)
 
 - [DNS configurations on bare metal](../../hosted_control_planes/hcp-deploy/hcp-deploy-bm.xml#hcp-bm-dns_hcp-deploy-bm)
 
@@ -544,7 +546,7 @@ After you enable the Assisted Installer as an add-on to multicluster engine Oper
 
 # About creating heterogeneous node pools on agent hosted clusters
 
-A node pool is a group of nodes within a cluster that share the same configuration. Heterogeneous node pools have different configurations, so that you can create pools and optimize them for various workloads.
+A node pool is a group of nodes within a cluster that share the same configuration. Heterogeneous node pools have different configurations so that you can create pools and optimize them for various workloads.
 
 You can create heterogeneous node pools on the agent platform. The platform enables clusters to run diverse machine types, such as `x86_64` or `ppc64le`, within a single hosted cluster.
 
@@ -591,7 +593,7 @@ To create heterogeneous node pools on an agent hosted cluster, you need to creat
       - openshiftVersion: <ocp_version>
         version: <ocp_release_version_x86>
         url: <iso_url_x86>
-        rootFSUrl: <root_fs_url_x8>
+        rootFSUrl: <root_fs_url_x86>
         cpuArchitecture: <arch_x86>
       - openshiftVersion: <ocp_version>
         version: <ocp_release_version_ppc64le>
@@ -601,35 +603,46 @@ To create heterogeneous node pools on an agent hosted cluster, you need to creat
   EOF
   ```
 
-  - Specify the multicluster engine for Kubernetes Operator `agentserviceconfig` config, database volume name.
+  where:
 
-  - Specify the multicluster engine Operator `agentserviceconfig` config, filesystem volume name.
+  `<db_volume_name>`
+  Specifies the multicluster engine for Kubernetes Operator `agentserviceconfig` config, database volume name.
 
-  - Specify the current version of OpenShift Container Platform.
+  `<fs_volume_name>`
+  Specifies the multicluster engine Operator `agentserviceconfig` config, filesystem volume name.
 
-  - Specify the current OpenShift Container Platform release version for x86.
+  `<ocp_version>`
+  Specifies the current version of OpenShift Container Platform.
 
-  - Specify the ISO URL for x86.
+  `<ocp_release_version_x86>`
+  Specifies the current OpenShift Container Platform release version for x86.
 
-  - Specify the root filesystem URL for x86.
+  `<iso_url_x86>`
+  Specifies the ISO URL for x86.
 
-  - Specify the CPU architecture for x86.
+  `<root_fs_url_x86>`
+  Specifies the root filesystem URL for x86.
 
-  - Specify the current OpenShift Container Platform version.
+  `<arch_x86>`
+  Specifies the CPU architecture for x86.
 
-  - Specify the OpenShift Container Platform release version for `ppc64le`.
+  `<ocp_release_version_ppc64le>`
+  Specifies the OpenShift Container Platform release version for `ppc64le`.
 
-  - Specify the ISO URL for `ppc64le`.
+  `<iso_url_ppc64le>`
+  Specifies the ISO URL for `ppc64le`.
 
-  - Specify the root filesystem URL for `ppc64le`.
+  `<root_fs_url_ppc64le>`
+  Specifies the root filesystem URL for `ppc64le`.
 
-  - Specify the CPU architecture for `ppc64le`.
+  `<arch_ppc64le>`
+  Specifies the CPU architecture for `ppc64le`.
 
 ## Create an agent cluster
 
 An agent-based approach manages and provisions an agent cluster. An agent cluster can use heterogeneous node pools, allowing the use of different types of compute nodes within the same cluster.
 
-- You used a multi-architecture release image to enable support for heterogeneous node pools when creating a hosted cluster. Find the latest multi-architecture images on the [Multi-arch release images](https://multi.ocp.releases.ci.openshift.org/) page.
+- You used a multi-architecture release image to enable support for heterogeneous node pools when creating a hosted cluster. Find the latest multi-architecture images on the "Multi-arch release images" page.
 
 1.  Create an environment variable for the cluster namespace by running the following command:
 
@@ -656,20 +669,29 @@ An agent-based approach manages and provisions an agent cluster. An agent cluste
         --name=<hosted_cluster_name> \
         --pull-secret=<pull_secret_file> \
         --agent-namespace=<hosted_control_plane_namespace> \
-        --base-domain=<basedomain> \
+        --base-domain=<base_domain> \
         --api-server-address=api.<hosted_cluster_name>.<basedomain> \
         --release-image=quay.io/openshift-release-dev/ocp-release:<ocp_release>
     ```
 
-    - Specify the hosted cluster name.
+    where:
 
-    - Specify the pull secret file path.
+    `<hosted_cluster_name>`
+    Specifies the hosted cluster name.
 
-    - Specify the namespace for the hosted control plane.
+    `<pull_secret_file>`
+    Specifies the pull secret file path.
 
-    - Specify the base domain for the hosted cluster.
+    `<hosted_control_plane_namespace>`
+    Specifies the namespace for the hosted control plane.
 
-    - Specify the current OpenShift Container Platform release version.
+    `<base_domain>`
+    Specifies the base domain for the hosted cluster.
+
+    `<ocp_release>`
+    Specifies the current OpenShift Container Platform release version.
+
+- [Multi-arch release images](https://multi.ocp.releases.ci.openshift.org/)
 
 ## Creating heterogeneous node pools
 
@@ -704,7 +726,7 @@ You create heterogeneous node pools by using the `NodePool` custom resource (CR)
   EOF
   ```
 
-  - The selector block selects the agents that match the specified label. To create a node pool of architecture `ppc64le` with zero replicas, specify `ppc64le`. This ensures that the selector block selects only agents from `ppc64le` architecture during a scaling operation.
+  `<arch_ppc64le>`: The selector block selects the agents that match the specified label. To create a node pool of architecture `ppc64le` with zero replicas, specify `ppc64le`. This ensures that the selector block selects only agents from `ppc64le` architecture during a scaling operation.
 
 ## DNS configuration for hosted control planes
 
@@ -714,7 +736,9 @@ You can point an `*.apps.<cluster_name>` record to either of the compute nodes t
 
 ## Creating infrastructure environment resources
 
-For heterogeneous node pools, you must create an `infraEnv` custom resource (CR) for each architecture. This configuration ensures that the correct architecture-specific operating system and boot artifacts get used during the node provisioning process. For example, for node pools with `x86_64` and `ppc64le` architectures, create an `InfraEnv` CR for `x86_64` and `ppc64le`.
+For heterogeneous node pools, you must create an `infraEnv` custom resource (CR) for each architecture. This configuration ensures that the correct architecture-specific operating system and boot artifacts get used during the node provisioning process.
+
+For example, for node pools with `x86_64` and `ppc64le` architectures, create an `InfraEnv` CR for `x86_64` and `ppc64le`.
 
 <div class="note">
 
@@ -739,13 +763,19 @@ Before starting the procedure, ensure that you add the operating system images f
     EOF
     ```
 
-    - The hosted cluster name.
+    where:
 
-    - The `x86_64` architecture.
+    `<hosted_cluster_name>`
+    Specifies the hosted cluster name.
 
-    - The hosted control plane namespace.
+    `<arch_x86>`
+    Specifies the `x86_64` architecture.
 
-    - The SSH public key.
+    `<hosted_control_plane_namespace>`
+    Specifies the hosted control plane namespace.
+
+    `<ssh_pub_key>`
+    Specifies the SSH public key.
 
 2.  Create the `InfraEnv` resource with `ppc64le` architecture for heterogeneous node pools by running the following command:
 
@@ -764,13 +794,19 @@ Before starting the procedure, ensure that you add the operating system images f
     EOF
     ```
 
-    - The hosted cluster name.
+    where:
 
-    - The `ppc64le` architecture.
+    `<hosted_cluster_name>`
+    Specifies the hosted cluster name.
 
-    - The hosted control plane namespace.
+    `<arch_ppc64le>`
+    Specifies the `ppc64le` architecture.
 
-    - The SSH public key.
+    `<hosted_control_plane_namespace>`
+    Specifies the hosted control plane namespace.
+
+    `<ssh_pub_key>`
+    Specifies the SSH public key.
 
 3.  Verify the successful creation of the `InfraEnv` resources by running the following commands:
 
@@ -802,7 +838,9 @@ Before starting the procedure, ensure that you add the operating system images f
 
 ## Adding agents to the heterogeneous cluster
 
-You add agents by manually configuring the machine to boot with a live ISO. You can download the live ISO and use it to boot a bare-metal node or a virtual machine. On boot, the node communicates with the `assisted-service` and registers as an agent in the same namespace as the `InfraEnv` resource. After the creation of each agent, you can optionally set its `installation_disk_id` and `hostname` parameters in the specifications. You can then approve the agent to indicate the agent as ready for use.
+You add agents by manually configuring the machine to boot with a live ISO. You can download the live ISO and use it to boot a bare-metal node or a virtual machine.
+
+On boot, the node communicates with the `assisted-service` and registers as an agent in the same namespace as the `InfraEnv` resource. After the creation of each agent, you can optionally set its `installation_disk_id` and `hostname` parameters in the specifications. You can then approve the agent to indicate the agent as ready for use.
 
 1.  Obtain a list of agents by running the following command:
 
@@ -850,7 +888,9 @@ You add agents by manually configuring the machine to boot with a live ISO. You 
 
 ## Scaling the node pool
 
-After you approve your agents, you can scale the node pools. The `agentLabelSelector` value that you configured in the node pool ensures that only matching agents get added to the cluster. This also helps scale down the node pool. To remove specific architecture nodes from the cluster, scale down the corresponding node pool.
+After you approve your agents, you can scale the node pools. The `agentLabelSelector` value that you configured in the node pool ensures that only matching agents get added to the cluster. This also helps scale down the node pool.
+
+To remove specific architecture nodes from the cluster, scale down the corresponding node pool.
 
 - Scale the node pool by running the following command:
 

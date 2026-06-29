@@ -574,7 +574,7 @@ To maintain control over your image history and simplify management within OpenS
   Deleted tag default/python:3.6
   ```
 
-<!-- -->
+# Additional resources
 
 - [Removing deprecated image stream tags from the Cluster Samples Operator](../openshift_images/configuring-samples-operator.xml#images-samples-operator-deprecated-image-stream_configuring-samples-operator)
 

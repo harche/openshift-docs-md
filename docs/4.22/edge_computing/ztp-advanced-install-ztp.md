@@ -40,9 +40,9 @@ Extra manifests must be packaged in `ConfigMap` resources and referenced in the 
       disableNameSuffixHash: true
     ```
 
-    - The namespace must match the `ClusterInstance` namespace.
+    - The `configMapGenerator.namespace` value must match the `ClusterInstance` namespace.
 
-    - Disables the hash suffix so the `ConfigMap` name is predictable.
+    - Setting `generatorOptions.disableNameSuffixHash` to `true` disables the hash suffix so the `ConfigMap` name is predictable.
 
 4.  In your `ClusterInstance` CR, reference the `ConfigMap` in the `extraManifestsRefs` field:
 
@@ -60,17 +60,17 @@ Extra manifests must be packaged in `ConfigMap` resources and referenced in the 
       # ...
     ```
 
-    - Reference to the `ConfigMap` containing the extra manifests.
+    - The `extraManifestsRefs` field references the `ConfigMap` containing the extra manifests.
 
 5.  Commit the `ClusterInstance` CR, extra manifest files, and `kustomization.yaml` to your Git repository and push the changes.
 
-During cluster provisioning, the SiteConfig Operator applies the CRs contained in the referenced `ConfigMap` resources as extra manifests.
+    During cluster provisioning, the SiteConfig Operator applies the CRs contained in the referenced `ConfigMap` resources as extra manifests.
 
-<div class="note">
+    <div class="note">
 
-You can reference multiple `ConfigMap` resources in `extraManifestsRefs` to organize your manifests logically. For example, you might have separate `ConfigMap` resources for crun configuration, custom `MachineConfig` CRs, and other Day 0 configurations.
+    You can reference multiple `ConfigMap` resources in `extraManifestsRefs` to organize your manifests logically. For example, you might have separate `ConfigMap` resources for crun configuration, custom `MachineConfig` CRs, and other Day 0 configurations.
 
-</div>
+    </div>
 
 # Deleting a node by using the ClusterInstance CR
 

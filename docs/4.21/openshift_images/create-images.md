@@ -1,4 +1,4 @@
-Learn how to create your own container images, based on pre-built images that are ready to help you. The process includes learning best practices for writing images, defining metadata for images, testing images, and using a custom builder workflow to create images to use with OpenShift Container Platform. After you create an image, you can push it to the OpenShift image registry.
+You can create your own container images based on pre-built base images. This process includes following best practices for writing images, defining metadata, testing images, and using a custom builder workflow with Source-to-Image (S2I). After you create an image, you can push it to the OpenShift image registry.
 
 # Learning container best practices
 
@@ -463,13 +463,13 @@ The goal of testing an S2I image is to make sure that all of these described com
 
 The standard location for the `test` script is `test/run`. This script is invoked by the OpenShift Container Platform S2I image builder and it could be a simple Bash script or a static Go binary.
 
-The `test/run` script performs the S2I build, so you must have the S2I binary available in your `$PATH`. If required, follow the installation instructions in the [S2I README](https://github.com/openshift/source-to-image/blob/master/README.md#installation).
+The `test/run` script performs the S2I build, so you must have the S2I binary available in your `$PATH`. If required, follow the S2I installation instructions in the *Additional resources*.
 
 S2I combines the application source code and builder image, so to test it you need a sample application source to verify that the source successfully transforms into a runnable container image. The sample application should be simple, but it should exercise the crucial steps of `assemble` and `run` scripts.
 
 ## Generating scripts and tools
 
-The S2I tooling comes with powerful generation tools to speed up the process of creating a new S2I image. The `s2i create` command produces all the necessary S2I scripts and testing tools along with the `Makefile`:
+The S2I tooling includes powerful generation tools to speed up the process of creating a new S2I image. The `s2i create` command produces all the necessary S2I scripts and testing tools along with the `Makefile`:
 
 ``` terminal
 $ s2i create <image_name> <destination_directory>
@@ -571,3 +571,7 @@ Once you have a `Dockerfile` and the other artifacts that make up your new S2I b
 If your OpenShift Container Platform instance is hosted on a public IP address, the build can be triggered each time you push into your S2I builder image GitHub repository.
 
 You can also use the `ImageChangeTrigger` to trigger a rebuild of your applications that are based on the S2I builder image you updated.
+
+# Additional resources
+
+- [S2I README](https://github.com/openshift/source-to-image/blob/master/README.md#installation)

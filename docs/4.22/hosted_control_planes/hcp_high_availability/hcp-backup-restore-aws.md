@@ -147,13 +147,13 @@ You took an etcd snapshot on a hosted cluster.
     1.  Define the snapshot by entering the following command:
 
         ``` terminal
-        ETCD_SNAPSHOT=${ETCD_SNAPSHOT:-"s3://${BUCKET_NAME}/${CLUSTER_NAME}-snapshot.db"}
+        $ ETCD_SNAPSHOT=${ETCD_SNAPSHOT:-"s3://${BUCKET_NAME}/${CLUSTER_NAME}-snapshot.db"}
         ```
 
     2.  Define the snapshot URL by entering the following command:
 
         ``` terminal
-        ETCD_SNAPSHOT_URL=$(aws s3 presign ${ETCD_SNAPSHOT})
+        $ ETCD_SNAPSHOT_URL=$(aws s3 presign ${ETCD_SNAPSHOT})
         ```
 
 3.  Create the new hosted cluster by entering the following command:

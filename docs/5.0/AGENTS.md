@@ -246,6 +246,7 @@ Root: ./
 
 |etcd:{etcd-overview.md,etcd-practices.md,etcd-performance.md,etcd-encrypt.md,etcd-guidance-span.md}
 |etcd/etcd-backup-restore:{etcd-backup.md,replace-unhealthy-etcd-member.md,etcd-disaster-recovery.md}
+|etcd/KMS_v2:{index.md,kms-configuring.md,kms-disabling.md}
 
 ### Hosted control planes
 

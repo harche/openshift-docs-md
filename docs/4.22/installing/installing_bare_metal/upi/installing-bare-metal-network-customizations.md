@@ -1566,7 +1566,7 @@ For production OpenShift Container Platform clusters on which you want to perfor
 
 # Network configuration phases
 
-There are two phases prior to OpenShift Container Platform installation where you can customize the network configuration.
+There are two phases prior to OpenShift Container Platform installation where you can customize the network configuration. Customize settings in the `install-config.yaml` file and in the Cluster Network Operator manifest across two configuration phases.
 
 Phase 1
 You can customize the following network-related fields in the `install-config.yaml` file before you create the manifest files:
@@ -1602,9 +1602,7 @@ During phase 2, you cannot override the values that you specified in phase 1 in 
 
 # Specifying advanced network configuration
 
-You can use advanced network configuration for your network plugin to integrate your cluster into your existing network environment.
-
-You can specify advanced network configuration only before you install the cluster.
+To integrate your OpenShift Container Platform cluster with your existing network environment, you can specify advanced network configuration in a manifest before you install the cluster. Advanced network configuration can be configured only during cluster installation.
 
 <div class="important">
 
@@ -1620,7 +1618,7 @@ Customizing your network configuration by modifying the OpenShift Container Plat
     $ ./openshift-install create manifests --dir <installation_directory>
     ```
 
-    - `<installation_directory>` specifies the name of the directory that contains the `install-config.yaml` file for your cluster.
+    The `<installation_directory>` specifies the name of the directory that contains the `install-config.yaml` file for your cluster.
 
 2.  Create a stub manifest file for the advanced network configuration that is named `cluster-network-03-config.yml` in the `<installation_directory>/manifests/` directory:
 
@@ -4023,7 +4021,7 @@ The following table shows the RHCOS live installer `coreos.inst` boot options fo
 
 ## Enabling multipathing with kernel arguments on RHCOS
 
-To achieve higher host availability and stronger resilience against hardware failure, enable multipathing on the primary disk. This configuration uses kernel arguments on RHCOS to ensure continuous storage access if path failure occurs.
+RHCOS supports multipathing on the primary disk, allowing stronger resilience to hardware failure to achieve higher host availability.
 
 You can enable multipathing at installation time for nodes that were provisioned in OpenShift Container Platform 4.8 or later. While postinstallation support is available by activating multipathing through the machine config, Red Hat recommends enabling multipathing during installation.
 
@@ -4115,7 +4113,7 @@ OpenShift Container Platform does not support enabling multipathing as a day-2 a
 
 ### Enabling multipathing on secondary disks
 
-To enable multipathing on a secondary disk during installation, use Ignition configuration. This setup ensures storage resilience for additional disks on RHCOS without relying on the kernel arguments used for primary disks.
+RHCOS also supports multipathing on a secondary disk. Instead of kernel arguments, you use Ignition to enable multipathing for the secondary disk at installation time.
 
 - You have read the section *Disk partitioning*.
 
@@ -4224,7 +4222,7 @@ To enable multipathing on a secondary disk during installation, use Ignition con
 
 ## Installing RHCOS manually on an iSCSI boot device
 
-To deploy RHCOS by using networked storage, manually install the operating system on an iSCSI target. This configuration enables the system to boot from a remote storage array, eliminating the need for local disks.
+You can manually install RHCOS on an iSCSI target.
 
 1.  You are in the RHCOS live environment.
 
@@ -4281,7 +4279,7 @@ To deploy RHCOS by using networked storage, manually install the operating syste
 
 ## Installing RHCOS on an iSCSI boot device using iBFT
 
-To configure a completely diskless machine, pass the iSCSI target and initiator values by using the iSCSI Boot Firmware Table (iBFT). With this setup, you can use iSCSI multipathing to ensure storage resilience.
+On a completely diskless machine, the iSCSI target and initiator values can be passed through iBFT. iSCSI multipathing is also supported.
 
 1.  You are in the RHCOS live environment.
 
@@ -4346,7 +4344,7 @@ To configure a completely diskless machine, pass the iSCSI target and initiator 
 
 # Waiting for the bootstrap process to complete
 
-To install OpenShift Container Platform, use Ignition configuration files to initialize the bootstrap process after the cluster nodes boot into RHCOS. You must wait for this process to complete to ensure the cluster is fully installed.
+The OpenShift Container Platform bootstrap process begins after the cluster nodes first boot into the persistent RHCOS environment that has been installed to disk. The configuration information provided through the Ignition config files is used to initialize the bootstrap process and install OpenShift Container Platform on the machines. You must wait for the bootstrap process to complete.
 
 - You have created the Ignition config files for your cluster.
 
@@ -4437,7 +4435,7 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 # Approving the certificate signing requests for your machines
 
-You can add machines to a cluster by verifying the status of the Certificate Signing Requests (CSRs) generated for each machine. If manual approval is required, approve the client requests first, followed by the server requests.
+When you add machines to a cluster, two pending certificate signing requests (CSRs) are generated for each machine that you added. You must confirm that these CSRs are approved or, if necessary, approve them yourself. The client requests must be approved first, followed by the server requests.
 
 - You added machines to your cluster.
 
@@ -4593,7 +4591,7 @@ You can add machines to a cluster by verifying the status of the Certificate Sig
 
 # Initial Operator configuration
 
-To ensure all Operators become available, configure the required Operators immediately after the control plane initialises. This configuration is essential for stabilizing the cluster environment following the installation.
+After the control plane initializes, you must immediately configure some Operators so that they all become available.
 
 - Your control plane has initialized.
 

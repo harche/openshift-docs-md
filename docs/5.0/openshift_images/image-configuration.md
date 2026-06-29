@@ -1166,7 +1166,7 @@ You can create postinstallation mirror configuration custom resources (CR) to re
 
     - Setting up a mirrored repository with Red Hat Quay. You can copy images from one repository to another and also automatically sync those repositories repeatedly over time by using Red Hat Quay.
 
-      - [Red Hat Quay Repository Mirroring](https://access.redhat.com/documentation/en-us/red_hat_quay/3/html/manage_red_hat_quay/repo-mirroring-in-red-hat-quay)
+      - [Red Hat Quay Repository Mirroring](https://docs.redhat.com/en/documentation/red_hat_quay/3/html/manage_red_hat_quay/arch-mirroring-intro#enabling-repository-mirroring-quay)
 
     - Using a tool such as `skopeo` to copy images manually from the source repository to the mirrored repository.
 
@@ -1267,18 +1267,18 @@ You can create postinstallation mirror configuration custom resources (CR) to re
 
         ``` terminal
         NAME                           STATUS                     ROLES    AGE  VERSION
-        ip-10-0-137-44.ec2.internal    Ready                      worker   7m   v1.35.4
-        ip-10-0-138-148.ec2.internal   Ready                      master   11m  v1.35.4
-        ip-10-0-139-122.ec2.internal   Ready                      master   11m  v1.35.4
-        ip-10-0-147-35.ec2.internal    Ready                      worker   7m   v1.35.4
-        ip-10-0-153-12.ec2.internal    Ready                      worker   7m   v1.35.4
-        ip-10-0-154-10.ec2.internal    Ready                      master   11m  v1.35.4
+        worker-1.compute.local         Ready                      worker   7m   v1.35.4
+        master-1.compute.local         Ready                      master   11m  v1.35.4
+        master-2.compute.local         Ready                      master   11m  v1.35.4
+        worker-2.compute.local         Ready                      worker   7m   v1.35.4
+        worker-3.compute.local         Ready                      worker   7m   v1.35.4
+        master-3.compute.local         Ready                      master   11m  v1.35.4
         ```
 
     2.  Start the debugging process to access the node:
 
         ``` terminal
-        $ oc debug node/ip-10-0-147-35.ec2.internal
+        $ oc debug node/worker-1.compute.local
         ```
 
         <div class="formalpara-title">
@@ -1288,7 +1288,7 @@ You can create postinstallation mirror configuration custom resources (CR) to re
         </div>
 
         ``` terminal
-        Starting pod/ip-10-0-147-35ec2internal-debug ...
+        Starting pod/worker-1.compute.local-debug ...
         To use host binaries, run `chroot /host`
         ```
 

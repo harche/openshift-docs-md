@@ -299,21 +299,21 @@ If an instance type for your platform meets the minimum requirements for cluster
 
 ## Tested instance types for Azure
 
-The following Microsoft Azure instance types have been tested with OpenShift Container Platform.
+There are several Microsoft Azure instance types tested with OpenShift Container Platform. Choose a listed instance type when you install a cluster on 64-bit x86 infrastructure.
 
 <https://raw.githubusercontent.com/openshift/installer/release-4.21/docs/user/azure/tested_instance_types_x86_64.md>
 
 ## Tested instance types for Azure on 64-bit ARM infrastructures
 
-The following Microsoft Azure ARM64 instance types have been tested with OpenShift Container Platform.
+There are several Microsoft Azure ARM64 instance types tested with OpenShift Container Platform. Choose a listed instance type when you install a cluster on 64-bit ARM infrastructure.
 
 <https://raw.githubusercontent.com/openshift/installer/release-4.21/docs/user/azure/tested_instance_types_aarch64.md>
 
 ## Enabling trusted launch for Azure VMs
 
-You can enable two trusted launch features when installing your cluster on Azure: [secure boot](https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch#secure-boot) and [virtualized Trusted Platform Modules](https://learn.microsoft.com/en-us/windows/security/hardware-security/tpm/trusted-platform-module-overview).
+To enable trusted launch on Azure virtual machines for your OpenShift Container Platform cluster, you can configure secure boot and virtualized Trusted Platform Modules in the `install-config.yaml` file. Apply the settings to control plane nodes, compute nodes, or all nodes as needed.
 
-For more information about the sizes of virtual machines that support the trusted launch features, see [Virtual machine sizes](https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch#virtual-machines-sizes).
+For more information about the sizes of virtual machines that support the trusted launch features, secure boot, and virtualized Trusted Platform Modules, see the Additional resources section.
 
 <div class="important">
 
@@ -370,9 +370,17 @@ For more information about the support scope of Red Hat Technology Preview featu
               virtualizedTrustedPlatformModule: Enabled
     ```
 
+<!-- -->
+
+- [Secure Boot (Microsoft Azure documentation)](https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch#secure-boot)
+
+- [virtualized Trusted Platform Modules (Microsoft Azure documentation)](https://learn.microsoft.com/en-us/windows/security/hardware-security/tpm/trusted-platform-module-overview)
+
+- [Virtual machine sizes (Microsoft Azure documentation)](https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch#virtual-machines-sizes)
+
 ## Enabling confidential VMs
 
-You can enable confidential VMs when installing your cluster. You can enable confidential VMs for compute nodes, control plane nodes, or all nodes.
+To enable confidential VMs on Azure for your OpenShift Container Platform cluster, you can configure the `install-config.yaml` file before deployment. Apply the settings to control plane nodes, compute nodes, or all nodes as needed.
 
 You can use confidential VMs with the following VM sizes:
 
@@ -497,13 +505,16 @@ For more information about the support scope of Red Hat Technology Preview featu
   # ...
   ```
 
-<!-- -->
+  where:
 
-- Specify the same value you defined for `platformDiskID`.
+  `controlPlane.platform.azure.dataDisks.nameSuffix`
+  Specifies the same value you defined for `platformDiskID`.
 
-- Specify `None`. Other caching requirements are not currently supported.
+  `controlPlane.platform.azure.dataDisks.cachingType`
+  Specifies `None`. Other caching requirements are not currently supported.
 
-- Specify a disk size in GB. This value can be any integer greater than `0`.
+  `controlPlane.platform.azure.dataDisks.diskSizeGB`
+  Specifies a disk size in GB. This value can be any integer greater than `0`.
 
   <div class="note">
 
@@ -511,11 +522,14 @@ For more information about the support scope of Red Hat Technology Preview featu
 
   </div>
 
-- Specify a logical unit number (LUN). This can be any integer from `0` through `63` that is not used by another disk.
+  `controlPlane.platform.azure.dataDisks.lun`
+  Specifies a logical unit number (LUN). This can be any integer from `0` through `63` that is not used by another disk.
 
-- Specify `etcd`. This identifies `etcd` as the node component type to receive a dedicated disk.
+  `controlPlane.diskSetup.type`
+  Specifies `etcd`. This identifies `etcd` as the node component type to receive a dedicated disk.
 
-- Specify a name to identify the disk. This value must not exceed 12 characters.
+  `controlPlane.diskSetup.etcd.platformDiskID`
+  Specifies a name to identify the disk. This value must not exceed 12 characters.
 
 ## Enabling a user-managed DNS
 
@@ -706,7 +720,7 @@ Production environments can deny direct access to the internet and instead have 
 
 # Network configuration phases
 
-There are two phases prior to OpenShift Container Platform installation where you can customize the network configuration.
+There are two phases prior to OpenShift Container Platform installation where you can customize the network configuration. Customize settings in the `install-config.yaml` file and in the Cluster Network Operator manifest across two configuration phases.
 
 Phase 1
 You can customize the following network-related fields in the `install-config.yaml` file before you create the manifest files:
@@ -742,9 +756,7 @@ During phase 2, you cannot override the values that you specified in phase 1 in 
 
 # Specifying advanced network configuration
 
-You can use advanced network configuration for your network plugin to integrate your cluster into your existing network environment.
-
-You can specify advanced network configuration only before you install the cluster.
+To integrate your OpenShift Container Platform cluster with your existing network environment, you can specify advanced network configuration in a manifest before you install the cluster. Advanced network configuration can be configured only during cluster installation.
 
 <div class="important">
 
@@ -760,7 +772,7 @@ Customizing your network configuration by modifying the OpenShift Container Plat
     $ ./openshift-install create manifests --dir <installation_directory>
     ```
 
-    - `<installation_directory>` specifies the name of the directory that contains the `install-config.yaml` file for your cluster.
+    The `<installation_directory>` specifies the name of the directory that contains the `install-config.yaml` file for your cluster.
 
 2.  Create a stub manifest file for the advanced network configuration that is named `cluster-network-03-config.yml` in the `<installation_directory>/manifests/` directory:
 
@@ -1519,35 +1531,40 @@ The Cloud Credential Operator (CCO) can be put into manual mode prior to install
       --to=<path_to_directory_for_credentials_requests>
     ```
 
-    - The `--included` parameter includes only the manifests that your specific cluster configuration requires.
+    where:
 
-    - Specify the location of the `install-config.yaml` file.
+    `--included`
+    Specifies only the manifests that your specific cluster configuration requires.
 
-    - Specify the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
+    `<path_to_directory_with_installation_configuration>`
+    Specifies the location of the `install-config.yaml` file.
 
-      This command creates a YAML file for each `CredentialsRequest` object.
+    `<path_to_directory_for_credentials_requests>`
+    Specifies the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
 
-      <div class="formalpara-title">
+    This command creates a YAML file for each `CredentialsRequest` object.
 
-      **Sample `CredentialsRequest` object**
+    <div class="formalpara-title">
 
-      </div>
+    **Sample `CredentialsRequest` object**
 
-      ``` yaml
-      apiVersion: cloudcredential.openshift.io/v1
-      kind: CredentialsRequest
-      metadata:
-        name: <component_credentials_request>
-        namespace: openshift-cloud-credential-operator
-        ...
-      spec:
-        providerSpec:
-          apiVersion: cloudcredential.openshift.io/v1
-          kind: AzureProviderSpec
-          roleBindings:
-          - role: Contributor
-        ...
-      ```
+    </div>
+
+    ``` yaml
+    apiVersion: cloudcredential.openshift.io/v1
+    kind: CredentialsRequest
+    metadata:
+      name: <component_credentials_request>
+      namespace: openshift-cloud-credential-operator
+      ...
+    spec:
+      providerSpec:
+        apiVersion: cloudcredential.openshift.io/v1
+        kind: AzureProviderSpec
+        roleBindings:
+        - role: Contributor
+      ...
+    ```
 
 5.  Create YAML files for secrets in the `openshift-install` manifests directory that you generated previously. The secrets must be stored using the namespace and secret name defined in the `spec.secretRef` for each `CredentialsRequest` object.
 
@@ -1599,11 +1616,11 @@ The Cloud Credential Operator (CCO) can be put into manual mode prior to install
       azure_region: <base64_encoded_azure_region>
     ```
 
-<div class="important">
+    <div class="important">
 
-Before upgrading a cluster that uses manually maintained credentials, you must ensure that the CCO is in an upgradeable state.
+    Before upgrading a cluster that uses manually maintained credentials, you must ensure that the CCO is in an upgradeable state.
 
-</div>
+    </div>
 
 ## Configuring an Azure cluster to use short-term credentials
 
@@ -1935,7 +1952,7 @@ To implement short-term security credentials managed outside the cluster for ind
     # ...
     ```
 
-    - This value must match the user-defined name for Azure resources that was specified with the `--name` argument of the `ccoctl azure create-all` command.
+    The `<azure_infra_name>` value must match the user-defined name for Azure resources that was specified with the `--name` argument of the `ccoctl azure create-all` command.
 
 3.  If you have not previously created installation manifest files, do so by running the following command:
 
@@ -1959,7 +1976,7 @@ To implement short-term security credentials managed outside the cluster for ind
 
 # Deploying the cluster
 
-You can install OpenShift Container Platform on a compatible cloud platform.
+To deploy your OpenShift Container Platform cluster, you can initialize installation by running the `openshift-install create cluster` command from the directory that contains the installation program. The installation program provisions infrastructure and completes cluster setup.
 
 <div class="important">
 
@@ -1998,34 +2015,34 @@ When the cluster deployment completes successfully:
 
 - Credential information also outputs to `<installation_directory>/.openshift_install.log`.
 
-<div class="important">
+  <div class="important">
 
-Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
+  Do not delete the installation program or the files that the installation program creates. Both are required to delete the cluster.
 
-</div>
+  </div>
 
-<div class="formalpara-title">
+  <div class="formalpara-title">
 
-**Example output**
+  **Example output**
 
-</div>
+  </div>
 
-``` terminal
-...
-INFO Install complete!
-INFO To access the cluster as the system:admin user when using 'oc', run 'export KUBECONFIG=/home/myuser/install_dir/auth/kubeconfig'
-INFO Access the OpenShift web-console here: https://console-openshift-console.apps.mycluster.example.com
-INFO Login to the console with user: "kubeadmin", and password: "password"
-INFO Time elapsed: 36m22s
-```
+  ``` terminal
+  ...
+  INFO Install complete!
+  INFO To access the cluster as the system:admin user when using 'oc', run 'export KUBECONFIG=/home/myuser/install_dir/auth/kubeconfig'
+  INFO Access the OpenShift web-console here: https://console-openshift-console.apps.mycluster.example.com
+  INFO Login to the console with user: "kubeadmin", and password: "password"
+  INFO Time elapsed: 36m22s
+  ```
 
-<div class="important">
+  <div class="important">
 
-- The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
+  - The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
-- It is recommended that you use Ignition config files within 12 hours after they are generated because the 24-hour certificate rotates from 16 to 22 hours after the cluster is installed. By using the Ignition config files within 12 hours, you can avoid installation failure if the certificate update runs during installation.
+  - It is recommended that you use Ignition config files within 12 hours after they are generated because the 24-hour certificate rotates from 16 to 22 hours after the cluster is installed. By using the Ignition config files within 12 hours, you can avoid installation failure if the certificate update runs during installation.
 
-</div>
+  </div>
 
 # Provisioning your own DNS records
 

@@ -1,4 +1,4 @@
-The set of baseline measurements for resource utilization can vary in each hosted cluster.
+The set of baseline measurements for resource utilization can vary in each hosted cluster. Ensure that you understand the resource utilization needed for your deployment.
 
 # Overriding resource utilization measurements for a hosted cluster
 
@@ -68,15 +68,7 @@ You can override resource utilization measurements based on the type and pace of
 
 # Disabling the metric service monitoring
 
-After you enable the `hypershift-addon` managed cluster add-on, metric service monitoring is configured by default so that OpenShift Container Platform monitoring can gather metrics from `hypershift-addon`.
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-You can disable metric service monitoring by completing the following steps:
+After you enable the `hypershift-addon` managed cluster add-on, metric service monitoring is configured by default so that OpenShift Container Platform monitoring can gather metrics from `hypershift-addon`. If needed, you can disable metric service monitoring.
 
 1.  Log in to your hub cluster by running the following command:
 
@@ -109,7 +101,7 @@ You can disable metric service monitoring by completing the following steps:
         value: "true"
     ```
 
-    - The `disableMetrics=true` customized variable disables metric service monitoring for both new and existing `hypershift-addon` managed cluster add-ons.
+    The `disableMetrics=true` customized variable disables metric service monitoring for both new and existing `hypershift-addon` managed cluster add-ons.
 
 4.  Apply the changes to the configuration specification by running the following command:
 

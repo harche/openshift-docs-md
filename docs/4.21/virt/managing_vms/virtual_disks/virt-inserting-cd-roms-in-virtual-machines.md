@@ -37,18 +37,11 @@ For more information about the support scope of Red Hat Technology Preview featu
         declarativeHotplugVolumes: true
   ```
 
-- The `HotplugVolumes` feature gate must be disabled. This feature gate is required for using ephemeral volumes, but is incompatible with `DeclarativeHotplugVolumes`.
+  <div class="note">
 
-  ``` yaml
-  apiVersion: hco.kubevirt.io/v1
-  kind: HyperConverged
-  metadata:
-    name: kubevirt-hyperconverged
-    namespace: openshift-cnv
-  spec:
-      featureGates:
-          HotplugVolumes: false
-  ```
+  The `DeclarativeHotplugVolumes` feature gate does not support hot plugging ephemeral volumes.
+
+  </div>
 
 - You have an ISO image of a CD-ROM available in the cluster.
 
@@ -135,18 +128,11 @@ For more information about the support scope of Red Hat Technology Preview featu
         declarativeHotplugVolumes: true
   ```
 
-- The `HotplugVolumes` feature gate must be disabled. This feature gate is required for using ephemeral volumes, but is incompatible with `DeclarativeHotplugVolumes`.
+  <div class="note">
 
-  ``` yaml
-  apiVersion: hco.kubevirt.io/v1
-  kind: HyperConverged
-  metadata:
-    name: kubevirt-hyperconverged
-    namespace: openshift-cnv
-  spec:
-      featureGates:
-          HotplugVolumes: false
-  ```
+  The `DeclarativeHotplugVolumes` feature gate does not support hot plugging ephemeral volumes.
+
+  </div>
 
 1.  In the OpenShift Container Platform web console, go to **Virtualization** → **VirtualMachines**.
 

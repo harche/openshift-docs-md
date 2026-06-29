@@ -1122,6 +1122,10 @@
   - [Replacing an unhealthy etcd member](etcd/etcd-backup-restore/replace-unhealthy-etcd-member.md)
   - [Disaster recovery](etcd/etcd-backup-restore/etcd-disaster-recovery.md)
 - [Enabling etcd encryption](etcd/etcd-encrypt.md)
+- **External encryption key management**
+  - [About KMS](etcd/KMS_v2/index.md)
+  - [Configuring KMS](etcd/KMS_v2/kms-configuring.md)
+  - [Disabling KMS](etcd/KMS_v2/kms-disabling.md)
 - [Guidance for clusters that span data centers](etcd/etcd-guidance-span.md)
 
 ### Hosted control planes

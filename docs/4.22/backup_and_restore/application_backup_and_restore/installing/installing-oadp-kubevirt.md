@@ -1,6 +1,6 @@
 You can install the OpenShift API for Data Protection (OADP) with OpenShift Virtualization by installing the OADP Operator and configuring a backup location. Then, you can install the Data Protection Application.
 
-Back up and restore virtual machines by using the [OpenShift API for Data Protection](../../../backup_and_restore/index.xml#application-backup-restore-operations-overview).
+Back up and restore virtual machines by using the OpenShift API for Data Protection.
 
 OpenShift API for Data Protection with OpenShift Virtualization supports the following backup and restore storage options:
 
@@ -14,9 +14,7 @@ The following storage options are excluded:
 
 - Volume snapshot backups and restores
 
-For more information, see [Backing up applications with File System Backup: Kopia or Restic](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-backing-up-applications-restic-doc.xml#oadp-backing-up-applications-restic-doc).
-
-To install the OADP Operator in a restricted network environment, you must first disable the default software catalog sources and mirror the Operator catalog. See [Using Operator Lifecycle Manager in disconnected environments](../../../disconnected/using-olm.xml#olm-restricted-networks) for details.
+To install the OADP Operator in a restricted network environment, you must first disable the default software catalog sources and mirror the Operator catalog.
 
 <div class="important">
 
@@ -1032,6 +1030,10 @@ The CSI Data Mover backups use Kopia regardless of `uploaderType`.
 </div>
 
 # Additional resources
+
+- [Application backup and restore operations](../../../backup_and_restore/index.xml#application-backup-restore-operations-overview)
+
+- [Backing up applications with File System Backup: Kopia or Restic](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-backing-up-applications-restic-doc.xml#oadp-backing-up-applications-restic-doc)
 
 - [OADP plugins](../../../backup_and_restore/application_backup_and_restore/oadp-features-plugins.xml#oadp-plugins_oadp-features-plugins)
 

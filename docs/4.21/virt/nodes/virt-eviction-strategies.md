@@ -1,4 +1,4 @@
-You can configure eviction strategies for virtual machines (VMs) or for the cluster. The default eviction strategy is `LiveMigrate`. The VM `LiveMigrate` eviction strategy ensures that a virtual machine instance (VMI) is not interrupted if the node is placed into maintenance or drained. VMIs with this eviction strategy are live migrated to another node.
+You can configure eviction strategies for virtual machines (VMs) or for the cluster. The default eviction strategy is `LiveMigrate`, which ensures that a virtual machine instance (VMI) is not interrupted if the node is placed into maintenance or drained.
 
 | Eviction strategy          | Description                                                                              | Interrupts workflow | Blocks upgrades  |
 |----------------------------|------------------------------------------------------------------------------------------|---------------------|------------------|
@@ -149,7 +149,7 @@ You can configure a run strategy for a virtual machine (VM) by using the command
 
 # Delete a failed node to trigger virtual machine failover
 
-If a node fails and machine health checks are not deployed on your cluster, virtual machines (VMs) with `runStrategy: Always` configured are not automatically relocated to healthy nodes. To trigger VM failover, you must manually delete the `Node` object. The following procedure deletes a node from an OpenShift Container Platform cluster running on bare metal.
+If a node fails and machine health checks are not deployed on your cluster, virtual machines (VMs) with `runStrategy: Always` configured are not automatically relocated to healthy nodes. To trigger VM failover, you must manually delete the `Node` object.
 
 - A node where a virtual machine was running has the `NotReady` condition.
 

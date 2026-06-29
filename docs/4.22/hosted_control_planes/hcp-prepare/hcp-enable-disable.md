@@ -1,8 +1,12 @@
-The hosted control planes feature, as well as the `hypershift-addon` managed cluster add-on, are enabled by default. If you want to disable the feature, or if you disabled it and want to manually enable it, see the following procedures.
+The hosted control planes feature, as well as the `hypershift-addon` managed cluster add-on, are enabled by default. If needed, you can disable the feature, or if you disabled it, you can manually enable it.
+
+You can uninstall the HyperShift Operator and disable the hosted control planes feature. When you disable the hosted control planes feature, you must destroy the hosted cluster and the managed cluster resource on multicluster engine Operator, as described in the *Destroying a hosted cluster* section.
+
+- [Destroying a hosted cluster](../../hosted_control_planes/hcp-destroy/hcp-destroy-aws.xml#hcp-destroy-aws)
 
 # Manually enabling the hosted control planes feature
 
-If you need to manually enable hosted control planes, complete the following steps.
+If the hosted control planes feature is disabled, you can manually enable it.
 
 1.  Run the following command to enable the feature:
 
@@ -11,7 +15,7 @@ If you need to manually enable hosted control planes, complete the following ste
       '{"spec":{"overrides":{"components":[{"name":"hypershift","enabled": true}]}}}'
     ```
 
-    - The default `MultiClusterEngine` resource instance name is `multiclusterengine`, but you can get the `MultiClusterEngine` name from your cluster by running the following command: `$ oc get mce`.
+    The default `MultiClusterEngine` resource instance name is `multiclusterengine`, but you can get the `MultiClusterEngine` name from your cluster by running the following command: `$ oc get mce`.
 
 2.  Run the following command to verify that the `hypershift` and `hypershift-local-hosting` features are enabled in the `MultiClusterEngine` custom resource:
 
@@ -19,31 +23,31 @@ If you need to manually enable hosted control planes, complete the following ste
     $ oc get mce multiclusterengine -o yaml
     ```
 
-    - The default `MultiClusterEngine` resource instance name is `multiclusterengine`, but you can get the `MultiClusterEngine` name from your cluster by running the following command: `$ oc get mce`.
+    The default `MultiClusterEngine` resource instance name is `multiclusterengine`, but you can get the `MultiClusterEngine` name from your cluster by running the following command: `$ oc get mce`.
 
-      <div class="formalpara-title">
+    <div class="formalpara-title">
 
-      **Example output**
+    **Example output**
 
-      </div>
+    </div>
 
-      ``` yaml
-      apiVersion: multicluster.openshift.io/v1
-      kind: MultiClusterEngine
-      metadata:
-        name: multiclusterengine
-      spec:
-        overrides:
-          components:
-          - name: hypershift
-            enabled: true
-          - name: hypershift-local-hosting
-            enabled: true
-      ```
+    ``` yaml
+    apiVersion: multicluster.openshift.io/v1
+    kind: MultiClusterEngine
+    metadata:
+      name: multiclusterengine
+    spec:
+      overrides:
+        components:
+        - name: hypershift
+          enabled: true
+        - name: hypershift-local-hosting
+          enabled: true
+    ```
 
-## Manually enabling the hypershift-addon managed cluster add-on for local-cluster
+# Manually enabling the hypershift-addon managed cluster add-on for local-cluster
 
-Enabling the hosted control planes feature automatically enables the `hypershift-addon` managed cluster add-on. If you need to enable the `hypershift-addon` managed cluster add-on manually, complete the following steps to use the `hypershift-addon` to install the HyperShift Operator on `local-cluster`.
+Enabling the hosted control planes feature automatically enables the `hypershift-addon` managed cluster add-on. If you need to enable the `hypershift-addon` managed cluster add-on manually, use the `hypershift-addon` to install the HyperShift Operator on `local-cluster`.
 
 1.  Create the `ManagedClusterAddon` add-on named `hypershift-addon` by creating a file that resembles the following example:
 
@@ -78,15 +82,11 @@ Enabling the hosted control planes feature automatically enables the `hypershift
     hypershift-addon   True
     ```
 
-Your `hypershift-addon` managed cluster add-on is installed and the hosting cluster is available to create and manage hosted clusters.
+    Your `hypershift-addon` managed cluster add-on is installed and the hosting cluster is available to create and manage hosted clusters.
 
-# Disabling the hosted control planes feature
+# Uninstalling the HyperShift Operator
 
-You can uninstall the HyperShift Operator and disable the hosted control planes feature. When you disable the hosted control planes feature, you must destroy the hosted cluster and the managed cluster resource on multicluster engine Operator, as described in the *Managing hosted clusters* topics.
-
-## Uninstalling the HyperShift Operator
-
-To uninstall the HyperShift Operator and disable the `hypershift-addon` from the `local-cluster`, complete the following steps:
+Before you can disable the hosted control planes feature, you need to uninstall the HyperShift Operator and disable the `hypershift-addon` from the `local-cluster`.
 
 1.  Run the following command to ensure that there is no hosted cluster running:
 
@@ -107,17 +107,17 @@ To uninstall the HyperShift Operator and disable the `hypershift-addon` from the
       '{"spec":{"overrides":{"components":[{"name":"hypershift-local-hosting","enabled": false}]}}}'
     ```
 
-    - The default `MultiClusterEngine` resource instance name is `multiclusterengine`, but you can get the `MultiClusterEngine` name from your cluster by running the following command: `$ oc get mce`.
+    The default `MultiClusterEngine` resource instance name is `multiclusterengine`, but you can get the `MultiClusterEngine` name from your cluster by running the following command: `$ oc get mce`.
 
-      <div class="note">
+    <div class="note">
 
-      You can also disable the `hypershift-addon` for the `local-cluster` from the multicluster engine Operator console after disabling the `hypershift-addon`.
+    You can also disable the `hypershift-addon` for the `local-cluster` from the multicluster engine Operator console after disabling the `hypershift-addon`.
 
-      </div>
+    </div>
 
-## Disabling the hosted control planes feature
+# Disabling the hosted control planes feature
 
-To disable the hosted control planes feature, complete the following steps.
+If you no longer use the hosted control planes feature, you can disable it.
 
 - You uninstalled the HyperShift Operator. For more information, see "Uninstalling the HyperShift Operator".
 
@@ -128,7 +128,7 @@ To disable the hosted control planes feature, complete the following steps.
       '{"spec":{"overrides":{"components":[{"name":"hypershift","enabled": false}]}}}'
     ```
 
-    - The default `MultiClusterEngine` resource instance name is `multiclusterengine`, but you can get the `MultiClusterEngine` name from your cluster by running the following command: `$ oc get mce`.
+    The default `MultiClusterEngine` resource instance name is `multiclusterengine`, but you can get the `MultiClusterEngine` name from your cluster by running the following command: `$ oc get mce`.
 
 2.  You can verify that the `hypershift` and `hypershift-local-hosting` features are disabled in the `MultiClusterEngine` custom resource by running the following command:
 
@@ -136,20 +136,20 @@ To disable the hosted control planes feature, complete the following steps.
     $ oc get mce multiclusterengine -o yaml
     ```
 
-    - The default `MultiClusterEngine` resource instance name is `multiclusterengine`, but you can get the `MultiClusterEngine` name from your cluster by running the following command: `$ oc get mce`.
+    The default `MultiClusterEngine` resource instance name is `multiclusterengine`, but you can get the `MultiClusterEngine` name from your cluster by running the following command: `$ oc get mce`.
 
-      See the following example where `hypershift` and `hypershift-local-hosting` have their `enabled:` flags set to `false`:
+    See the following example where `hypershift` and `hypershift-local-hosting` have their `enabled:` flags set to `false`:
 
-      ``` yaml
-      apiVersion: multicluster.openshift.io/v1
-      kind: MultiClusterEngine
-      metadata:
-        name: multiclusterengine
-      spec:
-        overrides:
-          components:
-          - name: hypershift
-            enabled: false
-          - name: hypershift-local-hosting
-            enabled: false
-      ```
+    ``` yaml
+    apiVersion: multicluster.openshift.io/v1
+    kind: MultiClusterEngine
+    metadata:
+      name: multiclusterengine
+    spec:
+      overrides:
+        components:
+        - name: hypershift
+          enabled: false
+        - name: hypershift-local-hosting
+          enabled: false
+    ```

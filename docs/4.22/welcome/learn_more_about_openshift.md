@@ -217,8 +217,8 @@ Explore the following OpenShift Container Platform installation tasks:
 <td style="text-align: left;"><p><a href="https://docs.redhat.com/en/documentation/red_hat_openshift_distributed_tracing_platform/latest">Red Hat OpenShift Distributed Tracing Platform</a></p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><a href="../observability/otel/otel-installing.xml#install-otel">Red Hat build of OpenTelemetry</a></p></td>
-<td style="text-align: left;"><p><a href="../observability/otel/otel-receiving-telemetry-data.xml#otel-receiving-telemetry-data">Receiving telemetry data from multiple clusters</a></p></td>
+<td style="text-align: left;"><p><a href="https://docs.redhat.com/en/documentation/red_hat_build_of_opentelemetry/latest/html/installing_red_hat_build_of_opentelemetry/install-otel">Red Hat build of OpenTelemetry</a></p></td>
+<td style="text-align: left;"><p><a href="https://docs.redhat.com/en/documentation/red_hat_build_of_opentelemetry/latest/html/receiving_telemetry/otel-receiving-telemetry#otel-receiving-telemetry-from-multiple-clusters_otel-receiving-telemetry">Receiving telemetry data from multiple clusters</a></p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><a href="../observability/network_observability/network-observability-overview.xml#network-observability-overview">About Network Observability</a></p></td>

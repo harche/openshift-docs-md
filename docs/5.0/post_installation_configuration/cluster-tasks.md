@@ -200,7 +200,9 @@ This guidance is relevant to fully automated, installer-provisioned infrastructu
 
 ## The compute machine set deletion policy
 
-`Random`, `Newest`, and `Oldest` are the three supported deletion options. The default is `Random`, meaning that random machines are chosen and deleted when scaling compute machine sets down. The deletion policy can be set according to the use case by modifying the particular compute machine set:
+Compute machine sets can be configured to use the `Random`, `Newest`, and `Oldest` deletion options. The default is `Random`, meaning that random machines are chosen and deleted when scaling compute machine sets down.
+
+The deletion policy can be set according to the use case by modifying the particular compute machine set as in the following example:
 
 ``` yaml
 spec:

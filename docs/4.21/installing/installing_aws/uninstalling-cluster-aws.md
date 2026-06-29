@@ -2,7 +2,7 @@ You can remove a cluster that you deployed to Amazon Web Services (AWS).
 
 # Removing a cluster that uses installer-provisioned infrastructure
 
-You can remove a cluster that uses installer-provisioned infrastructure that you provisioned from your cloud platform.
+To remove an OpenShift Container Platform cluster that uses installer-provisioned infrastructure, you can run the installation program destroy command. Use the installation files from your original deployment to uninstall the cluster from your cloud platform.
 
 <div class="note">
 
@@ -39,7 +39,7 @@ After uninstallation, check your cloud provider for any resources that were not 
 
 # Deleting Amazon Web Services resources with the Cloud Credential Operator utility
 
-After uninstalling an OpenShift Container Platform cluster that uses short-term credentials managed outside the cluster, you can use the CCO utility (`ccoctl`) to remove the Amazon Web Services resources that `ccoctl` created during installation.
+After uninstalling an OpenShift Container Platform cluster that uses short-term credentials managed outside the cluster, you can use the Cloud Credential Operator (CCO) utility (`ccoctl`) to remove the Amazon Web Services resources that `ccoctl` created during installation.
 
 - Extract and prepare the `ccoctl` binary.
 

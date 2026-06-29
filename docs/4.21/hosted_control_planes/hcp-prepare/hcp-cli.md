@@ -18,7 +18,7 @@ You can install the hosted control planes command-line interface (CLI), `hcp`, f
     $ wget <hcp_cli_download_url>
     ```
 
-    - Replace `hcp_cli_download_url` with the URL that you obtained from the previous step.
+    Replace `hcp_cli_download_url` with the URL that you obtained from the previous step.
 
 3.  Unpack the downloaded archive by running the following command:
 
@@ -38,11 +38,11 @@ You can install the hosted control planes command-line interface (CLI), `hcp`, f
     $ sudo mv hcp /usr/local/bin/.
     ```
 
-<div class="note">
+    <div class="note">
 
-If you download the CLI on a Mac computer, you might see a warning about the `hcp` binary file. You need to adjust your security settings to allow the binary file to be run.
+    If you download the CLI on a Mac computer, you might see a warning about the `hcp` binary file. You need to adjust your security settings to allow the binary file to be run.
 
-</div>
+    </div>
 
 - Verify that you see the list of available parameters by running the following command:
 
@@ -50,7 +50,7 @@ If you download the CLI on a Mac computer, you might see a warning about the `hc
   $ hcp create cluster <platform> --help
   ```
 
-  - You can use the `hcp create cluster` command to create and manage hosted clusters. The supported platforms are `aws`, `agent`, and `kubevirt`.
+  You can use the `hcp create cluster` command to create and manage hosted clusters. The supported platforms are `aws`, `agent`, and `kubevirt`.
 
 # Installing the hosted control planes command-line interface by using the web console
 
@@ -80,11 +80,11 @@ You can install the hosted control planes command-line interface (CLI), `hcp`, b
     $ sudo mv hcp /usr/local/bin/.
     ```
 
-<div class="note">
+    <div class="note">
 
-If you download the CLI on a Mac computer, you might see a warning about the `hcp` binary file. You need to adjust your security settings to allow the binary file to be run.
+    If you download the CLI on a Mac computer, you might see a warning about the `hcp` binary file. You need to adjust your security settings to allow the binary file to be run.
 
-</div>
+    </div>
 
 - Verify that you see the list of available parameters by running the following command:
 
@@ -92,7 +92,7 @@ If you download the CLI on a Mac computer, you might see a warning about the `hc
   $ hcp create cluster <platform> --help
   ```
 
-  - You can use the `hcp create cluster` command to create and manage hosted clusters. The supported platforms are `aws`, `agent`, and `kubevirt`.
+  You can use the `hcp create cluster` command to create and manage hosted clusters. The supported platforms are `aws`, `agent`, and `kubevirt`.
 
 # Installing the hosted control planes command-line interface by using the content gateway
 
@@ -120,11 +120,11 @@ You can install the hosted control planes command-line interface (CLI), `hcp`, b
     $ sudo mv hcp /usr/local/bin/.
     ```
 
-<div class="note">
+    <div class="note">
 
-If you download the CLI on a Mac computer, you might see a warning about the `hcp` binary file. You need to adjust your security settings to allow the binary file to be run.
+    If you download the CLI on a Mac computer, you might see a warning about the `hcp` binary file. You need to adjust your security settings to allow the binary file to be run.
 
-</div>
+    </div>
 
 - Verify that you see the list of available parameters by running the following command:
 
@@ -132,4 +132,4 @@ If you download the CLI on a Mac computer, you might see a warning about the `hc
   $ hcp create cluster <platform> --help
   ```
 
-  - You can use the `hcp create cluster` command to create and manage hosted clusters. The supported platforms are `aws`, `agent`, and `kubevirt`.
+  You can use the `hcp create cluster` command to create and manage hosted clusters. The supported platforms are `aws`, `agent`, and `kubevirt`.

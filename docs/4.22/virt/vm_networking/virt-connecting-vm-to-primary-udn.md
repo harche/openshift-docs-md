@@ -24,7 +24,9 @@ You must consider the following limitations before implementing a primary UDN:
 
 # Create a primary user-defined network by using the web console
 
-You can use the OpenShift Container Platform web console to create a primary namespace-scoped `UserDefinedNetwork` or a cluster-scoped `ClusterUserDefinedNetwork` custom resource definition (CRD). The UDN serves as the default primary network for pods and VMs that you create in namespaces associated with the network.
+You can use the OpenShift Container Platform web console to create a primary namespace-scoped `UserDefinedNetwork` (UDN) or a cluster-scoped `ClusterUserDefinedNetwork` custom resource definition (CRD).
+
+The UDN serves as the default primary network for pods and VMs that you create in namespaces associated with the network.
 
 After you define the custom primary overlay network, you can create namespaces that are associated with the cluster-scoped UDN.
 

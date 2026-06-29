@@ -142,9 +142,9 @@ The restore process can be completed only on the same management cluster where y
       - resticrepositories.velero.io
     ```
 
-    - This field starts the recovery of pods with the included persistent volumes.
+    - `spec.restorePVs` starts the recovery of pods with the included persistent volumes.
 
-    - Setting `existingResourcePolicy` to `update` ensures that any existing objects are overwritten with backup content. This action can cause issues with objects that contain immutable fields, which is why you deleted the `HostedCluster`, node pools, and PVCs. If you do not set this policy, the Velero engine skips the restoration of objects that already exist.
+    - `spec.existingResourcePolicy: update` ensures that any existing objects are overwritten with backup content. This action can cause issues with objects that contain immutable fields, which is why you deleted the `HostedCluster`, node pools, and PVCs. If you do not set this policy, the Velero engine skips the restoration of objects that already exist.
 
 4.  Apply the changes to the YAML file by entering the following command:
 

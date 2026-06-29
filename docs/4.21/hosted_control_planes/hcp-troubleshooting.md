@@ -54,7 +54,7 @@ Although the output does not contain any secret objects from the cluster, it can
 
 <!-- -->
 
-- [Installing the hosted control planes command-line interface](../hosted_control_planes/hcp-prepare/hcp-cli.xml)
+- [Installing the hosted control planes command-line interface](../hosted_control_planes/hcp-prepare/hcp-cli.xml#hcp-cli)
 
 # Gathering OpenShift Container Platform data for a hosted cluster
 

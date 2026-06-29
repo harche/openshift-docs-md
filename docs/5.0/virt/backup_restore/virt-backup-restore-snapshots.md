@@ -293,9 +293,17 @@ You can restore a virtual machine (VM) to a previous configuration represented b
 
 6.  Click the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) and select **Restore VirtualMachine from snapshot**.
 
-7.  Click **Restore**.
+7.  Optional: In the **Volume restore policy** section, select how restored persistent volume claims (PVCs) are named:
 
-8.  Optional: You can also create a new VM based on the snapshot. To do so:
+    - **Prefix target name** - The restored PVC names use the target VM name as a prefix. This is the default setting.
+
+    - **In place** - The restored PVCs overwrite the original PVCs with the same names.
+
+    - **Randomize names** - The restored PVC names are randomly generated.
+
+8.  Click **Restore**.
+
+9.  Optional: You can also create a new VM based on the snapshot. To do so:
 
     1.  In the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) of the snapshot, select **Create VirtualMachine from Snapshot**.
 
@@ -321,6 +329,14 @@ You can restore an existing virtual machine (VM) to a previous configuration by 
 
   - `WaitEventually` - The restore process waits indefinitely for the VM to be ready.
 
+- Optional: To control how restored persistent volume claims (PVCs) are named, you can set the `volumeRestorePolicy` parameter to one of the following values:
+
+  - `PrefixTargetName` - The restored PVC names use the target VM name as a prefix: `<vm_name>-<volume_name>`. This is the default setting.
+
+  - `RandomizeNames` - The restored PVC names are randomly generated: `restore-<uid>-<volume_name>`.
+
+  - `InPlace` - The restored PVCs overwrite the original PVCs. The original PVCs are deleted if they exist, and new PVCs are created with the same names.
+
 1.  Create a YAML file to define a `VirtualMachineRestore` object that specifies the name of the VM you want to restore and the name of the snapshot to be used as the source as in the following example:
 
     ``` yaml
@@ -334,9 +350,46 @@ You can restore an existing virtual machine (VM) to a previous configuration by 
         kind: VirtualMachine
         name: <vm_name>
       virtualMachineSnapshotName: <snapshot_name>
+      volumeRestorePolicy: PrefixTargetName
     ```
 
-2.  Create the `VirtualMachineRestore` object:
+    Where:
+
+    - `volumeRestorePolicy`: Optional. The volume restore policy determines how restored PVCs are named. Valid values are `PrefixTargetName` (default), `RandomizeNames`, or `InPlace`.
+
+2.  Optional: To customize the names, labels, and annotations of individual restored persistent volume claims (PVCs), add the `volumeRestoreOverrides` parameter to the YAML file:
+
+    ``` yaml
+    apiVersion: snapshot.kubevirt.io/v1beta1
+    kind: VirtualMachineRestore
+    metadata:
+      name: <vm_restore>
+    spec:
+      target:
+        apiGroup: kubevirt.io
+        kind: VirtualMachine
+        name: <vm_name>
+      virtualMachineSnapshotName: <snapshot_name>
+      volumeRestoreOverrides:
+      - volumeName: <volume_name>
+        restoreName: <custom_pvc_name>
+        labels:
+          custom-label: <label_value>
+        annotations:
+          custom-annotation: <annotation_value>
+    ```
+
+    Where:
+
+    - `volumeName`: Required. The name of the volume from the snapshot to customize.
+
+    - `restoreName`: Optional. The custom name for the restored PVC. If not specified, the PVC name is determined by the `volumeRestorePolicy` setting.
+
+    - `labels`: Optional. Custom labels to add to the restored PVC. These labels are merged with any existing labels from the source PVC.
+
+    - `annotations`: Optional. Custom annotations to add to the restored PVC. These annotations are merged with any existing annotations from the source PVC.
+
+3.  Create the `VirtualMachineRestore` object:
 
     ``` terminal
     $ oc create -f <vm_restore>.yaml

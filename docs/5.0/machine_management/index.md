@@ -101,6 +101,16 @@ For example, you can perform the following actions:
 
 - Configure and deploy a [machine health check](../machine_management/deploying-machine-health-checks.xml#deploying-machine-health-checks) to automatically fix damaged machines in a machine pool.
 
+<div class="note">
+
+When creating a new machine set, you should specify the latest image to use for the boot image. For more information about updating the boot image on your cluster, see "Manually updating the boot image" and "Boot image management". The method to update or specify the image varies by platform.
+
+</div>
+
+- [Manually updating the boot image](../machine_configuration/mco-update-boot-images-manual.xml#mco-update-boot-images-manual)
+
+- [Boot image management](../machine_configuration/mco-update-boot-images.xml#mco-update-boot-images)
+
 # Control plane machine management
 
 As a cluster administrator, you can manage the control plane machines in your OpenShift Container Platform cluster.

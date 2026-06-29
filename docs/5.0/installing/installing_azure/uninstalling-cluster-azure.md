@@ -1,8 +1,8 @@
-You can remove a cluster that you deployed to Microsoft Azure.
+When you no longer need an OpenShift Container Platform cluster on Microsoft Azure, you can uninstall the cluster and remove related cloud resources. Complete uninstallation so you avoid ongoing costs and leave no orphaned infrastructure.
 
 # Removing a cluster that uses installer-provisioned infrastructure
 
-You can remove a cluster that uses installer-provisioned infrastructure that you provisioned from your cloud platform.
+To remove an OpenShift Container Platform cluster that uses installer-provisioned infrastructure, you can run the installation program destroy command. Use the installation files from your original deployment to uninstall the cluster from your cloud platform.
 
 <div class="note">
 
@@ -39,7 +39,7 @@ After uninstallation, check your cloud provider for any resources that were not 
 
 # Deleting Microsoft Azure resources with the Cloud Credential Operator utility
 
-After uninstalling an OpenShift Container Platform cluster that uses short-term credentials managed outside the cluster, you can use the CCO utility (`ccoctl`) to remove the Microsoft Azure resources that `ccoctl` created during installation.
+After uninstalling an OpenShift Container Platform cluster that uses short-term credentials managed outside the cluster, you can use the Cloud Credential Operator (CCO) utility (`ccoctl`) to remove the Microsoft Azure resources that `ccoctl` created during installation.
 
 - Extract and prepare the `ccoctl` binary.
 

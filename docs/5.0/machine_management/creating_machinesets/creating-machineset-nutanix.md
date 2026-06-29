@@ -125,7 +125,7 @@ Specifies one or more Nutanix Prism categories to apply to compute machines. Thi
 Specifies a Nutanix Prism Element cluster configuration. In this example, the cluster type is `uuid`, so there is a `uuid` stanza.
 
 `<infrastructure_id>-rhcos`
-Specifies the image to use. Use an image from an existing default compute machine set for the cluster.
+Specifies the image to use as a boot image for your nodes. You should use the use the latest image when adding a new machine set.
 
 `16Gi`
 Specifies the amount of memory for the cluster in Gi.
@@ -147,6 +147,8 @@ Specifies the number of vCPU sockets.
 
 `1`
 Specifies the number of vCPUs per socket.
+
+- [Manually updating the boot image](../../machine_configuration/mco-update-boot-images-manual.xml#mco-update-boot-images-manual)
 
 # Creating a compute machine set
 

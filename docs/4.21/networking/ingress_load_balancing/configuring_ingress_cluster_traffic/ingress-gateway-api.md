@@ -404,10 +404,10 @@ spec:
   - name: http
     protocol: HTTP
     port: 80
-    hostname: "example.com"
+    hostname: "*.example.com"
 ```
 
-- `spec.listeneres`:: If you do not set `spec.listeners[].allowedRoutes` for a `Gateway` resource, the system implicitly sets the `namespaces.from` field to the value of `Same`.
+- `spec.listeners`:: If you do not set `spec.listeners[].allowedRoutes` for a `Gateway` resource, the system implicitly sets the `namespaces.from` field to the value of `Same`.
 
 The following example shows the associated `HTTPRoute` resource, `sales-db`, which attaches to the dedicated `Gateway` object:
 
@@ -431,10 +431,10 @@ spec:
   rules:
     - backendRefs:
         - name: sales-db
-        ¦ port: 8080
+          port: 8080
 ```
 
-The `HTTPRoute` resource must have the name of the `Gateway` object as the value for its `parentRefs` field in order to attach to the gateway. The system implicitly assumes that the route is exists in the same namespace as the `Gateway` object.
+The `HTTPRoute` resource must have the name of the `Gateway` object as the value for its `parentRefs` field in order to attach to the gateway. The system implicitly assumes that the route exists in the same namespace as the `Gateway` object.
 
 Shared gateway
 Routes are served from multiple namespaces or multiple hostnames. The `Gateway` object allows routes from application namespaces by using the `spec.listeners.allowedRoutes.namespaces` field.
@@ -459,13 +459,13 @@ spec:
   - name: http
     protocol: HTTP
     port: 80
-    hostname: "example.com"
+    hostname: "*.example.com"
     allowedRoutes:
       namespaces:
         from: Selector
         selector:
-        ¦ matchLabels:
-        ¦   shared-gateway-access: "true"
+          matchLabels:
+            shared-gateway-access: "true"
 ```
 
 The following examples show the allowed namespaces for the `devops-gateway` resource:
@@ -495,7 +495,7 @@ metadata:
 In this example, two `HTTPRoute` resources, `dev-portal` and `ops-home`, are in different namespaces but are attached to the shared gateway:
 
 ``` yaml
-apiVersion: v1
+apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: dev-portal
@@ -509,7 +509,7 @@ spec:
     - name: dev-portal
       port: 8080
 ---
-apiVersion: v1
+apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: ops-home

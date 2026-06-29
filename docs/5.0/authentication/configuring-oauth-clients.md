@@ -1,24 +1,29 @@
-Several OAuth clients are created by default in OpenShift Container Platform. You can also register and configure additional OAuth clients.
+OpenShift Container Platform includes default OAuth clients for platform authentication. You can register additional OAuth clients to integrate third-party applications and configure token inactivity timeouts to enhance security.
 
 # Default OAuth clients
 
-The following OAuth clients are automatically created when starting the OpenShift Container Platform API:
+OpenShift Container Platform automatically creates OAuth clients for browser-based logins, CLI authentication, and challenge-based authentication when the API starts.
 
-| OAuth client                   | Usage                                                                                                                             |
-|--------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
-| `openshift-browser-client`     | Requests tokens at `<namespace_route>/oauth/token/request` with a user-agent that can handle interactive logins. <sup>\[1\]</sup> |
-| `openshift-challenging-client` | Requests tokens with a user-agent that can handle `WWW-Authenticate` challenges.                                                  |
-| `openshift-cli-client`         | Requests tokens by using a local HTTP server fetching an authorization code grant.                                                |
+The following OAuth clients are created:
 
-1.  `<namespace_route>` refers to the namespace route. This is found by running the following command:
+| OAuth client                   | Usage                                                                                                            |
+|--------------------------------|------------------------------------------------------------------------------------------------------------------|
+| `openshift-browser-client`     | Requests tokens at `<namespace_route>/oauth/token/request` with a user-agent that can handle interactive logins. |
+| `openshift-challenging-client` | Requests tokens with a user-agent that can handle `WWW-Authenticate` challenges.                                 |
+| `openshift-cli-client`         | Requests tokens by using a local HTTP server fetching an authorization code grant.                               |
 
-    ``` terminal
-    $ oc get route oauth-openshift -n openshift-authentication -o json | jq .spec.host
-    ```
+where:
+
+`<namespace_route>`
+Specifies the namespace route. Find this value by running the following command:
+
+``` terminal
+$ oc get route oauth-openshift -n openshift-authentication -o json | jq .spec.host
+```
 
 # Registering an additional OAuth client
 
-If you need an additional OAuth client to manage authentication for your OpenShift Container Platform cluster, you can register one.
+Register additional OAuth clients to manage authentication for applications that need to interact with your OpenShift Container Platform cluster.
 
 - To register additional OAuth clients:
 
@@ -35,17 +40,25 @@ If you need an additional OAuth client to manage authentication for your OpenShi
   ')
   ```
 
-  - The `name` of the OAuth client is used as the `client_id` parameter when making requests to `<namespace_route>/oauth/authorize` and `<namespace_route>/oauth/token`.
+  where:
 
-  - The `secret` is used as the `client_secret` parameter when making requests to `<namespace_route>/oauth/token`.
+  `metadata.name`
+  Specifies the OAuth client name. This value is used as the `client_id` parameter when making requests to `<namespace_route>/oauth/authorize` and `<namespace_route>/oauth/token`.
 
-  - The `redirect_uri` parameter specified in requests to `<namespace_route>/oauth/authorize` and `<namespace_route>/oauth/token` must be equal to or prefixed by one of the URIs listed in the `redirectURIs` parameter value.
+  `secret`
+  Specifies the secret value used as the `client_secret` parameter when making requests to `<namespace_route>/oauth/token`.
 
-  - The `grantMethod` is used to determine what action to take when this client requests tokens and has not yet been granted access by the user. Specify `auto` to automatically approve the grant and retry the request, or `prompt` to prompt the user to approve or deny the grant.
+  `redirectURIs`
+  Specifies the list of valid redirect URIs. The `redirect_uri` parameter specified in requests to `<namespace_route>/oauth/authorize` and `<namespace_route>/oauth/token` must be equal to or prefixed by one of these URIs.
+
+  `grantMethod`
+  Specifies the action to take when this client requests tokens and has not yet been granted access by the user. Use `auto` to automatically approve the grant and retry the request, or `prompt` to prompt the user to approve or deny the grant.
 
 # Configuring token inactivity timeout for an OAuth client
 
-You can configure OAuth clients to expire OAuth tokens after a set period of inactivity. By default, no token inactivity timeout is set.
+Configure OAuth clients to expire tokens after a set period of inactivity, improving security by automatically invalidating idle sessions.
+
+By default, no token inactivity timeout is set.
 
 <div class="note">
 
@@ -67,20 +80,23 @@ If the token inactivity timeout is also configured in the internal OAuth server 
       $ oc edit oauthclient <oauth_client>
       ```
 
-      - Replace `<oauth_client>` with the OAuth client to configure, for example, `console`.
+      Replace `<oauth_client>` with the OAuth client to configure, for example, `console`.
 
-        Add the `accessTokenInactivityTimeoutSeconds` field and set your timeout value:
+      Add the `accessTokenInactivityTimeoutSeconds` field and set your timeout value:
 
-        ``` yaml
-        apiVersion: oauth.openshift.io/v1
-        grantMethod: auto
-        kind: OAuthClient
-        metadata:
-        ...
-        accessTokenInactivityTimeoutSeconds: 600
-        ```
+      ``` yaml
+      apiVersion: oauth.openshift.io/v1
+      grantMethod: auto
+      kind: OAuthClient
+      metadata:
+      ...
+      accessTokenInactivityTimeoutSeconds: 600
+      ```
 
-      - The minimum allowed timeout value in seconds is `300`.
+      where:
+
+      `accessTokenInactivityTimeoutSeconds`
+      Specifies the token inactivity timeout in seconds. The minimum allowed value is `300`.
 
   2.  Save the file to apply the changes.
 

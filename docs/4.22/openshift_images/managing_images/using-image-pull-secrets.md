@@ -1,6 +1,4 @@
-To authenticate with container registries and pull images across OpenShift Container Platform projects or from secured registries, you can configure and use image pull secrets.
-
-You first obtain the registry authentication credentials, which are typically found in the `~/.docker/config.json` file for Docker or the `~/.config/containers/auth.json` file for Podman, created by the [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret) process. This content is then used to create or update the global `pullSecret` object within your cluster, allowing access to images from [quay.io](https://quay.io/) and [registry.redhat.io](https://registry.redhat.io).
+To authenticate with container registries and pull images across OpenShift Container Platform projects or from secured registries, you can configure and use image pull secrets. You first obtain the registry authentication credentials, which are typically found in the `~/.docker/config.json` file for Docker or the `~/.config/containers/auth.json` file for Podman, created by the [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret) process. This content is then used to create or update the global `pullSecret` object within your cluster.
 
 <div class="note">
 
@@ -333,5 +331,9 @@ For more information, see *Transferring cluster ownership* under *Additional res
     ```
 
     This triggers the automatic cleanup process across your nodes.
+
+- [Quay.io container registry](https://quay.io/)
+
+- [Red Hat container registry](https://registry.redhat.io)
 
 - [Transferring cluster ownership](https://docs.redhat.com/en/documentation/openshift_cluster_manager/1-latest/html-single/managing_clusters/index#transferring-cluster-ownership_downloading-and-updating-pull-secrets)

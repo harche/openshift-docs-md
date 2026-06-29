@@ -12,7 +12,9 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 # About KubeVirt Redfish
 
-KubeVirt Redfish is a Redfish-compatible API that exposes virtual machines (VMs) managed by OpenShift Virtualization on OpenShift Container Platform. You can use the same Redfish automation patterns you use for physical baseboard management controllers (BMCs) to manage VM power and inventory. The primary use case is deploying virtualized control plane clusters, where the control plane nodes run as VMs on an existing OpenShift Virtualization cluster.
+KubeVirt Redfish is a Redfish-compatible API that exposes virtual machines (VMs) managed by OpenShift Virtualization on OpenShift Container Platform.
+
+You can use the same Redfish automation patterns you use for physical baseboard management controllers (BMCs) to manage VM power and inventory. The primary use case is deploying virtualized control plane clusters, where the control plane nodes run as VMs on an existing OpenShift Virtualization cluster.
 
 # KubeVirt Redfish architecture
 

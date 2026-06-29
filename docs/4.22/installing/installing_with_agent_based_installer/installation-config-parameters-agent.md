@@ -1,6 +1,10 @@
-Before you deploy an OpenShift Container Platform cluster using the Agent-based Installer, you provide parameters to customize your cluster and the platform that hosts it. When you create the `install-config.yaml` and `agent-config.yaml` files, you must provide values for the required parameters, and you can use the optional parameters to customize your cluster further.
+Before you deploy an OpenShift Container Platform cluster using the Agent-based Installer, you provide parameters to customize your cluster and the platform that hosts it.
+
+When you create the `install-config.yaml` and `agent-config.yaml` files, you must provide values for the required parameters, and you can use the optional parameters to customize your cluster further.
 
 # Available installation configuration parameters
+
+To customize your cluster installation, configuration parameters are available to use in the `install-config.yaml` file.
 
 The following tables specify the required and optional installation configuration parameters that you can set as part of the Agent-based installation process.
 
@@ -870,9 +874,9 @@ Deprecated VMware vSphere cluster parameters
 
 # Available Agent configuration parameters
 
-The following tables specify the required and optional Agent configuration parameters that you can set as part of the Agent-based installation process.
+To customize your cluster installation, configuration parameters are available to use in the `agent-config.yaml` file.
 
-These values are specified in the `agent-config.yaml` file.
+The following tables specify the required and optional Agent configuration parameters that you can set as part of the Agent-based installation process.
 
 <div class="note">
 
@@ -1007,7 +1011,7 @@ Optional Agent configuration parameters are described in the following table:
 <tr class="even">
 <td style="text-align: left;"><pre><code>hosts:
   networkConfig:</code></pre></td>
-<td style="text-align: left;"><p>The host network definition. The configuration must match the Host Network Management API defined in the <a href="https://nmstate.io/">nmstate documentation</a>.</p>
+<td style="text-align: left;"><p>The host network definition. The configuration must match the Host Network Management API defined in the "Declarative Network API (nmstate documentation)".</p>
 <p><strong>Value:</strong> A dictionary of host network configuration objects.</p></td>
 </tr>
 <tr class="odd">
@@ -1023,5 +1027,7 @@ Optional Agent configuration parameters are described in the following table:
 Optional parameters
 
 - [Preparing PXE assets for OpenShift Container Platform](../../installing/installing_with_agent_based_installer/prepare-pxe-assets-agent.xml#prepare-pxe-assets-agent)
+
+- [Declarative Network API (nmstate documentation)](https://nmstate.io/)
 
 - [Root device hints](../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#root-device-hints_ipi-install-installation-workflow)

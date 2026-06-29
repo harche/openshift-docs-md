@@ -1,4 +1,8 @@
-Many factors, including hosted cluster workload and worker node count, affect how many hosted control planes can fit within a certain number of worker nodes. Use this sizing guide to help with hosted cluster capacity planning. This guidance assumes a highly available hosted control planes topology. The load-based sizing examples were measured on a bare-metal cluster. Cloud-based instances might have different limiting factors, such as memory size.
+Many factors, including hosted cluster workload and worker node count, affect how many hosted control planes can fit within a certain number of worker nodes.
+
+Use this sizing guide to help with hosted cluster capacity planning.
+
+This guidance assumes a highly available hosted control planes topology. The load-based sizing examples were measured on a bare-metal cluster. Cloud-based instances might have different limiting factors, such as memory size.
 
 You can override the following resource utilization sizing measurements and disable the metric service monitoring.
 
@@ -34,7 +38,7 @@ A highly available hosted control plane consists of 78 pods that request 5 vCPUs
 
 # Load-based limit
 
-The maximum number of hosted control planes that the cluster can host is calculated based on the hosted control plane pods CPU and memory utilizations when some workload is put on the hosted control plane Kubernetes API server.
+As you plan your deployment, consider the maximum number of hosted control planes that the cluster can host. That number is calculated based on the hosted control plane pods CPU and memory utilizations when some workload is put on the hosted control plane Kubernetes API server.
 
 The following method is used to measure the hosted control plane resource utilizations as the workload increases:
 
@@ -71,6 +75,8 @@ API rate table
 The hosted control plane sizing is about control-plane load and workloads that cause heavy API activity, etcd activity, or both. Hosted pod workloads that focus on data-plane loads, such as running a database, might not result in high API rates.
 
 # Sizing calculation example
+
+Review an example of how to size a deployment of hosted control planes.
 
 This example provides sizing guidance for the following scenario:
 
@@ -123,4 +129,4 @@ Sharing infrastructure can be beneficial in constrained environments, such as in
 
 Before you share infrastructure, ensure that your infrastructure has enough resources to support hosted control planes. On the OpenShift Container Platform management cluster, nothing else can be deployed except hosted control planes. Ensure that the management cluster has enough CPU, memory, storage, and network resources to handle the combined load of the hosted clusters. Workload must not be demanding, and it must fall within a low queries-per-second (QPS) profile. For more information about resources and workload, see "Sizing guidance for hosted control planes".
 
-- [Sizing guidance for hosted control planes](../../hosted_control_planes/hcp-prepare/hcp-sizing-guidance.xml)
+- [Sizing guidance for hosted control planes](../../hosted_control_planes/hcp-prepare/hcp-sizing-guidance.xml#hcp-sizing-guidance)

@@ -56,25 +56,21 @@ Pods for a hosted cluster have tolerations, and the scheduler uses affinity rule
 
 For the `ControllerAvailabilityPolicy` option, use `HighlyAvailable`, which is the default value that the hosted control planes command-line interface, `hcp`, deploys. When you use that option, you can schedule pods for each deployment within a hosted cluster across different failure domains by setting `topology.kubernetes.io/zone` as the topology key. Scheduling pods for a deployment within a hosted cluster across different failure domains is available only for highly available control planes.
 
-<div class="formalpara-title">
+- To enable a hosted cluster to require its pods to be scheduled into infrastructure nodes, set the `HostedCluster.spec.nodeSelector` specification, as shown in the following example:
 
-**Procedure**
+  ``` yaml
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/infra: ""
+  ```
 
-</div>
-
-To enable a hosted cluster to require its pods to be scheduled into infrastructure nodes, set `HostedCluster.spec.nodeSelector`, as shown in the following example:
-
-``` yaml
-  spec:
-    nodeSelector:
-      node-role.kubernetes.io/infra: ""
-```
-
-This way, hosted control planes for each hosted cluster are eligible infrastructure node workloads, and you do not need to entitle the underlying OpenShift Container Platform nodes.
+  This way, hosted control planes for each hosted cluster are eligible infrastructure node workloads, and you do not need to entitle the underlying OpenShift Container Platform nodes.
 
 # Priority classes
 
-Four built-in priority classes influence the priority and preemption of the hosted cluster pods. You can create the pods in the management cluster in the following order from highest to lowest:
+Four built-in priority classes influence the priority and preemption of the hosted cluster pods.
+
+You can create the pods in the management cluster in the following order from highest to lowest:
 
 - `hypershift-operator`: HyperShift Operator pods.
 
@@ -86,7 +82,7 @@ Four built-in priority classes influence the priority and preemption of the host
 
 # Custom taints and tolerations
 
-By default, pods for a hosted cluster tolerate the `control-plane` and `cluster` taints. However, you can also use custom taints on nodes so that hosted clusters can tolerate those taints on a per-hosted-cluster basis by setting `HostedCluster.spec.tolerations`.
+By default, pods for a hosted cluster tolerate the `control-plane` and `cluster` taints. However, you can also use custom taints on nodes so that hosted clusters can tolerate those taints on a per-hosted-cluster basis by setting the `HostedCluster.spec.tolerations` specification.
 
 <div class="important">
 

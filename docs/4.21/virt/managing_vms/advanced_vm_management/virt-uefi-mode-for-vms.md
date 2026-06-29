@@ -54,32 +54,9 @@ You can configure a virtual machine to boot in UEFI mode by editing the `Virtual
     $ oc create -f <file_name>.yaml
     ```
 
-# Enabling persistent EFI
-
-You can enable EFI persistence in a VM by configuring an RWX storage class at the cluster level and adjusting the settings in the EFI section of the VM.
-
-- You must have cluster administrator privileges.
-
-- You must have a storage class that supports RWX access mode and FS volume mode.
-
-- You have installed the OpenShift CLI (`oc`).
-
-<!-- -->
-
-- Enable the `VMPersistentState` feature gate by running the following command:
-
-  ``` terminal
-  $ oc patch hyperconverged kubevirt-hyperconverged -n openshift-cnv \
-    --type json -p '[{"op":"replace","path":"/spec/featureGates/VMPersistentState", "value": true}]'
-  ```
-
 # Configuring VMs with persistent EFI
 
 You can configure a VM to have EFI persistence enabled by editing its manifest file.
-
-- `VMPersistentState` feature gate enabled.
-
-<!-- -->
 
 - Edit the VM manifest file and save to apply settings.
 

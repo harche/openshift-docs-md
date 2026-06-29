@@ -1,10 +1,10 @@
 Configure the OpenShift API for Data Protection (OADP) with Microsoft Azure to back up and restore cluster resources by using Azure storage. This provides data protection capabilities for your OpenShift Container Platform clusters.
 
-The OADP Operator installs [Velero 1.16](https://velero.io/docs/v1.16/).
+The OADP Operator installs Velero 1.16.
 
-You configure Azure for Velero, create a default `Secret`, and then install the Data Protection Application. For more details, see [Installing the OADP Operator](../../../backup_and_restore/application_backup_and_restore/installing/oadp-installing-operator.xml#oadp-installing-operator-doc).
+You configure Azure for Velero, create a default `Secret`, and then install the Data Protection Application.
 
-To install the OADP Operator in a restricted network environment, you must first disable the default software catalog sources and mirror the Operator catalog. See [Using Operator Lifecycle Manager in disconnected environments](../../../disconnected/using-olm.xml#olm-restricted-networks) for details.
+To install the OADP Operator in a restricted network environment, you must first disable the default software catalog sources and mirror the Operator catalog.
 
 # Configuring Microsoft Azure
 
@@ -1462,6 +1462,14 @@ If you are not using `Restic`, `Kopia`, or `DataMover` for your backups, you can
     Enables the node agent.
 
     You can set up a job to enable and disable the `nodeAgent` field in the `DataProtectionApplication` CR. For more information, see "Running tasks in pods using jobs".
+
+# Additional resources
+
+- [Velero 1.16](https://velero.io/docs/v1.16/)
+
+- [Installing the OADP Operator](../../../backup_and_restore/application_backup_and_restore/installing/oadp-installing-operator.xml#oadp-installing-operator-doc)
+
+- [Using Operator Lifecycle Manager in disconnected environments](../../../disconnected/using-olm.xml#olm-restricted-networks)
 
 - [Installing the Data Protection Application with the `kubevirt` and `openshift` plugins](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-kubevirt.xml#oadp-installing-dpa_installing-oadp-kubevirt)
 

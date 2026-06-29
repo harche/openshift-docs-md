@@ -1,10 +1,10 @@
 Install the OpenShift API for Data Protection (OADP) with OpenShift Data Foundation by installing the OADP Operator and configuring a backup location and a snapshot location. You then install the Data Protection Application.
 
-You can configure [Multicloud Object Gateway](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-mcg.xml#installing-oadp-mcg) or any AWS S3-compatible object storage as a backup location.
+You can configure Multicloud Object Gateway or any AWS S3-compatible object storage as a backup location.
 
-You can create a `Secret` CR for the backup location and install the Data Protection Application. For more details, see [Installing the OADP Operator](../../../backup_and_restore/application_backup_and_restore/installing/oadp-installing-operator.xml#oadp-installing-operator-doc).
+You can create a `Secret` CR for the backup location and install the Data Protection Application.
 
-To install the OADP Operator in a restricted network environment, you must first disable the default software catalog sources and mirror the Operator catalog. For details, see [Using Operator Lifecycle Manager in disconnected environments](../../../disconnected/using-olm.xml#olm-restricted-networks).
+To install the OADP Operator in a restricted network environment, you must first disable the default software catalog sources and mirror the Operator catalog.
 
 # About backup and snapshot locations and their secrets
 
@@ -1161,6 +1161,14 @@ If you are not using `Restic`, `Kopia`, or `DataMover` for your backups, you can
     Enables the node agent.
 
     You can set up a job to enable and disable the `nodeAgent` field in the `DataProtectionApplication` CR. For more information, see "Running tasks in pods using jobs".
+
+# Additional resources
+
+- [Configuring OADP with Multicloud Object Gateway](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-mcg.xml#installing-oadp-mcg)
+
+- [Installing the OADP Operator](../../../backup_and_restore/application_backup_and_restore/installing/oadp-installing-operator.xml#oadp-installing-operator-doc)
+
+- [Using Operator Lifecycle Manager in disconnected environments](../../../disconnected/using-olm.xml#olm-restricted-networks)
 
 - [Installing the Data Protection Application with the `kubevirt` and `openshift` plugins](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-kubevirt.xml#oadp-installing-dpa_installing-oadp-kubevirt)
 

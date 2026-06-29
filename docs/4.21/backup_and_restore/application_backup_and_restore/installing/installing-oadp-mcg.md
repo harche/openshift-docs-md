@@ -1,10 +1,10 @@
 Configure OpenShift API for Data Protection (OADP) to use Multicloud Object Gateway (MCG), a component of OpenShift Data Foundation, as a backup storage location by setting up credentials, secrets, and the Data Protection Application.
 
-You can install the OpenShift API for Data Protection (OADP) with MCG by installing the OADP Operator. The Operator installs [Velero 1.16](https://velero.io/docs/v1.16/).
+You can install the OpenShift API for Data Protection (OADP) with MCG by installing the OADP Operator. The Operator installs Velero 1.16.
 
-You can create a `Secret` CR for the backup location and install the Data Protection Application. For more details, see [Installing the OADP Operator](../../../backup_and_restore/application_backup_and_restore/installing/oadp-installing-operator.xml#oadp-installing-operator-doc).
+You can create a `Secret` CR for the backup location and install the Data Protection Application.
 
-To install the OADP Operator in a restricted network environment, you must first disable the default software catalog sources and mirror the Operator catalog. For details, see [Using Operator Lifecycle Manager in disconnected environments](../../../disconnected/using-olm.xml#olm-restricted-networks).
+To install the OADP Operator in a restricted network environment, you must first disable the default software catalog sources and mirror the Operator catalog.
 
 # Retrieving Multicloud Object Gateway credentials
 
@@ -1102,6 +1102,14 @@ If you are not using `Restic`, `Kopia`, or `DataMover` for your backups, you can
     Enables the node agent.
 
     You can set up a job to enable and disable the `nodeAgent` field in the `DataProtectionApplication` CR. For more information, see "Running tasks in pods using jobs".
+
+# Additional resources
+
+- [Velero 1.16](https://velero.io/docs/v1.16/)
+
+- [Installing the OADP Operator](../../../backup_and_restore/application_backup_and_restore/installing/oadp-installing-operator.xml#oadp-installing-operator-doc)
+
+- [Using Operator Lifecycle Manager in disconnected environments](../../../disconnected/using-olm.xml#olm-restricted-networks)
 
 - [Performance tuning guide for Multicloud Object Gateway](https://access.redhat.com/solutions/6719951)
 

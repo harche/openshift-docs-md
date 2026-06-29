@@ -2,13 +2,13 @@ As a cluster administrator, you install the OpenShift API for Data Protection (O
 
 To back up Kubernetes resources and internal images, you must have object storage as a backup location, such as one of the following storage types:
 
-- [Amazon Web Services](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-aws.xml#installing-oadp-aws)
+- Amazon Web Services
 
-- [Microsoft Azure](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-azure.xml#installing-oadp-azure)
+- Microsoft Azure
 
-- [Google Cloud](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-gcp.xml#installing-oadp-gcp)
+- Google Cloud
 
-- [Multicloud Object Gateway](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-mcg.xml#installing-oadp-mcg)
+- Multicloud Object Gateway
 
 - IBM Cloud® Object Storage S3
 
@@ -28,13 +28,13 @@ You can back up persistent volumes (PVs) by using snapshots or a File System Bac
 
 To back up PVs with snapshots, you must have a cloud provider that supports either a native snapshot API or Container Storage Interface (CSI) snapshots, such as one of the following cloud providers:
 
-- [Amazon Web Services](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-aws.xml#installing-oadp-aws)
+- Amazon Web Services
 
-- [Microsoft Azure](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-azure.xml#installing-oadp-azure)
+- Microsoft Azure
 
-- [Google Cloud](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-gcp.xml#installing-oadp-gcp)
+- Google Cloud
 
-- CSI snapshot-enabled cloud provider, such as [OpenShift Data Foundation](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-ocs.xml#installing-oadp-ocs)
+- CSI snapshot-enabled cloud provider, such as OpenShift Data Foundation
 
 <div class="note">
 
@@ -44,7 +44,7 @@ OADP 1.0.*x* does not support CSI backup on OCP 4.11 and later. OADP 1.0.*x* inc
 
 </div>
 
-If your cloud provider does not support snapshots or if your storage is NFS, you can back up applications with [Backing up applications with File System Backup: Kopia or Restic](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-backing-up-applications-restic-doc.xml#backing-up-applications) on object storage.
+If your cloud provider does not support snapshots or if your storage is NFS, you can back up applications with File System Backup: Kopia or Restic on object storage.
 
 You create a default `Secret` and then you install the Data Protection Application.
 
@@ -146,9 +146,21 @@ For more information on the MCG, see [Accessing the Multicloud Object Gateway wi
 
 - Configure MCG as an external object store as described in [Adding storage resources for hybrid or Multicloud](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/4.13/html/managing_hybrid_and_multicloud_resources/adding-storage-resources-for-hybrid-or-multicloud_rhodf#doc-wrapper).
 
-<!-- -->
+# Additional resources
 
-- [Overview of backup and snapshot locations in the Velero documentation](https://velero.io/docs/v1.16/locations/)
+- [Installing OADP on Amazon Web Services](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-aws.xml#installing-oadp-aws)
+
+- [Installing OADP on Microsoft Azure](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-azure.xml#installing-oadp-azure)
+
+- [Installing OADP on Google Cloud](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-gcp.xml#installing-oadp-gcp)
+
+- [Installing OADP on Multicloud Object Gateway](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-mcg.xml#installing-oadp-mcg)
+
+- [Installing OADP on OpenShift Data Foundation](../../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-ocs.xml#installing-oadp-ocs)
+
+- [Backing up applications with File System Backup: Kopia or Restic](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-backing-up-applications-restic-doc.xml#backing-up-applications)
+
+- [Cluster service version](../../../operators/understanding/olm/olm-understanding-olm.xml#olm-csv_olm-understanding-olm)
 
 # About OADP update channels
 
@@ -221,8 +233,6 @@ Depending on your storage provider, the immutability options are called differen
 - Write Once Read Many (WORM) buckets
 
 The primary reason for the absence of support for other S3-compatible object storage is that OADP initially saves the state of a backup as *finalizing* and then verifies whether any asynchronous operations are in progress.
-
-- [Cluster service version](../../../operators/understanding/olm/olm-understanding-olm.xml#olm-csv_olm-understanding-olm)
 
 # Velero CPU and memory requirements based on collected data
 

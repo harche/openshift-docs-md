@@ -2,7 +2,9 @@ Learn how to keep OpenShift Virtualization updated and compatible with OpenShift
 
 # About updating OpenShift Virtualization
 
-When you install OpenShift Virtualization, you select an update channel and an approval strategy. The update channel determines the version of OpenShift Virtualization that you use. The approval strategy determines whether updates occur automatically or require manual approval. Both settings affect supportability.
+When you install OpenShift Virtualization, you select an update channel and an approval strategy. Both settings affect supportability.
+
+The update channel determines the version of OpenShift Virtualization that you use. The approval strategy determines whether updates occur automatically or require manual approval.
 
 ## Recommended settings
 

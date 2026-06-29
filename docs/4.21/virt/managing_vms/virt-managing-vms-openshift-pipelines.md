@@ -1,5 +1,3 @@
-Automate virtual machine (VM) provisioning and management in your CI/CD workflows with OpenShift Pipelines tasks designed for virtualization. These tasks allow you to create, configure, and manipulate VMs and their disks as part of your automated deployment pipelines, streamlining VM lifecycle management.
-
 Red Hat OpenShift Pipelines is a Kubernetes-native CI/CD framework that allows developers to design and run each step of the CI/CD pipeline in its own container.
 
 By using OpenShift Pipelines tasks and the example pipeline, you can do the following:
@@ -24,7 +22,7 @@ The example Windows pipeline is located in the pipeline catalog (ArtifactHub).
 
 # Supported virtual machine tasks
 
-The following table shows the supported tasks.
+Automate virtual machine (VM) provisioning and management in your CI/CD workflows with OpenShift Pipelines tasks designed for virtualization. These tasks allow you to create, configure, and manipulate VMs and their disks as part of your automated deployment pipelines, streamlining VM lifecycle management.
 
 | Task                      | Description                                                                                       |
 |---------------------------|---------------------------------------------------------------------------------------------------|

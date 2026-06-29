@@ -1,11 +1,5 @@
 You can install the Secondary Scheduler Operator to run a custom secondary scheduler alongside the default scheduler to schedule pods.
 
-<div class="important">
-
-The Secondary Scheduler Operator is not currently available for OpenShift Container Platform 4.17. The Operator is planned to be released in the near future.
-
-</div>
-
 # About the Secondary Scheduler Operator
 
 The Secondary Scheduler Operator for Red Hat OpenShift provides a way to deploy a custom secondary scheduler in OpenShift Container Platform. The secondary scheduler runs alongside the default scheduler to schedule pods. Pod configurations can specify which scheduler to use.
@@ -19,3 +13,7 @@ You can use the Secondary Scheduler Operator to deploy a custom secondary schedu
 </div>
 
 The Secondary Scheduler Operator creates the default roles and role bindings required by the secondary scheduler. You can specify which scheduling plugins to enable or disable by configuring the `KubeSchedulerConfiguration` resource for the secondary scheduler.
+
+You can optionally configure high availability for the secondary scheduler to ensure continuous pod scheduling during scheduler pod failures or maintenance. When high availability is enabled, the Operator deploys multiple secondary scheduler replicas distributed across nodes, eliminating the scheduler as a single point of failure in production environments.
+
+The Secondary Scheduler Operator publishes secondary scheduler metrics to Prometheus by default, enabling monitoring and observability of scheduler performance.

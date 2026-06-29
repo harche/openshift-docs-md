@@ -266,7 +266,7 @@ To more easily diagnose and troubleshoot issues, you can aggregate and filter yo
 
 ## Viewing aggregated OpenShift Virtualization logs with Loki
 
-To troubleshoot issues and monitor the health of your virtualization environment, you can view aggregated logs for OpenShift Virtualization pods and containers in the web console. This process requires Loki, a logging component that provides a short-term, horizontally scalable log store and log aggregation. For more information about Loki, see "Additional resources".
+You can use the Loki logging component to view aggregated logs for OpenShift Virtualization pods and containers in the web console. This is useful for troubleshooting issues and monitoring your OpenShift Virtualization environment.
 
 - You have installed the Loki Operator and deployed the `LokiStack` custom resource (CR).
 

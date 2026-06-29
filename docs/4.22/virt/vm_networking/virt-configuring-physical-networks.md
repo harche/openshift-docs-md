@@ -1,4 +1,10 @@
-As an OpenShift administrator, you can create or configure a physical network in the OpenShift Container Platform web console without using the node network configuration policy (NNCP) page. When you use the physical network page in the web console, the NNCP is generated automatically. If you need more flexibility or require complex settings, use the NNCP page.
+As an OpenShift Container Platform administrator, you can create or configure a physical network in the OpenShift Container Platform web console without using the node network configuration policy (NNCP) page.
+
+<div class="note">
+
+The **Physical networks** page is available when the NMState console plugin is installed. When you use the **Physical networks** page in the web console, the NNCP is generated automatically. If you need more flexibility or require complex settings, use the NNCP page.
+
+</div>
 
 # Creating a physical network by using the OpenShift Container Platform web console
 
@@ -63,7 +69,7 @@ You can add one or more OpenShift Container Platform worker nodes to an existing
 
 - You are logged in to the OpenShift Container Platform web console as a user with `cluster-admin` permissions.
 
-1.  From the **Virtualization** perspective, go to **Networking** → **Physical networks**.
+1.  In the OpenShift Container Platform web console, go to **Networking** → **Physical networks**.
 
 2.  Click the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) next to the network that you want to edit.
 

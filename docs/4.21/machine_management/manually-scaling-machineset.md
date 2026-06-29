@@ -1,14 +1,14 @@
-You can add or remove an instance of a machine in a compute machine set.
+You can manually add or remove an instance of a machine in a compute machine set. Manually scaling a compute machine set gives you control over the resource utilization of that machine set.
 
 <div class="note">
 
-If you need to modify aspects of a compute machine set outside of scaling, see [Modifying a compute machine set](../machine_management/modifying-machineset.xml#modifying-machineset).
+If you need to modify aspects of a compute machine set outside of scaling, see "Modifying a compute machine set".
 
 </div>
 
 # Prerequisites
 
-- If you enabled the cluster-wide proxy and scale up compute machines not included in `networking.machineNetwork[].cidr` from the installation configuration, you must [add the compute machines to the Proxy object’s `noProxy` field](../networking/configuring_network_settings/enable-cluster-wide-proxy.xml#nw-proxy-configure-object_config-cluster-wide-proxy) to prevent connection issues.
+- If you enabled the cluster-wide proxy and scale up compute machines not included in `networking.machineNetwork[].cidr` from the installation configuration, you must add the compute machines to the Proxy object’s `noProxy` field to prevent connection issues. See "Add the compute machines to the Proxy object’s `noProxy` field" for more information.
 
 <div class="important">
 
@@ -100,7 +100,9 @@ This guidance is relevant to fully automated, installer-provisioned infrastructu
 
 # The compute machine set deletion policy
 
-`Random`, `Newest`, and `Oldest` are the three supported deletion options. The default is `Random`, meaning that random machines are chosen and deleted when scaling compute machine sets down. The deletion policy can be set according to the use case by modifying the particular compute machine set:
+Compute machine sets can be configured to use the `Random`, `Newest`, and `Oldest` deletion options. The default is `Random`, meaning that random machines are chosen and deleted when scaling compute machine sets down.
+
+The deletion policy can be set according to the use case by modifying the particular compute machine set as in the following example:
 
 ``` yaml
 spec:
@@ -123,5 +125,9 @@ Custom compute machine sets can be used for use cases requiring that services ru
 </div>
 
 # Additional resources
+
+- [Modifying a compute machine set](../machine_management/modifying-machineset.xml#modifying-machineset)
+
+- [Add the compute machines to the Proxy object’s `noProxy` field](../networking/configuring_network_settings/enable-cluster-wide-proxy.xml#nw-proxy-configure-object_config-cluster-wide-proxy)
 
 - [Lifecycle hooks for the machine deletion phase](../machine_management/deleting-machine.xml#machine-lifecycle-hook-deletion_deleting-machine)

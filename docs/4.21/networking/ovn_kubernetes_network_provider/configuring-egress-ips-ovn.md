@@ -430,9 +430,7 @@ spec:
 
 # Assignment of egress IPs to a namespace, nodes, and pods
 
-To assign one or more egress IPs to a namespace or specific pods in a namespace, you must meet certain conditions.
-
-These conditions are listed as follows:
+To assign one or more egress IPs to a namespace or specific pods in a namespace, you must meet specific conditions.
 
 - At least one node in your cluster must have the `k8s.ovn.org/egress-assignable: ""` label.
 
@@ -459,6 +457,12 @@ When creating an `EgressIP` object, the following conditions apply to nodes that
   - Traffic is balanced roughly equally between the specified IP addresses for a given namespace.
 
 - If a node becomes unavailable, any egress IP addresses assigned to it are automatically reassigned, subject to the previously described conditions.
+
+<div class="important">
+
+If the number of nodes labeled with `k8s.ovn.org/egress-assignable` is less than the number of egress IP addresses specified in the `EgressIP` object, the additional egress IP addresses remain unassigned. To ensure all specified egress IP addresses are active and traffic is balanced as expected, verify that the number of egress-assignable nodes is equal to or greater than the number of egress IP addresses defined in the `EgressIP` object.
+
+</div>
 
 When a pod matches the selector for multiple `EgressIP` objects, there is no guarantee which of the egress IP addresses that are specified in the `EgressIP` objects is assigned as the egress IP address for the pod.
 
