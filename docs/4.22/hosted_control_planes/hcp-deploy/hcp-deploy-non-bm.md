@@ -70,9 +70,9 @@ Before you deploy hosted control planes on non-bare-metal agent machines, ensure
 
 <!-- -->
 
-- [Advanced configuration (Red Hat Advanced Cluster Management documentation)](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#advanced-config-engine)
+- [Advanced configuration (Red Hat Advanced Cluster Management documentation)](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/latest/html/clusters/cluster_mce_overview#advanced-config-engine)
 
-- [Enabling the central infrastructure management service (Red Hat Advanced Cluster Management documentation)](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#enable-cim)
+- [Enabling the central infrastructure management service (Red Hat Advanced Cluster Management documentation)](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/latest/html/clusters/cluster_mce_overview#enable-cim)
 
 ## Firewall, port, and service requirements for non-bare-metal agent machines
 
@@ -348,8 +348,6 @@ When you create a hosted cluster with the Agent platform, the HyperShift Operato
 
 - [Configuring a custom API server certificate in a hosted cluster](../../hosted_control_planes/hcp-certificates.xml#hcp-custom-cert_hcp-certificates)
 
-- [Adding hosts to the host inventory by using the Discovery Image (Red Hat Advanced Cluster Management documentation)](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#add-host-host-inventory)
-
 - [Extracting the release image digest](../../hosted_control_planes/hcp-disconnected/hcp-deploy-dc-bm.xml#hcp-dc-extract_hcp-deploy-dc-bm)
 
 # Creating a hosted cluster on non-bare-metal agent machines by using the web console
@@ -390,7 +388,7 @@ You can create a hosted cluster on non-bare-metal agent machines by using the Op
 
 8.  To view the node pool status, scroll to the **NodePool** section. The process to install the nodes takes about 10 minutes. You can also click **Nodes** to confirm whether the nodes joined the hosted cluster.
 
-- [Creating a credential for an on-premises environment (Red Hat Advanced Cluster Management documentation)](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#creating-a-credential-for-an-on-premises-environment)
+- [Creating a credential for an on-premises environment (Red Hat Advanced Cluster Management documentation)](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#creating-a-credential-for-an-on-premises-environment)
 
 - [Accessing the web console](../../web_console/web-console.xml#web-console-overview)
 
@@ -447,7 +445,7 @@ You can use a mirror registry to create a hosted cluster on non-bare-metal agent
 
     - `--namespace` specifies your hosted cluster namespace.
 
-    - `--release-image` specifies the supported OpenShift Container Platform version that you want to use. If you are using a disconnected environment, replace the version with the digest image. To extract the OpenShift Container Platform release image digest, see "Extracting the OpenShift Container Platform release image digest".
+    - `--release-image` specifies the supported OpenShift Container Platform version that you want to use. If you are using a disconnected environment, replace the version with the digest image. To extract the OpenShift Container Platform release image digest, see "Extracting the release image digest".
 
 - [Accessing the hosted cluster](../../hosted_control_planes/hcp-manage/hcp-manage-bm.xml#hcp-bm-access_hcp-manage-bm)
 

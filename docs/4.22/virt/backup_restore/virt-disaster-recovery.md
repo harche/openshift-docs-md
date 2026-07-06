@@ -74,7 +74,7 @@ You should expect data loss due to failover. The extent of loss depends on wheth
 
 # Disaster recovery solutions for Red Hat managed clusters
 
-The following DR solutions combine Red Hat Advanced Cluster Management (RHACM), Red Hat Ceph Storage, and OpenShift Data Foundation components. You can use them to failover applications from the primary to the secondary site, and to relocate the applications back to the primary site after you restore the disaster site.
+You can use disaster recovery (DR) solutions that combine Red Hat Advanced Cluster Management (RHACM), Red Hat Ceph Storage, and OpenShift Data Foundation components to failover applications between sites.
 
 ## Metro-DR for Red Hat OpenShift Data Foundation
 
@@ -110,15 +110,15 @@ OpenShift Virtualization supports the Regional-DR solution for OpenShift Data Fo
 
 For more information about using the Regional-DR solution for OpenShift Data Foundation with OpenShift Virtualization, see IBM’s OpenShift Data Foundation Regional-DR documentation.
 
-- [Metro-DR solution for OpenShift Data Foundation](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/latest/html-single/configuring_openshift_data_foundation_disaster_recovery_for_openshift_workloads/index#metro-dr-solution)
-
-- [Regional-DR solution for OpenShift Data Foundation](https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/latest/html-single/configuring_openshift_data_foundation_disaster_recovery_for_openshift_workloads/index#rdr-solution)
-
 # Additional resources
 
 - [Red Hat OpenShift Virtualization disaster recovery guide](https://access.redhat.com/articles/7041594)
 
 - [Configuring OpenShift Data Foundation Disaster Recovery for OpenShift Workloads](https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/latest/html/configuring_openshift_data_foundation_disaster_recovery_for_openshift_workloads/index)
+
+- [Metro-DR solution for OpenShift Data Foundation](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/latest/html-single/configuring_openshift_data_foundation_disaster_recovery_for_openshift_workloads/index#metro-dr-solution)
+
+- [Regional-DR solution for OpenShift Data Foundation](https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/latest/html-single/configuring_openshift_data_foundation_disaster_recovery_for_openshift_workloads/index#rdr-solution)
 
 - [Use OpenShift Data Foundation Disaster Recovery to Protect Virtual Machines (in the Red Hat Knowledgebase)](https://access.redhat.com/articles/7053115)
 

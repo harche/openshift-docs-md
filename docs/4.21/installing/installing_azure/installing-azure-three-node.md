@@ -1,10 +1,12 @@
-In OpenShift Container Platform version 4.17, you can install a three-node cluster on Microsoft Azure. A three-node cluster consists of three control plane machines, which also act as compute machines. This type of cluster provides a smaller, more resource efficient cluster, for cluster administrators and developers to use for testing, development, and production.
+In OpenShift Container Platform version 4.17, you can install a three-node cluster on Microsoft Azure. A three-node cluster consists of three control plane machines, which also act as compute machines.
 
-You can install a three-node cluster using either installer-provisioned or user-provisioned infrastructure.
+This type of cluster provides a smaller, more resource efficient cluster, for cluster administrators and developers to use for testing, development, and production.
+
+You can install a three-node cluster by using either installer-provisioned or user-provisioned infrastructure.
 
 <div class="note">
 
-Deploying a three-node cluster using an Azure Marketplace image is not supported.
+Deploying a three-node cluster by using an Azure Marketplace image is not supported.
 
 </div>
 
@@ -65,7 +67,7 @@ Because application workloads run from control plane nodes, additional subscript
     status: {}
     ```
 
-# Next steps
+# Additional resources
 
 - [Installing a cluster on Azure with customizations](../../installing/installing_azure/ipi/installing-azure-customizations.xml#installing-azure-customizations)
 

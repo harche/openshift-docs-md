@@ -10,7 +10,7 @@ In OpenShift Container Platform 4.17, you can install a cluster on Nutanix infra
 
   - You confirmed that port 9440 is accessible. Control plane nodes must be able to reach Prism Central and Prism Element on port 9440 for the installation to succeed.
 
-  - You configured the firewall to [grant access](../../installing/install_config/configuring-firewall.xml#configuring-firewall) to the sites that OpenShift Container Platform requires. This includes the use of Telemetry.
+  - You configured the firewall to [grant access](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) to the sites that OpenShift Container Platform requires. This includes the use of Telemetry.
 
 - If your Nutanix environment is using the default self-signed SSL/TLS certificate, replace it with a certificate that is signed by a CA. The installation program requires a valid CA-signed certificate to access to the Prism Central API. For more information about replacing the self-signed certificate, see the [Nutanix AOS Security Guide](https://portal.nutanix.com/page/documents/details?targetId=Nutanix-Security-Guide-v6_1:mul-security-ssl-certificate-pc-t.html).
 

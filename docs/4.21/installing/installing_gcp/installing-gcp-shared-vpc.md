@@ -8,7 +8,7 @@ The installation program provisions the rest of the required infrastructure, whi
 
 - You read the documentation on [selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing).
 
-- If you use a firewall, you [configured it to allow the sites](../../installing/install_config/configuring-firewall.xml#configuring-firewall) that your cluster requires access to.
+- If you use a firewall, you [configured it to allow the sites](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
 
 - You [configured a Google Cloud project](../../installing/installing_gcp/installing-gcp-account.xml#installing-gcp-account) to host the cluster. This project, known as the service project, must be attached to the host project. For more information, see [Attaching service projects in the Google Cloud documentation](https://cloud.google.com/vpc/docs/provisioning-shared-vpc#create-shared).
 
@@ -1515,6 +1515,12 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
     ``` terminal
     system:admin
     ```
+
+- "Customize your cluster"
+
+- "Remote health reporting"
+
+<!-- -->
 
 - See [Accessing the web console](../../web_console/web-console.xml#web-console) for more details about accessing and understanding the OpenShift Container Platform web console.
 

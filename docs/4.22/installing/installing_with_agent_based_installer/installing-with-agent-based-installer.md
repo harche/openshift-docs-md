@@ -18,7 +18,7 @@ Before beginning your cluster installation, you must complete prerequisite tasks
 
 - [Selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing)
 
-- [Configuring your firewall](../../installing/install_config/configuring-firewall.xml#configuring-firewall)
+- [Configuring your firewall](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
 
 # Downloading the Agent-based Installer
 
@@ -748,7 +748,7 @@ If there are leftover TPM encryption keys from a previous operating system on th
     `diskEncryption.tangServers`
     Specifies the Tang servers if you are using Tang. This value is optional.
 
-- [About disk encryption](../../installing/install_config/installing-customizing.xml#installation-special-config-encrypt-disk_installing-customizing)
+- [About disk encryption](../../installing/install_config/installing-customizing.xml#installation-special-config-storage_installing-customizing)
 
 # Creating and booting the agent image
 

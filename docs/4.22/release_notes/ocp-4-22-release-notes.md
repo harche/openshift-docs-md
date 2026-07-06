@@ -1285,6 +1285,61 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHSA-2026:27009 - OpenShift Container Platform 4.17.2 bug fix and security update
+
+Issued: 23 June 2026
+
+OpenShift Container Platform release 4.17.2 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:27009](https://access.redhat.com/errata/RHSA-2026:27009) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:27007](https://access.redhat.com/errata/RHBA-2026:27007) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.22.2 --pullspecs
+```
+
+### New features
+
+The Helm CLI for Red Hat OpenShift Container Platform v4 is now available as a standalone download
+The Helm CLI for Red Hat OpenShift Container Platform v4.1.4 is the first supported downstream build of Helm v4, available as a standalone binary from the OpenShift Container Platform mirror repository. This release provides access to Helm v4 capabilities, enabling you to evaluate and use Helm v4 workflows on OpenShift Container Platform.
+
+Note that all integrated OpenShift Container Platform console flows and software catalogs still run on Helm v3 only. If you use new Helm chart features or Helm v4-exclusive features through the command line interface (CLI), they will not map to or render in the current {ocp} web console.
+
+Red Hat does not distribute Helm as a traditional RPM.
+
+For more information, see ([Helm CLI for Red Hat OpenShift Container Platform](https://access.redhat.com/solutions/7144038)(Red Hat Knowledgebase article)).
+
+### Enhancements
+
+This release contains the following enhancement:
+
+- With this release, the `chrony-wait` service no longer blocks the node bootstrap process. As a result, the time to `NodeReady` is reduced to 10-24 seconds, depending on the platform. ([OCPBUGS-88114](https://issues.redhat.com/browse/OCPBUGS-88114))
+
+### Fixed issues
+
+- Before this update, when you created a namespace-scoped `ProjectHelmChartRepository` object in the OpenShift Container Platform web console, the Certificate Authority (CA) certificate and Transport Layer Security (TLS) client config drop-down menus listed only the resources from the `openshift-config` namespace. With this release, the form lists CA and TLS resources from the selected project namespace for `ProjectHelmChartRepository` objects, while cluster-scoped `HelmChartRepository` objects continue to use the `openshift-config` namespace. ([OCPBUGS-76328](https://issues.redhat.com/browse/OCPBUGS-76328))
+
+- Before this update, when a boundary clock (T-BC) entered holdover, the `event.sync.sync-status.synchronization-state-change` (`/sync/sync-status/sync-state`) event would sometimes incorrectly report `FREERUN` instead of `HOLDOVER`. These reports might have occurred because of an issue with the calculation of the overall node sync state. With this release, the `ptp4l` state is ignored. As a result, the `event.sync.sync-status.synchronization-state-change` (`/sync/sync-status/sync-state`) event correctly reports `HOLDOVER`. ([OCPBUGS-86530](https://issues.redhat.com/browse/OCPBUGS-86530))
+
+- Before this update, arbiter configs previously used runc as the default container runtime. With this release, the arbiter configs have been updated to be in sync with the master nodes and use crun as the default container runtime. ([OCPBUGS-87019](https://issues.redhat.com/browse/OCPBUGS-87019))
+
+- Before this update, the `openshift-apiserver` might have failed when multiple requests accessed project authorization data at the same time. This issue occurred more often on clusters with many namespaces and role-based access control (RBAC) rules. As a consequence, `openshift-apiserver` pods restarted unexpectedly with exit code `2`, which temporarily disrupted the API availability for project and namespace operations. With this release, the project authorization cache safely handles concurrent access. As a result, the `openshift-apiserver` namespace does not fail during concurrent project authorization lookups, and project listing operations remain responsive regardless of cluster size. ([OCPBUGS-87022](https://issues.redhat.com/browse/OCPBUGS-87022))
+
+- Before this update, when you navigated to the Cluster Dashboard Overview page and clicked the Insights window on the Status card, an underlying UI component rendered the text incorrectly. As a consequence, the icons for the four severity levels (Critical, Important, Moderate, and Low) appeared, but the actual issue counts and the links to the Insights advisor were missing. With this release, the link component inside the Insights severity message is updated to ensure that the text and links render properly. As a result, each severity level in the Insights window now successfully displays its icon, the correct issue count, and a clickable link to the Insights advisor. ([OCPBUGS-87096](https://issues.redhat.com/browse/OCPBUGS-87096))
+
+- Before this update, after a `cloud-event-proxy` (CEP) sidecar restart, the linuxptp-daemon could send replayed and live `ptp4l` output on the same event socket at the same time. A stale replayed port-role event with `FAULTY` could force the clock state to `HOLDOVER`. Because port roles update only on discrete state-change events, later live offset updates could not restore `LOCKED`. A replayed `RECEIVER` to `FAULTY` transition could also overwrite the live `RECEIVER` role on the socket and persist until a real port state change occurred. This issue affects T-BC and dual-follower configurations and, with lower probability, OpenShift CLI (`oc`) configurations. As a consequence, the clock state metric and the `SyncStateChange` cloud event could remain stuck at `FREERUN` or `HOLDOVER`, and the port role could remain stuck at `FAULTY`, even when `ptp4l` was fully locked. With this release, a live gate blocks process connections from writing to the event socket until replay completes, so all historical state is processed before any live data arrives. As a result, stale replay data cannot race with live output, and the clock state and port role metrics correctly reflect the current synchronization status after a CEP restart. ([OCPBUGS-87839](https://issues.redhat.com/browse/OCPBUGS-87839))
+
+- Before this update, OpenShift Container Platform disabled timer migration to ensure that the high resolution kernel timers and cyclictest (a timer-based bench-marking tool) was not affected by extra latency. However, timer migration was required to allow the kernel to migrate previously started timers such as the TCP timeout and keep-alive away from CPUs assigned to a newly CPU-pinned guaranteed workload container. As a consequence, when the timer migration was disabled, the remaining timers kept interrupting the latency sensitive workloads. With this release, the timer migration is reinstated to enable configuration because the `PerformanceProfile` parameter is mostly used with latency sensitive workloads. As a result, newly created pods are not interrupted by timers that are stuck on the CPUs assigned to those workloads. If you do not want the latency-sensitive polling application running on the cluster, you can set the `kernel.timer_migration=0` sysctl by using the advanced configuration instructions that are provided in the Knowledge Base at [5532341](https://access.redhat.com/solutions/5532341). ([OCPBUGS-87891](https://issues.redhat.com/browse/OCPBUGS-87891))
+
+- Before this update, when you bootstrapped a new node, the extensions image was pulled regardless of whether it was required by the cluster configuration. As a consequence, node bootstrap times increased. With this release, the extensions image is only pulled when the configuration requires it. ([OCPBUGS-88120](https://issues.redhat.com/browse/OCPBUGS-88120))
+
+- Before this update, you were prompted to complete the "Restore as new PVC" action for VolumeSnapshots to work when the parent PVC was deleted aligning the console behavior with the CLI, which already supported this operation. With this release, the restore `VolumeSnapshot` modal now falls back to snapshot annotations for storage class, access modes, and size instead of requiring the original PVC to be present. ([OCPBUGS-88304](https://issues.redhat.com/browse/OCPBUGS-88304))
+
+### Updating
+
+To update an OpenShift Container Platform 4.22 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHSA-2026:25206 - OpenShift Container Platform 4.17.1 fixed issues and security update
 
 Issued: 16 June 2026

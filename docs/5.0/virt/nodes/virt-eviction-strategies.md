@@ -65,7 +65,7 @@ You can configure an eviction strategy for a cluster by using the command line.
 1.  Edit the `hyperconverged` resource by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
 2.  Set the cluster eviction strategy as shown in the following example:
@@ -73,12 +73,13 @@ You can configure an eviction strategy for a cluster by using the command line.
     Example cluster eviction strategy:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
     spec:
-      evictionStrategy: LiveMigrate
+      virtualization:
+        evictionStrategy: LiveMigrate
     # ...
     ```
 

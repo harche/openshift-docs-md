@@ -28,7 +28,7 @@ The steps for performing a user-provisioned infrastructure installation are prov
 
   </div>
 
-- If you use a firewall, you [configured it to allow the sites](../../installing/install_config/configuring-firewall.xml#configuring-firewall) that your cluster requires access to. While you might need to grant access to more sites, you must grant access to `*.googleapis.com` and `accounts.google.com`.
+- If you use a firewall, you [configured it to allow the sites](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to. While you might need to grant access to more sites, you must grant access to `*.googleapis.com` and `accounts.google.com`.
 
 - If the cloud identity and access management (IAM) APIs are not accessible in your environment, or if you do not want to store an administrator-level credential secret in the `kube-system` namespace, you can [manually create and maintain long-term credentials](../../installing/installing_gcp/installing-gcp-customizations.xml#manually-create-iam_installing-gcp-customizations).
 
@@ -2534,6 +2534,10 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
     ``` terminal
     system:admin
     ```
+
+- "Customize your cluster"
+
+- "Remote health reporting"
 
 # Disabling the default software catalog sources
 

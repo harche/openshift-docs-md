@@ -16,7 +16,7 @@ While you can select `azure` when using the installation program to deploy a clu
 
 - You [configured an Azure Stack Hub account](../../../installing/installing_azure_stack_hub/installing-azure-stack-hub-account.xml#installing-azure-stack-hub-account) to host the cluster.
 
-- If you use a firewall, you [configured it to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall) that your cluster requires access to.
+- If you use a firewall, you [configured it to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
 
 - You verified that you have approximately 16 GB of local disk space. Installing the cluster requires that you download the RHCOS virtual hard drive (VHD) cluster image and upload it to your Azure Stack Hub environment so that it is accessible during deployment. Decompressing the VHD files requires this amount of local disk space.
 
@@ -1100,6 +1100,10 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
     ``` terminal
     system:admin
     ```
+
+- "Customize your cluster"
+
+- "Remote health reporting"
 
 # Logging in to the cluster by using the web console
 

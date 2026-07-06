@@ -64,7 +64,7 @@ If node IP addresses fall outside the specified `networking.machineNetwork[].cid
 
 # Prerequisites
 
-Review the [sites that your cluster requires access to](../../installing/install_config/configuring-firewall.xml#configuring-firewall) and determine whether any of them must bypass the proxy. By default, all cluster system egress traffic is proxied, including calls to the cloud provider API for the cloud that hosts your cluster. The system-wide proxy affects system components only, not user workloads. If necessary, add sites to the `spec.noProxy` parameter of the `Proxy` object to bypass the proxy.
+Review the [sites that your cluster requires access to](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) and determine whether any of them must bypass the proxy. By default, all cluster system egress traffic is proxied, including calls to the cloud provider API for the cloud that hosts your cluster. The system-wide proxy affects system components only, not user workloads. If necessary, add sites to the `spec.noProxy` parameter of the `Proxy` object to bypass the proxy.
 
 # Enabling the cluster-wide proxy
 

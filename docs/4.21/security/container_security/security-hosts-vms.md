@@ -46,7 +46,7 @@ To further protect RHCOS systems in OpenShift Container Platform clusters, most 
 
 - [Kernel modules](../../installing/install_config/installing-customizing.xml#installation-special-config-kmod_installing-customizing)
 
-- [Disk encryption](../../installing/install_config/installing-customizing.xml#installation-special-config-encrypt-disk_installing-customizing)
+- [Disk encryption](../../installing/install_config/installing-customizing.xml#installation-special-config-storage_installing-customizing)
 
 - [Chrony time service](../../installing/install_config/installing-customizing.xml#installation-special-config-chrony_installing-customizing)
 

@@ -8,7 +8,7 @@ When you customize OpenShift Container Platform networking, you must set most of
 
 - You read the documentation on [selecting a cluster installation method and preparing it for users](../../../installing/overview/installing-preparing.xml#installing-preparing).
 
-- If you use a firewall and plan to use the Telemetry service, you [configured the firewall to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall) that your cluster requires access to.
+- If you use a firewall and plan to use the Telemetry service, you [configured the firewall to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
 
 # Internet access for OpenShift Container Platform
 
@@ -4432,6 +4432,10 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
     ``` terminal
     system:admin
     ```
+
+- "Customize your cluster"
+
+- "Remote health reporting"
 
 # Approving the certificate signing requests for your machines
 

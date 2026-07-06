@@ -40,7 +40,7 @@ The steps for performing a user-provisioned infrastructure installation are prov
 
 - You downloaded the AWS CLI and installed it on your computer. See [Install the AWS CLI Using the Bundled Installer (Linux, macOS, or UNIX)](https://docs.aws.amazon.com/cli/latest/userguide/install-bundle.html) in the AWS documentation.
 
-- If you use a firewall and plan to use the Telemetry service, you [configured the firewall to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall) that your cluster requires access to.
+- If you use a firewall and plan to use the Telemetry service, you [configured the firewall to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
 
   <div class="note">
 
@@ -2298,6 +2298,10 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
     ``` terminal
     system:admin
     ```
+
+- "Customize your cluster"
+
+- "Remote health reporting"
 
 # Logging in to the cluster by using the web console
 

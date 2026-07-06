@@ -2,16 +2,11 @@ Use the NVIDIA GPU operator to create virtual GPUs (vGPUs) and assign them to vi
 
 # About using virtual GPUs with OpenShift Virtualization
 
-You can create vGPUs for your VMs using supported GPU cards. You can use the NVIDIA GPU Operator to manage the lifecycle and creation of these vGPUs on the cluster nodes. You must add these devices to the `HyperConverged` custom resource (CR) so that OpenShift Virtualization can discover and make them available to virtual machines.
+You can create vGPUs for your virtual machines (VMs) using supported GPU cards. Refer to your hardware vendor’s documentation for functionality and support details.
 
-<div class="note">
+You can use the NVIDIA GPU Operator to manage vGPUs for your virtual machines (VMs) on the cluster nodes. You must add these devices to the `HyperConverged` custom resource (CR) so that OpenShift Virtualization can discover and make them available to virtual machines.
 
-Refer to your hardware vendor’s documentation for functionality and support details.
-
-</div>
-
-Mediated device
-A physical device that is divided into one or more virtual devices. A vGPU is a type of mediated device (mdev); the performance of the physical GPU is divided among the virtual devices. You can assign mediated devices to one or more virtual machines (VMs), but the number of guests must be compatible with your GPU. Some GPUs do not support multiple guests.
+A mediated device is a physical device that is divided into one or more virtual devices. vGPUs are a type of mediated device (mdev) where the performance of the physical GPU is divided among the virtual devices. You can assign mediated devices to one or more virtual machines (VMs), but the number of guests must be compatible with your GPU. Some GPUs do not support multiple guests.
 
 ## Adding kernel arguments to enable the IOMMU driver
 
@@ -275,30 +270,31 @@ As an administrator, you can create mediated devices and expose them to the clus
 2.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
 3.  Create and expose the mediated devices by updating the configuration:
 
-    1.  Expose the mediated devices to the cluster by adding the `mdevNameSelector` and `resourceName` values to the `spec.permittedHostDevices.mediatedDevices` stanza. The `resourceName` value is based on the `mdevNameSelector` value, but you use underscores instead of spaces.
+    1.  Expose the mediated devices to the cluster by adding the `mdevNameSelector` and `resourceName` values to the `spec.virtualization.permittedHostDevices.mediatedDevices` stanza. The `resourceName` value is based on the `mdevNameSelector` value, but you use underscores instead of spaces.
 
         Example `HyperConverged` CR:
 
         ``` yaml
-        apiVersion: hco.kubevirt.io/v1beta1
+        apiVersion: hco.kubevirt.io/v1
         kind: HyperConverged
         metadata:
           name: kubevirt-hyperconverged
           namespace: openshift-cnv
         spec:
-          permittedHostDevices:
-            mediatedDevices:
-            - mdevNameSelector: NVIDIA A2-2Q
-              resourceName: nvidia.com/NVIDIA_A2-2Q
-              externalResourceProvider: true
-            - mdevNameSelector: NVIDIA A2-4Q
-              resourceName: nvidia.com/NVIDIA_A2-4Q
-              externalResourceProvider: true
+          virtualization:
+            permittedHostDevices:
+              mediatedDevices:
+              - mdevNameSelector: NVIDIA A2-2Q
+                resourceName: nvidia.com/NVIDIA_A2-2Q
+                externalResourceProvider: true
+              - mdevNameSelector: NVIDIA A2-4Q
+                resourceName: nvidia.com/NVIDIA_A2-4Q
+                externalResourceProvider: true
         # ...
         ```
 
@@ -333,23 +329,24 @@ As a cluster administrator you can remove mediated devices from the cluster so t
 1.  Edit the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
-2.  Remove the device information from the `spec.permittedHostDevices` stanza of the `HyperConverged` CR. For example:
+2.  Remove the device information from the `spec.virtualization.permittedHostDevices` stanza of the `HyperConverged` CR. For example:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
       namespace: openshift-cnv
     spec:
-      permittedHostDevices:
-        mediatedDevices:
-        - mdevNameSelector: GRID T4-2Q
-          resourceName: nvidia.com/GRID_T4-2Q
-          externalResourceProvider: true
+      virtualization:
+        permittedHostDevices:
+          mediatedDevices:
+          - mdevNameSelector: GRID T4-2Q
+            resourceName: nvidia.com/GRID_T4-2Q
+            externalResourceProvider: true
     ```
 
     - To remove the `GRID T4-2Q` device, delete the `mdevNameSelector` field and its corresponding `resourceName` field.

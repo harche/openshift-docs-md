@@ -1,4 +1,4 @@
-You can configure node placement rules to specify where OpenShift Virtualization Operators, workloads, and controllers are deployed. While default scheduling is sufficient for standard environments, custom placement rules allow you to isolate virtual machine (VM) traffic or dedicate specialized compute resources to critical workloads.
+You can configure node placement rules to specify where OpenShift Virtualization Operators, workloads, and controllers are deployed. Custom placement rules allow you to isolate virtual machine (VM) traffic or dedicate specialized compute resources to critical workloads.
 
 <div class="important">
 
@@ -117,20 +117,20 @@ To specify the nodes where OpenShift Virtualization deploys its components, you 
 Example `HyperConverged` object with `nodeSelector` rule:
 
 ``` yaml
-apiVersion: hco.kubevirt.io/v1beta1
+apiVersion: hco.kubevirt.io/v1
 kind: HyperConverged
 metadata:
   name: kubevirt-hyperconverged
   namespace: openshift-cnv
 spec:
-  infra:
-    nodePlacement:
-      nodeSelector:
-        example.io/example-infra-key: example-infra-value
-  workloads:
-    nodePlacement:
-      nodeSelector:
-        example.io/example-workloads-key: example-workloads-value
+  deployment:
+    nodePlacements:
+      infra:
+        nodeSelector:
+          example.io/example-infra-key: example-infra-value
+      workload:
+        nodeSelector:
+          example.io/example-workloads-key: example-workloads-value
 ```
 
 - Infrastructure resources are placed on nodes labeled `example.io/example-infra-key = example-infra-value`.
@@ -140,42 +140,42 @@ spec:
 Example `HyperConverged` object with `affinity` rule:
 
 ``` yaml
-apiVersion: hco.kubevirt.io/v1beta1
+apiVersion: hco.kubevirt.io/v1
 kind: HyperConverged
 metadata:
   name: kubevirt-hyperconverged
   namespace: openshift-cnv
 spec:
-  infra:
-    nodePlacement:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: example.io/example-infra-key
-                operator: In
-                values:
-                - example-infra-value
-  workloads:
-    nodePlacement:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: example.io/example-workloads-key
-                operator: In
-                values:
-                - example-workloads-value
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 1
-            preference:
-              matchExpressions:
-              - key: example.io/num-cpus
-                operator: Gt
-                values:
-                - 8
+  deployment:
+    nodePlacements:
+      infra:
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: example.io/example-infra-key
+                  operator: In
+                  values:
+                  - example-infra-value
+      workload:
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: example.io/example-workloads-key
+                  operator: In
+                  values:
+                  - example-workloads-value
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                - key: example.io/num-cpus
+                  operator: Gt
+                  values:
+                  - 8
 ```
 
 - Infrastructure resources are placed on nodes labeled `example.io/example-infra-key = example-value`.
@@ -187,19 +187,20 @@ spec:
 Example `HyperConverged` object with `tolerations` rule:
 
 ``` yaml
-apiVersion: hco.kubevirt.io/v1beta1
+apiVersion: hco.kubevirt.io/v1
 kind: HyperConverged
 metadata:
   name: kubevirt-hyperconverged
   namespace: openshift-cnv
 spec:
-  workloads:
-    nodePlacement:
-      tolerations:
-      - key: "key"
-        operator: "Equal"
-        value: "virtualization"
-        effect: "NoSchedule"
+  deployment:
+    nodePlacements:
+      workload:
+        tolerations:
+        - key: "key"
+          operator: "Equal"
+          value: "virtualization"
+          effect: "NoSchedule"
 ```
 
 Nodes reserved for OpenShift Virtualization components are labeled with the `key = virtualization:NoSchedule` taint. Only pods with matching tolerations are scheduled on reserved nodes.

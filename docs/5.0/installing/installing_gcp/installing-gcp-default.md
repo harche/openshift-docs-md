@@ -8,7 +8,7 @@ In OpenShift Container Platform version 4.17, you can install a cluster on Googl
 
 - You [configured a Google Cloud project](../../installing/installing_gcp/installing-gcp-account.xml#installing-gcp-account) to host the cluster.
 
-- If you use a firewall, you [configured it to allow the sites](../../installing/install_config/configuring-firewall.xml#configuring-firewall) that your cluster requires access to.
+- If you use a firewall, you [configured it to allow the sites](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
 
 - If you are installing using a [Private Service Connect (PSC) endpoint](https://cloud.google.com/vpc/docs/private-service-connect), you must configure the endpoint in the same Virtual Private Cloud (VPC) where you install the cluster, specified in the `install-config.yaml` file, as described in [Installing a cluster on Google Cloud into an existing VPC](../../installing/installing_gcp/installing-gcp-vpc.xml#installing-gcp-vpc).
 
@@ -432,6 +432,12 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
     ``` terminal
     system:admin
     ```
+
+- "Customize your cluster"
+
+- "Remote health reporting"
+
+<!-- -->
 
 - See [Accessing the web console](../../web_console/web-console.xml#web-console) for more details about accessing and understanding the OpenShift Container Platform web console.
 

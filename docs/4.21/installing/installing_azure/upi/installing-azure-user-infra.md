@@ -20,7 +20,7 @@ The steps for performing a user-provisioned infrastructure installation are prov
 
 - If the cloud identity and access management (IAM) APIs are not accessible in your environment, or if you do not want to store an administrator-level credential secret in the `kube-system` namespace, see [Alternatives to storing administrator-level secrets in the kube-system project](../../../installing/installing_azure/ipi/installing-azure-customizations.xml#installing-azure-manual-modes_installing-azure-customizations).
 
-- If you use a firewall and plan to use the Telemetry service, you [configured the firewall to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall) that your cluster requires access to.
+- If you use a firewall and plan to use the Telemetry service, you [configured the firewall to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
 
   <div class="note">
 
@@ -58,7 +58,9 @@ All Azure resources that are available through public endpoints are subject to r
 
 ## Azure account limits
 
-The OpenShift Container Platform cluster uses a number of Microsoft Azure components, and the default [Azure subscription and service limits, quotas, and constraints](https://docs.microsoft.com/en-us/azure/azure-subscription-service-limits) affect your ability to install OpenShift Container Platform clusters.
+The OpenShift Container Platform cluster uses a number of Microsoft Azure components. Default subscription and service limits, quotas, and constraints can affect your ability to install OpenShift Container Platform clusters.
+
+For more information on Azure subscription and service limits, see "Azure subscription and service limits, quotas, and constraints".
 
 <div class="important">
 
@@ -199,9 +201,11 @@ To increase an account limit, file a support request on the Azure portal. For mo
 
 - [Optimizing storage](../../../scalability_and_performance/optimization/optimizing-storage.xml#optimizing-storage)
 
+- [Azure subscription and service limits, quotas, and constraints (Azure documentation)](https://docs.microsoft.com/en-us/azure/azure-subscription-service-limits)
+
 ## Configuring a public DNS zone in Azure
 
-To install OpenShift Container Platform, the Microsoft Azure account you use must have a dedicated public hosted DNS zone in your account. This zone must be authoritative for the domain. This service provides cluster DNS resolution and name lookup for external connections to the cluster.
+To install OpenShift Container Platform, the Microsoft Azure account you use must have a dedicated public hosted DNS zone in your account that is authoritative for the domain. This zone provides cluster DNS resolution and name lookup for external connections to the cluster.
 
 1.  Identify your domain, or subdomain, and registrar. You can transfer an existing domain and registrar or obtain a new one through Azure or another source.
 
@@ -225,7 +229,7 @@ The `kube-controller-manager` only approves the kubelet client CSRs. The `machin
 
 ## Recording the subscription and tenant IDs
 
-The installation program requires the subscription and tenant IDs that are associated with your Azure account. You can use the Azure CLI to gather this information.
+To record the subscription and tenant IDs that the installation program requires for your Azure account, you can use the Azure CLI.
 
 - You have installed or updated the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-yum?view=azure-cli-latest).
 
@@ -344,7 +348,7 @@ The installation program requires the subscription and tenant IDs that are assoc
 
 ## Supported identities to access Azure resources
 
-An OpenShift Container Platform cluster requires an Azure identity to create and manage Azure resources. You need one of the following types of identities to complete the installation:
+An OpenShift Container Platform cluster requires an Azure identity to create and manage Azure resources. You need a service principal, a system-assigned managed identity, or a user-assigned managed identity to complete the installation.
 
 - A service principal
 
@@ -352,7 +356,7 @@ An OpenShift Container Platform cluster requires an Azure identity to create and
 
 - A user-assigned managed identity
 
-For more information on Azure identities, see [Managed identity types](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview#managed-identity-types).
+For more information on Azure identities, see "Managed identity types".
 
 ## Required Azure permissions for user-provisioned infrastructure
 
@@ -672,7 +676,7 @@ You can scope all the permissions to your subscription when deleting an OpenShif
 
 ## Using Azure managed identities
 
-The installation program requires an Azure identity to complete the installation. You can use either a system-assigned or user-assigned managed identity.
+To provide the identity that the installation program requires on Azure, you can use a system-assigned or user-assigned managed identity.
 
 If you are unable to use a managed identity, you can use a service principal.
 
@@ -684,13 +688,11 @@ If you are unable to use a managed identity, you can use a service principal.
 
     2.  Record its client ID. You require this value when installing the cluster.
 
-        For more information about viewing the details of a user-assigned managed identity, see [List user-assigned managed identities](https://learn.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/how-manage-user-assigned-managed-identities?pivots=identity-mi-methods-azp#list-user-assigned-managed-identities) in the Azure documentation.
-
 3.  Verify that the required permissions are assigned to the managed identity.
 
 ## Creating a service principal
 
-The installation program requires an Azure identity to complete the installation. You can use a service principal.
+To provide the identity that the installation program requires on Azure, you can create a service principal.
 
 If you are unable to use a service principal, you can use a managed identity.
 
@@ -708,44 +710,53 @@ If you are unable to use a service principal, you can use a managed identity.
          --scopes /subscriptions/<subscription_id>
     ```
 
-    - Defines the role name. You can use the `Contributor` role, or you can specify a custom role which contains the necessary permissions.
+    where:
 
-    - Defines the service principal name.
+    `<role_name>`
+    Specifies the role name. You can use the `Contributor` role, or you can specify a custom role which contains the necessary permissions.
 
-    - Specifies the subscription ID.
+    `<service_principal>`
+    Specifies the service principal name.
 
-      <div class="formalpara-title">
+    `<subscription_id>`
+    Specifies the subscription ID.
 
-      **Example output**
+    <div class="formalpara-title">
 
-      </div>
+    **Example output**
 
-      ``` terminal
-      Creating 'Contributor' role assignment under scope '/subscriptions/<subscription_id>'
-      The output includes credentials that you must protect. Be sure that you do not
-      include these credentials in your code or check the credentials into your source
-      control. For more information, see https://aka.ms/azadsp-cli
-      {
-        "appId": "axxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-        "displayName": <service_principal>",
-        "password": "00000000-0000-0000-0000-000000000000",
-        "tenantId": "8xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-      }
-      ```
+    </div>
 
-      Record the values of the `appId` and `password` parameters from the output. You require these values when installing the cluster.
+    ``` terminal
+    Creating 'Contributor' role assignment under scope '/subscriptions/<subscription_id>'
+    The output includes credentials that you must protect. Be sure that you do not
+    include these credentials in your code or check the credentials into your source
+    control. For more information, see https://aka.ms/azadsp-cli
+    {
+      "appId": "axxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "displayName": <service_principal>",
+      "password": "00000000-0000-0000-0000-000000000000",
+      "tenantId": "8xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    }
+    ```
+
+    Record the values of the `appId` and `password` parameters from the output. You require these values when installing the cluster.
 
 2.  If you assigned the `Contributor` role to your service principal, assign the `User Administrator Access` role by running the following command:
 
     ``` terminal
     $ az role assignment create --role "User Access Administrator" \
-      --assignee-object-id $(az ad sp show --id <appId> --query id -o tsv)
+      --assignee-object-id $(az ad sp show --id <appId> --query id -o tsv) \
       --scope /subscriptions/<subscription_id>
     ```
 
-    - Specify the `appId` parameter value for your service principal.
+    where:
 
-    - Specifies the subscription ID.
+    `<appId>`
+    Specifies the `appId` parameter value for your service principal.
+
+    `<subscription_id>`
+    Specifies the subscription ID.
 
 - For more information about CCO modes, see [About the Cloud Credential Operator](../../../authentication/managing_cloud_provider_credentials/about-cloud-credential-operator.xml#about-cloud-credential-operator-modes).
 
@@ -2477,6 +2488,10 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
     ``` terminal
     system:admin
     ```
+
+- "Customize your cluster"
+
+- "Remote health reporting"
 
 # Approving the certificate signing requests for your machines
 

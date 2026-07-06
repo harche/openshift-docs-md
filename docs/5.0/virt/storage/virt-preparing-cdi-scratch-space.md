@@ -6,7 +6,7 @@ The Containerized Data Importer (CDI) requires scratch space (temporary storage)
 
 The scratch space PVC is deleted after the operation completes or aborts.
 
-You can define the storage class that is used to bind the scratch space PVC in the `spec.scratchSpaceStorageClass` field of the `HyperConverged` custom resource.
+You can define the storage class that is used to bind the scratch space PVC in the `spec.storage.scratchSpaceStorageClass` field of the `HyperConverged` custom resource.
 
 If the defined storage class does not match a storage class in the cluster, then the default storage class defined for the cluster is used. If there is no default storage class defined in the cluster, the storage class used to provision the original DV or PVC is used.
 
@@ -34,25 +34,26 @@ To import and process virtual machine (VM) images, the Containerized Data Import
 
 # Defining a storage class
 
-You can define the storage class that the Containerized Data Importer (CDI) uses when allocating scratch space by adding the `spec.scratchSpaceStorageClass` field to the `HyperConverged` custom resource (CR).
+You can define the storage class that the Containerized Data Importer (CDI) uses when allocating scratch space by adding the `spec.storage.scratchSpaceStorageClass` field to the `HyperConverged` custom resource (CR).
 
 - Install the OpenShift CLI (`oc`).
 
 1.  Edit the `HyperConverged` CR by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
-2.  Add the `spec.scratchSpaceStorageClass` field to the CR and set the value to the name of a storage class that exists in the cluster. If you do not specify a storage class, CDI uses the storage class of the persistent volume claim that is being populated.
+2.  Add the `spec.storage.scratchSpaceStorageClass` field to the CR and set the value to the name of a storage class that exists in the cluster. If you do not specify a storage class, CDI uses the storage class of the persistent volume claim that is being populated.
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
     spec:
-      scratchSpaceStorageClass: "<storage_class>"
+      storage:
+        scratchSpaceStorageClass: "<storage_class>"
     ```
 
 3.  Save and exit your default editor to update the `HyperConverged` CR.

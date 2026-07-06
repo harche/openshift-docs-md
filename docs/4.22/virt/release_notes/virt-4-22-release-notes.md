@@ -201,6 +201,11 @@ You can provision OpenShift Virtualization clusters that run Red Hat Enterprise 
 
 [CNV-49964](https://redhat.atlassian.net/browse/CNV-49964)
 
+KubeVirt Redfish for VM management through the Redfish API (Technology Preview)
+KubeVirt Redfish exposes OpenShift Virtualization virtual machines through the standard Redfish API. Using KubeVirt Redfish, administrators can manage VM power states, boot configuration, and virtual media attachments. This feature is available as a Technology Preview.
+
+For more information, see [Install KubeVirt Redfish](../post_installation_configuration/virt-kubevirt-redfish.xml#proc_virt-installing-kubevirt-redfish_virt-kubevirt-redfish).
+
 # Fixed issues
 
 The following issues are fixed for this release.

@@ -62,7 +62,7 @@ You can configure a custom namespace for golden images in your cluster by using 
 
 # Configuring a custom namespace for golden images by using the CLI
 
-You can configure a custom namespace for golden images in your cluster by setting the `spec.commonBootImageNamespace` field in the `HyperConverged` custom resource (CR).
+You can configure a custom namespace for golden images in your cluster by setting the `spec.workloadSources.commonBootImageNamespace` field in the `HyperConverged` custom resource (CR).
 
 - You installed the OpenShift CLI (`oc`).
 
@@ -71,27 +71,28 @@ You can configure a custom namespace for golden images in your cluster by settin
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
-2.  Configure the custom namespace by updating the value of the `spec.commonBootImageNamespace` field.
+2.  Configure the custom namespace by updating the value of the `spec.workloadSources.commonBootImageNamespace` field.
 
     Example configuration file:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
       namespace: openshift-cnv
     spec:
-      commonBootImageNamespace: <custom_namespace>
+      workloadSources:
+        commonBootImageNamespace: <custom_namespace>
     # ...
     ```
 
     where:
 
-    `spec.commonBootImageNamespace`
+    `spec.workloadSources.commonBootImageNamespace`
     Specifies the namespace to use for golden images.
 
 3.  Save your changes and exit the editor.

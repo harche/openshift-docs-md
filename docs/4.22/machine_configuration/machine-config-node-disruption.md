@@ -1,4 +1,4 @@
-By default, when you make certain changes to the fields in a `MachineConfig` object, the Machine Config Operator (MCO) drains and reboots the nodes associated with that machine config. However, you can create a *node disruption policy* that defines a set of changes to some Ignition config objects that would require little or no disruption to your workloads.
+You can create a *node disruption policy* to define the configuration changes that cause a disruption to your cluster, and which changes do not.
 
 <div class="note">
 
@@ -6,7 +6,9 @@ Node disruption policies are not supported for on-cluster custom layered images.
 
 </div>
 
-A node disruption policy allows you to define the configuration changes that cause a disruption to your cluster, and which changes do not. This allows you to reduce node downtime when making small machine configuration changes in your cluster. To configure the policy, you modify the `MachineConfiguration` object, which is in the `openshift-machine-config-operator` namespace. See the example node disruption policies in the `MachineConfiguration` objects that follow.
+By default, when you make certain changes to the Ignition config objects fields by using a `MachineConfig` object, the Machine Config Operator (MCO) drains and reboots the nodes associated with that machine config.
+
+By using a node disruption policy, you can define the configuration changes that require actions such as node reboots, node drains, or service restarts, and which changes do not. This reduces node downtime when making small machine configuration changes in your cluster. To configure the policy, you modify the `MachineConfiguration` object, which is in the `openshift-machine-config-operator` namespace. See the example node disruption policies in the `MachineConfiguration` objects in "Example node disruption policies".
 
 <div class="note">
 
@@ -326,21 +328,27 @@ When you make any of these changes, the node disruption policy determines which 
           name: test.service
     ```
 
-    - Specifies the node disruption policy.
+    where:
 
-    - Specifies a list of machine config file definitions and actions to take to changes on those paths. This list supports a maximum of 50 entries.
+    `spec.nodeDisruptionPolicy`
+    Specifies the node disruption policy.
 
-    - Specifies the series of actions to be executed upon changes to the specified files. Actions are applied in the order that they are set in this list. This list supports a maximum of 10 entries.
+    `spec.nodeDisruptionPolicy.files`
+    Specifies a list of machine config file definitions and actions to take to changes on those paths. This list supports a maximum of 50 entries.
 
-    - Specifies that the listed service is to be reloaded upon changes to the specified files.
+    `spec.nodeDisruptionPolicy.files.actions`
+    Specifies the series of actions to be executed upon changes to the specified files. Actions are applied in the order that they are set in this list. This list supports a maximum of 10 entries. Specify the following parameters:
 
-    - Specifies the full name of the service to be acted upon.
+    `restart`. Specifies that the listed service is to be reloaded upon changes to the specified files. `restart.serviceName`. Specifies the full name of the service to be acted upon.
 
-    - Specifies the location of a file that is managed by a machine config. The actions in the policy apply when changes are made to the file in `path`.
+    `spec.nodeDisruptionPolicy.files.path`
+    Specifies the location of a file that is managed by a machine config. The actions in the policy apply when changes are made to the file in `path`.
 
-    - Specifies a list of service names and actions to take upon changes to the SSH keys in the cluster.
+    `spec.nodeDisruptionPolicy.sshkey`
+    Specifies a list of service names and actions to take upon changes to the SSH keys in the cluster.
 
-    - Specifies a list of systemd unit names and actions to take upon changes to those units.
+    `spec.nodeDisruptionPolicy.units`
+    Specifies a list of systemd unit names and actions to take upon changes to those units.
 
 - View the `MachineConfiguration` object file that you created:
 
@@ -394,4 +402,4 @@ When you make any of these changes, the node disruption policy determines which 
   # ...
   ```
 
-  - Specifies the current cluster-validated policies.
+  The `nodeDisruptionPolicyStatus` parameter specifies the current cluster-validated policies.

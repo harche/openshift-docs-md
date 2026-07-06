@@ -36,11 +36,11 @@ To ensure successful deployment of hosted control planes on Amazon Web Services 
 
 </div>
 
-- [Configuring Ansible Automation Platform jobs to run on hosted clusters](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#ansible-config-hosted-cluster)
+- [Configuring Ansible Automation Platform jobs to run on hosted clusters](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/latest/html/clusters/cluster_mce_overview#ansible-config-hosted-cluster)
 
-- [Advanced configuration](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#advanced-config-engine)
+- [Advanced configuration](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/latest/html/clusters/cluster_mce_overview#advanced-config-engine)
 
-- [Enabling the central infrastructure management service](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#enable-cim)
+- [Enabling the central infrastructure management service](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/latest/html/clusters/cluster_mce_overview#enable-cim)
 
 - [Manually enabling the hosted control planes feature](../../hosted_control_planes/hcp-prepare/hcp-enable-disable.xml#hcp-enable-manual_hcp-enable-disable)
 
@@ -1102,12 +1102,14 @@ If you do not use a multi-architecture release image, the compute nodes in the n
   Specifies the AWS region name, for example, `us-east-1`.
 
   `<ocp_release_image>`
-  Specifies the supported OpenShift Container Platform version that you want to use, for example, `4.22.0-multi`. If you are using a disconnected environment, replace `<ocp_release_image>` with the digest image. To extract the OpenShift Container Platform release image digest, see "Extracting the OpenShift Container Platform release image digest".
+  Specifies the supported OpenShift Container Platform version that you want to use, for example, `4.22.0-multi`. If you are using a disconnected environment, replace `<ocp_release_image>` with the digest image. To extract the OpenShift Container Platform release image digest, see "Extracting the release image digest".
 
   `<role_name>`
   Specifies the Amazon Resource Name (ARN), for example, `arn:aws:iam::820196288204:role/myrole`.
 
 <!-- -->
+
+- [Extracting the release image digest](../../hosted_control_planes/hcp-disconnected/hcp-deploy-dc-bm.xml#hcp-dc-extract_hcp-deploy-dc-bm)
 
 - [Create an OpenShift Container Platform Cluster: AWS (ARM)](https://console.redhat.com/openshift/install/aws/arm)
 
@@ -1156,8 +1158,6 @@ The valid values for the `arch` field are as follows:
 <!-- -->
 
 - [Multi-architecture nightly images](https://multi.ocp.releases.ci.openshift.org/)
-
-- [Extracting the OpenShift Container Platform release image digest](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#configure-hosted-disconnected-digest-image)
 
 # Creating a private hosted cluster on AWS
 

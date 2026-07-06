@@ -139,11 +139,7 @@ Alternatively, you can use the web console to manage catalog sources. From the *
         $ oc get pods -n openshift-marketplace
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         NAME                                    READY   STATUS    RESTARTS  AGE
@@ -157,11 +153,7 @@ Alternatively, you can use the web console to manage catalog sources. From the *
         $ oc get catalogsource -n openshift-marketplace
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         NAME                  DISPLAY               TYPE PUBLISHER  AGE
@@ -174,18 +166,14 @@ Alternatively, you can use the web console to manage catalog sources. From the *
         $ oc get packagemanifest -n openshift-marketplace
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         NAME                          CATALOG               AGE
         jaeger-product                My Operator Catalog   93s
         ```
 
-You can now install the Operators from the **Software Catalog** page on your OpenShift Container Platform web console.
+        You can now install the Operators from the **Software Catalog** page on your OpenShift Container Platform web console.
 
 - [Accessing images for Operators from private registries](../operators/admin/olm-managing-custom-catalogs.xml#olm-accessing-images-private-registries_olm-managing-custom-catalogs)
 

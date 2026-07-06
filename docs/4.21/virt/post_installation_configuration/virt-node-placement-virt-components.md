@@ -1,4 +1,4 @@
-You can configure node placement rules to specify where OpenShift Virtualization Operators, workloads, and controllers are deployed. While default scheduling is sufficient for standard environments, custom placement rules allow you to isolate virtual machine (VM) traffic or dedicate specialized compute resources to critical workloads.
+You can configure node placement rules to specify where OpenShift Virtualization Operators, workloads, and controllers are deployed. Custom placement rules allow you to isolate virtual machine (VM) traffic or dedicate specialized compute resources to critical workloads.
 
 <div class="important">
 

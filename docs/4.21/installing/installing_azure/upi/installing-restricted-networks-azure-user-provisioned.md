@@ -22,7 +22,7 @@ The steps for performing a user-provisioned infrastructure installation are prov
 
   </div>
 
-- If you use a firewall, you [configured it to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall) that your cluster requires access to.
+- If you use a firewall, you [configured it to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
 
 - If the cloud identity and access management (IAM) APIs are not accessible in your environment, or if you do not want to store an administrator-level credential secret in the `kube-system` namespace, you have [manually created long-term credentials](../../../installing/installing_azure/ipi/installing-azure-customizations.xml#manually-create-iam_installing-azure-customizations).
 
@@ -80,7 +80,9 @@ All Azure resources that are available through public endpoints are subject to r
 
 ## Azure account limits
 
-The OpenShift Container Platform cluster uses a number of Microsoft Azure components, and the default [Azure subscription and service limits, quotas, and constraints](https://docs.microsoft.com/en-us/azure/azure-subscription-service-limits) affect your ability to install OpenShift Container Platform clusters.
+The OpenShift Container Platform cluster uses a number of Microsoft Azure components. Default subscription and service limits, quotas, and constraints can affect your ability to install OpenShift Container Platform clusters.
+
+For more information on Azure subscription and service limits, see "Azure subscription and service limits, quotas, and constraints".
 
 <div class="important">
 
@@ -221,9 +223,11 @@ To increase an account limit, file a support request on the Azure portal. For mo
 
 - [Optimizing storage](../../../scalability_and_performance/optimization/optimizing-storage.xml#optimizing-storage)
 
+- [Azure subscription and service limits, quotas, and constraints (Azure documentation)](https://docs.microsoft.com/en-us/azure/azure-subscription-service-limits)
+
 ## Configuring a public DNS zone in Azure
 
-To install OpenShift Container Platform, the Microsoft Azure account you use must have a dedicated public hosted DNS zone in your account. This zone must be authoritative for the domain. This service provides cluster DNS resolution and name lookup for external connections to the cluster.
+To install OpenShift Container Platform, the Microsoft Azure account you use must have a dedicated public hosted DNS zone in your account that is authoritative for the domain. This zone provides cluster DNS resolution and name lookup for external connections to the cluster.
 
 1.  Identify your domain, or subdomain, and registrar. You can transfer an existing domain and registrar or obtain a new one through Azure or another source.
 
@@ -247,7 +251,9 @@ The `kube-controller-manager` only approves the kubelet client CSRs. The `machin
 
 ## Required Azure roles
 
-Before you create the identity, verify that your environment meets the following requirements based on the identity:
+Before you create the identity for an OpenShift Container Platform cluster on Azure, verify that your environment meets the role and permission requirements for the identity type you plan to use.
+
+The following requirements must be met:
 
 - The Azure account that you use to create the identity is assigned the `User Access Administrator` and `Contributor` roles. These roles are required when:
 
@@ -256,8 +262,6 @@ Before you create the identity, verify that your environment meets the following
   - Enabling a system-assigned managed identity on a virtual machine.
 
 - If you are going to use a service principal to complete the installation, verify that the Azure account that you use to create the identity is assigned the `microsoft.directory/servicePrincipals/createAsOwner` permission in Microsoft Entra ID.
-
-To set roles on the Azure portal, see [Assign Azure roles using the Azure portal](https://docs.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) in the Azure documentation.
 
 ## Required Azure permissions for user-provisioned infrastructure
 
@@ -2518,6 +2522,10 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
     ``` terminal
     system:admin
     ```
+
+- "Customize your cluster"
+
+- "Remote health reporting"
 
 # Approving the certificate signing requests for your machines
 

@@ -137,42 +137,42 @@ See "Customizing nodes" in the *Installing → Installation configuration* secti
 
     - For the `ppc64le` platform, replace `nr_cpus=1` with `maxcpus=1`, which is not supported on this platform.
 
-<div class="note">
+      <div class="note">
 
-To export the dumps to NFS targets, some kernel modules must be explicitly added to the configuration file:
+      To export the dumps to NFS targets, some kernel modules must be explicitly added to the configuration file:
 
-<div class="formalpara-title">
+      <div class="formalpara-title">
 
-**Example `/etc/kdump.conf` file**
+      **Example `/etc/kdump.conf` file**
 
-</div>
+      </div>
 
-``` text
-nfs server.example.com:/export/cores
-core_collector makedumpfile -l --message-level 7 -d 31
-extra_bins /sbin/mount.nfs
-extra_modules nfs nfsv3 nfs_layout_nfsv41_files blocklayoutdriver nfs_layout_flexfiles nfs_layout_nfsv41_files
-```
+      ``` text
+      nfs server.example.com:/export/cores
+      core_collector makedumpfile -l --message-level 7 -d 31
+      extra_bins /sbin/mount.nfs
+      extra_modules nfs nfsv3 nfs_layout_nfsv41_files blocklayoutdriver nfs_layout_flexfiles nfs_layout_nfsv41_files
+      ```
 
-</div>
+      </div>
 
-1.  Use Butane to generate a machine config YAML file, `99-worker-kdump.yaml`, containing the configuration to be delivered to the nodes:
+2.  Use Butane to generate a machine config YAML file, `99-worker-kdump.yaml`, containing the configuration to be delivered to the nodes:
 
     ``` terminal
     $ butane 99-worker-kdump.bu -o 99-worker-kdump.yaml
     ```
 
-2.  Put the YAML file into the `<installation_directory>/manifests/` directory during cluster setup. You can also create this `MachineConfig` object after cluster setup with the YAML file:
+3.  Put the YAML file into the `<installation_directory>/manifests/` directory during cluster setup. You can also create this `MachineConfig` object after cluster setup with the YAML file:
 
     ``` terminal
     $ oc create -f 99-worker-kdump.yaml
     ```
 
-**Testing the kdump configuration**
+## Testing and analyzing kdump
+
+After configuring kdump, you can test the configuration and analyze core dumps using the RHEL documentation.
 
 See the [Testing the kdump configuration](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/managing_monitoring_and_updating_the_kernel/configuring-kdump-on-the-command-line_managing-monitoring-and-updating-the-kernel#testing-the-kdump-configuration_configuring-kdump-on-the-command-line) section in the RHEL documentation for kdump.
-
-**Analyzing a core dump**
 
 See the [Analyzing a core dump](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/managing_monitoring_and_updating_the_kernel/analyzing-a-core-dump_managing-monitoring-and-updating-the-kernel) section in the RHEL documentation for kdump.
 

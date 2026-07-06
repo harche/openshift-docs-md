@@ -1,4 +1,4 @@
-You can connect a virtual machine (VM) to a user-defined network (UDN) on the VM’s primary interface by using the OpenShift Container Platform web console or the CLI. The primary user-defined network replaces the default pod network in your specified namespace. Unlike the pod network, you can define the primary UDN per project, where each project can use its specific subnet and topology.
+You can connect a virtual machine (VM) to a user-defined network (UDN) on the VM’s primary interface. The primary UDN replaces the default pod network in your specified namespace. You can define the primary UDN per project, where each project can use its specific subnet and topology.
 
 OpenShift Virtualization supports the namespace-scoped `UserDefinedNetwork` and the cluster-scoped `ClusterUserDefinedNetwork` custom resource definitions (CRD).
 
@@ -375,7 +375,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 2.  Optional: If you are using the Plug a Simple Socket Transport (passt) network binding plugin, set the `hco.kubevirt.io/deployPasstNetworkBinding` annotation to `true` in the `HyperConverged` custom resource (CR) by running the following command:
 
     ``` terminal
-    $ oc annotate hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv hco.kubevirt.io/deployPasstNetworkBinding=true --overwrite
+    $ oc annotate hco kubevirt-hyperconverged -n openshift-cnv hco.kubevirt.io/deployPasstNetworkBinding=true --overwrite
     ```
 
 3.  Apply the `VirtualMachine` manifest by running the following command:

@@ -448,9 +448,9 @@ After the VM is created, you can monitor the status on the **VirtualMachine deta
 
 You can enable dynamic key injection for a virtual machine (VM) by using the OpenShift Container Platform web console. Then, you can update the public SSH key at runtime.
 
-The key is added to the VM by the QEMU guest agent, which is installed with Red Hat Enterprise Linux (RHEL) 9.
+The key is added to the VM by the QEMU guest agent, which is installed with Red Hat Enterprise Linux (RHEL) 9 and later.
 
-- The guest operating system is RHEL 9.
+- The guest operating system is RHEL 9 or later.
 
 1.  Navigate to **Virtualization** → **VirtualMachines** in the web console.
 

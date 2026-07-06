@@ -1,3 +1,5 @@
+You can use the Cluster API to create and manage compute machine sets and compute machines in your OpenShift Container Platform cluster.
+
 <div class="important">
 
 Managing machines with the Cluster API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
@@ -6,11 +8,11 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 </div>
 
-The [Cluster API](https://cluster-api.sigs.k8s.io/) is an upstream project that is integrated into OpenShift Container Platform as a Technology Preview for Amazon Web Services (AWS), Google Cloud, Microsoft Azure, Red Hat OpenStack Platform (RHOSP), VMware vSphere, and bare metal.
+The [Cluster API](https://cluster-api.sigs.k8s.io/) is an upstream project that is integrated into OpenShift Container Platform as a Technology Preview for Amazon Web Services (AWS), Google Cloud, Microsoft Azure, Red Hat OpenStack Platform (RHOSP), VMware vSphere, and bare-metal platforms.
 
 # Cluster API overview
 
-You can use the Cluster API to create and manage compute machine sets and compute machines in your OpenShift Container Platform cluster. This capability is in addition or an alternative to managing machines with the Machine API.
+You can use the Cluster API to create and manage compute machine sets and compute machines in your OpenShift Container Platform cluster. You can use the Cluster API alongside or instead of managing machines with the Machine API.
 
 For OpenShift Container Platform 4.17 clusters, you can use the Cluster API to perform node host provisioning management actions after the cluster installation finishes. This system enables an elastic, dynamic provisioning method on top of public or private cloud infrastructure.
 
@@ -18,7 +20,9 @@ With the Cluster API Technology Preview, you can create compute machines and com
 
 ## Cluster API benefits
 
-By using the Cluster API, OpenShift Container Platform users and developers gain the following advantages:
+With the Cluster API, you can use Kubernetes tools for infrastructure management to perform advanced machine management and scaling.
+
+By using the Cluster API, OpenShift Container Platform users and developers can gain the following advantages:
 
 - The option to use upstream community Cluster API infrastructure providers that might not be supported by the Machine API.
 
@@ -30,7 +34,9 @@ By using the Cluster API, OpenShift Container Platform users and developers gain
 
 ## Cluster API limitations
 
-Using the Cluster API to manage machines is a Technology Preview feature and has the following limitations:
+Using the Cluster API to manage machines is a Technology Preview feature and has specific limitations.
+
+These limitiations are listed as follows:
 
 - To use this feature, you must enable the `TechPreviewNoUpgrade` feature set.
 
@@ -62,17 +68,15 @@ Using the Cluster API to manage machines is a Technology Preview feature and has
 
 - [Referencing the intended objects when using the CLI](../../machine_management/cluster_api_machine_management/cluster-api-troubleshooting.xml#ts-capi-cli-reference-intended-objects_cluster-api-troubleshooting)
 
-# Cluster API architecture
-
-The OpenShift Container Platform integration of the upstream Cluster API is implemented and managed by the Cluster CAPI Operator. The Cluster CAPI Operator and its operands are provisioned in the `openshift-cluster-api` namespace, in contrast to the Machine API, which uses the `openshift-machine-api` namespace.
-
 ## The Cluster CAPI Operator
+
+The OpenShift Container Platform integration of the upstream Cluster API is implemented and managed by the Cluster CAPI Operator.
+
+The Cluster CAPI Operator and its operands are provisioned in the `openshift-cluster-api` namespace, in contrast to the Machine API, which uses the `openshift-machine-api` namespace.
 
 The Cluster CAPI Operator is an OpenShift Container Platform Operator that maintains the lifecycle of Cluster API resources. This Operator is responsible for all administrative tasks related to deploying the Cluster API project within an OpenShift Container Platform cluster.
 
-If a cluster is configured correctly to allow the use of the Cluster API, the Cluster CAPI Operator installs the Cluster API components on the cluster.
-
-For more information, see the "Cluster CAPI Operator" entry in the *Cluster Operators reference* content.
+If a cluster is configured correctly to allow the use of the Cluster API, the Cluster CAPI Operator installs the Cluster API components on the cluster. For more information, see the "Cluster CAPI Operator" entry in the *Cluster Operators reference* content.
 
 - [Cluster CAPI Operator](../../operators/operator-reference.xml#cluster-capi-operator_operator-reference)
 

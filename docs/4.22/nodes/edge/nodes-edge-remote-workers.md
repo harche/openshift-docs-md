@@ -18,7 +18,7 @@ Note the following limitations when planning a cluster with remote worker nodes:
 
 - Moving workloads from one Kubernetes zone to a different Kubernetes zone can be problematic due to system and environment issues, such as a specific type of memory not being available in a different zone.
 
-- Proxies and firewalls can present additional limitations that are beyond the scope of this document. See the relevant OpenShift Container Platform documentation for how to address such limitations, such as [Configuring your firewall](../../installing/install_config/configuring-firewall.xml#configuring-firewall).
+- Proxies and firewalls can present additional limitations that are beyond the scope of this document. See the relevant OpenShift Container Platform documentation for how to address such limitations, such as [Configuring your firewall](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall).
 
 - You are responsible for configuring and maintaining L2/L3-level network connectivity between the control plane and the network-edge nodes.
 

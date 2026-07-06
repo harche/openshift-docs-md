@@ -230,7 +230,7 @@ As a VM owner, you can adjust or disable the CPU hot plug for individual VMs. Th
 
 ## Disabling hot plugging for all VMs on a cluster
 
-If you are a cluster administrator and want to disable hot plugging for an entire cluster, you must modify the `spec.configuration.kubevirtConfiguration.developerConfiguration.maxHotplugRatio` setting in the `HyperConverged` custom resource (CR).
+If you are a cluster administrator and want to disable hot plugging for an entire cluster, you must modify the `spec.virtualization.liveUpdateConfiguration.maxHotplugRatio` setting in the `HyperConverged` custom resource (CR).
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -239,16 +239,16 @@ If you are a cluster administrator and want to disable hot plugging for an entir
 1.  Modify the `HyperConverged` CR and set the `maxHotplugRatio` value to `1.0`:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
       namespace: openshift-cnv
     spec:
       # ...
-      kubevirtConfiguration:
-        developerConfiguration:
-          maxHotplugRatio: 1.0
+      virtualization:
+        liveUpdateConfiguration:
+          maxHotplugRatio: 1
     # ...
     ```
 
@@ -263,7 +263,7 @@ If you are a cluster administrator and want to disable hot plugging for an entir
 1.  Check that you have configured the `maxHotplugRatio` value correctly, by running the following command:
 
     ``` terminal
-    $ oc get hyperconvergeds.v1beta1.hco.kubevirt.io -n openshift-cnv -o jsonpath='{.spec.liveUpdateConfiguration.maxHotplugRatio}'
+    $ oc get hco -n openshift-cnv -o jsonpath='{.spec.virtualization.liveUpdateConfiguration.maxHotplugRatio}'
     ```
 
     If the configuration was successful, the output is the `maxHotplugRatio` value that you set in the previous procedure:

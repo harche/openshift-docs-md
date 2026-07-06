@@ -16,33 +16,9 @@ You can use the hosted control plane command-line interface, `hcp`, to create an
 
 - [Disabling the automatic import of hosted clusters into multicluster engine Operator](../../hosted_control_planes/hcp-import.xml#hcp-import-disable_hcp-import)
 
-- [Enabling or disabling the hosted control planes feature](../../hosted_control_planes/hcp-prepare/hcp-enable-disable.xml#hcp-enable-disable)
+# Prerequisites to deploy hosted control planes on OpenShift Virtualization
 
-- [Configuring Ansible Automation Platform jobs to run on hosted clusters](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#ansible-config-hosted-cluster)
-
-# Requirements to deploy hosted control planes on OpenShift Virtualization
-
-As you prepare to deploy hosted control planes on OpenShift Virtualization, consider the following information:
-
-- Run the management cluster on bare metal.
-
-- Each hosted cluster must have a cluster-wide unique name.
-
-- Do not use `clusters` as a hosted cluster name.
-
-- A hosted cluster cannot be created in the namespace of a multicluster engine Operator managed cluster.
-
-- When you configure storage for hosted control planes, consider the recommended etcd practices. To ensure that you meet the latency requirements, dedicate a fast storage device to all hosted control plane etcd instances that run on each control-plane node. You can use LVM storage to configure a local storage class for hosted etcd pods. For more information, see "Recommended etcd practices" and "Persistent storage using Logical Volume Manager storage".
-
-<!-- -->
-
-- [Recommended etcd practices](../../etcd/etcd-practices.xml#recommended-etcd-practices)
-
-- [Persistent storage using Logical Volume Manager Storage](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#persistent-storage-using-lvms)
-
-## Prerequisites
-
-You must meet the following prerequisites to create an OpenShift Container Platform cluster on OpenShift Virtualization:
+To create an OpenShift Container Platform cluster on OpenShift Virtualization, you must meet several prerequisites.
 
 - You have administrator access to an OpenShift Container Platform cluster, version 4.14 or later, specified in the `KUBECONFIG` environment variable.
 
@@ -67,6 +43,10 @@ You must meet the following prerequisites to create an OpenShift Container Platf
     -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
   ```
 
+- When you configure storage for hosted control planes, consider the recommended etcd practices. To ensure that you meet the latency requirements, dedicate a fast storage device to all hosted control plane etcd instances that run on each control-plane node. You can use LVM storage to configure a local storage class for hosted etcd pods. For more information, see "Recommended etcd practices" and "Persistent storage using Logical Volume Manager storage".
+
+- On the OpenShift Container Platform cluster that hosts the OpenShift Virtualization virtual machines, you must use a `ReadWriteMany` (RWX) storage class so that live migration can be enabled.
+
 - You have a valid pull secret file for the `quay.io/openshift-release-dev` repository. For more information, see "Install OpenShift on any x86_64 platform with user-provisioned infrastructure".
 
 - You have installed the hosted control plane command-line interface.
@@ -87,7 +67,11 @@ You must meet the following prerequisites to create an OpenShift Container Platf
   $ oc get managedclusters local-cluster
   ```
 
-- On the OpenShift Container Platform cluster that hosts the OpenShift Virtualization virtual machines, you are using a `ReadWriteMany` (RWX) storage class so that live migration can be enabled.
+- Ensure each hosted cluster has a cluster-wide unique name.
+
+- Do not use `clusters` as a hosted cluster name.
+
+- Do not create a hosted cluster in the namespace of a multicluster engine Operator managed cluster.
 
 <!-- -->
 
@@ -100,6 +84,10 @@ You must meet the following prerequisites to create an OpenShift Container Platf
 - [Configuring MetalLB](../../hosted_control_planes/hcp-deploy/hcp-deploy-virt.xml#hcp-metallb_hcp-deploy-virt)
 
 - [Advanced configuration](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#advanced-config-engine)
+
+- [Recommended etcd practices](../../etcd/etcd-practices.xml#recommended-etcd-practices)
+
+- [Persistent storage using Logical Volume Manager Storage](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#persistent-storage-using-lvms)
 
 ## Firewall and port requirements
 
@@ -479,7 +467,9 @@ If you want to use predefined values to automatically populate fields in the con
 
 # Configuring the default ingress and DNS for hosted control planes on OpenShift Virtualization
 
-Every OpenShift Container Platform cluster includes a default application Ingress Controller, which must have an wildcard DNS record associated with it. By default, hosted clusters that are created by using OpenShift Virtualization automatically become a subdomain of the OpenShift Container Platform cluster that the virtual machines run on.
+Every OpenShift Container Platform cluster includes a default application Ingress Controller, which must have an wildcard DNS record associated with it.
+
+By default, hosted clusters that are created by using OpenShift Virtualization automatically become a subdomain of the OpenShift Container Platform cluster that the virtual machines run on.
 
 For example, your OpenShift Container Platform cluster might have the following default ingress DNS entry:
 
@@ -566,11 +556,11 @@ If you do not want to use the default ingress and DNS behavior, you can configur
 
 This option requires manual configuration steps during creation and involves three main steps: cluster creation, load balancer creation, and wildcard DNS configuration.
 
-## Deploying a hosted cluster that specifies the base domain
+## Creating a hosted cluster that specifies the base domain
 
-To create a hosted cluster that specifies a base domain, complete the following steps.
+If you do not want to use the default ingress and DNS behavior, you can configure a KubeVirt hosted cluster with a unique base domain at creation time.
 
-1.  Enter the following command:
+1.  Create the cluster by entering the following command:
 
     ``` terminal
     $ hcp create cluster kubevirt \
@@ -584,21 +574,21 @@ To create a hosted cluster that specifies a base domain, complete the following 
       --release-image <ocp_release_image_for_the_cluster>
     ```
 
-    - Specify the name of your hosted cluster.
+    - `--name` specifies the name of your hosted cluster.
 
-    - Specify the worker count, for example, `2`.
+    - `--node-pool-replicas` specifies the worker count, for example, `2`.
 
-    - Specify the path to your pull secret, for example, `/user/name/pullsecret`.
+    - `--pull-secret` specifies the path to your pull secret, for example, `/user/name/pullsecret`.
 
-    - Specify a value for memory, for example, `6Gi`.
+    - `--memory` specifies a value for memory, for example, `6Gi`.
 
-    - Specify a value for CPU, for example, `2`.
+    - `--cores` specifies a value for CPU, for example, `2`.
 
-    - Specify the base domain, for example, `hypershift.lab`.
+    - `--base-domain` specifies the base domain, for example, `hypershift.lab`.
 
-    - Specify the architecture of the node pool, for example, `s390x`. The default is `amd64`.
+    - `--arch` specifies the architecture of the node pool, for example, `s390x`. The default is `amd64`.
 
-    - Specify the ocp release image for the cluster, for example, `quay.io/openshift-release-dev/ocp-release:4.20.14-multi`.
+    - `--release-image` specifies the ocp release image for the cluster, for example, `quay.io/openshift-release-dev/ocp-release:4.20.14-multi`.
 
       As a result, the hosted cluster has an ingress wildcard that is configured for the cluster name and the base domain, for example, `.apps.example.hypershift.lab`. The hosted cluster remains in `Partial` status because after you create a hosted cluster with unique base domain, you must configure the required DNS records and load balancer.
 
@@ -646,19 +636,13 @@ To create a hosted cluster that specifies a base domain, complete the following 
 
     Replace `<4.x.0>` with the supported OpenShift Container Platform version that you want to use.
 
-<div class="formalpara-title">
+3.  To fix any errors in the output, complete the steps in "Setting up the load balancer" and "Setting up a wildcard DNS".
 
-**Next steps**
+    <div class="note">
 
-</div>
+    If your hosted cluster is on bare metal, you might need MetalLB to set up load balancer services. For more information, see "Configuring MetalLB".
 
-To fix the errors in the output, complete the steps in "Setting up the load balancer" and "Setting up a wildcard DNS".
-
-<div class="note">
-
-If your hosted cluster is on bare metal, you might need MetalLB to set up load balancer services. For more information, see "Configuring MetalLB".
-
-</div>
+    </div>
 
 ## Setting up the load balancer
 
@@ -711,9 +695,11 @@ Set up the load balancer service that routes ingress traffic to the KubeVirt VMs
       type: LoadBalancer
     ```
 
-    - Specify the HTTPS node port value that you noted in the previous step.
+    where:
 
-    - Specify the HTTP node port value that you noted in the previous step.
+    - `<https_node_port>` specifies the HTTPS node port value that you noted in the previous step.
+
+    - `<http_node_port>` specifies the HTTP node port value that you noted in the previous step.
 
 3.  Create the load balancer service by running the following command:
 
@@ -723,7 +709,7 @@ Set up the load balancer service that routes ingress traffic to the KubeVirt VMs
 
 ## Setting up a wildcard DNS
 
-Set up a wildcard DNS record or CNAME that references the external IP of the load balancer service.
+If you are customizing the ingress and DNS for your hosted cluster, you need to set up a wildcard DNS record or CNAME that references the external IP of the load balancer service.
 
 1.  Get the external IP address by entering the following command:
 
@@ -889,7 +875,7 @@ By default, KubeVirt VMs might share their CPUs with other workloads on a node. 
 
 ## Scheduling KubeVirt VMs on a set of nodes
 
-By default, KubeVirt VMs created by a node pool are scheduled to any available nodes. You can schedule KubeVirt VMs on a specific set of nodes that has enough capacity to run the VM.
+By default, KubeVirt virtual machines (VMs) created by a node pool are scheduled to any available nodes. You can schedule KubeVirt VMs on a specific set of nodes that has enough capacity to run the VM.
 
 - To schedule KubeVirt VMs within a node pool on a specific set of nodes, use the `--vm-node-selector` argument by running the following command:
 
@@ -903,21 +889,21 @@ By default, KubeVirt VMs created by a node pool are scheduled to any available n
     --vm-node-selector <label_key>=<label_value>,<label_key>=<label_value>
   ```
 
-  - Specify the name of your hosted cluster, for example, `my-hosted-cluster`.
+  - `--name` specifies the name of your hosted cluster, for example, `my-hosted-cluster`.
 
-  - Specify your worker node count, for example, `2`.
+  - `--node-pool-replicas` specifies your worker node count, for example, `2`.
 
-  - Specify the path to your pull secret, for example, `/user/name/pullsecret`.
+  - `--pull-secret` specifies the path to your pull secret, for example, `/user/name/pullsecret`.
 
-  - Specify the memory value, for example, `8Gi`.
+  - `--memory` specifies the memory value, for example, `8Gi`.
 
-  - Specify the CPU value, for example, `2`.
+  - `--cores` specifies the CPU value, for example, `2`.
 
-  - The `--vm-node-selector` flag defines a specific set of nodes that contains the key-value pairs. Replace `<label_key>` with the keys of your labels and replace `<label_value>` with the values of your labels.
+  - `--vm-node-selector` defines a specific set of nodes that contains the key-value pairs. Replace `<label_key>` with the keys of your labels and replace `<label_value>` with the values of your labels.
 
 # Scaling a node pool
 
-You can manually scale a node pool by using the `oc scale` command.
+You can manually scale a node pool for a hosted cluster on OpenShift Virtualization by using the `oc scale` command.
 
 1.  Run the following command:
 
@@ -1089,7 +1075,7 @@ You can create node pools for a hosted cluster by specifying a name, number of r
 
 # Verifying hosted cluster creation on OpenShift Virtualization
 
-To verify that your hosted cluster was successfully created, complete the following steps.
+After you create a hosted cluster on OpenShift Virtualization, verify that it was successfully created.
 
 1.  Verify that the `HostedCluster` resource transitioned to the `completed` state by entering the following command:
 

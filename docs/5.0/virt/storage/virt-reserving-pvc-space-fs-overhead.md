@@ -19,30 +19,31 @@ You can change the default file system overhead value by editing the `HyperConve
 
 # Overriding the default file system overhead value
 
-Change the amount of persistent volume claim (PVC) space that the OpenShift Virtualization reserves for file system overhead by editing the `spec.filesystemOverhead` attribute of the `HCO` object.
+Change the amount of persistent volume claim (PVC) space that the OpenShift Virtualization reserves for file system overhead by editing the `spec.storage.filesystemOverhead` attribute of the `HCO` object.
 
 - Install the OpenShift CLI (`oc`).
 
 1.  Open the `HCO` object for editing by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
-2.  Edit the `spec.filesystemOverhead` fields, populating them with your chosen values:
+2.  Edit the `spec.storage.filesystemOverhead` fields, populating them with your chosen values:
 
     ``` yaml
     # ...
     spec:
-      filesystemOverhead:
-        global: "<new_global_value>"
-        storageClass:
-          <storage_class_name>: "<new_value_for_this_storage_class>"
+      storage:
+        filesystemOverhead:
+          global: "<new_global_value>"
+          storageClass:
+            <storage_class_name>: "<new_value_for_this_storage_class>"
     ```
 
-    - `spec.filesystemOverhead.global` specifies the default file system overhead percentage used for any storage classes that do not already have a set value. For example, `global: "0.07"` reserves 7% of the PVC for file system overhead.
+    - `spec.storage.filesystemOverhead.global` specifies the default file system overhead percentage used for any storage classes that do not already have a set value. For example, `global: "0.07"` reserves 7% of the PVC for file system overhead.
 
-    - `spec.filesystemOverhead.storageClass` specifies the file system overhead percentage for the specified storage class. For example, `mystorageclass: "0.04"` changes the default overhead value for PVCs in the `mystorageclass` storage class to 4%.
+    - `spec.storage.filesystemOverhead.storageClass` specifies the file system overhead percentage for the specified storage class. For example, `mystorageclass: "0.04"` changes the default overhead value for PVCs in the `mystorageclass` storage class to 4%.
 
 3.  Save and exit the editor to update the `HCO` object.
 

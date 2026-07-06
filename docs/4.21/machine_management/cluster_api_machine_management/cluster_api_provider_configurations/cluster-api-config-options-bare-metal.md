@@ -30,19 +30,25 @@ spec:
         name: worker-user-data-managed
 ```
 
-- Specify the machine template kind. This value must match the value for your platform.
+where:
 
-- Specify a name for the machine template.
+`kind`
+Specifies the machine template kind. This value must match the value for your platform.
 
-- Specify the details for your environment. The values here are examples.
+`metadata.name`
+Specifies a name for the machine template.
 
-- The `userData` parameter refers to the Ignition configuration, which the Machine API Operator generates during installation. You must apply the `openshift-cluster-api` namespace to ensure the cluster can access the secret by running the following command:
+`spec.template.spec`
+Specifies the details for your environment. The values here are examples.
 
-  ``` terminal
-  $ oc get secret worker-user-data-managed \
-    -n openshift-machine-api -o yaml | \
-    sed 's/namespace: .*/namespace: openshift-cluster-api/' | oc apply -f -
-  ```
+`spec.template.spec.userData.name`
+Specifies the Ignition configuration, which the Machine API Operator generates during installation. You must apply the `openshift-cluster-api` namespace to ensure the cluster can access the secret by running the following command:
+
+``` terminal
+$ oc get secret worker-user-data-managed \
+  -n openshift-machine-api -o yaml | \
+  sed 's/namespace: .*/namespace: openshift-cluster-api/' | oc apply -f -
+```
 
 ## Sample YAML for a Cluster API compute machine set resource on bare metal
 
@@ -81,10 +87,16 @@ spec:
         name: <template_name>
 ```
 
-- Specify a name for the compute machine set. The cluster ID, machine role, and region form a typical pattern for this value in the following format: `<cluster_name>-<role>-<region>`.
+where:
 
-- Specify the cluster ID as the name of the cluster.
+`metadata.name`
+Specifies a name for the compute machine set. The cluster ID, machine role, and region form a typical pattern for this value in the following format: `<cluster_name>-<role>-<region>`.
 
-- Specify the machine template kind. This value must match the value for your platform.
+`metadata.labels.cluster.x-k8s.io/cluster-name`
+Specifies the cluster ID as the name of the cluster.
 
-- Specify the machine template name.
+`spec.template.spec.infrastructureRef.kind`
+Specifies the machine template kind. This value must match the value for your platform.
+
+`spec.template.spec.infrastructureRef.name`
+Specifies the machine template name.

@@ -180,12 +180,6 @@ Follow this process to completely wipe the CRI-O storage and resolve the errors.
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     NAME                 STATUS                  ROLES    AGE    VERSION
     ci-ln-tkbxyft-f76d1-nvwhr-master-1  Ready, SchedulingDisabled   master   133m   v1.34.2
@@ -196,12 +190,6 @@ Follow this process to completely wipe the CRI-O storage and resolve the errors.
     ``` terminal
     $ oc adm uncordon <node_name>
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     NAME                  STATUS       ROLES    AGE    VERSION

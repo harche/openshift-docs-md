@@ -1,4 +1,4 @@
-As a cluster administrator, you can expose USB devices in a cluster, which makes the devices available for virtual machine (VM) owners to assign to VMs. Enabling this passthrough of USB devices allows a VM to connect to USB hardware that is attached to an OpenShift Container Platform node, as if the hardware and the VM are physically connected.
+You can expose USB devices in a cluster to make devices available for virtual machine (VM) owners to assign to VMs. Enabling this passthrough of USB devices allows a VM to connect to USB hardware that is attached to an OpenShift Container Platform node, as if the hardware and the VM are physically connected.
 
 To expose a USB device, first enable host passthrough and then configure the VM to use the USB device.
 
@@ -52,35 +52,36 @@ To do this, specify a resource name and USB device name for each device you want
 2.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
 3.  Add the required USB device to the `permittedHostDevices` stanza of the `HyperConvered` CR. The following example adds a device with vendor ID `045e` and product ID `07a5`:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
       namespace: openshift-cnv
     spec:
-      permittedHostDevices:
-        usbHostDevices:
-        - resourceName: kubevirt.io/peripherals
-          selectors:
-          - vendor: "045e"
-            product: "07a5"
-          - vendor: "062a"
-            product: "4102"
-          - vendor: "072f"
-            product: "b100"
+      virtualization:
+        permittedHostDevices:
+          usbHostDevices:
+          - resourceName: kubevirt.io/peripherals
+            selectors:
+            - vendor: "045e"
+              product: "07a5"
+            - vendor: "062a"
+              product: "4102"
+            - vendor: "072f"
+              product: "b100"
     ```
 
-    - `spec.permittedHostDevices` defines the host devices that have permission to be used in the cluster.
+    - `spec.virtualization.permittedHostDevices` defines the host devices that have permission to be used in the cluster.
 
-    - `spec.permittedHostDevices.usbHostDevices` defines a list of available USB devices.
+    - `spec.virtualization.permittedHostDevices.usbHostDevices` defines a list of available USB devices.
 
-    - `spec.permittedHostDevices.usbHostDevices.resourceName` defines the USB device that you want to add and assign to the VM. In this example, the resource is bound to three devices, each of which is identified by `vendor` and `product` and is known as a `selector`.
+    - `spec.virtualization.permittedHostDevices.usbHostDevices.resourceName` defines the USB device that you want to add and assign to the VM. In this example, the resource is bound to three devices, each of which is identified by `vendor` and `product` and is known as a `selector`.
 
 # Connecting a USB device to a virtual machine
 
@@ -93,7 +94,7 @@ You can configure virtual machine (VM) access to a USB device. This configuratio
 1.  In the `HyperConverged` custom resource (CR), find the assigned resource name of the USB device:
 
     ``` terminal
-    $ oc get hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc get hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
     Example output:

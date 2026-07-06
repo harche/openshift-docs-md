@@ -36,7 +36,7 @@ The AAQ Operator introduces two new API objects defined as custom resource defin
 
   - `spec.hard.requests.memory/vmi` defines the maximum amount of RAM that is allowed for VM workloads in the default namespace.
 
-- `ApplicationAwareClusterResourceQuota`: Mirrors the `ApplicationAwareResourceQuota` object at a cluster scope. It is compatible with the native `ClusterResourceQuota` API object and shares the same specification and status definitions. When creating an AAQ cluster quota, you can select multiple namespaces based on annotation selection, label selection, or both by editing the `spec.selector.labels` or `spec.selector.annotations` fields. You can only create an `ApplicationAwareClusterResourceQuota` object if the `spec.applicationAwareConfig.allowApplicationAwareClusterResourceQuota` field in the `HyperConverged` custom resource (CR) is set to `true`.
+- `ApplicationAwareClusterResourceQuota`: Mirrors the `ApplicationAwareResourceQuota` object at a cluster scope. It is compatible with the native `ClusterResourceQuota` API object and shares the same specification and status definitions. When creating an AAQ cluster quota, you can select multiple namespaces based on annotation selection, label selection, or both by editing the `spec.selector.labels` or `spec.selector.annotations` fields. You can only create an `ApplicationAwareClusterResourceQuota` object if the `spec.deployment.applicationAwareConfig.allowApplicationAwareClusterResourceQuota` field in the `HyperConverged` custom resource (CR) is set to `true`.
 
   Example manifest:
 
@@ -72,7 +72,7 @@ If the CPU and memory requests and limits for the workload exceed the enforced q
 
 <div class="important">
 
-Pods that have the `spec.nodeName` field set to a specific node cannot use namespaces that match the `spec.namespaceSelector` labels defined in the `HyperConverged` CR.
+Pods that have the `spec.nodeName` field set to a specific node cannot use namespaces that match the `spec.deployment.applicationAwareConfig.namespaceSelector` labels defined in the `HyperConverged` CR.
 
 </div>
 
@@ -108,7 +108,7 @@ Enable the Application Aware Quota (AAQ) operator to manage resource quotas to e
 
 # Configuring the AAQ Operator by using the CLI
 
-You can configure the AAQ Operator by specifying the fields of the `spec.applicationAwareConfig` object in the `HyperConverged` custom resource (CR).
+You can configure the AAQ Operator by specifying the fields of the `spec.deployment.applicationAwareConfig` object in the `HyperConverged` custom resource (CR).
 
 - You have access to the cluster as a user with `cluster-admin` privileges.
 
@@ -119,16 +119,19 @@ You can configure the AAQ Operator by specifying the fields of the `spec.applica
 - Update the `HyperConverged` CR by running the following command:
 
   ``` terminal
-  $ oc patch hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv --type merge -p '{
+  $ oc patch hco kubevirt-hyperconverged -n openshift-cnv --type merge -p '{
     "spec": {
-      "applicationAwareConfig": {
-        "vmiCalcConfigName": "DedicatedVirtualResources",
-        "namespaceSelector": {
-          "matchLabels": {
-            "app": "my-app"
-          }
-        },
-        "allowApplicationAwareClusterResourceQuota": true
+      "deployment": {
+        "applicationAwareConfig": {
+          "enable": true,
+          "vmiCalcConfigName": "DedicatedVirtualResources",
+          "namespaceSelector": {
+            "matchLabels": {
+              "app": "my-app"
+            }
+          },
+          "allowApplicationAwareClusterResourceQuota": true
+        }
       }
     }
   }'

@@ -22,7 +22,7 @@ The example Windows pipeline is located in the pipeline catalog (ArtifactHub).
 
 # Supported virtual machine tasks
 
-Automate virtual machine (VM) provisioning and management in your CI/CD workflows with OpenShift Pipelines tasks designed for virtualization. These tasks allow you to create, configure, and manipulate VMs and their disks as part of your automated deployment pipelines, streamlining VM lifecycle management.
+Automate virtual machine (VM) provisioning and management in your CI/CD workflows with OpenShift Pipelines tasks designed for virtualization. These tasks allow you to manage VMs and their disks as part of your automated deployment pipelines, streamlining VM lifecycle management.
 
 | Task                      | Description                                                                                       |
 |---------------------------|---------------------------------------------------------------------------------------------------|

@@ -18,21 +18,21 @@ Custom boot sources are not affected by this setting.
 
 - Enable or disable automatic boot source updates by editing the `HyperConverged` custom resource (CR).
 
-  - To disable automatic boot source updates, set the `spec.enableCommonBootImageImport` field value in the `HyperConverged` CR to `false`. For example:
+  - To disable automatic boot source updates, set the `spec.workloadSources.enableCommonBootImageImport` field value in the `HyperConverged` CR to `false`. For example:
 
     ``` terminal
-    $ oc patch hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv \
+    $ oc patch hco kubevirt-hyperconverged -n openshift-cnv \
       --type json -p '[{"op": "replace", "path": \
-      "/spec/enableCommonBootImageImport", \
+      "/spec/workloadSources/enableCommonBootImageImport", \
       "value": false}]'
     ```
 
-  - To re-enable automatic boot source updates, set the `spec.enableCommonBootImageImport` field value in the `HyperConverged` CR to `true`. For example:
+  - To re-enable automatic boot source updates, set the `spec.workloadSources.enableCommonBootImageImport` field value in the `HyperConverged` CR to `true`. For example:
 
     ``` terminal
-    $ oc patch hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv \
+    $ oc patch hco kubevirt-hyperconverged -n openshift-cnv \
       --type json -p '[{"op": "replace", "path": \
-      "/spec/enableCommonBootImageImport", \
+      "/spec/workloadSources/enableCommonBootImageImport", \
       "value": true}]'
     ```
 
@@ -107,35 +107,36 @@ To ensure stable behavior and avoid unnecessary re-importing, you can specify th
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
 2.  Add the `dataImportCronTemplate` to the spec section of the `HyperConverged` resource and set the `storageClassName`:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
     spec:
-      dataImportCronTemplates:
-      - metadata:
-          name: rhel9-image-cron
-        spec:
-          template:
-            spec:
-              storage:
-                storageClassName: <storage_class>
-          schedule: "0 */12 * * *"
-          managedDataSource: <data_source>
+      workloadSources:
+        dataImportCronTemplates:
+        - metadata:
+            name: rhel9-image-cron
+          spec:
+            template:
+              spec:
+                storage:
+                  storageClassName: <storage_class>
+            schedule: "0 */12 * * *"
+            managedDataSource: <data_source>
     # ...
     ```
 
-    - `spec.dataImportCronTemplates.spec.template.spec.storage.storageClassName` specifies the storage class.
+    - `spec.workloadSources.dataImportCronTemplates.spec.template.spec.storage.storageClassName` specifies the storage class.
 
-    - `spec.dataImportCronTemplates.spec.schedule` is a required field that specifies the schedule for the job in cron format.
+    - `spec.workloadSources.dataImportCronTemplates.spec.schedule` is a required field that specifies the schedule for the job in cron format.
 
-    - `spec.dataImportCronTemplates.spec.managedDataSource` is a required field that specifies the data source to use.
+    - `spec.workloadSources.dataImportCronTemplates.spec.managedDataSource` is a required field that specifies the data source to use.
 
       <div class="note">
 
@@ -168,44 +169,45 @@ OpenShift Virtualization automatically updates system-defined boot sources by de
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
-2.  Edit the `HyperConverged` CR, adding the appropriate template and boot source in the `dataImportCronTemplates` section. For example:
+2.  Edit the `HyperConverged` CR, adding the appropriate template and boot source in the `workloadSources.dataImportCronTemplates` section. For example:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
     spec:
-      dataImportCronTemplates:
-      - metadata:
-          name: centos-stream9-image-cron
-          annotations:
-            cdi.kubevirt.io/storage.bind.immediate.requested: "true"
-        spec:
-          schedule: "0 */12 * * *"
-          template:
-            spec:
-              source:
-                registry:
-                  url: docker://quay.io/containerdisks/centos-stream:9
-              storage:
-                resources:
-                  requests:
-                    storage: 30Gi
-          garbageCollect: Outdated
-          managedDataSource: centos-stream9
+      workloadSources:
+        dataImportCronTemplates:
+        - metadata:
+            name: centos-stream9-image-cron
+            annotations:
+              cdi.kubevirt.io/storage.bind.immediate.requested: "true"
+          spec:
+            schedule: "0 */12 * * *"
+            template:
+              spec:
+                source:
+                  registry:
+                    url: docker://quay.io/containerdisks/centos-stream:9
+                storage:
+                  resources:
+                    requests:
+                      storage: 30Gi
+            garbageCollect: Outdated
+            managedDataSource: centos-stream9
     ```
 
-    - `spec.dataImportCronTemplates.metadata.annotations` specifies a required annotation for storage classes with `volumeBindingMode` set to `WaitForFirstConsumer`.
+    - `spec.workloadSources.dataImportCronTemplates.metadata.annotations` specifies a required annotation for storage classes with `volumeBindingMode` set to `WaitForFirstConsumer`.
 
-    - `spec.dataImportCronTemplates.spec.schedule` specifies the schedule for the job, specified in cron format.
+    - `spec.workloadSources.dataImportCronTemplates.spec.schedule` specifies the schedule for the job, specified in cron format.
 
-    - `spec.dataImportCronTemplates.spec.template.spec.source.registry` specifies the registry source to use to create a data volume. Use the default `pod` `pullMethod` and not `node` `pullMethod`, which is based on the `node` docker cache. The `node` docker cache is useful when a registry image is available via `Container.Image`, but the CDI importer is not authorized to access it.
+    - `spec.workloadSources.dataImportCronTemplates.spec.template.spec.source.registry` specifies the registry source to use to create a data volume. Use the default `pod` `pullMethod` and not `node` `pullMethod`, which is based on the `node` docker cache. The `node` docker cache is useful when a registry image is available via `Container.Image`, but the CDI importer is not authorized to access it.
 
-    - `spec.dataImportCronTemplates.spec.managedDataSource` specifies the name of the managed data source. For the custom image to be detected as an available boot source, the name of the image’s `managedDataSource` must match the name of the template’s `DataSource`, which is found under `spec.dataVolumeTemplates.spec.sourceRef.name` in the VM template YAML file.
+    - `spec.workloadSources.dataImportCronTemplates.spec.managedDataSource` specifies the name of the managed data source. For the custom image to be detected as an available boot source, the name of the image’s `managedDataSource` must match the name of the template’s `DataSource`, which is found under `spec.dataVolumeTemplates.spec.sourceRef.name` in the VM template YAML file.
 
 3.  Save the file.
 
@@ -269,16 +271,16 @@ You can disable automatic updates for an individual boot source, whether it is c
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
-2.  Disable automatic updates for an individual boot source by editing the `spec.dataImportCronTemplates` field.
+2.  Disable automatic updates for an individual boot source by editing the `spec.workloadSources.dataImportCronTemplates` field.
 
     Custom boot source
-    - Remove the boot source from the `spec.dataImportCronTemplates` field. Automatic updates are disabled for custom boot sources by default.
+    - Remove the boot source from the `spec.workloadSources.dataImportCronTemplates` field. Automatic updates are disabled for custom boot sources by default.
 
     System-defined boot source
-    1.  Add the boot source to `spec.dataImportCronTemplates`.
+    1.  Add the boot source to `spec.workloadSources.dataImportCronTemplates`.
 
         <div class="note">
 
@@ -291,16 +293,17 @@ You can disable automatic updates for an individual boot source, whether it is c
         For example:
 
         ``` yaml
-        apiVersion: hco.kubevirt.io/v1beta1
+        apiVersion: hco.kubevirt.io/v1
         kind: HyperConverged
         metadata:
           name: kubevirt-hyperconverged
         spec:
-          dataImportCronTemplates:
-          - metadata:
-              annotations:
-                dataimportcrontemplate.kubevirt.io/enable: 'false'
-              name: rhel8-image-cron
+          workloadSources:
+            dataImportCronTemplates:
+            - metadata:
+                annotations:
+                  dataimportcrontemplate.kubevirt.io/enable: 'false'
+                name: rhel8-image-cron
         # ...
         ```
 
@@ -321,25 +324,26 @@ Manually deleting older `PersistentVolumeClaim` or `DataVolume` objects associat
 1.  Open the `HyperConverged` custom resource (CR) in your default editor:
 
     ``` terminal
-    $ oc edit hyperconverged kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
-2.  Edit the `spec.dataImportCronTemplates` field to adjust the `importsToKeep` parameter to your preferred retention threshold:
+2.  Edit the `spec.workloadSources.dataImportCronTemplates` field to adjust the `importsToKeep` parameter to your preferred retention threshold:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
     spec:
-      dataImportCronTemplates:
-        - metadata:
-            name: rhel9-image-cron
-          spec:
-            garbageCollect: Outdated
-            importsToKeep: 3
-            schedule: "0 */12 * * *"
-            managedDataSource: rhel9
+      workloadSources:
+        dataImportCronTemplates:
+          - metadata:
+              name: rhel9-image-cron
+            spec:
+              garbageCollect: Outdated
+              importsToKeep: 3
+              schedule: "0 */12 * * *"
+              managedDataSource: rhel9
     ```
 
 # Verifying the status of a boot source
@@ -351,13 +355,13 @@ You can determine if a boot source is system-defined or custom by viewing the `H
 1.  View the contents of the `HyperConverged` CR by running the following command:
 
     ``` terminal
-    $ oc get hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv -o yaml
+    $ oc get hco kubevirt-hyperconverged -n openshift-cnv -o yaml
     ```
 
     Example output:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged

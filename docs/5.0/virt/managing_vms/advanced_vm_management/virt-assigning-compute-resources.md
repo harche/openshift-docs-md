@@ -25,7 +25,7 @@ To change the default number of vCPUs mapped to each physical CPU, set the `vmiC
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
 2.  Set the `vmiCPUAllocationRatio`:
@@ -33,7 +33,7 @@ To change the default number of vCPUs mapped to each physical CPU, set the `vmiC
     ``` yaml
     ...
     spec:
-      resourceRequirements:
+      virtualization:
         vmiCPUAllocationRatio: 1
     # ...
     ```

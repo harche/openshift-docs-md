@@ -1,8 +1,10 @@
-Besides managing `MachineConfig` objects, the MCO manages two custom resources (CRs): `KubeletConfig` and `ContainerRuntimeConfig`. Those CRs let you change node-level settings impacting how the kubelet and CRI-O container runtime services behave.
+In addition to `MachineConfig` objects, you can use `KubeletConfig` or `ContainerRuntimeConfig` custom resources to change node-level settings that impact how the kubelet and CRI-O container runtime services behave.
+
+The kubelet configuration is currently serialized as an Ignition configuration, so it can be directly edited. However, there is also a new `kubelet-config-controller` added to the Machine Config Controller (MCC). This lets you use a `KubeletConfig` custom resource (CR) to edit the kubelet parameters.
 
 # Creating a KubeletConfig CR to edit kubelet parameters
 
-The kubelet configuration is currently serialized as an Ignition configuration, so it can be directly edited. However, there is also a new `kubelet-config-controller` added to the Machine Config Controller (MCC). This lets you use a `KubeletConfig` custom resource (CR) to edit the kubelet parameters.
+You can use a `KubeletConfig` custom resource (CR) to edit a kubelet parameters without modifing the kubelet configuration directly.
 
 <div class="note">
 
@@ -46,11 +48,7 @@ If you have a machine config with a `kubelet-9` suffix, and you create another `
 
 </div>
 
-<div class="formalpara-title">
-
-**Example `KubeletConfig` CR**
-
-</div>
+The following example command and output show a `KubeletConfig` CR:
 
 ``` terminal
 $ oc get kubeletconfig
@@ -61,11 +59,7 @@ NAME                      AGE
 set-kubelet-config        15m
 ```
 
-<div class="formalpara-title">
-
-**Example showing a `KubeletConfig` machine config**
-
-</div>
+The following example command and output show a `KubeletConfig` machine config:
 
 ``` terminal
 $ oc get mc | grep kubelet
@@ -109,7 +103,7 @@ The following procedure is an example to show how to configure the maximum numbe
             custom-kubelet: set-kubelet-config
         ```
 
-        - If a label has been added it appears under `labels`.
+        The `metadata.labels` parameter specifies labels you can use with a `KubeletConfig` CR.
 
     2.  If the label is not present, add a key/value pair:
 
@@ -182,36 +176,40 @@ The following procedure is an example to show how to configure the maximum numbe
               maxPods: 500
         ```
 
-        - Enter the label from the machine config pool.
+        where:
 
-        - Add the kubelet configuration. For example:
+        `spec.machineConfigPoolSelector.matchLabels`
+        Specifies the label from the machine config pool.
 
-          - Use `podPidsLimit` to set the maximum number of PIDs in any pod.
+        `spec.kubeletConfig`
+        Specifies the kubelet configuration. For example:
 
-          - Use `containerLogMaxSize` to set the maximum size of the container log file before it is rotated.
+        - Use `podPidsLimit` to set the maximum number of PIDs in any pod.
 
-          - Use `maxPods` to set the maximum pods per node.
+        - Use `containerLogMaxSize` to set the maximum size of the container log file before it is rotated.
 
-            <div class="note">
+        - Use `maxPods` to set the maximum pods per node.
 
-            The rate at which the kubelet talks to the API server depends on queries per second (QPS) and burst values. The default values, `50` for `kubeAPIQPS` and `100` for `kubeAPIBurst`, are sufficient if there are limited pods running on each node. It is recommended to update the kubelet QPS and burst rates if there are enough CPU and memory resources on the node.
+          <div class="note">
 
-            ``` yaml
-            apiVersion: machineconfiguration.openshift.io/v1
-            kind: KubeletConfig
-            metadata:
-              name: set-kubelet-config
-            spec:
-              machineConfigPoolSelector:
-                matchLabels:
-                  custom-kubelet: set-kubelet-config
-              kubeletConfig:
-                maxPods: <pod_count>
-                kubeAPIBurst: <burst_rate>
-                kubeAPIQPS: <QPS>
-            ```
+          The rate at which the kubelet talks to the API server depends on queries per second (QPS) and burst values. The default values, `50` for `kubeAPIQPS` and `100` for `kubeAPIBurst`, are sufficient if there are limited pods running on each node. It is recommended to update the kubelet QPS and burst rates if there are enough CPU and memory resources on the node.
 
-            </div>
+          ``` yaml
+          apiVersion: machineconfiguration.openshift.io/v1
+          kind: KubeletConfig
+          metadata:
+            name: set-kubelet-config
+          spec:
+            machineConfigPoolSelector:
+              matchLabels:
+                custom-kubelet: set-kubelet-config
+            kubeletConfig:
+              maxPods: <pod_count>
+              kubeAPIBurst: <burst_rate>
+              kubeAPIQPS: <QPS>
+          ```
+
+          </div>
 
     2.  Update the machine config pool for workers with the label:
 
@@ -269,7 +267,7 @@ The following procedure is an example to show how to configure the maximum numbe
          ...
         ```
 
-        - In this example, the `pods` parameter should report the value you set in the `KubeletConfig` object.
+        In this example, the `pods` parameter should report the value you set in the `KubeletConfig` object.
 
 3.  Verify the change in the `KubeletConfig` object:
 
@@ -298,7 +296,9 @@ The following procedure is an example to show how to configure the maximum numbe
 
 # Creating a ContainerRuntimeConfig CR to edit CRI-O parameters
 
-You can change some of the settings associated with the OpenShift Container Platform CRI-O runtime for the nodes associated with a specific machine config pool (MCP). Using a `ContainerRuntimeConfig` custom resource (CR), you set the configuration values and add a label to match the MCP. The MCO then rebuilds the `crio.conf` and `storage.conf` configuration files on the associated nodes with the updated values.
+You can change some of the settings associated with the OpenShift Container Platform CRI-O runtime for the nodes associated with a specific machine config pool (MCP) by using a `ContainerRuntimeConfig` custom resource (CR).
+
+With a `ContainerRuntimeConfig` CR, you set the configuration values and add a label to match the MCP. The MCO then rebuilds the `crio.conf` and `storage.conf` configuration files on the associated nodes with the updated values.
 
 <div class="note">
 
@@ -328,21 +328,11 @@ If you have a machine config with a `containerruntime-9` suffix, and you create 
 
 </div>
 
-<div class="formalpara-title">
-
-**Example showing multiple `ContainerRuntimeConfig` CRs**
-
-</div>
+The following example command and output show multiple `ContainerRuntimeConfig` CRs:
 
 ``` terminal
 $ oc get ctrcfg
 ```
-
-<div class="formalpara-title">
-
-**Example output**
-
-</div>
 
 ``` terminal
 NAME         AGE
@@ -350,21 +340,11 @@ ctr-overlay  15m
 ctr-level    5m45s
 ```
 
-<div class="formalpara-title">
-
-**Example showing multiple `containerruntime` machine configs**
-
-</div>
+The following example command and output show multiple `containerruntime` machine configs:
 
 ``` terminal
 $ oc get mc | grep container
 ```
-
-<div class="formalpara-title">
-
-**Example output**
-
-</div>
 
 ``` terminal
 ...
@@ -379,12 +359,6 @@ $ oc get mc | grep container
 ```
 
 The following example sets the `log_level` field to `debug`, sets the overlay size to 8 GB, and configures runC as the container runtime:
-
-<div class="formalpara-title">
-
-**Example `ContainerRuntimeConfig` CR**
-
-</div>
 
 ``` yaml
 apiVersion: machineconfiguration.openshift.io/v1
@@ -401,21 +375,21 @@ spec:
    defaultRuntime: "runc"
 ```
 
-- Specifies the machine config pool label. For a container runtime config, the role must match the name of the associated machine config pool.
+where:
 
-- Optional: Specifies the level of verbosity for log messages.
+`spec.machineConfigPoolSelector.matchLabels`
+Specifies the machine config pool label. For a container runtime config, the role must match the name of the associated machine config pool.
 
-- Optional: Specifies the maximum size of a container image.
+`spec.containerRuntimeConfig.logLevel`
+Specifies the level of verbosity for log messages. This parameter is optional.
 
-- Optional: Specifies the container runtime to deploy to new containers, either `crun` or `runc`. The default value is `crun`.
+`spec.containerRuntimeConfig.overlaySize`
+Specifies the maximum size of a container image. This parameter is optional.
 
-<div class="formalpara-title">
+`spec.containerRuntimeConfig.defaultRuntime`
+Specifies the container runtime to deploy to new containers, either `crun` or `runc`. The default value is `crun`. This parameter is optional.
 
-**Procedure**
-
-</div>
-
-To change CRI-O settings using the `ContainerRuntimeConfig` CR:
+The following procedure shows how to change CRI-O settings by using a `ContainerRuntimeConfig` CR.
 
 1.  Create a YAML file for the `ContainerRuntimeConfig` CR:
 
@@ -434,9 +408,13 @@ To change CRI-O settings using the `ContainerRuntimeConfig` CR:
        defaultRuntime: "runc"
     ```
 
-    - Specify a label for the machine config pool that you want you want to modify.
+    where:
 
-    - Set the parameters as needed.
+    `spec.machineConfigPoolSelector.matchLabels`
+    Set a label for the machine config pool that you want you want to modify.
+
+    `spec.containerRuntimeConfig`
+    Set the parameters as needed.
 
 2.  Create the `ContainerRuntimeConfig` CR:
 
@@ -648,7 +626,9 @@ If you updated your cluster from OpenShift Container Platform 4.17, the runc con
 
 # Setting the default maximum container root partition size for Overlay with CRI-O
 
-The root partition of each container shows all of the available disk space of the underlying host. Follow this guidance to set a maximum partition size for the root disk of all containers.
+You can use a `ContainerRuntimeConfig` custom resource (CR) to set a maximum partition size for the root disk of all containers.
+
+The root partition of each container shows all of the available disk space of the underlying host.
 
 To configure the maximum Overlay size, as well as other CRI-O options like the log level, you can create the following `ContainerRuntimeConfig` custom resource definition (CRD):
 
@@ -777,7 +757,9 @@ spec:
 
 # Creating a drop-in file for the default CRI-O capabilities
 
-You can change some of the settings associated with the OpenShift Container Platform CRI-O runtime for the nodes associated with a specific machine config pool (MCP). By using a controller custom resource (CR), you set the configuration values and add a label to match the MCP. The Machine Config Operator (MCO) then rebuilds the `crio.conf` and `default.conf` configuration files on the associated nodes with the updated values.
+You can change some of the settings associated with the OpenShift Container Platform CRI-O runtime for the nodes associated with a specific machine config pool (MCP) by using a controller custom resource (CR).
+
+You set the configuration values and add a label to match the MCP in a `ContainerRuntimeConfig` CR. The Machine Config Operator (MCO) then rebuilds the `crio.conf` and `default.conf` configuration files on the associated nodes with the updated values.
 
 Earlier versions of OpenShift Container Platform included specific machine configs by default. If you updated to a later version of OpenShift Container Platform, those machine configs were retained to ensure that clusters running on the same OpenShift Container Platform version have the same machine configs.
 
@@ -827,7 +809,7 @@ $ cat /proc/1/status | grep Cap
 $ capsh --decode=<decode_CapBnd_value>
 ```
 
-- Replace `<decode_CapBnd_value>` with the specific value you want to decode.
+Replace `<decode_CapBnd_value>` with the specific value you want to decode.
 
 # Additional resources
 

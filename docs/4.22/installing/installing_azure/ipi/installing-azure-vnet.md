@@ -121,7 +121,7 @@ Because the cluster is unable to modify network security groups in an existing s
 
 - [About the OVN-Kubernetes network plugin](../../../networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.xml#about-ovn-kubernetes)
 
-- [Configuring your firewall](../../../installing/install_config/configuring-firewall.xml#configuring-firewall)
+- [Configuring your firewall](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
 
 # Creating the installation configuration file
 

@@ -8,11 +8,9 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 </div>
 
-# Sample YAML for configuring Microsoft Azure clusters
-
 The following example YAML files show configurations for an Azure cluster.
 
-## Sample YAML for a Cluster API machine template resource on Microsoft Azure
+# Sample YAML for a Cluster API machine template resource on Microsoft Azure
 
 The machine template resource is provider-specific and defines the basic properties of the machines that a compute machine set creates. The compute machine set references this template when creating machines.
 
@@ -44,23 +42,29 @@ spec:
       vmSize: Standard_D4s_v3
 ```
 
-- Specify the machine template kind. This value must match the value for your platform.
+where:
 
-- Specify a name for the machine template.
+`kind`
+Specifies the machine template kind. This value must match the value for your platform.
 
-- Specify the details for your environment. The values here are examples.
+`metadata.name`
+Specifies a name for the machine template.
 
-- Specify an image that is compatible with your instance type. The Hyper-V generation V2 images created by the installation program have a `-gen2` suffix, while V1 images have the same name without the suffix.
+`spec.template.spec`
+Specifies the details for your environment. The values here are examples.
 
-  <div class="note">
+`spec.template.spec.image.id`
+Specifies an image that is compatible with your instance type. The Hyper-V generation V2 images created by the installation program have a `-gen2` suffix, while V1 images have the same name without the suffix.
 
-  Default OpenShift Container Platform cluster names contain hyphens (`-`), which are not compatible with Azure gallery name requirements. The value of `<compliant_cluster_name>` in this configuration must use underscores (`_`) instead of hyphens to comply with these requirements. Other instances of `<cluster_name>` do not change.
+<div class="note">
 
-  For example, a cluster name of `jdoe-test-2m2np` transforms to `jdoe_test_2m2np`. The full string for `gallery_<compliant_cluster_name>` in this example is `gallery_jdoe_test_2m2np`, not `gallery_jdoe-test-2m2np`. The complete value of `spec.template.spec.image.id` for this example value is `/subscriptions/<subscription_id>/resourceGroups/jdoe-test-2m2np-rg/providers/Microsoft.Compute/galleries/gallery_jdoe_test_2m2np/images/jdoe-test-2m2np-gen2/versions/latest`.
+Default OpenShift Container Platform cluster names contain hyphens (`-`), which are not compatible with Azure gallery name requirements. The value of `<compliant_cluster_name>` in this configuration must use underscores (`_`) instead of hyphens to comply with these requirements. Other instances of `<cluster_name>` do not change.
 
-  </div>
+For example, a cluster name of `jdoe-test-2m2np` transforms to `jdoe_test_2m2np`. The full string for `gallery_<compliant_cluster_name>` in this example is `gallery_jdoe_test_2m2np`, not `gallery_jdoe-test-2m2np`. The complete value of `spec.template.spec.image.id` for this example value is `/subscriptions/<subscription_id>/resourceGroups/jdoe-test-2m2np-rg/providers/Microsoft.Compute/galleries/gallery_jdoe_test_2m2np/images/jdoe-test-2m2np-gen2/versions/latest`.
 
-## Sample YAML for a Cluster API compute machine set resource on Microsoft Azure
+</div>
+
+# Sample YAML for a Cluster API compute machine set resource on Microsoft Azure
 
 The compute machine set resource defines additional properties of the machines that it creates. The compute machine set also references the cluster resource and machine template when creating machines.
 
@@ -89,7 +93,7 @@ spec:
         node-role.kubernetes.io/<role>: ""
     spec:
       bootstrap:
-         dataSecretName: worker-user-data
+        dataSecretName: worker-user-data
       clusterName: <cluster_name>
       infrastructureRef:
         apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
@@ -97,10 +101,16 @@ spec:
         name: <template_name>
 ```
 
-- Specify a name for the compute machine set. The cluster ID, machine role, and region form a typical pattern for this value in the following format: `<cluster_name>-<role>-<region>`.
+where:
 
-- Specify the cluster ID as the name of the cluster.
+`metadata.name`
+Specifies a name for the compute machine set. The cluster ID, machine role, and region form a typical pattern for this value in the following format: `<cluster_name>-<role>-<region>`.
 
-- Specify the machine template kind. This value must match the value for your platform.
+`metadata.labels.cluster.x-k8s.io/cluster-name`
+Specifies the cluster ID as the name of the cluster.
 
-- Specify the machine template name.
+`spec.template.spec.infrastructureRef.kind`
+Specifies the machine template kind. This value must match the value for your platform.
+
+`spec.template.spec.infrastructureRef.name`
+Specifies the machine template name.

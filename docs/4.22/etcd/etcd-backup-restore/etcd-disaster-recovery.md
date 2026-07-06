@@ -338,25 +338,23 @@ For non-recovery control plane nodes, it is not required to establish SSH connec
 
 7.  When the API responds, to turn off the etcd Operator quorum guard, run the following command:
 
-<div class="important">
+    <div class="important">
 
-For a TNF setup, do not:
+    For a TNF setup, do not:
 
-- Change the etcd Operator quorum setting.
+    - Change the etcd Operator quorum setting.
 
-- Turn the etcd Operator quorum off.
+    - Turn the etcd Operator quorum off.
 
-- Turn the etcd Operator quorum on back.
+    - Turn the etcd Operator quorum on back.
 
-</div>
+    </div>
 
-\+
+    ``` terminal
+    $ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides": {"useUnsupportedUnsafeNonHANonProductionUnstableEtcd": true}}}'
+    ```
 
-``` terminal
-$ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides": {"useUnsupportedUnsafeNonHANonProductionUnstableEtcd": true}}}'
-```
-
-1.  Monitor the recovery progress of the control plane by running the following command:
+8.  Monitor the recovery progress of the control plane by running the following command:
 
     ``` terminal
     $ oc adm wait-for-stable-cluster
@@ -368,7 +366,7 @@ $ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides":
 
     </div>
 
-2.  Enable the quorum guard by running the following command:
+9.  Enable the quorum guard by running the following command:
 
     ``` terminal
     $ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides": null}}'

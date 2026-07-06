@@ -1606,6 +1606,10 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
     system:admin
     ```
 
+- "Customize your cluster"
+
+- "Remote health reporting"
+
 # Deleting bootstrap resources from RHOSP
 
 Delete the bootstrap resources that you no longer need.

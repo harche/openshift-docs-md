@@ -691,7 +691,7 @@ After you enable the Assisted Installer as an add-on to multicluster engine Oper
     Specifies the availability policy for the hosted control plane components. Supported options are `SingleReplica` and `HighlyAvailable`. The default value is `HighlyAvailable`.
 
     `<ocp_release_image>`
-    Specifies the supported OpenShift Container Platform version that you want to use, such as `4.22.0-multi`. If you are using a disconnected environment, replace `<ocp_release_image>` with the digest image. To extract the OpenShift Container Platform release image digest, see "Extracting the OpenShift Container Platform release image digest".
+    Specifies the supported OpenShift Container Platform version that you want to use, such as `4.22.0-multi`. If you are using a disconnected environment, replace `<ocp_release_image>` with the digest image. To extract the OpenShift Container Platform release image digest, see "Extracting the release image digest".
 
     `<node_pool_replica_count>`
     Specifies the node pool replica count, such as `3`. You must specify the replica count as `0` or greater to create the same number of replicas. Otherwise, you do not create node pools.
@@ -984,8 +984,6 @@ After you enable the Assisted Installer as an add-on to multicluster engine Oper
 
 - [Configuring a custom API server certificate in a hosted cluster](../../hosted_control_planes/hcp-certificates.xml#hcp-custom-cert_hcp-certificates)
 
-- [Adding hosts to the host inventory by using the Discovery Image](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/latest/html/clusters/cluster_mce_overview#add-host-host-inventory)
-
 ## Creating a hosted cluster on bare metal by using the console
 
 Instead of using the command-line interface to create a hosted cluster on bare metal, you can also use the OpenShift Container Platform web console.
@@ -1028,7 +1026,7 @@ Instead of using the command-line interface to create a hosted cluster on bare m
 
 10. To view the node pool status, scroll to the **NodePool** section. The process to install the nodes takes about 10 minutes. You can also click **Nodes** to confirm whether the nodes joined the hosted cluster.
 
-- [Creating a credential for an on-premises environment](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/latest/html/clusters/cluster_mce_overview#creating-a-credential-for-an-on-premises-environment)
+- [Creating a credential for an on-premises environment](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/clusters/cluster_mce_overview#creating-a-credential-for-an-on-premises-environment)
 
 - [Accessing the web console](../../web_console/web-console.xml#web-console-overview)
 
@@ -1096,7 +1094,9 @@ You can use a mirror registry to create a hosted cluster on bare metal by specif
     Specifies your hosted cluster namespace.
 
     `<ocp_release_image>`
-    Specifies the supported OpenShift Container Platform version that you want to use, for example, `4.22.0-multi`. If you are using a disconnected environment, replace `<ocp_release_image>` with the digest image. To extract the OpenShift Container Platform release image digest, see "Extracting the OpenShift Container Platform release image digest".
+    Specifies the supported OpenShift Container Platform version that you want to use, for example, `4.22.0-multi`. If you are using a disconnected environment, replace `<ocp_release_image>` with the digest image. To extract the OpenShift Container Platform release image digest, see "Extracting the release image digest".
+
+- [Extracting the release image digest](../../hosted_control_planes/hcp-disconnected/hcp-deploy-dc-bm.xml#hcp-dc-extract_hcp-deploy-dc-bm)
 
 - [Accessing the hosted cluster](../../hosted_control_planes/hcp-manage/hcp-manage-bm.xml#hcp-bm-access_hcp-manage-bm)
 

@@ -12,11 +12,13 @@ The process involves the following steps:
 
 5.  Restoring a hosted cluster by using OADP
 
-# Prerequisites
+# Prerequisites to automate disaster recovery by using OADP
 
-You must meet the following prerequisites on the management cluster:
+Ensure that you meet the prerequisites to automate disaster recovery for hosted control planes by using OADP.
 
-- You [installed the OADP Operator](../../backup_and_restore/application_backup_and_restore/installing/about-installing-oadp.xml#about-installing-oadp).
+The following prerequisites apply to the management cluster:
+
+- You installed the OADP Operator. For more information, see "About installing OADP".
 
 - You created a storage class.
 
@@ -26,169 +28,201 @@ You must meet the following prerequisites on the management cluster:
 
 - You have access to a cloud storage provider that is compatible with OADP, such as S3, Microsoft Azure, Google Cloud, or MinIO.
 
-- In a disconnected environment, you have access to a self-hosted storage provider that is compatible with OADP, for example [Red Hat OpenShift Data Foundation](https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/) or [MinIO](https://min.io/).
+- In a disconnected environment, you have access to a self-hosted storage provider that is compatible with OADP, for example Red Hat OpenShift Data Foundation or MinIO.
 
 - Your hosted control planes pods are up and running.
 
-- You are using a supported version of OADP for your management cluster. For example, if your management cluster is on OpenShift Container Platform 4.20, you must use OADP version 1.5. For more information, see [Support for OpenShift API for Data Protection (OADP)](../../backup_and_restore/application_backup_and_restore/oadp-intro.xml#oadp-operator-supported_oadp-api).
-
-# Configuring OADP
-
-If your hosted cluster is on AWS, follow the steps in "Configuring the OpenShift API for Data Protection with Multicloud Object Gateway" to configure OADP.
-
-If your hosted cluster is on a bare-metal platform, follow the steps in "Configuring the OpenShift API for Data Protection with AWS S3 compatible storage" to configure OADP.
-
-- [Configuring the OpenShift API for Data Protection with Multicloud Object Gateway](../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-aws.xml#installing-oadp-aws)
-
-- [Configuring the OpenShift API for Data Protection with AWS S3 compatible storage](../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-mcg.xml#installing-oadp-mcg)
-
-# Automating the backup and restore process by using a DPA
-
-You can automate parts of the backup and restore process by using a Data Protection Application (DPA). When you use a DPA, the steps to pause and restart the reconciliation of resources are automated. The DPA defines information including backup locations and Velero pod configurations.
-
-You can create a DPA by defining a `DataProtectionApplication` object.
-
-- If you use a bare-metal platform, you can create a DPA by completing the following steps:
-
-  1.  Create a manifest file similar to the following example:
-
-      ``` yaml
-      apiVersion: oadp.openshift.io/v1alpha1
-      kind: DataProtectionApplication
-      metadata:
-        name: dpa-sample
-        namespace: openshift-adp
-      spec:
-        backupLocations:
-          - name: default
-            velero:
-              provider: aws
-              default: true
-              objectStorage:
-                bucket: <bucket_name>
-                prefix: <bucket_prefix>
-              config:
-                region: minio
-                profile: "default"
-                s3ForcePathStyle: "true"
-                s3Url: "<bucket_url>"
-                insecureSkipTLSVerify: "true"
-              credential:
-                key: cloud
-                name: cloud-credentials
-                default: true
-        snapshotLocations:
-          - velero:
-              provider: aws
-              config:
-                region: minio
-                profile: "default"
-              credential:
-                key: cloud
-                name: cloud-credentials
-        configuration:
-          nodeAgent:
-            enable: true
-            uploaderType: kopia
-          velero:
-            defaultPlugins:
-              - openshift
-              - aws
-              - csi
-              - hypershift
-            resourceTimeout: 2h
-      ```
-
-      - Specify the provider for Velero. If you are using bare metal and MinIO, you can use `aws` as the provider.
-
-      - Specify the bucket name; for example, `oadp-backup`.
-
-      - Specify the bucket prefix; for example, `hcp`.
-
-      - The bucket region in this example is `minio`, which is a storage provider that is compatilble with the S3 API.
-
-      - Specify the URL of the S3 endpoint.
-
-      - Specify `kopia` as the uploader type. The `restic` uploader type is deprecated for OADP 1.5 and later.
-
-  2.  Create the DPA object by running the following command:
-
-      ``` terminal
-      $ oc create -f dpa.yaml
-      ```
-
-      After you create the `DataProtectionApplication` object, new `velero` deployment and `node-agent` pods are created in the `openshift-adp` namespace.
-
-- If you use Amazon Web Services (AWS), you can create a DPA by completing the following steps:
-
-  1.  Create a manifest file similar to the following example:
-
-      ``` yaml
-      apiVersion: oadp.openshift.io/v1alpha1
-      kind: DataProtectionApplication
-      metadata:
-        name: dpa-sample
-        namespace: openshift-adp
-      spec:
-        backupLocations:
-          - name: default
-            velero:
-              provider: aws
-              default: true
-              objectStorage:
-                bucket: <bucket_name>
-                prefix: <bucket_prefix>
-              config:
-                region: minio
-                profile: "backupStorage"
-              credential:
-                key: cloud
-                name: cloud-credentials
-        snapshotLocations:
-          - velero:
-              provider: aws
-              config:
-                region: minio
-                profile: "volumeSnapshot"
-              credential:
-                key: cloud
-                name: cloud-credentials
-        configuration:
-          nodeAgent:
-            enable: true
-            uploaderType: kopia
-          velero:
-            defaultPlugins:
-              - openshift
-              - aws
-              - csi
-              - hypershift
-            resourceTimeout: 2h
-      ```
-
-      - Specify the bucket name; for example, `oadp-backup`.
-
-      - Specify the bucket prefix; for example, `hcp`.
-
-      - The bucket region in this example is `minio`, which is a storage provider that is compatilble with the S3 API.
-
-      - Specify `kopia` as the uploader type. The `restic` uploader type is deprecated for OADP 1.5 and later.
-
-  2.  Create the DPA resource by running the following command:
-
-      ``` terminal
-      $ oc create -f dpa.yaml
-      ```
-
-      After you create the `DataProtectionApplication` object, new `velero` deployment and `node-agent` pods are created in the `openshift-adp` namespace.
+- You are using a supported version of OADP for your management cluster. For example, if your management cluster is on OpenShift Container Platform 4.20, you must use OADP version 1.5. For more information, see "Support for OpenShift API for Data Protection (OADP)".
 
 <!-- -->
 
+- [About installing OADP](../../backup_and_restore/application_backup_and_restore/installing/about-installing-oadp.xml#about-installing-oadp)
+
+- [Red Hat OpenShift Data Foundation](https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/)
+
+- [MinIO](https://min.io/)
+
+- [Support for OpenShift API for Data Protection (OADP)](../../backup_and_restore/application_backup_and_restore/oadp-intro.xml#oadp-operator-supported_oadp-api)
+
+# Configuring OADP to automate disaster recovery for hosted control planes
+
+Before you can automate disaster recovery by using OpenShift API for Data Protection (OADP), you need to configure it for your hosted control planes platform.
+
+- If your hosted cluster is on AWS, follow the steps in "Configuring the OpenShift API for Data Protection with AWS S3 compatible storage" to configure OADP.
+
+- If your hosted cluster is on a bare metal, follow the steps in "Configuring the OpenShift API for Data Protection with Multicloud Object Gateway" to configure OADP.
+
+<!-- -->
+
+- [Configuring the OpenShift API for Data Protection with AWS S3 compatible storage](../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-mcg.xml#installing-oadp-mcg)
+
+- [Configuring the OpenShift API for Data Protection with Multicloud Object Gateway](../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-aws.xml#installing-oadp-aws)
+
+# Automation of the backup and restore process with a DPA
+
+You can automate parts of the backup and restore process by using a Data Protection Application (DPA). When you use a DPA, the steps to pause and restart the reconciliation of resources are automated. The DPA defines information including backup locations and Velero pod configurations.
+
+## Creating a Data Protection Application for bare metal
+
+Automate parts of the backup and restore process on bare metal by creating a Data Protection Application (DPA). A DPA defines information including backup locations and Velero pod configurations.
+
+You can create a DPA by defining a `DataProtectionApplication` object.
+
+1.  Create a manifest file similar to the following example:
+
+    ``` yaml
+    apiVersion: oadp.openshift.io/v1alpha1
+    kind: DataProtectionApplication
+    metadata:
+      name: dpa-sample
+      namespace: openshift-adp
+    spec:
+      backupLocations:
+        - name: default
+          velero:
+            provider: aws
+            default: true
+            objectStorage:
+              bucket: <bucket_name>
+              prefix: <bucket_prefix>
+            config:
+              region: minio
+              profile: "default"
+              s3ForcePathStyle: "true"
+              s3Url: "<bucket_url>"
+              insecureSkipTLSVerify: "true"
+            credential:
+              key: cloud
+              name: cloud-credentials
+              default: true
+      snapshotLocations:
+        - velero:
+            provider: aws
+            config:
+              region: minio
+              profile: "default"
+            credential:
+              key: cloud
+              name: cloud-credentials
+      configuration:
+        nodeAgent:
+          enable: true
+          uploaderType: kopia
+        velero:
+          defaultPlugins:
+            - openshift
+            - aws
+            - csi
+            - hypershift
+          resourceTimeout: 2h
+    ```
+
+    - `spec.backupLocations.velero.provider` specifies the provider for Velero. If you are using bare metal and MinIO, you can use `aws` as the provider.
+
+    - `spec.backupLocations.velero.objectStorage.bucket` specifies the bucket name; for example, `oadp-backup`.
+
+    - `spec.backupLocations.velero.objectStorage.prefix` specifies the bucket prefix; for example, `hcp`.
+
+    - `spec.backupLocations.velero.config.region` specifies the bucket region. In this example, the region is `minio`, which is a storage provider that is compatible with the S3 API.
+
+    - `spec.backupLocations.velero.config.s3Url` specifies the URL of the S3 endpoint.
+
+    - `spec.snapshotLocations.velero.provider` specifies the provider for Velero. If you are using bare metal and MinIO, you can use `aws` as the provider.
+
+    - `spec.snapshotLocations.velero.config.region` specifies the region. In this example, the region is `minio`, which is a storage provider that is compatible with the S3 API.
+
+    - `spec.configuration.nodeAgent.uploaderType` specifies `kopia` as the uploader type. The `restic` uploader type is deprecated for OADP 1.5 and later.
+
+2.  Create the DPA object by running the following command:
+
+    ``` terminal
+    $ oc create -f dpa.yaml
+    ```
+
+    After you create the `DataProtectionApplication` object, new `velero` deployment and `node-agent` pods are created in the `openshift-adp` namespace.
+
 - Back up the data plane workload.
 
-# Backing up the data plane workload
+## Creating a Data Protection Application for AWS
 
-To back up the data plane workload by using the OADP Operator, see "Backing up applications". If the data plane workload is not important, you can skip this procedure.
+Automate parts of the backup and restore process on AWS by creating a Data Protection Application (DPA). A DPA defines information including backup locations and Velero pod configurations.
+
+You can create a DPA by defining a `DataProtectionApplication` object.
+
+1.  Create a manifest file similar to the following example:
+
+    ``` yaml
+    apiVersion: oadp.openshift.io/v1alpha1
+    kind: DataProtectionApplication
+    metadata:
+      name: dpa-sample
+      namespace: openshift-adp
+    spec:
+      backupLocations:
+        - name: default
+          velero:
+            provider: aws
+            default: true
+            objectStorage:
+              bucket: <bucket_name>
+              prefix: <bucket_prefix>
+            config:
+              region: minio
+              profile: "backupStorage"
+            credential:
+              key: cloud
+              name: cloud-credentials
+      snapshotLocations:
+        - velero:
+            provider: aws
+            config:
+              region: minio
+              profile: "volumeSnapshot"
+            credential:
+              key: cloud
+              name: cloud-credentials
+      configuration:
+        nodeAgent:
+          enable: true
+          uploaderType: kopia
+        velero:
+          defaultPlugins:
+            - openshift
+            - aws
+            - csi
+            - hypershift
+          resourceTimeout: 2h
+    ```
+
+    - `spec.backupLocations.velero.objectStorage.bucket` specifies the bucket name; for example, `oadp-backup`.
+
+    - `spec.backupLocations.velero.objectStorage.prefix` specifies the bucket prefix; for example, `hcp`.
+
+    - `spec.backupLocations.velero.config.region` specifies the bucket region. The bucket region in this example is `minio`, which is a storage provider that is compatible with the S3 API.
+
+    - `spec.snapshotLocations.velero.config.region` specifies the region. The region in this example is `minio`, which is a storage provider that is compatible with the S3 API.
+
+    - `spec.configuration.nodeAgent.uploaderType` specifies `kopia` as the uploader type. The `restic` uploader type is deprecated for OADP 1.5 and later.
+
+2.  Create the DPA resource by running the following command:
+
+    ``` terminal
+    $ oc create -f dpa.yaml
+    ```
+
+    After you create the `DataProtectionApplication` object, new `velero` deployment and `node-agent` pods are created in the `openshift-adp` namespace.
+
+- Back up the data plane workload.
+
+# Backing up the data plane workload by using the OADP Operator
+
+You can back up the data plane workload by using the OADP Operator.
+
+However, if the data plane workload is not important, you can skip this procedure.
+
+- To back up the data plane workload, follow the steps in "Backing up applications".
+
+<!-- -->
 
 - [Backing up applications](../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/backing-up-applications.xml#backing-up-applications)
 

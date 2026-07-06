@@ -22,7 +22,7 @@ When you run an `oc` command, `oc` communicates with the Kube API server to dete
 CRDs for Cluster API objects are in the `cluster.x-k8s.io` group, while CRDs for Machine API objects are in the `machine.openshift.io` group. Because the letter `c` precedes the letter `m` alphabetically, the Kube API server matches on the Cluster API object CRD. As a result, the `oc` command acts upon Cluster API objects.
 
 Consequence
-Due to this behavior, the following unintended outcomes can occur on a cluster that uses the Cluster API:
+Because of this behavior, the following unintended outcomes can occur on a cluster that uses the Cluster API:
 
 - For namespaces that contain both types of objects, commands such as `oc get machine` return only Cluster API objects.
 
@@ -81,7 +81,7 @@ On clusters that support migrating Machine API resources to Cluster API resource
 These Cluster API resources have the same names as their counterparts in the `openshift-machine-api` namespace.
 
 Consequence
-Due to this behavior, instances of machine set and machine resources that seem to be duplicates appear in the output of `oc` commands that list resources and in the OpenShift Container Platform web console.
+Because of this behavior, instances of machine set and machine resources that seem to be duplicates appear in the output of `oc` commands that list resources and in the OpenShift Container Platform web console.
 
 Workaround
 Although the resources have the same names as their counterparts in the other namespace, only the resources that use the current authoritative API are active. The synchronization controller creates and maintains the corresponding resources that do not use the current authoritative API in an unprovisioned (`Paused`) state to prevent unintended reconciliation.
@@ -145,7 +145,7 @@ To help avoid or recover from issues when you migrate a resource to use a differ
 
 ## Authoritative API types of compute machines
 
-The authoritative API of a compute machine depends on the values of the `.spec.authoritativeAPI` and `.spec.template.spec.authoritativeAPI` fields in the Machine API compute machine set that creates it.
+The values of the `.spec.authoritativeAPI` and `.spec.template.spec.authoritativeAPI` fields in a Machine API compute machine set determine the authoritative API of the compute machines.
 
 |                                                       |              |              |              |              |
 |-------------------------------------------------------|--------------|--------------|--------------|--------------|
@@ -168,7 +168,7 @@ The label and annotation synchronization behavior differs between the Machine AP
 Cause
 With the Machine API, changes to machine set labels and annotations do not propagate to existing machines and nodes. These changes only apply to machines deployed after the update.
 
-With the Cluster API, changes to machine set labels and annotations propagate to existing machines and nodes. When the authoritative API for a machine set changes from Machine API to Cluster API, its labels propagate to the Cluster API machines that it manages. The propagation happens before the Cluster API machine is marked as authoritative.
+With the Cluster API, changes to machine set labels and annotations propagate to existing machines and nodes. When the authoritative API for a machine set changes from Machine API to Cluster API, the labels propagate to the Cluster API machines that the authoritative API manages. The propagation happens before the Cluster API machine is marked as authoritative.
 
 Consequence
 The two-way synchronization controller overwrites any propagated labels and annotations with the earlier value, leading to an inconsistency. This outcome only occurs when removing a label or annotation. Updates and additional labels or annotations do not cause this inconsistency.

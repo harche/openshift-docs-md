@@ -200,9 +200,10 @@ After the descheduler is installed and configured, all migratable virtual machin
 
     ``` yaml
     spec:
-      liveMigrationConfig:
-        parallelMigrationsPerCluster: 5
-        parallelOutboundMigrationsPerNode: 2
+      virtualization:
+        liveMigrationConfig:
+          parallelMigrationsPerCluster: 5
+          parallelOutboundMigrationsPerNode: 2
     ```
 
 5.  Optional: To exclude the VM from eviction, add the `descheduler.alpha.kubernetes.io/prefer-no-eviction` annotation to the `spec.template.metadata.annotations` field. The change is applied dynamically and is propagated to the `VirtualMachineInstance` (VMI) object and the `virt-launcher` pod.

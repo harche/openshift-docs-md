@@ -47,30 +47,31 @@ To configure a dedicated secondary network for live migration, you must first cr
 2.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
-3.  Add the name of the `NetworkAttachmentDefinition` object to the `spec.liveMigrationConfig` stanza of the `HyperConverged` CR.
+3.  Add the name of the `NetworkAttachmentDefinition` object to the `spec.virtualization.liveMigrationConfig` stanza of the `HyperConverged` CR.
 
     Example `HyperConverged` manifest:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
       namespace: openshift-cnv
     spec:
-      liveMigrationConfig:
-        completionTimeoutPerGiB: 800
-        network: <network>
-        parallelMigrationsPerCluster: 5
-        parallelOutboundMigrationsPerNode: 2
-        progressTimeout: 150
+      virtualization:
+        liveMigrationConfig:
+          completionTimeoutPerGiB: 800
+          network: <network>
+          parallelMigrationsPerCluster: 5
+          parallelOutboundMigrationsPerNode: 2
+          progressTimeout: 150
     # ...
     ```
 
-    - `spec.liveMigrationConfig.network` defines the name of the Multus `NetworkAttachmentDefinition` object to be used for live migrations.
+    - `spec.virtualization.liveMigrationConfig.network` defines the name of the Multus `NetworkAttachmentDefinition` object to be used for live migrations.
 
 4.  Save your changes and exit the editor. The `virt-handler` pods restart and connect to the secondary network.
 

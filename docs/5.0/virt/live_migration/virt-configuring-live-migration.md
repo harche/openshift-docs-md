@@ -11,25 +11,26 @@ Configure live migration limits and timeouts for the cluster by updating the `Hy
 - Edit the `HyperConverged` CR and add the necessary live migration parameters:
 
   ``` terminal
-  $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+  $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
   ```
 
   Example configuration file:
 
   ``` yaml
-  apiVersion: hco.kubevirt.io/v1beta1
+  apiVersion: hco.kubevirt.io/v1
   kind: HyperConverged
   metadata:
     name: kubevirt-hyperconverged
     namespace: openshift-cnv
   spec:
-    liveMigrationConfig:
-      bandwidthPerMigration: 64Mi
-      completionTimeoutPerGiB: 800
-      parallelMigrationsPerCluster: 5
-      parallelOutboundMigrationsPerNode: 2
-      progressTimeout: 150
-      allowPostCopy: false
+    virtualization:
+      liveMigrationConfig:
+        bandwidthPerMigration: 64Mi
+        completionTimeoutPerGiB: 800
+        parallelMigrationsPerCluster: 5
+        parallelOutboundMigrationsPerNode: 2
+        progressTimeout: 150
+        allowPostCopy: false
   ```
 
   where:
@@ -54,7 +55,7 @@ Configure live migration limits and timeouts for the cluster by updating the `Hy
 
   <div class="note">
 
-  You can restore the default value for any `spec.liveMigrationConfig` field by deleting that key/value pair and saving the file. For example, delete `progressTimeout: <value>` to restore the default `progressTimeout: 150`.
+  You can restore the default value for any `spec.virtualization.liveMigrationConfig` field by deleting that key/value pair and saving the file. For example, delete `progressTimeout: <value>` to restore the default `progressTimeout: 150`.
 
   </div>
 
@@ -69,25 +70,26 @@ Configure live migration for heavy workloads by updating the `HyperConverged` cu
 1.  Edit the `HyperConverged` CR and add the necessary parameters for migrating heavy workloads:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
     Example configuration file:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
       namespace: openshift-cnv
     spec:
-      liveMigrationConfig:
-        bandwidthPerMigration: 0Mi
-        completionTimeoutPerGiB: 150
-        parallelMigrationsPerCluster: 5
-        parallelOutboundMigrationsPerNode: 1
-        progressTimeout: 150
-        allowPostCopy: true
+      virtualization:
+        liveMigrationConfig:
+          bandwidthPerMigration: 0Mi
+          completionTimeoutPerGiB: 150
+          parallelMigrationsPerCluster: 5
+          parallelOutboundMigrationsPerNode: 1
+          progressTimeout: 150
+          allowPostCopy: true
     ```
 
     where:

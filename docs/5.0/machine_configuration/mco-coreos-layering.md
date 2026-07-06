@@ -1,4 +1,6 @@
-You can extend the functionality of your base RHCOS image by layering additional images onto the base image. This layering does not modify the base RHCOS image. Instead, it creates a *custom layered image* that includes all RHCOS functionality and adds additional functionality to specific nodes in the cluster.
+You can extend the functionality of your base RHCOS image by layering additional images onto the base image without modifying the base RHCOS image.
+
+This layering creates a *custom layered image* that includes all RHCOS functionality and adds additional functionality to specific nodes in the cluster.
 
 Image mode is a cloud-native approach to operating system management that treats your OS like a container image. You define your operating system configuration as code, build it as a unified image, and deploy it consistently across your entire fleet.
 
@@ -21,10 +23,10 @@ When you apply the custom layered image to your cluster, you assume the responsi
 There are three methods for deploying a custom layered image onto your nodes:
 
 On-cluster image mode
-With [on-cluster image mode](../machine_configuration/mco-coreos-layering.xml#coreos-layering-configuring-on_mco-coreos-layering), you create a `MachineOSConfig` object where you include the Containerfile and other parameters. The build is performed on your cluster and the resulting custom layered image is automatically pushed to your repository and applied to the machine config pool that you specified in the `MachineOSConfig` object. The entire process is performed completely within your cluster.
+With on-cluster image mode, you create a `MachineOSConfig` object where you include the Containerfile and other parameters. The build is performed on your cluster and the resulting custom layered image is automatically pushed to your repository and applied to the machine config pool that you specified in the `MachineOSConfig` object. The entire process is performed completely within your cluster.
 
 Out-of-cluster image mode
-With [out-of-cluster image mode](../machine_configuration/mco-coreos-layering.xml#coreos-layering-configuring_mco-coreos-layering), you create a Containerfile that references an OpenShift Container Platform image and the RPM that you want to apply, build the layered image in your own environment, and push the image to your repository. Then, in your cluster, create a `MachineConfig` object for the targeted node pool that points to the new image. The Machine Config Operator overrides the base RHCOS image, as specified by the `osImageURL` value in the associated machine config, and boots the new image.
+With out-of-cluster image mode, you create a Containerfile that references an OpenShift Container Platform image and the RPM that you want to apply, build the layered image in your own environment, and push the image to your repository. Then, in your cluster, create a `MachineConfig` object for the targeted node pool that points to the new image. The Machine Config Operator overrides the base RHCOS image, as specified by the `osImageURL` value in the associated machine config, and boots the new image.
 
 During OpenShift Container Platform installation
 You can apply a pre-built custom layered image to specific nodes during OpenShift Container Platform installation.
@@ -39,7 +41,7 @@ For these methods, use the same base RHCOS image installed on the rest of your c
 
 Image mode for OpenShift allows you to use the following types of images to create custom layered images:
 
-- **OpenShift Container Platform Hotfixes**. You can work with Customer Experience and Engagement (CEE) to obtain and apply [Hotfix packages](https://access.redhat.com/solutions/2996001) on top of your RHCOS image. In some instances, you might want a bug fix or enhancement before it is included in an official OpenShift Container Platform release. Image mode for OpenShift allows you to easily add the Hotfix before it is officially released and remove the Hotfix when the underlying RHCOS image incorporates the fix.
+- **OpenShift Container Platform Hotfixes**. You can work with Customer Experience and Engagement (CEE) to obtain and apply Hotfix packages on top of your RHCOS image. In some instances, you might want a bug fix or enhancement before it is included in an official OpenShift Container Platform release. Image mode for OpenShift allows you to easily add the Hotfix before it is officially released and remove the Hotfix when the underlying RHCOS image incorporates the fix.
 
   <div class="important">
 
@@ -47,7 +49,7 @@ Image mode for OpenShift allows you to use the following types of images to crea
 
   </div>
 
-  Hotfixes are provided to you based on [Red Hat Hotfix policy](https://access.redhat.com/solutions/2996001). Apply it on top of the base image and test that new custom layered image in a non-production environment. When you are satisfied that the custom layered image is safe to use in production, you can roll it out on your own schedule to specific node pools. For any reason, you can easily roll back the custom layered image and return to using the default RHCOS.
+  Hotfixes are provided to you based on Red Hat Hotfix policy. Apply it on top of the base image and test that new custom layered image in a non-production environment. When you are satisfied that the custom layered image is safe to use in production, you can roll it out on your own schedule to specific node pools. For any reason, you can easily roll back the custom layered image and return to using the default RHCOS.
 
   <div class="formalpara-title">
 
@@ -89,7 +91,7 @@ Image mode for OpenShift allows you to use the following types of images to crea
       bootc container lint
   ```
 
-- **RHEL packages**. You can download Red Hat Enterprise Linux (RHEL) packages from the [Red Hat Customer Portal](https://access.redhat.com/downloads/content/479/ver=/rhel---9/9.1/x86_64/packages), such as chrony, firewalld, and iputils.
+- **RHEL packages**. You can download Red Hat Enterprise Linux (RHEL) packages from the Red Hat Customer Portal, such as chrony, firewalld, and iputils.
 
   <div class="formalpara-title">
 
@@ -207,7 +209,7 @@ It is strongly recommended that you test your images outside of your production 
 
 # About on-cluster image mode
 
-You can use the image mode for OpenShift on-cluster build process to apply a custom layered image to your nodes by creating a `MachineOSConfig` custom resource (CR), as described in "Using On-cluster image mode to apply a custom layered image".
+You can use the image mode for OpenShift on-cluster build process to apply a custom layered image to your nodes by creating a `MachineOSConfig` custom resource (CR).
 
 When you create the object, the Machine Config Operator (MCO) creates a `MachineOSBuild` object and a builder pod. The process also creates transient objects, such as config maps, which are cleaned up after the build is complete. The `MachineOSBuild` object and the associated `builder-*` pod use the same naming scheme, `<MachineOSConfig_CR_name>-<hash>`, for example:
 
@@ -287,7 +289,7 @@ master    rendered-master-a0b404d061a6183cc36d302363422aba    True      False   
 worker    rendered-worker-221507009cbcdec0eec8ab3ccd789d18    False     False      False      2              2                   2                     0                      4h14m
 ```
 
-- The `worker` machine config pool is paused, as indicated by the three `False` statuses and the `READYMACHINECOUNT` at `0`.
+The `worker` machine config pool is paused, as indicated by the three `False` statuses and the `READYMACHINECOUNT` at `0`.
 
 After the changes have been rolled out, you can unpause the machine config pool.
 
@@ -342,25 +344,11 @@ Note the following limitations when working with the on-cluster layering feature
 
 - The images used in creating custom layered images take up space in your push registry. Always be aware of the free space in your registry and prune the images as needed. You can automatically remove an on-cluster custom layered image from the repository by deleting the `MachineOSBuild` object that created the image. Note that the credentials provided by the registry push secret must also grant permission to delete an image from the registry. For more information, see "Removing an on-cluster custom layered image".
 
-<!-- -->
-
-- [Using the on-cluster image mode to apply a custom layered image](../machine_configuration/mco-coreos-layering.xml#coreos-layering-configuring-on-proc_mco-coreos-layering)
-
-- [Removing an on-cluster custom layered image](../machine_configuration/mco-coreos-layering.xml#coreos-layering-configuring-on-remove_mco-coreos-layering)
-
-- [Pausing the machine config pools](../updating/updating_a_cluster/update-using-custom-machine-config-pools.xml#update-using-custom-machine-config-pools-pause_update-using-custom-machine-config-pools)
-
-- [Rebuilding an on-cluster custom layered image](../machine_configuration/mco-coreos-layering.xml#coreos-layering-configuring-on-rebuild_mco-coreos-layering)
-
-- [Reverting an on-cluster custom layered image](../machine_configuration/mco-coreos-layering.xml#coreos-layering-configuring-on-revert_mco-coreos-layering)
-
-- [Modifying a custom layered image](../machine_configuration/mco-coreos-layering.xml#coreos-layering-configuring-on-modifying_mco-coreos-layering)
-
-- [About checking machine config node status](../machine_configuration/index.xml#checking-mco-node-status_machine-config-overview)
-
 ## Using the on-cluster image mode to apply a custom layered image
 
-To apply a custom layered image to your cluster by using the on-cluster build process, create a `MachineOSConfig` custom resource (CR) that specifies the following parameters:
+You can use the on-cluster build process to apply a custom layered image to your cluster by creating a `MachineOSConfig` custom resource (CR).
+
+The `MachineOSConfig` CR specifies the following parameters:
 
 - the Containerfile to build
 
@@ -416,23 +404,34 @@ You can create only one `MachineOSConfig` CR for each machine config pool.
             name: builder-dockercfg-mtcl23
         ```
 
-        - Specifies the `machineconfiguration.openshift.io/v1` API that is required for `MachineConfig` CRs.
+        where:
 
-        - Specifies a name for the `MachineOSConfig` object. The name must match the name of the associated machine config pool. This name is used with other on-cluster image mode resources. The examples in this documentation use the name `layered-image`.
+        `apiVersion`
+        Specifies the `machineconfiguration.openshift.io/v1` API that is required for `MachineConfig` CRs.
 
-        - Specifies the name of the machine config pool associated with the nodes where you want to deploy the custom layered image. The examples in this documentation use the `layered-image` machine config pool.
+        `metadata.name`
+        Specifies a name for the `MachineOSConfig` object. The name must match the name of the associated machine config pool. This name is used with other on-cluster image mode resources. The examples in this documentation use the name `layered-image`.
 
-        - Specifies the Containerfile to configure the custom layered image.
+        `spec.machineConfigPool.name`
+        Specifies the name of the machine config pool associated with the nodes where you want to deploy the custom layered image. The examples in this documentation use the `layered-image` machine config pool.
 
-        - Specifies the architecture this containerfile is to be built for: `ARM64`, `AMD64`, `PPC64LE`, `S390X`, or `NoArch`. The default is `NoArch`, which defines a Containerfile that can be applied to any architecture.
+        `spec.containerFile`
+        Specifies the Containerfile to configure the custom layered image.
 
-        - Specifies the name of the image builder to use. This must be `Job`, which is a reference to the `job` object that is managing the image build.
+        `spec.containerFile.containerfileArch`
+        Specifies the architecture this containerfile is to be built for: `ARM64`, `AMD64`, `PPC64LE`, `S390X`, or `NoArch`. The default is `NoArch`, which defines a Containerfile that can be applied to any architecture.
 
-        - Optional: Specifies the name of the pull secret that the MCO needs to pull the base operating system image from the registry. By default, the global pull secret is used.
+        `spec.imageBuilder`
+        Specifies the name of the image builder to use. This must be `Job`, which is a reference to the `job` object that is managing the image build.
 
-        - Specifies the image registry to push the newly-built custom layered image to. This can be any registry that your cluster has access to in the `host[:port][/namespace]/name` or `svc_name.namespace.svc[:port]/repository/name:<tag>` format. This example uses the internal OpenShift Container Platform registry. You can specify a mirror registry if you cluster is properly configured to use a mirror registry.
+        `spec.baseImagePullSecret`
+        Specifies the name of the pull secret that the MCO needs to pull the base operating system image from the registry. By default, the global pull secret is used. This parameter is optional.
 
-        - Specifies the name of the push secret that the MCO needs to push the newly-built custom layered image to that registry.
+        `spec.renderedImagePushSpec`
+        Specifies the image registry to push the newly-built custom layered image to. This can be any registry that your cluster has access to in the `host[:port][/namespace]/name` or `svc_name.namespace.svc[:port]/repository/name:<tag>` format. This example uses the internal OpenShift Container Platform registry. You can specify a mirror registry if you cluster is properly configured to use a mirror registry.
+
+        `spec.renderedImagePushSecret`
+        Specifies the name of the push secret that the MCO needs to push the newly-built custom layered image to that registry.
 
     2.  Create the `MachineOSConfig` object:
 
@@ -495,9 +494,7 @@ You can create only one `MachineOSConfig` CR for each machine config pool.
     machine-os-builder-6fb66cfb99-zcpvq                                     1/1     Running   0          2m42s
     ```
 
-    - This is the build pod where the custom layered image is building, named in the `build-<MachineOSConfig_CR_name>-<hash>` format.
-
-    - This pod can be used for troubleshooting.
+    The build pod where the custom layered image is building is named in the `build-<MachineOSConfig_CR_name>-<hash>` format. The `machine-os-builder-*` pod can be used for troubleshooting.
 
 2.  Verify the custom layered image build by running a command similar to the following:
 
@@ -532,7 +529,7 @@ You can create only one `MachineOSConfig` CR for each machine config pool.
         type: ImageBuildDegraded
     ```
 
-    - Indicates whether the custom layered image build failed. If `False`, the build succeeded. If `True`, the build failed. You can use the build pod logs to troubleshoot any build failures.
+    The `reason: BuildFailed` status indicates whether the custom layered image build failed. If `False`, the build succeeded. If `True`, the build failed. You can use the build pod logs to troubleshoot any build failures.
 
 3.  Verify the current stage of your layered build by running the following command:
 
@@ -551,9 +548,9 @@ You can create only one `MachineOSConfig` CR for each machine config pool.
     layered-image-ad5a3cad36303c363cf458ab0524e7c0   False      True       False       False         False    12m
     ```
 
-    - The `MachineOSBuild` is named in the `<MachineOSConfig_CR_name>-<hash>` format.
+    The `MachineOSBuild` object is named in the `<MachineOSConfig_CR_name>-<hash>` format.
 
-      The build is complete when `BUILDING` is `False` and `SUCCEEDED` is `True`.
+    The build is complete when `BUILDING` is `False` and `SUCCEEDED` is `True`.
 
 4.  When the build is complete, verify that the image has been applied to the nodes in the affected pool by running a command similar to the following:
 
@@ -596,7 +593,7 @@ You can create only one `MachineOSConfig` CR for each machine config pool.
     # ...
     ```
 
-    - Digested image pull spec for the new custom layered image.
+    The digested image pull spec for the new custom layered image is in the `Spec.Config Image.Desired Image` parameter.
 
     <div class="important">
 
@@ -632,7 +629,10 @@ You can create only one `MachineOSConfig` CR for each machine config pool.
       currentImagePullSpec: image-registry.openshift-image-registry.svc:5000/openshift-machine-config-operator/os-image@sha256:3c8fc667adcb432ce0c83581f16086afec08a961dd28fed69bb6bad6db0a0754
     ```
 
-    - Digested image pull spec for the new custom layered image.
+    where:
+
+    `status.currentImagePullSpec`
+    Specifies the digested image pull spec for the new custom layered image.
 
 6.  Verify that the appropriate nodes are using the new custom layered image:
 
@@ -668,17 +668,13 @@ You can create only one `MachineOSConfig` CR for each machine config pool.
                           Version: 419.94.202502100215-0 (2025-02-12T19:20:44Z)
         ```
 
-        - Digested image pull spec for the new custom layered image.
-
-- [Updating the global cluster pull secret](../openshift_images/managing_images/using-image-pull-secrets.xml#images-update-global-pull-secret_using-image-pull-secrets)
-
-- [Reverting an on-cluster custom layered image](../machine_configuration/mco-coreos-layering.xml#coreos-layering-configuring-on-revert_mco-coreos-layering)
-
-- [Enabling features using feature gates](../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)
+        The `Deployments` stanza includes the digested image pull spec for the new custom layered image.
 
 ## Modifying an on-cluster custom layered image
 
-You can modify an on-cluster custom layered image, as needed. This allows you to install additional packages, remove existing packages, change the pull or push repositories, update secrets, or other similar changes. You can edit the `MachineOSConfig` object, apply changes to the YAML file that created the `MachineOSConfig` object, or create a new YAML file for that purpose.
+You can modify an on-cluster custom layered image, as needed, to install additional packages, remove existing packages, change the pull or push repositories, update secrets, or other similar changes.
+
+You can edit the `MachineOSConfig` object, apply changes to the YAML file that created the `MachineOSConfig` object, or create a new YAML file for that purpose.
 
 If you modify and apply the `MachineOSConfig` object YAML or create a new YAML file, the YAML overwrites any changes you made directly to the `MachineOSConfig` object itself.
 
@@ -698,7 +694,7 @@ master    rendered-master-a0b404d061a6183cc36d302363422aba    True      False   
 worker    rendered-worker-221507009cbcdec0eec8ab3ccd789d18    False     False      False      2              2                   2                     0                      4h14m
 ```
 
-- The `worker` machine config pool is paused, as indicated by the three `False` statuses and the `READYMACHINECOUNT` at `0`.
+The `worker` machine config pool is paused, as indicated by the three `False` statuses and the `READYMACHINECOUNT` at `0`.
 
 After the changes have been rolled out, you can unpause the machine config pool.
 
@@ -739,15 +735,21 @@ After the changes have been rolled out, you can unpause the machine config pool.
           name: new-secret-name
       ```
 
-      - Optional: Modify the Containerfile, for example to add or remove packages.
+      where:
 
-      - Optional: Update the secret needed to pull the base operating system image from the registry.
+      `spec:containerFile.content`
+      Modify the Containerfile, for example to add or remove packages. This parameter is optional.
 
-      - Optional: Modify the image registry to push the newly built custom layered image to.
+      `spec.baseImagePullSecret`
+      Update the secret needed to pull the base operating system image from the registry. This parameter is optional.
 
-      - Optional: Update the secret needed to push the newly built custom layered image to the registry.
+      `spec.renderedImagePushspec`
+      Modify the image registry to push the newly built custom layered image to. This parameter is optional.
 
-        When you save the changes, the MCO drains, cordons, and reboots the nodes. After the reboot, the node uses the cluster base Red Hat Enterprise Linux CoreOS (RHCOS) image. If your changes modify a secret only, no new build is triggered and no reboot is performed.
+      `spec.renderedImagePushSecret`
+      Update the secret needed to push the newly built custom layered image to the registry. This parameter is optional.
+
+      When you save the changes, the MCO drains, cordons, and reboots the nodes. After the reboot, the node uses the cluster base Red Hat Enterprise Linux CoreOS (RHCOS) image. If your changes modify a secret only, no new build is triggered and no reboot is performed.
 
 1.  Verify that the new `MachineOSBuild` object was created by using the following command:
 
@@ -767,7 +769,7 @@ After the changes have been rolled out, you can unpause the machine config pool.
     layered-image-f91f0f5593dd337d89bf4d38c877590b   False      True       False       False         False    2m41s
     ```
 
-    - The value `True` in the `BUILDING` column indicates that the `MachineOSBuild` object is building. When the `SUCCEEDED` column reports `True`, the build is complete.
+    The value `True` in the `BUILDING` column indicates that the `MachineOSBuild` object is building. When the `SUCCEEDED` column reports `True`, the build is complete.
 
 2.  You can watch as the new machine config is rolled out to the nodes by using the following command:
 
@@ -787,7 +789,7 @@ After the changes have been rolled out, you can unpause the machine config pool.
     worker    rendered-worker-221507009cbcdec0eec8ab3ccd789d18    False     True       False      2              2                   2                     0                      3h38m
     ```
 
-    - The value `FALSE` in the `UPDATED` column indicates that the `MachineOSBuild` object is building. When the `UPDATED` column reports `FALSE`, the new custom layered image has rolled out to the nodes.
+    The value `FALSE` in the `UPDATED` column indicates that the `MachineOSBuild` object is building. When the `UPDATED` column reports `FALSE`, the new custom layered image has rolled out to the nodes.
 
 3.  When the node is back in the `Ready` state, check that the changes were applied:
 
@@ -833,11 +835,11 @@ After the changes have been rolled out, you can unpause the machine config pool.
         rngd 6.16
         ```
 
-- [Pausing the machine config pools](../updating/updating_a_cluster/update-using-custom-machine-config-pools.xml#update-using-custom-machine-config-pools-pause_update-using-custom-machine-config-pools)
-
 ## Rebuilding an on-cluster custom layered image
 
-In situations where you want to rebuild an on-cluster custom layered image, you can either modify your `MachineOSConfig` object or add an annotation to the `MachineOSConfig` object. Both of these actions trigger an automatic rebuild of the object. For example, you could perform a rebuild if the you change the Containerfile or need to update the `osimageurl` location in a machine config.
+You can rebuild an on-cluster custom layered image by either modifying your `MachineOSConfig` object or adding an annotation to the `MachineOSConfig` object. Both of these actions trigger an automatic rebuild of the object.
+
+For example, you could perform a rebuild if the you change the Containerfile or need to update the `osimageurl` location in a machine config.
 
 After you add the annotation, the Machine Config Operator (MCO) deletes the current `MachineOSBuild` object and creates a new one in its place. When the build process is complete, the MCO automatically removes the annotation.
 
@@ -869,7 +871,7 @@ After you add the annotation, the Machine Config Operator (MCO) deletes the curr
   # ...
   ```
 
-  - Add this annotation to trigger a rebuild of the custom layered image.
+  Add the `machineconfiguration.openshift.io/rebuild: ""` annotation to trigger a rebuild of the custom layered image.
 
 <!-- -->
 
@@ -890,7 +892,7 @@ After you add the annotation, the Machine Config Operator (MCO) deletes the curr
   layered-image-d6b929a29c6dbfa8e4007c8069a2fd08   False      True       False       False         False    2m41s
   ```
 
-  - The value `True` in the `BUILDING` column indicates that the `MachineOSBuild` object is building.
+  The value `True` in the `BUILDING` column indicates that the `MachineOSBuild` object is building.
 
 - Edit the `MachineOSConfig` object to verify that the MCO removed the `machineconfiguration.openshift.io/rebuild` annotation by using the following command:
 
@@ -964,9 +966,7 @@ Before you remove the label, make sure the node is associated with another MCP.
     worker    rendered-worker-e8c8bc1de69777325003e80bc0c04b82    True      False      False      3              3                   3                     0                      5h39m
     ```
 
-    - The custom machine config pool no longer has any nodes.
-
-    - When the `UPDATING` field is `True`, the machine config pool is updating with the previous machine config. When the field becomes `False`, the worker machine config pool has rolled out to the previous machine config.
+    The custom machine config pool, named `layered`, no longer has any nodes. When the `UPDATING` field is `True`, the machine config pool is updating with the previous machine config. When the field becomes `False`, the worker machine config pool has rolled out to the previous machine config.
 
   - Check the nodes to see that scheduling on the nodes is disabled. This indicates that the change is being applied:
 
@@ -1022,9 +1022,9 @@ Before you remove the label, make sure the node is associated with another MCP.
                                Digest: sha256:a8bd32573f787f6d1c23e1d669abbefd1e31339826d06e750c0ca632ad6c414f
                               Version: 419.96.202501202201-0 (2025-01-20T22:06:13Z)
 
-## Removing an on-cluster custom layered image
+## Removal of an on-cluster custom layered image
 
-To prevent the custom layered images from taking up excessive space in your registry, you can automatically remove an on-cluster custom layered image from the repository by deleting the `MachineOSBuild` object that created the image.
+You can remove an on-cluster custom layered image from the repository by deleting the `MachineOSBuild` object that created the image. Removing unneeded custom layered images prevents the images from taking up excessive space in your registry.
 
 The credentials provided by the registry push secret that you added to the `MachineOSBuild` object must grant the permission for deleting an image from the registry. If the delete permission is not provided, the image is not removed when you delete the `MachineOSBuild` object.
 
@@ -1069,15 +1069,19 @@ As soon as you apply an out-of-cluster custom image to your cluster, you effecti
       bootc container lint
   ```
 
-  - Specifies the RHCOS base image of your cluster.
+  where:
 
-  - Replaces the kernel packages.
+  `FROM`
+  Specifies the RHCOS base image of your cluster.
 
-    <div class="note">
+  `RUN`
+  Replaces the kernel packages.
 
-    Instructions on how to create a Containerfile are beyond the scope of this documentation.
+  <div class="note">
 
-    </div>
+  Instructions on how to create a Containerfile are beyond the scope of this documentation.
+
+  </div>
 
 - Because the process for building a custom layered image is performed outside of the cluster, you must use the `--authfile /path/to/pull-secret` option with Podman or Buildah. Alternatively, to have the pull secret read by these tools automatically, you can add it to one of the default file locations: `~/.docker/config.json`, `$XDG_RUNTIME_DIR/containers/auth.json`, `~/.docker/config.json`, or `~/.dockercfg`. Refer to the `containers-auth.json` man page for more information.
 
@@ -1098,9 +1102,13 @@ As soon as you apply an out-of-cluster custom image to your cluster, you effecti
           osImageURL: quay.io/my-registry/custom-image@sha256...
         ```
 
-        - Specifies the machine config pool to deploy the custom layered image.
+        where:
 
-        - Specifies the path to the custom layered image in the repository.
+        `metadata.labels`
+        Specifies the machine config pool to deploy the custom layered image.
+
+        `spec.osImageURL`
+        Specifies the path to the custom layered image in the repository.
 
     2.  Create the `MachineConfig` object:
 
@@ -1154,9 +1162,7 @@ You can verify that the custom layered image is applied by performing any of the
         rendered-worker-5de4837625b1cbc237de6b22bc0bc873   5bdb57489b720096ef912f738b46330a8f577803   3.5.0             4s
         ```
 
-        - New machine config
-
-        - New rendered machine config
+        The `os-layer-custom` object is the newly created machine config. The `rendered-worker-5de4837625b1cbc237de6b22bc0bc873` object is the newly created rendered machine config.
 
     2.  Check that the `osImageURL` value in the new machine config points to the expected image:
 
@@ -1200,7 +1206,7 @@ You can verify that the custom layered image is applied by performing any of the
         worker   rendered-worker-5de4837625b1cbc237de6b22bc0bc873   True      False      False      3              0                   0                     0                      39m
         ```
 
-        - When the `UPDATING` field is `True`, the machine config pool is updating with the new machine config. In this case, you will not see the new machine config listed in the output. When the field becomes `False`, the worker machine config pool has rolled out to the new machine config.
+        When the `UPDATING` field is `True`, the machine config pool is updating with the new machine config. In this case, you will not see the new machine config listed in the output. When the field becomes `False`, the worker machine config pool has rolled out to the new machine config.
 
     4.  Check the nodes to see that scheduling on the nodes is disabled. This indicates that the change is being applied:
 
@@ -1255,14 +1261,6 @@ You can verify that the custom layered image is applied by performing any of the
             * ostree-unverified-registry:quay.io/my-registry/...
                                Digest: sha256:...
 
-<div class="formalpara-title">
-
-**Additional resources**
-
-</div>
-
-[Updating with a RHCOS custom layered image](../machine_configuration/mco-coreos-layering.xml#coreos-layering-updating_mco-coreos-layering)
-
 ## Reverting an out-of-cluster node
 
 You can revert an out-of-cluster custom layered image from the nodes in specific machine config pools. The Machine Config Operator (MCO) reboots those nodes with the cluster base Red Hat Enterprise Linux CoreOS (RHCOS) image, overriding the custom layered image.
@@ -1303,7 +1301,7 @@ You can verify that the custom layered image is removed by performing any of the
     worker   rendered-worker-6b000dbc31aaee63c6a2d56d04cd4c1b   False     True       False      3              0                   0                     0                      39m
     ```
 
-    - When the `UPDATING` field is `True`, the machine config pool is updating with the previous machine config. When the field becomes `False`, the worker machine config pool has rolled out to the previous machine config.
+    When the `UPDATING` field is `True`, the machine config pool is updating with the previous machine config. When the field becomes `False`, the worker machine config pool has rolled out to the previous machine config.
 
 2.  Check the nodes to see that scheduling on the nodes is disabled. This indicates that the change is being applied:
 
@@ -1514,6 +1512,8 @@ After the installation, if you modify a machine config pool or update the OpenSh
 
 When you configure image mode for OpenShift, OpenShift Container Platform no longer automatically updates the node pool that uses the custom layered image. You become responsible to manually update your nodes as appropriate.
 
+Updating a node with a custom layered image is not required. However, if that node gets too far behind the current OpenShift Container Platform version, you could experience unexpected results.
+
 To update a node that uses a custom layered image, follow these general steps:
 
 1.  The cluster automatically upgrades to version x.y.z+1, except for the nodes that use the custom layered image.
@@ -1522,4 +1522,28 @@ To update a node that uses a custom layered image, follow these general steps:
 
 3.  Create a new machine config that points to the updated custom layered image.
 
-Updating a node with a custom layered image is not required. However, if that node gets too far behind the current OpenShift Container Platform version, you could experience unexpected results.
+# Additional resources
+
+- [Using the on-cluster image mode to apply a custom layered image](../machine_configuration/mco-coreos-layering.xml#coreos-layering-configuring-on-proc_mco-coreos-layering)
+
+- [Removing an on-cluster custom layered image](../machine_configuration/mco-coreos-layering.xml#coreos-layering-configuring-on-remove_mco-coreos-layering)
+
+- [Pausing the machine config pools](../updating/updating_a_cluster/update-using-custom-machine-config-pools.xml#update-using-custom-machine-config-pools-pause_update-using-custom-machine-config-pools)
+
+- [Rebuilding an on-cluster custom layered image](../machine_configuration/mco-coreos-layering.xml#coreos-layering-configuring-on-rebuild_mco-coreos-layering)
+
+- [Reverting an on-cluster custom layered image](../machine_configuration/mco-coreos-layering.xml#coreos-layering-configuring-on-revert_mco-coreos-layering)
+
+- [Modifying a custom layered image](../machine_configuration/mco-coreos-layering.xml#coreos-layering-configuring-on-modifying_mco-coreos-layering)
+
+- [About checking machine config node status](../machine_configuration/index.xml#checking-mco-node-status_machine-config-overview)
+
+- [Updating the global cluster pull secret](../openshift_images/managing_images/using-image-pull-secrets.xml#images-update-global-pull-secret_using-image-pull-secrets)
+
+- [Enabling features using feature gates](../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)
+
+- [Updating with a RHCOS custom layered image](../machine_configuration/mco-coreos-layering.xml#coreos-layering-updating_mco-coreos-layering)
+
+- [What is a Hotfix package? (Red Hat Knowledgebase article)](https://access.redhat.com/solutions/2996001)
+
+- [Download Red Hat Enterprise Linux Packages](https://access.redhat.com/downloads/content/479/ver=/rhel---9/9.1/x86_64/packages)

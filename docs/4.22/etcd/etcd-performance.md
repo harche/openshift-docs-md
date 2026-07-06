@@ -460,6 +460,8 @@ This procedure is not supported when using control plane machine sets.
 
 # Defragmenting etcd data
 
+To prevent etcd performance degradation and cluster-wide maintenance alarms on large clusters, monitor etcd database metrics and defragment the data store when the keyspace grows too large.
+
 For large and dense clusters, etcd can suffer from poor performance if the keyspace grows too large and exceeds the space quota. Periodically maintain and defragment etcd to free up space in the data store. Monitor Prometheus for etcd metrics and defragment it when required; otherwise, etcd can raise a cluster-wide alarm that puts the cluster into a maintenance mode that accepts only key reads and deletes.
 
 Monitor these key metrics:
@@ -476,13 +478,15 @@ History compaction is performed automatically every five minutes and leaves gaps
 
 Defragmentation occurs automatically, but you can also trigger it manually.
 
+# Automatic defragmentation
+
+When etcd database growth affects performance, the etcd Operator can automatically defragment member disks based on cluster metrics.
+
 <div class="note">
 
 Automatic defragmentation is good for most cases, because the etcd operator uses cluster information to determine the most efficient operation for the user.
 
 </div>
-
-## Automatic defragmentation
 
 The etcd Operator automatically defragments disks. No manual intervention is needed.
 
@@ -496,31 +500,25 @@ Verify that the defragmentation process is successful by viewing one of these lo
 
 <div class="warning">
 
-Automatic defragmentation can cause leader election failure in various OpenShift core components, such as the Kubernetes controller manager, which triggers a restart of the failing component. The restart is harmless and either triggers failover to the next running instance or the component resumes work again after the restart.
+Automatic defragmentation can cause leader election failure in various OpenShift Container Platform core components, such as the Kubernetes controller manager, which triggers a restart of the failing component. The restart is harmless and either triggers failover to the next running instance or the component resumes work again after the restart.
 
 </div>
 
-<div class="formalpara-title">
-
-**Example log output for successful defragmentation**
-
-</div>
+The following is example log output for successful defragmentation:
 
 ``` terminal
 etcd member has been defragmented: <member_name>, memberID: <member_id>
 ```
 
-<div class="formalpara-title">
-
-**Example log output for unsuccessful defragmentation**
-
-</div>
+The following is example log output for unsuccessful defragmentation:
 
 ``` terminal
 failed defrag on member: <member_name>, memberID: <member_id>: <error_message>
 ```
 
-## Manual defragmentation
+# Manual defragmentation
+
+When automatic ectd defragmentation cannot reclaim enough space, manually defragment etcd on each member to restore disk availability and normal cluster operation.
 
 A Prometheus alert indicates when you need to use manual defragmentation. The alert is displayed in two cases:
 
@@ -548,11 +546,7 @@ Follow this procedure to defragment etcd data on each etcd member.
         $ oc -n openshift-etcd get pods -l k8s-app=etcd -o wide
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         etcd-ip-10-0-159-225.example.redhat.com                3/3     Running     0          175m   10.0.159.225   ip-10-0-159-225.example.redhat.com   <none>           <none>
@@ -566,11 +560,7 @@ Follow this procedure to defragment etcd data on each etcd member.
         $ oc rsh -n openshift-etcd etcd-ip-10-0-159-225.example.redhat.com etcdctl endpoint status --cluster -w table
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         Defaulting container name to etcdctl.
@@ -606,11 +596,7 @@ Follow this procedure to defragment etcd data on each etcd member.
         sh-4.4# etcdctl --command-timeout=30s --endpoints=https://localhost:2379 defrag
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         Finished defragmenting etcd member[https://localhost:2379]
@@ -624,11 +610,7 @@ Follow this procedure to defragment etcd data on each etcd member.
         sh-4.4# etcdctl endpoint status -w table --cluster
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         +---------------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+
@@ -654,11 +636,7 @@ Follow this procedure to defragment etcd data on each etcd member.
         sh-4.4# etcdctl alarm list
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         memberID:12345678912345678912 alarm:NOSPACE

@@ -68,7 +68,7 @@ When you restore your cluster, you must use an etcd backup that was taken from t
 
 # Restoring to a previous cluster state for more than one node
 
-You can use a saved etcd backup to restore a previous cluster state or restore a cluster that has lost the majority of control plane hosts.
+You can use a saved etcd backup to restore an earlier cluster state or restore a cluster that has lost the majority of control plane hosts.
 
 For high availability (HA) clusters, a three-node HA cluster requires you to shut down etcd on two hosts to avoid a cluster split. On four-node and five-node HA clusters, you must shut down three hosts. Quorum requires a simple majority of nodes. The minimum number of nodes required for quorum on a three-node HA cluster is two. On four-node and five-node HA clusters, the minimum number of nodes required for quorum is three. If you start a new cluster from backup on your recovery host, the other etcd members might still be able to form quorum and continue service.
 

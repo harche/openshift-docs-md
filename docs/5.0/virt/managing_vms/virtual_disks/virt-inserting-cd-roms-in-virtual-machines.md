@@ -8,22 +8,24 @@ To make data on a CD-ROM storage device available to a running virtual machine (
 
 Setting up a virtual CD-ROM drive requires rebooting the VM, but afterwards, you can insert and eject ISO images in the drive while the VM is running.
 
-- The `DeclarativeHotplugVolumes` feature gate is enabled. To ensure this, the `HyperConverged` CR must contain the `declarativeHotplugVolumes: true` line in the `spec.featureGates` configuration section:
+- The `declarativeHotplugVolumes` feature gate is enabled. To ensure this, the `HyperConverged` CR must contain the `declarativeHotplugVolumes` feature gate in the `spec.featureGates` field:
 
   ``` yaml
-  apiVersion: hco.kubevirt.io/v1beta1
+  apiVersion: hco.kubevirt.io/v1
   kind: HyperConverged
   metadata:
     name: kubevirt-hyperconverged
     namespace: openshift-cnv
   spec:
-      featureGates:
-        declarativeHotplugVolumes: true
+    featureGates:
+      - name: declarativeHotplugVolumes
   ```
+
+  Make sure the `state` field for this feature gate is not set, or set to `"Enabled"` (rather than to `"Disabled"`).
 
   <div class="note">
 
-  The `DeclarativeHotplugVolumes` feature gate does not support hot plugging ephemeral volumes.
+  The `declarativeHotplugVolumes` feature gate does not support hot plugging ephemeral volumes.
 
   </div>
 
@@ -91,22 +93,24 @@ To make data on a CD-ROM storage device available to a running virtual machine (
 
 Setting up a virtual CD-ROM drive requires rebooting the VM, but you can insert and eject ISO images in the drive while the VM is running.
 
-- The `DeclarativeHotplugVolumes` feature gate is enabled. To ensure this, the `HyperConverged` CR must contain the `declarativeHotplugVolumes: true` line in the `spec.featureGates` configuration section:
+- The `declarativeHotplugVolumes` feature gate is enabled. To ensure this, the `HyperConverged` CR must contain the `declarativeHotplugVolumes` feature gate in the `spec.featureGates` field:
 
   ``` yaml
-  apiVersion: hco.kubevirt.io/v1beta1
+  apiVersion: hco.kubevirt.io/v1
   kind: HyperConverged
   metadata:
     name: kubevirt-hyperconverged
     namespace: openshift-cnv
   spec:
-      featureGates:
-        declarativeHotplugVolumes: true
+    featureGates:
+      - name: declarativeHotplugVolumes
   ```
+
+  Make sure the `state` field for this feature gate is not set, or set to `"Enabled"` (rather than to `"Disabled"`).
 
   <div class="note">
 
-  The `DeclarativeHotplugVolumes` feature gate does not support hot plugging ephemeral volumes.
+  The `declarativeHotplugVolumes` feature gate does not support hot plugging ephemeral volumes.
 
   </div>
 

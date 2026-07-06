@@ -8,26 +8,26 @@ The `HyperConverged` custom resource (CR) defines the user configuration for the
 
 # Overriding CPU and memory defaults
 
-Modify the default settings for CPU and memory requests and limits for your use case by adding the `spec.resourceRequirements.storageWorkloads` stanza to the `HyperConverged` custom resource (CR).
+Modify the default settings for CPU and memory requests and limits for your use case by adding the `spec.storage.workloadResourceRequirements` stanza to the `HyperConverged` custom resource (CR).
 
 - Install the OpenShift CLI (`oc`).
 
 1.  Edit the `HyperConverged` CR by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
-2.  Add the `spec.resourceRequirements.storageWorkloads` stanza to the CR, setting the values based on your use case. For example:
+2.  Add the `spec.storage.workloadResourceRequirements` stanza to the CR, setting the values based on your use case. For example:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
     spec:
-      resourceRequirements:
-        storageWorkloads:
+      storage:
+        workloadResourceRequirements:
           limits:
             cpu: "500m"
             memory: "2Gi"

@@ -180,7 +180,7 @@ You can run the OpenShift Cluster Capacity Tool as a job inside of a pod by usin
 
     where:
 
-    \<namespace\>
+    `<namespace>`
     Specifies the namespace where the pod is located.
 
 4.  Define and create the pod spec:

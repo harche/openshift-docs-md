@@ -39,7 +39,7 @@ Connecting VMs to user-defined networks with the `layer2` topology is recommende
 
 # OpenShift Virtualization networking glossary
 
-The following terms are used throughout OpenShift Virtualization documentation.
+Definitions of key OpenShift Virtualization networking terms and technologies.
 
 Container Network Interface (CNI)
 A [Cloud Native Computing Foundation](https://www.cncf.io/) project, focused on container network connectivity. OpenShift Virtualization uses CNI plugins to build upon the basic Kubernetes networking functionality.
@@ -153,7 +153,7 @@ The Data Plane Development Kit (DPDK) provides a set of libraries and drivers fo
 
 ## Comparing Linux bridge CNI and OVN-Kubernetes localnet topology
 
-The following table provides a comparison of features available when using the Linux bridge CNI compared to the localnet topology for an OVN-Kubernetes plugin.
+A comparison of features available when using the Linux bridge CNI compared to the localnet topology for an OVN-Kubernetes plugin.
 
 | Feature                                       | Available on Linux bridge CNI                          | Available on OVN-Kubernetes localnet |
 |-----------------------------------------------|--------------------------------------------------------|--------------------------------------|

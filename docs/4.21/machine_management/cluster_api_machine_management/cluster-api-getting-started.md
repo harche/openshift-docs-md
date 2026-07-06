@@ -22,7 +22,7 @@ When you install a cluster that supports managing infrastructure resources with 
 
 - One provider-specific infrastructure cluster resource.
 
-On clusters that support migrating Machine API resources to Cluster API resources, a two-way synchronization controller creates these primary resources automatically. For more information, see [Migrating Machine API resources to Cluster API resources](../../machine_management/cluster_api_machine_management/cluster-api-getting-started.xml#mapi-to-capi-migration-overview_cluster-api-getting-started).
+On clusters that support migrating Machine API resources to Cluster API resources, a two-way synchronization controller creates these primary resources automatically. For more information, see "Machine API to Cluster API resource migration".
 
 # Creating the Cluster API primary resources
 
@@ -44,7 +44,7 @@ You can create a provider-specific machine template resource by creating a YAML 
 
 - You have installed the OpenShift CLI (`oc`).
 
-1.  Create a YAML file similar to the following. This procedure uses `<machine_template_resource_file>.yaml` as an example file name.
+1.  Create a YAML file similar to the following example. This procedure uses `<machine_template_resource_file>.yaml` as an example file name.
 
     ``` yaml
     apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
@@ -57,20 +57,27 @@ You can create a provider-specific machine template resource by creating a YAML 
         spec:
     ```
 
-    - Specify the machine template kind. This value must match the value for your platform. The following values are valid:
+    where:
 
-      | Cluster infrastructure provider    | Value                      |
-      |------------------------------------|----------------------------|
-      | Amazon Web Services (AWS)          | `AWSMachineTemplate`       |
-      | Google Cloud                       | `GCPMachineTemplate`       |
-      | Microsoft Azure                    | `AzureMachineTemplate`     |
-      | Red Hat OpenStack Platform (RHOSP) | `OpenStackMachineTemplate` |
-      | VMware vSphere                     | `VSphereMachineTemplate`   |
-      | Bare metal                         | `Metal3MachineTemplate`    |
+    `kind`
+    Specifies the machine template kind. This value must match the value for your platform.
 
-    - Specify a name for the machine template.
+    The following values are valid:
 
-    - Specify the details for your environment. These parameters are provider specific. For more information, see the sample Cluster API machine template YAML for your provider.
+    | Cluster infrastructure provider    | Value                      |
+    |------------------------------------|----------------------------|
+    | Amazon Web Services (AWS)          | `AWSMachineTemplate`       |
+    | Google Cloud                       | `GCPMachineTemplate`       |
+    | Microsoft Azure                    | `AzureMachineTemplate`     |
+    | Red Hat OpenStack Platform (RHOSP) | `OpenStackMachineTemplate` |
+    | VMware vSphere                     | `VSphereMachineTemplate`   |
+    | Bare metal                         | `Metal3MachineTemplate`    |
+
+    `metadata.name`
+    Specifies a name for the machine template.
+
+    `spec.template.spec`
+    Specifies the details for your environment. These parameters are provider specific. For more information, see the sample Cluster API machine template YAML for your provider.
 
 2.  Create the machine template CR by running the following command:
 
@@ -84,7 +91,7 @@ You can create a provider-specific machine template resource by creating a YAML 
   $ oc get <machine_template_kind> -n openshift-cluster-api
   ```
 
-  where `<machine_template_kind>` is the value that corresponds to your platform.
+  Replace `<machine_template_kind>` with the value that corresponds to your platform.
 
   <div class="formalpara-title">
 
@@ -98,6 +105,8 @@ You can create a provider-specific machine template resource by creating a YAML 
   ```
 
 <!-- -->
+
+- [Machine API to Cluster API resource migration](../../machine_management/cluster_api_machine_management/cluster-api-getting-started.xml#mapi-to-capi-migration-overview_cluster-api-getting-started)
 
 - [Sample YAML for a Cluster API machine template resource on Amazon Web Services](../../machine_management/cluster_api_machine_management/cluster_api_provider_configurations/cluster-api-config-options-aws.xml#capi-yaml-machine-template-aws_cluster-api-config-options-aws)
 
@@ -147,16 +156,21 @@ You can create compute machine sets that use the Cluster API to dynamically mana
     # ...
     ```
 
-    - Specify a name for the compute machine set. The cluster ID, machine role, and region form a typical pattern for this value in the following format: `<cluster_name>-<role>-<region>`.
+    where:
 
-    - Specify the name of the cluster. Obtain the value of the cluster ID by running the following command:
+    `metadata.name`
+    Specifies a name for the compute machine set. The cluster ID, machine role, and region form a typical pattern for this value in the following format: `<cluster_name>-<role>-<region>`.
 
-      ``` terminal
-      $  oc get infrastructure cluster \
-         -o jsonpath='{.status.infrastructureName}'
-      ```
+    `spec.clusterName`
+    Specifies the name of the cluster. Obtain the value of the cluster ID by running the following command:
 
-    - Specify the details for your environment. These parameters are provider specific. For more information, see the sample Cluster API compute machine set YAML for your provider.
+    ``` terminal
+    $  oc get infrastructure cluster \
+       -o jsonpath='{.status.infrastructureName}'
+    ```
+
+    `spec.template.spec`
+    Specifies the details for your environment. These parameters are provider specific. For more information, see the sample Cluster API compute machine set YAML for your provider.
 
 2.  Create the compute machine set CR by running the following command:
 
@@ -235,9 +249,11 @@ You can create compute machine sets that use the Cluster API to dynamically mana
 
 - [Sample YAML for a Cluster API compute machine set resource on bare metal](../../machine_management/cluster_api_machine_management/cluster_api_provider_configurations/cluster-api-config-options-bare-metal.xml#capi-yaml-machine-set-bare-metal_cluster-api-config-options-bare-metal)
 
-# Migrating Machine API resources to Cluster API resources
+# Machine API to Cluster API resource migration
 
-On clusters that support migrating Machine API resources to Cluster API resources, a two-way synchronization controller creates the following Cluster API resources in the `openshift-cluster-api` namespace:
+On clusters that support migrating Machine API resources to Cluster API resources, a two-way synchronization controller creates the Cluster API resources in the `openshift-cluster-api` namespace.
+
+These Cluster API resources are listed as follows:
 
 - One or more machine templates that correspond to compute machine sets.
 
@@ -276,7 +292,7 @@ Supported resource conversions
 
 ## Authoritative API types of compute machines
 
-The authoritative API of a compute machine depends on the values of the `.spec.authoritativeAPI` and `.spec.template.spec.authoritativeAPI` fields in the Machine API compute machine set that creates it.
+The values of the `.spec.authoritativeAPI` and `.spec.template.spec.authoritativeAPI` fields in a Machine API compute machine set determine the authoritative API of the compute machines.
 
 |                                                       |              |              |              |              |
 |-------------------------------------------------------|--------------|--------------|--------------|--------------|
@@ -437,7 +453,7 @@ For more information about the support scope of Red Hat Technology Preview featu
       -n openshift-machine-api
     ```
 
-    where `<machine_set_name>` is the name of the Machine API compute machine set that you want to configure to deploy Cluster API compute machines.
+    Replace `<machine_set_name>` with the name of the Machine API compute machine set that you want to configure to deploy Cluster API compute machines.
 
 3.  In the resource specification, update the value of the `spec.template.spec.authoritativeAPI` field:
 
@@ -460,11 +476,16 @@ For more information about the support scope of Red Hat Technology Preview featu
       [...]
     ```
 
-    - The unconverted value for the Machine API compute machine set. Do not change the value in this part of the specification.
+    where:
 
-    - Specify `ClusterAPI` to configure the compute machine set to deploy Cluster API compute machines.
+    `spec.authoritativeAPI`
+    Specifies the unconverted value for the Machine API compute machine set. Do not change the value in this part of the specification.
 
-    - The current value for the Machine API compute machine set. Do not change the value in this part of the specification.
+    `spec.template.spec.authoritativeAPI`
+    Specifies the authoritative API for the machine set. To configure the compute machine set to deploy Cluster API compute machines, set this value to `ClusterAPI`.
+
+    `status.authoritativeAPI`
+    Specifies the current value for the Machine API compute machine set. Do not change the value in this part of the specification.
 
 <!-- -->
 

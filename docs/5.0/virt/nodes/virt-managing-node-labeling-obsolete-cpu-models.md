@@ -22,25 +22,25 @@ By default, the following CPU models are eliminated from the list of labels gene
     qemu32
     qemu64
 
-This predefined list is not visible in the `HyperConverged` CR. You cannot *remove* CPU models from this list, but you can add to the list by editing the `spec.obsoleteCPUs.cpuModels` field of the `HyperConverged` CR.
+This predefined list is not visible in the `HyperConverged` CR. You cannot *remove* CPU models from this list, but you can add to the list by editing the `spec.virtualization.obsoleteCPUModels` field of the `HyperConverged` CR.
 
 # Configuring obsolete CPU models
 
 You can configure a list of obsolete CPU models by editing the `HyperConverged` custom resource (CR).
 
-- Edit the `HyperConverged` custom resource, specifying the obsolete CPU models in the `obsoleteCPUs` array. For example:
+- Edit the `HyperConverged` custom resource, specifying the obsolete CPU models in the `obsoleteCPUModels` array. For example:
 
   ``` yaml
-  apiVersion: hco.kubevirt.io/v1beta1
+  apiVersion: hco.kubevirt.io/v1
   kind: HyperConverged
   metadata:
     name: kubevirt-hyperconverged
     namespace: openshift-cnv
   spec:
-    obsoleteCPUs:
-      cpuModels:
+    virtualization:
+      obsoleteCPUModels:
         - "<obsolete_cpu_1>"
         - "<obsolete_cpu_2>"
   ```
 
-  Replace the example values in the `cpuModels` array with obsolete CPU models. Any value that you specify is added to a predefined list of obsolete CPU models. The predefined list is not visible in the CR.
+  Replace the example values in the `obsoleteCPUModels` array with obsolete CPU models. Any value that you specify is added to a predefined list of obsolete CPU models. The predefined list is not visible in the CR.

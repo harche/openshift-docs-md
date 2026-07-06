@@ -345,7 +345,7 @@ If a storage checkup fails, there are steps that you can take to identify the re
 
 # Storage checkup error codes
 
-The following error codes might appear in the `storage-checkup-config` config map after a storage checkup fails.
+Storage checkup error codes might appear in the `storage-checkup-config` config map after a storage checkup fails.
 
 | Error code                         | Meaning                                                                                                                                |
 |------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------|

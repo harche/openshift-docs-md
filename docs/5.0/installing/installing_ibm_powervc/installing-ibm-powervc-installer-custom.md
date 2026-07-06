@@ -646,6 +646,12 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
     system:admin
     ```
 
+- "Customize your cluster"
+
+- "Remote health reporting"
+
+<!-- -->
+
 - [Accessing the web console](../../web_console/web-console.xml#web-console)
 
 # Telemetry access for OpenShift Container Platform

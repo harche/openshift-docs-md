@@ -1,6 +1,4 @@
-There are times when you need to make changes to the operating systems running on OpenShift Container Platform nodes. This can include changing settings for network time service, adding kernel arguments, or configuring journaling in a specific way.
-
-Aside from a few specialized features, most changes to operating systems on OpenShift Container Platform nodes can be done by creating what are referred to as `MachineConfig` objects that are managed by the Machine Config Operator. For example, you can use the Machine Config Operator (MCO) and machine configs to manage update to systemd, CRI-O and kubelet, the kernel, Network Manager and other system features.
+You can make changes to the operating systems on OpenShift Container Platform nodes by creating `MachineConfig` objects, which are managed by the Machine Config Operator. For example, you can use the Machine Config Operator (MCO) and machine configs to manage systemd, CRI-O and kubelet, the kernel, Network Manager, and other system features.
 
 Tasks in this section describe how to use features of the Machine Config Operator to configure operating system features on OpenShift Container Platform nodes.
 
@@ -13,6 +11,8 @@ Previously, NetworkManager stored new network configurations to `/etc/sysconfig/
 </div>
 
 # About the Machine Config Operator
+
+The Machine Config Operator (MCO) manages the lifecycle of your cluster nodes by coordinating operating system updates and configuration changes. You can use the MCO to simplify node upgrades and ensures consistent host environments across your cluster.
 
 OpenShift Container Platform 4.17 integrates both operating system and cluster management. Because the cluster manages its own updates, including updates to Red Hat Enterprise Linux CoreOS (RHCOS) on cluster nodes, OpenShift Container Platform provides an opinionated lifecycle management experience that simplifies the orchestration of node upgrades.
 
@@ -56,11 +56,13 @@ Alternatively, you can prevent the nodes from automatically rebooting after mach
 
 There might be situations where the configuration on a node does not fully match what the currently-applied machine config specifies. This state is called *configuration drift*. The Machine Config Daemon (MCD) regularly checks the nodes for configuration drift. If the MCD detects configuration drift, the MCO marks the node `degraded` until an administrator corrects the node configuration. A degraded node is online and operational, but, it cannot be updated.
 
-- [About the OVN-Kubernetes network plugin](../networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.xml#about-ovn-kubernetes)
-
 # Machine config overview
 
-The Machine Config Operator (MCO) manages updates to systemd, CRI-O and Kubelet, the kernel, Network Manager and other system features. It also offers a `MachineConfig` CRD that can write configuration files onto the host (see [machine-config-operator](https://github.com/openshift/machine-config-operator#machine-config-operator)). Understanding what MCO does and how it interacts with other components is critical to making advanced, system-level changes to an OpenShift Container Platform cluster. Here are some things you should know about MCO, machine configs, and how they are used:
+You should understand what the Machine Config Operator (MCO) does and how it interacts with other components before making advanced, system-level changes to an OpenShift Container Platform cluster.
+
+The Machine Config Operator (MCO) manages updates to systemd, CRI-O and Kubelet, the kernel, Network Manager, and other system features. It also offers a `MachineConfig` CRD that can write configuration files onto the host.
+
+You should know the following details about the MCO, machine configs, and how they are used:
 
 - A machine config can make a specific change to a file or service on the operating system of each system representing a pool of OpenShift Container Platform nodes.
 
@@ -88,7 +90,7 @@ The Machine Config Operator (MCO) manages updates to systemd, CRI-O and Kubelet,
 
 - MCO is only supported for writing to files in `/etc` and `/var` directories, although there are symbolic links to some directories that can be writeable by being symbolically linked to one of those areas. The `/opt` and `/usr/local` directories are examples.
 
-- Ignition is the configuration format used in MachineConfigs. See the [Ignition Configuration Specification v3.5.0](https://coreos.github.io/ignition/configuration-v3_5/) for details.
+- Ignition is the configuration format used in MachineConfigs. For details, see the "Configuration Specification v3.5.0 (Ignition documentation)" in the *Additional resources* section.
 
 - Although Ignition config settings can be delivered directly at OpenShift Container Platform installation time, and are formatted in the same way that MCO delivers Ignition configs, MCO has no way of seeing what those original Ignition configs are. Therefore, you should wrap Ignition config settings into a machine config before deploying them.
 
@@ -96,13 +98,13 @@ The Machine Config Operator (MCO) manages updates to systemd, CRI-O and Kubelet,
 
 - A key reason for using a machine config is that it will be applied when you spin up new nodes for a pool in your OpenShift Container Platform cluster. The `machine-api-operator` provisions a new machine and MCO configures it.
 
-MCO uses [Ignition](https://coreos.github.io/ignition/) as the configuration format. OpenShift Container Platform 4.6 moved from Ignition config specification version 2 to version 3.
+MCO uses Ignition as the configuration format. OpenShift Container Platform 4.6 moved from Ignition config specification version 2 to version 3. For more information, see the "Configuration Specification v3.5.0 (Ignition documentation)" in the *Additional resources* section.
 
 ## What can you change with machine configs?
 
 The kinds of components that MCO can change include:
 
-- **config**: Create Ignition config objects (see the [Ignition configuration specification](https://coreos.github.io/ignition/configuration-v3_2/)) to do things like modify files, systemd services, and other features on OpenShift Container Platform machines, including:
+- **config**: Create Ignition config objects to do things like modify files, systemd services, and other features on OpenShift Container Platform machines, including:
 
   - **Configuration files**: Create or overwrite files in the `/var` or `/etc` directory.
 
@@ -122,7 +124,7 @@ The kinds of components that MCO can change include:
 
 - **kernelType**: Optionally identify a non-standard kernel to use instead of the standard kernel. Use `realtime` to use the RT kernel (for RAN). This is only supported on select platforms. Use the `64k-pages` parameter to enable the 64k page size kernel. This setting is exclusive to machines with 64-bit ARM architectures.
 
-- **fips**: Enable [FIPS](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/security_hardening/index#using-the-system-wide-cryptographic-policies_security-hardening) mode. FIPS should be set at installation-time setting and not a postinstallation procedure.
+- **fips**: Enable FIPS mode. FIPS should be set at installation-time setting and not a postinstallation procedure. For more information, see "Using system-wide cryptographic policies" in the *Additional resources* section.
 
   <div class="important">
 
@@ -132,7 +134,7 @@ The kinds of components that MCO can change include:
 
   </div>
 
-- **extensions**: Extend RHCOS features by adding selected pre-packaged software. For this feature, available extensions include [usbguard](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/security_hardening/index#protecting-systems-against-intrusive-usb-devices_security-hardening) and kernel modules.
+- **extensions**: Extend RHCOS features by adding selected pre-packaged software. For this feature, available extensions include usbguard and kernel modules. For more information, see "Protecting systems against intrusive USB devices" in the *Additional resources* section.
 
 - **Custom resources (for `ContainerRuntime` and `Kubelet`)**: Outside of machine configs, MCO manages two special custom resources for modifying CRI-O container runtime settings (`ContainerRuntime` CR) and the Kubelet service (`Kubelet` CR).
 
@@ -161,6 +163,8 @@ In other cases, you can mitigate the disruption to your workload when the MCO ma
 There might be situations where the configuration on a node does not fully match what the currently-applied machine config specifies. This state is called *configuration drift*. The Machine Config Daemon (MCD) regularly checks the nodes for configuration drift. If the MCD detects configuration drift, the MCO marks the node `degraded` until an administrator corrects the node configuration. A degraded node is online and operational, but, it cannot be updated. For more information on configuration drift, see *Understanding configuration drift detection*.
 
 ## Node configuration management with machine config pools
+
+When making changes to nodes, you can modify groups of nodes by applying the changes to all of the nodes in the same machine config pool (MCP).
 
 Machines that run control plane components or user workloads are divided into groups based on the types of resources they handle. These groups of machines are called machine config pools (MCP). Each MCP manages a set of nodes and its corresponding machine configs. The role of the node determines which MCP it belongs to; the MCP governs nodes based on its assigned node role label. Nodes in an MCP have the same configuration; this means nodes can be scaled up and torn down in response to increased or decreased workloads.
 
@@ -208,7 +212,7 @@ Throughout this process, the MCO maintains the required number of pods based on 
 
 <div class="note">
 
-There are conditions which can prevent the MCO from draining a node. If the MCO fails to drain a node, the Operator will be unable to reboot the node, preventing any changes made to the node through a machine config. For more information and mitigation steps, see the [MCCDrainError](https://github.com/openshift/runbooks/blob/master/alerts/machine-config-operator/MachineConfigControllerDrainError.md) runbook.
+There are conditions which can prevent the MCO from draining a node. If the MCO fails to drain a node, the Operator will be unable to reboot the node, preventing any changes made to the node through a machine config. For more information and mitigation steps, see the "MCCDrainError" runbook in the *Additional resources* section.
 
 </div>
 
@@ -224,19 +228,13 @@ In certain cases the nodes are not drained. For more information, see "About the
 
 </div>
 
-There are ways to mitigate the disruption caused by drain and reboot cycles by using node disruption policies or disabling control plane reboots. For more information, see "Understanding node restart behaviors after machine config changes" and "Disabling the Machine Config Operator from automatically rebooting."
-
-- [About the Machine Config Operator](../machine_configuration/index.xml#about-machine-config-operator_machine-config-overview)
-
-- [Using node disruption policies to minimize disruption from machine config changes](../machine_configuration/machine-config-node-disruption.xml#machine-configs-configure)
-
-- [Disabling the Machine Config Operator from automatically rebooting](../support/troubleshooting/troubleshooting-operator-issues.xml#troubleshooting-disabling-autoreboot-mco_troubleshooting-operator-issues)
+There are ways to mitigate the disruption caused by drain and reboot cycles by using node disruption policies or disabling control plane reboots. For more information, see "Understanding node restart behaviors after machine config changes" and "Disabling the Machine Config Operator from automatically rebooting".
 
 # Understanding configuration drift detection
 
-There might be situations when the on-disk state of a node differs from what is configured in the machine config. This is known as *configuration drift*. For example, a cluster admin might manually modify a file, a systemd unit file, or a file permission that was configured through a machine config. This causes configuration drift. Configuration drift can cause problems between nodes in a Machine Config Pool or when the machine configs are updated.
-
 The Machine Config Operator (MCO) uses the Machine Config Daemon (MCD) to check nodes for configuration drift on a regular basis. If detected, the MCO sets the node and the machine config pool (MCP) to `Degraded` and reports the error. A degraded node is online and operational, but, it cannot be updated.
+
+There might be situations when the on-disk state of a node differs from what is configured in the machine config. This is known as *configuration drift*. For example, a cluster admin might manually modify a file, a systemd unit file, or a file permission that was configured through a machine config. This causes configuration drift. Configuration drift can cause problems between nodes in a Machine Config Pool or when the machine configs are updated.
 
 The MCD performs configuration drift detection upon each of the following conditions:
 
@@ -305,9 +303,7 @@ $ oc describe mcp worker
  ...
 ```
 
-- This message shows that a node’s `/etc/mco-test-file` file, which was added by the machine config, has changed outside of the machine config.
-
-- The state of the node is `NodeDegraded`.
+In this example, the text in the `Message` field shows that a node’s `/etc/mco-test-file` file, which was added by the machine config, has changed outside of the machine config. In response, the `Type` field show that state of the node is `NodeDegraded`.
 
 Or, if you know which node is degraded, examine that node:
 
@@ -336,15 +332,13 @@ Annotations:        cloud.network.openshift.io/egress-ipconfig: [{"interface":"n
  ...
 ```
 
-- The error message indicating that configuration drift was detected between the node and the listed machine config. Here the error message indicates that the contents of the `/etc/mco-test-file`, which was added by the machine config, has changed outside of the machine config.
-
-- The state of the node is `Degraded`.
+The `content mismatch for file` error message indicates that configuration drift was detected between the node and the listed machine config. Here the error message indicates that the contents of the `/etc/mco-test-file`, which was added by the machine config, has changed outside of the machine config. As a result, the state of the node is `Degraded`.
 
 You can correct configuration drift and return the node to the `Ready` state by performing one of the following remediations:
 
 - Ensure that the contents and file permissions of the files on the node match what is configured in the machine config. You can manually rewrite the file contents or change the file permissions.
 
-- Generate a [force file](https://access.redhat.com/solutions/5414371) on the degraded node. The force file causes the MCD to bypass the usual configuration drift detection and reapplies the current machine config.
+- Generate a force file on the degraded node. The force file causes the MCD to bypass the usual configuration drift detection and reapplies the current machine config. For more information, see "How to skip validation of failing / stuck MachineConfig in OCP 4?" in the *Additional resources* section.
 
   <div class="note">
 
@@ -354,7 +348,7 @@ You can correct configuration drift and return the node to the `Ready` state by 
 
 # Checking machine config pool status
 
-To see the status of the Machine Config Operator (MCO), its sub-components, and the resources it manages, use the following `oc` commands:
+You can see the status of the Machine Config Operator (MCO), its sub-components, and the resources it manages, by using the `oc` commands.
 
 1.  To see the number of MCO-managed nodes available on your cluster for each machine config pool (MCP), run the following command:
 
@@ -534,15 +528,15 @@ To see the status of the Machine Config Operator (MCO), its sub-components, and 
           --config=/etc/kubernetes/kubelet.conf \ ...
     ```
 
-If something goes wrong with a machine config that you apply, you can always back out that change. For example, if you had run `oc create -f ./myconfig.yaml` to apply a machine config, you could remove that machine config by running the following command:
+5.  If something goes wrong with a machine config that you apply, you can always back out that change. For example, if you had run `oc create -f ./myconfig.yaml` to apply a machine config, you could remove that machine config by running the following command:
 
-``` terminal
-$ oc delete -f ./myconfig.yaml
-```
+    ``` terminal
+    $ oc delete -f ./myconfig.yaml
+    ```
 
-If that was the only problem, the nodes in the affected pool should return to a non-degraded state. This actually causes the rendered configuration to roll back to its previously rendered state.
+    If that was the only problem, the nodes in the affected pool should return to a non-degraded state. This actually causes the rendered configuration to roll back to its previously rendered state.
 
-If you add your own machine configs to your cluster, you can use the commands shown in the previous example to check their status and the related status of the pool to which they are applied.
+    If you add your own machine configs to your cluster, you can use the commands shown in the previous example to check their status and the related status of the pool to which they are applied.
 
 # About node status during updates
 
@@ -649,9 +643,7 @@ rendered-worker-f351f6947f15cd0380514f4b1c89f8f2   c00e2c941bc6e236b50e0bf3988e6
 # ...
 ```
 
-- The current machine config for the worker nodes.
-
-- The newly-created machine config that is being applied to the worker nodes.
+In this example, the current machine config for the worker nodes is listed before the newly-created machine config, which is being applied to the worker nodes.
 
 You can watch as the nodes are updated with the new machine config:
 
@@ -675,11 +667,11 @@ ci-ln-ds73n5t-72292-9xsm9-worker-b-gw5sd   worker        rendered-worker-f351f69
 ci-ln-ds73n5t-72292-9xsm9-worker-c-t227w   worker        rendered-worker-01f27f752eb84eba917450e43636b210   rendered-worker-01f27f752eb84eba917450e43636b210   True      19M
 ```
 
-- This node has been updated. The new machine config, `rendered-worker-f351f6947f15cd0380514f4b1c89f8f2`, is shown as the desired and current machine configs.
+In this example, the `ci-ln-ds73n5t-72292-9xsm9-worker-a-2d8tz` node has been updated. The new machine config, `rendered-worker-f351f6947f15cd0380514f4b1c89f8f2`, is shown as the desired and current machine configs.
 
-- This node is currently being updated to the new machine config. The previous and new machine configs are shown as the desired and current machine configs, respectively.
+The `ci-ln-ds73n5t-72292-9xsm9-worker-b-gw5sd` node is currently being updated to the new machine config. The previous and new machine configs are shown as the desired and current machine configs, respectively.
 
-- This node has not yet been updated to the new machine config. The previous machine config is shown as the desired and current machine configs.
+The `ci-ln-ds73n5t-72292-9xsm9-worker-c-t227w` node has not yet been updated to the new machine config. The previous machine config is shown as the desired and current machine configs.
 
 <table>
 <caption>Basic machine config node fields</caption>
@@ -875,11 +867,16 @@ status:
   observedGeneration: 4
 ```
 
-- The `MachineConfigNode` object name.
+where:
 
-- The new machine configuration. This field updates after the MCO validates the machine config in the `UPDATEPREPARED` phase, then the status adds the new configuration.
+`metadata.name`
+Specifies the `MachineConfigNode` object name.
 
-- The current machine config on the node.
+`spec.configVersion.desired`
+Specifies the new machine configuration. This field updates after the MCO validates the machine config in the `UPDATEPREPARED` phase, and then the status adds the new configuration.
+
+`status.configVersion.current`
+Specifies the current machine config on the node.
 
 For clusters configured with on-cluster image mode, the machine config node output also includes the name of the custom layered image that was applied to affected nodes.
 
@@ -918,7 +915,7 @@ Status:
 # ...
 ```
 
-- Digested image pull spec for the new custom layered image.
+The digested image pull spec for the new custom layered image is in the `Spec.Config Image.Desired Image` parameter.
 
 In order to see the custom layered image in the output, you must enable the `TechPreviewNoUpgrade` feature set on the cluster. For more information, see "Enabling features using feature gates".
 
@@ -935,10 +932,6 @@ The custom layered image output is a Technology Preview feature only. Technology
 For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
-
-- [About on-cluster image mode](../machine_configuration/mco-coreos-layering.xml#coreos-layering-configuring-on_mco-coreos-layering)
-
-- [Enabling features using feature gates](../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)
 
 ## Checking node status during updates
 
@@ -1103,11 +1096,11 @@ For more information on the meaning of these fields, see "About checking machine
   # ...
   ```
 
-# Understanding Machine Config Operator certificates
+# Viewing and interacting with certificates
 
-Machine Config Operator certificates are used to secure connections between the Red Hat Enterprise Linux CoreOS (RHCOS) nodes and the Machine Config Server. For more information, see [Machine Config Operator certificates](../security/certificate_types_descriptions/machine-config-operator-certificates.xml#cert-types-machine-config-operator-certificates).
+Machine Config Operator certificates are used to secure connections between the Red Hat Enterprise Linux CoreOS (RHCOS) nodes and the Machine Config Server.
 
-## Viewing and interacting with certificates
+For more information, see "Machine Config Operator certificates" in the *Additional resources* section.
 
 The following certificates are handled in the cluster by the Machine Config Controller (MCC) and can be found in the `ControllerConfig` resource:
 
@@ -1216,3 +1209,29 @@ You can get information about the listed certificates, including the underyling 
       image-registry.openshift-image-registry.svc.cluster.local:5000
       image-registry.openshift-image-registry.svc:5000
       ```
+
+# Additional resources
+
+- [MCCDrainError (Red Hat runbook)](https://github.com/openshift/runbooks/blob/master/alerts/machine-config-operator/MachineConfigControllerDrainError.md)
+
+- [Ignition Configuration Specification v3.5.0 (Ignition documentation)](https://coreos.github.io/ignition/configuration-v3_5/)
+
+- [How to skip validation of failing / stuck MachineConfig in OCP 4? (Red Hat Knowledgebase article)](https://access.redhat.com/solutions/5414371)
+
+- [Using system-wide cryptographic policies (Red Hat Enterprise Linux (RHEL) documentation)](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/security_hardening/index#using-the-system-wide-cryptographic-policies_security-hardening)
+
+- [Protecting systems against intrusive USB devices (Red Hat Enterprise Linux (RHEL) documentation)](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/security_hardening/index#protecting-systems-against-intrusive-usb-devices_security-hardening)
+
+- [About the OVN-Kubernetes network plugin](../networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.xml#about-ovn-kubernetes)
+
+- [About the Machine Config Operator](../machine_configuration/index.xml#about-machine-config-operator_machine-config-overview)
+
+- [Using node disruption policies to minimize disruption from machine config changes](../machine_configuration/machine-config-node-disruption.xml#machine-configs-configure)
+
+- [Disabling the Machine Config Operator from automatically rebooting](../support/troubleshooting/troubleshooting-operator-issues.xml#troubleshooting-disabling-autoreboot-mco_troubleshooting-operator-issues)
+
+- [About on-cluster image mode](../machine_configuration/mco-coreos-layering.xml#coreos-layering-configuring-on_mco-coreos-layering)
+
+- [Enabling features using feature gates](../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)
+
+- [Machine Config Operator certificates](../security/certificate_types_descriptions/machine-config-operator-certificates.xml#cert-types-machine-config-operator-certificates)

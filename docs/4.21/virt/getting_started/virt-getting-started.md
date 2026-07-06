@@ -28,30 +28,6 @@ You can explore several OpenShift Virtualization capabilities by taking quick st
 
 2.  Select **Quick Starts**. You can filter the list of tours by entering the keyword `virtual` in the **Filter** field.
 
-# Migrating to OpenShift Virtualization
-
-To migrate virtual machines from an external provider such as VMware vSphere, Red Hat OpenStack Platform (RHOSP), Red Hat Virtualization, or another OpenShift Container Platform cluster, use the Migration Toolkit for Virtualization (MTV). You can also migrate Open Virtual Appliance (OVA) files created by VMware vSphere.
-
-<div class="note">
-
-Migration Toolkit for Virtualization is not part of OpenShift Virtualization and requires separate installation. For this reason, all links in this procedure lead outside of OpenShift Virtualization documentation.
-
-</div>
-
-- The Migration Toolkit for Virtualization Operator [is installed](https://docs.redhat.com/en/documentation/migration_toolkit_for_virtualization/2.8/html/installing_and_using_the_migration_toolkit_for_virtualization/installing-the-operator_mtv#installing-the-operator_mtv).
-
-<!-- -->
-
-- [Migrate virtual machines from VMware vSphere](https://docs.redhat.com/en/documentation/migration_toolkit_for_virtualization/2.8/html/installing_and_using_the_migration_toolkit_for_virtualization/migrating-vmware#adding-source-provider_vmware).
-
-- [Migrate virtual machines from Red Hat OpenStack Platform (RHOSP)](https://docs.redhat.com/en/documentation/migration_toolkit_for_virtualization/2.8/html/installing_and_using_the_migration_toolkit_for_virtualization/migrating-osp_ostack#adding-source-provider_ostack).
-
-- [Migrate virtual machines from Red Hat Virtualization](https://docs.redhat.com/en/documentation/migration_toolkit_for_virtualization/2.8/html/installing_and_using_the_migration_toolkit_for_virtualization/migrating-rhv_rhv#adding-source-provider_rhv).
-
-- [Migrate virtual machines from OpenShift Virtualization](https://docs.redhat.com/en/documentation/migration_toolkit_for_virtualization/2.8/html/installing_and_using_the_migration_toolkit_for_virtualization/migrating-virt_cnv#adding-source-provider_cnv).
-
-- [Migrate virtual machines from OVA files created by VMware vSphere](https://docs.redhat.com/en/documentation/migration_toolkit_for_virtualization/2.8/html/installing_and_using_the_migration_toolkit_for_virtualization/migrating-ova_ova#adding-source-provider_ova).
-
 # Additional resources
 
 - [Plan your bare-metal cluster for OpenShift Virtualization](../../installing/installing_bare_metal/preparing-to-install-on-bare-metal.xml#virt-planning-bare-metal-cluster-for-ocp-virt_preparing-to-install-on-bare-metal)

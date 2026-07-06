@@ -2068,7 +2068,7 @@ To deploy a cluster autoscaler, you create an instance of the `ClusterAutoscaler
 
     where:
 
-    \<filename\>
+    `<filename>`
     Specifies the name of the YAML file you created.
 
 # Applying autoscaling to your cluster

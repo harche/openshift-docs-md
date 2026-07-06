@@ -228,7 +228,7 @@ As a developer, you must specify a project name when querying metrics. You must 
 
 # Virtualization metrics
 
-The following metric descriptions include example Prometheus Query Language (PromQL) queries. These metrics are not an API and might change between versions. For a complete list of virtualization metrics, see [KubeVirt components metrics](https://github.com/kubevirt/monitoring/blob/main/docs/metrics.md).
+Metric descriptions including example Prometheus Query Language (PromQL) queries. These metrics are not an API and might change between versions.
 
 <div class="note">
 
@@ -254,7 +254,7 @@ To query the vCPU metric, the `schedstats=enable` kernel argument must first be 
 `kubevirt_vmi_vcpu_delay_seconds_total`
 Returns the cumulative time, in seconds, that a vCPU was enqueued by the host scheduler but could not run immediately. This delay appears to the virtual machine as *steal time*, which is CPU time lost when the host runs other workloads. Steal time can impact performance and often indicates CPU overcommitment or contention on the host. Type: Counter.
 
-**Example vCPU delay query**
+Example vCPU delay query:
 
 The following query returns the average per-second delay over a 5-minute period. A high value may indicate CPU overcommitment or contention on the node:
 
@@ -262,7 +262,7 @@ The following query returns the average per-second delay over a 5-minute period.
 irate(kubevirt_vmi_vcpu_delay_seconds_total[5m]) > 0.05
 ```
 
-**Example vCPU wait time query**
+Example vCPU wait time query:
 
 The following query returns the top 3 VMs waiting for I/O at every given moment over a six-minute time period:
 
@@ -280,7 +280,7 @@ Returns the total amount of traffic received (in bytes) on the virtual machine�
 `kubevirt_vmi_network_transmit_bytes_total`
 Returns the total amount of traffic transmitted (in bytes) on the virtual machine’s network. Type: Counter.
 
-**Example network traffic query**
+Example network traffic query:
 
 The following query returns the top 3 VMs transmitting the most network traffic at every given moment over a six-minute time period:
 
@@ -300,7 +300,7 @@ Returns the total amount (in bytes) of the virtual machine’s storage-related t
 `kubevirt_vmi_storage_write_traffic_bytes_total`
 Returns the total amount of storage writes (in bytes) of the virtual machine’s storage-related traffic. Type: Counter.
 
-**Example storage-related traffic queries**
+Example storage-related traffic queries:
 
 - The following query returns the top 3 VMs performing the most storage traffic at every given moment over a six-minute time period:
 
@@ -322,7 +322,7 @@ Returns the total number of virtual machine disks restored from the source virtu
 `kubevirt_vmsnapshot_disks_restored_from_source_bytes`
 Returns the amount of space in bytes restored from the source virtual machine. Type: Gauge.
 
-**Examples of storage snapshot data queries**
+Examples of storage snapshot data queries:
 
 - The following query returns the total number of virtual machine disks restored from the source virtual machine:
 
@@ -339,12 +339,12 @@ Returns the amount of space in bytes restored from the source virtual machine. T
 The following queries can determine the I/O performance of storage devices:
 
 `kubevirt_vmi_storage_iops_read_total`
-Returns the amount of write I/O operations the virtual machine is performing per second. Type: Counter.
-
-`kubevirt_vmi_storage_iops_write_total`
 Returns the amount of read I/O operations the virtual machine is performing per second. Type: Counter.
 
-**Example I/O performance query**
+`kubevirt_vmi_storage_iops_write_total`
+Returns the amount of write I/O operations the virtual machine is performing per second. Type: Counter.
+
+Example I/O performance query:
 
 The following query returns the top 3 VMs performing the most I/O operations per second at every given moment over a six-minute time period:
 
@@ -362,7 +362,7 @@ Returns the total amount (in bytes) of memory the virtual guest is swapping in. 
 `kubevirt_vmi_memory_swap_out_traffic_bytes`
 Returns the total amount (in bytes) of memory the virtual guest is swapping out. Type: Gauge.
 
-**Example memory swapping query**
+Example memory swapping query:
 
 The following query returns the top 3 VMs where the guest is performing the most memory swapping at every given moment over a six-minute time period:
 
@@ -422,7 +422,7 @@ data:
 
 ## Live migration metrics
 
-The following metrics can be queried to show live migration status.
+You can query metrics to show live migration status.
 
 `kubevirt_vmi_migration_data_processed_bytes`
 The amount of guest operating system data that has migrated to the new virtual machine (VM). Type: Gauge.
@@ -449,6 +449,8 @@ The number of successfully completed migrations. Type: Gauge.
 The number of failed migrations. Type: Gauge.
 
 # Additional resources
+
+- [KubeVirt components metrics](https://github.com/kubevirt/monitoring/blob/main/docs/metrics.md)
 
 - [Adding kernel arguments to nodes](../../machine_configuration/machine-configs-configure.xml#nodes-nodes-kernel-arguments_machine-configs-configure)
 

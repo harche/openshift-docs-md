@@ -134,7 +134,7 @@ You must verify that the subscription creation was successful before you can pro
 2.  Check that the `HyperConverged` custom resource (CR) has the correct version. Run the following command and verify the output:
 
     ``` terminal
-    $ oc get hyperconvergeds.v1beta1.hco.kubevirt.io -n openshift-cnv kubevirt-hyperconverged -o json | jq .status.versions
+    $ oc get hco -n openshift-cnv kubevirt-hyperconverged -o json | jq .status.versions
     ```
 
     Example output:
@@ -149,7 +149,7 @@ You must verify that the subscription creation was successful before you can pro
 3.  Verify the `HyperConverged` CR conditions. Run the following command and check the output:
 
     ``` terminal
-    $ oc get hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv -o json | jq -r '.status.conditions[] | {type,status}'
+    $ oc get hco kubevirt-hyperconverged -n openshift-cnv -o json | jq -r '.status.conditions[] | {type,status}'
     ```
 
     Example output:
@@ -190,7 +190,7 @@ You can deploy the OpenShift Virtualization Operator by using the `oc` CLI.
 1.  Create a YAML file that contains the following manifest:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged

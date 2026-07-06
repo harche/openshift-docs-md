@@ -312,7 +312,7 @@ Root: ./
 ### AI workloads
 
 |ai_workloads:{index.md}
-|ai_workloads/kueue:{about-kueue.md,release-notes.md,install-kueue.md,install-disconnected.md,integrating-lws.md,integrating-jobset.md,rbac-permissions.md,configuring-quotas.md,managing-workloads.md,monitoring-pending-workloads.md,using-cohorts.md,configuring-fairsharing.md,gangscheduling.md,running-kueue-jobs.md,getting-support.md}
+|ai_workloads/kueue:{about-kueue.md,release-notes.md,install-kueue.md,install-disconnected.md,integrating-lws.md,integrating-jobset.md,rbac-permissions.md,configuring-quotas.md,managing-workloads.md,monitoring-pending-workloads.md,using-cohorts.md,configuring-fairsharing.md,admission-fair-sharing.md,gangscheduling.md,running-kueue-jobs.md,getting-support.md}
 |ai_workloads/leader_worker_set:{index.md,lws-release-notes.md,lws-managing.md,lws-uninstalling.md}
 |ai_workloads/jobset_operator:{index.md,jobset-release-notes.md,jobset-install.md,managing-jobset.md,jobset-uninstall.md}
 

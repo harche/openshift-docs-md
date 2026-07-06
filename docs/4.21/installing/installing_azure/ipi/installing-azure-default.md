@@ -1,4 +1,4 @@
-You can install a cluster on Microsoft Azure that uses the default configuration options.
+You can install an OpenShift Container Platform cluster on Microsoft Azure by using the default configuration options. The installation program provisions the required infrastructure.
 
 # Deploying the cluster
 
@@ -161,10 +161,14 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
     system:admin
     ```
 
-- For more information about accessing and understanding the OpenShift Container Platform web console, see [Accessing the web console](../../../web_console/web-console.xml#web-console).
+- "Customize your cluster"
 
-# Next steps
+- "Remote health reporting"
 
-- [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations).
+<!-- -->
 
-- If necessary, you can [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting).
+- [Accessing the web console](../../../web_console/web-console.xml#web-console)
+
+- [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
+
+- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)

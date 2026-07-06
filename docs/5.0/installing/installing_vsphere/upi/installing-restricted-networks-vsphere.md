@@ -30,7 +30,7 @@ The steps for performing a user-provisioned infrastructure installation are prov
 
 - If you use a firewall, you confirmed with the administrator that port 443 is accessible. Control plane nodes must be able to reach vCenter and ESXi hosts on port 443 for the installation to succeed.
 
-- If you use a firewall and plan to use the Telemetry service, you [configured the firewall to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall) that your cluster requires access to.
+- If you use a firewall and plan to use the Telemetry service, you [configured the firewall to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
 
   <div class="note">
 
@@ -519,6 +519,14 @@ The installation configuration file transforms into the Kubernetes manifests. Th
 
 You must set the time server and related settings used by the chrony time service (`chronyd`) by modifying the contents of the `chrony.conf` file and passing those contents to your nodes as a machine config.
 
+For more information on chrony best practices, see the following resources:
+
+- [Configuring chrony (Red Hat Knowledgebase article)](https://access.redhat.com/solutions/3073261)
+
+- [Best practices for NTP (Red Hat Knowledgebase article)](https://access.redhat.com/solutions/778603)
+
+- [Basic chrony NTP troubleshooting (Red Hat Ceph Storage documentation)](https://docs.redhat.com/en/documentation/red_hat_ceph_storage/8/html-single/troubleshooting_guide/basic-chrony-NTP-troubleshooting_diag#basic-chrony-NTP-troubleshooting_diag)
+
 1.  Create a Butane config including the contents of the `chrony.conf` file. For example, to configure chrony on worker nodes, create a `99-worker-chrony.bu` file.
 
     <div class="note">
@@ -577,14 +585,6 @@ You must set the time server and related settings used by the chrony time servic
       ``` terminal
       $ oc apply -f ./99-worker-chrony.yaml
       ```
-
-For more information on chrony best practices, see the following resources:
-
-- [Configuring chrony](https://access.redhat.com/solutions/3073261)
-
-- [Best practices for NTP](https://access.redhat.com/solutions/778603)
-
-- [Basic chrony NTP troubleshooting](https://docs.redhat.com/en/documentation/red_hat_ceph_storage/8/html-single/troubleshooting_guide/basic-chrony-NTP-troubleshooting_diag#basic-chrony-NTP-troubleshooting_diag)
 
 # Extracting the infrastructure name
 
@@ -1106,6 +1106,10 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
     ``` terminal
     system:admin
     ```
+
+- "Customize your cluster"
+
+- "Remote health reporting"
 
 # Approving the certificate signing requests for your machines
 

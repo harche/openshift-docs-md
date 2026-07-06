@@ -952,7 +952,7 @@ The `maxPods` parameter sets the number of pods that the node can run to a fixed
 
 ## Creating a KubeletConfig CR to edit kubelet parameters
 
-The kubelet configuration is currently serialized as an Ignition configuration, so it can be directly edited. However, there is also a new `kubelet-config-controller` added to the Machine Config Controller (MCC). This lets you use a `KubeletConfig` custom resource (CR) to edit the kubelet parameters.
+You can use a `KubeletConfig` custom resource (CR) to edit a kubelet parameters without modifing the kubelet configuration directly.
 
 <div class="note">
 
@@ -996,11 +996,7 @@ If you have a machine config with a `kubelet-9` suffix, and you create another `
 
 </div>
 
-<div class="formalpara-title">
-
-**Example `KubeletConfig` CR**
-
-</div>
+The following example command and output show a `KubeletConfig` CR:
 
 ``` terminal
 $ oc get kubeletconfig
@@ -1011,11 +1007,7 @@ NAME                      AGE
 set-kubelet-config        15m
 ```
 
-<div class="formalpara-title">
-
-**Example showing a `KubeletConfig` machine config**
-
-</div>
+The following example command and output show a `KubeletConfig` machine config:
 
 ``` terminal
 $ oc get mc | grep kubelet
@@ -1059,7 +1051,7 @@ The following procedure is an example to show how to configure the maximum numbe
             custom-kubelet: set-kubelet-config
         ```
 
-        - If a label has been added it appears under `labels`.
+        The `metadata.labels` parameter specifies labels you can use with a `KubeletConfig` CR.
 
     2.  If the label is not present, add a key/value pair:
 
@@ -1132,36 +1124,40 @@ The following procedure is an example to show how to configure the maximum numbe
               maxPods: 500
         ```
 
-        - Enter the label from the machine config pool.
+        where:
 
-        - Add the kubelet configuration. For example:
+        `spec.machineConfigPoolSelector.matchLabels`
+        Specifies the label from the machine config pool.
 
-          - Use `podPidsLimit` to set the maximum number of PIDs in any pod.
+        `spec.kubeletConfig`
+        Specifies the kubelet configuration. For example:
 
-          - Use `containerLogMaxSize` to set the maximum size of the container log file before it is rotated.
+        - Use `podPidsLimit` to set the maximum number of PIDs in any pod.
 
-          - Use `maxPods` to set the maximum pods per node.
+        - Use `containerLogMaxSize` to set the maximum size of the container log file before it is rotated.
 
-            <div class="note">
+        - Use `maxPods` to set the maximum pods per node.
 
-            The rate at which the kubelet talks to the API server depends on queries per second (QPS) and burst values. The default values, `50` for `kubeAPIQPS` and `100` for `kubeAPIBurst`, are sufficient if there are limited pods running on each node. It is recommended to update the kubelet QPS and burst rates if there are enough CPU and memory resources on the node.
+          <div class="note">
 
-            ``` yaml
-            apiVersion: machineconfiguration.openshift.io/v1
-            kind: KubeletConfig
-            metadata:
-              name: set-kubelet-config
-            spec:
-              machineConfigPoolSelector:
-                matchLabels:
-                  custom-kubelet: set-kubelet-config
-              kubeletConfig:
-                maxPods: <pod_count>
-                kubeAPIBurst: <burst_rate>
-                kubeAPIQPS: <QPS>
-            ```
+          The rate at which the kubelet talks to the API server depends on queries per second (QPS) and burst values. The default values, `50` for `kubeAPIQPS` and `100` for `kubeAPIBurst`, are sufficient if there are limited pods running on each node. It is recommended to update the kubelet QPS and burst rates if there are enough CPU and memory resources on the node.
 
-            </div>
+          ``` yaml
+          apiVersion: machineconfiguration.openshift.io/v1
+          kind: KubeletConfig
+          metadata:
+            name: set-kubelet-config
+          spec:
+            machineConfigPoolSelector:
+              matchLabels:
+                custom-kubelet: set-kubelet-config
+            kubeletConfig:
+              maxPods: <pod_count>
+              kubeAPIBurst: <burst_rate>
+              kubeAPIQPS: <QPS>
+          ```
+
+          </div>
 
     2.  Update the machine config pool for workers with the label:
 
@@ -1219,7 +1215,7 @@ The following procedure is an example to show how to configure the maximum numbe
          ...
         ```
 
-        - In this example, the `pods` parameter should report the value you set in the `KubeletConfig` object.
+        In this example, the `pods` parameter should report the value you set in the `KubeletConfig` object.
 
 3.  Verify the change in the `KubeletConfig` object:
 

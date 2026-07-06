@@ -145,7 +145,7 @@ The `PHASE` and conditions values are approximations that are based on available
 3.  Optional: Monitor the aggregated status of all OpenShift Virtualization component conditions by running the following command:
 
     ``` terminal
-    $ oc get hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv \
+    $ oc get hco kubevirt-hyperconverged -n openshift-cnv \
       -o=jsonpath='{range .status.conditions[*]}{"\t"}{"\t"}{"\n"}{end}'
     ```
 
@@ -169,7 +169,7 @@ Each virtual machine has a `virt-launcher` pod that runs the virtual machine ins
 
 </div>
 
-You can configure how workloads are updated by editing the `spec.workloadUpdateStrategy` stanza of the `HyperConverged` custom resource (CR). There are two available workload update methods: `LiveMigrate` and `Evict`.
+You can configure how workloads are updated by editing the `spec.virtualization.workloadUpdateStrategy` stanza of the `HyperConverged` custom resource (CR). There are two available workload update methods: `LiveMigrate` and `Evict`.
 
 Because the `Evict` method shuts down VMI pods, only the `LiveMigrate` update strategy is enabled by default.
 
@@ -222,39 +222,40 @@ You can configure how virtual machine workloads are updated during cluster upgra
 1.  To open the `HyperConverged` CR in your default editor, run the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
 2.  Edit the `workloadUpdateStrategy` stanza of the `HyperConverged` CR. For example:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
     spec:
-      workloadUpdateStrategy:
-        workloadUpdateMethods:
-        - LiveMigrate
-        - Evict
-        batchEvictionSize: 10
-        batchEvictionInterval: "1m0s"
+      virtualization:
+        workloadUpdateStrategy:
+          workloadUpdateMethods:
+          - LiveMigrate
+          - Evict
+          batchEvictionSize: 10
+          batchEvictionInterval: "1m0s"
     # ...
     ```
 
-    - `spec.workloadUpdateStrategy.workloadUpdateMethods` defines the methods that can be used to perform automated workload updates. The available values are `LiveMigrate` and `Evict`. If you enable both options as shown in this example, updates use `LiveMigrate` for VMIs that support live migration and `Evict` for any VMIs that do not support live migration. To disable automatic workload updates, you can either remove the `workloadUpdateStrategy` stanza or set `workloadUpdateMethods: []` to leave the array empty.
+    - `spec.virtualization.workloadUpdateStrategy.workloadUpdateMethods` defines the methods that can be used to perform automated workload updates. The available values are `LiveMigrate` and `Evict`. If you enable both options as shown in this example, updates use `LiveMigrate` for VMIs that support live migration and `Evict` for any VMIs that do not support live migration. To disable automatic workload updates, you can either remove the `workloadUpdateStrategy` stanza or set `workloadUpdateMethods: []` to leave the array empty.
 
       - `LiveMigrate` is the least disruptive update method. VMIs that support live migration are updated by migrating the virtual machine (VM) guest into a new pod with the updated components enabled. If `LiveMigrate` is the only workload update method listed, VMIs that do not support live migration are not disrupted or updated.
 
       - `Evict` is a disruptive method that shuts down VMI pods during upgrade. `Evict` is the only update method available if live migration is not enabled in the cluster. If a VMI is controlled by a `VirtualMachine` object that has `runStrategy: Always` configured, a new VMI is created in a new pod with updated components.
 
-    - `spec.workloadUpdateStrategy.batchEvictionSize` defines the number of VMIs that can be forced to be updated at a time by using the `Evict` method. This does not apply to the `LiveMigrate` method.
+    - `spec.virtualization.workloadUpdateStrategy.batchEvictionSize` defines the number of VMIs that can be forced to be updated at a time by using the `Evict` method. This does not apply to the `LiveMigrate` method.
 
-    - `spec.workloadUpdateStrategy.batchEvictionInterval` defines the interval to wait before evicting the next batch of workloads. This does not apply to the `LiveMigrate` method.
+    - `spec.virtualization.workloadUpdateStrategy.batchEvictionInterval` defines the interval to wait before evicting the next batch of workloads. This does not apply to the `LiveMigrate` method.
 
       <div class="note">
 
-      You can configure live migration limits and timeouts by editing the `spec.liveMigrationConfig` stanza of the `HyperConverged` CR.
+      You can configure live migration limits and timeouts by editing the `spec.virtualization.liveMigrationConfig` stanza of the `HyperConverged` CR.
 
       </div>
 
@@ -340,14 +341,14 @@ For supported OpenShift Container Platform releases and their RHEL versions, see
 2.  Disable workload update methods by running the following command:
 
     ``` terminal
-    $ oc patch hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv \
-      --type json -p '[{"op":"replace","path":"/spec/workloadUpdateStrategy/workloadUpdateMethods", "value":[]}]'
+    $ oc patch hco kubevirt-hyperconverged -n openshift-cnv \
+      --type json -p '[{"op":"replace","path":"/spec/virtualization/workloadUpdateStrategy/workloadUpdateMethods", "value":[]}]'
     ```
 
 3.  Ensure that the `HyperConverged` Operator is `Upgradeable`:
 
     ``` terminal
-    $ oc get hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv -o json | jq ".status.conditions"
+    $ oc get hco kubevirt-hyperconverged -n openshift-cnv -o json | jq ".status.conditions"
     ```
 
 4.  Update your cluster from the source EUS version to the next minor version of OpenShift Container Platform:
@@ -383,7 +384,7 @@ For supported OpenShift Container Platform releases and their RHEL versions, see
 8.  Confirm that OpenShift Virtualization updated to the latest z-stream release of the intermediate version:
 
     ``` terminal
-    $ oc get hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv -o json | jq ".status.versions"
+    $ oc get hco kubevirt-hyperconverged -n openshift-cnv -o json | jq ".status.versions"
     ```
 
 9.  Wait until the `HyperConverged` Operator again reports the `Upgradeable` condition.
@@ -413,8 +414,8 @@ For supported OpenShift Container Platform releases and their RHEL versions, see
 14. Restore the `workloadUpdateMethods` configuration recorded in step 1:
 
     ``` terminal
-    $ oc patch hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv --type json -p \
-    "[{\"op\":\"add\",\"path\":\"/spec/workloadUpdateStrategy/workloadUpdateMethods\", \"value\":{WorkloadUpdateMethodConfig}}]"
+    $ oc patch hco kubevirt-hyperconverged -n openshift-cnv --type json -p \
+    '[{"op":"add","path":"/spec/virtualization/workloadUpdateStrategy/workloadUpdateMethods", "value":{WorkloadUpdateMethodConfig}}]'
     ```
 
 - Check the status of VM migrations:

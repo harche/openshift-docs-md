@@ -1,4 +1,4 @@
-You can access a virtual machine (VM) that is connected to the default internal pod network on a stable fully qualified domain name (FQDN) by using headless services. A Kubernetes *headless service* creates a DNS record for each pod associated with the service instead of providing a single virtual IP address for the service. You can expose a VM through its FQDN without having to expose a specific TCP or UDP port.
+You can access a virtual machine on a stable, fully qualified domain name (FQDN) by using headless services. A headless service creates DNS records for each pod instead of a virtual IP, enabling FQDN access without exposing specific ports.
 
 <div class="important">
 

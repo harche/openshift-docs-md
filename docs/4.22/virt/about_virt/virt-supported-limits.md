@@ -1,14 +1,12 @@
-You can refer to tested object maximums when planning your OpenShift Container Platform environment for OpenShift Virtualization. However, approaching the maximum values can reduce performance and increase latency. Ensure that you plan for your specific use case and consider all factors that can impact cluster scaling.
-
-For more information about cluster configuration and options that impact performance, see the "OpenShift Virtualization - Tuning & Scaling Guide" in the Red Hat Knowledgebase.
+Refer to tested object maximums when planning your environment for your specific use case, and consider all factors that can impact cluster scaling. For information options that impact performance, see the "OpenShift Virtualization - Tuning & Scaling Guide" in the Red Hat Knowledgebase.
 
 # Tested maximums for OpenShift Virtualization
 
-The following limits apply to a large-scale OpenShift Virtualization 4.x environment. They are based on a single cluster of the largest possible size. When you plan an environment, remember that multiple smaller clusters might be the best option for your use case.
+Maximums are based on a single cluster of the largest possible size for a OpenShift Virtualization 4.x environment. When you plan an environment, remember that multiple smaller clusters might be the best option for your use case. Approaching the maximum values can reduce performance and increase latency.
 
 ## Virtual machine maximums
 
-The following maximums apply to virtual machines (VMs) running on OpenShift Virtualization. These values are subject to the limits specified in [Virtualization limits for Red Hat Enterprise Linux with KVM](https://access.redhat.com/articles/rhel-kvm-limits).
+Maximums apply to virtual machines (VMs) running on OpenShift Virtualization and are subject to the limits specified in "Virtualization limits for Red Hat Enterprise Linux with KVM".
 
 | Objective (per VM)  | Tested limit | Theoretical limit |
 |---------------------|--------------|-------------------|
@@ -58,6 +56,8 @@ The following maximums apply to objects defined in OpenShift Virtualization.
 # Additional resources
 
 - [OpenShift Virtualization - Tuning & Scaling Guide](https://access.redhat.com/articles/6994974)
+
+- [Virtualization limits for Red Hat Enterprise Linux with KVM](https://access.redhat.com/articles/rhel-kvm-limits)
 
 - [Planning your environment according to object maximums](../../scalability_and_performance/planning-your-environment-according-to-object-maximums.xml#planning-your-environment-according-to-object-maximums)
 

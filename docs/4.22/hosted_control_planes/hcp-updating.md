@@ -1,8 +1,12 @@
-Updates for hosted control planes involve updating the hosted cluster and the node pools. For a cluster to remain fully operational during an update process, you must meet the requirements of the [hosted cluster and node pool version skew policy](../hosted_control_planes/hcp-updating.xml#hcp-np-version-skew_hcp-updating) while completing the control plane and node updates.
+Updates for hosted control planes involve updating the hosted cluster and the node pools.
+
+For a cluster to remain fully operational during an update process, you must meet the requirements of the hosted cluster and node pool version skew policy while completing the control plane and node updates. For more information, see "Hosted cluster and node pool version skew policy".
 
 # Requirements to upgrade hosted control planes
 
-The multicluster engine for Kubernetes Operator can manage one or more OpenShift Container Platform clusters. After you create a hosted cluster on OpenShift Container Platform, you must import your hosted cluster in the multicluster engine Operator as a managed cluster. Then, you can use the OpenShift Container Platform cluster as a management cluster.
+The multicluster engine for Kubernetes Operator can manage one or more OpenShift Container Platform clusters. After you create a hosted cluster on OpenShift Container Platform, you must import your hosted cluster in the multicluster engine Operator as a managed cluster.
+
+You can then use the OpenShift Container Platform cluster as a management cluster.
 
 Consider the following requirements before you start updating hosted control planes:
 
@@ -59,13 +63,15 @@ The node pool controller sets the `SupportedVersionSkew` condition to report one
 Indicates that the node pool version is compatible with the hosted cluster version.
 
 `False`
-Indicates that the node pool version is incompatible with the hosted cluster version. A detailed error message is provided. You must upgrade or downgrade your node pools to a compatible version.
+Indicates that the node pool version is incompatible with the hosted cluster version. A detailed error message is provided. You must upgrade or roll back your node pools to a compatible version.
 
 If incompatibility is detected, the existing node pools continue to operate, but without stability or support. When creating new node pools, the CLI returns an error if you try to create a node pool with an incompatible version.
 
-# Setting channels in a hosted cluster
+# Setting update channels in a hosted cluster
 
-You can see available updates in the `HostedCluster.Status` field of the `HostedCluster` custom resource (CR).
+To see available updates for a hosted cluster, you must set the `spec.channel` field on the `HostedCluster` custom resource (CR).
+
+You can see available updates in the `HostedCluster.Status` field of the `HostedCluster` CR.
 
 The available updates are not fetched from the Cluster Version Operator (CVO) of a hosted cluster. The list of the available updates can be different from the available updates from the following fields of the `HostedCluster` custom resource (CR):
 
@@ -75,127 +81,127 @@ The available updates are not fetched from the Cluster Version Operator (CVO) of
 
 The initial `HostedCluster` CR does not have any information in the `status.version.availableUpdates` and `status.version.conditionalUpdates` fields. After you set the `spec.channel` field to the stable OpenShift Container Platform release version, the HyperShift Operator reconciles the `HostedCluster` CR and updates the `status.version` field with the available and conditional updates.
 
-See the following example of the `HostedCluster` CR that contains the channel configuration:
+1.  In the `HostedCluster` CR, add the channel configuration as shown in the following example:
 
-``` yaml
-spec:
-  autoscaling: {}
-  channel: stable-4.y
-  clusterID: d6d42268-7dff-4d37-92cf-691bd2d42f41
-  configuration: {}
-  controllerAvailabilityPolicy: SingleReplica
-  dns:
-    baseDomain: dev11.red-chesterfield.com
-    privateZoneID: Z0180092I0DQRKL55LN0
-    publicZoneID: Z00206462VG6ZP0H2QLWK
-```
+    ``` yaml
+    spec:
+      autoscaling: {}
+      channel: stable-<4.y>
+      clusterID: d6d42268-7dff-4d37-92cf-691bd2d42f41
+      configuration: {}
+      controllerAvailabilityPolicy: SingleReplica
+      dns:
+        baseDomain: dev11.red-chesterfield.com
+        privateZoneID: Z0180092I0DQRKL55LN0
+        publicZoneID: Z00206462VG6ZP0H2QLWK
+    ```
 
-- Replace `<4.y>` with the OpenShift Container Platform release version you specified in `spec.release`. For example, if you set the `spec.release` to `ocp-release:4.16.4-multi`, you must set `spec.channel` to `stable-4.16`.
+    Replace `<4.y>` with the OpenShift Container Platform release version you specified in `spec.release`. For example, if you set the `spec.release` to `ocp-release:4.16.4-multi`, you must set `spec.channel` to `stable-4.16`.
 
-After you configure the channel in the `HostedCluster` CR, to view the output of the `status.version.availableUpdates` and `status.version.conditionalUpdates` fields, run the following command:
+2.  After you configure the channel in the `HostedCluster` CR, to view the output of the `status.version.availableUpdates` and `status.version.conditionalUpdates` fields, run the following command:
 
-``` terminal
-$ oc get -n <hosted_cluster_namespace> hostedcluster <hosted_cluster_name> -o yaml
-```
+    ``` terminal
+    $ oc get -n <hosted_cluster_namespace> hostedcluster <hosted_cluster_name> -o yaml
+    ```
 
-<div class="formalpara-title">
+    <div class="formalpara-title">
 
-**Example output**
+    **Example output**
 
-</div>
+    </div>
 
-``` yaml
-version:
-  availableUpdates:
-  - channels:
-    - candidate-4.16
-    - candidate-4.17
-    - eus-4.16
-    - fast-4.16
-    - stable-4.16
-    image: quay.io/openshift-release-dev/ocp-release@sha256:b7517d13514c6308ae16c5fd8108133754eb922cd37403ed27c846c129e67a9a
-    url: https://access.redhat.com/errata/RHBA-2024:6401
-    version: 4.16.11
-  - channels:
-    - candidate-4.16
-    - candidate-4.17
-    - eus-4.16
-    - fast-4.16
-    - stable-4.16
-    image: quay.io/openshift-release-dev/ocp-release@sha256:d08e7c8374142c239a07d7b27d1170eae2b0d9f00ccf074c3f13228a1761c162
-    url: https://access.redhat.com/errata/RHSA-2024:6004
-    version: 4.16.10
-  - channels:
-    - candidate-4.16
-    - candidate-4.17
-    - eus-4.16
-    - fast-4.16
-    - stable-4.16
-    image: quay.io/openshift-release-dev/ocp-release@sha256:6a80ac72a60635a313ae511f0959cc267a21a89c7654f1c15ee16657aafa41a0
-    url: https://access.redhat.com/errata/RHBA-2024:5757
-    version: 4.16.9
-  - channels:
-    - candidate-4.16
-    - candidate-4.17
-    - eus-4.16
-    - fast-4.16
-    - stable-4.16
-    image: quay.io/openshift-release-dev/ocp-release@sha256:ea624ae7d91d3f15094e9e15037244679678bdc89e5a29834b2ddb7e1d9b57e6
-    url: https://access.redhat.com/errata/RHSA-2024:5422
-    version: 4.16.8
-  - channels:
-    - candidate-4.16
-    - candidate-4.17
-    - eus-4.16
-    - fast-4.16
-    - stable-4.16
-    image: quay.io/openshift-release-dev/ocp-release@sha256:e4102eb226130117a0775a83769fe8edb029f0a17b6cbca98a682e3f1225d6b7
-    url: https://access.redhat.com/errata/RHSA-2024:4965
-    version: 4.16.6
-  - channels:
-    - candidate-4.16
-    - candidate-4.17
-    - eus-4.16
-    - fast-4.16
-    - stable-4.16
-    image: quay.io/openshift-release-dev/ocp-release@sha256:f828eda3eaac179e9463ec7b1ed6baeba2cd5bd3f1dd56655796c86260db819b
-    url: https://access.redhat.com/errata/RHBA-2024:4855
-    version: 4.16.5
-  conditionalUpdates:
-  - conditions:
-    - lastTransitionTime: "2024-09-23T22:33:38Z"
-      message: |-
-        Could not evaluate exposure to update risk SRIOVFailedToConfigureVF (creating PromQL round-tripper: unable to load specified CA cert /etc/tls/service-ca/service-ca.crt: open /etc/tls/service-ca/service-ca.crt: no such file or directory)
-          SRIOVFailedToConfigureVF description: OCP Versions 4.14.34, 4.15.25, 4.16.7 and ALL subsequent versions include kernel datastructure changes which are not compatible with older versions of the SR-IOV operator. Please update SR-IOV operator to versions dated 20240826 or newer before updating OCP.
-          SRIOVFailedToConfigureVF URL: https://issues.redhat.com/browse/NHE-1171
-      reason: EvaluationFailed
-      status: Unknown
-      type: Recommended
-    release:
-      channels:
-      - candidate-4.16
-      - candidate-4.17
-      - eus-4.16
-      - fast-4.16
-      - stable-4.16
-      image: quay.io/openshift-release-dev/ocp-release@sha256:fb321a3f50596b43704dbbed2e51fdefd7a7fd488ee99655d03784d0cd02283f
-      url: https://access.redhat.com/errata/RHSA-2024:5107
-      version: 4.16.7
-    risks:
-    - matchingRules:
-      - promql:
-          promql: |
-            group(csv_succeeded{_id="d6d42268-7dff-4d37-92cf-691bd2d42f41", name=~"sriov-network-operator[.].*"})
-            or
-            0 * group(csv_count{_id="d6d42268-7dff-4d37-92cf-691bd2d42f41"})
-        type: PromQL
-      message: OCP Versions 4.14.34, 4.15.25, 4.16.7 and ALL subsequent versions
-        include kernel datastructure changes which are not compatible with older
-        versions of the SR-IOV operator. Please update SR-IOV operator to versions
-        dated 20240826 or newer before updating OCP.
-      name: SRIOVFailedToConfigureVF
-      url: https://issues.redhat.com/browse/NHE-1171
-```
+    ``` yaml
+    version:
+      availableUpdates:
+      - channels:
+        - candidate-4.16
+        - candidate-4.17
+        - eus-4.16
+        - fast-4.16
+        - stable-4.16
+        image: quay.io/openshift-release-dev/ocp-release@sha256:b7517d13514c6308ae16c5fd8108133754eb922cd37403ed27c846c129e67a9a
+        url: https://access.redhat.com/errata/RHBA-2024:6401
+        version: 4.16.11
+      - channels:
+        - candidate-4.16
+        - candidate-4.17
+        - eus-4.16
+        - fast-4.16
+        - stable-4.16
+        image: quay.io/openshift-release-dev/ocp-release@sha256:d08e7c8374142c239a07d7b27d1170eae2b0d9f00ccf074c3f13228a1761c162
+        url: https://access.redhat.com/errata/RHSA-2024:6004
+        version: 4.16.10
+      - channels:
+        - candidate-4.16
+        - candidate-4.17
+        - eus-4.16
+        - fast-4.16
+        - stable-4.16
+        image: quay.io/openshift-release-dev/ocp-release@sha256:6a80ac72a60635a313ae511f0959cc267a21a89c7654f1c15ee16657aafa41a0
+        url: https://access.redhat.com/errata/RHBA-2024:5757
+        version: 4.16.9
+      - channels:
+        - candidate-4.16
+        - candidate-4.17
+        - eus-4.16
+        - fast-4.16
+        - stable-4.16
+        image: quay.io/openshift-release-dev/ocp-release@sha256:ea624ae7d91d3f15094e9e15037244679678bdc89e5a29834b2ddb7e1d9b57e6
+        url: https://access.redhat.com/errata/RHSA-2024:5422
+        version: 4.16.8
+      - channels:
+        - candidate-4.16
+        - candidate-4.17
+        - eus-4.16
+        - fast-4.16
+        - stable-4.16
+        image: quay.io/openshift-release-dev/ocp-release@sha256:e4102eb226130117a0775a83769fe8edb029f0a17b6cbca98a682e3f1225d6b7
+        url: https://access.redhat.com/errata/RHSA-2024:4965
+        version: 4.16.6
+      - channels:
+        - candidate-4.16
+        - candidate-4.17
+        - eus-4.16
+        - fast-4.16
+        - stable-4.16
+        image: quay.io/openshift-release-dev/ocp-release@sha256:f828eda3eaac179e9463ec7b1ed6baeba2cd5bd3f1dd56655796c86260db819b
+        url: https://access.redhat.com/errata/RHBA-2024:4855
+        version: 4.16.5
+      conditionalUpdates:
+      - conditions:
+        - lastTransitionTime: "2024-09-23T22:33:38Z"
+          message: |-
+            Could not evaluate exposure to update risk SRIOVFailedToConfigureVF (creating PromQL round-tripper: unable to load specified CA cert /etc/tls/service-ca/service-ca.crt: open /etc/tls/service-ca/service-ca.crt: no such file or directory)
+              SRIOVFailedToConfigureVF description: OCP Versions 4.14.34, 4.15.25, 4.16.7 and ALL subsequent versions include kernel datastructure changes which are not compatible with older versions of the SR-IOV operator. Please update SR-IOV operator to versions dated 20240826 or newer before updating OCP.
+              SRIOVFailedToConfigureVF URL: https://issues.redhat.com/browse/NHE-1171
+          reason: EvaluationFailed
+          status: Unknown
+          type: Recommended
+        release:
+          channels:
+          - candidate-4.16
+          - candidate-4.17
+          - eus-4.16
+          - fast-4.16
+          - stable-4.16
+          image: quay.io/openshift-release-dev/ocp-release@sha256:fb321a3f50596b43704dbbed2e51fdefd7a7fd488ee99655d03784d0cd02283f
+          url: https://access.redhat.com/errata/RHSA-2024:5107
+          version: 4.16.7
+        risks:
+        - matchingRules:
+          - promql:
+              promql: |
+                group(csv_succeeded{_id="d6d42268-7dff-4d37-92cf-691bd2d42f41", name=~"sriov-network-operator[.].*"})
+                or
+                0 * group(csv_count{_id="d6d42268-7dff-4d37-92cf-691bd2d42f41"})
+            type: PromQL
+          message: OCP Versions 4.14.34, 4.15.25, 4.16.7 and ALL subsequent versions
+            include kernel datastructure changes which are not compatible with older
+            versions of the SR-IOV operator. Please update SR-IOV operator to versions
+            dated 20240826 or newer before updating OCP.
+          name: SRIOVFailedToConfigureVF
+          url: https://issues.redhat.com/browse/NHE-1171
+    ```
 
 # Updating the OpenShift Container Platform version in a hosted cluster
 

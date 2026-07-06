@@ -395,12 +395,22 @@ Create VMs on the hosting cluster that will become the control plane nodes for y
 
     </div>
 
-2.  Enable the `declarativeHotplugVolumes` feature gate on the hosting cluster by running the following command:
+2.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc patch hyperconverged kubevirt-hyperconverged -n openshift-cnv \
-        --type merge \
-        -p '{"spec": {"featureGates": {"declarativeHotplugVolumes": true}}}'
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
+    ```
+
+3.  Edit the `HyperConverged` CR, to enable the `declarativeHotplugVolumes` feature gate by adding it to the featureGate list:
+
+    ``` yaml
+    apiVersion: hco.kubevirt.io/v1
+    kind: HyperConverged
+    metadata:
+      name: kubevirt-hyperconverged
+    spec:
+      featureGates:
+      - name: declarativeHotplugVolumes
     ```
 
     <div class="note">
@@ -409,7 +419,7 @@ Create VMs on the hosting cluster that will become the control plane nodes for y
 
     </div>
 
-3.  Create a `VirtualMachine` CR for each control plane node by creating a YAML file with content such as the following example:
+4.  Create a `VirtualMachine` CR for each control plane node by creating a YAML file with content such as the following example:
 
     ``` yaml
     apiVersion: kubevirt.io/v1
@@ -479,7 +489,7 @@ Create VMs on the hosting cluster that will become the control plane nodes for y
 
       </div>
 
-4.  Apply the resource by running the following command:
+5.  Apply the resource by running the following command:
 
     ``` terminal
     $ oc apply -f master-0.yaml

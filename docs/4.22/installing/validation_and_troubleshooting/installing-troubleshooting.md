@@ -189,6 +189,6 @@ For a user-provisioned infrastructure installation, you must manually destroy th
 
 - [Determining where installation issues occur](../../support/troubleshooting/troubleshooting-installations.xml#determining-where-installation-issues-occur_troubleshooting-installations)
 
-- [Configuring your firewall](../../installing/install_config/configuring-firewall.xml#configuring-firewall)
+- [Configuring your firewall](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
 
 - [Installing an OpenShift Container Platform cluster](../../installing/overview/index.xml#ocp-installation-overview)

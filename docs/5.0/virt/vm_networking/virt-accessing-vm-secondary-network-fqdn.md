@@ -1,4 +1,4 @@
-You can access a virtual machine (VM) that is attached to a secondary network interface from outside the cluster by using its fully qualified domain name (FQDN). To connect to a VM by using its external FQDN, you must configure the DNS server, retrieve the cluster FQDN, then connect to the VM by using the `ssh` command.
+You can access a virtual machine (VM) that is attached to a secondary network interface from outside the cluster by using its fully qualified domain name (FQDN). You must configure the DNS server, retrieve the cluster FQDN, then connect to the VM by using the `ssh` command.
 
 <div class="important">
 
@@ -21,24 +21,24 @@ The Cluster Network Addons Operator (CNAO) deploys a Domain Name Server (DNS) se
 1.  Edit the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
 2.  Enable the DNS server and monitoring components according to the following example:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
       namespace: openshift-cnv
     spec:
-        featureGates:
-          deployKubeSecondaryDNS: true
+      featureGates:
+        - name: deployKubeSecondaryDNS
     # ...
     ```
 
-    Setting `deployKubeSecondaryDNS` to `true` enables the DNS server.
+    Adding `deployKubeSecondaryDNS` feature gate enables the DNS server.
 
 3.  Save the file and exit the editor.
 
@@ -65,25 +65,26 @@ The Cluster Network Addons Operator (CNAO) deploys a Domain Name Server (DNS) se
 6.  Edit the `HyperConverged` CR again:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
-7.  Add the external IP address that you previously retrieved to the `kubeSecondaryDNSNameServerIP` field in the enterprise DNS server records. For example:
+7.  Add the external IP address that you previously retrieved to the `networking.kubeSecondaryDNSNameServerIP` field in the enterprise DNS server records. For example:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
       namespace: openshift-cnv
     spec:
       featureGates:
-        deployKubeSecondaryDNS: true
-      kubeSecondaryDNSNameServerIP: "10.46.41.94"
+        - name: deployKubeSecondaryDNS
+      networking:
+        kubeSecondaryDNSNameServerIP: "10.46.41.94"
     # ...
     ```
 
-    Specify the external IP address exposed by the load balancer service in the `kubeSecondaryDNSNameServerIP` field.
+    Specify the external IP address exposed by the load balancer service in the `networking.kubeSecondaryDNSNameServerIP` field.
 
 8.  Save the file and exit the editor.
 

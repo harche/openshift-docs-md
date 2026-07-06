@@ -22,7 +22,7 @@ In OpenShift Container Platform 4.17, you can install a cluster in a restricted 
 
   - The VPC must allow traffic to and from the endpoint gateways. You can use the VPC’s default security group, or a new security group, to allow traffic on port 443. For more information, see [Allowing endpoint gateway traffic](../../installing/installing_ibm_cloud/installing-ibm-cloud-restricted.xml#installation-ibm-cloud-configure-vpc-for-endpoint-gateways_installing-ibm-cloud-restricted).
 
-- If you use a firewall, you [configured it to allow the sites](../../installing/install_config/configuring-firewall.xml#configuring-firewall) that your cluster requires access to.
+- If you use a firewall, you [configured it to allow the sites](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
 
 - You configured the `ccoctl` utility before you installed the cluster. For more information, see [Configuring IAM for IBM Cloud](../../installing/installing_ibm_cloud/configuring-iam-ibm-cloud.xml#configuring-iam-ibm-cloud).
 
@@ -1098,6 +1098,12 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
     ``` terminal
     system:admin
     ```
+
+- "Customize your cluster"
+
+- "Remote health reporting"
+
+<!-- -->
 
 - [Accessing the web console](../../web_console/web-console.xml#web-console)
 

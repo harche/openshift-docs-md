@@ -1097,11 +1097,7 @@ Alternatively, you can use the web console to manage catalog sources. From the *
         $ oc get pods -n openshift-marketplace
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         NAME                                    READY   STATUS    RESTARTS  AGE
@@ -1115,11 +1111,7 @@ Alternatively, you can use the web console to manage catalog sources. From the *
         $ oc get catalogsource -n openshift-marketplace
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         NAME                  DISPLAY               TYPE PUBLISHER  AGE
@@ -1132,18 +1124,14 @@ Alternatively, you can use the web console to manage catalog sources. From the *
         $ oc get packagemanifest -n openshift-marketplace
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         NAME                          CATALOG               AGE
         jaeger-product                My Operator Catalog   93s
         ```
 
-You can now install the Operators from the **Software Catalog** page on your OpenShift Container Platform web console.
+        You can now install the Operators from the **Software Catalog** page on your OpenShift Container Platform web console.
 
 - [Accessing images for Operators from private registries](../operators/admin/olm-managing-custom-catalogs.xml#olm-accessing-images-private-registries_olm-managing-custom-catalogs)
 
@@ -1586,7 +1574,9 @@ In most cases, the web console method of this procedure is preferred because it 
 
 6.  If you set the `installPlanApproval` field to `Manual`, manually approve the pending install plan to complete the Operator installation. For more information, see "Manually approving a pending Operator update".
 
-At this point, OLM is now aware of the selected Operator. A cluster service version (CSV) for the Operator should appear in the target namespace, and APIs provided by the Operator should be available for creation.
+    At this point, OLM is now aware of the selected Operator. A cluster service version (CSV) for the Operator should appear in the target namespace, and APIs provided by the Operator should be available for creation.
+
+<!-- -->
 
 1.  Check the status of the `Subscription` object for your installed Operator by running the following command:
 

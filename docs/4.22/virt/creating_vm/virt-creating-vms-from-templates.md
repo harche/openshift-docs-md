@@ -69,9 +69,13 @@ You can choose between two views in the web console to create the VM:
 
 # Removing a deprecated designation from a customized VM template by using the web console
 
-You can customize an existing virtual machine (VM) template by modifying the VM or template parameters, such as data sources, cloud-init, or SSH keys, before you start the VM. If you customize a template by copying it and including all of its labels and annotations, the customized template is marked as deprecated when a new version of the Scheduling, Scale, and Performance (SSP) Operator is deployed.
+You can customize an existing virtual machine (VM) template before you start the VM, by modifying the VM or template parameters, such as data sources, cloud-init, or SSH keys.
 
-You can remove the deprecated designation from the customized template.
+<div class="note">
+
+If you customize a template by copying it and including all of its labels and annotations, the customized template is marked as deprecated when a new version of the Scheduling, Scale, and Performance (SSP) Operator is deployed. You can remove the deprecated designation from the customized template.
+
+</div>
 
 1.  Navigate to **Virtualization** → **Templates** in the web console.
 

@@ -375,7 +375,7 @@ To deploy a cluster autoscaler, you create an instance of the `ClusterAutoscaler
 
     where:
 
-    \<filename\>
+    `<filename>`
     Specifies the name of the YAML file you created.
 
 # About the machine autoscaler
@@ -465,7 +465,7 @@ To deploy a machine autoscaler, you create an instance of the `MachineAutoscaler
 
     where:
 
-    \<filename\>
+    `<filename>`
     Specifies the name of the YAML file you created.
 
 # Disabling a machine autoscaler

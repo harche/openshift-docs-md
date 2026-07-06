@@ -1,4 +1,4 @@
-If you use a firewall, you must configure your firewall’s allowlist to ensure OpenShift Container Platform has access to the URLs it requires to pull container images and access Red Hat services. Additional URLs are required for features such as Telemetry, Red Hat Lightspeed, cloud provider integrations, or certain build strategies.
+If you use a firewall, you must configure your allowlist for the firewall to ensure OpenShift Container Platform has access to the URLs it requires to pull container images and access Red Hat services. Additional URLs are required for features such as Telemetry, Red Hat Lightspeed, cloud provider integrations, or certain build strategies.
 
 # Configuring your firewall for OpenShift Container Platform
 

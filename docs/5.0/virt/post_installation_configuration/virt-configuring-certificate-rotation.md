@@ -9,25 +9,26 @@ You can do this during OpenShift Virtualization installation in the web console 
 1.  Open the `HyperConverged` CR by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
-2.  Edit the `spec.certConfig` fields as shown in the following example. To avoid overloading the system, ensure that all values are greater than or equal to 10 minutes. Express all values as strings that comply with the golang `ParseDuration` format.
+2.  Edit the `spec.security.certConfig` fields as shown in the following example. To avoid overloading the system, ensure that all values are greater than or equal to 10 minutes. Express all values as strings that comply with the golang `ParseDuration` format.
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
       namespace: openshift-cnv
     spec:
-      certConfig:
-        ca:
-          duration: 48h0m0s
-          renewBefore: 24h0m0s
-        server:
-          duration: 24h0m0s
-          renewBefore: 12h0m0s
+      security:
+        certConfig:
+          ca:
+            duration: 48h0m0s
+            renewBefore: 24h0m0s
+          server:
+            duration: 24h0m0s
+            renewBefore: 12h0m0s
     ```
 
     - The value of `ca.renewBefore` must be less than or equal to the value of `ca.duration`.
@@ -63,20 +64,21 @@ If the default values conflict with one of the following conditions, you receive
 For example, if you remove the `server.duration` value, the default value of `24h0m0s` is greater than the value of `ca.duration`, which conflicts with the specified conditions:
 
 ``` yaml
-apiVersion: hco.kubevirt.io/v1beta1
+apiVersion: hco.kubevirt.io/v1
 kind: HyperConverged
 metadata:
   name: kubevirt-hyperconverged
   namespace: openshift-cnv
 spec:
   # ...
-  certConfig:
-    ca:
-      duration: 4h0m0s
-      renewBefore: 1h0m0s
-    server:
-      duration: 4h0m0s
-      renewBefore: 4h0m0s
+  security:
+    certConfig:
+      ca:
+        duration: 4h0m0s
+        renewBefore: 1h0m0s
+      server:
+        duration: 4h0m0s
+        renewBefore: 4h0m0s
 # ...
 ```
 

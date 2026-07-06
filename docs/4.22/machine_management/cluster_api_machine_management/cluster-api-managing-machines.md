@@ -1,3 +1,5 @@
+You can manage machines with the Cluster API by modifying a Cluster API machine template or a compute machine set by using the CLI.
+
 <div class="important">
 
 Managing machines with the Cluster API is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
@@ -22,16 +24,16 @@ You can update the machine template resource for your cluster by modifying the Y
     $ oc get <machine_template_kind>
     ```
 
-    - Specify the value that corresponds to your platform. The following values are valid:
+    Replace `<machine_template_kind>` with the value that corresponds to your platform. The following values are valid:
 
-      | Cluster infrastructure provider | Value                      |
-      |---------------------------------|----------------------------|
-      | Amazon Web Services             | `AWSMachineTemplate`       |
-      | Google Cloud                    | `GCPMachineTemplate`       |
-      | Microsoft Azure                 | `AzureMachineTemplate`     |
-      | RHOSP                           | `OpenStackMachineTemplate` |
-      | VMware vSphere                  | `VSphereMachineTemplate`   |
-      | Bare metal                      | `Metal3MachineTemplate`    |
+    | Cluster infrastructure provider | Value                      |
+    |---------------------------------|----------------------------|
+    | Amazon Web Services             | `AWSMachineTemplate`       |
+    | Google Cloud                    | `GCPMachineTemplate`       |
+    | Microsoft Azure                 | `AzureMachineTemplate`     |
+    | RHOSP                           | `OpenStackMachineTemplate` |
+    | VMware vSphere                  | `VSphereMachineTemplate`   |
+    | Bare metal                      | `Metal3MachineTemplate`    |
 
     <div class="formalpara-title">
 
@@ -50,7 +52,7 @@ You can update the machine template resource for your cluster by modifying the Y
     $ oc get <machine_template_kind> <template_name> -o yaml > <template_name>.yaml
     ```
 
-    where `<template_name>` is the name of the machine template resource for your cluster.
+    Replace `<template_name>` with the name of the machine template resource for your cluster.
 
 3.  Make a copy of the `<template_name>.yaml` file with a different name. This procedure uses `<modified_template_name>.yaml` as an example file name.
 
@@ -72,7 +74,7 @@ You can update the machine template resource for your cluster by modifying the Y
     $ oc apply -f <modified_template_name>.yaml
     ```
 
-    - Use the edited YAML file with a new name.
+    For `<modified_template_name>`, use the edited YAML file with a new name.
 
 - For any Cluster API compute machine sets that reference this template, update the `spec.template.spec.infrastructureRef.name` parameter to match the `metadata.name` value in the new machine template resource. For more information, see "Modifying a compute machine set by using the CLI."
 

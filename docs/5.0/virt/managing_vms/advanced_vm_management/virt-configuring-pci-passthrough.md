@@ -322,48 +322,49 @@ The `MachineConfig` Operator generates the `/etc/modprobe.d/vfio.conf` on the no
 
 ## Exposing PCI host devices in the cluster using the CLI
 
-To expose PCI host devices in the cluster, add details about the PCI devices to the `spec.permittedHostDevices.pciHostDevices` array of the `HyperConverged` custom resource (CR).
+To expose PCI host devices in the cluster, add details about the PCI devices to the `spec.virtualization.permittedHostDevices.pciHostDevices` array of the `HyperConverged` custom resource (CR).
 
 - You have installed the OpenShift CLI (`oc`).
 
 1.  Edit the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
-2.  Add the PCI device information to the `spec.permittedHostDevices.pciHostDevices` array.
+2.  Add the PCI device information to the `spec.virtualization.permittedHostDevices.pciHostDevices` array.
 
     Example configuration file:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
       namespace: openshift-cnv
     spec:
-      permittedHostDevices:
-        pciHostDevices:
-        - pciDeviceSelector: "10DE:1DB6"
-          resourceName: "nvidia.com/GV100GL_Tesla_V100"
-        - pciDeviceSelector: "10DE:1EB8"
-          resourceName: "nvidia.com/TU104GL_Tesla_T4"
-        - pciDeviceSelector: "8086:6F54"
-          resourceName: "intel.com/qat"
-          externalResourceProvider: true
+      virtualization:
+        permittedHostDevices:
+          pciHostDevices:
+          - pciDeviceSelector: "10DE:1DB6"
+            resourceName: "nvidia.com/GV100GL_Tesla_V100"
+          - pciDeviceSelector: "10DE:1EB8"
+            resourceName: "nvidia.com/TU104GL_Tesla_T4"
+          - pciDeviceSelector: "8086:6F54"
+            resourceName: "intel.com/qat"
+            externalResourceProvider: true
     # ...
     ```
 
-    - `spec.permittedHostDevices` specifies the host devices that are permitted to be used in the cluster.
+    - `spec.virtualization.permittedHostDevices` specifies the host devices that are permitted to be used in the cluster.
 
-    - `spec.permittedHostDevices.pciHostDevices` specifies the list of PCI devices available on the node.
+    - `spec.virtualization.permittedHostDevices.pciHostDevices` specifies the list of PCI devices available on the node.
 
-    - `spec.permittedHostDevices.pciHostDevices.pciDeviceSelector` specifies the vendor ID and the device ID required to identify the PCI device.
+    - `spec.virtualization.permittedHostDevices.pciHostDevices.pciDeviceSelector` specifies the vendor ID and the device ID required to identify the PCI device.
 
-    - `spec.permittedHostDevices.pciHostDevices.resourceName` specifies the name of a PCI host device.
+    - `spec.virtualization.permittedHostDevices.pciHostDevices.resourceName` specifies the name of a PCI host device.
 
-    - `spec.permittedHostDevices.pciHostDevices.externalResourceProvider` is an optional setting. Setting this field to `true` indicates that the resource is provided by an external device plugin. OpenShift Virtualization allows the usage of this device in the cluster but leaves the allocation and monitoring to an external device plugin.
+    - `spec.virtualization.permittedHostDevices.pciHostDevices.externalResourceProvider` is an optional setting. Setting this field to `true` indicates that the resource is provided by an external device plugin. OpenShift Virtualization allows the usage of this device in the cluster but leaves the allocation and monitoring to an external device plugin.
 
       <div class="note">
 
@@ -374,16 +375,17 @@ To expose PCI host devices in the cluster, add details about the PCI devices to 
       Example configuration file for an IBM® Spyre device on `s390x` architecture:
 
       ``` yaml
-      apiVersion: hco.kubevirt.io/v1beta1
+      apiVersion: hco.kubevirt.io/v1
       kind: HyperConverged
       metadata:
         name: kubevirt-hyperconverged
         namespace: openshift-cnv
       spec:
-        permittedHostDevices:
-          pciHostDevices:
-          - pciDeviceSelector: "1014:06a8"
-            resourceName: "ibm.com/spyre"
+        virtualization:
+          permittedHostDevices:
+            pciHostDevices:
+            - pciDeviceSelector: "1014:06a8"
+              resourceName: "ibm.com/spyre"
       # ...
       ```
 
@@ -441,24 +443,25 @@ To remove a PCI host device from the cluster, delete the information for that de
 1.  Edit the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
-2.  Remove the PCI device information from the `spec.permittedHostDevices.pciHostDevices` array by deleting the `pciDeviceSelector`, `resourceName` and `externalResourceProvider` (if applicable), fields for the appropriate device. In this example, the user deletes the `nvidia.com/TU104GL_Tesla_T4`.
+2.  Remove the PCI device information from the `spec.virtualization.permittedHostDevices.pciHostDevices` array by deleting the `pciDeviceSelector`, `resourceName` and `externalResourceProvider` (if applicable), fields for the appropriate device. In this example, the user deletes the `nvidia.com/TU104GL_Tesla_T4`.
 
     Example configuration file:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
       namespace: openshift-cnv
     spec:
-      permittedHostDevices:
-        pciHostDevices:
-        - pciDeviceSelector: "10DE:1DB6"
-          resourceName: "nvidia.com/GV100GL_Tesla_V100"
+      virtualization:
+        permittedHostDevices:
+          pciHostDevices:
+          - pciDeviceSelector: "10DE:1DB6"
+            resourceName: "nvidia.com/GV100GL_Tesla_V100"
     # ...
     ```
 

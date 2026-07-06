@@ -41,11 +41,16 @@ spec:
       ipForwarding: Disabled
 ```
 
-- Specify the machine template kind. This value must match the value for your platform.
+where:
 
-- Specify a name for the machine template.
+`kind`
+Specifies the machine template kind. This value must match the value for your platform.
 
-- Specify the details for your environment. The values here are examples.
+`metadata.name`
+Specifies a name for the machine template.
+
+`spec.template.spec`
+Specifies the details for your environment. The values here are examples.
 
 ## Sample YAML for a Cluster API compute machine set resource on Google Cloud
 
@@ -85,12 +90,22 @@ spec:
       failureDomain: <failure_domain>
 ```
 
-- Specify a name for the compute machine set. The cluster ID, machine role, and region form a typical pattern for this value in the following format: `<cluster_name>-<role>-<region>`.
+where:
 
-- Specify the cluster ID as the name of the cluster.
+`metadata.name`
+Specifies a name for the compute machine set. The cluster ID, machine role, and region form a typical pattern for this value in the following format: `<cluster_name>-<role>-<region>`.
 
-- Specify the machine template kind. This value must match the value for your platform.
+`metadata.labels.cluster.x-k8s.io/cluster-name`
+Specifies the cluster ID as the name of the cluster.
 
-- Specify the machine template name.
+`spec.clusterName`
+Specifies the cluster ID as the name of the cluster.
 
-- Specify the failure domain within the Google Cloud region.
+`spec.template.spec.infrastructureRef.kind`
+Specifies the machine template kind. This value must match the value for your platform.
+
+`spec.template.spec.infrastructureRef.name`
+Specifies the machine template name.
+
+`spec.template.spec.failureDomain`
+Specifies the failure domain within the Google Cloud region.

@@ -83,37 +83,38 @@ The following procedure shows how to override the default node IP selection logi
     where; `spec.config.storage.files.contents.source.<encoded_content>`
     Replace this placeholder with the base64-encoded content of the `/etc/default/nodeip-configuration` file, for example, `Tk9ERUlQX0hJTlQ9MTkyLjAuMCxxxx==`. Note that a space is not acceptable after the comma and before the encoded content.
 
-<div class="formalpara-title">
+    <div class="formalpara-title">
 
-**99-nodeip-hint-worker.yaml**
+    **99-nodeip-hint-worker.yaml**
 
-</div>
+    </div>
 
-``` yaml
-apiVersion: machineconfiguration.openshift.io/v1
-kind: MachineConfig
-metadata:
- labels:
-   machineconfiguration.openshift.io/role: worker
-   name: 99-nodeip-hint-worker
-spec:
- config:
-   ignition:
-     version: 3.2.0
-   storage:
-     files:
-     - contents:
-         source: data:text/plain;charset=utf-8;base64,<encoded_content>
-       mode: 0644
-       overwrite: true
-       path: /etc/default/nodeip-configuration
-```
+    ``` yaml
+    apiVersion: machineconfiguration.openshift.io/v1
+    kind: MachineConfig
+    metadata:
+     labels:
+       machineconfiguration.openshift.io/role: worker
+       name: 99-nodeip-hint-worker
+    spec:
+     config:
+       ignition:
+         version: 3.2.0
+       storage:
+         files:
+         - contents:
+             source: data:text/plain;charset=utf-8;base64,<encoded_content>
+           mode: 0644
+           overwrite: true
+           path: /etc/default/nodeip-configuration
+    ```
 
-\+ where: `spec.config.storage.files.contents.source.<encoded_content>`:: Replace this placeholder with the base64-encoded content of the `/etc/default/nodeip-configuration` file, for example, `Tk9ERUlQX0hJTlQ9MTkyLjAuMCxxxx==`. Note that a space is not acceptable after the comma and before the encoded content.
+    where; `spec.config.storage.files.contents.source.<encoded_content>`
+    Replace this placeholder with the base64-encoded content of the `/etc/default/nodeip-configuration` file, for example, `Tk9ERUlQX0hJTlQ9MTkyLjAuMCxxxx==`. Note that a space is not acceptable after the comma and before the encoded content.
 
-1.  Save the manifest to the directory where you store your cluster configuration, for example, `~/clusterconfigs`.
+4.  Save the manifest to the directory where you store your cluster configuration, for example, `~/clusterconfigs`.
 
-2.  Deploy the cluster.
+5.  Deploy the cluster.
 
 ## Configuring OVN-Kubernetes to use a secondary OVS bridge
 

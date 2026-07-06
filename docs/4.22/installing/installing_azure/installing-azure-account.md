@@ -1,14 +1,16 @@
-Before you can install OpenShift Container Platform, you must configure a Microsoft Azure account to meet installation requirements.
+Before you can install OpenShift Container Platform on Microsoft Azure, you must configure an Azure account with the correct identity and permissions before you start the installation.
 
 <div class="important">
 
-All Azure resources that are available through public endpoints are subject to resource name restrictions. For a list of terms that Azure restricts for resource names, see [Resolve reserved resource name errors](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-reserved-resource-name) in the Azure documentation.
+All Azure resources that are available through public endpoints are subject to resource name restrictions. For a list of terms that Azure restricts for resource names, see "Resolve errors for reserved resource names".
 
 </div>
 
 # Azure account limits
 
-The OpenShift Container Platform cluster uses a number of Microsoft Azure components, and the default [Azure subscription and service limits, quotas, and constraints](https://docs.microsoft.com/en-us/azure/azure-subscription-service-limits) affect your ability to install OpenShift Container Platform clusters.
+The OpenShift Container Platform cluster uses a number of Microsoft Azure components. Default subscription and service limits, quotas, and constraints can affect your ability to install OpenShift Container Platform clusters.
+
+For more information on Azure subscription and service limits, see "Azure subscription and service limits, quotas, and constraints".
 
 <div class="important">
 
@@ -147,11 +149,13 @@ The following table summarizes the Azure components whose limits can impact your
 
 To increase an account limit, file a support request on the Azure portal. For more information, see [Request a quota limit increase for Azure Deployment Environments resources](https://learn.microsoft.com/en-us/azure/deployment-environments/how-to-request-quota-increase).
 
-- [Optimizing storage](../../scalability_and_performance/optimization/optimizing-storage.xml#optimizing-storage).
+- [Optimizing storage](../../scalability_and_performance/optimization/optimizing-storage.xml#optimizing-storage)
+
+- [Azure subscription and service limits, quotas, and constraints (Azure documentation)](https://docs.microsoft.com/en-us/azure/azure-subscription-service-limits)
 
 # Configuring a public DNS zone in Azure
 
-To install OpenShift Container Platform, the Microsoft Azure account you use must have a dedicated public hosted DNS zone in your account. This zone must be authoritative for the domain. This service provides cluster DNS resolution and name lookup for external connections to the cluster.
+To install OpenShift Container Platform, the Microsoft Azure account you use must have a dedicated public hosted DNS zone in your account that is authoritative for the domain. This zone provides cluster DNS resolution and name lookup for external connections to the cluster.
 
 1.  Identify your domain, or subdomain, and registrar. You can transfer an existing domain and registrar or obtain a new one through Azure or another source.
 
@@ -167,7 +171,7 @@ To install OpenShift Container Platform, the Microsoft Azure account you use mus
 
 # Recording the subscription and tenant IDs
 
-The installation program requires the subscription and tenant IDs that are associated with your Azure account. You can use the Azure CLI to gather this information.
+To record the subscription and tenant IDs that the installation program requires for your Azure account, you can use the Azure CLI.
 
 - You have installed or updated the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-yum?view=azure-cli-latest).
 
@@ -286,7 +290,7 @@ The installation program requires the subscription and tenant IDs that are assoc
 
 # Supported identities to access Azure resources
 
-An OpenShift Container Platform cluster requires an Azure identity to create and manage Azure resources. You need one of the following types of identities to complete the installation:
+An OpenShift Container Platform cluster requires an Azure identity to create and manage Azure resources. You need a service principal, a system-assigned managed identity, or a user-assigned managed identity to complete the installation.
 
 - A service principal
 
@@ -294,11 +298,15 @@ An OpenShift Container Platform cluster requires an Azure identity to create and
 
 - A user-assigned managed identity
 
-For more information on Azure identities, see [Managed identity types](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview#managed-identity-types).
+For more information on Azure identities, see "Managed identity types".
+
+- [Managed identity types (Azure documentation)](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview#managed-identity-types)
 
 ## Required Azure roles
 
-Before you create the identity, verify that your environment meets the following requirements based on the identity:
+Before you create the identity for an OpenShift Container Platform cluster on Azure, verify that your environment meets the role and permission requirements for the identity type you plan to use.
+
+The following requirements must be met:
 
 - The Azure account that you use to create the identity is assigned the `User Access Administrator` and `Contributor` roles. These roles are required when:
 
@@ -308,7 +316,9 @@ Before you create the identity, verify that your environment meets the following
 
 - If you are going to use a service principal to complete the installation, verify that the Azure account that you use to create the identity is assigned the `microsoft.directory/servicePrincipals/createAsOwner` permission in Microsoft Entra ID.
 
-To set roles on the Azure portal, see [Assign Azure roles using the Azure portal](https://docs.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) in the Azure documentation.
+<!-- -->
+
+- [Assign Azure roles using the Azure portal (Azure documentation)](https://docs.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal)
 
 ### Required Azure permissions for installer-provisioned infrastructure
 
@@ -326,6 +336,7 @@ The following options are available to you:
 
 The following permissions are required for creating an OpenShift Container Platform cluster on Microsoft Azure.
 
+Required permissions for creating authorization resources
 - `Microsoft.Authorization/policies/audit/action`
 
 - `Microsoft.Authorization/policies/auditIfNotExists/action`
@@ -362,6 +373,7 @@ The following permissions are not required if you set `identity.type` to `UserAs
 
 </div>
 
+Required permissions for creating compute resources
 - `Microsoft.Compute/availabilitySets/read`
 
 - `Microsoft.Compute/availabilitySets/write`
@@ -400,16 +412,14 @@ The following permissions are not required if you set `identity.type` to `UserAs
 
 - `Microsoft.Compute/virtualMachines/write`
 
-<!-- -->
-
+Required permissions for creating identity management resources
 - `Microsoft.ManagedIdentity/userAssignedIdentities/assign/action`
 
 - `Microsoft.ManagedIdentity/userAssignedIdentities/read`
 
 - `Microsoft.ManagedIdentity/userAssignedIdentities/write`
 
-<!-- -->
-
+Required permissions for creating network resources
 - `Microsoft.Network/dnsZones/A/write`
 
 - `Microsoft.Network/dnsZones/CNAME/write`
@@ -514,6 +524,7 @@ The following permissions are not required to create the private OpenShift Conta
 
 </div>
 
+Required permissions for checking the health of resources
 - `Microsoft.Resourcehealth/healthevent/Activated/action`
 
 - `Microsoft.Resourcehealth/healthevent/InProgress/action`
@@ -524,24 +535,20 @@ The following permissions are not required to create the private OpenShift Conta
 
 - `Microsoft.Resourcehealth/healthevent/Updated/action`
 
-<!-- -->
-
+Required permissions for creating a resource group
 - `Microsoft.Resources/subscriptions/resourceGroups/read`
 
 - `Microsoft.Resources/subscriptions/resourcegroups/write`
 
-<!-- -->
-
+Optional permissions for attaching an existing user-assigned identity to a node
 - `Microsoft.ManagedIdentity/userAssignedIdentities/assign/action`
 
 - `Microsoft.ManagedIdentity/userAssignedIdentities/read`
 
-<!-- -->
-
+Required permissions for creating resource tags
 - `Microsoft.Resources/tags/write`
 
-<!-- -->
-
+Required permissions for creating storage resources
 - `Microsoft.Storage/storageAccounts/blobServices/read`
 
 - `Microsoft.Storage/storageAccounts/blobServices/containers/write`
@@ -560,8 +567,7 @@ The following permissions are not required to create the private OpenShift Conta
 
 - `Microsoft.Storage/storageAccounts/write`
 
-<!-- -->
-
+Optional permissions for creating a private storage endpoint for the image registry
 - `Microsoft.Network/privateEndpoints/write`
 
 - `Microsoft.Network/privateEndpoints/read`
@@ -574,14 +580,12 @@ The following permissions are not required to create the private OpenShift Conta
 
 - `Microsoft.Storage/storageAccounts/PrivateEndpointConnectionsApproval/action`
 
-<!-- -->
-
+Optional permissions for creating marketplace virtual machine resources
 - `Microsoft.MarketplaceOrdering/offertypes/publishers/offers/plans/agreements/read`
 
 - `Microsoft.MarketplaceOrdering/offertypes/publishers/offers/plans/agreements/write`
 
-<!-- -->
-
+Optional permissions for creating compute resources
 - `Microsoft.Compute/availabilitySets/delete`
 
 - `Microsoft.Compute/images/read`
@@ -590,8 +594,7 @@ The following permissions are not required to create the private OpenShift Conta
 
 - `Microsoft.Compute/images/delete`
 
-<!-- -->
-
+Optional permissions for enabling user-managed encryption
 - `Microsoft.Compute/diskEncryptionSets/read`
 
 - `Microsoft.Compute/diskEncryptionSets/write`
@@ -612,22 +615,19 @@ The following permissions are not required to create the private OpenShift Conta
 
 - `Microsoft.Features/providers/features/register/action`
 
-<!-- -->
-
+Optional permissions for installing a cluster using the `NatGateway` outbound type
 - `Microsoft.Network/natGateways/read`
 
 - `Microsoft.Network/natGateways/write`
 
-<!-- -->
-
+Optional permissions for installing a private cluster with Azure Network Address Translation (NAT)
 - `Microsoft.Network/natGateways/join/action`
 
 - `Microsoft.Network/natGateways/read`
 
 - `Microsoft.Network/natGateways/write`
 
-<!-- -->
-
+Optional permissions for installing a private cluster with Azure firewall
 - `Microsoft.Network/azureFirewalls/applicationRuleCollections/write`
 
 - `Microsoft.Network/azureFirewalls/read`
@@ -650,16 +650,15 @@ The following permissions are not required to create the private OpenShift Conta
 
 - `Microsoft.Network/virtualNetworks/virtualNetworkPeerings/write`
 
-<!-- -->
-
+Optional permission for running gather bootstrap
 - `Microsoft.Compute/virtualMachines/retrieveBootDiagnosticsData/action`
 
 The following permissions are required for deleting an OpenShift Container Platform cluster on Microsoft Azure. You can use the same permissions to delete a private OpenShift Container Platform cluster on Azure.
 
+Required permissions for deleting authorization resources
 - `Microsoft.Authorization/roleAssignments/delete`
 
-<!-- -->
-
+Required permissions for deleting compute resources
 - `Microsoft.Compute/disks/delete`
 
 - `Microsoft.Compute/galleries/delete`
@@ -670,12 +669,10 @@ The following permissions are required for deleting an OpenShift Container Platf
 
 - `Microsoft.Compute/virtualMachines/delete`
 
-<!-- -->
-
+Required permissions for deleting identity management resources
 - `Microsoft.ManagedIdentity/userAssignedIdentities/delete`
 
-<!-- -->
-
+Required permissions for deleting network resources
 - `Microsoft.Network/dnszones/read`
 
 - `Microsoft.Network/dnsZones/A/read`
@@ -720,18 +717,17 @@ The following permissions are not required to delete a private OpenShift Contain
 
 </div>
 
+Required permissions for checking the health of resources
 - `Microsoft.Resourcehealth/healthevent/Activated/action`
 
 - `Microsoft.Resourcehealth/healthevent/Resolved/action`
 
 - `Microsoft.Resourcehealth/healthevent/Updated/action`
 
-<!-- -->
-
+Required permissions for deleting a resource group
 - `Microsoft.Resources/subscriptions/resourcegroups/delete`
 
-<!-- -->
-
+Required permissions for deleting storage resources
 - `Microsoft.Storage/storageAccounts/delete`
 
 - `Microsoft.Storage/storageAccounts/listKeys/action`
@@ -744,9 +740,13 @@ You can scope all the permissions to your subscription when deleting an OpenShif
 
 </div>
 
+- [Managing access to Azure resources using the Azure portal (Azure documentation)](https://docs.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal)
+
+- [Custom roles (Azure documentation)](https://learn.microsoft.com/en-us/azure/role-based-access-control/custom-roles)
+
 ## Using Azure managed identities
 
-The installation program requires an Azure identity to complete the installation. You can use either a system-assigned or user-assigned managed identity.
+To provide the identity that the installation program requires on Azure, you can use a system-assigned or user-assigned managed identity.
 
 If you are unable to use a managed identity, you can use a service principal.
 
@@ -758,13 +758,13 @@ If you are unable to use a managed identity, you can use a service principal.
 
     2.  Record its client ID. You require this value when installing the cluster.
 
-        For more information about viewing the details of a user-assigned managed identity, see [List user-assigned managed identities](https://learn.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/how-manage-user-assigned-managed-identities?pivots=identity-mi-methods-azp#list-user-assigned-managed-identities) in the Azure documentation.
-
 3.  Verify that the required permissions are assigned to the managed identity.
+
+- [List user-assigned managed identities (Azure documentation)](https://learn.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/how-manage-user-assigned-managed-identities?pivots=identity-mi-methods-azp#list-user-assigned-managed-identities)
 
 ## Creating a service principal
 
-The installation program requires an Azure identity to complete the installation. You can use a service principal.
+To provide the identity that the installation program requires on Azure, you can create a service principal.
 
 If you are unable to use a service principal, you can use a managed identity.
 
@@ -782,50 +782,59 @@ If you are unable to use a service principal, you can use a managed identity.
          --scopes /subscriptions/<subscription_id>
     ```
 
-    - Defines the role name. You can use the `Contributor` role, or you can specify a custom role which contains the necessary permissions.
+    where:
 
-    - Defines the service principal name.
+    `<role_name>`
+    Specifies the role name. You can use the `Contributor` role, or you can specify a custom role which contains the necessary permissions.
 
-    - Specifies the subscription ID.
+    `<service_principal>`
+    Specifies the service principal name.
 
-      <div class="formalpara-title">
+    `<subscription_id>`
+    Specifies the subscription ID.
 
-      **Example output**
+    <div class="formalpara-title">
 
-      </div>
+    **Example output**
 
-      ``` terminal
-      Creating 'Contributor' role assignment under scope '/subscriptions/<subscription_id>'
-      The output includes credentials that you must protect. Be sure that you do not
-      include these credentials in your code or check the credentials into your source
-      control. For more information, see https://aka.ms/azadsp-cli
-      {
-        "appId": "axxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-        "displayName": <service_principal>",
-        "password": "00000000-0000-0000-0000-000000000000",
-        "tenantId": "8xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-      }
-      ```
+    </div>
 
-      Record the values of the `appId` and `password` parameters from the output. You require these values when installing the cluster.
+    ``` terminal
+    Creating 'Contributor' role assignment under scope '/subscriptions/<subscription_id>'
+    The output includes credentials that you must protect. Be sure that you do not
+    include these credentials in your code or check the credentials into your source
+    control. For more information, see https://aka.ms/azadsp-cli
+    {
+      "appId": "axxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "displayName": <service_principal>",
+      "password": "00000000-0000-0000-0000-000000000000",
+      "tenantId": "8xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    }
+    ```
+
+    Record the values of the `appId` and `password` parameters from the output. You require these values when installing the cluster.
 
 2.  If you assigned the `Contributor` role to your service principal, assign the `User Administrator Access` role by running the following command:
 
     ``` terminal
     $ az role assignment create --role "User Access Administrator" \
-      --assignee-object-id $(az ad sp show --id <appId> --query id -o tsv)
+      --assignee-object-id $(az ad sp show --id <appId> --query id -o tsv) \
       --scope /subscriptions/<subscription_id>
     ```
 
-    - Specify the `appId` parameter value for your service principal.
+    where:
 
-    - Specifies the subscription ID.
+    `<appId>`
+    Specifies the `appId` parameter value for your service principal.
+
+    `<subscription_id>`
+    Specifies the subscription ID.
 
 - [About the Cloud Credential Operator](../../authentication/managing_cloud_provider_credentials/about-cloud-credential-operator.xml#about-cloud-credential-operator-modes)
 
 # Supported Azure Marketplace regions
 
-Installing a cluster using the Azure Marketplace image is available to customers who purchase the offer in North America and EMEA.
+Installing a cluster by using the Azure Marketplace image is available to customers who purchase the offer in North America and EMEA.
 
 While the offer must be purchased in North America or EMEA, you can deploy the cluster to any of the Azure public partitions that OpenShift Container Platform supports.
 
@@ -945,6 +954,10 @@ Support for the following Microsoft Azure Government (MAG) regions was added in 
 
 You can reference all available MAG regions in the [Azure documentation](https://azure.microsoft.com/en-us/global-infrastructure/geographies/#geographies). Other provided MAG regions are expected to work with OpenShift Container Platform, but have not been tested.
 
-# Next steps
+# Additional resources
 
-- Install an OpenShift Container Platform cluster on Azure. You can [install a customized cluster](../../installing/installing_azure/ipi/installing-azure-customizations.xml#installing-azure-customizations) or [quickly install a cluster](../../installing/installing_azure/ipi/installing-azure-default.xml#installing-azure-default) with default options.
+- [Resolve errors for reserved resource names (Azure documentation)](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-reserved-resource-name)
+
+- [Install a customized cluster on Azure](../../installing/installing_azure/ipi/installing-azure-customizations.xml#installing-azure-customizations)
+
+- [Quickly install a cluster on Azure with default options](../../installing/installing_azure/ipi/installing-azure-default.xml#installing-azure-default)

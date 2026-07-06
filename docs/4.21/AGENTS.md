@@ -127,7 +127,7 @@ Root: ./
 |security/security_profiles_operator:{spo-overview.md,spo-release-notes.md,spo-support.md,spo-understanding.md,spo-enabling.md,spo-seccomp.md,spo-selinux.md,spo-advanced.md,spo-logging.md,spo-troubleshooting.md,spo-uninstalling.md}
 |security/nbde_tang_server_operator:{nbde-tang-server-operator-overview.md,nbde-tang-server-operator-release-notes.md,nbde-tang-server-operator-understanding.md,nbde-tang-server-operator-installing.md,nbde-tang-server-operator-configuring-managing.md,nbde-tang-server-operator-identifying-url.md}
 |security/cert_manager_operator:{index.md,cert-manager-operator-release-notes.md,cert-manager-operator-install.md,cert-manager-operator-proxy.md,cert-manager-customizing-api-fields.md,cert-manager-authenticate.md,cert-manager-operator-issuer-acme.md,cert-manager-creating-certificate.md,cert-manager-securing-routes.md,cert-manager-operator-integrating-istio.md,cert-manager-nw-policy.md,cert-manager-trust-manager.md,cert-manager-monitoring.md,cert-manager-log-levels.md,cert-manager-operator-uninstall.md}
-|security/zero_trust_workload_identity_manager:{zero-trust-manager-overview.md,zero-trust-manager-components.md,zero-trust-manager-release-notes.md,zero-trust-manager-install.md,zero-trust-manager-configuration.md,zero-trust-manager-proxy.md,zero-trust-manager-oidc-federation.md,zero-trust-manager-spire-federation.md,zero-trust-manager-reconciliation.md,zero-trust-manager-monitoring.md,zero-trust-manager-uninstall.md}
+|security/zero_trust_workload_identity_manager:{zero-trust-manager-overview.md,zero-trust-manager-components.md,zero-trust-manager-release-notes.md,zero-trust-manager-install.md,zero-trust-manager-configuration.md,zero-trust-manager-proxy.md,zero-trust-manager-oidc-federation.md,zero-trust-manager-spire-federation.md,zero-trust-manager-reconciliation.md,zero-trust-manager-plugins.md,zero-trust-manager-monitoring.md,zero-trust-manager-uninstall.md}
 |security/external_secrets_operator:{index.md,external-secrets-operator-release-notes.md,external-secrets-operator-install.md,external-secrets-operator-config-net-policy.md,external-secrets-operator-proxy.md,external-secrets-monitoring.md,external-secrets-log-levels.md,external-secrets-operator-uninstall.md,external-secrets-operator-api.md,external-secrets-operator-migrate-downstream-upstream.md}
 |security/network_bound_disk_encryption:{nbde-about-disk-encryption-technology.md,nbde-tang-server-installation-considerations.md,nbde-managing-encryption-keys.md,nbde-disaster-recovery-considerations.md}
 
@@ -306,7 +306,7 @@ Root: ./
 ### AI workloads
 
 |ai_workloads:{index.md}
-|ai_workloads/kueue:{about-kueue.md,release-notes.md,install-kueue.md,install-disconnected.md,integrating-lws.md,integrating-jobset.md,rbac-permissions.md,configuring-quotas.md,managing-workloads.md,monitoring-pending-workloads.md,using-cohorts.md,configuring-fairsharing.md,gangscheduling.md,running-kueue-jobs.md,getting-support.md}
+|ai_workloads/kueue:{about-kueue.md,release-notes.md,install-kueue.md,install-disconnected.md,integrating-lws.md,integrating-jobset.md,rbac-permissions.md,configuring-quotas.md,managing-workloads.md,monitoring-pending-workloads.md,using-cohorts.md,configuring-fairsharing.md,admission-fair-sharing.md,gangscheduling.md,running-kueue-jobs.md,getting-support.md}
 |ai_workloads/leader_worker_set:{index.md,lws-release-notes.md,lws-managing.md,lws-uninstalling.md}
 |ai_workloads/jobset_operator:{index.md,jobset-release-notes.md,jobset-install.md,managing-jobset.md,jobset-uninstall.md}
 

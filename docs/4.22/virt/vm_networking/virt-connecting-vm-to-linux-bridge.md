@@ -287,7 +287,7 @@ You can configure a network interface for a virtual machine (VM) by using the Op
 
 ## Networking fields
 
-The following table describes the networking fields in the virtual machine wizard.
+Information about networking fields in the virtual machine wizard.
 
 <table>
 <colgroup>

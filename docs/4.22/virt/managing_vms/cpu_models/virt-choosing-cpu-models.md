@@ -1,4 +1,4 @@
-You can select the appropriate CPU model for your virtual machines based on your cluster configuration. Choose between the host-model CPU, which provides maximum performance and feature access in homogeneous clusters, or named CPU models, which ensure compatibility and migration flexibility in heterogeneous clusters with different CPU types.
+You can choose an appropriate CPU model for your virtual machines based on your environment. The host-model CPU provides maximum performance and feature access in homogeneous clusters. CPU models ensure compatibility and migration flexibility in heterogeneous clusters with different CPU types.
 
 # Host-model CPU
 

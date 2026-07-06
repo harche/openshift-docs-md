@@ -19,36 +19,37 @@ To expose downward metrics for a host virtual machine, you can enable the `downw
 1.  Open the HyperConverged custom resource (CR) in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
 2.  Choose to enable or disable the downwardMetrics feature gate as follows:
 
-    - To enable the `downwardMetrics` feature gate, add and then set `spec.featureGates.downwardMetrics` to `true`. For example:
+    - To enable the `downwardMetrics` feature gate, add a feature gate entry with `name: downwardMetrics`. For example:
 
       ``` yaml
-      apiVersion: hco.kubevirt.io/v1beta1
+      apiVersion: hco.kubevirt.io/v1
       kind: HyperConverged
       metadata:
         name: kubevirt-hyperconverged
         namespace: openshift-cnv
       spec:
-          featureGates:
-            downwardMetrics: true
+        featureGates:
+          - name: downwardMetrics
       # ...
       ```
 
-    - To disable the `downwardMetrics` feature gate, set `spec.featureGates.downwardMetrics` to `false`. For example:
+    - To disable the `downwardMetrics` feature gate, set the `state` to `Disabled`. For example:
 
       ``` yaml
-      apiVersion: hco.kubevirt.io/v1beta1
+      apiVersion: hco.kubevirt.io/v1
       kind: HyperConverged
       metadata:
         name: kubevirt-hyperconverged
         namespace: openshift-cnv
       spec:
-          featureGates:
-            downwardMetrics: false
+        featureGates:
+          - name: downwardMetrics
+            state: Disabled
       # ...
       ```
 
@@ -67,19 +68,17 @@ To expose downward metrics for a host virtual machine, you can enable the `downw
   - Enable the `downwardMetrics` feature gate by running the command shown in the following example:
 
     ``` terminal
-    $ oc patch hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv \
-      --type json -p '[{"op": "replace", "path": \
-      "/spec/featureGates/downwardMetrics", \
-      "value": true}]'
+    $ oc patch hco kubevirt-hyperconverged -n openshift-cnv \
+      --type json -p '[{"op": "add", "path": "/spec/featureGates/-", \
+      "value": {"name": "downwardMetrics"}}]'
     ```
 
   - Disable the `downwardMetrics` feature gate by running the command shown in the following example:
 
     ``` terminal
-    $ oc patch hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv \
-      --type json -p '[{"op": "replace", "path": \
-      "/spec/featureGates/downwardMetrics", \
-      "value": false}]'
+    $ oc patch hco kubevirt-hyperconverged -n openshift-cnv \
+      --type json -p '[{"op": "add", "path": "/spec/featureGates/-", \
+      "value": {"name": "downwardMetrics", "state": "Disabled"}}]'
     ```
 
 # Configuring a downward metrics device

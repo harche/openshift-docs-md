@@ -1,10 +1,10 @@
-You can use the tasks in this section to create `MachineConfig` objects that modify files, systemd unit files, and other operating system features running on OpenShift Container Platform nodes. This allows you to perform such tasks such as disabling chronyd, adding kernel arguments, enabling multipathing, and adding RHCOS extensions.
+You can create `MachineConfig` custom resources (CR) that modify files, systemd unit files, and other operating system features running on OpenShift Container Platform nodes. By using `MachineConfig` objects, you can perform tasks such as disabling chronyd, adding kernel arguments, enabling multipathing, and adding RHCOS extensions.
 
-For more ideas on working with machine configs, see content related to [updating](https://access.redhat.com/solutions/3868301) SSH authorized keys, [verifying image signatures](../security/container_security/security-container-signature.xml#security-container-signature), [enabling SCTP](https://access.redhat.com/solutions/4727321), and [configuring iSCSI initiatornames](https://access.redhat.com/solutions/5170251) for OpenShift Container Platform.
+For more ideas on working with machine configs, see "How to update ssh keys after installation in OpenShift 4?", "Container image signatures", "Enabling SCTP in Openshift Container Platform 4", and "How to provide custom iSCSI initiatornames for nodes" in the *Additional resources* section.
 
-OpenShift Container Platform supports [Ignition specification version 3.5](https://coreos.github.io/ignition/configuration-v3_5/). You should base all new machine configs you create going forward on Ignition specification version 3.5. If you are upgrading your OpenShift Container Platform cluster, any existing machine configs with a previous Ignition specification will be translated automatically to specification version 3.5.
+OpenShift Container Platform supports Ignition specification version 3.5. For more information, see "Ignition specification version 3.5" in the *Additional resources* section. You should base all new machine configs you create going forward on Ignition specification version 3.5. If you are upgrading your OpenShift Container Platform cluster, any existing machine configs with a previous Ignition specification will be translated automatically to specification version 3.5.
 
-There might be situations where the configuration on a node does not fully match what the currently-applied machine config specifies. This state is called *configuration drift*. The Machine Config Daemon (MCD) regularly checks the nodes for configuration drift. If the MCD detects configuration drift, the MCO marks the node `degraded` until an administrator corrects the node configuration. A degraded node is online and operational, but, it cannot be updated. For more information on configuration drift, see [Understanding configuration drift detection](../machine_configuration/index.xml#machine-config-drift-detection_machine-config-overview).
+There might be situations where the configuration on a node does not fully match what the currently-applied machine config specifies. This state is called *configuration drift*. The Machine Config Daemon (MCD) regularly checks the nodes for configuration drift. If the MCD detects configuration drift, the MCO marks the node `degraded` until an administrator corrects the node configuration. A degraded node is online and operational, but, it cannot be updated. For more information on configuration drift, see "Understanding configuration drift detection" in the *Additional resources* section.
 
 <div class="tip">
 
@@ -15,6 +15,14 @@ Use the following "Configuring chrony time service" procedure as a model for how
 # Configuring chrony time service
 
 You can set the time server and related settings used by the chrony time service (`chronyd`) by modifying the contents of the `chrony.conf` file and passing those contents to your nodes as a machine config.
+
+For more information on chrony best practices, see the following resources:
+
+- [Configuring chrony (Red Hat Knowledgebase article)](https://access.redhat.com/solutions/3073261)
+
+- [Best practices for NTP (Red Hat Knowledgebase article)](https://access.redhat.com/solutions/778603)
+
+- [Basic chrony NTP troubleshooting (Red Hat Ceph Storage documentation)](https://docs.redhat.com/en/documentation/red_hat_ceph_storage/8/html-single/troubleshooting_guide/basic-chrony-NTP-troubleshooting_diag#basic-chrony-NTP-troubleshooting_diag)
 
 1.  Create a Butane config including the contents of the `chrony.conf` file. For example, to configure chrony on worker nodes, create a `99-worker-chrony.bu` file.
 
@@ -77,14 +85,6 @@ You can set the time server and related settings used by the chrony time service
       $ oc apply -f ./99-worker-chrony.yaml
       ```
 
-For more information on chrony best practices, see the following resources:
-
-- [Configuring chrony](https://access.redhat.com/solutions/3073261)
-
-- [Best practices for NTP](https://access.redhat.com/solutions/778603)
-
-- [Basic chrony NTP troubleshooting](https://docs.redhat.com/en/documentation/red_hat_ceph_storage/8/html-single/troubleshooting_guide/basic-chrony-NTP-troubleshooting_diag#basic-chrony-NTP-troubleshooting_diag)
-
 # Disabling the chrony time service
 
 You can disable the chrony time service (`chronyd`) for nodes with a specific role by using a `MachineConfig` custom resource (CR).
@@ -140,7 +140,10 @@ You can disable the chrony time service (`chronyd`) for nodes with a specific ro
                     Wants=rpc-statd.service
         ```
 
-        - Node role where you want to disable `chronyd`, for example, `master`.
+        where:
+
+        `metadata.labels`
+        Specifies the node role where you want to disable `chronyd`, for example, `master`.
 
     2.  Create the `MachineConfig` CR by running the following command:
 
@@ -328,13 +331,13 @@ In the following procedure, you create a `MachineConfig` object that identifies:
 
 # Enabling multipathing with kernel arguments on RHCOS
 
+You can achieve higher host availability by enabling multipathing on the primary disk, which allows stronger resilience to hardware failure, by using a `MachineConfig` object.
+
 <div class="important">
 
 Enabling multipathing during installation is supported and recommended for nodes provisioned in OpenShift Container Platform. In setups where any I/O to non-optimized paths results in I/O system errors, you must enable multipathing at installation time. For more information about enabling multipathing during installation time, see "Enabling multipathing post installation" in the *Installing on bare metal* documentation.
 
 </div>
-
-Red Hat Enterprise Linux CoreOS (RHCOS) supports multipathing on the primary disk, allowing stronger resilience to hardware failure to achieve higher host availability. Postinstallation support is available by activating multipathing via the machine config.
 
 <div class="important">
 
@@ -564,7 +567,7 @@ Although making the change is as simple as changing a machine config `kernelType
 
 # Configuring journald settings
 
-If you need to configure settings for the `journald` service on OpenShift Container Platform nodes, you can do that by modifying the appropriate configuration file and passing the file to the appropriate pool of nodes as a machine config.
+To configure settings for the `journald` service on OpenShift Container Platform nodes, you can modify the appropriate configuration file and pass the file to the appropriate pool of nodes as a machine config.
 
 This procedure describes how to modify `journald` rate limiting settings in the `/etc/systemd/journald.conf` file and apply them to worker nodes. See the `journald.conf` man page for information on how to use that file.
 
@@ -674,9 +677,9 @@ This procedure describes how to modify `journald` rate limiting settings in the 
 
 # Adding extensions to RHCOS
 
-RHCOS is a minimal container-oriented RHEL operating system, designed to provide a common set of capabilities to OpenShift Container Platform clusters across all platforms. Although adding software packages to RHCOS systems is generally discouraged, the MCO provides an `extensions` feature you can use to add a minimal set of features to RHCOS nodes.
+You can add software packages to Red Hat Enterprise Linux CoreOS (RHCOS) systems by using extension packages to add a minimal set of features to specific nodes.
 
-Currently, the following extensions are available:
+RHCOS is a minimal container-oriented op-system-base-full operating system, designed to provide a common set of capabilities to OpenShift Container Platform clusters across all platforms. Although adding software packages to RHCOS systems is generally discouraged, you can add any of the following extensions to extend RHCOS:
 
 - **usbguard**: The `usbguard` extension protects RHCOS systems from attacks by intrusive USB devices. For more information, see [USBGuard](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/security_hardening/index#usbguard_protecting-systems-against-intrusive-usb-devices) for details.
 
@@ -797,7 +800,9 @@ The following procedure describes how to use a machine config to add one or more
 
 # Loading custom firmware blobs in the machine config manifest
 
-Because the default location for firmware blobs in `/usr/lib` is read-only, you can locate a custom firmware blob by updating the search path. This enables you to load local firmware blobs in the machine config manifest when the blobs are not managed by RHCOS.
+You can load local firmware blobs that are not managed by RHCOS into the machine config manifest by updating the search path with a machine config.
+
+By default, the location for firmware blobs in `/usr/lib` is read-only.
 
 1.  Create a Butane config file, `98-worker-firmware-blob.bu`, that updates the search path so that it is root-owned and writable to local storage. The following example places the custom blob file from your local workstation onto nodes under `/var/lib/firmware`.
 
@@ -831,13 +836,19 @@ Because the default location for firmware blobs in `/usr/lib` is read-only, you 
         - 'firmware_class.path=/var/lib/firmware'
     ```
 
-    - Sets the path on the node where the firmware package is copied to.
+    where:
 
-    - Specifies a file with contents that are read from a local file directory on the system running Butane. The path of the local file is relative to a `files-dir` directory, which must be specified by using the `--files-dir` option with Butane in the following step.
+    `storage.files.path`
+    Specifies the path on the node where the firmware package is copied to.
 
-    - Sets the permissions for the file on the RHCOS node. It is recommended to set `0644` permissions.
+    `storage.files.contents.local`
+    Specifies a file with contents that are read from a local file directory on the system running Butane. The path of the local file is relative to a `files-dir` directory, which must be specified by using the `--files-dir` option with Butane in a subsequent step.
 
-    - The `firmware_class.path` parameter customizes the kernel search path of where to look for the custom firmware blob that was copied from your local workstation onto the root file system of the node. This example uses `/var/lib/firmware` as the customized path.
+    `storage.files.mode`
+    Specifies the permissions for the file on the RHCOS node. Red Hat recommends setting `0644` permissions.
+
+    `openshift.kernel_arguments`
+    Specifies the kernel search path of where to look for the custom firmware blob that was copied from your local workstation onto the root file system of the node. This example uses `/var/lib/firmware` as the customized path.
 
 2.  Run Butane to generate a `MachineConfig` object file that uses a copy of the firmware blob on your local workstation named `98-worker-firmware-blob.yaml`. The firmware blob contains the configuration to be delivered to the nodes. The following example uses the `--files-dir` option to specify the directory on your workstation where the local file or files are located:
 
@@ -861,9 +872,9 @@ Because the default location for firmware blobs in `/usr/lib` is read-only, you 
 
 # Changing the core user password for node access
 
-By default, Red Hat Enterprise Linux CoreOS (RHCOS) creates a user named `core` on the nodes in your cluster. You can use the `core` user to access the node through a cloud provider serial console or a bare metal baseboard controller manager (BMC). This can be helpful, for example, if a node is down and you cannot access that node by using SSH or the `oc debug node` command. However, by default, there is no password for this user, so you cannot log in without creating one.
+You can use the default `core` user to access a node through a cloud provider serial console or a bare metal baseboard controller manager (BMC) if a node is down and you cannot access that node by using SSH or the `oc debug node` command.
 
-You can create a password for the `core` user by using a machine config. The Machine Config Operator (MCO) assigns the password and injects the password into the `/etc/shadow` file, allowing you to log in with the `core` user. The MCO does not examine the password hash. As such, the MCO cannot report if there is a problem with the password.
+By default, Red Hat Enterprise Linux CoreOS (RHCOS) creates a user named `core` on the nodes in your cluster. However, there is no password for this user. As such, you cannot log in with this user without creating a password by using a machine config. The Machine Config Operator (MCO) assigns the password and injects the password into the `/etc/shadow` file, allowing you to log in with the `core` user. The MCO does not examine the password hash. As such, the MCO cannot report if there is a problem with the password.
 
 <div class="note">
 
@@ -910,9 +921,13 @@ You can change the password, if needed, by editing the machine config you used t
             passwordHash: <password>
     ```
 
-    - This must be `core`.
+    where:
 
-    - The hashed password to use with the `core` account.
+    `spec.config.passwd.users.name`
+    Specifies the user name. This must be `core`.
+
+    `spec.config.passwd.users.passwordHash`
+    Specifies the hashed password to use with the `core` account.
 
 3.  Create the machine config by running the following command:
 
@@ -1084,6 +1099,18 @@ For more information about the support scope of Red Hat Technology Preview featu
     When you create a new node from a machine set with the associated label, the new configurations are applied to the node.
 
 # Additional resources
+
+- [How to update ssh keys after installation in OpenShift 4? (Red Hat Knowledgebase article)](https://access.redhat.com/solutions/3868301)
+
+- [Container image signatures](../security/container_security/security-container-signature.xml#security-container-signature)
+
+- [Enabling SCTP in OpenShift Container Platform 4 (Red Hat Knowledgebase article)](https://access.redhat.com/solutions/4727321)
+
+- [How to provide custom iSCSI initiatornames for nodes in OpenShift Container Platform 4.x (Red Hat Knowledgebase article)](https://access.redhat.com/solutions/5170251)
+
+- [Configuration Specification v3.5.0 (Ignition documentation)](https://coreos.github.io/ignition/configuration-v3_5/)
+
+- [Understanding configuration drift detection](../machine_configuration/index.xml#machine-config-drift-detection_machine-config-overview)
 
 - [Creating machine configs with Butane](../installing/install_config/installing-customizing.xml#installation-special-config-butane_installing-customizing)
 

@@ -1080,11 +1080,7 @@ To dynamically manage machine compute resources, you can create your own compute
         $ oc get machinesets -n openshift-machine-api
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         NAME                                DESIRED   CURRENT   READY   AVAILABLE   AGE
@@ -1103,11 +1099,7 @@ To dynamically manage machine compute resources, you can create your own compute
           -n openshift-machine-api -o yaml
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` yaml
         apiVersion: machine.openshift.io/v1beta1
@@ -1164,11 +1156,7 @@ To dynamically manage machine compute resources, you can create your own compute
   $ oc get machineset -n openshift-machine-api
   ```
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
+  The following is example output:
 
   ``` terminal
   NAME                                DESIRED   CURRENT   READY   AVAILABLE   AGE
@@ -1241,7 +1229,7 @@ You can optionally create a default cluster-wide node selector. The default node
 
     You can now move infrastructure resources to the new infrastructure nodes and remove any workloads that you do not want, or that do not belong, on the new infrastructure node. See the list of workloads supported for use on infrastructure nodes in "OpenShift Container Platform infrastructure components".
 
-- For information on how to configure project node selectors to avoid cluster-wide node selector key conflicts, see [Project node selectors](../nodes/scheduling/nodes-scheduler-node-selectors.xml#project-node-selectors_nodes-scheduler-node-selectors).
+- [Project node selectors](../nodes/scheduling/nodes-scheduler-node-selectors.xml#project-node-selectors_nodes-scheduler-node-selectors)
 
 ## Creating a machine config pool for infrastructure machines
 
@@ -1389,7 +1377,7 @@ Creating a custom machine configuration pool overrides default worker pool confi
 
     In this example, the role of the node was changes from `worker` to `infra`.
 
-- See [Node configuration management with machine config pools](../architecture/control-plane.xml#architecture-machine-config-pools_control-plane) for more information on grouping infra machines in a custom pool.
+- [Node configuration management with machine config pools](../architecture/control-plane.xml#architecture-machine-config-pools_control-plane)
 
 # Assigning machine set resources to infrastructure nodes
 
@@ -1520,7 +1508,7 @@ It is recommended that you preserve the dual `infra,worker` label that is create
 
 4.  Remove any workloads that you do not want, or that do not belong, on the new infrastructure node. See the list of workloads supported for use on infrastructure nodes in "OpenShift Container Platform infrastructure components".
 
-- See [Controlling pod placement using the scheduler](../nodes/scheduling/nodes-scheduler-about.xml#nodes-scheduler-about) for general information on scheduling a pod to a node.
+- [Controlling pod placement using the scheduler](../nodes/scheduling/nodes-scheduler-about.xml#nodes-scheduler-about)
 
 # Moving resources to infrastructure machine sets
 
@@ -2068,7 +2056,7 @@ To deploy a cluster autoscaler, you create an instance of the `ClusterAutoscaler
 
     where:
 
-    \<filename\>
+    `<filename>`
     Specifies the name of the YAML file you created.
 
 # Applying autoscaling to your cluster
@@ -2810,6 +2798,8 @@ Only save a backup from a single control plane host. Do not take a backup from e
 
 ## Defragmenting etcd data
 
+To prevent etcd performance degradation and cluster-wide maintenance alarms on large clusters, monitor etcd database metrics and defragment the data store when the keyspace grows too large.
+
 For large and dense clusters, etcd can suffer from poor performance if the keyspace grows too large and exceeds the space quota. Periodically maintain and defragment etcd to free up space in the data store. Monitor Prometheus for etcd metrics and defragment it when required; otherwise, etcd can raise a cluster-wide alarm that puts the cluster into a maintenance mode that accepts only key reads and deletes.
 
 Monitor these key metrics:
@@ -2826,13 +2816,15 @@ History compaction is performed automatically every five minutes and leaves gaps
 
 Defragmentation occurs automatically, but you can also trigger it manually.
 
+## Automatic defragmentation
+
+When etcd database growth affects performance, the etcd Operator can automatically defragment member disks based on cluster metrics.
+
 <div class="note">
 
 Automatic defragmentation is good for most cases, because the etcd operator uses cluster information to determine the most efficient operation for the user.
 
 </div>
-
-### Automatic defragmentation
 
 The etcd Operator automatically defragments disks. No manual intervention is needed.
 
@@ -2846,31 +2838,25 @@ Verify that the defragmentation process is successful by viewing one of these lo
 
 <div class="warning">
 
-Automatic defragmentation can cause leader election failure in various OpenShift core components, such as the Kubernetes controller manager, which triggers a restart of the failing component. The restart is harmless and either triggers failover to the next running instance or the component resumes work again after the restart.
+Automatic defragmentation can cause leader election failure in various OpenShift Container Platform core components, such as the Kubernetes controller manager, which triggers a restart of the failing component. The restart is harmless and either triggers failover to the next running instance or the component resumes work again after the restart.
 
 </div>
 
-<div class="formalpara-title">
-
-**Example log output for successful defragmentation**
-
-</div>
+The following is example log output for successful defragmentation:
 
 ``` terminal
 etcd member has been defragmented: <member_name>, memberID: <member_id>
 ```
 
-<div class="formalpara-title">
-
-**Example log output for unsuccessful defragmentation**
-
-</div>
+The following is example log output for unsuccessful defragmentation:
 
 ``` terminal
 failed defrag on member: <member_name>, memberID: <member_id>: <error_message>
 ```
 
-### Manual defragmentation
+## Manual defragmentation
+
+When automatic ectd defragmentation cannot reclaim enough space, manually defragment etcd on each member to restore disk availability and normal cluster operation.
 
 A Prometheus alert indicates when you need to use manual defragmentation. The alert is displayed in two cases:
 
@@ -2898,11 +2884,7 @@ Follow this procedure to defragment etcd data on each etcd member.
         $ oc -n openshift-etcd get pods -l k8s-app=etcd -o wide
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         etcd-ip-10-0-159-225.example.redhat.com                3/3     Running     0          175m   10.0.159.225   ip-10-0-159-225.example.redhat.com   <none>           <none>
@@ -2916,11 +2898,7 @@ Follow this procedure to defragment etcd data on each etcd member.
         $ oc rsh -n openshift-etcd etcd-ip-10-0-159-225.example.redhat.com etcdctl endpoint status --cluster -w table
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         Defaulting container name to etcdctl.
@@ -2956,11 +2934,7 @@ Follow this procedure to defragment etcd data on each etcd member.
         sh-4.4# etcdctl --command-timeout=30s --endpoints=https://localhost:2379 defrag
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         Finished defragmenting etcd member[https://localhost:2379]
@@ -2974,11 +2948,7 @@ Follow this procedure to defragment etcd data on each etcd member.
         sh-4.4# etcdctl endpoint status -w table --cluster
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         +---------------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+
@@ -3004,11 +2974,7 @@ Follow this procedure to defragment etcd data on each etcd member.
         sh-4.4# etcdctl alarm list
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         memberID:12345678912345678912 alarm:NOSPACE
@@ -3022,7 +2988,7 @@ Follow this procedure to defragment etcd data on each etcd member.
 
 ## Restoring to a previous cluster state for more than one node
 
-You can use a saved etcd backup to restore a previous cluster state or restore a cluster that has lost the majority of control plane hosts.
+You can use a saved etcd backup to restore an earlier cluster state or restore a cluster that has lost the majority of control plane hosts.
 
 For high availability (HA) clusters, a three-node HA cluster requires you to shut down etcd on two hosts to avoid a cluster split. On four-node and five-node HA clusters, you must shut down three hosts. Quorum requires a simple majority of nodes. The minimum number of nodes required for quorum on a three-node HA cluster is two. On four-node and five-node HA clusters, the minimum number of nodes required for quorum is three. If you start a new cluster from backup on your recovery host, the other etcd members might still be able to form quorum and continue service.
 
@@ -3342,4 +3308,4 @@ It is recommended to set the `unhealthyPodEvictionPolicy` field to `AlwaysAllow`
 
 - [Enabling features using feature gates](../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)
 
-- [Unhealthy Pod Eviction Policy](https://kubernetes.io/docs/tasks/run-application/configure-pdb/#unhealthy-pod-eviction-policy) in the Kubernetes documentation
+- [Unhealthy Pod Eviction Policy in the Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/configure-pdb/#unhealthy-pod-eviction-policy)

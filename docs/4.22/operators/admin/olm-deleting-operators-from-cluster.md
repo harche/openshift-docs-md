@@ -90,22 +90,10 @@ Cluster administrators can delete installed Operators from a selected namespace 
 
 In Operator Lifecycle Manager (OLM), if you subscribe to an Operator that references images that are not accessible on your network, you can find jobs in the `openshift-marketplace` namespace that are failing with the following errors:
 
-<div class="formalpara-title">
-
-**Example output**
-
-</div>
-
 ``` terminal
 ImagePullBackOff for
 Back-off pulling image "example.com/openshift4/ose-elasticsearch-operator-bundle@sha256:6d2587129c846ec28d384540322b40b05833e7e00b25cca584e004af9a1d292e"
 ```
-
-<div class="formalpara-title">
-
-**Example output**
-
-</div>
 
 ``` terminal
 rpc error: code = Unknown desc = error pinging docker registry example.com: Get "https://example.com/v2/": dial tcp: lookup example.com on 10.0.0.1:53: no such host

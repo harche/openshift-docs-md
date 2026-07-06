@@ -1,4 +1,4 @@
-The following procedures are typically performed after you install OpenShift Virtualization. You can configure the components that are relevant for your environment:
+After you have installed OpenShift Virtualization, there are procedures that you can complete to ensure that your environment is properly set up. You can configure the components that are relevant for your environment.
 
 - As a cluster administrator, you can run a self validation checkup to verify that the environment is fully functional and self-sustained before you deploy production workloads.
 

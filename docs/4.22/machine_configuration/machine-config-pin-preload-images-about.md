@@ -1,8 +1,8 @@
-A slow, unreliable connection to an image registry can interfere with operations that require pulling images, such as updating a cluster or deploying an application. This can include clusters that have low bandwidth, clusters with unreliable internet connectivity, or clusters in a disconnected environment. For example, a cluster update might require pulling more than one hundred images. Failure to pull those images could cause retries that can interfere with the update process and might cause the update to fail.
+You can prevent a slow, unreliable connection to an image registry from interfering with operations that require pulled images by pulling those images in advance and *pinning* those images to a specific machine config pool (MCP) before they are actually needed.
 
-One way to prevent this is to pull the required images in advance, before they are actually needed, and *pinning* those images to a specific machine config pool (MCP). This ensures that the images are available to your nodes when needed. Pinned images can provide a more consistent update, which is important when scheduling updates into maintenance windows.
+This problem can affect clusters that have low bandwidth, clusters with unreliable internet connectivity, or clusters in a disconnected environment. For example, a cluster update might require pulling more than one hundred images. Failure to pull those images could cause retries that can interfere with the update process and might cause the update to fail.
 
-Pinned images also ensures that the images are available when deploying applications, so that you can deploy in a more reliable manner.
+By pinning images, you can ensure that the images are available to your nodes when needed for operations such as updating a cluster or deploying an application. You can provide a more consistent update, which is important when scheduling updates into maintenance windows. When deploying applications, you can pin images to ensure that the images are available, so that you can deploy in a more reliable manner.
 
 You can pin images to specific nodes by using a `PinnedImageSet` custom resource (CR), as described in *Pinning images*. Pinned images are stored on the nodes in the `/etc/crio/crio.conf.d/50-pinned-images` file on those nodes. The contents of the file appear similar to the following example:
 
@@ -18,7 +18,9 @@ Before pulling the images, the Machine Config Operator (MCO) verifies that there
 
 # Pinning images
 
-You can pin images to your nodes by using a `PinnedImageSet` custom resource (CR). The pinned image set defines the list of images to pre-load and the machine config pool to which the images should be pinned.
+You can pin images to your nodes by using a `PinnedImageSet` custom resource (CR) making the images available to your nodes when needed for operations such as updating a cluster or deploying an application.
+
+The pinned image set defines the list of images to pre-load and the machine config pool to which the images should be pinned.
 
 The images are stored in the `/etc/crio/crio.conf.d/50-pinned-images` file on the nodes.
 
@@ -45,10 +47,10 @@ Only images that you can successfully inspect with the `podman manifest inspect 
 
     where:
 
-    `labels`
+    `metadata.labels`
     Specifies an optional node selector to specify the machine config pool to pin the images to. If not specified, the images are pinned to all nodes in the cluster.
 
-    `pinnedImages`
+    `spec.pinnedImages`
     Specifies a list of one or more images to pre-load.
 
 2.  Create the `PinnedImageSet` object by running the following command:
@@ -94,41 +96,44 @@ Only images that you can successfully inspect with the `podman manifest inspect 
       name: worker-pinned-images
   ```
 
-  - The `PinnedImageset` object is associated with the machine config node.
+  where:
 
-    Any failures or error messages would appear in the `MachineConfigNode` object status fields, as shown in the following example:
+  `status.pinnedImageSets`
+  Specifies that the `PinnedImageSet` object you created is associated with the machine config node.
 
-    <div class="formalpara-title">
+  Any failures or error messages would appear in the `MachineConfigNode` object status fields, as shown in the following example:
 
-    **Example output for a failed image pull and pin**
+  <div class="formalpara-title">
 
-    </div>
+  **Example output for a failed image pull and pin**
 
-    ``` terminal
-    apiVersion: machineconfiguration.openshift.io/v1
-    kind: MachineConfigNode
-    metadata:
-      creationTimestamp: "2025-04-28T18:40:29Z"
-      generation: 3
-      name: <machine_config_node_name>
-    # ...
-      - lastTransitionTime: "2025-04-29T19:37:23Z"
-        message: One or more PinnedImageSet is experiencing an error. See PinnedImageSet
-          list for more details.
-        reason: PrefetchFailed
-        status: "True"
-        type: PinnedImageSetsDegraded
-      configVersion:
-        current: rendered-worker-cef1b52c532e19a20add12e369261fba
-        desired: rendered-worker-cef1b52c532e19a20add12e369261fba
-      observedGeneration: 3
-      pinnedImageSets:
-      - desiredGeneration: 1
-        lastFailedGeneration: 1
-        lastFailedGenerationError: 'failed to execute podman manifest inspect for "quay.io/rh-ee/machine-config-operator@sha256:65d3a308767b1773b6e3499dde6ef085753d7e20e685f78841079":
-          exit status 125'
-        name: worker-pinned-images
-    ```
+  </div>
+
+  ``` terminal
+  apiVersion: machineconfiguration.openshift.io/v1
+  kind: MachineConfigNode
+  metadata:
+    creationTimestamp: "2025-04-28T18:40:29Z"
+    generation: 3
+    name: <machine_config_node_name>
+  # ...
+    - lastTransitionTime: "2025-04-29T19:37:23Z"
+      message: One or more PinnedImageSet is experiencing an error. See PinnedImageSet
+        list for more details.
+      reason: PrefetchFailed
+      status: "True"
+      type: PinnedImageSetsDegraded
+    configVersion:
+      current: rendered-worker-cef1b52c532e19a20add12e369261fba
+      desired: rendered-worker-cef1b52c532e19a20add12e369261fba
+    observedGeneration: 3
+    pinnedImageSets:
+    - desiredGeneration: 1
+      lastFailedGeneration: 1
+      lastFailedGenerationError: 'failed to execute podman manifest inspect for "quay.io/rh-ee/machine-config-operator@sha256:65d3a308767b1773b6e3499dde6ef085753d7e20e685f78841079":
+        exit status 125'
+      name: worker-pinned-images
+  ```
 
 - Check that the pinned image file is created and contains the correct images.
 

@@ -57,7 +57,7 @@ OpenShift Virtualization cluster roles
 
 ## RBAC roles for storage features in OpenShift Virtualization
 
-The following permissions are granted to the Containerized Data Importer (CDI), including the `cdi-operator` and `cdi-controller` service accounts.
+Cluster-wide and namespaced RBAC roles enable the Containerized Data Importer (CDI) to manage storage resources, data volumes, and virtual machine disk operations.
 
 ### Cluster-wide RBAC roles
 

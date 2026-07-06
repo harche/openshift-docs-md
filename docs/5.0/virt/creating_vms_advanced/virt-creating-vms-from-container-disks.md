@@ -83,24 +83,25 @@ You can disable TLS (transport layer security) for one or more container registr
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
-2.  Add a list of insecure registries to the `spec.storageImport.insecureRegistries` field.
+2.  Add a list of insecure registries to the `spec.storage.storageImport.insecureRegistries` field.
 
     Example `HyperConverged` custom resource:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
       namespace: openshift-cnv
     spec:
-      storageImport:
-        insecureRegistries:
-          - "private-registry-example-1:5000"
-          - "private-registry-example-2:5000"
+      storage:
+        storageImport:
+          insecureRegistries:
+            - "private-registry-example-1:5000"
+            - "private-registry-example-2:5000"
     ```
 
     Replace the examples in the `insecureRegistries` list with valid registry hostnames.

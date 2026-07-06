@@ -18,7 +18,7 @@ AWS Local Zones is an infrastructure that place Cloud Resources close to metropo
 
 - You downloaded the AWS CLI and installed it on your computer. See [Install the AWS CLI Using the Bundled Installer (Linux, macOS, or UNIX)](https://docs.aws.amazon.com/cli/latest/userguide/install-bundle.html) in the AWS documentation.
 
-- If you use a firewall, you [configured it to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall) that your cluster must access.
+- If you use a firewall, you [configured it to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster must access.
 
 - You noted the region and supported [AWS Local Zones locations](https://aws.amazon.com/about-aws/global-infrastructure/localzones/locations) to create the network resources in.
 
@@ -1434,6 +1434,10 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
     ``` terminal
     system:admin
     ```
+
+- "Customize your cluster"
+
+- "Remote health reporting"
 
 ## Logging in to the cluster by using the web console
 

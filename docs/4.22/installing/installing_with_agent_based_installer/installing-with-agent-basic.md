@@ -20,7 +20,7 @@ Before beginning your cluster installation, you must complete prerequisite tasks
 
 - [Selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing)
 
-- [Configuring your firewall](../../installing/install_config/configuring-firewall.xml#configuring-firewall)
+- [Configuring your firewall](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
 
 # Downloading the Agent-based Installer
 

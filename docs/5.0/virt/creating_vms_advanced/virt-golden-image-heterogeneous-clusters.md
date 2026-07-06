@@ -49,8 +49,9 @@ For more information about the support scope of Red Hat Technology Preview featu
 - Enable the `enableMultiArchBootImageImport` feature gate by running the following command:
 
   ``` terminal
-  $ oc patch hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv \
-    --type json -p '[{"op":"replace","path":"/spec/featureGates/enableMultiArchBootImageImport", "value": true}]'
+  $ oc patch hco kubevirt-hyperconverged -n openshift-cnv \
+    --type json -p '[{"op": "add", "path": "/spec/featureGates/-", \
+    "value": {"name": "enableMultiArchBootImageImport"}}]'
   ```
 
 # Modifying a common golden image source in a heterogeneous cluster
@@ -70,7 +71,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
 2.  Edit the `HyperConverged` CR, adding the appropriate values for `ssp.kubevirt.io/dict.architectures` annotation in the `dataImportCronTemplates` section. For example:
@@ -78,19 +79,20 @@ For more information about the support scope of Red Hat Technology Preview featu
     ``` yaml
     #...
     spec:
-      dataImportCronTemplates:
-      - metadata:
-          name: kubevirt-hyperconverged
-          annotations:
-            ssp.kubevirt.io/dict.architectures: "<architecture_list>"
-        spec:
-          schedule: "0 */12 * * *"
-          template:
-            spec:
-              source:
-                registry:
-                    url: docker://my-private-registry/my-own-version-of-centos:8
-          managedDataSource: centos-stream8
+      workloadSources:
+        dataImportCronTemplates:
+        - metadata:
+            name: kubevirt-hyperconverged
+            annotations:
+              ssp.kubevirt.io/dict.architectures: "<architecture_list>"
+          spec:
+            schedule: "0 */12 * * *"
+            template:
+              spec:
+                source:
+                  registry:
+                      url: docker://my-private-registry/my-own-version-of-centos:8
+            managedDataSource: centos-stream8
     #...
     ```
 
@@ -111,38 +113,39 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 </div>
 
-Add a custom golden image in a heterogeneous cluster by setting the `ssp.kubevirt.io/dict.architectures` annotation in the `spec.dataImportCronTemplates.metadata.annotations` stanza of the `HyperConverged` custom resource (CR). This annotation lists the architectures supported by the image.
+Add a custom golden image in a heterogeneous cluster by setting the `ssp.kubevirt.io/dict.architectures` annotation in the `spec.workloadSources.dataImportCronTemplates.metadata.annotations` stanza of the `HyperConverged` custom resource (CR). This annotation lists the architectures supported by the image.
 
 - You have installed the OpenShift CLI (`oc`).
 
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
 2.  Edit the `HyperConverged` CR, to add the custom golden image. You must add the appropriate values for `ssp.kubevirt.io/dict.architectures` annotation in the `dataImportCronTemplates` section. For example:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
     spec:
-      dataImportCronTemplates:
-      - metadata:
-          name: custom-image1
-          annotations:
-            ssp.kubevirt.io/dict.architectures: "<architecture_list>"
-        spec:
-          schedule: "0 */12 * * *"
-          template:
-            spec:
-              source:
-                registry:
-                  url: docker://myprivateregistry/custom1
-          managedDataSource: custom1
-          retentionPolicy: "All"
+      workloadSources:
+        dataImportCronTemplates:
+        - metadata:
+            name: custom-image1
+            annotations:
+              ssp.kubevirt.io/dict.architectures: "<architecture_list>"
+          spec:
+            schedule: "0 */12 * * *"
+            template:
+              spec:
+                source:
+                  registry:
+                    url: docker://myprivateregistry/custom1
+            managedDataSource: custom1
+            retentionPolicy: "All"
     #...
     ```
 
@@ -176,29 +179,30 @@ If you have a heterogeneous cluster but do not want to enable multiple architect
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
 2.  Edit the `HyperConverged` CR, to modify the workloads node placement to include only nodes with a specific architecture. For example:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
     spec:
     #...
-      workloads:
-        nodePlacement:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                  - matchExpressions:
-                      - key: kubernetes.io/arch
-                        operator: In
-                        values:
-                          - <node_architecture>
+      deployment:
+        nodePlacements:
+          workload:
+            affinity:
+              nodeAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  nodeSelectorTerms:
+                    - matchExpressions:
+                        - key: kubernetes.io/arch
+                          operator: In
+                          values:
+                            - <node_architecture>
     ```
 
     where:

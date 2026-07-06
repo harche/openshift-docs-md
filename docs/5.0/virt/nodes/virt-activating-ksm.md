@@ -19,7 +19,7 @@ You can configure OpenShift Virtualization to activate kernel samepage merging (
 You can enable or disable the KSM activation feature for all nodes by using the OpenShift Container Platform web console or by editing the `HyperConverged` custom resource (CR). The `HyperConverged` CR supports more granular configuration.
 
 CR configuration
-You can configure the KSM activation feature by editing the `spec.configuration.ksmConfiguration` stanza of the `HyperConverged` CR.
+You can configure the KSM activation feature by editing the `spec.virtualization.ksmConfiguration` stanza of the `HyperConverged` CR.
 
 - You enable the feature and configure settings by editing the `ksmConfiguration` stanza.
 
@@ -66,7 +66,7 @@ You can enable or disable OpenShift Virtualization’s kernel samepage merging (
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
 2.  Edit the `ksmConfiguration` stanza:
@@ -74,13 +74,13 @@ You can enable or disable OpenShift Virtualization’s kernel samepage merging (
     - To enable the KSM activation feature for all nodes, set the `nodeLabelSelector` value to `{}`. For example:
 
       ``` yaml
-      apiVersion: hco.kubevirt.io/v1beta1
+      apiVersion: hco.kubevirt.io/v1
       kind: HyperConverged
       metadata:
         name: kubevirt-hyperconverged
         namespace: openshift-cnv
       spec:
-        configuration:
+        virtualization:
           ksmConfiguration:
             nodeLabelSelector: {}
       # ...
@@ -89,13 +89,13 @@ You can enable or disable OpenShift Virtualization’s kernel samepage merging (
     - To enable the KSM activation feature on a subset of nodes, edit the `nodeLabelSelector` field. Add syntax that matches the nodes where you want OpenShift Virtualization to enable KSM. For example, the following configuration allows OpenShift Virtualization to enable KSM on nodes where both `<first_example_key>` and `<second_example_key>` are set to `"true"`:
 
       ``` yaml
-      apiVersion: hco.kubevirt.io/v1beta1
+      apiVersion: hco.kubevirt.io/v1
       kind: HyperConverged
       metadata:
         name: kubevirt-hyperconverged
         namespace: openshift-cnv
       spec:
-        configuration:
+        virtualization:
           ksmConfiguration:
             nodeLabelSelector:
               matchLabels:
@@ -107,13 +107,13 @@ You can enable or disable OpenShift Virtualization’s kernel samepage merging (
     - To disable the KSM activation feature, delete the `ksmConfiguration` stanza. For example:
 
       ``` yaml
-      apiVersion: hco.kubevirt.io/v1beta1
+      apiVersion: hco.kubevirt.io/v1
       kind: HyperConverged
       metadata:
         name: kubevirt-hyperconverged
         namespace: openshift-cnv
       spec:
-        configuration:
+        virtualization: {}
       # ...
       ```
 

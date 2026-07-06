@@ -758,7 +758,7 @@ It is not recommended to add the devices to the VG through dynamic device discov
 
 - [Configuring a RAID-enabled data volume](../../installing/install_config/installing-customizing.xml#installation-special-config-raid_installing-customizing)
 
-- [About disk encryption](../../installing/install_config/installing-customizing.xml#installation-special-config-encrypt-disk_installing-customizing)
+- [About disk encryption](../../installing/install_config/installing-customizing.xml#installation-special-config-storage_installing-customizing)
 
 - [Configuring disk encryption and mirroring](../../installing/install_config/installing-customizing.xml#installation-special-config-storage-procedure_installing-customizing)
 

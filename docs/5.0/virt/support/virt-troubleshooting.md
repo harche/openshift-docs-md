@@ -31,24 +31,25 @@ To gather more detailed diagnostic information for troubleshooting, you can conf
 1.  To set log verbosity for specific components, open the `HyperConverged` CR in your default text editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
-2.  Set the log level for one or more components by editing the `spec.logVerbosityConfig` stanza. For example:
+2.  Set the log level for one or more components by editing the `spec.deployment.logVerbosityConfig` stanza. For example:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
     spec:
-      logVerbosityConfig:
-        kubevirt:
-          virtAPI: 5
-          virtController: 4
-          virtHandler: 3
-          virtLauncher: 2
-          virtOperator: 6
+      deployment:
+        logVerbosityConfig:
+          kubevirt:
+            virtAPI: 5
+            virtController: 4
+            virtHandler: 3
+            virtLauncher: 2
+            virtOperator: 6
     ```
 
     The log verbosity value must be an integer in the range `1–9`, where a higher number indicates a more detailed log. In this example, the `virtAPI` component logs are exposed if their priority level is `5` or higher.
@@ -155,18 +156,20 @@ To troubleshoot issues more easily, you can enable default access to virtual mac
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
 2.  Update the `disableSerialConsoleLog` value. For example:
 
     ``` yaml
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
     spec:
-      virtualMachineOptions:
-        disableSerialConsoleLog: true
+      virtualization:
+        virtualMachineOptions:
+          disableSerialConsoleLog: true
     #...
     ```
 

@@ -132,11 +132,11 @@ Clusters using a restricted network must import the default must-gather image to
     $ oc import-image is/must-gather -n openshift
     ```
 
-When running the `oc adm must-gather` command, use the `--image` flag and point to the payload image, as in the following example:
+    When running the `oc adm must-gather` command, use the `--image` flag and point to the payload image, as in the following example:
 
-``` terminal
-$ oc adm must-gather --image=$(oc adm release info --image-for must-gather)
-```
+    ``` terminal
+    $ oc adm must-gather --image=$(oc adm release info --image-for must-gather)
+    ```
 
 # Configuring periodic importing of Cluster Sample Operator image stream tags
 

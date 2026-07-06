@@ -1,4 +1,4 @@
-PXE booting, or network booting, is available in OpenShift Virtualization. Network booting allows a computer to boot and load an operating system or other program without requiring a locally attached storage device. For example, you can use it to choose your desired OS image from a PXE server when deploying a new host.
+PXE booting, or network booting, allows a computer to boot and load an operating system or other program without requiring a locally attached storage device. For example, you can use it to choose your desired OS image from a PXE server when deploying a new host.
 
 # PXE booting with a specified MAC address
 
@@ -152,7 +152,7 @@ You can also specify a MAC address in the virtual machine instance configuration
 
 # OpenShift Virtualization networking glossary
 
-The following terms are used throughout OpenShift Virtualization documentation.
+Definitions of key OpenShift Virtualization networking terms and technologies.
 
 Container Network Interface (CNI)
 A [Cloud Native Computing Foundation](https://www.cncf.io/) project, focused on container network connectivity. OpenShift Virtualization uses CNI plugins to build upon the basic Kubernetes networking functionality.

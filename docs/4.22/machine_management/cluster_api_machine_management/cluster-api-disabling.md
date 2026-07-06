@@ -8,9 +8,9 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 </div>
 
-# Migrating Cluster API resources to Machine API resources
+# Cluster API resources migration to Machine API resources
 
-On clusters that support migrating between Machine API and Cluster API resources, the two-way synchronization controller supports converting a Cluster API resource to a Machine API resource.
+On clusters that support migrating between the Cluster API and Machine API resources, the two-way synchronization controller supports converting a Cluster API resource to a Machine API resource.
 
 <div class="note">
 
@@ -151,7 +151,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 ## Authoritative API types of compute machines
 
-The authoritative API of a compute machine depends on the values of the `.spec.authoritativeAPI` and `.spec.template.spec.authoritativeAPI` fields in the Machine API compute machine set that creates it.
+The values of the `.spec.authoritativeAPI` and `.spec.template.spec.authoritativeAPI` fields in a Machine API compute machine set determine the authoritative API of the compute machines.
 
 |                                                       |              |              |              |              |
 |-------------------------------------------------------|--------------|--------------|--------------|--------------|
@@ -169,4 +169,4 @@ When the `.spec.authoritativeAPI` value is `ClusterAPI`, the Machine API machine
 
 - [Troubleshooting resource migration](../../machine_management/cluster_api_machine_management/cluster-api-troubleshooting.xml#ts-capi-resource-migration_cluster-api-troubleshooting)
 
-- [Migrating Machine API resources to Cluster API resources](../../machine_management/cluster_api_machine_management/cluster-api-getting-started.xml#mapi-to-capi-migration-overview_cluster-api-getting-started)
+- [Machine API to Cluster API resource migration](../../machine_management/cluster_api_machine_management/cluster-api-getting-started.xml#mapi-to-capi-migration-overview_cluster-api-getting-started)

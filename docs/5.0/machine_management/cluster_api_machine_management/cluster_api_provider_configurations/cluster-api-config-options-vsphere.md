@@ -41,37 +41,50 @@ spec:
           networkName: "<vm_network_name>"
 ```
 
-- Specify the machine template kind. This value must match the value for your platform.
+where:
 
-- Specify a name for the machine template.
+`kind`
+Specifies the machine template kind. This value must match the value for your platform.
 
-- Specify the details for your environment. The values here are examples.
+`metadata.name`
+Specifies a name for the machine template.
 
-- Specify the vSphere VM template to use, such as `user-5ddjd-rhcos`.
+`spec.template.spec`
+Specifies the details for your environment. The values here are examples.
 
-- Specify the vCenter server IP or fully qualified domain name.
+`spec.template.spec.template`
+Specifies the vSphere VM template to use, such as `user-5ddjd-rhcos`.
 
-- Specify the type of VM clone to use. The following values are valid:
+`spec.template.spec.server`
+Specifies the vCenter server IP or fully qualified domain name.
 
-  - `fullClone`
+`spec.template.spec.cloneMode`
+Specifies the type of VM clone to use. The following values are valid:
 
-  - `linkedClone`
+- `fullClone`
 
-  When using the `linkedClone` type, the disk size matches the clone source instead of using the `diskGiB` value. For more information, see the vSphere documentation about VM clone types.
+- `linkedClone`
 
-- Specify the vCenter data center to deploy the compute machine set on.
+When using the `linkedClone` type, the disk size matches the clone source instead of using the `diskGiB` value. For more information, see the vSphere documentation about VM clone types.
 
-- Specify the vCenter datastore to deploy the compute machine set on.
+`spec.template.spec.datacenter`
+Specifies the vCenter data center to deploy the compute machine set on.
 
-- Specify the path to the vSphere VM folder in vCenter, such as `/dc1/vm/user-inst-5ddjd`.
+`spec.template.spec.datastore`
+Specifies the vCenter datastore to deploy the compute machine set on.
 
-- Specify the vSphere resource pool for your VMs.
+`spec.template.spec.folder`
+Specifies the path to the vSphere VM folder in vCenter, such as `/dc1/vm/user-inst-5ddjd`.
 
-- Specify the vSphere VM network to deploy the compute machine set to. This VM network must be where other compute machines reside in the cluster.
+`spec.template.spec.resourcePool`
+Specifies the vSphere resource pool for your VMs.
+
+`spec.template.spec.network.devices.networkName`
+Specifies the vSphere VM network to deploy the compute machine set to. This VM network must be where other compute machines reside in the cluster.
 
 ## Sample YAML for a Cluster API compute machine set resource on VMware vSphere
 
-The compute machine set resource defines additional properties of the machines that it creates. The compute machine set also references the cluster resource and machine template when creating machines.
+The compute machine set resource defines additional properties of the machines that the resource creates. The compute machine set also references the cluster resource and machine template when creating machines.
 
 ``` yaml
 apiVersion: cluster.x-k8s.io/v1beta1
@@ -118,18 +131,28 @@ spec:
             - port-group
 ```
 
-- Specify a name for the compute machine set. The cluster ID, machine role, and region form a typical pattern for this value in the following format: `<cluster_name>-<role>-<region>`.
+where:
 
-- Specify the cluster ID as the name of the cluster.
+`metadata.name`
+Specifies a name for the compute machine set. The cluster ID, machine role, and region form a typical pattern for this value in the following format: `<cluster_name>-<role>-<region>`.
 
-- Specify the machine template kind. This value must match the value for your platform.
+`metadata.labels.cluster.x-k8s.io/cluster-name`
+Specifies the cluster ID as the name of the cluster.
 
-- Specify the machine template name.
+`spec.clusterName`
+Specifies the cluster ID as the name of the cluster.
 
-- Specify the failure domain configuration details.
+`spec.template.spec.infrastructureRef.kind`
+Specifies the machine template kind. This value must match the value for your platform.
 
-  <div class="note">
+`spec.template.spec.infrastructureRef.name`
+Specifies the machine template name.
 
-  Using multiple regions and zones on a vSphere cluster that uses the Cluster API is not a validated configuration.
+`spec.template.spec.failureDomain`
+Specifies the failure domain configuration details.
 
-  </div>
+<div class="note">
+
+Using multiple regions and zones on a vSphere cluster that uses the Cluster API is not a validated configuration.
+
+</div>

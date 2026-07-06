@@ -130,7 +130,7 @@ Kubernetes also supports authentication using client certificates, instead of a 
 1.  Set the `deployVmConsoleProxy` field value in the `HyperConverged` (`HCO`) custom resource (CR) to `true`:
 
     ``` terminal
-    $ oc patch hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv --type json -p '[{"op": "replace", "path": "/spec/deployVmConsoleProxy", "value": true}]'
+    $ oc patch hco kubevirt-hyperconverged -n openshift-cnv --type json -p '[{"op": "replace", "path": "/spec/deployment/deployVmConsoleProxy", "value": true}]'
     ```
 
 2.  Generate a token by entering the following command:

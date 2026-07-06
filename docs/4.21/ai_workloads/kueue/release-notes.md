@@ -30,6 +30,25 @@ Currently, Red Hat build of Kueue is not supported on Red Hat build of MicroSh
 
 </div>
 
+/ Module included in the following assemblies:
+
+# Release notes for Red Hat build of Kueue version 1.4
+
+Red Hat build of Kueue version 1.4 is a generally available release that is supported on OpenShift Container Platform versions 4.18 and later. Red Hat build of Kueue version 1.4 uses [Kueue](https://kueue.sigs.k8s.io/docs/overview/) version 0.18.
+
+## New features and enhancements
+
+Admission fair sharing
+This release introduces admission fair sharing, which balances workload admission across multiple local Queues feeding into a shared `ClusterQueue`. Admission fair sharing:
+
+- Prioritizes workloads based on historical resource consumption
+
+- Tracks usage over time with a configurable decay function
+
+- Applies immediate admission penalties to prevent resource monopolization
+
+For more information, see [Admission fair sharing](../../ai_workloads/kueue/admission-fair-sharing.xml#admission-fair-sharing).
+
 # Release notes for Red Hat build of Kueue version 1.3.1
 
 Red Hat build of Kueue version 1.3.1 is a generally available release that is supported on OpenShift Container Platform versions 4.18 and later. Red Hat build of Kueue version 1.3 uses [Kueue](https://kueue.sigs.k8s.io/docs/overview/) version 0.16.5.

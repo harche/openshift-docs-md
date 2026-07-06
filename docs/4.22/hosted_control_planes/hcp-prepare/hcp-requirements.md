@@ -157,13 +157,15 @@ For example, if you have an OpenShift Container Platform 4.18 hosted cluster on 
 
 For a list of features in this release that have a Technology Preview status, see the "Technology Preview features status" section of the *Hosted control planes release notes*.
 
+# Additional resources
+
 - [OpenShift Operator Life Cycles](https://access.redhat.com/support/policy/updates/openshift_operators)
 
 - [Shared infrastructure between hosted and standalone control planes](../../hosted_control_planes/hcp-prepare/hcp-sizing-guidance.xml#hcp-shared-infra_hcp-sizing-guidance)
 
 - [Technology Preview features status](../../hosted_control_planes/hcp-release-notes.xml#hcp-release-notes-technology-preview-tables_hcp-release-notes)
 
-- [Removing a cluster from management](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#remove-managed-cluster)
+- [Removing a cluster from management](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/latest/html/clusters/cluster_mce_overview#remove-managed-cluster)
 
 - [The multicluster engine for Kubernetes operator 2.17 Support Matrix](https://access.redhat.com/articles/7142379)
 

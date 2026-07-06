@@ -31,19 +31,28 @@ spec:
           name: <openstack_image>
 ```
 
-- Specify the machine template kind. This value must match the value for your platform.
+where:
 
-- Specify a name for the machine template.
+`kind`
+Specifies the machine template kind. This value must match the value for your platform.
 
-- Specify the details for your environment. The values here are examples.
+`metadata.name`
+Specifies a name for the machine template.
 
-- Specify the RHOSP flavor to use. For more information, see [Creating flavors for launching instances](https://docs.redhat.com/en/documentation/red_hat_openstack_platform/17.1/html/configuring_the_compute_service_for_instance_creation/assembly_creating-flavors-for-launching-instances_instance-flavors).
+`spec.template.spec`
+Specifies the details for your environment. The values here are examples.
 
-- Specify the image to use.
+`spec.template.spec.flavor`
+Specifies the RHOSP flavor to use. For more information, see "Creating flavors for launching instances".
+
+`spec.template.spec.image.filter.name`
+Specifies the image to use.
+
+- [Creating flavors for launching instances](https://docs.redhat.com/en/documentation/red_hat_openstack_platform/17.1/html/configuring_the_compute_service_for_instance_creation/assembly_creating-flavors-for-launching-instances_instance-flavors)
 
 ## Sample YAML for a Cluster API compute machine set resource on RHOSP
 
-The compute machine set resource defines additional properties of the machines that it creates. The compute machine set also references the infrastructure resource and machine template when creating machines.
+The compute machine set resource defines additional properties of the machines that the resource creates. The compute machine set also references the infrastructure resource and machine template when creating machines.
 
 ``` yaml
 apiVersion: cluster.x-k8s.io/v1beta1
@@ -77,14 +86,22 @@ spec:
       failureDomain: <nova_availability_zone>
 ```
 
-- Specify a name for the compute machine set.
+where:
 
-- Specify the cluster ID as the name of the cluster.
+`metadata.name`
+Specifies a name for the compute machine set.
 
-- For the Cluster API Technology Preview, the Operator can use the worker user data secret from the `openshift-machine-api` namespace.
+`spec.clusterName`
+Specifies the cluster ID as the name of the cluster.
 
-- Specify the machine template kind. This value must match the value for your platform.
+`spec.template.spec.bootstrap.dataSecretName`
+For the Cluster API Technology Preview, the Operator can use the worker user data secret from the `openshift-machine-api` namespace.
 
-- Specify the machine template name.
+`spec.template.spec.infrastructureRef.kind`
+Specifies the machine template kind. This value must match the value for your platform.
 
-- Optional: Specify the name of the Nova availability zone for the machine set to create machines in. If you do not specify a value, machines are not restricted to a specific availability zone.
+`spec.template.spec.infrastructureRef.name`
+Specifies the machine template name.
+
+`spec.template.spec.failureDomain`
+Optional parameter. Specifies the name of the Nova availability zone for the machine set to create machines in. If you do not specify a value, machines are not restricted to a specific availability zone.

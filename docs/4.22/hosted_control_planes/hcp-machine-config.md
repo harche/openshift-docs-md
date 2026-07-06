@@ -545,7 +545,7 @@ You can configure the Network Time Protocol (NTP) server for your hosted cluster
 
 - [Creating machine configs with Butane](../installing/install_config/installing-customizing.xml#installation-special-config-butane_installing-customizing)
 
-- [Creating a host inventory](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.14/html-single/clusters/index#create-host-inventory-cli-steps)
+- [Creating a host inventory by using the command line interface](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/latest/html-single/clusters/index#create-host-inventory-cli)
 
 # Scaling up and down workloads in a hosted cluster
 

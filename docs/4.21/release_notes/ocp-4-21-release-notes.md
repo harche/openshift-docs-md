@@ -940,6 +940,32 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHSA-2026:29834 - OpenShift Container Platform 4.17.22 fixed issues advisory
+
+Issued: 30 June 2026
+
+OpenShift Container Platform release 4.17.22 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:29834](https://access.redhat.com/errata/RHSA-2026:29834) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:29832](https://access.redhat.com/errata/RHBA-2026:29832) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.22 --pullspecs
+```
+
+### Known issues
+
+- Currently, when you apply the `openshift-node-performance` `PerformanceProfile` with the RHEL non-Real Time kernel, timer migration is not enabled for the `kernel.timer_migration` setting. As a consequence, kernel timers such as the TCP timeout and keep-alive timers can remain stuck on CPUs assigned to latency-sensitive workloads, causing unwanted interruptions to those workloads. As a workaround, enable timer migration by using a TuneD profile to set the `kernel.timer_migration=1` `sysctl` parameter. For more information about configuring TuneD, see [Performance addons operator advanced configuration](https://access.redhat.com/solutions/5532341). ([OCPBUGS-88467](https://issues.redhat.com/browse/OCPBUGS-88467))
+
+### Fixed issues
+
+- Before this update, the `CertificateRevocationController` verified certificate revocation through the Key Attestation Service (KAS) load balancer, which routed each check to one pod. In high-availability (HA) deployments with three KAS replicas, a check could reach a pod that had loaded the updated trust bundle while other pods had not, causing premature state transitions in the revocation flow. As a consequence, the revocation flow could complete before all KAS pods were consistent. With this release, the controller verifies revocation status against each KAS pod directly at its IP address rather than through the load balancer. As a result, certificate revocation completes reliably in HA deployments because the controller confirms that all KAS pods have propagated the change. ([OCPBUGS-86040](https://issues.redhat.com/browse/OCPBUGS-86040))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHSA-2026:25187 - OpenShift Container Platform 4.17.20 fixed issues advisory
 
 Issued: 16 June 2026

@@ -16,7 +16,7 @@ In this topology, you must update your hosted clusters by using the command-line
 
 - [Updating a control plane in a hosted cluster](../hosted_control_planes/hcp-updating.xml#hcp-update-ocp-hc_hcp-updating)
 
-- [Discovering multicluster engine for Kubernetes Operator hosted clusters in Red Hat Advanced Cluster Management](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.11/html/clusters/cluster_mce_overview#discover-hosted-acm)
+- [Discovering multicluster engine for Kubernetes Operator hosted clusters in Red Hat Advanced Cluster Management](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/latest/html/multicluster_engine_operator_with_red_hat_advanced_cluster_management/hosted-acm#discover-hosted-acm)
 
 # Manually importing hosted clusters
 

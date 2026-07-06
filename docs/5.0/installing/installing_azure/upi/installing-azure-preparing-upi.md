@@ -4,7 +4,7 @@ To prepare for installation of an OpenShift Container Platform cluster on Azure,
 
 - You [configured an Azure account](../../../installing/installing_azure/installing-azure-account.xml#installing-azure-account) to host the cluster and determined the tested and validated region to deploy the cluster to.
 
-- If you use a firewall, you have [configured it to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall) that your cluster requires access to.
+- If you use a firewall, you have [configured it to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
 
 # Internet access for OpenShift Container Platform
 
