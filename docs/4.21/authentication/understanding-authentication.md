@@ -1,10 +1,10 @@
-For users to interact with OpenShift Container Platform, they must first authenticate to the cluster. The authentication layer identifies the user associated with requests to the OpenShift Container Platform API. The authorization layer then uses information about the requesting user to determine if the request is allowed.
+You can interact with OpenShift Container Platform, by first authenticating to the cluster. The authentication layer identifies the user associated with requests to the OpenShift Container Platform API. The authorization layer then uses information about the requesting user to determine if the request is allowed.
 
 As an administrator, you can configure authentication for OpenShift Container Platform.
 
 # Users
 
-A *user* in OpenShift Container Platform is an entity that can make requests to the OpenShift Container Platform API. An OpenShift Container Platform `User` object represents an actor which can be granted permissions in the system by adding roles to them or to their groups. Typically, this represents the account of a developer or administrator that is interacting with OpenShift Container Platform.
+A user in OpenShift Container Platform is an entity that makes API requests and can be granted permissions through role assignments. Users include regular users, system users for infrastructure components, and service accounts associated with projects.
 
 Several types of users can exist:
 
@@ -18,7 +18,7 @@ Each user must authenticate in some way to access OpenShift Container Platform. 
 
 # Groups
 
-A user can be assigned to one or more *groups*, each of which represent a certain set of users. Groups are useful when managing authorization policies to grant permissions to multiple users at once, for example allowing access to objects within a project, versus granting them to users individually.
+Groups represent sets of users and simplify authorization management by allowing administrators to grant permissions to multiple users simultaneously rather than individually. OpenShift Container Platform includes both explicitly defined groups and automatically provisioned virtual groups.
 
 In addition to explicitly defined groups, there are also system groups, or *virtual groups*, that are automatically provisioned by the cluster.
 
@@ -32,7 +32,7 @@ The following default virtual groups are most important:
 
 # API authentication
 
-Requests to the OpenShift Container Platform API are authenticated using the following methods:
+Requests to the OpenShift Container Platform API are authenticated using OAuth access tokens or X.509 client certificates, with invalid credentials rejected and anonymous requests assigned virtual user and group identities for authorization processing.
 
 OAuth access tokens
 - Obtained from the OpenShift Container Platform OAuth server using the `<namespace_route>/oauth/authorize` and `<namespace_route>/oauth/token` endpoints.
@@ -54,15 +54,17 @@ If no access token or certificate is presented, the authentication layer assigns
 
 ## OpenShift Container Platform OAuth server
 
-The OpenShift Container Platform Control Plane includes a built-in OAuth server that issues access tokens for API authentication using configured identity providers.
+The OpenShift Container Platform Control Plane includes a built-in OAuth server. Users obtain OAuth access tokens to authenticate themselves to the API.
 
 When a person requests a new OAuth token, the OAuth server uses the configured identity provider to determine the identity of the person making the request.
 
 It then determines what user that identity maps to, creates an access token for that user, and returns the token for use.
 
-### OAuth token requests
+## OAuth token requests
 
-Every request for an OAuth token must specify the OAuth client that will receive and use the token. The following OAuth clients are automatically created when starting the OpenShift Container Platform API:
+OpenShift Container Platform automatically creates OAuth clients to handle token requests from different user agents, including browser-based and CLI tools. These clients interact with OAuth endpoints to authenticate users through interactive login flows or WWW-Authenticate challenges.
+
+The following OAuth clients are automatically created when starting the OpenShift Container Platform API:
 
 | OAuth client                   | Usage                                                                                                                             |
 |--------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
@@ -93,7 +95,9 @@ You can configure a request to the OpenShift Container Platform API to act as th
 
 ### Authentication metrics for Prometheus
 
-OpenShift Container Platform captures the following Prometheus system metrics during authentication attempts:
+You can use Prometheus metrics to monitor login activity and troubleshoot authentication failures.
+
+OpenShift Container Platform captures the following Prometheus metrics that track authentication attempts and outcomes for both the CLI and web console:
 
 - `openshift_auth_basic_password_count` counts the number of `oc login` user name and password attempts.
 

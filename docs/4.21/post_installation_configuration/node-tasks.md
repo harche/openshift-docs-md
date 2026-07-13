@@ -3804,25 +3804,34 @@ The individual items of the list:
 
 where:
 
-- `machineConfigLabels`: Optional.
+`machineConfigLabels`
+Optional.
 
-- `<mcLabels>`: A dictionary of key/value `MachineConfig` labels. The keys must be unique.
+`<mcLabels>`
+A dictionary of key/value `MachineConfig` labels. The keys must be unique.
 
-- `match`: If omitted, profile match is assumed unless a profile with a higher priority matches first or `machineConfigLabels` is set.
+`match`
+If omitted, profile match is assumed unless a profile with a higher priority matches first or `machineConfigLabels` is set.
 
-- `<match>`: An optional list.
+`<match>`
+An optional list.
 
-- `<priority>`: Profile ordering priority. Lower numbers mean higher priority (`0` is the highest priority).
+`<priority>`
+Profile ordering priority. Lower numbers mean higher priority (`0` is the highest priority).
 
-- `<tuned_profile_name>`: A TuneD profile to apply on a match. For example `tuned_profile_1`.
+`<tuned_profile_name>`
+A TuneD profile to apply on a match. For example `tuned_profile_1`.
 
-- `operand`: Optional operand configuration.
+`operand`
+Optional operand configuration.
 
-- `debug`: Turn debugging on or off for the TuneD daemon. Options are `true` for on or `false` for off. The default is `false`.
+`debug`
+Turn debugging on or off for the TuneD daemon. Options are `true` for on or `false` for off. The default is `false`.
 
-- `reapply_sysctl`: Turn `reapply_sysctl` functionality on or off for the TuneD daemon. Options are `true` for on and `false` for off.
+`reapply_sysctl`
+Turn `reapply_sysctl` functionality on or off for the TuneD daemon. Options are `true` for on and `false` for off.
 
-`<match>` is an optional list recursively defined as follows:
+The `<match>` parameter is an optional list recursively defined as follows:
 
 ``` yaml
 - label: <label_name>
@@ -3833,13 +3842,17 @@ where:
 
 where:
 
-- `<label_name>`: Node or pod label name.
+`<label_name>`
+Node or pod label name.
 
-- `<label_value>`: Optional node or pod label value. If omitted, the presence of `<label_name>` is enough to match.
+`<label_value>`
+Optional node or pod label value. If omitted, the presence of `<label_name>` is enough to match.
 
-- `<label_type>`: Optional object type (`node` or `pod`). If omitted, `node` is assumed.
+`<label_type>`
+Optional object type (`node` or `pod`). If omitted, `node` is assumed.
 
-- `<match>`: An optional `<match>` list.
+`<match>`
+An optional `<match>` list.
 
 If `<match>` is not omitted, all nested `<match>` sections must also evaluate to `true`. Otherwise, `false` is assumed and the profile with the respective `<match>` section will not be applied or recommended. Therefore, the nesting (child `<match>` sections) works as logical AND operator. Conversely, if any item of the `<match>` list matches, the entire `<match>` list evaluates to `true`. Therefore, the list acts as logical OR operator.
 

@@ -202,9 +202,8 @@ If you disable the `ImageRegistry` capability or if you disable the integrated O
 
 If you disable the `ImageRegistry` capability, you can reduce the overall resource footprint of OpenShift Container Platform in Telco environments. Depending on your deployment, you can disable this component if you do not need it.
 
-### Project
-
-[cluster-image-registry-operator](https://github.com/openshift/cluster-image-registry-operator)
+Project
+See "cluster-image-registry-operator".
 
 - [Image Registry Operator in OpenShift Container Platform](../../registry/configuring-registry-operator.xml#configuring-registry-operator)
 
@@ -224,11 +223,8 @@ If the cluster storage capability is disabled, the cluster will not have a defau
 
 </div>
 
-### Notes
-
-- The storage class that the Operator creates can be made non-default by editing its annotation, but this storage class cannot be deleted as long as the Operator runs.
-
-<!-- -->
+Notes
+The storage class that the Operator creates can be made non-default by editing its annotation, but this storage class cannot be deleted as long as the Operator runs.
 
 - [cluster-storage-operator](https://github.com/openshift/cluster-storage-operator)
 

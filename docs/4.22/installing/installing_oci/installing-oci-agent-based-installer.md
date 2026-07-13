@@ -337,7 +337,7 @@ You can also use the Agent-based Installer to generate or accept Zero Touch Prov
 
 # Configuring your firewall for OpenShift Container Platform
 
-Before you install OpenShift Container Platform, you must configure your firewall to grant access to the sites that OpenShift Container Platform requires. When using a firewall, make additional configurations to the firewall so that OpenShift Container Platform can access the sites that it requires to function.
+Before you install OpenShift Container Platform, you must configure your firewall to grant access to the sites that OpenShift Container Platform requires.
 
 For a disconnected environment, you must mirror content from both Red Hat and Oracle. This environment requires that you create firewall rules to expose your firewall to specific ports and registries.
 

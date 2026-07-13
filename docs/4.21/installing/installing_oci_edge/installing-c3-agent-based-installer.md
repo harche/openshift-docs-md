@@ -269,7 +269,7 @@ You can also use the Agent-based Installer to generate or accept Zero Touch Prov
 
 # Configuring your firewall for OpenShift Container Platform
 
-Before you install OpenShift Container Platform, you must configure your firewall to grant access to the sites that OpenShift Container Platform requires. When using a firewall, make additional configurations to the firewall so that OpenShift Container Platform can access the sites that it requires to function.
+Before you install OpenShift Container Platform, you must configure your firewall to grant access to the sites that OpenShift Container Platform requires.
 
 There are no special configuration considerations for services running on only controller nodes compared to compute nodes.
 
@@ -514,11 +514,11 @@ If your environment has a dedicated load balancer in front of your OpenShift Con
     | `2.rhel.pool.ntp.org` | 123  | Provides NTP services for time synchronization. |
     | `3.rhel.pool.ntp.org` | 123  | Provides NTP services for time synchronization. |
 
-<div class="note">
+    <div class="note">
 
-If you do not use a default Red Hat NTP server, verify the NTP server for your platform and allow it in your firewall.
+    If you do not use a default Red Hat NTP server, verify the NTP server for your platform and allow it in your firewall.
 
-</div>
+    </div>
 
 # Running a cluster on Oracle Edge Cloud
 

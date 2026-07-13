@@ -1,4 +1,6 @@
-When you submit a support case to Red Hat Support, it is helpful to provide debugging information for OpenShift Container Platform and OpenShift Virtualization by using the following tools:
+When you submit a support case to Red Hat Support, it is helpful to provide debugging information for OpenShift Container Platform and OpenShift Virtualization.
+
+You can use the following tools to collect debugging information:
 
 must-gather tool
 The `must-gather` tool collects diagnostic information, including resource definitions and service logs.

@@ -2,6 +2,8 @@ Before performing an upgrade on the cluster with applied KMM modules, you must v
 
 # Validation kickoff
 
+Create a `PreflightValidationOCP` resource to trigger preflight validation and specify the kernel version and DTK image for validation.
+
 Preflight validation is triggered by creating a `PreflightValidationOCP` resource in the cluster. This resource contains the following fields:
 
 `dtkImage`
@@ -33,13 +35,17 @@ If `true`, then the images created during the Build and Sign validation are push
 
 # Validation lifecycle
 
-Preflight validation attempts to validate every module loaded in the cluster. Preflight stops running validation on a `Module` resource after the validation is successful. If module validation fails, you can change the module definitions and Preflight tries to validate the module again in the next loop.
+Preflight validation continuously validates all cluster modules, retrying failures after changes until all modules succeed or the validation resource is deleted.
+
+Each module stops being validated after it succeeds individually. Failed modules are retried in subsequent validation loops.
 
 If you want to run Preflight validation for an additional kernel, then you should create another `PreflightValidationOCP` resource for that kernel. After all the modules have been validated, it is recommended to delete the `PreflightValidationOCP` resource.
 
 # Validation status
 
-A `PreflightValidationOCP` resource reports the status and progress of each module in the cluster that it attempts or has attempted to validate in its `.status.modules` list. Elements of that list contain the following fields:
+The `PreflightValidationOCP` resource reports validation status and progress for each cluster module in its `.status.modules` list.
+
+The following outlines the fields included in the `.status.modules` list:
 
 `name`
 The name of the `Module` resource.
@@ -68,6 +74,8 @@ The status of the Module verification:
 
 # Image validation stage
 
+Image validation checks whether kernel module images exist and are accessible before attempting to build or sign new images.
+
 Image validation is always the first stage of the preflight validation to be executed. If image validation is successful, no other validations are run on that specific module. The Operator uses the container runtime to check the image existence and accessibility for the updaded kernel in the module.
 
 If the image validation fails and there is a `build/sign` section in the module that is relevant to the upgraded kernel, the controller tries to build or sign the image. If the `PushBuiltImage` flag is defined in the `PreflightValidationOCP` resource, the controller will also try to push the resulting image into its repository. The resulting image name is taken from the definition of the `containerImage` field of the `Module` CR.
@@ -80,7 +88,7 @@ In case a `build` section exists, the input image in the `sign` section is used 
 
 # Example PreflightValidationOCP resource
 
-The following example shows a `PreflightValidationOCP` resource in the YAML format.
+The example `PreflightValidationOCP` resource validates kernel modules and pushes built images to repositories.
 
 The example verifies all of the currently present modules against the upcoming `5.14.0-570.19.1.el9_6.x86_64` kernel. Because `.spec.pushBuiltImage` is set to `true`, KMM pushes the resulting images of Build/Sign into the defined repositories.
 

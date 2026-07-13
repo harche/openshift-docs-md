@@ -34,7 +34,9 @@ In OpenShift Container Platform 4.17, you can install a cluster on Nutanix infra
 
 # About installations in restricted networks
 
-In OpenShift Container Platform 4.17, you can perform an installation that does not require an active connection to the internet to obtain software components. Restricted network installations can be completed using installer-provisioned infrastructure or user-provisioned infrastructure, depending on the cloud platform to which you are installing the cluster.
+In OpenShift Container Platform 4.17, you can install a cluster in a restricted network without an active internet connection to obtain software components.
+
+Depending on the cloud platform where you install the cluster, you can complete a restricted network installation by using either installer-provisioned infrastructure or user-provisioned infrastructure.
 
 If you choose to perform a restricted network installation on a cloud platform, you still require access to its cloud APIs. Some cloud functions, like Amazon Web Service’s Route 53 DNS and IAM services, require internet access. Depending on your network, you might require less internet access for an installation on bare metal hardware, Nutanix, or on VMware vSphere.
 

@@ -61,7 +61,7 @@ When you need more capacity in your hosted cluster and spare agents are availabl
 
 2.  Create a workload that requires a new node.
 
-    1.  Create a YAML file that contains the workload configuration, by using the following example:
+    1.  Create a YAML file that has the workload configuration, by using the following example:
 
         ``` yaml
         apiVersion: apps/v1

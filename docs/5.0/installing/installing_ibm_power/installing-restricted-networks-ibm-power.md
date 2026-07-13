@@ -34,7 +34,9 @@ Additional considerations exist for non-bare metal platforms. Review the informa
 
 # About installations in restricted networks
 
-In OpenShift Container Platform 4.17, you can perform an installation that does not require an active connection to the internet to obtain software components. Restricted network installations can be completed using installer-provisioned infrastructure or user-provisioned infrastructure, depending on the cloud platform to which you are installing the cluster.
+In OpenShift Container Platform 4.17, you can install a cluster in a restricted network without an active internet connection to obtain software components.
+
+Depending on the cloud platform where you install the cluster, you can complete a restricted network installation by using either installer-provisioned infrastructure or user-provisioned infrastructure.
 
 To complete a restricted network installation, you must create a registry that mirrors the contents of the OpenShift image registry and contains the installation media. You can create this registry on a mirror host, which can access both the internet and your closed network, or by using other methods that meet your restrictions.
 

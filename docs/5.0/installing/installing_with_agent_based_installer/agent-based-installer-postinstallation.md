@@ -82,11 +82,12 @@ The following list of interface names are reserved and you cannot use the names 
   spec:
     nodeSelector:
       kubernetes.io/hostname: worker-0
-      desiredState:
+    desiredState:
       interfaces:
       - name: enp2s0
         type: ethernet
         state: up
+        mtu: 9000
         ipv4:
           enabled: false
         ipv6:
@@ -110,6 +111,7 @@ The following list of interface names are reserved and you cannot use the names 
         type: ovs-interface
         state: up
         copy-mac-from: enp2s0
+        mtu: 9000
         ipv4:
           enabled: true
           dhcp: true
@@ -140,6 +142,9 @@ The following list of interface names are reserved and you cannot use the names 
 
   `interfaces.state`
   Specifies the requested state for the interface after creation.
+
+  `mtu`
+  To ensure network stability and performance, you must explicitly declare the MTU in the manifest for every interface. Do not rely on automatic MTU configuration. The MTU configured on a bridge port or VLAN-tagged interface must not exceed the maximum frame size supported by the attached physical medium. A mismatch causes packet fragmentation or connectivity loss.
 
   `ipv4.enabled`
   Disables IPv4 and IPv6 in this example.

@@ -1,8 +1,10 @@
+After installation, OpenShift Container Platform creates a cluster administrator user called `kubeadmin` with the `cluster-admin` role. To improve cluster security, you can remove this user after configuring an identity provider and creating a new `cluster-admin` user.
+
 # The kubeadmin user
 
-OpenShift Container Platform creates a cluster administrator, `kubeadmin`, after the installation process completes.
+OpenShift Container Platform creates a cluster administrator, `kubeadmin`, after the installation process completes. This user has the `cluster-admin` role automatically applied and is treated as the root user for the cluster.
 
-This user has the `cluster-admin` role automatically applied and is treated as the root user for the cluster. The password is dynamically generated and unique to your OpenShift Container Platform environment. After installation completes the password is provided in the installation program’s output. For example:
+The password is dynamically generated and unique to your OpenShift Container Platform environment. After the installation completes, the password is provided in the installation program’s output. For example:
 
 ``` terminal
 INFO Install complete!

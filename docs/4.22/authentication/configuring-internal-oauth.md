@@ -2,7 +2,7 @@ The OpenShift Container Platform Control Plane includes a built-in OAuth server 
 
 # OpenShift Container Platform OAuth server
 
-The OpenShift Container Platform Control Plane includes a built-in OAuth server that issues access tokens for API authentication using configured identity providers.
+The OpenShift Container Platform Control Plane includes a built-in OAuth server. Users obtain OAuth access tokens to authenticate themselves to the API.
 
 When a person requests a new OAuth token, the OAuth server uses the configured identity provider to determine the identity of the person making the request.
 

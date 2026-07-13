@@ -582,10 +582,10 @@ You can add a worker node to a single-node OpenShift cluster manually by booting
 
             where:
 
-            \<static_ip\>
+            `<static_ip>`
             Specifies the host static IP address and CIDR, for example, `10.1.101.50/24`.
 
-            \<network_gateway\>
+            `<network_gateway>`
             Specifies the network gateway, for example, `10.1.101.1`.
 
         2.  Activate the modified network interface:
@@ -643,10 +643,10 @@ You can add a worker node to a single-node OpenShift cluster manually by booting
 
             where:
 
-            \<new_worker_ign_file\>
+            `<new_worker_ign_file>`
             Specifies the locally accessible URL for the hosted `new-worker.ign` file, for example, `http://webserver.example.com/new-worker.ign`.
 
-            \<hard_disk\>
+            `<hard_disk>`
             Specifies the hard disk where you install RHCOS, for example, `/dev/sda`.
 
     4.  For networks that have DHCP enabled, you do not need to set a static IP. Run the following `coreos-installer` command from the target host console to install the system:

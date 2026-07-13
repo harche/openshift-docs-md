@@ -1,4 +1,6 @@
-You can back up and restore virtual machines (VMs) by using snapshots. Snapshots are supported by the following storage providers:
+You can back up and restore virtual machines (VMs) by using snapshots.
+
+Snapshots are supported by the following storage providers:
 
 - Red Hat OpenShift Data Foundation
 

@@ -222,9 +222,8 @@ If insufficient information is available to define a complete `image-registry` r
 
 The Cluster Image Registry Operator runs in the `openshift-image-registry` namespace and it also manages the registry instance in that location. All configuration and workload resources for the registry reside in that namespace.
 
-## Project
-
-[cluster-image-registry-operator](https://github.com/openshift/cluster-image-registry-operator)
+Project
+See "cluster-image-registry-operator".
 
 # Cluster Machine Approver Operator
 
@@ -329,27 +328,20 @@ Project
 
 # Cluster Storage Operator
 
-<div class="note">
+The Cluster Storage Operator is an optional cluster capability that can be disabled by cluster administrators during installation.
 
-The Cluster Storage Operator is an optional cluster capability that can be disabled by cluster administrators during installation. For more information about optional cluster capabilities, see "Cluster capabilities" in *Installing*.
-
-</div>
+For more information about optional cluster capabilities, see "Cluster capabilities".
 
 The Cluster Storage Operator sets OpenShift Container Platform cluster-wide storage defaults. It ensures a default `storageclass` exists for OpenShift Container Platform clusters. It also installs Container Storage Interface (CSI) drivers which enable your cluster to use various storage backends.
 
-## Project
+Project
+See "cluster-storage-operator".
 
-[cluster-storage-operator](https://github.com/openshift/cluster-storage-operator)
-
-## Configuration
-
+Configuration
 No configuration is required.
 
-## Notes
-
-- The storage class that the Operator creates can be made non-default by editing its annotation, but this storage class cannot be deleted as long as the Operator runs.
-
-<!-- -->
+Notes
+The storage class that the Operator creates can be made non-default by editing its annotation, but this storage class cannot be deleted as long as the Operator runs.
 
 - [Storage capability](../installing/overview/cluster-capabilities.xml#cluster-storage-operator_cluster-capabilities)
 
@@ -369,17 +361,14 @@ For more information regarding cluster version condition types, see "Understandi
 
 # Console Operator
 
-<div class="note">
+The Console Operator is an optional cluster capability that can be disabled by cluster administrators during installation. If you disable the Console Operator at installation, your cluster is still supported and upgradable.
 
-The Console Operator is an optional cluster capability that can be disabled by cluster administrators during installation. If you disable the Console Operator at installation, your cluster is still supported and upgradable. For more information about optional cluster capabilities, see "Cluster capabilities" in *Installing*.
-
-</div>
+For more information about optional cluster capabilities, see "Cluster capabilities".
 
 The Console Operator installs and maintains the OpenShift Container Platform web console on a cluster. The Console Operator is installed by default and automatically maintains a console.
 
-## Project
-
-[console-operator](https://github.com/openshift/console-operator)
+Project
+See "console-operator".
 
 - [Web console capability](../installing/overview/cluster-capabilities.xml#console-operator_cluster-capabilities)
 

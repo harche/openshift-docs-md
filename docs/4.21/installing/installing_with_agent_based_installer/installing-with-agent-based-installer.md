@@ -427,6 +427,7 @@ The following list of interface names are reserved and you cannot use the names 
     - name: enp2s0
       type: ethernet
       state: up
+      mtu: 9000
       ipv4:
         enabled: false
       ipv6:
@@ -450,6 +451,7 @@ The following list of interface names are reserved and you cannot use the names 
       type: ovs-interface
       state: up
       copy-mac-from: enp2s0
+      mtu: 9000
       ipv4:
         enabled: true
         dhcp: true
@@ -464,22 +466,25 @@ The following list of interface names are reserved and you cannot use the names 
     where:
 
     `interfaces.name`
-    Name of the interface.
+    Specifies the name of the interface.
 
     `interfaces.type`
-    The type of ethernet.
+    Specifies the type of ethernet.
 
     `interfaces.state`
-    The requested state for the interface after creation.
+    Specifies the requested state for the interface after creation.
+
+    `mtu`
+    To ensure network stability and performance, you must explicitly declare the MTU in the manifest for every interface. Do not rely on automatic MTU configuration. The MTU configured on a bridge port or VLAN-tagged interface must not exceed the maximum frame size supported by the attached physical medium. A mismatch causes packet fragmentation or connectivity loss.
 
     `ipv4.enabled`
     Disables IPv4 and IPv6 in this example.
 
     `port.name`
-    The node NIC to which the bridge attaches.
+    Specifies the node NIC to which the bridge attaches.
 
     `auto-route-metric`
-    Set the parameter to `48` to ensure the `br-ex` default route always has the highest precedence (lowest metric). This configuration prevents routing conflicts with any other interfaces automatically configured by the `NetworkManager` service.
+    Sets the parameter to `48` to ensure the `br-ex` default route always has the highest precedence (lowest metric). This configuration prevents routing conflicts with any other interfaces that are automatically configured by the `NetworkManager` service.
 
 2.  Use the `cat` command to base64-encode the contents of the NMState configuration:
 
@@ -529,9 +534,9 @@ The following list of interface names are reserved and you cannot use the names 
     Writes the encoded base64 information to the specified path.
 
     `path`
-    For each node in your cluster, specify the hostname path to your node and the base-64 encoded Ignition configuration file data for the machine type. The `worker` role is the default role for nodes in your cluster. Use the `.yml` extension for configuration files. For example, use `$(hostname -s).yml` when specifying the short hostname path for each node or all nodes in the `MachineConfig` manifest file.
+    For each node in your cluster, specify the hostname path to your node and the base-64 encoded Ignition configuration file data for the machine type. The `worker` role is the default role for nodes in your cluster. You must use the `.yml` extension for configuration files. For example, use `$(hostname -s).yml` when specifying the short hostname path for each node or all nodes in the `MachineConfig` manifest file.
 
-    You can apply a single global configuration to all nodes by using the `/etc/nmstate/openshift/cluster.yml` configuration file. In this case, you do not need to specify individual hostname paths for each node, such as `/etc/nmstate/openshift/<node_hostname>.yml`.
+    You can apply a single global configuration to all nodes in your cluster by using the `/etc/nmstate/openshift/cluster.yml` configuration file. In this case, you do not need to specify the short hostname path for each node, such as `/etc/nmstate/openshift/<node_hostname>.yml`. For example:
 
     <div class="formalpara-title">
 

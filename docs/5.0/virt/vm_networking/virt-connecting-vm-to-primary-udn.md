@@ -354,12 +354,12 @@ For more information about the support scope of Red Hat Technology Preview featu
           domain:
             devices:
               interfaces:
-                - name: udn-l2-net
+                - name: default
                   binding:
                     name: l2bridge
     # ...
           networks:
-          - name: udn-l2-net
+          - name: default
             pod: {}
     # ...
     ```

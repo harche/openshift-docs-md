@@ -2,7 +2,7 @@ In-tree storage drivers that are traditionally shipped with OpenShift Container 
 
 # Overview
 
-This feature automatically migrates volumes that were provisioned using in-tree storage plugins to their counterpart Container Storage Interface (CSI) drivers.
+Container Storage Interface (CSI) migration transparently translates in-tree storage volumes to CSI equivalents in memory without data migration or API changes.
 
 This process does not perform any data migration; OpenShift Container Platform only translates the persistent volume object in memory. As a result, the translated persistent volume object is not stored on disk, nor is its contents changed. CSI automatic migration should be seamless. This feature does not change how you use all existing API objects: for example, `PersistentVolumes`, `PersistentVolumeClaims`, and `StorageClasses`.
 
@@ -26,8 +26,12 @@ CSI automatic migration of in-tree persistent volumes (PVs) or persistent volume
 
 # Storage class implications
 
+OpenShift Container Platform 4.13, and later, uses Container Storage Interface (CSI) storage classes for new installations. Upgraded clusters receive CSI storage classes as default if none existed. Existing in-tree classes remain for backward compatibility. Switching to CSI storage classes is recommended.
+
 For new OpenShift Container Platform 4.13, and later, installations, the default storage class is the CSI storage class. All volumes provisioned using this storage class are CSI persistent volumes (PVs).
 
-For clusters upgraded from 4.12, and earlier, to 4.13, and later, the CSI storage class is created, and is set as the default if no default storage class was set prior to the upgrade. In the very unlikely case that there is a storage class with the same name, the existing storage class remains unchanged. Any existing in-tree storage classes remain, and might be necessary for certain features, such as volume expansion to work for existing in-tree PVs. While storage class referencing to the in-tree storage plugin will continue working, we recommend that you switch the default storage class to the CSI storage class.
+For clusters upgraded from 4.12, and earlier, to 4.13, and later, the CSI storage class is created, and is set as the default if no default storage class was set before the upgrade. In the very unlikely case that there is a storage class with the same name, the existing storage class remains unchanged. Any existing in-tree storage classes remain, and might be necessary for certain features, such as volume expansion to work for existing in-tree PVs. While storage class referencing to the in-tree storage plugin will continue working, we recommend that you switch the default storage class to the CSI storage class.
 
-To change the default storage class, see [Changing the default storage class](../../storage/container_storage_interface/persistent-storage-csi-sc-manage.xml#change-default-storage-class_persistent-storage-csi-sc-manage).
+For information about changing the default storage class, see *Changing the default storage class* under *Additional resources*.
+
+- [Changing the default storage class](../../storage/container_storage_interface/persistent-storage-csi-sc-manage.xml#change-default-storage-class_persistent-storage-csi-sc-manage)

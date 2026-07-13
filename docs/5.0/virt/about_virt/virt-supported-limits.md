@@ -2,7 +2,7 @@ Refer to tested object maximums when planning your environment for your specific
 
 # Tested maximums for OpenShift Virtualization
 
-Maximums are based on a single cluster of the largest possible size for a OpenShift Virtualization 4.x environment. When you plan an environment, remember that multiple smaller clusters might be the best option for your use case. Approaching the maximum values can reduce performance and increase latency.
+Maximums are based on a single cluster of the largest possible size for a OpenShift Virtualization 4.x environment. Approaching the maximum values can reduce performance and increase latency. Consider using multiple smaller clusters if possible to improve performance.
 
 ## Virtual machine maximums
 
@@ -10,7 +10,7 @@ Maximums apply to virtual machines (VMs) running on OpenShift Virtualization and
 
 | Objective (per VM)  | Tested limit | Theoretical limit |
 |---------------------|--------------|-------------------|
-| Virtual CPUs        | 216 vCPUs    | 255 vCPUs         |
+| Virtual CPUs        | 255 vCPUs    | 255 vCPUs         |
 | Memory              | 6 TB         | 16 TB             |
 | Single disk size    | 100 TB       | 100 TB            |
 | Hot-pluggable disks | 255 disks    | N/A               |

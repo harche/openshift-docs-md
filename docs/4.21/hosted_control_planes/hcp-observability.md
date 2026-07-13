@@ -233,7 +233,7 @@ You can enable monitoring dashboards in a hosted cluster by creating a config ma
           value: "1"
     ```
 
-    When monitoring dashboards are enabled, for each hosted cluster that the HyperShift Operator manages, the Operator creates a config map named `cp-<hosted_cluster_namespace>-<hosted_cluster_name>` in the `openshift-config-managed` namespace, where `<hosted_cluster_namespace>` is the namespace of the hosted cluster and `<hosted_cluster_name>` is the name of the hosted cluster. As a result, a new dashboard is added in the administrative console of the management cluster.
+    When monitoring dashboards are enabled, for each hosted cluster that the HyperShift Operator manages, the Operator creates a config map named `hc-<hosted_cluster_namespace>-<hosted_cluster_name>` in the `openshift-config-managed` namespace, where `<hosted_cluster_namespace>` is the namespace of the hosted cluster and `<hosted_cluster_name>` is the name of the hosted cluster. As a result, a new dashboard is added in the administrative console of the management cluster.
 
 3.  To view the dashboard, log in to the management cluster’s console and go to the dashboard for the hosted cluster by clicking **Observe → Dashboards**.
 

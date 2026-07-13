@@ -640,7 +640,7 @@ If you do not use the provided CloudFormation template to create your AWS infras
 
     - The Route 53 public zone ID to register the targets with.
 
-    - Specify the Route 53 public zone ID, which as a format similar to `Z21IXYZABCZ2A4`. You can obtain this value from the AWS console.
+    - Specify the Route 53 public zone ID, which has a format similar to `Z21IXYZABCZ2A4`. You can obtain this value from the AWS console.
 
     - The Route 53 zone to register the targets with.
 
@@ -862,7 +862,7 @@ In OpenShift Container Platform, *stream metadata* provides standardized metadat
 
 You can use the `coreos print-stream-json` sub-command of `openshift-install` to access information about the boot images in the stream metadata format. This command provides a method for printing stream metadata in a scriptable, machine-readable format.
 
-For user-provisioned installations, the `openshift-install` binary contains references to the version of RHCOS boot images that are tested for use with OpenShift Container Platform, such as the AWS AMI.
+For user-provisioned installations, the `openshift-install` binary contains references to the version of RHCOS boot images that are tested for use with OpenShift Container Platform, such as the Amazon Web Services (AWS) AMI.
 
 <div class="formalpara-title">
 
@@ -1775,21 +1775,26 @@ When you use the CloudFormation template for the control plane machines, the tem
        --parameters file://<parameters>.json
   ```
 
-  - Specify the `<name>` with the name for the CloudFormation stack, such as `cluster-worker-1`. You need the name of this stack if you remove the cluster.
+  where:
 
-  - Specify the relative path and the name of the CloudFormation template YAML file that you saved.
+  `<name>`
+  Specifies the `<name>` with the name for the CloudFormation stack, such as `cluster-worker-1`. You need the name of this stack if you remove the cluster.
 
-  - Specify the relative path and the name of the JSON file for the CloudFormation parameters.
+  `<template>`
+  Specifies the relative path and the name of the CloudFormation template YAML file that you saved.
 
-    <div class="formalpara-title">
+  `<parameters>`
+  Specifies the relative path and the name of the JSON file for the CloudFormation parameters.
 
-    **Example output**
+  <div class="formalpara-title">
 
-    </div>
+  **Example output**
 
-    ``` terminal
-    arn:aws:cloudformation:us-east-1:269333783861:stack/cluster-worker-1/729ee301-1c2a-11eb-348f-sd9888c65b59
-    ```
+  </div>
+
+  ``` terminal
+  arn:aws:cloudformation:us-east-1:269333783861:stack/cluster-worker-1/729ee301-1c2a-11eb-348f-sd9888c65b59
+  ```
 
 # Initializing the bootstrap sequence on AWS with user-provisioned infrastructure
 

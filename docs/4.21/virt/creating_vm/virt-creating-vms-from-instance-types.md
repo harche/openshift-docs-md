@@ -418,13 +418,13 @@ After the VM is created, you can monitor the status on the **VirtualMachine deta
 
 # Change the instance type for a VM
 
-As a cluster administrator or VM owner, you might want to change the instance type for an existing VM for the following reasons:
+Cluster administrators and VM owners can change the instance type for existing virtual machines to adjust resources or optimize performance for specific workloads.
 
-- If a VM’s workload has increased, you might change the instance type to one with more CPU, more memory, or specific hardware resources, to prevent performance bottlenecks.
+Changing the instance type for a VM allows you to adapt to evolving workload requirements without recreating the virtual machine. When a VM’s workload increases over time, you can switch to an instance type with more CPU, additional memory, or specific hardware resources to prevent performance bottlenecks and ensure the VM continues to meet demand.
 
-- If you are using specialized workloads, you might switch to a different instance type to improve performance, as some instance types are optimized for specific use cases.
+Different instance types are optimized for specific use cases, so switching to a specialized instance type can improve performance for particular workloads. For example, you might transition to a compute-optimized instance type for CPU-intensive applications or to a memory-optimized type for workloads that require larger memory allocations.
 
-You can use the OpenShift Container Platform web console or the OpenShift CLI (`oc`) to change the instance type for an existing VM.
+You can change the instance type for an existing VM using either the OpenShift Container Platform web console or the OpenShift CLI (`oc`).
 
 ## Changing the instance type of a VM by using the web console
 

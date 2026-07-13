@@ -103,6 +103,8 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 # Adding a custom golden image in a heterogeneous cluster
 
+Add a custom golden image in a heterogeneous cluster by editing the `HyperConverged` custom resource (CR).
+
 <div class="important">
 
 Golden image support for heterogeneous clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
@@ -110,8 +112,6 @@ Golden image support for heterogeneous clusters is a Technology Preview feature 
 For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
-
-Add a custom golden image in a heterogeneous cluster by setting the `ssp.kubevirt.io/dict.architectures` annotation in the `spec.dataImportCronTemplates.metadata.annotations` stanza of the `HyperConverged` custom resource (CR). This annotation lists the architectures supported by the image.
 
 - You have installed the OpenShift CLI (`oc`).
 

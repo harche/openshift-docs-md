@@ -1,8 +1,8 @@
-After you deploy hosted control planes on IBM Power, you can manage a hosted cluster by completing the following tasks.
+After you deploy hosted control planes on IBM Power, you can manage a hosted cluster.
 
 # Creating an InfraEnv resource for hosted control planes on IBM Power
 
-An `InfraEnv` is a environment where hosts that are starting the live ISO can join as agents. In this case, the agents are created in the same namespace as your hosted control plane.
+An `InfraEnv` resource is an environment where hosts that are starting the live ISO can join as agents. In this case, the agents are created in the same namespace as your hosted control plane.
 
 You can create an `InfraEnv` resource for hosted control planes on 64-bit x86 bare metal for IBM Power compute nodes.
 
@@ -12,8 +12,8 @@ You can create an `InfraEnv` resource for hosted control planes on 64-bit x86 ba
     apiVersion: agent-install.openshift.io/v1beta1
     kind: InfraEnv
     metadata:
-      name: <hosted_cluster_name> \
-      namespace: <hosted_control_plane_namespace> \
+      name: <hosted_cluster_name>
+      namespace: <hosted_control_plane_namespace>
     spec:
       cpuArchitecture: ppc64le
       pullSecretRef:
@@ -21,11 +21,11 @@ You can create an `InfraEnv` resource for hosted control planes on 64-bit x86 ba
       sshAuthorizedKey: <path_to_ssh_public_key>
     ```
 
-    - Replace `<hosted_cluster_name>` with the name of your hosted cluster.
+    - `metadata.name` specifies the name of your hosted cluster.
 
-    - Replace `<hosted_control_plane_namespace>` with the name of the hosted control plane namespace, for example, `clusters-hosted`.
+    - `metadata.namespace` specifies the name of the hosted control plane namespace, for example, `clusters-hosted`.
 
-    - Replace `<path_to_ssh_public_key>` with the path to your SSH public key. The default file path is `~/.ssh/id_rsa.pub`.
+    - `spec.sshAuthorizedKey` specifies the path to your SSH public key. The default file path is `~/.ssh/id_rsa.pub`.
 
 2.  Save the file as `infraenv-config.yaml`.
 
@@ -46,7 +46,7 @@ You can create an `InfraEnv` resource for hosted control planes on 64-bit x86 ba
 
 You can add agents by manually configuring the machine to start with the live ISO.
 
-1.  Download the live ISO and use it to start a bare metal or a virtual machine (VM) host. You can find the URL for the live ISO in the `status.isoDownloadURL` field, in the `InfraEnv` resource. At startup, the host communicates with the Assisted Service and registers as an agent in the same namespace as the `InfraEnv` resource.
+1.  Download the live ISO and use it to start a bare metal or a virtual machine (VM) host. You can find the URL for the live ISO in the `status.isoDownloadURL` field in the `InfraEnv` resource. At startup, the host communicates with the Assisted Service and registers as an agent in the same namespace as the `InfraEnv` resource.
 
 2.  To list the agents and some of their properties, enter the following command:
 

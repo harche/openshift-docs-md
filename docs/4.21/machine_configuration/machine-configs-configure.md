@@ -681,9 +681,9 @@ You can add software packages to Red Hat Enterprise Linux CoreOS (RHCOS) system
 
 RHCOS is a minimal container-oriented op-system-base-full operating system, designed to provide a common set of capabilities to OpenShift Container Platform clusters across all platforms. Although adding software packages to RHCOS systems is generally discouraged, you can add any of the following extensions to extend RHCOS:
 
-- **usbguard**: The `usbguard` extension protects RHCOS systems from attacks by intrusive USB devices. For more information, see [USBGuard](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/security_hardening/index#usbguard_protecting-systems-against-intrusive-usb-devices) for details.
+- **usbguard**: The `usbguard` extension protects RHCOS systems from attacks by intrusive USB devices. For `usbguard`, you must create additional `MachineConfig` objects to start and enable the services as described in the following procedure. For more information, see [USBGuard](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/security_hardening/index#usbguard_protecting-systems-against-intrusive-usb-devices).
 
-- **kerberos**: The `kerberos` extension provides a mechanism that allows both users and machines to identify themselves to the network to receive defined, limited access to the areas and services that an administrator has configured. For more information, see [Using Kerberos](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/system-level_authentication_guide/using_kerberos) for details, including how to set up a Kerberos client and mount a Kerberized NFS share.
+- **kerberos**: The `kerberos` extension provides a mechanism that allows both users and machines to identify themselves to the network to receive defined, limited access to the areas and services that an administrator has configured. For more information, see [Using Kerberos](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/system-level_authentication_guide/using_kerberos), including how to set up a Kerberos client and mount a Kerberized NFS share.
 
 - **sandboxed-containers**: The `sandboxed-containers` extension contains RPMs for Kata, QEMU, and its dependencies. For more information, see [OpenShift Sandboxed Containers](https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/latest).
 
@@ -701,37 +701,59 @@ The following procedure describes how to use a machine config to add one or more
 
 - Log in to the cluster as a user with administrative privileges.
 
-1.  Create a machine config for extensions: Create a YAML file (for example, `80-extensions.yaml`) that contains a `MachineConfig` `extensions` object. This example tells the cluster to add the `usbguard` extension.
+1.  Create a Butane configuration file named `80-worker-usbguard.bu` to add the extension, manage the configuration files, and enable the service.
 
-    ``` terminal
-    $ cat << EOF > 80-extensions.yaml
-    apiVersion: machineconfiguration.openshift.io/v1
-    kind: MachineConfig
+    ``` yaml
+    variant: openshift
+    version: 4.17.0
     metadata:
+      name: 80-worker-usbguard
       labels:
         machineconfiguration.openshift.io/role: worker
-      name: 80-worker-extensions
-    spec:
-      config:
-        ignition:
-          version: 3.5.0
-      extensions:
-        - usbguard
-    EOF
+    extensions:
+      - usbguard
+    storage:
+      files:
+        - path: /etc/usbguard/usbguard-daemon.conf
+          mode: 0600
+          overwrite: true
+          contents:
+            inline: |
+              RuleFile=/etc/usbguard/rules.conf
+              PresentDevicePolicy=apply-policy
+              IPCAllowedGroups=wheel
+        - path: /etc/usbguard/rules.conf
+          mode: 0600
+          overwrite: false
+          contents:
+            inline: |
+              allow id 1d6b:0002 serial "0000:00:14.0" name "EHCI Host Controller"
+    systemd:
+      units:
+        - name: usbguard.service
+          enabled: true
     ```
 
-2.  Add the machine config to the cluster. Type the following to add the machine config to the cluster:
+2.  Convert the Butane configuration into a `MachineConfig` manifest by entering the following command:
 
     ``` terminal
-    $ oc create -f 80-extensions.yaml
+    $ butane 80-worker-usbguard.bu -o 80-worker-usbguard.yaml
     ```
 
-    This sets all worker nodes to have rpm packages for `usbguard` installed.
-
-3.  Check that the extensions were applied:
+3.  Apply the `MachineConfig` to the cluster by entering the following command:
 
     ``` terminal
-    $ oc get machineconfig 80-worker-extensions
+    $ oc apply -f 80-worker-usbguard.yaml
+    ```
+
+    This sets all compute nodes to install the `usbguard` RPM package, write the required configuration files, and enable the systemd daemon within a single node rollout cycle.
+
+<!-- -->
+
+1.  Check that the new machine config was successfully created by entering the following command:
+
+    ``` terminal
+    $ oc get machineconfig 80-worker-usbguard
     ```
 
     <div class="formalpara-title">
@@ -741,11 +763,11 @@ The following procedure describes how to use a machine config to add one or more
     </div>
 
     ``` terminal
-    NAME                 GENERATEDBYCONTROLLER IGNITIONVERSION AGE
-    80-worker-extensions                       3.5.0           57s
+    NAME                GENERATEDBYCONTROLLER IGNITIONVERSION AGE
+    80-worker-usbguard                        3.5.0           57s
     ```
 
-4.  Check that the new machine config is now applied and that the nodes are not in a degraded state. It may take a few minutes. The worker pool will show the updates in progress, as each machine successfully has the new machine config applied:
+2.  Check that the machine config is now applied and that the nodes are not in a degraded state. This operation might take a few minutes. The worker pool will show the updates in progress, as each machine successfully has the new machine config applied:
 
     ``` terminal
     $ oc get machineconfigpool
@@ -763,7 +785,7 @@ The following procedure describes how to use a machine config to add one or more
     worker rendered-worker-d8 False   True     False    3            1                 1                   0                    34m
     ```
 
-5.  Check the extensions. To check that the extension was applied, run:
+3.  After the pool reports `UPDATED` as `True`, verify that the extension package was installed and that the service is running normally by debugging a compute node. You can complete these tasks by running the following commands:
 
     ``` terminal
     $ oc get node | grep worker
@@ -796,6 +818,11 @@ The following procedure describes how to use a machine config to add one or more
     sh-4.4# chroot /host
     sh-4.4# rpm -q usbguard
     usbguard-0.7.4-4.el8.x86_64.rpm
+    ...
+    sh-4.4# systemctl status usbguard.service
+    usbguard.service - USBGuard daemon
+            Loaded: loaded (/usr/lib/systemd/system/usbguard.service; enabled; preset: disabled)
+            Active: active (running)
     ```
 
 # Loading custom firmware blobs in the machine config manifest

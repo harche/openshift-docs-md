@@ -559,6 +559,8 @@
   - [Configuring the egress proxy](security/zero_trust_workload_identity_manager/zero-trust-manager-proxy.md)
   - [Configuring Zero Trust Workload Identity Manager OIDC Federation](security/zero_trust_workload_identity_manager/zero-trust-manager-oidc-federation.md)
   - [Configuring Zero Trust Workload Identity Manager SPIRE Federation](security/zero_trust_workload_identity_manager/zero-trust-manager-spire-federation.md)
+  - [Using the SPIFFE Helper container image](security/zero_trust_workload_identity_manager/zero-trust-manager-spiffe-helper.md)
+  - [Integrating OpenShift Service Mesh with Zero Trust Workload Identity Manager](security/zero_trust_workload_identity_manager/zero-trust-manager-mesh-integration.md)
   - [Enabling create-only mode for the Zero Trust Workload Identity Manager](security/zero_trust_workload_identity_manager/zero-trust-manager-reconciliation.md)
   - [SPIRE UpstreamAuthority plugins for Zero Trust Workload Identity Manager](security/zero_trust_workload_identity_manager/zero-trust-manager-plugins.md)
   - [Monitoring Zero Trust Workload Identity Manager](security/zero_trust_workload_identity_manager/zero-trust-manager-monitoring.md)

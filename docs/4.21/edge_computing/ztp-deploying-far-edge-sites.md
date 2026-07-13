@@ -85,7 +85,13 @@ The deployment of the clusters includes:
 
 - Deploying profile Operators and performing any needed software-related configuration, such as performance profile, PTP, and SR-IOV
 
-## Overview of the managed site installation process
+<div class="note">
+
+To deploy clusters with virtualized control planes running on OpenShift Virtualization VMs instead of physical servers, you can use KubeVirt Redfish to expose VMs as Redfish endpoints. For more information, see "Virtualized control planes".
+
+</div>
+
+# Overview of the managed site installation process
 
 After you apply the managed site custom resources (CRs) on the hub cluster, the following actions happen automatically:
 
@@ -103,7 +109,7 @@ The Discovery image ISO process is complete when the `Agent` CR for the managed 
 
 <div class="important">
 
-The target bare-metal host must meet the networking, firmware, and hardware requirements listed in [Recommended single-node OpenShift cluster configuration for vDU application workloads](../edge_computing/ztp-reference-cluster-configuration-for-vdu.xml#sno-configure-for-vdu).
+The target bare-metal host must meet the networking, firmware. For more information, see "Recommended single-node OpenShift cluster configuration for vDU application workloads".
 
 </div>
 
@@ -142,13 +148,16 @@ The secrets are referenced from the `ClusterInstance` CR by name. The namespace 
         type: kubernetes.io/dockerconfigjson
         ```
 
-        - Must match the namespace configured in the related `ClusterInstance` CR
+        where:
 
-        - Base64-encoded values for `password` and `username`
+        `namespace`
+        Must match the namespace configured in the related `ClusterInstance` CR.
 
-        - Must match the namespace configured in the related `ClusterInstance` CR
+        `password`, `username`
+        Base64-encoded values for `password` and `username`.
 
-        - Base64-encoded pull secret
+        `.dockerconfigjson`
+        Base64-encoded pull secret.
 
 2.  Add the relative path to `example-sno-secret.yaml` to the `kustomization.yaml` file that you use to install the cluster.
 
@@ -206,9 +215,9 @@ In OpenShift Container Platform 4.17, you can only add kernel arguments. You can
           additionalNTPSources: "{{ .Cluster.AdditionalNTPSources }}"
         ```
 
-        - Specify the append operation to add a kernel argument.
+        - `kernelArguments.operation` specifies the append operation to add a kernel argument.
 
-        - Specify the kernel argument you want to configure. This example configures the audit kernel argument and the trace kernel argument.
+        - `kernelArguments.value` specifies the kernel argument you want to configure. This example configures the `audit` kernel argument and the `trace` kernel argument.
 
 2.  Commit the `InfraEnv-example.yaml` file to your Git repository and push your changes. The following example shows a sample Git repository structure:
 
@@ -236,11 +245,11 @@ In OpenShift Container Platform 4.17, you can only add kernel arguments. You can
       disableNameSuffixHash: true
     ```
 
-    - The name of the `ClusterInstance` CR.
+    - `clusterinstance-example.yaml` specifies the name of the `ClusterInstance` CR.
 
-    - The name of the `ConfigMap` that contains the custom `InfraEnv` CR.
+    - `configMapGenerator.name` specifies the name of the `ConfigMap` that contains the custom `InfraEnv` CR.
 
-    - The namespace must match the `ClusterInstance` namespace.
+    - `configMapGenerator.namespace` must match the `ClusterInstance` namespace.
 
 4.  In your `ClusterInstance` CR, reference the `ConfigMap` in the `spec.templateRefs` field:
 
@@ -258,7 +267,7 @@ In OpenShift Container Platform 4.17, you can only add kernel arguments. You can
     # ...
     ```
 
-    - Reference to the `ConfigMap` CR that contains the custom `InfraEnv` CR template.
+    - `spec.templateRefs` specifies the `ConfigMap` CR that contains the custom `InfraEnv` CR template.
 
 5.  Commit the `ClusterInstance` CR and `kustomization.yaml` to your Git repository and push your changes.
 
@@ -551,29 +560,25 @@ You require Red Hat Advanced Cluster Management (RHACM) version 2.12 or later t
   $ oc describe node example-node.example.com
   ```
 
-<div class="formalpara-title">
+  The following example output shows the custom roles and labels:
 
-**Example output**
+  ``` terminal
+  Name:   example-node.example.com
+  Roles:  control-plane,example-label,master,worker
+  Labels: beta.kubernetes.io/arch=amd64
+          beta.kubernetes.io/os=linux
+          custom-label/parameter1=true
+          kubernetes.io/arch=amd64
+          kubernetes.io/hostname=cnfdf03.telco5gran.eng.rdu2.redhat.com
+          kubernetes.io/os=linux
+          node-role.kubernetes.io/control-plane=
+          node-role.kubernetes.io/example-label=
+          node-role.kubernetes.io/master=
+          node-role.kubernetes.io/worker=
+          node.openshift.io/os_id=rhcos
+  ```
 
-</div>
-
-``` terminal
-Name:   example-node.example.com
-Roles:  control-plane,example-label,master,worker
-Labels: beta.kubernetes.io/arch=amd64
-        beta.kubernetes.io/os=linux
-        custom-label/parameter1=true
-        kubernetes.io/arch=amd64
-        kubernetes.io/hostname=cnfdf03.telco5gran.eng.rdu2.redhat.com
-        kubernetes.io/os=linux
-        node-role.kubernetes.io/control-plane=
-        node-role.kubernetes.io/example-label=
-        node-role.kubernetes.io/master=
-        node-role.kubernetes.io/worker=
-        node.openshift.io/os_id=rhcos
-```
-
-- The custom label is applied to the node.
+  - `node-role.kubernetes.io/example-label=` shows the custom label applied to the node.
 
 <!-- -->
 
@@ -625,13 +630,13 @@ You can also configure IPsec encryption for single-node OpenShift clusters with 
         type: tunnel
     ```
 
-    - The value of this field must match with the name of the certificate used on the remote system.
+    - `leftcert` must match the name of the certificate used on the remote system.
 
-    - Replace `<external_host>` with the external host IP address or DNS hostname.
+    - `right` is the external host IP address or DNS hostname.
 
-    - Replace `<external_address>` with the IP subnet of the external host on the other side of the IPsec tunnel.
+    - `rightsubnet` is the IP subnet of the external host on the other side of the IPsec tunnel.
 
-    - Use the IKEv2 VPN encryption protocol only. Do not use IKEv1, which is deprecated.
+    - `ikev2: insist` uses the IKEv2 VPN encryption protocol only. Do not use IKEv1, which is deprecated.
 
 3.  Add the following certificates to the `optional-extra-manifest/ipsec` folder:
 
@@ -647,11 +652,7 @@ You can also configure IPsec encryption for single-node OpenShift clusters with 
 
     If the PKCS#12 certificate is protected with a password, set the `-W` argument.
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following example shows the generated output directory structure:
 
     ``` terminal
     out
@@ -673,7 +674,7 @@ You can also configure IPsec encryption for single-node OpenShift clusters with 
 
     - The `ipsec/build.sh` script generates the Butane and endpoint configuration CRs.
 
-    - You provide `ca.pem` and `left_server.p12` certificate files that are relevant to your network.
+    - Add the `ca.pem` and `left_server.p12` certificate files that are relevant to your network.
 
 6.  Create an `ipsec-manifests/` folder in the repository where you manage your custom site configuration data. Add the `enable-ipsec.yaml` and `99-ipsec-*` YAML files to the directory. For example:
 
@@ -706,9 +707,9 @@ You can also configure IPsec encryption for single-node OpenShift clusters with 
       disableNameSuffixHash: true
     ```
 
-    - The namespace must match the `ClusterInstance` namespace.
+    - `namespace` must match the `ClusterInstance` namespace.
 
-    - Disables the hash suffix so the `ConfigMap` name is predictable.
+    - `disableNameSuffixHash: true` disables the hash suffix so the `ConfigMap` name is predictable.
 
 8.  In your `ClusterInstance` CR, reference the `ConfigMap` in the `extraManifestsRefs` field:
 
@@ -726,13 +727,13 @@ You can also configure IPsec encryption for single-node OpenShift clusters with 
     # ...
     ```
 
-    - Reference to the `ConfigMap` containing the IPsec manifests.
+    - `extraManifestsRefs.name` references the `ConfigMap` containing the IPsec manifests.
 
-      <div class="note">
+    <div class="note">
 
-      If you have other extra manifests, you can either include them in the same `ConfigMap` or create multiple `ConfigMap` resources and reference each of those in the `extraManifestsRefs` field.
+    If you have other extra manifests, you can either include them in the same `ConfigMap` or create multiple `ConfigMap` resources and reference each of those in the `extraManifestsRefs` field.
 
-      </div>
+    </div>
 
 9.  Commit the `ClusterInstance` CR, IPsec manifest files, and `kustomization.yaml` changes in your Git repository and push the changes to provision the managed cluster and configure IPsec encryption.
 
@@ -831,13 +832,13 @@ You can enable IPsec encryption in managed multi-node clusters that you install 
                     type: tunnel
     ```
 
-    - The value of this field must match with the name of the certificate used on the remote system.
+    - `leftcert` must match the name of the certificate used on the remote system.
 
-    - Replace `<external_host>` with the external host IP address or DNS hostname.
+    - `right` is the external host IP address or DNS hostname.
 
-    - Replace `<external_address>` with the IP subnet of the external host on the other side of the IPsec tunnel.
+    - `rightsubnet` is the IP subnet of the external host on the other side of the IPsec tunnel.
 
-    - Use the IKEv2 VPN encryption protocol only. Do not use IKEv1, which is deprecated.
+    - `ikev2: insist` uses the IKEv2 VPN encryption protocol only. Do not use IKEv1, which is deprecated.
 
 3.  Add the following certificates to the `optional-extra-manifest/ipsec` folder:
 
@@ -853,11 +854,7 @@ You can enable IPsec encryption in managed multi-node clusters that you install 
 
     If the PKCS#12 certificate is protected with a password, set the `-W` argument.
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following example shows the generated output directory structure:
 
     ``` terminal
     out
@@ -918,9 +915,9 @@ You can enable IPsec encryption in managed multi-node clusters that you install 
       disableNameSuffixHash: true
     ```
 
-    - The namespace must match the `ClusterInstance` namespace.
+    - `namespace` must match the `ClusterInstance` namespace.
 
-    - Disables the hash suffix so the `ConfigMap` name is predictable.
+    - `disableNameSuffixHash: true` disables the hash suffix so the `ConfigMap` name is predictable.
 
 8.  In your `ClusterInstance` CR, reference the `ConfigMap` in the `extraManifestsRefs` field:
 
@@ -938,13 +935,13 @@ You can enable IPsec encryption in managed multi-node clusters that you install 
     # ...
     ```
 
-    - Reference to the `ConfigMap` containing the IPsec certificate import manifests.
+    - `extraManifestsRefs.name` references the `ConfigMap` containing the IPsec certificate import manifests.
 
-      <div class="note">
+    <div class="note">
 
-      If you have other extra manifests, you can either include them in the same `ConfigMap` or create multiple `ConfigMap` resources and reference them all in `extraManifestsRefs`.
+    If you have other extra manifests, you can either include them in the same `ConfigMap` or create multiple `ConfigMap` resources and reference them all in `extraManifestsRefs`.
 
-      </div>
+    </div>
 
 9.  Include the `ipsec-config-policy.yaml` config policy file in the `source-crs` directory in GitOps and reference the file in one of the `PolicyGenerator` CRs.
 
@@ -992,11 +989,7 @@ You can verify that the IPsec encryption is successfully applied in a managed Op
     sh-5.1# ip xfrm policy
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following example output shows the IPsec policy applied to the cluster node:
 
     ``` terminal
     src 172.16.123.0/24 dst 10.1.232.10/32
@@ -1019,11 +1012,7 @@ You can verify that the IPsec encryption is successfully applied in a managed Op
     sh-5.1# ip xfrm state
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following example output shows the IPsec tunnel is up and connected:
 
     ``` terminal
     src 10.1.232.10 dst 10.1.28.190
@@ -1052,11 +1041,7 @@ You can verify that the IPsec encryption is successfully applied in a managed Op
     sh-5.1# ping 172.16.110.8
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following example output shows a successful ping response:
 
     ``` terminal
     PING 172.16.110.8 (172.16.110.8) 56(84) bytes of data.
@@ -1124,11 +1109,7 @@ You can discover the host firmware schema for managed clusters. The host firmwar
   $ oc get firmwareschema -n <managed_cluster_namespace> -o yaml
   ```
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
+  The following example output shows the host firmware schema:
 
   ``` terminal
   apiVersion: v1
@@ -1174,11 +1155,7 @@ You can retrieve the host firmware settings for managed clusters. This is useful
     $ oc get hostfirmwaresettings -n <cluster_namespace> <node_name> -o yaml
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following example output shows the host firmware settings:
 
     ``` terminal
     apiVersion: v1
@@ -1207,18 +1184,21 @@ You can retrieve the host firmware settings for managed clusters. This is useful
           message: ""
           observedGeneration: 1
           reason: Success
+          # Indicates that a change in the host firmware settings has been detected.
           status: "True"
           type: ChangeDetected
         - lastTransitionTime: "2024-09-11T10:29:43Z"
           message: Invalid BIOS setting
           observedGeneration: 1
           reason: ConfigurationError
+          # Indicates that the host has an invalid firmware setting.
           status: "False"
           type: Valid
         lastUpdated: "2024-09-11T10:29:43Z"
         schema:
           name: schema-40562318
           namespace: compute-1
+        # Contains the complete list of configured host firmware settings returned under the `status.settings` field.
         settings:
           AccessControlService: Enabled
           AcpiHpet: Enabled
@@ -1226,39 +1206,25 @@ You can retrieve the host firmware settings for managed clusters. This is useful
           # ...
     ```
 
-    - Indicates that a change in the host firmware settings has been detected
-
-    - Indicates that the host has an invalid firmware setting
-
-    - The complete list of configured host firmware settings is returned under the `status.settings` field
-
 2.  Optional: Check the status of the `HostFirmwareSettings` (`hfs`) custom resource in the cluster:
 
     ``` terminal
     $ oc get hfs -n <managed_cluster_namespace> <managed_cluster_name> -o jsonpath='{.status.conditions[?(@.type=="ChangeDetected")].status}'
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following example output shows a detected change:
 
     ``` terminal
     True
     ```
 
-3.  Optional: Check for invalid firmware settings in the cluster host. Run the following command:
+3.  Optional: Check for invalid firmware settings in the cluster host by running the following command:
 
     ``` terminal
     $ oc get hfs -n <managed_cluster_namespace> <managed_cluster_name> -o jsonpath='{.status.conditions[?(@.type=="Valid")].status}'
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following example output shows an invalid firmware setting:
 
     ``` terminal
     False
@@ -1333,9 +1299,9 @@ You can configure host hardware profiles to be applied in a hierarchy. Node-leve
       disableNameSuffixHash: true
     ```
 
-    - The namespace must match the `ClusterInstance` namespace.
+    - `namespace` must match the `ClusterInstance` namespace.
 
-    - The name of the `HostFirmwareSettings` CR.
+    - `host-firmware-settings.yaml` is the name of the `HostFirmwareSettings` CR.
 
 4.  To apply a hardware profile to all hosts in the cluster, reference the `ConfigMap` in the `spec.templateRefs` field of your `ClusterInstance` CR. For example:
 
@@ -1356,7 +1322,7 @@ You can configure host hardware profiles to be applied in a hierarchy. Node-leve
           # ...
     ```
 
-    - Applies the firmware profile to all hosts in the cluster.
+    - `templateRefs` applies the firmware profile to all hosts in the cluster.
 
 5.  Optional: To apply a hardware profile to a specific host in the cluster, reference the `ConfigMap` in the `spec.nodes[].templateRefs` field. For example:
 
@@ -1379,7 +1345,7 @@ You can configure host hardware profiles to be applied in a hierarchy. Node-leve
           # ...
     ```
 
-    - Applies the firmware profile only to the `node1.example.com` host.
+    - `nodes[].templateRefs` applies the firmware profile only to the `node1.example.com` host.
 
       <div class="note">
 
@@ -1403,17 +1369,13 @@ You can configure host hardware profiles to be applied in a hierarchy. Node-leve
   $ oc get hfs -n <managed_cluster_namespace> <managed_cluster_name> -o jsonpath='{.status.conditions[?(@.type=="Valid")].status}'
   ```
 
-  - where `<managed_cluster_namespace>` is the namespace of the managed cluster and `<managed_cluster_name>` is the name of the managed cluster.
+- `<managed_cluster_namespace>` is the namespace of the managed cluster and `<managed_cluster_name>` is the name of the managed cluster.
 
-    <div class="formalpara-title">
+  The following example output shows valid firmware settings:
 
-    **Example output**
-
-    </div>
-
-    ``` terminal
-    True
-    ```
+  ``` terminal
+  True
+  ```
 
 # Monitoring managed cluster installation progress
 
@@ -1423,15 +1385,7 @@ The Argo CD pipeline syncs the `ClusterInstance` CR from the Git repository to t
 
 - You have logged in to the hub cluster as a user with `cluster-admin` privileges.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-When the synchronization is complete, the installation generally proceeds as follows:
-
-1.  The Assisted Service Operator installs OpenShift Container Platform on the cluster. You can monitor the progress of cluster installation from the RHACM dashboard or from the command line by running the following commands:
+1.  Monitor the progress of cluster installation by running the following commands:
 
     1.  Export the cluster name:
 
@@ -1521,7 +1475,7 @@ You can remove a managed site and the associated installation and configuration 
 
 4.  Optional: If you want to remove a site temporarily, for example when redeploying a site, you can leave the `ClusterInstance` and site-specific `PolicyGenerator` or `PolicyGentemplate` CRs in the Git repository.
 
-- [Removing a cluster from management](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.9/html/clusters/cluster_mce_overview#remove-managed-cluster).
+- [Removing a cluster from management](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.9/html/clusters/cluster_mce_overview#remove-managed-cluster)
 
 - [Deprovisioning clusters](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/multicluster_engine_operator_with_red_hat_advanced_cluster_management/ibio-intro#deprovision-clusters)
 

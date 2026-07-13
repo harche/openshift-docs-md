@@ -794,23 +794,34 @@ You can install single-node OpenShift with z/VM on IBM Z and IBM LinuxONE.
       <ssh_key>
     ```
 
-    - Add the cluster domain name.
+    where:
 
-    - Set the `compute` replicas to `0`. This makes the control plane node schedulable.
+    `baseDomain`
+    Specifies the cluster domain name.
 
-    - Set the `controlPlane` replicas to `1`. In conjunction with the previous `compute` setting, this setting ensures the cluster runs on a single node.
+    `compute.replicas`
+    Specifies the `compute` replicas to `0`. This makes the control plane node schedulable.
 
-    - Set the `metadata` name to the cluster name.
+    `controlPlane.replicas`
+    Specifies the `controlPlane` replicas to `1`. In conjunction with the previous `compute` setting, this setting ensures the cluster runs on a single node.
 
-    - Set the `networking` details. OVN-Kubernetes is the only allowed network plugin type for single-node clusters.
+    `metadata.name`
+    Specifies the cluster name.
 
-    - Set the `cidr` value to match the subnet of the single-node OpenShift cluster.
+    `networking`
+    Specifies the `networking` details. OVN-Kubernetes is the only allowed network plugin type for single-node clusters.
 
-    - Set the path to the installation disk drive, for example, `/dev/disk/by-id/wwn-0x64cd98f04fde100024684cf3034da5c2`.
+    `machineNetwork.cidr`
+    Specifies the `cidr` value to match the subnet of the single-node OpenShift cluster.
 
-    - Copy the [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret) and add the contents to this configuration setting.
+    `bootstrapInPlace.installationDisk`
+    Specifies the path to the installation disk drive, for example, `/dev/disk/by-id/wwn-0x64cd98f04fde100024684cf3034da5c2`.
 
-    - Add the public SSH key from the administration host so that you can log in to the cluster after installation.
+    `pullSecret`
+    Specifies the `pullSecret` parameter. Copy the [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret) and add the contents to this configuration setting.
+
+    `sshKey`
+    Specifies the `sshKey` parameter. Add the public SSH key from the administration host so that you can log in to the cluster after installation.
 
 6.  Generate OpenShift Container Platform assets by running the following commands:
 
@@ -888,7 +899,7 @@ You can install single-node OpenShift with z/VM on IBM Z and IBM LinuxONE.
 
     - For installations on FCP-type disks, use `rd.zfcp=<adapter>,<wwpn>,<lun>` to specify the FCP disk where RHCOS is to be installed. Omit this entry for DASD-type disks.
 
-      Leave all other parameters unchanged.
+    Leave all other parameters unchanged.
 
 10. Transfer the following artifacts, files, and images to z/VM. For example by using FTP:
 
@@ -916,19 +927,13 @@ You can install single-node OpenShift with z/VM on IBM Z and IBM LinuxONE.
         $ cp i <devno> clear loadparm prompt
         ```
 
-        where:
-
-        `<devno>`
-        Specifies the device number of the boot device as seen by the guest.
+        Replace `<devno>` with the device number of the boot device as seen by the guest.
 
         ``` terminal
         $ cp vi vmsg 0 <kernel_parameters>
         ```
 
-        where:
-
-        `<kernel_parameters>`
-        Specifies a set of kernel parameters to be stored as system control program data (SCPDATA). When booting Linux, these kernel parameters are concatenated to the end of the existing kernel parameters that are used by your boot configuration. The combined parameter string must not exceed 896 characters.
+        Replace `<kernel_parameters>` with a set of kernel parameters to be stored as system control program data (SCPDATA). When booting Linux, these kernel parameters are concatenated to the end of the existing kernel parameters that are used by your boot configuration. The combined parameter string must not exceed 896 characters.
 
     2.  To boot an FCP device after first reboot, run the following commands:
 
@@ -936,19 +941,13 @@ You can install single-node OpenShift with z/VM on IBM Z and IBM LinuxONE.
         $ cp set loaddev portname <wwpn> lun <lun>
         ```
 
-        where:
-
-        `<wwpn>`
-        Specifies the target port and `<lun>` the logical unit in hexadecimal format.
+        Replace `<wwpn>` with the target port and `<lun>` with the logical unit in hexadecimal format.
 
         ``` terminal
         $ cp set loaddev bootprog <n>
         ```
 
-        where:
-
-        `<n>`
-        Specifies the kernel to be booted.
+        Replace `<n>` with the kernel to be booted.
 
         ``` terminal
         $ cp set loaddev scpdata {APPEND|NEW} '<kernel_parameters>'
@@ -979,12 +978,11 @@ You can install single-node OpenShift with z/VM on IBM Z and IBM LinuxONE.
         $ cp i <devno>
         ```
 
-        where:
-
-        `<devno>`
-        Specifies the device number of the boot device as seen by the guest.
+        Replace `<devno>` with the device number of the boot device as seen by the guest.
 
 ## Installing single-node OpenShift with RHEL KVM on IBM Z and IBM LinuxONE
+
+You can install single-node OpenShift with with RHEL KVM on IBM Z and IBM LinuxONE.
 
 - You have installed `podman`.
 
@@ -994,7 +992,7 @@ You can install single-node OpenShift with z/VM on IBM Z and IBM LinuxONE.
     $ OCP_VERSION=<ocp_version>
     ```
 
-    - Replace `<ocp_version>` with the current version. For example, `latest-4.17`.
+    Replace `<ocp_version>` with the current version. For example, `latest-4.17`.
 
 2.  Set the host architecture by running the following command:
 
@@ -1002,7 +1000,7 @@ You can install single-node OpenShift with z/VM on IBM Z and IBM LinuxONE.
     $ ARCH=<architecture>
     ```
 
-    - Replace `<architecture>` with the target host architecture `s390x`.
+    Replace `<architecture>` with the target host architecture `s390x`.
 
 3.  Download the OpenShift Container Platform client (`oc`) and make it available for use by entering the following commands:
 
@@ -1063,23 +1061,34 @@ You can install single-node OpenShift with z/VM on IBM Z and IBM LinuxONE.
       <ssh_key>
     ```
 
-    - Add the cluster domain name.
+    where:
 
-    - Set the `compute` replicas to `0`. This makes the control plane node schedulable.
+    `baseDomain`
+    Specifies the cluster domain name.
 
-    - Set the `controlPlane` replicas to `1`. In conjunction with the previous `compute` setting, this setting ensures the cluster runs on a single node.
+    `compute.replicas`
+    Specifies the `compute` replicas to `0`. This makes the control plane node schedulable.
 
-    - Set the `metadata` name to the cluster name.
+    `controlPlane.replicas`
+    Specifies the `controlPlane` replicas to `1`. In conjunction with the previous `compute` setting, this setting ensures the cluster runs on a single node.
 
-    - Set the `networking` details. OVN-Kubernetes is the only allowed network plugin type for single-node clusters.
+    `metadata.name`
+    Specifies the cluster name.
 
-    - Set the `cidr` value to match the subnet of the single-node OpenShift cluster.
+    `networking`
+    Specifies the `networking` details. OVN-Kubernetes is the only allowed network plugin type for single-node clusters.
 
-    - Set the path to the installation disk drive, for example, `/dev/disk/by-id/wwn-0x64cd98f04fde100024684cf3034da5c2`.
+    `machineNetwork.cidr`
+    Specifies the `cidr` value to match the subnet of the single-node OpenShift cluster.
 
-    - Copy the [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret) and add the contents to this configuration setting.
+    `bootstrapInPlace.installationDisk`
+    Specifies the path to the installation disk drive, for example, `/dev/disk/by-id/wwn-0x64cd98f04fde100024684cf3034da5c2`.
 
-    - Add the public SSH key from the administration host so that you can log in to the cluster after installation.
+    `pullSecret`
+    Specifies the `pullSecret` parameter. Copy the [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret) and add the contents to this configuration setting.
+
+    `sshKey`
+    Specifies the `sshKey` parameter. Add the public SSH key from the administration host so that you can log in to the cluster after installation.
 
 6.  Generate OpenShift Container Platform assets by running the following commands:
 
@@ -1130,36 +1139,38 @@ You can install single-node OpenShift with z/VM on IBM Z and IBM LinuxONE.
 
     - Adjusted parm line arguments
 
-``` terminal
-$ virt-install \
-   --name <vm_name> \
-   --autostart \
-   --memory=<memory_mb> \
-   --cpu host \
-   --vcpus <vcpus> \
-   --location <media_location>,kernel=<rhcos_kernel>,initrd=<rhcos_initrd> \
-   --disk size=100 \
-   --network network=<virt_network_parm> \
-   --graphics none \
-   --noautoconsole \
-   --extra-args "rd.neednet=1 ignition.platform.id=metal ignition.firstboot" \
-   --extra-args "ignition.config.url=http://<http_server>/bootstrap.ign" \
-   --extra-args "coreos.live.rootfs_url=http://<http_server>/rhcos-<version>-live-rootfs.<architecture>.img" \
-   --extra-args "ip=<ip>::<gateway>:<mask>:<hostname>::none" \
-   --extra-args "nameserver=<dns>" \
-   --extra-args "console=ttysclp0" \
-   --wait
-```
+    ``` terminal
+    $ virt-install \
+       --name <vm_name> \
+       --autostart \
+       --memory=<memory_mb> \
+       --cpu host \
+       --vcpus <vcpus> \
+       --location <media_location>,kernel=<rhcos_kernel>,initrd=<rhcos_initrd> \
+       --disk size=100 \
+       --network network=<virt_network_parm> \
+       --graphics none \
+       --noautoconsole \
+       --extra-args "rd.neednet=1 ignition.platform.id=metal ignition.firstboot" \
+       --extra-args "ignition.config.url=http://<http_server>/bootstrap.ign" \
+       --extra-args "coreos.live.rootfs_url=http://<http_server>/rhcos-<version>-live-rootfs.<architecture>.img" \
+       --extra-args "ip=<ip>::<gateway>:<mask>:<hostname>::none" \
+       --extra-args "nameserver=<dns>" \
+       --extra-args "console=ttysclp0" \
+       --wait
+    ```
 
-- For the `--location` parameter, specify the location of the kernel/initrd on the HTTP or HTTPS server.
+    - For the `--location` parameter, specify the location of the kernel/initrd on the HTTP or HTTPS server.
 
-- Specify the location of the `bootstrap.ign` config file. Only HTTP and HTTPS protocols are supported.
+    - For the `ignition.config.url=` artifact, specify the location of the `bootstrap.ign` config file. Only HTTP and HTTPS protocols are supported.
 
-- For the `coreos.live.rootfs_url=` artifact, specify the matching `rootfs` artifact for the `kernel` and `initramfs` you are booting. Only HTTP and HTTPS protocols are supported.
+    - For the `coreos.live.rootfs_url=` artifact, specify the matching `rootfs` artifact for the `kernel` and `initramfs` you are booting. Only HTTP and HTTPS protocols are supported.
 
-- For the `ip=` parameter, assign the IP address manually as described in "Installing a cluster with RHEL KVM on IBM Z® and IBM® LinuxONE".
+    - For the `ip=` parameter, assign the IP address manually as described in "Installing a cluster with RHEL KVM on IBM Z® and IBM® LinuxONE".
 
 ## Installing single-node OpenShift in an LPAR on IBM Z and IBM LinuxONE
+
+You can install single-node OpenShift in an LPAR on IBM Z and IBM LinuxONE.
 
 - If you are deploying a single-node cluster there are zero compute nodes, the Ingress Controller pods run on the control plane nodes. In single-node cluster deployments, you must configure your application ingress load balancer to route HTTP and HTTPS traffic to the control plane nodes. See the *Load balancing requirements for user-provisioned infrastructure* section for more information.
 
@@ -1169,7 +1180,7 @@ $ virt-install \
     $ OCP_VERSION=<ocp_version>
     ```
 
-    - Replace `<ocp_version>` with the current version. For example, `latest-4.17`.
+    Replace `<ocp_version>` with the current version. For example, `latest-4.17`.
 
 2.  Set the host architecture by running the following command:
 
@@ -1177,7 +1188,7 @@ $ virt-install \
     $ ARCH=<architecture>
     ```
 
-    - Replace `<architecture>` with the target host architecture `s390x`.
+    Replace `<architecture>` with the target host architecture `s390x`.
 
 3.  Download the OpenShift Container Platform client (`oc`) and make it available for use by entering the following commands:
 
@@ -1236,21 +1247,31 @@ $ virt-install \
       <ssh_key>
     ```
 
-    - Add the cluster domain name.
+    where:
 
-    - Set the `compute` replicas to `0`. This makes the control plane node schedulable.
+    `baseDomain`
+    Specifies the cluster domain name.
 
-    - Set the `controlPlane` replicas to `1`. In conjunction with the previous `compute` setting, this setting ensures the cluster runs on a single node.
+    `compute.replicas`
+    Specifies the `compute` replicas to `0`. This makes the control plane node schedulable.
 
-    - Set the `metadata` name to the cluster name.
+    `controlPlane.replicas`
+    Specifies the `controlPlane` replicas to `1`. In conjunction with the previous `compute` setting, this setting ensures the cluster runs on a single node.
 
-    - Set the `networking` details. OVN-Kubernetes is the only allowed network plugin type for single-node clusters.
+    `metadata.name`
+    Specifies the cluster name.
 
-    - Set the `cidr` value to match the subnet of the single-node OpenShift cluster.
+    `networking`
+    Specifies the `networking` details. OVN-Kubernetes is the only allowed network plugin type for single-node clusters.
 
-    - Copy the [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret) and add the contents to this configuration setting.
+    `machineNetwork.cidr`
+    Specifies the `cidr` value to match the subnet of the single-node OpenShift cluster.
 
-    - Add the public SSH key from the administration host so that you can log in to the cluster after installation.
+    `pullSecret`
+    Specifies the `pullSecret` parameter. Copy the [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret) and add the contents to this configuration setting.
+
+    `sshKey`
+    Specifies the `sshKey` parameter. Add the public SSH key from the administration host so that you can log in to the cluster after installation.
 
 6.  Generate OpenShift Container Platform assets by running the following commands:
 
@@ -1268,7 +1289,7 @@ $ virt-install \
     $ ./openshift-install create manifests --dir <installation_directory>
     ```
 
-    - For `<installation_directory>`, specify the installation directory that contains the `install-config.yaml` file you created.
+    Replace `<installation_directory>` with the installation directory that contains the `install-config.yaml` file you created.
 
 8.  Check that the `mastersSchedulable` parameter in the `<installation_directory>/manifests/cluster-scheduler-02-config.yml` Kubernetes manifest file is set to `true`.
 
@@ -1290,7 +1311,7 @@ $ virt-install \
     $ ./openshift-install create ignition-configs --dir <installation_directory>
     ```
 
-    - For `<installation_directory>`, specify the same installation directory.
+    Replace `<installation_directory>` with the same installation directory.
 
 10. Obtain the RHEL `kernel`, `initramfs`, and `rootfs` artifacts from the [Product Downloads](https://access.redhat.com/downloads/content/290) page on the Red Hat Customer Portal or from the [RHCOS image mirror](https://mirror.openshift.com/pub/openshift-v4/s390x/dependencies/rhcos/latest/) page.
 
@@ -1344,9 +1365,9 @@ $ virt-install \
     zfcp.allow_lun_scan=0
     ```
 
-    - Specify the block device on the system to install to. For installations on DASD-type disk use `dasda`, for installations on FCP-type disks use `sda`.
+    - For the `coreos.inst.install_dev=` artifact, specify the block device on the system to install to. For installations on DASD-type disk use `dasda`, for installations on FCP-type disks use `sda`.
 
-    - Specify the location of the `bootstrap.ign` config file. Only HTTP and HTTPS protocols are supported.
+    - For the `coreos.inst.ignition_url=` artifact, specify the location of the `bootstrap.ign` config file. Only HTTP and HTTPS protocols are supported.
 
     - For the `coreos.live.rootfs_url=` artifact, specify the matching `rootfs` artifact for the `` kernel`and `initramfs `` you are booting. Only HTTP and HTTPS protocols are supported.
 
@@ -1379,7 +1400,7 @@ $ virt-install \
     zfcp.allow_lun_scan=0
     ```
 
-    - Specify the location of the `master.ign` config file. Only HTTP and HTTPS protocols are supported.
+    For the `coreos.inst.ignition_url=` artifact, specify the location of the `master.ign` config file. Only HTTP and HTTPS protocols are supported.
 
 14. Transfer the following artifacts, files, and images to the LPAR. For example by using FTP:
 
@@ -1423,7 +1444,9 @@ You can use dedicated or shared IFLs to assign sufficient compute resources. Res
 
 ## Setting up bastion for single-node OpenShift with IBM Power
 
-Prior to installing single-node OpenShift on IBM Power®, you must set up bastion. Setting up a bastion server for single-node OpenShift on IBM Power® requires the configuration of the following services:
+Before installing single-node OpenShift on IBM Power®, you must set up bastion.
+
+Setting up a bastion server for single-node OpenShift on IBM Power® requires the configuration of the following services:
 
 - PXE is used for the single-node OpenShift cluster installation. PXE requires the following services to be configured and run:
 
@@ -1548,23 +1571,34 @@ Use the following procedure to configure a bastion server that meets these requi
           <ssh_key>
         ```
 
-        - Add the cluster domain name.
+        where:
 
-        - Set the `compute` replicas to `0`. This makes the control plane node schedulable.
+        `baseDomain`
+        Specifies the cluster domain name.
 
-        - Set the `controlPlane` replicas to `1`. In conjunction with the previous `compute` setting, this setting ensures that the cluster runs on a single node.
+        `compute.replicas`
+        Specifies the `compute` replicas to `0`. This makes the control plane node schedulable.
 
-        - Set the `metadata` name to the cluster name.
+        `controlPlane.replicas`
+        Specifies the `controlPlane` replicas to `1`. In conjunction with the previous `compute` setting, this setting ensures the cluster runs on a single node.
 
-        - Set the `networking` details. OVN-Kubernetes is the only allowed network plugin type for single-node clusters.
+        `metadata.name`
+        Specifies the cluster name.
 
-        - Set the `cidr` value to match the subnet of the single-node OpenShift cluster.
+        `networking`
+        Specifies the `networking` details. OVN-Kubernetes is the only allowed network plugin type for single-node clusters.
 
-        - Set the path to the installation disk drive, for example, `/dev/disk/by-id/wwn-0x64cd98f04fde100024684cf3034da5c2`.
+        `machineNetwork.cidr`
+        Specifies the `cidr` value to match the subnet of the single-node OpenShift cluster.
 
-        - Copy the [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret) and add the contents to this configuration setting.
+        `bootstrapInPlace.installationDisk`
+        Specifies the path to the installation disk drive, for example, `/dev/disk/by-id/wwn-0x64cd98f04fde100024684cf3034da5c2`.
 
-        - Add the public SSH key from the administration host so that you can log in to the cluster after installation.
+        `pullSecret`
+        Specifies the `pullSecret` parameter. Copy the [pull secret from Red Hat OpenShift Cluster Manager](https://console.redhat.com/openshift/install/pull-secret) and add the contents to this configuration setting.
+
+        `sshKey`
+        Specifies the `sshKey` parameter. Add the public SSH key from the administration host so that you can log in to the cluster after installation.
 
 4.  Download the `openshift-install` image to create the ignition file and copy it to the `http` directory.
 
@@ -1602,15 +1636,11 @@ Use the following procedure to configure a bastion server that meets these requi
 
 ## Installing single-node OpenShift with IBM Power
 
-- You have set up bastion.
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
+You can install single-node OpenShift with IBM Power.
 
 There are two steps for the single-node OpenShift cluster installation. First the single-node OpenShift logical partition (LPAR) needs to boot up with PXE, then you need to monitor the installation progress.
+
+- You have set up bastion.
 
 1.  Use the following command to boot powerVM with netboot:
 

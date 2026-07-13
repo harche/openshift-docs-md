@@ -36,91 +36,111 @@ spec:
   excludeTopology: false
 ```
 
-- The name for the custom resource object.
+where:
 
-- The namespace where the SR-IOV Network Operator is installed.
+`metadata.name`
+Specifies the name for the custom resource object.
 
-- The resource name of the SR-IOV network device plugin. You can create multiple SR-IOV network node policies for a resource name.
+`metadata.namespace`
+Specifies the namespace where the SR-IOV Network Operator is installed.
 
-  When specifying a name, be sure to use the accepted syntax expression `^[a-zA-Z0-9_]+$` in the `resourceName`.
+`spec.resourceName`
+Specifies the resource name of the SR-IOV network device plugin. You can create multiple SR-IOV network node policies for a resource name. When specifying a name, be sure to use the accepted syntax expression `^[a-zA-Z0-9_]+$`.
 
-- The node selector specifies the nodes to configure. Only SR-IOV network devices on the selected nodes are configured. The SR-IOV Container Network Interface (CNI) plugin and device plugin are deployed on selected nodes only.
+`spec.nodeSelector`
+Specifies the nodes to configure. Only SR-IOV network devices on the selected nodes are configured. The SR-IOV Container Network Interface (CNI) plugin and device plugin are deployed on selected nodes only.
 
-  <div class="important">
+<div class="important">
 
-  The SR-IOV Network Operator applies node network configuration policies to nodes in sequence. Before applying node network configuration policies, the SR-IOV Network Operator checks if the machine config pool (MCP) for a node is in an unhealthy state such as `Degraded` or `Updating`. If a node is in an unhealthy MCP, the process of applying node network configuration policies to all targeted nodes in the cluster pauses until the MCP returns to a healthy state.
+The SR-IOV Network Operator applies node network configuration policies to nodes in sequence. Before applying node network configuration policies, the SR-IOV Network Operator checks if the machine config pool (MCP) for a node is in an unhealthy state such as `Degraded` or `Updating`. If a node is in an unhealthy MCP, the process of applying node network configuration policies to all targeted nodes in the cluster pauses until the MCP returns to a healthy state.
 
-  To avoid a node in an unhealthy MCP from blocking the application of node network configuration policies to other nodes, including nodes in other MCPs, you must create a separate node network configuration policy for each MCP.
+To avoid a node in an unhealthy MCP from blocking the application of node network configuration policies to other nodes, including nodes in other MCPs, you must create a separate node network configuration policy for each MCP.
 
-  </div>
+</div>
 
-- Optional: The priority is an integer value between `0` and `99`. A smaller value receives higher priority. For example, a priority of `10` is a higher priority than `99`. The default value is `99`.
+`spec.priority`
+Optional: Specifies the priority as an integer value between `0` and `99`. A smaller value receives higher priority. For example, a priority of `10` is a higher priority than `99`. The default value is `99`.
 
-- Optional: The maximum transmission unit (MTU) of the physical function and all its virtual functions. The maximum MTU value can vary for different network interface controller (NIC) models.
+`spec.mtu`
+Optional: Specifies the maximum transmission unit (MTU) of the physical function and all its virtual functions. The maximum MTU value can vary for different network interface controller (NIC) models.
 
-  <div class="important">
+<div class="important">
 
-  If you want to create virtual function on the default network interface, ensure that the MTU is set to a value that matches the cluster MTU.
+If you want to create virtual function on the default network interface, ensure that the MTU is set to a value that matches the cluster MTU.
 
-  If you want to modify the MTU of a single virtual function while the function is assigned to a pod, leave the MTU value blank in the SR-IOV network node policy. Otherwise, the SR-IOV Network Operator reverts the MTU of the virtual function to the MTU value defined in the SR-IOV network node policy, which might trigger a node drain.
+If you want to modify the MTU of a single virtual function while the function is assigned to a pod, leave the MTU value blank in the SR-IOV network node policy. Otherwise, the SR-IOV Network Operator reverts the MTU of the virtual function to the MTU value defined in the SR-IOV network node policy, which might trigger a node drain.
 
-  </div>
+</div>
 
-- Optional: Set `needVhostNet` to `true` to mount the `/dev/vhost-net` device in the pod. Use the mounted `/dev/vhost-net` device with Data Plane Development Kit (DPDK) to forward traffic to the kernel network stack.
+`spec.needVhostNet`
+Optional: Set to `true` to mount the `/dev/vhost-net` device in the pod. Use the mounted `/dev/vhost-net` device with Data Plane Development Kit (DPDK) to forward traffic to the kernel network stack.
 
-- The number of the virtual functions (VF) to create for the SR-IOV physical network device. For an Intel network interface controller (NIC), the number of VFs cannot be larger than the total VFs supported by the device. For a Mellanox NIC, the number of VFs cannot be larger than `127`.
+`spec.numVfs`
+Specifies the number of the virtual functions (VF) to create for the SR-IOV physical network device. For an Intel network interface controller (NIC), the number of VFs cannot be larger than the total VFs supported by the device. For a Mellanox NIC, the number of VFs cannot be larger than `127`.
 
-- The `externallyManaged` field indicates whether the SR-IOV Network Operator manages all, or only a subset of virtual functions (VFs). With the value set to `false` the SR-IOV Network Operator manages and configures all VFs on the PF.
+`spec.externallyManaged`
+Indicates whether the SR-IOV Network Operator manages all, or only a subset of virtual functions (VFs). With the value set to `false` the SR-IOV Network Operator manages and configures all VFs on the PF.
 
-  <div class="note">
+<div class="note">
 
-  When `externallyManaged` is set to `true`, you must manually create the Virtual Functions (VFs) on the physical function (PF) before applying the `SriovNetworkNodePolicy` resource. If the VFs are not pre-created, the SR-IOV Network Operator’s webhook will block the policy request.
+When `externallyManaged` is set to `true`, you must manually create the Virtual Functions (VFs) on the physical function (PF) before applying the `SriovNetworkNodePolicy` resource. If the VFs are not pre-created, the SR-IOV Network Operator’s webhook will block the policy request.
 
-  When `externallyManaged` is set to `false`, the SR-IOV Network Operator automatically creates and manages the VFs, including resetting them if necessary.
+When `externallyManaged` is set to `false`, the SR-IOV Network Operator automatically creates and manages the VFs, including resetting them if necessary.
 
-  To use VFs on the host system, you must create them through NMState, and set `externallyManaged` to `true`. In this mode, the SR-IOV Network Operator does not modify the PF or the manually managed VFs, except for those explicitly defined in the `nicSelector` field of your policy. However, the SR-IOV Network Operator continues to manage VFs that are used as pod secondary interfaces.
+To use VFs on the host system, you must create them through NMState, and set `externallyManaged` to `true`. In this mode, the SR-IOV Network Operator does not modify the PF or the manually managed VFs, except for those explicitly defined in the `nicSelector` field of your policy. However, the SR-IOV Network Operator continues to manage VFs that are used as pod secondary interfaces.
 
-  </div>
+</div>
 
-- The NIC selector identifies the device to which this resource applies. You do not have to specify values for all the parameters. It is recommended to identify the network device with enough precision to avoid selecting a device unintentionally.
+`spec.nicSelector`
+Identifies the device to which this resource applies. You do not have to specify values for all the parameters. It is recommended to identify the network device with enough precision to avoid selecting a device unintentionally.
 
-  If you specify `rootDevices`, you must also specify a value for `vendor`, `deviceID`, or `pfNames`. If you specify both `pfNames` and `rootDevices` at the same time, ensure that they refer to the same device. If you specify a value for `netFilter`, then you do not need to specify any other parameter because a network ID is unique.
+If you specify `rootDevices`, you must also specify a value for `vendor`, `deviceID`, or `pfNames`. If you specify both `pfNames` and `rootDevices` at the same time, ensure that they refer to the same device. If you specify a value for `netFilter`, then you do not need to specify any other parameter because a network ID is unique.
 
-- Optional: The vendor hexadecimal vendor identifier of the SR-IOV network device. The only allowed values are `8086` (Intel) and `15b3` (Mellanox).
+`spec.nicSelector.vendor`
+Optional: Specifies the vendor hexadecimal identifier of the SR-IOV network device. The only allowed values are `8086` (Intel) and `15b3` (Mellanox).
 
-- Optional: The device hexadecimal device identifier of the SR-IOV network device. For example, `101b` is the device ID for a Mellanox ConnectX-6 device.
+`spec.nicSelector.deviceID`
+Optional: Specifies the device hexadecimal identifier of the SR-IOV network device. For example, `101b` is the device ID for a Mellanox ConnectX-6 device.
 
-- Optional: An array of one or more physical function (PF) names the resource must apply to.
+`spec.nicSelector.pfNames`
+Optional: Specifies an array of one or more physical function (PF) names the resource must apply to.
 
-- Optional: An array of one or more PCI bus addresses the resource must apply to. For example `0000:02:00.1`.
+`spec.nicSelector.rootDevices`
+Optional: Specifies an array of one or more PCI bus addresses the resource must apply to. For example `0000:02:00.1`.
 
-- Optional: The platform-specific network filter. The only supported platform is Red Hat OpenStack Platform (RHOSP). Acceptable values use the following format: `openstack/NetworkID:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`. Replace `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` with the value from the `/var/config/openstack/latest/network_data.json` metadata file. This filter ensures that VFs are associated with a specific OpenStack network. The operator uses this filter to map the VFs to the appropriate network based on metadata provided by the OpenStack platform.
+`spec.nicSelector.netFilter`
+Optional: Specifies the platform-specific network filter. The only supported platform is Red Hat OpenStack Platform (RHOSP). Acceptable values use the following format: `openstack/NetworkID:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`. Replace `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` with the value from the `/var/config/openstack/latest/network_data.json` metadata file. This filter ensures that VFs are associated with a specific OpenStack network. The operator uses this filter to map the VFs to the appropriate network based on metadata provided by the OpenStack platform.
 
-- Optional: The driver to configure for the VFs created from this resource. The only allowed values are `netdevice` and `vfio-pci`. The default value is `netdevice`.
+`spec.deviceType`
+Optional: Specifies the driver to configure for the VFs created from this resource. The only allowed values are `netdevice` and `vfio-pci`. The default value is `netdevice`.
 
-  For a Mellanox NIC to work in DPDK mode on bare metal nodes, use the `netdevice` driver type and set `isRdma` to `true`.
+For a Mellanox NIC to work in DPDK mode on bare-metal nodes, use the `netdevice` driver type and set `isRdma` to `true`.
 
-- Optional: Configures whether to enable remote direct memory access (RDMA) mode. The default value is `false`.
+`spec.isRdma`
+Optional: Configures whether to enable remote direct memory access (RDMA) mode. The default value is `false`.
 
-  If the `isRdma` parameter is set to `true`, you can continue to use the RDMA-enabled VF as a normal network device. A device can be used in either mode.
+If the `isRdma` parameter is set to `true`, you can continue to use the RDMA-enabled VF as a normal network device. A device can be used in either mode.
 
-  Set `isRdma` to `true` and additionally set `needVhostNet` to `true` to configure a Mellanox NIC for use with Fast Datapath DPDK applications.
+Set `isRdma` to `true` and additionally set `needVhostNet` to `true` to configure a Mellanox NIC for use with Fast data path DPDK applications.
 
-  <div class="note">
+<div class="note">
 
-  You cannot set the `isRdma` parameter to `true` for intel NICs.
+You cannot set the `isRdma` parameter to `true` for Intel NICs.
 
-  </div>
+</div>
 
-- Optional: The link type for the VFs. The default value is `eth` for Ethernet. Change this value to 'ib' for InfiniBand.
+`spec.linkType`
+Optional: Specifies the link type for the VFs. The default value is `eth` for Ethernet. Change this value to 'ib' for InfiniBand.
 
-  When `linkType` is set to `ib`, `isRdma` is automatically set to `true` by the SR-IOV Network Operator webhook. When `linkType` is set to `ib`, `deviceType` should not be set to `vfio-pci`.
+When `linkType` is set to `ib`, `isRdma` is automatically set to `true` by the SR-IOV Network Operator webhook. When `linkType` is set to `ib`, `deviceType` should not be set to `vfio-pci`.
 
-  Do not set linkType to `eth` for SriovNetworkNodePolicy, because this can lead to an incorrect number of available devices reported by the device plugin.
+Do not set `linkType` to `eth` for `SriovNetworkNodePolicy`, because this can lead to an incorrect number of available devices reported by the device plugin.
 
-- Optional: To enable hardware offloading, you must set the `eSwitchMode` field to `"switchdev"`. For more information about hardware offloading, see "Configuring hardware offloading".
+`spec.eSwitchMode`
+Optional: Set to `"switchdev"` to enable hardware offloading. For more information about hardware offloading, see "Configuring hardware offloading".
 
-- Optional: To exclude advertising an SR-IOV network resource’s NUMA node to the Topology Manager, set the value to `true`. The default value is `false`.
+`spec.excludeTopology`
+Optional: Set to `true` to exclude advertising an SR-IOV network resource’s NUMA node to the Topology Manager. The default value is `false`.
 
 ## SR-IOV network node configuration examples
 
@@ -279,9 +299,9 @@ The number of virtual functions in the firmware is the maximum number of virtual
     $ mstconfig -d -0001:b1:00.1 set SRIOV_EN=1 NUM_OF_VFS=16
     ```
 
-    - The `SRIOV_EN` environment variable enables the SR-IOV Network Operator support on the Mellanox card.
+    - `SRIOV_EN=1` enables the SR-IOV Network Operator support on the Mellanox card.
 
-    - The `NUM_OF_VFS` environment variable specifies the number of virtual functions to enable in the firmware.
+    - `NUM_OF_VFS=16` specifies the number of virtual functions to enable in the firmware.
 
 2.  Configure the SR-IOV Network Operator by disabling the Mellanox plugin. See the following `SriovOperatorConfig` example configuration:
 
@@ -310,11 +330,7 @@ The number of virtual functions in the firmware is the maximum number of virtual
     $ oc -n openshift-sriov-network-operator get sriovnetworknodestate.sriovnetwork.openshift.io worker-0 -oyaml
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following is example output:
 
     ``` yaml
     - deviceID: 101d
@@ -415,30 +431,28 @@ spec:
   deviceType: vfio-pci
 ```
 
-- Confirm that the interface partitioned to virtual functions (VFs) for the SR-IOV device by running the following command.
+### Verifying that the interface is successfully partitioned
 
-  ``` terminal
-  $ ip link show <interface>
-  ```
+Confirm that the interface partitioned to virtual functions (VFs) for the SR-IOV device by running the following command:
 
-  - Replace `<interface>` with the interface that you specified when partitioning to VFs for the SR-IOV device, for example, `ens3f1`.
+``` terminal
+$ ip link show <interface>
+```
 
-    <div class="formalpara-title">
+`<interface>` specifies the interface that you specified when partitioning to VFs for the SR-IOV device, for example, `ens3f1`.
 
-    **Example output**
+The following is example output:
 
-    </div>
+``` terminal
+5: ens3f1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
+link/ether 3c:fd:fe:d1:bc:01 brd ff:ff:ff:ff:ff:ff
 
-    ``` terminal
-    5: ens3f1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
-    link/ether 3c:fd:fe:d1:bc:01 brd ff:ff:ff:ff:ff:ff
-
-    vf 0     link/ether 5a:e7:88:25:ea:a0 brd ff:ff:ff:ff:ff:ff, spoof checking on, link-state auto, trust off
-    vf 1     link/ether 3e:1d:36:d7:3d:49 brd ff:ff:ff:ff:ff:ff, spoof checking on, link-state auto, trust off
-    vf 2     link/ether ce:09:56:97:df:f9 brd ff:ff:ff:ff:ff:ff, spoof checking on, link-state auto, trust off
-    vf 3     link/ether 5e:91:cf:88:d1:38 brd ff:ff:ff:ff:ff:ff, spoof checking on, link-state auto, trust off
-    vf 4     link/ether e6:06:a1:96:2f:de brd ff:ff:ff:ff:ff:ff, spoof checking on, link-state auto, trust off
-    ```
+vf 0     link/ether 5a:e7:88:25:ea:a0 brd ff:ff:ff:ff:ff:ff, spoof checking on, link-state auto, trust off
+vf 1     link/ether 3e:1d:36:d7:3d:49 brd ff:ff:ff:ff:ff:ff, spoof checking on, link-state auto, trust off
+vf 2     link/ether ce:09:56:97:df:f9 brd ff:ff:ff:ff:ff:ff, spoof checking on, link-state auto, trust off
+vf 3     link/ether 5e:91:cf:88:d1:38 brd ff:ff:ff:ff:ff:ff, spoof checking on, link-state auto, trust off
+vf 4     link/ether e6:06:a1:96:2f:de brd ff:ff:ff:ff:ff:ff, spoof checking on, link-state auto, trust off
+```
 
 ## A test pod template for clusters that use SR-IOV on OpenStack
 
@@ -661,13 +675,13 @@ You can create a NUMA aligned SR-IOV pod by restricting SR-IOV and the CPU resou
             cpu: "2"
     ```
 
-    - Replace `<name>` with the name of the SR-IOV network attachment definition CR.
+    - `<name>` specifies the name of the SR-IOV network attachment definition CR.
 
-    - Replace `<image>` with the name of the `sample-pod` image.
+    - `<image>` specifies the name of the `sample-pod` image.
 
     - To create the SR-IOV pod with guaranteed QoS, set `memory limits` equal to `memory requests`.
 
-    - To create the SR-IOV pod with guaranteed QoS, set `cpu limits` equals to `cpu requests`.
+    - To create the SR-IOV pod with guaranteed QoS, set `cpu limits` equal to `cpu requests`.
 
 2.  Create the sample SR-IOV pod by running the following command:
 
@@ -675,7 +689,7 @@ You can create a NUMA aligned SR-IOV pod by restricting SR-IOV and the CPU resou
     $ oc create -f <filename>
     ```
 
-    - Replace `<filename>` with the name of the file you created in the previous step.
+    - `<filename>` specifies the name of the file you created in the earlier step.
 
 3.  Confirm that the `sample-pod` is configured with guaranteed QoS.
 
@@ -709,25 +723,22 @@ After following the procedure to configure an SR-IOV network device, the followi
 
 - To display the state of nodes, run the following command:
 
-``` terminal
-$ oc get sriovnetworknodestates -n openshift-sriov-network-operator <node_name>
-```
+  ``` terminal
+  $ oc get sriovnetworknodestates -n openshift-sriov-network-operator <node_name>
+  ```
 
-where:
+  `<node_name>` specifies the name of a node with an SR-IOV network device.
 
-\<node_name\>
-Specifies the name of a node with an SR-IOV network device.
+  If the output from the command indicates "cannot allocate memory", check the following items:
 
-If the output from the command indicates "cannot allocate memory", check the following items:
+  - Confirm that global SR-IOV settings are enabled in the BIOS for the node.
 
-- Confirm that global SR-IOV settings are enabled in the BIOS for the node.
-
-- Confirm that VT-d is enabled in the BIOS for the node.
+  - Confirm that VT-d is enabled in the BIOS for the node.
 
 <!-- -->
 
 - [Using CPU Manager](../../scalability_and_performance/using-cpu-manager.xml#using-cpu-manager)
 
-# Next steps
+<!-- -->
 
 - [Configuring an SR-IOV network attachment](../../networking/hardware_networks/configuring-sriov-net-attach.xml#configuring-sriov-net-attach)

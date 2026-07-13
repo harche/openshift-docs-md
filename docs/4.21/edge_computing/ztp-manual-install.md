@@ -296,25 +296,22 @@ The secrets are referenced from the `ClusterInstance` CR by name. The namespace 
         type: kubernetes.io/dockerconfigjson
         ```
 
-        - Must match the namespace configured in the related `ClusterInstance` CR
+        where:
 
-        - Base64-encoded values for `password` and `username`
+        `namespace`
+        Must match the namespace configured in the related `ClusterInstance` CR.
 
-        - Must match the namespace configured in the related `ClusterInstance` CR
+        `password`, `username`
+        Base64-encoded values for `password` and `username`.
 
-        - Base64-encoded pull secret
+        `.dockerconfigjson`
+        Base64-encoded pull secret.
 
 2.  Add the relative path to `example-sno-secret.yaml` to the `kustomization.yaml` file that you use to install the cluster.
 
 # Configuring Discovery ISO kernel arguments for manual installations using GitOps ZTP
 
-The GitOps Zero Touch Provisioning (ZTP) workflow uses the Discovery ISO as part of the OpenShift Container Platform installation process on managed bare-metal hosts. You can edit the `InfraEnv` resource to specify kernel arguments for the Discovery ISO. This is useful for cluster installations with specific environmental requirements. For example, configure the `rd.net.timeout.carrier` kernel argument for the Discovery ISO to facilitate static networking for the cluster or to receive a DHCP address before downloading the root file system during installation.
-
-<div class="note">
-
-In OpenShift Container Platform 4.17, you can only add kernel arguments. You can not replace or delete kernel arguments.
-
-</div>
+The GitOps Zero Touch Provisioning (ZTP) workflow uses the Discovery ISO as part of the OpenShift Container Platform installation process on managed bare-metal hosts. You can edit the `InfraEnv` resource to specify kernel arguments for the Discovery ISO. This is useful for cluster installations with specific environmental requirements. For example, configure the `rd.net.timeout.carrier` kernel argument for the Discovery ISO to facilitate static networking for the cluster or to receive a DHCP address before downloading the root file system during installation. In OpenShift Container Platform 4.17, you can only add kernel arguments. You can not replace or delete kernel arguments.
 
 - You have installed the OpenShift CLI (oc).
 
@@ -324,34 +321,38 @@ In OpenShift Container Platform 4.17, you can only add kernel arguments. You can
 
 1.  Edit the `spec.kernelArguments` specification in the `InfraEnv` CR to configure kernel arguments:
 
-``` yaml
-apiVersion: agent-install.openshift.io/v1beta1
-kind: InfraEnv
-metadata:
-  name: <cluster_name>
-  namespace: <cluster_name>
-spec:
-  kernelArguments:
-    - operation: append
-      value: audit=0
-    - operation: append
-      value: trace=1
-  clusterRef:
-    name: <cluster_name>
-    namespace: <cluster_name>
-  pullSecretRef:
-    name: pull-secret
-```
+    ``` yaml
+    apiVersion: agent-install.openshift.io/v1beta1
+    kind: InfraEnv
+    metadata:
+      name: <cluster_name>
+      namespace: <cluster_name>
+    spec:
+      kernelArguments:
+        - operation: append
+          value: audit=0
+        - operation: append
+          value: trace=1
+      clusterRef:
+        name: <cluster_name>
+        namespace: <cluster_name>
+      pullSecretRef:
+        name: pull-secret
+    ```
 
-- Specify the append operation to add a kernel argument.
+    where:
 
-- Specify the kernel argument you want to configure. This example configures the audit kernel argument and the trace kernel argument.
+    `operation`
+    Specify the `append` operation to add a kernel argument.
 
-<div class="note">
+    `value`
+    Specify the kernel argument you want to configure. This example configures the `audit` kernel argument and the `trace` kernel argument.
 
-The `ClusterInstance` CR generates the `InfraEnv` resource as part of the day-0 installation CRs.
+    <div class="note">
 
-</div>
+    The `ClusterInstance` CR generates the `InfraEnv` resource as part of the day-0 installation CRs.
+
+    </div>
 
 <div class="formalpara-title">
 
@@ -398,9 +399,13 @@ You can manually deploy a single managed cluster using the assisted service and 
        releaseImage: quay.io/openshift-release-dev/ocp-release:4.17.0-x86_64
     ```
 
-    - The descriptive version that you want to deploy.
+    where:
 
-    - Specifies the `releaseImage` to deploy and determines the operating system image version. The discovery ISO is based on the image version as set by `releaseImage`, or the latest version if the exact version is unavailable.
+    `name`
+    The descriptive version that you want to deploy.
+
+    `releaseImage`
+    Specifies the `releaseImage` to deploy and determines the operating system image version. The discovery ISO is based on the image version as set by `releaseImage`, or the latest version if the exact version is unavailable.
 
 2.  Apply the `clusterImageSet` CR:
 
@@ -419,7 +424,10 @@ You can manually deploy a single managed cluster using the assisted service and 
             name: <cluster_name>
     ```
 
-    - The name of the managed cluster to provision.
+    where:
+
+    `name`
+    The name of the managed cluster to provision.
 
 4.  Apply the `Namespace` CR by running the following command:
 

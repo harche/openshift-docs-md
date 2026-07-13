@@ -353,7 +353,7 @@ The oc-mirror OpenShift CLI (`oc`) plugin creates this graph data container imag
 
 </div>
 
-1.  Create a Dockerfile, for example, `./Dockerfile`, containing the following:
+1.  Create a Dockerfile, for example, `./Dockerfile`, containing the following information:
 
     ``` terminal
     FROM registry.access.redhat.com/ubi9/ubi:latest

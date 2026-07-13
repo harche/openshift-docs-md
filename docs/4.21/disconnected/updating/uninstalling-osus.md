@@ -1,4 +1,4 @@
-To remove a local copy of the OpenShift Update Service (OSUS) from your cluster, you must first delete the OSUS application and then uninstall the OSUS Operator.
+You can remove a local copy of the OpenShift Update Service (OSUS) from your cluster. To do this, you must first delete the OSUS application and then uninstall the OSUS Operator.
 
 # Deleting an OpenShift Update Service application
 

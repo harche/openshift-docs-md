@@ -1,4 +1,8 @@
+Many Container Storage Interface (CSI) operators can actively manage default storage classes, removing manual intervention needs and avoiding accidental deletion. Proper management ensures persistent volume claims provision correctly with the appropriate storage backend for your applications.
+
 # Overview
+
+You can manage the default storage class by configuring the spec.storageClassState field in the ClusterCSIDriver object to control dynamic provisioning, prevent automatic recreation, or rename the storage class.
 
 Managing the default storage class allows you to accomplish several different objectives:
 
@@ -18,33 +22,27 @@ To accomplish these objectives, you change the setting for the `spec.storageClas
 
 Managing the default storage classes is supported by the following Container Storage Interface (CSI) driver operators:
 
-- [Amazon Web Services (AWS) Elastic Block Storage (EBS)](../../storage/container_storage_interface/persistent-storage-csi-ebs.xml#persistent-storage-csi-ebs)
+- Amazon Web Services (AWS) Elastic Block Storage (EBS)
 
-- [Azure Disk](../../storage/container_storage_interface/persistent-storage-csi-azure.xml#persistent-storage-csi-azure-disk)
+- Azure Disk
 
-- [Azure File](../../storage/container_storage_interface/persistent-storage-csi-azure-file.xml#persistent-storage-csi-azure-file)
+- Azure File
 
-- [Google Cloud Platform (GCP) Persistent Disk (PD)](../../storage/container_storage_interface/persistent-storage-csi-gcp-pd.xml#persistent-storage-csi-gcp-pd)
+- Google Cloud Platform (GCP) Persistent Disk (PD)
 
-- [IBM Cloud® VPC Block](../../storage/container_storage_interface/persistent-storage-csi-ibm-cloud-vpc-block.xml#persistent-storage-csi-ibm-cloud-vpc-block)
+- IBM Cloud® VPC Block
 
-- [OpenStack Cinder](../../storage/container_storage_interface/persistent-storage-csi-cinder.xml#persistent-storage-csi-cinder)
+- OpenStack Cinder
 
-- [VMware vSphere](../../storage/container_storage_interface/persistent-storage-csi-vsphere.xml#persistent-storage-vsphere)
+- VMware vSphere
 
 # Managing the default storage class using the web console
+
+Manage storage class behavior using the web console by configuring the `ClusterCSIDriver` object’s `storageClassState` field. Set the state to Managed for operator control, Unmanaged for manual control, or Removed to delete the storage class, determining how default storage classes are handled.
 
 - Access to the OpenShift Container Platform web console.
 
 - Access to the cluster with cluster-admin privileges.
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To manage the default storage class using the web console:
 
 1.  Log in to the web console.
 
@@ -77,31 +75,31 @@ To manage the default storage class using the web console:
     ...
     ```
 
-    - `spec.storageClassState` field set to "Unmanaged"
+    For this example, `spec.storageClassState` field is set to "Unmanaged".
 
 7.  Click **Save**.
 
 # Managing the default storage class using the CLI
 
+Manage storage class behavior using the CLI by configuring the `ClusterCSIDriver` object’s `storageClassState` field. Set the state to Managed for operator control, Unmanaged for manual control, or Removed to delete the storage class, determining how default storage classes are handled.
+
 - Access to the cluster with cluster-admin privileges.
 
-<div class="formalpara-title">
+<!-- -->
 
-**Procedure**
+- To manage the storage class using the CLI, run the following command:
 
-</div>
+  ``` terminal
+  $ oc patch clustercsidriver $DRIVERNAME --type=merge -p "{\"spec\":{\"storageClassState\":\"${STATE}\"}}"
+  ```
 
-To manage the storage class using the CLI, run the following command:
+  - Where `${STATE}` is "Removed" or "Managed" or "Unmanaged".
 
-``` terminal
-$ oc patch clustercsidriver $DRIVERNAME --type=merge -p "{\"spec\":{\"storageClassState\":\"${STATE}\"}}"
-```
-
-- Where `${STATE}` is "Removed" or "Managed" or "Unmanaged".
-
-  Where `$DRIVERNAME` is the provisioner name. You can find the provisioner name by running the command `oc get sc`.
+  - Where `$DRIVERNAME` is the provisioner name. You can find the provisioner name by running the command `oc get sc`.
 
 # Absent or multiple default storage classes
+
+Absent or multiple default storage classes cause persistent volume claim issues. Multiple default storage classes might result in unpredictable selection and alerts, while absent default storage classes leave claims pending. Resolve by ensuring exactly one storage class is designated as the default.
 
 ## Multiple default storage classes
 

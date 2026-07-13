@@ -245,7 +245,7 @@ Specializing a Windows virtual machine (VM) configures the computer-specific inf
 
 During the initial boot, Windows uses the `unattend.xml` answer file to specialize the VM. The VM is now ready to use.
 
-# Creating a VM from an uploaded image by using the CLI
+# Uploading a virtual machine image by using the CLI
 
 You can upload an operating system image by using the `virtctl` command-line tool. You can use an existing data volume or create a new data volume for the image.
 

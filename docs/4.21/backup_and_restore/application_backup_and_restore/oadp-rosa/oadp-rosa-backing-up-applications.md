@@ -621,7 +621,7 @@ While installing the OADP Operator on a ROSA Security Token Service (STS) cluste
 
 - [Backing up applications](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/backing-up-applications.xml#backing-up-applications)
 
-- [Installing Red Hat OpenShift Service on AWS (ROSA) interactive walkthrough](https://www.redhat.com/en/products/interactive-walkthrough/install-rosa)
+- [Installing Red Hat OpenShift Service on AWS interactive walkthrough](https://www.redhat.com/en/products/interactive-walkthrough/install-rosa)
 
 - [Red Hat OpenShift Cluster Manager](https://docs.openshift.com/dedicated/ocm/ocm-overview.html)
 

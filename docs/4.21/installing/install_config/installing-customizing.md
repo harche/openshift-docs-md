@@ -1266,9 +1266,9 @@ OpenShift Container Platform 4.17 supports manually configuring a hybrid RAID on
 
 4.  Continue with the remainder of the OpenShift Container Platform installation.
 
-## Configuring an Intel® Virtual RAID on CPU (VROC) data volume
+# Configuring an Intel® Virtual RAID on CPU (VROC) data volume
 
-Intel® VROC is a type of hybrid RAID, where some of the maintenance is offloaded to the hardware, but appears as software RAID to the operating system.
+Intel® VROC is a type of hybrid RAID, where some of the maintenance is offloaded to the hardware, but shows as software RAID to the operating system. You can configure an Intel® Virtual RAID on CPU (VROC) data volume to deliver direct-to-CPU NVMe throughput for data-intensive workloads.
 
 The following procedure configures an Intel® VROC-enabled RAID1.
 
@@ -1281,7 +1281,7 @@ The following procedure configures an Intel® VROC-enabled RAID1.
       imsm -n2 /dev/nvme0n1 /dev/nvme1n1
     ```
 
-    - The RAID device names. In this example, there are two devices listed. If you provide more than two device names, you must adjust the `-n` flag. For example, listing three devices would use the flag `-n3`.
+    The RAID device names. In this example, there are two devices listed. If you provide more than two device names, you must adjust the `-n` flag. For example, listing three devices would use the flag `-n3`.
 
 2.  Create the RAID1 storage inside the container:
 
@@ -1327,9 +1327,9 @@ The following procedure configures an Intel® VROC-enabled RAID1.
           ...
         ```
 
-        - The UUID of the IMSM container.
+        Replace `<md_UUID>` with the UUID of the IMSM container.
 
-          Include any additional `coreos-installer` arguments you need to install RHCOS.
+        Include any additional `coreos-installer` arguments you need to install RHCOS.
 
 # Configuring chrony time service
 

@@ -4,9 +4,9 @@ The Insights Operator periodically gathers configuration and component failure s
 
 - [Using Red Hat Lightspeed to identify issues with your cluster](../../support/remote_health_monitoring/using-insights-to-identify-issues-with-your-cluster.xml#using-insights-to-identify-issues-with-your-cluster)
 
-# Configuring Insights Operator
+# The Insights Operator configuration
 
-Insights Operator configuration is a combination of the default Operator configuration and the configuration that is stored in either the **insights-config** `ConfigMap` object in the `openshift-insights` namespace, OR in the support secret in the `openshift-config` namespace.
+The Insights Operator configuration combines default settings with configurations stored in either the `insights-config` `ConfigMap` in the `openshift-insights` namespace or the support secret in the `openshift-config` namespace.
 
 When a `ConfigMap` object or support secret exists, the contained attribute values override the default Operator configuration values. If both a `ConfigMap` object *and* a support secret exist, the Operator reads the `ConfigMap` object.
 
@@ -14,7 +14,13 @@ The `ConfigMap` object does not exist by default, so an OpenShift Container Plat
 
 ## ConfigMap object configuration structure
 
-This example of an **insights-config** `ConfigMap` object (`config.yaml` configuration) shows configuration options by using standard YAML formatting.
+View the example of an `insights-config` `ConfigMap` object (`config.yaml` configuration) to better understand the configuration options for the `ConfigMap` object.
+
+<div class="formalpara-title">
+
+**Example insights-config ConfigMap object**
+
+</div>
 
 ``` yaml
 apiVersion: v1
@@ -29,6 +35,7 @@ data:
       storagePath: /var/lib/insights-operator
       downloadEndpoint: https://console.redhat.com/api/insights-results-aggregator/v2/cluster/%s/reports
       conditionalGathererEndpoint: https://console.redhat.com/api/gathering/gathering_rules
+      disableRuntimeExtractor: true
     sca:
         disabled: false
         endpoint: https://api.openshift.com/api/accounts_mgmt/v1/entitlement_certificates
@@ -41,13 +48,11 @@ data:
         noProxy: test.org
 ```
 
-**Configurable attributes and default values**
-
 The following table describes the available configuration attributes:
 
 <div class="note">
 
-The **insights-config** `ConfigMap` object follows standard YAML formatting, wherein child values are below the parent attribute and indented two spaces. For the **Obfuscation** attribute, enter values as bulleted children of the parent attribute.
+The `insights-config` `ConfigMap` object follows standard YAML formatting, wherein child values are below the parent attribute and indented two spaces. For the `Obfuscation` attribute, enter values as bulleted children of the parent attribute.
 
 </div>
 
@@ -126,13 +131,20 @@ The **insights-config** `ConfigMap` object follows standard YAML formatting, whe
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><pre><code>dataReporting:
+    disableRuntimeExtractor: true</code></pre></td>
+<td style="text-align: left;"><p>When set to true, it disables the deployment and management of all insights-runtime-extractor resources.</p></td>
+<td style="text-align: left;"><p>Boolean</p></td>
+<td style="text-align: left;"><p><code>false</code></p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><pre><code>dataReporting:
     obfuscation:
     - networking</code></pre></td>
 <td style="text-align: left;"><p>Enables the global obfuscation of IP addresses and the cluster domain name.</p></td>
 <td style="text-align: left;"><p>String</p></td>
 <td style="text-align: left;"><p>Not applicable</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>dataReporting:
     obfuscation:
     - workload_names</code></pre></td>
@@ -140,7 +152,7 @@ The **insights-config** `ConfigMap` object follows standard YAML formatting, whe
 <td style="text-align: left;"><p>String</p></td>
 <td style="text-align: left;"><p>Not applicable</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>proxy:
     httpProxy: http://example.com
     httpsProxy: http://example.com
@@ -149,21 +161,21 @@ The **insights-config** `ConfigMap` object follows standard YAML formatting, whe
 <td style="text-align: left;"><p>URL</p></td>
 <td style="text-align: left;"><p>No default</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>sca:
     interval: 8h0m0s</code></pre></td>
 <td style="text-align: left;"><p>Specifies the frequency of the simple content access (SCA) entitlements download.</p></td>
 <td style="text-align: left;"><p>Time interval</p></td>
 <td style="text-align: left;"><p><code>2h</code></p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><pre><code>sca:
     endpoint: &lt;url&gt;</code></pre></td>
 <td style="text-align: left;"><p>Specifies the endpoint for downloading the simple content access (SCA) entitlements.</p></td>
 <td style="text-align: left;"><p>URL</p></td>
 <td style="text-align: left;"><p><a href="https://api.openshift.com/api/accounts_mgmt/v1/entitlement_certificates">https://api.openshift.com/api/accounts_mgmt/v1/entitlement_certificates</a></p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><pre><code>sca:
     disabled: false</code></pre></td>
 <td style="text-align: left;"><p>Disables the simple content access entitlements download.</p></td>
@@ -177,7 +189,7 @@ Insights Operator configurable attributes
 
 # Creating the insights-config ConfigMap object
 
-This procedure describes how to create the **insights-config** `ConfigMap` object for the Insights Operator to set custom configurations.
+You can create the `insights-config` `ConfigMap` object for the Insights Operator with custom configurations.
 
 <div class="important">
 
@@ -193,7 +205,7 @@ Red Hat recommends you consult Red Hat Support before making changes to the de
 
 2.  Click **Create ConfigMap**.
 
-3.  Select **Configure via: YAML view** and enter your configuration preferences, for example
+3.  Select **Configure via: YAML view** and enter your configuration preferences, for example:
 
     ``` yaml
     apiVersion: v1
@@ -224,11 +236,13 @@ Red Hat recommends you consult Red Hat Support before making changes to the de
 
 7.  For the **Value** field, either browse for a file to drag and drop into the field or enter your configuration parameters manually.
 
-8.  Click **Create** and you can see the `ConfigMap` object and configuration information.
+8.  Click **Create**. The `ConfigMap` object and configuration information are displayed.
 
-# Understanding Insights Operator alerts
+# Insights Operator alerts
 
-The Insights Operator declares alerts through the Prometheus monitoring system to the Alertmanager. You can view these alerts in the Alerting UI in the OpenShift Container Platform web console by using one of the following methods:
+The Insights Operator declares alerts through the Prometheus monitoring system to the Alertmanager. You can view these alerts in the Alerting UI in the OpenShift Container Platform web console.
+
+To view these alerts in the Alerting UI in the OpenShift Container Platform web console, choose one of the following methods:
 
 - In the **Administrator** perspective, click **Observe** → **Alerting**.
 
@@ -246,25 +260,25 @@ Insights Operator alerts
 
 ## Disabling Insights Operator alerts
 
-To prevent the Insights Operator from sending alerts to the cluster Prometheus instance, you create or edit the **insights-config** `ConfigMap` object.
+To prevent the Insights Operator from sending alerts to the cluster Prometheus instance, you create or edit the `insights-config` `ConfigMap` object.
 
 <div class="note">
 
-Previously, a cluster administrator would create or edit the Insights Operator configuration using a **support secret** in the `openshift-config` namespace. Red Hat Lightspeed now supports the creation of a `ConfigMap` object to configure the Operator. The Operator gives preference to the config map configuration over the support secret if both exist.
+Previously, a cluster administrator would create or edit the Insights Operator configuration using a support secret in the `openshift-config` namespace. Red Hat Lightspeed now supports the creation of a `ConfigMap` object to configure the Operator. The Operator gives preference to the config map configuration over the support secret if both exist.
 
 </div>
 
-If the **insights-config** `ConfigMap` object does not exist, you must create it when you first add custom configurations. Note that configurations within the `ConfigMap` object take precedence over the default settings defined in the `config/pod.yaml` file.
+If the `insights-config` `ConfigMap` object does not exist, you must create it when you first add custom configurations. Note that configurations within the `ConfigMap` object take precedence over the default settings defined in the `config/pod.yaml` file.
 
 - Remote health reporting is enabled, which is the default.
 
 - You are logged in to the OpenShift Container Platform web console as `cluster-admin`.
 
-- The **insights-config** `ConfigMap` object exists in the `openshift-insights` namespace.
+- The `insights-config` `ConfigMap` object exists in the `openshift-insights` namespace.
 
 1.  Go to **Workloads** → **ConfigMaps** and select **Project: openshift-insights**.
 
-2.  Click on the **insights-config** `ConfigMap` object to open it.
+2.  Click the **insights-config** `ConfigMap` object to open it.
 
 3.  Click **Actions** and select **Edit ConfigMap**.
 
@@ -283,7 +297,7 @@ If the **insights-config** `ConfigMap` object does not exist, you must create it
     # ...
     ```
 
-6.  Click **Save**. The **insights-config** config-map details page opens.
+6.  Click **Save**. The `insights-config` ConfigMap details page opens.
 
 7.  Verify that the value of the `config.yaml` `alerting` attribute is set to `disabled: true`.
 
@@ -291,11 +305,11 @@ If the **insights-config** `ConfigMap` object does not exist, you must create it
 
 ## Enabling Insights Operator alerts
 
-When alerts are disabled, the Insights Operator no longer sends alerts to the cluster Prometheus instance. You can reenable them.
+When alerts are disabled, the Insights Operator no longer sends alerts to the cluster Prometheus instance. You can re-enable them.
 
 <div class="note">
 
-Previously, a cluster administrator would create or edit the Insights Operator configuration using a **support secret** in the `openshift-config` namespace. Red Hat Lightspeed now supports the creation of a `ConfigMap` object to configure the Insights Operator. The Insights Operator gives preference to the config map configuration over the support secret if both exist.
+Previously, a cluster administrator would create or edit the Insights Operator configuration using a support secret in the `openshift-config` namespace. Red Hat Lightspeed now supports the creation of a `ConfigMap` object to configure the Insights Operator. The Insights Operator gives preference to the config map configuration over the support secret if both exist.
 
 </div>
 
@@ -303,11 +317,11 @@ Previously, a cluster administrator would create or edit the Insights Operator c
 
 - You are logged in to the OpenShift Container Platform web console as `cluster-admin`.
 
-- The **insights-config** `ConfigMap` object exists in the `openshift-insights` namespace.
+- The `insights-config` `ConfigMap` object exists in the `openshift-insights` namespace.
 
 1.  Go to **Workloads** → **ConfigMaps** and select **Project: openshift-insights**.
 
-2.  Click on the **insights-config** `ConfigMap` object to open it.
+2.  Click on the `insights-config` `ConfigMap` object to open it.
 
 3.  Click **Actions** and select **Edit ConfigMap**.
 
@@ -326,7 +340,7 @@ Previously, a cluster administrator would create or edit the Insights Operator c
     # ...
     ```
 
-6.  Click **Save**. The **insights-config** config-map details page opens.
+6.  Click **Save**. The `insights-config` `ConfigMap` details page opens.
 
 7.  Verify that the value of the `config.yaml` `alerting` attribute is set to `disabled: false`.
 
@@ -354,7 +368,7 @@ Insights Operator stores gathered data in an archive located in the `openshift-i
 
     The recent Insights Operator archives are now available in the `insights-data` directory.
 
-# Running an Insights Operator gather operation on-demand
+# On-demand Insights Operator gather operations
 
 Instead of waiting for the next periodic data gather operation, you can run a custom on-demand Insights Operator data gather operation by using the OpenShift Container Platform web console or command-line interface (CLI).
 
@@ -372,7 +386,7 @@ You can optionally customize the following items for the on-demand data gather o
 
 - **Enable and define data obfuscation:** By defining the `DataGather` `dataPolicy` specification, you can enable additional obfuscation of the Red Hat Lightspeed archive data, for example, the IP address or workload names.
 
-- **Enable persistant storage:** By default, the Insights Operator uses ephemeral storage, which means that a new pod will be created for each gather operation and the history of gather operations and data collected is not retained. You can switch to persistent storage to retain the data and history for up to the last 10 gather operations by defining the `DataGather` `storage` specification in the CRD.
+- **Enable persistent storage:** By default, the Insights Operator uses ephemeral storage, which means that a new pod will be created for each gather operation and the history of gather operations and data collected is not retained. You can switch to persistent storage to retain the data and history for up to the last 10 gather operations by defining the `DataGather` `storage` specification in the CRD.
 
 - **Exclude specific data gather operations:** You can choose to disable specific gather operations from running by defining the `DataGather` `gatherers` specification. For example, you can choose to disable the cluster authentication operation or the workload data operation.
 
@@ -434,7 +448,7 @@ Use the following procedure to create a `DataGather` custom resource definition 
 
 1.  On the console, select **Administration** \> **CustomResourceDefinitions**.
 
-2.  On the **CustomResourceDefinitions** page, in the **Search by name** field, find the **DataGather** resource definition, and then click it.
+2.  On the **CustomResourceDefinitions** page, in the **Search by name** field, find and then click the **DataGather** resource definition.
 
 3.  On the **CustomResourceDefinition details** page, click the **Instances** tab.
 
@@ -523,7 +537,7 @@ Use the following procedure to create a `DataGather` custom resource definition 
 
 <!-- -->
 
-1.  On the console, select to **Workloads** \> **Pods**.
+1.  On the console, select **Workloads** \> **Pods**.
 
 2.  On the Pods page, go to the **Project** pull-down menu, and then select **Show default projects**.
 
@@ -585,7 +599,7 @@ Use the following procedure to create a `DataGather` custom resource definition 
                 state: Disabled
       ```
 
-    - To enable persistent storage to retain the data archive file and history for up to the last 10 data gathering jobs, define the `storage` specification. Set **type** to `PersistentVolume`, and define the `mountPath` and `name` of the volume, as outlined in the following example:
+    - To enable persistent storage to retain the data archive file and history for up to the last 10 data gathering jobs, define the `storage` specification. Set `type` to `PersistentVolume`, and define the `mountPath` and `name` of the volume:
 
       ``` yaml
       apiVersion: insights.openshift.io/v1alpha2
@@ -666,7 +680,7 @@ If you enable Technology Preview in your cluster, the Insights Operator runs gat
 
 5.  Edit the `InsightsDataGather` CRD, and complete one of the following steps:
 
-    - To disable all the gather operations and data collection, define the `gatherers` specification and set the `mode` to **None** as outlined in the following example extract:
+    - To disable all the gather operations and data collection, define the `gatherers` specification and set the `mode` to `None`:
 
       ``` yaml
       apiVersion: insights.openshift.io/v1alpha2
@@ -679,7 +693,7 @@ If you enable Technology Preview in your cluster, the Insights Operator runs gat
           mode: None # Options: All, None, Custom
       ```
 
-    - To disable individual gather operations, under `gatherers`, set the `mode` to **Custom** and then specify the individual gatherer that you intend to disable. For example, to disable the workload gatherer, define the following specification:
+    - To disable individual gather operations, under `gatherers`, set the `mode` to `Custom` and then specify the individual gatherer that you intend to disable. For example, to disable the workload gatherer, define the following specification:
 
       ``` yaml
       apiVersion: insights.openshift.io/v1alpha2
@@ -709,7 +723,7 @@ If you enable Technology Preview in your cluster, the Insights Operator runs gat
 
 </div>
 
-After you save the changes, the Insights Operator gather configurations are updated and the operations that you disabled in the configuration will no longer occur.
+The Insights Operator updates the gather configurations and no longer runs the operations that you disabled.
 
 <div class="note">
 
@@ -741,7 +755,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 5.  Edit the `InsightsDataGather` CRD, and complete one of the following steps:
 
-    - To enable all disabled gather operations, under the `gatherers` specification, set the `mode` back to **All** as outlined in the following example extract:
+    - To enable all disabled gather operations, under the `gatherers` specification, set the `mode` back to `All`:
 
       ``` yaml
       apiVersion: insights.openshift.io/v1alpha2
@@ -754,7 +768,7 @@ For more information about the support scope of Red Hat Technology Preview featu
           mode: All # Options: All, None, Custom
       ```
 
-    - To enable individual gather operations that were previously disabled, find the name of the gatherer operation under the `gatherers:custom:configs` key section and change the `state` to **Enabled**. Alternatively, under the `config` specification, remove the `name` and `state` configuration lines for the operation you want to enable.
+    - To enable individual gather operations that were previously disabled, find the name of the gatherer operation under the `gatherers:custom:configs` key section and change the `state` to `Enabled`. Alternatively, under the `config` specification, remove the `name` and `state` configuration lines for the operation you want to enable.
 
       ``` yaml
       apiVersion: insights.openshift.io/v1alpha2
@@ -778,7 +792,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 6.  Click **Save**.
 
-    After you save the changes, the Insights Operator gather configurations are updated and the affected gather operations start.
+    The Insights Operator updates the gather configurations and starts the affected gather operations.
 
     <div class="note">
 
@@ -796,7 +810,7 @@ To obfuscate the name of resources, you must manually set the `obfuscation` attr
 
 - You are logged in to the OpenShift Container Platform web console with the "cluster-admin" role.
 
-- The **insights-config** `ConfigMap` object exists in the `openshift-insights` namespace.
+- The `insights-config` `ConfigMap` object exists in the `openshift-insights` namespace.
 
 - The cluster is self managed and the Deployment Validation Operator is installed.
 
@@ -822,6 +836,6 @@ To obfuscate the name of resources, you must manually set the `obfuscation` attr
     # ...
     ```
 
-6.  Click **Save**. The **insights-config** config-map details page opens.
+6.  Click **Save**. The `insights-config` ConfigMap details page opens.
 
 7.  Verify that the value of the `config.yaml` `obfuscation` attribute is set to `- workload_names`.

@@ -241,12 +241,12 @@ vpa-updater-default-db8b58df-2nkvf                  1/1     Running   0         
               effect: "NoSchedule"
         ```
 
-        </div>
-
         where:
 
         `spec.config.tolerations`
         Specifies a toleration for a taint on the node where you want to move the VPA Operator pod.
+
+        </div>
 
 2.  Move each VPA component by adding node selectors to the `VerticalPodAutoscaler` custom resource (CR):
 
@@ -339,8 +339,6 @@ vpa-updater-default-db8b58df-2nkvf                  1/1     Running   0         
                 effect: "NoSchedule"
         ```
 
-        </div>
-
         where:
 
         `spec.deploymentOverrides.admission.tolerations`
@@ -351,6 +349,8 @@ vpa-updater-default-db8b58df-2nkvf                  1/1     Running   0         
 
         `spec.deploymentOverrides.updater.tolerations`
         Specifies a toleration for the updater pod for a taint on the node where you want to install the pod.
+
+        </div>
 
 - You can verify the pods have moved by using the following command:
 

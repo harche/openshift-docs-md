@@ -52,7 +52,7 @@ You can install VirtIO drivers from a container disk that you add to a Windows v
 
 <div class="tip">
 
-Downloading the `container-native-virtualization/virtio-win` container disk from the [Red Hat Ecosystem Catalog](https://catalog.redhat.com/software/containers/search?q=virtio-win&p=1) is not mandatory, because the container disk is downloaded from the Red Hat registry if it not already present in the cluster. However, downloading reduces the installation time.
+You do not need to download the `container-native-virtualization/virtio-win-rhel9` container disk. If the container disk is not present, the cluster downloads it from the Red Hat registry. However, to reduce the installation time, you can download the container disk in advance from the [Red Hat Ecosystem Catalog](https://catalog.redhat.com/en/software/containers/container-native-virtualization/virtio-win-rhel9/633ffae83be061d37b2770f6).
 
 </div>
 
@@ -76,7 +76,7 @@ Downloading the `container-native-virtualization/virtio-win` container disk from
                 bus: sata
     volumes:
       - containerDisk:
-          image: container-native-virtualization/virtio-win
+          image: registry.redhat.io/container-native-virtualization/virtio-win-rhel9:v4.22
         name: virtiocontainerdisk
     ```
 

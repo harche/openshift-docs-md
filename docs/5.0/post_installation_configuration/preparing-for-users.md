@@ -8,7 +8,7 @@ As an administrator, you can configure OAuth to specify an identity provider aft
 
 ## About identity providers in OpenShift Container Platform
 
-By default, only a `kubeadmin` user exists on your cluster. To specify an identity provider, you must create a custom resource (CR) that describes that identity provider and add it to the cluster.
+You can configure identity providers by creating a custom resource (CR) that describes the provider and adding it to the cluster. Identity providers enable user authentication in OpenShift Container Platform beyond the default `kubeadmin` user.
 
 <div class="note">
 
@@ -83,7 +83,9 @@ When adding or changing identity providers, you can map identities from the new 
 
 ## Sample identity provider CR
 
-The following custom resource (CR) shows the parameters and default values that you use to configure an identity provider. This example uses the htpasswd identity provider.
+You can use a custom resource (CR) to see the parameters and default values that you use to configure an identity provider.
+
+The following example uses the htpasswd identity provider.
 
 <div class="formalpara-title">
 
@@ -106,11 +108,16 @@ spec:
         name: htpass-secret
 ```
 
-- This provider name is prefixed to provider user names to form an identity name.
+where:
 
-- Controls how mappings are established between this provider’s identities and `User` objects.
+`spec.identityProviders.name`
+Specifies the provider name, which is prefixed to provider user names to form an identity name.
 
-- An existing secret containing a file generated using [`htpasswd`](http://httpd.apache.org/docs/2.4/programs/htpasswd.html).
+`spec.identityProviders.mappingMethod`
+Specifies how mappings are established between this provider’s identities and `User` objects.
+
+`spec.identityProviders.htpasswd.fileData.name`
+Specifies an existing secret containing a file generated using [`htpasswd`](http://httpd.apache.org/docs/2.4/programs/htpasswd.html).
 
 # Using RBAC to define and apply permissions
 
@@ -922,7 +929,7 @@ Always verify compliance with your organization’s security standards when modi
 
 ## Adding unauthenticated groups to cluster roles
 
-As a cluster administrator, you can add unauthenticated users to the following cluster roles in OpenShift Container Platform by creating a cluster role binding. Unauthenticated users do not have access to non-public cluster roles. This should only be done in specific use cases when necessary.
+As a cluster administrator, you can grant unauthenticated users access to specific cluster roles to enable features, such as external webhooks or automated token management, that require cluster access without authentication. Only grant this access when required and after verifying compliance with your organization’s security standards.
 
 You can add unauthenticated users to the following cluster roles:
 
@@ -971,9 +978,9 @@ Always verify compliance with your organization’s security standards when modi
 
 # The kubeadmin user
 
-OpenShift Container Platform creates a cluster administrator, `kubeadmin`, after the installation process completes.
+OpenShift Container Platform creates a cluster administrator, `kubeadmin`, after the installation process completes. This user has the `cluster-admin` role automatically applied and is treated as the root user for the cluster.
 
-This user has the `cluster-admin` role automatically applied and is treated as the root user for the cluster. The password is dynamically generated and unique to your OpenShift Container Platform environment. After installation completes the password is provided in the installation program’s output. For example:
+The password is dynamically generated and unique to your OpenShift Container Platform environment. After the installation completes, the password is provided in the installation program’s output. For example:
 
 ``` terminal
 INFO Install complete!

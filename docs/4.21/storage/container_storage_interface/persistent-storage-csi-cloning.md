@@ -1,14 +1,16 @@
-Volume cloning duplicates an existing persistent volume to help protect against data loss in OpenShift Container Platform. This feature is only available with supported Container Storage Interface (CSI) drivers. You should be familiar with [persistent volumes](../../storage/understanding-persistent-storage.xml#persistent-volumes_understanding-persistent-storage) before you provision a CSI volume clone.
+Container Storage Interface (CSI) volume cloning duplicates existing persistent volumes to create independent copies for data protection, testing, or deployment. You can use cloning to create new volumes from existing data without manual copying or backup restoration.
 
 # Overview of CSI volume cloning
 
-A Container Storage Interface (CSI) volume clone is a duplicate of an existing persistent volume at a particular point in time.
+You can use Container Storage Interface (CSI) volume clones to create point-in-time duplicates of existing persistent volumes.
 
 Volume cloning is similar to volume snapshots, although it is more efficient. For example, a cluster administrator can duplicate a cluster volume by creating another instance of the existing cluster volume.
 
 Cloning creates an exact duplicate of the specified volume on the back-end device, rather than creating a new empty volume. After dynamic provisioning, you can use a volume clone just as you would use any standard volume.
 
 No new API objects are required for cloning. The existing `dataSource` field in the `PersistentVolumeClaim` object is expanded so that it can accept the name of an existing PersistentVolumeClaim in the same namespace.
+
+Before you provision a CSI volume clone, you should be familiar with persistent volumes. For information about persistent volumes, see *Understanding persistent volumes* in *Additional resources*.
 
 ## Support limitations
 
@@ -28,6 +30,8 @@ By default, OpenShift Container Platform supports CSI volume cloning with these 
 
 # Provisioning a CSI volume clone
 
+Create a new persistent volume claim (PVC) that specifies an existing PVC as its data source. The new volume automatically populates with a copy of the source PVC’s data and must be created in the same namespace as the source.
+
 When you create a cloned persistent volume claim (PVC) API object, you trigger the provisioning of a CSI volume clone. The clone pre-populates with the contents of another PVC, adhering to the same rules as any other persistent volume. The one exception is that you must add a `dataSource` that references an existing PVC in the same namespace.
 
 - You are logged in to a running OpenShift Container Platform cluster.
@@ -36,19 +40,11 @@ When you create a cloned persistent volume claim (PVC) API object, you trigger t
 
 - Your storage back end is configured for dynamic provisioning. Cloning support is not available for static provisioners.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To clone a PVC from an existing PVC:
-
 1.  Create and save a file with the `PersistentVolumeClaim` object described by the following YAML:
 
     <div class="formalpara-title">
 
-    **pvc-clone.yaml**
+    **Example pvc-clone.yaml**
 
     </div>
 
@@ -70,7 +66,7 @@ To clone a PVC from an existing PVC:
         name: pvc-1
     ```
 
-    - The name of the storage class that provisions the storage back end. The default storage class can be used and `storageClassName` can be omitted in the spec.
+    Where `spec.storageClassName` is the name of the storage class that provisions the storage back end. The default storage class can be used and `storageClassName` can be omitted in the spec.
 
 2.  Create the object you saved in the previous step by running the following command:
 
@@ -92,6 +88,12 @@ To clone a PVC from an existing PVC:
 
 4.  Create and save a file with the `Pod` object described by the YAML. For example:
 
+    <div class="formalpara-title">
+
+    **Example pod YAML file**
+
+    </div>
+
     ``` yaml
     kind: Pod
     apiVersion: v1
@@ -110,6 +112,14 @@ To clone a PVC from an existing PVC:
             claimName: pvc-1-clone
     ```
 
-    - The cloned PVC created during the CSI volume cloning operation.
+    Where `spec.volumes.persistentVolumeClaim.claimName` is the cloned PVC created during the CSI volume cloning operation.
 
-      The created `Pod` object is now ready to consume, clone, snapshot, or delete your cloned PVC independently of its original `dataSource` PVC.
+<div class="formalpara-title">
+
+**Result**
+
+</div>
+
+The created `Pod` object is now ready to consume, clone, snapshot, or delete your cloned PVC independently of its original `dataSource` PVC.
+
+- [Understanding persistent volumes](../../storage/understanding-persistent-storage.xml#persistent-volumes_understanding-persistent-storage)

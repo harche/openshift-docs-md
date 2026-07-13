@@ -24,7 +24,9 @@ You can install an OpenShift Container Platform cluster by using mirrored instal
 
 # About installations in restricted networks
 
-In OpenShift Container Platform 4.17, you can perform an installation that does not require an active connection to the internet to obtain software components. Restricted network installations can be completed using installer-provisioned infrastructure or user-provisioned infrastructure, depending on the cloud platform to which you are installing the cluster.
+In OpenShift Container Platform 4.17, you can install a cluster in a restricted network without an active internet connection to obtain software components.
+
+Depending on the cloud platform where you install the cluster, you can complete a restricted network installation by using either installer-provisioned infrastructure or user-provisioned infrastructure.
 
 If you choose to perform a restricted network installation on a cloud platform, you still require access to its cloud APIs. Some cloud functions, like Amazon Web Service’s Route 53 DNS and IAM services, require internet access. Depending on your network, you might require less internet access for an installation on bare metal hardware, Nutanix, or on VMware vSphere.
 
@@ -74,13 +76,13 @@ If you are using Azure Firewall for restricting internet access, you must set th
 
 # About reusing a VNet for your OpenShift Container Platform cluster
 
-In OpenShift Container Platform 4.17, you can deploy a cluster into an existing Azure Virtual Network (VNet) in Microsoft Azure. If you do, you must also use existing subnets within the VNet and routing rules.
+In OpenShift Container Platform 4.17, you can deploy a cluster into an existing Microsoft Azure Virtual Network (VNet). Deployments in an existing VNet require existing subnets and routing rules.
 
 By deploying OpenShift Container Platform into an existing Azure VNet, you might be able to avoid service limit constraints in new accounts or more easily abide by the operational constraints that your company’s guidelines set. This is a good option to use if you cannot obtain the infrastructure creation permissions that are required to create the VNet.
 
 ## Requirements for using your VNet
 
-When you deploy a cluster by using an existing VNet, you must perform additional network configuration before you install the cluster. In installer-provisioned infrastructure clusters, the installer usually creates the following components, but it does not create them when you install into an existing VNet:
+When you deploy a cluster by using an existing VNet, you must perform additional network configuration before you install the cluster. In installer-provisioned infrastructure clusters, the installation program usually creates the following components, but it does not create them when you install into an existing VNet:
 
 - Subnets
 
@@ -98,7 +100,7 @@ The installation program requires that you use the cloud-provided DNS server. Us
 
 If you use a custom VNet, you must correctly configure it and its subnets for the installation program and the cluster to use. The installation program cannot subdivide network ranges for the cluster to use, set route tables for the subnets, or set VNet options like DHCP, so you must do so before you install the cluster.
 
-The cluster must be able to access the resource group that contains the existing VNet and subnets. While all of the resources that the cluster creates are placed in a separate resource group that it creates, some network resources are used from a separate group. Some cluster Operators must be able to access resources in both resource groups. For example, the Machine API controller attaches NICS for the virtual machines that it creates to subnets from the networking resource group.
+The cluster must be able to access the resource group that contains the existing VNet and subnets. While all of the resources that the cluster creates are placed in a separate resource group that it creates, some network resources are used from a separate group. Some cluster Operators must be able to access resources in both resource groups. For example, the Machine API controller attaches NICs for the virtual machines that it creates to subnets from the networking resource group.
 
 Your VNet must meet the following characteristics:
 
@@ -110,7 +112,7 @@ You must provide two subnets within your VNet, one for the control plane machine
 
 <div class="note">
 
-By default, if you specify availability zones in the `install-config.yaml` file, the installation program distributes the control plane machines and the compute machines across [these availability zones](https://azure.microsoft.com/en-us/global-infrastructure/availability-zones/) within [a region](https://azure.microsoft.com/en-us/global-infrastructure/regions). To ensure high availability for your cluster, select a region with at least three availability zones. If your region contains fewer than three availability zones, the installation program places more than one control plane machine in the available zones.
+By default, if you specify availability zones in the `install-config.yaml` file, the installation program distributes the control plane machines and the compute machines across availability zones within a region. To ensure high availability for your cluster, select a region with at least three availability zones. If your region contains fewer than three availability zones, the installation program places more than one control plane machine in the available zones. For more information, see "Availability zones" and "Regions".
 
 </div>
 
@@ -161,19 +163,19 @@ To ensure that the machine config server endpoints, ports 22623 and 22624, are s
 
 Because cluster components do not modify the user-provided network security groups, which the Kubernetes controllers update, a pseudo-network security group is created for the Kubernetes controller to modify without impacting the rest of the environment.
 
-| Protocol             | Port                                                                                                                       | Description                |
-|----------------------|----------------------------------------------------------------------------------------------------------------------------|----------------------------|
-| ICMP                 | N/A                                                                                                                        | Network reachability tests |
-| TCP                  | `1936`                                                                                                                     | Metrics                    |
-| `9000`-`9999`        | Host level services, including the node exporter on ports `9100`-`9101` and the Cluster Version Operator on port `9099`.   |                            |
-| `10250`-`10259`      | The default ports that Kubernetes reserves                                                                                 |                            |
-| UDP                  | `6081`                                                                                                                     | Geneve                     |
-| `9000`-`9999`        | Host level services, including the node exporter on ports `9100`-`9101`.                                                   |                            |
-| `500`                | IPsec IKE packets                                                                                                          |                            |
-| `4500`               | IPsec NAT-T packets                                                                                                        |                            |
-| `123`                | Network Time Protocol (NTP) on UDP port `123`. If you configure an external NTP time server, you must open UDP port `123`. |                            |
-| TCP/UDP              | `30000`-`32767`                                                                                                            |                            |
-| Kubernetes node port | ESP                                                                                                                        | N/A                        |
+| Protocol        | Port                                                                                                                       | Description                                |
+|-----------------|----------------------------------------------------------------------------------------------------------------------------|--------------------------------------------|
+| ICMP            | N/A                                                                                                                        | Network reachability tests                 |
+| TCP             | `1936`                                                                                                                     | Metrics                                    |
+| `9000`-`9999`   | Host level services, including the node exporter on ports `9100`-`9101` and the Cluster Version Operator on port `9099`.   |                                            |
+| `10250`-`10259` | The default ports that Kubernetes reserves                                                                                 |                                            |
+| UDP             | `6081`                                                                                                                     | Geneve                                     |
+| `9000`-`9999`   | Host level services, including the node exporter on ports `9100`-`9101`.                                                   |                                            |
+| `500`           | IPsec IKE packets                                                                                                          |                                            |
+| `4500`          | IPsec NAT-T packets                                                                                                        |                                            |
+| `123`           | Network Time Protocol (NTP) on UDP port `123`. If you configure an external NTP time server, you must open UDP port `123`. |                                            |
+| TCP/UDP         | `30000`-`32767`                                                                                                            | Kubernetes node port                       |
+| ESP             | N/A                                                                                                                        | IPsec Encapsulating Security Payload (ESP) |
 
 Ports used for all-machine to all-machine communications
 
@@ -196,6 +198,10 @@ Because the cluster is unable to modify network security groups in an existing s
 - [About the OVN-Kubernetes network plugin](../../../networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.xml#about-ovn-kubernetes)
 
 - [Configuring your firewall](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
+
+- [Availability zones](https://azure.microsoft.com/en-us/global-infrastructure/availability-zones/)
+
+- [Regions](https://azure.microsoft.com/en-us/global-infrastructure/regions/)
 
 # Creating the installation configuration file
 

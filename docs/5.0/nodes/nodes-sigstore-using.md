@@ -503,6 +503,8 @@ The following example shows general guidelines on how to configure an `ImagePoli
           matchPolicy: MatchRepository
     ```
 
+    where:
+
     `kind`
     Specifies that the configuration is for a `ImagePolicy` object.
 
@@ -562,6 +564,8 @@ The following example shows general guidelines on how to configure an `ImagePoli
           matchPolicy: MatchRepository
     ```
 
+    where:
+
     `kind`
     Specifies that the configuration is for a `ImagePolicy` object.
 
@@ -618,6 +622,8 @@ The following example shows general guidelines on how to configure an `ImagePoli
           exactRepository:
             repository: quay.io/crio/signed
     ```
+
+    where:
 
     `kind`
     Specifies that the configuration is for a `ImagePolicy` object.

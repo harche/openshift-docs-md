@@ -16,11 +16,15 @@ The steps for performing a user-provisioned infrastructure installation are prov
 
 # Prerequisites
 
-- You reviewed details about the [OpenShift Container Platform installation and update](../../../architecture/architecture-installation.xml#architecture-installation) processes.
+Before you install OpenShift Container Platform on Amazon Web Services (AWS) in a restricted network, ensure that you have prepared your user-provisioned infrastructure, configured mirror registries for disconnected installation, and met all account and networking requirements.
 
-- You read the documentation on [selecting a cluster installation method and preparing it for users](../../../installing/overview/installing-preparing.xml#installing-preparing).
+The following list outlines the prerequisites to complete:
 
-- You [created a mirror registry on your mirror host](../../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images) and obtained the `imageContentSources` data for your version of OpenShift Container Platform.
+- You reviewed details about the OpenShift Container Platform installation and update processes.
+
+- You read the documentation on selecting a cluster installation method and preparing it for users.
+
+- You created a mirror registry on your mirror host and obtained the `imageContentSources` data for your version of OpenShift Container Platform.
 
   <div class="important">
 
@@ -28,19 +32,19 @@ The steps for performing a user-provisioned infrastructure installation are prov
 
   </div>
 
-- You [configured an AWS account](../../../installing/installing_aws/installing-aws-account.xml#installing-aws-account) to host the cluster.
+- You configured an AWS account to host the cluster.
 
   <div class="important">
 
-  If you have an AWS profile stored on your computer, it must not use a temporary session token that you generated while using a multi-factor authentication device. The cluster continues to use your current AWS credentials to create AWS resources for the entire life of the cluster, so you must use key-based, long-term credentials. To generate appropriate keys, see [Managing Access Keys for IAM Users](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) in the AWS documentation. You can supply the keys when you run the installation program.
+  If you have an AWS profile stored on your computer, it must not use a temporary session token that you generated while using a multi-factor authentication device. The cluster continues to use your current AWS credentials to create AWS resources for the entire life of the cluster, so you must use key-based, long-term credentials. You must generate appropriate keys. You can supply the keys when you run the installation program.
 
   </div>
 
-- You [prepared the user-provisioned infrastructure.](../../../installing/installing_aws/upi/upi-aws-installation-reqs.xml#upi-aws-installation-reqs)
+- You prepared the user-provisioned infrastructure.
 
-- You downloaded the AWS CLI and installed it on your computer. See [Install the AWS CLI Using the Bundled Installer (Linux, macOS, or UNIX)](https://docs.aws.amazon.com/cli/latest/userguide/install-bundle.html) in the AWS documentation.
+- You downloaded the AWS CLI and installed it on your computer.
 
-- If you use a firewall and plan to use the Telemetry service, you [configured the firewall to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
+- If you use a firewall and plan to use the Telemetry service, you configured the firewall to allow the sites that your cluster requires access to.
 
   <div class="note">
 
@@ -48,11 +52,33 @@ The steps for performing a user-provisioned infrastructure installation are prov
 
   </div>
 
-- If the cloud identity and access management (IAM) APIs are not accessible in your environment, or if you do not want to store an administrator-level credential secret in the `kube-system` namespace, you can [manually create and maintain long-term credentials](../../../installing/installing_aws/ipi/installing-aws-customizations.xml#manually-create-iam_installing-aws-customizations).
+- If the cloud identity and access management (IAM) APIs are not accessible in your environment, or if you do not want to store an administrator-level credential secret in the `kube-system` namespace, you can manually create and maintain long-term credentials.
+
+<!-- -->
+
+- [Installation and update](../../../architecture/architecture-installation.xml#architecture-installation)
+
+- [Selecting a cluster installation method and preparing it for users](../../../installing/overview/installing-preparing.xml#installing-preparing)
+
+- [Mirroring images for a disconnected installation](../../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images)
+
+- [Configuring an AWS account](../../../installing/installing_aws/installing-aws-account.xml#installing-aws-account)
+
+- [Managing access keys for IAM users (AWS documentation)](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html)
+
+- [Requirements for a cluster with user-provisioned infrastructure on AWS](../../../installing/installing_aws/upi/upi-aws-installation-reqs.xml#upi-aws-installation-reqs)
+
+- [Install the AWS CLI Using the Bundled Installer (Linux, macOS, or UNIX) (AWS documentation)](https://docs.aws.amazon.com/cli/latest/userguide/install-bundle.html)
+
+- [Configuring your firewall](../../../installing/install_config/configuring-firewall.xml#configuring-firewall)
+
+- [Manually creating long-term credentials](../../../installing/installing_aws/ipi/installing-aws-customizations.xml#manually-create-iam_installing-aws-customizations)
 
 # About installations in restricted networks
 
-In OpenShift Container Platform 4.17, you can perform an installation that does not require an active connection to the internet to obtain software components. Restricted network installations can be completed using installer-provisioned infrastructure or user-provisioned infrastructure, depending on the cloud platform to which you are installing the cluster.
+In OpenShift Container Platform 4.17, you can install a cluster in a restricted network without an active internet connection to obtain software components.
+
+Depending on the cloud platform where you install the cluster, you can complete a restricted network installation by using either installer-provisioned infrastructure or user-provisioned infrastructure.
 
 If you choose to perform a restricted network installation on a cloud platform, you still require access to its cloud APIs. Some cloud functions, like Amazon Web Service’s Route 53 DNS and IAM services, require internet access. Depending on your network, you might require less internet access for an installation on bare metal hardware, Nutanix, or on VMware vSphere.
 
@@ -302,7 +328,7 @@ Generate and customize the installation configuration file that the installation
 
     </div>
 
-- See [Configuration and credential file settings](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) in the AWS documentation for more information about AWS profile and credential configuration.
+- [Configuration and credential file settings (AWS documentation)](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
 
 ## Configuring the cluster-wide proxy during installation
 
@@ -709,7 +735,7 @@ If you do not use the provided CloudFormation template to create your AWS infras
 
     - The Route 53 public zone ID to register the targets with.
 
-    - Specify the Route 53 public zone ID, which as a format similar to `Z21IXYZABCZ2A4`. You can obtain this value from the AWS console.
+    - Specify the Route 53 public zone ID, which has a format similar to `Z21IXYZABCZ2A4`. You can obtain this value from the AWS console.
 
     - The Route 53 zone to register the targets with.
 
@@ -925,7 +951,7 @@ In OpenShift Container Platform, *stream metadata* provides standardized metadat
 
 You can use the `coreos print-stream-json` sub-command of `openshift-install` to access information about the boot images in the stream metadata format. This command provides a method for printing stream metadata in a scriptable, machine-readable format.
 
-For user-provisioned installations, the `openshift-install` binary contains references to the version of RHCOS boot images that are tested for use with OpenShift Container Platform, such as the AWS AMI.
+For user-provisioned installations, the `openshift-install` binary contains references to the version of RHCOS boot images that are tested for use with OpenShift Container Platform, such as the Amazon Web Services (AWS) AMI.
 
 <div class="formalpara-title">
 
@@ -1293,7 +1319,7 @@ You can use the following CloudFormation template to deploy the bootstrap machin
 link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/aws/cloudformation/04_cluster_bootstrap.yaml[role=include]
 ```
 
-- [RHCOS AMIs for the AWS infrastructure(AWS documentation)](../../../installing/installing_aws/upi/installing-aws-user-infra.xml#installation-aws-user-infra-rhcos-ami_installing-aws-user-infra)
+- [RHCOS AMIs for the AWS infrastructure (AWS documentation)](../../../installing/installing_aws/upi/installing-aws-user-infra.xml#installation-aws-user-infra-rhcos-ami_installing-aws-user-infra)
 
 ## Creating the control plane machines in AWS
 
@@ -1685,21 +1711,26 @@ When you use the CloudFormation template for the control plane machines, the tem
        --parameters file://<parameters>.json
   ```
 
-  - Specify the `<name>` with the name for the CloudFormation stack, such as `cluster-worker-1`. You need the name of this stack if you remove the cluster.
+  where:
 
-  - Specify the relative path and the name of the CloudFormation template YAML file that you saved.
+  `<name>`
+  Specifies the `<name>` with the name for the CloudFormation stack, such as `cluster-worker-1`. You need the name of this stack if you remove the cluster.
 
-  - Specify the relative path and the name of the JSON file for the CloudFormation parameters.
+  `<template>`
+  Specifies the relative path and the name of the CloudFormation template YAML file that you saved.
 
-    <div class="formalpara-title">
+  `<parameters>`
+  Specifies the relative path and the name of the JSON file for the CloudFormation parameters.
 
-    **Example output**
+  <div class="formalpara-title">
 
-    </div>
+  **Example output**
 
-    ``` terminal
-    arn:aws:cloudformation:us-east-1:269333783861:stack/cluster-worker-1/729ee301-1c2a-11eb-348f-sd9888c65b59
-    ```
+  </div>
+
+  ``` terminal
+  arn:aws:cloudformation:us-east-1:269333783861:stack/cluster-worker-1/729ee301-1c2a-11eb-348f-sd9888c65b59
+  ```
 
 # Initializing the bootstrap sequence on AWS with user-provisioned infrastructure
 
@@ -1740,9 +1771,9 @@ After you create all of the required infrastructure in Amazon Web Services (AWS)
 
       </div>
 
-- See [Monitoring installation progress](../../../support/troubleshooting/troubleshooting-installations.xml#monitoring-installation-progress_troubleshooting-installations) for details about monitoring the installation, bootstrap, and control plane logs as an OpenShift Container Platform installation progresses.
+- [Monitoring installation progress](../../../support/troubleshooting/troubleshooting-installations.xml#monitoring-installation-progress_troubleshooting-installations)
 
-- See [Gathering bootstrap node diagnostic data](../../../support/troubleshooting/troubleshooting-installations.xml#gathering-bootstrap-diagnostic-data_troubleshooting-installations) for information about troubleshooting issues related to the bootstrap process.
+- [Gathering bootstrap node diagnostic data](../../../support/troubleshooting/troubleshooting-installations.xml#gathering-bootstrap-diagnostic-data_troubleshooting-installations)
 
 # Approving the certificate signing requests for your machines
 
@@ -2351,28 +2382,20 @@ The `kubeadmin` user exists by default after an OpenShift Container Platform ins
 
 - [Accessing the web console](../../../web_console/web-console.xml#web-console)
 
-<!-- -->
+- [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
-- See [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring) for more information about the Telemetry service
+- [Managing AWS resources as a single unit with CloudFormation stacks (AWS documentation)](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacks.html)
 
-# Additional resources
+- [Validating an installation](../../../installing/validation_and_troubleshooting/validating-an-installation.xml#validating-an-installation)
 
-- [Working with stacks (AWS documentation)](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacks.html)
+- [Customizing your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
 
-# Next steps
+- [Configuring image streams](../../../post_installation_configuration/cluster-tasks.xml#post-install-must-gather-disconnected)
 
-- [Validate an installation](../../../installing/validation_and_troubleshooting/validating-an-installation.xml#validating-an-installation).
+- [Using Operator Lifecycle Manager in disconnected environments](../../../disconnected/using-olm.xml#olm-restricted-networks)
 
-- [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations).
+- [Image configuration resources](../../../openshift_images/image-configuration.xml#images-configuration-cas_image-configuration)
 
-- [Configure image streams](../../../post_installation_configuration/cluster-tasks.xml#post-install-must-gather-disconnected) for the Cluster Samples Operator and the `must-gather` tool.
+- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
-- Learn how to [use Operator Lifecycle Manager in disconnected environments](../../../disconnected/using-olm.xml#olm-restricted-networks).
-
-- If the mirror registry that you used to install your cluster has a trusted CA, add it to the cluster by [configuring additional trust stores](../../../openshift_images/image-configuration.xml#images-configuration-cas_image-configuration).
-
-- If necessary, you can [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting).
-
-- If necessary, see [Registering your disconnected cluster](../../../support/remote_health_monitoring/remote-health-reporting.xml#insights-operator-register-disconnected-cluster_remote-health-reporting)
-
-- If necessary, you can [remove cloud provider credentials](../../../post_installation_configuration/changing-cloud-credentials-configuration.xml#manually-removing-cloud-creds_changing-cloud-credentials-configuration).
+- [Changing the cloud provider credentials configuration](../../../post_installation_configuration/changing-cloud-credentials-configuration.xml#manually-removing-cloud-creds_changing-cloud-credentials-configuration)

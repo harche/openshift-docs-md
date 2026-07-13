@@ -6,7 +6,21 @@ For the current version, see [Custom Metrics Autoscaler Operator release notes](
 
 You can review the following release notes to learn about changes in the 2.18.z releases.
 
-# Custom Metrics Autoscaler Operator 2.18.1-1 release notes
+## Custom Metrics Autoscaler Operator 2.18.1-2 release notes
+
+Issued: 09 February 2026
+
+You can review the following release notes to learn about the bug fixes provided in this release of the Custom Metrics Autoscaler Operator.
+
+This release of the Custom Metrics Autoscaler Operator 2.18.1-2 addresses Common Vulnerabilities and Exposures (CVEs). The following advisory is available for the Custom Metrics Autoscaler Operator: [RHSA-2026:2368](https://access.redhat.com/errata/RHSA-2026:2368)
+
+<div class="important">
+
+Before installing this version of the Custom Metrics Autoscaler Operator, remove any previously installed Technology Preview versions or the community-supported version of Kubernetes-based Event Driven Autoscaler (KEDA).
+
+</div>
+
+## Custom Metrics Autoscaler Operator 2.18.1-1 release notes
 
 This release of the Custom Metrics Autoscaler Operator 2.18.1-1, which provides new features and enhancements, deprecated features, and bug fixes for running the Operator in an OpenShift Container Platform cluster, was issued on 15 January 2026. Review the following information to understand important changes in this release.
 

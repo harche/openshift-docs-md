@@ -1,8 +1,10 @@
-Users can review their own OAuth access tokens and delete any that are no longer needed.
+You can review your own OAuth access tokens and delete any that are no longer needed.
 
 # Listing user-owned OAuth access tokens
 
-You can list your user-owned OAuth access tokens. Token names are not sensitive and cannot be used to log in.
+You can list your user-owned OAuth access tokens.
+
+Token names are not sensitive and cannot be used to log in.
 
 - List all user-owned OAuth access tokens:
 
@@ -42,7 +44,7 @@ You can list your user-owned OAuth access tokens. Token names are not sensitive 
 
 # Viewing the details of a user-owned OAuth access token
 
-You can view the details of a user-owned OAuth access token.
+View details of a user-owned OAuth access token to identify the associated client application, check expiration and inactivity timeouts, verify scopes, and see other information fields.
 
 - Describe the details of a user-owned OAuth access token:
 
@@ -94,23 +96,31 @@ You can view the details of a user-owned OAuth access token.
   Events:     <none>
   ```
 
-  - The token name, which is the sha256 hash of the token. Token names are not sensitive and cannot be used to log in.
+  where:
 
-  - The client name, which describes where the token originated from.
+  `Name`
+  Specifies the token name, which is the sha256 hash of the token. Token names are not sensitive and cannot be used to log in.
 
-  - The value in seconds from the creation time before this token expires.
+  `Client Name`
+  Specifies the client name, which describes where the token originated from.
 
-  - If there is a token inactivity timeout set for the OAuth server, this is the value in seconds from the creation time before this token can no longer be used.
+  `Expires In`
+  Specifies the value in seconds from the creation time before this token expires.
 
-  - The scopes for this token.
+  `Inactivity Timeout Seconds`
+  If there is a token inactivity timeout set for the OAuth server, this specifies the value in seconds from the creation time before this token can no longer be used.
 
-  - The user name associated with this token.
+  `Scopes`
+  Specifies the scopes for this token.
+
+  `User Name`
+  Specifies the user name associated with this token.
 
 # Deleting user-owned OAuth access tokens
 
-The `oc logout` command only invalidates the OAuth token for the active session. You can use the following procedure to delete any user-owned OAuth tokens that are no longer needed.
+You can use the following procedure to delete any user-owned OAuth tokens that are no longer needed.
 
-Deleting an OAuth access token logs out the user from all sessions that use the token.
+The `oc logout` command only invalidates the OAuth token for the active session. Deleting an OAuth access token logs out the user from all sessions that use the token.
 
 - Delete the user-owned OAuth access token:
 
@@ -130,7 +140,7 @@ Deleting an OAuth access token logs out the user from all sessions that use the 
 
 # Adding unauthenticated groups to cluster roles
 
-As a cluster administrator, you can add unauthenticated users to the following cluster roles in OpenShift Container Platform by creating a cluster role binding. Unauthenticated users do not have access to non-public cluster roles. This should only be done in specific use cases when necessary.
+As a cluster administrator, you can grant unauthenticated users access to specific cluster roles to enable features, such as external webhooks or automated token management, that require cluster access without authentication. Only grant this access when required and after verifying compliance with your organization’s security standards.
 
 You can add unauthenticated users to the following cluster roles:
 

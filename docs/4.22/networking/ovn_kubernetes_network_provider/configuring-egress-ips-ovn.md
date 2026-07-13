@@ -136,12 +136,6 @@ Automatic attachment and detachment of egress IP addresses for traffic between n
 
 <div class="note">
 
-The RHOSP egress IP address feature creates a Neutron reservation port called `egressip-<IP address>`. Using the same RHOSP user as the one used for the OpenShift Container Platform cluster installation, you can assign a floating IP address to this reservation port to have a predictable SNAT address for egress traffic. When an egress IP address on an RHOSP network is moved from one node to another, because of a node failover, for example, the Neutron reservation port is removed and recreated. This means that the floating IP association is lost and you need to manually reassign the floating IP address to the new reservation port.
-
-</div>
-
-<div class="note">
-
 When an RHOSP cluster administrator assigns a floating IP to the reservation port, OpenShift Container Platform cannot delete the reservation port. The `CloudPrivateIPConfig` object cannot perform delete and move operations until an RHOSP cluster administrator unassigns the floating IP from the reservation port.
 
 </div>

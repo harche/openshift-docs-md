@@ -1,4 +1,6 @@
-You can back up and restore virtual machines (VMs) by using snapshots. Snapshots are supported by the following storage providers:
+You can back up and restore virtual machines (VMs) by using snapshots.
+
+Snapshots are supported by the following storage providers:
 
 - Red Hat OpenShift Data Foundation
 
@@ -328,6 +330,14 @@ You can restore an existing virtual machine (VM) to a previous configuration by 
   - `WaitGracePeriod 5` - The restore process waits for a set amount of time, in minutes, for the VM to be ready. This is the default setting, with the default value set to 5 minutes.
 
   - `WaitEventually` - The restore process waits indefinitely for the VM to be ready.
+
+- Optional: To control the naming of restored persistent volume claims (PVCs), you can set the `volumeRestorePolicy` parameter to one of the following values:
+
+  - `PrefixTargetName` - The restored PVC names use the target VM name as a prefix: `<vm_name>-<volume_name>`.
+
+  - `RandomizeNames` - The system generates the restored PVC names randomly: `restore-<uid>-<volume_name>`.
+
+  - `InPlace` - The restored PVCs overwrite the original PVCs. The system deletes the original PVCs if they exist and creates new PVCs with the same names. This is the default setting.
 
 - Optional: To control how restored persistent volume claims (PVCs) are named, you can set the `volumeRestorePolicy` parameter to one of the following values:
 

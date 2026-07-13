@@ -1,10 +1,10 @@
-The OpenShift Container Platform master includes a built-in OAuth server. Developers and administrators obtain OAuth access tokens to authenticate themselves to the API.
+As an administrator, you can configure OAuth to specify an identity provider after you install your cluster. Developers and administrators obtain OAuth access tokens to authenticate themselves to the API.
 
-As an administrator, you can configure OAuth to specify an identity provider after you install your cluster.
+The OpenShift Container Platform master includes a built-in OAuth server.
 
 # About identity providers in OpenShift Container Platform
 
-By default, only a `kubeadmin` user exists on your cluster. To specify an identity provider, you must create a custom resource (CR) that describes that identity provider and add it to the cluster.
+You can configure identity providers by creating a custom resource (CR) that describes the provider and adding it to the cluster. Identity providers enable user authentication in OpenShift Container Platform beyond the default `kubeadmin` user.
 
 <div class="note">
 
@@ -103,7 +103,9 @@ When adding or changing identity providers, you can map identities from the new 
 
 # Sample identity provider CR
 
-The following custom resource (CR) shows the parameters and default values that you use to configure an identity provider. This example uses the htpasswd identity provider.
+You can use a custom resource (CR) to see the parameters and default values that you use to configure an identity provider.
+
+The following example uses the htpasswd identity provider.
 
 <div class="formalpara-title">
 
@@ -126,15 +128,20 @@ spec:
         name: htpass-secret
 ```
 
-- This provider name is prefixed to provider user names to form an identity name.
+where:
 
-- Controls how mappings are established between this provider’s identities and `User` objects.
+`spec.identityProviders.name`
+Specifies the provider name, which is prefixed to provider user names to form an identity name.
 
-- An existing secret containing a file generated using [`htpasswd`](http://httpd.apache.org/docs/2.4/programs/htpasswd.html).
+`spec.identityProviders.mappingMethod`
+Specifies how mappings are established between this provider’s identities and `User` objects.
+
+`spec.identityProviders.htpasswd.fileData.name`
+Specifies an existing secret containing a file generated using [`htpasswd`](http://httpd.apache.org/docs/2.4/programs/htpasswd.html).
 
 # Manually provisioning a user when using the lookup mapping method
 
-Typically, identities are automatically mapped to users during login. The `lookup` mapping method disables this automatic mapping, which requires you to provision users manually. If you are using the `lookup` mapping method, use the following procedure for each user after configuring the identity provider.
+You can manually provision users when the `lookup` mapping method is enabled. The `lookup` method disables automatic identity-to-user mapping during login, requiring manual provisioning of each user after configuring the identity provider.
 
 - You have installed the OpenShift CLI (`oc`).
 

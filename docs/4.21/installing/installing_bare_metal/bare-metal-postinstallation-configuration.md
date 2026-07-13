@@ -433,11 +433,12 @@ The following list of interface names are reserved and you cannot use the names 
   spec:
     nodeSelector:
       kubernetes.io/hostname: worker-0
-      desiredState:
+    desiredState:
       interfaces:
       - name: enp2s0
         type: ethernet
         state: up
+        mtu: 9000
         ipv4:
           enabled: false
         ipv6:
@@ -461,6 +462,7 @@ The following list of interface names are reserved and you cannot use the names 
         type: ovs-interface
         state: up
         copy-mac-from: enp2s0
+        mtu: 9000
         ipv4:
           enabled: true
           dhcp: true
@@ -492,6 +494,9 @@ The following list of interface names are reserved and you cannot use the names 
   `interfaces.state`
   Specifies the requested state for the interface after creation.
 
+  `mtu`
+  To ensure network stability and performance, you must explicitly declare the MTU in the manifest for every interface. Do not rely on automatic MTU configuration. The MTU configured on a bridge port or VLAN-tagged interface must not exceed the maximum frame size supported by the attached physical medium. A mismatch causes packet fragmentation or connectivity loss.
+
   `ipv4.enabled`
   Disables IPv4 and IPv6 in this example.
 
@@ -518,9 +523,9 @@ The following list of interface names are reserved and you cannot use the names 
 
 For certain situations, you might need to make disruptive changes to a `br-ex` bridge for planned maintenance or network configuration updates. A `br-ex` bridge is a gateway for all external network traffic from your workloads, so any change to the bridge might temporarily disconnect pods and virtual machines (VMs) from an external network.
 
-The following procedure uses an example to show making disruptive changes to a `br-ex` bridge that minimizes any impact to running cluster workloads.
+The following procedure shows how to make disruptive changes to a `br-ex` bridge while minimizing the impact to running cluster workloads.
 
-For all the nodes in your cluster to receive the `br-ex` bridge changes, you must reboot your cluster. Editing the existing `MachineConfig` object does not force a reboot operation, so you must create an additional `MachineConfig` object to force a reboot operation for the cluster.
+For all the nodes in your cluster to receive the `br-ex` bridge changes, you must reboot your cluster. Editing the existing `MachineConfig` object does not force a reboot operation. You must create an additional `MachineConfig` object to force a cluster reboot.
 
 <div class="important">
 
@@ -532,11 +537,13 @@ Red Hat does not support changing IP addresses for nodes as a postinstallation t
 
 - You deployed your cluster that has the configured `br-ex` bridge.
 
-1.  Make changes to the NMState configuration file that you created during cluster installation for customizing your `br-ex` bridge network interface.
+1.  Make changes to the NMState configuration file you created during cluster installation to customize your br-ex bridge network interface.
 
     <div class="important">
 
     Before you save the `MachineConfig` object, check the changed parameter values. If you enter wrong values and save the file, you cannot recover the file to its original state and this impacts networking functionality for your cluster.
+
+    To ensure network stability and performance, you must explicitly declare the MTU in the manifest for every interface. Do not rely on automatic MTU configuration. The MTU configured on a bridge port or VLAN-tagged interface must not exceed the maximum frame size supported by the attached physical medium. A mismatch causes packet fragmentation or connectivity loss.
 
     </div>
 
@@ -615,7 +622,7 @@ Red Hat does not support changing IP addresses for nodes as a postinstallation t
     $ oc delete machineconfig <machine_config_name>
     ```
 
-- Use the `nmstatectl` tool to check the configuration for the `br-ex` bridge interface by running the following command. The tool checks a node that runs the `br-ex` bridge interface and not the location where you deployed the `MachineConfig` objects.
+- Use the `nmstatectl` tool to check the `br-ex` bridge interface configuration by running the following command. The tool checks a node that runs the `br-ex` bridge interface. The tool does not check the location where you deployed the `MachineConfig` objects.
 
   ``` terminal
   $ sudo nmstatectl show br-ex
@@ -651,7 +658,61 @@ Misconfiguring any files that form part of the migration operation can cause dis
 
     Replace `<nmstate_configuration>` with the name of your NMState resource YAML file.
 
-3.  Create a `MachineConfig` manifest file and define a customized `br-ex` bridge network configuration in the file. Additionally, ensure that you specify the path to the base64-encoded NMState configuration file so that the contents of this file get embedded in the `MachineConfig` manifest file.
+3.  Create a `MachineConfig` manifest file and define a customized `br-ex` bridge network configuration in the file. Specify the path to the `base64-encoded` NMState configuration file. This embeds the file contents in the `MachineConfig` manifest file.
+
+    <div class="important">
+
+    To ensure network stability and performance, you must explicitly declare the MTU in the manifest for every interface. Do not rely on automatic MTU configuration. The MTU configured on a bridge port or VLAN-tagged interface must not exceed the maximum frame size supported by the attached physical medium. A mismatch causes packet fragmentation or connectivity loss.
+
+    The following example sets the MTU to `9000` for both the physical device and the bridge interface in the NMState configuration file. You must base64-encode the file and then embed the output in a `MachineConfig` manifest file. The `MachineConfig` manifest file writes to `/etc/nmstate/openshift/cluster.yml` or a per-node path under `/etc/nmstate/openshift/`.
+
+    <div class="formalpara-title">
+
+    **NMState file before encoding**
+
+    </div>
+
+    ``` yaml
+    # ...
+    interfaces:
+    # ...
+    - name: enp2s0
+      type: ethernet
+      state: up
+      mtu: 9000
+    # ...
+    - name: br-ex
+      type: ovs-interface
+      state: up
+      copy-mac-from: enp2s0
+      mtu: 9000
+    # ...
+    ```
+
+    <div class="formalpara-title">
+
+    **MachineConfig embeds the encoded file**
+
+    </div>
+
+    ``` yaml
+    # ...
+      kind: MachineConfig
+      metadata:
+    # ...
+    spec:
+      config:
+    # ...
+        storage:
+          files:
+          - contents:
+              source: data:text/plain;charset=utf-8;base64,<base64_encoded_nmstate_configuration>
+    # ...
+            path: /etc/nmstate/openshift/cluster.yml
+    # ...
+    ```
+
+    </div>
 
 4.  Apply the updates from the `MachineConfig` object to your cluster by entering the following command:
 
@@ -712,7 +773,7 @@ Misconfiguring any files that form part of the migration operation can cause dis
     $ oc delete machineconfig <machine_config_name>
     ```
 
-- Use the `nmstatectl` tool to check the configuration for the `br-ex` bridge interface by running the following command. The tool checks a node that runs the `br-ex` bridge interface and not the location where you deployed the `MachineConfig` objects.
+- Use the `nmstatectl` tool to check the configuration for the `br-ex` bridge interface by running the following command. The tool checks a node that runs the `br-ex` bridge interface. The tool does not check the location where you deployed the `MachineConfig` objects.
 
   ``` terminal
   $ sudo nmstatectl show br-ex

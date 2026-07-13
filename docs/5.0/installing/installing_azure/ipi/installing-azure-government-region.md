@@ -2,15 +2,19 @@ In OpenShift Container Platform version 4.17, you can install a cluster on Micro
 
 # Azure government regions
 
-OpenShift Container Platform supports deploying a cluster to [Microsoft Azure Government (MAG)](https://docs.microsoft.com/en-us/azure/azure-government/documentation-government-welcome) regions. MAG is specifically designed for US government agencies at the federal, state, and local level, as well as contractors, educational institutions, and other US customers that must run sensitive workloads on Azure. MAG is composed of government-only data center regions, all granted an [Impact Level 5 Provisional Authorization](https://docs.microsoft.com/en-us/microsoft-365/compliance/offering-dod-disa-l2-l4-l5?view=o365-worldwide#dod-impact-level-5-provisional-authorization).
+Microsoft Azure Government (MAG) is a cloud environment designed for US government agencies for US government agencies at the federal, state, and local level, as well as contractors, educational institutions, and other US customers that must run sensitive workloads on Azure. MAG is composed of government-only data center regions, all granted an Impact Level 5 Provisional Authorization.
 
-Installing to a MAG region requires manually configuring the Azure Government dedicated cloud instance and region in the `install-config.yaml` file. You must also update your service principal to reference the appropriate government environment.
+Deploying a OpenShift Container Platform cluster to a Microsoft Azure Government (MAG) region requires manually configuring the Azure Government cloud instance and region in the `install-config.yaml` file before you install the cluster. You must also update your service principal to reference the appropriate government environment.
 
 <div class="note">
 
 The Azure government region cannot be selected using the guided terminal prompts from the installation program. You must define the region manually in the `install-config.yaml` file. Remember to also set the dedicated cloud instance, like `AzureUSGovernmentCloud`, based on the region specified.
 
 </div>
+
+- [Microsoft Azure Government (MAG)](https://docs.microsoft.com/en-us/azure/azure-government/documentation-government-welcome)
+
+- [Impact Level 5 Provisional Authorization](https://docs.microsoft.com/en-us/microsoft-365/compliance/offering-dod-disa-l2-l4-l5?view=o365-worldwide#dod-impact-level-5-provisional-authorization)
 
 # Private clusters
 
@@ -40,7 +44,7 @@ To deploy a private cluster, you must:
 
 To create a private cluster on Microsoft Azure, you must provide an existing private VNet and subnets to host the cluster. The installation program must also be able to resolve the DNS records that the cluster requires. The installation program configures the Ingress Operator and API server for only internal traffic.
 
-Depending how your network connects to the private VNET, you might need to use a DNS forwarder to resolve the cluster’s private DNS records. The cluster’s machines use `168.63.129.16` internally for DNS resolution. For more information, see [What is Azure Private DNS?](https://docs.microsoft.com/en-us/azure/dns/private-dns-overview) and [What is IP address 168.63.129.16?](https://docs.microsoft.com/en-us/azure/virtual-network/what-is-ip-address-168-63-129-16) in the Azure documentation.
+Depending how your network connects to the private VNET, you might need to use a DNS forwarder to resolve the cluster’s private DNS records. The cluster’s machines use `168.63.129.16` internally for DNS resolution. For more information, see "What is Azure Private DNS?" and "What is IP address 168.63.129.16?".
 
 The cluster still requires access to internet to access the Azure APIs.
 
@@ -59,6 +63,10 @@ The following items are not required or created when you install a private clust
 ### Limitations
 
 Private clusters on Azure are subject to only the limitations that are associated with the use of an existing VNet.
+
+- [What is Azure Private DNS?](https://docs.microsoft.com/en-us/azure/dns/private-dns-overview)
+
+- [What is IP address 168.63.129.16?](https://docs.microsoft.com/en-us/azure/virtual-network/what-is-ip-address-168-63-129-16)
 
 ## User-defined outbound routing
 
@@ -86,13 +94,13 @@ There are several pre-existing networking setups that are supported for internet
 
 # About reusing a VNet for your OpenShift Container Platform cluster
 
-In OpenShift Container Platform 4.17, you can deploy a cluster into an existing Azure Virtual Network (VNet) in Microsoft Azure. If you do, you must also use existing subnets within the VNet and routing rules.
+In OpenShift Container Platform 4.17, you can deploy a cluster into an existing Microsoft Azure Virtual Network (VNet). Deployments in an existing VNet require existing subnets and routing rules.
 
 By deploying OpenShift Container Platform into an existing Azure VNet, you might be able to avoid service limit constraints in new accounts or more easily abide by the operational constraints that your company’s guidelines set. This is a good option to use if you cannot obtain the infrastructure creation permissions that are required to create the VNet.
 
 ## Requirements for using your VNet
 
-When you deploy a cluster by using an existing VNet, you must perform additional network configuration before you install the cluster. In installer-provisioned infrastructure clusters, the installer usually creates the following components, but it does not create them when you install into an existing VNet:
+When you deploy a cluster by using an existing VNet, you must perform additional network configuration before you install the cluster. In installer-provisioned infrastructure clusters, the installation program usually creates the following components, but it does not create them when you install into an existing VNet:
 
 - Subnets
 
@@ -110,7 +118,7 @@ The installation program requires that you use the cloud-provided DNS server. Us
 
 If you use a custom VNet, you must correctly configure it and its subnets for the installation program and the cluster to use. The installation program cannot subdivide network ranges for the cluster to use, set route tables for the subnets, or set VNet options like DHCP, so you must do so before you install the cluster.
 
-The cluster must be able to access the resource group that contains the existing VNet and subnets. While all of the resources that the cluster creates are placed in a separate resource group that it creates, some network resources are used from a separate group. Some cluster Operators must be able to access resources in both resource groups. For example, the Machine API controller attaches NICS for the virtual machines that it creates to subnets from the networking resource group.
+The cluster must be able to access the resource group that contains the existing VNet and subnets. While all of the resources that the cluster creates are placed in a separate resource group that it creates, some network resources are used from a separate group. Some cluster Operators must be able to access resources in both resource groups. For example, the Machine API controller attaches NICs for the virtual machines that it creates to subnets from the networking resource group.
 
 Your VNet must meet the following characteristics:
 
@@ -122,7 +130,7 @@ You must provide two subnets within your VNet, one for the control plane machine
 
 <div class="note">
 
-By default, if you specify availability zones in the `install-config.yaml` file, the installation program distributes the control plane machines and the compute machines across [these availability zones](https://azure.microsoft.com/en-us/global-infrastructure/availability-zones/) within [a region](https://azure.microsoft.com/en-us/global-infrastructure/regions). To ensure high availability for your cluster, select a region with at least three availability zones. If your region contains fewer than three availability zones, the installation program places more than one control plane machine in the available zones.
+By default, if you specify availability zones in the `install-config.yaml` file, the installation program distributes the control plane machines and the compute machines across availability zones within a region. To ensure high availability for your cluster, select a region with at least three availability zones. If your region contains fewer than three availability zones, the installation program places more than one control plane machine in the available zones. For more information, see "Availability zones" and "Regions".
 
 </div>
 
@@ -171,19 +179,19 @@ To ensure that the machine config server endpoints, ports 22623 and 22624, are s
 
 Because cluster components do not modify the user-provided network security groups, which the Kubernetes controllers update, a pseudo-network security group is created for the Kubernetes controller to modify without impacting the rest of the environment.
 
-| Protocol             | Port                                                                                                                       | Description                |
-|----------------------|----------------------------------------------------------------------------------------------------------------------------|----------------------------|
-| ICMP                 | N/A                                                                                                                        | Network reachability tests |
-| TCP                  | `1936`                                                                                                                     | Metrics                    |
-| `9000`-`9999`        | Host level services, including the node exporter on ports `9100`-`9101` and the Cluster Version Operator on port `9099`.   |                            |
-| `10250`-`10259`      | The default ports that Kubernetes reserves                                                                                 |                            |
-| UDP                  | `6081`                                                                                                                     | Geneve                     |
-| `9000`-`9999`        | Host level services, including the node exporter on ports `9100`-`9101`.                                                   |                            |
-| `500`                | IPsec IKE packets                                                                                                          |                            |
-| `4500`               | IPsec NAT-T packets                                                                                                        |                            |
-| `123`                | Network Time Protocol (NTP) on UDP port `123`. If you configure an external NTP time server, you must open UDP port `123`. |                            |
-| TCP/UDP              | `30000`-`32767`                                                                                                            |                            |
-| Kubernetes node port | ESP                                                                                                                        | N/A                        |
+| Protocol        | Port                                                                                                                       | Description                                |
+|-----------------|----------------------------------------------------------------------------------------------------------------------------|--------------------------------------------|
+| ICMP            | N/A                                                                                                                        | Network reachability tests                 |
+| TCP             | `1936`                                                                                                                     | Metrics                                    |
+| `9000`-`9999`   | Host level services, including the node exporter on ports `9100`-`9101` and the Cluster Version Operator on port `9099`.   |                                            |
+| `10250`-`10259` | The default ports that Kubernetes reserves                                                                                 |                                            |
+| UDP             | `6081`                                                                                                                     | Geneve                                     |
+| `9000`-`9999`   | Host level services, including the node exporter on ports `9100`-`9101`.                                                   |                                            |
+| `500`           | IPsec IKE packets                                                                                                          |                                            |
+| `4500`          | IPsec NAT-T packets                                                                                                        |                                            |
+| `123`           | Network Time Protocol (NTP) on UDP port `123`. If you configure an external NTP time server, you must open UDP port `123`. |                                            |
+| TCP/UDP         | `30000`-`32767`                                                                                                            | Kubernetes node port                       |
+| ESP             | N/A                                                                                                                        | IPsec Encapsulating Security Payload (ESP) |
 
 Ports used for all-machine to all-machine communications
 
@@ -206,6 +214,10 @@ Because the cluster is unable to modify network security groups in an existing s
 - [About the OVN-Kubernetes network plugin](../../../networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.xml#about-ovn-kubernetes)
 
 - [Configuring your firewall](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
+
+- [Availability zones](https://azure.microsoft.com/en-us/global-infrastructure/availability-zones/)
+
+- [Regions](https://azure.microsoft.com/en-us/global-infrastructure/regions/)
 
 # Manually creating the installation configuration file
 
@@ -584,7 +596,7 @@ Production environments can deny direct access to the internet and instead have 
 
     </div>
 
-- For more details about Accelerated Networking, see [Accelerated Networking for Microsoft Azure VMs](../../../machine_management/creating_machinesets/creating-machineset-azure.xml#machineset-azure-accelerated-networking_creating-machineset-azure).
+- [Accelerated Networking for Microsoft Azure VMs](../../../machine_management/creating_machinesets/creating-machineset-azure.xml#machineset-azure-accelerated-networking_creating-machineset-azure)
 
 # Deploying the cluster
 
@@ -739,12 +751,10 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 - "Remote health reporting"
 
-<!-- -->
+# Additional resources
 
 - [Accessing the web console](../../../web_console/web-console.xml#web-console)
 
-# Next steps
+- [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
 
-- [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations).
-
-- If necessary, you can [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting).
+- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)

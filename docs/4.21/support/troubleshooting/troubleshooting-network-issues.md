@@ -80,9 +80,6 @@ The following procedure shows how to override the default node IP selection logi
             path: /etc/default/nodeip-configuration
     ```
 
-    where; `spec.config.storage.files.contents.source.<encoded_content>`
-    Replace this placeholder with the base64-encoded content of the `/etc/default/nodeip-configuration` file, for example, `Tk9ERUlQX0hJTlQ9MTkyLjAuMCxxxx==`. Note that a space is not acceptable after the comma and before the encoded content.
-
     <div class="formalpara-title">
 
     **99-nodeip-hint-worker.yaml**
@@ -109,7 +106,9 @@ The following procedure shows how to override the default node IP selection logi
            path: /etc/default/nodeip-configuration
     ```
 
-    where; `spec.config.storage.files.contents.source.<encoded_content>`
+    where:
+
+    `spec.config.storage.files.contents.source.<encoded_content>`
     Replace this placeholder with the base64-encoded content of the `/etc/default/nodeip-configuration` file, for example, `Tk9ERUlQX0hJTlQ9MTkyLjAuMCxxxx==`. Note that a space is not acceptable after the comma and before the encoded content.
 
 4.  Save the manifest to the directory where you store your cluster configuration, for example, `~/clusterconfigs`.

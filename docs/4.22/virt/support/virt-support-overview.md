@@ -28,7 +28,7 @@ Submit a support case to resolve a cluster issue that is affecting the ability o
 
 You can submit a support case to Red Hat Support by using the Customer Support page. Include data that you collected about your issue with your support request.
 
-## Creating a Jira issue
+# Creating a Jira issue
 
 To report a bug, use the Red Hat Issue Router (RHIR), which is available in the Customer Portal Labs.
 
@@ -51,6 +51,18 @@ To report a bug, use the Red Hat Issue Router (RHIR), which is available in the 
 5.  Click **Create** at the bottom of the page.
 
 6.  Review the details of the bug you created.
+
+# Provide feedback on OpenShift Virtualization documentation
+
+To report an error or request an enhancement in the documentation, log in to your Red Hat Jira account and submit an issue. If you do not have a Red Hat Jira account, you are prompted to create an account.
+
+1.  Create a Jira issue for OpenShift Virtualization and in the **Component** field, select **CNV Documentation**.
+
+2.  Enter a brief description of the issue in the **Summary**.
+
+3.  Provide a detailed description of the issue or requested enhancement in the **Description**. Include a URL to where the issue occurs in the documentation.
+
+4.  Click **Create**.
 
 # Web console monitoring
 
@@ -82,4 +94,4 @@ Web console pages for monitoring and troubleshooting
 
 - [Red Hat Jira account](https://redhat.atlassian.net/jira)
 
-- [Create issue](https://redhat.atlassian.net/secure/CreateIssueDetails%21init.jspa?priority=10200&summary=%5BDoc%5D&pid=10270&issuetype=10016&components=12333768)
+- [Jira issue tracker for OpenShift Virtualization](https://redhat.atlassian.net/secure/CreateIssueDetails!init.jspa?priority=1003&summary=%5BDoc%5D&pid=10270&issuetype=10016&components=13563)

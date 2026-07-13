@@ -1,8 +1,4 @@
-You can increase the number of virtual machines (VMs) on nodes by overcommitting memory (RAM). Increasing VM workload density can be useful in the following situations:
-
-- You have many similar workloads.
-
-- You have underused workloads.
+You can increase the number of virtual machines (VMs) on nodes by overcommitting memory (RAM). Increasing VM workload density can be useful if you have many similar workloads or underused workloads.
 
 <div class="note">
 

@@ -1,4 +1,4 @@
-Run a self validation checkup to validate the stability, health, and compliance of an OpenShift Virtualization installation. A self validation checkup runs conformance tests on critical subsystems to verify that the environment is fully functional and self-sustained before you deploy production workloads.
+A self validation checkup runs conformance tests on critical subsystems to verify that the environment is fully functional and self-sustained before you deploy production workloads.
 
 # Run a self validation checkup in the web console
 

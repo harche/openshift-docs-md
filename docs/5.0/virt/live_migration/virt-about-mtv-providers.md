@@ -2,7 +2,7 @@ To migrate a virtual machine (VM) across OpenShift Container Platform clusters, 
 
 # Configuring the root certificate authority for providers
 
-You must configure an OpenShift Container Platform provider for each cluster that you are including in a migration, and each provider requires a certificate authority (CA) for the cluster. It is important to configure the root CA for the entire cluster to avoid CA expiration, which causes the provider to fail.
+You must configure an OpenShift Container Platform provider for each cluster that you are including in a migration, and each provider requires a certificate authority (CA) for the cluster. Configure the root CA for the entire cluster to avoid CA expiration, which causes the provider to fail.
 
 1.  Run the following command against the cluster for which you are creating the provider:
 

@@ -1,5 +1,46 @@
 You can migrate one or more virtual disks to a different storage class to optimize storage performance or reduce costs without stopping your virtual machine (VM) or virtual machine instance (VMI).
 
+# Assign storage migration permissions
+
+Cluster administrators must grant users permission to perform storage migrations. Permissions to perform storage migrations are not part of the administrative or editing roles in the cluster by default.
+
+- You have cluster administrator privileges.
+
+1.  (Optional) To assign the user single namespace storage migration permissions, run the following command:
+
+    ``` terminal
+    $ kubectl create rolebinding <role_binding_name> \
+        --clusterrole=migrations.kubevirt.io:storagemigrate \
+        --user=<user_name> -n <namespace>
+    ```
+
+    where:
+
+    \<role_binding_name\>
+    The name to assign to this role binding instance.
+
+    \<user_name\>
+    The user to assign the storage migration permission.
+
+    \<namespace\>
+    The applicable namespace for this role binding instance.
+
+2.  (Optional) To assign the user multiple namespace storage migration permissions, run the following command:
+
+    ``` terminal
+    $ kubectl create clusterrolebinding <role_binding_name> \
+        --clusterrole=migrations.kubevirt.io:storagemigrate-multins \
+        --user=<user_name>
+    ```
+
+    where:
+
+    \<role_binding_name\>
+    The name to assign to this role binding instance.
+
+    \<user_name\>
+    The user to assign the storage migration permission.
+
 # Migrating VM disks to a different storage class by using the web console
 
 You can migrate one or more disks attached to a virtual machine (VM) to a different storage class by using the OpenShift Container Platform web console. When performing this action on a running VM, the operation of the VM is not interrupted and the data on the migrated disks remains accessible.

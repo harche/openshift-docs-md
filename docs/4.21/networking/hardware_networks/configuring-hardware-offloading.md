@@ -8,7 +8,7 @@ Open vSwitch hardware offloading is a method of processing network tasks by dive
 
 The key element for this feature is a modern class of network interface controllers known as SmartNICs. A SmartNIC is a network interface controller that is able to handle computationally-heavy network processing tasks. In the same way that a dedicated graphics card can improve graphics performance, a SmartNIC can improve network performance. In each case, a dedicated processor improves performance for a specific type of processing task.
 
-In OpenShift Container Platform, you can configure hardware offloading for bare metal nodes that have a compatible SmartNIC. Hardware offloading is configured and enabled by the SR-IOV Network Operator.
+In OpenShift Container Platform, you can configure hardware offloading for bare-metal nodes that have a compatible SmartNIC. Hardware offloading is configured and enabled by the SR-IOV Network Operator.
 
 Hardware offloading is not compatible with all workloads or application types. Only the following two communication types are supported:
 
@@ -36,13 +36,23 @@ Supported network interface controllers
 
 # Prerequisites
 
-- Your cluster has at least one bare metal machine with a network interface controller that is supported for hardware offloading.
+Before you configure hardware offloading, ensure that the following conditions are met.
 
-- You [installed the SR-IOV Network Operator](../../networking/networking_operators/sr-iov-operator/installing-sriov-operator.xml#installing-sriov-operator).
+- Your cluster has at least one bare-metal machine with a network interface controller that is supported for hardware offloading.
 
-- Your cluster uses the [OVN-Kubernetes network plugin](../../networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.xml#about-ovn-kubernetes).
+- You installed the SR-IOV Network Operator.
 
-- In your [OVN-Kubernetes network plugin configuration](../../networking/networking_operators/cluster-network-operator.xml#gatewayConfig-object_cluster-network-operator), the `gatewayConfig.routingViaHost` field is set to `false`.
+- Your cluster uses the OVN-Kubernetes network plugin.
+
+- In your OVN-Kubernetes network plugin configuration, the `gatewayConfig.routingViaHost` field is set to `false`.
+
+<!-- -->
+
+- [Installing the SR-IOV Network Operator](../../networking/networking_operators/sr-iov-operator/installing-sriov-operator.xml#installing-sriov-operator)
+
+- [About the OVN-Kubernetes network plugin](../../networking/ovn_kubernetes_network_provider/about-ovn-kubernetes.xml#about-ovn-kubernetes)
+
+- [OVN-Kubernetes network plugin configuration](../../networking/networking_operators/cluster-network-operator.xml#gatewayConfig-object_cluster-network-operator)
 
 # Setting the SR-IOV Network Operator into systemd mode
 
@@ -87,25 +97,23 @@ To enable hardware offloading, you now create a dedicated machine config pool an
 
 1.  Create a machine config pool for machines you want to use hardware offloading on.
 
-    1.  Create a file, such as `mcp-offloading.yaml`, with content like the following example:
+    1.  Create a file, such as `mcp-offloading.yaml`, with content such as the following example:
 
         ``` yaml
         apiVersion: machineconfiguration.openshift.io/v1
         kind: MachineConfigPool
         metadata:
-          name: mcp-offloading
+          name: <mcp_name>
         spec:
           machineConfigSelector:
             matchExpressions:
-              - {key: machineconfiguration.openshift.io/role, operator: In, values: [worker,mcp-offloading]}
+              - {key: machineconfiguration.openshift.io/role, operator: In, values: [worker,<mcp_name>]}
           nodeSelector:
             matchLabels:
-              node-role.kubernetes.io/mcp-offloading: ""
+              node-role.kubernetes.io/<mcp_name>: ""
         ```
 
-        - The name of your machine config pool for hardware offloading.
-
-        - This node role label is used to add nodes to the machine config pool.
+        - `<mcp_name>` specifies the name of your machine config pool for hardware offloading. This value is used as the machine config pool name, the machine config selector value, and the node role label.
 
     2.  Apply the configuration for the machine config pool:
 
@@ -125,11 +133,7 @@ To enable hardware offloading, you now create a dedicated machine config pool an
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following is example output:
 
     ``` terminal
     NAME       STATUS   ROLES                   AGE   VERSION
@@ -142,7 +146,7 @@ To enable hardware offloading, you now create a dedicated machine config pool an
 
 4.  Add this machine config pool to the `SriovNetworkPoolConfig` custom resource:
 
-    1.  Create a file, such as `sriov-pool-config.yaml`, with content like the following example:
+    1.  Create a file, such as `sriov-pool-config.yaml`, with content such as the following example:
 
         ``` yaml
         apiVersion: sriovnetwork.openshift.io/v1
@@ -152,10 +156,10 @@ To enable hardware offloading, you now create a dedicated machine config pool an
           namespace: openshift-sriov-network-operator
         spec:
           ovsHardwareOffloadConfig:
-            name: mcp-offloading
+            name: <mcp_name>
         ```
 
-        - The name of your machine config pool for hardware offloading.
+        - `<mcp_name>` specifies the name of your machine config pool for hardware offloading.
 
     2.  Apply the configuration:
 
@@ -181,13 +185,13 @@ The following procedure creates an SR-IOV interface for a network interface cont
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
-1.  Create a file, such as `sriov-node-policy.yaml`, with content like the following example:
+1.  Create a file, such as `sriov-node-policy.yaml`, with content such as the following example:
 
     ``` yaml
     apiVersion: sriovnetwork.openshift.io/v1
     kind: SriovNetworkNodePolicy
     metadata:
-      name: sriov-node-policy
+      name: <name>
       namespace: openshift-sriov-network-operator
     spec:
       deviceType: netdevice
@@ -206,11 +210,11 @@ The following procedure creates an SR-IOV interface for a network interface cont
       resourceName: mlxnics
     ```
 
-    - The name for the custom resource object.
+    - `<name>` specifies the name for the custom resource object.
 
-    - Required. Hardware offloading is not supported with `vfio-pci`.
+    - The `deviceType` field must be set to `netdevice`. Hardware offloading is not supported with `vfio-pci`.
 
-    - Required.
+    - The `eSwitchMode` field must be set to `"switchdev"`.
 
 2.  Apply the configuration for the policy:
 
@@ -230,11 +234,7 @@ The following procedure creates an SR-IOV interface for a network interface cont
 
 The following example describes an SR-IOV interface for a network interface controller (NIC) with hardware offloading on Red Hat OpenStack Platform (RHOSP).
 
-<div class="formalpara-title">
-
-**An SR-IOV interface for a NIC with hardware offloading on RHOSP**
-
-</div>
+The following example shows an SR-IOV interface for a NIC with hardware offloading on RHOSP:
 
 ``` yaml
 apiVersion: sriovnetwork.openshift.io/v1
@@ -289,17 +289,17 @@ This procedure results in the creation of two pools: the first has a virtual fun
         - 0000:d8:00.0
         vendor: "15b3"
         pfNames:
-        - ens8f0#0-0
+        - <pf_name>#0-0
       nodeSelector:
         network.operator.openshift.io/smart-nic: ""
-      numVfs: 6
+      numVfs: <num_vfs>
       priority: 5
       resourceName: mgmtvf
     ```
 
-    - Replace this device with the appropriate network device for your use case. The `#0-0` part of the `pfNames` value reserves a single virtual function used by OVN-Kubernetes.
+    - `<pf_name>` specifies the network device for your use case. The `#0-0` part of the `pfNames` value reserves a single virtual function used by OVN-Kubernetes.
 
-    - The value provided here is an example. Replace this value with one that meets your requirements. For more information, see *SR-IOV network node configuration object* in the *Additional resources* section.
+    - `<num_vfs>` specifies the number of virtual functions. Replace this value with one that meets your requirements. For more information, see *SR-IOV network node configuration object* in the *Additional resources* section.
 
 3.  Create a policy named `sriov-node-policy.yaml` with content such as the following example:
 
@@ -318,23 +318,23 @@ This procedure results in the creation of two pools: the first has a virtual fun
         - 0000:d8:00.0
         vendor: "15b3"
         pfNames:
-        - ens8f0#1-5
+        - <pf_name>#1-5
       nodeSelector:
         network.operator.openshift.io/smart-nic: ""
-      numVfs: 6
+      numVfs: <num_vfs>
       priority: 5
       resourceName: mlxnics
     ```
 
-    - Replace this device with the appropriate network device for your use case.
+    - `<pf_name>` specifies the network device for your use case.
 
-    - The value provided here is an example. Replace this value with the value specified in the `sriov-node-mgmt-vf-policy.yaml` file. For more information, see *SR-IOV network node configuration object* in the *Additional resources* section.
+    - `<num_vfs>` specifies the number of virtual functions. Replace this value with the value specified in the `sriov-node-mgmt-vf-policy.yaml` file. For more information, see *SR-IOV network node configuration object* in the *Additional resources* section.
 
-      <div class="note">
+    <div class="note">
 
-      The `sriov-node-mgmt-vf-policy.yaml` file has different values for the `pfNames` and `resourceName` keys than the `sriov-node-policy.yaml` file.
+    The `sriov-node-mgmt-vf-policy.yaml` file has different values for the `pfNames` and `resourceName` keys than the `sriov-node-policy.yaml` file.
 
-      </div>
+    </div>
 
 4.  Apply the configuration for both policies:
 
@@ -370,31 +370,31 @@ This procedure results in the creation of two pools: the first has a virtual fun
 
 # Creating a network attachment definition
 
-After you define the machine config pool and the SR-IOV network node policy, you can create a network attachment definition for the network interface card you specified.
+After you define the machine config pool and the SR-IOV network node policy, you can create a network attachment definition for the network interface controller (NIC) you specified.
 
 - You installed the OpenShift CLI (`oc`).
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
-1.  Create a file, such as `net-attach-def.yaml`, with content like the following example:
+1.  Create a file, such as `net-attach-def.yaml`, with content such as the following example:
 
     ``` yaml
     apiVersion: "k8s.cni.cncf.io/v1"
     kind: NetworkAttachmentDefinition
     metadata:
-      name: net-attach-def
-      namespace: net-attach-def
+      name: <net_attach_def_name>
+      namespace: <net_attach_def_namespace>
       annotations:
-        k8s.v1.cni.cncf.io/resourceName: openshift.io/mlxnics
+        k8s.v1.cni.cncf.io/resourceName: openshift.io/<resource_name>
     spec:
       config: '{"cniVersion":"0.3.1","name":"ovn-kubernetes","type":"ovn-k8s-cni-overlay","ipam":{},"dns":{}}'
     ```
 
-    - The name for your network attachment definition.
+    - `<net_attach_def_name>` specifies the name for your network attachment definition.
 
-    - The namespace for your network attachment definition.
+    - `<net_attach_def_namespace>` specifies the namespace for your network attachment definition.
 
-    - This is the value of the `spec.resourceName` field you specified in the `SriovNetworkNodePolicy` object.
+    - `<resource_name>` specifies the value of the `spec.resourceName` field from the `SriovNetworkNodePolicy` object.
 
 2.  Apply the configuration for the network attachment definition:
 
@@ -420,7 +420,7 @@ After you create the machine config pool, the `SriovNetworkPoolConfig` and `Srio
   ....
   metadata:
     annotations:
-      v1.multus-cni.io/default-network: net-attach-def/net-attach-def
+      v1.multus-cni.io/default-network: <namespace>/<net_attach_def_name>
   ```
 
-  - The value must be the name and namespace of the network attachment definition you created for hardware offloading.
+  - `<namespace>/<net_attach_def_name>` specifies the namespace and name of the network attachment definition you created for hardware offloading.

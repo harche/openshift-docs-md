@@ -1,4 +1,4 @@
-After you deploy hosted control planes on non-bare-metal agent machines, you can manage a hosted cluster by completing the following tasks.
+After you deploy hosted control planes on non-bare-metal agent machines, you can manage a hosted cluster.
 
 # Accessing the hosted cluster
 
@@ -10,7 +10,7 @@ You can access the hosted cluster by either getting the `kubeconfig` file and `k
 
 </div>
 
-To access the hosted cluster by getting the `kubeconfig` file and credentials directly from resources, you must be familiar with the access secrets for hosted clusters. The *hosted cluster (hosting)* namespace contains hosted cluster resources and the access secrets. The *hosted control plane* namespace is where the hosted control plane runs.
+To access the hosted cluster by getting the `kubeconfig` file and credentials directly from resources, you must be familiar with the access secrets for hosted clusters. The *hosted cluster (hosting)* namespace has hosted cluster resources and the access secrets. The *hosted control plane* namespace is where the hosted control plane runs.
 
 The secret name formats are as follows:
 
@@ -18,7 +18,7 @@ The secret name formats are as follows:
 
 - `kubeadmin` password secret: `<hosted_cluster_namespace>-<name>-kubeadmin-password`. For example, `clusters-hypershift-demo-kubeadmin-password`.
 
-The `kubeconfig` secret contains a Base64-encoded `kubeconfig` field, which you can decode and save into a file to use with the following command:
+The `kubeconfig` secret has a Base64-encoded `kubeconfig` field, which you can decode and save into a file to use with the following command:
 
 ``` terminal
 $ oc --kubeconfig <hosted_cluster_name>.kubeconfig get nodes
@@ -43,7 +43,9 @@ The `kubeadmin` password secret is also Base64-encoded. You can decode it and us
 
 # Scaling the NodePool object for a hosted cluster
 
-You can scale up the `NodePool` object by adding nodes to your hosted cluster. When you scale a node pool, consider the following information:
+You can scale up the `NodePool` object by adding nodes to your hosted cluster.
+
+When you scale a node pool, consider the following information:
 
 - When you scale a replica by the node pool, a machine is created. For every machine, the Cluster API provider finds and installs an Agent that meets the requirements that are specified in the node pool specification. You can monitor the installation of an Agent by checking its status and conditions.
 
@@ -153,7 +155,7 @@ You can scale up the `NodePool` object by adding nodes to your hosted cluster. W
     hypercluster1-c96b6f675-tl42p   hypercluster1-b2qhl   ocp-worker-2   agent://4dac1ab2-7dd5-4894-a220-6a3473b67ee6   Running   15m   4.x.z
     ```
 
-    The `clusterversion` reconcile process eventually reaches a point where only Ingress and Console cluster operators are missing.
+    The `clusterversion` reconcile process eventually reaches a point where only Ingress and Console cluster Operators are missing.
 
 7.  Enter the following command:
 
@@ -197,13 +199,13 @@ Only a single agent namespace is supported for each hosted cluster. As a result,
       --agentLabelSelector size=medium
     ```
 
-    - Replace `<hosted_cluster_name>` with your hosted cluster name.
+    - `--cluster-name` specifies your hosted cluster name, for example, `my-hosted-cluster`.
 
-    - Replace `<nodepool_name>` with the name of your node pool, for example, `<hosted_cluster_name>-extra-cpu`.
+    - `--name` specifies the name of your node pool, for example, `my-hosted-cluster-extra-cpu`.
 
-    - Replace `<worker_node_count>` with the worker node count, for example, `2`.
+    - `--node-count` specifies the worker node count, for example, `2`.
 
-    - The `--agentLabelSelector` flag is optional. The node pool uses agents with the `size=medium` label.
+    - `--agentLabelSelector` is optional. The node pool uses agents with the `size=medium` label.
 
 2.  Check the status of the node pool by listing `nodepool` resources in the `clusters` namespace:
 
@@ -259,7 +261,7 @@ When you need more capacity in your hosted cluster and spare agents are availabl
 
 2.  Create a workload that requires a new node.
 
-    1.  Create a YAML file that contains the workload configuration, by using the following example:
+    1.  Create a YAML file that has the workload configuration, by using the following example:
 
         ``` yaml
         apiVersion: apps/v1
@@ -342,7 +344,7 @@ When you need more capacity in your hosted cluster and spare agents are availabl
 
 ## Disabling node auto-scaling for the hosted cluster
 
-To disable node auto-scaling, complete the following procedure.
+If needed, you can disable node auto-scaling.
 
 - Enter the following command to disable node auto-scaling for the hosted cluster:
 
@@ -362,17 +364,13 @@ To disable node auto-scaling, complete the following procedure.
 
 # Handling ingress in a hosted cluster on non-bare-metal agent machines
 
-Every OpenShift Container Platform cluster has a default application Ingress Controller that typically has an external DNS record associated with it. For example, if you create a hosted cluster named `example` with the base domain `krnl.es`, you can expect the wildcard domain `*.apps.example.krnl.es` to be routable.
+Every OpenShift Container Platform cluster has a default application Ingress Controller that typically has an external DNS record associated with it.
 
-<div class="formalpara-title">
+For example, if you create a hosted cluster named `example` with the base domain `krnl.es`, you can expect the wildcard domain `*.apps.example.krnl.es` to be routable.
 
-**Procedure**
+To set up a load balancer and wildcard DNS record for the `*.apps` domain, perform the following actions on your hosted cluster.
 
-</div>
-
-To set up a load balancer and wildcard DNS record for the `*.apps` domain, perform the following actions on your guest cluster:
-
-1.  Deploy MetalLB by creating a YAML file that contains the configuration for the MetalLB Operator:
+1.  Deploy MetalLB by creating a YAML file that has the configuration for the MetalLB Operator:
 
     ``` yaml
     apiVersion: v1
@@ -412,7 +410,7 @@ To set up a load balancer and wildcard DNS record for the `*.apps` domain, perfo
 
 4.  After the Operator is running, create the MetalLB instance:
 
-    1.  Create a YAML file that contains the configuration for the MetalLB instance:
+    1.  Create a YAML file that has the configuration for the MetalLB instance:
 
         ``` yaml
         apiVersion: metallb.io/v1beta1
@@ -432,7 +430,7 @@ To set up a load balancer and wildcard DNS record for the `*.apps` domain, perfo
 
 5.  Create an `IPAddressPool` resource with a single IP address. This IP address must be on the same subnet as the network that the cluster nodes use.
 
-    1.  Create a file, such as `ipaddresspool.yaml`, with content like the following example:
+    1.  Create a file, such as `ipaddresspool.yaml`, with content similar to the following example:
 
         ``` yaml
         apiVersion: metallb.io/v1beta1
@@ -446,9 +444,9 @@ To set up a load balancer and wildcard DNS record for the `*.apps` domain, perfo
           autoAssign: false
         ```
 
-        - Specify the `IPAddressPool` resource name.
+        - `metadata.name` specifies the `IPAddressPool` resource name.
 
-        - Specify the IP address for your environment. For example, `192.168.122.23`.
+        - `spec.addresses` specifies the IP address for your environment. For example, `192.168.122.23`.
 
     2.  Apply the configuration for the IP address pool by entering the following command:
 
@@ -458,7 +456,7 @@ To set up a load balancer and wildcard DNS record for the `*.apps` domain, perfo
 
 6.  Create a L2 advertisement.
 
-    1.  Create a file, such as `l2advertisement.yaml`, with content like the following example:
+    1.  Create a file, such as `l2advertisement.yaml`, with content similar to the following example:
 
         ``` yaml
         apiVersion: metallb.io/v1beta1
@@ -471,9 +469,9 @@ To set up a load balancer and wildcard DNS record for the `*.apps` domain, perfo
            - <ip_address_pool_name>
         ```
 
-        - Specify the `L2Advertisement` resource name.
+        - `metadata.name` specifies the `L2Advertisement` resource name.
 
-        - Specify the `IPAddressPool` resource name.
+        - `spec.ipAddressPools` specifies the `IPAddressPool` resource name.
 
     2.  Apply the configuration by entering the following command:
 
@@ -569,13 +567,7 @@ Consider the following limitations before enabling machine health checks:
 
 After you enable machine health checks for the managed cluster nodes, the `MachineHealthCheck` object is created in your hosted cluster.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To enable machine health checks in your hosted cluster, modify the `NodePool` resource. Complete the following steps:
+To enable machine health checks in your hosted cluster, modify the `NodePool` resource.
 
 1.  Verify that the `spec.nodeDrainTimeout` value in your `NodePool` resource is greater than `0s`. Replace `<hosted_cluster_namespace>` with the name of your hosted cluster namespace and `<nodepool_name>` with the node pool name. Run the following command:
 

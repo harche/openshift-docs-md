@@ -203,7 +203,7 @@ The initial `HostedCluster` CR does not have any information in the `status.vers
           url: https://issues.redhat.com/browse/NHE-1171
     ```
 
-# Updating the OpenShift Container Platform version in a hosted cluster
+# Updates of the OpenShift Container Platform version in a hosted cluster
 
 Hosted control planes enables the decoupling of updates between the control plane and the data plane.
 
@@ -211,25 +211,13 @@ As a cluster service provider or cluster administrator, you can manage the contr
 
 You can update a control plane by modifying the `HostedCluster` custom resource (CR) and a node by modifying its `NodePool` CR. Both the `HostedCluster` and `NodePool` CRs specify an OpenShift Container Platform release image in a `.release` field.
 
-To keep your hosted cluster fully operational during an update process, the control plane and the node versions must be compatible. For more information, see "Hosted cluster and node pool version skew policy".
+To keep your hosted cluster fully operational during an update process, the control plane and the node versions must be compatible. For more information, see "Hosted cluster and node pool version skew policy" in the *Additional resources* section.
 
 ## The multicluster engine Operator hub management cluster
 
 The multicluster engine for Kubernetes Operator requires a specific OpenShift Container Platform version for the management cluster to remain in a supported state. You can install the multicluster engine Operator from the software catalog in the OpenShift Container Platform web console.
 
-See the following support matrices for the multicluster engine Operator versions:
-
-- [multicluster engine Operator 2.9](https://access.redhat.com/articles/7120837)
-
-- [multicluster engine Operator 2.8](https://access.redhat.com/articles/7099674)
-
-- [multicluster engine Operator 2.7](https://access.redhat.com/articles/7086906)
-
-- [multicluster engine Operator 2.6](https://access.redhat.com/articles/7073030)
-
-- [multicluster engine Operator 2.5](https://access.redhat.com/articles/7056007)
-
-- [multicluster engine Operator 2.4](https://access.redhat.com/articles/7027079)
+See the support matrixes for the multicluster engine Operator versions in the *Additional resources* section.
 
 The multicluster engine Operator supports the following OpenShift Container Platform versions:
 
@@ -283,6 +271,24 @@ Server Supports OCP Versions: 4.17, 4.16, 4.15, 4.14
 
 - [Hosted cluster and node pool version skew policy](../hosted_control_planes/hcp-updating.xml#hcp-np-version-skew_hcp-updating)
 
+- [multicluster engine Operator 2.17](https://access.redhat.com/articles/7142379)
+
+- [multicluster engine Operator 2.11](https://access.redhat.com/articles/7136929)
+
+- [multicluster engine Operator 2.10](https://access.redhat.com/articles/7133096)
+
+- [multicluster engine Operator 2.9](https://access.redhat.com/articles/7120837)
+
+- [multicluster engine Operator 2.8](https://access.redhat.com/articles/7099674)
+
+- [multicluster engine Operator 2.7](https://access.redhat.com/articles/7086906)
+
+- [multicluster engine Operator 2.6](https://access.redhat.com/articles/7073030)
+
+- [multicluster engine Operator 2.5](https://access.redhat.com/articles/7056007)
+
+- [multicluster engine Operator 2.4](https://access.redhat.com/articles/7027079)
+
 # Updates for the hosted cluster
 
 The `spec.release.image` value dictates the version of the control plane. The `HostedCluster` object transmits the intended `spec.release.image` value to the `HostedControlPlane.spec.releaseImage` value and runs the appropriate Control Plane Operator version.
@@ -293,15 +299,19 @@ The hosted control plane manages the rollout of the new version of the control p
 
 In hosted control planes, the `NodeHealthCheck` resource cannot detect the status of the CVO. A cluster administrator must manually pause the remediation triggered by `NodeHealthCheck`, before performing critical operations, such as updating the cluster, to prevent new remediation actions from interfering with cluster updates.
 
-To pause the remediation, enter the array of strings, for example, `pause-test-cluster`, as a value of the `pauseRequests` field in the `NodeHealthCheck` resource. For more information, see [About the Node Health Check Operator](https://docs.redhat.com/en/documentation/workload_availability_for_red_hat_openshift/24.4/html/remediation_fencing_and_maintenance/node-health-check-operator#about-node-health-check-operator_node-health-check-operator).
+To pause the remediation, enter the array of strings, for example, `pause-test-cluster`, as a value of the `pauseRequests` field in the `NodeHealthCheck` resource. For more information, see "About the Node Health Check Operator".
 
-After the cluster update is complete, you can edit or delete the remediation. Navigate to the **Compute** → **NodeHealthCheck** page, click your node health check, and then click **Actions**, which shows a drop-down list.
+After the cluster update is complete, you can edit or delete the remediation. Go to the **Compute** → **NodeHealthCheck** page, click your node health check, and then click **Actions**, which shows a drop-down list.
 
 </div>
 
+- [About the Node Health Check Operator](https://docs.redhat.com/en/documentation/workload_availability_for_red_hat_openshift/24.4/html/remediation_fencing_and_maintenance/node-health-check-operator#about-node-health-check-operator_node-health-check-operator)
+
 # Updates for node pools
 
-With node pools, you can configure the software that is running in the nodes by exposing the `spec.release` and `spec.config` values. You can start a rolling node pool update in the following ways:
+You can update node pools by exposing the `spec.release` and `spec.config` values.
+
+You can start a rolling node pool update in the following ways:
 
 - Changing the `spec.release` or `spec.config` values.
 
@@ -321,9 +331,9 @@ Replace updates do not preserve any manual changes because the node is entirely 
 
 ## In place updates for node pools
 
-An *in-place* update directly updates the operating systems of the instances. This type is suitable for environments where the infrastructure constraints are higher, such as bare metal.
+An *in-place* update directly updates the operating systems of the instances. This type is suitable for environments where the infrastructure constraints are greater, such as bare metal.
 
-In-place updates can preserve manual changes, but will report errors if you make manual changes to any file system or operating system configuration that the cluster directly manages, such as kubelet certificates.
+In-place updates can preserve manual changes, but reports errors if you manually change any file system or operating system configuration that the cluster directly manages, such as kubelet certificates.
 
 # Updating node pools in a hosted cluster
 
@@ -339,9 +349,9 @@ The `.spec.release` field in the `NodePool` custom resource (CR) shows the versi
     -p '{"spec":{"nodeDrainTimeout":"60s","release":{"image":"<openshift_release_image>"}}}'
   ```
 
-  - Replace `<node_pool_name>` and `<hosted_cluster_namespace>` with your node pool name and hosted cluster namespace, respectively.
+- Replace `<node_pool_name>` with your node pool name and `<hosted_cluster_namespace>` with your hosted cluster namespace.
 
-  - The `<openshift_release_image>` variable specifies the new OpenShift Container Platform release image that you want to upgrade to, for example, `quay.io/openshift-release-dev/ocp-release:4.y.z-x86_64`. Replace `<4.y.z>` with the supported OpenShift Container Platform version.
+- The `<openshift_release_image>` variable specifies the new OpenShift Container Platform release image that you want to upgrade to, for example, `quay.io/openshift-release-dev/ocp-release:<4.y.z>-x86_64`. Replace `<4.y.z>` with the supported OpenShift Container Platform version.
 
 <!-- -->
 
@@ -357,21 +367,21 @@ The `.spec.release` field in the `NodePool` custom resource (CR) shows the versi
 
   </div>
 
-  ``` yaml
+  ``` terminal
   status:
    conditions:
    - lastTransitionTime: "2024-05-20T15:00:40Z"
-         message: 'Using release image: quay.io/openshift-release-dev/ocp-release:4.y.z-x86_64'
+         message: 'Using release image: quay.io/openshift-release-dev/ocp-release:4.20.0-x86_64'
          reason: AsExpected
          status: "True"
          type: ValidReleaseImage
   ```
 
-  - Replace `<4.y.z>` with the supported OpenShift Container Platform version.
-
 # Updating a control plane in a hosted cluster
 
-On hosted control planes, you can upgrade your version of OpenShift Container Platform by updating the hosted cluster. The `.spec.release` in the `HostedCluster` custom resource (CR) shows the version of the control plane. The `HostedCluster` updates the `.spec.release` field to the `HostedControlPlane.spec.release` and runs the appropriate Control Plane Operator version.
+In hosted control planes, you can upgrade your version of OpenShift Container Platform by updating the hosted cluster.
+
+The `.spec.release` in the `HostedCluster` custom resource (CR) shows the version of the control plane. The `HostedCluster` updates the `.spec.release` field to the `HostedControlPlane.spec.release` and runs the appropriate Control Plane Operator version.
 
 The `HostedControlPlane` resource orchestrates the rollout of the new version of the control plane components along with the OpenShift Container Platform component in the data plane through the new version of the Cluster Version Operator (CVO). The `HostedControlPlane` includes the following artifacts:
 
@@ -400,9 +410,9 @@ You can set the `.spec.release` field in the `HostedCluster` CR to update the co
       --overwrite
     ```
 
-    - Replace `<hosted_cluster_name>` and `<hosted_cluster_namespace>` with your hosted cluster name and hosted cluster namespace, respectively.
+    - Replace `<hosted_cluster_name>` with your hosted cluster name and `<hosted_cluster_namespace>` with your hosted cluster namespace.
 
-    - The `<openshift_release_image>` variable specifies the new OpenShift Container Platform release image that you want to upgrade to, for example, `quay.io/openshift-release-dev/ocp-release:4.y.z-x86_64`. Replace `<4.y.z>` with the supported OpenShift Container Platform version.
+    - The `<openshift_release_image>` variable specifies the new OpenShift Container Platform release image that you want to upgrade to, for example, `quay.io/openshift-release-dev/ocp-release:<4.y.z>-x86_64`. Replace `<4.y.z>` with the supported OpenShift Container Platform version.
 
 2.  Change the `spec.release.image` value in the hosted cluster by entering the following command:
 
@@ -425,22 +435,20 @@ You can set the `.spec.release` field in the `HostedCluster` CR to update the co
 
   </div>
 
-  ``` yaml
+  ``` terminal
   status:
    conditions:
    - lastTransitionTime: "2024-05-20T15:01:01Z"
-          message: Payload loaded version="4.y.z" image="quay.io/openshift-release-dev/ocp-release:4.y.z-x86_64"
+          message: Payload loaded version="4.20.0" image="quay.io/openshift-release-dev/ocp-release:4.20.0-x86_64"
           status: "True"
           type: ClusterVersionReleaseAccepted
   #...
   version:
         availableUpdates: null
         desired:
-        image: quay.io/openshift-release-dev/ocp-release:4.y.z-x86_64
-        version: 4.y.z
+        image: quay.io/openshift-release-dev/ocp-release:4.20.0-x86_64
+        version: 4.20.0
   ```
-
-  - Replace `<4.y.z>` with the supported OpenShift Container Platform version.
 
 # Updating a hosted cluster by using the multicluster engine Operator console
 

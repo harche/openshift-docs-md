@@ -1,8 +1,8 @@
-When reaching out to Red Hat support for issues with an update, it is important to provide data for the support team to use for troubleshooting your failed cluster update.
+Collect cluster data, logs, and update history to help Red Hat Support diagnose and troubleshoot failed cluster updates.
 
 # Gathering log data for a support case
 
-To gather data from your cluster, including log data, use the `oc adm must-gather` command. See *Gathering data about your cluster*.
+Use the `oc adm must-gather` command to collect cluster data and logs. Red Hat Support can then use the data and logs to diagnose and resolve support cases.
 
 # Changing CVO log level (Technology Preview)
 
@@ -14,7 +14,9 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 </div>
 
-The Cluster Version Operator (CVO) log level verbosity can be changed by the cluster administrator. There are four log levels.
+Adjust the verbosity of the Cluster Version Operator (CVO) log to troubleshoot update issues or diagnose errors by using four available log levels.
+
+The following list outlines the four log levels:
 
 - `Normal` - The default log level. Contains working log information. Used when everything is fine. Provides helpful notices for auditing or common operations.
 
@@ -36,21 +38,21 @@ If `TraceAll` is turned on in a production cluster it may cause widespread perfo
 
 - You have the `TechPreviewNoUpgrade` feature set enabled.
 
-1.  Enter the following command into the CLI to change the log level.
+1.  Enter the following command into the CLI to change the log level:
 
-``` terminal
-$ oc patch clusterversionoperator/cluster --type=merge --patch '{"spec":{"operatorLogLevel":"<log_level>"}}'
-```
+    ``` terminal
+    $ oc patch clusterversionoperator/cluster --type=merge --patch '{"spec":{"operatorLogLevel":"<log_level>"}}'
+    ```
 
-<div class="formalpara-title">
+    <div class="formalpara-title">
 
-**Example output**
+    **Example output**
 
-</div>
+    </div>
 
-``` terminal
-clusterversionoperator.operator.openshift.io/cluster patched
-```
+    ``` terminal
+    clusterversionoperator.operator.openshift.io/cluster patched
+    ```
 
 # Gathering ClusterVersion history
 
@@ -66,7 +68,7 @@ You can view the ClusterVersion history by using the OpenShift Container Platfor
 
 ## Gathering ClusterVersion history in the OpenShift Container Platform web console
 
-You can view the ClusterVersion history in the OpenShift Container Platform web console.
+You can view the ClusterVersion history and status information in the OpenShift Container Platform web console. Use the history to verify successful updates and to troubleshoot failures.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -78,7 +80,7 @@ You can view the ClusterVersion history in the OpenShift Container Platform web 
 
 ## Gathering ClusterVersion history using the OpenShift CLI (`oc`)
 
-You can view the ClusterVersion history using the OpenShift CLI (`oc`).
+Use the OpenShift CLI (`oc`) to view ClusterVersion history. You can use the history to troubleshoot update issues or to verify completed updates.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -131,4 +133,4 @@ You can view the ClusterVersion history using the OpenShift CLI (`oc`).
     Events:                 <none>
     ```
 
-- [Gathering data about your cluster](../../support/gathering-cluster-data.xml#support_gathering_data_gathering-cluster-data)
+- [Gathering data about your cluster for Red Hat Support](../../support/gathering-cluster-data.xml#support_gathering_data_gathering-cluster-data)

@@ -181,17 +181,13 @@ If you use `NodePort` or `LoadBalancer` service publishing instead of `Route` se
 
 ## Handling ingress in a hosted cluster on bare metal
 
-Every OpenShift Container Platform cluster has a default application Ingress Controller that typically has an external DNS record associated with it. For example, if you create a hosted cluster named `example` with the base domain `krnl.es`, you can expect the wildcard domain `*.apps.example.krnl.es` to be routable.
+Every OpenShift Container Platform cluster has a default application Ingress Controller that typically has an external DNS record associated with it.
 
-<div class="formalpara-title">
+For example, if you create a hosted cluster named `example` with the base domain `krnl.es`, you can expect the wildcard domain `*.apps.example.krnl.es` to be routable.
 
-**Procedure**
+To set up a load balancer and wildcard DNS record for the `*.apps` domain, perform the following actions on your hosted cluster.
 
-</div>
-
-To set up a load balancer and wildcard DNS record for the `*.apps` domain, perform the following actions on your guest cluster:
-
-1.  Deploy MetalLB by creating a YAML file that contains the configuration for the MetalLB Operator:
+1.  Deploy MetalLB by creating a YAML file that has the configuration for the MetalLB Operator:
 
     ``` yaml
     apiVersion: v1
@@ -231,7 +227,7 @@ To set up a load balancer and wildcard DNS record for the `*.apps` domain, perfo
 
 4.  After the Operator is running, create the MetalLB instance:
 
-    1.  Create a YAML file that contains the configuration for the MetalLB instance:
+    1.  Create a YAML file that has the configuration for the MetalLB instance:
 
         ``` yaml
         apiVersion: metallb.io/v1beta1
@@ -251,7 +247,7 @@ To set up a load balancer and wildcard DNS record for the `*.apps` domain, perfo
 
 5.  Create an `IPAddressPool` resource with a single IP address. This IP address must be on the same subnet as the network that the cluster nodes use.
 
-    1.  Create a file, such as `ipaddresspool.yaml`, with content like the following example:
+    1.  Create a file, such as `ipaddresspool.yaml`, with content similar to the following example:
 
         ``` yaml
         apiVersion: metallb.io/v1beta1
@@ -265,9 +261,9 @@ To set up a load balancer and wildcard DNS record for the `*.apps` domain, perfo
           autoAssign: false
         ```
 
-        - Specify the `IPAddressPool` resource name.
+        - `metadata.name` specifies the `IPAddressPool` resource name.
 
-        - Specify the IP address for your environment. For example, `192.168.122.23`.
+        - `spec.addresses` specifies the IP address for your environment. For example, `192.168.122.23`.
 
     2.  Apply the configuration for the IP address pool by entering the following command:
 
@@ -277,7 +273,7 @@ To set up a load balancer and wildcard DNS record for the `*.apps` domain, perfo
 
 6.  Create a L2 advertisement.
 
-    1.  Create a file, such as `l2advertisement.yaml`, with content like the following example:
+    1.  Create a file, such as `l2advertisement.yaml`, with content similar to the following example:
 
         ``` yaml
         apiVersion: metallb.io/v1beta1
@@ -290,9 +286,9 @@ To set up a load balancer and wildcard DNS record for the `*.apps` domain, perfo
            - <ip_address_pool_name>
         ```
 
-        - Specify the `L2Advertisement` resource name.
+        - `metadata.name` specifies the `L2Advertisement` resource name.
 
-        - Specify the `IPAddressPool` resource name.
+        - `spec.ipAddressPools` specifies the `IPAddressPool` resource name.
 
     2.  Apply the configuration by entering the following command:
 

@@ -227,6 +227,8 @@ See "OpenShift Virtualization supported limits" in the Additional resources sect
 
 # Additional resources
 
+- [About installation methods for OpenShift Virtualization](../../virt/install/installing-virt.xml#virt-about-installation-methods_installing-virt)
+
 - [Hardware, software, and operational requirements](../../virt/install/virt-requirements.xml#virt-requirements)
 
 - [Planning a bare-metal cluster for OpenShift Virtualization](../../installing/installing_bare_metal/preparing-to-install-on-bare-metal.xml#virt-planning-bare-metal-cluster-for-ocp-virt_preparing-to-install-on-bare-metal)

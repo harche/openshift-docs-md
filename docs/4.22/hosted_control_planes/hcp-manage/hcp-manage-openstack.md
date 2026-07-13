@@ -1,10 +1,10 @@
-After you deploy hosted control planes on Red Hat OpenStack Platform (RHOSP) agent machines, you can manage a hosted cluster by completing the following tasks.
+After you deploy hosted control planes on Red Hat OpenStack Platform (RHOSP) agent machines, you can manage a hosted cluster.
 
 # Accessing the hosted cluster
 
 You can access hosted clusters on Red Hat OpenStack Platform (RHOSP) by extracting the kubeconfig secret directly from resources by using the `oc` CLI.
 
-The *hosted cluster (hosting)* namespace contains hosted cluster resources and the access secrets. The *hosted control plane* namespace is where the hosted control plane runs.
+The *hosted cluster (hosting)* namespace has hosted cluster resources and the access secrets. The *hosted control plane* namespace is where the hosted control plane runs.
 
 The secret name formats are as follows:
 
@@ -12,7 +12,7 @@ The secret name formats are as follows:
 
 - `kubeadmin` password secret: `<hosted_cluster_namespace>-<name>-kubeadmin-password`. For example, `clusters-hypershift-demo-kubeadmin-password`.
 
-The `kubeconfig` secret contains a Base64-encoded `kubeconfig` field. The `kubeadmin` password secret is also Base64-encoded; you can extract it and then use the password to log in to the API server or console of the hosted cluster.
+The `kubeconfig` secret has a Base64-encoded `kubeconfig` field. The `kubeadmin` password secret is also Base64-encoded; you can extract it and then use the password to log in to the API server or console of the hosted cluster.
 
 - The `oc` CLI is installed.
 
@@ -52,7 +52,7 @@ When you need more capacity in your hosted cluster on Red Hat OpenStack Platfor
 
 2.  Create a workload that requires a new node.
 
-    1.  Create a YAML file that contains the workload configuration, by using the following example:
+    1.  Create a YAML file that has the workload configuration, by using the following example:
 
         ``` yaml
         apiVersion: apps/v1
@@ -125,7 +125,7 @@ When you need more capacity in your hosted cluster on Red Hat OpenStack Platfor
 
 # Configuring node pools for availability zones
 
-You can distribute node pools across multiple Red Hat OpenStack Platform (RHOSP) Nova availability zones to improve the high availability of your hosted cluster.
+To improve the high availability of your hosted cluster, you can distribute node pools across multiple Red Hat OpenStack Platform (RHOSP) Nova availability zones.
 
 <div class="note">
 
@@ -137,7 +137,7 @@ Availability zones do not necessarily correspond to fault domains and do not inh
 
 - You have access to the management cluster.
 
-- The `hcp` and `oc` CLIs are installed.
+- The `hcp` and `oc` command-line interfaces (CLIs) are installed.
 
 1.  Set environment variables that are appropriate for your needs. For example, if you want to create two additional machines in the `az1` availability zone, you could enter:
 
@@ -219,11 +219,9 @@ Availability zones do not necessarily correspond to fault domains and do not inh
     <node_pool_name>  <cluster_name>  2         2         2           False         All replicas are available
     ```
 
-# Configuring additional ports for node pools
+# Additional ports for node pools
 
 You can configure additional ports for node pools to support advanced networking scenarios, such as SR-IOV or multiple networks.
-
-## Use cases for additional ports for node pools
 
 Common reasons to configure additional ports for node pools include the following:
 
@@ -241,14 +239,16 @@ Enables pods to connect to multiple network interfaces. Node pools with addition
 
 ## Options for additional ports for node pools
 
-You can use the `--openstack-node-additional-port` flag to attach additional ports to nodes in a hosted cluster on OpenStack. The flag takes a list of comma-separated parameters. Parameters can be used multiple times to attach multiple additional ports to the nodes.
+To support advanced networking scenarios, you can use the `--openstack-node-additional-port` flag to attach additional ports to nodes in a hosted cluster on OpenStack.
 
-The parameters are:
+The flag takes a list of comma-separated parameters that can be used multiple times to attach multiple additional ports to the nodes.
+
+The parameters are as follows:
 
 | Parameter               | Description                                                                                                                                                                                   | Required | Default |
 |-------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|---------|
 | `network-id`            | The ID of the network to attach to the node.                                                                                                                                                  | Yes      | N/A     |
-| `vnic-type`             | The VNIC type to use for the port. If not specified, Neutron uses the default type `normal`.                                                                                                  | No       | N/A     |
+| `vnic-type`             | The vNIC type to use for the port. If not specified, Neutron uses the default type `normal`.                                                                                                  | No       | N/A     |
 | `disable-port-security` | Whether to disable port security for the port. If not specified, Neutron enables port security unless it is explicitly disabled at the network level.                                         | No       | N/A     |
 | `address-pairs`         | A list of IP address pairs to assign to the port. The format is `ip_address=mac_address`. Multiple pairs can be provided, separated by a hyphen (`-`). The `mac_address` portion is optional. | No       | N/A     |
 
@@ -291,7 +291,7 @@ You can configure additional ports for node pools for hosted clusters that run o
   Specifies the name of the node pool.
 
   `<replica_count>`
-  Specifies the desired number of replicas.
+  Specifies the number of replicas that you need.
 
   `<flavor>`
   Specifies the RHOSP flavor to use.
@@ -302,7 +302,7 @@ You can configure additional ports for node pools for hosted clusters that run o
   `<lb_net_id>`
   Specifies a load balancer network ID.
 
-# Configuring additional ports for node pools
+# Node tuning for hosted clusters on RHOSP
 
 You can tune hosted cluster node performance on RHOSP for high-performance workloads, such as cloud-native network functions (CNFs). Performance tuning includes configuring RHOSP resources, creating a performance profile, deploying a tuned `NodePool` resource, and enabling SR-IOV device support.
 
@@ -310,7 +310,7 @@ CNFs are designed to run in cloud-native environments. They can provide network 
 
 ## Tuning performance for hosted cluster nodes
 
-Create a performance profile and deploy a tuned `NodePool` resource to run high-performance workloads on Red Hat OpenStack Platform (RHOSP) hosted control planes.
+To run high-performance workloads on hosted control planes on Red Hat OpenStack Platform (RHOSP), you can create a performance profile and deploy a tuned `NodePool` resource.
 
 - You have RHOSP flavor that has the necessary resources to run your workload, including dedicated CPU, memory, and host aggregate information.
 
@@ -443,15 +443,17 @@ Create a performance profile and deploy a tuned `NodePool` resource to run high-
           --timeout=5m
         ```
 
-<div class="note">
+        <div class="note">
 
-You can make an SSH connection into the nodes or use the `oc debug` command to verify performance configurations.
+        You can make an SSH connection into the nodes or use the `oc debug` command to verify performance configurations.
 
-</div>
+        </div>
 
 ## Enabling the SR-IOV Network Operator in a hosted cluster
 
-You can enable the SR-IOV Network Operator to manage SR-IOV-capable devices on nodes deployed by the `NodePool` resource. The operator runs in the hosted cluster and requires labeled worker nodes.
+To manage the SR-IOV-capable devices on nodes deployed by the `NodePool` resource, you can enable the SR-IOV Network Operator.
+
+The Operator runs in the hosted cluster and requires labeled worker nodes.
 
 1.  Generate a `kubeconfig` file for the hosted cluster by running the following command:
 

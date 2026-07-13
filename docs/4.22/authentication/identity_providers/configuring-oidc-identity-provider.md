@@ -2,7 +2,7 @@ Configure the `oidc` identity provider to integrate with an OpenID Connect ident
 
 # About identity providers in OpenShift Container Platform
 
-By default, only a `kubeadmin` user exists on your cluster. To specify an identity provider, you must create a custom resource (CR) that describes that identity provider and add it to the cluster.
+You can configure identity providers by creating a custom resource (CR) that describes the provider and adding it to the cluster. Identity providers enable user authentication in OpenShift Container Platform beyond the default `kubeadmin` user.
 
 <div class="note">
 

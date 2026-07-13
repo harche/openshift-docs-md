@@ -81,6 +81,8 @@ Zero Trust Workload Identity Manager uses only the existing OpenShift `privilege
 Action required after upgrade
 Zero Trust Workload Identity Manager does not remove the legacy custom SCC `spire-spiffe-csi-driver`. After you upgrade Zero Trust Workload Identity Manager to 1.1.0 from the **OpenShift OperatorHub** catalog, remove it manually once CSI is healthy on the platform SCC.
 
+For more information, see [Manually delete the custom security context constraints](../../security/zero_trust_workload_identity_manager/zero-trust-manager-configuration.xml#zero-trust-manager-manually-delete-scc_zero-trust-manager-configuration).
+
 ## Fixed issues
 
 Managed route TLS secrets no longer require manual RBAC configuration

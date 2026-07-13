@@ -1041,7 +1041,7 @@ In this example, the `crio-credential-provider` configuration was generated from
 
         <div class="formalpara-title">
 
-        **Example `CRIOCredentialProviderConfig` object**
+        **Example `Role` and `RoleBinding` objects**
 
         </div>
 
@@ -1073,7 +1073,7 @@ In this example, the `crio-credential-provider` configuration was generated from
 
         Replace `<namespace_name>` with a name for your namespace and `<role_name>` with a name for the role.
 
-    2.  Create the `CRIOCredentialProviderConfig` object:
+    2.  Create the `Role` and `RoleBinding` objects:
 
         ``` terminal
         $ oc create -f <file_name>.yaml

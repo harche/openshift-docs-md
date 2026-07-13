@@ -1,4 +1,6 @@
-You can use the OpenShift API for Data Protection (OADP) Operator to perform disaster recovery on Amazon Web Services (AWS) and bare metal.
+By using the OpenShift API for Data Protection (OADP) Operator for disaster recovery, you can restore hosted cluster namespaces from object storage instead of manually rebuilding every cluster. In addition, you back up etcd as part of the control plane backup, and you can back up hosted clusters independently.
+
+You can use the OADP Operator to perform disaster recovery for hosted control planes on Amazon Web Services (AWS) and bare metal.
 
 The disaster recovery process with OpenShift API for Data Protection (OADP) involves the following steps:
 
@@ -10,73 +12,103 @@ The disaster recovery process with OpenShift API for Data Protection (OADP) invo
 
 4.  Restoring a hosted cluster by using OADP
 
-# Prerequisites
+# Preparing AWS to use OADP for disaster recovery
 
-You must meet the following prerequisites on the management cluster:
+Before you can perform disaster recovery for hosted control planes on Amazon Web Services (AWS), you need to meet a few prerequisites and configure OpenShift API for Data Protection (OADP) on AWS S3 compatible storage.
 
-- You [installed the OADP Operator](../../backup_and_restore/application_backup_and_restore/installing/about-installing-oadp.xml#about-installing-oadp).
+- You installed the OADP Operator on the management cluster. For more information, see "About installing OADP" in the *Additional resources* section.
 
-- You created a storage class.
+- You created a storage class for the management cluster.
 
-- You have access to the cluster with `cluster-admin` privileges.
+- You have access to the management cluster with `cluster-admin` privileges.
 
 - You have access to the OADP subscription through a catalog source.
 
 - You have access to a cloud storage provider that is compatible with OADP, such as S3, Microsoft Azure, Google Cloud, or MinIO.
 
-- In a disconnected environment, you have access to a self-hosted storage provider, for example [Red Hat OpenShift Data Foundation](https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/) or [MinIO](https://min.io/), that is compatible with OADP.
+- In a disconnected environment, you have access to a self-hosted storage provider that is compatible with OADP, such as [Red Hat OpenShift Data Foundation](https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/) or [MinIO](https://min.io/).
 
 - Your hosted control planes pods are up and running.
 
-- You are using a supported version of OADP for your management cluster. For example, if your management cluster is on OpenShift Container Platform 4.20, you must use OADP version 1.5. For more information, see [Support for OpenShift API for Data Protection (OADP)](../../backup_and_restore/application_backup_and_restore/oadp-intro.xml#oadp-operator-supported_oadp-api).
-
-# Preparing AWS to use OADP
-
-To perform disaster recovery for a hosted cluster, you can use OpenShift API for Data Protection (OADP) on Amazon Web Services (AWS) S3 compatible storage. After creating the `DataProtectionApplication` object, new `velero` deployment and `node-agent` pods are created in the `openshift-adp` namespace.
-
-To prepare AWS to use OADP, see "Configuring the OpenShift API for Data Protection with Multicloud Object Gateway".
-
-- [Configuring the OpenShift API for Data Protection with Multicloud Object Gateway](../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-aws.xml#installing-oadp-aws)
+- You are using a supported version of OADP for your management cluster. For example, if your management cluster is on OpenShift Container Platform 4.20, you must use OADP version 1.5. For more information, see "Support for OpenShift API for Data Protection (OADP)" in the *Additional resources* section.
 
 <!-- -->
 
-- Backing up the data plane workload
+- To prepare AWS to use OADP, follow the steps in "Configuring the OpenShift API for Data Protection with AWS S3 compatible storage" in the *Additional resources* section.
 
-- Backing up the control plane workload
+  After you create the `DataProtectionApplication` object, new `velero` deployment and `node-agent` pods are created in the `openshift-adp` namespace.
 
-# Preparing bare metal to use OADP
+<!-- -->
 
-To perform disaster recovery for a hosted cluster, you can use OpenShift API for Data Protection (OADP) on bare metal. After creating the `DataProtectionApplication` object, new `velero` deployment and `node-agent` pods are created in the `openshift-adp` namespace.
+- Back up the data plane workload and the control plane workload.
 
-To prepare bare metal to use OADP, see "Configuring the OpenShift API for Data Protection with AWS S3 compatible storage".
+<!-- -->
+
+- [About installing OADP](../../backup_and_restore/application_backup_and_restore/installing/about-installing-oadp.xml#about-installing-oadp)
+
+- [Support for OpenShift API for Data Protection (OADP)](../../backup_and_restore/application_backup_and_restore/oadp-intro.xml#oadp-operator-supported_oadp-api)
 
 - [Configuring the OpenShift API for Data Protection with AWS S3 compatible storage](../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-mcg.xml#installing-oadp-mcg)
 
+# Preparing bare metal to use OADP for disaster recovery
+
+Before you can perform disaster recovery for hosted control planes on bare metal, you need to meet a few prerequisites and configure the OpenShift API for Data Protection (OADP) with Multicloud Object Gateway.
+
+- You installed the OADP Operator on the management cluster. For more information, see "About installing OADP" in the *Additional resources* section.
+
+- You created a storage class for the management cluster.
+
+- You have access to the management cluster with `cluster-admin` privileges.
+
+- You have access to the OADP subscription through a catalog source.
+
+- You have access to a cloud storage provider that is compatible with OADP, such as S3, Microsoft Azure, Google Cloud, or MinIO.
+
+- In a disconnected environment, you have access to a self-hosted storage provider that is compatible with OADP, such as [Red Hat OpenShift Data Foundation](https://docs.redhat.com/en/documentation/red_hat_openshift_data_foundation/) or [MinIO](https://min.io/).
+
+- Your hosted control planes pods are up and running.
+
+- You are using a supported version of OADP for your management cluster. For example, if your management cluster is on OpenShift Container Platform 4.20, you must use OADP version 1.5. For more information, see "Support for OpenShift API for Data Protection (OADP)" in the *Additional resources* section.
+
 <!-- -->
 
-- Backing up the data plane workload
+- To prepare bare metal to use OADP, complete the steps in "Configuring the OpenShift API for Data Protection with Multicloud Object Gateway" in the *Additional resources* section.
 
-- Backing up the control plane workload
+  After you create the `DataProtectionApplication` object, new `velero` deployment and `node-agent` pods are created in the `openshift-adp` namespace.
 
-# Backing up the data plane workload
+<!-- -->
 
-If the data plane workload is not important, you can skip this procedure. To back up the data plane workload by using the OADP Operator, see "Backing up applications".
+- Back up the data plane workload and the control plane workload.
+
+<!-- -->
+
+- [About installing OADP](../../backup_and_restore/application_backup_and_restore/installing/about-installing-oadp.xml#about-installing-oadp)
+
+- [Support for OpenShift API for Data Protection (OADP)](../../backup_and_restore/application_backup_and_restore/oadp-intro.xml#oadp-operator-supported_oadp-api)
+
+- [Configuring the OpenShift API for Data Protection with Multicloud Object Gateway](../../backup_and_restore/application_backup_and_restore/installing/installing-oadp-aws.xml#installing-oadp-aws)
+
+# Data plane workload backup
+
+As part of the process to back up and restore by using the OADP Operator, you can back up the data plane workload.
+
+If the data plane workload is not important, you can skip this procedure.
+
+To back up the data plane workload by using the OADP Operator, see "Backing up applications". After you complete those steps, you can restore your hosted cluster by using OADP.
 
 - [Backing up applications](../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/backing-up-applications.xml#backing-up-applications)
 
-<!-- -->
+# Control plane workload backup
 
-- Restoring a hosted cluster by using OADP
+You can back up the control plane workload by creating the `Backup` custom resource (CR).
 
-# Backing up the control plane workload
-
-You can back up the control plane workload by creating the `Backup` custom resource (CR). The steps vary depending on whether your platform is AWS or bare metal.
+The steps vary depending on whether your platform is AWS or bare metal.
 
 ## Backing up the control plane workload on AWS
 
 You can back up the control plane workload by creating the `Backup` custom resource (CR).
 
-To monitor and observe the backup process, see "Observing the backup and restore process".
+For information about monitoring the backup process, see "Observing the backup and restore process".
 
 1.  Pause the reconciliation of the `HostedCluster` resource by running the following command:
 
@@ -137,6 +169,12 @@ To monitor and observe the backup process, see "Observing the backup and restore
 
 8.  Create a YAML file that defines the `Backup` CR:
 
+    <div class="formalpara-title">
+
+    **Example `backup-control-plane.yaml` file**
+
+    </div>
+
     ``` yaml
     apiVersion: velero.io/v1
     kind: Backup
@@ -182,19 +220,15 @@ To monitor and observe the backup process, see "Observing the backup and restore
       defaultVolumesToFsBackup: true
     ```
 
-    - Replace `backup_resource_name` with the name of your `Backup` resource.
+    - `metadata.name` specifies the name of your `Backup` resource.
 
-    - Selects specific namespaces to back up objects from them. You must include your hosted cluster namespace and the hosted control plane namespace.
+    - `spec.includedNamespaces` includes specific namespaces to back up objects from them. You must replace `<hosted_cluster_namespace>` with the name of the hosted cluster namespace and replace `<hosted_control_plane_namespace>` with the name of the hosted control plane namespace.
 
-    - Replace `<hosted_cluster_namespace>` with the name of the hosted cluster namespace, for example, `clusters`.
+    - `spec.includedResources` includes the `infraenv` resource. You must create the `infraenv` resource in a separate namespace. Do not delete the `infraenv` resource during the backup process.
 
-    - Replace `<hosted_control_plane_namespace>` with the name of the hosted control plane namespace, for example, `clusters-hosted`.
+    - `spec.snapshotMoveData` and `spec.datamover` enable the CSI volume snapshots and upload the control plane workload automatically to the cloud storage.
 
-    - You must create the `infraenv` resource in a separate namespace. Do not delete the `infraenv` resource during the backup process.
-
-    - Enables the CSI volume snapshots and uploads the control plane workload automatically to the cloud storage.
-
-    - Sets the `fs-backup` backing up method for persistent volumes (PVs) as default. This setting is useful when you use a combination of Container Storage Interface (CSI) volume snapshots and the `fs-backup` method.
+    - `spec.defaultVolumesToFsBackup` sets the `fs-backup` backing up method for persistent volumes (PVs) as default. This setting is useful when you use a combination of Container Storage Interface (CSI) volume snapshots and the `fs-backup` method.
 
       <div class="note">
 
@@ -219,11 +253,11 @@ To monitor and observe the backup process, see "Observing the backup and restore
 
 - Restoring a hosted cluster by using OADP
 
-## Backing up the control plane workload on a bare-metal platform
+## Backing up the control plane workload on a bare metal
 
 You can back up the control plane workload by creating the `Backup` custom resource (CR).
 
-To monitor and observe the backup process, see "Observing the backup and restore process".
+For more information about monitoring the backup process, see "Observing the backup and restore process".
 
 1.  Pause the reconciliation of the `HostedCluster` resource by running the following command:
 
@@ -285,6 +319,12 @@ To monitor and observe the backup process, see "Observing the backup and restore
 
 9.  Create a YAML file that defines the `Backup` CR:
 
+    <div class="formalpara-title">
+
+    **Example `backup-control-plane.yaml` file**
+
+    </div>
+
     ``` yaml
     apiVersion: velero.io/v1
     kind: Backup
@@ -333,19 +373,13 @@ To monitor and observe the backup process, see "Observing the backup and restore
       defaultVolumesToFsBackup: true
     ```
 
-    - Replace `backup_resource_name` with the name of your `Backup` resource.
+    - `metadata.name` specifies the name of your `Backup` resource.
 
-    - Selects specific namespaces to back up objects from them. You must include your hosted cluster namespace and the hosted control plane namespace.
+    - `spec.includedNamespaces` specifies namespaces to back up objects from them. Replace `<hosted_cluster_namespace>` with the name of the hosted cluster namespace, replace `<hosted_control_plane_namespace>` with the name of the hosted control plane namespace, and replace `<agent_namespace>` with the namespace where your `Agent`, `BMH`, and `InfraEnv` CRs are located.
 
-    - Replace `<hosted_cluster_namespace>` with the name of the hosted cluster namespace, for example, `clusters`.
+    - `spec.snapshotMoveData` enable the CSI volume snapshots and upload the control plane workload automatically to the cloud storage.
 
-    - Replace `<hosted_control_plane_namespace>` with the name of the hosted control plane namespace, for example, `clusters-hosted`.
-
-    - Replace `<agent_namespace>` with the namespace where your `Agent`, `BMH`, and `InfraEnv` CRs are located, for example, `agents`.
-
-    - Enables the CSI volume snapshots and uploads the control plane workload automatically to the cloud storage.
-
-    - Sets the `fs-backup` backing up method for persistent volumes (PVs) as default. This setting is useful when you use a combination of Container Storage Interface (CSI) volume snapshots and the `fs-backup` method.
+    - `spec.defaultVolumesToFsBackup` sets the `fs-backup` backing up method for persistent volumes (PVs) as default. This setting is useful when you use a combination of Container Storage Interface (CSI) volume snapshots and the `fs-backup` method.
 
       <div class="note">
 
@@ -370,7 +404,7 @@ To monitor and observe the backup process, see "Observing the backup and restore
 
 - Restore a hosted cluster by using OADP.
 
-# Restoring a hosted cluster by using OADP
+# Hosted cluster restoration by using OADP
 
 You can restore a hosted cluster into the same management cluster or into a new management cluster.
 
@@ -378,13 +412,13 @@ You can restore a hosted cluster into the same management cluster or into a new 
 
 You can restore the hosted cluster by creating the `Restore` custom resource (CR).
 
-- If you are using an *in-place* update, InfraEnv does not need spare nodes. You need to re-provision the worker nodes from the new management cluster.
+- If you are using an *in-place* update, the `InfraEnv` resource does not need spare nodes. You need to re-provision the worker nodes from the new management cluster.
 
-- If you are using a *replace* update, you need some spare nodes for InfraEnv to deploy the worker nodes.
+- If you are using a *replace* update, you need some spare nodes for the `InfraEnv` resource to deploy the worker nodes.
 
 <div class="important">
 
-After you back up your hosted cluster, you must destroy it to initiate the restoring process. To initiate node provisioning, you must back up workloads in the data plane before deleting the hosted cluster.
+After you back up your hosted cluster, you must delete it to start the restoring process. To start node provisioning, you must back up workloads in the data plane before deleting the hosted cluster.
 
 </div>
 
@@ -437,13 +471,13 @@ To monitor and observe the backup process, see "Observing the backup and restore
       - resticrepositories.velero.io
     ```
 
-    - Replace `<restore_resource_name>` with the name of your `Restore` resource.
+    - `metadata.name` specifies the name of your `Restore` resource.
 
-    - Replace `<backup_resource_name>` with the name of your `Backup` resource.
+    - `spec.backupName` specifies the name of your `Backup` resource.
 
-    - Initiates the recovery of persistent volumes (PVs) and its pods.
+    - `spec.restorePVs: true` starts the recovery of persistent volumes (PVs) and its pods.
 
-    - Ensures that the existing objects are overwritten with the backed up content.
+    - `spec.existingResourcePolicy: update` ensures that the existing objects are overwritten with the backed up content.
 
       <div class="important">
 
@@ -576,23 +610,17 @@ Complete the following steps on the new management cluster that you are restorin
       - pvc
     ```
 
-    - Replace `<restore_resource_name>` with the name of your `Restore` resource.
+    - `metadata.name` specifies the name of your `Restore` resource.
 
-    - Selects specific namespaces to back up objects from them. You must include your hosted cluster namespace and the hosted control plane namespace.
+    - `spec.includedNamespaces` specifies namespaces to back up objects from them. Replace `<hosted_cluster_namespace>` with the name of the hosted cluster namespace, replace `<hosted_control_plane_namespace>` with the name of the hosted control plane namespace, and replace `<agent_namespace>` with the namespace where your `Agent`, `BMH`, and `InfraEnv` CRs are located.
 
-    - Replace `<hosted_cluster_namespace>` with the name of the hosted cluster namespace, for example, `clusters`.
+    - `spec.backupName` specifies the name of your `Backup` resource.
 
-    - Replace `<hosted_control_plane_namespace>` with the name of the hosted control plane namespace, for example, `clusters-hosted`.
+    - `spec.veleroManagedClustersBackupName` can be omitted if you are not using Red Hat Advanced Cluster Management.
 
-    - Replace `<agent_namespace>` with the namespace where your `Agent`, `BMH`, and `InfraEnv` CRs are located, for example, `agents`.
+    - `spec.restorePVs: true` starts the recovery of persistent volumes (PVs) and its pods.
 
-    - Replace `<backup_resource_name>` with the name of your `Backup` resource.
-
-    - You can omit this field if you are not using Red Hat Advanced Cluster Management.
-
-    - Initiates the recovery of persistent volumes (PVs) and its pods.
-
-    - Ensures that the existing objects are overwritten with the backed up content.
+    - `spec.existingResourcePolicy: update` ensures that the existing objects are overwritten with the backed up content.
 
 2.  Apply the `Restore` CR by running the following command:
 
@@ -806,7 +834,7 @@ Complete the following steps on the new management cluster that you are restorin
 
 # Observing the backup and restore process
 
-When using OpenShift API for Data Protection (OADP) to backup and restore a hosted cluster, you can monitor and observe the process.
+When you use OpenShift API for Data Protection (OADP) to back up and restore a hosted cluster, you can monitor and observe the process.
 
 1.  Observe the backup process by running the following command:
 
@@ -832,9 +860,9 @@ When using OpenShift API for Data Protection (OADP) to backup and restore a host
     $ watch "echo BackupRepositories:;echo;oc get backuprepositories.velero.io -A;echo; echo BackupStorageLocations: ;echo; oc get backupstoragelocations.velero.io -A;echo;echo DataUploads: ;echo;oc get datauploads.velero.io -A;echo;echo DataDownloads: ;echo;oc get datadownloads.velero.io -n openshift-adp; echo;echo VolumeSnapshotLocations: ;echo;oc get volumesnapshotlocations.velero.io -A;echo;echo Backups:;echo;oc get backup -A; echo;echo Restores:;echo;oc get restore -A"
     ```
 
-# Using the velero CLI to describe the Backup and Restore resources
+# Using the Velero CLI to describe the Backup and Restore resources
 
-When using OpenShift API for Data Protection, you can get more details of the `Backup` and `Restore` resources by using the `velero` command-line interface (CLI).
+When you use OpenShift API for Data Protection, you can get more details of the `Backup` and `Restore` resources by using the `velero` command-line interface (CLI).
 
 1.  Create an alias to use the `velero` CLI from a container by running the following command:
 
@@ -848,7 +876,7 @@ When using OpenShift API for Data Protection, you can get more details of the `B
     $ velero restore describe <restore_resource_name> --details
     ```
 
-    - Replace `<restore_resource_name>` with the name of your `Restore` resource.
+    Replace `<restore_resource_name>` with the name of your `Restore` resource.
 
 3.  Get details of your `Backup` CR by running the following command:
 
@@ -856,4 +884,4 @@ When using OpenShift API for Data Protection, you can get more details of the `B
     $ velero restore describe <backup_resource_name> --details
     ```
 
-    - Replace `<backup_resource_name>` with the name of your `Backup` resource.
+    Replace `<backup_resource_name>` with the name of your `Backup` resource.

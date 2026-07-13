@@ -1,8 +1,10 @@
-Red Hat Lightspeed repeatedly analyzes the data Insights Operator sends, which includes workload recommendations from Deployment Validation Operator (DVO). Users of OpenShift Container Platform can display the results in the [Advisor](https://console.redhat.com/openshift/insights/advisor/) service on Red Hat Hybrid Cloud Console.
+Red Hat Lightspeed repeatedly analyzes the data Insights Operator sends, which includes workload recommendations from Deployment Validation Operator (DVO). Users of OpenShift Container Platform can display the results in the [Advisor](https://console.redhat.com/openshift/insights/advisor/) service on the Red Hat Hybrid Cloud Console.
 
 # About Red Hat Lightspeed Advisor for OpenShift Container Platform
 
-You can use the Red Hat Lightspeed advisor service to assess and monitor the health of your OpenShift Container Platform clusters. Whether you are concerned about individual clusters, or with your whole infrastructure, it is important to be aware of the exposure of your cluster infrastructure to issues that can affect service availability, fault tolerance, performance, or security.
+You can use the Red Hat Lightspeed advisor service to assess and monitor the health of your OpenShift Container Platform clusters.
+
+If you are concerned about individual clusters or with your whole infrastructure, be aware of the exposure of your cluster infrastructure to issues that can affect service availability, fault tolerance, performance, or security.
 
 If the cluster has the Deployment Validation Operator (DVO) installed the recommendations also highlight workloads whose configuration might lead to cluster health issues.
 
@@ -22,7 +24,9 @@ The results of the Red Hat Lightspeed analysis are available in the Red Hat Li
 
 # Understanding Red Hat Lightspeed advisor service recommendations
 
-The Red Hat Lightspeed advisor service bundles information about various cluster states and component configurations that can negatively affect the service availability, fault tolerance, performance, or security of your clusters and workloads. This information set is called a recommendation in the Red Hat Lightspeed advisor service. Recommendations for clusters includes the following information:
+The Red Hat Lightspeed advisor service bundles information about various cluster states and component configurations that can negatively affect the service availability, fault tolerance, performance, or security of your clusters and workloads.
+
+The information set is called a recommendation in the Red Hat Lightspeed advisor service. Recommendations for clusters includes the following information:
 
 - **Name:** A concise description of the recommendation
 
@@ -38,7 +42,7 @@ The Red Hat Lightspeed advisor service bundles information about various cluste
 
 # Displaying potential issues with your cluster
 
-This section describes how to display the Red Hat Lightspeed report in **Red Hat Lightspeed Advisor** on [OpenShift Cluster Manager](https://console.redhat.com/openshift).
+You can display a Red Hat Lightspeed report in **Red Hat Lightspeed Advisor** on [OpenShift Cluster Manager](https://console.redhat.com/openshift).
 
 Note that Red Hat Lightspeed repeatedly analyzes your cluster and shows the latest results. These results can change, for example, if you fix an issue or a new issue has been detected.
 
@@ -64,7 +68,7 @@ Note that Red Hat Lightspeed repeatedly analyzes your cluster and shows the lat
 
 # Displaying all Red Hat Lightspeed advisor service recommendations
 
-The Recommendations view, by default, only displays the recommendations that are detected on your clusters. However, you can view all of the recommendations in the advisor service’s archive.
+The **Recommendations** view, by default, only displays the recommendations that are detected on your clusters. However, you can view all of the recommendations in the archive of the service.
 
 - Remote health reporting is enabled, which is the default.
 
@@ -80,7 +84,7 @@ The Recommendations view, by default, only displays the recommendations that are
 
 # Advisor recommendation filters
 
-The Red Hat Lightspeed advisor service can return a large number of recommendations. To focus on your most critical recommendations, you can apply filters to the [Advisor recommendations](https://console.redhat.com/openshift/insights/advisor/recommendations) list to remove low-priority recommendations.
+The Red Hat Lightspeed advisor service can return a large number of recommendations. To focus on your most critical recommendations, you can apply filters to the advisor recommendations list on the Hybrid Cloud Console to remove low-priority recommendations.
 
 By default, filters are set to only show enabled recommendations that are impacting one or more clusters. To view all or disabled recommendations in the Red Hat Lightspeed library, you can customize the filters.
 
@@ -104,19 +108,17 @@ You can set the following filter types:
 
 - **Risk of change:** Select one or more values from **High**, **Moderate**, **Low**, and **Very low** indicating the risk that the implementation of the resolution could have on cluster operations.
 
+<!-- -->
+
+- [Advisor recommendations (Red Hat Hybrid Cloud Console)](https://console.redhat.com/openshift/insights/advisor/recommendations)
+
 ## Filtering Red Hat Lightspeed advisor service recommendations
 
 As an OpenShift Container Platform cluster manager, you can filter the recommendations that are displayed on the recommendations list. By applying filters, you can reduce the number of reported recommendations and concentrate on your highest priority recommendations.
 
 The following procedure demonstrates how to set and remove **Category** filters; however, the procedure is applicable to any of the filter types and respective values.
 
-<div class="formalpara-title">
-
-**Prerequisites**
-
-</div>
-
-You are logged in to the [OpenShift Cluster Manager](https://console.redhat.com/openshift) in the Hybrid Cloud Console.
+- You are logged in to the [OpenShift Cluster Manager](https://console.redhat.com/openshift) in the Hybrid Cloud Console.
 
 1.  Go to [**OpenShift** \> **Advisor** \> **Recommendations**](https://console.redhat.com/openshift/insights/advisor/recommendations?).
 
@@ -134,17 +136,13 @@ You are logged in to the [OpenShift Cluster Manager](https://console.redhat.com/
 
 You can apply multiple filters to the list of recommendations. When ready, you can remove them individually or completely reset them.
 
-- Removing filters individually
+- To remove default or non-default filters individually, click the **X** icon next to each filter.
 
-  - Click the **X** icon next to each filter, including the default filters, to remove them individually.
-
-- Removing all non-default filters
-
-  - Click **Reset filters** to remove only the filters that you applied, leaving the default filters in place.
+- To remove all non-default filters, click **Reset filters** to remove only the filters that you applied, leaving the default filters in place.
 
 # Disabling Red Hat Lightspeed advisor service recommendations
 
-You can disable specific recommendations that affect your clusters, so that they no longer appear in your reports. It is possible to disable a recommendation for a single cluster or all of your clusters.
+You can disable specific recommendations that affect your clusters, so that they no longer show in your reports. You can disable a recommendation for a single cluster or all of your clusters.
 
 <div class="note">
 
@@ -166,7 +164,7 @@ Disabling a recommendation for all of your clusters also applies to any future c
 
     - To disable an alert:
 
-      1.  Click the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) for that alert, and then click **Disable recommendation**.
+      1.  Click the **Options** menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) for that alert, and then click **Disable recommendation**.
 
       2.  Enter a justification note and click **Save**.
 
@@ -206,11 +204,27 @@ When a recommendation is disabled for all clusters, you no longer see the recomm
 
 # About Red Hat Lightspeed advisor service recommendations for workloads
 
-You can use the Red Hat Lightspeed advisor service to view and manage information about recommendations that affect not only your clusters, but also your workloads. The advisor service takes advantage of deployment validation and helps OpenShift cluster administrators to see all runtime violations of deployment policies. You can see recommendations for workloads at [OpenShift \> Advisor \> Workloads](https://console.redhat.com/openshift/insights/advisor/workloads) on the Red Hat Hybrid Cloud Console. For more information, see these additional resources:
+You can use the Red Hat Lightspeed advisor service to view and manage information about recommendations that affect not only your clusters, but also your workloads. The advisor service takes advantage of deployment validation and helps OpenShift Container Platform cluster administrators to see all runtime violations of deployment policies.
 
-- [Information about Kubernetes workloads](https://kubernetes.io/docs/concepts/workloads/)
+You can see recommendations for workloads at **OpenShift** \> **Advisor** \> **Workloads** on the Red Hat Hybrid Cloud Console. For more information, see the following sections in the *Additional resources* section:
 
-- [Boost your cluster operations with Deployment Validation and Red Hat Lightspeed Advisor for Workloads](https://www.redhat.com/en/blog/boost-your-cluster-operations-with-deployment-validation-and-insights-advisor-for-workloads)
+- Information about Kubernetes workloads
+
+- Boost your cluster operations with Deployment Validation and Red Hat Lightspeed Advisor for Workloads
+
+- Identifying workload recommendations for namespaces in your clusters
+
+- Viewing workload recommendations for namespaces in your cluster
+
+- Excluding objects from workload recommendations in your clusters
+
+<!-- -->
+
+- [OpenShift \> Advisor \> Workloads (Red Hat Hybrid Cloud Console)](https://console.redhat.com/openshift/insights/advisor/workloads)
+
+- [Information about Kubernetes workloads (Kubernetes documentation)](https://kubernetes.io/docs/concepts/workloads/)
+
+- [Boost your cluster operations with Deployment Validation and Red Hat Lightspeed Advisor for Workloads (Red Hat Blog)](https://www.redhat.com/en/blog/boost-your-cluster-operations-with-deployment-validation-and-insights-advisor-for-workloads)
 
 - [Identifying workload recommendations for namespaces in your clusters](https://docs.redhat.com/en/documentation/red_hat_lightspeed/1-latest/html-single/monitoring_your_openshift_cluster_health_with_red_hat_lightspeed_advisor/index#identifying-workload-recommendations-for-namespaces-in-clusters_using-insights-advisor)
 

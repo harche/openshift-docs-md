@@ -2,7 +2,7 @@ If you use a firewall, you must configure your allowlist for the firewall to ens
 
 # Configuring your firewall for OpenShift Container Platform
 
-Before you install OpenShift Container Platform, you must configure your firewall to grant access to the sites that OpenShift Container Platform requires. When using a firewall, make additional configurations to the firewall so that OpenShift Container Platform can access the sites that it requires to function.
+Before you install OpenShift Container Platform, you must configure your firewall to grant access to the sites that OpenShift Container Platform requires.
 
 There are no special configuration considerations for services running on only controller nodes compared to compute nodes.
 
@@ -247,15 +247,17 @@ If your environment has a dedicated load balancer in front of your OpenShift Con
     | `2.rhel.pool.ntp.org` | 123  | Provides NTP services for time synchronization. |
     | `3.rhel.pool.ntp.org` | 123  | Provides NTP services for time synchronization. |
 
-<div class="note">
+    <div class="note">
 
-If you do not use a default Red Hat NTP server, verify the NTP server for your platform and allow it in your firewall.
+    If you do not use a default Red Hat NTP server, verify the NTP server for your platform and allow it in your firewall.
 
-</div>
+    </div>
 
 - [OpenID Connect requirements for AWS STS](../../authentication/managing_cloud_provider_credentials/cco-short-term-creds.xml#cco-short-term-creds-auth-flow-aws-oidc_cco-short-term-creds)
 
 # OpenShift Container Platform network flow matrix
+
+You can use the information in the appropriate network flow matrix to manage ingress traffic for your specific environment. You can restrict ingress traffic to essential flows to improve network security.
 
 The following network flow matrixes describe the ingress flows to OpenShift Container Platform services for the following environments:
 
@@ -272,8 +274,6 @@ The following network flow matrixes describe the ingress flows to OpenShift Cont
 You can use the `commatrix` plugin for the `oc` command to generate local network flow data for your cluster. For more information see "Generating ingress network flow data using the `commatrix` plugin".
 
 </div>
-
-Use the information in the appropriate network flow matrix to help you manage ingress traffic for your specific environment. You can restrict ingress traffic to essential flows to improve network security.
 
 Additionally, consider the following dynamic port ranges when managing ingress traffic for both bare metal and cloud environments:
 

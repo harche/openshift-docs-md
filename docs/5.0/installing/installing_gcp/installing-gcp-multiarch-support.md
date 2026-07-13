@@ -20,7 +20,7 @@ Before adding a secondary architecture node to your cluster, it is recommended t
 
 # Installing a cluster with multi-architecture support
 
-You can install a cluster with the support for configuring multi-architecture compute machines.
+You can install a cluster with multi-architecture support to use compute machines with different Central Processing Unit (CPU) architectures. Modifying your configuration file helps ensure your control plane and worker nodes deploy with the correct architecture.
 
 - You installed the OpenShift CLI (`oc`).
 
@@ -75,9 +75,13 @@ You can install a cluster with the support for configuring multi-architecture co
     # ...
     ```
 
-    - Specify the architecture of the worker node. You can set this field to either `arm64` or `amd64`.
+    where:
 
-    - Specify the control plane node architecture. You can set this field to either `arm64` or `amd64`.
+    `compute.architecture`
+    Specifies the architecture of the worker node. You can set this field to either `arm64` or `amd64`.
+
+    `controlPlane.architecture`
+    Specifies the control plane node architecture. You can set this field to either `arm64` or `amd64`.
 
 - [Deploying the cluster](../../installing/installing_gcp/installing-gcp-customizations.xml#installation-launching-installer_installing-gcp-customizations)
 

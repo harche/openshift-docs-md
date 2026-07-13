@@ -76,7 +76,7 @@ You can change your existing global cluster pull secret to enable remote health 
 
 # Consequences of disabling remote health reporting
 
-In OpenShift Container Platform, customers can disable reporting usage information.
+You can disable reporting usage information, but understand potential consequences before doing so.
 
 Before you disable remote health reporting, read the following benefits of a connected cluster:
 
@@ -154,7 +154,7 @@ By registering your disconnected cluster, you can continue to report your subscr
 
 5.  To register your disconnected cluster, select the **Register cluster** button.
 
-- [How does the subscriptions service show my subscription data?](https://access.redhat.com/documentation/en-us/subscription_central/2023/html/getting_started_with_the_subscriptions_service/con-how-does-subscriptionwatch-show-data_assembly-viewing-understanding-subscriptionwatch-data-ctxt)(Getting Started with the Subscription Service)
+- [How does the subscriptions service show my subscription data?(Getting Started with the Subscription Service)](https://access.redhat.com/documentation/en-us/subscription_central/2023/html/getting_started_with_the_subscriptions_service/con-how-does-subscriptionwatch-show-data_assembly-viewing-understanding-subscriptionwatch-data-ctxt)
 
 # Updating the global cluster pull secret
 

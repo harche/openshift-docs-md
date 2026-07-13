@@ -39,7 +39,7 @@ The scheduler does not select LPAR over z/VM or KVM nodes on `s390x` by default.
 
 # Applying node placement rules
 
-To ensure that virtualization components run on the most suitable nodes for your workload requirements, you can apply node placement rules by editing the `Subscription`, `HyperConverged`, or `HostPathProvisioner` objects.
+You can apply node placement rules to ensure that virtualization components run on the most suitable nodes for your workload requirements. You can apply node placement rules by editing OpenShift Virtualization objects.
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -55,7 +55,7 @@ To ensure that virtualization components run on the most suitable nodes for your
 
 # Node placement rule examples
 
-You can specify node placement rules for a OpenShift Virtualization component by editing a `Subscription`, `HyperConverged`, or `HostPathProvisioner` object.
+Examples of node placement rules for different objects that determine where OpenShift Virtualization components are deployed.
 
 ## Subscription object node placement rule examples
 

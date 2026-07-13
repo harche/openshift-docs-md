@@ -18,7 +18,7 @@ Because FIPS must be enabled before the operating system that your cluster uses 
 
 # Obtaining a FIPS-capable installation program using `oc adm extract`
 
-OpenShift Container Platform requires the use of a FIPS-capable installation binary to install a cluster in FIPS mode. You can obtain this binary by extracting it from the release image by using the OpenShift CLI (`oc`). After you have obtained the binary, you proceed with the cluster installation, replacing all instances of the `openshift-install` command with `openshift-install-fips`.
+You must get a FIPS-capable installation binary to install a OpenShift Container Platform cluster in FIPS mode. Extract the binary from the release image by using the OpenShift CLI (`oc`). After you get the binary, you must proceed with the cluster installation, replacing all instances of the `openshift-install` command with `openshift-install-fips`.
 
 - You have installed the OpenShift CLI (`oc`) with version 4.16 or newer.
 

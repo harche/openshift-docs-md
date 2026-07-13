@@ -8,7 +8,9 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 </div>
 
-The [Cluster API](https://cluster-api.sigs.k8s.io/) is an upstream project that is integrated into OpenShift Container Platform as a Technology Preview for Amazon Web Services (AWS), Google Cloud, Microsoft Azure, Red Hat OpenStack Platform (RHOSP), VMware vSphere, and bare-metal platforms.
+The Cluster API is an upstream project that is integrated into OpenShift Container Platform as a Technology Preview for Amazon Web Services (AWS), Google Cloud, Microsoft Azure, Red Hat OpenStack Platform (RHOSP), VMware vSphere, and bare-metal platforms.
+
+- [Kubernetes Cluster API (Kubernetes documentation)](https://cluster-api.sigs.k8s.io/)
 
 # Cluster API overview
 

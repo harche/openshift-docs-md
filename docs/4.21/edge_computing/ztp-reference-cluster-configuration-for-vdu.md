@@ -1,8 +1,8 @@
 Use the following reference information to understand the single-node OpenShift configurations required to deploy virtual distributed unit (vDU) applications in the cluster. Configurations include cluster optimizations for high performance workloads, enabling workload partitioning, and minimizing the number of reboots required postinstallation.
 
-- To deploy a single cluster by hand, see [Manually installing a single-node OpenShift cluster with GitOps ZTP](../edge_computing/ztp-manual-install.xml#ztp-manual-install).
+- [Manually installing a single-node OpenShift cluster with GitOps ZTP](../edge_computing/ztp-manual-install.xml#ztp-manual-install)
 
-- To deploy a fleet of clusters using GitOps Zero Touch Provisioning (ZTP), see [Deploying far edge sites with GitOps ZTP](../edge_computing/ztp-deploying-far-edge-sites.xml#ztp-deploying-far-edge-sites).
+- [Deploying far edge sites with GitOps ZTP](../edge_computing/ztp-deploying-far-edge-sites.xml#ztp-deploying-far-edge-sites)
 
 # Running low latency applications on OpenShift Container Platform
 
@@ -80,11 +80,11 @@ Bare-metal hosts require the firmware to be configured before the host can be pr
 
     Sample firmware configuration
 
-<div class="note">
+    <div class="note">
 
-Enable global SR-IOV and VT-d settings in the firmware for the host. These settings are relevant to bare-metal environments.
+    Enable global SR-IOV and VT-d settings in the firmware for the host. These settings are relevant to bare-metal environments.
 
-</div>
+    </div>
 
 # Connectivity prerequisites for managed cluster networks
 
@@ -132,7 +132,9 @@ When using the GitOps ZTP plugin and `ClusterInstance` CRs for cluster deploymen
 
 </div>
 
-Use the `ClusterInstance` `extraManifestRefs` to alter the CRs that are included by default. For more information, see [Advanced managed cluster configuration with ClusterInstance CRs](../edge_computing/ztp-advanced-install-ztp.xml#ztp-advanced-install-ztp).
+Use the `ClusterInstance` `extraManifestRefs` to alter the CRs that are included by default. For more information, see "Advanced managed cluster configuration with ClusterInstance CRs".
+
+- [Advanced managed cluster configuration with ClusterInstance CRs](../edge_computing/ztp-advanced-install-ztp.xml#ztp-advanced-install-ztp)
 
 ## Reduced platform management footprint
 
@@ -535,9 +537,11 @@ When the cluster installation is complete, the ZTP pipeline applies the followin
 
 <div class="note">
 
-In GitOps ZTP v4.10 and earlier, you configure UEFI secure boot with a `MachineConfig` CR. This is no longer required in GitOps ZTP v4.11 and later. In v4.11, you configure UEFI secure boot for single-node OpenShift clusters by updating the `spec.nodes[].bootMode` field in the `ClusterInstance` CR that you use to install the cluster. For more information, see [Deploying a managed cluster with ClusterInstance and GitOps ZTP](../edge_computing/ztp-deploying-far-edge-sites.xml#ztp-deploying-a-site_ztp-deploying-far-edge-sites).
+In GitOps ZTP v4.10 and earlier, you configure UEFI secure boot with a `MachineConfig` CR. This is no longer required in GitOps ZTP v4.11 and later. In v4.11, you configure UEFI secure boot for single-node OpenShift clusters by updating the `spec.nodes[].bootMode` field in the `ClusterInstance` CR that you use to install the cluster. For more information, see "Deploying a managed cluster with ClusterInstance and GitOps ZTP".
 
 </div>
+
+- [Deploying a managed cluster with ClusterInstance and GitOps ZTP](../edge_computing/ztp-deploying-far-edge-sites.xml#ztp-deploying-a-site_ztp-deploying-far-edge-sites)
 
 ## Operators
 

@@ -545,17 +545,17 @@ Images deprecated and removed tracker
 
 ## Installation deprecated and removed features
 
-| Feature                                                                                                                | 4.20                 | 4.21                 | 4.22       |
-|------------------------------------------------------------------------------------------------------------------------|----------------------|----------------------|------------|
-| `--cloud` parameter for `oc adm release extract`                                                                       | Deprecated           | Deprecated           | Deprecated |
-| CoreDNS wildcard queries for the `cluster.local` domain                                                                | Deprecated           | Deprecated           | Deprecated |
-| `compute.platform.openstack.rootVolume.type` for RHOSP                                                                 | Deprecated           | Deprecated           | Deprecated |
-| `controlPlane.platform.openstack.rootVolume.type` for RHOSP                                                            | Deprecated           | Deprecated           | Deprecated |
-| `ingressVIP` and `apiVIP` settings in the `install-config.yaml` file for installer-provisioned infrastructure clusters | Deprecated           | Deprecated           | Deprecated |
-| `platform.aws.preserveBootstrapIgnition` parameter for Amazon Web Services (AWS)                                       | Deprecated           | Deprecated           | Deprecated |
-| Installing a cluster on AWS with compute nodes in AWS Outposts                                                         | Deprecated           | Deprecated           | Deprecated |
-| Adding kernel modules to nodes with kvc                                                                                | General Availability | General Availability | Deprecated |
-| Installing a cluster using Fujitsu iRMC drivers on bare-metal machines                                                 | General Availability | Deprecated           | Deprecated |
+| Feature                                                                                                                | 4.20                 | 4.21               | 4.22       |
+|------------------------------------------------------------------------------------------------------------------------|----------------------|--------------------|------------|
+| `--cloud` parameter for `oc adm release extract`                                                                       | Deprecated           | Deprecated         | Deprecated |
+| CoreDNS wildcard queries for the `cluster.local` domain                                                                | Deprecated           | Deprecated         | Deprecated |
+| `compute.platform.openstack.rootVolume.type` for RHOSP                                                                 | Deprecated           | Deprecated         | Deprecated |
+| `controlPlane.platform.openstack.rootVolume.type` for RHOSP                                                            | Deprecated           | Deprecated         | Deprecated |
+| `ingressVIP` and `apiVIP` settings in the `install-config.yaml` file for installer-provisioned infrastructure clusters | Deprecated           | Deprecated         | Deprecated |
+| `platform.aws.preserveBootstrapIgnition` parameter for Amazon Web Services (AWS)                                       | Deprecated           | Deprecated         | Deprecated |
+| Installing a cluster on AWS with compute nodes in AWS Outposts                                                         | Deprecated           | Deprecated         | Deprecated |
+| Adding kernel modules to nodes with kvc                                                                                | Technology Preview   | Technology Preview | Deprecated |
+| Installing a cluster using Fujitsu iRMC drivers on bare-metal machines                                                 | General Availability | Deprecated         | Deprecated |
 
 Installation deprecated and removed tracker
 

@@ -1,16 +1,18 @@
-When you use hosted control planes for OpenShift Container Platform on Amazon Web Services (AWS), the infrastructure requirements vary based on your setup.
+After you deploy a hosted cluster on Amazon Web Services (AWS), you can manage the cluster.
 
 # Prerequisites to manage AWS infrastructure and IAM permissions
 
-To configure hosted control planes for OpenShift Container Platform on Amazon Web Services (AWS), you must meet the following the infrastructure requirements:
+To configure hosted control planes for OpenShift Container Platform on Amazon Web Services (AWS), you must meet the infrastructure requirements.
 
-- You configured hosted control planes before you can create hosted clusters.
+- You must configure hosted control planes before you can create hosted clusters.
 
-- You created an AWS Identity and Access Management (IAM) role and AWS Security Token Service (STS) credentials.
+- You must create an AWS Identity and Access Management (IAM) role and AWS Security Token Service (STS) credentials.
 
 ## Infrastructure requirements for AWS
 
-When you use hosted control planes on Amazon Web Services (AWS), the infrastructure requirements fit in the following categories:
+When you use hosted control planes on Amazon Web Services (AWS), the infrastructure requirements vary based on your setup.
+
+The infrastructure requirements fit in the following categories:
 
 - Prerequired and unmanaged infrastructure for the HyperShift Operator in an arbitrary AWS account
 
@@ -22,7 +24,7 @@ When you use hosted control planes on Amazon Web Services (AWS), the infrastruct
 
 - Kubernetes-managed infrastructure in a hosted cluster AWS account
 
-Prerequired means that hosted control planes requires AWS infrastructure to properly work. Unmanaged means that no Operator or controller creates the infrastructure for you.
+*Prerequired* means that hosted control planes requires AWS infrastructure to properly work. *Unmanaged* means that no Operator or controller creates the infrastructure for you.
 
 ## Unmanaged infrastructure for the HyperShift Operator in an AWS account
 
@@ -42,7 +44,7 @@ In a prerequired and unmanaged infrastructure for the HyperShift Operator, the f
 
 ## Unmanaged infrastructure requirements for a management AWS account
 
-When your infrastructure is prerequired and unmanaged in a hosted cluster Amazon Web Services (AWS) account, the infrastructure requirements for all access modes are as follows:
+When your infrastructure is prerequired and unmanaged in a hosted cluster Amazon Web Services (AWS) account, ensure that you are familiar with the infrastructure requirements for all access modes.
 
 - One VPC
 
@@ -136,7 +138,9 @@ For accounts with public and private clusters, the infrastructure requirements a
 
 ## Kubernetes-managed infrastructure in a hosted cluster AWS account
 
-When Kubernetes manages your infrastructure in a hosted cluster Amazon Web Services (AWS) account, the infrastructure requirements are as follows:
+When Kubernetes manages your infrastructure in a hosted cluster Amazon Web Services (AWS) account, ensure that you meet the infrastructure requirements.
+
+The infrastructure requirements are as follows:
 
 - A network load balancer for default Ingress
 

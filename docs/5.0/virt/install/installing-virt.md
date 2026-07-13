@@ -8,6 +8,41 @@ If you have limited internet connectivity, you can configure proxy support in OL
 
 </div>
 
+# About installation methods for OpenShift Virtualization
+
+You can install OpenShift Virtualization on your OpenShift Container Platform cluster by using Operator Lifecycle Manager (OLM), agent-based installation, or the Assisted Installer.
+
+Standard installation by using Operator Lifecycle Manager (OLM)
+Install the OpenShift Virtualization Operator from the OpenShift Container Platform web console or CLI. This method is suitable for most deployment scenarios and provides the most flexibility for cluster configuration.
+
+For disconnected environments, you must configure OLM for restricted networks before installing OpenShift Virtualization.
+
+Agent-based installation
+Use the Agent-based Installer to deploy a cluster with OpenShift Virtualization and related operators pre-configured. This installation method is designed for users who want a streamlined, UI-driven installation experience, particularly in disconnected environments.
+
+<div class="important">
+
+Agent-based installation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
+
+Assisted Installer with virtualization bundle
+Use the Assisted Installer to deploy OpenShift Virtualization or Red Hat OpenShift Virtualization Engine by using the virtualization operator bundle, which includes OpenShift Virtualization and essential supporting operators. This installation method simplifies the deployment process by pre-configuring operators and minimizing external dependencies. This is the preferred installation method for OpenShift Virtualization Engine.
+
+## Choosing an installation method
+
+Consider the following factors when choosing an installation method:
+
+- Network connectivity: For disconnected or air-gapped environments, the Agent-based Installer or Assisted Installer with the virtualization bundle can simplify deployment by reducing registry dependencies.
+
+- Installation experience: If you prefer a UI-driven installation workflow over writing YAML files, consider using the Agent-based Installer or Assisted Installer.
+
+- Operator requirements: If you need additional operators such as the Node Health Check Operator, Fence Agents Remediation Operator, or NMState Operator, the Assisted Installer virtualization bundle includes these operators by default.
+
+- Customization needs: For maximum flexibility in cluster configuration, use the standard OLM installation method.
+
 # Installing the OpenShift Virtualization Operator by using the web console
 
 You can deploy the OpenShift Virtualization Operator by using the OpenShift Container Platform web console.
@@ -218,6 +253,10 @@ You can deploy the OpenShift Virtualization Operator by using the `oc` CLI.
   ```
 
 # Additional resources
+
+- [Installing a cluster for OpenShift Virtualization using the Agent-based Installer](../../installing/installing_with_agent_based_installer/installing-ove.xml#installing-ove)
+
+- [Installing with the virtualization operator bundle (Assisted Installer)](https://docs.redhat.com/en/documentation/assisted_installer_for_openshift_container_platform/2026/html/installing_openshift_container_platform_with_the_assisted_installer/customizing-with-bundles-and-operators#openshift-virtualization-operator_customizing-with-bundles-and-operators)
 
 - [Using Operator Lifecycle Manager in disconnected environments](../../disconnected/using-olm.xml#olm-restricted-networks)
 

@@ -94,7 +94,7 @@ You can stop impersonating a user or group at any time from the OpenShift Contai
 
 # Adding unauthenticated groups to cluster roles
 
-As a cluster administrator, you can add unauthenticated users to the following cluster roles in OpenShift Container Platform by creating a cluster role binding. Unauthenticated users do not have access to non-public cluster roles. This should only be done in specific use cases when necessary.
+As a cluster administrator, you can grant unauthenticated users access to specific cluster roles to enable features, such as external webhooks or automated token management, that require cluster access without authentication. Only grant this access when required and after verifying compliance with your organization’s security standards.
 
 You can add unauthenticated users to the following cluster roles:
 

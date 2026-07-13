@@ -2,7 +2,7 @@ OpenShift Virtualization provides a comprehensive virtualization solution that a
 
 # What you can do with OpenShift Virtualization
 
-OpenShift Virtualization provides the scalable, enterprise-grade virtualization functionality in Red Hat OpenShift. You can use it to manage virtual machines (VMs) exclusively or alongside container workloads.
+OpenShift Virtualization provides scalable, enterprise-grade virtualization functionality for your cluster. You can use it to manage virtual machines (VMs) exclusively or alongside container workloads.
 
 <div class="note">
 
@@ -115,7 +115,9 @@ Mapping of vSphere concepts to their closest OpenShift Virtualization counterpar
 
 # Supported cluster versions for OpenShift Virtualization
 
-OpenShift Virtualization 4.22 is supported for use on OpenShift Container Platform 4.17 clusters. To use the latest z-stream release of OpenShift Virtualization, you must first upgrade to the latest version of OpenShift Container Platform. The latest stable release of OpenShift Virtualization 4.22 is 4.22.0.
+OpenShift Virtualization 4.22 is supported for use on OpenShift Container Platform 4.17 clusters. To use the latest z-stream release of OpenShift Virtualization, you must first upgrade to the latest version of OpenShift Container Platform.
+
+The latest stable release of OpenShift Virtualization 4.22 is 4.22.0.
 
 # About volume and access modes for virtual machine disks
 

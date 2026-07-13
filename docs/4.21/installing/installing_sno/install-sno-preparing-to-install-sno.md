@@ -1,12 +1,16 @@
-# Prerequisites
+Review the different requirements for installing OpenShift Container Platform on a single node and prepare your environment for installation.
 
-- You reviewed details about the [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation) processes.
+Ensure you have reviewed the following documentation before preparing for a single node installation:
 
-- You have read the documentation on [selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing).
+- "OpenShift Container Platform installation and update"
+
+- "Selecting a cluster installation method and preparing it for users"
 
 # About OpenShift on a single node
 
-You can create a single-node cluster with standard installation methods. OpenShift Container Platform on a single node is a specialized installation that requires the creation of a special Ignition configuration file. The primary use case is for edge computing workloads, including intermittent connectivity, portable clouds, and 5G radio access networks (RAN) close to a base station. The major tradeoff with an installation on a single node is the lack of high availability.
+You can create a single-node cluster with standard installation methods. OpenShift Container Platform on a single node is a specialized installation that requires the creation of a special Ignition configuration file.
+
+The primary use case is for edge computing workloads, including intermittent connectivity, portable clouds, and 5G radio access networks (RAN) close to a base station. The major tradeoff with an installation on a single node is the lack of high availability.
 
 <div class="important">
 
@@ -16,7 +20,9 @@ The use of OpenShiftSDN with single-node OpenShift is not supported. OVN-Kuberne
 
 # Requirements for installing OpenShift on a single node
 
-Installing OpenShift Container Platform on a single node alleviates some of the requirements for high availability and large scale clusters. However, you must address the following requirements:
+Installing OpenShift Container Platform on a single node alleviates some of the requirements for high availability and large scale clusters. However, you must still address several requirements.
+
+The following requirements must be met:
 
 - **Administration host:** You must have a computer to prepare the ISO, to create the USB boot drive, and to monitor the installation.
 
@@ -34,7 +40,7 @@ Installing OpenShift Container Platform on a single node alleviates some of the 
 
 - **CPU Architecture:** Installing OpenShift Container Platform on a single node supports `x86_64`, `arm64`,`ppc64le`, and `s390x` CPU architectures.
 
-- **Supported platforms:** Installing OpenShift Container Platform on a single node is supported on bare metal and [Certified third-party hypervisors](https://access.redhat.com/articles/973163). In most cases, you must specify the `platform.none: {}` parameter in the `install-config.yaml` configuration file. The following list shows the only exceptions and the corresponding parameter to specify in the `install-config.yaml` configuration file:
+- **Supported platforms:** Installing OpenShift Container Platform on a single node is supported on bare metal and Certified third-party hypervisors. See "Certified Hypervisors and Guest Operating Systems" for more information. In most cases, you must specify the `platform.none: {}` parameter in the `install-config.yaml` configuration file. The following list shows the only exceptions and the corresponding parameter to specify in the `install-config.yaml` configuration file:
 
   - Amazon Web Services (AWS), where you use `platform=aws`
 
@@ -81,3 +87,13 @@ Installing OpenShift Container Platform on a single node alleviates some of the 
   Without persistent IP addresses, communications between the `apiserver` and `etcd` might fail.
 
   </div>
+
+<!-- -->
+
+- [Certified Hypervisors and Guest Operating Systems (Red Hat Knowledgebase article)](https://access.redhat.com/articles/973163)
+
+# Additional resources
+
+- [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation)
+
+- [Selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing)
