@@ -31,7 +31,7 @@ In OpenShift Container Platform 4.17, half of a CPU core (500 millicore) is now 
 
 OpenShift Container Platform exposes metrics that the Cluster Monitoring Operator (CMO) collects and stores in the Prometheus-based monitoring stack. As an administrator, you can view dashboards for system resources, containers, and components metrics in the OpenShift Container Platform web console by navigating to **Observe** → **Dashboards**.
 
-# Prometheus database storage requirements
+## Prometheus database storage requirements
 
 Red Hat performed various tests for different scale sizes.
 
@@ -68,19 +68,11 @@ CPU utilization has minor impact. The ratio is approximately 1 core out of 40 pe
 
 - Use at least three **openshift-container-storage** nodes with non-volatile memory express (SSD or NVMe) drives.
 
-# Configuring cluster monitoring
+## Configuring cluster monitoring
 
 You can increase the storage capacity for the Prometheus component in the cluster monitoring stack.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To increase the storage capacity for Prometheus:
-
-1.  Create a YAML configuration file, `cluster-monitoring-config.yaml`. For example:
+1.  To increase the storage capacity for Prometheus, create a YAML configuration file, `cluster-monitoring-config.yaml`, as in the following example:
 
     ``` yaml
     apiVersion: v1
@@ -88,36 +80,36 @@ To increase the storage capacity for Prometheus:
     data:
       config.yaml: |
         prometheusK8s:
-          retention: {{PROMETHEUS_RETENTION_PERIOD}}
+          retention: <prometheus_retention_period>
           nodeSelector:
             node-role.kubernetes.io/infra: ""
           volumeClaimTemplate:
             spec:
-              storageClassName: {{STORAGE_CLASS}}
+              storageClassName: <storage_class>
               resources:
                 requests:
-                  storage: {{PROMETHEUS_STORAGE_SIZE}}
+                  storage: <prometheus_storage_size>
         alertmanagerMain:
           nodeSelector:
             node-role.kubernetes.io/infra: ""
           volumeClaimTemplate:
             spec:
-              storageClassName: {{STORAGE_CLASS}}
+              storageClassName: <storage_class>
               resources:
                 requests:
-                  storage: {{ALERTMANAGER_STORAGE_SIZE}}
+                  storage: <alertmanager_storage_size>
     metadata:
       name: cluster-monitoring-config
       namespace: openshift-monitoring
     ```
 
-    - The default value of Prometheus retention is `PROMETHEUS_RETENTION_PERIOD=15d`. Units are measured in time using one of these suffixes: s, m, h, d.
+    - `<prometheus_retention_period>` specifies the Prometheus retention period. The default value is `15d`. Units are measured in time using one of these suffixes: s, m, h, d.
 
-    - The storage class for your cluster.
+    - `<storage_class>` specifies the storage class for your cluster.
 
-    - A typical value is `PROMETHEUS_STORAGE_SIZE=2000Gi`. Storage values can be a plain integer or a fixed-point integer using one of these suffixes: E, P, T, G, M, K. You can also use the power-of-two equivalents: Ei, Pi, Ti, Gi, Mi, Ki.
+    - `<prometheus_storage_size>` specifies the Prometheus storage size. A typical value is `2000Gi`. Storage values can be a plain integer or a fixed-point integer using one of these suffixes: E, P, T, G, M, K. You can also use the power-of-two equivalents: Ei, Pi, Ti, Gi, Mi, Ki.
 
-    - A typical value is `ALERTMANAGER_STORAGE_SIZE=20Gi`. Storage values can be a plain integer or a fixed-point integer using one of these suffixes: E, P, T, G, M, K. You can also use the power-of-two equivalents: Ei, Pi, Ti, Gi, Mi, Ki.
+    - `<alertmanager_storage_size>` specifies the Alertmanager storage size. A typical value is `20Gi`. Storage values can be a plain integer or a fixed-point integer using one of these suffixes: E, P, T, G, M, K. You can also use the power-of-two equivalents: Ei, Pi, Ti, Gi, Mi, Ki.
 
 2.  Add values for the retention period, storage class, and storage sizes.
 

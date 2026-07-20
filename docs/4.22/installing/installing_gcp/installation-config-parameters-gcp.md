@@ -313,12 +313,12 @@ Optional installation configuration parameters are described in the following ta
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><pre><code>arbiter:
-    name: arbiter</code></pre></td>
+    name:</code></pre></td>
 <td style="text-align: left;"><p>The OpenShift Container Platform cluster requires a name for arbiter nodes. For example, <code>arbiter</code>.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><pre><code>arbiter:
-    replicas: 1</code></pre></td>
+    replicas:</code></pre></td>
 <td style="text-align: left;"><p>The <code>replicas</code> parameter sets the number of arbiter nodes for the OpenShift Container Platform cluster. You cannot set this field to a value that is greater than 1.</p></td>
 </tr>
 <tr class="odd">

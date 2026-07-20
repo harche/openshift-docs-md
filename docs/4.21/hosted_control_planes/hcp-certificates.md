@@ -1,10 +1,12 @@
-To establish secure and encrypted communication between your clients and the hosted control plane, you must configure a server certificate for your hosted cluster. With hosted control planes, the steps to configure certificates differ from those of standalone OpenShift Container Platform.
+To establish secure and encrypted communication between your clients and the hosted control plane, you must configure a server certificate for your hosted cluster.
+
+With hosted control planes, the steps to configure certificates differ from those of standalone OpenShift Container Platform.
 
 # Configuring a custom API server certificate in a hosted cluster
 
 To configure a custom certificate for the API server, specify the certificate details in the `spec.configuration.apiServer` section of your `HostedCluster` configuration.
 
-You can configure a custom certificate during either day-1 or day-2 operations. However, because the service publishing strategy is immutable after you set it during hosted cluster creation, you must know what the hostname is for the Kubernetes API server that you plan to configure.
+You can configure a custom certificate during either Day 1 or Day 2 operations. However, because the service publishing strategy is immutable after you set it during hosted cluster creation, you must know what the hostname is for the Kubernetes API server that you plan to configure.
 
 - You created a Kubernetes secret that contains your custom certificate in the management cluster. The secret contains the following keys:
 
@@ -12,9 +14,9 @@ You can configure a custom certificate during either day-1 or day-2 operations. 
 
   - `tls.key`: The private key
 
-- If your `HostedCluster` configuration includes custom serving certificates via the `spec.configuration.apiServer.servingCerts.namedCertificates` specification, ensure that the Subject Alternative Names (SANs) of the certificate do not conflict with the external API server address. For example, depending on the hostname pattern used in your environment, the address might be in the following format: `api.<cluster-name>.<domain>`.
+- If your `HostedCluster` configuration includes custom serving certificates via the `spec.configuration.apiServer.servingCerts.namedCertificates` specification, ensure that the Subject Alternative Names (SANs) of the certificate do not conflict with the external API server address. For example, depending on the hostname pattern used in your environment, the address might be in the following format: `api.<cluster_name>.<domain>`.
 
-  The `HostedCluster` resource automatically includes the external API address in the default Kubernetes API server certificate SANs. If the same hostname is in both the custom certificate and the auto-generated Kubernetes API server certificate, the configuration is rejected to prevent TLS serving ambiguity.
+  The `HostedCluster` resource automatically includes the external API address in the default Kubernetes API server certificate SANs. If the same hostname is in both the custom certificate and the automatically generated Kubernetes API server certificate, the configuration is rejected to prevent TLS serving ambiguity.
 
   This validation applies to all service publishing strategies, including `LoadBalancer` and `NodePort`. The only exception is when you use Amazon Web Services (AWS) as the provider with `Private` or `PublicAndPrivate` endpoint access configurations, where the platform manages the SAN conflict.
 
@@ -45,9 +47,9 @@ You can configure a custom certificate during either day-1 or day-2 operations. 
                 name: sample-hosted-kas-custom-cert
     ```
 
-    - The list of DNS names that the certificate is valid for.
+    - `spec.configuration.apiServer.servingCerts.namedCertificates.names` specifies the list of DNS names that the certificate is valid for.
 
-    - The name of the secret that contains the custom certificate.
+    - `spec.configuration.apiServer.servingCerts.namedCertificates.servingCertificate` specifies the name of the secret that contains the custom certificate.
 
 3.  Apply the changes to your `HostedCluster` configuration by entering the following command:
 
@@ -63,7 +65,7 @@ You can configure a custom certificate during either day-1 or day-2 operations. 
 
 # Configuring the Kubernetes API server for a hosted cluster
 
-If you want to customize the Kubernetes API server for your hosted cluster, complete the following steps.
+You can customize the Kubernetes API server for your hosted cluster.
 
 - You have a running hosted cluster.
 
@@ -114,11 +116,11 @@ If you want to customize the Kubernetes API server for your hosted cluster, comp
     # ...
     ```
 
-    - The list of DNS names that the certificate is valid for. The names listed in this field cannot be the same as the names specified in the `spec.servicePublishingStrategy.*hostname` field.
+    - `spec.configuration.apiServer.servingCerts.namedCertificates.names` specifies the list of DNS names that the certificate is valid for. The names listed in this field cannot be the same as the names specified in the `spec.servicePublishingStrategy.*hostname` field.
 
-    - The name of the secret that contains the custom certificate.
+    - `spec.configuration.apiServer.servingCerts.namedCertificates.servingCertificate` specifies the name of the secret that contains the custom certificate.
 
-    - This field accepts a URI that will be used as the API server endpoint.
+    - `spec.kubeAPIServerDNSName` accepts a URI that will be used as the API server endpoint.
 
 3.  Apply the configuration by entering the following command:
 
@@ -357,7 +359,7 @@ If you want to use certificates from a trusted certificate authority (CA) to acc
 
 # Troubleshooting accessing a hosted cluster by using a custom DNS
 
-If you encounter issues when you access a hosted cluster by using a custom DNS, complete the following steps.
+If you encounter an issue when you access a hosted cluster by using a custom DNS, you can determine the root cause so that you can resolve the issue.
 
 1.  Verify that the DNS record is properly configured and resolved.
 

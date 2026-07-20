@@ -316,6 +316,7 @@ Before you create a hosted cluster on Amazon Web Services (AWS), you must create
                 "Action": [
                     "iam:CreateInstanceProfile",
                     "iam:DeleteInstanceProfile",
+                    "iam:TagInstanceProfile",
                     "iam:GetRole",
                     "iam:UpdateAssumeRolePolicy",
                     "iam:GetInstanceProfile",
@@ -326,11 +327,15 @@ Before you create a hosted cluster on Amazon Web Services (AWS), you must create
                     "iam:PutRolePolicy",
                     "iam:AddRoleToInstanceProfile",
                     "iam:CreateOpenIDConnectProvider",
+                    "iam:TagOpenIDConnectProvider",
                     "iam:ListOpenIDConnectProviders",
                     "iam:DeleteRolePolicy",
                     "iam:UpdateRole",
                     "iam:DeleteOpenIDConnectProvider",
-                    "iam:GetRolePolicy"
+                    "iam:GetRolePolicy",
+                    "iam:ListAttachedRolePolicies",
+                    "iam:ListRolePolicies",
+                    "iam:DetachRolePolicy"
                 ],
                 "Resource": "*"
             },

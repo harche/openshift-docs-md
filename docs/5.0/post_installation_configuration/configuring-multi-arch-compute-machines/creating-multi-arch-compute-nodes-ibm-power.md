@@ -2,19 +2,31 @@ To create a cluster with multi-architecture compute machines on IBM Power® (`pp
 
 <div class="important">
 
-Before you can add `ppc64le` nodes to your cluster, you must upgrade your cluster to one that uses the multi-architecture payload. For more information on migrating to the multi-architecture payload, see [Migrating to a cluster with multi-architecture compute machines](../../updating/updating_a_cluster/migrating-to-multi-payload.xml#migrating-to-multi-payload).
+Before you can add `ppc64le` nodes to your cluster, you must upgrade your cluster to one that uses the multi-architecture payload. For more information on migrating to the multi-architecture payload, see "Migrating to a cluster with multi-architecture compute machines".
 
 </div>
 
-The following procedures explain how to create a RHCOS compute machine using an ISO image or network PXE booting. This will allow you to add `ppc64le` nodes to your cluster and deploy a cluster with multi-architecture compute machines.
+The following procedures explain how to complete the following tasks:
 
-To create an IBM Power® (`ppc64le`) cluster with multi-architecture compute machines on `x86_64`, follow the instructions for [Installing a cluster on IBM Power®](../../installing/installing_ibm_power/preparing-to-install-on-ibm-power.xml#preparing-to-install-on-ibm-power). You can then add `x86_64` compute machines as described in [Creating a cluster with multi-architecture compute machines on bare metal, IBM Power, or IBM Z](./creating-multi-arch-compute-nodes-bare-metal.xml#creating-multi-arch-compute-nodes-bare-metal).
+- Create a RHCOS compute machine by using an ISO image or network PXE booting.
+
+- Add `ppc64le` nodes to your cluster and deploy a cluster with multi-architecture compute machines.
+
+To create an IBM Power® (`ppc64le`) cluster with multi-architecture compute machines on `x86_64`, follow the instructions for "Installing a cluster on IBM Power®". You can then add `x86_64` compute machines as described in "Creating a cluster with multi-architecture compute machines on bare metal, IBM Power, or IBM Z".
 
 <div class="note">
 
-Before adding a secondary architecture node to your cluster, it is recommended to install the Multiarch Tuning Operator, and deploy a `ClusterPodPlacementConfig` object. For more information, see [Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator](../../post_installation_configuration/configuring-multi-arch-compute-machines/multiarch-tuning-operator.xml#multiarch-tuning-operator).
+Before adding a secondary architecture node to your cluster, Red Hat recommends that you install the Multiarch Tuning Operator, and deploy a `ClusterPodPlacementConfig` object. For more information, see "Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator".
 
 </div>
+
+- [Migrating to a cluster with multi-architecture compute machines](../../updating/updating_a_cluster/migrating-to-multi-payload.xml#migrating-to-multi-payload)
+
+- [Installing a cluster on IBM Power®](../../installing/installing_ibm_power/preparing-to-install-on-ibm-power.xml#preparing-to-install-on-ibm-power)
+
+- [Creating a cluster with multi-architecture compute machines on bare metal, IBM Power, or IBM Z](./creating-multi-arch-compute-nodes-bare-metal.xml#creating-multi-arch-compute-nodes-bare-metal)
+
+- [Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator](../../post_installation_configuration/configuring-multi-arch-compute-machines/multiarch-tuning-operator.xml#multiarch-tuning-operator)
 
 # Creating RHCOS machines using an ISO image
 
@@ -93,7 +105,7 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines fo
 
 # Creating RHCOS machines by PXE or iPXE booting
 
-You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines for your bare metal cluster by using PXE or iPXE booting.
+You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines for your bare-metal cluster by using PXE or iPXE booting.
 
 - Obtain the URL of the Ignition config file for the compute machines for your cluster. You uploaded this file to your HTTP server during installation.
 
@@ -232,7 +244,7 @@ When you add machines to a cluster, two pending certificate signing requests (CS
 
     <div class="note">
 
-    The preceding output might not include the compute nodes, also known as worker nodes, until some CSRs are approved.
+    The preceding output might not include the compute nodes until some CSRs are approved.
 
     </div>
 
@@ -261,7 +273,7 @@ When you add machines to a cluster, two pending certificate signing requests (CS
 
     <div class="note">
 
-    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. Then, subsequent serving certificate renewal requests are automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The subsequent serving certificate renewal requests are then automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
 
     </div>
 
@@ -357,6 +369,6 @@ When you add machines to a cluster, two pending certificate signing requests (CS
 
     <div class="note">
 
-    It can take a few minutes after approval of the server CSRs for the machines to transition to the `Ready` status.
+    You might need to wait a few minutes after approval of the server CSRs for the machines to transition to the `Ready` status.
 
     </div>

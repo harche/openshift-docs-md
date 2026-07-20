@@ -263,7 +263,7 @@ On bare-metal infrastructure, you can create or import a hosted cluster. After y
 
 5.  Confirm that the hosted cluster is ready. The status of `Available: True` indicates the readiness of the control plane.
 
-- [Manually importing a hosted cluster](../../hosted_control_planes/hcp-import.xml)
+- [Manually importing a hosted cluster](../../hosted_control_planes/hcp-import.xml#hcp-import)
 
 - [Extracting the release image digest](../../hosted_control_planes/hcp-disconnected/hcp-deploy-dc-bm.xml#hcp-dc-extract_hcp-deploy-dc-bm)
 

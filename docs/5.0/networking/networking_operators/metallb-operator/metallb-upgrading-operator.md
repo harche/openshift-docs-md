@@ -50,11 +50,7 @@ To manually control when the MetalLB Operator upgrades in OpenShift Container Pl
     $ oc -n metallb-system get installplan
     ```
 
-    <div class="formalpara-title">
-
-    **Example output that shows install-tsz2g as a manual install plan**
-
-    </div>
+    The following example output shows `install-tsz2g` as a manual install plan:
 
     ``` terminal
     NAME            CSV                                     APPROVAL    APPROVED

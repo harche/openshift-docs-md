@@ -1,8 +1,12 @@
-You can deploy OpenShift Container Platform clusters by using two different control plane configurations: standalone or hosted control planes. The standalone configuration uses dedicated virtual machines or physical machines to host the control plane. With hosted control planes for OpenShift Container Platform, you create control planes as pods on a management cluster without the need for dedicated virtual or physical machines for each control plane.
+You can deploy OpenShift Container Platform clusters by using two different control plane configurations: standalone or hosted control planes.
+
+The standalone configuration uses dedicated virtual machines or physical machines to host the control plane. With hosted control planes for OpenShift Container Platform, you create control planes as pods on a management cluster without the need for dedicated virtual or physical machines for each control plane.
 
 # Introduction to hosted control planes
 
-Hosted control planes is available by using a [supported version of multicluster engine for Kubernetes Operator](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#cluster_mce_overview) on the following platforms:
+Hosted control planes is available by using a supported version of multicluster engine for Kubernetes Operator on several platforms.
+
+You can deploy hosted control planes on the following platforms:
 
 - Bare metal by using the Agent provider
 
@@ -22,7 +26,7 @@ The hosted control planes feature is enabled by default.
 
 <div class="note">
 
-The multicluster engine Operator is an integral part of Red Hat Advanced Cluster Management (RHACM) and is enabled by default with RHACM. However, you do not need RHACM in order to use hosted control planes.
+The multicluster engine Operator is an integral part of Red Hat Advanced Cluster Management (RHACM) and is enabled by default with RHACM. However, you do not need RHACM to use hosted control planes.
 
 </div>
 
@@ -52,9 +56,15 @@ With hosted control planes, you can pave the way for a true hybrid-cloud approac
 
 - From an operational perspective, multicluster management is more centralized, which results in fewer external factors that affect the cluster status and consistency. Site reliability engineers have a central place to debug issues and navigate to the cluster data plane, which can lead to shorter Time to Resolution (TTR) and greater productivity.
 
+<!-- -->
+
+- [Cluster lifecycle with multicluster engine for Kubernetes Operator overview (Red Hat Advanced Cluster Management official documentation)](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#cluster_mce_overview)
+
 # Differences between hosted control planes and OpenShift Container Platform
 
-Hosted control planes is a form factor of OpenShift Container Platform. Hosted clusters and the stand-alone OpenShift Container Platform clusters are configured and managed differently. See the following tables to understand the differences between OpenShift Container Platform and hosted control planes:
+Hosted control planes is a form factor of OpenShift Container Platform. Hosted clusters and the standalone OpenShift Container Platform clusters are configured and managed differently.
+
+See the following tables to understand the differences between OpenShift Container Platform and hosted control planes:
 
 ## Cluster creation and lifecycle
 
@@ -126,11 +136,11 @@ Hosted control planes is a form factor of OpenShift Container Platform. Hosted c
 
 # Relationship between hosted control planes, multicluster engine Operator, and RHACM
 
-You can configure hosted control planes by using the multicluster engine for Kubernetes Operator. The multicluster engine Operator cluster lifecycle defines the process of creating, importing, managing, and destroying Kubernetes clusters across various infrastructure cloud providers, private clouds, and on-premises data centers.
+You can configure hosted control planes by using the multicluster engine for Kubernetes Operator. The multicluster engine Operator cluster lifecycle defines the process of creating, importing, managing, and destroying Kubernetes clusters across various infrastructure cloud providers, private clouds, and on-premise data centers.
 
 <div class="note">
 
-The multicluster engine Operator is an integral part of Red Hat Advanced Cluster Management (RHACM) and is enabled by default with RHACM. However, you do not need RHACM in order to use hosted control planes.
+The multicluster engine Operator is an integral part of Red Hat Advanced Cluster Management and is enabled by default with RHACM. However, you do not need Red Hat Advanced Cluster Management to use hosted control planes.
 
 </div>
 
@@ -156,13 +166,19 @@ You can deploy OpenShift Container Platform clusters by using two different cont
 <figcaption aria-hidden="true">RHACM and the multicluster engine Operator introduction diagram</figcaption>
 </figure>
 
-## Discovering multicluster engine Operator hosted clusters in RHACM
+## Hosted clusters in Red Hat Advanced Cluster Management
 
-If you want to bring hosted clusters to a Red Hat Advanced Cluster Management (RHACM) hub cluster to manage them with RHACM management components, see the instructions in the [Red Hat Advanced Cluster Management official documentation](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.11/html/clusters/cluster_mce_overview#discover-hosted-acm).
+You can bring hosted clusters to a Red Hat Advanced Cluster Management hub cluster to manage them with Red Hat Advanced Cluster Management management components.
+
+For more information, see "Discovering multicluster engine Operator hosted clusters in Red Hat Advanced Cluster Management".
+
+- [Discovering multicluster engine Operator hosted clusters in Red Hat Advanced Cluster Management (Red Hat Advanced Cluster Management official documentation)](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.11/html/clusters/cluster_mce_overview#discover-hosted-acm)
 
 # Versioning for hosted control planes
 
-The hosted control planes feature includes the following components, which might require independent versioning and support levels:
+The hosted control planes feature includes several components that might require independent versioning and support levels.
+
+Those components are as follows:
 
 - Management cluster
 
@@ -222,7 +238,7 @@ You can use the `hcp` CLI to create hosted clusters. You can download the CLI fr
 
 You can use the `hypershift.openshift.io` API resources, such as, `HostedCluster` and `NodePool`, to create and manage OpenShift Container Platform clusters at scale. A `HostedCluster` resource contains the control plane and common data plane configuration. When you create a `HostedCluster` resource, you have a fully functional control plane with no attached nodes. A `NodePool` resource is a scalable set of worker nodes that is attached to a `HostedCluster` resource.
 
-The API version policy generally aligns with the policy for [Kubernetes API versioning](https://kubernetes.io/docs/reference/using-api/#api-versioning).
+The API version policy generally aligns with the policy for Kubernetes API versioning.
 
 Updates for hosted control planes involve updating the hosted cluster and the node pools. For more information, see "Updates for hosted control planes".
 
@@ -237,6 +253,8 @@ The Control Plane Operator is released as part of each OpenShift Container Platf
 - multi-arch
 
 <!-- -->
+
+- [Kubernetes API versioning](https://kubernetes.io/docs/reference/using-api/#api-versioning)
 
 - [AMD64 release images](https://amd64.ocp.releases.ci.openshift.org/)
 
@@ -286,10 +304,10 @@ cluster instance user
 Users who assume this role are the equivalent of developers in standalone OpenShift Container Platform. This user does not have a view into the software catalog or machines.
 
 cluster service consumer
-Users who assume this role can request control planes and worker nodes, drive updates, or modify externalized configurations. Typically, this user does not manage or access cloud credentials or infrastructure encryption keys. The cluster service consumer persona can request hosted clusters and interact with node pools. Users who assume this role have RBAC to create, read, update, or delete hosted clusters and node pools within a logical boundary.
+Users who assume this role can request control planes and worker nodes, drive updates, or modify externalized configurations. Typically, this user does not manage or access cloud credentials or infrastructure encryption keys. The cluster service consumer persona can request hosted clusters and interact with node pools. Users who assume this role have role-based access control (RBAC) to create, read, update, or delete hosted clusters and node pools within a logical boundary.
 
 cluster service provider
-Users who assume this role typically have the `cluster-admin` role on the management cluster and have RBAC to monitor and own the availability of the HyperShift Operator as well as the control planes for the tenant’s hosted clusters. The cluster service provider persona is responsible for several activities, including the following examples:
+Users who assume this role typically have the `cluster-admin` role on the management cluster and have RBAC to monitor and own the availability of the HyperShift Operator and the control planes for the tenant’s hosted clusters. The cluster service provider persona is responsible for several activities, including the following examples:
 
 - Owning service-level objects for control plane availability, uptime, and stability
 

@@ -12,11 +12,13 @@ For example, you can use the CLI to complete the following operations:
 
 # List of CLI tools
 
-Review the primary command-line interface (CLI) tools available for OpenShift Container Platform, including tools for cluster administration, application development, and Operator management.
+Manage your OpenShift Container Platform cluster, applications, and Operators from the terminal by using primary command-line interface (CLI) tools.
 
-Use the following tools to manage your cluster from the terminal:
+The following list details these primary CLI tools:
 
 - [OpenShift CLI (`oc`)](../cli_reference/openshift_cli/getting-started-cli.xml#cli-getting-started): This is the most commonly used CLI tool by OpenShift Container Platform users. It helps both cluster administrators and developers to perform end-to-end operations across OpenShift Container Platform using the terminal. Unlike the web console, it allows the user to work directly with the project source code using command scripts.
+
+- Kubernetes CLI (`kubectl`): OpenShift Container Platform is conformant with Cloud Native Computing Foundation (CNCF) Kubernetes and fully supports `kubectl` as a client. The OpenShift CLI (`oc`) is a superset of `kubectl`, where both CLI tools are included in the OpenShift Container Platform clients download. You can use the standard `kubectl` commands against OpenShift Container Platform clusters without any compatibility issues.
 
 - [Knative CLI (kn)](../cli_reference/kn-cli-tools.xml#kn-cli-tools): The Knative (`kn`) CLI tool provides simple and intuitive terminal commands that can be used to interact with OpenShift Serverless components, such as Knative Serving and Eventing.
 

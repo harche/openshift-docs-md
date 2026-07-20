@@ -68,7 +68,7 @@ The Loki Operator supports a few log storage options, such as AWS S3, Google Clo
 
 1.  Using the web console, navigate to the **Project** → **All Projects** dropdown and select **Create Project**.
 
-2.  Name the project `netobserv` and click **Create**.
+2.  Name the project `netobserv-loki` and click **Create**.
 
 3.  Navigate to the Import icon, **+**, in the top right corner. Paste your YAML file into the editor.
 
@@ -109,14 +109,6 @@ The Loki Operator supports a few log storage options, such as AWS S3, Google Clo
     Specifies the AWS region where the bucket is located.
 
 - After you create the secret, you view the secret listed under **Workloads** → **Secrets** in the web console.
-
-<!-- -->
-
-- [Creating a LokiStack custom resource](../../observability/network_observability/installing-operators.xml#network-observability-lokistack-create_network_observability)
-
-- [Flow Collector API Reference](../../observability/network_observability/flowcollector-api.xml#network-observability-flowcollector-api-specifications_network_observability)
-
-- [Flow Collector sample resource](../../observability/network_observability/configuring-operator.xml#network-observability-flowcollector-view_network_observability)
 
 ## Creating a LokiStack custom resource
 
@@ -177,39 +169,19 @@ You can deploy a `LokiStack` custom resource (CR) to create a namespace or new p
 
 5.  Click **Create**.
 
-## Creating a new group for the cluster-admin user role
+## Role-based access control for Loki logs
 
-<div class="important">
+Configure role-based access control to grant users permission to view application, infrastructure, or audit logs in Loki.
 
-Querying application logs for multiple namespaces as a `cluster-admin` user, where the sum total of characters of all of the namespaces in the cluster is greater than 5120, results in the error `Parse error: input size too long (XXXX > 5120)`. For better control over access to logs in LokiStack, make the `cluster-admin` user a member of the `cluster-admin` group. If the `cluster-admin` group does not exist, create it and add the desired users to it.
+By default, logging 5.8 and later does not grant users access to logs. You must configure role-based access control to grant users permission to view specific log types.
 
-</div>
+For more information on access control for Loki logs, see: "Fine grained access for Loki logs" in the Red Hat OpenShift Logging Operator documentation.
 
-Use the following procedure to create a new group for users with `cluster-admin` permissions.
+### Grant non-admin users cluster-wide log access
 
-1.  Enter the following command to create a new group:
+Add users to a custom admin group to grant cluster-wide log access without making them cluster administrators. This is useful for senior engineers who need full log visibility but should not have cluster modification privileges.
 
-    ``` terminal
-    $ oc adm groups new cluster-admin
-    ```
-
-2.  Enter the following command to add the desired user to the `cluster-admin` group:
-
-    ``` terminal
-    $ oc adm groups add-users cluster-admin <username>
-    ```
-
-3.  Enter the following command to add `cluster-admin` user role to the group:
-
-    ``` terminal
-    $ oc adm policy add-cluster-role-to-group cluster-admin cluster-admin
-    ```
-
-## Custom admin group access
-
-If you need to see cluster-wide logs without necessarily being an administrator, or if you already have any group defined that you want to use here, you can specify a custom group using the `adminGroup` field. Users who are members of any group specified in the `adminGroups` field of the `LokiStack` custom resource (CR) have the same read access to logs as administrators.
-
-Administrator users have access to all network logs across the cluster.
+Users who are members of any group specified in the `adminGroups` field of the `LokiStack` custom resource (CR) have the same read access to logs as administrators.
 
 <div class="formalpara-title">
 
@@ -222,7 +194,7 @@ apiVersion: loki.grafana.com/v1
 kind: LokiStack
 metadata:
   name: loki
-  namespace: netobserv
+  namespace: netobserv-loki
 spec:
   tenants:
     mode: openshift-network
@@ -232,32 +204,15 @@ spec:
       - custom-admin-group
 ```
 
-- Custom admin groups are only available in this mode.
+where:
 
-- Entering an empty list `[]` value for this field disables admin groups.
+`spec.tenants.mode`
+Specifies the tenant mode. Must be `openshift-network` for network observability.
 
-- Overrides the default groups (`system:cluster-admins`, `cluster-admin`, `dedicated-admin`)
+`spec.tenants.openshift.adminGroups`
+Specifies the list of groups whose members have cluster-wide log access. Defaults to `system:cluster-admins`, `cluster-admin`, and `dedicated-admin`. Set to `[]` to disable.
 
-## Loki deployment sizing
-
-Sizing for Loki follows the format of `1x.<size>` where the value `1x` is number of instances and `<size>` specifies performance capabilities.
-
-<div class="important">
-
-It is not possible to change the number `1x` for the deployment size.
-
-</div>
-
-|                              | 1x.demo       | 1x.extra-small    | 1x.small           | 1x.medium          |
-|------------------------------|---------------|-------------------|--------------------|--------------------|
-| **Data transfer**            | Demo use only | 100GB/day         | 500GB/day          | 2TB/day            |
-| **Queries per second (QPS)** | Demo use only | 1-25 QPS at 200ms | 25-50 QPS at 200ms | 25-75 QPS at 200ms |
-| **Replication factor**       | None          | 2                 | 2                  | 2                  |
-| **Total CPU requests**       | None          | 14 vCPUs          | 34 vCPUs           | 54 vCPUs           |
-| **Total memory requests**    | None          | 31Gi              | 67Gi               | 139Gi              |
-| **Total disk requests**      | 40Gi          | 430Gi             | 430Gi              | 590Gi              |
-
-Loki sizing
+- [Fine grained access for Loki logs](https://docs.redhat.com/en/documentation/red_hat_openshift_logging/6.5/html/configuring_logging/configuring-lokistack-storage#logging-loki-log-access_configuring-the-log-store)
 
 ## LokiStack ingestion limits and health alerts
 
@@ -287,7 +242,17 @@ spec:
 
 For more information about these settings, see "LokiStack API reference".
 
+- [Creating a LokiStack custom resource](../../observability/network_observability/installing-operators.xml#network-observability-lokistack-create_network_observability)
+
+- [Loki object storage](https://docs.redhat.com/en/documentation/red_hat_openshift_logging/latest/html/configuring_logging/configuring-lokistack-storage#logging-loki-storage_configuring-the-log-store)
+
+- [Loki deployment sizing](https://docs.redhat.com/en/documentation/red_hat_openshift_logging/latest/html/configuring_logging/configuring-lokistack-storage.html#loki-sizing_configuring-the-log-store)
+
 - [LokiStack API reference](https://loki-operator.dev/docs/api.md/#loki-grafana-com-v1-IngestionLimitSpec)
+
+- [Flow Collector API Reference](../../observability/network_observability/flowcollector-api.xml#network-observability-flowcollector-api-specifications_network_observability)
+
+- [Flow Collector sample resource](../../observability/network_observability/configuring-operator.xml#network-observability-flowcollector-view_network_observability)
 
 # Installing the Network Observability Operator
 
@@ -369,7 +334,7 @@ Therefore, you can consider configuring the following options when creating the 
 
 - [Network observability architecture](../../observability/network_observability/understanding-network-observability-operator.xml#network-observability-architecture_nw-network-observability-operator)
 
-## Migrating removed stored versions of the FlowCollector CRD
+# Migrating removed stored versions of the FlowCollector CRD
 
 Manually remove the deprecated `v1alpha1` version from the `FlowCollector` custom resource definition (CRD) `storedVersion` list to prevent upgrade errors and successfully migrate to Network Observability Operator 1.6.
 
@@ -478,22 +443,6 @@ For Developers, multi-tenancy is available for both Loki and Prometheus but requ
 <!-- -->
 
 - [Kubernetes Storage Version Migrator Operator](../../operators/operator-reference.xml#cluster-kube-storage-version-migrator-operator_operator-reference)
-
-# Installing Kafka (optional)
-
-The Kafka Operator is supported for large-scale environments. Kafka provides high-throughput and low-latency data feeds for forwarding network flow data in a more resilient, scalable way.
-
-You can install the Kafka Operator as Red Hat AMQ Streams from the Operator Hub, just as the Loki Operator and Network Observability Operator were installed. Refer to "Configuring the FlowCollector resource with Kafka" to configure Kafka as a storage option.
-
-<div class="note">
-
-To uninstall Kafka, refer to the uninstallation process that corresponds with the method you used to install.
-
-</div>
-
-- [Red Hat AMQ Streams](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/2.2)
-
-- [Configuring the FlowCollector resource with Kafka](../../observability/network_observability/configuring-operator.xml#network-observability-flowcollector-kafka-config_network_observability)
 
 # Uninstalling the Network Observability Operator
 

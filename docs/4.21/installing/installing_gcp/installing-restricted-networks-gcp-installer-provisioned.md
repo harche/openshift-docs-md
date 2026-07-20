@@ -56,9 +56,9 @@ In OpenShift Container Platform 4.17, you require access to the internet to obta
 
 You must have internet access to perform the following actions:
 
-- Access [OpenShift Cluster Manager](https://console.redhat.com/openshift) to download the installation program and perform subscription management. If the cluster has internet access and you do not disable Telemetry, that service automatically entitles your cluster.
+- Access Red Hat Hybrid Cloud Console to download the installation program and perform subscription management. If the cluster has internet access and you do not disable Telemetry, that service automatically entitles your cluster.
 
-- Access [Quay.io](http://quay.io) to obtain the packages that are required to install your cluster.
+- Access Quay.io to obtain the packages that are required to install your cluster.
 
 - Obtain the packages that are required to perform cluster updates.
 
@@ -708,7 +708,7 @@ Production environments can deny direct access to the internet and instead have 
 
 # Installing the OpenShift CLI on Linux
 
-To manage your cluster and deploy applications from the command line, install the OpenShift CLI (`oc`) binary on Linux.
+To manage your cluster and deploy applications from the command line on Linux, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
 <div class="important">
 
@@ -748,7 +748,7 @@ Download and install the new version of `oc`.
 
 # Installing the OpenShift CLI on Windows
 
-To manage your cluster and deploy applications from the command line, install OpenShift CLI (`oc`) binary on Windows.
+To manage your cluster and deploy applications from the command line on Windows, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
 <div class="important">
 
@@ -782,7 +782,7 @@ Download and install the new version of `oc`.
 
 # Installing the OpenShift CLI on macOS
 
-To manage your cluster and deploy applications from the command line, install the OpenShift CLI (`oc`) binary on macOS.
+To manage your cluster and deploy applications from the command line on macOS, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
 <div class="important">
 
@@ -1732,11 +1732,11 @@ Operator catalogs that source content provided by Red Hat and community projects
       -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'
   ```
 
-<div class="tip">
+  <div class="tip">
 
-Alternatively, you can use the web console to manage catalog sources. From the **Administration** → **Cluster Settings** → **Configuration** → **OperatorHub** page, click the **Sources** tab, where you can create, update, delete, disable, and enable individual sources.
+  Alternatively, you can use the web console to manage catalog sources. From the **Administration** → **Cluster Settings** → **Configuration** → **OperatorHub** page, click the **Sources** tab, where you can create, update, delete, disable, and enable individual sources.
 
-</div>
+  </div>
 
 # Telemetry access for OpenShift Container Platform
 

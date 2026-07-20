@@ -978,7 +978,7 @@ After you enable the Assisted Installer as an add-on to multicluster engine Oper
     https://console-openshift-console.apps.<hosted_cluster_namespace>.<base_domain>
     ```
 
-- [Manually importing a hosted cluster](../../hosted_control_planes/hcp-import.xml)
+- [Manually importing a hosted cluster](../../hosted_control_planes/hcp-import.xml#hcp-import)
 
 - [Extracting the release image digest](../../hosted_control_planes/hcp-disconnected/hcp-deploy-dc-bm.xml#hcp-dc-extract_hcp-deploy-dc-bm)
 

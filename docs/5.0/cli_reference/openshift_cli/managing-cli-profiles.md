@@ -1,12 +1,14 @@
-A CLI configuration file allows you to configure different profiles, or contexts, for use with the [CLI tools overview](../../cli_reference/index.xml#cli-tools-overview). A context consists of [user authentication](../../authentication/understanding-authentication.xml#understanding-authentication) a OpenShift Container Platform server information associated with a *nickname*.
+You can use a CLI configuration file to create different profiles, or contexts, for use with the OpenShift CLI (`oc`). A context consists of user authentication and a OpenShift Container Platform server information associated with a *nickname*.
 
-# About switches between CLI profiles
+# About switching between CLI profiles
 
-Contexts allow you to easily switch between multiple users across multiple OpenShift Container Platform servers, or clusters, when using CLI operations. Nicknames make managing CLI configurations easier by providing short-hand references to contexts, user credentials, and cluster details. After a user logs in with the `oc` CLI for the first time, OpenShift Container Platform creates a `~/.kube/config` file if one does not already exist. As more authentication and connection details are provided to the CLI, either automatically during an `oc login` operation or by manually configuring CLI profiles, the updated information is stored in the configuration file:
+You can use contexts to easily switch between users across multiple OpenShift Container Platform clusters when using the OpenShift CLI (`oc`). You specify a nickname to make managing CLI configurations easier by providing short-hand references to contexts, user credentials, and cluster details.
+
+After a user logs in with the `oc` CLI for the first time, OpenShift Container Platform creates a `~/.kube/config` file if one does not already exist. As more authentication and connection details are provided to the CLI, the updated information is stored in the configuration file:
 
 <div class="formalpara-title">
 
-**CLI config file**
+**CLI configuration file**
 
 </div>
 
@@ -41,13 +43,19 @@ users:
     token: xZHd2piv5_9vQrg-SKXRJ2Dsl9SceNJdhNTljEKTb8k
 ```
 
-- The `clusters` section defines connection details for OpenShift Container Platform clusters, including the address for their master server. In this example, one cluster is nicknamed `openshift1.example.com:8443` and another is nicknamed `openshift2.example.com:8443`.
+where:
 
-- This `contexts` section defines two contexts: one nicknamed `alice-project/openshift1.example.com:8443/alice`, using the `alice-project` project, `openshift1.example.com:8443` cluster, and `alice` user, and another nicknamed `joe-project/openshift1.example.com:8443/alice`, using the `joe-project` project, `openshift1.example.com:8443` cluster and `alice` user.
+`clusters`
+Specifies connection details for OpenShift Container Platform clusters, including the address for their master server. In this example, one cluster is nicknamed `openshift1.example.com:8443` and another is nicknamed `openshift2.example.com:8443`.
 
-- The `current-context` parameter shows that the `joe-project/openshift1.example.com:8443/alice` context is currently in use, allowing the `alice` user to work in the `joe-project` project on the `openshift1.example.com:8443` cluster.
+`contexts`
+Specifies two contexts: one nicknamed `alice-project/openshift1.example.com:8443/alice`, using the `alice-project` project, `openshift1.example.com:8443` cluster, and `alice` user, and another nicknamed `joe-project/openshift1.example.com:8443/alice`, using the `joe-project` project, `openshift1.example.com:8443` cluster and `alice` user.
 
-- The `users` section defines user credentials. In this example, the user nickname `alice/openshift1.example.com:8443` uses an access token.
+`current-context`
+Specifies that the `joe-project/openshift1.example.com:8443/alice` context is currently in use, allowing the `alice` user to work in the `joe-project` project on the `openshift1.example.com:8443` cluster.
+
+`users`
+Specifies user credentials. In this example, the user nickname `alice/openshift1.example.com:8443` uses an access token.
 
 The CLI can support multiple configuration files which are loaded at runtime and merged together along with any override options specified from the command line. After you are logged in, you can use the `oc status` or `oc project` command to verify your current working environment:
 
@@ -68,7 +76,6 @@ $ oc status
 </div>
 
 ``` terminal
-oc status
 In project Joe's Project (joe-project)
 
 service database (172.30.43.12:5434 -> 3306)
@@ -124,7 +131,9 @@ At any time, you can use the `oc config view` command to view your current CLI c
 
 <div class="note">
 
-If you have access to administrator credentials but are no longer logged in as the default system user `system:admin`, you can log back in as this user at any time as long as the credentials are still present in your CLI config file. The following command logs in and switches to the default project:
+If you have access to administrator credentials but are not logged in as the default system user `system:admin`, you can log back in as this user as long as the credentials are present in your CLI configuration file.
+
+The following command logs in and switches to the default project:
 
 ``` terminal
 $ oc login -u system:admin -n default
@@ -132,7 +141,9 @@ $ oc login -u system:admin -n default
 
 </div>
 
-# Manual configuration of CLI profiles
+# Manually configuring CLI profiles
+
+If you want to manually configure your CLI configuration files, you can use the `oc config` command instead of directly modifying the files.
 
 <div class="note">
 
@@ -140,7 +151,65 @@ This section covers more advanced usage of CLI configurations. In most situation
 
 </div>
 
-If you want to manually configure your CLI config files, you can use the `oc config` command instead of directly modifying the files. The `oc config` command includes a number of helpful sub-commands for this purpose:
+For more details on the available `oc config` subcommands, see the "CLI configuration subcommands" table.
+
+1.  Log in as a user that uses an access token. This token is used by the `alice` user:
+
+    ``` terminal
+    $ oc login https://openshift1.example.com --token=ns7yVhuRNpDM9cgzfhhxQ7bM5s7N2ZVrkZepSRf4LC0
+    ```
+
+2.  View the cluster entry automatically created:
+
+    ``` terminal
+    $ oc config view
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    apiVersion: v1
+    clusters:
+    - cluster:
+        insecure-skip-tls-verify: true
+        server: https://openshift1.example.com
+      name: openshift1-example-com
+    contexts:
+    - context:
+        cluster: openshift1-example-com
+        namespace: default
+        user: alice/openshift1-example-com
+      name: default/openshift1-example-com/alice
+    current-context: default/openshift1-example-com/alice
+    kind: Config
+    preferences: {}
+    users:
+    - name: alice/openshift1.example.com
+      user:
+        token: ns7yVhuRNpDM9cgzfhhxQ7bM5s7N2ZVrkZepSRf4LC0
+    ```
+
+3.  Update the current context to have users log in to the desired namespace:
+
+    ``` terminal
+    $ oc config set-context `oc config current-context` --namespace=<project_name>
+    ```
+
+4.  Examine the current context, to confirm that the changes are implemented:
+
+    ``` terminal
+    $ oc whoami -c
+    ```
+
+    All subsequent CLI operations uses the new context, unless otherwise specified by overriding CLI options or until the context is switched.
+
+## Manual configuration of CLI profiles
+
+You can manually configure CLI profiles by using `oc config` subcommands to set clusters, contexts, and individual configuration values.
 
 <table>
 <caption>CLI configuration subcommands</caption>
@@ -157,14 +226,14 @@ If you want to manually configure your CLI config files, you can use the `oc con
 <tbody>
 <tr class="odd">
 <td style="text-align: left;"><p><code>set-cluster</code></p></td>
-<td style="text-align: left;"><p>Sets a cluster entry in the CLI config file. If the referenced cluster nickname already exists, the specified information is merged in.</p>
+<td style="text-align: left;"><p>Sets a cluster entry in the CLI configuration file. If the referenced cluster nickname already exists, the specified information is merged in.</p>
 <pre class="terminal"><code>$ oc config set-cluster &lt;cluster_nickname&gt; [--server=&lt;master_ip_or_fqdn&gt;]
 [--certificate-authority=&lt;path/to/certificate/authority&gt;]
 [--api-version=&lt;apiversion&gt;] [--insecure-skip-tls-verify=true]</code></pre></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>set-context</code></p></td>
-<td style="text-align: left;"><p>Sets a context entry in the CLI config file. If the referenced context nickname already exists, the specified information is merged in.</p>
+<td style="text-align: left;"><p>Sets a context entry in the CLI configuration file. If the referenced context nickname already exists, the specified information is merged in.</p>
 <pre class="terminal"><code>$ oc config set-context &lt;context_nickname&gt; [--cluster=&lt;cluster_nickname&gt;]
 [--user=&lt;user_nickname&gt;] [--namespace=&lt;namespace&gt;]</code></pre></td>
 </tr>
@@ -175,13 +244,13 @@ If you want to manually configure your CLI config files, you can use the `oc con
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>set</code></p></td>
-<td style="text-align: left;"><p>Sets an individual value in the CLI config file.</p>
+<td style="text-align: left;"><p>Sets an individual value in the CLI configuration file.</p>
 <pre class="terminal"><code>$ oc config set &lt;property_name&gt; &lt;property_value&gt;</code></pre>
 <p>The <code>&lt;property_name&gt;</code> is a dot-delimited name where each token represents either an attribute name or a map key. The <code>&lt;property_value&gt;</code> is the new value being set.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>unset</code></p></td>
-<td style="text-align: left;"><p>Unsets individual values in the CLI config file.</p>
+<td style="text-align: left;"><p>Unsets individual values in the CLI configuration file.</p>
 <pre class="terminal"><code>$ oc config unset &lt;property_name&gt;</code></pre>
 <p>The <code>&lt;property_name&gt;</code> is a dot-delimited name where each token represents either an attribute name or a map key.</p></td>
 </tr>
@@ -189,7 +258,7 @@ If you want to manually configure your CLI config files, you can use the `oc con
 <td style="text-align: left;"><p><code>view</code></p></td>
 <td style="text-align: left;"><p>Displays the merged CLI configuration currently in use.</p>
 <pre class="terminal"><code>$ oc config view</code></pre>
-<p>Displays the result of the specified CLI config file.</p>
+<p>Displays the result of the specified CLI configuration file.</p>
 <pre class="terminal"><code>$ oc config view --config=&lt;specific_filename&gt;</code></pre></td>
 </tr>
 </tbody>
@@ -197,65 +266,11 @@ If you want to manually configure your CLI config files, you can use the `oc con
 
 CLI configuration subcommands
 
-- Log in as a user that uses an access token. This token is used by the `alice` user:
-
-``` terminal
-$ oc login https://openshift1.example.com --token=ns7yVhuRNpDM9cgzfhhxQ7bM5s7N2ZVrkZepSRf4LC0
-```
-
-- View the cluster entry automatically created:
-
-``` terminal
-$ oc config view
-```
-
-<div class="formalpara-title">
-
-**Example output**
-
-</div>
-
-``` terminal
-apiVersion: v1
-clusters:
-- cluster:
-    insecure-skip-tls-verify: true
-    server: https://openshift1.example.com
-  name: openshift1-example-com
-contexts:
-- context:
-    cluster: openshift1-example-com
-    namespace: default
-    user: alice/openshift1-example-com
-  name: default/openshift1-example-com/alice
-current-context: default/openshift1-example-com/alice
-kind: Config
-preferences: {}
-users:
-- name: alice/openshift1.example.com
-  user:
-    token: ns7yVhuRNpDM9cgzfhhxQ7bM5s7N2ZVrkZepSRf4LC0
-```
-
-- Update the current context to have users log in to the desired namespace:
-
-``` terminal
-$ oc config set-context `oc config current-context` --namespace=<project_name>
-```
-
-- Examine the current context, to confirm that the changes are implemented:
-
-``` terminal
-$ oc whoami -c
-```
-
-All subsequent CLI operations uses the new context, unless otherwise specified by overriding CLI options or until the context is switched.
-
 # Load and merge rules
 
-You can follow these rules, when issuing CLI operations for the loading and merging order for the CLI configuration:
+Review the rules that OpenShift CLI (`oc`) uses for the loading and merging order for the CLI configuration.
 
-- CLI config files are retrieved from your workstation, using the following hierarchy and merge rules:
+- CLI configuration files are retrieved from your workstation, using the following hierarchy and merge rules:
 
   - If the `--config` option is set, then only that file is loaded. The flag is set once and no merging takes place.
 
@@ -267,7 +282,7 @@ You can follow these rules, when issuing CLI operations for the loading and merg
 
   - The value of the `--context` option.
 
-  - The `current-context` value from the CLI config file.
+  - The `current-context` value from the CLI configuration file.
 
   - An empty value is allowed at this stage.
 
@@ -295,7 +310,7 @@ You can follow these rules, when issuing CLI operations for the loading and merg
 
   - If you do not have a server location, then there is an error.
 
-- The actual user information to use is determined. Users are built using the same rules as clusters, except that you can only have one authentication technique per user; conflicting techniques cause the operation to fail. Command-line options take precedence over config file values. Valid command-line options are:
+- The actual user information to use is determined. Users are built using the same rules as clusters, except that you can only have one authentication technique per user; conflicting techniques cause the operation to fail. Command-line options take precedence over configuration file values. Valid command-line options are:
 
   - `--auth-path`
 
@@ -306,3 +321,9 @@ You can follow these rules, when issuing CLI operations for the loading and merg
   - `--token`
 
 - For any information that is still missing, default values are used and prompts are given for additional information.
+
+# Additional resources
+
+- [CLI tools overview](../../cli_reference/index.xml#cli-tools-overview)
+
+- [Understanding authentication](../../authentication/understanding-authentication.xml#understanding-authentication)

@@ -40,7 +40,7 @@ Note the following operand behaviors:
 
 You can install the Multiarch Tuning Operator by using the OpenShift CLI (`oc`).
 
-- You have installed `oc`.
+- You have installed the OpenShift CLI (`oc`).
 
 - You have logged in to `oc` as a user with `cluster-admin` privileges.
 
@@ -75,7 +75,7 @@ You can install the Multiarch Tuning Operator by using the OpenShift CLI (`oc`).
         $ oc create -f <file_name>
         ```
 
-        - Replace `<file_name>` with the name of the YAML file that contains the `OperatorGroup` object configuration.
+        Replace `<file_name>` with the name of the YAML file that contains the `OperatorGroup` object configuration.
 
 3.  Create a `Subscription` object:
 
@@ -108,13 +108,15 @@ You can install the Multiarch Tuning Operator by using the OpenShift CLI (`oc`).
         $ oc create -f <file_name>
         ```
 
-        - Replace `<file_name>` with the name of the YAML file that contains the `Subscription` object configuration.
+        Replace `<file_name>` with the name of the YAML file that contains the `Subscription` object configuration.
 
-<div class="note">
+        <div class="note">
 
-For more details about configuring the `Subscription` object and `OperatorGroup` object, see "Installing from the software catalog by using the CLI".
+        For more details about configuring the `Subscription` object and `OperatorGroup` object, see "Installing from the software catalog by using the CLI".
 
-</div>
+        </div>
+
+<!-- -->
 
 1.  To verify that the Multiarch Tuning Operator is installed, run the following command:
 
@@ -199,7 +201,7 @@ You can install the Multiarch Tuning Operator by using the OpenShift Container P
 
     3.  Set **Installed Namespace** to **Operator recommended Namespace** or **Select a Namespace**.
 
-        The recommended Operator namespace is `openshift-multiarch-tuning-operator`. If the `openshift-multiarch-tuning-operator` namespace does not exist, it is created during the operator installation.
+        The recommended Operator namespace is `openshift-multiarch-tuning-operator`. If the `openshift-multiarch-tuning-operator` namespace does not exist, the namespace is created during the operator installation.
 
         If you select **Select a namespace**, you must select a namespace for the Operator from the **Select Project** list.
 
@@ -243,15 +245,15 @@ The following table describes the labels that the Multiarch Tuning Operator adds
 
 Pod labels that the Multiarch Tuning Operator adds when you create a pod
 
-# Creating the ClusterPodPlacementConfig object
+# The ClusterPodPlacementConfig object
 
-After installing the Multiarch Tuning Operator, you must create a `ClusterPodPlacementConfig` object. This object instructs the operator to deploy its operand, which enables architecture-aware workload scheduling across your cluster.
+After installing the Multiarch Tuning Operator, you must create a `ClusterPodPlacementConfig` object. The object instructs the Operator to deploy its operand, which enables architecture-aware workload scheduling across your cluster.
 
 The `ClusterPodPlacementConfig` object supports two optional plugins:
 
-- The **node affinity scoring** plugin patches pods to set soft preferences, using weighted affinities, for the architectures specified by the user. Pods are more likely to be scheduled on nodes running architectures with higher weights.
+- The `node affinity scoring` plugin patches pods to set soft preferences, using weighted affinities, for the architectures specified by the user. Pods are more likely to be scheduled on nodes running architectures with higher weights.
 
-- The **exec format error monitor** plugin detects `ENOEXEC` errors, which occur when a pod attempts to execute a binary incompatible with the node’s architecture. When enabled, this plugin generates events in the affected pod’s event stream. It triggers a `ExecFormatErrorsDetected` Prometheus alert if one or more `ENOEXEC` errors are detected within the last six hours. These errors can result from incorrect architecture node selectors, invalid image metadata that affects architecture-aware workload scheduling, an incorrect binary in an image, or an incompatible binary injected at runtime.
+- The `exec format error monitor` plugin detects `ENOEXEC` errors, which occur when a pod attempts to execute a binary incompatible with the architecture of the node. When enabled, this plugin generates events in the affected event stream of the pod. The plugin triggers an `ExecFormatErrorsDetected` Prometheus alert if one or more `ENOEXEC` errors are detected within the last six hours. These errors can result from incorrect architecture node selectors, invalid image metadata that affects architecture-aware workload scheduling, an incorrect binary in an image, or an incompatible binary injected at runtime.
 
 <div class="note">
 
@@ -295,16 +297,16 @@ where:
 Specifies the name of the object. You must set this parameter to `cluster`.
 
 `spec.logVerbosity`
-Optional: Specifies the log verbosity level. You can set the field value to `Normal`, `Debug`, `Trace`, or `TraceAll`. The value is set to `Normal` by default.
+Optional parameter. Specifies the log verbosity level. You can set the field value to `Normal`, `Debug`, `Trace`, or `TraceAll`. The value is set to `Normal` by default.
 
 `spec.namespaceSelector`
-Optional: You can configure the `namespaceSelector` to select the namespaces in which the Multiarch Tuning Operator’s pod placement operand must process the `nodeAffinity` of the pods. All namespaces are considered by default.
+Optional parameter. You can configure the `namespaceSelector` to select the namespaces in which the Multiarch Tuning Operator’s pod placement operand must process the `nodeAffinity` of the pods. All namespaces are considered by default.
 
 `spec.plugins.nodeAffinityScoring.enabled`
-Optional: You can enable the node affinity scoring plugin to set architecture preferences for pod placement. When enabled, the scheduler first filters out nodes that do not meet the pod’s requirements. Then, it prioritizes the remaining nodes based on the architecture scores defined in the `nodeAffinityScoring.platforms` field. The default value is false.
+Optional parameter. You can enable the node affinity scoring plugin to set architecture preferences for pod placement. When enabled, the scheduler first filters out nodes that do not meet the pod’s requirements. Then, it prioritizes the remaining nodes based on the architecture scores defined in the `nodeAffinityScoring.platforms` field. The default value is false.
 
 `spec.plugins.nodeAffinityScoring.platforms`
-Optional: Defines a list of architectures and their corresponding scores. The scheduler prioritizes nodes for pod placement based on the architecture scores that you set and the scheduling requirements defined in the pod specification.
+Optional parameter. Defines a list of architectures and their corresponding scores. The scheduler prioritizes nodes for pod placement based on the architecture scores that you set and the scheduling requirements defined in the pod specification.
 
 `spec.plugins.nodeAffinityScoring.platforms.architecture`
 Specifies the architecture for the node affinity scoring plugin. Accepted values are `arm64`, `amd64`, `ppc64le`, or `s390x`.
@@ -313,10 +315,10 @@ Specifies the architecture for the node affinity scoring plugin. Accepted values
 Specifies the weight for the architecture you specified in the `spec.plugins.nodeAffinityScoring.platforms.architecture` parameter. The value must be configured in the range of `1` (lowest priority) to `100` (highest priority). The scheduler uses this score to prioritize nodes for pod placement, favoring nodes with architectures that have higher scores.
 
 `spec.plugins.execFormatErrorMonitor.enabled`
-Optional: Set this field to `true` to enable the `execFormatErrorMonitor` plugin. When enabled, the plugin detects `ENOEXEC` errors, caused when a pod executes a binary incompatible with the node’s architecture. The plugin generates events in the affected pods, and triggers the `ExecFormatErrorsDetected` Prometheus alert if one or more errors are found in the last six hours.
+Optional parameter. Set this field to `true` to enable the `execFormatErrorMonitor` plugin. When enabled, the plugin detects `ENOEXEC` errors, caused when a pod executes a binary incompatible with the node’s architecture. The plugin generates events in the affected pods, and triggers the `ExecFormatErrorsDetected` Prometheus alert if one or more errors are found in the last six hours.
 
 `spec.fallbackArchitecture`
-Optional: Specifies an architecture where pods will be scheduled if the image inspector cannot determine the architecture of the image. Valid values are `""`, `arm64`, `amd64`, `ppc64le`, or `s390x`. The value is set to `""` by default.
+Optional parameter. Specifies an architecture where pods will be scheduled if the image inspector cannot determine the architecture of the image. Valid values are `""`, `arm64`, `amd64`, `ppc64le`, or `s390x`. The value is set to `""` by default.
 
 In this example, the `operator` field value is set to `DoesNotExist`. Therefore, if the `key` field value (`multiarch.openshift.io/exclude-pod-placement`) is set as a label in a namespace, the operand does not process the `nodeAffinity` of the pods in that namespace. Instead, the operand processes the `nodeAffinity` of the pods in namespaces that do not contain the label.
 
@@ -333,7 +335,7 @@ In this example, the `operator` field value is set to `Exists`. Therefore, the o
 
 <div class="important">
 
-This Operator excludes pods in namespaces starting with `kube-`. It also excludes pods that are expected to be scheduled on control plane nodes.
+This Operator excludes pods in namespaces starting with `kube-`. The Operator also excludes pods that are expected to be scheduled on control plane nodes.
 
 </div>
 
@@ -341,7 +343,7 @@ This Operator excludes pods in namespaces starting with `kube-`. It also exclude
 
 To deploy the pod placement operand that enables architecture-aware workload scheduling, you can create the `ClusterPodPlacementConfig` object by using the OpenShift CLI (`oc`).
 
-- You have installed `oc`.
+- You have installed the OpenShift CLI (`oc`).
 
 - You have logged in to `oc` as a user with `cluster-admin` privileges.
 
@@ -382,7 +384,7 @@ To deploy the pod placement operand that enables architecture-aware workload sch
     $ oc create -f <file_name>
     ```
 
-    - Replace `<file_name>` with the name of the `ClusterPodPlacementConfig` object YAML file.
+    Replace `<file_name>` with the name of the `ClusterPodPlacementConfig` object YAML file.
 
 - To check that the `ClusterPodPlacementConfig` object is created, run the following command:
 
@@ -413,7 +415,7 @@ To deploy the pod placement operand that enables architecture-aware workload sch
 
 1.  Log in to the OpenShift Container Platform web console.
 
-2.  Navigate to **Ecosystem** → **Installed Operators**.
+2.  Go to **Ecosystem** → **Installed Operators**.
 
 3.  On the **Installed Operators** page, click **Multiarch Tuning Operator**.
 
@@ -508,7 +510,7 @@ You can create only one instance of the `ClusterPodPlacementConfig` object. If y
 
 You can delete this object by using the OpenShift CLI (`oc`).
 
-- You have installed `oc`.
+- You have installed the OpenShift CLI (`oc`).
 
 - You have logged in to `oc` as a user with `cluster-admin` privileges.
 
@@ -538,7 +540,7 @@ You can delete this object by using the OpenShift CLI (`oc`).
 
 # Deleting the ClusterPodPlacementConfig object by using the web console
 
-You can create only one instance of the `ClusterPodPlacementConfig` object. If you want to re-create this object, you must first delete the existing instance.
+You can create only one instance of the `ClusterPodPlacementConfig` object. If you want to recreate this object, you must first delete the existing instance.
 
 You can delete this object by using the OpenShift Container Platform web console.
 
@@ -566,7 +568,7 @@ You can delete this object by using the OpenShift Container Platform web console
 
 You can uninstall the Multiarch Tuning Operator by using the OpenShift CLI (`oc`).
 
-- You have installed `oc`.
+- You have installed the OpenShift CLI (`oc`).
 
 - You have logged in to `oc` as a user with `cluster-admin` privileges.
 
@@ -574,7 +576,7 @@ You can uninstall the Multiarch Tuning Operator by using the OpenShift CLI (`oc`
 
   <div class="important">
 
-  You must delete the `ClusterPodPlacementConfig` object before uninstalling the Multiarch Tuning Operator. Uninstalling the Operator without deleting the `ClusterPodPlacementConfig` object can lead to unexpected behavior.
+  You must delete the `ClusterPodPlacementConfig` object before uninstalling the Multiarch Tuning Operator. Uninstalling the Operator without deleting the `ClusterPodPlacementConfig` object leads to unexpected behavior.
 
   </div>
 
@@ -584,18 +586,18 @@ You can uninstall the Multiarch Tuning Operator by using the OpenShift CLI (`oc`
     $ oc get subscription.operators.coreos.com -n <namespace>
     ```
 
-    - Replace `<namespace>` with the name of the namespace where you want to uninstall the Multiarch Tuning Operator.
+    Replace `<namespace>` with the name of the namespace where you want to uninstall the Multiarch Tuning Operator.
 
-      <div class="formalpara-title">
+    <div class="formalpara-title">
 
-      **Example output**
+    **Example output**
 
-      </div>
+    </div>
 
-      ``` terminal
-      NAME                                  PACKAGE                     SOURCE             CHANNEL
-      openshift-multiarch-tuning-operator   multiarch-tuning-operator   redhat-operators   stable
-      ```
+    ``` terminal
+    NAME                                  PACKAGE                     SOURCE             CHANNEL
+    openshift-multiarch-tuning-operator   multiarch-tuning-operator   redhat-operators   stable
+    ```
 
 2.  Get the `currentCSV` value for the Multiarch Tuning Operator by running the following command:
 
@@ -603,7 +605,9 @@ You can uninstall the Multiarch Tuning Operator by using the OpenShift CLI (`oc`
     $ oc get subscription.operators.coreos.com <subscription_name> -n <namespace> -o yaml | grep currentCSV
     ```
 
-    - Replace `<subscription_name>` with the `Subscription` object name. For example: `openshift-multiarch-tuning-operator`. Replace `<namespace>` with the name of the namespace where you want to uninstall the Multiarch Tuning Operator.
+    - Replace `<subscription_name>` with the `Subscription` object name. For example, `openshift-multiarch-tuning-operator`.
+
+    - Replace `<namespace>` with the name of the namespace where you want to uninstall the Multiarch Tuning Operator.
 
       <div class="formalpara-title">
 
@@ -621,7 +625,9 @@ You can uninstall the Multiarch Tuning Operator by using the OpenShift CLI (`oc`
     $ oc delete subscription.operators.coreos.com <subscription_name> -n <namespace>
     ```
 
-    - Replace `<subscription_name>` with the `Subscription` object name. Replace `<namespace>` with the name of the namespace where you want to uninstall the Multiarch Tuning Operator.
+    - Replace `<subscription_name>` with the `Subscription` object name.
+
+    - Replace `<namespace>` with the name of the namespace where you want to uninstall the Multiarch Tuning Operator.
 
       <div class="formalpara-title">
 
@@ -633,13 +639,15 @@ You can uninstall the Multiarch Tuning Operator by using the OpenShift CLI (`oc`
       subscription.operators.coreos.com "openshift-multiarch-tuning-operator" deleted
       ```
 
-4.  Delete the CSV for the Multiarch Tuning Operator in the target namespace using the `currentCSV` value by running the following command:
+4.  Delete the CSV for the Multiarch Tuning Operator in the target namespace by using the `currentCSV` value by running the following command:
 
     ``` terminal
     $ oc delete clusterserviceversion <currentCSV_value> -n <namespace>
     ```
 
-    - Replace `<currentCSV>` with the `currentCSV` value for the Multiarch Tuning Operator. For example: `multiarch-tuning-operator.<version>`. Replace `<namespace>` with the name of the namespace where you want to uninstall the Multiarch Tuning Operator.
+    - Replace `<currentCSV_value>` with the `currentCSV` value for the Multiarch Tuning Operator. For example: `multiarch-tuning-operator.<version>`.
+
+    - Replace `<namespace>` with the name of the namespace where you want to uninstall the Multiarch Tuning Operator.
 
       <div class="formalpara-title">
 
@@ -657,17 +665,17 @@ You can uninstall the Multiarch Tuning Operator by using the OpenShift CLI (`oc`
   $ oc get csv -n <namespace>
   ```
 
-  - Replace `<namespace>` with the name of the namespace where you have uninstalled the Multiarch Tuning Operator.
+  Replace `<namespace>` with the name of the namespace where you have uninstalled the Multiarch Tuning Operator.
 
-    <div class="formalpara-title">
+  <div class="formalpara-title">
 
-    **Example output**
+  **Example output**
 
-    </div>
+  </div>
 
-    ``` terminal
-    No resources found in openshift-multiarch-tuning-operator namespace.
-    ```
+  ``` terminal
+  No resources found in openshift-multiarch-tuning-operator namespace.
+  ```
 
 # Uninstalling the Multiarch Tuning Operator by using the web console
 
@@ -679,7 +687,7 @@ You can uninstall the Multiarch Tuning Operator by using the OpenShift Container
 
   <div class="important">
 
-  You must delete the `ClusterPodPlacementConfig` object before uninstalling the Multiarch Tuning Operator. Uninstalling the Operator without deleting the `ClusterPodPlacementConfig` object can lead to unexpected behavior.
+  You must delete the `ClusterPodPlacementConfig` object before uninstalling the Multiarch Tuning Operator. Uninstalling the Operator without deleting the `ClusterPodPlacementConfig` object leads to unexpected behavior.
 
   </div>
 

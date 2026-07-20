@@ -40,7 +40,7 @@ For platforms that support using the CCO in multiple modes, you can determine wh
 
 ## Determining the Cloud Credential Operator mode by using the web console
 
-You can determine what mode the Cloud Credential Operator (CCO) is configured to use by using the web console.
+Determine the Cloud Credential Operator (CCO) mode by using the web console. Before you perform upgrades or troubleshoot, ensure you understand your cluster’s credential management configuration.
 
 <div class="note">
 
@@ -138,7 +138,7 @@ Only Amazon Web Services (AWS), global Microsoft Azure, and Google Cloud cluster
 
 ## Determining the Cloud Credential Operator mode by using the CLI
 
-You can determine what mode the Cloud Credential Operator (CCO) is configured to use by using the CLI.
+Determine the Cloud Credential Operator (CCO) mode by querying the cluster with the CLI. Before you perform upgrades or troubleshoot, ensure you understand your cluster’s credential management configuration.
 
 <div class="note">
 

@@ -48,11 +48,13 @@ You can access a Windows node by using a secure shell (SSH).
       -o go-template="{{ with (index (index .items 0).status.loadBalancer.ingress 0) }}{{ or .hostname .ip }}{{end}}")' <username>@<windows_node_internal_ip>
   ```
 
-  where
+  where:
 
-- Specify the cloud provider username, such as `Administrator` for Amazon Web Services (AWS) or `capi` for Microsoft Azure.
+  `<username>`
+  Specifies the cloud provider username, such as `Administrator` for Amazon Web Services (AWS) or `capi` for Microsoft Azure.
 
-- Specify the internal IP address of the node, which can be discovered by running the following command:
+  `<windows_node_internal_ip>`
+  Specifies the internal IP address of the node, which can be discovered by running the following command:
 
   ``` terminal
   $ oc get nodes <node_name> -o jsonpath={.status.addresses[?\(@.type==\"InternalIP\"\)].address}
@@ -77,12 +79,14 @@ You can access a Windows node by using a Remote Desktop Protocol (RDP).
         core@$(oc get service --all-namespaces -l run=ssh-bastion -o go-template="{{ with (index (index .items 0).status.loadBalancer.ingress 0) }}{{ or .hostname .ip }}{{end}}")
     ```
 
-    where
-    - Specify the internal IP address of the node, which can be discovered by running the following command:
+    where:
 
-      ``` terminal
-      $ oc get nodes <node_name> -o jsonpath={.status.addresses[?\(@.type==\"InternalIP\"\)].address}
-      ```
+    `<windows_node_internal_ip>`
+    Specifies the internal IP address of the node, which can be discovered by running the following command:
+
+    ``` terminal
+    $ oc get nodes <node_name> -o jsonpath={.status.addresses[?\(@.type==\"InternalIP\"\)].address}
+    ```
 
 2.  From within the resulting shell, SSH into the Windows node and run the following command to create a password for the user:
 

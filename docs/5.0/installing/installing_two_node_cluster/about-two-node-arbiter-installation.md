@@ -14,6 +14,6 @@ Do not add more than two worker nodes to the OpenShift Container Platform cluste
 
 - [Configuring a local arbiter node with installer-provisioned infrastructure](../installing_bare_metal/ipi/ipi-install-installation-workflow.xml#ipi-install-config-local-arbiter-node_ipi-install-installation-workflow)
 
-- [Configuring a local arbiter node with the Agent-based Installer](../../installing/installing_with_agent_based_installer/installing-with-agent-based-installer.xml#installing-ocp-agent-local-arbiter-node_installing-with-agent-based-installer)
+- [About a local arbiter node](../../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#installing-ocp-agent-local-arbiter-node_preparing-to-install-with-agent-based-installer)
 
 - [Configuring a local arbiter node with user-provisioned infrastructure](../installing_bare_metal/upi/installing-bare-metal.xml#upi-install-config-local-arbiter-node_installing-bare-metal)

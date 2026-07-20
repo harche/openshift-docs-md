@@ -457,7 +457,7 @@ When the cluster deployment completes successfully:
 
 # Installing the OpenShift CLI on Linux
 
-To manage your cluster and deploy applications from the command line, install the OpenShift CLI (`oc`) binary on Linux.
+To manage your cluster and deploy applications from the command line on Linux, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
 <div class="important">
 
@@ -497,7 +497,7 @@ Download and install the new version of `oc`.
 
 # Installing the OpenShift CLI on Windows
 
-To manage your cluster and deploy applications from the command line, install OpenShift CLI (`oc`) binary on Windows.
+To manage your cluster and deploy applications from the command line on Windows, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
 <div class="important">
 
@@ -531,7 +531,7 @@ Download and install the new version of `oc`.
 
 # Installing the OpenShift CLI on macOS
 
-To manage your cluster and deploy applications from the command line, install the OpenShift CLI (`oc`) binary on macOS.
+To manage your cluster and deploy applications from the command line on macOS, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
 <div class="important">
 

@@ -30,9 +30,9 @@ In OpenShift Container Platform 4.17, you require access to the internet to inst
 
 You must have internet access to perform the following actions:
 
-- Access [OpenShift Cluster Manager](https://console.redhat.com/openshift) to download the installation program and perform subscription management. If the cluster has internet access and you do not disable Telemetry, that service automatically entitles your cluster.
+- Access Red Hat Hybrid Cloud Console to download the installation program and perform subscription management. If the cluster has internet access and you do not disable Telemetry, that service automatically entitles your cluster.
 
-- Access [Quay.io](http://quay.io) to obtain the packages that are required to install your cluster.
+- Access Quay.io to obtain the packages that are required to install your cluster.
 
 - Obtain the packages that are required to perform cluster updates.
 
@@ -219,17 +219,13 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 - "Remote health reporting"
 
-# Creating registry storage
-
-After you install the cluster, you must create storage for the registry Operator.
-
-## Image registry removed during installation
+# Image registry removed during installation
 
 On platforms that do not provide shareable object storage, the OpenShift Image Registry Operator bootstraps itself as `Removed`. This allows `openshift-installer` to complete installations on these platform types.
 
 After installation, you must edit the Image Registry Operator configuration to switch the `managementState` from `Removed` to `Managed`. When this has completed, you must configure storage.
 
-## Image registry storage configuration
+# Image registry storage configuration
 
 The Image Registry Operator is not initially available for platforms that do not provide default storage. After installation, you must configure your registry to use storage so that the Registry Operator is made available.
 
@@ -237,7 +233,7 @@ Configure a persistent volume, which is required for production clusters. Where 
 
 You can also allow the image registry to use block storage types by using the `Recreate` rollout strategy during upgrades.
 
-### Configuring registry storage for VMware vSphere
+## Configuring registry storage for VMware vSphere
 
 As a cluster administrator, following installation you must configure your registry to use storage.
 
@@ -330,7 +326,7 @@ Other NFS implementations on the marketplace might not have these issues. Contac
     image-registry   4.7       True        False         False      6h50m
     ```
 
-### Configuring block registry storage for VMware vSphere
+## Configuring block registry storage for VMware vSphere
 
 To allow the image registry to use block storage types such as vSphere Virtual Machine Disk (VMDK) during upgrades as a cluster administrator, you can use the `Recreate` rollout strategy.
 
@@ -404,7 +400,7 @@ Specifies the size of the persistent volume claim.
 
         By creating a custom PVC, you can leave the `claim` field blank for the default automatic creation of an `image-registry-storage` PVC.
 
-For instructions about configuring registry storage so that it references the correct PVC, see [Configuring the registry for vSphere](../../../registry/configuring_registry_storage/configuring-registry-storage-vsphere.xml#registry-configuring-storage-vsphere_configuring-registry-storage-vsphere).
+- [Configuring the registry for vSphere](../../../registry/configuring_registry_storage/configuring-registry-storage-vsphere.xml#registry-configuring-storage-vsphere_configuring-registry-storage-vsphere)
 
 # Telemetry access for OpenShift Container Platform
 
@@ -412,7 +408,7 @@ To provide metrics about cluster health and the success of updates, the Telemetr
 
 After you confirm that your [OpenShift Cluster Manager](https://console.redhat.com/openshift) inventory is correct, either maintained automatically by Telemetry or manually by using OpenShift Cluster Manager,use subscription watch to track your OpenShift Container Platform subscriptions at the account or multi-cluster level. For more information about subscription watch, see "Data Gathered and Used by Red Hat’s subscription services" in the *Additional resources* section.
 
-- See [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring) for more information about the Telemetry service
+- [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
 # Next steps
 

@@ -1,4 +1,6 @@
-This reference provides descriptions and example commands for OpenShift CLI (`oc`) developer commands. For administrator commands, see the [OpenShift CLI administrator command reference](../../cli_reference/openshift_cli/administrator-cli-commands.xml#cli-administrator-commands).
+To learn more about the OpenShift CLI (`oc`) developer commands, review their descriptions and example commands.
+
+For administrator commands, see the "OpenShift CLI administrator command reference".
 
 Run `oc help` to list all commands or run `oc <command> --help` to get additional details for a specific command.
 

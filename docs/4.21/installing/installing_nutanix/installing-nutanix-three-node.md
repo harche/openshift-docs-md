@@ -34,6 +34,6 @@ Because application workloads run from control plane nodes, additional subscript
   # ...
   ```
 
-# Next steps
+# Additional resources
 
 - [Installing a cluster on Nutanix](../../installing/installing_nutanix/installing-nutanix-installer-provisioned.xml#installing-nutanix-installer-provisioned)

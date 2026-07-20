@@ -940,6 +940,40 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHSA-2026:34769 - OpenShift Container Platform 4.17.23 fixed issues advisory
+
+Issued: 07 July 2026
+
+OpenShift Container Platform release 4.17.23 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:34769](https://access.redhat.com/errata/RHSA-2026:34769) advisory. There are no RPM packages for this release.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.23 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, the Cluster Ingress Operator (CIO) hard-coded the Operator Lifecycle Manager (OLM) `redhat-operators` catalog source name when managing the OpenShift Container Platform Service Mesh (OSSM) subscription for Gateway API. In disconnected environments, the catalog source had a different name, and the CIO unconditionally overwrote it. As a consequence, Gateway API installation failed in disconnected and air-gapped environments because the OSSM subscription pointed to a catalog source that did not exist. With this release, the dependency on OLM catalog sources is removed entirely because the OLM-based OSSM installation is replaced with the Sail Library, which installs Istio directly through embedded Helm charts. As a result, Gateway API works in disconnected environments without workarounds, provided that the required container images are mirrored to an accessible registry. ([OCPBUGS-78330](https://issues.redhat.com/browse/OCPBUGS-78330))
+
+- Before this update, enabling Gateway API on a cluster with an existing OpenShift Container Platform Service Mesh (OSSM) installation caused the Cluster Ingress Operator to take over or duplicate the OSSM subscription, which resulted in unexpected behavior. With this release, the OLM-based OSSM installation is replaced with the Sail Library, which installs Istio directly without OLM subscriptions. As a result, existing OSSM installations are not affected when Gateway API is enabled.([OCPBUGS-82146](https://issues.redhat.com/browse/OCPBUGS-82146))
+
+- Before this update, the Cluster Ingress Operator (CIO) depended on the Marketplace capability to install OpenShift Container Platform Service Mesh (OSSM) through Operator Lifecycle Manager (OLM) for Gateway API. On clusters where the Marketplace capability was disabled, such as disconnected clusters that cannot reach external catalog sources, the CIO could not create or manage the OLM subscription and the Istio control plane never started. As a consequence, Gateway API did not function on these clusters. When the GatewayClass was created, the `istiod-openshift-gateway` pod did not start. With this release, the OLM-based OSSM installation is replaced with the Sail Library, which installs Istio directly through embedded Helm charts. As a result, the dependency on the Marketplace capability is removed and Gateway API works on disconnected clusters and other environments without the Marketplace capability, provided that the required container images are mirrored to an accessible registry. ([OCPBUGS-85550](https://issues.redhat.com/browse/OCPBUGS-85550))
+
+- Before this update, deleting a BareMetalHost (BMH) that referenced a pre-provisioning network data Secret (through the `spec.preprovisioningNetworkDataName` parameter) could report a `RegistrationError` if the Secret was removed before the BMH finished deleting. As a consequence, the BMH deletion would take minutes to complete before an eventual force-delete by the controller. With this release, the Bare Metal Operator (BMO) manages the lifecycle of that Secret in the same way as the BMC credential Secrets. The BMO now protects the Secret using a finalizer while the host is active, which prevents the Secret deletion until the finalizer is removed by the controller. As a result, the BMH is removed successfully before the Secret is allowed to be deleted. ([OCPBUGS-87964](https://issues.redhat.com/browse/OCPBUGS-87964))
+
+- Before this update, the Cluster Ingress Operator (CIO) installed the OpenShift Container Platform Service Mesh (OSSM) Operator through OLM to provide Gateway API support. and pinned OSSM to a specific version using the `startingCSV` parameter and manual install plan approval. As a consequence, after the OSSM was already installed, the OLM ignored the `startingCSV` parameter and resolved upgrades to the channel head, which generated install plans that the CIO never approved because the version did not match. The OSSM z-stream upgrades were then blocked, which prevented CVE fixes from being delivered to clusters using the Gateway API. With this release, the OLM-based OSSM installation is replaced with the Sail Library, which installs Istio directly through embedded Helm charts. The dependency on OLM for the Gateway API is removed and clusters that are upgraded from the OLM-based path are automatically migrated to the Sail Library during the z-stream upgrade. As a result, OSSM and Istio version management is not blocked by OLM and the CVE fixes can be shipped. ([OCPBUGS-88295](https://issues.redhat.com/browse/OCPBUGS-88295))
+
+- Before this update, when you clicked a status count, such as counts from error pods or not-ready nodes, from the **Overview** dashboard view, the resource list page opened without applying the expected filter. As a consequence, all resources were displayed instead of only the resources that matched the selected status. With this update, clicking a status count opens a filtered list page that shows only the matching resources. ([OCPBUGS-90553](https://issues.redhat.com/browse/OCPBUGS-90553))
+
+- Before this update, during parallel single node OpenShift Container Platform deployments, specifically with hypervisor-based single node deployments, some systems would hang in the middle of the deployment due to a race condition involving the BareMetalHost (BMH) custom resource. The single node deployment was never powered on by metal3 after virtual media was attached. As a consequence, parallel deployments at scale (10+ nodes) had approximately 80% success rate, with the remaining nodes requiring manual intervention to patch the `online` field to `true` for the impacted BMH custom resources. With this release, the race condition in the BMH power-on process has been resolved. As a result, parallel single node deployments successfully power on all nodes without manual intervention, even at scale. ([OCPBUGS-90554](https://issues.redhat.com/browse/OCPBUGS-90554))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHSA-2026:29834 - OpenShift Container Platform 4.17.22 fixed issues advisory
 
 Issued: 30 June 2026
@@ -961,6 +995,36 @@ $ oc adm release info 4.21.22 --pullspecs
 ### Fixed issues
 
 - Before this update, the `CertificateRevocationController` verified certificate revocation through the Key Attestation Service (KAS) load balancer, which routed each check to one pod. In high-availability (HA) deployments with three KAS replicas, a check could reach a pod that had loaded the updated trust bundle while other pods had not, causing premature state transitions in the revocation flow. As a consequence, the revocation flow could complete before all KAS pods were consistent. With this release, the controller verifies revocation status against each KAS pod directly at its IP address rather than through the load balancer. As a result, certificate revocation completes reliably in HA deployments because the controller confirms that all KAS pods have propagated the change. ([OCPBUGS-86040](https://issues.redhat.com/browse/OCPBUGS-86040))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
+## RHSA-2026:27044 - OpenShift Container Platform 4.17.21 fixed issues advisory
+
+Issued: 23 June 2026
+
+OpenShift Container Platform release 4.17.21 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:27044](https://access.redhat.com/errata/RHSA-2026:27044) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:27041](https://access.redhat.com/errata/RHBA-2026:27041) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.21 --pullspecs
+```
+
+### Enhancements
+
+- With this update, the `chrony-wait.service` systemd service has been optimized to reduce node boot times. The service now creates a flag file when shutting down and checks its timestamp on startup. If the file was modified within the last hour, the service assumes minimal clock skew has occurred and skips the synchronization wait. As a result, nodes reach the `Ready` state approximately 24 seconds faster on Azure and 11 seconds faster on other platforms during reboots, improving cluster scaling and recovery times. ([OCPBUGS-88334](https://redhat.atlassian.net/browse/OCPBUGS-88334))
+
+### Fixed issues
+
+- Before this update, `NodeNetworkConfigurationPolicy` (NNCP) policies with captured names based on matched rules could erroneously capture and overwrite transient network profiles created by the `configure-ovs.sh` script in `/run/NetworkManager/system-connections/`. As a consequence, applying NNCP policies could break existing network configurations, particularly for bond interfaces, leaving nodes in a degraded state that would fail after reboot. With this release, NNCP policies only capture and modify network connections from `/etc/NetworkManager/system-connections/`, excluding transient runtime profiles. As a result, NNCP policies no longer interfere with Open vSwitch bridge configurations or other transient network setups. ([OCPBUGS-86998](https://redhat.atlassian.net/browse/OCPBUGS-86998))
+
+- Before this update, the Machine Config Daemon (MCD) unnecessarily pulled and extracted the extensions container image during every operating system update, including initial node bootstrap, regardless of whether extensions were configured. As a consequence, this caused unnecessary network traffic and increased update times even when no extensions were in use. With this release, the MCD only pulls the extensions image when extensions are actually configured in the `MachineConfig` object. As a result, operating system updates complete more quickly and use less network bandwidth when extensions are not in use. ([OCPBUGS-88335](https://redhat.atlassian.net/browse/OCPBUGS-88335))
+
+- Before this update, restoring a `VolumeSnapshot` request from the OpenShift Container Platform web console failed if the parent persistent volume claim (PVC) was deleted. This issue occurred because of the incomplete rendering of form fields. As a consequence, users could not restore a `VolumeSnapshot` request through the user interface after the parent PVC was removed. With this update, the console correctly renders the restore form fields regardless of the status of the parent PVC. As a result, users can successfully restore a `VolumeSnapshot` request from the OpenShift Container Platform web console even after deleting the parent PVC.([OCPBUGS-88358](https://redhat.atlassian.net/browse/OCPBUGS-88358))
 
 ### Updating
 

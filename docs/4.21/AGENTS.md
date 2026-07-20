@@ -82,6 +82,7 @@ Root: ./
 |post_installation_configuration/configuring-multi-arch-compute-machines:{multi-architecture-configuration.md,creating-multi-arch-compute-nodes-aws.md,creating-multi-arch-compute-nodes-azure.md,creating-multi-arch-compute-nodes-google-cloud.md,creating-multi-arch-compute-nodes-bare-metal.md,creating-multi-arch-compute-nodes-ibm-z.md,creating-multi-arch-compute-nodes-ibm-z-lpar.md,creating-multi-arch-compute-nodes-ibm-z-kvm.md,creating-multi-arch-compute-nodes-ibm-power.md,multi-architecture-compute-managing.md,multiarch-tuning-operator.md,multi-arch-tuning-operator-release-notes.md}
 |post_installation_configuration/day_2_core_cnf_clusters:{telco-day-2-welcome.md}
 |post_installation_configuration/day_2_core_cnf_clusters/updating:{update-welcome.md,update-api.md,update-ocp-update-prep.md,update-cnf-update-prep.md,update-before-the-update.md,update-completing-the-control-plane-only-update.md,update-completing-the-y-stream-update.md,update-completing-the-z-stream-update.md}
+|post_installation_configuration/day_2_core_cnf_clusters/updating:{update-rhacm-talm-overview.md,update-rhacm-talm-preparing-policies.md,update-rhacm-talm-worker-batching.md,update-rhacm-talm-health-checks.md,update-rhacm-talm-worker-management.md,update-rhacm-talm-operator-coordination.md,update-rhacm-talm-z-stream.md,update-rhacm-talm-y-stream.md,update-rhacm-talm-eus.md,update-rhacm-talm-troubleshooting.md}
 |post_installation_configuration/day_2_core_cnf_clusters/troubleshooting:{troubleshooting-intro.md,troubleshooting-general-troubleshooting.md,troubleshooting-cluster-maintenance.md,troubleshooting-security.md,troubleshooting-cert-maintenance.md,troubleshooting-mco.md,troubleshooting-bmn-maintenance.md}
 |post_installation_configuration/day_2_core_cnf_clusters/observability:{observability.md}
 |post_installation_configuration/day_2_core_cnf_clusters/security:{security-basics.md,security-host-sec.md,security-sec-context-constraints.md}
@@ -275,7 +276,7 @@ Root: ./
 
 ### Windows Container Support for OpenShift
 
-|windows_containers:{index.md,windows-containers-support.md,understanding-windows-container-workloads.md,enabling-windows-container-workloads.md,scheduling-windows-workloads.md,windows-node-upgrades.md,byoh-windows-instance.md,removing-windows-nodes.md,disabling-windows-container-workloads.md}
+|windows_containers:{index.md,windows-containers-support.md,understanding-windows-container-workloads.md,enabling-windows-container-workloads.md,scheduling-windows-workloads.md,windows-node-upgrades.md,byoh-windows-instance.md,removing-windows-nodes.md,disabling-windows-container-workloads.md,windows-containers-troubleshooting.md}
 |windows_containers/wmco_rn:{windows-containers-release-notes.md,windows-containers-release-notes-past.md,windows-containers-release-notes-prereqs.md,windows-containers-release-notes-limitations.md}
 |windows_containers/creating_windows_machinesets:{creating-windows-machineset-aws.md,creating-windows-machineset-azure.md,creating-windows-machineset-gcp.md,creating-windows-machineset-nutanix.md,creating-windows-machineset-vsphere.md}
 

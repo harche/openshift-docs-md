@@ -540,7 +540,7 @@ After you enable the Assisted Installer as an add-on to multicluster engine Oper
 
 - [DNS configurations on bare metal](../../hosted_control_planes/hcp-deploy/hcp-deploy-bm.xml#hcp-bm-dns_hcp-deploy-bm)
 
-- [Manually importing a hosted cluster](../../hosted_control_planes/hcp-import.xml)
+- [Manually importing a hosted cluster](../../hosted_control_planes/hcp-import.xml#hcp-import)
 
 - [Extracting the release image digest](../../hosted_control_planes/hcp-disconnected/hcp-deploy-dc-bm.xml#hcp-dc-extract_hcp-deploy-dc-bm)
 

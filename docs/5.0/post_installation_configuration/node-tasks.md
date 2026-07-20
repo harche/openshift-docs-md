@@ -89,7 +89,7 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines fo
 
 ## Creating RHCOS machines by PXE or iPXE booting
 
-You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines for your bare metal cluster by using PXE or iPXE booting.
+You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines for your bare-metal cluster by using PXE or iPXE booting.
 
 - Obtain the URL of the Ignition config file for the compute machines for your cluster. You uploaded this file to your HTTP server during installation.
 
@@ -232,7 +232,7 @@ When you add machines to a cluster, two pending certificate signing requests (CS
 
     <div class="note">
 
-    The preceding output might not include the compute nodes, also known as worker nodes, until some CSRs are approved.
+    The preceding output might not include the compute nodes until some CSRs are approved.
 
     </div>
 
@@ -261,7 +261,7 @@ When you add machines to a cluster, two pending certificate signing requests (CS
 
     <div class="note">
 
-    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. Then, subsequent serving certificate renewal requests are automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The subsequent serving certificate renewal requests are then automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
 
     </div>
 
@@ -355,7 +355,7 @@ When you add machines to a cluster, two pending certificate signing requests (CS
 
     <div class="note">
 
-    It can take a few minutes after approval of the server CSRs for the machines to transition to the `Ready` status.
+    You might need to wait a few minutes after approval of the server CSRs for the machines to transition to the `Ready` status.
 
     </div>
 
@@ -1830,7 +1830,7 @@ The TuneD boot-loader plugin only supports Red Hat Enterprise Linux CoreOS (RHC
 
 # Understanding device plugins
 
-The device plugin provides a consistent and portable solution to consume hardware devices across clusters. The device plugin provides support for these devices through an extension mechanism, which makes these devices available to Containers, provides health checks of these devices, and securely shares them.
+A device plugin is a gRPC service running on nodes that manages specific hardware resources through an extension mechanism, enabling containers to consume these devices.
 
 <div class="important">
 
@@ -1894,7 +1894,7 @@ For easy device plugin reference implementation, there is a stub device plugin i
 
 ## Understanding the Device Manager
 
-Device Manager provides a mechanism for advertising specialized node hardware resources with the help of plugins known as device plugins.
+Device Manager advertises specialized node hardware resources through device plugins, enabling pods to consume hardware devices without requiring upstream code changes.
 
 You can advertise specialized hardware without requiring any upstream code changes.
 
@@ -1916,7 +1916,7 @@ Additionally, device plugins can also perform several other device-specific oper
 
 ## Enabling Device Manager
 
-Enable Device Manager to implement a device plugin to advertise specialized hardware without any upstream code changes.
+Enable Device Manager to allow device plugins to advertise specialized node hardware resources and make them available to pods without requiring code changes.
 
 Device Manager provides a mechanism for advertising specialized node hardware resources with the help of plugins known as device plugins.
 
@@ -1946,11 +1946,9 @@ Device Manager provides a mechanism for advertising specialized node hardware re
         Labels:       machineconfiguration.openshift.io/role=worker
         ```
 
-        - Label required for the Device Manager.
+        `machineconfiguration.openshift.io` is the label required for the Device Manager.
 
-<!-- -->
-
-1.  Create a custom resource (CR) for your configuration change.
+2.  Create a custom resource (CR) for your configuration change.
 
     <div class="formalpara-title">
 
@@ -1972,13 +1970,18 @@ Device Manager provides a mechanism for advertising specialized node hardware re
           - DevicePlugins=true
     ```
 
-    - Assign a name to CR.
+    where:
 
-    - Enter the label from the Machine Config Pool.
+    `metadata.name`
+    Specifies a name to assign to the CR.
 
-    - Set `DevicePlugins` to 'true\`.
+    `spec.machineConfigPoolSelector.matchLabels`
+    Specifies the label from the Machine Config Pool.
 
-2.  Create the Device Manager:
+    `spec.kubeletConfig.feature-gates`
+    Specifies the `DevicePlugins` feature gate. Set to `true`.
+
+3.  Create the Device Manager:
 
     ``` terminal
     $ oc create -f devicemgr.yaml
@@ -1994,7 +1997,7 @@ Device Manager provides a mechanism for advertising specialized node hardware re
     kubeletconfig.machineconfiguration.openshift.io/devicemgr created
     ```
 
-3.  Ensure that Device Manager was actually enabled by confirming that ***/var/lib/kubelet/device-plugins/kubelet.sock*** is created on the node. This is the UNIX domain socket on which the Device Manager gRPC server listens for new plugin registrations. This sock file is created when the Kubelet is started only if Device Manager is enabled.
+4.  Ensure that Device Manager was actually enabled by confirming that ***/var/lib/kubelet/device-plugins/kubelet.sock*** is created on the node. This is the UNIX domain socket on which the Device Manager gRPC server listens for new plugin registrations. This sock file is created when the Kubelet is started only if Device Manager is enabled.
 
 # Taints and tolerations
 

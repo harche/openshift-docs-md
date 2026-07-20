@@ -34,17 +34,9 @@ The following limitations apply to the Common Internet File System (CIFS)/Server
 
 # Installing the CIFS/SMB CSI Driver Operator
 
-The CIFS/SMB CSI Driver Operator (a Red Hat Operator) is not installed in OpenShift Container Platform by default. Use the following procedure to install and configure the CIFS/SMB CSI Driver Operator in your cluster.
+Install and configure the CIFS/SMB Container Storage Interface (CSI) Driver Operator to enable CIFS/SMB storage in your cluster. This Red Hat Operator is not installed by default and requires manual installation.
 
 - Access to the OpenShift Container Platform web console.
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To install the CIFS/SMB CSI Driver Operator from the web console:
 
 1.  Log in to the web console.
 
@@ -67,6 +59,14 @@ To install the CIFS/SMB CSI Driver Operator from the web console:
     6.  Click **Install**.
 
         After the installation finishes, the CIFS/SMB CSI Operator is listed in the **Installed Operators** section of the web console.
+
+<div class="formalpara-title">
+
+**Next steps**
+
+</div>
+
+Install the CIFS/SMB CSI Driver.
 
 # Installing the CIFS/SMB CSI Driver
 

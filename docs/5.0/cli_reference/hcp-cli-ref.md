@@ -50,7 +50,7 @@ You can install the hosted control planes command-line interface (CLI), `hcp`, f
   $ hcp create cluster <platform> --help
   ```
 
-  You can use the `hcp create cluster` command to create and manage hosted clusters. The supported platforms are `aws`, `agent`, and `kubevirt`.
+  You can use the `hcp create cluster` command to create and manage hosted clusters. The supported platforms are `agent`, `aws`, and `kubevirt`. The `azure` and `openstack` platforms are also available as Technology Preview features.
 
 # Installing the hosted control planes command-line interface by using the web console
 
@@ -92,7 +92,7 @@ You can install the hosted control planes command-line interface (CLI), `hcp`, b
   $ hcp create cluster <platform> --help
   ```
 
-  You can use the `hcp create cluster` command to create and manage hosted clusters. The supported platforms are `aws`, `agent`, and `kubevirt`.
+  You can use the `hcp create cluster` command to create and manage hosted clusters. The supported platforms are `agent`, `aws`, and `kubevirt`. The `azure` and `openstack` platforms are also available as Technology Preview features.
 
 # Installing the hosted control planes command-line interface by using the content gateway
 
@@ -132,4 +132,4 @@ You can install the hosted control planes command-line interface (CLI), `hcp`, b
   $ hcp create cluster <platform> --help
   ```
 
-  You can use the `hcp create cluster` command to create and manage hosted clusters. The supported platforms are `aws`, `agent`, and `kubevirt`.
+  You can use the `hcp create cluster` command to create and manage hosted clusters. The supported platforms are `agent`, `aws`, and `kubevirt`. The `azure` and `openstack` platforms are also available as Technology Preview features.

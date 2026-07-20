@@ -1,16 +1,24 @@
+The Google Cloud Platform (GCP) Filestore Container Storage Interface (CSI) Driver Operator provisions and manages GCP Filestore Storage in OpenShift Container Platform with dynamic volume provisioning, eliminating the need to pre-provision storage.
+
 # Overview
 
 OpenShift Container Platform is capable of provisioning persistent volumes (PVs) using the Container Storage Interface (CSI) driver for Google Compute Platform (GCP) Filestore Storage.
 
-Familiarity with [persistent storage](../../storage/understanding-persistent-storage.xml#understanding-persistent-storage) and [configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi) is recommended when working with a CSI Operator and driver.
+Familiarity with persistent storage and configuring CSI volumes is recommended when working with a CSI Operator and driver. For more information, see "Understanding persistent storage" and "Configuring CSI volumes".
 
 To create CSI-provisioned PVs that mount to Google Cloud Filestore Storage assets, you install the Google Cloud Filestore CSI Driver Operator and the Google Cloud Filestore CSI driver in the `openshift-cluster-csi-drivers` namespace.
 
-- The *Google Cloud Filestore CSI Driver Operator* does not provide a storage class by default, but [you can create one if needed](../../storage/container_storage_interface/persistent-storage-csi-google-cloud-file.xml#persistent-storage-csi-google-cloud-file-create-sc_persistent-storage-csi-google-cloud-file). The Google Cloud Filestore CSI Driver Operator supports dynamic volume provisioning by allowing storage volumes to be created on demand, eliminating the need for cluster administrators to pre-provision storage.
+- The *Google Cloud Filestore CSI Driver Operator* does not provide a storage class by default, but you can create one if needed (for more information, see "Creating a storage class for GCP Filestore storage"). The Google Cloud Filestore CSI Driver Operator supports dynamic volume provisioning by allowing storage volumes to be created on-demand, eliminating the need for cluster administrators to pre-provision storage.
 
 - The *Google Cloud Filestore CSI driver* enables you to create and mount Google Cloud Filestore PVs.
 
 OpenShift Container Platform Google Cloud Filestore supports Workload Identity. This allows users to access Google Cloud resources using federated identities instead of a service account key. GCP Workload Identity must be enabled globally during installation, and then configured for the Google Cloud Filestore CSI Driver Operator.
+
+- [Understanding persistent storage](../../storage/understanding-persistent-storage.xml#understanding-persistent-storage)
+
+- [Configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi)
+
+- [Creating a storage class for GCP Filestore storage](../../storage/container_storage_interface/persistent-storage-csi-google-cloud-file.xml#persistent-storage-csi-google-cloud-file-create-sc_persistent-storage-csi-google-cloud-file)
 
 # About CSI
 
@@ -20,19 +28,13 @@ CSI Operators give OpenShift Container Platform users storage options, such as v
 
 # Installing the Google Cloud Filestore CSI Driver Operator
 
+Since the Google Compute Platform (Google Cloud) Filestore Container Storage Interface (CSI) Driver Operator is not installed in OpenShift Container Platform by default, you must install the Google Cloud Filestore CSI Driver Operator in your cluster.
+
 ## Preparing to install the Google Cloud Filestore CSI Driver Operator with Workload Identity
 
 If you are planning to use GCP Workload Identity with Google Compute Platform Filestore, you must obtain certain parameters that you will use during the installation of the Google Cloud Filestore Container Storage Interface (CSI) Driver Operator.
 
 - Access to the cluster as a user with the cluster-admin role.
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To prepare to install the Google Cloud Filestore CSI Driver Operator with Workload Identity:
 
 1.  Obtain the project number:
 
@@ -90,39 +92,39 @@ To prepare to install the Google Cloud Filestore CSI Driver Operator with Worklo
     2.  Use the `CredentialsRequest` file to create a Google Cloud service account by running the following command:
 
         ``` terminal
-        $ ./ccoctl gcp create-service-accounts --name=<filestore-service-account> \
-          --workload-identity-pool=<workload-identity-pool> \
-          --workload-identity-provider=<workload-identity-provider> \
-          --project=<project-id> \
+        $ ./ccoctl gcp create-service-accounts --name=<filestore-service-account> \//
+          --workload-identity-pool=<workload-identity-pool> \//
+          --workload-identity-provider=<workload-identity-provider> \//
+          --project=<project-id> \//
           --credentials-requests-dir=/tmp/credreq
         ```
 
-        - \<filestore-service-account\> is a user-chosen name.
+        - `<filestore-service-account>` is a user-chosen name.
 
-        - \<workload-identity-pool\> comes from Step 2 above.
+        - `<workload-identity-pool>` comes from Step 2 above.
 
-        - \<workload-identity-provider\> comes from Step 2 above.
+        - `<workload-identity-provider>` comes from Step 2 above.
 
-        - \<project-id\> comes from Step 1.a above.
+        - `<project-id>` comes from Step 1.a above.
 
-        - The name of directory where the `CredentialsRequest` file resides.
+        - `credentials-requests-dir` is the name of directory where the `CredentialsRequest` file resides.
 
-          <div class="formalpara-title">
+        <div class="formalpara-title">
 
-          **Example output**
+        **Example output**
 
-          </div>
+        </div>
 
-          ``` terminal
-          2025/02/10 17:47:39 Credentials loaded from gcloud CLI defaults
-          2025/02/10 17:47:42 IAM service account filestore-service-account-openshift-gcp-filestore-csi-driver-operator created
-          2025/02/10 17:47:44 Unable to add predefined roles to IAM service account, retrying...
-          2025/02/10 17:47:59 Updated policy bindings for IAM service account filestore-service-account-openshift-gcp-filestore-csi-driver-operator
-          2025/02/10 17:47:59 Saved credentials configuration to: /tmp/install-dir/
-          openshift-cluster-csi-drivers-gcp-filestore-cloud-credentials-credentials.yaml
-          ```
+        ``` terminal
+        2025/02/10 17:47:39 Credentials loaded from gcloud CLI defaults
+        2025/02/10 17:47:42 IAM service account filestore-service-account-openshift-gcp-filestore-csi-driver-operator created
+        2025/02/10 17:47:44 Unable to add predefined roles to IAM service account, retrying...
+        2025/02/10 17:47:59 Updated policy bindings for IAM service account filestore-service-account-openshift-gcp-filestore-csi-driver-operator
+        2025/02/10 17:47:59 Saved credentials configuration to: /tmp/install-dir/
+        openshift-cluster-csi-drivers-gcp-filestore-cloud-credentials-credentials.yaml
+        ```
 
-        - The current directory.
+        Where `/tmp/install-dir/` is the current directory.
 
     3.  Find the service account email of the newly created service account by running the following command:
 
@@ -164,19 +166,11 @@ You now have the following parameters that you need to install the Google Cloud 
 
 ## Installing the Google Cloud Filestore CSI Driver Operator
 
-The Google Compute Platform (Google Cloud) Filestore Container Storage Interface (CSI) Driver Operator is not installed in OpenShift Container Platform by default. Use the following procedure to install the Google Cloud Filestore CSI Driver Operator in your cluster.
+Since the Google Compute Platform (Google Cloud) Filestore Container Storage Interface (CSI) Driver Operator is not installed in OpenShift Container Platform by default, you must install the Google Cloud Filestore CSI Driver Operator in your cluster.
 
 - Access to the OpenShift Container Platform web console.
 
 - If using GCP Workload Identity, certain GCP Workload Identity parameters are needed. See the preceding Section *Preparing to install the Google Cloud Filestore CSI Driver Operator with Workload Identity*.
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To install the Google Cloud Filestore CSI Driver Operator from the web console:
 
 1.  Log in to the web console.
 
@@ -186,9 +180,9 @@ To install the Google Cloud Filestore CSI Driver Operator from the web console:
     $ gcloud services enable file.googleapis.com  --project <my_gce_project>
     ```
 
-    - Replace `<my_gce_project>` with your Google Cloud project.
+    Replace `<my_gce_project>` with your Google Cloud project.
 
-      You can also do this using Google Cloud web console.
+    You can also do this using Google Cloud web console.
 
 3.  Install the Google Cloud Filestore CSI Operator:
 
@@ -247,23 +241,17 @@ To install the Google Cloud Filestore CSI Driver Operator from the web console:
 
         - GCPFilestoreDriverControllerServiceControllerAvailable
 
-- [Enabling an API in your Google Cloud](https://cloud.google.com/endpoints/docs/openapi/enable-api).
+- [Enabling an API in your Google Cloud](https://cloud.google.com/endpoints/docs/openapi/enable-api)
 
-- [Enabling an API using the Google Cloud web console](https://support.google.com/googleapi/answer/6158841?hl=en).
+- [Enabling an API using the Google Cloud web console](https://support.google.com/googleapi/answer/6158841?hl=en)
 
 # Creating a storage class for GCP Filestore Storage
 
-After installing the Operator, you should create a storage class for dynamic provisioning of Google Compute Platform (GCP) Filestore volumes.
+To enable dynamic provisioning of GCP Filestore volumes, create a storage class that specifies VPC network configuration and connection mode settings.
+
+Ensure that the Operator is installed before creating a storage class for dynamic provisioning of Google Compute Platform (GCP) Filestore volumes.
 
 - You are logged in to the running OpenShift Container Platform cluster.
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To create a storage class:
 
 1.  Create a storage class using the following example YAML file:
 
@@ -286,9 +274,9 @@ To create a storage class:
     volumeBindingMode: WaitForFirstConsumer
     ```
 
-    - For a shared VPC, use the `connect-mode` parameter set to `PRIVATE_SERVICE_ACCESS`. For a non-shared VPC, the value is `DIRECT_PEERING`, which is the default setting.
+    - `parameters.connect-mode`: For a shared VPC, use the `connect-mode` parameter set to `PRIVATE_SERVICE_ACCESS`. For a non-shared VPC, the value is `DIRECT_PEERING`, which is the default setting.
 
-    - Specify the name of the GCP virtual private cloud (VPC) network where Filestore instances should be created in.
+    - `parameters.network`: Specify the name of the GCP virtual private cloud (VPC) network where Filestore instances should be created in.
 
 2.  Specify the name of the VPC network where Filestore instances should be created in.
 
@@ -309,6 +297,8 @@ To create a storage class:
     In this example, the VPC network name in this cluster is "gcp-filestore-network".
 
 # NFS export options
+
+To restrict access to Google Cloud Filestore volumes beyond default project-wide permissions, configure NFS export options that limit access by IP range and user/group IDs.
 
 By default, a Filestore instance grants root level read/write access to all clients that share the same Google Cloud project and virtual private cloud (VPC) network. Network File System (NFS) export options can limit this access to certain IP ranges and specific user/group IDs for the Filestore instance. When creating a storage class, you can set these options using the `nfs-export-options-on-create` parameter.
 
@@ -352,31 +342,25 @@ By default, a Filestore instance grants root level read/write access to all clie
     allowVolumeExpansion: true
     ```
 
-    - **NFS export options parameter**
+    For `parameters.nfs-export-options-on-create` arguments:
 
-    - **Access mode**: Either `READ_ONLY,` which allows only read requests on the exported directory; or `READ_WRITE`, which allows both read and write requests. The default is `READ_WRITE`.
+    - `AccessMode`: Either `READ_ONLY,` which allows only read requests on the exported directory; or `READ_WRITE`, which allows both read and write requests. The default is `READ_WRITE`.
 
-    - **Squash mode**: Either `NO_ROOT_SQUASH`, which allows root access on the exported directory; or ROOT_SQUASH, which does not allow root access. The default is `NO_ROOT_SQUASH`.
+    - `SquashMode`: Either `NO_ROOT_SQUASH`, which allows root access on the exported directory; or ROOT_SQUASH, which does not allow root access. The default is `NO_ROOT_SQUASH`.
 
-    - **AnonUid**: An integer representing the anonymous user ID with a default value of 65534. `AnonUid` can only be set with `squashMode` set to `ROOT_SQUASH`; Otherwise, an error occurs.
+    - `AnonUid`: An integer representing the anonymous user ID with a default value of 65534. `AnonUid` can only be set with `squashMode` set to `ROOT_SQUASH`; Otherwise, an error occurs.
 
-    - **AnonGid**: An integer representing the anonymous group ID with a default value of 65534. `AnonGid` can only be set with `squashMode` set to `ROOT_SQUASH`. Otherwise, an error occurs.
+    - `AnonGid`: An integer representing the anonymous group ID with a default value of 65534. `AnonGid` can only be set with
 
-    - **IP ranges**: List of either an IPv4 addresses in the format {octet1}.{octet2}.{octet3}.{octet4}, or CIDR ranges in the format {octet1}.{octet2}.{octet3}.{octet4}/{mask size}, which can mount the file share. Overlapping IP ranges are not allowed, both within and across NfsExportOptions, otherwise, an error is returned. The limit is 64 IP ranges or addresses for each `FileShareConfig` among all NFS export options.
+    - `ipRanges`: List of either an IPv4 addresses in the format {octet1}.{octet2}.{octet3}.{octet4}, or CIDR ranges in the format {octet1}.{octet2}.{octet3}.{octet4}/{mask size}, which can mount the file share. Overlapping IP ranges are not allowed, both within and across NfsExportOptions, otherwise, an error is returned. The limit is 64 IP ranges or addresses for each `FileShareConfig` among all NFS export options.
 
 # Destroying clusters and GCP Filestore
+
+To prevent orphaned resources and potential costs, verify that all Google Cloud Filestore resources are deleted after cluster destruction, as automated cleanup might not remove all resources.
 
 Typically, if you destroy a cluster, the OpenShift Container Platform installer deletes all of the cloud resources that belong to that cluster. However, due to the special nature of the Google Compute Platform (GCP) Filestore resources, the automated cleanup process might not remove all of them in some rare cases.
 
 Therefore, Red Hat recommends that you verify that all cluster-owned Filestore resources are deleted by the uninstall process.
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To ensure that all GCP Filestore PVCs have been deleted:
 
 1.  Access your Google Cloud account using the GUI or CLI.
 
@@ -390,4 +374,4 @@ To ensure that all GCP Filestore PVCs have been deleted:
 
 - [Configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi)
 
-- [CCO-based workflow for OLM-managed Operators with Google Cloud Workload Identity](../../operators/operator_sdk/token_auth/osdk-cco-gcp.xml).
+- [CCO-based workflow for OLM-managed Operators with Google Cloud Workload Identity](../../operators/operator_sdk/token_auth/osdk-cco-gcp.xml)

@@ -103,18 +103,6 @@ Specifies the infrastructure ID, role node label, and zone.
 `<role>`
 Specifies the role node label to add.
 
-<div class="note">
-
-The `spec.template.spec.providerSpec.value.ami.id` stanza specifies a valid Red Hat Enterprise Linux CoreOS (RHCOS) Amazon Machine Image (AMI) for your AWS zone for your OpenShift Container Platform nodes. If you want to use an AWS Machine Image (AMI) for your AWS zone as a boot image for your OpenShift Container Platform nodes, you should use the latest image when adding a new machine set. If you want to use an AWS Marketplace image, you must complete the OpenShift Container Platform subscription from the [AWS Marketplace](https://aws.amazon.com/marketplace/fulfillment?productId=59ead7de-2540-4653-a8b0-fa7926d5c845) to obtain an AMI ID for your region.
-
-``` terminal
-$ oc -n openshift-machine-api \
-    -o jsonpath='{.spec.template.spec.providerSpec.value.ami.id}{"\n"}' \
-    get machineset/<infrastructure_id>-<role>-<zone>
-```
-
-</div>
-
 `<zone>`
 Specifies the zone name, for example, `us-east-1a`.
 
@@ -130,6 +118,18 @@ Optional: Specifies custom tag data for your cluster. For example, you might add
 <div class="note">
 
 Custom tags can also be specified during installation in the `install-config.yaml` file. If the `install-config.yaml` file and the machine set include a tag with the same `name` data, the value for the tag from the machine set takes priority over the value for the tag in the `install-config.yaml` file.
+
+</div>
+
+<div class="note">
+
+The `spec.template.spec.providerSpec.value.ami.id` stanza specifies a valid Red Hat Enterprise Linux CoreOS (RHCOS) Amazon Machine Image (AMI) for your AWS zone for your OpenShift Container Platform nodes. If you want to use an AWS Marketplace image, you must complete the OpenShift Container Platform subscription from the [AWS Marketplace](https://aws.amazon.com/marketplace/fulfillment?productId=59ead7de-2540-4653-a8b0-fa7926d5c845) to obtain an AMI ID for your region.
+
+``` terminal
+$ oc -n openshift-machine-api \
+    -o jsonpath='{.spec.template.spec.providerSpec.value.ami.id}{"\n"}' \
+    get machineset/<infrastructure_id>-<role>-<zone>
+```
 
 </div>
 
@@ -302,7 +302,7 @@ Label your machine sets to indicate which machines the cluster autoscaler can us
 
 # Assigning machines to placement groups for Elastic Fabric Adapter instances by using machine sets
 
-You can configure a machine set to deploy machines on Elastic Fabric Adapter (EFA) instances within an existing Amazon Web Services (AWS) placement group. Using EFA instances to run control plane machines can improve network performance.
+You can configure a machine set to deploy machines on Elastic Fabric Adapter (EFA) instances within an existing Amazon Web Services (AWS) placement group.
 
 [EFA](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html) instances do not require placement groups, and you can use placement groups for purposes other than configuring an EFA. This example uses both to demonstrate a configuration that can improve network performance for machines within the specified placement group.
 
@@ -355,7 +355,7 @@ Specifies the region, for example, `us-east-1`.
 Specifies the name of the existing AWS placement group to deploy machines in.
 
 `spec.template.spec.providerSpec.value.placementGroupPartition`
-Optional: Specifies the partition number of the existing AWS placement group to deploy machines in.
+Specifies the partition number of the existing AWS placement group to deploy machines in. This value is optional.
 
 - In the AWS console, find a machine that the machine set created and verify the following in the machine properties:
 
@@ -367,7 +367,7 @@ Optional: Specifies the partition number of the existing AWS placement group to 
 
 # Machine set options for the Amazon EC2 Instance Metadata Service
 
-You can use machine sets to create machines that use a specific version of the Amazon EC2 Instance Metadata Service (IMDS). Configuring Amazon EC2 IMDS behavior for control plane machines improves security.
+You can use machine sets to create machines that use a specific version of the Amazon EC2 Instance Metadata Service (IMDS).
 
 Machine sets can create machines that allow the use of both IMDSv1 and IMDSv2 or machines that require the use of IMDSv2.
 
@@ -406,10 +406,10 @@ You can specify whether to require the use of IMDSv2 by adding or editing the va
         authentication: Required
   ```
 
-where:
+  where:
 
-`providerSpec.value.metadataServiceOptions.authentication`
-Specifies whether to require IMDSv2. Set this parameter to `Required` to require IMDSv2. Set this parameter to `Optional` to allow the use of both IMDSv1 and IMDSv2. If you do not specify a value, both IMDSv1 and IMDSv2 are allowed.
+  `providerSpec.value.metadataServiceOptions.authentication`
+  Specifies whether to require IMDSv2. To require IMDSv2, set the parameter value to `Required`. To allow the use of both IMDSv1 and IMDSv2, set the parameter value to `Optional`. If you do not specify a value, both IMDSv1 and IMDSv2 are allowed.
 
 # Configuring storage throughput for gp3 drives
 

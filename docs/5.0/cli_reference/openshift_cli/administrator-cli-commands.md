@@ -1,6 +1,6 @@
-This reference provides descriptions and example commands for OpenShift CLI (`oc`) administrator commands. You must have `cluster-admin` or equivalent permissions to use these commands.
+To learn more about the OpenShift CLI (`oc`) administrator commands, review their descriptions and example commands. You must have `cluster-admin` or equivalent permissions to use these commands.
 
-For developer commands, see the [OpenShift CLI developer command reference](../../cli_reference/openshift_cli/developer-cli-commands.xml#cli-developer-commands).
+For developer commands, see the "OpenShift CLI developer command reference".
 
 Run `oc adm -h` to list all administrator commands or run `oc <command> --help` to get additional details for a specific command.
 

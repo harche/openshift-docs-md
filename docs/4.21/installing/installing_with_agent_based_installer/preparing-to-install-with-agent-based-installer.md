@@ -72,6 +72,8 @@ You can install a disconnected OpenShift Container Platform cluster through the 
 
 - **Highly available OpenShift Container Platform cluster (HA)**: Three control plane nodes with any number of compute nodes.
 
+- **Two-Node OpenShift Container Platform cluster with Arbiter**: Two control plane nodes with one local arbiter node. For more information, see "About a local arbiter node".
+
 ## Recommended resources for topologies
 
 The following cluster resources are recommended for each topology:
@@ -121,6 +123,8 @@ For installations on IBM Z® (`s390x`) architecture, the minimum memory requirem
 - [Increase the network MTU](../installing_bare_metal/ipi/ipi-install-prerequisites.xml#network-requirements-increase-mtu_ipi-install-prerequisites)
 
 - [Adding worker nodes to single-node OpenShift clusters](../../nodes/nodes/nodes-sno-worker-nodes.xml#nodes-sno-worker-nodes)
+
+- [About a local arbiter node](../../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#installing-ocp-agent-local-arbiter-node_preparing-to-install-with-agent-based-installer)
 
 # About FIPS compliance
 
@@ -867,6 +871,105 @@ If you are using HAProxy as a load balancer, you can check that the `haproxy` pr
 - [Cluster capabilities](../../installing/overview/cluster-capabilities.xml#cluster-capabilities)
 
 - [Deploying OpenShift 4.x on non-tested platforms using the bare metal install method (Red Hat Knowledgebase article)](https://access.redhat.com/articles/4207611)
+
+# About a local arbiter node
+
+You can configure an OpenShift Container Platform cluster with two control plane nodes and one local arbiter node so as to retain high availability (HA) while reducing infrastructure costs for your cluster.
+
+A local arbiter node is a lower-cost, co-located machine that participates in control plane quorum decisions. Unlike a standard control plane node, the arbiter node does not run the full set of control plane services. You can use this configuration to maintain HA in your cluster with only two fully provisioned control plane nodes instead of three.
+
+<div class="important">
+
+You can configure a local arbiter node only. Remote arbiter nodes are not supported.
+
+</div>
+
+To deploy a cluster with two control plane nodes and one local arbiter node, you must define the following nodes in the `install-config.yaml` file:
+
+- 2 control plane nodes
+
+- 1 arbiter node
+
+The arbiter node must meet the following minimum system requirements:
+
+- 2 vCPUs
+
+- 8 GB of RAM
+
+- 50 GB of SSD or equivalent storage
+
+The arbiter node must be located in a network environment with an end-to-end latency of less than 500 milliseconds, including disk I/O. In high-latency environments, you might need to apply the `etcd` slow profile.
+
+The control plane nodes must meet the following minimum system requirements:
+
+- 4 vCPUs
+
+- 16 GB of RAM
+
+- 120 GB of SSD or equivalent storage
+
+Additionally, the control plane nodes must also have enough storage for the workload.
+
+<div class="formalpara-title">
+
+**Example `install-config.yaml` configuration for deploying an arbiter node**
+
+</div>
+
+``` yaml
+apiVersion: v1
+baseDomain: devcluster.openshift.com
+compute:
+  - architecture: amd64
+    hyperthreading: Enabled
+    name: worker
+    platform: {}
+    replicas: 0
+arbiter:
+  architecture: amd64
+  hyperthreading: Enabled
+  replicas: 1
+  name: arbiter
+  platform:
+    baremetal: {}
+controlPlane:
+  architecture: amd64
+  hyperthreading: Enabled
+  name: master
+  platform:
+    baremetal: {}
+  replicas: 2
+platform:
+  baremetal:
+# ...
+    hosts:
+      - name: cluster-master-0
+        role: master
+# ...
+      - name: cluster-master-1
+        role: master
+        ...
+      - name: cluster-arbiter-0
+        role: arbiter
+# ...
+```
+
+where:
+
+`arbiter`
+Specifies the arbiter machine pool. You configure this field to deploy a cluster with an arbiter node.
+
+`arbiter.replicas`
+Specifies the `arbiter.replicas` parameter as `1` for the arbiter pool. You cannot set this field to a value that is greater than 1.
+
+`arbiter.name`
+Specifies a name for the arbiter machine pool.
+
+`controlPlane`
+Specifies the control plane machine pool.
+
+`controlPlane.replicas`
+Specifies the `controlPlane.replicas` parameter. When an arbiter pool is defined, two control plane replicas are valid.
 
 # Example: Bonds and VLAN interface node network configuration
 

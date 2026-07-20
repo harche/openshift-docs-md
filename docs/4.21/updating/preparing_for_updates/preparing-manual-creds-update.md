@@ -73,7 +73,7 @@ The required update process depends on the mode that the cluster is configured t
 
 ## Determining the Cloud Credential Operator mode by using the web console
 
-You can determine what mode the Cloud Credential Operator (CCO) is configured to use by using the web console.
+Determine the Cloud Credential Operator (CCO) mode by using the web console. Before you perform upgrades or troubleshoot, ensure you understand your cluster’s credential management configuration.
 
 <div class="note">
 
@@ -172,7 +172,7 @@ Only Amazon Web Services (AWS), global Microsoft Azure, and Google Cloud cluster
 
 ## Determining the Cloud Credential Operator mode by using the CLI
 
-You can determine what mode the Cloud Credential Operator (CCO) is configured to use by using the CLI.
+Determine the Cloud Credential Operator (CCO) mode by querying the cluster with the CLI. Before you perform upgrades or troubleshoot, ensure you understand your cluster’s credential management configuration.
 
 <div class="note">
 
@@ -315,11 +315,15 @@ Before updating a cluster that uses the Cloud Credential Operator (CCO) in manua
       --to=<path_to_directory_for_credentials_requests>
     ```
 
-    - The `--included` parameter includes only the manifests that your specific cluster configuration requires for the target release.
+    where:
 
-    - Specify the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
+    `--included`
+    Includes only the manifests that your specific cluster configuration requires for the target release.
 
-      This command creates a YAML file for each `CredentialsRequest` object.
+    `<path_to_directory_for_credentials_requests>`
+    Specifies the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
+
+    This command creates a YAML file for each `CredentialsRequest` object.
 
 4.  For each `CredentialsRequest` CR in the release image, ensure that a namespace that matches the text in the `spec.secretRef.namespace` field exists in the cluster. This field is where the generated secrets that hold the credentials configuration are stored.
 
@@ -351,9 +355,12 @@ Before updating a cluster that uses the Cloud Credential Operator (CCO) in manua
         namespace: openshift-cloud-credential-operator
     ```
 
-    - This field indicates the namespace which must exist to hold the generated secret.
+    where:
 
-      The `CredentialsRequest` CRs for other platforms have a similar format with different platform-specific values.
+    `openshift-cloud-credential-operator`
+    Indicates the namespace which must exist to hold the generated secret.
+
+    The `CredentialsRequest` CRs for other platforms have a similar format with different platform-specific values.
 
 5.  For any `CredentialsRequest` CR for which the cluster does not already have a namespace with the name specified in `spec.secretRef.namespace`, create the namespace by running the following command:
 
@@ -643,7 +650,9 @@ You can verify that the required provider resources and permissions policies are
 
 # Manually updating cloud provider resources
 
-Before upgrading a cluster with manually maintained credentials, you must create secrets for any new credentials for the release image that you are upgrading to. You must also review the required permissions for existing credentials and accommodate any new permissions requirements in the new release for those components.
+Meet the requirements of the target release by manually updating cloud provider credentials. Update these credentials by creating secrets for new components and by adjusting the permissions for existing components.
+
+Before you upgrade a cluster with manually maintained credentials, you must create secrets for any new credentials for the release image that you are upgrading to. You must also review the required permissions for existing credentials and accommodate any new permissions requirements in the new release for those components.
 
 - You have extracted the `CredentialsRequest` custom resources (CRs) from the OpenShift Container Platform release image and ensured that a namespace that matches the text in the `spec.secretRef.namespace` field exists in the cluster.
 
@@ -812,7 +821,7 @@ Before upgrading a cluster with manually maintained credentials, you must create
 
 # Indicating that the cluster is ready to upgrade
 
-The Cloud Credential Operator (CCO) `Upgradable` status for a cluster with manually maintained credentials is `False` by default.
+Modify the `CloudCredential` resource to include an `upgradeable-to` annotation. This signals that you updated manually maintained credentials and that the cluster is ready to upgrade.
 
 - For the release image that you are upgrading to, you have processed any new credentials manually or by using the Cloud Credential Operator utility (`ccoctl`).
 

@@ -93,7 +93,7 @@ The "Cardinality" column gives information about the implied metric cardinality 
 <td style="text-align: left;"><p><code>dns_name</code></p></td>
 <td style="text-align: left;"><p>no</p></td>
 <td style="text-align: left;"><p>careful</p></td>
-<td style="text-align: left;"><p>n/a</p></td>
+<td style="text-align: left;"><p>dns.name</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>Dscp</code></p></td>
@@ -156,7 +156,7 @@ The "Cardinality" column gives information about the implied metric cardinality 
 <td style="text-align: left;"><p><code>dst_network</code></p></td>
 <td style="text-align: left;"><p>no</p></td>
 <td style="text-align: left;"><p>fine</p></td>
-<td style="text-align: left;"><p>n/a</p></td>
+<td style="text-align: left;"><p>destination.network.name</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>DstK8S_OwnerName</code></p></td>
@@ -252,7 +252,7 @@ The "Cardinality" column gives information about the implied metric cardinality 
 <td style="text-align: left;"><p><code>ipsec_status</code></p></td>
 <td style="text-align: left;"><p>no</p></td>
 <td style="text-align: left;"><p>fine</p></td>
-<td style="text-align: left;"><p>n/a</p></td>
+<td style="text-align: left;"><p>ipsec.status</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>IcmpCode</code></p></td>
@@ -449,7 +449,7 @@ The "Cardinality" column gives information about the implied metric cardinality 
 <td style="text-align: left;"><p><code>src_network</code></p></td>
 <td style="text-align: left;"><p>no</p></td>
 <td style="text-align: left;"><p>fine</p></td>
-<td style="text-align: left;"><p>n/a</p></td>
+<td style="text-align: left;"><p>source.network.name</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>SrcK8S_OwnerName</code></p></td>
@@ -513,6 +513,42 @@ The "Cardinality" column gives information about the implied metric cardinality 
 <td style="text-align: left;"><p>no</p></td>
 <td style="text-align: left;"><p>fine</p></td>
 <td style="text-align: left;"><p>source.subnet.label</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>TLSCipherSuite</code></p></td>
+<td style="text-align: left;"><p>string</p></td>
+<td style="text-align: left;"><p>TLS cipher suite</p></td>
+<td style="text-align: left;"><p><code>tls_cipher_suite</code></p></td>
+<td style="text-align: left;"><p>no</p></td>
+<td style="text-align: left;"><p>fine</p></td>
+<td style="text-align: left;"><p>tls.ciphersuite</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>TLSGroup</code></p></td>
+<td style="text-align: left;"><p>string</p></td>
+<td style="text-align: left;"><p>TLS group name</p></td>
+<td style="text-align: left;"><p><code>tls_group</code></p></td>
+<td style="text-align: left;"><p>no</p></td>
+<td style="text-align: left;"><p>fine</p></td>
+<td style="text-align: left;"><p>tls.group</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>TLSTypes</code></p></td>
+<td style="text-align: left;"><p>string[]</p></td>
+<td style="text-align: left;"><p>TLS message types (bitfield)</p></td>
+<td style="text-align: left;"><p><code>tls_types</code></p></td>
+<td style="text-align: left;"><p>no</p></td>
+<td style="text-align: left;"><p>careful</p></td>
+<td style="text-align: left;"><p>tls.types</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>TLSVersion</code></p></td>
+<td style="text-align: left;"><p>string</p></td>
+<td style="text-align: left;"><p>TLS version</p></td>
+<td style="text-align: left;"><p><code>tls_version</code></p></td>
+<td style="text-align: left;"><p>no</p></td>
+<td style="text-align: left;"><p>fine</p></td>
+<td style="text-align: left;"><p>tls.version</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>TimeFlowEndMs</code></p></td>

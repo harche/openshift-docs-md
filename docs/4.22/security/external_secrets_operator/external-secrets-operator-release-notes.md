@@ -6,7 +6,7 @@ For more information, see [External Secrets Operator overview](../../security/ex
 
 # Release notes for External Secrets Operator for Red Hat OpenShift 1.2.0
 
-External Secrets Operator for Red Hat OpenShift version 1.2.0 is based on the upstream external-secrets project, version v2.5.0. For more information, see the [external-secrets project release notes for v2.5.0](https://github.com/external-secrets/external-secrets/releases/tag/v2.5.0).
+External Secrets Operator for Red Hat OpenShift version 1.2.0 is based on the upstream external-secrets project, version v2.5.0.
 
 Issued: 2026-07-09
 
@@ -78,9 +78,9 @@ With this release, when upgrading from a version that used unprefixed `NetworkPo
 
 - Before this release, if the `app=external-secrets` managed label was externally removed from a resource that the External Secrets Operator for Red Hat OpenShift owns, the resource fell out of the label-filtered informer cache. Subsequent reconciliation attempts to create the resource received an `AlreadyExists` error, causing the controller to enter a permanent error loop. With this release, the controller detects this cache-miss condition and restores the managed labels and annotations directly on the API server by using an uncached client, without interrupting the operand. ([ESO-237](https://issues.redhat.com/browse/ESO-237))
 
-# Release notes for External Secrets Operator for Red Hat OpenShift 1.1.0 (General Availability)
+# Release notes for External Secrets Operator for Red Hat OpenShift 1.1.0
 
-External Secrets Operator for Red Hat OpenShift version 1.1.0 is based on the upstream external-secrets project, version v0.20.4. For more information, see the [external-secrets project release notes for v0.20.4](https://https://github.com/external-secrets/external-secrets/tree/v0.20.4).
+External Secrets Operator for Red Hat OpenShift version 1.1.0 is based on the upstream external-secrets project, version v0.20.4.
 
 Issued: 2026-03-17
 
@@ -102,9 +102,33 @@ With this release, the Operator API, `externalsecretsconfig.operator.openshift.i
 
 For more information, see [Customizing the External Secrets Operator for Red Hat OpenShift](https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html-single/security_and_compliance/index#external-secrets-log-levels).
 
+# Release notes for External Secrets Operator for Red Hat OpenShift 1.0.1
+
+External Secrets Operator for Red Hat OpenShift 1.0.1 is based on the upstream external-secrets version 0.19.2.
+
+Issued: 16 July 2026
+
+This release fixes some Common Vulnerabilities and Exposures (CVEs) and provides related Red Hat advisories.
+
+The following advisories are available for the External Secrets Operator for Red Hat OpenShift:
+
+- [RHSA-2026:40924](https://access.redhat.com/errata/RHSA-2026:40924)
+
+- [RHBA-2026:40923](https://access.redhat.com/errata/RHBA-2026:40923)
+
+- [RHBA-2026:40925](https://access.redhat.com/errata/RHBA-2026:40925)
+
+- [RHBA-2026:41014](https://access.redhat.com/errata/RHBA-2026:41014)
+
+## CVEs
+
+- [CVE-2025-61726](https://access.redhat.com/security/cve/cve-2025-61726)
+
+- [CVE-2025-68121](https://access.redhat.com/security/cve/cve-2025-68121)
+
 # Release notes for External Secrets Operator for Red Hat OpenShift 1.0.0 (General Availability)
 
-External Secrets Operator for Red Hat OpenShift version 1.0.0 is based on the upstream external-secrets project, version v0.19.0. For more information, see the [external-secrets project release notes for v0.19.0](https://github.com/external-secrets/external-secrets/releases/tag/v0.19.0).
+External Secrets Operator for Red Hat OpenShift version 1.0.0 is based on the upstream external-secrets project, version v0.19.0.
 
 Issued: 2025-11-03
 
@@ -154,7 +178,7 @@ For more information, see [Configuring network policy for the operand](https://d
 
 # Release notes for External Secrets Operator for Red Hat OpenShift 0.1.0 (Technology Preview)
 
-Version `0.1.0` of the External Secrets Operator for Red Hat OpenShift is based on the upstream external-secrets version `0.14.3`. For more information, see the [external-secrets project release notes for v0.14.3](https://github.com/external-secrets/external-secrets/releases/tag/v0.14.3).
+Version `0.1.0` of the External Secrets Operator for Red Hat OpenShift is based on the upstream external-secrets version `0.14.3`.
 
 Issued: 2025-06-26
 

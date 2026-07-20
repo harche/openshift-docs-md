@@ -2,7 +2,7 @@ The OpenShift Container Platform control plane includes a built-in OAuth server.
 
 # Configuring the OAuth server for a hosted cluster by using the CLI
 
-You can configure the internal OAuth server for your hosted cluster by using the CLI.
+You can configure the internal OAuth server for your hosted cluster by using the command-line interface (CLI).
 
 You can configure OAuth for the following supported identity providers:
 
@@ -34,7 +34,7 @@ When you configure identity providers, you must configure at least one `NodePool
 
 - You created your hosted cluster.
 
-1.  Edit the `HostedCluster` custom resource (CR) on the hosting cluster by running the following command:
+1.  Edit the `HostedCluster` custom resource (CR) on the management cluster by running the following command:
 
     ``` terminal
     $ oc edit hostedcluster <hosted_cluster_name> -n <hosted_cluster_namespace>
@@ -69,25 +69,25 @@ When you configure identity providers, you must configure at least one `NodePool
             type: OpenID
     ```
 
-    - Specifies your hosted cluster name.
+    - `metadata.name` specifies your hosted cluster name.
 
-    - Specifies your hosted cluster namespace.
+    - `metadata.namespace` specifies your hosted cluster namespace.
 
-    - This provider name is prefixed to the value of the identity claim to form an identity name. The provider name is also used to build the redirect URL.
+    - `spec.configuration.oauth.identityProviders.openID` is a provider name that is prefixed to the value of the identity claim to form an identity name. The provider name is also used to build the redirect URL.
 
-    - Defines a list of attributes to use as the email address.
+    - `spec.configuration.oauth.identityProviders.openID.claims.email` defines a list of attributes to use as the email address.
 
-    - Defines a list of attributes to use as a display name.
+    - `spec.configuration.oauth.identityProviders.openID.claims.name` defines a list of attributes to use as a display name.
 
-    - Defines a list of attributes to use as a preferred user name.
+    - `spec.configuration.oauth.identityProviders.openID.claims.preferredUsername` defines a list of attributes to use as a preferred user name.
 
-    - Defines the ID of a client registered with the OpenID provider. You must allow the client to redirect to the `https://oauth-openshift.apps.<cluster_name>.<cluster_domain>/oauth2callback/<idp_provider_name>` URL.
+    - `spec.configuration.oauth.identityProviders.openID.clientID` defines the ID of a client registered with the OpenID provider. You must allow the client to redirect to the `https://oauth-openshift.apps.<cluster_name>.<cluster_domain>/oauth2callback/<idp_provider_name>` URL.
 
-    - Defines a secret of a client registered with the OpenID provider.
+    - `spec.configuration.oauth.identityProviders.openID.clientSecret.name` defines a secret of a client registered with the OpenID provider.
 
-    - The [Issuer Identifier](https://openid.net/specs/openid-connect-core-1_0.html#IssuerIdentifier) described in the OpenID spec. You must use `https` without query or fragment component.
+    - `spec.configuration.oauth.identityProviders.openID.issuer` specifies the Issuer Identifier described in the OpenID spec. You must use `https` without query or fragment component. For more information about Issuer Identifiers, see "Issuer Identifier" in the *Additional resources* section.
 
-    - Defines a mapping method that controls how mappings are established between identities of this provider and `User` objects.
+    - `spec.configuration.oauth.identityProviders.mappingMethod` defines a mapping method that controls how mappings are established between identities of this provider and `User` objects.
 
 3.  Save the file to apply the changes.
 
@@ -179,11 +179,11 @@ When you configure identity providers, you must configure at least one `NodePool
 
 7.  Click **Save**.
 
-- To know more about supported identity providers, see ["Understanding identity provider configuration"](../authentication/understanding-identity-provider.xml#understanding-identity-provider) in *Authentication and authorization*.
+# IAM roles assigned by using the CCO in a hosted cluster on AWS
 
-# Assigning components IAM roles by using the CCO in a hosted cluster on AWS
+You can assign components Identity and Access Management (IAM) roles that provide short-term, limited-privilege security credentials by using the Cloud Credential Operator (CCO) in hosted clusters on Amazon Web Services (AWS).
 
-You can assign components IAM roles that provide short-term, limited-privilege security credentials by using the Cloud Credential Operator (CCO) in hosted clusters on Amazon Web Services (AWS). By default, the CCO runs in a hosted control plane.
+By default, the CCO runs in a hosted control plane.
 
 <div class="note">
 
@@ -191,48 +191,7 @@ The CCO supports a manual mode only for hosted clusters on AWS. By default, host
 
 </div>
 
-# Verifying the CCO installation in a hosted cluster on AWS
-
-You can verify that the Cloud Credential Operator (CCO) is running correctly in your hosted control plane.
-
-- You configured the hosted cluster on Amazon Web Services (AWS).
-
-1.  Verify that the CCO is configured in a manual mode in your hosted cluster by running the following command:
-
-    ``` terminal
-    $ oc get cloudcredentials <hosted_cluster_name> \
-      -n <hosted_cluster_namespace> \
-      -o=jsonpath={.spec.credentialsMode}
-    ```
-
-    <div class="formalpara-title">
-
-    **Expected output**
-
-    </div>
-
-    ``` terminal
-    Manual
-    ```
-
-2.  Verify that the value for the `serviceAccountIssuer` resource is not empty by running the following command:
-
-    ``` terminal
-    $ oc get authentication cluster --kubeconfig <hosted_cluster_name>.kubeconfig \
-      -o jsonpath --template '{.spec.serviceAccountIssuer }'
-    ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
-    ``` terminal
-    https://aos-hypershift-ci-oidc-29999.s3.us-east-2.amazonaws.com/hypershift-ci-29999
-    ```
-
-# Enabling Operators to support CCO-based workflows with AWS STS
+## Enabling Operators to support CCO-based workflows with AWS STS
 
 As an Operator author designing your project to run on Operator Lifecycle Manager (OLM), you can enable your Operator to authenticate against AWS on STS-enabled OpenShift Container Platform clusters by customizing your project to support the Cloud Credential Operator (CCO).
 
@@ -511,5 +470,52 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
            SharedConfigFiles: []string{sharedCredentialsFile},
         }
         ```
+
+## Verifying the CCO installation in a hosted cluster on AWS
+
+You can verify that the Cloud Credential Operator (CCO) is running correctly in your hosted control plane.
+
+- You configured the hosted cluster on Amazon Web Services (AWS).
+
+1.  Verify that the CCO is configured in a manual mode in your hosted cluster by running the following command:
+
+    ``` terminal
+    $ oc get cloudcredentials <hosted_cluster_name> \
+      -n <hosted_cluster_namespace> \
+      -o=jsonpath={.spec.credentialsMode}
+    ```
+
+    <div class="formalpara-title">
+
+    **Expected output**
+
+    </div>
+
+    ``` terminal
+    Manual
+    ```
+
+2.  Verify that the value for the `serviceAccountIssuer` resource is not empty by running the following command:
+
+    ``` terminal
+    $ oc get authentication cluster --kubeconfig <hosted_cluster_name>.kubeconfig \
+      -o jsonpath --template '{.spec.serviceAccountIssuer }'
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    https://aos-hypershift-ci-oidc-29999.s3.us-east-2.amazonaws.com/hypershift-ci-29999
+    ```
+
+# Additional resources
+
+- [Issuer Identifier](https://openid.net/specs/openid-connect-core-1_0.html#IssuerIdentifier)
+
+- [Understanding identity provider configuration](../authentication/understanding-identity-provider.xml#understanding-identity-provider)
 
 - [Cluster Operators reference page for the Cloud Credential Operator](../operators/operator-reference.xml#cloud-credential-operator_operator-reference)

@@ -146,9 +146,11 @@ The infrastructure requirements are as follows:
 
 - An S3 bucket for registry
 
-# Identity and Access Management (IAM) permissions
+# Identity and Access Management (IAM) permissions for hosted control planes on AWS
 
-In the context of hosted control planes, the consumer is responsible to create the Amazon Resource Name (ARN) roles. The *consumer* is an automated process to generate the permissions files. The consumer might be the CLI or OpenShift Cluster Manager. Hosted control planes can enable granularity to honor the principle of least-privilege components, which means that every component uses its own role to operate or create Amazon Web Services (AWS) objects, and the roles are limited to what is required for the product to function normally.
+In the context of hosted control planes, the consumer is responsible to create the Amazon Resource Name (ARN) roles. The *consumer* is an automated process to generate the permissions files. It might be the command-line interface (CLI) or OpenShift Cluster Manager.
+
+Hosted control planes can enable granularity to honor the principle of least-privilege components, which means that every component uses its own role to operate or create Amazon Web Services (AWS) objects, and the roles are limited to what is required for the product to function normally.
 
 The hosted cluster receives the ARN roles as input and the consumer creates an AWS permission configuration for each component. As a result, the component can authenticate through STS and preconfigured OIDC IDP.
 
@@ -497,201 +499,203 @@ The roles that hosted control planes uses are shown in the following examples:
   }
   ```
 
-# Creating AWS infrastructure and IAM resources separate
+# Separate creation of the hosted cluster and its resources
 
-By default, the `hcp create cluster aws` command creates cloud infrastructure with the hosted cluster and applies it. You can create the cloud infrastructure portion separately so that you can use the `hcp create cluster aws` command only to create the cluster, or render it to modify it before you apply it.
+By default, the `hcp create cluster aws` command creates the cloud infrastructure with the hosted cluster and applies it. However, you can create the cloud infrastructure separately so that you can use the command to create only the cluster, or render it to modify it before you apply it.
 
-To create the cloud infrastructure portion separately, you need to create the Amazon Web Services (AWS) infrastructure, create the AWS Identity and Access (IAM) resources, and create the cluster.
+The process to create the hosted cluster and its resources separately involves creating the cloud infrastructure, creating the AWS Identity and Access (IAM) resources, and then creating the cluster.
 
 ## Creating the AWS infrastructure separately
 
-To create the Amazon Web Services (AWS) infrastructure, you need to create a Virtual Private Cloud (VPC) and other resources for your cluster. You can use the AWS console or an infrastructure automation and provisioning tool. For instructions to use the AWS console, see [Create a VPC plus other VPC resources](https://docs.aws.amazon.com/vpc/latest/userguide/create-vpc.html#create-vpc-and-other-resources) in the AWS Documentation.
+To create the Amazon Web Services (AWS) infrastructure, you need to create a Virtual Private Cloud (VPC) and other resources for your cluster. You can use the AWS console or an infrastructure automation and provisioning tool.
+
+For instructions to use the AWS console, see [Create a VPC plus other VPC resources](https://docs.aws.amazon.com/vpc/latest/userguide/create-vpc.html#create-vpc-and-other-resources) in the AWS Documentation.
 
 The VPC must include private and public subnets and resources for external access, such as a network address translation (NAT) gateway and an internet gateway. In addition to the VPC, you need a private hosted zone for the ingress of your cluster. If you are creating clusters that use PrivateLink (`Private` or `PublicAndPrivate` access modes), you need an additional hosted zone for PrivateLink.
 
-Create the AWS infrastructure for your hosted cluster by using the following example configuration:
+- Create the AWS infrastructure for your hosted cluster by using the following example configuration:
 
-``` yaml
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  creationTimestamp: null
-  name: clusters
-spec: {}
-status: {}
----
-apiVersion: v1
-data:
-  .dockerconfigjson: xxxxxxxxxxx
-kind: Secret
-metadata:
-  creationTimestamp: null
-  labels:
-    hypershift.openshift.io/safe-to-delete-with-cluster: "true"
-  name: <pull_secret_name>
-  namespace: clusters
----
-apiVersion: v1
-data:
-  key: xxxxxxxxxxxxxxxxx
-kind: Secret
-metadata:
-  creationTimestamp: null
-  labels:
-    hypershift.openshift.io/safe-to-delete-with-cluster: "true"
-  name: <etcd_encryption_key_name>
-  namespace: clusters
-type: Opaque
----
-apiVersion: v1
-data:
-  id_rsa: xxxxxxxxx
-  id_rsa.pub: xxxxxxxxx
-kind: Secret
-metadata:
-  creationTimestamp: null
-  labels:
-    hypershift.openshift.io/safe-to-delete-with-cluster: "true"
-  name: <ssh-key-name>
-  namespace: clusters
----
-apiVersion: hypershift.openshift.io/v1beta1
-kind: HostedCluster
-metadata:
-  creationTimestamp: null
-  name: <hosted_cluster_name>
-  namespace: clusters
-spec:
-  autoscaling: {}
-  configuration: {}
-  controllerAvailabilityPolicy: SingleReplica
-  dns:
-    baseDomain: <dns_domain>
-    privateZoneID: xxxxxxxx
-    publicZoneID: xxxxxxxx
-  etcd:
-    managed:
-      storage:
-        persistentVolume:
-          size: 8Gi
-          storageClassName: gp3-csi
-        type: PersistentVolume
-    managementType: Managed
-  fips: false
-  infraID: <infra_id>
-  issuerURL: <issuer_url>
-  networking:
-    clusterNetwork:
-    - cidr: 10.132.0.0/14
-    machineNetwork:
-    - cidr: 10.0.0.0/16
-    networkType: OVNKubernetes
-    serviceNetwork:
-    - cidr: 172.31.0.0/16
-  olmCatalogPlacement: management
-  platform:
-    aws:
-      cloudProviderConfig:
+  ``` yaml
+  ---
+  apiVersion: v1
+  kind: Namespace
+  metadata:
+    creationTimestamp: null
+    name: clusters
+  spec: {}
+  status: {}
+  ---
+  apiVersion: v1
+  data:
+    .dockerconfigjson: xxxxxxxxxxx
+  kind: Secret
+  metadata:
+    creationTimestamp: null
+    labels:
+      hypershift.openshift.io/safe-to-delete-with-cluster: "true"
+    name: <pull_secret_name>
+    namespace: clusters
+  ---
+  apiVersion: v1
+  data:
+    key: xxxxxxxxxxxxxxxxx
+  kind: Secret
+  metadata:
+    creationTimestamp: null
+    labels:
+      hypershift.openshift.io/safe-to-delete-with-cluster: "true"
+    name: <etcd_encryption_key_name>
+    namespace: clusters
+  type: Opaque
+  ---
+  apiVersion: v1
+  data:
+    id_rsa: xxxxxxxxx
+    id_rsa.pub: xxxxxxxxx
+  kind: Secret
+  metadata:
+    creationTimestamp: null
+    labels:
+      hypershift.openshift.io/safe-to-delete-with-cluster: "true"
+    name: <ssh_key_name>
+    namespace: clusters
+  ---
+  apiVersion: hypershift.openshift.io/v1beta1
+  kind: HostedCluster
+  metadata:
+    creationTimestamp: null
+    name: <hosted_cluster_name>
+    namespace: clusters
+  spec:
+    autoscaling: {}
+    configuration: {}
+    controllerAvailabilityPolicy: SingleReplica
+    dns:
+      baseDomain: <dns_domain>
+      privateZoneID: xxxxxxxx
+      publicZoneID: xxxxxxxx
+    etcd:
+      managed:
+        storage:
+          persistentVolume:
+            size: 8Gi
+            storageClassName: gp3-csi
+          type: PersistentVolume
+      managementType: Managed
+    fips: false
+    infraID: <infra_id>
+    issuerURL: <issuer_url>
+    networking:
+      clusterNetwork:
+      - cidr: 10.132.0.0/14
+      machineNetwork:
+      - cidr: 10.0.0.0/16
+      networkType: OVNKubernetes
+      serviceNetwork:
+      - cidr: 172.31.0.0/16
+    olmCatalogPlacement: management
+    platform:
+      aws:
+        cloudProviderConfig:
+          subnet:
+            id: <subnet_xxx>
+          vpc: <vpc_xxx>
+          zone: us-west-1b
+        endpointAccess: Public
+        multiArch: false
+        region: us-west-1
+        rolesRef:
+          controlPlaneOperatorARN: arn:aws:iam::820196288204:role/<infra_id>-control-plane-operator
+          imageRegistryARN: arn:aws:iam::820196288204:role/<infra_id>-openshift-image-registry
+          ingressARN: arn:aws:iam::820196288204:role/<infra_id>-openshift-ingress
+          kubeCloudControllerARN: arn:aws:iam::820196288204:role/<infra_id>-cloud-controller
+          networkARN: arn:aws:iam::820196288204:role/<infra_id>-cloud-network-config-controller
+          nodePoolManagementARN: arn:aws:iam::820196288204:role/<infra_id>-node-pool
+          storageARN: arn:aws:iam::820196288204:role/<infra_id>-aws-ebs-csi-driver-controller
+      type: AWS
+    pullSecret:
+      name: <pull_secret_name>
+    release:
+      image: quay.io/openshift-release-dev/ocp-release:4.16-x86_64
+    secretEncryption:
+      aescbc:
+        activeKey:
+          name: <etcd_encryption_key_name>
+      type: aescbc
+    services:
+    - service: APIServer
+      servicePublishingStrategy:
+        type: LoadBalancer
+    - service: OAuthServer
+      servicePublishingStrategy:
+        type: Route
+    - service: Konnectivity
+      servicePublishingStrategy:
+        type: Route
+    - service: Ignition
+      servicePublishingStrategy:
+        type: Route
+    - service: OVNSbDb
+      servicePublishingStrategy:
+        type: Route
+    sshKey:
+      name: <ssh_key_name>
+  status:
+    controlPlaneEndpoint:
+      host: ""
+      port: 0
+  ---
+  apiVersion: hypershift.openshift.io/v1beta1
+  kind: NodePool
+  metadata:
+    creationTimestamp: null
+    name: <node_pool_name>
+    namespace: clusters
+  spec:
+    arch: amd64
+    clusterName: <hosted_cluster_name>
+    management:
+      autoRepair: true
+      upgradeType: Replace
+    nodeDrainTimeout: 0s
+    platform:
+      aws:
+        instanceProfile: <instance_profile_name>
+        instanceType: m6i.xlarge
+        rootVolume:
+          size: 120
+          type: gp3
         subnet:
           id: <subnet_xxx>
-        vpc: <vpc_xxx>
-        zone: us-west-1b
-      endpointAccess: Public
-      multiArch: false
-      region: us-west-1
-      rolesRef:
-        controlPlaneOperatorARN: arn:aws:iam::820196288204:role/<infra_id>-control-plane-operator
-        imageRegistryARN: arn:aws:iam::820196288204:role/<infra_id>-openshift-image-registry
-        ingressARN: arn:aws:iam::820196288204:role/<infra_id>-openshift-ingress
-        kubeCloudControllerARN: arn:aws:iam::820196288204:role/<infra_id>-cloud-controller
-        networkARN: arn:aws:iam::820196288204:role/<infra_id>-cloud-network-config-controller
-        nodePoolManagementARN: arn:aws:iam::820196288204:role/<infra_id>-node-pool
-        storageARN: arn:aws:iam::820196288204:role/<infra_id>-aws-ebs-csi-driver-controller
-    type: AWS
-  pullSecret:
-    name: <pull_secret_name>
-  release:
-    image: quay.io/openshift-release-dev/ocp-release:4.16-x86_64
-  secretEncryption:
-    aescbc:
-      activeKey:
-        name: <etcd_encryption_key_name>
-    type: aescbc
-  services:
-  - service: APIServer
-    servicePublishingStrategy:
-      type: LoadBalancer
-  - service: OAuthServer
-    servicePublishingStrategy:
-      type: Route
-  - service: Konnectivity
-    servicePublishingStrategy:
-      type: Route
-  - service: Ignition
-    servicePublishingStrategy:
-      type: Route
-  - service: OVNSbDb
-    servicePublishingStrategy:
-      type: Route
-  sshKey:
-    name: <ssh_key_name>
-status:
-  controlPlaneEndpoint:
-    host: ""
-    port: 0
----
-apiVersion: hypershift.openshift.io/v1beta1
-kind: NodePool
-metadata:
-  creationTimestamp: null
-  name: <node_pool_name>
-  namespace: clusters
-spec:
-  arch: amd64
-  clusterName: <hosted_cluster_name>
-  management:
-    autoRepair: true
-    upgradeType: Replace
-  nodeDrainTimeout: 0s
-  platform:
-    aws:
-      instanceProfile: <instance_profile_name>
-      instanceType: m6i.xlarge
-      rootVolume:
-        size: 120
-        type: gp3
-      subnet:
-        id: <subnet_xxx>
-    type: AWS
-  release:
-    image: quay.io/openshift-release-dev/ocp-release:4.16-x86_64
-  replicas: 2
-status:
-  replicas: 0
-```
+      type: AWS
+    release:
+      image: quay.io/openshift-release-dev/ocp-release:4.16-x86_64
+    replicas: 2
+  status:
+    replicas: 0
+  ```
 
-- Replace `<pull_secret_name>` with the name of your pull secret.
+  - `<pull_secret_name>` specifies the name of your pull secret.
 
-- Replace `<etcd_encryption_key_name>` with the name of your etcd encryption key.
+  - `<etcd_encryption_key_name>` specifies the name of your etcd encryption key.
 
-- Replace `<ssh_key_name>` with the name of your SSH key.
+  - `<ssh_key_name>` specifies the name of your SSH key.
 
-- Replace `<hosted_cluster_name>` with the name of your hosted cluster.
+  - `<hosted_cluster_name>` specifies the name of your hosted cluster.
 
-- Replace `<dns_domain>` with your base DNS domain, such as `example.com`.
+  - `<dns_domain>` specifies your base DNS domain, such as `example.com`.
 
-- Replace `<infra_id>` with the value that identifies the IAM resources that are associated with the hosted cluster.
+  - `<infra_id>` specifies the value that identifies the IAM resources that are associated with the hosted cluster.
 
-- Replace `<issuer_url>` with your issuer URL, which ends with your `infra_id` value. For example, `https://example-hosted-us-west-1.s3.us-west-1.amazonaws.com/example-hosted-infra-id`.
+  - `<issuer_url>` specifies your issuer URL, which ends with your `infra_id` value. For example, `https://example-hosted-us-west-1.s3.us-west-1.amazonaws.com/example-hosted-infra-id`.
 
-- Replace `<subnet_xxx>` with your subnet ID. Both private and public subnets need to be tagged. For public subnets, use `kubernetes.io/role/elb=1`. For private subnets, use `kubernetes.io/role/internal-elb=1`.
+  - `<subnet_xxx>` specifies your subnet ID. Both private and public subnets need to be tagged. For public subnets, use `kubernetes.io/role/elb=1`. For private subnets, use `kubernetes.io/role/internal-elb=1`.
 
-- Replace `<vpc_xxx>` with your VPC ID.
+  - `<vpc_xxx>` specifies your VPC ID.
 
-- Replace `<node_pool_name>` with the name of your `NodePool` resource.
+  - `<node_pool_name>` specifies the name of your `NodePool` resource.
 
-- Replace `<instance_profile_name>` with the name of your AWS instance.
+  - `<instance_profile_name>` specifies the name of your AWS instance.
 
 ## Creating the AWS IAM resources
 

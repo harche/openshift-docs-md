@@ -65,10 +65,10 @@ After uninstallation, check your cloud provider for any resources that were not 
 
     where:
 
-    \<installation_directory\>
+    `<installation_directory>`
     Specify the path to the directory that you stored the installation files in.
 
-    --log-level info
+    `--log-level info`
     To view different details, specify `warn`, `debug`, or `error` instead of `info`.
 
     <div class="note">

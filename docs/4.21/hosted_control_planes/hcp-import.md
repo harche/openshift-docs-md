@@ -2,15 +2,13 @@ Hosted clusters are automatically imported into multicluster engine Operator aft
 
 # Limitations of managing imported hosted clusters
 
-Hosted clusters are automatically imported into the local multicluster engine for Kubernetes Operator, unlike a standalone OpenShift Container Platform or third party clusters. Hosted clusters run some of their agents in the *hosted mode* so that the agents do not use the resources of your cluster.
+Hosted clusters are automatically imported into the local multicluster engine for Kubernetes Operator, unlike a standalone OpenShift Container Platform or third-party clusters. Hosted clusters run some of their agents in the *hosted mode* so that the agents do not use the resources of your cluster.
 
 If you choose to automatically import hosted clusters, you can update node pools and the control plane in hosted clusters by using the `HostedCluster` resource on the management cluster. To update node pools and a control plane, see "Updating node pools in a hosted cluster" and "Updating a control plane in a hosted cluster".
 
 You can import hosted clusters into a location other than the local multicluster engine Operator by using the Red Hat Advanced Cluster Management (RHACM). For more information, see "Discovering multicluster engine for Kubernetes Operator hosted clusters in Red Hat Advanced Cluster Management".
 
 In this topology, you must update your hosted clusters by using the command-line interface or the console of the local multicluster engine for Kubernetes Operator where the cluster is hosted. You cannot update the hosted clusters through the RHACM hub cluster.
-
-# Additional resources
 
 - [Updating node pools in a hosted cluster](../hosted_control_planes/hcp-updating.xml#hcp-update-node-pools_hcp-updating)
 
@@ -20,7 +18,7 @@ In this topology, you must update your hosted clusters by using the command-line
 
 # Manually importing hosted clusters
 
-If you want to import hosted clusters manually, complete the following steps.
+Typically, hosted clusters are automatically imported to multicluster engine Operator after the hosted control plane becomes available. However, you can import hosted clusters manually as required.
 
 1.  In the console, click **Infrastructure** → **Clusters** and select the hosted cluster that you want to import.
 
@@ -28,13 +26,13 @@ If you want to import hosted clusters manually, complete the following steps.
 
     <div class="note">
 
-    For your *discovered* hosted cluster, you can also import from the console, but the cluster must be in an upgradable state. Import on your cluster is disabled if the hosted cluster is not in an upgradable state because the hosted control plane is not available. Click **Import** to begin the process. The status is `Importing` while the cluster receives updates and then changes to `Ready`.
+    For your *discovered* hosted cluster, you can also import from the console, but the cluster must be in an upgradeable state. Import on your cluster is disabled if the hosted cluster is not in an upgradeable state because the hosted control plane is not available. Click **Import** to begin the process. The status is `Importing` while the cluster receives updates and then changes to `Ready`.
 
     </div>
 
 # Manually importing a hosted cluster on AWS
 
-You can also import a hosted cluster on Amazon Web Services (AWS) with the command-line interface.
+You can import a hosted cluster on Amazon Web Services (AWS) with the command-line interface.
 
 1.  Create your `ManagedCluster` resource by using the following sample YAML file:
 
@@ -57,7 +55,7 @@ You can also import a hosted cluster on Amazon Web Services (AWS) with the comma
       leaseDurationSeconds: 60
     ```
 
-    - Replace `<hosted_cluster_name>` with the name of your hosted cluster.
+    Replace `<hosted_cluster_name>` with the name of your hosted cluster.
 
 2.  Run the following command to apply the resource:
 
@@ -65,7 +63,7 @@ You can also import a hosted cluster on Amazon Web Services (AWS) with the comma
     $ oc apply -f <file_name>
     ```
 
-    - Replace `<file_name>` with the YAML file name you created in the previous step.
+    Replace `<file_name>` with the YAML file name you created in the previous step.
 
 3.  If you have Red Hat Advanced Cluster Management installed, create your `KlusterletAddonConfig` resource by using the following sample YAML file. If you have installed multicluster engine Operator only, skip this step:
 
@@ -103,7 +101,7 @@ You can also import a hosted cluster on Amazon Web Services (AWS) with the comma
     $ oc apply -f <file_name>
     ```
 
-    - Replace `<file_name>` with the YAML file name you created in the previous step.
+    Replace `<file_name>` with the name of the YAML that you created in the previous step.
 
 5.  After the import process is complete, your hosted cluster becomes visible in the console. You can also check the status of your hosted cluster by running the following command:
 
@@ -124,14 +122,6 @@ If Red Hat Advanced Cluster Management is installed, all Red Hat Advanced Clus
 </div>
 
 When automatic import is disabled, only newly created hosted clusters are not automatically imported. Hosted clusters that were already imported are not affected. You can still manually import clusters by using the console or by creating the `ManagedCluster` and `KlusterletAddonConfig` custom resources.
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To disable the automatic import of hosted clusters, complete the following steps:
 
 1.  On the hub cluster, open the `hypershift-addon-deploy-config` specification that is in the `AddonDeploymentConfig` resource in the namespace where multicluster engine Operator is installed by entering the following command:
 

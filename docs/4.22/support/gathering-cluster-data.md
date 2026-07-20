@@ -26,7 +26,7 @@ Alternatively, you can collect specific information by running the command with 
 
   ``` terminal
   $ oc adm must-gather \
-    --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.0
+    --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.2
   ```
 
 - To collect the audit logs, use the `-- /usr/bin/gather_audit_logs` argument, as described in a following section.
@@ -63,7 +63,7 @@ For example:
 
 ``` terminal
 $ oc adm must-gather --run-namespace <namespace> \
-  --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.0
+  --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.2
 ```
 
 ## Gathering data about your cluster for Red Hat Support
@@ -205,7 +205,7 @@ You can gather debugging information about specific features by using the `oc ad
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><p><code>registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.0</code></p></td>
+<td style="text-align: left;"><p><code>registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.2</code></p></td>
 <td style="text-align: left;"><p>Data collection for OpenShift Virtualization.</p></td>
 </tr>
 <tr class="even">
@@ -308,7 +308,7 @@ To determine the latest version for an OpenShift Container Platform component’
     ``` terminal
     $ oc adm must-gather \
       --image-stream=openshift/must-gather \
-      --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.0
+      --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.2
     ```
 
     You can use the `must-gather` tool with additional arguments to gather data that is specifically related to OpenShift Logging and the Red Hat OpenShift Logging Operator in your cluster. For OpenShift Logging, run the following command:

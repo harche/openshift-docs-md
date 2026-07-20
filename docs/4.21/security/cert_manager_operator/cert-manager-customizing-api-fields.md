@@ -1,12 +1,14 @@
-After installing the cert-manager Operator for Red Hat OpenShift, you can perform the following actions by configuring the `CertManager` custom resource (CR):
+You can customize the cert-manager Operator for Red Hat OpenShift after installation to suit your cluster requirements.
 
-- Configure the arguments to modify the behavior of the cert-manager components, such as the cert-manager controller, CA injector, and Webhook.
+- Configure the `CertManager` custom resource (CR) to modify the behavior of cert-manager components, such as the cert-manager controller, CA injector, and webhook.
 
 - Set environment variables for the controller pod.
 
 - Define resource requests and limits to manage CPU and memory usage.
 
 - Configure scheduling rules to control where pods run in your cluster.
+
+- Configure the cluster `APIServer` custom resource (CR) to apply the cluster-wide TLS security profile to cert-manager components.
 
 <div class="formalpara-title">
 
@@ -145,7 +147,7 @@ You can configure the overridable arguments for the cert-manager components in t
 The following table describes the overridable arguments for the cert-manager components:
 
 <table>
-<caption>Overridable arguments the cert-manager components</caption>
+<caption>Overridable arguments for the cert-manager components</caption>
 <colgroup>
 <col style="width: 45%" />
 <col style="width: 18%" />
@@ -218,6 +220,26 @@ The following table describes the overridable arguments for the cert-manager com
 <td style="text-align: left;"><p>Specify the minimum backoff duration for certificate requests. The default value is <code>1h0m0s</code>.</p></td>
 </tr>
 <tr class="even">
+<td style="text-align: left;"><p><code>--concurrent-workers</code></p></td>
+<td style="text-align: left;"><p>Controller</p></td>
+<td style="text-align: left;"><p>The number of concurrent workers for each controller. The default value is <code>5</code>.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>--kube-api-qps</code></p></td>
+<td style="text-align: left;"><p>Controller</p></td>
+<td style="text-align: left;"><p>The maximum number of queries per second sent to the Kubernetes API server. The default value is <code>20</code>.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>--kube-api-burst</code></p></td>
+<td style="text-align: left;"><p>Controller</p></td>
+<td style="text-align: left;"><p>The maximum burst of queries per second sent to the Kubernetes API server. Must be greater than or equal to <code>--kube-api-qps</code>. The default value is <code>50</code>.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>--max-concurrent-challenges</code></p></td>
+<td style="text-align: left;"><p>Controller</p></td>
+<td style="text-align: left;"><p>The maximum number of ACME challenges that can run concurrently. The default value is <code>60</code>.</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>--v=&lt;verbosity_level&gt;</code></p></td>
 <td style="text-align: left;"><p>Controller, Webhook, CA injector</p></td>
 <td style="text-align: left;"><p>Specify the log level verbosity to determine the verbosity of log messages.</p></td>
@@ -225,7 +247,7 @@ The following table describes the overridable arguments for the cert-manager com
 </tbody>
 </table>
 
-Overridable arguments the cert-manager components
+Overridable arguments for the cert-manager components
 
 ## Overridable environment variables for the cert-manager controller
 
@@ -258,7 +280,7 @@ Overridable resource parameters for the cert-manager components
 
 ## Overridable scheduling parameters for the cert-manager components
 
-You can configure the pod scheduling constrainsts for the cert-manager components in the `spec.controllerConfig`, `spec.webhookConfig` field, and `spec.cainjectorConfig` sections in the `CertManager` CR.
+You can configure the pod scheduling constraints for the cert-manager components in the `spec.controllerConfig`, `spec.webhookConfig` field, and `spec.cainjectorConfig` sections in the `CertManager` CR.
 
 The following table describes the pod scheduling parameters for the cert-manager components:
 
@@ -400,6 +422,10 @@ You can override the supported arguments for the cert-manager Operator for Red H
           - '--acme-http01-solver-resource-request-cpu=<quantity>'
           - '--acme-http01-solver-resource-request-memory=<quantity>'
           - '--certificate-request-minimum-backoff-duration=<duration>'
+          - '--concurrent-workers=<quantity>'
+          - '--kube-api-qps=<quantity>'
+          - '--kube-api-burst=<quantity>'
+          - '--max-concurrent-challenges=<quantity>'
       webhookConfig:
         overrideArgs:
           - '--v=<verbosity_level>'
@@ -433,14 +459,16 @@ You can override the supported arguments for the cert-manager Operator for Red H
     spec:
       containers:
       - args:
-        - --acme-http01-solver-nameservers=1.1.1.1:53
-        - --cluster-resource-namespace=$(POD_NAMESPACE)
-        - --dns01-recursive-nameservers=1.1.1.1:53
-        - --dns01-recursive-nameservers-only
-        - --leader-election-namespace=kube-system
-        - --max-concurrent-challenges=60
-        - --metrics-listen-address=0.0.0.0:9042
-        - --v=6
+        # ...
+          - --acme-http01-solver-nameservers=1.1.1.1:53
+          - --concurrent-workers=5
+          - --dns01-recursive-nameservers=1.1.1.1:53
+          - --dns01-recursive-nameservers-only
+          - --kube-api-burst=50
+          - --kube-api-qps=20
+          - --max-concurrent-challenges=60
+          - --metrics-listen-address=0.0.0.0:9042
+          - --v=6
   ...
     metadata:
       name: cert-manager-cainjector-866c4fd758-ltxxj
@@ -449,8 +477,8 @@ You can override the supported arguments for the cert-manager Operator for Red H
     spec:
       containers:
       - args:
-        - --leader-election-namespace=kube-system
-        - --v=2
+        # ...
+          - --v=2
   ...
     metadata:
       name: cert-manager-webhook-6d48f88495-c88gd
@@ -459,8 +487,8 @@ You can override the supported arguments for the cert-manager Operator for Red H
     spec:
       containers:
       - args:
-        ...
-        - --v=4
+        # ...
+          - --v=2
   ```
 
 <!-- -->
@@ -836,3 +864,152 @@ You can configure the pod scheduling from the cert-manager Operator for Red Hat 
     ```
 
 - [Explanation of fields in the CertManager custom resource](../../security/cert_manager_operator/cert-manager-customizing-api-fields.xml#cert-manager-explanation-of-certmanager-cr-fields_cert-manager-customizing-api-fields)
+
+# Configuring cluster TLS security profile adherence for cert-manager components
+
+You can configure the cert-manager Operator for Red Hat OpenShift to apply the cluster-wide TLS security profile by setting the TLS adherence policy on the cluster `APIServer` resource. When the adherence policy is set to `StrictAllComponents`, cert-manager components automatically apply the cluster TLS security profile settings.
+
+<div class="important">
+
+TLS adherence for cert-manager operands is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
+
+- You have access to the cluster with `cluster-admin` privileges.
+
+- You installed the cert-manager Operator for Red Hat OpenShift.
+
+- You enabled the `TechPreviewNoUpgrade` feature set. For more information, see "Enabling features using feature gates".
+
+1.  Edit the cluster `APIServer` custom resource (CR) by running the following command:
+
+    ``` terminal
+    $ oc edit apiserver cluster
+    ```
+
+2.  Add or modify the `tlsAdherence` field in the `spec` section and set it to `StrictAllComponents` by using the following example:
+
+    ``` yaml
+    apiVersion: config.openshift.io/v1
+    kind: APIServer
+    metadata:
+      name: cluster
+    spec:
+      tlsSecurityProfile:
+        type: Intermediate
+        intermediate: {}
+      tlsAdherence: StrictAllComponents
+    ```
+
+    where:
+
+    `tlsSecurityProfile.type`
+    Optional: Specifies the TLS security profile type. Valid values are `Old`, `Intermediate`, `Modern`, or `Custom`. If not specified, the default is `Intermediate`. When specifying a profile type, you must also include the corresponding profile-specific field, for example, `intermediate: {}` for the `Intermediate` profile.
+
+    `tlsAdherence: StrictAllComponents`
+    Specifies that cluster-wide TLS settings are enforced on all components, including cert-manager.
+
+3.  Save the changes and exit the editor.
+
+<!-- -->
+
+1.  The cert-manager Operator for Red Hat OpenShift automatically applies the cluster TLS security profile to the cert-manager controller, webhook, and CA injector deployments. Check that the TLS configuration is applied to the cert-manager components. For more information, see "Verifying TLS security profile adherence for cert-manager components".
+
+# Verifying TLS security profile adherence for cert-manager components
+
+After configuring the cluster TLS security profile adherence, you can verify that the TLS configuration is applied to the cert-manager controller, webhook, and CA injector deployments.
+
+- You have access to the cluster with `cluster-admin` privileges.
+
+- You installed the cert-manager Operator for Red Hat OpenShift.
+
+- You enabled the `TechPreviewNoUpgrade` feature set. For more information, see "Enabling features using feature gates".
+
+- You configured the cluster TLS security profile adherence for cert-manager components. For more information, see "Configuring cluster TLS security profile adherence for cert-manager components".
+
+1.  Verify that the cert-manager controller deployment has the TLS configuration applied by running the following command:
+
+    ``` terminal
+    $ oc get deployment -n cert-manager cert-manager -o yaml | grep -A 15 "args:"
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    args:
+    - --v=2
+    - --cluster-resource-namespace=$(POD_NAMESPACE)
+    - --leader-election-namespace=kube-system
+    - --acme-http01-solver-image=registry.redhat.io/cert-manager/cert-manager-acmesolver-rhel9@sha256:...
+    - --max-concurrent-challenges=60
+    - --metrics-tls-min-version=VersionTLS12
+    - --metrics-tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+    ```
+
+    The `--metrics-tls-min-version` flag shows the minimum TLS version configured based on the cluster TLS security profile. The `--metrics-tls-cipher-suites` flag shows TLS cipher suites configured based on the cluster TLS security profile.
+
+2.  Verify that the webhook deployment has the TLS configuration applied by running the following command:
+
+    ``` terminal
+    $ oc get deployment -n cert-manager cert-manager-webhook -o yaml | grep -A 20 "args:"
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    args:
+    - --v=2
+    - --dynamic-serving-ca-secret-namespace=$(POD_NAMESPACE)
+    - --dynamic-serving-ca-secret-name=cert-manager-webhook-ca
+    - --dynamic-serving-dns-names=cert-manager-webhook
+    - --tls-min-version=VersionTLS12
+    - --tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+    - --metrics-tls-min-version=VersionTLS12
+    - --metrics-tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+    ```
+
+    The webhook deployment includes serving TLS flags (`--tls-min-version` and `--tls-cipher-suites`) for the webhook HTTPS endpoint, and TLS flags for the metrics endpoint.
+
+3.  Verify that the CA injector deployment has the TLS configuration applied by running the following command:
+
+    ``` terminal
+    $ oc get deployment -n cert-manager cert-manager-cainjector -o yaml | grep -A 10 "args:"
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    args:
+    - --v=2
+    - --leader-election-namespace=kube-system
+    - --metrics-tls-min-version=VersionTLS12
+    - --metrics-tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+    ```
+
+    The CA injector deployment includes metrics endpoint TLS flags.
+
+    <div class="note">
+
+    TLS profile enforcement is not available for the IstioCSR and TrustManager operands.
+
+    When the cluster TLS security profile is set to `Modern` (TLS 1.3), the cipher suite flags are automatically omitted.
+
+    </div>
+
+- [Understanding feature gates](../../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features-about_nodes-cluster-enabling)
+
+- [Understanding TLS security profiles](../../security/tls-security-profiles.xml#tls-profiles-understanding_tls-security-profiles)

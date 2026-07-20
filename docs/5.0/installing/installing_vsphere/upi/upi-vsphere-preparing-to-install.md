@@ -1,10 +1,12 @@
+You should familiarize yourself with the steps you must perform before install an OpenShift Container Platform cluster on vSphere.
+
 You prepare to install an OpenShift Container Platform cluster on vSphere by completing the following steps:
 
 - Downloading the installation program.
 
   <div class="note">
 
-  If you are installing in a disconnected environment, you extract the installation program from the mirrored content. For more information, see [Mirroring images for a disconnected installation](../../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images).
+  If you are installing in a disconnected environment, you extract the installation program from the mirrored content. For more information, see "Mirroring images for a disconnected installation".
 
   </div>
 
@@ -66,7 +68,7 @@ Before you install OpenShift Container Platform, download the installation file 
 
 # Installing the OpenShift CLI on Linux
 
-To manage your cluster and deploy applications from the command line, install the OpenShift CLI (`oc`) binary on Linux.
+To manage your cluster and deploy applications from the command line on Linux, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
 <div class="important">
 
@@ -106,7 +108,7 @@ Download and install the new version of `oc`.
 
 # Installing the OpenShift CLI on Windows
 
-To manage your cluster and deploy applications from the command line, install OpenShift CLI (`oc`) binary on Windows.
+To manage your cluster and deploy applications from the command line on Windows, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
 <div class="important">
 
@@ -140,7 +142,7 @@ Download and install the new version of `oc`.
 
 # Installing the OpenShift CLI on macOS
 
-To manage your cluster and deploy applications from the command line, install the OpenShift CLI (`oc`) binary on macOS.
+To manage your cluster and deploy applications from the command line on macOS, install the OpenShift CLI (`oc`) binary. You can download the OpenShift CLI (`oc`) from the Red  Customer Portal.
 
 <div class="important">
 
@@ -601,3 +603,7 @@ The validation steps detailed in this section must succeed before you install yo
         ```
 
     3.  Use this method to perform reverse lookups against the IP addresses for the control plane and compute nodes. Check that the results correspond to the DNS record names of each node.
+
+# Additional resources
+
+- [Mirroring images for a disconnected installation](../../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images)

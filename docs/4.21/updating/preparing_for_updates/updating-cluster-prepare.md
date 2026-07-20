@@ -4,9 +4,11 @@ Learn more about administrative tasks that cluster admins must perform to succes
 
 There are no Kubernetes API removals in this release.
 
-# Assessing the risk of conditional updates
+# The risk of conditional updates
 
-A *conditional update* is an update target that is available but not recommended due to a known risk that applies to your cluster. The Cluster Version Operator (CVO) periodically queries the OpenShift Update Service (OSUS) for the most recent data about update recommendations, and some potential update targets might have risks associated with them.
+Conditional updates are update targets flagged by the OpenShift Update Service (OSUS) as available but not recommended due to known risks that apply to your cluster.
+
+The Cluster Version Operator (CVO) periodically queries the OSUS for the most recent data about update recommendations, and some potential update targets might have risks associated with them.
 
 The CVO evaluates the conditional risks, and if the risks are not applicable to the cluster, then the target version is available as a recommended update path for the cluster. If the risk is determined to be applicable, or if for some reason CVO cannot evaluate the risk, then the update target is available to the cluster as a conditional update.
 
@@ -24,9 +26,13 @@ However, if you have a strong reason to update to that version, for example, if 
 
 # etcd backups before cluster updates
 
-etcd backups record the state of your cluster and all of its resource objects. You can use backups to attempt restoring the state of a cluster in disaster scenarios where you cannot recover a cluster in its currently dysfunctional state.
+Create etcd backups before you update clusters to preserve your cluster state and to enable disaster recovery.
 
-In the context of updates, you can attempt an etcd restoration of the cluster if an update introduced catastrophic conditions that cannot be fixed without reverting to the previous cluster version. etcd restorations might be destructive and destabilizing to a running cluster, use them only as a last resort.
+etcd backups record the state of your cluster and all of its resource objects. You can use backups to try to restore the state of a cluster when the cluster has become unrecoverable.
+
+In the context of updates, you can attempt an etcd restoration of the cluster if an update introduced catastrophic conditions that cannot be fixed without reverting to the previous cluster version.
+
+etcd restorations might be destructive and destabilizing to a running cluster, use them only as a last resort.
 
 <div class="warning">
 
@@ -42,9 +48,15 @@ There are several factors that affect the viability of an etcd restoration. For 
 
 # Preparing for Gateway API management succession by the Ingress Operator
 
-Starting in OpenShift Container Platform 4.19, the Ingress Operator manages the lifecycle of any Gateway API custom resource definitions (CRDs). This means that you will be denied access to creating, updating, and deleting any CRDs within the API groups that are grouped under Gateway API.
+Prepare your cluster for Gateway API management succession by removing existing unsupported definitions and installing compliant resources. This ensures a seamless update to OpenShift Container Platform 4.19 and prevents conflicts with the Ingress Operator.
 
-Updating from a version before 4.19 of OpenShift Container Platform where this management was not present requires you to replace or remove any Gateway API CRDs that already exist in the cluster so that they conform to the specific OpenShift Container Platform specification required by the Ingress Operator. OpenShift Container Platform version 4.19 requires Gateway API Standard version 1.2.1 CRDs.
+Starting in OpenShift Container Platform 4.19, the Ingress Operator manages the lifecycle of any Gateway API custom resource definitions (CRDs). This lifecycle control blocks you from creating, updating, or deleting CRDs within the `gateway.networking.k8s.io` API group.
+
+<div class="note">
+
+Starting in OpenShift Container Platform 4.22, deploying the Gateway API CRD `gateway.networking.x-k8s.io` is no longer restricted. You can deploy that CRD without interference from the Ingress Operator. Experimental Gateway API CRDs in the `gateway.networking.k8s.io` group remain restricted.
+
+</div>
 
 <div class="warning">
 
@@ -118,19 +130,25 @@ Updating or deleting Gateway API resources can result in downtime and loss of se
 
 # Best practices for cluster updates
 
-OpenShift Container Platform provides a robust update experience that minimizes workload disruptions during an update. Updates will not begin unless the cluster is in an upgradeable state at the time of the update request.
+Follow best practices to ensure successful cluster updates. These best practices include selecting recommended versions, resolving critical alerts, maintaining spare node capacity, and properly configuring pod disruption budgets.
+
+OpenShift Container Platform minimizes workload disruptions during an update. Updates do not begin unless the cluster is in an upgradeable state at the time of the update request.
 
 This design enforces some key conditions before initiating an update, but there are a number of actions you can take to increase your chances of a successful cluster update.
 
 ## Choose versions recommended by the OpenShift Update Service
 
-The OpenShift Update Service (OSUS) provides update recommendations based on cluster characteristics such as the cluster’s subscribed channel. The Cluster Version Operator saves these recommendations as either recommended or conditional updates. While it is possible to attempt an update to a version that is not recommended by OSUS, following a recommended update path protects users from encountering known issues or unintended consequences on the cluster.
+The OpenShift Update Service (OSUS) provides update recommendations based on cluster characteristics such as the cluster’s subscribed channel. The Cluster Version Operator saves these recommendations as either recommended or conditional updates.
+
+While it is possible to attempt an update to a version that is not recommended by OSUS, following a recommended update path protects users from encountering known issues or unintended consequences on the cluster.
 
 Choose only update targets that are recommended by OSUS to ensure a successful update.
 
 ## Address all critical alerts on the cluster
 
-Critical alerts must always be addressed as soon as possible, but it is especially important to address these alerts and resolve any problems before initiating a cluster update. Failing to address critical alerts before beginning an update can cause problematic conditions for the cluster.
+Critical alerts must always be addressed as soon as possible, but it is especially important to address these alerts and resolve any problems before initiating a cluster update.
+
+Failing to address critical alerts before beginning an update can cause problematic conditions for the cluster.
 
 In the **Administrator** perspective of the web console, navigate to **Observe** → **Alerting** to find critical alerts.
 

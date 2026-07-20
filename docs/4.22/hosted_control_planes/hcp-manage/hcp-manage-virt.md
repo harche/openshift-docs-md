@@ -1,4 +1,4 @@
-After you deploy a hosted cluster on OpenShift Virtualization, you can manage the cluster by completing the following procedures.
+After you deploy a hosted cluster on OpenShift Virtualization, you can manage the cluster.
 
 # Accessing the hosted cluster
 
@@ -10,7 +10,7 @@ You can access the hosted cluster by either getting the `kubeconfig` file and `k
 
 </div>
 
-To access the hosted cluster by getting the `kubeconfig` file and credentials directly from resources, you must be familiar with the access secrets for hosted clusters. The *hosted cluster (hosting)* namespace contains hosted cluster resources and the access secrets. The *hosted control plane* namespace is where the hosted control plane runs.
+To access the hosted cluster by getting the `kubeconfig` file and credentials directly from resources, you must be familiar with the access secrets for hosted clusters. The *hosted cluster (hosting)* namespace has hosted cluster resources and the access secrets. The *hosted control plane* namespace is where the hosted control plane runs.
 
 The secret name formats are as follows:
 
@@ -18,7 +18,7 @@ The secret name formats are as follows:
 
 - `kubeadmin` password secret: `<hosted_cluster_namespace>-<name>-kubeadmin-password` (clusters-hypershift-demo-kubeadmin-password)
 
-The `kubeconfig` secret contains a Base64-encoded `kubeconfig` field, which you can decode and save into a file to use with the following command:
+The `kubeconfig` secret has a Base64-encoded `kubeconfig` field, which you can decode and save into a file to use with the following command:
 
 ``` terminal
 $ oc --kubeconfig <hosted_cluster_name>.kubeconfig get nodes
@@ -26,20 +26,20 @@ $ oc --kubeconfig <hosted_cluster_name>.kubeconfig get nodes
 
 The `kubeadmin` password secret is also Base64-encoded. You can decode it and use the password to log in to the API server or console of the hosted cluster.
 
-- To access the hosted cluster by using the `hcp` CLI to generate the `kubeconfig` file, take the following steps:
+To access the hosted cluster by using the `hcp` CLI to generate the `kubeconfig` file, take the following steps.
 
-  1.  Generate the `kubeconfig` file by entering the following command:
+1.  Generate the `kubeconfig` file by entering the following command:
 
-      ``` terminal
-      $ hcp create kubeconfig --namespace <hosted_cluster_namespace> \
-        --name <hosted_cluster_name> > <hosted_cluster_name>.kubeconfig
-      ```
+    ``` terminal
+    $ hcp create kubeconfig --namespace <hosted_cluster_namespace> \
+      --name <hosted_cluster_name> > <hosted_cluster_name>.kubeconfig
+    ```
 
-  2.  After you save the `kubeconfig` file, you can access the hosted cluster by entering the following example command:
+2.  After you save the `kubeconfig` file, you can access the hosted cluster by entering the following example command:
 
-      ``` terminal
-      $ oc --kubeconfig <hosted_cluster_name>.kubeconfig get nodes
-      ```
+    ``` terminal
+    $ oc --kubeconfig <hosted_cluster_name>.kubeconfig get nodes
+    ```
 
 # Enabling node auto-scaling for the hosted cluster
 
@@ -142,7 +142,7 @@ When you need more capacity in your hosted cluster and spare agents are availabl
 
     </div>
 
-# Configuring storage for hosted control planes on OpenShift Virtualization
+# Storage for hosted control planes on OpenShift Virtualization
 
 If you do not provide any advanced storage configuration, the default storage class is used for the KubeVirt virtual machine (VM) images, the KubeVirt Container Storage Interface (CSI) mapping, and the etcd volumes.
 
@@ -190,37 +190,11 @@ OpenShift Virtualization handles storage on hosted clusters, which especially he
 
 ## Mapping KubeVirt CSI storage classes
 
-KubeVirt CSI supports mapping a infrastructure storage class that is capable of `ReadWriteMany` (RWX) access. You can map the infrastructure storage class to hosted storage class during cluster creation.
-
-- To map the infrastructure storage class to the hosted storage class, use the `--infra-storage-class-mapping` argument by running the following command:
-
-  ``` terminal
-  $ hcp create cluster kubevirt \
-    --name <hosted_cluster_name> \
-    --node-pool-replicas <worker_node_count> \
-    --pull-secret <path_to_pull_secret> \
-    --memory <memory> \
-    --cores <cpu> \
-    --infra-storage-class-mapping=<infrastructure_storage_class>/<hosted_storage_class> \
-  ```
-
-  - Specify the name of your hosted cluster, for instance, `example`.
-
-  - Specify the worker count, for example, `2`.
-
-  - Specify the path to your pull secret, for example, `/user/name/pullsecret`.
-
-  - Specify a value for memory, for example, `8Gi`.
-
-  - Specify a value for CPU, for example, `2`.
-
-  - Replace `<infrastructure_storage_class>` with the infrastructure storage class name and `<hosted_storage_class>` with the hosted cluster storage class name. You can use the `--infra-storage-class-mapping` argument multiple times within the `hcp create cluster` command.
-
-After you create the hosted cluster, the infrastructure storage class is visible within the hosted cluster. When you create a Persistent Volume Claim (PVC) within the hosted cluster that uses one of those storage classes, KubeVirt CSI provisions that volume by using the infrastructure storage class mapping that you configured during cluster creation.
+You can map the infrastructure storage class to the hosted storage class during cluster creation.
 
 <div class="note">
 
-KubeVirt CSI supports mapping only an infrastructure storage class that is capable of RWX access.
+KubeVirt CSI supports mapping only an infrastructure storage class that is capable of `ReadWriteMany` (RWX) access.
 
 </div>
 
@@ -233,6 +207,32 @@ The following table shows how volume and access mode capabilities map to KubeVir
 | RWO `FileSystem`              | RWO `Block` or `Filesystem`                                    | Not supported             | Lack of live migration support affects the ability to update the underlying infrastructure cluster that hosts the KubeVirt VMs. Use of the infrastructure `Filesystem` volume mode results in degraded hosted `Block` mode performance. |
 
 Mapping KubeVirt CSI storage classes to access and volume modes
+
+- To map the infrastructure storage class to the hosted storage class, use the `--infra-storage-class-mapping` argument as shown in the following example:
+
+  ``` terminal
+  $ hcp create cluster kubevirt \
+    --name my-hosted-cluster \
+    --node-pool-replicas 2 \
+    --pull-secret /user/name/pullsecret \
+    --memory 8Gi \
+    --cores 2 \
+    --infra-storage-class-mapping=<infrastructure_storage_class>/<hosted_storage_class>
+  ```
+
+  - `--name` specifies the name of your hosted cluster.
+
+  - `--node-pool-replicas` specifies the worker count.
+
+  - `--pull-secret` specifies the path to your pull secret.
+
+  - `--memory` specifies a value for memory.
+
+  - `--cores` specifies a value for CPU.
+
+  - `--infra-storage-class-mapping` specifies the storage class names for the infrastructure and hosted cluster. Replace `<infrastructure_storage_class>` with the infrastructure storage class name and `<hosted_storage_class>` with the hosted cluster storage class name. You can use the `--infra-storage-class-mapping` argument multiple times within the `hcp create cluster` command.
+
+    After you create the hosted cluster, the infrastructure storage class is visible within the hosted cluster. When you create a Persistent Volume Claim (PVC) within the hosted cluster that uses one of those storage classes, KubeVirt CSI provisions that volume by using the infrastructure storage class mapping that you configured during cluster creation.
 
 ## Mapping a single KubeVirt CSI volume snapshot class
 

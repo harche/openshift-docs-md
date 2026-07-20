@@ -1,3 +1,5 @@
+Jobs execute one-time or scheduled tasks in your cluster, tracking completion status and managing pod lifecycles for batch workloads, parallel processing, and recurring operations.
+
 A *job* executes a task in your OpenShift Container Platform cluster.
 
 A job tracks the overall progress of a task and updates its status with information about active, succeeded, and failed pods. Deleting a job will clean up any pod replicas it created. Jobs are part of the Kubernetes API, which can be managed with `oc` commands like other object types.
@@ -31,25 +33,34 @@ spec:
 #...
 ```
 
-- The pod replicas a job should run in parallel.
+where:
 
-- Successful pod completions are needed to mark a job completed.
+`spec.parallelism`
+Specifies the pod replicas a job should run in parallel.
 
-- The maximum duration the job can run.
+`spec.completions`
+Specifies the successful pod completions needed to mark a job completed.
 
-- The number of retries for a job.
+`spec.activeDeadlineSeconds`
+Specifies the maximum duration the job can run.
 
-- The period of time in seconds after which the job should be automatically deleted upon completion.
+`spec.backoffLimit`
+Specifies the number of retries for a job.
 
-- The template for the pod the controller creates.
+`spec.ttlSecondsAfterFinished`
+Specifies the period of time in seconds after which the job should be automatically deleted upon completion.
 
-- The restart policy of the pod.
+`spec.template`
+Specifies the template for the pod the controller creates.
 
-<!-- -->
+`spec.template.spec.restartPolicy`
+Specifies the restart policy of the pod.
 
 - [Jobs (Kubernetes documentation)](https://kubernetes.io/docs/concepts/workloads/controllers/job/)
 
 # Understanding jobs and cron jobs
+
+Jobs run one-time tasks and track completion status, while cron jobs schedule recurring tasks using cron expressions, supporting non-parallel, parallel with fixed completion count, and work queue execution patterns.
 
 A job tracks the overall progress of a task and updates its status with information about active, succeeded, and failed pods. Deleting a job cleans up any pods it created. Jobs are part of the Kubernetes API, which can be managed with `oc` commands like other object types.
 
@@ -175,15 +186,19 @@ With the `OnFailure` policy, *kubelet* performs the restart. Each attempt does n
 
 # Creating jobs
 
+Create a job to run a one-time task, configuring parallelism, completion count, time limits, retry policies, and automatic cleanup behavior.
+
 You create a job in OpenShift Container Platform by creating a job object.
 
-<div class="formalpara-title">
+<div class="note">
 
-**Procedure**
+You can also create and launch a job from a single command using `oc create job`. The following command creates and launches a job similar to the one specified in the following example:
+
+``` terminal
+$ oc create job pi --image=perl -- perl -Mbignum=bpi -wle 'print bpi(2000)'
+```
 
 </div>
-
-To create a job:
 
 1.  Create a YAML file similar to the following:
 
@@ -210,35 +225,28 @@ To create a job:
     #...
     ```
 
-    - Optional: Specify how many pod replicas a job should run in parallel; defaults to `1`.
+    where:
 
-      - For non-parallel jobs, leave unset. When unset, defaults to `1`.
+    `spec.parallelism`
+    Specifies how many pod replicas a job should run in parallel; defaults to `1`. For non-parallel jobs, leave unset. When unset, defaults to `1`. This value is optional.
 
-    - Optional: Specify how many successful pod completions are needed to mark a job completed.
+    `spec.completions`
+    Specifies how many successful pod completions are needed to mark a job completed. For non-parallel jobs, leave unset. When unset, defaults to `1`. For parallel jobs with a fixed completion count, specify the number of completions. For parallel jobs with a work queue, leave unset. When unset defaults to the `parallelism` value. This value is optional.
 
-      - For non-parallel jobs, leave unset. When unset, defaults to `1`.
+    `spec.activeDeadlineSeconds`
+    Specifies the maximum duration the job can run. This value is optional.
 
-      - For parallel jobs with a fixed completion count, specify the number of completions.
+    `spec.backoffLimit`
+    Specifies the number of retries for a job. This field defaults to six. This value is optional.
 
-      - For parallel jobs with a work queue, leave unset. When unset defaults to the `parallelism` value.
+    `spec.ttlSecondsAfterFinished`
+    Specifies the period of time in seconds after which the job should be automatically deleted upon completion. If set to '0', the job is immediately deleted after completion. If this field is not included, the job is not automatically deleted. This value is optional.
 
-    - Optional: Specify the maximum duration the job can run.
+    `spec.template`
+    Specifies the template for the pod the controller creates.
 
-    - Optional: Specify the number of retries for a job. This field defaults to six.
-
-    - Optional: Specify the period of time in seconds after which the job should be automatically deleted upon completion. If set to '0', the job is immediately deleted after completion. If this field is not included, the job is not automatically deleted.
-
-    - Specify the template for the pod the controller creates.
-
-    - Specify the restart policy of the pod:
-
-      - `Never`. Do not restart the job.
-
-      - `OnFailure`. Restart the job only if it fails.
-
-      - `Always`. Always restart the job.
-
-        For details on how OpenShift Container Platform uses restart policy with failed containers, see the [Example States](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#example-states) in the Kubernetes documentation.
+    `spec.template.spec.restartPolicy`
+    Specifies the restart policy of the pod: `Never` (Do not restart the job), `OnFailure` (Restart the job only if it fails), or `Always` (Always restart the job). For details on how OpenShift Container Platform uses restart policy with failed containers, see the [Example States](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#example-states) in the Kubernetes documentation.
 
 2.  Create the job:
 
@@ -246,27 +254,23 @@ To create a job:
     $ oc create -f <file-name>.yaml
     ```
 
-<div class="note">
-
-You can also create and launch a job from a single command using `oc create job`. The following command creates and launches a job similar to the one specified in the previous example:
-
-``` terminal
-$ oc create job pi --image=perl -- perl -Mbignum=bpi -wle 'print bpi(2000)'
-```
-
-</div>
-
 # Creating cron jobs
+
+Create a cron job to schedule recurring tasks using cron expressions, configuring time zone, concurrency policies, history limits, and suspension behavior.
 
 You create a cron job in OpenShift Container Platform by creating a job object.
 
-<div class="formalpara-title">
+<div class="note">
 
-**Procedure**
+You can also create and launch a cron job from a single command using `oc create cronjob`. The following command creates and launches a cron job similar to the one specified in the following example:
+
+``` terminal
+$ oc create cronjob pi --image=perl --schedule='*/1 * * * *' -- perl -Mbignum=bpi -wle 'print bpi(2000)'
+```
+
+With `oc create cronjob`, the `--schedule` option accepts schedules in [cron format](https://en.wikipedia.org/wiki/Cron).
 
 </div>
-
-To create a cron job:
 
 1.  Create a YAML file similar to the following:
 
@@ -298,46 +302,40 @@ To create a cron job:
     #...
     ```
 
-    - Schedule for the job specified in [cron format](https://en.wikipedia.org/wiki/Cron). In this example, the job will run every minute.
+    where:
 
-    - An optional time zone for the schedule. See [List of tz database time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for valid options. If not specified, the Kubernetes controller manager interprets the schedule relative to its local time zone.
+    `spec.schedule`
+    Specifies the schedule for the job in [cron format](https://en.wikipedia.org/wiki/Cron). In this example, the job will run every minute.
 
-    - An optional concurrency policy, specifying how to treat concurrent jobs within a cron job. Only one of the following concurrent policies may be specified. If not specified, this defaults to allowing concurrent executions.
+    `spec.timeZone`
+    Specifies a time zone for the schedule. See [List of tz database time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for valid options. If not specified, the Kubernetes controller manager interprets the schedule relative to its local time zone. This value is optional.
 
-      - `Allow` allows cron jobs to run concurrently.
+    `spec.concurrencyPolicy`
+    Specifies how to treat concurrent jobs within a cron job. Only one of the following concurrent policies may be specified. If not specified, this defaults to allowing concurrent executions: `Allow` (allows cron jobs to run concurrently), `Forbid` (forbids concurrent runs, skipping the next run if the previous has not finished yet), or `Replace` (cancels the currently running job and replaces it with a new one). This value is optional.
 
-      - `Forbid` forbids concurrent runs, skipping the next run if the previous has not finished yet.
+    `spec.startingDeadlineSeconds`
+    Specifies a deadline (in seconds) for starting the job if it misses its scheduled time for any reason. Missed jobs executions will be counted as failed ones. If not specified, there is no deadline. This value is optional.
 
-      - `Replace` cancels the currently running job and replaces it with a new one.
+    `spec.suspend`
+    Specifies a flag allowing the suspension of a cron job. If set to `true`, all subsequent executions will be suspended. This value is optional.
 
-    - An optional deadline (in seconds) for starting the job if it misses its scheduled time for any reason. Missed jobs executions will be counted as failed ones. If not specified, there is no deadline.
+    `spec.successfulJobsHistoryLimit`
+    Specifies the number of successful finished jobs to retain (defaults to 3).
 
-    - An optional flag allowing the suspension of a cron job. If set to `true`, all subsequent executions will be suspended.
+    `spec.failedJobsHistoryLimit`
+    Specifies the number of failed finished jobs to retain (defaults to 1).
 
-    - The number of successful finished jobs to retain (defaults to 3).
+    `spec.jobTemplate`
+    Specifies the job template. This is similar to the job example.
 
-    - The number of failed finished jobs to retain (defaults to 1).
+    `spec.jobTemplate.spec.template.metadata.labels`
+    Specifies labels for jobs spawned by this cron job.
 
-    - Job template. This is similar to the job example.
-
-    - Sets a label for jobs spawned by this cron job.
-
-    - The restart policy of the pod. This does not apply to the job controller.
+    `spec.jobTemplate.spec.template.spec.restartPolicy`
+    Specifies the restart policy of the pod. This does not apply to the job controller.
 
 2.  Create the cron job:
 
     ``` terminal
     $ oc create -f <file-name>.yaml
     ```
-
-<div class="note">
-
-You can also create and launch a cron job from a single command using `oc create cronjob`. The following command creates and launches a cron job similar to the one specified in the previous example:
-
-``` terminal
-$ oc create cronjob pi --image=perl --schedule='*/1 * * * *' -- perl -Mbignum=bpi -wle 'print bpi(2000)'
-```
-
-With `oc create cronjob`, the `--schedule` option accepts schedules in [cron format](https://en.wikipedia.org/wiki/Cron).
-
-</div>

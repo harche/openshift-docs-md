@@ -1,26 +1,22 @@
+You can provision and manage OpenStack Cinder storage in OpenShift Container Platform using the OpenStack Cinder Container Storage Interface (CSI) Driver Operator and driver, which provide dynamic volume provisioning.
+
 # Overview
 
 OpenShift Container Platform is capable of provisioning persistent volumes (PVs) using the Container Storage Interface (CSI) driver for OpenStack Cinder.
 
-Familiarity with [persistent storage](../../storage/understanding-persistent-storage.xml#understanding-persistent-storage) and [configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi) is recommended when working with a Container Storage Interface (CSI) Operator and driver.
+Familiarity with persistent storage and configuring CSI volumes is recommended when working with a CSI Operator and driver. For more information, see "Understanding persistent storage" and "Configuring CSI volumes."
 
 To create CSI-provisioned PVs that mount to OpenStack Cinder storage assets, OpenShift Container Platform installs the OpenStack Cinder CSI Driver Operator and the OpenStack Cinder CSI driver in the `openshift-cluster-csi-drivers` namespace.
 
-- The *OpenStack Cinder CSI Driver Operator* provides a CSI storage class that you can use to create PVCs. You can disable this default storage class if desired (see [Managing the default storage class](../../storage/container_storage_interface/persistent-storage-csi-sc-manage.xml#persistent-storage-csi-sc-manage)).
+- The *OpenStack Cinder CSI Driver Operator* provides a CSI storage class that you can use to create PVCs. You can disable this default storage class if needed (see "Managing the default storage class").
 
 - The *OpenStack Cinder CSI driver* enables you to create and mount OpenStack Cinder PVs.
 
 <div class="note">
 
-OpenShift Container Platform provides automatic migration for the Cinder in-tree volume plugin to its equivalent CSI driver. For more information, see [CSI automatic migration](../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration).
+OpenShift Container Platform provides automatic migration for the Cinder in-tree volume plugin to its equivalent CSI driver. For more information, see "CSI automatic migration".
 
 </div>
-
-# About CSI
-
-Storage vendors have traditionally provided storage drivers as part of Kubernetes. With the implementation of the Container Storage Interface (CSI), third-party providers can instead deliver storage plugins using a standard interface without ever having to change the core Kubernetes code.
-
-CSI Operators give OpenShift Container Platform users storage options, such as volume snapshots, that are not possible with in-tree volume plugins.
 
 <div class="important">
 
@@ -28,7 +24,23 @@ OpenShift Container Platform defaults to using the CSI plugin to provision Cinde
 
 </div>
 
+- [Understanding persistent storage](../../storage/understanding-persistent-storage.xml#understanding-persistent-storage)
+
+- [Configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi)
+
+- [Managing the default storage class](../../storage/container_storage_interface/persistent-storage-csi-sc-manage.xml#persistent-storage-csi-sc-manage)
+
+- [CSI automatic migration](../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration)
+
+# About CSI
+
+Storage vendors have traditionally provided storage drivers as part of Kubernetes. With the implementation of the Container Storage Interface (CSI), third-party providers can instead deliver storage plugins using a standard interface without ever having to change the core Kubernetes code.
+
+CSI Operators give OpenShift Container Platform users storage options, such as volume snapshots, that are not possible with in-tree volume plugins.
+
 # Making OpenStack Cinder CSI the default storage class
+
+To use the OpenStack Cinder Container Storage Interface (CSI) driver for dynamic provisioning instead of the in-tree driver, change the default storage class from `standard` to `standard-csi` by updating storage class annotations.
 
 The OpenStack Cinder CSI driver uses the `cinder.csi.openstack.org` parameter key to support dynamic provisioning.
 
@@ -36,15 +48,9 @@ To enable OpenStack Cinder CSI provisioning in OpenShift Container Platform, it 
 
 In OpenShift Container Platform, the default storage class references the in-tree Cinder driver. However, with CSI automatic migration enabled, volumes created using the default storage class actually use the CSI driver.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
 Use the following steps to apply the `standard-csi` storage class by overwriting the default in-tree storage class.
 
-1.  List the storage class:
+1.  List the storage class by running the following command:
 
     ``` terminal
     $ oc get storageclass
@@ -114,5 +120,3 @@ Use the following steps to apply the `standard-csi` storage class by overwriting
     ``` terminal
     $ oc create -f cinder-claim.yaml
     ```
-
-- [Configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi)

@@ -828,6 +828,8 @@ You can add references to a config map that has additional certificate authoriti
 
 # Understanding image registry repository mirroring
 
+You must mirror images to update clusters in disconnected environments.
+
 By setting up container registry repository mirroring, you can perform the following tasks:
 
 - Configure your OpenShift Container Platform cluster to redirect requests to pull images from a repository on a source image registry and have it resolved by a repository on a mirrored image registry.
@@ -1436,6 +1438,8 @@ You can use the following table for information about parameters when configurin
 | `source: registry.example.com`                        | Pulls the image `registry.example.com/myimage@sha256` from the mirror registry `example.net/registry-example-com/myimage@sha256:…​`.                                                                                                                                                                    |
 
 ## Converting ImageContentSourcePolicy (ICSP) files for image registry repository mirroring
+
+You can convert existing `ImageContentSourcePolicy` (ICSP) files to `ImageDigestMirrorSet` files to configure image registry repository mirroring.
 
 Using an `ImageContentSourcePolicy` (ICSP) object to configure repository mirroring is a deprecated feature.
 

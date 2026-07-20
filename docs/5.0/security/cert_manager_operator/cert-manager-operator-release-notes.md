@@ -18,7 +18,7 @@ The following advisories are available for the cert-manager Operator for Red Hat
 
 - [RHBA-2026:34714](https://access.redhat.com/errata/RHBA-2026:34714)
 
-Version `v1.20.0` of the cert-manager Operator for Red Hat OpenShift is based on the upstream cert-manager version `v1.20.2`. For more information, see the [cert-manager project release notes for v1.20.2](https://cert-manager.io/docs/releases/release-notes/release-notes-1.20#v1202).
+Version `v1.20.0` of the cert-manager Operator for Red Hat OpenShift is based on the upstream cert-manager version `v1.20.3`. For more information, see the [cert-manager project release notes for v1.20.3](https://cert-manager.io/docs/releases/release-notes/release-notes-1.20/#v1203).
 
 ## New features and enhancements
 

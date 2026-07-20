@@ -77,7 +77,7 @@ You can add optional environment details and scripts to the `must-gather` comman
 
   ``` terminal
   $ oc adm must-gather \
-    --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.0 \
+    --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.2 \
     -- /usr/bin/gather
   ```
 
@@ -95,7 +95,7 @@ You can add optional environment details and scripts to the `must-gather` comman
 
       ``` terminal
       $ oc adm must-gather \
-        --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.0 \
+        --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.2 \
         -- PROS=<number> /usr/bin/gather
       ```
 
@@ -105,7 +105,7 @@ You can add optional environment details and scripts to the `must-gather` comman
 
       ``` terminal
       $ oc adm must-gather \
-        --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.0 \
+        --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.2 \
         -- NS=<namespace name> VM=<VM name> /usr/bin/gather --vms_details
       ```
 
@@ -115,7 +115,7 @@ You can add optional environment details and scripts to the `must-gather` comman
 
       ``` terminal
       $ oc adm must-gather \
-       --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.0 \
+       --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.2 \
        /usr/bin/gather --images
       ```
 
@@ -123,7 +123,7 @@ You can add optional environment details and scripts to the `must-gather` comman
 
       ``` terminal
       $ oc adm must-gather \
-       --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.0 \
+       --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.2 \
        /usr/bin/gather --instancetypes
       ```
 
@@ -188,7 +188,7 @@ You can run a script by itself or with one or more compatible environment variab
 
 ``` terminal
 $ oc adm must-gather \
-  --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.0 \
+  --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.2 \
   -- <environment_variable_1> <environment_variable_2> <script_name>
 ```
 

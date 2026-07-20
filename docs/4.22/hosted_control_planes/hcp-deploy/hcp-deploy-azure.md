@@ -561,9 +561,10 @@ The configuration steps include configuring the DNS zone, delegating the DNS rec
       --scope "${DNS_ID}"
     ```
 
-13. Create the content for the Azure credentials file as shown in the following example:
+13. Save the Azure credentials to a local file by entering the following command:
 
-    ``` json
+    ``` terminal
+    $ cat > ${SERVICE_PRINCIPAL_FILEPATH} <<EOF
     {
       "tenantId": "$(az account show --query tenantId -o tsv)",
       "subscriptionId": "$(az account show --query id -o tsv)",
@@ -571,29 +572,26 @@ The configuration steps include configuring the DNS zone, delegating the DNS rec
       "aadClientId": "$EXTERNAL_DNS_SP_APP_ID",
       "aadClientSecret": "$EXTERNAL_DNS_SP_PASSWORD"
     }
+    EOF
     ```
 
-14. Create the credentials file by entering the following command:
+14. If an existing Kubernetes secret for the Azure credentials exists, delete it by entering the following command:
 
     ``` terminal
-    $ oc apply -f <service_principal_filepath>.json
+    $ oc delete secret/azure-config-file --namespace "hypershift" || true
     ```
 
-15. If an existing Kubernetes secret for the Azure credentials exists, delete it by entering the following command:
-
-    ``` terminal
-    $ oc delete secret/azure-config-file --namespace "default" || true
-    ```
-
-16. Create the Kubernetes secret for the Azure credentials by entering the following command:
+15. Create the Kubernetes secret for the Azure credentials by entering the following command:
 
     ``` terminal
     $ oc create secret generic azure-config-file \
-      --namespace "default" \
-      --from-file ${SERVICE_PRINCIPAL_FILEPATH}
+      --namespace "hypershift" \
+      --from-file=credentials=${SERVICE_PRINCIPAL_FILEPATH}
     ```
 
-17. Configure the HyperShift Operator to use external DNS by creating the following `ConfigMap` object:
+    The secret must be created in the `hypershift` namespace where the external DNS deployment runs. The `credentials` key name is required because the external DNS pod mounts the secret at `/etc/provider/credentials`.
+
+16. Configure the HyperShift Operator to use external DNS by creating the following `ConfigMap` object:
 
     ``` yaml
     apiVersion: v1
@@ -602,13 +600,13 @@ The configuration steps include configuring the DNS zone, delegating the DNS rec
       name: hypershift-operator-install-flags
       namespace: local-cluster
     data:
-      installFlagsToAdd: "--external-dns-provider=azure --external-dns-credentials <secret> --external-dns-domain-filter <dns_zone>"
+      installFlagsToAdd: "--external-dns-provider=azure --external-dns-secret=azure-config-file --external-dns-domain-filter=<dns_zone>"
       installFlagsToRemove: ""
     ```
 
-    The `data.installFlagsToAdd` parameter specifies the flags to pass to the Operator so it detects the DNS.
+    The `--external-dns-secret` flag specifies the name of the Kubernetes secret that contains the Azure credentials. The `data.installFlagsToAdd` parameter specifies the flags to pass to the Operator so it detects the DNS.
 
-18. Apply the config map by entering the following command:
+17. Apply the config map by entering the following command:
 
     ``` terminal
     $ oc apply -f hypershift-operator-install-flags.yaml
@@ -679,6 +677,12 @@ The hosted cluster uses Workload Identities to securely access Azure services wi
     --diagnostics-storage-account-type Managed \
     --external-dns-domain "${DNS_ZONE_NAME}"
   ```
+
+  <div class="note">
+
+  For non-production environments, you can create a hosted cluster without external DNS by omitting the `--external-dns-domain` and `--assign-service-principal-roles` flags. In that case, the API server is accessible through an Azure load balancer hostname instead of a custom DNS name.
+
+  </div>
 
 1.  Check the cluster status by entering the following command:
 

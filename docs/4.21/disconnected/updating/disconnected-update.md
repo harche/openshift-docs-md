@@ -1,20 +1,26 @@
+You can update a cluster in a disconnected environment without using the OpenShift Update Service.
+
 Use the following procedures to update a cluster in a disconnected environment without access to the OpenShift Update Service.
 
-# Prerequisites
+# Prerequisites for a cluster update
+
+You must meet several prerequisites before updating a cluster in a disconnected environment.
+
+The following prerequisites must be met:
 
 - You must have the `oc` command-line interface (CLI) tool installed.
 
-- You must provision a local container image registry with the container images for your update, as described in [Mirroring OpenShift Container Platform images](../../disconnected/updating/mirroring-image-repository.xml#mirroring-ocp-image-repository).
+- You must provision a local container image registry with the container images for your update, as described in "Mirroring OpenShift Container Platform images".
 
-- You must have access to the cluster as a user with `admin` privileges. See [Using RBAC to define and apply permissions](../../authentication/using-rbac.xml#using-rbac).
+- You must have access to the cluster as a user with `admin` privileges. See "Using RBAC to define and apply permissions".
 
-- You must have a recent [etcd backup](../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd) in case your update fails and you must [restore your cluster to a previous state](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state).
+- You must have a recent etcd backup in case your update fails and you must restore your cluster to a previous state. For more information, see "Backing up etcd" and "Restoring to a previous cluster state".
 
-- You have updated all Operators previously installed through Operator Lifecycle Manager (OLM) to a version that is compatible with your target release. Updating the Operators ensures they have a valid update path when the default catalog sources switch from the current minor version to the next during a cluster update. See [Updating installed Operators](../../operators/admin/olm-upgrading-operators.xml#olm-upgrading-operators) for more information on how to check compatibility and, if necessary, update the installed Operators.
+- You have updated all Operators previously installed through Operator Lifecycle Manager (OLM) to a version that is compatible with your target release. Updating the Operators ensures they have a valid update path when the default catalog sources switch from the current minor version to the next during a cluster update. See "Updating installed Operators" for more information on how to check compatibility and, if necessary, update the installed Operators.
 
 - You must ensure that all machine config pools (MCPs) are running and not paused. Nodes associated with a paused MCP are skipped during the update process. You can pause the MCPs if you are performing a canary rollout update strategy.
 
-- If your cluster uses manually maintained credentials, update the cloud provider resources for the new release. For more information, including how to determine if this is a requirement for your cluster, see [Preparing to update a cluster with manually maintained credentials](../../updating/preparing_for_updates/preparing-manual-creds-update.xml#preparing-manual-creds-update).
+- If your cluster uses manually maintained credentials, update the cloud provider resources for the new release. For more information, including how to determine if this is a requirement for your cluster, see "Preparing to update a cluster with manually maintained credentials".
 
 - If you run an Operator or you have configured any application with the pod disruption budget, you might experience an interruption during the update process. If `minAvailable` is set to 1 in `PodDisruptionBudget`, the nodes are drained to apply pending machine configs which might block the eviction process. If several nodes are rebooted, all the pods might run on only one node, and the `PodDisruptionBudget` field can prevent the node drain.
 
@@ -23,6 +29,18 @@ Use the following procedures to update a cluster in a disconnected environment w
 If you run an Operator or you have configured any application with the pod disruption budget, you might experience an interruption during the update process. If `minAvailable` is set to 1 in `PodDisruptionBudget`, the nodes are drained to apply pending machine configs which might block the eviction process. If several nodes are rebooted, all the pods might run on only one node, and the `PodDisruptionBudget` field can prevent the node drain.
 
 </div>
+
+- [Mirroring OpenShift Container Platform images](../../disconnected/updating/mirroring-image-repository.xml#mirroring-ocp-image-repository)
+
+- [Using RBAC to define and apply permissions](../../authentication/using-rbac.xml#using-rbac)
+
+- [Backing up etcd](../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd)
+
+- [Restoring to a previous cluster state](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
+
+- [Updating installed Operators](../../operators/admin/olm-upgrading-operators.xml#olm-upgrading-operators)
+
+- [Preparing to update a cluster with manually maintained credentials](../../updating/preparing_for_updates/preparing-manual-creds-update.xml#preparing-manual-creds-update)
 
 # Pausing a MachineHealthCheck resource
 
@@ -171,6 +189,8 @@ If you have a local OpenShift Update Service, you can update by using the connec
 - [Mirroring OpenShift Container Platform images](../../disconnected/updating/mirroring-image-repository.xml#mirroring-ocp-image-repository)
 
 # Understanding image registry repository mirroring
+
+You must mirror images to update clusters in disconnected environments.
 
 By setting up container registry repository mirroring, you can perform the following tasks:
 
@@ -521,6 +541,8 @@ If the repository mirroring procedure does not work as described, use the follow
 - The format of the `/etc/containers/registries.conf` file has changed recently. It is now version 2 and in TOML format.
 
 ## Converting ImageContentSourcePolicy (ICSP) files for image registry repository mirroring
+
+You can convert existing `ImageContentSourcePolicy` (ICSP) files to `ImageDigestMirrorSet` files to configure image registry repository mirroring.
 
 Using an `ImageContentSourcePolicy` (ICSP) object to configure repository mirroring is a deprecated feature.
 

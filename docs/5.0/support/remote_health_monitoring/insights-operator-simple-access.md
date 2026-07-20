@@ -1,4 +1,6 @@
-Insights Operator automates the import of Simple Content Access (SCA) entitlement certificates every 8 hours. These Red Hat Subscription Management (RHSM) certificates allow the cluster to authenticate with the Red Hat Content Delivery Network (CDN) to access subscription-governed content. SCA supports multi-architecture clusters by generating architecture-specific secrets, such as `amd64` or `arm64`, in the `openshift-config-managed` namespace to ensure compatibility across all worker node types.
+Insights Operator automates the import of Simple Content Access (SCA) entitlement certificates every 8 hours. These Red Hat Subscription Management (RHSM) certificates allow the cluster to authenticate with the Red Hat Content Delivery Network (CDN) to access subscription-governed content.
+
+SCA supports multi-architecture clusters by generating architecture-specific secrets, such as `amd64` or `arm64`, in the `openshift-config-managed` namespace to ensure compatibility across all worker node types.
 
 - [About simple content access](https://access.redhat.com/documentation/en-us/subscription_central/2021/html-single/getting_started_with_simple_content_access/index#assembly-about-simplecontent)
 
@@ -56,7 +58,7 @@ To verify the imported entitlement secrets, list architecture-specific secrets a
 
 # Configuring simple content access import interval
 
-You can configure how often the Insights Operator imports the simple content access (sca) entitlements by using the **insights-config** `ConfigMap` object in the `openshift-insights` namespace. The entitlement import normally occurs every eight hours, but you can shorten this sca interval if you update your simple content access configuration in the **insights-config** `ConfigMap` object.
+You can configure how often the Insights Operator imports the simple content access (sca) entitlements by using the `insights-config` `ConfigMap` object in the `openshift-insights` namespace. The entitlement import normally occurs every eight hours, but you can shorten this sca interval if you update your simple content access configuration in the `insights-config` `ConfigMap` object.
 
 This procedure describes how to update the import interval to two hours (2h). You can specify hours (h) or hours and minutes, for example: 2h30m.
 
@@ -93,13 +95,13 @@ This procedure describes how to update the import interval to two hours (2h). Yo
 
 ## Disabling simple content access import
 
-You can disable the importing of simple content access entitlements by using the **insights-config** `ConfigMap` object in the `openshift-insights` namespace.
+You can disable the importing of simple content access entitlements by using the `insights-config` `ConfigMap` object in the `openshift-insights` namespace.
 
 - Remote health reporting is enabled, which is the default.
 
 - You are logged in to the OpenShift Container Platform web console as `cluster-admin`.
 
-- The **insights-config** `ConfigMap` object exists in the `openshift-insights` namespace.
+- The `insights-config` `ConfigMap` object exists in the `openshift-insights` namespace.
 
 1.  Go to **Workloads** → **ConfigMaps** and select **Project: openshift-insights**.
 
@@ -134,7 +136,7 @@ If the importing of simple content access entitlements is disabled, the Insights
 
 - You have logged in to the OpenShift Container Platform web console as a user with the `cluster-admin` role.
 
-- The **insights-config** `ConfigMap` object exists in the `openshift-insights` namespace.
+- The `insights-config` `ConfigMap` object exists in the `openshift-insights` namespace.
 
 1.  Go to **Workloads** → **ConfigMaps** and select **Project: openshift-insights**.
 

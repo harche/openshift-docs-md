@@ -4,6 +4,12 @@ The Network Observability Operator enables administrators to observe and analyze
 
 These release notes track the development of the Network Observability Operator in the OpenShift Container Platform.
 
+# Network Observability Operator 1.12.1 advisory
+
+Network Observability Operator 1.12.1 includes a product enhancement advisory.
+
+- [RHEA-2026:40244 Network Observability Operator 1.12.1](https://access.redhat.com/errata/RHEA-2026:40244)
+
 # Network Observability Operator 1.12 advisory
 
 You can review the advisory for Network Observability Operator 1.12 release.

@@ -6,7 +6,9 @@ To use the Insights Operator in a restricted network, you must:
 
 - Upload the Insights Operator archive to [console.redhat.com](https://console.redhat.com).
 
-Additionally, you can select to [obfuscate](../../support/remote_health_monitoring/remote-health-reporting-from-restricted-network.xml#insights-operator-enable-obfuscation_remote-health-reporting-from-restricted-network) the Insights Operator data before upload.
+Additionally, you can select to obfuscate the Insights Operator data before data upload.
+
+- [Enabling Insights Operator data obfuscation](../../support/remote_health_monitoring/remote-health-reporting-from-restricted-network.xml#insights-operator-enable-obfuscation_remote-health-reporting-from-restricted-network)
 
 # Running an Insights Operator gather operation
 
@@ -71,8 +73,7 @@ You must run a gather operation to create an Insights Operator archive.
           volumeMounts:
     ```
 
-    where; `spec.template.initContainers.image`
-    Replace any existing value with your `insights-operator` image version.
+    Replace the value of `spec.template.initContainers.image` with your `insights-operator` image version.
 
 4.  Create the gather job:
 
@@ -102,8 +103,7 @@ You must run a gather operation to create an Insights Operator archive.
       Normal  SuccessfulCreate  7m18s  job-controller  Created pod: insights-operator-job-<your_job>
     ```
 
-    where
-    `insights-operator-job-<your_job>` is the name of the pod.
+    Replace `insights-operator-job-<your_job>` with the name of the pod.
 
 6.  Verify that the operation has finished:
 
@@ -167,7 +167,16 @@ You can manually upload an Insights Operator archive to [console.redhat.com](htt
     $ curl -v -H "User-Agent: insights-operator/one10time200gather184a34f6a168926d93c330 cluster/<cluster_id>" -H "Authorization: Bearer <your_token>" -F "upload=@<path_to_archive>; type=application/vnd.redhat.openshift.periodic+tar" https://console.redhat.com/api/ingress/v1/upload
     ```
 
-    where `<cluster_id>` is your cluster ID, `<your_token>` is the token from your pull secret, and `<path_to_archive>` is the path to the Insights Operator archive.
+    where:
+
+    `<cluster_id>`
+    Specifies the cluster ID.
+
+    `<your_token>`
+    Specifies the token from your pull secret.
+
+    `<path_to_archive>`
+    Specifies the path to the Insights Operator archive.
 
     If the operation is successful, the command returns a `"request_id"` and `"account_number"`:
 
@@ -244,8 +253,8 @@ The following procedure enables obfuscation using the `support` secret in the `o
 
 3.  Search for the **obfuscation-translation-table** secret using the **Search by name** field.
 
-If the `obfuscation-translation-table` secret exists, then obfuscation is enabled and working.
+    If the `obfuscation-translation-table` secret exists, then obfuscation is enabled and working.
 
-Alternatively, you can inspect `/insights-operator/gathers.json` in your Insights Operator archive for the value `"is_global_obfuscation_enabled": true`.
+    Alternatively, you can inspect `/insights-operator/gathers.json` in your Insights Operator archive for the value `"is_global_obfuscation_enabled": true`.
 
 - [Showing data collected by the Insights Operator](../../support/remote_health_monitoring/showing-data-collected-by-remote-health-monitoring.xml#insights-operator-showing-data-collected-from-the-cluster_showing-data-collected-by-remote-health-monitoring)

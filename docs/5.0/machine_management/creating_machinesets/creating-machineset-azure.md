@@ -1054,7 +1054,7 @@ You can configure a machine set to deploy machines on any available resources th
 
 These parameters specify the VM size, region, and number of instances that you want to reserve. If your Azure subscription quota can accommodate the capacity request, the deployment succeeds.
 
-For more information, including limitations and suggested use cases for this Azure offering, see [On-demand Capacity Reservation](https://learn.microsoft.com/en-us/azure/virtual-machines/capacity-reservation-overview) in the Microsoft Azure documentation.
+For more information, including limitations and suggested use cases for this Microsoft Azure offering, see [On-demand Capacity Reservation](https://learn.microsoft.com/en-us/azure/virtual-machines/capacity-reservation-overview) in the Azure documentation.
 
 <div class="note">
 

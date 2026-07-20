@@ -62,7 +62,7 @@ You can gather OpenShift Container Platform debugging information for a hosted c
 
 ## Gathering data for a hosted cluster by using the CLI
 
-You can gather OpenShift Container Platform debugging information for a hosted cluster by using the CLI.
+You can gather OpenShift Container Platform debugging information for a hosted cluster by using the command-line interface (CLI).
 
 - You must have `cluster-admin` access to the management cluster.
 
@@ -87,7 +87,7 @@ You can gather OpenShift Container Platform debugging information for a hosted c
     $ oc --kubeconfig <hosted_cluster_name>.kubeconfig get nodes
     ```
 
-3.  . Collect the must-gather information by entering the following command:
+3.  Collect the must-gather information by entering the following command:
 
     ``` terminal
     $ oc adm must-gather
@@ -144,7 +144,7 @@ When you need to troubleshoot an issue in a disconnected environment, you can ga
 
 When you troubleshoot a hosted cluster on OpenShift Virtualization, start with the top-level `HostedCluster` and `NodePool` resources and then work down the stack until you find the root cause. The following steps can help you discover the root cause of common issues.
 
-## HostedCluster resource is stuck in a partial state
+## Troubleshooting HostedCluster resource stuck in a partial state
 
 If a hosted control plane is not coming fully online because a `HostedCluster` resource is pending, identify the problem by checking prerequisites, resource conditions, and node and Operator status.
 
@@ -158,13 +158,13 @@ If a hosted control plane is not coming fully online because a `HostedCluster` r
 
   - View the output of the `oc get nodes` command to ensure that worker nodes are ready.
 
-## No worker nodes are registered
+## Identifying why no compute nodes are registered
 
-If a hosted control plane is not coming fully online because the hosted control plane has no worker nodes registered, identify the problem by checking the status of various parts of the hosted control plane.
+If a hosted control plane is not coming fully online because the hosted control plane has no compute nodes registered, identify the problem by checking the status of various parts of the hosted control plane.
 
 - View the `HostedCluster` and `NodePool` conditions for failures that indicate what the problem might be.
 
-- Enter the following command to view the KubeVirt worker node virtual machine (VM) status for the `NodePool` resource:
+- Enter the following command to view the KubeVirt compute node virtual machine (VM) status for the `NodePool` resource:
 
   ``` terminal
   $ oc get vm -n <namespace>
@@ -184,15 +184,15 @@ If a hosted control plane is not coming fully online because the hosted control 
 
   If the virt-launcher pods are in a pending state, investigate why the pods are not being scheduled. For example, not enough resources might exist to run the virt-launcher pods.
 
-- If the VMs are running but they are not registered as worker nodes, use the web console to gain VNC access to one of the affected VMs. The VNC output indicates whether the ignition configuration was applied. If a VM cannot access the hosted control plane ignition server on startup, the VM cannot be provisioned correctly.
+- If the VMs are running but they are not registered as compute nodes, use the web console to gain VNC access to one of the affected VMs. The VNC output indicates whether the ignition configuration was applied. If a VM cannot access the hosted control plane ignition server on startup, the VM cannot be provisioned correctly.
 
-- If the ignition configuration was applied but the VM is still not registering as a node, see *Identifying the problem: Access the VM console logs* to learn how to access the VM console logs during startup.
+- If the ignition configuration was applied but the VM is still not registering as a node, see "Identifying the problem: Access the VM console logs" to learn how to access the VM console logs during startup.
 
 <!-- -->
 
 - [Identifying the problem: Access the VM console logs](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.11/html/clusters/cluster_mce_overview#identifying-vm-console-logs)
 
-## Worker nodes are stuck in the NotReady state
+## Identifying why compute nodes are not ready
 
 During cluster creation, nodes enter the `NotReady` state temporarily while the networking stack is rolled out. This part of the process is normal. However, if this part of the process takes longer than 15 minutes, identify the problem by investigating the node object and pods.
 
@@ -208,7 +208,7 @@ During cluster creation, nodes enter the `NotReady` state temporarily while the 
     $ oc get pods -A --field-selector=status.phase!=Running,status,phase!=Succeeded
     ```
 
-## Ingress and console cluster operators are not coming online
+## Identifying why ingress and console cluster Operators are not coming online
 
 If a hosted control plane is not coming fully online because the Ingress and console cluster Operators are not online, check the wildcard DNS routes and load balancer.
 
@@ -226,7 +226,7 @@ If a hosted control plane is not coming fully online because the Ingress and con
 
   - Ensure that the wildcard DNS entry is targeting the load balancer IP address.
 
-## Load balancer services for the hosted cluster are not available
+## Identifying why load balancer services for the hosted cluster are unavailable
 
 If a hosted control plane is not coming fully online because the load balancer services are not becoming available, check events, details, and the Kubernetes Cluster Configuration Manager (KCCM) pod.
 
@@ -239,7 +239,7 @@ If a hosted control plane is not coming fully online because the load balancer s
     -l app=cloud-controller-manager
   ```
 
-## Hosted cluster PVCs are not available
+## Identifying why hosted cluster PVCs are not available
 
 If a hosted control plane is not coming fully online because the persistent volume claims (PVCs) for a hosted cluster are not available, check the PVC events and details, and component logs.
 
@@ -258,15 +258,21 @@ If a hosted control plane is not coming fully online because the persistent volu
   $ oc get pods -n <hcp namespace> -l app=kubevirt-csi-driver
   ```
 
-## VM nodes are not correctly joining the cluster
+## Identifying why VM nodes are not joining the cluster
 
-If a hosted control plane is not coming fully online because the VM nodes are not correctly joining the cluster, access the VM console logs.
+If a hosted control plane is not coming fully online because the virtual machine (VM) nodes are not correctly joining the cluster, access the VM console logs.
 
-- To access the VM console logs, complete the steps in [How to get serial console logs for VMs part of OpenShift Virtualization Hosted Control Plane clusters](https://access.redhat.com/solutions/7037705).
+- To access the VM console logs, complete the steps in "How to get serial console logs for VMs part of OpenShift Virtualization Hosted Control Plane clusters".
 
-## RHCOS image mirroring fails
+<!-- -->
 
-For hosted control planes on OpenShift Virtualization in a disconnected environment, `oc-mirror` fails to automatically mirror the Red Hat Enterprise Linux CoreOS (RHCOS) image to the internal registry. When you create your first hosted cluster, the Kubevirt virtual machine does not boot, because the boot image is not available in the internal registry.
+- [How to get serial console logs for VMs part of OpenShift Virtualization Hosted Control Plane clusters (Red Hat Knowledgebase)](https://access.redhat.com/solutions/7037705)
+
+## Resolving RHCOS image mirroring failures
+
+For hosted control planes on OpenShift Virtualization in a disconnected environment, if `oc-mirror` fails to automatically mirror the Red Hat Enterprise Linux CoreOS (RHCOS) image to the internal registry, you can manually mirror the RHCOS image to the internal registry.
+
+When you create your first hosted cluster, the Kubevirt virtual machine does not boot, because the boot image is not available in the internal registry.
 
 To resolve this issue, manually mirror the RHCOS image to the internal registry.
 
@@ -298,11 +304,15 @@ To resolve this issue, manually mirror the RHCOS image to the internal registry.
       | jq -r '.architectures.x86_64.images.kubevirt."digest-ref"'
     ```
 
-5.  Mirror the RHCOS image to your internal registry. Replace `<rhcos_image>` with your RHCOS image; for example, `quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:d9643ead36b1c026be664c9c65c11433c6cdf71bfd93ba229141d134a4a6dd94`. Replace `<internal_registry>` with the name of your internal registry; for example, `virthost.ostest.test.metalkube.org:5000/localimages/ocp-v4.0-art-dev`. Run the following command:
+5.  Mirror the RHCOS image to your internal registry by running the following command:
 
     ``` terminal
     $ oc image mirror <rhcos_image> <internal_registry>
     ```
+
+    - Replace `<rhcos_image>` with your RHCOS image; for example, `quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:d9643ead36b1c026be664c9c65c11433c6cdf71bfd93ba229141d134a4a6dd94`.
+
+    - Replace `<internal_registry>` with the name of your internal registry; for example, `virthost.ostest.test.metalkube.org:5000/localimages/ocp-v4.0-art-dev`.
 
 6.  Create a YAML file named `rhcos-boot-kubevirt.yaml` that defines the `ImageDigestMirrorSet` object. See the following example configuration:
 
@@ -318,9 +328,9 @@ To resolve this issue, manually mirror the RHCOS image to the internal registry.
           source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
     ```
 
-    - Specify the name of your internal registry, for example, `virthost.ostest.test.metalkube.org:5000/localimages/ocp-v4.0-art-dev`.
+    - `spec.repositoryDigestMirrors.mirrors` specifies the name of your internal registry.
 
-    - Specify your RHCOS image without its digest, for example, `quay.io/openshift-release-dev/ocp-v4.0-art-dev`.
+    - `spec.repositoryDigestMirrors.source` specifies your RHCOS image without its digest.
 
 7.  Apply the `rhcos-boot-kubevirt.yaml` file to create the `ImageDigestMirrorSet` object by running the following command:
 

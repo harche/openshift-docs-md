@@ -48,21 +48,7 @@ Run a latency checkup to verify network connectivity and measure the latency bet
 
 # Running a latency checkup by using the CLI
 
-You can run a latency checkup by using the CLI.
-
-Perform the following steps:
-
-1.  Create a service account, roles, and rolebindings to provide cluster access permissions to the latency checkup.
-
-2.  Create a config map to provide the input to run the checkup and to store the results.
-
-3.  Create a job to run the checkup.
-
-4.  Review the results in the config map.
-
-5.  Optional: To rerun the checkup, delete the existing config map and job and then create a new config map and job.
-
-6.  When you are finished, delete the latency checkup resources.
+Verify that network latency between virtual machines on a secondary network meets your performance requirements.
 
 - You installed the OpenShift CLI (`oc`).
 

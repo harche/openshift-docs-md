@@ -1,14 +1,8 @@
-You can write and install plugins to build on the default `oc` commands, allowing you to perform new and more complex tasks with the OpenShift Container Platform CLI.
+You can write and install plugins to build on the default `oc` commands, allowing you to perform new and more complex tasks with the OpenShift CLI (`oc`).
 
 # Writing CLI plugins
 
-You can write a plugin for the OpenShift Container Platform CLI in any programming language or script that allows you to write command-line commands. Note that you can not use a plugin to overwrite an existing `oc` command.
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
+You can write a plugin for the OpenShift CLI (`oc`) in any programming language or script that allows you to write command-line commands. Note that you cannot use a plugin to overwrite an existing `oc` command.
 
 This procedure creates a simple Bash plugin that prints a message to the terminal when the `oc foo` command is issued.
 
@@ -42,15 +36,15 @@ This procedure creates a simple Bash plugin that prints a message to the termina
     echo "I am a plugin named kubectl-foo"
     ```
 
-After you install this plugin for the OpenShift Container Platform CLI, it can be invoked using the `oc foo` command.
+    After you install this plugin for the OpenShift CLI (`oc`), you can invoke it by using the `oc foo` command.
 
-- Review the [Sample plugin repository](https://github.com/kubernetes/sample-cli-plugin) for an example of a plugin written in Go.
+- [Sample plugin repository](https://github.com/kubernetes/sample-cli-plugin)
 
-- Review the [CLI runtime repository](https://github.com/kubernetes/cli-runtime/) for a set of utilities to assist in writing plugins in Go.
+- [CLI runtime repository](https://github.com/kubernetes/cli-runtime/)
 
 # Installing and using CLI plugins
 
-After you write a custom plugin for the OpenShift Container Platform CLI, you must install the plugin before use.
+After you write a custom plugin for the OpenShift CLI (`oc`), you must install the plugin before you can use it.
 
 - You must have the `oc` CLI tool installed.
 
@@ -90,7 +84,7 @@ After you write a custom plugin for the OpenShift Container Platform CLI, you mu
 
 4.  Invoke the new command or option introduced by the plugin.
 
-    For example, if you built and installed the `kubectl-ns` plugin from the [Sample plugin repository](https://github.com/kubernetes/sample-cli-plugin), you can use the following command to view the current namespace.
+    For example, if you built and installed the `kubectl-ns` plugin from the [Sample plugin repository](https://github.com/kubernetes/sample-cli-plugin), you can use the following command to view the current namespace:
 
     ``` terminal
     $ oc ns

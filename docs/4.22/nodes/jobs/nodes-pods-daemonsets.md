@@ -1,3 +1,5 @@
+Daemon sets ensure that pods run on all or specific nodes in a cluster, enabling cluster-wide services such as logging agents, monitoring tools, and shared storage that must be present on every node.
+
 As an administrator, you can create and use daemon sets to run replicas of a pod on specific or all nodes in an OpenShift Container Platform cluster.
 
 A daemon set ensures that all (or some) nodes run a copy of a pod. As nodes are added to the cluster, pods are added to the cluster. As nodes are removed from the cluster, those pods are removed through garbage collection. Deleting a daemon set will clean up the pods it created.
@@ -46,7 +48,21 @@ In addition, a `node.kubernetes.io/unschedulable:NoSchedule` toleration is added
 
 # Creating daemonsets
 
+Create a daemon set to automatically deploy and maintain pod replicas across selected nodes in your cluster, using node selectors to control placement.
+
 When creating daemon sets, the `nodeSelector` field is used to indicate the nodes on which the daemon set should deploy replicas.
+
+<div class="important">
+
+- If you update a daemon set pod template, the existing pod replicas are not affected.
+
+- If you delete a daemon set and then create a new daemon set with a different template but the same label selector, it recognizes any existing pod replicas as having matching labels and thus does not update them or create new replicas despite a mismatch in the pod template.
+
+- If you change node labels, the daemon set adds pods to nodes that match the new labels and deletes pods from nodes that do not match the new labels.
+
+To update a daemon set, force new pod replicas to be created by deleting the old replicas or nodes.
+
+</div>
 
 - Before you start using daemon sets, disable the default project-wide node selector in your namespace, by setting the namespace annotation `openshift.io/node-selector` to an empty string:
 
@@ -76,14 +92,6 @@ When creating daemon sets, the `nodeSelector` field is used to indicate the node
   ``` terminal
   $ oc adm new-project <name> --node-selector=""
   ```
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To create a daemon set:
 
 1.  Define the daemon set yaml file:
 
@@ -117,13 +125,18 @@ To create a daemon set:
     #...
     ```
 
-    - The label selector that determines which pods belong to the daemon set.
+    where:
 
-    - The pod template’s label selector. Must match the label selector above.
+    `spec.selector.matchLabels.name`
+    Specifies the label selector that determines which pods belong to the daemon set.
 
-    - The node selector that determines on which nodes pod replicas should be deployed. A matching label must be present on the node.
+    `spec.template.metadata.labels.name`
+    Specifies the pod template’s label selector. Must match the label selector above.
 
-2.  Create the daemon set object:
+    `spec.template.spec.nodeSelector`
+    Specifies the node selector that determines on which nodes pod replicas should be deployed. A matching label must be present on the node.
+
+2.  Create the daemon set object by running the following command:
 
     ``` terminal
     $ oc create -f daemonset.yaml
@@ -131,7 +144,7 @@ To create a daemon set:
 
 3.  To verify that the pods were created, and that each node has a pod replica:
 
-    1.  Find the daemonset pods:
+    1.  Find the daemonset pods by entering the following command:
 
         ``` terminal
         $ oc get pods
@@ -148,7 +161,7 @@ To create a daemon set:
         hello-daemonset-e3md9   1/1       Running   0          2m
         ```
 
-    2.  View the pods to verify the pod has been placed onto the node:
+    2.  View the pods to verify the pod has been placed onto the node by entering the following command:
 
         ``` terminal
         $ oc describe pod/hello-daemonset-cx6md|grep Node
@@ -177,15 +190,3 @@ To create a daemon set:
         ``` terminal
         Node:        openshift-node02.hostname.com/10.14.20.137
         ```
-
-<div class="important">
-
-- If you update a daemon set pod template, the existing pod replicas are not affected.
-
-- If you delete a daemon set and then create a new daemon set with a different template but the same label selector, it recognizes any existing pod replicas as having matching labels and thus does not update them or create new replicas despite a mismatch in the pod template.
-
-- If you change node labels, the daemon set adds pods to nodes that match the new labels and deletes pods from nodes that do not match the new labels.
-
-To update a daemon set, force new pod replicas to be created by deleting the old replicas or nodes.
-
-</div>

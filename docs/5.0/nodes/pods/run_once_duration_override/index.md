@@ -1,4 +1,4 @@
-You can use the Run Once Duration Override Operator to specify a maximum time limit that run-once pods can be active for.
+The Run Once Duration Override Operator enforces time limits on run-once pods to prevent tasks from running indefinitely and consuming cluster resources.
 
 # About the Run Once Duration Override Operator
 

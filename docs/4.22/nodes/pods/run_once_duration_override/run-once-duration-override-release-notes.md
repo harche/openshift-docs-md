@@ -4,7 +4,7 @@ To apply the run-once duration override from the Run Once Duration Override Oper
 
 These release notes track the development of the Run Once Duration Override Operator for OpenShift Container Platform.
 
-For an overview of the Run Once Duration Override Operator, see [About the Run Once Duration Override Operator](../../../nodes/pods/run_once_duration_override/index.xml#run-once-about_run-once-duration-override-about).
+- [About the Run Once Duration Override Operator](../../../nodes/pods/run_once_duration_override/index.xml#rodoo-about_run-once-duration-override-about)
 
 # Run Once Duration Override Operator 1.4.1
 

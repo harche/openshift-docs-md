@@ -324,6 +324,17 @@
     - [Completing the Control Plane Only update](post_installation_configuration/day_2_core_cnf_clusters/updating/update-completing-the-control-plane-only-update.md)
     - [Completing the y-stream update](post_installation_configuration/day_2_core_cnf_clusters/updating/update-completing-the-y-stream-update.md)
     - [Completing the z-stream update](post_installation_configuration/day_2_core_cnf_clusters/updating/update-completing-the-z-stream-update.md)
+  - **Upgrading OpenShift Container Platform clusters with RHACM and TALM**
+    - [About cluster updates with RHACM and TALM](post_installation_configuration/day_2_core_cnf_clusters/updating/update-rhacm-talm-overview.md)
+    - [Prepare RHACM policies and TALM for cluster updates](post_installation_configuration/day_2_core_cnf_clusters/updating/update-rhacm-talm-preparing-policies.md)
+    - [Prepare worker node pools before a cluster update with TALM](post_installation_configuration/day_2_core_cnf_clusters/updating/update-rhacm-talm-worker-batching.md)
+    - [Perform health checks before a cluster update with TALM](post_installation_configuration/day_2_core_cnf_clusters/updating/update-rhacm-talm-health-checks.md)
+    - [Manage worker nodes during a cluster update with TALM](post_installation_configuration/day_2_core_cnf_clusters/updating/update-rhacm-talm-worker-management.md)
+    - [Coordinate OLM-managed Operator updates with TALM](post_installation_configuration/day_2_core_cnf_clusters/updating/update-rhacm-talm-operator-coordination.md)
+    - [Complete a z-stream cluster update with TALM](post_installation_configuration/day_2_core_cnf_clusters/updating/update-rhacm-talm-z-stream.md)
+    - [Complete a y-stream cluster update with TALM](post_installation_configuration/day_2_core_cnf_clusters/updating/update-rhacm-talm-y-stream.md)
+    - [Complete an EUS-to-EUS cluster update with TALM](post_installation_configuration/day_2_core_cnf_clusters/updating/update-rhacm-talm-eus.md)
+    - [Troubleshoot cluster updates with TALM](post_installation_configuration/day_2_core_cnf_clusters/updating/update-rhacm-talm-troubleshooting.md)
   - **Troubleshooting and maintaining OpenShift Container Platform clusters**
     - [Troubleshooting and maintaining OpenShift Container Platform clusters](post_installation_configuration/day_2_core_cnf_clusters/troubleshooting/troubleshooting-intro.md)
     - [General troubleshooting](post_installation_configuration/day_2_core_cnf_clusters/troubleshooting/troubleshooting-general-troubleshooting.md)
@@ -1176,7 +1187,7 @@
   - [Automated disaster recovery for a hosted cluster by using OADP](hosted_control_planes/hcp_high_availability/hcp-disaster-recovery-oadp-auto.md)
 - [Authentication and authorization for hosted control planes](hosted_control_planes/hcp-authentication-authorization.md)
 - [Handling machine configuration for hosted control planes](hosted_control_planes/hcp-machine-config.md)
-- [Using feature gates in a hosted cluster](hosted_control_planes/hcp-using-feature-gates.md)
+- [Feature gates in a hosted cluster](hosted_control_planes/hcp-using-feature-gates.md)
 - [Observability for hosted control planes](hosted_control_planes/hcp-observability.md)
 - [Networking for hosted control planes](hosted_control_planes/hcp-networking.md)
 - [Troubleshooting hosted control planes](hosted_control_planes/hcp-troubleshooting.md)
@@ -1315,6 +1326,7 @@
 - [Using Bring-Your-Own-Host Windows instances as nodes](windows_containers/byoh-windows-instance.md)
 - [Removing Windows nodes](windows_containers/removing-windows-nodes.md)
 - [Disabling Windows container workloads](windows_containers/disabling-windows-container-workloads.md)
+- [Troubleshooting Windows container workloads](windows_containers/windows-containers-troubleshooting.md)
 
 ### OpenShift sandboxed containers
 

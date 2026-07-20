@@ -56,9 +56,9 @@ In OpenShift Container Platform 4.17, you require access to the internet to obta
 
 You must have internet access to perform the following actions:
 
-- Access [OpenShift Cluster Manager](https://console.redhat.com/openshift) to download the installation program and perform subscription management. If the cluster has internet access and you do not disable Telemetry, that service automatically entitles your cluster.
+- Access Red Hat Hybrid Cloud Console to download the installation program and perform subscription management. If the cluster has internet access and you do not disable Telemetry, that service automatically entitles your cluster.
 
-- Access [Quay.io](http://quay.io) to obtain the packages that are required to install your cluster.
+- Access Quay.io to obtain the packages that are required to install your cluster.
 
 - Obtain the packages that are required to perform cluster updates.
 
@@ -1332,11 +1332,11 @@ Operator catalogs that source content provided by Red Hat and community projects
       -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'
   ```
 
-<div class="tip">
+  <div class="tip">
 
-Alternatively, you can use the web console to manage catalog sources. From the **Administration** → **Cluster Settings** → **Configuration** → **OperatorHub** page, click the **Sources** tab, where you can create, update, delete, disable, and enable individual sources.
+  Alternatively, you can use the web console to manage catalog sources. From the **Administration** → **Cluster Settings** → **Configuration** → **OperatorHub** page, click the **Sources** tab, where you can create, update, delete, disable, and enable individual sources.
 
-</div>
+  </div>
 
 # Creating registry storage
 

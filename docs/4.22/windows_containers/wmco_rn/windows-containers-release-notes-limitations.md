@@ -12,8 +12,6 @@ Note the following limitations when working with Windows nodes managed by the WM
 
   - OpenShift Serverless
 
-  - Horizontal Pod Autoscaling
-
   - Vertical Pod Autoscaling
 
   - Hosted Control Planes

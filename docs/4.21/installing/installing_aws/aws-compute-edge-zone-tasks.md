@@ -1003,18 +1003,6 @@ Specifies the infrastructure ID, `edge` role node label, and zone name.
 `<edge>`
 Specifies the `edge` role node label.
 
-<div class="note">
-
-The `spec.template.spec.providerSpec.value.ami.id` stanza specifies a valid Red Hat Enterprise Linux CoreOS (RHCOS) Amazon Machine Image (AMI) for your AWS zone for your OpenShift Container Platform nodes. If you want to use an AWS Marketplace image, you must complete the OpenShift Container Platform subscription from the [AWS Marketplace](https://aws.amazon.com/marketplace/fulfillment?productId=59ead7de-2540-4653-a8b0-fa7926d5c845) to obtain an AMI ID for your region.
-
-``` terminal
-$ oc -n openshift-machine-api \
-    -o jsonpath='{.spec.template.spec.providerSpec.value.ami.id}{"\n"}' \
-    get machineset/<infrastructure_id>-<role>-<zone>
-```
-
-</div>
-
 `<zone>`
 Specifies the zone name, for example, `us-east-1-nyc-1a`.
 
@@ -1030,6 +1018,18 @@ Optional: Specifies custom tag data for your cluster. For example, you might add
 <div class="note">
 
 Custom tags can also be specified during installation in the `install-config.yaml` file. If the `install-config.yaml` file and the machine set include a tag with the same `name` data, the value for the tag from the machine set takes priority over the value for the tag in the `install-config.yaml` file.
+
+</div>
+
+<div class="note">
+
+The `spec.template.spec.providerSpec.value.ami.id` stanza specifies a valid Red Hat Enterprise Linux CoreOS (RHCOS) Amazon Machine Image (AMI) for your AWS zone for your OpenShift Container Platform nodes. If you want to use an AWS Marketplace image, you must complete the OpenShift Container Platform subscription from the [AWS Marketplace](https://aws.amazon.com/marketplace/fulfillment?productId=59ead7de-2540-4653-a8b0-fa7926d5c845) to obtain an AMI ID for your region.
+
+``` terminal
+$ oc -n openshift-machine-api \
+    -o jsonpath='{.spec.template.spec.providerSpec.value.ami.id}{"\n"}' \
+    get machineset/<infrastructure_id>-<role>-<zone>
+```
 
 </div>
 

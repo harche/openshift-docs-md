@@ -1,14 +1,14 @@
 To create a cluster with multi-architecture compute machines on IBM Z® and IBM® LinuxONE (`s390x`) with RHEL KVM, you must have an existing single-architecture `x86_64` cluster. You can then add `s390x` compute machines to your OpenShift Container Platform cluster.
 
-Before you can add `s390x` nodes to your cluster, you must upgrade your cluster to one that uses the multi-architecture payload. For more information on migrating to the multi-architecture payload, see [Migrating to a cluster with multi-architecture compute machines](../../updating/updating_a_cluster/migrating-to-multi-payload.xml#migrating-to-multi-payload).
+Before you can add `s390x` nodes to your cluster, you must upgrade your cluster to one that uses the multi-architecture payload. For more information on migrating to the multi-architecture payload, see "Migrating to a cluster with multi-architecture compute machines".
 
 The following procedures explain how to create a RHCOS compute machine using a RHEL KVM instance. This will allow you to add `s390x` nodes to your cluster and deploy a cluster with multi-architecture compute machines.
 
-To create an IBM Z® or IBM® LinuxONE (`s390x`) cluster with multi-architecture compute machines on `x86_64`, follow the instructions for [Installing a cluster on IBM Z® and IBM® LinuxONE](../../installing/installing_ibm_z/preparing-to-install-on-ibm-z.xml#preparing-to-install-on-ibm-z). You can then add `x86_64` compute machines as described in [Creating a cluster with multi-architecture compute machines on bare metal, IBM Power, or IBM Z](./creating-multi-arch-compute-nodes-bare-metal.xml#creating-multi-arch-compute-nodes-bare-metal).
+To create an IBM Z® or IBM® LinuxONE (`s390x`) cluster with multi-architecture compute machines on `x86_64`, follow the instructions for "Installing a cluster on IBM Z® and IBM® LinuxONE". You can then add `x86_64` compute machines as described in "Creating a cluster with multi-architecture compute machines on bare metal, IBM Power, or IBM Z".
 
 <div class="note">
 
-Before adding a secondary architecture node to your cluster, it is recommended to install the Multiarch Tuning Operator, and deploy a `ClusterPodPlacementConfig` object. For more information, see [Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator](../../post_installation_configuration/configuring-multi-arch-compute-machines/multiarch-tuning-operator.xml#multiarch-tuning-operator).
+Before adding a secondary architecture node to your cluster, install the Multiarch Tuning Operator and then deploy a `ClusterPodPlacementConfig` object. For more information, see "Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator".
 
 </div>
 
@@ -82,25 +82,32 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines fo
        --wait
     ```
 
-    - For `os-variant`, specify the RHEL version for the RHCOS compute machine. `rhel9.4` is the recommended version. To query the supported RHEL version of your operating system, run the following command:
+    where:
 
-      ``` terminal
-      $ osinfo-query os -f short-id
-      ```
+    `os-variant`
+    Specifies the RHEL version for the RHCOS compute machine. `rhel9.4` is the recommended version. To query the supported RHEL version of your operating system, run the following command:
 
-      <div class="note">
+    ``` terminal
+    $ osinfo-query os -f short-id
+    ```
 
-      The `os-variant` is case sensitive.
+    <div class="note">
 
-      </div>
+    The `os-variant` is case sensitive.
 
-    - For `--location`, specify the location of the kernel/initrd on the HTTP or HTTPS server.
+    </div>
 
-    - Specify the location of the `worker.ign` config file. Only HTTP and HTTPS protocols are supported.
+    `location`
+    Specifies the location of the kernel/initrd on the HTTP or HTTPS server.
 
-    - Specify the location of the `rootfs` artifact for the `kernel` and `initramfs` you are booting. Only HTTP and HTTPS protocols are supported
+    `coreos.inst.ignition_url`
+    Specifies the location of the `worker.ign` config file. Only HTTP and HTTPS protocols are supported.
 
-    - Optional: For `hostname`, specify the fully qualified hostname of the client machine.
+    `coreos.live.rootfs_url`
+    Specifies the location of the `rootfs` artifact for the `kernel` and `initramfs` you are booting. Only HTTP and HTTPS protocols are supported
+
+    `hostname`
+    Optional parameter. Specifies the fully qualified hostname of the client machine.
 
     <div class="note">
 
@@ -139,7 +146,7 @@ When you add machines to a cluster, two pending certificate signing requests (CS
 
     <div class="note">
 
-    The preceding output might not include the compute nodes, also known as worker nodes, until some CSRs are approved.
+    The preceding output might not include the compute nodes until some CSRs are approved.
 
     </div>
 
@@ -168,7 +175,7 @@ When you add machines to a cluster, two pending certificate signing requests (CS
 
     <div class="note">
 
-    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. Then, subsequent serving certificate renewal requests are automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The subsequent serving certificate renewal requests are then automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
 
     </div>
 
@@ -262,6 +269,16 @@ When you add machines to a cluster, two pending certificate signing requests (CS
 
     <div class="note">
 
-    It can take a few minutes after approval of the server CSRs for the machines to transition to the `Ready` status.
+    You might need to wait a few minutes after approval of the server CSRs for the machines to transition to the `Ready` status.
 
     </div>
+
+# Additional resources
+
+- [Migrating to a cluster with multi-architecture compute machines](../../updating/updating_a_cluster/migrating-to-multi-payload.xml#migrating-to-multi-payload)
+
+- [Installing a cluster on IBM Z® and IBM® LinuxONE](../../installing/installing_ibm_z/preparing-to-install-on-ibm-z.xml#preparing-to-install-on-ibm-z)
+
+- [Creating a cluster with multi-architecture compute machines on bare metal, IBM Power, or IBM Z](./creating-multi-arch-compute-nodes-bare-metal.xml#creating-multi-arch-compute-nodes-bare-metal)
+
+- [Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator](../../post_installation_configuration/configuring-multi-arch-compute-machines/multiarch-tuning-operator.xml#multiarch-tuning-operator)

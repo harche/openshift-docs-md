@@ -1,4 +1,6 @@
-Alibaba Cloud provides a broad range of cloud computing and data storage services to online businesses and global enterprises. You can install an OpenShift Container Platform cluster on Alibaba Cloud using the Assisted Installer.
+You can install an OpenShift Container Platform cluster on Alibaba Cloud using the Assisted Installer.
+
+Alibaba Cloud provides a broad range of cloud computing and data storage services to online businesses and global enterprises.
 
 <div class="important">
 
@@ -9,6 +11,8 @@ For more information about the support scope of Red Hat Technology Preview featu
 </div>
 
 # Process outline for creating a cluster with the Assisted Installer
+
+You can install an OpenShift Container Platform cluster on Alibaba Cloud by using both the Assisted Installer and the Alibaba Cloud consoles.
 
 The main steps of the installation process are as follows:
 

@@ -32,8 +32,6 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 </div>
 
-- You have enabled one of the following feature sets on your cluster: `TechPreviewNoUpgrade`, `DevPreviewNoUpgrade`, `CustomNoUpgrade`, or `OKD`. For more information on enabling the feature set, see "Enabling features using feature gates".
-
 - You have access to the cluster with `cluster-admin` privileges.
 
 - You have installed cert-manager Operator for Red Hat OpenShift.
@@ -166,10 +164,6 @@ For more information about the support scope of Red Hat Technology Preview featu
 <!-- -->
 
 - Configuring trust bundle
-
-<!-- -->
-
-- [Enabling features using feature gates](../../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)
 
 # Configuring trust bundle
 

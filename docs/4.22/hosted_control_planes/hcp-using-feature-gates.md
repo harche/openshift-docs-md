@@ -26,15 +26,15 @@ You can enable the `TechPreviewNoUpgrade` feature set in a hosted cluster by edi
           featureSet: TechPreviewNoUpgrade
     ```
 
-    - Specifies your hosted cluster name.
+    - `metadata.name` specifies your hosted cluster name.
 
-    - Specifies your hosted cluster namespace.
+    - `metadata.namespace` specifies your hosted cluster namespace.
 
-    - This feature set is a subset of the current Technology Preview features.
+    - `spec.configuration.featureGate.featureSet` is a subset of the current Technology Preview features.
 
       <div class="warning">
 
-      Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. This feature set allows you to enable these Technology Preview features on test clusters, where you can fully test them. Do not enable this feature set on production clusters.
+      Enabling the `TechPreviewNoUpgrade` feature set on your cluster cannot be undone and prevents minor version updates. With this feature set, you can enable these Technology Preview features on test clusters, where you can fully test them. Do not enable this feature set on production clusters.
 
       </div>
 

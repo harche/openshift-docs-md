@@ -1,10 +1,12 @@
-Managing a cluster that has nodes with multiple architectures requires you to consider node architecture as you monitor the cluster and manage your workloads. This requires you to take additional considerations into account when you configure cluster resource requirements and behavior, or schedule workloads in a multi-architecture cluster.
+Managing a cluster that has nodes with multiple architectures requires you to consider node architecture as you monitor the cluster and manage your workloads. This requires you to take additional considerations into account when you configure cluster resource requirements and behaviors, or schedule workloads in a multi-architecture cluster.
 
 # Scheduling workloads on clusters with multi-architecture compute machines
 
-When you deploy workloads on a cluster with compute nodes that use different architectures, you must align pod architecture with the architecture of the underlying node. Your workload may also require additional configuration to particular resources depending on the underlying node architecture.
+When you deploy workloads on a cluster with compute nodes that use different architectures, you must align pod architecture with the architecture of the underlying node. Your workload might also require additional configuration to particular resources depending on the underlying node architecture.
 
 You can use the Multiarch Tuning Operator to enable architecture-aware scheduling of workloads on clusters with multi-architecture compute machines. The Multiarch Tuning Operator implements additional scheduler predicates in the pods specifications based on the architectures that the pods can support at creation time.
+
+- [Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/postinstallation_configuration/configuring-multi-architecture-compute-machines-on-an-openshift-cluster#multiarch-tuning-operator)
 
 ## Sample multi-architecture node workload deployments
 
@@ -38,9 +40,10 @@ spec:
                 values:
                 - amd64
                 - arm64
+# ...
 ```
 
-- Specify the supported architectures. Valid values include `amd64`,`arm64`, or both values.
+- The `values` parameter specifies the supported architectures. Valid values include `amd64`,`arm64`, or both values.
 
 <!-- -->
 
@@ -243,15 +246,19 @@ Using 64k pages is exclusive to 64-bit ARM architecture compute nodes or cluster
       kernelType: 64k-pages
     ```
 
-    - Specify the value of the `machineconfiguration.openshift.io/role` label in the custom machine config pool. The example MachineConfig uses the `worker-64k-pages` label to enable 64k pages in the `worker-64k-pages` pool.
+    where:
 
-    - Specify your desired kernel type. Valid values are `64k-pages` and `default`
+    `metadata.labels.machineconfiguration.openshift.io/role`
+    Specifies the value of the `machineconfiguration.openshift.io/role` label in the custom machine config pool. The example MachineConfig uses the `worker-64k-pages` label to enable 64k pages in the `worker-64k-pages` pool.
 
-      <div class="note">
+    `spec.kernalType`
+    Specifies your desired kernel type. Valid values are `64k-pages` and `default`
 
-      The `64k-pages` type is supported on only 64-bit ARM architecture based compute nodes. The `realtime` type is supported on only 64-bit x86 architecture based compute nodes.
+    <div class="note">
 
-      </div>
+    The `64k-pages` type is supported on only 64-bit ARM architecture based compute nodes. The `realtime` type is supported on only 64-bit x86 architecture based compute nodes.
+
+    </div>
 
 - To view your new `worker-64k-pages` machine config pool, run the following command:
 
@@ -276,11 +283,11 @@ Using 64k pages is exclusive to 64-bit ARM architecture compute nodes or cluster
 
 On an OpenShift Container Platform 4.17 cluster with multi-architecture compute machines, the image streams in the cluster do not import manifest lists automatically. You must manually change the default `importMode` option to the `PreserveOriginal` option in order to import the manifest list.
 
-- You installed the OpenShift Container Platform CLI (`oc`).
+- You installed the OpenShift CLI (`oc`).
 
 <!-- -->
 
-- The following example command shows how to patch the `ImageStream` cli-artifacts so that the `cli-artifacts:latest` image stream tag is imported as a manifest list.
+- Enter a command similar to the following example command to patch the `ImageStream` cli-artifacts so that the `cli-artifacts:latest` image stream tag is imported as a manifest list:
 
   ``` terminal
   $ oc patch is/cli-artifacts -n openshift -p '{"spec":{"tags":[{"name":"latest","importPolicy":{"importMode":"PreserveOriginal"}}]}}'
@@ -294,7 +301,7 @@ On an OpenShift Container Platform 4.17 cluster with multi-architecture compute 
   $ oc get istag cli-artifacts:latest -n openshift -oyaml
   ```
 
-  If the `dockerImageManifests` object is present, then the manifest list import was successful.
+  If the `dockerImageManifests` object is present, the manifest list imported successfully.
 
   <div class="formalpara-title">
 

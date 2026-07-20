@@ -87,7 +87,7 @@ You can change the Amazon Web Services (AWS) instance type that your control pla
 
 # Assigning machines to placement groups for Elastic Fabric Adapter instances by using machine sets
 
-You can configure a machine set to deploy machines on Elastic Fabric Adapter (EFA) instances within an existing Amazon Web Services (AWS) placement group. Using EFA instances to run control plane machines can improve network performance.
+You can configure a machine set to deploy machines on Elastic Fabric Adapter (EFA) instances within an existing Amazon Web Services (AWS) placement group.
 
 [EFA](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html) instances do not require placement groups, and you can use placement groups for purposes other than configuring an EFA. This example uses both to demonstrate a configuration that can improve network performance for machines within the specified placement group.
 
@@ -140,7 +140,7 @@ Specifies the region, for example, `us-east-1`.
 Specifies the name of the existing AWS placement group to deploy machines in.
 
 `spec.template.spec.providerSpec.value.placementGroupPartition`
-Optional: Specifies the partition number of the existing AWS placement group to deploy machines in.
+Specifies the partition number of the existing AWS placement group to deploy machines in. This value is optional.
 
 - In the AWS console, find a machine that the machine set created and verify the following in the machine properties:
 
@@ -152,7 +152,7 @@ Optional: Specifies the partition number of the existing AWS placement group to 
 
 # Machine set options for the Amazon EC2 Instance Metadata Service
 
-You can use machine sets to create machines that use a specific version of the Amazon EC2 Instance Metadata Service (IMDS). Configuring Amazon EC2 IMDS behavior for control plane machines improves security.
+You can use machine sets to create machines that use a specific version of the Amazon EC2 Instance Metadata Service (IMDS).
 
 Machine sets can create machines that allow the use of both IMDSv1 and IMDSv2 or machines that require the use of IMDSv2.
 
@@ -187,10 +187,14 @@ You can specify whether to require the use of IMDSv2 by adding or editing the va
         authentication: Required
   ```
 
-where:
+  where:
 
-`providerSpec.value.metadataServiceOptions.authentication`
-Specifies whether to require IMDSv2. Set this parameter to `Required` to require IMDSv2. Set this parameter to `Optional` to allow the use of both IMDSv1 and IMDSv2. If you do not specify a value, both IMDSv1 and IMDSv2 are allowed.
+  `providerSpec.value.metadataServiceOptions.authentication`
+  Specifies whether to require IMDSv2. To require IMDSv2, set the parameter value to `Required`. To allow the use of both IMDSv1 and IMDSv2, set the parameter value to `Optional`. If you do not specify a value, both IMDSv1 and IMDSv2 are allowed.
+
+<!-- -->
+
+- [Use the Instance Metadata Service to access instance metadata (AWS documentation)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html)
 
 # Configuring storage throughput for gp3 drives
 

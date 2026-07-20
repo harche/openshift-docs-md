@@ -1,4 +1,4 @@
-With this release, hosted control planes for OpenShift Container Platform 4.22 is available. Hosted control planes for OpenShift Container Platform 4.22 supports multicluster engine for Kubernetes Operator version 2.17.
+With this release, hosted control planes for OpenShift Container Platform 4.17 is available. Hosted control planes for OpenShift Container Platform 4.17 supports multicluster engine for Kubernetes Operator version 4.17.
 
 # New features and enhancements
 

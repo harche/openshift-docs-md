@@ -161,6 +161,11 @@ When installing or upgrading an OpenShift Container Platform cluster on Google C
 
 For more information, see [Creating GCP resources with the Cloud Credential Operator utility](../installing/installing_gcp/installing-gcp-customizations.xml#cco-ccoctl-creating-at-once_installing-gcp-customizations).
 
+Oracle Alloy General Availability
+With this update, installing a cluster on Oracle Alloy is now Generally Available.
+
+For more information, see [Installing a cluster on Oracle Distributed Cloud by using the Assisted Installer](../installing/installing_oci/installing-oci-assisted-installer.xml#installing-oci-assisted-installer) or [Installing a cluster on Oracle Distributed Cloud by using the Agent-based Installer](../installing/installing_oci/installing-oci-agent-based-installer.xml#installing-oci-agent-based-installer).
+
 ## Machine Config Operator
 
 Boot nodes into a custom machine config pool
@@ -1285,6 +1290,112 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHSA-2026:37585 - OpenShift Container Platform 4.17.5 bug fix and security update
+
+Issued: 14 July 2026
+
+OpenShift Container Platform release 4.17.5 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:37585](https://access.redhat.com/errata/RHSA-2026:37585) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:37583](https://access.redhat.com/errata/RHBA-2026:37583) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.22.5 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, when deploying a hosted cluster on AWS in non-commercial ISO or classified regions, the Cluster Network Operator (CNO) assumed a maximum transmission unit (MTU) of `9001` for hosted cluster nodes. Because some of these regions do not support jumbo frames at this MTU value, and the setting could not be overridden during cluster creation, networking for hosted clusters in these regions could fail to configure correctly. With this release, you can specify an OVN-Kubernetes tunnel interface MTU between `576` and `9216` at cluster creation time. You can configure this setting by using the optional, immutable `mtu` field in the `ovnKubernetesConfig` configuration of the `HostedCluster` custom resource (CR) or by using the `--ovn-kubernetes-mtu` hosted control planes CLI flag. As a result, you can successfully deploy hosted clusters in AWS regions that do not support jumbo frames, and the CNO applies the correct MTU value. ([OCPBUGS-77078](https://redhat.atlassian.net/browse/OCPBUGS-77078))
+
+- Before this update, when you filtered projects on the **Projects** list page in the OpenShift Container Platform web console, the filter matched only the project `metadata.name` value and not the display name stored in the `openshift.io/display-name` annotation. As a consequence, typing a project display name in the filter toolbar returned no results even when a matching project existed. With this release, the **Projects** list filter includes the display name in its matching logic for both fuzzy and exact search modes. As a result, you can filter projects by either their technical name or their display name. ([OCPBUGS-90495](https://redhat.atlassian.net/browse/OCPBUGS-90495))
+
+- Before this update, on Secure Boot-enabled clusters with nodes originally installed on OpenShift Container Platform 4.15 or earlier, the Machine Config Operator (MCO) verified the shim version in the node operating system image rather than in the EFI System Partition (ESP). Nodes that were updated in place could have outdated shim and GRand Unified Bootloader (GRUB) binaries on the ESP while the operating system image contained newer versions. As a consequence, the MCO incorrectly skipped the boot loader update workaround for those nodes during a cluster update, and the nodes could fail to boot after the update. With this release, when a node runs Red Hat Enterprise Linux (RHEL) 9.6 or later, the MCO runs a node-level boot loader update by using `bootupctl` before it pulls the new node image container, and falls back to the existing container-based update path if the node-level update fails. As a result, nodes with stale boot loader files on the ESP are updated correctly and boot successfully after updating to this release. ([OCPBUGS-93743](https://redhat.atlassian.net/browse/OCPBUGS-93743))
+
+- Before this update, when Prometheus compacted time series data, it attempted to enable direct input/output on files that were already open. Some file systems, such as IBM Storage Scale, do not support this operation. As a consequence, compaction failed with a `cannot enable Direct IO: invalid argument` error, Prometheus could not write chunks to disk, and memory usage in Prometheus pods increased until the pods hit their memory limits and restarted or affected other workloads on the node. With this release, Prometheus detects when a file system does not support direct input/output on open files and handles the condition gracefully. As a result, Prometheus writes chunks to disk and completes compaction successfully on these storage back ends. ([OCPBUGS-93919](https://redhat.atlassian.net/browse/OCPBUGS-93919))
+
+- Before this update, the ironic-agent container image was missing the `iproute` package at runtime, which provides the `ip` command required for network configuration. As a consequence, the Ironic Python Agent (IPA) failed to heartbeat to Ironic during bare-metal node cleaning, and node cleaning operations timed out. With this release, the ironic-agent container image build process is updated to retain required packages such as `iproute` and `psmisc`. As a result, IPA completes network configuration successfully and bare-metal node cleaning operations complete without timing out. ([OCPBUGS-95061](https://redhat.atlassian.net/browse/OCPBUGS-95061))
+
+- Before this update, when you provisioned machines on an OpenStack cloud provider that does not support the optional Standard Attributes Tag extension, the Machine API Provider for OpenStack (MAPO) attempted to apply port tags during network port creation. As a consequence, network port creation failed and machine provisioning did not complete. With this release, MAPO checks whether the OpenStack Neutron `standard-attr-tag` extension is available before applying port tags. If the extension is not supported, MAPO skips tag assignment during provisioning. If you explicitly configure port tags on an unsupported OpenStack deployment, MAPO returns an error that prompts you to remove the port tags configuration. As a result, machine provisioning completes successfully on OpenStack deployments that do not support the tag extension. ([OCPBUGS-97826](https://redhat.atlassian.net/browse/OCPBUGS-97826))
+
+### Updating
+
+To update an OpenShift Container Platform 4.22 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
+## RHSA-2026:34794 - OpenShift Container Platform 4.17.4 bug fix and security update
+
+Issued: 07 July 2026
+
+OpenShift Container Platform release 4.17.4 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:34794](https://access.redhat.com/errata/RHSA-2026:34794) advisory. The RPM packages that are included in the update are provided by the [RHSA-2026:34789](https://access.redhat.com/errata/RHSA-2026:34789) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.22.4 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, Role Based Access Control (RBAC) permissions were insufficient for the Secrets Store CSI driver in the Control Plane Operator on the management cluster. As a consequence, users could not create hosted clusters with the Secrets Store CSI driver and the Control Plane Operator on versions later than 4.19.19. With this release, the Control Plane Operator now checks the accessibility of resource types before creation, granting access to the Secrets Store CSI driver and enabling successful hosted cluster creation. ([OCPBUGS-65687](https://redhat.atlassian.net/browse/OCPBUGS-65687))
+
+- Before this update, a transient failure to attach or detach a persistent volume to a node sometimes occurred. As a consequence, the Machine API Operator incorrectly marked the Machine as permanently failed. With this release, the Machine API provider for Microsoft Azure does not misinterpret the failure of any asynchronous operation on an Azure VM as a failure to provision the VM. As a result, the failure of a volume attach or a volume detach does not affect the status of the Machine object. ([OCPBUGS-86996](https://issues.redhat.com/browse/OCPBUGS-86996))
+
+- Before this update, changes to the `tlsAdherence` feature, such as `""` → `StrictAllComponents`, would not trigger a Cluster Baremetal Operator (CBO) restart. As a consequence, the Operator would run with a stale TLS (Transport Layer Security) configuration. With this release, the `controller-runtime-common` resource is updated to watch both the `tlsAdherence` field and the TLS security profile on the API Server custom resource (CR) in the Security Profile Watcher. As a result, changes to the `tlsAdherence` feature triggers a CBO restart as expected. ([OCPBUGS-87212](https://issues.redhat.com/browse/OCPBUGS-87212))
+
+- Before this update, the Hosted Cluster Config Operator would crash loop on an uncustomized Kubernetes cluster because the Operator was unconditionally attempting to watch the OpenShift Container Platform Route resource. With this release, the Operator attempts to watch the resource only when it exists on the management cluster. As a result, the Operator is no longer crash looping on an uncustomized Kubernetes cluster. ([OCPBUGS-87364](https://issues.redhat.com/browse/OCPBUGS-87364))
+
+- Before this update, the `kube-apiserver-to-kubelet` client signer certificate was being refreshed every 30 days despite having a 365-day validity period. With this release, the refresh interval is corrected to 292 days, 80% of validity, which is consistent with other signers. As a result, certificate rotations are prevented and the signer behavior is aligned with the intended configuration. ([OCPBUGS-87844](https://issues.redhat.com/browse/OCPBUGS-87844))
+
+- Before this update, deleting a BareMetalHost (BMH) that referenced a pre-provisioning network data Secret through the `spec.preprovisioningNetworkDataName` parameter could report a `RegistrationError` if the Secret was removed before the BMH finished deleting. As a consequence, the BMH deletion would take minutes to complete before an eventual force-delete by the controller. With this enhancement, the Bare Metal Operator (BMO) manages the lifecycle of that Secret in the same way as the BMC credential Secrets. The BMO now protects the Secret using a finalizer while the host is active, which prevents the Secret deletion until the finalizer is removed by the controller. As a result, the BMH is removed successfully before the Secret is allowed to be deleted. ([OCPBUGS-87963](https://issues.redhat.com/browse/OCPBUGS-87963))
+
+- Before this update, in vSphere installer-provisioned infrastructure clusters using static IPs, the control plane machine set (CPMS) Operator was not copying the name server into the CPMS when the CPMS was deleted. As a consequence, the CPMS Operator would identify current masters as not valid and would identify the masters as needing to be recreated. With this release, the CPMS Operator logic is updated to copy the name server definition into the CPMS when the clusters used static IPs. As a result, the name server information is configured in the CPMS when recreating the CPMS cluster instance. ([OCPBUGS-87968](https://issues.redhat.com/browse/OCPBUGS-87968))
+
+- Before this update, when generateRelease used the digest-only `ImageDigestMirrorSet` (IDMS) mode, images that were referenced as tag and digest, for example, nvcr.io/…​/container-toolkit:v1.19.1@sha256:…​, were treated as tag-only and excluded from IDMS generation. As a consequence, those images appeared only in the `ImageTagMirrorSet` (ITMS) mode. For disconnected installs that rely on IDMS for digest-based resolution, the mirroring install could fail for Operator-related images that were referenced as ITMS. With this release, updated `generateImageMirrors` objects are updated so that the tag and digest references are included in IDMS and ITMS. As a result, tag and digest images are written to both IDMS and ITMS. ([OCPBUGS-88484](https://issues.redhat.com/browse/OCPBUGS-88484))
+
+- Before this update, the **Column Management** modal did not display the help text that informed you that the namespace column is shown only when you select **All projects**. With this release, the help text displays correctly. ([OCPBUGS-90110](https://issues.redhat.com/browse/OCPBUGS-90110))
+
+- Before this update, the Ingress Node Firewall Operator used the `reflect.DeepEqual` parameter for node label comparison which required an exact label match instead of Kubernetes label selector semantics. As a consequence, the `IngressNodeFirewallNodeState` objects that were not created for nodes were added after the Ingress Node Firewall Operator startup. With this release, the `reflect.DeepEqual` parameter is replaced with the `labels.SelectorFromSet().Matches()` parameter for correct Kubernetes label selector matching. As a result, the Ingress Node Firewall Operator correctly creates the `IngressNodeFirewallNodeState` parameter for dynamically added nodes and label changes. ([OCPBUGS-90550](https://issues.redhat.com/browse/OCPBUGS-90550))
+
+- Before this update, the metrics-proxy scraper created a new HTTP client with a new `http.Transport` on an every 30-60-second scrape cycle without ever closing idle connections. The `http.Transport` for Go retained idle connections and their TLS buffers until `CloseIdleConnections` was explicitly called. As a consequence, idle connections and the TLS (Transport Layer Security) session state accumulated indefinitely across scrape cycles, which caused unbounded memory growth in metrics-proxy pods on request-serving nodes. Up to 2774Mi usage was observed against a 40Mi request, which triggered `RequestServingNodesNeedUpscale` alerts. With this release, the `DisableKeepAlives` parameter is set on the ephemeral transport to prevent connection pooling on single-use clients, and `CloseIdleConnections` is deferred as a safety net after each `ScrapeAll` call. As a result, the `metrics-proxy` memory usage remains stable over time within reasonable bounds. ([OCPBUGS-90563](https://issues.redhat.com/browse/OCPBUGS-90563))
+
+- Before this update, the GatewayClass controller set up watches on the Operator Lifecycle Management (OLM) `Subscription` and `InstallPlan` resources without checking whether the `OperatorLifecycleManager` capability was enabled on the cluster. As a consequence, on clusters that did not have the OLM capability, the GatewayClass controller blocked indefinitely during startup because the OLM CRDs did not exist. This blocking prevented the controller reconcile workers from starting, making Gateway API non-functional on those clusters. With this release, the Subscription and InstallPlan watches in the GatewayClass controller are guarded with an `OperatorLifecycleManagerEnabled` check so that the watches are only registered when OLM is present. The status controller `subscriptionCache` creation is also guarded with the same check. As a result, the GatewayClass controller starts successfully on clusters without OLM, and Gateway API functions correctly on non-OLM clusters. ([OCPBUGS-91967](https://issues.redhat.com/browse/OCPBUGS-91967))
+
+### Updating
+
+To update an OpenShift Container Platform 4.22 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
+## RHSA-2026:29795 - OpenShift Container Platform 4.17.3 bug fix and security update
+
+Issued: 30 June 2026
+
+OpenShift Container Platform release 4.17.3 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:29795](https://access.redhat.com/errata/RHSA-2026:29795) advisory. There are no RPM packages for this release.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.22.3 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, during parallel deployments of single-node OpenShift Container Platform, specifically with hypervisor-based single-node OpenShift Container Platform, some systems would hang in the middle of the deployment due to a race condition involving the BareMetalHost (BMH) custom resource. The single-node OpenShift Container Platform was never powered on by metal3 after virtual media was attached. As a consequence, parallel deployments at scale (10+ nodes) had approximately 80% success rate, with the remaining nodes requiring manual intervention to patch the `online` field to `true` for the impacted BMH custom resources. With this release, the race condition in the BMH power-on process has been resolved. As a result, parallel single-node OpenShift Container Platform deployments successfully power on all nodes without manual intervention, even at scale. ([OCPBUGS-73622](https://issues.redhat.com/browse/OCPBUGS-73622))
+
+- Before this update, the `kube-apiserver-check-endpoints` container generated a TLS certificate for the `check-endpoint` service on port `17697` with a validity of only 1 second. As a consequence, the certificate expired almost immediately after generation, which differed from previous OpenShift Container Platform versions where the certificate was valid for 1 month. With this release, the `kube-apiserver-check-endpoints` container generates certificates with an appropriate validity period. As a result, the `check-endpoint` service certificate remains valid for the expected duration, consistent with previous releases. ([OCPBUGS-84536](https://issues.redhat.com/browse/OCPBUGS-84536))
+
+- Before this update, the `oslat` latency test hard coded the runner pod memory to 1 GB regardless of the `LATENCY_TEST_CPUS` value. As a consequence, when running the CNF latency test with high CPU counts such as `LATENCY_TEST_CPUS=126`, the `oslat` pod was `OOMKilled` because the fixed 1 GB memory limit was insufficient, blocking hardware platform evaluation. With this release, the `oslat` test runner pod memory is configurable or appropriately scaled based on the `LATENCY_TEST_CPUS` setting. As a result, the documented CNF latency test flow completes successfully with higher CPU counts without `OOMKilled` failures. ([OCPBUGS-86071](https://issues.redhat.com/browse/OCPBUGS-86071))
+
+- Before this update, when the `etcd-endpoints` config map contained only the IP addresses of failed or unreachable etcd members, the etcd Operator entered a permanent deadlock. The `EtcdEndpointsController`, which updates the config map, required a working etcd connection to list members, but the etcd client pool read endpoints exclusively from the stale config map. This circular dependency prevented all Operator controllers from functioning. As a consequence, the Operator retried indefinitely against dead endpoints, logging `context deadline exceeded` errors continuously, and required manual intervention to patch the config map with healthy member IPs. With this release, the Operator detects when all config map-derived endpoints are unreachable and falls back to node-based endpoint discovery to re-establish connectivity with healthy etcd members. As a result, the `EtcdEndpointsController` automatically updates the config map with correct IP addresses and recovery proceeds without manual intervention. ([OCPBUGS-88490](https://issues.redhat.com/browse/OCPBUGS-88490))
+
+- Before this update, the Vertical Pod Autoscaler (VPA) Operator failed to create events in the cluster because it did not set the required `action` field when creating event objects. As a consequence, the VPA Operator logs contained errors such as `Server rejected event (will not retry!)` with the message `Event is invalid: action: Required value`. With this release, the VPA Operator correctly populates the `action` field when creating events. As a result, the VPA Operator successfully creates events without errors in the logs. ([OCPBUGS-90165](https://issues.redhat.com/browse/OCPBUGS-90165))
+
+### Updating
+
+To update an OpenShift Container Platform 4.22 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHSA-2026:27009 - OpenShift Container Platform 4.17.2 bug fix and security update
 
 Issued: 23 June 2026
@@ -1301,14 +1412,14 @@ $ oc adm release info 4.22.2 --pullspecs
 
 ### New features
 
-The Helm CLI for Red Hat OpenShift Container Platform v4 is now available as a standalone download
-The Helm CLI for Red Hat OpenShift Container Platform v4.1.4 is the first supported downstream build of Helm v4, available as a standalone binary from the OpenShift Container Platform mirror repository. This release provides access to Helm v4 capabilities, enabling you to evaluate and use Helm v4 workflows on OpenShift Container Platform.
+The Helm CLI v4 for Red Hat OpenShift is now available as a standalone download
+The Helm CLI v4.1.4 for Red Hat OpenShift is the first supported downstream build of Helm v4, available as a standalone binary from the OpenShift Container Platform mirror repository. This release provides access to Helm v4 capabilities, enabling you to evaluate and use Helm v4 workflows on OpenShift Container Platform.
 
-Note that all integrated OpenShift Container Platform console flows and software catalogs still run on Helm v3 only. If you use new Helm chart features or Helm v4-exclusive features through the command line interface (CLI), they will not map to or render in the current {ocp} web console.
+Note that all integrated OpenShift Container Platform console flows and software catalogs still run on Helm v3 only. If you use new Helm chart features or Helm v4-exclusive features through the command line interface (CLI), they will not map to or render in the current OpenShift Container Platform web console.
 
-Red Hat does not distribute Helm as a traditional RPM.
+Red Hat does not distribute Helm CLI v4 as a traditional RPM.
 
-For more information, see ([Helm CLI for Red Hat OpenShift Container Platform](https://access.redhat.com/solutions/7144038)(Red Hat Knowledgebase article)).
+For more information, see [Helm CLI for Red Hat OpenShift Container Platform](https://access.redhat.com/solutions/7144038)(Red Hat Knowledgebase).
 
 ### Enhancements
 

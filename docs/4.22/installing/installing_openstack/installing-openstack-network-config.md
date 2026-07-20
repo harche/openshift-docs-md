@@ -2,7 +2,7 @@ You can configure network settings for an OpenShift Container Platform on Red Ha
 
 # Configuring application access with floating IP addresses
 
-After you install OpenShift Container Platform, configure Red Hat OpenStack Platform (RHOSP) to allow application network traffic.
+After you install OpenShift Container Platform, configure Red Hat OpenStack Platform (RHOSP) to allow application network traffic by attaching a floating IP address to the ingress port.
 
 <div class="note">
 
@@ -14,45 +14,39 @@ You do not need to perform this procedure if you provided values for `platform.o
 
 - Floating IP addresses are enabled as described in the OpenShift Container Platform on RHOSP installation documentation.
 
-<div class="formalpara-title">
+1.  Attach a floating IP address to the ingress port by completing the following commands:
 
-**Procedure**
+    1.  Show the port by entering the following command:
 
-</div>
+        ``` terminal
+        $ openstack port show <cluster_name>-<cluster_ID>-ingress-port
+        ```
 
-After you install the OpenShift Container Platform cluster, attach a floating IP address to the ingress port:
+    2.  Attach the port to the IP address by entering the following command:
 
-1.  Show the port:
+        ``` terminal
+        $ openstack floating ip set --port <ingress_port_ID> <apps_FIP>
+        ```
 
-    ``` terminal
-    $ openstack port show <cluster_name>-<cluster_ID>-ingress-port
-    ```
-
-2.  Attach the port to the IP address:
-
-    ``` terminal
-    $ openstack floating ip set --port <ingress_port_ID> <apps_FIP>
-    ```
-
-3.  Add a wildcard `A` record for `*apps.` to your DNS file:
+2.  Add a wildcard `A` record for `*apps.` to your DNS file:
 
     ``` dns
     *.apps.<cluster_name>.<base_domain>  IN  A  <apps_FIP>
     ```
 
-<div class="note">
+    <div class="note">
 
-If you do not control the DNS server but want to enable application access for non-production purposes, you can add these hostnames to `/etc/hosts`:
+    If you do not control the DNS server but want to enable application access for non-production purposes, you can add these hostnames to the `/etc/hosts` file:
 
-``` dns
-<apps_FIP> console-openshift-console.apps.<cluster name>.<base domain>
-<apps_FIP> integrated-oauth-server-openshift-authentication.apps.<cluster name>.<base domain>
-<apps_FIP> oauth-openshift.apps.<cluster name>.<base domain>
-<apps_FIP> prometheus-k8s-openshift-monitoring.apps.<cluster name>.<base domain>
-<apps_FIP> <app name>.apps.<cluster name>.<base domain>
-```
+    ``` dns
+    <apps_FIP> console-openshift-console.apps.<cluster name>.<base domain>
+    <apps_FIP> integrated-oauth-server-openshift-authentication.apps.<cluster name>.<base domain>
+    <apps_FIP> oauth-openshift.apps.<cluster name>.<base domain>
+    <apps_FIP> prometheus-k8s-openshift-monitoring.apps.<cluster name>.<base domain>
+    <apps_FIP> <app name>.apps.<cluster name>.<base domain>
+    ```
 
-</div>
+    </div>
 
 # Enabling OVS hardware offloading
 
@@ -99,38 +93,46 @@ Application layer gateway flows are broken in OpenShift Container Platform versi
       resourceName: "hwoffload9"
     ```
 
-    - Insert the `SriovNetworkNodePolicy` value here.
+    where:
 
-    - Both interfaces must include physical function (PF) names.
+    `kind`
+    Specifies the `SriovNetworkNodePolicy` value.
 
-      <div class="formalpara-title">
+    `spec.nicSelector.pfNames`
+    Specifies the physical function (PF) name. Both interfaces must include PF names.
 
-      **The second virtual function interface**
+    <div class="formalpara-title">
 
-      </div>
+    **The second virtual function interface**
 
-      ``` yaml
-      apiVersion: sriovnetwork.openshift.io/v1
-      kind: SriovNetworkNodePolicy
-      metadata:
-        name: "hwoffload10"
-        namespace: openshift-sriov-network-operator
-      spec:
-        deviceType: netdevice
-        isRdma: true
-        nicSelector:
-          pfNames:
-          - ens5
-        nodeSelector:
-          feature.node.kubernetes.io/network-sriov.capable: 'true'
-        numVfs: 1
-        priority: 99
-        resourceName: "hwoffload10"
-      ```
+    </div>
 
-    - Insert the `SriovNetworkNodePolicy` value here.
+    ``` yaml
+    apiVersion: sriovnetwork.openshift.io/v1
+    kind: SriovNetworkNodePolicy
+    metadata:
+      name: "hwoffload10"
+      namespace: openshift-sriov-network-operator
+    spec:
+      deviceType: netdevice
+      isRdma: true
+      nicSelector:
+        pfNames:
+        - ens5
+      nodeSelector:
+        feature.node.kubernetes.io/network-sriov.capable: 'true'
+      numVfs: 1
+      priority: 99
+      resourceName: "hwoffload10"
+    ```
 
-    - Both interfaces must include physical function (PF) names.
+    where:
+
+    `kind`
+    Specifies the `SriovNetworkNodePolicy` value.
+
+    `spec.nicSelector.pfNames`
+    Specifies the physical function (PF) name. Both interfaces must include PF names.
 
 2.  Create `NetworkAttachmentDefinition` resources for the two interfaces:
 
@@ -250,25 +252,25 @@ Only the following IPv6 additional network configurations are supported:
 
 </div>
 
-- On a command line, enter the following command:
+- To disable port security for the IPv6 port of the server, enter the following command:
 
   ``` terminal
   $ openstack port set --no-security-group --disable-port-security <compute_ipv6_port>
   ```
 
-  - Specify the IPv6 port of the compute server.
+  Replace `<compute_ipv6_port>` with the IPv6 port of the compute server.
 
-    <div class="important">
+  <div class="important">
 
-    This command removes security groups from the port and disables port security. Traffic restrictions are removed entirely from the port.
+  This command removes security groups from the port and disables port security. Traffic restrictions are removed entirely from the port.
 
-    </div>
+  </div>
 
 # Create pods that have IPv6 connectivity on RHOSP
 
-After you enable IPv6 connectivty for pods and add it to them, create pods that have secondary IPv6 connections.
+After you enable and add IPv6 connectivity to pods, you can create pods that have secondary IPv6 connections.
 
-1.  Define pods that use your IPv6 namespace and the annotation `k8s.v1.cni.cncf.io/networks: <additional_network_name>`, where `<additional_network_name` is the name of the additional network. For example, as part of a `Deployment` object:
+1.  Define pods that use your IPv6 namespace and the annotation `k8s.v1.cni.cncf.io/networks: <additional_network_name>`, where `<additional_network_name>` is the name of the additional network. For example, as part of a `Deployment` object:
 
     ``` yaml
     apiVersion: apps/v1
@@ -319,11 +321,11 @@ After you enable IPv6 connectivty for pods and add it to them, create pods that 
     $ oc create -f <ipv6_enabled_resource>
     ```
 
-    - Specify the file that contains your resource definition.
+    Replace `<ipv6_enabled_resource>` with the file that contains your resource definition.
 
 # Adding IPv6 connectivity to pods on RHOSP
 
-After you enable IPv6 connectivity in pods, add connectivity to them by using a Container Network Interface (CNI) configuration.
+After you enable IPv6 connectivity in pods, add connectivity to the pods by using a Container Network Interface (CNI) configuration.
 
 1.  To edit the Cluster Network Operator (CNO), enter the following command:
 
@@ -343,21 +345,25 @@ After you enable IPv6 connectivity in pods, add connectivity to them by using a 
         type: Raw
     ```
 
-    - Be sure to create pods in the same namespace.
+    where
 
-    - The interface in the network attachment `"master"` field can differ from `"ens4"` when more networks are configured or when a different kernel driver is used.
+    `spec.additionalNetworks.namespace`
+    Be sure to create pods in the same namespace.
 
-      <div class="note">
+    `spec.additionalNetworks.rawCNIConfig`
+    The interface in the network attachment `"master"` field can differ from `"ens4"` when more networks are configured or when a different kernel driver is used.
 
-      If you are using stateful address mode, include the IP Address Management (IPAM) in the CNI configuration.
+    <div class="note">
 
-      DHCPv6 is not supported by Multus.
+    If you are using stateful address mode, include the IP Address Management (IPAM) in the CNI configuration.
 
-      </div>
+    DHCPv6 is not supported by Multus.
+
+    </div>
 
 3.  Save your changes and quit the text editor to commit your changes.
 
-- On a command line, enter the following command:
+- To verify that the IPv6 connectivity was added to pods, enter the following command:
 
   ``` terminal
   $ oc get network-attachment-definitions -A
@@ -374,4 +380,4 @@ After you enable IPv6 connectivity in pods, add connectivity to them by using a 
   ipv6            ipv6            21h
   ```
 
-You can now create pods that have secondary IPv6 connections.
+  You can now create pods that have secondary IPv6 connections.

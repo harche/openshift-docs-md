@@ -326,6 +326,17 @@
     - [Completing the Control Plane Only update](post_installation_configuration/day_2_core_cnf_clusters/updating/update-completing-the-control-plane-only-update.md)
     - [Completing the y-stream update](post_installation_configuration/day_2_core_cnf_clusters/updating/update-completing-the-y-stream-update.md)
     - [Completing the z-stream update](post_installation_configuration/day_2_core_cnf_clusters/updating/update-completing-the-z-stream-update.md)
+  - **Upgrading OpenShift Container Platform clusters with RHACM and TALM**
+    - [About cluster updates with RHACM and TALM](post_installation_configuration/day_2_core_cnf_clusters/updating/update-rhacm-talm-overview.md)
+    - [Prepare RHACM policies and TALM for cluster updates](post_installation_configuration/day_2_core_cnf_clusters/updating/update-rhacm-talm-preparing-policies.md)
+    - [Prepare worker node pools before a cluster update with TALM](post_installation_configuration/day_2_core_cnf_clusters/updating/update-rhacm-talm-worker-batching.md)
+    - [Perform health checks before a cluster update with TALM](post_installation_configuration/day_2_core_cnf_clusters/updating/update-rhacm-talm-health-checks.md)
+    - [Manage worker nodes during a cluster update with TALM](post_installation_configuration/day_2_core_cnf_clusters/updating/update-rhacm-talm-worker-management.md)
+    - [Coordinate OLM-managed Operator updates with TALM](post_installation_configuration/day_2_core_cnf_clusters/updating/update-rhacm-talm-operator-coordination.md)
+    - [Complete a z-stream cluster update with TALM](post_installation_configuration/day_2_core_cnf_clusters/updating/update-rhacm-talm-z-stream.md)
+    - [Complete a y-stream cluster update with TALM](post_installation_configuration/day_2_core_cnf_clusters/updating/update-rhacm-talm-y-stream.md)
+    - [Complete an EUS-to-EUS cluster update with TALM](post_installation_configuration/day_2_core_cnf_clusters/updating/update-rhacm-talm-eus.md)
+    - [Troubleshoot cluster updates with TALM](post_installation_configuration/day_2_core_cnf_clusters/updating/update-rhacm-talm-troubleshooting.md)
   - **Troubleshooting and maintaining OpenShift Container Platform clusters**
     - [Troubleshooting and maintaining OpenShift Container Platform clusters](post_installation_configuration/day_2_core_cnf_clusters/troubleshooting/troubleshooting-intro.md)
     - [General troubleshooting](post_installation_configuration/day_2_core_cnf_clusters/troubleshooting/troubleshooting-general-troubleshooting.md)
@@ -536,6 +547,13 @@
   - [Configuring and managing Tang servers using the NBDE Tang Server Operator](security/nbde_tang_server_operator/nbde-tang-server-operator-configuring-managing.md)
   - [Identifying URL of a Tang server deployed with the NBDE Tang Server Operator](security/nbde_tang_server_operator/nbde-tang-server-operator-identifying-url.md)
 - [Understanding secrets management](security/understanding-secrets-management.md)
+- **External Secrets Management Console Plug-in**
+  - [External Secrets Management Console Plug-in overview](security/external_secrets_management_console_plugin/index.md)
+  - [External Secrets Management Console Plug-in release notes](security/external_secrets_management_console_plugin/external-secrets-console-plugin-release-notes.md)
+  - [Installing the External Secrets Management Console Plug-in](security/external_secrets_management_console_plugin/external-secrets-console-plugin-install.md)
+  - [Monitoring the External Secrets Management Console Plug-in](security/external_secrets_management_console_plugin/external-secrets-console-plugin-monitor.md)
+  - [Uninstalling the External Secrets Management Console Plug-in](security/external_secrets_management_console_plugin/external-secrets-console-plugin-uninstall.md)
+  - [Deleting certificates and secrets with External Secrets Management Console Plug-in](security/external_secrets_management_console_plugin/external-secrets-console-plugin-delete.md)
 - **cert-manager Operator for Red Hat OpenShift**
   - [cert-manager Operator for Red Hat OpenShift overview](security/cert_manager_operator/index.md)
   - [cert-manager Operator for Red Hat OpenShift release notes](security/cert_manager_operator/cert-manager-operator-release-notes.md)
@@ -564,6 +582,7 @@
   - [Using the SPIFFE Helper container image](security/zero_trust_workload_identity_manager/zero-trust-manager-spiffe-helper.md)
   - [Integrating OpenShift Service Mesh with Zero Trust Workload Identity Manager](security/zero_trust_workload_identity_manager/zero-trust-manager-mesh-integration.md)
   - [Enabling create-only mode for the Zero Trust Workload Identity Manager](security/zero_trust_workload_identity_manager/zero-trust-manager-reconciliation.md)
+  - [SPIRE UpstreamAuthority plugins for Zero Trust Workload Identity Manager](security/zero_trust_workload_identity_manager/zero-trust-manager-plugins.md)
   - [Monitoring Zero Trust Workload Identity Manager](security/zero_trust_workload_identity_manager/zero-trust-manager-monitoring.md)
   - [Uninstalling the Zero Trust Workload Identity Manager](security/zero_trust_workload_identity_manager/zero-trust-manager-uninstall.md)
 - **External Secrets Operator for Red Hat OpenShift**
@@ -772,6 +791,7 @@
     - [Controlling incoming traffic with Gateway listeners](networking/ingress_load_balancing/configuring_gateway_api/controlling-incoming-traffic-gateway-listeners.md)
     - [Assigning network addresses to gateways](networking/ingress_load_balancing/configuring_gateway_api/assigning-network-addresses-gateways.md)
     - [Routing HTTP requests to services](networking/ingress_load_balancing/configuring_gateway_api/routing-http-requests-to-services.md)
+    - [Securing HTTPRoutes](networking/ingress_load_balancing/configuring_gateway_api/securing-httproutes.md)
     - [Routing gRPC requests to services](networking/ingress_load_balancing/configuring_gateway_api/routing-grpc-requests-to-services.md)
     - [Verifying Gateway infrastructure status](networking/ingress_load_balancing/configuring_gateway_api/verifying-gateway-infrastructure-status.md)
   - [Load balancing on OpenStack](networking/ingress_load_balancing/load-balancing-openstack.md)
@@ -1193,7 +1213,7 @@
   - [Backing up etcd data for hosted control planes by using the etcd snapshot method](hosted_control_planes/hcp_high_availability/hcp-backup-etcd-snapshot.md)
 - [Authentication and authorization for hosted control planes](hosted_control_planes/hcp-authentication-authorization.md)
 - [Handling machine configuration for hosted control planes](hosted_control_planes/hcp-machine-config.md)
-- [Using feature gates in a hosted cluster](hosted_control_planes/hcp-using-feature-gates.md)
+- [Feature gates in a hosted cluster](hosted_control_planes/hcp-using-feature-gates.md)
 - [Observability for hosted control planes](hosted_control_planes/hcp-observability.md)
 - [Networking for hosted control planes](hosted_control_planes/hcp-networking.md)
 - [Troubleshooting hosted control planes](hosted_control_planes/hcp-troubleshooting.md)
@@ -1339,6 +1359,7 @@
 - [Using Bring-Your-Own-Host Windows instances as nodes](windows_containers/byoh-windows-instance.md)
 - [Removing Windows nodes](windows_containers/removing-windows-nodes.md)
 - [Disabling Windows container workloads](windows_containers/disabling-windows-container-workloads.md)
+- [Troubleshooting Windows container workloads](windows_containers/windows-containers-troubleshooting.md)
 
 ### OpenShift sandboxed containers
 

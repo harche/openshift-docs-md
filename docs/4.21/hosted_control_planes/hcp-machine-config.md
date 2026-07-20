@@ -6,7 +6,9 @@ You can reference any `machineconfiguration.openshift.io` resources in the `node
 
 </div>
 
-In hosted control planes, the `MachineConfigPool` CR does not exist. A node pool contains a set of compute nodes. You can handle a machine configuration by using node pools. You can manage your workloads in your hosted cluster by using the cluster autoscaler.
+In hosted control planes, the `MachineConfigPool` CR does not exist. A node pool contains a set of compute nodes. You can handle a machine configuration by using node pools.
+
+You can manage your workloads in your hosted cluster by using the cluster autoscaler.
 
 <div class="note">
 
@@ -16,7 +18,7 @@ In OpenShift Container Platform 4.18 or later, the default container runtime for
 
 # Configuring node pools for hosted control planes
 
-On hosted control planes, you can configure node pools by creating a `MachineConfig` object inside of a config map in the management cluster.
+In hosted control planes, you can configure node pools by creating a `MachineConfig` object inside of a config map in the management cluster.
 
 1.  To create a `MachineConfig` object inside of a config map in the management cluster, enter the following information:
 
@@ -47,13 +49,15 @@ On hosted control planes, you can configure node pools by creating a `MachineCon
                 path: ${PATH}
     ```
 
-    - Sets the path on the node where the `MachineConfig` object is stored.
+    The `path` field specifies the path on the node where the `MachineConfig` object is stored.
 
 2.  After you add the object to the config map, you can apply the config map to the node pool as follows:
 
     ``` yaml
     $ oc edit nodepool <nodepool_name> --namespace <hosted_cluster_namespace>
     ```
+
+3.  Edit the `NodePool` resource to include the config map:
 
     ``` yaml
     apiVersion: hypershift.openshift.io/v1alpha1
@@ -69,7 +73,7 @@ On hosted control planes, you can configure node pools by creating a `MachineCon
     # ...
     ```
 
-    - Replace `<configmap_name>` with the name of your config map.
+    Replace `<configmap_name>` with the name of your config map.
 
 # Referencing the kubelet configuration in node pools
 
@@ -103,9 +107,9 @@ To reference your kubelet configuration in node pools, you add the kubelet confi
               effect: "NoExecute"
     ```
 
-    - Replace `<configmap_name>` with the name of your config map.
+    - `<configmap_name>` specifies the name of your config map.
 
-    - Replace `<kubeletconfig_name>` with the name of the `KubeletConfig` resource.
+    - `<kubeletconfig_name>` specifies the name of the `KubeletConfig` resource.
 
 2.  Apply the config map to the node pool by entering the following command:
 
@@ -113,29 +117,27 @@ To reference your kubelet configuration in node pools, you add the kubelet confi
     $ oc edit nodepool <nodepool_name> --namespace clusters
     ```
 
-    - Replace `<nodepool_name>` with the name of your node pool.
+    Replace `<nodepool_name>` with the name of your node pool.
 
-      <div class="formalpara-title">
+    <div class="formalpara-title">
 
-      **Example `NodePool` resource configuration**
+    **Example `NodePool` resource configuration**
 
-      </div>
+    </div>
 
-      ``` yaml
-      apiVersion: hypershift.openshift.io/v1alpha1
-      kind: NodePool
-      metadata:
-      # ...
-        name: nodepool-1
-        namespace: clusters
-      # ...
-      spec:
-        config:
-        - name: <configmap_name>
-      # ...
-      ```
-
-    - Replace `<configmap_name>` with the name of your config map.
+    ``` yaml
+    apiVersion: hypershift.openshift.io/v1alpha1
+    kind: NodePool
+    metadata:
+    # ...
+      name: nodepool-1
+      namespace: clusters
+    # ...
+    spec:
+      config:
+      - name: example-configmap-1
+    # ...
+    ```
 
 # Configuring node tuning in a hosted cluster
 
@@ -384,9 +386,9 @@ You can configure the Network Time Protocol (NTP) server for your hosted cluster
     # ...
     ```
 
-    - Specify an octal value mode for the `mode` field in the machine config file. After creating the file and applying the changes, the `mode` field is converted to a decimal value.
+    - `storage.files.mode` specifies an octal value mode for the `mode` field in the machine config file. After you create the file and apply the changes, the `mode` field is converted to a decimal value.
 
-    - Specify any valid, reachable time source, such as the one provided by your Dynamic Host Configuration Protocol (DHCP) server.
+    - `storage.files.contents.inline` specifies any valid, reachable time source, such as the one provided by your Dynamic Host Configuration Protocol (DHCP) server.
 
       <div class="note">
 
@@ -463,7 +465,7 @@ You can configure the Network Time Protocol (NTP) server for your hosted cluster
     # ...
     ```
 
-    - Replace `<namespace>` with the name of your namespace where you created the node pool, such as `clusters`.
+    Replace `<namespace>` with the name of your namespace where you created the node pool, such as `clusters`.
 
 4.  Apply the config map to your node pool by running the following command:
 
@@ -487,11 +489,9 @@ You can configure the Network Time Protocol (NTP) server for your hosted cluster
     # ...
     spec:
       config:
-      - name: <configmap_name>
+      - name: example-config-map
     # ...
     ```
-
-    - Replace `<configmap_name>` with the name of your config map.
 
 5.  Add the list of your NTP servers in the `infra-env.yaml` file, which defines the `InfraEnv` custom resource (CR):
 
@@ -513,7 +513,7 @@ You can configure the Network Time Protocol (NTP) server for your hosted cluster
     # ...
     ```
 
-    - Replace `<ntp_server>` with the name of your NTP server. For more details about creating a host inventory and the `InfraEnv` CR, see "Creating a host inventory".
+    Replace `<ntp_server>` with the name of your NTP server. For more details about creating a host inventory and the `InfraEnv` CR, see "Creating a host inventory".
 
 6.  Apply the `InfraEnv` CR by running the following command:
 
@@ -545,7 +545,7 @@ You can configure the Network Time Protocol (NTP) server for your hosted cluster
 
 - [Creating machine configs with Butane](../installing/install_config/installing-customizing.xml#installation-special-config-butane_installing-customizing)
 
-- [Creating a host inventory](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.14/html-single/clusters/index#create-host-inventory-cli-steps)
+- [Creating a host inventory (Red Hat Advanced Cluster Management documentation)](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.14/html-single/clusters/index#create-host-inventory-cli-steps)
 
 # Scaling up and down workloads in a hosted cluster
 
@@ -614,7 +614,7 @@ To scale up the workloads in your hosted cluster, you can use the `ScaleUpOnly` 
 3.  Enable cluster autoscaling to configure the minimum and maximum node counts for your node pools. Run the following command:
 
     ``` terminal
-    $ oc patch -n <hosted_cluster_namespace> nodepool <nodepool_name>
+    $ oc patch -n <hosted_cluster_namespace> nodepool <nodepool_name> \
       --type=merge --patch='{"spec": {"autoScaling": {"max": 3, "min": 1}}}'
     ```
 
@@ -749,7 +749,7 @@ After you scale up your node pools, you can use `balancingIgnoredLabels` to even
       --namespace <hosted_cluster_namespace> > nested.config
     ```
 
-6.  After scaling up the node pools, check that all compute nodes are in the `Ready` status by running the following command:
+6.  After you scale up the node pools, check that all compute nodes are in the `Ready` status by running the following command:
 
     ``` terminal
     $ oc --kubeconfig nested.config get nodes -l 'hypershift.openshift.io/nodePool=<node_pool_name>'

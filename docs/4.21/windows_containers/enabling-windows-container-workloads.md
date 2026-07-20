@@ -248,7 +248,7 @@ This secret is required to allow the WMCO to communicate with the Windows virtua
       -n openshift-windows-machine-config-operator
   ```
 
-  You must create the private key in the WMCO namespace, like `openshift-windows-machine-config-operator`.
+  You must create the private key in the WMCO namespace, such as `openshift-windows-machine-config-operator`.
 
 # Configuring debug-level logging for the Windows Machine Config Operator
 
@@ -350,6 +350,8 @@ When using an IDMS or ITMS object to mirror container images on Windows nodes, t
   For this reason, specify container images using a digest by an IDMS object instead of an ITMS object. Using a digest can prevent the wrong container image from being used, by ensuring that the image the container specifies and the image being pulled have the same digest.
 
 ## Understanding image registry repository mirroring
+
+You must mirror images to update clusters in disconnected environments.
 
 By setting up container registry repository mirroring, you can perform the following tasks:
 

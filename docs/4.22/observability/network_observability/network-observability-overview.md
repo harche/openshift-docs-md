@@ -30,6 +30,8 @@ If you choose to use Kafka, it is recommended to use Red Hat supported AMQ Strea
 
 - [Network observability without Loki](../network_observability/installing-operators.xml#network-observability-without-loki_network_observability)
 
+- [Red Hat AMQ Streams](https://docs.redhat.com/en/documentation/red_hat_streams_for_apache_kafka/2.2)
+
 # OpenShift Container Platform console integration
 
 The Network Observability Operator integrates with the OpenShift Container Platform console, providing an overview, topology view, and traffic flow tables.

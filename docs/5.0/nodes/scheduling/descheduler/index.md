@@ -1,4 +1,4 @@
-While the [scheduler](../../../nodes/scheduling/nodes-scheduler-about.xml#nodes-scheduler-about) is used to determine the most suitable node to host a new pod, the descheduler can be used to evict a running pod so that the pod can be rescheduled onto a more suitable node.
+The descheduler evicts running pods so that the default scheduler can place them on more suitable nodes.
 
 # About the descheduler
 
@@ -222,3 +222,5 @@ This profile balances resource usage between nodes and enables the following str
 Do not enable `LongLifecycle` with any of the following profiles: `LifecycleAndUtilization` or `CompactAndScale`. Enabling these profiles together results in a conflict.
 
 </div>
+
+- [Default scheduling](../../../nodes/scheduling/nodes-scheduler-about.xml#nodes-scheduler-about)

@@ -10,17 +10,61 @@ The core configuration element of an `HTTPRoute` CR is a rule. You can configure
 
 - `Timeouts`: Establish strict time limits for the entire request or the backend hop.
 
-To successfully configure your HTTP routing behavior, complete the following tasks:
+# Creating a basic HTTPRoute custom resource
 
-- Configure HTTP request matching conditions
+To direct incoming network traffic from a gateway to your backend applications, you must create an HTTPRoute custom resource (CR). The resource specifies the hostnames the route handles and binds them to a parent `Gateway` CR.
 
-- Apply processing filters to HTTP requests
+- You created a target backend service.
 
-- Configure routing destinations and traffic weights
+- You know the name and namespace of the parent `Gateway` CR.
 
-- Set timeouts for HTTP requests
+1.  Create an `HTTPRoute` CR file that references your parent gateway, application hostnames, and backend service, and save it as `httproute.yaml`:
 
-- Compare OpenShift Container Platform routes and `HTTPRoute` CRs
+    ``` yaml
+    apiVersion: gateway.networking.k8s.io/v1
+    kind: HTTPRoute
+    metadata:
+      name: sample-route
+      namespace: my-application
+    spec:
+      parentRefs:
+      - name: generic-gateway
+        namespace: openshift-ingress
+      hostnames:
+      - app1.example.com
+      - app2.example.com
+      rules:
+      - backendRefs:
+        - name: application-backend
+          port: 8080
+    ```
+
+    - You must include application hostnames and a `backendRef` rule that points to your backend service.
+
+    - If your `HTTPRoute` and `Gateway` CRs are deployed in different namespaces, the `Gateway` CR listener must be configured to allow cross-namespace routes. You must set `allowedRoutes.namespaces.from: All` in the `Gateway` CR.
+
+2.  Apply the `HTTPRoute` CR file to your cluster:
+
+    ``` terminal
+    $ oc apply -f httproute.yaml
+    ```
+
+- Verify that the `HTTPRoute` CR was successfully created:
+
+  ``` terminal
+  $ oc get httproute <sample_route> -n <my_application>
+  ```
+
+  <div class="formalpara-title">
+
+  **Example output**
+
+  </div>
+
+  ``` terminal
+  NAME           HOSTNAMES                                 AGE
+  sample-route   ["app1.example.com","app2.example.com"]   45s
+  ```
 
 # Configure HTTP request matching conditions
 

@@ -122,20 +122,6 @@ jwt_svids = [{
 
 For JWT bundle output, set `jwt_bundle_file_name` instead of the X.509 or JWT SVID file names.
 
-# SPIFFE Helper architecture
-
-The SPIFFE Helper working pattern demonstrates how to apply the same certificate and identity flow to your own workloads.
-
-The SPIFFE Helper architecture deploys PostgreSQL with mTLS across two namespaces, with SPIFFE Helper provisioning and renewing certificates, `ClusterSPIFFEID` defining identities, and the SPIFFE CSI driver connecting to the SPIFFE Workload API. Understanding this pattern helps you apply the same certificate and identity flow to your own workloads.
-
-- **`postgresql-spiffe`** — PostgreSQL server. SPIFFE Helper runs as an init container (non-daemon mode) to write initial certificates to a shared volume, then as a sidecar (daemon mode) to renew them. PostgreSQL reads TLS files from that volume and `pg_hba.conf` requires certificate authentication for remote connections.
-
-- **`postgresql-spiffe-client`** — Client pod with the stock SPIFFE Helper sidecar. The client uses SPIFFE-issued certificates from the same shared volume pattern when connecting with `psql`.
-
-Each namespace defines a `ClusterSPIFFEID` so SPIFFE Runtime Environment issues X.509 SPIFFE Verifiable Identity Document (SVID)s with the correct DNS names: the server identity includes `postgresql-spiffe.postgresql-spiffe.svc`; the client identity includes `postgresql_spiffe`, which must match the PostgreSQL user created during database initialization.
-
-SPIFFE Helper connects to the SPIFFE Workload API through the SPIFFE CSI driver, which mounts the agent socket at `/spiffe-workload-api/spire-agent.sock`.
-
 # Deploying PostgreSQL with SPIFFE Helper
 
 Deploy a PostgreSQL server and client that use SPIFFE Helper to fetch X.509 SPIFFE Verifiable Identity Document (SVID) from the SPIFFE Workload API and write them to disk for mutual Transport Layer Security (mTLS).

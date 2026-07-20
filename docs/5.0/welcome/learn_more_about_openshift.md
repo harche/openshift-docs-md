@@ -1,7 +1,8 @@
-Use the following sections to find content to help you learn about and better understand OpenShift Container Platform functions:
+To better use OpenShift Container Platform, you should first learn about and better understand how OpenShift Container Platform functions.
 
-# Learning and support
+You can use the following sections to find content to help you learn about OpenShift Container Platform.
 
+Learning and support
 | Learn about OpenShift Container Platform                                                                            | Optional additional resources                                                                                     |
 |---------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|
 | [What’s new in OpenShift Container Platform](https://www.openshift.com/learn/whats-new)                             | [OpenShift blog](https://www.openshift.com/blog?hsLang=en-us)                                                     |
@@ -9,8 +10,7 @@ Use the following sections to find content to help you learn about and better un
 | [OpenShift Interactive Learning Portal](https://learn.openshift.com/?extIdCarryOver=true&sc_cid=701f2000001Css5AAC) | [OpenShift Knowledgebase articles](https://access.redhat.com/articles/4217411)                                    |
 | [Getting Support](../support/getting-support.xml#getting-support)                                                   | [Gathering data about your cluster](../support/gathering-cluster-data.xml#gathering-data)                         |
 
-# Architecture
-
+Architecture
 | Learn about OpenShift Container Platform                                                                                                                           | Optional additional resources                                                                                                                                                               |
 |--------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [Enterprise Kubernetes with OpenShift](https://www.openshift.com/blog/enterprise-kubernetes-with-openshift-part-one?extIdCarryOver=true&sc_cid=701f2000001Css5AAC) | [Tested platforms](https://access.redhat.com/articles/4128421)                                                                                                                              |
@@ -18,8 +18,7 @@ Use the following sections to find content to help you learn about and better un
 | [Networking](../networking/networking_overview/understanding-networking.xml#understanding-networking)                                                              | [OVN-Kubernetes architecture](../networking/ovn_kubernetes_network_provider/ovn-kubernetes-architecture-assembly.xml#ovn-kubernetes-architecture-con)                                       |
 | [Backup and restore](../backup_and_restore/index.xml#backup-restore-overview)                                                                                      | [Restoring to a previous cluster state](../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#scenario-2-restoring-cluster-state) |
 
-# Installation
-
+Installation
 Explore the following OpenShift Container Platform installation tasks:
 
 | Learn about installation on OpenShift Container Platform                                                             | Optional additional resources                                                                                                                                                                                    |
@@ -27,15 +26,13 @@ Explore the following OpenShift Container Platform installation tasks:
 | [OpenShift Container Platform installation overview](../installing/overview/index.xml#ocp-installation-overview)     | [Selecting a cluster installation method and preparing it for users](../installing/overview/installing-preparing.xml#installing-preparing)                                                                       |
 | [Installing a cluster in FIPS mode](../installing/overview/installing-fips.xml#installing-fips-mode_installing-fips) | [About FIPS compliance](../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#agent-installer-fips-compliance_preparing-to-install-with-agent-based-installer) |
 
-# Other cluster installer tasks
-
+Other cluster installer tasks
 | Learn about other installer tasks on OpenShift Container Platform                                                                             | Optional additional resources                                                                                                        |
 |-----------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
 | [Troubleshooting installation issues](../installing/validation_and_troubleshooting/installing-troubleshooting.xml#installing-troubleshooting) | [Validating an installation](../installing/validation_and_troubleshooting/validating-an-installation.xml#validating-an-installation) |
 | [Install Red Hat OpenShift Data Foundation](../storage/persistent_storage/persistent-storage-ocs.xml#red-hat-openshift-data-foundation)       | [image mode for OpenShift](../machine_configuration/mco-coreos-layering.xml#mco-coreos-layering)                                     |
 
-## Install a cluster in a restricted network
-
+Install a cluster in a restricted network
 <table>
 <colgroup>
 <col style="width: 50%" />
@@ -64,14 +61,12 @@ Explore the following OpenShift Container Platform installation tasks:
 </tbody>
 </table>
 
-## Install a cluster in an existing network
-
+Install a cluster in an existing network
 | Learn about installing in a restricted network                                                                                                                                                                                                                                                                                                                                                                  | Optional additional resources                                                                                                                                                            |
 |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | If you use an existing Virtual Private Cloud (VPC) in [Amazon Web Services (AWS)](../installing/installing_aws/ipi/installing-aws-vpc.xml#installing-aws-vpc) or [Google Cloud](../installing/installing_gcp/installing-gcp-vpc.xml#installing-gcp-vpc) or an existing [VNet](../installing/installing_azure/ipi/installing-azure-vnet.xml#installing-azure-vnet) on Microsoft Azure, you can install a cluster | [Installing a cluster on Google Cloud into a shared VPC](../installing/installing_gcp/installing-gcp-shared-vpc.xml#installation-gcp-shared-vpc-prerequisites_installing-gcp-shared-vpc) |
 
-# Cluster Administrator
-
+Cluster administration
 <table>
 <colgroup>
 <col style="width: 50%" />
@@ -99,10 +94,7 @@ Explore the following OpenShift Container Platform installation tasks:
 </tbody>
 </table>
 
-## Managing and changing cluster components
-
-### Managing cluster components
-
+Managing cluster components
 <table>
 <colgroup>
 <col style="width: 50%" />
@@ -154,8 +146,9 @@ Explore the following OpenShift Container Platform installation tasks:
 </tbody>
 </table>
 
-### Changing cluster components
+<!-- -->
 
+Changing cluster components
 <table>
 <colgroup>
 <col style="width: 50%" />
@@ -198,8 +191,7 @@ Explore the following OpenShift Container Platform installation tasks:
 </tbody>
 </table>
 
-# Observe a cluster
-
+Observe a cluster
 <table>
 <colgroup>
 <col style="width: 50%" />
@@ -237,8 +229,7 @@ Explore the following OpenShift Container Platform installation tasks:
 </tbody>
 </table>
 
-# Storage activities
-
+Storage activities
 <table>
 <colgroup>
 <col style="width: 50%" />
@@ -261,15 +252,13 @@ Explore the following OpenShift Container Platform installation tasks:
 </tbody>
 </table>
 
-# Application Site Reliability Engineer (App SRE)
-
+Application Site Reliability Engineer (App SRE)
 | Learn about OpenShift Container Platform                                                   | Optional additional resources                                                                |
 |--------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
 | [Building applications overview](../applications/index.xml#building-applications-overview) | [Projects](../applications/projects/working-with-projects.xml#working-with-projects)         |
 | [Operators](../operators/understanding/olm-what-operators-are.xml#olm-what-operators-are)  | [Cluster Operator reference](../operators/operator-reference.xml#cluster-operator-reference) |
 
-# Developer
-
+Developing applications
 OpenShift Container Platform is a platform for developing and deploying containerized applications. Read the following OpenShift Container Platform documentation, so that you can better understand OpenShift Container Platform functions:
 
 <table>

@@ -331,13 +331,13 @@ You can restore an existing virtual machine (VM) to a previous configuration by 
 
   - `WaitEventually` - The restore process waits indefinitely for the VM to be ready.
 
-- Optional: To control how restored persistent volume claims (PVCs) are named, you can set the `volumeRestorePolicy` parameter to one of the following values:
+- Optional: To control the naming of restored persistent volume claims (PVCs), you can set the `volumeRestorePolicy` parameter to one of the following values:
 
-  - `PrefixTargetName` - The restored PVC names use the target VM name as a prefix: `<vm_name>-<volume_name>`. This is the default setting.
+  - `PrefixTargetName` - The restored PVC names use the target VM name as a prefix: `<vm_name>-<volume_name>`.
 
-  - `RandomizeNames` - The restored PVC names are randomly generated: `restore-<uid>-<volume_name>`.
+  - `RandomizeNames` - The system generates the restored PVC names randomly: `restore-<uid>-<volume_name>`.
 
-  - `InPlace` - The restored PVCs overwrite the original PVCs. The original PVCs are deleted if they exist, and new PVCs are created with the same names.
+  - `InPlace` - The restored PVCs overwrite the original PVCs. The system deletes the original PVCs if they exist and creates new PVCs with the same names. This is the default setting.
 
 1.  Create a YAML file to define a `VirtualMachineRestore` object that specifies the name of the VM you want to restore and the name of the snapshot to be used as the source as in the following example:
 

@@ -1,4 +1,4 @@
-This glossary defines common Kubernetes and OpenShift Container Platform terms.
+To better use OpenShift Container Platform, you should first understand common Kubernetes and OpenShift Container Platform terms.
 
 access policies
 A set of roles that dictate how users, applications, and entities within a cluster interact with one another. An access policy increases cluster security.

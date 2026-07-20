@@ -1,3 +1,5 @@
+You can customize your command-line environment after installing the OpenShift CLI (`oc`).
+
 # Enabling tab completion
 
 You can enable tab completion for the Bash or Zsh shells.
@@ -51,19 +53,30 @@ After you install the OpenShift CLI (`oc`), you can enable tab completion to aut
 
 You can use the `oc` CLI to log in to your OpenShift cluster and retrieve a kubeconfig file for accessing the cluster from the command line.
 
+<div class="important">
+
+If you plan to reuse the exported `kubeconfig` file across sessions or machines, store it securely and avoid committing it to source control.
+
+</div>
+
 - You have access to the OpenShift Container Platform web console or API server endpoint.
 
 1.  Log in to your OpenShift cluster by running the following command:
 
     ``` terminal
-    $ oc login <api-server-url> -u <username> -p <password>
+    $ oc login <api_server_url> -u <username> -p <password>
     ```
 
-    - Specify the full API server URL. For example: `https://api.my-cluster.example.com:6443`.
+    where:
 
-    - Specify a valid username. For example: `kubeadmin`.
+    `<api_server_url>`
+    Specifies the full API server URL; for example, `https://api.my-cluster.example.com:6443`.
 
-    - Provide the password for the specified user. For example, the `kubeadmin` password generated during cluster installation.
+    `<username>`
+    Specifies a valid username; for example, `kubeadmin`.
+
+    `<password>`
+    Specifies the password for the specified user; for example, the `kubeadmin` password generated during cluster installation.
 
 2.  Save the cluster configuration to a local file by running the following command:
 
@@ -82,9 +95,3 @@ You can use the `oc` CLI to log in to your OpenShift cluster and retrieve a kube
     ``` terminal
     $ oc get nodes
     ```
-
-<div class="note">
-
-If you plan to reuse the exported `kubeconfig` file across sessions or machines, store it securely and avoid committing it to source control.
-
-</div>
