@@ -1,4 +1,6 @@
-Before performing an upgrade on the cluster with applied KMM modules, you must verify that kernel modules installed using KMM are able to be installed on the nodes after the cluster upgrade and possible kernel upgrade. Preflight attempts to validate every `Module` loaded in the cluster, in parallel. Preflight does not wait for validation of one `Module` to complete before starting validation of another `Module`.
+Before you upgrade a cluster that uses Kernel Module Management (KMM) modules, verify that the kernel modules can be installed on the nodes after the upgrade. This preflight validation helps you avoid unexpected module failures caused by kernel changes.
+
+Preflight attempts to validate every `Module` loaded in the cluster, in parallel. Preflight does not wait for validation of one `Module` to complete before starting validation of another `Module`.
 
 # Validation kickoff
 
@@ -90,7 +92,7 @@ In case a `build` section exists, the input image in the `sign` section is used 
 
 The example `PreflightValidationOCP` resource validates kernel modules and pushes built images to repositories.
 
-The example verifies all of the currently present modules against the upcoming `5.14.0-570.19.1.el9_6.x86_64` kernel. Because `.spec.pushBuiltImage` is set to `true`, KMM pushes the resulting images of Build/Sign into the defined repositories.
+The example verifies all of the currently present modules against the upcoming `5.14.0-570.19.1.el9_6.x86_64` kernel. Because `.spec.pushBuiltImage` is set to `true`, KMM pushes the resulting images of Build/Sign in to the defined repositories.
 
 ``` yaml
 apiVersion: kmm.sigs.x-k8s.io/v1beta2

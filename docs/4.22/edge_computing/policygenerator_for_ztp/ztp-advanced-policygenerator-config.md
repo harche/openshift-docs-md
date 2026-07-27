@@ -135,22 +135,22 @@ The following example procedure describes how to update fields in the generated 
             enabled: true
     ```
 
-<div class="note">
+    <div class="note">
 
-In the `/source-crs` folder that you extract from the `ztp-site-generate` container, the `$` syntax is not used for template substitution as implied by the syntax. Rather, if the `policyGen` tool sees the `$` prefix for a string and you do not specify a value for that field in the related `PolicyGenerator` CR, the field is omitted from the output CR entirely.
+    In the `/source-crs` folder that you extract from the `ztp-site-generate` container, the `$` syntax is not used for template substitution as implied by the syntax. Rather, if the `policyGen` tool sees the `$` prefix for a string and you do not specify a value for that field in the related `PolicyGenerator` CR, the field is omitted from the output CR entirely.
 
-An exception to this is the `$mcp` variable in `/source-crs` YAML files that is substituted with the specified value for `mcp` from the `PolicyGenerator` CR. For example, in `example/acmpolicygenerator/acm-group-du-standard-ranGen.yaml`, the value for `mcp` is `worker`:
+    An exception to this is the `$mcp` variable in `/source-crs` YAML files that is substituted with the specified value for `mcp` from the `PolicyGenerator` CR. For example, in `example/acmpolicygenerator/acm-group-du-standard-ranGen.yaml`, the value for `mcp` is `worker`:
 
-``` yaml
-spec:
-  bindingRules:
-    group-du-standard: ""
-  mcp: "worker"
-```
+    ``` yaml
+    spec:
+      bindingRules:
+        group-du-standard: ""
+      mcp: "worker"
+    ```
 
-The `policyGen` tool replace instances of `$mcp` with `worker` in the output CRs.
+    The `policyGen` tool replace instances of `$mcp` with `worker` in the output CRs.
 
-</div>
+    </div>
 
 # Adding custom content to the GitOps ZTP pipeline
 
@@ -178,7 +178,7 @@ Perform the following procedure to add new content to the GitOps ZTP pipeline.
                 └── ElasticsearchOperatorGroup.yaml
     ```
 
-    - The `source-crs` subdirectory must be in the same directory as the `kustomization.yaml` file.
+    The `source-crs` subdirectory must be in the same directory as the `kustomization.yaml` file.
 
 3.  Update the required `PolicyGenerator` CRs to include references to the content you added in the `source-crs/custom-crs` and `source-crs/elasticsearch` directories. For example:
 
@@ -279,7 +279,7 @@ Perform the following procedure to add new content to the GitOps ZTP pipeline.
             - path: custom-crs/disable-nic-lldp.yaml
     ```
 
-    - Set `policies.manifests.path` to include the relative path to the file from the `/source-crs` parent directory.
+    Set `policies.manifests.path` to include the relative path to the file from the `/source-crs` parent directory.
 
 4.  Commit the `PolicyGenerator` change in Git, and then push to the Git repository that is monitored by the GitOps ZTP Argo CD policies application.
 
@@ -407,11 +407,7 @@ Create a validator inform policy that signals when the GitOps Zero Touch Provisi
 
 1.  Create a standalone `PolicyGenerator` custom resource (CR) that contains the source file `validatorCRs/informDuValidator.yaml`. You only need one standalone `PolicyGenerator` CR for each cluster type. For example, this CR applies a validator inform policy for single-node OpenShift clusters:
 
-    <div class="formalpara-title">
-
-    **Example single-node cluster validator inform policy CR (acm-group-du-sno-validator-ranGen.yaml)**
-
-    </div>
+    Example single-node cluster validator inform policy CR (acm-group-du-sno-validator-ranGen.yaml):
 
     ``` yaml
     apiVersion: policy.open-cluster-management.io/v1
@@ -459,7 +455,9 @@ Create a validator inform policy that signals when the GitOps Zero Touch Provisi
 
 # Configuring power states using PolicyGenerator CRs
 
-For low latency and high-performance edge deployments, it is necessary to disable or limit C-states and P-states. With this configuration, the CPU runs at a constant frequency, which is typically the maximum turbo frequency. This ensures that the CPU is always running at its maximum speed, which results in high performance and low latency. This leads to the best latency for workloads. However, this also leads to the highest power consumption, which might not be necessary for all workloads.
+For low latency and high-performance edge deployments, it is necessary to disable or limit C-states and P-states.
+
+With this configuration, the CPU runs at a constant frequency, which is typically the maximum turbo frequency. This ensures that the CPU is always running at its maximum speed, which results in high performance and low latency. This leads to the best latency for workloads. However, this also leads to the highest power consumption, which might not be necessary for all workloads.
 
 Workloads can be classified as critical or non-critical, with critical workloads requiring disabled C-state and P-state settings for high performance and low latency, while non-critical workloads use C-state and P-state settings for power savings at the expense of some latency and performance. You can configure the following three power states using GitOps Zero Touch Provisioning (ZTP):
 
@@ -554,7 +552,7 @@ The power saving mode balances reduced power consumption with increased latency.
               - "cpufreq.default_governor=schedutil"
     ```
 
-    - The `schedutil` governor is recommended, however, you can also use other governors, including `ondemand` and `powersave`.
+    The `schedutil` governor is recommended, however, you can also use other governors, including `ondemand` and `powersave`.
 
 2.  Commit the `PolicyGenerator` change in Git, and then push to the Git repository being monitored by the GitOps ZTP Argo CD application.
 
@@ -596,7 +594,9 @@ The power saving mode balances reduced power consumption with increased latency.
 
 ## Maximizing power savings
 
-Limiting the maximum CPU frequency is recommended to achieve maximum power savings. Enabling C-states on the non-critical workload CPUs without restricting the maximum CPU frequency negates much of the power savings by boosting the frequency of the critical CPUs.
+Limiting the maximum CPU frequency is recommended to achieve maximum power savings.
+
+Enabling C-states on the non-critical workload CPUs without restricting the maximum CPU frequency negates much of the power savings by boosting the frequency of the critical CPUs.
 
 Maximize power savings by updating the `sysfs` plugin fields, setting an appropriate value for `max_perf_pct` in the `TunedPerformancePatch` CR for the reference configuration. This example based on the `acm-group-du-sno-ranGen.yaml` describes the procedure to follow to restrict the maximum CPU frequency.
 
@@ -616,13 +616,13 @@ Maximize power savings by updating the `sysfs` plugin fields, setting an appropr
                 /sys/devices/system/cpu/intel_pstate/max_perf_pct=<x>
     ```
 
-    - The `max_perf_pct` controls the maximum frequency the `cpufreq` driver is allowed to set as a percentage of the maximum supported CPU frequency. This value applies to all CPUs. You can check the maximum supported frequency in `/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq`. As a starting point, you can use a percentage that caps all CPUs at the `All Cores Turbo` frequency. The `All Cores Turbo` frequency is the frequency that all cores run at when the cores are all fully occupied.
+    The `max_perf_pct` controls the maximum frequency the `cpufreq` driver is allowed to set as a percentage of the maximum supported CPU frequency. This value applies to all CPUs. You can check the maximum supported frequency in `/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq`. As a starting point, you can use a percentage that caps all CPUs at the `All Cores Turbo` frequency. The `All Cores Turbo` frequency is the frequency that all cores run at when the cores are all fully occupied.
 
-      <div class="note">
+    <div class="note">
 
-      To maximize power savings, set a lower value. Setting a lower value for `max_perf_pct` limits the maximum CPU frequency, thereby reducing power consumption, but also potentially impacting performance. Experiment with different values and monitor the system’s performance and power consumption to find the optimal setting for your use-case.
+    To maximize power savings, set a lower value. Setting a lower value for `max_perf_pct` limits the maximum CPU frequency, thereby reducing power consumption, but also potentially impacting performance. Experiment with different values and monitor the system’s performance and power consumption to find the optimal setting for your use-case.
 
-      </div>
+    </div>
 
 2.  Commit the `PolicyGenerator` change in Git, and then push to the Git repository being monitored by the GitOps ZTP Argo CD application.
 
@@ -867,15 +867,22 @@ You can configure PTP events that use HTTP transport on managed clusters that yo
                 minOffsetThreshold: -100
         ```
 
-        - Can be `PtpConfigMaster.yaml` or `PtpConfigSlave.yaml` depending on your requirements. For configurations based on `acm-group-du-sno-ranGen.yaml` or `acm-group-du-3node-ranGen.yaml`, use `PtpConfigSlave.yaml`.
+        where:
 
-        - Device specific interface name.
+        `path`
+        Specifies `PtpConfigMaster.yaml` or `PtpConfigSlave.yaml` depending on your requirements. For configurations based on `acm-group-du-sno-ranGen.yaml` or `acm-group-du-3node-ranGen.yaml`, use `PtpConfigSlave.yaml`.
 
-        - You must append the `--summary_interval -4` value to `ptp4lOpts` in `.spec.sourceFiles.spec.profile` to enable PTP fast events.
+        `patches.spec.profile.interface`
+        Specifies the device specific interface name.
 
-        - Required `phc2sysOpts` values. `-m` prints messages to `stdout`. The `linuxptp-daemon` `DaemonSet` parses the logs and generates Prometheus metrics.
+        `patches.spec.profile.ptp4lOpts`
+        Specifies the ptp4l options. You must append the `--summary_interval -4` value to `ptp4lOpts` in `.spec.sourceFiles.spec.profile` to enable PTP fast events.
 
-        - Optional. If the `ptpClockThreshold` stanza is not present, default values are used for the `ptpClockThreshold` fields. The stanza shows default `ptpClockThreshold` values. The `ptpClockThreshold` values configure how long after the PTP master clock is disconnected before PTP events are triggered. `holdOverTimeout` is the time value in seconds before the PTP clock event state changes to `FREERUN` when the PTP master clock is disconnected. The `maxOffsetThreshold` and `minOffsetThreshold` settings configure offset values in nanoseconds that compare against the values for `CLOCK_REALTIME` (`phc2sys`) or master offset (`ptp4l`). When the `ptp4l` or `phc2sys` offset value is outside this range, the PTP clock state is set to `FREERUN`. When the offset value is within this range, the PTP clock state is set to `LOCKED`.
+        `patches.spec.profile.phc2sysOpts`
+        Specifies the required `phc2sysOpts` values. `-m` prints messages to `stdout`. The `linuxptp-daemon` `DaemonSet` parses the logs and generates Prometheus metrics.
+
+        `patches.spec.ptpClockThreshold`
+        Specifies the PTP clock threshold settings. Optional. If the `ptpClockThreshold` stanza is not present, default values are used for the `ptpClockThreshold` fields. The stanza shows default `ptpClockThreshold` values. The `ptpClockThreshold` values configure how long after the PTP master clock is disconnected before PTP events are triggered. `holdOverTimeout` is the time value in seconds before the PTP clock event state changes to `FREERUN` when the PTP master clock is disconnected. The `maxOffsetThreshold` and `minOffsetThreshold` settings configure offset values in nanoseconds that compare against the values for `CLOCK_REALTIME` (`phc2sys`) or master offset (`ptp4l`). When the `ptp4l` or `phc2sys` offset value is outside this range, the PTP clock state is set to `FREERUN`. When the offset value is within this range, the PTP clock state is set to `LOCKED`.
 
 2.  Merge any other required changes and files with your custom site repository.
 

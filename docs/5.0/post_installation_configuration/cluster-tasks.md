@@ -1080,11 +1080,7 @@ To dynamically manage machine compute resources, you can create your own compute
         $ oc get machinesets -n openshift-machine-api
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         NAME                                DESIRED   CURRENT   READY   AVAILABLE   AGE
@@ -1103,11 +1099,7 @@ To dynamically manage machine compute resources, you can create your own compute
           -n openshift-machine-api -o yaml
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` yaml
         apiVersion: machine.openshift.io/v1beta1
@@ -1164,11 +1156,7 @@ To dynamically manage machine compute resources, you can create your own compute
   $ oc get machineset -n openshift-machine-api
   ```
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
+  The following is example output:
 
   ``` terminal
   NAME                                DESIRED   CURRENT   READY   AVAILABLE   AGE
@@ -1241,7 +1229,7 @@ You can optionally create a default cluster-wide node selector. The default node
 
     You can now move infrastructure resources to the new infrastructure nodes and remove any workloads that you do not want, or that do not belong, on the new infrastructure node. See the list of workloads supported for use on infrastructure nodes in "OpenShift Container Platform infrastructure components".
 
-- For information on how to configure project node selectors to avoid cluster-wide node selector key conflicts, see [Project node selectors](../nodes/scheduling/nodes-scheduler-node-selectors.xml#project-node-selectors_nodes-scheduler-node-selectors).
+- [Project node selectors](../nodes/scheduling/nodes-scheduler-node-selectors.xml#project-node-selectors_nodes-scheduler-node-selectors)
 
 ## Creating a machine config pool for infrastructure machines
 
@@ -1389,7 +1377,7 @@ Creating a custom machine configuration pool overrides default worker pool confi
 
     In this example, the role of the node was changes from `worker` to `infra`.
 
-- See [Node configuration management with machine config pools](../architecture/control-plane.xml#architecture-machine-config-pools_control-plane) for more information on grouping infra machines in a custom pool.
+- [Node configuration management with machine config pools](../architecture/control-plane.xml#architecture-machine-config-pools_control-plane)
 
 # Assigning machine set resources to infrastructure nodes
 
@@ -1520,7 +1508,7 @@ It is recommended that you preserve the dual `infra,worker` label that is create
 
 4.  Remove any workloads that you do not want, or that do not belong, on the new infrastructure node. See the list of workloads supported for use on infrastructure nodes in "OpenShift Container Platform infrastructure components".
 
-- See [Controlling pod placement using the scheduler](../nodes/scheduling/nodes-scheduler-about.xml#nodes-scheduler-about) for general information on scheduling a pod to a node.
+- [Controlling pod placement using the scheduler](../nodes/scheduling/nodes-scheduler-about.xml#nodes-scheduler-about)
 
 # Moving resources to infrastructure machine sets
 
@@ -2501,7 +2489,7 @@ If you deployed a bare-metal cluster, you can scale the cluster up to 5 nodes as
 
 </div>
 
-## About etcd encryption
+## etcd encryption
 
 By default, etcd data is not encrypted in OpenShift Container Platform. You can enable etcd encryption for your cluster to provide an additional layer of data security. For example, it can help protect the loss of sensitive data if an etcd backup is exposed to the incorrect parties.
 
@@ -2521,7 +2509,7 @@ When you enable etcd encryption, encryption keys are created. You must have thes
 
 <div class="note">
 
-Etcd encryption only encrypts values, not keys. Resource types, namespaces, and object names are unencrypted.
+etcd encryption only encrypts values, not keys. Resource types, namespaces, and object names are unencrypted.
 
 If etcd encryption is enabled during a backup, the `static_kuberesources_<datetimestamp>.tar.gz` file contains the encryption keys for the etcd snapshot. For security reasons, store this file separately from the etcd snapshot. However, this file is required to restore a previous state of etcd from the respective etcd snapshot.
 
@@ -2529,19 +2517,21 @@ If etcd encryption is enabled during a backup, the `static_kuberesources_<dateti
 
 ## Supported encryption types
 
+OpenShift Container Platform supports AES-CBC and AES-GCM encryption types to protect etcd data at rest.
+
 The following encryption types are supported for encrypting etcd data in OpenShift Container Platform:
 
 AES-CBC
-Uses AES-CBC with PKCS#7 padding and a 32 byte key to perform the encryption.
+Uses AES-CBC with PKCS#7 padding and a 32-byte key to perform the encryption.
 
 AES-GCM
-Uses AES-GCM with a random nonce and a 32 byte key to perform the encryption.
+Uses AES-GCM with a random nonce and a 32-byte key to perform the encryption.
 
-The etcd encryption keys are rotated every 7 days. Up to 10 historical encryption keys are preserved after rotation to facilitate the decryption of older backups and provide an extra layer of data recovery safety.
+The etcd encryption keys are rotated every 7 days. Up to 10 historical encryption keys are preserved after rotation to help decrypt older backups and provide an extra layer of data recovery safety.
 
 ## Enabling etcd encryption
 
-You can enable etcd encryption to encrypt sensitive resources in your cluster.
+Enable etcd encryption to protect sensitive cluster resources such as secrets, config maps, routes, and OAuth tokens at rest.
 
 <div class="warning">
 
@@ -2551,7 +2541,7 @@ After you enable etcd encryption, several changes can occur:
 
 - The etcd encryption might affect the memory consumption of a few resources.
 
-- You might notice a transient affect on backup performance because the leader must serve the backup.
+- You might notice a transient effect on backup performance because the leader must serve the backup.
 
 - A disk I/O can affect the node that receives the backup state.
 
@@ -2581,62 +2571,60 @@ To migrate your etcd database from one encryption type to the other, you can mod
         type: aesgcm
     ```
 
-    - Set to `aesgcm` for AES-GCM encryption or `aescbc` for AES-CBC encryption.
+    - The `aesgcm` value specifies AES-GCM encryption. Alternatively, set the `type` field to `aescbc` for AES-CBC encryption.
 
 3.  Save the file to apply the changes.
 
     The encryption process starts. It can take 20 minutes or longer for this process to complete, depending on the size of the etcd database.
 
-4.  Verify that etcd encryption was successful.
+- Review the `Encrypted` status condition for the OpenShift API server to verify that its resources were successfully encrypted:
 
-    1.  Review the `Encrypted` status condition for the OpenShift API server to verify that its resources were successfully encrypted:
+  ``` terminal
+  $ oc get openshiftapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}'
+  ```
 
-        ``` terminal
-        $ oc get openshiftapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}'
-        ```
+  The output shows `EncryptionCompleted` upon successful encryption:
 
-        The output shows `EncryptionCompleted` upon successful encryption:
+  ``` terminal
+  EncryptionCompleted
+  All resources encrypted: routes.route.openshift.io
+  ```
 
-        ``` terminal
-        EncryptionCompleted
-        All resources encrypted: routes.route.openshift.io
-        ```
+  If the output shows `EncryptionInProgress`, encryption is still in progress. Wait a few minutes and try again.
 
-        If the output shows `EncryptionInProgress`, encryption is still in progress. Wait a few minutes and try again.
+- Review the `Encrypted` status condition for the Kubernetes API server to verify that its resources were successfully encrypted:
 
-    2.  Review the `Encrypted` status condition for the Kubernetes API server to verify that its resources were successfully encrypted:
+  ``` terminal
+  $ oc get kubeapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}'
+  ```
 
-        ``` terminal
-        $ oc get kubeapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}'
-        ```
+  The output shows `EncryptionCompleted` upon successful encryption:
 
-        The output shows `EncryptionCompleted` upon successful encryption:
+  ``` terminal
+  EncryptionCompleted
+  All resources encrypted: secrets, configmaps
+  ```
 
-        ``` terminal
-        EncryptionCompleted
-        All resources encrypted: secrets, configmaps
-        ```
+  If the output shows `EncryptionInProgress`, encryption is still in progress. Wait a few minutes and try again.
 
-        If the output shows `EncryptionInProgress`, encryption is still in progress. Wait a few minutes and try again.
+- Review the `Encrypted` status condition for the OpenShift OAuth API server to verify that its resources were successfully encrypted:
 
-    3.  Review the `Encrypted` status condition for the OpenShift OAuth API server to verify that its resources were successfully encrypted:
+  ``` terminal
+  $ oc get authentication.operator.openshift.io -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}'
+  ```
 
-        ``` terminal
-        $ oc get authentication.operator.openshift.io -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}'
-        ```
+  The output shows `EncryptionCompleted` upon successful encryption:
 
-        The output shows `EncryptionCompleted` upon successful encryption:
+  ``` terminal
+  EncryptionCompleted
+  All resources encrypted: oauthaccesstokens.oauth.openshift.io, oauthauthorizetokens.oauth.openshift.io
+  ```
 
-        ``` terminal
-        EncryptionCompleted
-        All resources encrypted: oauthaccesstokens.oauth.openshift.io, oauthauthorizetokens.oauth.openshift.io
-        ```
-
-        If the output shows `EncryptionInProgress`, encryption is still in progress. Wait a few minutes and try again.
+  If the output shows `EncryptionInProgress`, encryption is still in progress. Wait a few minutes and try again.
 
 ## Disabling etcd encryption
 
-You can disable encryption of etcd data in your cluster.
+Disable etcd encryption when you no longer need to encrypt sensitive cluster resources at rest.
 
 - Access to the cluster as a user with the `cluster-admin` role.
 
@@ -2654,58 +2642,56 @@ You can disable encryption of etcd data in your cluster.
         type: identity
     ```
 
-    - The `identity` type is the default value and means that no encryption is performed.
+    The `identity` value specifies that no encryption is performed. This is the default value.
 
 3.  Save the file to apply the changes.
 
     The decryption process starts. It can take 20 minutes or longer for this process to complete, depending on the size of your cluster.
 
-4.  Verify that etcd decryption was successful.
+- Review the `Encrypted` status condition for the OpenShift API server to verify that its resources were successfully decrypted:
 
-    1.  Review the `Encrypted` status condition for the OpenShift API server to verify that its resources were successfully decrypted:
+  ``` terminal
+  $ oc get openshiftapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}'
+  ```
 
-        ``` terminal
-        $ oc get openshiftapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}'
-        ```
+  The output shows `DecryptionCompleted` upon successful decryption:
 
-        The output shows `DecryptionCompleted` upon successful decryption:
+  ``` terminal
+  DecryptionCompleted
+  Encryption mode set to identity and everything is decrypted
+  ```
 
-        ``` terminal
-        DecryptionCompleted
-        Encryption mode set to identity and everything is decrypted
-        ```
+  If the output shows `DecryptionInProgress`, decryption is still in progress. Wait a few minutes and try again.
 
-        If the output shows `DecryptionInProgress`, decryption is still in progress. Wait a few minutes and try again.
+- Review the `Encrypted` status condition for the Kubernetes API server to verify that its resources were successfully decrypted:
 
-    2.  Review the `Encrypted` status condition for the Kubernetes API server to verify that its resources were successfully decrypted:
+  ``` terminal
+  $ oc get kubeapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}'
+  ```
 
-        ``` terminal
-        $ oc get kubeapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}'
-        ```
+  The output shows `DecryptionCompleted` upon successful decryption:
 
-        The output shows `DecryptionCompleted` upon successful decryption:
+  ``` terminal
+  DecryptionCompleted
+  Encryption mode set to identity and everything is decrypted
+  ```
 
-        ``` terminal
-        DecryptionCompleted
-        Encryption mode set to identity and everything is decrypted
-        ```
+  If the output shows `DecryptionInProgress`, decryption is still in progress. Wait a few minutes and try again.
 
-        If the output shows `DecryptionInProgress`, decryption is still in progress. Wait a few minutes and try again.
+- Review the `Encrypted` status condition for the OpenShift OAuth API server to verify that its resources were successfully decrypted:
 
-    3.  Review the `Encrypted` status condition for the OpenShift OAuth API server to verify that its resources were successfully decrypted:
+  ``` terminal
+  $ oc get authentication.operator.openshift.io -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}'
+  ```
 
-        ``` terminal
-        $ oc get authentication.operator.openshift.io -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}'
-        ```
+  The output shows `DecryptionCompleted` upon successful decryption:
 
-        The output shows `DecryptionCompleted` upon successful decryption:
+  ``` terminal
+  DecryptionCompleted
+  Encryption mode set to identity and everything is decrypted
+  ```
 
-        ``` terminal
-        DecryptionCompleted
-        Encryption mode set to identity and everything is decrypted
-        ```
-
-        If the output shows `DecryptionInProgress`, decryption is still in progress. Wait a few minutes and try again.
+  If the output shows `DecryptionInProgress`, decryption is still in progress. Wait a few minutes and try again.
 
 ## Backing up etcd data
 
@@ -2806,9 +2792,11 @@ For a Two-Node with Fencing (TNF) setup, follow the steps to back up etcd data o
 
       </div>
 
-## Defragmenting etcd data
+## Data defragmentation for etcd
 
-For large and dense clusters, etcd can suffer from poor performance if the keyspace grows too large and exceeds the space quota. Periodically maintain and defragment etcd to free up space in the data store. Monitor Prometheus for etcd metrics and defragment it when required; otherwise, etcd can raise a cluster-wide alarm that puts the cluster into a maintenance mode that accepts only key reads and deletes.
+To prevent etcd performance degradation and cluster-wide maintenance alarms on large clusters, monitor etcd database metrics and defragment the data store when the keyspace grows too large.
+
+For large and dense clusters, etcd can suffer from poor performance if the keyspace grows too large and exceeds the space quota. Periodically maintain and defragment etcd to free up space in the data store. Monitor Prometheus for etcd metrics and defragment it when required. Otherwise, etcd can raise a cluster-wide alarm that puts the cluster into a maintenance mode, which accepts only key reads and deletes.
 
 Monitor these key metrics:
 
@@ -2824,17 +2812,19 @@ History compaction is performed automatically every five minutes and leaves gaps
 
 Defragmentation occurs automatically, but you can also trigger it manually.
 
+## Automatic defragmentation
+
+When etcd database growth affects performance, the etcd Operator can automatically defragment member disks based on cluster metrics.
+
 <div class="note">
 
-Automatic defragmentation is good for most cases, because the etcd operator uses cluster information to determine the most efficient operation for the user.
+Automatic defragmentation works well in most cases because the etcd Operator uses cluster metrics to choose the most efficient defragmentation approach.
 
 </div>
 
-### Automatic defragmentation
-
 The etcd Operator automatically defragments disks. No manual intervention is needed.
 
-Verify that the defragmentation process is successful by viewing one of these logs:
+Verify that defragmentation succeeded by checking one of these logs:
 
 - etcd logs
 
@@ -2844,31 +2834,25 @@ Verify that the defragmentation process is successful by viewing one of these lo
 
 <div class="warning">
 
-Automatic defragmentation can cause leader election failure in various OpenShift core components, such as the Kubernetes controller manager, which triggers a restart of the failing component. The restart is harmless and either triggers failover to the next running instance or the component resumes work again after the restart.
+Automatic defragmentation can cause leader election failure in various OpenShift Container Platform core components, such as the Kubernetes controller manager, which triggers a restart of the failing component. The restart is harmless and either triggers failover to the next running instance or the component resumes work again after the restart.
 
 </div>
 
-<div class="formalpara-title">
-
-**Example log output for successful defragmentation**
-
-</div>
+The following is example log output for successful defragmentation:
 
 ``` terminal
 etcd member has been defragmented: <member_name>, memberID: <member_id>
 ```
 
-<div class="formalpara-title">
-
-**Example log output for unsuccessful defragmentation**
-
-</div>
+The following is example log output for unsuccessful defragmentation:
 
 ``` terminal
 failed defrag on member: <member_name>, memberID: <member_id>: <error_message>
 ```
 
-### Manual defragmentation
+## Manually defragmenting etcd data
+
+When automatic etcd defragmentation cannot reclaim enough space, manually defragment etcd on each member to restore disk availability and normal cluster operation.
 
 A Prometheus alert indicates when you need to use manual defragmentation. The alert is displayed in two cases:
 
@@ -2880,7 +2864,7 @@ You can also determine whether defragmentation is needed by checking the etcd da
 
 <div class="warning">
 
-Defragmenting etcd is a blocking action. The etcd member will not respond until defragmentation is complete. For this reason, wait at least one minute between defragmentation actions on each of the pods to allow the cluster to recover.
+Defragmenting etcd is a blocking action. The etcd member does not respond until defragmentation is complete. For this reason, wait at least one minute between defragmentation actions on each of the pods to allow the cluster to recover.
 
 </div>
 
@@ -2896,11 +2880,7 @@ Follow this procedure to defragment etcd data on each etcd member.
         $ oc -n openshift-etcd get pods -l k8s-app=etcd -o wide
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         etcd-ip-10-0-159-225.example.redhat.com                3/3     Running     0          175m   10.0.159.225   ip-10-0-159-225.example.redhat.com   <none>           <none>
@@ -2914,11 +2894,7 @@ Follow this procedure to defragment etcd data on each etcd member.
         $ oc rsh -n openshift-etcd etcd-ip-10-0-159-225.example.redhat.com etcdctl endpoint status --cluster -w table
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         Defaulting container name to etcdctl.
@@ -2954,11 +2930,7 @@ Follow this procedure to defragment etcd data on each etcd member.
         sh-4.4# etcdctl --command-timeout=30s --endpoints=https://localhost:2379 defrag
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         Finished defragmenting etcd member[https://localhost:2379]
@@ -2972,11 +2944,7 @@ Follow this procedure to defragment etcd data on each etcd member.
         sh-4.4# etcdctl endpoint status -w table --cluster
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         +---------------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+
@@ -2992,7 +2960,7 @@ Follow this procedure to defragment etcd data on each etcd member.
 
     5.  Repeat these steps to connect to each of the other etcd members and defragment them. Always defragment the leader last.
 
-        Wait at least one minute between defragmentation actions to allow the etcd pod to recover. Until the etcd pod recovers, the etcd member will not respond.
+        Wait at least one minute between defragmentation actions to allow the etcd pod to recover. Until the etcd pod recovers, the etcd member does not respond.
 
 3.  If any `NOSPACE` alarms were triggered due to the space quota being exceeded, clear them.
 
@@ -3002,11 +2970,7 @@ Follow this procedure to defragment etcd data on each etcd member.
         sh-4.4# etcdctl alarm list
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         memberID:12345678912345678912 alarm:NOSPACE
@@ -3098,25 +3062,23 @@ For non-recovery control plane nodes, it is not required to establish SSH connec
 
 7.  When the API responds, to turn off the etcd Operator quorum guard, run the following command:
 
-<div class="important">
+    <div class="important">
 
-For a TNF setup, do not:
+    For a TNF setup, do not:
 
-- Change the etcd Operator quorum setting.
+    - Change the etcd Operator quorum setting.
 
-- Turn the etcd Operator quorum off.
+    - Turn the etcd Operator quorum off.
 
-- Turn the etcd Operator quorum on back.
+    - Turn the etcd Operator quorum on back.
 
-</div>
+    </div>
 
-\+
+    ``` terminal
+    $ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides": {"useUnsupportedUnsafeNonHANonProductionUnstableEtcd": true}}}'
+    ```
 
-``` terminal
-$ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides": {"useUnsupportedUnsafeNonHANonProductionUnstableEtcd": true}}}'
-```
-
-1.  Monitor the recovery progress of the control plane by running the following command:
+8.  Monitor the recovery progress of the control plane by running the following command:
 
     ``` terminal
     $ oc adm wait-for-stable-cluster
@@ -3128,7 +3090,7 @@ $ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides":
 
     </div>
 
-2.  Enable the quorum guard by running the following command:
+9.  Enable the quorum guard by running the following command:
 
     ``` terminal
     $ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides": null}}'
@@ -3368,4 +3330,4 @@ It is recommended to set the `unhealthyPodEvictionPolicy` field to `AlwaysAllow`
 
 - [Enabling features using feature gates](../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)
 
-- [Unhealthy Pod Eviction Policy](https://kubernetes.io/docs/tasks/run-application/configure-pdb/#unhealthy-pod-eviction-policy) in the Kubernetes documentation
+- [Unhealthy Pod Eviction Policy in the Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/configure-pdb/#unhealthy-pod-eviction-policy)

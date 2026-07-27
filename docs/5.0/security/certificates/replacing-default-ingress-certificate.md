@@ -1,12 +1,14 @@
+To allow external clients to connect securely to applications under the .apps subdomain in OpenShift Container Platform, you can replace the default wildcard ingress certificate with one issued by a trusted public CA.
+
 # Understanding the default ingress certificate
 
-By default, OpenShift Container Platform uses the Ingress Operator to create an internal CA and issue a wildcard certificate that is valid for applications under the `.apps` sub-domain. Both the web console and CLI use this certificate as well.
+You can replace the default ingress certificate with a certificate from a public CA so that external clients connect securely to your applications.
 
-The internal infrastructure CA certificates are self-signed. While this process might be perceived as bad practice by some security or PKI teams, any risk here is minimal. The only clients that implicitly trust these certificates are other components within the cluster. Replacing the default wildcard certificate with one that is issued by a public CA already included in the CA bundle as provided by the container userspace allows external clients to connect securely to applications running under the `.apps` sub-domain.
+The default ingress certificate in OpenShift Container Platform is a wildcard certificate that the Ingress Operator issues from an internal CA for the web console, CLI, and applications under the `.apps` subdomain.
 
 # Replacing the default ingress certificate
 
-You can replace the default ingress certificate for all applications under the `.apps` subdomain. After you replace the certificate, all applications, including the web console and CLI, have encryption provided by the specified certificate.
+To secure the web console, CLI, and all applications under the `.apps` subdomain in OpenShift Container Platform, you can replace the default ingress certificate by creating a TLS secret with your wildcard certificate and updating the Ingress Controller and cluster proxy configuration.
 
 <div class="note">
 
@@ -94,4 +96,4 @@ Before using the procedure, ensure you understand the following Ingress Controll
 
 - [Replacing the CA Bundle certificate](../../security/certificates/updating-ca-bundle.xml#ca-bundle-understanding_updating-ca-bundle)
 
-- [Proxy certificate customization](../../security/certificate_types_descriptions/proxy-certificates.xml#customization)
+- [Proxy certificate customization](../../security/certificate_types_descriptions/proxy-certificates.xml#proxy-cert-customization_proxy-certificates)

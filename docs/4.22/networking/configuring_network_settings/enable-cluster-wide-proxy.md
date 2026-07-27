@@ -278,6 +278,6 @@ To verify that your cluster-wide proxy configuration is working correctly in Ope
 
 - [Understanding the CA Bundle certificate](../../security/certificates/updating-ca-bundle.xml#ca-bundle-understanding_updating-ca-bundle)
 
-- [Proxy certificates](../../security/certificate_types_descriptions/proxy-certificates.xml#customization)
+- [Proxy certificates](../../security/certificate_types_descriptions/proxy-certificates.xml#proxy-cert-customization_proxy-certificates)
 
 - [How is the cluster-wide proxy setting applied to OpenShift Container Platform nodes?](https://access.redhat.com/solutions/7065528)

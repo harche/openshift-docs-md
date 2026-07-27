@@ -1,3 +1,5 @@
+Review service certificate authority (CA) certificates for monitoring and Red Hat OpenShift Logging Operator components in OpenShift Container Platform, including validity, automatic rotation, and system-managed namespaces.
+
 # Expiration
 
 Monitoring components secure their traffic with service CA certificates. These certificates are valid for 2 years and are replaced automatically on rotation of the service CA, which is every 13 months.

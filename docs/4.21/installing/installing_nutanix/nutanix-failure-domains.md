@@ -6,9 +6,9 @@ A failure domain represents an additional Prism Element instance that is availab
 
 The OpenShift Container Platform installation method determines how and when you configure failure domains:
 
-- If you deploy using installer-provisioned infrastructure, you can configure failure domains in the installation configuration file before deploying the cluster. For more information, see [Configuring failure domains](../../installing/installing_nutanix/installing-nutanix-installer-provisioned.xml#installation-configuring-nutanix-failure-domains_installing-nutanix-installer-provisioned).
+- If you deploy using installer-provisioned infrastructure, you can configure failure domains in the installation configuration file before deploying the cluster.
 
-  You can also configure failure domains after the cluster is deployed. For more information about configuring failure domains post-installation, see [Adding failure domains to an existing Nutanix cluster](../../installing/installing_nutanix/nutanix-failure-domains.xml#nutanix-failure-domains-adding-to-existing-cluster_nutanix-failure-domains).
+  You can also configure failure domains after the cluster is deployed, as described in the following section.
 
 - If you deploy using infrastructure that you manage (user-provisioned infrastructure) no additional configuration is required. After the cluster is deployed, you can manually distribute control plane and compute machines across failure domains.
 
@@ -20,7 +20,7 @@ A failure domain represents a single Prism Element instance where new control pl
 
 ## Failure domain requirements
 
-When planning to use failure domains, consider the following requirements:
+When planning to use failure domains, you must meet several Nutanix Prism Central, networking, and subnet requirements.
 
 - All Nutanix Prism Element instances must be managed by the same instance of Prism Central. A deployment that is comprised of multiple Prism Central instances is not supported.
 
@@ -157,7 +157,13 @@ For more information on checking the control plane machine set custom resource s
 
 3.  Save your changes.
 
-By default, the control plane machine set propagates changes to your control plane configuration automatically. If the cluster is configured to use the `OnDelete` update strategy, you must replace your control planes manually. For more information, see "Additional resources".
+<div class="formalpara-title">
+
+**Result**
+
+</div>
+
+By default, the control plane machine set propagates changes to your control plane configuration automatically. If the cluster is configured to use the `OnDelete` update strategy, you must replace your control planes manually.
 
 - [Checking the control plane machine set custom resource state](../../machine_management/control_plane_machine_management/cpmso-getting-started.xml#cpmso-checking-status_cpmso-getting-started)
 
@@ -165,11 +171,17 @@ By default, the control plane machine set propagates changes to your control pla
 
 ## Distributing compute machines across failure domains
 
-You can distribute compute machines across Nutanix failure domains one of the following ways:
+You can distribute compute machines across Nutanix failure domains by editing or replacing existing compute machine sets.
 
-- [Editing existing compute machine sets](../../installing/installing_nutanix/nutanix-failure-domains.xml#post-installation-adding-nutanix-failure-domains-compute-machines-edit_nutanix-failure-domains) allows you to distribute compute machines across Nutanix failure domains as a minimal configuration update.
+- Editing existing compute machine sets allows you to distribute compute machines across Nutanix failure domains as a minimal configuration update.
 
-- [Replacing existing compute machine sets](../../installing/installing_nutanix/nutanix-failure-domains.xml#post-installation-adding-nutanix-failure-domains-compute-machines-replace_nutanix-failure-domains) ensures that the specification is immutable and all your machines are the same.
+- Replacing existing compute machine sets ensures that the specification is immutable and all your machines are the same.
+
+<!-- -->
+
+- [Editing existing compute machine sets to implement failure domains](../../installing/installing_nutanix/nutanix-failure-domains.xml#post-installation-adding-nutanix-failure-domains-compute-machines-edit_nutanix-failure-domains)
+
+- [Replacing existing compute machine sets to implement failure domains](../../installing/installing_nutanix/nutanix-failure-domains.xml#post-installation-adding-nutanix-failure-domains-compute-machines-replace_nutanix-failure-domains)
 
 ### Editing compute machine sets to implement failure domains
 
@@ -291,7 +303,7 @@ To distribute compute machines across Nutanix failure domains by using an existi
       -n openshift-machine-api
     ```
 
-    - For example, if the original number of replicas in the compute machine set is `2`, scale the replicas to `4`.
+    For example, if the original number of replicas in the compute machine set is `2`, scale the replicas to `4`.
 
 11. List the machines that are managed by the updated compute machine set by running the following command:
 
@@ -309,7 +321,7 @@ To distribute compute machines across Nutanix failure domains by using an existi
       -n openshift-machine-api
     ```
 
-    - For example, if the original number of replicas in the compute machine set was `2`, scale the replicas to `2`.
+    For example, if the original number of replicas in the compute machine set was `2`, scale the replicas to `2`.
 
 13. As required, continue to modify machine sets to reference the additional failure domains that are available to the deployment.
 
@@ -369,11 +381,7 @@ To distribute compute machines across Nutanix failure domains by replacing a com
         -n openshift-machine-api -o yaml
       ```
 
-      <div class="formalpara-title">
-
-      **Example output**
-
-      </div>
+      The command returns output similar to the following example:
 
       ``` yaml
       apiVersion: machine.openshift.io/v1beta1
@@ -401,17 +409,22 @@ To distribute compute machines across Nutanix failure domains by replacing a com
               ...
       ```
 
-      - The cluster infrastructure ID.
+      where:
 
-      - A default node label.
+      `<infrastructure_id>`
+      Specifies the cluster infrastructure ID.
 
-        <div class="note">
+      `<role>`
+      Specifies a default node label.
 
-        For clusters that have user-provisioned infrastructure, a compute machine set can only create machines with a `worker` or `infra` role.
+      `providerSpec`
+      Specifies the values in the `providerSpec` section of the compute machine set CR are platform-specific. For more information about `providerSpec` parameters in the CR, see the sample compute machine set CR configuration for your provider.
 
-        </div>
+      <div class="note">
 
-      - The values in the `<providerSpec>` section of the compute machine set CR are platform-specific. For more information about `<providerSpec>` parameters in the CR, see the sample compute machine set CR configuration for your provider.
+      For clusters that have user-provisioned infrastructure, a compute machine set can only create machines with a `worker` or `infra` role.
+
+      </div>
 
 6.  Configure the new compute machine set to use the first failure domain by updating or adding the following to the `spec.template.spec.providerSpec.value` stanza in the `<new_machine_set_name_1>.yaml` file.
 
@@ -577,3 +590,9 @@ The following networking configuration and management practices can help your mu
   To avoid this issue, regularly remove stale DHCP leases.
 
 - Use automation tools, such as Terraform or Ansible, to isolate the infrastructure for each OpenShift Container Platform cluster.
+
+# Additional resources
+
+- [Configuring failure domains](../../installing/installing_nutanix/installing-nutanix-installer-provisioned.xml#installation-configuring-nutanix-failure-domains_installing-nutanix-installer-provisioned)
+
+- [Adding failure domains to an existing Nutanix cluster](../../installing/installing_nutanix/nutanix-failure-domains.xml#nutanix-failure-domains-adding-to-existing-cluster_nutanix-failure-domains)

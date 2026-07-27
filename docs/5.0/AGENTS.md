@@ -410,7 +410,7 @@ Root: ./
 ### Virtualization
 
 |virt/about_virt:{about-virt.md,virt-supported-limits.md,virt-security-policies.md,virt-architecture.md}
-|virt/release_notes:{virt-4-22-release-notes.md}
+|virt/release_notes:{virt-5-0-release-notes.md}
 |virt/getting_started:{virt-getting-started.md,virt-using-the-cli-tools.md}
 |virt/install:{preparing-cluster-for-virt.md,virt-requirements.md,installing-virt.md,uninstalling-virt.md,virt-install-ibm-cloud-bm-nodes.md}
 |virt/post_installation_configuration:{virt-post-install-config.md,virt-node-placement-virt-components.md,virt-post-install-network-config.md,virt-post-install-storage-config.md,virt-self-validation-checkups.md,virt-physical-cores-allocation-vms.md,virt-configuring-higher-vm-workload-density.md,virt-configuring-certificate-rotation.md,virt-kubevirt-redfish.md}

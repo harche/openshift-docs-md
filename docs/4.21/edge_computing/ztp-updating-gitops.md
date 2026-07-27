@@ -254,11 +254,9 @@ Using the extracted `argocd/deployment` directory, and after ensuring that the a
         }
         ```
 
-        - Optional: For RHEL 9 images, copy the required universal executable in the `/policy-generator/PolicyGenerator-not-fips-compliant` folder for the ArgoCD version.
+        - Optional: For RHEL 9 images, in the `args` field, change the executable path from `/policy-generator/PolicyGenerator-not-fips-compliant` to match the required universal executable for your ArgoCD version.
 
-        - Match the `multicluster-operators-subscription` image to the RHACM version.
-
-        - In disconnected environments, replace the URL for the `multicluster-operators-subscription` image with the disconnected registry equivalent for your environment.
+        - Match the `multicluster-operators-subscription` image to your RHACM version. In disconnected environments, replace the URL with the disconnected registry equivalent for your environment.
 
     3.  Patch the ArgoCD instance. Run the following command:
 
@@ -332,6 +330,6 @@ If any configuration changes were included in the upgrade due to implementing re
 
 To roll out the changes, create one or more `ClusterGroupUpgrade` CRs as detailed in the TALM documentation. The CR must contain the list of `Non-Compliant` policies that you want to push out to the managed clusters as well as a list or selector of which clusters should be included in the update.
 
-- For information about the Topology Aware Lifecycle Manager (TALM), see [About the Topology Aware Lifecycle Manager configuration](../edge_computing/cnf-talm-for-cluster-upgrades.xml#cnf-about-topology-aware-lifecycle-manager-config_cnf-topology-aware-lifecycle-manager).
+- [About the Topology Aware Lifecycle Manager configuration](../edge_computing/cnf-talm-for-cluster-upgrades.xml#cnf-about-topology-aware-lifecycle-manager-config_cnf-topology-aware-lifecycle-manager)
 
-- For information about creating `ClusterGroupUpgrade` CRs, see [About the auto-created ClusterGroupUpgrade CR for GitOps ZTP](../edge_computing/policygentemplate_for_ztp/ztp-talm-updating-managed-policies.xml#talo-precache-autocreated-cgu-for-ztp_ztp-talm).
+- [About the auto-created ClusterGroupUpgrade CR for GitOps ZTP](../edge_computing/policygentemplate_for_ztp/ztp-talm-updating-managed-policies.xml#talo-precache-autocreated-cgu-for-ztp_ztp-talm)

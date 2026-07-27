@@ -2,21 +2,21 @@ In OpenShift Container Platform version 4.17, you can install a cluster on your 
 
 # Prerequisites
 
-- You have completed the tasks in [Preparing to install a cluster using installer-provisioned infrastructure](../../../installing/installing_vsphere/ipi/ipi-vsphere-preparing-to-install.xml#ipi-vsphere-preparing-to-install).
+- You have completed the tasks in "Preparing to install a cluster using installer-provisioned infrastructure".
 
 - You reviewed your VMware platform licenses. Red Hat does not place any restrictions on your VMware licenses, but some VMware infrastructure components require licensing.
 
-- You reviewed details about the [OpenShift Container Platform installation and update](../../../architecture/architecture-installation.xml#architecture-installation) processes.
+- You reviewed details about the OpenShift Container Platform installation and update processes.
 
-- You read the documentation on [selecting a cluster installation method and preparing it for users](../../../installing/overview/installing-preparing.xml#installing-preparing).
+- You read the documentation on selecting a cluster installation method and preparing it for users.
 
-- You provisioned [persistent storage](../../../storage/understanding-persistent-storage.xml#understanding-persistent-storage) for your cluster. To deploy a private image registry, your storage must provide `ReadWriteMany` access modes.
+- You provisioned persistent storage for your cluster. To deploy a private image registry, your storage must provide `ReadWriteMany` access modes.
 
 - The OpenShift Container Platform installer requires access to port 443 on the vCenter and ESXi hosts. You verified that port 443 is accessible.
 
 - If you use a firewall, you confirmed with the administrator that port 443 is accessible. Control plane nodes must be able to reach vCenter and ESXi hosts on port 443 for the installation to succeed.
 
-- If you use a firewall, you [configured it to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
+- If you use a firewall, you configured it to allow the sites that your cluster requires access to.
 
   <div class="note">
 
@@ -408,14 +408,22 @@ To provide metrics about cluster health and the success of updates, the Telemetr
 
 After you confirm that your [OpenShift Cluster Manager](https://console.redhat.com/openshift) inventory is correct, either maintained automatically by Telemetry or manually by using OpenShift Cluster Manager,use subscription watch to track your OpenShift Container Platform subscriptions at the account or multi-cluster level. For more information about subscription watch, see "Data Gathered and Used by Red Hat’s subscription services" in the *Additional resources* section.
 
+- [Preparing to install a cluster using installer-provisioned infrastructure](../../../installing/installing_vsphere/ipi/ipi-vsphere-preparing-to-install.xml#ipi-vsphere-preparing-to-install)
+
+- [OpenShift Container Platform installation and update processes](../../../architecture/architecture-installation.xml#architecture-installation)
+
+- [Selecting a cluster installation method and preparing it for users](../../../installing/overview/installing-preparing.xml#installing-preparing)
+
+- [Persistent storage](../../../storage/understanding-persistent-storage.xml#understanding-persistent-storage)
+
+- [Configuring your firewall to allow required sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
+
 - [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
-# Next steps
+- [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
 
-- [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations).
+- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
-- If necessary, you can [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting).
+- [Set up your registry and configure registry storage](../../../registry/configuring_registry_storage/configuring-registry-storage-vsphere.xml#configuring-registry-storage-vsphere)
 
-- [Set up your registry and configure registry storage](../../../registry/configuring_registry_storage/configuring-registry-storage-vsphere.xml#configuring-registry-storage-vsphere).
-
-- Optional: [View the events from the vSphere Problem Detector Operator](../../../installing/installing_vsphere/using-vsphere-problem-detector-operator.xml#vsphere-problem-detector-viewing-events_vsphere-problem-detector) to determine if the cluster has permission or storage configuration issues.
+- [View the events from the vSphere Problem Detector Operator to determine if the cluster has permission or storage configuration issues](../../../installing/installing_vsphere/using-vsphere-problem-detector-operator.xml#vsphere-problem-detector-viewing-events_vsphere-problem-detector)

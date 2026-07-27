@@ -61,7 +61,7 @@ Because application workloads run from control plane nodes, additional subscript
     status: {}
     ```
 
-# Next steps
+# Additional resources
 
 - [Installing a cluster on vSphere with customizations](../../installing/installing_vsphere/ipi/installing-vsphere-installer-provisioned-customizations.xml#installing-vsphere-installer-provisioned-customizations)
 

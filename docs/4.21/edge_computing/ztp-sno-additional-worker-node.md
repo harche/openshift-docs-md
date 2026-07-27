@@ -18,11 +18,11 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 </div>
 
-- For more information about single-node OpenShift clusters tuned for vDU application deployments, see [Reference configuration for deploying vDUs on single-node OpenShift](../edge_computing/ztp-reference-cluster-configuration-for-vdu.xml#sno-configure-for-vdu).
+- [Reference configuration for deploying vDUs on single-node OpenShift](../edge_computing/ztp-reference-cluster-configuration-for-vdu.xml#sno-configure-for-vdu)
 
-- For more information about worker nodes, see [Adding worker nodes to single-node OpenShift clusters](../nodes/nodes/nodes-sno-worker-nodes.xml#nodes-sno-worker-nodes).
+- [Adding worker nodes to single-node OpenShift clusters](../nodes/nodes/nodes-sno-worker-nodes.xml#nodes-sno-worker-nodes)
 
-- For information about removing a worker node from an expanded single-node OpenShift cluster, see [Removing managed cluster nodes by using the command line interface](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.10/html/clusters/cluster_mce_overview#auto-remove-host-steps-cli).
+- [Removing managed cluster nodes by using the command line interface](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.10/html/clusters/cluster_mce_overview#auto-remove-host-steps-cli)
 
 # Applying profiles to the worker node with PolicyGenerator or PolicyGenTemplate resources
 
@@ -64,11 +64,7 @@ If the DU profile was deployed using the GitOps Zero Touch Provisioning (ZTP) pl
     $ oc get ptpoperatorconfig/default -n openshift-ptp -ojsonpath='' | jq
     ```
 
-    <div class="formalpara-title">
-
-    **Example output for PTP Operator**
-
-    </div>
+    The following is example output for the PTP Operator:
 
     ``` json
     {"daemonNodeSelector":{"node-role.kubernetes.io/master":""}}
@@ -83,11 +79,7 @@ If the DU profile was deployed using the GitOps Zero Touch Provisioning (ZTP) pl
     openshift-sriov-network-operator -ojsonpath='' | jq
     ```
 
-    <div class="formalpara-title">
-
-    **Example output for SR-IOV Operator**
-
-    </div>
+    The following is example output for the SR-IOV Operator:
 
     ``` json
     {"configDaemonNodeSelector":{"node-role.kubernetes.io/worker":""},"disableDrain":false,"enableInjector":true,"enableOperatorWebhook":true}
@@ -201,11 +193,11 @@ You can create policies for the additional worker node by using `PolicyGenerator
                         - profile: performance-patch-worker
     ```
 
-    - The policies are applied to all clusters with this label.
+    - `policyDefaults.placement.labelSelector.matchExpressions` — The policies are applied to all clusters with this label.
 
-    - The `cpu.isolated` and `cpu.reserved` fields must be configured for each specific hardware platform.
+    - `spec.cpu.isolated` and `spec.cpu.reserved` in the `PerformanceProfile-MCP-worker.yaml` manifest — These fields must be configured for each specific hardware platform.
 
-    - The `cmdline_crash` CPU set must match the `cpu.isolated` set in the `PerformanceProfile` section.
+    - `cmdline_crash` in the `TunedPerformancePatch-MCP-worker.yaml` manifest — The `nohz_full` CPU set must match the `cpu.isolated` set in the `PerformanceProfile` section.
 
     You can generate the content of `crio` and `kubelet` configuration files.
 
@@ -319,15 +311,15 @@ You can create policies for the additional worker node by using `PolicyGenTempla
             - profile: performance-patch-worker
     ```
 
-    - The policies are applied to all clusters with this label.
+    - `spec.bindingRules.sites` — The policies are applied to all clusters with this label.
 
-    - The `MCP` field must be set to `worker`.
+    - `spec.mcp` — The `MCP` field must be set to `worker`.
 
-    - This generic `MachineConfig` CR is used to configure workload partitioning on the worker node.
+    - `MachineConfigGeneric.yaml` in `spec.sourceFiles` — This generic `MachineConfig` CR is used to configure workload partitioning on the worker node.
 
-    - The `cpu.isolated` and `cpu.reserved` fields must be configured for each particular hardware platform.
+    - `spec.cpu.isolated` and `spec.cpu.reserved` in the `PerformanceProfile.yaml` manifest — These fields must be configured for each particular hardware platform.
 
-    - The `cmdline_crash` CPU set must match the `cpu.isolated` set in the `PerformanceProfile` section.
+    - `cmdline_crash` in the `TunedPerformancePatch.yaml` manifest — The `nohz_full` CPU set must match the `cpu.isolated` set in the `PerformanceProfile` section.
 
     You can generate the content of `crio` and `kubelet` configuration files.
 
@@ -473,11 +465,7 @@ You can monitor the installation process in several ways.
   $ oc get ppimg -n example-sno
   ```
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
+  The following is example output:
 
   ``` terminal
   NAMESPACE       NAME            READY   REASON
@@ -491,11 +479,7 @@ You can monitor the installation process in several ways.
   $ oc get bmh -n example-sno
   ```
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
+  The following is example output:
 
   ``` terminal
   NAME            STATE          CONSUMER   ONLINE   ERROR   AGE
@@ -513,11 +497,7 @@ You can monitor the installation process in several ways.
       $ oc get agent -n example-sno --watch
       ```
 
-      <div class="formalpara-title">
-
-      **Example output**
-
-      </div>
+      The following is example output:
 
       ``` terminal
       NAME                                   CLUSTER   APPROVED   ROLE     STAGE
@@ -540,11 +520,7 @@ You can monitor the installation process in several ways.
       jsonpath='{range .status.nodeList[*]}{"\t"}{"\t"}{"\n"}{end}'
       ```
 
-      <div class="formalpara-title">
-
-      **Example output**
-
-      </div>
+      The following is example output:
 
       ``` terminal
       example-sno  [{"status":"True","type":"Ready"}]  {"node-role.kubernetes.io/master":"","node-role.kubernetes.io/worker":""}

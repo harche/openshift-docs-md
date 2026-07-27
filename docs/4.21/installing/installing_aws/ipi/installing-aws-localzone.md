@@ -95,8 +95,6 @@ Generally, the maximum transmission unit (MTU) between an Amazon EC2 instance in
 
 The network plugin can provide additional features, such as IPsec, that also affect the MTU sizing.
 
-For more information, see [How Local Zones work](https://docs.aws.amazon.com/local-zones/latest/ug/how-local-zones-work.html) in the AWS documentation.
-
 </div>
 
 OpenShift Container Platform 4.12 introduced a new compute pool, *edge*, that is designed for use in remote zones. The edge compute pool configuration is common between Amazon Web Services (AWS) Local Zones locations. Because of the type and size limitations of resources like EC2 and EBS on Local Zones resources, the default instance type can vary from the traditional compute pool.
@@ -122,6 +120,8 @@ By default, the machine sets for the edge compute pool define the taint of `NoSc
 - [Storage classes](../../../storage/understanding-persistent-storage.xml#pvc-storage-class_understanding-persistent-storage)
 
 - [Ingress Controller sharding](../../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-ingress-controller.xml#nw-ingress-sharding_configuring-ingress-cluster-traffic-ingress-controller)
+
+- [How Local Zones work (AWS documentation)](https://docs.aws.amazon.com/local-zones/latest/ug/how-local-zones-work.html)
 
 # Installation prerequisites
 
@@ -254,11 +254,13 @@ For OpenShift Container Platform version 4.19, RHCOS is based on RHEL version 9.
 
 - s390x architecture requires z14 ISA
 
-For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures) (RHEL documentation).
+For more information, see "Architectures".
 
 </div>
 
 If an instance type for your platform meets the minimum requirements for cluster machines, it is supported to use in OpenShift Container Platform.
+
+- [Architectures (RHEL documentation)](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures)
 
 ## Tested instance types for AWS
 
@@ -482,7 +484,7 @@ pullSecret: '{"auths": ...}'
 sshKey: ssh-ed25519 AAAA...
 ```
 
-- For more information about the maximum supported maximum transmission unit (MTU) value, see [AWS resources supported in Local Zones](https://docs.aws.amazon.com/local-zones/latest/ug/how-local-zones-work.html#considerations) in the AWS documentation.
+- [AWS resources supported in Local Zones (AWS documentation)](https://docs.aws.amazon.com/local-zones/latest/ug/how-local-zones-work.html#considerations)
 
 # Cluster installation options for an AWS Local Zones environment
 
@@ -1094,6 +1096,12 @@ arn:aws:cloudformation:us-east-1:123456789012:stack/<stack_name>/dbedae40-820e-1
 
 Use the CloudFormation template to deploy the private and public subnets in a zone on Local Zones infrastructure. The template provisions an `AWS::EC2::Subnet` and associates it with a specific Local Zones and VPC route table to reduce latency.
 
+<div class="formalpara-title">
+
+**CloudFormation template for VPC subnets**
+
+</div>
+
 ``` yaml
 AWSTemplateFormatVersion: 2010-09-09
 Description: Template for Best Practice Subnets (Public and Private)
@@ -1182,7 +1190,7 @@ Outputs:
       !Join ["", [!Ref PrivateSubnet]]
 ```
 
-- You can view details about the CloudFormation stacks that you create by navigating to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/).
+- [AWS CloudFormation console (AWS documentation)](https://console.aws.amazon.com/cloudformation/)
 
 ## Modifying an installation configuration file to use AWS Local Zones subnets
 
@@ -1222,9 +1230,9 @@ Modify your `install-config.yaml` file to include Local Zones subnets.
 
 <!-- -->
 
-- For more information about viewing the CloudFormation stacks that you created, see [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation).
+- [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation)
 
-- For more information about AWS profile and credential configuration, see [Configuration and credential file settings](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) in the AWS documentation.
+- [Configuration and credential file settings in the AWS CLI (AWS documentation)](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
 
 <!-- -->
 

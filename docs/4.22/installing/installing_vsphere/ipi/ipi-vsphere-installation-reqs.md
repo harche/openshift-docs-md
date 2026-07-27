@@ -10,6 +10,12 @@ You must install an OpenShift Container Platform cluster on one of the following
 
 Both of these releases support Container Storage Interface (CSI) migration, which is enabled by default on OpenShift Container Platform 4.17.
 
+<div class="note">
+
+Red Hat follows Broadcom’s End of Support dates for VMware products that OpenShift Container Platform runs on. After a VMware product version reaches End of Support, that version is no longer supported for use with OpenShift Container Platform.
+
+</div>
+
 You can host the VMware vSphere infrastructure on-premise or on a [VMware Cloud Verified provider](https://cloud.vmware.com/providers) that meets the requirements outlined in the following tables:
 
 | Virtual environment product | Required version                                                                                                                            |
@@ -124,9 +130,9 @@ Installing an OpenShift Container Platform cluster in a vCenter is tested agains
 
 </div>
 
-- To remove a third-party vSphere CSI driver, see [Removing a third-party vSphere CSI Driver](../../../storage/container_storage_interface/persistent-storage-csi-vsphere.xml#persistent-storage-csi-vsphere-install-issues_persistent-storage-csi-vsphere).
+- [Removing a third-party vSphere CSI Driver Operator](../../../storage/container_storage_interface/persistent-storage-csi-vsphere.xml#persistent-storage-csi-vsphere-install-issues_persistent-storage-csi-vsphere)
 
-- To update the hardware version for your vSphere nodes, see [Updating hardware on nodes running in vSphere](../../../updating/updating_a_cluster/updating-hardware-on-nodes-running-on-vsphere.xml#updating-hardware-on-nodes-running-on-vsphere).
+- [Updating hardware on nodes running on vSphere](../../../updating/updating_a_cluster/updating-hardware-on-nodes-running-on-vsphere.xml#updating-hardware-on-nodes-running-on-vsphere)
 
 - [Minimum permissions for the storage components](../../../installing/installing_vsphere/ipi/ipi-vsphere-installation-reqs.xml#installation-vsphere-minimum-permissions-storage_ipi-vsphere-installation-reqs)
 
@@ -149,6 +155,7 @@ The following tables do not explicitly list the ESXi host object. In the vSphere
 </div>
 
 <table>
+<caption>Roles and privileges required for installation in vSphere API</caption>
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 33%" />
@@ -165,42 +172,50 @@ The following tables do not explicitly list the ESXi host object. In the vSphere
 <tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter</p></td>
 <td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p><code>Cns.Searchable</code><br />
-<code>InventoryService.Tagging.AttachTag</code><br />
-<code>InventoryService.Tagging.CreateCategory</code><br />
-<code>InventoryService.Tagging.CreateTag</code><br />
-<code>InventoryService.Tagging.DeleteCategory</code><br />
-<code>InventoryService.Tagging.DeleteTag</code><br />
-<code>InventoryService.Tagging.EditCategory</code><br />
-<code>InventoryService.Tagging.EditTag</code><br />
-<code>Sessions.ValidateSession</code><br />
-<code>StorageProfile.Update</code><br />
-<code>StorageProfile.View</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>Cns.Searchable</code></p></li>
+<li><p><code>InventoryService.Tagging.AttachTag</code></p></li>
+<li><p><code>InventoryService.Tagging.CreateCategory</code></p></li>
+<li><p><code>InventoryService.Tagging.CreateTag</code></p></li>
+<li><p><code>InventoryService.Tagging.DeleteCategory</code></p></li>
+<li><p><code>InventoryService.Tagging.DeleteTag</code></p></li>
+<li><p><code>InventoryService.Tagging.EditCategory</code></p></li>
+<li><p><code>InventoryService.Tagging.EditTag</code></p></li>
+<li><p><code>Sessions.ValidateSession</code></p></li>
+<li><p><code>StorageProfile.Update</code></p></li>
+<li><p><code>StorageProfile.View</code></p></li>
+</ul></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>vSphere vCenter Cluster</p></td>
 <td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p><code>Host.Config.Storage</code><br />
-<code>Resource.AssignVMToPool</code><br />
-<code>VApp.AssignResourcePool</code><br />
-<code>VApp.Import</code><br />
-<code>VirtualMachine.Config.AddNewDisk</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>Host.Config.Storage</code></p></li>
+<li><p><code>Resource.AssignVMToPool</code></p></li>
+<li><p><code>VApp.AssignResourcePool</code></p></li>
+<li><p><code>VApp.Import</code></p></li>
+<li><p><code>VirtualMachine.Config.AddNewDisk</code></p></li>
+</ul></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter Resource Pool</p></td>
 <td style="text-align: left;"><p>For a provided existing resource pool</p></td>
-<td style="text-align: left;"><p><code>Resource.AssignVMToPool</code><br />
-<code>VApp.AssignResourcePool</code><br />
-<code>VApp.Import</code><br />
-<code>VirtualMachine.Config.AddNewDisk</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>Resource.AssignVMToPool</code></p></li>
+<li><p><code>VApp.AssignResourcePool</code></p></li>
+<li><p><code>VApp.Import</code></p></li>
+<li><p><code>VirtualMachine.Config.AddNewDisk</code></p></li>
+</ul></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>vSphere Datastore</p></td>
 <td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p><code>Datastore.AllocateSpace</code><br />
-<code>Datastore.Browse</code><br />
-<code>Datastore.FileManagement</code><br />
-<code>InventoryService.Tagging.ObjectAttachable</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>Datastore.AllocateSpace</code></p></li>
+<li><p><code>Datastore.Browse</code></p></li>
+<li><p><code>Datastore.FileManagement</code></p></li>
+<li><p><code>InventoryService.Tagging.ObjectAttachable</code></p></li>
+</ul></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>vSphere Port Group</p></td>
@@ -210,75 +225,82 @@ The following tables do not explicitly list the ESXi host object. In the vSphere
 <tr class="even">
 <td style="text-align: left;"><p>Virtual Machine Folder</p></td>
 <td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p><code>InventoryService.Tagging.ObjectAttachable</code><br />
-<code>Resource.AssignVMToPool</code><br />
-<code>VApp.Import</code><br />
-<code>VirtualMachine.Config.AddExistingDisk</code><br />
-<code>VirtualMachine.Config.AddNewDisk</code><br />
-<code>VirtualMachine.Config.AddRemoveDevice</code><br />
-<code>VirtualMachine.Config.AdvancedConfig</code><br />
-<code>VirtualMachine.Config.Annotation</code><br />
-<code>VirtualMachine.Config.CPUCount</code><br />
-<code>VirtualMachine.Config.DiskExtend</code><br />
-<code>VirtualMachine.Config.DiskLease</code><br />
-<code>VirtualMachine.Config.EditDevice</code><br />
-<code>VirtualMachine.Config.Memory</code><br />
-<code>VirtualMachine.Config.RemoveDisk</code><br />
-<code>VirtualMachine.Config.Rename</code><br />
-<code>Host.Config.Storage</code><br />
-<code>VirtualMachine.Config.ResetGuestInfo</code><br />
-<code>VirtualMachine.Config.Resource</code><br />
-<code>VirtualMachine.Config.Settings</code><br />
-<code>VirtualMachine.Config.UpgradeVirtualHardware</code><br />
-<code>VirtualMachine.Interact.GuestControl</code><br />
-<code>VirtualMachine.Interact.PowerOff</code><br />
-<code>VirtualMachine.Interact.PowerOn</code><br />
-<code>VirtualMachine.Interact.Reset</code><br />
-<code>VirtualMachine.Inventory.Create</code><br />
-<code>VirtualMachine.Inventory.CreateFromExisting</code><br />
-<code>VirtualMachine.Inventory.Delete</code><br />
-<code>VirtualMachine.Provisioning.Clone</code><br />
-<code>VirtualMachine.Provisioning.MarkAsTemplate</code><br />
-<code>VirtualMachine.Provisioning.DeployTemplate</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>InventoryService.Tagging.ObjectAttachable</code></p></li>
+<li><p><code>Resource.AssignVMToPool</code></p></li>
+<li><p><code>VApp.Import</code></p></li>
+<li><p><code>VirtualMachine.Config.AddExistingDisk</code></p></li>
+<li><p><code>VirtualMachine.Config.AddNewDisk</code></p></li>
+<li><p><code>VirtualMachine.Config.AddRemoveDevice</code></p></li>
+<li><p><code>VirtualMachine.Config.AdvancedConfig</code></p></li>
+<li><p><code>VirtualMachine.Config.Annotation</code></p></li>
+<li><p><code>VirtualMachine.Config.CPUCount</code></p></li>
+<li><p><code>VirtualMachine.Config.DiskExtend</code></p></li>
+<li><p><code>VirtualMachine.Config.DiskLease</code></p></li>
+<li><p><code>VirtualMachine.Config.EditDevice</code></p></li>
+<li><p><code>VirtualMachine.Config.Memory</code></p></li>
+<li><p><code>VirtualMachine.Config.RemoveDisk</code></p></li>
+<li><p><code>VirtualMachine.Config.Rename</code></p></li>
+<li><p><code>Host.Config.Storage</code></p></li>
+<li><p><code>VirtualMachine.Config.ResetGuestInfo</code></p></li>
+<li><p><code>VirtualMachine.Config.Resource</code></p></li>
+<li><p><code>VirtualMachine.Config.Settings</code></p></li>
+<li><p><code>VirtualMachine.Config.UpgradeVirtualHardware</code></p></li>
+<li><p><code>VirtualMachine.Interact.GuestControl</code></p></li>
+<li><p><code>VirtualMachine.Interact.PowerOff</code></p></li>
+<li><p><code>VirtualMachine.Interact.PowerOn</code></p></li>
+<li><p><code>VirtualMachine.Interact.Reset</code></p></li>
+<li><p><code>VirtualMachine.Inventory.Create</code></p></li>
+<li><p><code>VirtualMachine.Inventory.CreateFromExisting</code></p></li>
+<li><p><code>VirtualMachine.Inventory.Delete</code></p></li>
+<li><p><code>VirtualMachine.Provisioning.Clone</code></p></li>
+<li><p><code>VirtualMachine.Provisioning.MarkAsTemplate</code></p></li>
+<li><p><code>VirtualMachine.Provisioning.DeployTemplate</code></p></li>
+</ul></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter data center</p></td>
 <td style="text-align: left;"><p>The installation program creates the virtual machine folder.</p></td>
-<td style="text-align: left;"><p><code>InventoryService.Tagging.ObjectAttachable</code><br />
-<code>Resource.AssignVMToPool</code><br />
-<code>VirtualMachine.Config.AddExistingDisk</code><br />
-<code>VirtualMachine.Config.AddNewDisk</code><br />
-<code>VirtualMachine.Config.AddRemoveDevice</code><br />
-<code>VirtualMachine.Config.AdvancedConfig</code><br />
-<code>VirtualMachine.Config.Annotation</code><br />
-<code>VirtualMachine.Config.CPUCount</code><br />
-<code>VirtualMachine.Config.DiskExtend</code><br />
-<code>VirtualMachine.Config.DiskLease</code><br />
-<code>VirtualMachine.Config.EditDevice</code><br />
-<code>VirtualMachine.Config.Memory</code><br />
-<code>VirtualMachine.Config.RemoveDisk</code><br />
-<code>VirtualMachine.Config.Rename</code><br />
-<code>VirtualMachine.Config.ResetGuestInfo</code><br />
-<code>VirtualMachine.Config.Resource</code><br />
-<code>VirtualMachine.Config.Settings</code><br />
-<code>VirtualMachine.Config.UpgradeVirtualHardware</code><br />
-<code>VirtualMachine.Interact.GuestControl</code><br />
-<code>VirtualMachine.Interact.PowerOff</code><br />
-<code>VirtualMachine.Interact.PowerOn</code><br />
-<code>VirtualMachine.Interact.Reset</code><br />
-<code>VirtualMachine.Inventory.Create</code><br />
-<code>VirtualMachine.Inventory.CreateFromExisting</code><br />
-<code>VirtualMachine.Inventory.Delete</code><br />
-<code>VirtualMachine.Provisioning.Clone</code><br />
-<code>VirtualMachine.Provisioning.DeployTemplate</code><br />
-<code>VirtualMachine.Provisioning.MarkAsTemplate</code><br />
-<code>Folder.Create</code><br />
-<code>Folder.Delete</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>InventoryService.Tagging.ObjectAttachable</code></p></li>
+<li><p><code>Resource.AssignVMToPool</code></p></li>
+<li><p><code>VirtualMachine.Config.AddExistingDisk</code></p></li>
+<li><p><code>VirtualMachine.Config.AddNewDisk</code></p></li>
+<li><p><code>VirtualMachine.Config.AddRemoveDevice</code></p></li>
+<li><p><code>VirtualMachine.Config.AdvancedConfig</code></p></li>
+<li><p><code>VirtualMachine.Config.Annotation</code></p></li>
+<li><p><code>VirtualMachine.Config.CPUCount</code></p></li>
+<li><p><code>VirtualMachine.Config.DiskExtend</code></p></li>
+<li><p><code>VirtualMachine.Config.DiskLease</code></p></li>
+<li><p><code>VirtualMachine.Config.EditDevice</code></p></li>
+<li><p><code>VirtualMachine.Config.Memory</code></p></li>
+<li><p><code>VirtualMachine.Config.RemoveDisk</code></p></li>
+<li><p><code>VirtualMachine.Config.Rename</code></p></li>
+<li><p><code>VirtualMachine.Config.ResetGuestInfo</code></p></li>
+<li><p><code>VirtualMachine.Config.Resource</code></p></li>
+<li><p><code>VirtualMachine.Config.Settings</code></p></li>
+<li><p><code>VirtualMachine.Config.UpgradeVirtualHardware</code></p></li>
+<li><p><code>VirtualMachine.Interact.GuestControl</code></p></li>
+<li><p><code>VirtualMachine.Interact.PowerOff</code></p></li>
+<li><p><code>VirtualMachine.Interact.PowerOn</code></p></li>
+<li><p><code>VirtualMachine.Interact.Reset</code></p></li>
+<li><p><code>VirtualMachine.Inventory.Create</code></p></li>
+<li><p><code>VirtualMachine.Inventory.CreateFromExisting</code></p></li>
+<li><p><code>VirtualMachine.Inventory.Delete</code></p></li>
+<li><p><code>VirtualMachine.Provisioning.Clone</code></p></li>
+<li><p><code>VirtualMachine.Provisioning.DeployTemplate</code></p></li>
+<li><p><code>VirtualMachine.Provisioning.MarkAsTemplate</code></p></li>
+<li><p><code>Folder.Create</code></p></li>
+<li><p><code>Folder.Delete</code></p></li>
+</ul></td>
 </tr>
 </tbody>
 </table>
 
+Roles and privileges required for installation in vSphere API
+
 <table>
+<caption>Roles and privileges required for installation in vCenter graphical user interface (GUI)</caption>
 <colgroup>
 <col style="width: 25%" />
 <col style="width: 37%" />
@@ -295,43 +317,51 @@ The following tables do not explicitly list the ESXi host object. In the vSphere
 <tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter</p></td>
 <td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p><code>Cns.Searchable</code><br />
-<code>"vSphere Tagging"."Assign or Unassign vSphere Tag"</code><br />
-<code>"vSphere Tagging"."Create vSphere Tag Category"</code><br />
-<code>"vSphere Tagging"."Create vSphere Tag"</code><br />
-<code>vSphere Tagging"."Delete vSphere Tag Category"</code><br />
-<code>"vSphere Tagging"."Delete vSphere Tag"</code><br />
-<code>"vSphere Tagging"."Edit vSphere Tag Category"</code><br />
-<code>"vSphere Tagging"."Edit vSphere Tag"</code><br />
-<code>Sessions."Validate session"</code><br />
-<code>"VM storage policies"."Update VM storage policies"</code><br />
-<code>"VM storage policies"."View VM storage policies"</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>Cns.Searchable</code></p></li>
+<li><p><code>"vSphere Tagging"."Assign or Unassign vSphere Tag"</code></p></li>
+<li><p><code>"vSphere Tagging"."Create vSphere Tag Category"</code></p></li>
+<li><p><code>"vSphere Tagging"."Create vSphere Tag"</code></p></li>
+<li><p><code>vSphere Tagging"."Delete vSphere Tag Category"</code></p></li>
+<li><p><code>"vSphere Tagging"."Delete vSphere Tag"</code></p></li>
+<li><p><code>"vSphere Tagging"."Edit vSphere Tag Category"</code></p></li>
+<li><p><code>"vSphere Tagging"."Edit vSphere Tag"</code></p></li>
+<li><p><code>Sessions."Validate session"</code></p></li>
+<li><p><code>"VM storage policies"."Update VM storage policies"</code></p></li>
+<li><p><code>"VM storage policies"."View VM storage policies"</code></p></li>
+</ul></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>vSphere vCenter Cluster</p></td>
 <td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p><code>Host.Configuration."Storage partition configuration"</code><br />
-<code>Resource."Assign virtual machine to resource pool"</code><br />
-<code>VApp."Assign resource pool"</code><br />
-<code>VApp.Import</code><br />
-<code>"Virtual machine"."Change Configuration"."Add new disk"</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>Host.Configuration."Storage partition configuration"</code></p></li>
+<li><p><code>Resource."Assign virtual machine to resource pool"</code></p></li>
+<li><p><code>VApp."Assign resource pool"</code></p></li>
+<li><p><code>VApp.Import</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Add new disk"</code></p></li>
+</ul></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter Resource Pool</p></td>
 <td style="text-align: left;"><p>If providing an existing resource pool</p></td>
-<td style="text-align: left;"><p><code>Host.Configuration."Storage partition configuration"</code><br />
-<code>Resource."Assign virtual machine to resource pool"</code><br />
-<code>VApp."Assign resource pool"</code><br />
-<code>VApp.Import</code><br />
-<code>"Virtual machine"."Change Configuration"."Add new disk"</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>Host.Configuration."Storage partition configuration"</code></p></li>
+<li><p><code>Resource."Assign virtual machine to resource pool"</code></p></li>
+<li><p><code>VApp."Assign resource pool"</code></p></li>
+<li><p><code>VApp.Import</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Add new disk"</code></p></li>
+</ul></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>vSphere Datastore</p></td>
 <td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p><code>Datastore."Allocate space"</code><br />
-<code>Datastore."Browse datastore"</code><br />
-<code>Datastore."Low level file operations"</code><br />
-<code>"vSphere Tagging"."Assign or Unassign vSphere Tag on Object"</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>Datastore."Allocate space"</code></p></li>
+<li><p><code>Datastore."Browse datastore"</code></p></li>
+<li><p><code>Datastore."Low level file operations"</code></p></li>
+<li><p><code>"vSphere Tagging"."Assign or Unassign vSphere Tag on Object"</code></p></li>
+</ul></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>vSphere Port Group</p></td>
@@ -341,73 +371,79 @@ The following tables do not explicitly list the ESXi host object. In the vSphere
 <tr class="even">
 <td style="text-align: left;"><p>Virtual Machine Folder</p></td>
 <td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p><code>"vSphere Tagging"."Assign or Unassign vSphere Tag on Object"</code><br />
-<code>Resource."Assign virtual machine to resource pool"</code><br />
-<code>VApp.Import</code><br />
-<code>"Virtual machine"."Change Configuration"."Add existing disk"</code><br />
-<code>"Virtual machine"."Change Configuration"."Add new disk"</code><br />
-<code>"Virtual machine"."Change Configuration"."Add or remove device"</code><br />
-<code>"Virtual machine"."Change Configuration"."Advanced configuration"</code><br />
-<code>"Virtual machine"."Change Configuration"."Set annotation"</code><br />
-<code>"Virtual machine"."Change Configuration"."Change CPU count"</code><br />
-<code>"Virtual machine"."Change Configuration"."Extend virtual disk"</code><br />
-<code>"Virtual machine"."Change Configuration"."Acquire disk lease"</code><br />
-<code>"Virtual machine"."Change Configuration"."Modify device settings"</code><br />
-<code>"Virtual machine"."Change Configuration"."Change Memory"</code><br />
-<code>"Virtual machine"."Change Configuration"."Remove disk"</code><br />
-<code>"Virtual machine"."Change Configuration".Rename</code><br />
-<code>"Virtual machine"."Change Configuration"."Reset guest information"</code><br />
-<code>"Virtual machine"."Change Configuration"."Change resource"</code><br />
-<code>"Virtual machine"."Change Configuration"."Change Settings"</code><br />
-<code>"Virtual machine"."Change Configuration"."Upgrade virtual machine compatibility"</code><br />
-<code>"Virtual machine".Interaction."Guest operating system management by VIX API"</code><br />
-<code>"Virtual machine".Interaction."Power off"</code><br />
-<code>"Virtual machine".Interaction."Power on"</code><br />
-<code>"Virtual machine".Interaction.Reset</code><br />
-<code>"Virtual machine"."Edit Inventory"."Create new"</code><br />
-<code>"Virtual machine"."Edit Inventory"."Create from existing"</code><br />
-<code>"Virtual machine"."Edit Inventory"."Remove"</code><br />
-<code>"Virtual machine".Provisioning."Clone virtual machine"</code><br />
-<code>"Virtual machine".Provisioning."Mark as template"</code><br />
-<code>"Virtual machine".Provisioning."Deploy template"</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>"vSphere Tagging"."Assign or Unassign vSphere Tag on Object"</code></p></li>
+<li><p><code>Resource."Assign virtual machine to resource pool"</code></p></li>
+<li><p><code>VApp.Import</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Add existing disk"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Add new disk"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Add or remove device"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Advanced configuration"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Set annotation"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Change CPU count"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Extend virtual disk"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Acquire disk lease"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Modify device settings"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Change Memory"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Remove disk"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration".Rename</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Reset guest information"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Change resource"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Change Settings"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Upgrade virtual machine compatibility"</code></p></li>
+<li><p><code>"Virtual machine".Interaction."Guest operating system management by VIX API"</code></p></li>
+<li><p><code>"Virtual machine".Interaction."Power off"</code></p></li>
+<li><p><code>"Virtual machine".Interaction."Power on"</code></p></li>
+<li><p><code>"Virtual machine".Interaction.Reset</code></p></li>
+<li><p><code>"Virtual machine"."Edit Inventory"."Create new"</code></p></li>
+<li><p><code>"Virtual machine"."Edit Inventory"."Create from existing"</code></p></li>
+<li><p><code>"Virtual machine"."Edit Inventory"."Remove"</code></p></li>
+<li><p><code>"Virtual machine".Provisioning."Clone virtual machine"</code></p></li>
+<li><p><code>"Virtual machine".Provisioning."Mark as template"</code></p></li>
+<li><p><code>"Virtual machine".Provisioning."Deploy template"</code></p></li>
+</ul></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter data center</p></td>
 <td style="text-align: left;"><p>The installation program creates the virtual machine folder.</p></td>
-<td style="text-align: left;"><p><code>"vSphere Tagging"."Assign or Unassign vSphere Tag on Object"</code><br />
-<code>Resource."Assign virtual machine to resource pool"</code><br />
-<code>VApp.Import</code><br />
-<code>"Virtual machine"."Change Configuration"."Add existing disk"</code><br />
-<code>"Virtual machine"."Change Configuration"."Add new disk"</code><br />
-<code>"Virtual machine"."Change Configuration"."Add or remove device"</code><br />
-<code>"Virtual machine"."Change Configuration"."Advanced configuration"</code><br />
-<code>"Virtual machine"."Change Configuration"."Set annotation"</code><br />
-<code>"Virtual machine"."Change Configuration"."Change CPU count"</code><br />
-<code>"Virtual machine"."Change Configuration"."Extend virtual disk"</code><br />
-<code>"Virtual machine"."Change Configuration"."Acquire disk lease"</code><br />
-<code>"Virtual machine"."Change Configuration"."Modify device settings"</code><br />
-<code>"Virtual machine"."Change Configuration"."Change Memory"</code><br />
-<code>"Virtual machine"."Change Configuration"."Remove disk"</code><br />
-<code>"Virtual machine"."Change Configuration".Rename</code><br />
-<code>"Virtual machine"."Change Configuration"."Reset guest information"</code><br />
-<code>"Virtual machine"."Change Configuration"."Change resource"</code><br />
-<code>"Virtual machine"."Change Configuration"."Change Settings"</code><br />
-<code>"Virtual machine"."Change Configuration"."Upgrade virtual machine compatibility"</code><br />
-<code>"Virtual machine".Interaction."Guest operating system management by VIX API"</code><br />
-<code>"Virtual machine".Interaction."Power off"</code><br />
-<code>"Virtual machine".Interaction."Power on"</code><br />
-<code>"Virtual machine".Interaction.Reset</code><br />
-<code>"Virtual machine"."Edit Inventory"."Create new"</code><br />
-<code>"Virtual machine"."Edit Inventory"."Create from existing"</code><br />
-<code>"Virtual machine"."Edit Inventory"."Remove"</code><br />
-<code>"Virtual machine".Provisioning."Clone virtual machine"</code><br />
-<code>"Virtual machine".Provisioning."Deploy template"</code><br />
-<code>"Virtual machine".Provisioning."Mark as template"</code><br />
-<code>Folder."Create folder"</code><br />
-<code>Folder."Delete folder"</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>"vSphere Tagging"."Assign or Unassign vSphere Tag on Object"</code></p></li>
+<li><p><code>Resource."Assign virtual machine to resource pool"</code></p></li>
+<li><p><code>VApp.Import</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Add existing disk"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Add new disk"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Add or remove device"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Advanced configuration"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Set annotation"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Change CPU count"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Extend virtual disk"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Acquire disk lease"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Modify device settings"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Change Memory"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Remove disk"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration".Rename</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Reset guest information"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Change resource"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Change Settings"</code></p></li>
+<li><p><code>"Virtual machine"."Change Configuration"."Upgrade virtual machine compatibility"</code></p></li>
+<li><p><code>"Virtual machine".Interaction."Guest operating system management by VIX API"</code></p></li>
+<li><p><code>"Virtual machine".Interaction."Power off"</code></p></li>
+<li><p><code>"Virtual machine".Interaction."Power on"</code></p></li>
+<li><p><code>"Virtual machine".Interaction.Reset</code></p></li>
+<li><p><code>"Virtual machine"."Edit Inventory"."Create new"</code></p></li>
+<li><p><code>"Virtual machine"."Edit Inventory"."Create from existing"</code></p></li>
+<li><p><code>"Virtual machine"."Edit Inventory"."Remove"</code></p></li>
+<li><p><code>"Virtual machine".Provisioning."Clone virtual machine"</code></p></li>
+<li><p><code>"Virtual machine".Provisioning."Deploy template"</code></p></li>
+<li><p><code>"Virtual machine".Provisioning."Mark as template"</code></p></li>
+<li><p><code>Folder."Create folder"</code></p></li>
+<li><p><code>Folder."Delete folder"</code></p></li>
+</ul></td>
 </tr>
 </tbody>
 </table>
+
+Roles and privileges required for installation in vCenter graphical user interface (GUI)
 
 Additionally, the user requires some `ReadOnly` permissions, and some of the roles require permission to propagate the permissions to child objects. These settings vary depending on whether or not you install the cluster into an existing folder.
 
@@ -422,6 +458,8 @@ Additionally, the user requires some `ReadOnly` permissions, and some of the rol
 | vSphere Port Group                      | Always                 | False                      | Listed required privileges |
 | vSphere vCenter Virtual Machine Folder  | Existing folder        | True                       | Listed required privileges |
 | vSphere vCenter Resource Pool           | Existing resource pool | True                       | Listed required privileges |
+
+Required permissions and propagation settings
 
 For more information about creating an account with only the required privileges, see [vSphere Permissions and User Management Tasks](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-5372F580-5C23-4E9C-8A4E-EF1B4DD9033E.html) in the vSphere documentation.
 
@@ -448,6 +486,7 @@ Red Hat does not support configuring an account without including the required 
 The following tables specify how the required vCenter account privileges provided earlier in this document are relevant to different aspects of OpenShift Container Platform architecture.
 
 <table>
+<caption>Minimum permissions on installer-provisioned infrastructure</caption>
 <colgroup>
 <col style="width: 36%" />
 <col style="width: 36%" />
@@ -464,41 +503,49 @@ The following tables specify how the required vCenter account privileges provide
 <tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter</p></td>
 <td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p><code>Cns.Searchable</code><br />
-<code>InventoryService.Tagging.AttachTag</code><br />
-<code>InventoryService.Tagging.CreateCategory</code><br />
-<code>InventoryService.Tagging.CreateTag</code><br />
-<code>InventoryService.Tagging.DeleteCategory</code><br />
-<code>InventoryService.Tagging.DeleteTag</code><br />
-<code>InventoryService.Tagging.EditCategory</code><br />
-<code>InventoryService.Tagging.EditTag</code><br />
-<code>Sessions.ValidateSession</code><br />
-<code>StorageProfile.Update</code><br />
-<code>StorageProfile.View</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>Cns.Searchable</code></p></li>
+<li><p><code>InventoryService.Tagging.AttachTag</code></p></li>
+<li><p><code>InventoryService.Tagging.CreateCategory</code></p></li>
+<li><p><code>InventoryService.Tagging.CreateTag</code></p></li>
+<li><p><code>InventoryService.Tagging.DeleteCategory</code></p></li>
+<li><p><code>InventoryService.Tagging.DeleteTag</code></p></li>
+<li><p><code>InventoryService.Tagging.EditCategory</code></p></li>
+<li><p><code>InventoryService.Tagging.EditTag</code></p></li>
+<li><p><code>Sessions.ValidateSession</code></p></li>
+<li><p><code>StorageProfile.Update</code></p></li>
+<li><p><code>StorageProfile.View</code></p></li>
+</ul></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>vSphere vCenter Cluster</p></td>
 <td style="text-align: left;"><p>If you intend to create VMs in the cluster root</p></td>
-<td style="text-align: left;"><p><code>Host.Config.Storage</code><br />
-<code>Resource.AssignVMToPool</code><br />
-<code>VApp.AssignResourcePool</code><br />
-<code>VApp.Import</code><br />
-<code>VirtualMachine.Config.AddNewDisk</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>Host.Config.Storage</code></p></li>
+<li><p><code>Resource.AssignVMToPool</code></p></li>
+<li><p><code>VApp.AssignResourcePool</code></p></li>
+<li><p><code>VApp.Import</code></p></li>
+<li><p><code>VirtualMachine.Config.AddNewDisk</code></p></li>
+</ul></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter Resource Pool</p></td>
 <td style="text-align: left;"><p>If you included an existing resource pool in the <code>install-config.yaml</code> file</p></td>
-<td style="text-align: left;"><p><code>Host.Config.Storage</code><br />
-<code>Resource.AssignVMToPool</code><br />
-<code>VApp.AssignResourcePool</code><br />
-<code>VApp.Import`minimum</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>Host.Config.Storage</code></p></li>
+<li><p><code>Resource.AssignVMToPool</code></p></li>
+<li><p><code>VApp.AssignResourcePool</code></p></li>
+<li><p><code>VApp.Import`minimum</code></p></li>
+</ul></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>vSphere Datastore</p></td>
 <td style="text-align: left;"><p>If you referenced a datastore in the <code>install-config.yaml</code> file</p></td>
-<td style="text-align: left;"><p><code>Datastore.Browse</code><br />
-<code>Datastore.FileManagement</code><br />
-<code>InventoryService.Tagging.ObjectAttachable</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>Datastore.Browse</code></p></li>
+<li><p><code>Datastore.FileManagement</code></p></li>
+<li><p><code>InventoryService.Tagging.ObjectAttachable</code></p></li>
+</ul></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>vSphere Port Group</p></td>
@@ -508,75 +555,82 @@ The following tables specify how the required vCenter account privileges provide
 <tr class="even">
 <td style="text-align: left;"><p>Virtual Machine Folder</p></td>
 <td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p><code>InventoryService.Tagging.ObjectAttachable</code><br />
-<code>Resource.AssignVMToPool</code><br />
-<code>VApp.Import</code><br />
-<code>VirtualMachine.Config.AddExistingDisk</code><br />
-<code>VirtualMachine.Config.AddNewDisk</code><br />
-<code>VirtualMachine.Config.AddRemoveDevice</code><br />
-<code>VirtualMachine.Config.AdvancedConfig</code><br />
-<code>VirtualMachine.Config.Annotation</code><br />
-<code>VirtualMachine.Config.CPUCount</code><br />
-<code>VirtualMachine.Config.DiskExtend</code><br />
-<code>VirtualMachine.Config.DiskLease</code><br />
-<code>VirtualMachine.Config.EditDevice</code><br />
-<code>VirtualMachine.Config.Memory</code><br />
-<code>VirtualMachine.Config.RemoveDisk</code><br />
-<code>VirtualMachine.Config.Rename</code><br />
-<code>VirtualMachine.Config.ResetGuestInfo</code><br />
-<code>VirtualMachine.Config.Resource</code><br />
-<code>VirtualMachine.Config.Settings</code><br />
-<code>VirtualMachine.Config.UpgradeVirtualHardware</code><br />
-<code>VirtualMachine.Interact.GuestControl</code><br />
-<code>VirtualMachine.Interact.PowerOff</code><br />
-<code>VirtualMachine.Interact.PowerOn</code><br />
-<code>VirtualMachine.Interact.Reset</code><br />
-<code>VirtualMachine.Inventory.Create</code><br />
-<code>VirtualMachine.Inventory.CreateFromExisting</code><br />
-<code>VirtualMachine.Inventory.Delete</code><br />
-<code>VirtualMachine.Provisioning.Clone</code><br />
-<code>VirtualMachine.Provisioning.MarkAsTemplate</code><br />
-<code>VirtualMachine.Provisioning.DeployTemplate</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>InventoryService.Tagging.ObjectAttachable</code></p></li>
+<li><p><code>Resource.AssignVMToPool</code></p></li>
+<li><p><code>VApp.Import</code></p></li>
+<li><p><code>VirtualMachine.Config.AddExistingDisk</code></p></li>
+<li><p><code>VirtualMachine.Config.AddNewDisk</code></p></li>
+<li><p><code>VirtualMachine.Config.AddRemoveDevice</code></p></li>
+<li><p><code>VirtualMachine.Config.AdvancedConfig</code></p></li>
+<li><p><code>VirtualMachine.Config.Annotation</code></p></li>
+<li><p><code>VirtualMachine.Config.CPUCount</code></p></li>
+<li><p><code>VirtualMachine.Config.DiskExtend</code></p></li>
+<li><p><code>VirtualMachine.Config.DiskLease</code></p></li>
+<li><p><code>VirtualMachine.Config.EditDevice</code></p></li>
+<li><p><code>VirtualMachine.Config.Memory</code></p></li>
+<li><p><code>VirtualMachine.Config.RemoveDisk</code></p></li>
+<li><p><code>VirtualMachine.Config.Rename</code></p></li>
+<li><p><code>VirtualMachine.Config.ResetGuestInfo</code></p></li>
+<li><p><code>VirtualMachine.Config.Resource</code></p></li>
+<li><p><code>VirtualMachine.Config.Settings</code></p></li>
+<li><p><code>VirtualMachine.Config.UpgradeVirtualHardware</code></p></li>
+<li><p><code>VirtualMachine.Interact.GuestControl</code></p></li>
+<li><p><code>VirtualMachine.Interact.PowerOff</code></p></li>
+<li><p><code>VirtualMachine.Interact.PowerOn</code></p></li>
+<li><p><code>VirtualMachine.Interact.Reset</code></p></li>
+<li><p><code>VirtualMachine.Inventory.Create</code></p></li>
+<li><p><code>VirtualMachine.Inventory.CreateFromExisting</code></p></li>
+<li><p><code>VirtualMachine.Inventory.Delete</code></p></li>
+<li><p><code>VirtualMachine.Provisioning.Clone</code></p></li>
+<li><p><code>VirtualMachine.Provisioning.MarkAsTemplate</code></p></li>
+<li><p><code>VirtualMachine.Provisioning.DeployTemplate</code></p></li>
+</ul></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter data center</p></td>
 <td style="text-align: left;"><p>If the virtual machine folder does not already exist, the installation program creates the virtual machine folder. If your cluster does use the Machine API and you want to set the minimum set of permissions for the API, see the "Minimum permissions for the Machine API" table.</p></td>
-<td style="text-align: left;"><p><code>Folder.Create</code><br />
-<code>Folder.Delete</code><br />
-<code>InventoryService.Tagging.ObjectAttachable</code><br />
-<code>Resource.AssignVMToPool</code><br />
-<code>VApp.Import</code><br />
-<code>VirtualMachine.Config.AddExistingDisk</code><br />
-<code>VirtualMachine.Config.AddNewDisk</code><br />
-<code>VirtualMachine.Config.AddRemoveDevice</code><br />
-<code>VirtualMachine.Config.AdvancedConfig</code><br />
-<code>VirtualMachine.Config.Annotation</code><br />
-<code>VirtualMachine.Config.CPUCount</code><br />
-<code>VirtualMachine.Config.DiskExtend</code><br />
-<code>VirtualMachine.Config.DiskLease</code><br />
-<code>VirtualMachine.Config.EditDevice</code><br />
-<code>VirtualMachine.Config.Memory</code><br />
-<code>VirtualMachine.Config.RemoveDisk</code><br />
-<code>VirtualMachine.Config.Rename</code><br />
-<code>VirtualMachine.Config.ResetGuestInfo</code><br />
-<code>VirtualMachine.Config.Resource</code><br />
-<code>VirtualMachine.Config.Settings</code><br />
-<code>VirtualMachine.Config.UpgradeVirtualHardware</code><br />
-<code>VirtualMachine.Interact.GuestControl</code><br />
-<code>VirtualMachine.Interact.PowerOff</code><br />
-<code>VirtualMachine.Interact.PowerOn</code><br />
-<code>VirtualMachine.Interact.Reset</code><br />
-<code>VirtualMachine.Inventory.Create</code><br />
-<code>VirtualMachine.Inventory.CreateFromExisting</code><br />
-<code>VirtualMachine.Inventory.Delete</code><br />
-<code>VirtualMachine.Provisioning.Clone</code><br />
-<code>VirtualMachine.Provisioning.DeployTemplate</code><br />
-<code>VirtualMachine.Provisioning.MarkAsTemplate</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>Folder.Create</code></p></li>
+<li><p><code>Folder.Delete</code></p></li>
+<li><p><code>InventoryService.Tagging.ObjectAttachable</code></p></li>
+<li><p><code>Resource.AssignVMToPool</code></p></li>
+<li><p><code>VApp.Import</code></p></li>
+<li><p><code>VirtualMachine.Config.AddExistingDisk</code></p></li>
+<li><p><code>VirtualMachine.Config.AddNewDisk</code></p></li>
+<li><p><code>VirtualMachine.Config.AddRemoveDevice</code></p></li>
+<li><p><code>VirtualMachine.Config.AdvancedConfig</code></p></li>
+<li><p><code>VirtualMachine.Config.Annotation</code></p></li>
+<li><p><code>VirtualMachine.Config.CPUCount</code></p></li>
+<li><p><code>VirtualMachine.Config.DiskExtend</code></p></li>
+<li><p><code>VirtualMachine.Config.DiskLease</code></p></li>
+<li><p><code>VirtualMachine.Config.EditDevice</code></p></li>
+<li><p><code>VirtualMachine.Config.Memory</code></p></li>
+<li><p><code>VirtualMachine.Config.RemoveDisk</code></p></li>
+<li><p><code>VirtualMachine.Config.Rename</code></p></li>
+<li><p><code>VirtualMachine.Config.ResetGuestInfo</code></p></li>
+<li><p><code>VirtualMachine.Config.Resource</code></p></li>
+<li><p><code>VirtualMachine.Config.Settings</code></p></li>
+<li><p><code>VirtualMachine.Config.UpgradeVirtualHardware</code></p></li>
+<li><p><code>VirtualMachine.Interact.GuestControl</code></p></li>
+<li><p><code>VirtualMachine.Interact.PowerOff</code></p></li>
+<li><p><code>VirtualMachine.Interact.PowerOn</code></p></li>
+<li><p><code>VirtualMachine.Interact.Reset</code></p></li>
+<li><p><code>VirtualMachine.Inventory.Create</code></p></li>
+<li><p><code>VirtualMachine.Inventory.CreateFromExisting</code></p></li>
+<li><p><code>VirtualMachine.Inventory.Delete</code></p></li>
+<li><p><code>VirtualMachine.Provisioning.Clone</code></p></li>
+<li><p><code>VirtualMachine.Provisioning.DeployTemplate</code></p></li>
+<li><p><code>VirtualMachine.Provisioning.MarkAsTemplate</code></p></li>
+</ul></td>
 </tr>
 </tbody>
 </table>
 
+Minimum permissions on installer-provisioned infrastructure
+
 <table>
+<caption>Minimum permissions for postinstallation management of components</caption>
 <colgroup>
 <col style="width: 36%" />
 <col style="width: 36%" />
@@ -593,23 +647,27 @@ The following tables specify how the required vCenter account privileges provide
 <tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter</p></td>
 <td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p><code>Cns.Searchable</code><br />
-<code>InventoryService.Tagging.AttachTag</code><br />
-<code>InventoryService.Tagging.CreateCategory</code><br />
-<code>InventoryService.Tagging.CreateTag</code><br />
-<code>InventoryService.Tagging.DeleteCategory</code><br />
-<code>InventoryService.Tagging.DeleteTag</code><br />
-<code>InventoryService.Tagging.EditCategory</code><br />
-<code>InventoryService.Tagging.EditTag</code><br />
-<code>Sessions.ValidateSession</code><br />
-<code>StorageProfile.Update</code><br />
-<code>StorageProfile.View</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>Cns.Searchable</code></p></li>
+<li><p><code>InventoryService.Tagging.AttachTag</code></p></li>
+<li><p><code>InventoryService.Tagging.CreateCategory</code></p></li>
+<li><p><code>InventoryService.Tagging.CreateTag</code></p></li>
+<li><p><code>InventoryService.Tagging.DeleteCategory</code></p></li>
+<li><p><code>InventoryService.Tagging.DeleteTag</code></p></li>
+<li><p><code>InventoryService.Tagging.EditCategory</code></p></li>
+<li><p><code>InventoryService.Tagging.EditTag</code></p></li>
+<li><p><code>Sessions.ValidateSession</code></p></li>
+<li><p><code>StorageProfile.Update</code></p></li>
+<li><p><code>StorageProfile.View</code></p></li>
+</ul></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>vSphere vCenter Cluster</p></td>
 <td style="text-align: left;"><p>If you intend to create VMs in the cluster root</p></td>
-<td style="text-align: left;"><p><code>Host.Config.Storage</code><br />
-<code>Resource.AssignVMToPool</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>Host.Config.Storage</code></p></li>
+<li><p><code>Resource.AssignVMToPool</code></p></li>
+</ul></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter Resource Pool</p></td>
@@ -619,10 +677,12 @@ The following tables specify how the required vCenter account privileges provide
 <tr class="even">
 <td style="text-align: left;"><p>vSphere Datastore</p></td>
 <td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p><code>Datastore.AllocateSpace</code><br />
-<code>Datastore.Browse</code><br />
-<code>Datastore.FileManagement</code><br />
-<code>InventoryService.Tagging.ObjectAttachable</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>Datastore.AllocateSpace</code></p></li>
+<li><p><code>Datastore.Browse</code></p></li>
+<li><p><code>Datastore.FileManagement</code></p></li>
+<li><p><code>InventoryService.Tagging.ObjectAttachable</code></p></li>
+</ul></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>vSphere Port Group</p></td>
@@ -632,35 +692,42 @@ The following tables specify how the required vCenter account privileges provide
 <tr class="even">
 <td style="text-align: left;"><p>Virtual Machine Folder</p></td>
 <td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p><code>VirtualMachine.Config.AddExistingDisk</code><br />
-<code>VirtualMachine.Config.AddRemoveDevice</code><br />
-<code>VirtualMachine.Config.AdvancedConfig</code><br />
-<code>VirtualMachine.Config.Annotation</code><br />
-<code>VirtualMachine.Config.CPUCount</code><br />
-<code>VirtualMachine.Config.DiskExtend</code><br />
-<code>VirtualMachine.Config.Memory</code><br />
-<code>VirtualMachine.Config.Settings</code><br />
-<code>VirtualMachine.Interact.PowerOff</code><br />
-<code>VirtualMachine.Interact.PowerOn</code><br />
-<code>VirtualMachine.Inventory.CreateFromExisting</code><br />
-<code>VirtualMachine.Inventory.Delete</code><br />
-<code>VirtualMachine.Provisioning.Clone</code><br />
-<code>VirtualMachine.Provisioning.DeployTemplate</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>VirtualMachine.Config.AddExistingDisk</code></p></li>
+<li><p><code>VirtualMachine.Config.AddRemoveDevice</code></p></li>
+<li><p><code>VirtualMachine.Config.AdvancedConfig</code></p></li>
+<li><p><code>VirtualMachine.Config.Annotation</code></p></li>
+<li><p><code>VirtualMachine.Config.CPUCount</code></p></li>
+<li><p><code>VirtualMachine.Config.DiskExtend</code></p></li>
+<li><p><code>VirtualMachine.Config.Memory</code></p></li>
+<li><p><code>VirtualMachine.Config.Settings</code></p></li>
+<li><p><code>VirtualMachine.Interact.PowerOff</code></p></li>
+<li><p><code>VirtualMachine.Interact.PowerOn</code></p></li>
+<li><p><code>VirtualMachine.Inventory.CreateFromExisting</code></p></li>
+<li><p><code>VirtualMachine.Inventory.Delete</code></p></li>
+<li><p><code>VirtualMachine.Provisioning.Clone</code></p></li>
+<li><p><code>VirtualMachine.Provisioning.DeployTemplate</code></p></li>
+</ul></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter data center</p></td>
 <td style="text-align: left;"><p>If the virtual machine folder does not already exist, the installation program creates the virtual machine folder.</p></td>
-<td style="text-align: left;"><p><code>Resource.AssignVMToPool</code><br />
-<code>VirtualMachine.Config.AddExistingDisk</code><br />
-<code>VirtualMachine.Config.AddRemoveDevice</code><br />
-<code>VirtualMachine.Interact.PowerOff</code><br />
-<code>VirtualMachine.Interact.PowerOn</code><br />
-<code>VirtualMachine.Provisioning.DeployTemplate</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>Resource.AssignVMToPool</code></p></li>
+<li><p><code>VirtualMachine.Config.AddExistingDisk</code></p></li>
+<li><p><code>VirtualMachine.Config.AddRemoveDevice</code></p></li>
+<li><p><code>VirtualMachine.Interact.PowerOff</code></p></li>
+<li><p><code>VirtualMachine.Interact.PowerOn</code></p></li>
+<li><p><code>VirtualMachine.Provisioning.DeployTemplate</code></p></li>
+</ul></td>
 </tr>
 </tbody>
 </table>
 
+Minimum permissions for postinstallation management of components
+
 <table>
+<caption>Minimum permissions for the storage components</caption>
 <colgroup>
 <col style="width: 36%" />
 <col style="width: 36%" />
@@ -677,13 +744,15 @@ The following tables specify how the required vCenter account privileges provide
 <tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter</p></td>
 <td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p><code>Cns.Searchable</code><br />
-<code>InventoryService.Tagging.CreateCategory</code><br />
-<code>InventoryService.Tagging.CreateTag</code><br />
-<code>InventoryService.Tagging.EditCategory</code><br />
-<code>InventoryService.Tagging.EditTag</code><br />
-<code>StorageProfile.Update</code><br />
-<code>StorageProfile.View</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>Cns.Searchable</code></p></li>
+<li><p><code>InventoryService.Tagging.CreateCategory</code></p></li>
+<li><p><code>InventoryService.Tagging.CreateTag</code></p></li>
+<li><p><code>InventoryService.Tagging.EditCategory</code></p></li>
+<li><p><code>InventoryService.Tagging.EditTag</code></p></li>
+<li><p><code>StorageProfile.Update</code></p></li>
+<li><p><code>StorageProfile.View</code></p></li>
+</ul></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>vSphere vCenter Cluster</p></td>
@@ -698,9 +767,11 @@ The following tables specify how the required vCenter account privileges provide
 <tr class="even">
 <td style="text-align: left;"><p>vSphere Datastore</p></td>
 <td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p><code>Datastore.Browse</code><br />
-<code>Datastore.FileManagement</code><br />
-<code>InventoryService.Tagging.ObjectAttachable</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>Datastore.Browse</code></p></li>
+<li><p><code>Datastore.FileManagement</code></p></li>
+<li><p><code>InventoryService.Tagging.ObjectAttachable</code></p></li>
+</ul></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>vSphere Port Group</p></td>
@@ -710,19 +781,26 @@ The following tables specify how the required vCenter account privileges provide
 <tr class="even">
 <td style="text-align: left;"><p>Virtual Machine Folder</p></td>
 <td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p><code>VirtualMachine.Config.AddExistingDisk</code><br />
-<code>VirtualMachine.Config.AddRemoveDevice</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>VirtualMachine.Config.AddExistingDisk</code></p></li>
+<li><p><code>VirtualMachine.Config.AddRemoveDevice</code></p></li>
+</ul></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter data center</p></td>
 <td style="text-align: left;"><p>If the virtual machine folder does not already exist, the installation program creates the virtual machine folder.</p></td>
-<td style="text-align: left;"><p><code>VirtualMachine.Config.AddExistingDisk</code><br />
-<code>VirtualMachine.Config.AddRemoveDevice</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>VirtualMachine.Config.AddExistingDisk</code></p></li>
+<li><p><code>VirtualMachine.Config.AddRemoveDevice</code></p></li>
+</ul></td>
 </tr>
 </tbody>
 </table>
 
+Minimum permissions for the storage components
+
 <table>
+<caption>Minimum permissions for the Machine API</caption>
 <colgroup>
 <col style="width: 36%" />
 <col style="width: 36%" />
@@ -739,16 +817,18 @@ The following tables specify how the required vCenter account privileges provide
 <tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter</p></td>
 <td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p><code>InventoryService.Tagging.AttachTag</code><br />
-<code>InventoryService.Tagging.CreateCategory</code><br />
-<code>InventoryService.Tagging.CreateTag</code><br />
-<code>InventoryService.Tagging.DeleteCategory</code><br />
-<code>InventoryService.Tagging.DeleteTag</code><br />
-<code>InventoryService.Tagging.EditCategory</code><br />
-<code>InventoryService.Tagging.EditTag</code><br />
-<code>Sessions.ValidateSession</code><br />
-<code>StorageProfile.Update</code><br />
-<code>StorageProfile.View</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>InventoryService.Tagging.AttachTag</code></p></li>
+<li><p><code>InventoryService.Tagging.CreateCategory</code></p></li>
+<li><p><code>InventoryService.Tagging.CreateTag</code></p></li>
+<li><p><code>InventoryService.Tagging.DeleteCategory</code></p></li>
+<li><p><code>InventoryService.Tagging.DeleteTag</code></p></li>
+<li><p><code>InventoryService.Tagging.EditCategory</code></p></li>
+<li><p><code>InventoryService.Tagging.EditTag</code></p></li>
+<li><p><code>Sessions.ValidateSession</code></p></li>
+<li><p><code>StorageProfile.Update</code></p></li>
+<li><p><code>StorageProfile.View</code></p></li>
+</ul></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>vSphere vCenter Cluster</p></td>
@@ -763,8 +843,10 @@ The following tables specify how the required vCenter account privileges provide
 <tr class="even">
 <td style="text-align: left;"><p>vSphere Datastore</p></td>
 <td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p><code>Datastore.AllocateSpace</code><br />
-<code>Datastore.Browse</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>Datastore.AllocateSpace</code></p></li>
+<li><p><code>Datastore.Browse</code></p></li>
+</ul></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>vSphere Port Group</p></td>
@@ -774,30 +856,36 @@ The following tables specify how the required vCenter account privileges provide
 <tr class="even">
 <td style="text-align: left;"><p>Virtual Machine Folder</p></td>
 <td style="text-align: left;"><p>Always</p></td>
-<td style="text-align: left;"><p><code>VirtualMachine.Config.AddRemoveDevice</code><br />
-<code>VirtualMachine.Config.AdvancedConfig</code><br />
-<code>VirtualMachine.Config.Annotation</code><br />
-<code>VirtualMachine.Config.CPUCount</code><br />
-<code>VirtualMachine.Config.DiskExtend</code><br />
-<code>VirtualMachine.Config.Memory</code><br />
-<code>VirtualMachine.Config.Settings</code><br />
-<code>VirtualMachine.Interact.PowerOff</code><br />
-<code>VirtualMachine.Interact.PowerOn</code><br />
-<code>VirtualMachine.Inventory.CreateFromExisting</code><br />
-<code>VirtualMachine.Inventory.Delete</code><br />
-<code>VirtualMachine.Provisioning.Clone</code><br />
-<code>VirtualMachine.Provisioning.DeployTemplate</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>VirtualMachine.Config.AddRemoveDevice</code></p></li>
+<li><p><code>VirtualMachine.Config.AdvancedConfig</code></p></li>
+<li><p><code>VirtualMachine.Config.Annotation</code></p></li>
+<li><p><code>VirtualMachine.Config.CPUCount</code></p></li>
+<li><p><code>VirtualMachine.Config.DiskExtend</code></p></li>
+<li><p><code>VirtualMachine.Config.Memory</code></p></li>
+<li><p><code>VirtualMachine.Config.Settings</code></p></li>
+<li><p><code>VirtualMachine.Interact.PowerOff</code></p></li>
+<li><p><code>VirtualMachine.Interact.PowerOn</code></p></li>
+<li><p><code>VirtualMachine.Inventory.CreateFromExisting</code></p></li>
+<li><p><code>VirtualMachine.Inventory.Delete</code></p></li>
+<li><p><code>VirtualMachine.Provisioning.Clone</code></p></li>
+<li><p><code>VirtualMachine.Provisioning.DeployTemplate</code></p></li>
+</ul></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>vSphere vCenter data center</p></td>
 <td style="text-align: left;"><p>If the virtual machine folder does not already exist, the installation program creates the virtual machine folder.</p></td>
-<td style="text-align: left;"><p><code>Resource.AssignVMToPool</code><br />
-<code>VirtualMachine.Interact.PowerOff</code><br />
-<code>VirtualMachine.Interact.PowerOn</code><br />
-<code>VirtualMachine.Provisioning.DeployTemplate</code></p></td>
+<td style="text-align: left;"><ul>
+<li><p><code>Resource.AssignVMToPool</code></p></li>
+<li><p><code>VirtualMachine.Interact.PowerOff</code></p></li>
+<li><p><code>VirtualMachine.Interact.PowerOn</code></p></li>
+<li><p><code>VirtualMachine.Provisioning.DeployTemplate</code></p></li>
+</ul></td>
 </tr>
 </tbody>
 </table>
+
+Minimum permissions for the Machine API
 
 ## Using OpenShift Container Platform with vMotion
 
@@ -871,7 +959,7 @@ Ensure that each OpenShift Container Platform node in the cluster has access to 
 
 Additionally, you must create the following networking resources before you install the OpenShift Container Platform cluster:
 
-### Required IP addresses
+## Required IP addresses
 
 For a network that uses DHCP, an installer-provisioned vSphere installation requires two static IP addresses:
 
@@ -881,7 +969,7 @@ For a network that uses DHCP, an installer-provisioned vSphere installation requ
 
 You must give these IP addresses to the installation program when you install the OpenShift Container Platform cluster.
 
-### DNS records
+## DNS records
 
 You must create DNS records for two static IP addresses in the appropriate DNS server for the vCenter instance that hosts your OpenShift Container Platform cluster. In each record, `<cluster_name>` is the cluster name and `<base_domain>` is the cluster base domain that you specify when you install the cluster. A complete DNS record takes the form: `<component>.<cluster_name>.<base_domain>.`.
 
@@ -892,7 +980,7 @@ You must create DNS records for two static IP addresses in the appropriate DNS s
 
 Required DNS records
 
-### Static IP addresses for vSphere nodes
+## Static IP addresses for vSphere nodes
 
 You can provision bootstrap, control plane, and compute nodes to be configured with static IP addresses in environments where Dynamic Host Configuration Protocol (DHCP) does not exist. To configure this environment, you must provide values to the `platform.vsphere.hosts.role` parameter in the `install-config.yaml` file.
 
@@ -949,13 +1037,19 @@ platform:
 # ...
 ```
 
-- Valid network definition values include `bootstrap`, `control-plane`, and `compute`. You must list at least one `bootstrap` network definition in your `install-config.yaml` configuration file.
+where:
 
-- Lists IPv4, IPv6, or both IP addresses that the installation program passes to the network interface. The machine API controller assigns all configured IP addresses to the default network interface.
+`role`
+Specifies a network definition value of `bootstrap`, `control-plane`, or `compute`. You must list at least one `bootstrap` network definition in your `install-config.yaml` configuration file.
 
-- The default gateway for the network interface.
+`ipAddrs`
+Specifies IPv4, IPv6, or both IP addresses that the installation program passes to the network interface. The machine API controller assigns all configured IP addresses to the default network interface.
 
-- Lists up to 3 DNS nameservers.
+`gateway`
+Specifies the default gateway for the network interface.
+
+`nameservers`
+Specifies up to 3 DNS nameservers.
 
 After you deployed your cluster to run nodes with static IP addresses, you can scale a machine to use one of these static IP addresses. Additionally, you can use a machine set to configure a machine to use one of the configured static IP addresses.
 

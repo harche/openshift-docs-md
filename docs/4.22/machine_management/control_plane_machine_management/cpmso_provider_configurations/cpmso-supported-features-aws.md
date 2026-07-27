@@ -103,44 +103,44 @@ You can configure a machine set to deploy machines on Elastic Fabric Adapter (EF
 
 2.  Edit the following lines under the `providerSpec` field:
 
-``` yaml
-apiVersion: machine.openshift.io/v1
-kind: ControlPlaneMachineSet
-# ...
-spec:
-  template:
+    ``` yaml
+    apiVersion: machine.openshift.io/v1
+    kind: ControlPlaneMachineSet
+    # ...
     spec:
-      providerSpec:
-        value:
-          instanceType: <supported_instance_type>
-          networkInterfaceType: EFA
-          placement:
-            availabilityZone: <zone>
-            region: <region>
-          placementGroupName: <placement_group>
-          placementGroupPartition: <placement_group_partition_number>
-# ...
-```
+      template:
+        spec:
+          providerSpec:
+            value:
+              instanceType: <supported_instance_type>
+              networkInterfaceType: EFA
+              placement:
+                availabilityZone: <zone>
+                region: <region>
+              placementGroupName: <placement_group>
+              placementGroupPartition: <placement_group_partition_number>
+    # ...
+    ```
 
-where:
+    where:
 
-`spec.template.spec.providerSpec.value.instanceType`
-Specifies an instance type that [supports EFAs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html#efa-instance-types).
+    `spec.template.spec.providerSpec.value.instanceType`
+    Specifies an instance type that [supports EFAs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html#efa-instance-types).
 
-`spec.template.spec.providerSpec.value.networkInterfaceType`
-Specifies the `EFA` network interface type.
+    `spec.template.spec.providerSpec.value.networkInterfaceType`
+    Specifies the `EFA` network interface type.
 
-`spec.template.spec.providerSpec.value.placement.availabilityZone`
-Specifies the zone, for example, `us-east-1a`.
+    `spec.template.spec.providerSpec.value.placement.availabilityZone`
+    Specifies the zone, for example, `us-east-1a`.
 
-`spec.template.spec.providerSpec.value.placement.region`
-Specifies the region, for example, `us-east-1`.
+    `spec.template.spec.providerSpec.value.placement.region`
+    Specifies the region, for example, `us-east-1`.
 
-`spec.template.spec.providerSpec.value.placementGroupName`
-Specifies the name of the existing AWS placement group to deploy machines in.
+    `spec.template.spec.providerSpec.value.placementGroupName`
+    Specifies the name of the existing AWS placement group to deploy machines in.
 
-`spec.template.spec.providerSpec.value.placementGroupPartition`
-Specifies the partition number of the existing AWS placement group to deploy machines in. This value is optional.
+    `spec.template.spec.providerSpec.value.placementGroupPartition`
+    Optional: Specifies the partition number of the existing AWS placement group to deploy machines in.
 
 - In the AWS console, find a machine that the machine set created and verify the following in the machine properties:
 

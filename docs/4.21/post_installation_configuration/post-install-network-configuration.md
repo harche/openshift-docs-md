@@ -4,23 +4,23 @@ After installing OpenShift Container Platform, you can further expand and custom
 
 You can use the Cluster Network Operator (CNO) to deploy and manage cluster network components on an OpenShift Container Platform cluster, including the Container Network Interface (CNI) network plugin selected for the cluster during installation.
 
-For more information, see [Cluster Network Operator in OpenShift Container Platform](../networking/networking_operators/cluster-network-operator.xml#nw-cluster-network-operator_cluster-network-operator).
+For more information, see "Cluster Network Operator in OpenShift Container Platform".
 
 # Network configuration tasks
 
-- [Configuring the cluster-wide proxy](../networking/configuring_network_settings/enable-cluster-wide-proxy.xml#enable-cluster-wide-proxy)
+- Configuring the cluster-wide proxy
 
-- [Configuring ingress cluster traffic overview](../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/overview-traffic.xml#overview-traffic)
+- Configuring ingress cluster traffic overview
 
-- [Configuring the node port service range](../networking/configuring_network_settings/configuring-node-port-service-range.xml#configuring-node-port-service-range)
+- Configuring the node port service range
 
-- [Configuring IPsec encryption](../networking/network_security/configuring-ipsec-ovn.xml#configuring-ipsec-ovn)
+- Configuring IPsec encryption
 
-- [Create a network policy](../networking/network_security/network_policy/creating-network-policy.xml#creating-network-policy) or [configure multitenant isolation with network policies](../networking/network_security/network_policy/multitenant-network-policy.xml#multitenant-network-policy)
+- Create a network policy or configure multitenant isolation with network policies
 
-- [Optimizing routing](../scalability_and_performance/optimization/routing-optimization.xml#routing-optimization)
+- Optimizing routing
 
-- [Understanding multiple networks](../networking/multiple_networks/understanding-multiple-networks.xml#understanding-multiple-networks)
+- Understanding multiple networks
 
 ## Creating default network policies for a new project
 
@@ -180,3 +180,23 @@ You can add `NetworkPolicy` objects to the default project template so that new 
         allow-from-openshift-ingress   <none>         7s
         allow-from-same-namespace      <none>         7s
         ```
+
+# Additional resources
+
+- [Cluster Network Operator in OpenShift Container Platform](../networking/networking_operators/cluster-network-operator.xml#nw-cluster-network-operator_cluster-network-operator)
+
+- [Configuring the cluster-wide proxy](../networking/configuring_network_settings/enable-cluster-wide-proxy.xml#enable-cluster-wide-proxy)
+
+- [Configuring ingress cluster traffic overview](../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/overview-traffic.xml#overview-traffic)
+
+- [Configuring the node port service range](../networking/configuring_network_settings/configuring-node-port-service-range.xml#configuring-node-port-service-range)
+
+- [Configuring IPsec encryption](../networking/network_security/configuring-ipsec-ovn.xml#configuring-ipsec-ovn)
+
+- [Create a network policy](../networking/network_security/network_policy/creating-network-policy.xml#creating-network-policy)
+
+- [Configure multitenant isolation with network policies](../networking/network_security/network_policy/multitenant-network-policy.xml#multitenant-network-policy)
+
+- [Optimizing routing](../scalability_and_performance/optimization/routing-optimization.xml#routing-optimization)
+
+- [Understanding multiple networks](../networking/multiple_networks/understanding-multiple-networks.xml#understanding-multiple-networks)

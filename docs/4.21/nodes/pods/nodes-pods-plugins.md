@@ -38,15 +38,15 @@ service DevicePlugin {
 
 ## Example device plugins
 
-- [Nvidia GPU device plugin for COS-based operating system](https://github.com/GoogleCloudPlatform/Container-engine-accelerators/tree/master/cmd/nvidia_gpu)
+- Nvidia GPU device plugin for COS-based operating system
 
-- [Nvidia official GPU device plugin](https://github.com/NVIDIA/k8s-device-plugin)
+- Nvidia official GPU device plugin
 
-- [Solarflare device plugin](https://github.com/vikaschoudhary16/sfc-device-plugin)
+- Solarflare device plugin
 
-- [KubeVirt device plugins: vfio and kvm](https://github.com/kubevirt/kubernetes-device-plugins)
+- KubeVirt device plugins: vfio and kvm
 
-- [Kubernetes device plugin for IBM® Crypto Express (CEX) cards](https://github.com/ibm-s390-cloud/k8s-cex-dev-plugin)
+- Kubernetes device plugin for IBM® Crypto Express (CEX) cards
 
 <div class="note">
 
@@ -63,6 +63,18 @@ For easy device plugin reference implementation, there is a stub device plugin i
 - Since device plugins must manage hardware resources, access to the host file system, as well as socket creation, they must be run in a privileged security context.
 
 - More specific details regarding deployment steps can be found with each device plugin implementation.
+
+<!-- -->
+
+- [Nvidia GPU device plugin for COS-based operating system](https://github.com/GoogleCloudPlatform/Container-engine-accelerators/tree/master/cmd/nvidia_gpu)
+
+- [Nvidia official GPU device plugin](https://github.com/NVIDIA/k8s-device-plugin)
+
+- [Solarflare device plugin](https://github.com/vikaschoudhary16/sfc-device-plugin)
+
+- [KubeVirt device plugins: vfio and kvm](https://github.com/kubevirt/kubernetes-device-plugins)
+
+- [Kubernetes device plugin for IBM® Crypto Express (CEX) cards](https://github.com/ibm-s390-cloud/k8s-cex-dev-plugin)
 
 # Understanding the Device Manager
 

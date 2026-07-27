@@ -78,9 +78,9 @@ This offering does not support IPv6, so dual stack or IPv6 environments are not 
 
 You must create a domain zone in CIS in the same account as your cluster. You must also ensure the zone is authoritative for the domain. You can do this using a root domain or subdomain.
 
-- You have installed the [IBM Cloud® CLI](https://www.ibm.com/cloud/cli).
+- You have installed the IBM Cloud® CLI. For more information, see "IBM Cloud® CLI".
 
-- You have an existing domain and registrar. For more information, see the IBM® [documentation](https://cloud.ibm.com/docs/dns?topic=dns-getting-started).
+- You have an existing domain and registrar. For more information, see the "IBM® DNS documentation".
 
 1.  Create a CIS instance to use with your cluster:
 
@@ -102,13 +102,13 @@ You must create a domain zone in CIS in the same account as your cluster. You mu
         $ ibmcloud cis instance-create <instance_name> standard-next
         ```
 
-        - At a minimum, you require a `Standard Next` plan for CIS to manage the cluster subdomain and its DNS records.
+        At a minimum, you require a `Standard Next` plan for CIS to manage the cluster subdomain and its DNS records.
 
-          <div class="note">
+        <div class="note">
 
-          After you have configured your registrar or DNS provider, it can take up to 24 hours for the changes to take effect.
+        After you have configured your registrar or DNS provider, it can take up to 24 hours for the changes to take effect.
 
-          </div>
+        </div>
 
 2.  Connect an existing domain to your CIS instance:
 
@@ -118,7 +118,7 @@ You must create a domain zone in CIS in the same account as your cluster. You mu
         $ ibmcloud cis instance-set <instance_CRN>
         ```
 
-        - The instance CRN (Cloud Resource Name). For example: `ibmcloud cis instance-set crn:v1:bluemix:public:power-iaas:osa21:a/65b64c1f1c29460d8c2e4bbfbd893c2c:c09233ac-48a5-4ccb-a051-d1cfb3fc7eb5::`
+        Replace `<instance_CRN>` with the instance CRN (Cloud Resource Name). For example: `ibmcloud cis instance-set crn:v1:bluemix:public:power-iaas:osa21:a/65b64c1f1c29460d8c2e4bbfbd893c2c:c09233ac-48a5-4ccb-a051-d1cfb3fc7eb5::`
 
     2.  Add the domain for CIS:
 
@@ -126,23 +126,31 @@ You must create a domain zone in CIS in the same account as your cluster. You mu
         $ ibmcloud cis domain-add <domain_name>
         ```
 
-        - The fully qualified domain name. You can use either the root domain or subdomain value as the domain name, depending on which you plan to configure.
+        Replace `<domain_name>` with the fully qualified domain name. You can use either the root domain or subdomain value as the domain name, depending on which you plan to configure.
 
-          <div class="note">
+        <div class="note">
 
-          A root domain uses the form `openshiftcorp.com`. A subdomain uses the form `clusters.openshiftcorp.com`.
+        A root domain uses the form `openshiftcorp.com`. A subdomain uses the form `clusters.openshiftcorp.com`.
 
-          </div>
+        </div>
 
-3.  Open the [CIS web console](https://cloud.ibm.com/catalog/services/internet-services), navigate to the **Overview** page, and note your CIS name servers. These name servers will be used in the next step.
+3.  Open the CIS web console, navigate to the **Overview** page, and note your CIS name servers. These name servers will be used in the next step. For more information, see "CIS web console".
 
-4.  Configure the name servers for your domains or subdomains at the domain’s registrar or DNS provider. For more information, see the IBM Cloud® [documentation](https://cloud.ibm.com/docs/cis?topic=cis-getting-started#configure-your-name-servers-with-the-registrar-or-existing-dns-provider).
+4.  Configure the name servers for your domains or subdomains at the domain’s registrar or DNS provider. For more information, see the IBM Cloud® documentation for "Configuring name servers".
+
+- [IBM Cloud® CLI (IBM Cloud® documentation)](https://www.ibm.com/cloud/cli)
+
+- [IBM® DNS documentation](https://cloud.ibm.com/docs/dns?topic=dns-getting-started)
+
+- [CIS web console (IBM Cloud® documentation)](https://cloud.ibm.com/catalog/services/internet-services)
+
+- [IBM Cloud® documentation for configuring name servers](https://cloud.ibm.com/docs/cis?topic=cis-getting-started#configure-your-name-servers-with-the-registrar-or-existing-dns-provider)
 
 # IBM Cloud IAM Policies and API Key
 
 To install OpenShift Container Platform into your IBM Cloud® account, the installation program requires an IAM API key, which provides authentication and authorization to access IBM Cloud® service APIs. You can use an existing IAM API key that contains the required policies or create a new one.
 
-For an IBM Cloud® IAM overview, see the IBM Cloud® [documentation](https://cloud.ibm.com/docs/account?topic=account-iamoverview).
+For an IBM Cloud® IAM overview, see the "IBM Cloud® IAM overview" documentation.
 
 ## Pre-requisite permissions
 
@@ -183,9 +191,17 @@ In IBM Cloud® IAM, access policies can be attached to different subjects:
 
 <div class="note">
 
-The recommended method is to define IAM access policies in an [access group](https://cloud.ibm.com/docs/account?topic=account-groups). This helps organize all the access required for OpenShift Container Platform and enables you to onboard users and service IDs to this group. You can also assign access to [users and service IDs](https://cloud.ibm.com/docs/account?topic=account-assign-access-resources) directly, if desired.
+The recommended method is to define IAM access policies in an access group. This helps organize all the access required for OpenShift Container Platform and enables you to onboard users and service IDs to this group. You can also assign access to users and service IDs directly, if desired.
+
+For more information, see "Access groups" and "Users and service IDs".
 
 </div>
+
+- [IBM Cloud® IAM overview](https://cloud.ibm.com/docs/account?topic=account-iamoverview)
+
+- [Access groups (IBM Cloud® documentation)](https://cloud.ibm.com/docs/account?topic=account-groups)
+
+- [Users and service IDs (IBM Cloud® documentation)](https://cloud.ibm.com/docs/account?topic=account-assign-access-resources)
 
 ## Creating an API key
 
@@ -193,15 +209,25 @@ You must create a user API key or a service ID API key for your IBM Cloud® acco
 
 - You have assigned the required access policies to your IBM Cloud® account.
 
-- You have attached you IAM access policies to an access group, or other appropriate resource.
+- You have attached your IAM access policies to an access group, or other appropriate resource.
 
 <!-- -->
 
 - Create an API key, depending on how you defined your IAM access policies.
 
-  For example, if you assigned your access policies to a user, you must create a [user API key](https://cloud.ibm.com/docs/account?topic=account-userapikey). If you assigned your access policies to a service ID, you must create a [service ID API key](https://cloud.ibm.com/docs/account?topic=account-serviceidapikeys). If your access policies are assigned to an access group, you can use either API key type. For more information on IBM Cloud® API keys, see [Understanding API keys](https://cloud.ibm.com/docs/account?topic=account-manapikey&interface=ui).
+  For example, if you assigned your access policies to a user, you must create a user API key. If you assigned your access policies to a service ID, you must create a service ID API key. If your access policies are assigned to an access group, you can use either API key type. For more information on IBM Cloud® API keys, see "User API key", "Service ID API key", and "Understanding API keys".
+
+<!-- -->
+
+- [User API key (IBM Cloud® documentation)](https://cloud.ibm.com/docs/account?topic=account-userapikey)
+
+- [Service ID API key (IBM Cloud® documentation)](https://cloud.ibm.com/docs/account?topic=account-serviceidapikeys)
+
+- [Understanding API keys (IBM Cloud® documentation)](https://cloud.ibm.com/docs/account?topic=account-manapikey&interface=ui)
 
 # Supported IBM Power Virtual Server regions and zones
+
+When installing OpenShift Container Platform, you must choose a supported region or zone for your cloud provider deployment.
 
 You can deploy an OpenShift Container Platform cluster to the following regions:
 

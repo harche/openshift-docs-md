@@ -18,11 +18,9 @@ You cannot change installed Operators to a channel that is older than the curren
 
 </div>
 
-Red Hat Customer Portal Labs include the following application that helps administrators prepare to update their Operators:
+Red Hat Customer Portal Labs include an application that helps administrators prepare to update their Operators. See Additional resources.
 
 - [Red Hat OpenShift Container Platform Operator Update Information Checker](https://access.redhat.com/labs/ocpouic/)
-
-You can use the application to search for Operator Lifecycle Manager-based Operators and verify the available Operator version per update channel across different versions of OpenShift Container Platform. Cluster Version Operator-based Operators are not included.
 
 # Changing the update channel for an Operator
 

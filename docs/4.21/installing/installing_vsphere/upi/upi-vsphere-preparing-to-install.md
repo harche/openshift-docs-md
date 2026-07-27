@@ -1,10 +1,12 @@
+You should familiarize yourself with the steps you must perform before install an OpenShift Container Platform cluster on vSphere.
+
 You prepare to install an OpenShift Container Platform cluster on vSphere by completing the following steps:
 
 - Downloading the installation program.
 
   <div class="note">
 
-  If you are installing in a disconnected environment, you extract the installation program from the mirrored content. For more information, see [Mirroring images for a disconnected installation](../../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images).
+  If you are installing in a disconnected environment, you extract the installation program from the mirrored content. For more information, see "Mirroring images for a disconnected installation".
 
   </div>
 
@@ -601,3 +603,7 @@ The validation steps detailed in this section must succeed before you install yo
         ```
 
     3.  Use this method to perform reverse lookups against the IP addresses for the control plane and compute nodes. Check that the results correspond to the DNS record names of each node.
+
+# Additional resources
+
+- [Mirroring images for a disconnected installation](../../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images)

@@ -125,7 +125,7 @@ If a node in a cluster installed by using installer-provisioned infrastructure f
 
 # Configuring a VM run strategy by using the CLI
 
-You can configure a run strategy for a virtual machine (VM) by using the command line.
+You can configure a run strategy for a virtual machine (VM) by using the command line. The run strategy controls whether a VM automatically restarts after disruptions such as node failures or maintenance events.
 
 - You have installed the OpenShift CLI (`oc`).
 

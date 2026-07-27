@@ -2,7 +2,9 @@ You can gather metrics for hosted control planes by configuring metrics sets. Mo
 
 # Configuring metrics sets for hosted control planes
 
-Hosted control planes for Red Hat OpenShift Container Platform creates `ServiceMonitor` resources in each control plane namespace that allow a Prometheus stack to gather metrics from the control planes. The `ServiceMonitor` resources use metrics relabelings to define which metrics are included or excluded from a particular component, such as etcd or the Kubernetes API server. The number of metrics that are produced by control planes directly impacts the resource requirements of the monitoring stack that gathers them.
+Hosted control planes creates `ServiceMonitor` resources in each control plane namespace that allow a Prometheus stack to gather metrics from the control planes.
+
+The `ServiceMonitor` resources use metrics relabelings to define which metrics are included or excluded from a particular component, such as etcd or the Kubernetes API server. The number of metrics that are produced by control planes directly impacts the resource requirements of the monitoring stack that gathers them.
 
 Instead of producing a fixed number of metrics that apply to all situations, you can configure a metrics set that identifies a set of metrics to produce for each control plane. The following metrics sets are supported:
 
@@ -12,13 +14,15 @@ Instead of producing a fixed number of metrics that apply to all situations, you
 
 - `All`: This set includes all of the metrics that are produced by standalone OpenShift Container Platform control plane components.
 
-To configure a metrics set, set the `METRICS_SET` environment variable in the HyperShift Operator deployment by entering the following command:
+<!-- -->
 
-``` terminal
-$ oc set env -n hypershift deployment/operator METRICS_SET=All
-```
+- To configure a metrics set, set the `METRICS_SET` environment variable in the HyperShift Operator deployment by entering the following command:
 
-## Configuring the SRE metrics set
+  ``` terminal
+  $ oc set env -n hypershift deployment/operator METRICS_SET=All
+  ```
+
+## SRE metrics set example
 
 When you specify the `SRE` metrics set, the HyperShift Operator looks for a config map named `sre-metric-set` with a single key: `config`. The value of the `config` key must contain a set of `RelabelConfigs` that are organized by control plane component.
 
@@ -201,7 +205,7 @@ When you enable monitoring dashboards, the `CLUSTER_ID` placeholder in the dashb
 
 If you delete and re-create a hosted cluster, a new random `clusterID` is assigned unless you specify one. To keep the same identifier in external monitoring systems, set `spec.clusterID` in the new `HostedCluster` CR to the UUID that you used before.
 
-- [Dashboard customization](../hosted_control_planes/hcp-observability.xml#hosted-control-planes-customize-dashboards_hcp-observability)
+- [Dashboard customization](../hosted_control_planes/hcp-observability.xml#hcp-customize-dashboards_hcp-observability)
 
 - [Configuring metrics sets for hosted control planes](../hosted_control_planes/hcp-observability.xml#hosted-control-planes-metrics-sets_hcp-observability)
 
@@ -224,7 +228,7 @@ You can enable monitoring dashboards in a hosted cluster by creating a config ma
       installFlagsToRemove: ""
     ```
 
-    - The `--monitoring-dashboards --metrics-set=All` flag adds the monitoring dashboard for all metrics.
+    The `--monitoring-dashboards --metrics-set=All` flag adds the monitoring dashboard for all metrics.
 
 2.  Wait a couple of minutes for the HyperShift Operator deployment in the `hypershift` namespace to be updated to include the following environment variable:
 
@@ -239,9 +243,13 @@ You can enable monitoring dashboards in a hosted cluster by creating a config ma
 
 4.  Optional: To disable monitoring dashboards in a hosted cluster, remove the `--monitoring-dashboards --metrics-set=All` flag from the `hypershift-operator-install-flags` config map. When you delete a hosted cluster, its corresponding dashboard is also deleted.
 
+- [Customized hosted cluster identifiers](../hosted_control_planes/hcp-observability.xml#hcp-cluster-ids_hcp-observability)
+
 ## Dashboard customization
 
-To generate dashboards for each hosted cluster, the HyperShift Operator uses a template that is stored in the `monitoring-dashboard-template` config map in the Operator namespace (`hypershift`). This template contains a set of Grafana panels that contain the metrics for the dashboard. You can edit the content of the config map to customize the dashboards.
+To generate dashboards for each hosted cluster, the HyperShift Operator uses a template that is stored in the `monitoring-dashboard-template` config map in the Operator namespace (`hypershift`). This template contains a set of Grafana panels that contain the metrics for the dashboard.
+
+You can edit the content of the config map to customize the dashboards.
 
 When a dashboard is generated, the following strings are replaced with values that correspond to a specific hosted cluster:
 
@@ -253,8 +261,6 @@ When a dashboard is generated, the following strings are replaced with values th
 | `__CLUSTER_ID__`              | The UUID of the hosted cluster, which matches the `_id` label of the hosted cluster metrics |
 
 To set a custom cluster identifier when you create the hosted cluster, see "Customized hosted cluster identifiers".
-
-- [Customized hosted cluster identifiers](../hosted_control_planes/hcp-observability.xml#hcp-cluster-ids_hcp-observability)
 
 # Connectivity monitoring for hosted control planes
 

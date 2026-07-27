@@ -336,11 +336,15 @@ For OpenShift Container Platform version 4.19, RHCOS is based on RHEL version 9.
 
 - s390x architecture requires z14 ISA
 
-For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures) (RHEL documentation).
+For more information, see "Architectures".
 
 </div>
 
 If an instance type for your platform meets the minimum requirements for cluster machines, it is supported to use in OpenShift Container Platform.
+
+- [Architectures (RHEL documentation)](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures)
+
+<!-- -->
 
 - [Optimizing storage](../../scalability_and_performance/optimization/optimizing-storage.xml#optimizing-storage)
 

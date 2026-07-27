@@ -20,8 +20,6 @@ If you want to migrate pre-existing OpenShift Container Platform cluster compute
 
 The cloud provider adds `topology.kubernetes.io/zone` and `topology.kubernetes.io/region` labels to any compute node provisioned by a machine set resource.
 
-For more information, see [Creating a compute machine set](../../machine_management/creating_machinesets/creating-machineset-vsphere.xml).
-
 </div>
 
 # Specifying multiple regions and zones for your cluster on vSphere
@@ -56,11 +54,7 @@ If you do not supply tags to all data centers and compute clusters before you cr
     $ oc edit infrastructures.config.openshift.io cluster
     ```
 
-    <div class="formalpara-title">
-
-    **Example `infrastructures.config.openshift.io` CRD for a instance named `cluster` with multiple regions and zones defined in its configuration**
-
-    </div>
+    The following example shows an `infrastructures.config.openshift.io` CRD for an instance named `cluster` with multiple regions and zones defined in its configuration:
 
     ``` yaml
     spec:
@@ -163,20 +157,22 @@ The following table lists mandatory parameters for defining multiple regions and
 | `server`         | The fully qualified domain name (FQDN) of the vCenter server.                                                                    |
 | `failureDomains` | The list of failure domains.                                                                                                     |
 | `name`           | The name of the failure domain.                                                                                                  |
-| `region`         | The value of the `openshift-region` tag assigned to the topology for the failure failure domain.                                 |
-| `zone`           | The value of the `openshift-zone` tag assigned to the topology for the failure failure domain.                                   |
-| `topology`       | The vCenter reources associated with the failure domain.                                                                         |
+| `region`         | The value of the `openshift-region` tag assigned to the topology for the failure domain.                                         |
+| `zone`           | The value of the `openshift-zone` tag assigned to the topology for the failure domain.                                           |
+| `topology`       | The vCenter resources associated with the failure domain.                                                                        |
 | `datacenter`     | The data center associated with the failure domain.                                                                              |
 | `computeCluster` | The full path of the compute cluster associated with the failure domain.                                                         |
 | `resourcePool`   | The full path of the resource pool associated with the failure domain.                                                           |
 | `datastore`      | The full path of the datastore associated with the failure domain.                                                               |
-| `networks`       | A list of port groups associated with the failure domain. Only one portgroup may be defined.                                     |
+| `networks`       | A list of port groups associated with the failure domain. Only one portgroup can be defined.                                     |
 
 - [Specifying multiple regions and zones for your cluster on vSphere](../../installing/installing_vsphere/post-install-vsphere-zones-regions-configuration.xml#specifying-regions-zones-infrastructure-vsphere_post-install-vsphere-zones-regions-configuration)
 
 # Specifying multiple host groups for your cluster on vSphere
 
-You can configure the `infrastructures.config.openshift.io` configuration resource to specify multiple host groups for your OpenShift Container Platform cluster that runs on a VMware vSphere instance. This is necessary if your vSphere instance is in a stretched cluster configuration, with your ESXi hosts and storage distributed across multiple physical data centers. Use this procedure if you did not already configure host groups for your OpenShift Container Platform cluster at installation, or if you need to update your OpenShift Container Platform cluster with additional host groups.
+You can configure the `infrastructures.config.openshift.io` configuration resource to specify multiple host groups for your OpenShift Container Platform cluster that runs on a VMware vSphere instance.
+
+This is necessary if your vSphere instance is in a stretched cluster configuration, with your ESXi hosts and storage distributed across multiple physical data centers. Use this procedure if you did not already configure host groups for your OpenShift Container Platform cluster at installation, or if you need to update your OpenShift Container Platform cluster with additional host groups.
 
 <div class="important">
 

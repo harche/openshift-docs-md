@@ -1,3 +1,7 @@
+A two-node OpenShift cluster with fencing provides high availability (HA) with a reduced hardware footprint. This configuration is designed for distributed or edge environments where deploying a full three-node control plane cluster is not practical.
+
+A two-node cluster does not include compute nodes. The two control plane machines run user workloads in addition to managing the cluster.
+
 <div class="important">
 
 Two-node OpenShift cluster with fencing is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
@@ -5,10 +9,6 @@ Two-node OpenShift cluster with fencing is a Technology Preview feature only. Te
 For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
-
-A two-node OpenShift cluster with fencing provides high availability (HA) with a reduced hardware footprint. This configuration is designed for distributed or edge environments where deploying a full three-node control plane cluster is not practical.
-
-A two-node cluster does not include compute nodes. The two control plane machines run user workloads in addition to managing the cluster.
 
 Fencing is managed by Pacemaker, which can isolate an unresponsive node by using the Baseboard Management Console (BMC) of the node. After the unresponsive node is fenced, the remaining node can safely continue operating the cluster without the risk of resource corruption.
 
@@ -27,7 +27,7 @@ The two-node OpenShift cluster with fencing requires the following hosts:
 
 Minimum required hosts
 
-The bootstrap and control plane machines must use Red Hat Enterprise Linux CoreOS (RHCOS) as the operating system. For instructions on installing RHCOS and starting the bootstrap process, see [Installing RHCOS and starting the OpenShift Container Platform bootstrap process](../../../installing/installing_bare_metal/upi/installing-bare-metal-network-customizations.xml#creating-machines-bare-metal_installing-bare-metal-network-customizations)
+The bootstrap and control plane machines must use Red Hat Enterprise Linux CoreOS (RHCOS) as the operating system. For instructions on installing RHCOS and starting the bootstrap process, see "Installing RHCOS and starting the OpenShift Container Platform bootstrap process".
 
 <div class="note">
 
@@ -35,7 +35,9 @@ The requirement to use RHCOS applies only to user-provisioned infrastructure dep
 
 </div>
 
-# Minimum resource requirements for installing the two-node OpenShift cluster with fencing
+# Minimum resource requirements for installing a two-node OpenShift cluster with fencing
+
+Each cluster must meet minimum requirements so that the cluster runs as expected.
 
 Each cluster machine must meet the following minimum requirements:
 
@@ -252,6 +254,8 @@ A PTR record is not required for the OpenShift Container Platform application wi
 
 # Installer-provisioned DNS requirements
 
+In OpenShift Container Platform deployments, you must ensure that cluster components meet certain DNS name resolution criteria for internal communication, certificate validation, and automated node discovery purposes.
+
 Clients access the OpenShift Container Platform cluster nodes over the `baremetal` network. A network administrator must configure a subdomain or subzone where the canonical name extension is the cluster name.
 
 ``` text
@@ -380,16 +384,18 @@ You must configure an external Ingress load balancer (LB) before you install a t
         $ curl https://<app>.<cluster_name>.<base_domain>
         ```
 
-You can shut down a control plane node and verify that the load balancer stops sending traffic to that node while the other node continues to serve requests.
+        You can shut down a control plane node and verify that the load balancer stops sending traffic to that node while the other node continues to serve requests.
 
 # Creating a manifest object for a customized br-ex bridge
 
 You must create a manifest object to modify the cluster’s network configuration after installation. The manifest configures the br-ex bridge, which manages external network connectivity for the cluster.
 
-For instructions on creating this manifest, "Creating a manifest file for a customized br-ex bridge".
+For instructions on creating this manifest, see "Creating a manifest file for a customized br-ex bridge".
 
 # Additional resources
 
+- [Installing RHCOS and starting the OpenShift Container Platform bootstrap process](../../../installing/installing_bare_metal/upi/installing-bare-metal-network-customizations.xml#creating-machines-bare-metal_installing-bare-metal-network-customizations)
+
 - [Creating a manifest file for a customized br-ex bridge](../../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#creating-manifest-file-customized-br-ex-bridge_ipi-install-installation-workflow)
 
-- [Configuring and managing high availability clusters in RHEL](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/configuring_and_managing_high_availability_clusters/index).
+- [Configuring and managing high availability clusters in RHEL](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/configuring_and_managing_high_availability_clusters/index)

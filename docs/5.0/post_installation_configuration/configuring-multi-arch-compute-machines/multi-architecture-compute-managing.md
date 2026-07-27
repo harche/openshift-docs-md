@@ -1,10 +1,10 @@
 Managing a cluster that has nodes with multiple architectures requires you to consider node architecture as you monitor the cluster and manage your workloads. This requires you to take additional considerations into account when you configure cluster resource requirements and behaviors, or schedule workloads in a multi-architecture cluster.
 
-# Scheduling workloads on clusters with multi-architecture compute machines
+# Scheduled workloads on clusters with multi-architecture compute machines
 
 When you deploy workloads on a cluster with compute nodes that use different architectures, you must align pod architecture with the architecture of the underlying node. Your workload might also require additional configuration to particular resources depending on the underlying node architecture.
 
-You can use the Multiarch Tuning Operator to enable architecture-aware scheduling of workloads on clusters with multi-architecture compute machines. The Multiarch Tuning Operator implements additional scheduler predicates in the pods specifications based on the architectures that the pods can support at creation time.
+You can use the Multiarch Tuning Operator to enable architecture-aware scheduling of workloads on clusters with multi-architecture compute machines. The Multiarch Tuning Operator implements additional scheduler predicates in the pod specifications based on the architectures that the pods can support at creation time.
 
 - [Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/postinstallation_configuration/configuring-multi-architecture-compute-machines-on-an-openshift-cluster#multiarch-tuning-operator)
 
@@ -13,7 +13,7 @@ You can use the Multiarch Tuning Operator to enable architecture-aware schedulin
 Scheduling a workload to an appropriate node based on architecture works in the same way as scheduling based on any other node characteristic. Consider the following options when determining how to schedule your workloads.
 
 Using `nodeAffinity` to schedule nodes with specific architectures
-You can allow a workload to be scheduled on only a set of nodes with architectures supported by its images, you can set the `spec.affinity.nodeAffinity` field in your pod’s template specification.
+You can allow a workload to be scheduled on only a set of nodes with architectures supported by its images. You can set the `spec.affinity.nodeAffinity` field in your pod’s template specification.
 
 <div class="formalpara-title">
 
@@ -43,7 +43,7 @@ spec:
 # ...
 ```
 
-- The `values` parameter specifies the supported architectures. Valid values include `amd64`,`arm64`, or both values.
+- The `values` parameter specifies the supported architectures. Valid values include `amd64`, `arm64`, or both values.
 
 <!-- -->
 
@@ -174,11 +174,13 @@ spec:
 
 # Enabling 64k pages on the Red Hat Enterprise Linux CoreOS (RHCOS) kernel
 
-You can enable the 64k memory page in the Red Hat Enterprise Linux CoreOS (RHCOS) kernel on the 64-bit ARM compute machines in your cluster. The 64k page size kernel specification can be used for large GPU or high memory workloads. This is done using the Machine Config Operator (MCO) which uses a machine config pool to update the kernel. To enable 64k page sizes, you must dedicate a machine config pool for ARM64 to enable on the kernel.
+You can enable the 64k memory page in the Red Hat Enterprise Linux CoreOS (RHCOS) kernel on the 64-bit ARM compute machines in your cluster. The 64k page size kernel specification can be used for large GPU or high memory workloads.
+
+This configuration is possible by using the Machine Config Operator (MCO), which uses a machine config pool to update the kernel. To enable 64k page sizes on ARM64, create a dedicated `MachineConfigPool` and apply the 64k kernel configuration to it.
 
 <div class="important">
 
-Using 64k pages is exclusive to 64-bit ARM architecture compute nodes or clusters installed on 64-bit ARM machines. If you configure the 64k pages kernel on a machine config pool using 64-bit x86 machines, the machine config pool and MCO will degrade.
+Using 64k pages is exclusive to 64-bit ARM architecture compute nodes or clusters installed on 64-bit ARM machines. If you configure the 64k pages kernel on a machine config pool using 64-bit x86 machines, the machine config pool and the MCO degrades.
 
 </div>
 
@@ -251,8 +253,8 @@ Using 64k pages is exclusive to 64-bit ARM architecture compute nodes or cluster
     `metadata.labels.machineconfiguration.openshift.io/role`
     Specifies the value of the `machineconfiguration.openshift.io/role` label in the custom machine config pool. The example MachineConfig uses the `worker-64k-pages` label to enable 64k pages in the `worker-64k-pages` pool.
 
-    `spec.kernalType`
-    Specifies your desired kernel type. Valid values are `64k-pages` and `default`
+    `spec.kernelType`
+    Specifies your desired kernel type. Valid values are `64k-pages` and `default`.
 
     <div class="note">
 
@@ -281,7 +283,7 @@ Using 64k pages is exclusive to 64-bit ARM architecture compute nodes or cluster
 
 # Importing manifest lists in image streams on your multi-architecture compute machines
 
-On an OpenShift Container Platform 4.17 cluster with multi-architecture compute machines, the image streams in the cluster do not import manifest lists automatically. You must manually change the default `importMode` option to the `PreserveOriginal` option in order to import the manifest list.
+On an OpenShift Container Platform 4.17 cluster with multi-architecture compute machines, the image streams in the cluster do not import manifest lists automatically. You must manually change the default `importMode` option to the `PreserveOriginal` option to import the manifest list.
 
 - You installed the OpenShift CLI (`oc`).
 
@@ -295,7 +297,7 @@ On an OpenShift Container Platform 4.17 cluster with multi-architecture compute 
 
 <!-- -->
 
-- You can check that the manifest lists imported properly by inspecting the image stream tag. The following command will list the individual architecture manifests for a particular tag.
+- You can check that the manifest lists imported properly by inspecting the image stream tag. The following command lists the individual architecture manifests for a particular tag.
 
   ``` terminal
   $ oc get istag cli-artifacts:latest -n openshift -oyaml

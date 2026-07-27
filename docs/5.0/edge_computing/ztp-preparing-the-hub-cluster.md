@@ -170,11 +170,16 @@ The RHCOS images might not change with every release of OpenShift Container Plat
         $ export OCP_VERSION=<ocp_version>
         ```
 
-        - ISO image name, for example, `rhcos-4.17.1-x86_64-live.x86_64.iso`
+        where:
 
-        - RootFS image name, for example, `rhcos-4.17.1-x86_64-live-rootfs.x86_64.img`
+        `<iso_image_name>`
+        ISO image name, for example, `rhcos-4.17.1-x86_64-live.x86_64.iso`
 
-        - OpenShift Container Platform version, for example, `4.17.1`
+        `<rootfs_image_name>`
+        RootFS image name, for example, `rhcos-4.17.1-x86_64-live-rootfs.x86_64.img`
+
+        `<ocp_version>`
+        OpenShift Container Platform version, for example, `4.17.1`
 
     2.  Download the required images:
 
@@ -192,11 +197,7 @@ The RHCOS images might not change with every release of OpenShift Container Plat
   $ wget http://$(hostname)/${ISO_IMAGE_NAME}
   ```
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
+  Example output:
 
   ``` terminal
   Saving to: rhcos-4.17.1-x86_64-live.x86_64.iso
@@ -295,23 +296,24 @@ If you enable TLS for the HTTP server, you must confirm the root certificate is 
            location = "mirror1.registry.corp.com:5000/example-repository"
     ```
 
-    - The `ConfigMap` namespace must be set to `multicluster-engine`.
+    where:
 
-    - The mirror registry’s certificate that is used when creating the mirror registry.
+    `namespace: multicluster-engine`
+    The `ConfigMap` namespace must be set to `multicluster-engine`.
 
-    - The configuration file for the mirror registry. The mirror registry configuration adds mirror information to the `/etc/containers/registries.conf` file in the discovery image. The mirror information is stored in the `imageContentSources` section of the `install-config.yaml` file when the information is passed to the installation program. The Assisted Service pod that runs on the hub cluster fetches the container images from the configured mirror registry.
+    `ca-bundle.crt`
+    The mirror registry’s certificate that is used when creating the mirror registry.
 
-    - The URL of the mirror registry. You must use the URL from the `imageContentSources` section by running the `oc adm release mirror` command when you configure the mirror registry. For more information, see the *Mirroring the OpenShift Container Platform image repository* section.
+    `registries.conf`
+    The configuration file for the mirror registry. The mirror registry configuration adds mirror information to the `/etc/containers/registries.conf` file in the discovery image. The mirror information is stored in the `imageContentSources` section of the `install-config.yaml` file when the information is passed to the installation program. The Assisted Service pod that runs on the hub cluster fetches the container images from the configured mirror registry.
 
-    - The registries defined in the `registries.conf` file must be scoped by repository, not by registry. In this example, both the `quay.io/example-repository` and the `mirror1.registry.corp.com:5000/example-repository` repositories are scoped by the `example-repository` repository.
+    `location = "quay.io/example-repository"`
+    The URL of the mirror registry. You must use the URL from the `imageContentSources` section by running the `oc adm release mirror` command when you configure the mirror registry. For more information, see the *Mirroring the OpenShift Container Platform image repository* section.
 
-    This updates `mirrorRegistryRef` in the `AgentServiceConfig` custom resource, as shown below:
+    `location = "mirror1.registry.corp.com:5000/example-repository"`
+    The registries defined in the `registries.conf` file must be scoped by repository, not by registry. In this example, both the `quay.io/example-repository` and the `mirror1.registry.corp.com:5000/example-repository` repositories are scoped by the `example-repository` repository.
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    This updates `mirrorRegistryRef` in the `AgentServiceConfig` custom resource, as shown in this example output:
 
     ``` yaml
     apiVersion: agent-install.openshift.io/v1beta1
@@ -341,19 +343,25 @@ If you enable TLS for the HTTP server, you must confirm the root certificate is 
           url: <iso_url>
     ```
 
-    - Set the `AgentServiceConfig` namespace to `multicluster-engine` to match the `ConfigMap` namespace.
+    where:
 
-    - Set `mirrorRegistryRef.name` to match the definition specified in the related `ConfigMap` CR.
+    `namespace: multicluster-engine`
+    Set the `AgentServiceConfig` namespace to `multicluster-engine` to match the `ConfigMap` namespace.
 
-    - Set the OpenShift Container Platform version to either the x.y or x.y.z format.
+    `assisted-installer-mirror-config`
+    Set `mirrorRegistryRef.name` to match the definition specified in the related `ConfigMap` CR.
 
-    - Set the URL for the ISO hosted on the `httpd` server.
+    `<ocp_version>`
+    Set the OpenShift Container Platform version to either the x.y or x.y.z format.
 
-<div class="important">
+    `<iso_url>`
+    Set the URL for the ISO hosted on the `httpd` server.
 
-A valid NTP server is required during cluster installation. Ensure that a suitable NTP server is available and can be reached from the installed clusters through the disconnected network.
+    <div class="important">
 
-</div>
+    A valid NTP server is required during cluster installation. Ensure that a suitable NTP server is available and can be reached from the installed clusters through the disconnected network.
+
+    </div>
 
 - [Mirroring the OpenShift Container Platform repository](../disconnected/installing-mirroring-installation-images.xml#installation-mirror-repository_installing-mirroring-installation-images)
 
@@ -391,11 +399,11 @@ You can configure the hub cluster to use unauthenticated registries. Unauthentic
 
     Unauthenticated registries are listed under `spec.unauthenticatedRegistries` in the `AgentServiceConfig` resource. Any registry on this list is not required to have an entry in the pull secret used for the spoke cluster installation. `assisted-service` validates the pull secret by making sure it contains the authentication information for every image registry used for installation.
 
-<div class="note">
+    <div class="note">
 
-Mirror registries are automatically added to the ignore list and do not need to be added under `spec.unauthenticatedRegistries`. Specifying the `PUBLIC_CONTAINER_REGISTRIES` environment variable in the `ConfigMap` overrides the default values with the specified value. The `PUBLIC_CONTAINER_REGISTRIES` defaults are [quay.io](https://quay.io) and [registry.svc.ci.openshift.org](https://registry.svc.ci.openshift.org).
+    Mirror registries are automatically added to the ignore list and do not need to be added under `spec.unauthenticatedRegistries`. Specifying the `PUBLIC_CONTAINER_REGISTRIES` environment variable in the `ConfigMap` overrides the default values with the specified value. The `PUBLIC_CONTAINER_REGISTRIES` defaults are [quay.io](https://quay.io) and [registry.svc.ci.openshift.org](https://registry.svc.ci.openshift.org).
 
-</div>
+    </div>
 
 <div class="formalpara-title">
 
@@ -505,11 +513,9 @@ Red Hat Advanced Cluster Management (RHACM) uses `ClusterInstance` CRs to gener
         }
         ```
 
-        - Optional: For RHEL 9 images, copy the required universal executable in the `/policy-generator/PolicyGenerator-not-fips-compliant` folder for the ArgoCD version.
+        - Optional: For RHEL 9 images, in the `args` field, change the executable path from `/policy-generator/PolicyGenerator-not-fips-compliant` to match the required universal executable for your ArgoCD version.
 
-        - Match the `multicluster-operators-subscription` image to the RHACM version.
-
-        - In disconnected environments, replace the URL for the `multicluster-operators-subscription` image with the disconnected registry equivalent for your environment.
+        - Match the `multicluster-operators-subscription` image to your RHACM version. In disconnected environments, replace the URL with the disconnected registry equivalent for your environment.
 
     3.  Patch the ArgoCD instance. Run the following command:
 
@@ -538,11 +544,7 @@ Red Hat Advanced Cluster Management (RHACM) uses `ClusterInstance` CRs to gener
     clusters -o jsonpath='{.spec.syncPolicy.syncOptions}' |jq
     ```
 
-    <div class="formalpara-title">
-
-    **Example output for an existing policy**
-
-    </div>
+    Example output for an existing policy:
 
     ``` terminal
     [
@@ -621,41 +623,49 @@ Before you can use the GitOps Zero Touch Provisioning (ZTP) pipeline, you need t
             └── kustomization.yaml
     ```
 
-    - Using `PolicyGenTemplate` CRs to manage and deploy policies to manage clusters will be deprecated in a future OpenShift Container Platform release. Equivalent and improved functionality is available by using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
+    <div class="note">
+
+    Using `PolicyGenTemplate` CRs to manage and deploy policies to manage clusters will be deprecated in a future OpenShift Container Platform release. Equivalent and improved functionality is available by using Red Hat Advanced Cluster Management (RHACM) and `PolicyGenerator` CRs.
+
+    </div>
 
 6.  Commit the directory structure and the `kustomization.yaml` files and push to your Git repository. The initial push to Git should include the `kustomization.yaml` files.
 
-You can use the directory structure under `out/argocd/example` as a reference for the structure and content of your Git repository. That structure includes `ClusterInstance` and `PolicyGenerator` or `PolicyGentemplate` reference CRs for single-node, three-node, and standard clusters. Remove references to cluster types that you are not using.
+    You can use the directory structure under `out/argocd/example` as a reference for the structure and content of your Git repository. That structure includes `ClusterInstance` and `PolicyGenerator` or `PolicyGentemplate` reference CRs for single-node, three-node, and standard clusters. Remove references to cluster types that you are not using.
 
-For all cluster types, you must:
+    For all cluster types, you must:
 
-- Add the `source-crs` subdirectory to the `acmpolicygenerator` or `policygentemplates` directory.
+    - Add the `source-crs` subdirectory to the `acmpolicygenerator` or `policygentemplates` directory.
 
-- Add the `extra-manifests` directory to the `clusterinstance` directory.
+    - Add the `extra-manifests` directory to the `clusterinstance` directory.
 
-The following example describes a set of CRs for a network of single-node clusters:
+      The following example describes a set of CRs for a network of single-node clusters:
 
-``` text
-example/
-  ├── acmpolicygenerator
-  │   ├── acm-common-ranGen.yaml
-  │   ├── acm-example-sno-site.yaml
-  │   ├── acm-group-du-sno-ranGen.yaml
-  │   ├── group-du-sno-validator-ranGen.yaml
-  │   ├── kustomization.yaml
-  │   ├── source-crs/
-  │   └── ns.yaml
-  └── clusterinstance
-        ├── example-sno.yaml
-        ├── extra-manifests/
-        ├── custom-manifests/
-        ├── KlusterletAddonConfigOverride.yaml
-        └── kustomization.yaml
-```
+      ``` text
+      example/
+        ├── acmpolicygenerator
+        │   ├── acm-common-ranGen.yaml
+        │   ├── acm-example-sno-site.yaml
+        │   ├── acm-group-du-sno-ranGen.yaml
+        │   ├── group-du-sno-validator-ranGen.yaml
+        │   ├── kustomization.yaml
+        │   ├── source-crs/
+        │   └── ns.yaml
+        └── clusterinstance
+              ├── example-sno.yaml
+              ├── extra-manifests/
+              ├── custom-manifests/
+              ├── KlusterletAddonConfigOverride.yaml
+              └── kustomization.yaml
+      ```
 
-- Contains reference manifests from the `ztp-container`.
+      where:
 
-- Contains custom manifests.
+      `extra-manifests/`
+      Contains reference manifests from the `ztp-container`.
+
+      `custom-manifests/`
+      Contains custom manifests.
 
 <div class="important">
 
@@ -734,35 +744,41 @@ The following procedure assumes you are using `PolicyGenerator` resources instea
             └── custom-manifest/
     ```
 
-    - Create a top-level `kustomization` YAML file.
+    where:
 
-    - Create the version-specific directories within the custom `/acmpolicygenerator` directory.
+    `kustomization.yaml` (top-level)
+    Create a top-level `kustomization` YAML file.
 
-    - Create a `kustomization.yaml` file for each version.
+    `version_4.13`, `version_4.14`
+    Create the version-specific directories within the custom `/acmpolicygenerator` directory.
 
-    - Create a `source-crs` directory for each version to contain reference CRs from the `ztp-site-generate` container.
+    `kustomization.yaml` (per-version)
+    Create a `kustomization.yaml` file for each version.
 
-    - Create the `reference-crs` directory for policy CRs that are extracted from the ZTP container.
+    `source-crs/`
+    Create a `source-crs` directory for each version to contain reference CRs from the `ztp-site-generate` container.
 
-    - Optional: Create a `custom-crs` directory for user-provided CRs.
+    `reference-crs/`
+    Create the `reference-crs` directory for policy CRs that are extracted from the ZTP container.
 
-    - Create a directory within the custom `/clusterinstance` directory to contain extra manifests from the `ztp-site-generate` container.
+    `custom-crs/`
+    Optional: Create a `custom-crs` directory for user-provided CRs.
 
-    - Create a folder to hold user-provided manifests.
+    `extra-manifest/`
+    Create a directory within the custom `/clusterinstance` directory to contain extra manifests from the `ztp-site-generate` container.
 
-      <div class="note">
+    `custom-manifest/`
+    Create a folder to hold user-provided manifests.
 
-      In the example directory structure, each version subdirectory in the custom `/clusterinstance` directory contains two further subdirectories, one containing the reference manifests copied from the container, the other for custom manifests that you provide. The names assigned to those directories are examples.
+    <div class="note">
 
-      </div>
+    In the example directory structure, each version subdirectory in the custom `/clusterinstance` directory contains two further subdirectories, one containing the reference manifests copied from the container, the other for custom manifests that you provide. The names assigned to those directories are examples.
+
+    </div>
 
 4.  Create ConfigMaps from the manifest directories and reference them in the `ClusterInstance` CR using the `extraManifestsRefs` field.
 
-    <div class="formalpara-title">
-
-    **Example kustomization.yaml with configMapGenerator**
-
-    </div>
+    Example `kustomization.yaml` with `configMapGenerator`:
 
     ``` yaml
     apiVersion: kustomize.config.k8s.io/v1beta1
@@ -781,17 +797,17 @@ The following procedure assumes you are using `PolicyGenerator` resources instea
       disableNameSuffixHash: true
     ```
 
-    - Extra manifest files from the `ztp-site-generate` container.
+    where:
 
-    - User-provided custom manifest files.
+    `extra-manifest/`
+    Extra manifest files from the `ztp-site-generate` container.
+
+    `custom-manifest/`
+    User-provided custom manifest files.
 
 5.  Edit the `ClusterInstance` CR to reference the `ConfigMap` CR:
 
-    <div class="formalpara-title">
-
-    **Example ClusterInstance CR**
-
-    </div>
+    Example `ClusterInstance` CR:
 
     ``` yaml
     apiVersion: siteconfig.open-cluster-management.io/v1alpha1
@@ -805,7 +821,7 @@ The following procedure assumes you are using `PolicyGenerator` resources instea
       - name: extra-manifests-cm
     ```
 
-    - Reference the ConfigMap containing the extra manifests.
+    The `extra-manifests-cm` value references the `ConfigMap` containing the extra manifests.
 
 6.  Edit the top-level `kustomization.yaml` file to control which OpenShift Container Platform versions are active. The following is an example of a `kustomization.yaml` file at the top level:
 
@@ -815,9 +831,13 @@ The following procedure assumes you are using `PolicyGenerator` resources instea
     #- version_4.14
     ```
 
-    - Activate version 4.13.
+    where:
 
-    - Use comments to deactivate a version.
+    `version_4.13`
+    Activate version 4.13.
+
+    `#- version_4.14`
+    Use comments to deactivate a version.
 
 # Configuring the hub cluster for backup and restore
 
@@ -906,7 +926,7 @@ You can use GitOps ZTP to configure a set of policies to back up `BareMetalHost`
       clusterSet: default
     ```
 
-    - If you apply the `cluster.open-cluster-management.io/backup: cluster-activation` label to `BareMetalHost` resources, the RHACM cluster backs up those resources. You can restore the `BareMetalHost` resources if the active cluster becomes unavailable, when restoring the hub activation resources.
+    If you apply the `cluster.open-cluster-management.io/backup: cluster-activation` label to `BareMetalHost` resources, the RHACM cluster backs up those resources. You can restore the `BareMetalHost` resources if the active cluster becomes unavailable, when restoring the hub activation resources.
 
 2.  Apply the policy by running the following command:
 
@@ -969,7 +989,7 @@ You can now use Red Hat Advanced Cluster Management to restore a managed cluste
 
 <div class="important">
 
-When you restore `BareMetalHosts` resources as part of restoring the cluster activation data, you must restore the `BareMetalHosts` status. The following RHACM `Restore` resource example restores activation resources, including `BareMetalHosts`, and also restores the status for the `BareMetalHosts` resources:
+When you restore `BareMetalHost` resources as part of restoring the cluster activation data, you must restore the `BareMetalHost` status. The following RHACM `Restore` resource example restores activation resources, including `BareMetalHost`, and also restores the status for the `BareMetalHost` resources:
 
 ``` yaml
 apiVersion: cluster.open-cluster-management.io/v1beta1
@@ -987,13 +1007,11 @@ spec:
       - BareMetalHosts
 ```
 
-</div>
-
 - Set `veleroManagedClustersBackupName: latest` to restore activation resources.
 
-- Restores the status for `BareMetalHosts` resources.
+- Restores the status for `BareMetalHost` resources.
 
-<!-- -->
+</div>
 
 - [Restoring managed cluster activation data](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/latest/html/business_continuity/business-cont-overview#managed-cluster-activation-data)
 

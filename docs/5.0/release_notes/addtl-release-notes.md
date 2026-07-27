@@ -76,7 +76,7 @@ O
 
 [Red Hat OpenShift Service Mesh 3.x](https://docs.openshift.com/service-mesh/3.0.0tp1/ossm-release-notes/ossm-release-notes-assembly.html)
 
-[Red Hat OpenShift Virtualization](../virt/release_notes/virt-4-22-release-notes.xml#virt-4-22-release-notes)
+[Red Hat OpenShift Virtualization](../virt/release_notes/virt-5-0-release-notes.xml#virt-5-0-release-notes)
 
 [Red Hat build of OpenTelemetry](../observability/otel/otel-rn.xml#otel-rn)
 

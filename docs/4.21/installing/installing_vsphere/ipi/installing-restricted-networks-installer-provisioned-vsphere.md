@@ -2,15 +2,15 @@ In OpenShift Container Platform 4.17, you can install a cluster on VMware vSpher
 
 # Prerequisites
 
-- You have completed the tasks in [Preparing to install a cluster using installer-provisioned infrastructure](../../../installing/installing_vsphere/ipi/ipi-vsphere-preparing-to-install.xml#ipi-vsphere-preparing-to-install).
+- You have completed the tasks in "Preparing to install a cluster using installer-provisioned infrastructure".
 
 - You reviewed your VMware platform licenses. Red Hat does not place any restrictions on your VMware licenses, but some VMware infrastructure components require licensing.
 
-- You reviewed details about the [OpenShift Container Platform installation and update](../../../architecture/architecture-installation.xml#architecture-installation) processes.
+- You reviewed details about the OpenShift Container Platform installation and update processes.
 
-- You read the documentation on [selecting a cluster installation method and preparing it for users](../../../installing/overview/installing-preparing.xml#installing-preparing).
+- You read the documentation on selecting a cluster installation method and preparing it for users.
 
-- You [created a registry on your mirror host](../../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images) and obtained the `imageContentSources` data for your version of OpenShift Container Platform.
+- You created a registry on your mirror host and obtained the `imageContentSources` data for your version of OpenShift Container Platform.
 
   <div class="important">
 
@@ -18,13 +18,13 @@ In OpenShift Container Platform 4.17, you can install a cluster on VMware vSpher
 
   </div>
 
-- You provisioned [persistent storage](../../../storage/understanding-persistent-storage.xml#understanding-persistent-storage) for your cluster. To deploy a private image registry, your storage must provide the ReadWriteMany access mode.
+- You provisioned persistent storage for your cluster. To deploy a private image registry, your storage must provide the ReadWriteMany access mode.
 
 - The OpenShift Container Platform installer requires access to port 443 on the vCenter and ESXi hosts. You verified that port 443 is accessible.
 
 - If you use a firewall, you confirmed with the administrator that port 443 is accessible. Control plane nodes must be able to reach vCenter and ESXi hosts on port 443 for the installation to succeed.
 
-- If you use a firewall and plan to use the Telemetry service, you [configured the firewall to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
+- If you use a firewall and plan to use the Telemetry service, you configured the firewall to allow the sites that your cluster requires access to.
 
   <div class="note">
 
@@ -82,11 +82,11 @@ Download the Red Hat Enterprise Linux CoreOS (RHCOS) image to install OpenShift
 
 4.  Upload the image you downloaded to a location that is accessible from the bastion server.
 
-The image is now available for a restricted installation. Note the image name or location for use in OpenShift Container Platform deployment.
-
 # VMware vSphere region and zone enablement
 
-You can deploy an OpenShift Container Platform cluster to multiple vSphere data centers. Each data center can run multiple clusters. This configuration reduces the risk of a hardware failure or network outage that can cause your cluster to fail. To enable regions and zones, you must define multiple failure domains for your OpenShift Container Platform cluster.
+You can deploy an OpenShift Container Platform cluster to multiple vSphere data centers. Each data center can run multiple clusters. This configuration reduces the risk of a hardware failure or network outage that can cause your cluster to fail.
+
+To enable regions and zones, you must define multiple failure domains for your OpenShift Container Platform cluster.
 
 <div class="important">
 
@@ -131,6 +131,8 @@ The following table outlines an example of the relationship among regions, zones
 
 # VMware vSphere host group enablement
 
+When deploying an OpenShift Container Platform cluster to VMware vSphere, you can map your vSphere host groups onto OpenShift Container Platform failure domains. This is useful if you are using a stretched cluster configuration, where ESXi hosts are grouped into host groups by physical location.
+
 <div class="important">
 
 OpenShift zones support for vSphere host groups is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
@@ -138,8 +140,6 @@ OpenShift zones support for vSphere host groups is a Technology Preview feature 
 For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
-
-When deploying an OpenShift Container Platform cluster to VMware vSphere, you can map your vSphere host groups onto OpenShift Container Platform failure domains. This is useful if you are using a stretched cluster configuration, where ESXi hosts are grouped into host groups by physical location.
 
 To enable this feature, you must meet the following requirements:
 
@@ -613,6 +613,8 @@ The default `install-config.yaml` file configuration from the previous release o
 
 ## Configuring host groups for a VMware vCenter
 
+You can modify the default installation configuration file to deploy an OpenShift Container Platform cluster on a VMware vSphere stretched cluster, where ESXi hosts are grouped into host groups by physical location.
+
 <div class="important">
 
 OpenShift zones support for vSphere host groups is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
@@ -620,8 +622,6 @@ OpenShift zones support for vSphere host groups is a Technology Preview feature 
 For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
-
-You can modify the default installation configuration file to deploy an OpenShift Container Platform cluster on a VMware vSphere stretched cluster, where ESXi hosts are grouped into host groups by physical location.
 
 The default `install-config.yaml` file configuration from previous releases of OpenShift Container Platform is deprecated. Though you can still use it, the OpenShift Container Platform installer will display a warning message that indicates the use of deprecated fields in the configuration file.
 
@@ -1325,6 +1325,8 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 Operator catalogs that source content provided by Red Hat and community projects are configured for the software catalog by default during an OpenShift Container Platform installation. In a restricted network environment, you must disable the default catalogs as a cluster administrator.
 
+Operator catalogs that source content provided by Red Hat and community projects are configured for the software catalog by default during an OpenShift Container Platform installation.
+
 - Disable the sources for the default catalogs by adding `disableAllDefaultSources: true` to the `OperatorHub` object:
 
   ``` terminal
@@ -1338,17 +1340,13 @@ Operator catalogs that source content provided by Red Hat and community projects
 
   </div>
 
-# Creating registry storage
-
-After you install the cluster, you must create storage for the Registry Operator.
-
-## Image registry removed during installation
+# Image registry removed during installation
 
 On platforms that do not provide shareable object storage, the OpenShift Image Registry Operator bootstraps itself as `Removed`. This allows `openshift-installer` to complete installations on these platform types.
 
 After installation, you must edit the Image Registry Operator configuration to switch the `managementState` from `Removed` to `Managed`. When this has completed, you must configure storage.
 
-## Image registry storage configuration
+# Image registry storage configuration
 
 The Image Registry Operator is not initially available for platforms that do not provide default storage. After installation, you must configure your registry to use storage so that the Registry Operator is made available.
 
@@ -1356,7 +1354,7 @@ Configure a persistent volume, which is required for production clusters. Where 
 
 You can also allow the image registry to use block storage types by using the `Recreate` rollout strategy during upgrades.
 
-### Configuring registry storage for VMware vSphere
+## Configuring registry storage for VMware vSphere
 
 As a cluster administrator, following installation you must configure your registry to use storage.
 
@@ -1455,14 +1453,24 @@ To provide metrics about cluster health and the success of updates, the Telemetr
 
 After you confirm that your [OpenShift Cluster Manager](https://console.redhat.com/openshift) inventory is correct, either maintained automatically by Telemetry or manually by using OpenShift Cluster Manager,use subscription watch to track your OpenShift Container Platform subscriptions at the account or multi-cluster level. For more information about subscription watch, see "Data Gathered and Used by Red Hat’s subscription services" in the *Additional resources* section.
 
-- See [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring) for more information about the Telemetry service
+- [Preparing to install a cluster using installer-provisioned infrastructure](../../../installing/installing_vsphere/ipi/ipi-vsphere-preparing-to-install.xml#ipi-vsphere-preparing-to-install)
 
-# Next steps
+- [OpenShift Container Platform installation and update processes](../../../architecture/architecture-installation.xml#architecture-installation)
 
-- [Customize your cluster](../../../installing/install_config/installing-customizing.xml#installing-customizing).
+- [Selecting a cluster installation method and preparing it for users](../../../installing/overview/installing-preparing.xml#installing-preparing)
 
-- If necessary, you can [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting).
+- [Creating a registry on your mirror host](../../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images)
 
-- If necessary, see [Registering your disconnected cluster](../../../support/remote_health_monitoring/remote-health-reporting.xml#insights-operator-register-disconnected-cluster_remote-health-reporting).
+- [Persistent storage](../../../storage/understanding-persistent-storage.xml#understanding-persistent-storage)
 
-- [Set up your registry and configure registry storage](../../../registry/configuring_registry_storage/configuring-registry-storage-vsphere.xml#configuring-registry-storage-vsphere).
+- [Configuring the firewall to allow required sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
+
+- [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+
+- [Customize your cluster](../../../installing/install_config/installing-customizing.xml#installing-customizing)
+
+- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+
+- [Registering your disconnected cluster](../../../support/remote_health_monitoring/remote-health-reporting.xml#insights-operator-register-disconnected-cluster_remote-health-reporting)
+
+- [Set up your registry and configure registry storage](../../../registry/configuring_registry_storage/configuring-registry-storage-vsphere.xml#configuring-registry-storage-vsphere)

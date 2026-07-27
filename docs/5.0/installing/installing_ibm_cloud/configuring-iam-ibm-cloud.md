@@ -104,10 +104,8 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
 
 - [Rotating API keys for IBM Cloud®](../../post_installation_configuration/changing-cloud-credentials-configuration.xml#refreshing-service-ids-ibm-cloud_changing-cloud-credentials-configuration)
 
-# Next steps
+# Additional resources
 
 - [Installing a cluster on IBM Cloud® with customizations](../../installing/installing_ibm_cloud/installing-ibm-cloud-customizations.xml#installing-ibm-cloud-customizations)
-
-# Additional resources
 
 - [Preparing to update a cluster with manually maintained credentials](../../updating/preparing_for_updates/preparing-manual-creds-update.xml#preparing-manual-creds-update)

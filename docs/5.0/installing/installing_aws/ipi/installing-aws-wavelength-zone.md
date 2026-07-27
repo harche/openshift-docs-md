@@ -109,8 +109,6 @@ Generally, the maximum transmission unit (MTU) between an Amazon EC2 instance in
 
 The network plugin can provide additional features, such as IPsec, that also affect the MTU sizing.
 
-For more information, see [How AWS Wavelength work](https://docs.aws.amazon.com/wavelength/latest/developerguide/how-wavelengths-work.html) in the AWS documentation.
-
 </div>
 
 OpenShift Container Platform 4.12 introduced a new compute pool, *edge*, that is designed for use in remote zones. The edge compute pool configuration is common between Amazon Web Services (AWS) Wavelength Zones locations. Because of the type and size limitations of resources like EC2 and EBS on Wavelength Zones resources, the default instance type can vary from the traditional compute pool.
@@ -136,6 +134,8 @@ By default, the machine sets for the edge compute pool define the taint of `NoSc
 - [Storage classes](../../../storage/understanding-persistent-storage.xml#pvc-storage-class_understanding-persistent-storage)
 
 - [Ingress Controller sharding](../../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-ingress-controller.xml#nw-ingress-sharding_configuring-ingress-cluster-traffic-ingress-controller)
+
+- [How AWS Wavelength works (AWS documentation)](https://docs.aws.amazon.com/wavelength/latest/developerguide/how-wavelengths-work.html)
 
 # Installation prerequisites
 
@@ -268,11 +268,13 @@ For OpenShift Container Platform version 4.22, RHCOS is based on RHEL version 9.
 
 - s390x architecture requires z14 ISA
 
-For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures) (RHEL documentation).
+For more information, see "Architectures".
 
 </div>
 
 If an instance type for your platform meets the minimum requirements for cluster machines, it is supported to use in OpenShift Container Platform.
+
+- [Architectures (RHEL documentation)](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures)
 
 ## Tested instance types for AWS
 
@@ -1031,7 +1033,7 @@ If you do not use the provided CloudFormation template to create your AWS infras
 
 <!-- -->
 
-- See [Amazon S3](https://aws.amazon.com/s3/) in the AWS documentation.
+- [Amazon S3 (AWS documentation)](https://aws.amazon.com/s3/)
 
 ## CloudFormation template for the VPC Carrier Gateway
 
@@ -1192,6 +1194,12 @@ arn:aws:cloudformation:us-east-1:123456789012:stack/<stack_name>/dbedae40-820e-1
 
 Use the CloudFormation template to deploy the private and public subnets in a zone on Wavelength Zones infrastructure. The template provisions an `AWS::EC2::Subnet` and associates it with a specific Wavelength Zones and VPC route table to reduce latency.
 
+<div class="formalpara-title">
+
+**CloudFormation template for VPC subnets**
+
+</div>
+
 ``` yaml
 AWSTemplateFormatVersion: 2010-09-09
 Description: Template for Best Practice Subnets (Public and Private)
@@ -1318,9 +1326,9 @@ Modify your `install-config.yaml` file to include Wavelength Zones subnets.
 
 <!-- -->
 
-- For more information about viewing the CloudFormation stacks that you created, see [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation).
+- [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation)
 
-- For more information about AWS profile and credential configuration, see [Configuration and credential file settings](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) in the AWS documentation.
+- [Configuration and credential file settings in the AWS CLI (AWS documentation)](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
 
 <!-- -->
 

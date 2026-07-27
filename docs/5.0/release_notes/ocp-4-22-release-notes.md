@@ -315,6 +315,15 @@ You can configure a Precision Time Protocol (PTP) Telecom Grandmaster (T-GM) on 
 
 For more information, see [Telecom Grandmaster clocks on Intel Granite Rapids-D hardware](../networking/advanced_networking/ptp/configuring-ptp.xml#nw-ptp-granite-rapids-telecom-grandmaster-clock-overview_configuring-ptp).
 
+<!-- -->
+
+High availability for PTP boundary clocks with dual time receiver ports on Intel E810 hardware
+You can configure dual time receiver (TR) ports on a single Intel Westport Channel E810-XXVDA4T network interface card (NIC) for Precision Time Protocol (PTP) Telecom Boundary Clock (T-BC) high availability. This configuration uses the Alternate Best Master Clock Algorithm (A-BMCA) to support automatic switchover between the upstream paths if the active port goes down or its quality degrades. As a result, downstream devices maintain continuous time synchronization without manual intervention during upstream path failures.
+
+The `PtpConfig` custom resource (CR) uses a two-profile architecture with a time receiver profile and a time transmitter profile on separate PTP domains. Both TR ports share the same Physical Hardware Clock (PHC), so failover relies on A-BMCA reselection rather than switching between separate clock servos.
+
+For more information, see [Configuring PTP boundary clock high availability with dual time receiver ports](../networking/advanced_networking/ptp/configuring-ptp.xml#ptp-configuring-linuxptp-services-dual-port-bc_configuring-ptp).
+
 ## Nodes
 
 Image pull credential verification in multi-tenant clusters

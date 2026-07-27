@@ -6,6 +6,69 @@ For additional information about OADP, see *OpenShift API for Data Protection (O
 
 </div>
 
+# OADP 1.6.1 release notes
+
+OpenShift API for Data Protection (OADP) 1.6.1 release notes list resolved and known issues.
+
+The following Red Hat Security Advisory (RHSA) is available for OADP 1.6.1:
+
+- [RHSA-2026:43692 - New version of Red Hat OpenShift API for Data Protection](https://access.redhat.com/errata/RHSA-2026:43692)
+
+## Resolved issues
+
+OADP CLI no longer exposes the namespace flag for non-admin operations
+Before this update, the OADP command-line interface (CLI) exposed the global `--namespace` or `-n` flag in the help output of all `oc oadp nonadmin` commands, even though non-admin operations do not support namespace selection because of multi-tenancy boundaries. As a consequence, if you specified the namespace flag during a non-admin backup or restore operation, the CLI ignored the provided value and used the active `oc project` context instead, potentially creating resources in an unintended namespace.
+
+With this update, the `--namespace` flag is hidden from all `oc oadp nonadmin` subcommands so that it is no longer displayed in the help output and does not accept user input for non-admin operations. As a result, non-admin CLI commands operate correctly only within your current project context, which eliminates the risk of namespace mismatch.
+
+[OADP-7955](https://redhat.atlassian.net/browse/OADP-7955)
+
+Wildcard handling for `excludedClusterScopedResources` no longer causes validation failures
+Before this update, the OADP Operator incorrectly appended default resources to `excludedClusterScopedResources` in the `NonAdminBackup` custom resource (CR) when a wildcard (`*`) was present. As a consequence, `FailedValidation` errors occurred when you excluded all cluster-scoped resources. With this update, the Operator correctly handles the wildcard without appending default resources. As a result, validation failures no longer occur when you use a wildcard to exclude cluster-scoped resources.
+
+[OADP-7897](https://redhat.atlassian.net/browse/OADP-7897)
+
+`VolumePolicy` support for phase conditions to allow skipping PVCs
+Before this update, OADP volume policies lacked the capability to evaluate and filter persistent volume claims (PVCs) based on their lifecycle status phase. As a consequence, backups could trigger unwanted warnings or errors for unbound or pending PVCs that you excluded, such as in scaled-down serverless environments.
+
+With this update, volume policy actions have been improved to natively support the phase condition of PVCs. As a result, you can define custom volume policies in your `ConfigMap` object to automatically skip pending or unbound PVCs during backup operations. For example:
+
+``` yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: volume-policy
+  namespace: velero
+data:
+  policy.yaml: |
+    version: v1
+    volumePolicies:
+    - conditions:
+        pvcPhase: ["Pending", "Lost"]
+      action:
+        type: skip
+```
+
+[OADP-6428](https://redhat.atlassian.net/browse/OADP-6428)
+
+## Known issues
+
+`CloudStorage` bucket creation fails on Google Cloud with WIF authentication
+When you configure `CloudStorage` on OpenShift clusters on Google Cloud by using Workload Identity Federation (WIF) authentication, the `CloudStorage` resource fails to detect that a Google Cloud bucket does not exist. As a consequence, the resource returns a `BucketCheckError` condition and prevents automatic bucket creation.
+
+To work around this problem, use an existing Google Cloud bucket when configuring `CloudStorage` on OpenShift clusters on Google Cloud using Workload Identity Federation (WIF) authentication. As a result, the controller skips bucket creation and proceeds with the existing bucket for backup storage.
+
+[OADP-8085](https://redhat.atlassian.net/browse/OADP-8085)
+
+Non-admin backups of ODF encrypted volumes fail with OADP
+When the OADP Data Mover backs up an encrypted Red Hat OpenShift Data Foundation (ODF) volume, it creates a temporary persistent volume claim (PVC) in the `openshift-adp` namespace. The ceph-csi driver then attempts to fetch the `ceph-csi-kms-token` secret from the `openshift-adp` namespace instead of the original application namespace that contains the secret. As a consequence, the `NonAdminBackup` custom resource (CR) fails with an error similar to the following output:
+
+    openshift-adp   2h11m       Warning   ProvisioningFailed     persistentvolumeclaim/NAMESPACE-rh-cf00000c-0000-0000-0000-22abf391t6dr   failed to provision volume with StorageClass "ocs-storagecluster-ceph-rbd-encrypted": rpc error: code = InvalidArgument desc = invalid encryption kms configuration: failed fetching token from openshift-adp/ceph-csi-kms-token: secrets "ceph-csi-kms-token" not found
+
+To work around this problem, copy `ceph-csi-kms-token` and the associated Key Management Service (KMS) config map from the application namespace to `openshift-adp` before running the backup. As a result, the ceph-csi driver can locate the encryption credentials and the backup completes successfully.
+
+[OADP-7972](https://redhat.atlassian.net/browse/OADP-7972)
+
 # OADP 1.6.0 release notes
 
 Review new features and enhancements, resolved issues, known issues, Technology Preview features, and removed features in OpenShift API for Data Protection (OADP) 1.6.0.

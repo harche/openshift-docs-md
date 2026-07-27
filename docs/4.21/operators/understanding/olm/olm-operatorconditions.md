@@ -59,6 +59,6 @@ spec:
 
 - [Managing Operator conditions](../../../operators/admin/olm-managing-operatorconditions.xml#olm-operatorconditions)
 
-- [Using pod disruption budgets to specify the number of pods that must be up](../../../nodes/pods/nodes-pods-configuring.xml#nodes-pods-configuring-pod-distruption-about_nodes-pods-configuring)
+- [Understanding how to use pod disruption budgets to specify the number of pods that must be up](../../../nodes/pods/nodes-pods-configuring.xml#nodes-pods-pod-disruption-about_nodes-pods-configuring)
 
 - [Graceful termination](../../../applications/deployments/route-based-deployment-strategies.xml#deployments-graceful-termination_route-based-deployment-strategies)

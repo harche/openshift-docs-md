@@ -192,7 +192,7 @@ Machine sets running on AWS support non-guaranteed Spot Instances. You can save 
 
 You can define a machine set YAML to provision nodes by specifying parameters such as `vmSize` and `image`. You can use this to automate and scale infrastructure consistently, to ensure compute nodes meet specific workload requirements within the cluster.
 
-The sample YAML defines a compute machine set that runs in the `1` Microsoft Azure zone in a region and creates nodes that are labeled with `node-role.kubernetes.io/infra: ""`. The YAML file specifies a taint to prevent user workloads from being scheduled on infra nodes. After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
+The sample YAML defines a compute machine set that runs in the `1` Microsoft Azure zone in a region and creates nodes that are labeled with ifdef::infra\[`node-role.kubernetes.io/infra: ""`. The YAML specifies a taint to prevent user workloads from being scheduled on infra nodes. After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
 
 In the sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `infra` is the node label to add.
 
@@ -273,7 +273,7 @@ spec:
 where:
 
 `<infrastructure_id>`
-Specifies the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI installed, you can obtain the infrastructure ID by running the following command:
+Specifies the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI (`oc`) installed, you can obtain the infrastructure ID by running the following command:
 
 ``` terminal
 $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
@@ -1089,11 +1089,7 @@ To dynamically manage machine compute resources, you can create your own compute
         $ oc get machinesets -n openshift-machine-api
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         NAME                                DESIRED   CURRENT   READY   AVAILABLE   AGE
@@ -1112,11 +1108,7 @@ To dynamically manage machine compute resources, you can create your own compute
           -n openshift-machine-api -o yaml
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` yaml
         apiVersion: machine.openshift.io/v1beta1
@@ -1173,11 +1165,7 @@ To dynamically manage machine compute resources, you can create your own compute
   $ oc get machineset -n openshift-machine-api
   ```
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
+  The following is example output:
 
   ``` terminal
   NAME                                DESIRED   CURRENT   READY   AVAILABLE   AGE

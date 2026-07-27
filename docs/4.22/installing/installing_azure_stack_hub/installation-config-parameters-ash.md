@@ -2,7 +2,7 @@ Before you deploy an OpenShift Container Platform cluster on Azure Stack Hub, yo
 
 # Available installation configuration parameters for Azure Stack Hub
 
-To customize your cluster installation, configuration parameters are available to use in the `install-config.yaml` file.
+To customize your cluster installation, you can use configuration parameters in the `install-config.yaml` file.
 
 The following tables specify the required, optional, and Azure Stack Hub-specific installation configuration parameters that you can set as part of the installation process.
 

@@ -202,6 +202,44 @@ For AArch64 architecture nodes, you can use the following dual-port NICs only:
 
 - Use the latest supported NVIDIA drivers and firmware to ensure proper PTP support and to expose a single PHC per NIC.
 
+# High availability for PTP boundary clocks with dual time receiver ports
+
+OpenShift Container Platform supports configuring two time receiver (TR) ports on the same network interface controller (NIC) for Precision Time Protocol (PTP) Telecom Boundary Clocks (T-BC), providing high availability by eliminating single points of failure in the upstream timing path.
+
+The dual time receiver port configuration uses the Alternate Best Master Clock Algorithm (A-BMCA) to manage port selection and failover. In normal operation, one TR port synchronizes to the upstream timing source while the second port remains in standby. If the active port fails or signal quality degrades, A-BMCA dynamically selects the best available path, ensuring continuous timing synchronization for downstream devices.
+
+The `PtpConfig` custom resource (CR) uses a two-profile architecture: one profile for the time receiver (TR) ports that synchronize from an upstream source, and a separate profile for the time transmitter (TT) port that distributes time downstream on a different PTP domain. Both TR ports share the same Physical Hardware Clock (PHC) on the NIC, so failover relies on A-BMCA reselection rather than switching between separate clock servos.
+
+## Failover and recovery scenarios
+
+The following scenarios describe how the system responds to timing path disruptions:
+
+Port failure
+If the active upstream path experiences a packet time signal failure due to port failure, the boundary clock briefly enters holdover while the system reselects and resynchronizes to the second configured upstream path. The boundary clock finite state machine (FSM) transitions from `HOLDOVER` to `LOCKED` after the backup port reaches the `SLAVE` state.
+
+Signal degradation
+If the active upstream path quality degrades below the quality of the standby upstream path, the system selects the best path according to the A-BMCA criterion.
+
+Holdover
+If both upstream paths are lost, the T-BC enters holdover mode and maintains timing accuracy based on the local oscillator until holdover timeout expires.
+
+Recovery
+When any upstream path returns and its clock quality is better than the local clock quality, the boundary clock briefly enters holdover during reselection, then recovers and resynchronizes to the upstream clock.
+
+## Hardware requirements
+
+You can configure high availability for dual time receiver (TR) ports on nodes with Intel Westport Channel E810-XXVDA4T NICs for T-BC configurations.
+
+## Limitations
+
+The dual time receiver port configuration has the following limitations:
+
+- Both receiver ports must belong to the same NIC. Configurations where dual receiver ports span across different NICs are not supported for this feature.
+
+- The G.8275.2 profile is not supported with dual time receiver ports.
+
+- Using a PTP port as a backup for a global navigation satellite system (GNSS) feed is not supported with this configuration.
+
 # 3-card Intel E810 PTP grandmaster clock
 
 OpenShift Container Platform supports cluster hosts with 3 Intel E810 NICs as PTP grandmaster clocks (T-GM).

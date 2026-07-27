@@ -1,4 +1,4 @@
-Learn more about administrative tasks that cluster admins must perform to successfully initialize an update, as well as optional guidelines for ensuring a successful update.
+Before you update your OpenShift Container Platform cluster, complete the required administrative tasks and review best practices to minimize disruption and avoid update failures.
 
 # Kubernetes API removals
 
@@ -31,6 +31,43 @@ To allow the update, you must perform one of the following tasks:
 <!-- -->
 
 - [Disabling boot image management](../../nodes/nodes/nodes-update-boot-images.xml#mco-update-boot-images-disable_nodes-update-boot-images)
+
+# Self-service Technical Supportability Review
+
+You can use the self-service Technical Supportability Review (TSR) on the Red Hat Customer Portal to validate your cluster configuration against Red Hat common practices.
+
+<div class="note">
+
+The `must-gather` tool collects diagnostic information about your cluster, including resource definitions, service logs, and configuration data. For more information, see "Gathering data about your cluster" in the OpenShift Container Platform documentation.
+
+</div>
+
+The self-service TSR uses AI to evaluate your cluster’s `must-gather` data and provides a prioritized executive summary of recommendations. This serves as a starting point to help you identify and resolve potential issues before they impact your environment.
+
+The TSR performs hundreds of checks across the OpenShift Container Platform platform, including OpenShift Virtualization. Coverage is continually expanding.
+
+## When to use the self-service TSR tool
+
+Integrating the self-service TSR into your regular operational workflow can be helpful in the following scenarios:
+
+Routine benchmarking
+Use the TSR quarterly to benchmark cluster health and plan for routine maintenance activities.
+
+Pre-flight checks
+Validate your cluster configuration before major structural changes, including upgrades, migrations, and expansions.
+
+Critical event preparation
+Confirm cluster stability ahead of high-traffic business events, such as seasonal peaks, or operational milestones, such as year-end shutdowns, business continuity drills, and compliance audits.
+
+## How to access the TSR
+
+To run a self-service review, upload your cluster’s `must-gather` data to the **Analyze** tab in the **Support** section of the Red Hat Customer Portal. For a direct link, see "Technical Supportability Review with AI tool" in the Additional resources section. The **Analyze** feature generates a prioritized executive summary that identifies your cluster’s top risks and recommends corrective actions. Review the recommendations and implement the suggested corrective actions to address the identified risks.
+
+The self-service TSR provides a solid baseline for cluster health. If you need additional guidance or a more comprehensive review, contact your Red Hat account team to arrange an assisted review through a Technical Account Manager (TAM) or Red Hat consultant. An assisted review includes human analysis, deeper coverage, and access to checks that are updated more frequently than the self-service version.
+
+- [Technical Supportability Review with AI tool](https://access.redhat.com/support/cases/#/analyze)
+
+- [Red Hat Technical Supportability Review with AI: Proactive AI-Driven Cluster Assessments for OpenShift Container Platform](https://access.redhat.com/solutions/7141255)
 
 # The risk of conditional updates
 
@@ -370,7 +407,7 @@ Follow best practices to ensure successful cluster updates. These best practices
 
 OpenShift Container Platform minimizes workload disruptions during an update. Updates do not begin unless the cluster is in an upgradeable state at the time of the update request.
 
-This design enforces some key conditions before initiating an update, but there are a number of actions you can take to increase your chances of a successful cluster update.
+This design enforces some key conditions before initiating an update, but there are several actions you can take to increase your chances of a successful cluster update.
 
 ## Choose versions recommended by the OpenShift Update Service
 
@@ -388,7 +425,7 @@ Failing to address critical alerts before beginning an update can cause problema
 
 In the **Administrator** perspective of the web console, navigate to **Observe** → **Alerting** to find critical alerts.
 
-## Ensure that the cluster is in an Upgradable state
+## Ensure that the cluster is in an Upgradeable state
 
 When one or more Operators have not reported their `Upgradeable` condition as `True` for more than an hour, the `ClusterNotUpgradeable` warning alert is triggered in the cluster. In most cases this alert does not block patch updates, but you cannot perform a minor version update until you resolve this alert and all Operators report `Upgradeable` as `True`.
 

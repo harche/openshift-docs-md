@@ -631,10 +631,10 @@
 - [Syncing LDAP groups](authentication/ldap-syncing.md)
 - **Managing cloud provider credentials**
   - [About the Cloud Credential Operator](authentication/managing_cloud_provider_credentials/about-cloud-credential-operator.md)
-  - [Mint mode](authentication/managing_cloud_provider_credentials/cco-mode-mint.md)
-  - [Passthrough mode](authentication/managing_cloud_provider_credentials/cco-mode-passthrough.md)
-  - [Manual mode with long-term credentials for components](authentication/managing_cloud_provider_credentials/cco-mode-manual.md)
-  - [Manual mode with short-term credentials for components](authentication/managing_cloud_provider_credentials/cco-short-term-creds.md)
+  - [About mint mode](authentication/managing_cloud_provider_credentials/cco-mode-mint.md)
+  - [About passthrough mode](authentication/managing_cloud_provider_credentials/cco-mode-passthrough.md)
+  - [About manual mode with long-term credentials for components](authentication/managing_cloud_provider_credentials/cco-mode-manual.md)
+  - [About manual mode with short-term credentials for components](authentication/managing_cloud_provider_credentials/cco-short-term-creds.md)
 
 ### Networking
 

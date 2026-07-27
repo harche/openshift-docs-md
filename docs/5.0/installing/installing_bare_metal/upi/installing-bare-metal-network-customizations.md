@@ -102,11 +102,15 @@ For OpenShift Container Platform version 4.22, RHCOS is based on RHEL version 9.
 
 - s390x architecture requires z14 ISA
 
-For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures) (RHEL documentation).
+For more information, see "Architectures".
 
 </div>
 
 If an instance type for your platform meets the minimum requirements for cluster machines, it is supported to use in OpenShift Container Platform.
+
+- [Architectures (RHEL documentation)](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures)
+
+<!-- -->
 
 - [Optimizing storage](../../../scalability_and_performance/optimization/optimizing-storage.xml#optimizing-storage)
 
@@ -2164,24 +2168,24 @@ Because you must manually start the cluster machines, you must generate the Igni
   $ ./openshift-install create ignition-configs --dir <installation_directory>
   ```
 
-  - For `<installation_directory>`, specify the directory name to store the files that the installation program creates.
+  For `<installation_directory>`, specify the directory name to store the files that the installation program creates.
 
-    <div class="important">
+  <div class="important">
 
-    If you created an `install-config.yaml` file, specify the directory that contains it. Otherwise, specify an empty directory. Some installation assets, like bootstrap X.509 certificates have short expiration intervals, so you must not reuse an installation directory. If you want to reuse individual files from another cluster installation, you can copy them into your directory. However, the file names for the installation assets might change between releases. Use caution when copying installation files from an earlier OpenShift Container Platform version.
+  If you created an `install-config.yaml` file, specify the directory that contains it. Otherwise, specify an empty directory. Some installation assets, like bootstrap X.509 certificates have short expiration intervals, so you must not reuse an installation directory. If you want to reuse individual files from another cluster installation, you can copy them into your directory. However, the file names for the installation assets might change between releases. Use caution when copying installation files from an earlier OpenShift Container Platform version.
 
-    </div>
+  </div>
 
-    The following files are generated in the directory:
+  The following files are generated in the directory:
 
-        .
-        ├── auth
-        │   ├── kubeadmin-password
-        │   └── kubeconfig
-        ├── bootstrap.ign
-        ├── master.ign
-        ├── metadata.json
-        └── worker.ign
+      .
+      ├── auth
+      │   ├── kubeadmin-password
+      │   └── kubeconfig
+      ├── bootstrap.ign
+      ├── master.ign
+      ├── metadata.json
+      └── worker.ign
 
 # Installing RHCOS and starting the OpenShift Container Platform bootstrap process
 
@@ -4446,7 +4450,7 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 # Approving the certificate signing requests for your machines
 
-When you add machines to a cluster, two pending certificate signing requests (CSRs) are generated for each machine that you added. You must confirm that these CSRs are approved or, if necessary, approve them yourself. The client requests must be approved first, followed by the server requests.
+When you add machines to a cluster, two pending certificate signing requests (CSRs) are generated for each machine. You must confirm that these CSRs are approved or, if necessary, approve them yourself. The client requests must be approved first, followed by the server requests.
 
 - You added machines to your cluster.
 
@@ -4502,7 +4506,7 @@ When you add machines to a cluster, two pending certificate signing requests (CS
 
     <div class="note">
 
-    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The subsequent serving certificate renewal requests are then automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After the client CSR is approved, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The subsequent serving certificate renewal requests are then automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
 
     </div>
 
@@ -4531,7 +4535,7 @@ When you add machines to a cluster, two pending certificate signing requests (CS
 
       <div class="note">
 
-      Some Operators might not become available until some CSRs are approved. Each node submits two CSRs, so you may need to run the command to approve CSRs multiple times.
+      Some Operators might not become available until some CSRs are approved. Each node submits two CSRs, so you might need to run the command to approve CSRs multiple times.
 
       </div>
 

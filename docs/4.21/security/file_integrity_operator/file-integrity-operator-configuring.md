@@ -1,21 +1,29 @@
+You can configure the Custom File Integrity Operator to meet your cluster requirements.
+
 # Viewing FileIntegrity object attributes
 
-As with any Kubernetes custom resources (CRs), you can run `oc explain fileintegrity`, and then look at the individual attributes using:
+As with any Kubernetes custom resources (CRs), you can run `oc explain fileintegrity`, and then examine the individual attributes.
 
-``` terminal
-$ oc explain fileintegrity.spec
-```
+- View the `FileIntegrity` spec attributes by running the following command:
 
-``` terminal
-$ oc explain fileintegrity.spec.config
-```
+  ``` terminal
+  $ oc explain fileintegrity.spec
+  ```
+
+- View the `FileIntegrity` config attributes by running the following command:
+
+  ``` terminal
+  $ oc explain fileintegrity.spec.config
+  ```
 
 # Important attributes
+
+The following `spec` and `spec.config` attributes are important when configuring a `FileIntegrity` CR.
 
 | Attribute                  | Description                                                                                                                                                                                                                                                                                                                                                                                   |
 |----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `spec.nodeSelector`        | Specifies a map of key-value pairs that labels for a node must match for a cluster to schedule Advanced Intrusion Detection Environment (AIDE) pods on that node. Typically, you can configure only a single key-value pair. For example, `node-role.kubernetes.io/worker: ""` schedules AIDE on all compute nodes, while `node.openshift.io/os_id: "rhel"` schedules AIDE on all RHEL nodes. |
-| `spec.debug`               | A boolean attribute. If set to `true`, the daemon running in the AIDE deamon set’s pods would output extra information.                                                                                                                                                                                                                                                                       |
+| `spec.debug`               | A boolean attribute. If set to `true`, the daemon running in the AIDE daemon set pods would output extra information.                                                                                                                                                                                                                                                                         |
 | `spec.tolerations`         | Specify tolerations to schedule on nodes with custom taints. When not specified, a default toleration is applied, which allows tolerations to run on control plane nodes.                                                                                                                                                                                                                     |
 | `spec.config.gracePeriod`  | The number of seconds to pause in between AIDE integrity checks. Frequent AIDE checks on a node can be resource intensive, so it can be useful to specify a longer interval. Defaults to `900`, or 15 minutes.                                                                                                                                                                                |
 | `maxBackups`               | The maximum number of AIDE database and log backups leftover from the `re-init` process to keep on a node. Older backups beyond this number are automatically pruned by the daemon.                                                                                                                                                                                                           |
@@ -37,6 +45,8 @@ The default File Integrity Operator configuration is stored in a config map with
   ```
 
 # Understanding the default File Integrity Operator configuration
+
+The default configuration for a `FileIntegrity` instance provides coverage for files under key system directories and excludes others.
 
 Below is an excerpt from the `aide.conf` key of the config map:
 
@@ -77,11 +87,11 @@ The following directories are not covered:
 
 # Supplying a custom AIDE configuration
 
-Any entries that configure AIDE internal behavior such as `DBDIR`, `LOGDIR`, `database`, and `database_out` are overwritten by the Operator. The Operator would add a prefix to `/hostroot/` before all paths to be watched for integrity changes. This makes reusing existing AIDE configs that might often not be tailored for a containerized environment and start from the root directory easier.
+Any entries that configure AIDE internal behavior such as `DBDIR`, `LOGDIR`, `database`, and `database_out` are overwritten by the Operator. The Operator adds a prefix to `/hostroot/` before all paths to be watched for integrity changes. As a result, you can reuse existing AIDE configs that might not be tailored for a containerized environment and that start from the root directory.
 
 <div class="note">
 
-`/hostroot` is the directory where the pods running AIDE mount the host’s file system. Changing the configuration triggers a reinitializing of the database.
+`/hostroot` is the directory where the pods running AIDE mount the host file system. Changing the configuration triggers a reinitializing of the database.
 
 </div>
 
@@ -177,3 +187,5 @@ This example focuses on defining a custom configuration for a scanner that runs 
 # Changing the custom File Integrity configuration
 
 To change the File Integrity configuration, never change the generated config map. Instead, change the config map that is linked to the `FileIntegrity` object through the `spec.name`, `namespace`, and `key` attributes.
+
+- Update the config map referenced by the `spec.config` attributes of the `FileIntegrity` object.

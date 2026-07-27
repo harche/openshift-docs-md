@@ -98,11 +98,13 @@ For OpenShift Container Platform version 4.19, RHCOS is based on RHEL version 9.
 
 - s390x architecture requires z14 ISA
 
-For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures) (RHEL documentation).
+For more information, see "Architectures".
 
 </div>
 
 If an instance type for your platform meets the minimum requirements for cluster machines, it is supported to use in OpenShift Container Platform.
+
+- [Architectures (RHEL documentation)](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures)
 
 # Bare-metal cluster installation requirements for OpenShift Virtualization
 
@@ -246,6 +248,12 @@ Red Hat supports any valid host network configuration that meets the documented 
 - Other tools might be supported to perform a specific task. Red Hat does not support these other tools for general network configurations.
 
 </div>
+
+## One IP address for each subnet
+
+For the primary interface, assign one IP address for each subnet. This configuration ensures the node IP address selection handles traffic without experiencing traffic handling issues.
+
+You can assign multiple IP addresses from the same subnet to a single interface, in a process known as *IP aliasing*. However, the node IP address selection process cannot consistently determine which address to use, causing routing conflicts and unpredictable IP selection.
 
 ## Ensuring required ports are open
 

@@ -1,3 +1,5 @@
+Learn about authentication and authorization in OpenShift Container Platform, and how you can control access to your cluster.
+
 # Glossary of common terms for OpenShift Container Platform authentication and authorization
 
 This glossary defines common terms that are used in OpenShift Container Platform authentication and authorization.
@@ -68,7 +70,7 @@ passthrough mode
 In passthrough mode, the Cloud Credential Operator (CCO) passes the provided cloud credential to the components that request cloud credentials.
 
 pod
-A pod is the smallest logical unit in Kubernetes. A pod is comprised of one or more containers to run in a worker node.
+A pod is the smallest logical unit in Kubernetes. A pod consists of one or more containers to run in a worker node.
 
 regular users
 Users that are created automatically in the cluster upon first login or via the API.
@@ -102,7 +104,7 @@ If you do not present a valid access token or certificate, your request is unaut
 
 An administrator can configure authentication through the following tasks:
 
-- Configuring an identity provider: You can define any [supported identity provider in OpenShift Container Platform](../authentication/understanding-identity-provider.xml#supported-identity-providers) and add it to your cluster.
+- Configuring an identity provider: You can define any [supported identity provider in OpenShift Container Platform](../authentication/understanding-identity-provider.xml#supported-identity-providers_understanding-identity-provider) and add it to your cluster.
 
 - [Configuring the internal OAuth server](../authentication/configuring-internal-oauth.xml#configuring-internal-oauth): The OpenShift Container Platform control plane includes a built-in OAuth server that determines the user’s identity from the configured identity provider and creates an access token. You can configure the token duration and inactivity timeout, and customize the internal OAuth server URL.
 

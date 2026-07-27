@@ -490,11 +490,7 @@ When executing `podman` commands as a non-root or non-privileged user, mounting 
 
   </div>
 
-  <div class="formalpara-title">
-
-  **Example failure output**
-
-  </div>
+  In this example failure output, the measured latency is outside the maximum allowed value.
 
   ``` terminal
   running /usr/bin/cnftests -ginkgo.v -ginkgo.focus=oslat
@@ -528,8 +524,6 @@ When executing `podman` commands as a non-root or non-privileged user, mounting 
   --- FAIL: TestTest (161.42s)
   FAIL
   ```
-
-  - In this example, the measured latency is outside the maximum allowed value.
 
 # Generating a latency test failure report
 

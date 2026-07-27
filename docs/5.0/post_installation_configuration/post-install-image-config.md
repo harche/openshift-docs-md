@@ -1,12 +1,12 @@
-You can update the global pull secret for your cluster by either replacing the current pull secret or appending a new pull secret. The procedure is required when users use a separate registry to store images than the registry used during installation. For more information, see [Using image pull secrets](../openshift_images/managing_images/using-image-pull-secrets.xml#using-image-pull-secrets).
+You can update the global pull secret for your cluster by either replacing the current pull secret or appending a new pull secret. The procedure is required when users use a separate registry to store images than the registry used during installation. For more information, see "Using image pull secrets".
 
 For information about images and configuring image streams or image registries, see the following documentation:
 
-- [Overview of images](../openshift_images/index.xml#overview-of-images)
+- Overview of images
 
-- [Image Registry Operator in OpenShift Container Platform](../registry/configuring-registry-operator.xml#configuring-registry-operator)
+- Image Registry Operator in OpenShift Container Platform
 
-- [Configuring image registry settings](../openshift_images/image-configuration.xml#image-configuration)
+- Configuring image registry settings
 
 # Configuring image streams for a disconnected cluster
 
@@ -132,11 +132,11 @@ Clusters using a restricted network must import the default must-gather image to
     $ oc import-image is/must-gather -n openshift
     ```
 
-When running the `oc adm must-gather` command, use the `--image` flag and point to the payload image, as in the following example:
+    When running the `oc adm must-gather` command, use the `--image` flag and point to the payload image, as in the following example:
 
-``` terminal
-$ oc adm must-gather --image=$(oc adm release info --image-for must-gather)
-```
+    ``` terminal
+    $ oc adm must-gather --image=$(oc adm release info --image-for must-gather)
+    ```
 
 # Configuring periodic importing of Cluster Sample Operator image stream tags
 
@@ -217,3 +217,13 @@ You can ensure that you always have access to the latest versions of the Cluster
     Tag: 1.11    Scheduled: true
     Tag: 1.12   Scheduled: true
     ```
+
+# Additional resources
+
+- [Using image pull secrets](../openshift_images/managing_images/using-image-pull-secrets.xml#using-image-pull-secrets)
+
+- [Overview of images](../openshift_images/index.xml#overview-of-images)
+
+- [Image Registry Operator in OpenShift Container Platform](../registry/configuring-registry-operator.xml#configuring-registry-operator)
+
+- [Configuring image registry settings](../openshift_images/image-configuration.xml#image-configuration)

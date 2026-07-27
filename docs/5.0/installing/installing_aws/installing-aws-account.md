@@ -727,7 +727,7 @@ To ensure your cluster operates with the correct security permissions in OpenShi
 
 By default, the installation program creates IAM instance profiles for the bootstrap, control plane, and compute instances with the necessary permissions for the cluster to operate.
 
-The following lists specify the default permissions for control plane and compute machines:
+The following list specifies the default IAM role permissions for control plane instance profiles:
 
 - `ec2:AttachVolume`
 
@@ -805,7 +805,7 @@ The following lists specify the default permissions for control plane and comput
 
 - `kms:DescribeKey`
 
-<!-- -->
+The following list specifies the default IAM permissions for compute instance profiles:
 
 - `ec2:DescribeInstances`
 

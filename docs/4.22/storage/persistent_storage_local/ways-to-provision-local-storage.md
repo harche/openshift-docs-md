@@ -1,3 +1,9 @@
+Local storage provides direct access to disks attached to cluster nodes, delivering lower latency and higher throughput than network-attached or cloud-based storage. Use local storage for performance-sensitive workloads, single-node clusters, or environments without cloud storage infrastructure.
+
+# Overview of local storage options
+
+OpenShift Container Platform provides three solutions for provisioning node-local storage. Each offers different capabilities for dynamic provisioning and topology awareness. Node-local storage binds workloads to specific nodes.
+
 You can use any of the following solutions to provision local storage:
 
 - HostPath Provisioner (HPP)
@@ -12,7 +18,7 @@ These solutions support provisioning only node-local storage. The workloads are 
 
 </div>
 
-# Overview of HostPath Provisioner functionality
+## Overview of HostPath Provisioner functionality
 
 You can perform the following actions using HostPath Provisioner (HPP):
 
@@ -30,7 +36,7 @@ HPP is available in upstream Kubernetes. However, it is not recommended to use H
 
 </div>
 
-# Overview of Local Storage Operator functionality
+## Overview of Local Storage Operator functionality
 
 You can perform the following actions using Local Storage Operator (LSO):
 
@@ -46,7 +52,7 @@ LSO is developed and delivered by Red Hat.
 
 </div>
 
-# Overview of LVM Storage functionality
+## Overview of LVM Storage functionality
 
 You can perform the following actions using Logical Volume Manager (LVM) Storage:
 
@@ -64,7 +70,7 @@ LVM Storage is developed and maintained by Red Hat. The CSI driver provided wit
 
 # Comparison of LVM Storage, LSO, and HPP
 
-The following sections compare the functionalities provided by LVM Storage, Local Storage Operator (LSO), and HostPath Provisioner (HPP) to provision local storage.
+Compare LVM Storage, Local Storage Operator (LSO), and HostPath Provisioner (HPP) across storage types, core features, performance, and isolation to determine the best local storage provisioning solution for your cluster.
 
 ## Comparison of the support for storage types and filesystems
 

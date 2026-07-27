@@ -72,7 +72,7 @@ Modify the following vSphere configuration settings as required:
 
 # Verifying the configuration
 
-The connection configuration process updates operator statuses and control plane nodes. It takes approximately an hour to complete. During the configuration process, the nodes will reboot. Previously bound `PersistentVolumeClaims` objects might become disconnected.
+The connection configuration process updates operator statuses and control plane nodes. It takes approximately an hour to complete. During the configuration process, the nodes reboot. Previously bound `PersistentVolumeClaims` objects might become disconnected.
 
 - You have saved the configuration settings in the **vSphere connection configuration** wizard.
 
@@ -127,4 +127,6 @@ The connection configuration process updates operator statuses and control plane
 
         If you are unable to create a `PersistentVolumeClaims` object, you can troubleshoot by navigating to **Storage** → **PersistentVolumeClaims** in the **Administrator** perspective of the OpenShift Container Platform web console.
 
-For instructions on creating storage objects, see [Dynamic provisioning](../../storage/dynamic-provisioning.xml#dynamic-provisioning).
+# Additional resources
+
+- [Dynamic provisioning](../../storage/dynamic-provisioning.xml#dynamic-provisioning)

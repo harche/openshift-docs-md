@@ -238,15 +238,9 @@ Red Hat recommends you consult Red Hat Support before making changes to the de
 
 8.  Click **Create**. The `ConfigMap` object and configuration information are displayed.
 
-# Insights Operator alerts
+# Viewing Insights Operator alerts
 
 The Insights Operator declares alerts through the Prometheus monitoring system to the Alertmanager. You can view these alerts in the Alerting UI in the OpenShift Container Platform web console.
-
-To view these alerts in the Alerting UI in the OpenShift Container Platform web console, choose one of the following methods:
-
-- In the **Administrator** perspective, click **Observe** → **Alerting**.
-
-- In the **Developer** perspective, click **Observe** → \<project_name\> → **Alerts** tab.
 
 Currently, Insights Operator sends the following alerts when the conditions are met:
 
@@ -257,6 +251,12 @@ Currently, Insights Operator sends the following alerts when the conditions are 
 | `InsightsRecommendationActive`    | Red Hat Lightspeed has an active recommendation for the cluster.         |
 
 Insights Operator alerts
+
+- To view these alerts in the Alerting UI in the OpenShift Container Platform web console, choose one of the following methods:
+
+  - In the **Administrator** perspective, click **Observe** → **Alerting**.
+
+  - In the **Developer** perspective, click **Observe** → \<project_name\> → **Alerts** tab.
 
 ## Disabling Insights Operator alerts
 

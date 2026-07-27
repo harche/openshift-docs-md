@@ -85,7 +85,7 @@ When you configure identity providers, you must configure at least one `NodePool
 
     - `spec.configuration.oauth.identityProviders.openID.clientSecret.name` defines a secret of a client registered with the OpenID provider.
 
-    - `spec.configuration.oauth.identityProviders.openID.issuer` specifies the Issuer Identifier described in the OpenID spec. You must use `https` without query or fragment component. For more information about Issuer Identifiers, see "Issuer Identifier" in the *Additional resources* section.
+    - `spec.configuration.oauth.identityProviders.openID.issuer` specifies the Issuer Identifier described in the OpenID spec. You must use `https` without query or fragment component. For more information about Issuer Identifiers, see "Issuer Identifier".
 
     - `spec.configuration.oauth.identityProviders.mappingMethod` defines a mapping method that controls how mappings are established between identities of this provider and `User` objects.
 
@@ -127,7 +127,7 @@ When you configure identity providers, you must configure at least one `NodePool
 
 - You created your hosted cluster.
 
-1.  Navigate to **Home** → **API Explorer**.
+1.  Go to **Home** → **API Explorer**.
 
 2.  Use the **Filter by kind** box to search for your `HostedCluster` resource.
 
@@ -140,6 +140,10 @@ When you configure identity providers, you must configure at least one `NodePool
 6.  Add the OAuth configuration in the YAML file:
 
     ``` yaml
+    apiVersion: hypershift.openshift.io/v1alpha1
+    kind: HostedCluster
+    metadata:
+      #...
     spec:
       configuration:
         oauth:
@@ -161,21 +165,21 @@ When you configure identity providers, you must configure at least one `NodePool
             type: OpenID
     ```
 
-    - This provider name is prefixed to the value of the identity claim to form an identity name. The provider name is also used to build the redirect URL.
+    - `spec.configuration.oauth.identityProviders.openID` specifies the provider name that is prefixed to the value of the identity claim to form an identity name. The provider name is also used to build the redirect URL.
 
-    - Defines a list of attributes to use as the email address.
+    - `spec.configuration.oauth.identityProviders.openID.claims.email` defines a list of attributes to use as the email address.
 
-    - Defines a list of attributes to use as a display name.
+    - `spec.configuration.oauth.identityProviders.openID.claims.name` defines a list of attributes to use as a display name.
 
-    - Defines a list of attributes to use as a preferred user name.
+    - `spec.configuration.oauth.identityProviders.openID.claims.preferredUsername` defines a list of attributes to use as a preferred user name.
 
-    - Defines the ID of a client registered with the OpenID provider. You must allow the client to redirect to the `https://oauth-openshift.apps.<cluster_name>.<cluster_domain>/oauth2callback/<idp_provider_name>` URL.
+    - `spec.configuration.oauth.identityProviders.openID.clientID` defines the ID of a client registered with the OpenID provider. You must allow the client to redirect to the `https://oauth-openshift.apps.<cluster_name>.<cluster_domain>/oauth2callback/<idp_provider_name>` URL.
 
-    - Defines a secret of a client registered with the OpenID provider.
+    - `spec.configuration.oauth.identityProviders.openID.clientSecret.name` defines a secret of a client registered with the OpenID provider.
 
-    - The [Issuer Identifier](https://openid.net/specs/openid-connect-core-1_0.html#IssuerIdentifier) described in the OpenID spec. You must use `https` without query or fragment component.
+    - `spec.configuration.oauth.identityProviders.openID.issuer` specifies the Issuer Identifier described in the OpenID spec. You must use `https` without query or fragment component. For more information, see "Issuer Identifier".
 
-    - Defines a mapping method that controls how mappings are established between identities of this provider and `User` objects.
+    - `spec.configuration.oauth.identityProviders.mappingMethod` defines a mapping method that controls how mappings are established between identities of this provider and `User` objects.
 
 7.  Click **Save**.
 
@@ -212,6 +216,12 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
 1.  Update your Operator project’s `ClusterServiceVersion` (CSV) object:
 
     1.  Ensure your Operator has RBAC permission to create `CredentialsRequests` objects:
+
+        <div class="formalpara-title">
+
+        **Example `clusterPermissions` list**
+
+        </div>
 
         ``` yaml
         # ...
@@ -254,6 +264,12 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         ```
 
     2.  Ensure you have a `CredentialsRequest` object ready to be patched and applied. For example:
+
+        <div class="formalpara-title">
+
+        **Example `CredentialsRequest` object creation**
+
+        </div>
 
         ``` go
         import (
@@ -303,6 +319,12 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         ```
 
         Alternatively, if you are starting from a `CredentialsRequest` object in YAML form (for example, as part of your Operator project code), you can handle it differently:
+
+        <div class="formalpara-title">
+
+        **Example `CredentialsRequest` object creation in YAML form**
+
+        </div>
 
         ``` go
         // CredentialsRequest is a struct that represents a request for credentials
@@ -370,6 +392,12 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
 
     3.  Add the role ARN and web identity token path to the credentials request and apply it during Operator initialization:
 
+        <div class="formalpara-title">
+
+        **Example applying `CredentialsRequest` object during Operator initialization**
+
+        </div>
+
         ``` go
         // apply CredentialsRequest on install
         credReq := credreq.CredentialsRequestTemplate
@@ -385,6 +413,12 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         ```
 
     4.  Ensure your Operator can wait for a `Secret` object to show up from the CCO, as shown in the following example, which is called along with the other items you are reconciling in your Operator:
+
+        <div class="formalpara-title">
+
+        **Example wait for `Secret` object**
+
+        </div>
 
         ``` go
         // WaitForSecret is a function that takes a Kubernetes client, a namespace, and a v1 "k8s.io/api/core/v1" name as arguments
@@ -424,9 +458,15 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         }
         ```
 
-        - The `timeout` value is based on an estimate of how fast the CCO might detect an added `CredentialsRequest` object and generate a `Secret` object. You might consider lowering the time or creating custom feedback for cluster administrators that could be wondering why the Operator is not yet accessing the cloud resources.
+        The `timeout` value is based on an estimate of how fast the CCO might detect an added `CredentialsRequest` object and generate a `Secret` object. You might consider lowering the time or creating custom feedback for cluster administrators that could be wondering why the Operator is not yet accessing the cloud resources.
 
     5.  Set up the AWS configuration by reading the secret created by the CCO from the credentials request and creating the AWS config file containing the data from that secret:
+
+        <div class="formalpara-title">
+
+        **Example AWS configuration creation**
+
+        </div>
 
         ``` go
         func SharedCredentialsFileFromSecret(secret *corev1.Secret) (string, error) {
@@ -459,6 +499,12 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         </div>
 
     6.  Configure the AWS SDK session, for example:
+
+        <div class="formalpara-title">
+
+        **Example AWS SDK session configuration**
+
+        </div>
 
         ``` go
         sharedCredentialsFile, err := SharedCredentialsFileFromSecret(secret)

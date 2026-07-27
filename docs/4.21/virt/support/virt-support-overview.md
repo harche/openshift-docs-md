@@ -56,7 +56,7 @@ To report a bug, use the Red Hat Issue Router (RHIR), which is available in the 
 
 To report an error or request an enhancement in the documentation, log in to your Red Hat Jira account and submit an issue. If you do not have a Red Hat Jira account, you are prompted to create an account.
 
-1.  Create a Jira issue for OpenShift Virtualization and in the **Component** field, select **CNV Documentation**.
+1.  Create a [Jira issue](https://redhat.atlassian.net/secure/CreateIssueDetails!init.jspa?priority=1003&summary=%5BDoc%5D&pid=10270&issuetype=10016&components=13563) and in the **Component** field, select **CNV Documentation**.
 
 2.  Enter a brief description of the issue in the **Summary**.
 
@@ -94,5 +94,3 @@ Web console pages for monitoring and troubleshooting
 - [Red Hat Issue Router](https://access.redhat.com/labs/rhir/?product=cnv)
 
 - [Red Hat Jira account](https://redhat.atlassian.net/jira)
-
-- [Jira issue tracker for OpenShift Virtualization](https://redhat.atlassian.net/secure/CreateIssueDetails!init.jspa?priority=1003&summary=%5BDoc%5D&pid=10270&issuetype=10016&components=13563)

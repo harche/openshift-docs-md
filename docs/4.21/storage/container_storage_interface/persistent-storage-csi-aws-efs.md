@@ -1,8 +1,10 @@
+You can provision and manage AWS Elastic File System (EFS) storage in OpenShift Container Platform by using the AWS EFS Container Storage Interface (CSI) Driver Operator and driver, which provide dynamic volume provisioning and eliminate the need to pre-provision storage.
+
 # Overview
 
 OpenShift Container Platform is capable of provisioning persistent volumes (PVs) using the Container Storage Interface (CSI) driver for AWS Elastic File Service (EFS).
 
-Familiarity with [persistent storage](../../storage/understanding-persistent-storage.xml#understanding-persistent-storage) and [configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi) is recommended when working with a CSI Operator and driver.
+Familiarity with persistent storage and configuring CSI volumes is recommended when working with a CSI Operator and driver. For more information, see "Understanding persistent storage" and "Configuring CSI volumes".
 
 After installing the AWS EFS CSI Driver Operator, OpenShift Container Platform installs the AWS EFS CSI Operator and the AWS EFS CSI driver by default in the `openshift-cluster-csi-drivers` namespace. This allows the AWS EFS CSI Driver Operator to create CSI-provisioned PVs that mount to AWS EFS assets.
 
@@ -10,13 +12,21 @@ After installing the AWS EFS CSI Driver Operator, OpenShift Container Platform i
 
 - The *AWS EFS CSI driver* enables you to create and mount AWS EFS PVs.
 
+<!-- -->
+
+- [Understanding persistent storage](../../storage/understanding-persistent-storage.xml#understanding-persistent-storage)
+
+- [Configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi)
+
 # About CSI
 
-Storage vendors have traditionally provided storage drivers as part of Kubernetes. With the implementation of the Container Storage Interface (CSI), third-party providers can instead deliver storage plugins using a standard interface without ever having to change the core Kubernetes code.
+The Container Storage Interface (CSI) enables storage vendors to deliver plugins through a standard interface without modifying Kubernetes core code, replacing traditional embedded storage drivers.
 
 CSI Operators give OpenShift Container Platform users storage options, such as volume snapshots, that are not possible with in-tree volume plugins.
 
 # Setting up the AWS EFS CSI Driver Operator
+
+To enable AWS Elastic File System (EFS) storage in your cluster, complete the setup process by obtaining necessary credentials, installing the operator, and installing the driver.
 
 1.  If you are using AWS EFS with AWS Secure Token Service (STS), obtain a role Amazon Resource Name (ARN) for STS. This is required for installing the AWS EFS CSI Driver Operator.
 
@@ -26,21 +36,11 @@ CSI Operators give OpenShift Container Platform users storage options, such as v
 
 ## Obtaining a role Amazon Resource Name for Security Token Service
 
-This procedure explains how to obtain a role Amazon Resource Name (ARN) to configure the AWS EFS CSI Driver Operator with OpenShift Container Platform on AWS Security Token Service (STS).
+To configure the AWS Elastic File System (EFS) Container Storage Interface (CSI) Driver Operator on clusters using Security Token Service (STS), obtain a role Amazon Resource Name (ARN) using the Cloud Credential Operator utility before installation.
 
 <div class="important">
 
 Perform this procedure before you install the AWS EFS CSI Driver Operator (see *Installing the AWS EFS CSI Driver Operator* procedure).
-
-</div>
-
-- Access to the cluster as a user with the cluster-admin role.
-
-- AWS account credentials
-
-<div class="formalpara-title">
-
-**Procedure**
 
 </div>
 
@@ -52,7 +52,9 @@ If you are using One Zone file system, you need to create two `CredentialRequest
 
 </div>
 
-To obtain a role ARN for configuring AWS EFS CSI Driver Operator using STS:
+- Access to the cluster as a user with the cluster-admin role.
+
+- AWS account credentials
 
 1.  Extract the `ccoctl` from the OpenShift Container Platform release image, which you used to install the cluster with STS. For more information, see "Configuring the Cloud Credential Operator utility".
 
@@ -133,7 +135,7 @@ To obtain a role ARN for configuring AWS EFS CSI Driver Operator using STS:
 
 </div>
 
-[Install the AWS EFS CSI Driver Operator](../../storage/container_storage_interface/persistent-storage-csi-aws-efs.xml#persistent-storage-csi-olm-operator-install_persistent-storage-csi-aws-efs).
+Install the AWS EFS CSI Driver Operator. For information, see Inst"alling the AWS EFS CSI Driver Operator".
 
 - [Installing the AWS EFS CSI Driver Operator](../../storage/container_storage_interface/persistent-storage-csi-aws-efs.xml#persistent-storage-csi-olm-operator-install_persistent-storage-csi-aws-efs)
 
@@ -143,17 +145,9 @@ To obtain a role ARN for configuring AWS EFS CSI Driver Operator using STS:
 
 ## Installing the AWS EFS CSI Driver Operator
 
-The AWS EFS CSI Driver Operator (a Red Hat Operator) is not installed in OpenShift Container Platform by default. Use the following procedure to install and configure the AWS EFS CSI Driver Operator in your cluster.
+Install and configure the AWS EFS Container Storage Interface (CSI) Driver Operator to enable AWS EFS storage in your cluster. This Red Hat Operator is not installed by default and requires manual installation.
 
 - Access to the OpenShift Container Platform web console.
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To install the AWS EFS CSI Driver Operator from the web console:
 
 1.  Log in to the web console.
 
@@ -191,11 +185,11 @@ To install the AWS EFS CSI Driver Operator from the web console:
 
 </div>
 
-[Install the AWS EFS CSI Driver](../../storage/container_storage_interface/persistent-storage-csi-aws-efs.xml#persistent-storage-csi-efs-driver-install_persistent-storage-csi-aws-efs).
+Install the AWS EFS CSI Driver.
 
 ## Installing the AWS EFS CSI Driver
 
-After installing the [AWS EFS CSI Driver Operator](https://github.com/openshift/aws-efs-csi-driver-operator) (a Red Hat operator), you install the [AWS EFS CSI driver](https://github.com/openshift/aws-efs-csi-driver).
+After installing the Container Storage Interface (CSI) Driver Operator (a Red Hat operator), you need to install the AWS EFS CSI driver.
 
 - Access to the OpenShift Container Platform web console.
 
@@ -214,6 +208,8 @@ After installing the [AWS EFS CSI Driver Operator](https://github.com/openshift/
       managementState: Managed
     ```
 
+    Where `metadata.name` is the storage provisioner name.
+
 4.  Click **Create**.
 
 5.  Wait for the following Conditions to change to a "True" status:
@@ -224,11 +220,13 @@ After installing the [AWS EFS CSI Driver Operator](https://github.com/openshift/
 
 # Creating the AWS EFS storage class
 
-Storage classes are used to differentiate and delineate storage levels and usages. By defining a storage class, users can obtain dynamically provisioned persistent volumes.
+To enable dynamic provisioning of persistent volumes, create a storage class that defines storage characteristics and allows users to automatically provision volumes on-demand.
 
-The *[AWS EFS CSI Driver Operator](https://github.com/openshift/aws-efs-csi-driver-operator) (a Red Hat operator)*, after being installed, does not create a storage class by default. However, you can manually create the AWS EFS storage class.
+The AWS Elastic File System (EFS) Container Storage Interface (CSI) Driver Operator (a Red Hat operator), after being installed, does not create a storage class by default. However, you can manually create the AWS EFS storage class.
 
 ## Creating the AWS EFS storage class using the console
+
+To enable dynamic provisioning of AWS Elastic File System (EFS) volumes using the console, create a `StorageClass` object that defines file system parameters, permissions, and access point configuration.
 
 1.  In the OpenShift Container Platform web console, click **Storage** → **StorageClasses**.
 
@@ -250,7 +248,9 @@ The *[AWS EFS CSI Driver Operator](https://github.com/openshift/aws-efs-csi-driv
 
 ## Creating the AWS EFS storage class using the CLI
 
-- Create a `StorageClass` object:
+To enable dynamic provisioning of AWS Elastic File System (EFS) volumes by using the command line, create a `StorageClass` object that defines file system parameters, permissions, and access point configuration.
+
+- Create a `StorageClass` object using the following example YAML file:
 
   ``` yaml
   kind: StorageClass
@@ -267,25 +267,25 @@ The *[AWS EFS CSI Driver Operator](https://github.com/openshift/aws-efs-csi-driv
     basePath: "/dynamic_provisioning"
   ```
 
-  - `provisioningMode` must be `efs-ap` to enable dynamic provisioning.
+- `parameters.provisioningMode`: Must be set to `efs-ap` to enable dynamic provisioning.
 
-  - `fileSystemId` must be the ID of the EFS volume created manually.
+- `parameters.fileSystemId`: Must be the ID of the EFS volume created manually.
 
-  - `directoryPerms` is the default permission of the root directory of the volume. In this example, the volume is accessible only by the owner.
+- `parameters.directoryPerms`: Is the default permission of the root directory of the volume. In this example, the volume is accessible only by the owner.
 
-  - `gidRangeStart` and `gidRangeEnd` set the range of POSIX Group IDs (GIDs) that are used to set the GID of the AWS access point. If not specified, the default range is 50000-7000000. Each provisioned volume, and thus AWS access point, is assigned a unique GID from this range.
+- `parameters.gidRangeStart` and `parameters.gidRangeEnd`: Set the range of POSIX Group IDs (GIDs) that are used to set the GID of the AWS access point. If not specified, the default range is 50000-7000000. Each provisioned volume, and thus AWS access point, is assigned a unique GID from this range.
 
-  - `basePath` is the directory on the EFS volume that is used to create dynamically provisioned volumes. In this case, a PV is provisioned as “/dynamic_provisioning/\<random uuid\>” on the EFS volume. Only the subdirectory is mounted to pods that use the PV.
+- `parameters.basePath`: Is the directory on the EFS volume that is used to create dynamically provisioned volumes. In this case, a PV is provisioned as “/dynamic_provisioning/\<random uuid\>” on the EFS volume. Only the subdirectory is mounted to pods that use the PV.
 
-    <div class="note">
+  <div class="note">
 
-    A cluster admin can create several `StorageClass` objects, each using a different EFS volume.
+  A cluster admin can create several `StorageClass` objects, each using a different EFS volume.
 
-    </div>
+  </div>
 
 # AWS EFS CSI cross account support
 
-Cross account support allows you to have an OpenShift Container Platform cluster in one AWS account and mount your file system in another AWS account by using the AWS Elastic File System (EFS) Container Storage Interface (CSI) driver.
+To mount AWS Elastic File System (EFS) volumes across AWS accounts, configure cross-account support that allows your OpenShift Container Platform cluster in one account to access file systems in another account.
 
 - Access to an OpenShift Container Platform cluster with administrator rights
 
@@ -303,19 +303,11 @@ Cross account support allows you to have an OpenShift Container Platform cluster
 
 - Access to `jq` command-line JSON processor.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
 The following procedure explains how to set up:
 
 - OpenShift Container Platform AWS Account A: Contains a Red Hat OpenShift Container Platform cluster v4.16, or later, deployed within a VPC
 
 - AWS Account B: Contains a VPC (including subnets, route tables, and network connectivity). The EFS filesystem will be created in this VPC.
-
-To use AWS EFS across accounts:
 
 1.  Set up the environment:
 
@@ -335,27 +327,27 @@ To use AWS EFS across accounts:
         export AWS_PAGER=""
         ```
 
-        - Cluster name of choice.
+        - `<CLUSTER_NAME>`: Cluster name of choice.
 
-        - AWS region of choice.
+        - `<AWS_REGION>`: AWS region of choice.
 
-        - AWS Account A ID.
+        - `<ACCOUNT_A_ID>`: AWS Account A ID.
 
-        - AWS Account B ID.
+        - `<ACCOUNT_B_ID>`: AWS Account B ID.
 
-        - CIDR range of VPC in Account A.
+        - `<VPC_A_CIDR>`: CIDR range of VPC in Account A.
 
-        - CIDR range of VPC in Account B.
+        - `<VPC_B_CIDR>`: CIDR range of VPC in Account B.
 
-        - VPC ID in Account A (cluster)
+        - `<VPC_A_ID>`: VPC ID in Account A (cluster)
 
-        - VPC ID in Account B (EFS cross account)
+        - `<VPC_B_ID>`: VPC ID in Account B (EFS cross account)
 
-        - Any writeable directory of choice to use to store temporary files.
+        - `<WORKING_DIRECTORY>`: Any writeable directory of choice to use to store temporary files.
 
-        - If your driver is installed in a non-default namespace, change this value.
+        - `CSI_DRIVER_NAMESPACE`: If your driver is installed in a non-default namespace, change this value.
 
-        - Makes AWS CLI output everything directly to stdout.
+        - `AWS_PAGER`: Makes AWS CLI output everything directly to stdout.
 
     2.  Create the working directory by running the following command:
 
@@ -747,9 +739,11 @@ To use AWS EFS across accounts:
 
 # One Zone file systems
 
+You can use AWS Elastic File System (EFS) One Zone file systems to store data redundantly within a single Availability Zone (AZ), offering a lower-cost storage option compared to multi-AZ regional storage.
+
 ## One Zone file systems overview
 
-OpenShift Container Platform supports AWS Elastic File System (EFS) One Zone file system, which is an EFS storage option that stores data redundantly within a single Availability Zone (AZ). This contrasts with the default EFS storage option, which stores data redundantly across multiple AZs within a region.
+AWS Elastic File System (EFS) One Zone contrasts with the default EFS storage option, which stores data redundantly across multiple AZs within a region.
 
 Clusters upgraded from OpenShift Container Platform 4.19 are compatible with the regional EFS volumes.
 
@@ -765,21 +759,15 @@ For Cloud Credential Operator (CCO) Mint mode or Passthrough, no extra configura
 
 ## Setting up One Zone file systems with STS
 
-The following procedure explains how to set up AWS One Zone file systems with Security Token Service (STS):
+Configure separate credential requests and role ARNs for the controller and driver nodes to use AWS Elastic File System (EFS) One Zone file systems with Security Token Service (STS) authentication.
+
+The following procedure explains how to set up AWS One Zone file systems with Security Token Service (STS).
 
 - Access to the cluster as a user with the cluster-admin role.
 
 - AWS account credentials
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To configure One Zone file systems with STS:
-
-1.  Create **two** `CredentialsRequests` in the `credrequests` directory following the procedure under Section *Obtaining a role Amazon Resource Name for Security Token Service*.:
+1.  Create **two** `CredentialsRequests` in the `credrequests` directory following the procedure under Section *Obtaining a role Amazon Resource Name for Security Token Service*:
 
     - For the **controller** `CredentialsRequest`, follow the procedure without any changes.
 
@@ -816,26 +804,28 @@ To configure One Zone file systems with STS:
         - aws-efs-csi-driver-node-sa
       ```
 
-      - Set `metadata.annotations.credentials.openshift.io/role-arns-vars` to `NODE_ROLEARN`.
+      Set `metadata.annotations.credentials.openshift.io/role-arns-vars` to `NODE_ROLEARN`.
 
-        <div class="formalpara-title">
+      <div class="formalpara-title">
 
-        **Example `ccoctl` output**
+      **Example `ccoctl` output**
 
-        </div>
+      </div>
 
-        ``` terminal
-        2025/08/26 14:05:24 Role arn:aws:iam::269733383066:role/my-arn-1-blll6-openshift-cluster-csi-drivers-aws-efs-cloud-cre created
-        2025/08/26 14:05:24 Saved credentials configuration to: /home/my-arn/project/go/src/github.com/openshift/myinst/aws-sts-compact-1/manifests/openshift-cluster-csi-drivers-aws-efs-cloud-credentials-credentials.yaml
-        2025/08/26 14:05:24 Updated Role policy for Role my-arn-1-blll6-openshift-cluster-csi-drivers-aws-efs-cloud-cre
-        2025/08/26 14:05:24 Role arn:aws:iam::269733383066:role/my-arn-1-blll6-openshift-cluster-csi-drivers-node-aws-efs-clou created
-        2025/08/26 14:05:24 Saved credentials configuration to: manifests/openshift-cluster-csi-drivers-node-aws-efs-cloud-credentials-credentials.yaml
-        2025/08/26 14:05:24 Updated Role policy for Role my-arn-1-blll6-openshift-cluster-csi-drivers-node-aws-efs-clou
-        ```
+      ``` terminal
+      2025/08/26 14:05:24 Role arn:aws:iam::269733383066:role/my-arn-1-blll6-openshift-cluster-csi-drivers-aws-efs-cloud-cre created
+      2025/08/26 14:05:24 Saved credentials configuration to: /home/my-arn/project/go/src/github.com/openshift/myinst/aws-sts-compact-1/manifests/openshift-cluster-csi-drivers-aws-efs-cloud-credentials-credentials.yaml
+      2025/08/26 14:05:24 Updated Role policy for Role my-arn-1-blll6-openshift-cluster-csi-drivers-aws-efs-cloud-cre
+      2025/08/26 14:05:24 Role arn:aws:iam::269733383066:role/my-arn-1-blll6-openshift-cluster-csi-drivers-node-aws-efs-clou created
+      2025/08/26 14:05:24 Saved credentials configuration to: manifests/openshift-cluster-csi-drivers-node-aws-efs-cloud-credentials-credentials.yaml
+      2025/08/26 14:05:24 Updated Role policy for Role my-arn-1-blll6-openshift-cluster-csi-drivers-node-aws-efs-clou
+      ```
 
-      - Controller Amazon Resource Name (ARN)
+      In this example:
 
-      - Driver node ARN
+    - The first line shows the Controller Amazon Resource Name (ARN).
+
+    - The fifth line shows the Driver node ARN.
 
 2.  Install the AWS EFS CSI driver using the controller ARN created earlier in this procedure.
 
@@ -853,13 +843,17 @@ To configure One Zone file systems with STS:
     ...
     ```
 
-    - Controller ARN. Already exists.
+    - `ROLEARN` `value` is the Controller ARN, which already exists.
 
-    - Driver node ARN
+    - `NODE_ROLEARN` `value` is the Driver node ARN.
 
 # Dynamic provisioning for Amazon Elastic File Storage
 
-The [AWS EFS CSI driver](https://github.com/openshift/aws-efs-csi-driver) supports a different form of dynamic provisioning than other CSI drivers. It provisions new PVs as subdirectories of a pre-existing EFS volume. The PVs are independent of each other. However, they all share the same EFS volume. When the volume is deleted, all PVs provisioned out of it are deleted too. The EFS CSI driver creates an AWS Access Point for each such subdirectory. Due to AWS AccessPoint limits, you can only dynamically provision 1000 PVs from a single `StorageClass`/EFS volume.
+To dynamically provision persistent volumes (PVs) as subdirectories of an existing Elastic File System (EFS) volume, create persistent volume claims (PVCs) referencing your EFS storage class to enable multiple independent volumes sharing the same resource.
+
+The AWS EFS Container Storage Interface (CSI) driver supports a different form of dynamic provisioning than other CSI drivers. It provisions new PVs as subdirectories of a pre-existing EFS volume. The PVs are independent of each other. However, they all share the same EFS volume. When the volume is deleted, all PVs provisioned out of it are deleted too.
+
+The EFS CSI driver creates an AWS Access Point for each such subdirectory. Due to AWS AccessPoint limits, you can only dynamically provision 1000 PVs from a single `StorageClass`/EFS volume.
 
 <div class="important">
 
@@ -871,17 +865,13 @@ Using monitoring of EFS volume sizes in AWS is strongly recommended.
 
 </div>
 
+If you have problems setting up dynamic provisioning, see *AWS EFS troubleshooting*.
+
 - You have created Amazon Elastic File Storage (Amazon EFS) volumes.
 
 - You have created the AWS EFS storage class.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To enable dynamic provisioning:
+<!-- -->
 
 - Create a PVC (or StatefulSet or Template) as usual, referring to the `StorageClass` created previously.
 
@@ -899,13 +889,19 @@ To enable dynamic provisioning:
         storage: 5Gi
   ```
 
-If you have problems setting up dynamic provisioning, see [AWS EFS troubleshooting](../../storage/container_storage_interface/persistent-storage-csi-aws-efs.xml#efs-troubleshooting_persistent-storage-csi-aws-efs).
+<!-- -->
+
+- [AWS EFS CSI driver](https://github.com/openshift/aws-efs-csi-driver)
+
+<!-- -->
 
 - [Creating the AWS EFS storage class](../../storage/container_storage_interface/persistent-storage-csi-aws-efs.xml#storage-create-storage-class_persistent-storage-csi-aws-efs)
 
 # Creating static PVs with Amazon Elastic File Storage
 
-It is possible to use an Amazon Elastic File Storage (Amazon EFS) volume as a single PV without any dynamic provisioning. The whole volume is mounted to pods.
+To mount an entire Amazon Elastic File Storage (EFS) volume as a single persistent volume without dynamic provisioning, create a static persistent volume (PV) that allows pods to access the full volume.
+
+If you have problems setting up static PVs, see "AWS EFS troubleshooting".
 
 - You have created Amazon EFS volumes.
 
@@ -933,29 +929,29 @@ It is possible to use an Amazon Elastic File Storage (Amazon EFS) volume as a si
         encryptInTransit: "false"
   ```
 
-  - `spec.capacity` does not have any meaning and is ignored by the CSI driver. It is used only when binding to a PVC. Applications can store any amount of data to the volume.
+- `spec.capacity` does not have any meaning and is ignored by the CSI driver. It is used only when binding to a PVC. Applications can store any amount of data to the volume.
 
-  - `volumeHandle` must be the same ID as the EFS volume you created in AWS. If you are providing your own access point, `volumeHandle` should be `<EFS volume ID>::<access point ID>`. For example: `fs-6e633ada::fsap-081a1d293f0004630`.
+- `spec.csi.volumeHandle` must be the same ID as the EFS volume you created in AWS. If you are providing your own access point, `volumeHandle` should be `<EFS volume ID>::<access point ID>`. For example: `fs-6e633ada::fsap-081a1d293f0004630`.
 
-  - If desired, you can disable encryption in transit. Encryption is enabled by default.
-
-If you have problems setting up static PVs, see [AWS EFS troubleshooting](../../storage/container_storage_interface/persistent-storage-csi-aws-efs.xml#efs-troubleshooting_persistent-storage-csi-aws-efs).
+- `spec.csi.volumeAttributes.encryptInTransit`: If desired, you can disable encryption in transit. Encryption is enabled by default.
 
 # Amazon Elastic File Storage security
 
-The following information is important for Amazon Elastic File Storage (Amazon EFS) security.
+When using Amazon Elastic File Storage (EFS) with access points, understand that file permissions are controlled by the access point rather than Kubernetes FSGroup settings, allowing any pod with access to read all files.
 
-When using access points, for example, by using dynamic provisioning as described earlier, Amazon automatically replaces GIDs on files with the GID of the access point. In addition, EFS considers the user ID, group ID, and secondary group IDs of the access point when evaluating file system permissions. EFS ignores the NFS client’s IDs. For more information about access points, see <https://docs.aws.amazon.com/efs/latest/ug/efs-access-points.html>.
+When using access points, for example, by using dynamic provisioning as described earlier, Amazon automatically replaces GIDs on files with the GID of the access point. In addition, EFS considers the user ID, group ID, and secondary group IDs of the access point when evaluating file system permissions. EFS ignores the NFS client’s IDs. For more information about access points, see "Working with access points".
 
 As a consequence, EFS volumes silently ignore FSGroup; OpenShift Container Platform is not able to replace the GIDs of files on the volume with FSGroup. Any pod that can access a mounted EFS access point can access any file on it.
 
-Unrelated to this, encryption in transit is enabled by default. For more information, see <https://docs.aws.amazon.com/efs/latest/ug/encryption-in-transit.html>.
+Unrelated to this, encryption in transit is enabled by default. For more information, see "Encrypting data in transit".
+
+- [Working with access points](https://docs.aws.amazon.com/efs/latest/ug/efs-access-points.html)
+
+- [Encrypting data in transit](https://docs.aws.amazon.com/efs/latest/ug/encryption-in-transit.html)
 
 # AWS EFS storage CSI usage metrics
 
-## Usage metrics overview
-
-Amazon Web Services (AWS) Elastic File Service (EFS) storage Container Storage Interface (CSI) usage metrics allow you to monitor how much space is used by either dynamically or statically provisioned EFS volumes.
+Amazon Web Services (AWS) Elastic File System (EFS) storage Container Storage Interface (CSI) usage metrics allow you to monitor how much space is used by either dynamically or statically provisioned EFS volumes.
 
 <div class="important">
 
@@ -965,9 +961,11 @@ This features is disabled by default, because turning on metrics can lead to per
 
 The AWS EFS usage metrics feature collects volume metrics in the AWS EFS CSI Driver by recursively walking through the files in the volume. Because this effort can degrade performance, administrators must explicitly enable this feature.
 
-## Enabling usage metrics using the web console
+## Enabling or disabling usage metrics using the web console
 
-To enable Amazon Web Services (AWS) Elastic File Service (EFS) Storage Container Storage Interface (CSI) usage metrics using the web console:
+To monitor Elastic File System (EFS) volume space consumption through the web console, enable usage metrics by configuring the `ClusterCSIDriver` resource with recursive walk parameters.
+
+- Access to an OpenShift Container Platform cluster with administrator rights
 
 1.  Click **Administration** \> **CustomResourceDefinitions**.
 
@@ -977,27 +975,29 @@ To enable Amazon Web Services (AWS) Elastic File Service (EFS) Storage Container
 
 4.  Click the **YAML** tab.
 
-5.  Under `spec.aws.efsVolumeMetrics.state`, set the value to `RecursiveWalk`.
+5.  Under `spec.aws.efsVolumeMetrics.state`:
 
-    `RecursiveWalk` indicates that volume metrics collection in the AWS EFS CSI Driver is performed by recursively walking through the files in the volume.
+    - **Enable** metrics: Set the value to `RecursiveWalk`. RecursiveWalk\` indicates that volume metrics collection in the AWS EFS CSI Driver is performed by recursively walking through the files in the volume.
 
-    <div class="formalpara-title">
+    - **Disable** metrics: set the value to `Disabled`.
 
-    **Example ClusterCSIDriver efs.csi.aws.com YAML file**
+      <div class="formalpara-title">
 
-    </div>
+      **Example ClusterCSIDriver efs.csi.aws.com YAML file**
 
-    ``` yaml
-    spec:
-        driverConfig:
-            driverType: AWS
-            aws:
-                efsVolumeMetrics:
-                  state: RecursiveWalk
-                  recursiveWalk:
-                    refreshPeriodMinutes: 100
-                    fsRateLimit: 10
-    ```
+      </div>
+
+      ``` yaml
+      spec:
+          driverConfig:
+              driverType: AWS
+              aws:
+                  efsVolumeMetrics:
+                    state: RecursiveWalk
+                    recursiveWalk:
+                      refreshPeriodMinutes: 100
+                      fsRateLimit: 10
+      ```
 
 6.  Optional: To define how the recursive walk operates, you can also set the following fields:
 
@@ -1007,43 +1007,45 @@ To enable Amazon Web Services (AWS) Elastic File Service (EFS) Storage Container
 
 7.  Click **Save**.
 
-<div class="note">
+## Enabling or disabling usage metrics using the CLI
 
-To **disable** AWS EFS CSI usage metrics, use the preceding procedure, but for `spec.aws.efsVolumeMetrics.state`, change the value from `RecursiveWalk` to `Disabled`.
+To monitor Elastic File System (EFS) volume space consumption through the command-line interface, enable usage metrics by configuring the `ClusterCSIDriver` resource with recursive walk parameters.
 
-</div>
+You can also disable usage metrics as needed.
 
-## Enabling usage metrics using the CLI
+- Access to an OpenShift Container Platform cluster with administrator rights
 
-To enable Amazon Web Services (AWS) Elastic File Service (EFS) storage Container Storage Interface (CSI) usage metrics using the CLI:
+- Access to OpenShift Container Platform CLI (`oc`)
 
-1.  Edit ClusterCSIDriver by running the following command:
+1.  Edit `ClusterCSIDriver` by running the following command:
 
     ``` terminal
     $ oc edit clustercsidriver efs.csi.aws.com
     ```
 
-2.  Under `spec.aws.efsVolumeMetrics.state`, set the value to `RecursiveWalk`.
+2.  Under `spec.aws.efsVolumeMetrics.state`:
 
-    `RecursiveWalk` indicates that volume metrics collection in the AWS EFS CSI Driver is performed by recursively walking through the files in the volume.
+    - **Enable** metrics: Set the value to `RecursiveWalk`. `RecursiveWalk` indicates that volume metrics collection in the AWS EFS CSI Driver is performed by recursively walking through the files in the volume.
 
-    <div class="formalpara-title">
+    - **Disable** metrics: set the value to `Disabled`.
 
-    **Example ClusterCSIDriver efs.csi.aws.com YAML file**
+      <div class="formalpara-title">
 
-    </div>
+      **Example ClusterCSIDriver efs.csi.aws.com YAML file**
 
-    ``` yaml
-    spec:
-        driverConfig:
-            driverType: AWS
-            aws:
-                efsVolumeMetrics:
-                  state: RecursiveWalk
-                  recursiveWalk:
-                    refreshPeriodMinutes: 100
-                    fsRateLimit: 10
-    ```
+      </div>
+
+      ``` yaml
+      spec:
+          driverConfig:
+              driverType: AWS
+              aws:
+                  efsVolumeMetrics:
+                    state: RecursiveWalk
+                    recursiveWalk:
+                      refreshPeriodMinutes: 100
+                      fsRateLimit: 10
+      ```
 
 3.  Optional: To define how the recursive walk operates, you can also set the following fields:
 
@@ -1053,13 +1055,9 @@ To enable Amazon Web Services (AWS) Elastic File Service (EFS) storage Container
 
 4.  Save the changes to the `efs.csi.aws.com` object.
 
-<div class="note">
-
-To **disable** AWS EFS CSI usage metrics, use the preceding procedure, but for `spec.aws.efsVolumeMetrics.state`, change the value from `RecursiveWalk` to `Disabled`.
-
-</div>
-
 # Amazon Elastic File Storage troubleshooting
+
+To diagnose and resolve AWS Elastic File System (EFS) issues, use these troubleshooting steps including gathering logs, checking operator status, and verifying network connectivity.
 
 The following information provides guidance on how to troubleshoot issues with Amazon Elastic File Storage (Amazon EFS):
 
@@ -1093,29 +1091,29 @@ The following information provides guidance on how to troubleshoot issues with A
     Warning  FailedMount  10s    kubelet            Unable to attach or mount volumes: unmounted volumes=[persistent-storage], unattached volumes=[persistent-storage kube-api-access-9j477]: timed out waiting for the condition
   ```
 
-  - Warning message indicating volume not mounted.
+  The text `error: code = DeadlineExceeded desc = context deadline exceeded` is a warning message indicating that the volume is not mounted.
 
-    This error is frequently caused by AWS dropping packets between an OpenShift Container Platform node and Amazon EFS.
+  This error is frequently caused by AWS dropping packets between an OpenShift Container Platform node and Amazon EFS.
 
-    Check that the following are correct:
+  Check that the following are correct:
 
-    - AWS firewall and Security Groups
+  - AWS firewall and Security Groups
 
-    - Networking: port number and IP addresses
+  - Networking: port number and IP addresses
 
 # Uninstalling the AWS EFS CSI Driver Operator
 
-All EFS PVs are inaccessible after uninstalling the [AWS EFS CSI Driver Operator](https://github.com/openshift/aws-efs-csi-driver-operator) (a Red Hat operator).
+To remove the AWS EFS Container Storage Interface (CSI) Driver Operator and free cluster resources, uninstall the operator after stopping applications and deleting persistent volumes (PVs).
 
-- Access to the OpenShift Container Platform web console.
+All EFS PVs are inaccessible after uninstalling the AWS EFS CSI Driver Operator (a Red Hat operator).
 
-<div class="formalpara-title">
+<div class="note">
 
-**Procedure**
+Before you can destroy a cluster (`openshift-install destroy cluster`), you must delete the EFS volume in AWS. An OpenShift Container Platform cluster cannot be destroyed when there is an EFS volume that uses the cluster’s VPC. Amazon does not allow deletion of such a VPC.
 
 </div>
 
-To uninstall the AWS EFS CSI Driver Operator from the web console:
+- Access to the OpenShift Container Platform web console.
 
 1.  Log in to the web console.
 
@@ -1127,7 +1125,7 @@ To uninstall the AWS EFS CSI Driver Operator from the web console:
 
     2.  Select each PVC that is in use by the AWS EFS CSI Driver Operator, click the drop-down menu on the far right of the PVC, and then click **Delete PersistentVolumeClaims**.
 
-4.  Uninstall the [AWS EFS CSI driver](https://github.com/openshift/aws-efs-csi-driver):
+4.  Uninstall the AWS EFS CSI driver:
 
     <div class="note">
 
@@ -1152,12 +1150,6 @@ To uninstall the AWS EFS CSI Driver Operator from the web console:
     4.  When prompted on the **Uninstall Operator** window, click the **Uninstall** button to remove the Operator from the namespace. Any applications deployed by the Operator on the cluster need to be cleaned up manually.
 
         After uninstalling, the AWS EFS CSI Driver Operator is no longer listed in the **Installed Operators** section of the web console.
-
-<div class="note">
-
-Before you can destroy a cluster (`openshift-install destroy cluster`), you must delete the EFS volume in AWS. An OpenShift Container Platform cluster cannot be destroyed when there is an EFS volume that uses the cluster’s VPC. Amazon does not allow deletion of such a VPC.
-
-</div>
 
 # Additional resources
 

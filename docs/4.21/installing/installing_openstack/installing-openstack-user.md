@@ -40,7 +40,7 @@ If your cluster cannot have direct internet access, you can perform a restricted
 
 # Resource guidelines for installing OpenShift Container Platform on RHOSP
 
-To support an OpenShift Container Platform installation, your Red Hat OpenStack Platform (RHOSP) quota must meet the following requirements:
+To support an OpenShift Container Platform installation, your Red Hat OpenStack Platform (RHOSP) quota must meet certain requirements.
 
 | Resource              | Value                                                                 |
 |-----------------------|-----------------------------------------------------------------------|
@@ -154,7 +154,7 @@ These instructions assume that you are using Red Hat Enterprise Linux (RHEL) 8.
 
 - Python 3 is installed on your machine.
 
-1.  On a command line, add the repositories:
+1.  On a command line, add the following repositories:
 
     1.  Register with Red Hat Subscription Manager:
 
@@ -467,7 +467,7 @@ If the Neutron trunk service plugin is enabled, a trunk port is created by defau
 
 </div>
 
-# Enabling access to the environment
+# Access to the environment
 
 At deployment, all OpenShift Container Platform machines are created in a Red Hat OpenStack Platform (RHOSP)-tenant network. Therefore, they are not accessible directly in most RHOSP deployments.
 
@@ -530,42 +530,44 @@ Create floating IP (FIP) addresses for external access to the OpenShift Containe
 
     - `os_ingress_fip`
 
-If you use these values, you must also enter an external network as the value of the `os_external_network` variable in the `inventory.yaml` file.
+    If you use these values, you must also enter an external network as the value of the `os_external_network` variable in the `inventory.yaml` file.
 
-<div class="tip">
+    \+
 
-You can make OpenShift Container Platform resources available outside of the cluster by assigning a floating IP address and updating your firewall configuration.
+    <div class="tip">
 
-</div>
+    You can make OpenShift Container Platform resources available outside of the cluster by assigning a floating IP address and updating your firewall configuration.
+
+    </div>
 
 ## Completing installation without floating IP addresses
 
 You can install OpenShift Container Platform on Red Hat OpenStack Platform (RHOSP) without providing floating IP addresses.
 
-In the `inventory.yaml` file, do not define the following variables:
+1.  In the `inventory.yaml` file, do not define the following variables:
 
-- `os_api_fip`
+    - `os_api_fip`
 
-- `os_bootstrap_fip`
+    - `os_bootstrap_fip`
 
-- `os_ingress_fip`
+    - `os_ingress_fip`
 
-If you cannot provide an external network, you can also leave `os_external_network` blank. If you do not provide a value for `os_external_network`, a router is not created for you, and, without additional action, the installer will fail to retrieve an image from Glance. Later in the installation process, when you create network resources, you must configure external connectivity on your own.
+2.  If you cannot provide an external network, you can also leave `os_external_network` blank. If you do not provide a value for `os_external_network`, a router is not created for you, and, without additional action, the installer will fail to retrieve an image from Glance. Later in the installation process, when you create network resources, you must configure external connectivity on your own.
 
-If you run the installer with the `wait-for` command from a system that cannot reach the cluster API due to a lack of floating IP addresses or name resolution, installation fails. To prevent installation failure in these cases, you can use a proxy network or run the installer from a system that is on the same network as your machines.
+3.  If you run the installer with the `wait-for` command from a system that cannot reach the cluster API due to a lack of floating IP addresses or name resolution, installation fails. To prevent installation failure in these cases, you can use a proxy network or run the installer from a system that is on the same network as your machines.
 
-<div class="note">
+    <div class="note">
 
-You can enable name resolution by creating DNS records for the API and Ingress ports. For example:
+    You can enable name resolution by creating DNS records for the API and Ingress ports. For example:
 
-``` dns
-api.<cluster_name>.<base_domain>.  IN  A  <api_port_IP>
-*.apps.<cluster_name>.<base_domain>. IN  A <ingress_port_IP>
-```
+    ``` dns
+    api.<cluster_name>.<base_domain>.  IN  A  <api_port_IP>
+    *.apps.<cluster_name>.<base_domain>. IN  A <ingress_port_IP>
+    ```
 
-If you do not control the DNS server, you can add the record to your `/etc/hosts` file. This action makes the API accessible to only you, which is not suitable for production deployment but does allow installation for development and testing.
+    If you do not control the DNS server, you can add the record to your `/etc/hosts` file. This action makes the API accessible to only you, which is not suitable for production deployment but does allow installation for development and testing.
 
-</div>
+    </div>
 
 # Defining parameters for the installation program
 
@@ -573,7 +575,7 @@ The OpenShift Container Platform installation program relies on a file that is c
 
 1.  Create the `clouds.yaml` file:
 
-    - If your RHOSP distribution includes the Horizon web UI, generate a `clouds.yaml` file in it.
+    - If your RHOSP distribution includes the Horizon web UI, generate a `clouds.yaml` file.
 
       <div class="important">
 
@@ -617,7 +619,7 @@ The OpenShift Container Platform installation program relies on a file that is c
 
         <div class="tip">
 
-        After you run the installer with a custom CA certificate, you can update the certificate by editing the value of the `ca-cert.pem` key in the `cloud-provider-config` keymap. On a command line, run:
+        After you run the installation program with a custom CA certificate, you can update the certificate by editing the value of the `ca-cert.pem` key in the `cloud-provider-config` keymap. You can then enter the following command:
 
         ``` terminal
         $ oc edit configmap -n openshift-config cloud-provider-config
@@ -1666,7 +1668,7 @@ After standing up the control plane, create compute machines. Red Hat provides a
 
 # Approving the certificate signing requests for your machines
 
-When you add machines to a cluster, two pending certificate signing requests (CSRs) are generated for each machine that you added. You must confirm that these CSRs are approved or, if necessary, approve them yourself. The client requests must be approved first, followed by the server requests.
+When you add machines to a cluster, two pending certificate signing requests (CSRs) are generated for each machine. You must confirm that these CSRs are approved or, if necessary, approve them yourself. The client requests must be approved first, followed by the server requests.
 
 - You added machines to your cluster.
 
@@ -1722,7 +1724,7 @@ When you add machines to a cluster, two pending certificate signing requests (CS
 
     <div class="note">
 
-    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The subsequent serving certificate renewal requests are then automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After the client CSR is approved, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The subsequent serving certificate renewal requests are then automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
 
     </div>
 

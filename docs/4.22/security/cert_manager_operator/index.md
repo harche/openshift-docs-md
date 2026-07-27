@@ -32,17 +32,17 @@ To configure certificate authorities for your cluster, review the issuer provide
 
 - Self-signed
 
-- [Vault](https://cert-manager.io/docs/configuration/vault/)
+- Vault
 
-- [Venafi](https://cert-manager.io/docs/configuration/venafi/)
+- Venafi
 
-- [Nokia NetGuard Certificate Manager](https://www.nokia.com/networks/security-portfolio/netguard/certificate-manager/) (NCM)
+- Nokia NetGuard Certificate Manager (NCM)
 
-- [Google cloud Certificate Authority Service](https://cloud.google.com/security/products/certificate-authority-service) (Google CAS)
+- Google Cloud Certificate Authority Service (Google CAS)
 
 <div class="note">
 
-OpenShift Container Platform does not test all factors associated with third-party cert-manager Operator for Red Hat OpenShift provider functionality. For more information about third-party support, see the [OpenShift Container Platform third-party support policy](https://access.redhat.com/third-party-software-support).
+OpenShift Container Platform does not test all factors associated with third-party cert-manager Operator for Red Hat OpenShift provider functionality. For more information about third-party support, see "OpenShift Container Platform third-party support policy" in Additional resources.
 
 </div>
 
@@ -80,4 +80,14 @@ To enable FIPS mode, you must install cert-manager Operator for Red Hat OpenShif
 
 - [Installing a cluster in FIPS mode](../../installing/overview/installing-fips.xml#installing-fips-mode_installing-fips)
 
-- [Do you need extra security for your cluster?](../../installing/overview/installing-preparing.xml#installing-preparing-security)
+- [Do you need extra security for your cluster?](../../installing/overview/installing-preparing.xml#installing-preparing-security_installing-preparing)
+
+- [Vault](https://cert-manager.io/docs/configuration/vault/)
+
+- [Venafi](https://cert-manager.io/docs/configuration/venafi/)
+
+- [Nokia NetGuard Certificate Manager](https://www.nokia.com/networks/security-portfolio/netguard/certificate-manager/)
+
+- [Google Cloud Certificate Authority Service](https://cloud.google.com/security/products/certificate-authority-service)
+
+- [OpenShift Container Platform third-party support policy](https://access.redhat.com/third-party-software-support)

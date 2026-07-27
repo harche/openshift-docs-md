@@ -1,10 +1,10 @@
-The Cloud Credential Operator (CCO) `Upgradable` status for a cluster with manually maintained credentials is `False` by default.
+Before you update a cluster that uses manually maintained credentials, accommodate any new or changed cloud provider credentials in the target release. This preparation ensures the Cloud Credential Operator (CCO) does not block the upgrade.
 
-- For minor releases, for example, from 4.12 to 4.13, this status prevents you from updating until you have addressed any updated permissions and annotated the `CloudCredential` resource to indicate that the permissions are updated as needed for the next version. This annotation changes the `Upgradable` status to `True`.
+The CCO `Upgradeable` status for a cluster with manually maintained credentials is `False` by default.
+
+- For minor releases, for example, from 4.12 to 4.13, this status prevents you from updating until you have addressed any updated permissions and annotated the `CloudCredential` resource to indicate that the permissions are updated as needed for the next version. This annotation changes the `Upgradeable` status to `True`.
 
 - For z-stream releases, for example, from 4.13.0 to 4.13.1, no permissions are added or changed, so the update is not blocked.
-
-Before updating a cluster with manually maintained credentials, you must accommodate any new or changed credentials in the release image for the version of OpenShift Container Platform you are updating to.
 
 # Update requirements for clusters with manually maintained credentials
 
@@ -73,7 +73,9 @@ The required update process depends on the mode that the cluster is configured t
 
 ## Determining the Cloud Credential Operator mode by using the web console
 
-Determine the Cloud Credential Operator (CCO) mode by using the web console. Before you perform upgrades or troubleshoot, ensure you understand your cluster’s credential management configuration.
+You can determine what mode the Cloud Credential Operator (CCO) is configured to use by using the web console.
+
+Before you perform upgrades or troubleshoot, ensure you understand your cluster’s credential management configuration.
 
 <div class="note">
 
@@ -146,33 +148,13 @@ Only Amazon Web Services (AWS), global Microsoft Azure, and Google Cloud cluster
 
         - An empty value (`''`) indicates that the cluster is using the CCO in manual mode but was not configured using the `ccoctl` utility.
 
-- If you are updating a cluster that has the CCO operating in mint or passthrough mode and the root secret is present, you do not need to update any cloud provider resources and can continue to the next part of the update process.
-
-- If your cluster is using the CCO in mint mode with the root secret removed, you must reinstate the credential secret with the administrator-level credential before continuing to the next part of the update process.
-
-- If your cluster was configured using the CCO utility (`ccoctl`), you must take the following actions:
-
-  1.  Extract and prepare the `CredentialsRequest` custom resources (CRs) for the new release.
-
-  2.  Configure the `ccoctl` utility for the new release and use it to update the cloud provider resources.
-
-  3.  Update the `upgradeable-to` annotation to indicate that the cluster is ready to update.
-
-- If your cluster is using the CCO in manual mode but was not configured using the `ccoctl` utility, you must take the following actions:
-
-  1.  Extract and prepare the `CredentialsRequest` custom resources (CRs) for the new release.
-
-  2.  Manually update the cloud provider resources for the new release.
-
-  3.  Update the `upgradeable-to` annotation to indicate that the cluster is ready to update.
-
-<!-- -->
-
 - [Extracting and preparing credentials request resources](../../updating/preparing_for_updates/preparing-manual-creds-update.xml#cco-ccoctl-upgrading-extracting_preparing-manual-creds-update)
 
 ## Determining the Cloud Credential Operator mode by using the CLI
 
-Determine the Cloud Credential Operator (CCO) mode by querying the cluster with the CLI. Before you perform upgrades or troubleshoot, ensure you understand your cluster’s credential management configuration.
+You can determine what mode the Cloud Credential Operator (CCO) is configured to use by using the CLI.
+
+Before you perform upgrades or troubleshoot, ensure you understand your cluster’s credential management configuration.
 
 <div class="note">
 
@@ -237,6 +219,10 @@ Only Amazon Web Services (AWS), global Microsoft Azure, and Google Cloud cluster
     - An output of a URL that is associated with your cloud provider indicates that the CCO is using manual mode with short-term credentials for components. These clusters are configured using the `ccoctl` utility to create and manage cloud credentials from outside of the cluster.
 
     - An empty output indicates that the cluster is using the CCO in manual mode but was not configured using the `ccoctl` utility.
+
+## Determining the next steps in the update
+
+After you determine the Cloud Credential Operator mode, it is important to understand how to proceed with the update.
 
 - If you are updating a cluster that has the CCO operating in mint or passthrough mode and the root secret is present, you do not need to update any cloud provider resources and can continue to the next part of the update process.
 
@@ -505,32 +491,58 @@ On AWS clusters, some `ccoctl` commands make AWS API calls to create or modify A
 
 3.  Use the `ccoctl` tool to process all `CredentialsRequest` objects by running the command for your cloud provider. The following commands process `CredentialsRequest` objects:
 
+    <div class="formalpara-title">
+
+    **Amazon Web Services (AWS)**
+
+    </div>
+
     ``` terminal
     $ ccoctl aws create-all \
       --name=<name> \
       --region=<aws_region> \
       --credentials-requests-dir=<path_to_credentials_requests_directory> \
       --output-dir=<path_to_ccoctl_output_dir> \
-      --public-key-file=<path_to_ccoctl_output_dir>/serviceaccount-signer.public \
+      --public-key-file= \
+      <path_to_ccoctl_output_dir>/serviceaccount-signer.public \
       --create-private-s3-bucket \
       --permissions-boundary-arn=<policy_arn>
     ```
 
-    - To create the AWS resources individually, use the "Creating AWS resources individually" procedure in the "Installing a cluster on AWS with customizations" content. This option might be useful if you need to review the JSON files that the `ccoctl` tool creates before modifying AWS resources, or if the process the `ccoctl` tool uses to create AWS resources automatically does not meet the requirements of your organization.
+    where:
 
-    - Specify the name used to tag any cloud resources that are created for tracking.
+    `<name>`
+    Specifies the name used to tag any cloud resources that are created for tracking.
 
-    - Specify the AWS region in which cloud resources will be created.
+    `<aws_region>`
+    Specifies the AWS region in which cloud resources will be created.
 
-    - Specify the directory containing the files for the component `CredentialsRequest` objects.
+    `<path_to_credentials_requests_directory>`
+    Specifies the directory containing the files for the component `CredentialsRequest` objects.
 
-    - Specify the path to the output directory.
+    `<path_to_ccoctl_output_dir>`
+    Specifies the path to the output directory. For `--public-key-file`, this directory contains the `serviceaccount-signer.public` file that you extracted from the cluster.
 
-    - Specify the path to the `serviceaccount-signer.public` file that you extracted from the cluster.
+    `<policy_arn>`
+    Optional: Specifies the Amazon Resource Name (ARN) of the AWS IAM policy to use as the permissions boundary for the IAM roles created by the `ccoctl` utility.
 
-    - Optional: By default, the `ccoctl` utility stores the OpenID Connect (OIDC) configuration files in a public S3 bucket and uses the S3 URL as the public OIDC endpoint. To store the OIDC configuration in a private S3 bucket that is accessed by the IAM identity provider through a public CloudFront distribution URL instead, use the `--create-private-s3-bucket` parameter.
+    <div class="note">
 
-    - Optional: Specify the Amazon Resource Name (ARN) of the AWS IAM policy to use as the permissions boundary for the IAM roles created by the `ccoctl` utility.
+    By default, the `ccoctl` utility stores the OpenID Connect (OIDC) configuration files in a public S3 bucket and uses the S3 URL as the public OIDC endpoint. To store the OIDC configuration in a private S3 bucket that is accessed by the IAM identity provider through a public CloudFront distribution URL instead, use the `--create-private-s3-bucket` parameter. This is an optional parameter.
+
+    </div>
+
+    <div class="note">
+
+    To create the AWS resources individually, use the "Creating AWS resources individually" procedure in the "Installing a cluster on AWS with customizations" content. This option might be useful if you need to review the JSON files that the `ccoctl` tool creates before modifying AWS resources, or if the process the `ccoctl` tool uses to create AWS resources automatically does not meet the requirements of your organization.
+
+    </div>
+
+    <div class="formalpara-title">
+
+    **Google Cloud**
+
+    </div>
 
     ``` terminal
     $ ccoctl gcp create-all \
@@ -540,19 +552,40 @@ On AWS clusters, some `ccoctl` commands make AWS API calls to create or modify A
       --credentials-requests-dir=<path_to_credentials_requests_directory> \
       --output-dir=<path_to_ccoctl_output_dir> \
       --public-key-file=<path_to_ccoctl_output_dir>/serviceaccount-signer.public \
+      --key-storage-method=<key_storage_method>
     ```
 
-    - Specify the user-defined name for all created Google Cloud resources used for tracking.
+    where:
 
-    - Specify the Google Cloud region in which cloud resources will be created.
+    `<name>`
+    Specifies the user-defined name for all created Google Cloud resources used for tracking.
 
-    - Specify the Google Cloud project ID in which cloud resources will be created.
+    `<gcp_region>`
+    Specifies the Google Cloud region in which cloud resources will be created.
 
-    - Specify the directory containing the files of `CredentialsRequest` manifests to create Google Cloud service accounts.
+    `<gcp_project_id>`
+    Specifies the Google Cloud project ID in which cloud resources will be created.
 
-    - Specify the path to the output directory.
+    `<path_to_credentials_requests_directory>`
+    Specifies the directory containing the files of `CredentialsRequest` manifests to create Google Cloud service accounts.
 
-    - Specify the path to the `serviceaccount-signer.public` file that you extracted from the cluster.
+    `<path_to_ccoctl_output_dir>`
+    Specifies the path to the output directory. For `--public-key-file`, this directory contains the `serviceaccount-signer.public` file that you extracted from the cluster.
+
+    `<key_storage_method>`
+    Optional: Specifies the method for storing OIDC JWK files. Accepted values are `public-bucket` and `pool-jwk-file`. The default value `public-bucket` creates a public GCS bucket to host the OIDC configuration and JWK files. The `pool-jwk-file` value attaches the JWK directly to the workload identity pool provider without creating a public bucket.
+
+    <div class="note">
+
+    If your cluster was previously configured with the `public-bucket` method and you switch to `pool-jwk-file`, the existing GCS bucket is no longer used. You can delete the old `<name>-oidc` bucket from your Google Cloud project to avoid retaining an unnecessary public resource.
+
+    </div>
+
+    <div class="formalpara-title">
+
+    **IBM Cloud**
+
+    </div>
 
     ``` terminal
     $ ccoctl ibmcloud create-service-id \
@@ -562,13 +595,25 @@ On AWS clusters, some `ccoctl` commands make AWS API calls to create or modify A
       --resource-group-name=<resource_group_name>
     ```
 
-    - Specify the directory containing the files for the component `CredentialsRequest` objects.
+    where:
 
-    - Specify the name of the OpenShift Container Platform cluster.
+    `<path_to_credential_requests_directory>`
+    Specifies the directory containing the files for the component `CredentialsRequest` objects.
 
-    - Optional: Specify the directory in which you want the `ccoctl` utility to create objects. By default, the utility creates objects in the directory in which the commands are run.
+    `<cluster_name>`
+    Specifies the name of the OpenShift Container Platform cluster.
 
-    - Optional: Specify the name of the resource group used for scoping the access policies.
+    `<installation_directory>`
+    Optional: Specifies the directory in which you want the `ccoctl` utility to create objects. By default, the utility creates objects in the directory in which the commands are run.
+
+    `<resource_group_name>`
+    Optional: Specifies the name of the resource group used for scoping the access policies.
+
+    <div class="formalpara-title">
+
+    **Microsoft Azure**
+
+    </div>
 
     ``` terminal
     $ ccoctl azure create-managed-identities \
@@ -583,35 +628,55 @@ On AWS clusters, some `ccoctl` commands make AWS API calls to create or modify A
       --preserve-existing-roles
     ```
 
-    - The value of the `name` parameter is used to create an Azure resource group. To use an existing Azure resource group instead of creating a new one, specify the `--oidc-resource-group-name` argument with the existing group name as its value.
+    where:
 
-    - Specify the path to the output directory.
+    `<azure_infra_name>`
+    Specifies the value of the `name` parameter used to create an Azure resource group. To use an existing Azure resource group instead of creating a new one, specify the `--oidc-resource-group-name` argument with the existing group name as its value.
 
-    - Specify the region of the existing cluster.
+    `<path_to_ccoctl_output_dir>`
+    Specifies the path to the output directory.
 
-    - Specify the subscription ID of the existing cluster.
+    `<azure_region>`
+    Specifies the region of the existing cluster.
 
-    - Specify the directory containing the files for the component `CredentialsRequest` objects.
+    `<azure_subscription_id>`
+    Specifies the subscription ID of the existing cluster.
 
-    - Specify the OIDC issuer URL from the existing cluster. You can obtain this value by running the following command:
+    `<path_to_directory_for_credentials_requests>`
+    Specifies the directory containing the files for the component `CredentialsRequest` objects.
 
-      ``` terminal
-      $ oc get authentication cluster \
-        -o jsonpath \
-        --template='{ .spec.serviceAccountIssuer }'
-      ```
+    `"${OIDC_ISSUER_URL}"`
+    Specifies the OIDC issuer URL from the existing cluster. You can obtain this value by running the following command:
 
-    - Specify the name of the resource group that contains the DNS zone.
+    ``` terminal
+    $ oc get authentication cluster \
+      -o jsonpath \
+      --template='{ .spec.serviceAccountIssuer }'
+    ```
 
-    - Specify the Azure resource group name. You can obtain this value by running the following command:
+    `<azure_dns_zone_resourcegroup_name>`
+    Specifies the name of the resource group that contains the DNS zone.
 
-      ``` terminal
-      $ oc get infrastructure cluster \
-        -o jsonpath \
-        --template '{ .status.platformStatus.azure.resourceGroupName }'
-      ```
+    `"${AZURE_INSTALL_RG}"`
+    Specifies the Azure resource group name. You can obtain this value by running the following command:
 
-    - Optional: Specify this flag to ensure that any custom role assignments you define on managed identities are not removed during OpenShift Container Platform updates.
+    ``` terminal
+    $ oc get infrastructure cluster \
+      -o jsonpath \
+      --template '{ .status.platformStatus.azure.resourceGroupName }'
+    ```
+
+    <div class="note">
+
+    Specifying the flag `ccoctl.azure.create-managed-identities.preserve-existing-roles` ensures that any custom role assignments you define on managed identities are not removed during OpenShift Container Platform updates. This flag is optional.
+
+    </div>
+
+    <div class="formalpara-title">
+
+    **Nutanix**
+
+    </div>
 
     ``` terminal
     $ ccoctl nutanix create-shared-secrets \
@@ -620,11 +685,16 @@ On AWS clusters, some `ccoctl` commands make AWS API calls to create or modify A
       --credentials-source-filepath=<path_to_credentials_file>
     ```
 
-    - Specify the path to the directory that contains the files for the component `CredentialsRequests` objects.
+    where:
 
-    - Optional: Specify the directory in which you want the `ccoctl` utility to create objects. By default, the utility creates objects in the directory in which the commands are run.
+    `<path_to_credentials_requests_directory>`
+    Specifies the path to the directory that contains the files for the component `CredentialsRequests` objects.
 
-    - Optional: Specify the directory that contains the credentials data YAML file. By default, `ccoctl` expects this file to be in `<home_directory>/.nutanix/credentials`.
+    `<ccoctl_output_dir>`
+    Optional: Specifies the directory in which you want the `ccoctl` utility to create objects. By default, the utility creates objects in the directory in which the commands are run.
+
+    `<path_to_credentials_file>`
+    Optional: Specifies the directory that contains the credentials data YAML file. By default, `ccoctl` expects this file to be in `<home_directory>/.nutanix/credentials`.
 
     For each `CredentialsRequest` object, `ccoctl` creates the required provider resources and a permissions policy as defined in each `CredentialsRequest` object from the OpenShift Container Platform release image.
 
@@ -658,11 +728,7 @@ Before you upgrade a cluster with manually maintained credentials, you must crea
 
 1.  Create YAML files with secrets for any `CredentialsRequest` custom resources that the new release image adds. The secrets must be stored using the namespace and secret name defined in the `spec.secretRef` for each `CredentialsRequest` object.
 
-    <div class="formalpara-title">
-
     **Sample AWS `CredentialsRequest` object with secrets**
-
-    </div>
 
     ``` yaml
     apiVersion: cloudcredential.openshift.io/v1
@@ -688,11 +754,7 @@ Before you upgrade a cluster with manually maintained credentials, you must crea
       ...
     ```
 
-    <div class="formalpara-title">
-
     **Sample AWS `Secret` object**
-
-    </div>
 
     ``` yaml
     apiVersion: v1
@@ -711,11 +773,7 @@ Before you upgrade a cluster with manually maintained credentials, you must crea
 
     </div>
 
-    <div class="formalpara-title">
-
     **Sample Azure `CredentialsRequest` object with secrets**
-
-    </div>
 
     ``` yaml
     apiVersion: cloudcredential.openshift.io/v1
@@ -737,11 +795,7 @@ Before you upgrade a cluster with manually maintained credentials, you must crea
       ...
     ```
 
-    <div class="formalpara-title">
-
     **Sample Azure `Secret` object**
-
-    </div>
 
     ``` yaml
     apiVersion: v1
@@ -759,11 +813,7 @@ Before you upgrade a cluster with manually maintained credentials, you must crea
       azure_region: <base64_encoded_azure_region>
     ```
 
-    <div class="formalpara-title">
-
     **Sample Google Cloud `CredentialsRequest` object with secrets**
-
-    </div>
 
     ``` yaml
     apiVersion: cloudcredential.openshift.io/v1
@@ -787,11 +837,7 @@ Before you upgrade a cluster with manually maintained credentials, you must crea
       ...
     ```
 
-    <div class="formalpara-title">
-
     **Sample Google Cloud `Secret` object**
-
-    </div>
 
     ``` yaml
     apiVersion: v1
@@ -835,11 +881,7 @@ Modify the `CloudCredential` resource to include an `upgradeable-to` annotation.
     $ oc edit cloudcredential cluster
     ```
 
-    <div class="formalpara-title">
-
-    **Text to add**
-
-    </div>
+    **Text to add:**
 
     ``` yaml
     ...

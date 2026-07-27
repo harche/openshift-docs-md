@@ -1,4 +1,6 @@
-# About etcd encryption
+Encrypt and decrypt etcd data in OpenShift Container Platform to protect sensitive cluster resources such as secrets, config maps, and OAuth tokens.
+
+# etcd encryption
 
 By default, etcd data is not encrypted in OpenShift Container Platform. You can enable etcd encryption for your cluster to provide an additional layer of data security. For example, it can help protect the loss of sensitive data if an etcd backup is exposed to the incorrect parties.
 
@@ -18,7 +20,7 @@ When you enable etcd encryption, encryption keys are created. You must have thes
 
 <div class="note">
 
-Etcd encryption only encrypts values, not keys. Resource types, namespaces, and object names are unencrypted.
+etcd encryption only encrypts values, not keys. Resource types, namespaces, and object names are unencrypted.
 
 If etcd encryption is enabled during a backup, the `static_kuberesources_<datetimestamp>.tar.gz` file contains the encryption keys for the etcd snapshot. For security reasons, store this file separately from the etcd snapshot. However, this file is required to restore a previous state of etcd from the respective etcd snapshot.
 
@@ -26,19 +28,21 @@ If etcd encryption is enabled during a backup, the `static_kuberesources_<dateti
 
 # Supported encryption types
 
+OpenShift Container Platform supports AES-CBC and AES-GCM encryption types to protect etcd data at rest.
+
 The following encryption types are supported for encrypting etcd data in OpenShift Container Platform:
 
 AES-CBC
-Uses AES-CBC with PKCS#7 padding and a 32 byte key to perform the encryption.
+Uses AES-CBC with PKCS#7 padding and a 32-byte key to perform the encryption.
 
 AES-GCM
-Uses AES-GCM with a random nonce and a 32 byte key to perform the encryption.
+Uses AES-GCM with a random nonce and a 32-byte key to perform the encryption.
 
-The etcd encryption keys are rotated every 7 days. Up to 10 historical encryption keys are preserved after rotation to facilitate the decryption of older backups and provide an extra layer of data recovery safety.
+The etcd encryption keys are rotated every 7 days. Up to 10 historical encryption keys are preserved after rotation to help decrypt older backups and provide an extra layer of data recovery safety.
 
 # Enabling etcd encryption
 
-You can enable etcd encryption to encrypt sensitive resources in your cluster.
+Enable etcd encryption to protect sensitive cluster resources such as secrets, config maps, routes, and OAuth tokens at rest.
 
 <div class="warning">
 
@@ -48,7 +52,7 @@ After you enable etcd encryption, several changes can occur:
 
 - The etcd encryption might affect the memory consumption of a few resources.
 
-- You might notice a transient affect on backup performance because the leader must serve the backup.
+- You might notice a transient effect on backup performance because the leader must serve the backup.
 
 - A disk I/O can affect the node that receives the backup state.
 
@@ -78,62 +82,60 @@ To migrate your etcd database from one encryption type to the other, you can mod
         type: aesgcm
     ```
 
-    - Set to `aesgcm` for AES-GCM encryption or `aescbc` for AES-CBC encryption.
+    - The `aesgcm` value specifies AES-GCM encryption. Alternatively, set the `type` field to `aescbc` for AES-CBC encryption.
 
 3.  Save the file to apply the changes.
 
     The encryption process starts. It can take 20 minutes or longer for this process to complete, depending on the size of the etcd database.
 
-4.  Verify that etcd encryption was successful.
+- Review the `Encrypted` status condition for the OpenShift API server to verify that its resources were successfully encrypted:
 
-    1.  Review the `Encrypted` status condition for the OpenShift API server to verify that its resources were successfully encrypted:
+  ``` terminal
+  $ oc get openshiftapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}'
+  ```
 
-        ``` terminal
-        $ oc get openshiftapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}'
-        ```
+  The output shows `EncryptionCompleted` upon successful encryption:
 
-        The output shows `EncryptionCompleted` upon successful encryption:
+  ``` terminal
+  EncryptionCompleted
+  All resources encrypted: routes.route.openshift.io
+  ```
 
-        ``` terminal
-        EncryptionCompleted
-        All resources encrypted: routes.route.openshift.io
-        ```
+  If the output shows `EncryptionInProgress`, encryption is still in progress. Wait a few minutes and try again.
 
-        If the output shows `EncryptionInProgress`, encryption is still in progress. Wait a few minutes and try again.
+- Review the `Encrypted` status condition for the Kubernetes API server to verify that its resources were successfully encrypted:
 
-    2.  Review the `Encrypted` status condition for the Kubernetes API server to verify that its resources were successfully encrypted:
+  ``` terminal
+  $ oc get kubeapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}'
+  ```
 
-        ``` terminal
-        $ oc get kubeapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}'
-        ```
+  The output shows `EncryptionCompleted` upon successful encryption:
 
-        The output shows `EncryptionCompleted` upon successful encryption:
+  ``` terminal
+  EncryptionCompleted
+  All resources encrypted: secrets, configmaps
+  ```
 
-        ``` terminal
-        EncryptionCompleted
-        All resources encrypted: secrets, configmaps
-        ```
+  If the output shows `EncryptionInProgress`, encryption is still in progress. Wait a few minutes and try again.
 
-        If the output shows `EncryptionInProgress`, encryption is still in progress. Wait a few minutes and try again.
+- Review the `Encrypted` status condition for the OpenShift OAuth API server to verify that its resources were successfully encrypted:
 
-    3.  Review the `Encrypted` status condition for the OpenShift OAuth API server to verify that its resources were successfully encrypted:
+  ``` terminal
+  $ oc get authentication.operator.openshift.io -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}'
+  ```
 
-        ``` terminal
-        $ oc get authentication.operator.openshift.io -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}'
-        ```
+  The output shows `EncryptionCompleted` upon successful encryption:
 
-        The output shows `EncryptionCompleted` upon successful encryption:
+  ``` terminal
+  EncryptionCompleted
+  All resources encrypted: oauthaccesstokens.oauth.openshift.io, oauthauthorizetokens.oauth.openshift.io
+  ```
 
-        ``` terminal
-        EncryptionCompleted
-        All resources encrypted: oauthaccesstokens.oauth.openshift.io, oauthauthorizetokens.oauth.openshift.io
-        ```
-
-        If the output shows `EncryptionInProgress`, encryption is still in progress. Wait a few minutes and try again.
+  If the output shows `EncryptionInProgress`, encryption is still in progress. Wait a few minutes and try again.
 
 # Disabling etcd encryption
 
-You can disable encryption of etcd data in your cluster.
+Disable etcd encryption when you no longer need to encrypt sensitive cluster resources at rest.
 
 - Access to the cluster as a user with the `cluster-admin` role.
 
@@ -151,55 +153,53 @@ You can disable encryption of etcd data in your cluster.
         type: identity
     ```
 
-    - The `identity` type is the default value and means that no encryption is performed.
+    The `identity` value specifies that no encryption is performed. This is the default value.
 
 3.  Save the file to apply the changes.
 
     The decryption process starts. It can take 20 minutes or longer for this process to complete, depending on the size of your cluster.
 
-4.  Verify that etcd decryption was successful.
+- Review the `Encrypted` status condition for the OpenShift API server to verify that its resources were successfully decrypted:
 
-    1.  Review the `Encrypted` status condition for the OpenShift API server to verify that its resources were successfully decrypted:
+  ``` terminal
+  $ oc get openshiftapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}'
+  ```
 
-        ``` terminal
-        $ oc get openshiftapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}'
-        ```
+  The output shows `DecryptionCompleted` upon successful decryption:
 
-        The output shows `DecryptionCompleted` upon successful decryption:
+  ``` terminal
+  DecryptionCompleted
+  Encryption mode set to identity and everything is decrypted
+  ```
 
-        ``` terminal
-        DecryptionCompleted
-        Encryption mode set to identity and everything is decrypted
-        ```
+  If the output shows `DecryptionInProgress`, decryption is still in progress. Wait a few minutes and try again.
 
-        If the output shows `DecryptionInProgress`, decryption is still in progress. Wait a few minutes and try again.
+- Review the `Encrypted` status condition for the Kubernetes API server to verify that its resources were successfully decrypted:
 
-    2.  Review the `Encrypted` status condition for the Kubernetes API server to verify that its resources were successfully decrypted:
+  ``` terminal
+  $ oc get kubeapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}'
+  ```
 
-        ``` terminal
-        $ oc get kubeapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}'
-        ```
+  The output shows `DecryptionCompleted` upon successful decryption:
 
-        The output shows `DecryptionCompleted` upon successful decryption:
+  ``` terminal
+  DecryptionCompleted
+  Encryption mode set to identity and everything is decrypted
+  ```
 
-        ``` terminal
-        DecryptionCompleted
-        Encryption mode set to identity and everything is decrypted
-        ```
+  If the output shows `DecryptionInProgress`, decryption is still in progress. Wait a few minutes and try again.
 
-        If the output shows `DecryptionInProgress`, decryption is still in progress. Wait a few minutes and try again.
+- Review the `Encrypted` status condition for the OpenShift OAuth API server to verify that its resources were successfully decrypted:
 
-    3.  Review the `Encrypted` status condition for the OpenShift OAuth API server to verify that its resources were successfully decrypted:
+  ``` terminal
+  $ oc get authentication.operator.openshift.io -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}'
+  ```
 
-        ``` terminal
-        $ oc get authentication.operator.openshift.io -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{"\n"}{"\n"}'
-        ```
+  The output shows `DecryptionCompleted` upon successful decryption:
 
-        The output shows `DecryptionCompleted` upon successful decryption:
+  ``` terminal
+  DecryptionCompleted
+  Encryption mode set to identity and everything is decrypted
+  ```
 
-        ``` terminal
-        DecryptionCompleted
-        Encryption mode set to identity and everything is decrypted
-        ```
-
-        If the output shows `DecryptionInProgress`, decryption is still in progress. Wait a few minutes and try again.
+  If the output shows `DecryptionInProgress`, decryption is still in progress. Wait a few minutes and try again.

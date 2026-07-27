@@ -1,3 +1,7 @@
+You can deploy a two-node OpenShift cluster with fencing by using either the installer-provisioned infrastructure or the user-provisioned infrastructure installation method.
+
+The following examples provide sample `install-config.yaml` configurations for both methods.
+
 <div class="important">
 
 Two-node OpenShift cluster with fencing is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
@@ -6,11 +10,9 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 </div>
 
-You can deploy a two-node OpenShift cluster with fencing by using either the installer-provisioned infrastructure or the user-provisioned infrastructure installation method. The following examples provide sample `install-config.yaml` configurations for both methods.
-
 # Sample install-config.yaml for a two-node installer-provisioned infrastructure cluster with fencing
 
-You can use the following `install-config.yaml` configuration as a template for deploying a two-node OpenShift cluster with fencing by using the installer-provisioned infrastructure method:
+You can use a sample `install-config.yaml` configuration as a template for deploying a two-node OpenShift cluster with fencing by using the installer-provisioned infrastructure method.
 
 <div class="note">
 
@@ -93,7 +95,7 @@ sshKey: '<ssh_public_key>'
 
 # Sample install-config.yaml for a two-node user-provisioned infrastructure cluster with fencing
 
-You can use the following `install-config.yaml` configuration as a template for deploying a two-node OpenShift cluster with fencing by using the user-provisioned infrastructure method:
+You can use a sample `install-config.yaml` configuration as a template for deploying a two-node OpenShift cluster with fencing by using the user-provisioned infrastructure method.
 
 <div class="note">
 

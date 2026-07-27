@@ -96,12 +96,6 @@ Generally, the maximum transmission unit (MTU) between an Amazon EC2 instance in
 
 The network plugin can provide additional features, such as IPsec, that also affect the MTU sizing.
 
-You can access the following resources to learn more about a respective zone type:
-
-- See [How Local Zones work](https://docs.aws.amazon.com/local-zones/latest/ug/how-local-zones-work.html) in the AWS documentation.
-
-- See [How AWS Wavelength work](https://docs.aws.amazon.com/wavelength/latest/developerguide/how-wavelengths-work.html) in the AWS documentation.
-
 </div>
 
 OpenShift Container Platform 4.12 introduced a new compute pool, *edge*, that is designed for use in remote zones. The edge compute pool configuration is common between Amazon Web Services (AWS) Local Zones or Wavelength Zones locations. Because of the type and size limitations of resources like EC2 and EBS on Local Zones or Wavelength Zones resources, the default instance type can vary from the traditional compute pool.
@@ -119,6 +113,10 @@ The edge compute pool creates new labels that developers can use to deploy appli
 - `machine.openshift.io/zone-group=$ZONE_GROUP_NAME`
 
 By default, the machine sets for the edge compute pool define the taint of `NoSchedule` to prevent other workloads from spreading on Local Zones or Wavelength Zones instances. Users can only run user workloads if they define tolerations in the pod specification.
+
+- [How AWS Local Zones work (AWS documentation)](https://docs.aws.amazon.com/local-zones/latest/ug/how-local-zones-work.html)
+
+- [How AWS Wavelength works (AWS documentation)](https://docs.aws.amazon.com/wavelength/latest/developerguide/how-wavelengths-work.html)
 
 # About changing the cluster network MTU to support Local Zones or Wavelength Zone
 
@@ -222,6 +220,12 @@ You cannot roll back an MTU value for nodes during the MTU migration process, bu
 The migration is disruptive and nodes in your cluster might be temporarily unavailable as the MTU update takes effect.
 
 </div>
+
+## Prerequisites for changing the cluster network MTU
+
+Before you change the cluster network maximum transmission unit (MTU), verify that you have the required access, tools, and network infrastructure to support the new MTU value.
+
+Ensure that the following conditions are met before you begin:
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -738,6 +742,12 @@ If you do not use the provided CloudFormation template to create your AWS infras
 ## CloudFormation template for the VPC subnet
 
 Use the CloudFormation template to deploy the private and public subnets in a zone on Local Zones or Wavelength Zones infrastructure. The template provisions an `AWS::EC2::Subnet` and associates it with a specific Local Zones or Wavelength Zones and VPC route table to reduce latency.
+
+<div class="formalpara-title">
+
+**CloudFormation template for VPC subnets**
+
+</div>
 
 ``` yaml
 AWSTemplateFormatVersion: 2010-09-09

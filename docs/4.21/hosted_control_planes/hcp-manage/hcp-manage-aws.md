@@ -697,74 +697,86 @@ The VPC must include private and public subnets and resources for external acces
 
   - `<instance_profile_name>` specifies the name of your AWS instance.
 
-## Creating the AWS IAM resources
-
-In Amazon Web Services (AWS), you must create the following IAM resources:
-
-- [An OpenID Connect (OIDC) identity provider in IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_oidc.html), which is required to enable STS authentication.
-
-- [Seven roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html), which are separate for every component that interacts with the provider, such as the Kubernetes controller manager, cluster API provider, and registry
-
-- The [instance profile](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html), which is the profile that is assigned to all worker instances of the cluster
-
 ## Creating a hosted cluster separately
 
-You can create a hosted cluster separately on Amazon Web Services (AWS).
+In hosted control planes on AWS, you can create a hosted cluster separately from creating the infrastructure and Identity and Access Management (IAM) resources.
 
-To create a hosted cluster separately, enter the following command:
+- You created infrastructure resources separately. For more information, see "Creating the AWS infrastructure separately".
 
-``` terminal
-$ hcp create cluster aws \
-    --infra-id <infra_id> \
-    --name <hosted_cluster_name> \
-    --sts-creds <path_to_sts_credential_file> \
-    --pull-secret <path_to_pull_secret> \
-    --generate-ssh \
-    --node-pool-replicas 3
-    --role-arn <role_name>
-```
+- You created the following IAM resources:
 
-- Replace `<infra_id>` with the same ID that you specified in the `create infra aws` command. This value identifies the IAM resources that are associated with the hosted cluster.
+  - An OpenID Connect (OIDC) identity provider in IAM, which is required to enable STS authentication. For more information, see [Create an OpenID Connect (OIDC) identity provider in IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_oidc.html).
 
-- Replace `<hosted_cluster_name>` with the name of your hosted cluster.
+  - The seven roles that are listed in "Identity and Access Management (IAM) permissions." The roles are separate for every component that interacts with the provider, such as the Kubernetes controller manager, cluster API provider, and registry. For more information, see [IAM role creation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html).
 
-- Replace `<path_to_sts_credential_file>` with the same name that you specified in the `create infra aws` command.
+  - The instance profile, which is the profile that is assigned to all worker instances of the cluster. For more information, see [Use instance profiles](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html).
 
-- Replace `<path_to_pull_secret>` with the name of the file that contains a valid OpenShift Container Platform pull secret.
+1.  To create a hosted cluster separately, enter the following command:
 
-- The `--generate-ssh` flag is optional, but is good to include in case you need to SSH to your workers. An SSH key is generated for you and is stored as a secret in the same namespace as the hosted cluster.
+    ``` terminal
+    $ hcp create cluster aws \
+        --infra-id <infra_id> \
+        --name <hosted_cluster_name> \
+        --sts-creds <path_to_sts_credential_file> \
+        --pull-secret <path_to_pull_secret> \
+        --generate-ssh \
+        --node-pool-replicas 3 \
+        --role-arn <role_name> \
+        --render-sensitive \
+        --render > <file_name>.yaml
+    ```
 
-- Replace `<role_name>` with the Amazon Resource Name (ARN), for example, `arn:aws:iam::820196288204:role/myrole`. Specify the Amazon Resource Name (ARN), for example, `arn:aws:iam::820196288204:role/myrole`. For more information about ARN roles, see "Identity and Access Management (IAM) permissions".
+    - `--infra-id` specifies the same ID that you specified in the `create infra aws` command. This value identifies the IAM resources that are associated with the hosted cluster.
 
-You can also add the `--render` flag to the command and redirect output to a file where you can edit the resources before you apply them to the cluster.
+    - `--name` specifies the name of your hosted cluster.
 
-After you run the command, the following resources are applied to your cluster:
+    - `--sts-creds` specifies the same name that you specified in the `create infra aws` command.
 
-- A namespace
+    - `--pull-secret` specifies the name of the file that contains a valid OpenShift Container Platform pull secret.
 
-- A secret with your pull secret
+    - `--generate-ssh` is an optional flag, but it is good to include in case you need to SSH to your workers. An SSH key is generated for you and is stored as a secret in the same namespace as the hosted cluster.
 
-- A `HostedCluster`
+    - `--role-arn` specifies the Amazon Resource Name (ARN); for example, `arn:aws:iam::820196288204:role/myrole`. For more information about ARN roles, see "Identity and Access Management (IAM) permissions".
 
-- A `NodePool`
+    - `--render-sensitive` generates secrets that are stored in the YAML file.
 
-- Three AWS STS secrets for control plane components
+    - `--render` is an optional flag. You can include this flag to redirect output to a file where you can edit the resources before you apply them to the cluster.
 
-- One SSH key secret if you specified the `--generate-ssh` flag.
+2.  Apply the manifests by entering the following command:
+
+    ``` terminal
+    $ oc apply -f <file_name>.yaml
+    ```
+
+- After you run the command, you can verify that the following resources are applied to your cluster:
+
+  - A namespace
+
+  - A secret with your pull secret
+
+  - A `HostedCluster`
+
+  - A `NodePool`
+
+  - Three AWS STS secrets for control plane components
+
+  - If you specified the `--generate-ssh` flag, one SSH key secret.
 
 # Transitioning a hosted cluster from single-architecture to multi-architecture
 
-You can transition your single-architecture 64-bit AMD hosted cluster to a multi-architecture hosted cluster on Amazon Web Services (AWS), to reduce the cost of running workloads on your cluster. For example, you can run existing workloads on 64-bit AMD while transitioning to 64-bit ARM and you can manage these workloads from a central Kubernetes cluster.
+You can transition your single-architecture 64-bit AMD hosted cluster to a multi-architecture hosted cluster on Amazon Web Services (AWS) to reduce the cost of running workloads on your cluster.
+
+For example, you can run existing workloads on 64-bit AMD while transitioning to 64-bit ARM and you can manage these workloads from a central Kubernetes cluster.
 
 A single-architecture hosted cluster can manage node pools of only one particular CPU architecture. However, a multi-architecture hosted cluster can manage node pools with different CPU architectures. On AWS, a multi-architecture hosted cluster can manage both 64-bit AMD and 64-bit ARM node pools.
 
-- You have installed an OpenShift Container Platform management cluster for AWS on Red Hat Advanced Cluster Management (RHACM) with the multicluster engine for Kubernetes Operator.
+- You installed an OpenShift Container Platform management cluster for AWS with the multicluster engine for Kubernetes Operator.
 
 - You have an existing single-architecture hosted cluster that uses 64-bit AMD variant of the OpenShift Container Platform release payload.
 
-- An existing node pool that uses the same 64-bit AMD variant of the OpenShift Container Platform release payload and is managed by an existing hosted cluster.
+- You have an existing node pool that uses the same 64-bit AMD variant of the OpenShift Container Platform release payload and is managed by an existing hosted cluster.
 
-- Ensure that you installed the following command-line tools:
+- You installed the following command-line tools:
 
   - `oc`
 
@@ -781,19 +793,17 @@ A single-architecture hosted cluster can manage node pools of only one particula
       -o jsonpath='{.spec.release.image}'
     ```
 
-    - Replace `<hosted_cluster_name>` with your hosted cluster name.
+    Replace `<hosted_cluster_name>` with your hosted cluster name.
 
-      <div class="formalpara-title">
+    <div class="formalpara-title">
 
-      **Example output**
+    **Example output**
 
-      </div>
+    </div>
 
-      ``` terminal
-      quay.io/openshift-release-dev/ocp-release:<4.y.z>-x86_64
-      ```
-
-    - Replace `<4.y.z>` with the supported OpenShift Container Platform version that you use.
+    ``` terminal
+    quay.io/openshift-release-dev/ocp-release:4.20.0-x86_64
+    ```
 
 2.  In your OpenShift Container Platform release image, if you use the digest instead of a tag, find the multi-architecture tag version of your release image:
 
@@ -848,7 +858,7 @@ A single-architecture hosted cluster can manage node pools of only one particula
           --type=merge
         ```
 
-        - Replace `<4.y.z>` with the supported OpenShift Container Platform version that you use.
+        Replace `<4.y.z>` with the supported OpenShift Container Platform version that you use.
 
     2.  Confirm that the multi-architecture image is set in your hosted cluster by running the following command:
 
@@ -904,19 +914,17 @@ A single-architecture hosted cluster can manage node pools of only one particula
   version:
       availableUpdates: null
       desired:
-        image: quay.io/openshift-release-dev/ocp-release:<4.x.y>-multi
+        image: quay.io/openshift-release-dev/ocp-release:4.20.0-multi
         url: https://access.redhat.com/errata/RHBA-2024:4855
-        version: 4.16.5
+        version: 4.20.0
       history:
       - completionTime: "2024-07-28T13:10:58Z"
-        image: quay.io/openshift-release-dev/ocp-release:<4.x.y>-multi
+        image: quay.io/openshift-release-dev/ocp-release:4.20.0-multi
         startedTime: "2024-07-28T13:10:27Z"
         state: Completed
         verified: false
-        version: <4.x.y>
+        version: 4.20.0
   ```
-
-  - Replace `<4.y.z>` with the supported OpenShift Container Platform version that you use.
 
   <div class="note">
 
@@ -926,11 +934,11 @@ A single-architecture hosted cluster can manage node pools of only one particula
 
 <!-- -->
 
-- Creating node pools on the multi-architecture hosted cluster
+- Create node pools on the multi-architecture hosted cluster.
 
 # Creating node pools on the multi-architecture hosted cluster
 
-After transitioning your hosted cluster from single-architecture to multi-architecture, create node pools on compute machines based on 64-bit AMD and 64-bit ARM architectures.
+After you transition your hosted cluster from single-architecture to multi-architecture, create node pools on compute machines based on 64-bit AMD and 64-bit ARM architectures.
 
 1.  Create node pools based on 64-bit ARM architecture by entering the following command:
 
@@ -982,25 +990,23 @@ After transitioning your hosted cluster from single-architecture to multi-archit
     arch: amd64
   #...
     release:
-      image: quay.io/openshift-release-dev/ocp-release:<4.x.y>-multi
+      image: quay.io/openshift-release-dev/ocp-release:4.20.0-multi
   ```
 
-  - Replace `<4.y.z>` with the supported OpenShift Container Platform version that you use.
+  <div class="formalpara-title">
 
-    <div class="formalpara-title">
+  **Example output for 64-bit ARM node pools**
 
-    **Example output for 64-bit ARM node pools**
+  </div>
 
-    </div>
-
-    ``` yaml
-    #...
-    spec:
-      arch: arm64
-    #...
-      release:
-        image: quay.io/openshift-release-dev/ocp-release:<4.x.y>-multi
-    ```
+  ``` yaml
+  #...
+  spec:
+    arch: arm64
+  #...
+    release:
+      image: quay.io/openshift-release-dev/ocp-release:4.20.0-multi
+  ```
 
 # Adding or updating AWS tags for a hosted cluster
 
@@ -1012,11 +1018,11 @@ You might want to use tags for the following purposes:
 
 - Tracking chargeback or showback.
 
-- Managing cloud IAM conditional permissions.
+- Managing cloud Identity and Access Management (IAM) conditional permissions.
 
 - Aggregating resources based on tags. For example, you can query tags to calculate resource usage and billing costs.
 
-You can add or update tags for several different types of resources, including EFS access points, load balancer resources, Amazon EBS volumes, IAM users, and AWS S3.
+You can add or update tags for several different types of resources, including Amazon Elastic File System (EFS) access points, load balancer resources, Amazon Elastic Block Storage (EBS) volumes, IAM users, and AWS S3.
 
 <div class="important">
 
@@ -1030,7 +1036,7 @@ In addition, tags cannot be updated on the default security group resource that 
 
 1.  If you want to add or update tags for EFS access points, complete steps 1 and 2. If you are adding or updating tags for other types of resources, complete only step 2.
 
-    1.  In the `aws-efs-csi-driver-operator` service account, add two annotations, as shown in the following example. These annotations are required so that the AWS EKS pod identity webhook that runs on the cluster can correctly assign AWS roles to the pods that the EFS Operator uses.
+    1.  In the `aws-efs-csi-driver-operator` service account, add two annotations, as shown in the following example. These annotations are required so that the Amazon Elastic Kubernetes Service (EKS) pod identity webhook that runs on the cluster can correctly assign AWS roles to the pods that the EFS Operator uses.
 
         ``` yaml
         apiVersion: v1
@@ -1085,13 +1091,13 @@ In addition, tags cannot be updated on the default security group resource that 
         type: AWS
     ```
 
-- Specify the tag that you want to add to your resource.
+    Replace `<tag>` with the tag that you want to add to your resource.
 
 # Configuring node pool capacity blocks on AWS
 
-After creating a hosted cluster, you can configure node pool capacity blocks for graphics processing unit (GPU) reservations on Amazon Web Services (AWS).
+After you create a hosted cluster, you can configure node pool capacity blocks for graphics processing unit (GPU) reservations on Amazon Web Services (AWS).
 
-1.  Create GPU reservations on AWS by running the following command:
+1.  Create GPU reservations on AWS by running a command similar to the following example:
 
     <div class="important">
 
@@ -1103,21 +1109,21 @@ After creating a hosted cluster, you can configure node pool capacity blocks for
     $ aws ec2 describe-capacity-block-offerings \
           --instance-type "p4d.24xlarge"\
           --instance-count  "1" \
-          --start-date-range "$(date -u +"%Y-%m-%dT%H:%M:%SZ")"  \
-          --end-date-range "$(date -u -d "2 day" +"%Y-%m-%dT%H:%M:%SZ")" \
+          --start-date-range "$(date -u +"2025-07-21T10:14:39Z")"  \
+          --end-date-range "$(date -u -d "2 day" +"2025-07-22T10:16:36Z")" \
           --capacity-duration-hours 24 \
           --output json
     ```
 
-    - Defines the type of your AWS instance, for example, `p4d.24xlarge`.
+    - `--instance-type` defines the type of your AWS instance.
 
-    - Defines your instance purchase quantity, for example, `1`. Valid values are integers ranging from `1` to `64`.
+    - `--instance-count` defines your instance purchase quantity. Valid values are integers ranging from `1` to `64`.
 
-    - Defines the start date range, for example, `2025-07-21T10:14:39Z`.
+    - `--start-date-range` defines the start date range.
 
-    - Defines the end date range, for example, `2025-07-22T10:16:36Z`.
+    - `--end-date-range` defines the end date range.
 
-    - Defines the duration of capacity blocks in hours, for example, `24`.
+    - `--capacity-duration-hours` defines the duration of capacity blocks in hours.
 
 2.  Purchase the minimum fee capacity block by running the following command:
 
@@ -1129,11 +1135,11 @@ After creating a hosted cluster, you can configure node pool capacity blocks for
           --output json   > "${CR_OUTPUT_FILE}"
     ```
 
-    - Defines the ID of the capacity block offering.
+    - `--capacity-block-offering-id` defines the ID of the capacity block offering.
 
-    - Defines the platform of your instance.
+    - `--instance-platform` defines the platform of your instance.
 
-    - Defines the tag for your instance.
+    - `--tag-specifications` defines the tag for your instance.
 
 3.  Create an environment variable to set the capacity reservation ID by running the following command:
 
@@ -1149,24 +1155,24 @@ After creating a hosted cluster, you can configure node pool capacity blocks for
     $ hcp create nodepool aws \
       --cluster-name <hosted_cluster_name> \
       --name <node_pool_name> \
-      --node-count 1 \
-      --instance-type p4d.24xlarge \
-      --arch amd64 \
+      --node-count <node_pool_count> \
+      --instance-type <instance_type> \
+      --arch <arch_type> \
       --release-image <release_image> \
       --render > /tmp/np.yaml
     ```
 
-    - Replace `<hosted_cluster_name>` with the name of your hosted cluster.
+    - `--cluster-name` specifies the name of your hosted cluster.
 
-    - Replace `<node_pool_name>` with the name of your node pool.
+    - `--name` specifies the name of your node pool.
 
-    - Defines the node pool count, for example, `1`.
+    - `--node-count` defines the node pool count, for example, `1`.
 
-    - Defines the instance type, for example, `p4d.24xlarge`.
+    - `--instance-type` defines the instance type, for example, `p4d.24xlarge`.
 
-    - Defines an architecture type, for example, `amd64`.
+    - `--arch` defines an architecture type, for example, `amd64`.
 
-    - Replace `<release_image>` with the release image you want to use.
+    - `--release-image` specifies the release image you want to use.
 
 5.  Add the `capacityReservation` setting in your `NodePool` resource by using the following example configuration:
 
@@ -1238,11 +1244,11 @@ After creating a hosted cluster, you can configure node pool capacity blocks for
     ip-10-0-134-183.ec2.internal   Ready    worker   4h5m   v1.34.2
     ```
 
-## Destroying a hosted cluster after configuring node pool capacity blocks
+## Deleting a hosted cluster after configuring node pool capacity blocks
 
-After you configured node pool capacity blocks, you can optionally destroy a hosted cluster and uninstall the HyperShift Operator.
+After you configure node pool capacity blocks, you can optionally delete a hosted cluster and uninstall the HyperShift Operator.
 
-1.  To destroy a hosted cluster, run the following example command:
+1.  To delete a hosted cluster, run a command similar to the following example:
 
     ``` terminal
     $ hcp destroy cluster aws \

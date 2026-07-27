@@ -1,6 +1,10 @@
+Learn how to back up and restore your OpenShift Container Platform cluster’s control plane and how to back up and restore applications running on the cluster.
+
 # Control plane backup and restore operations
 
-As a cluster administrator, you might need to stop an OpenShift Container Platform cluster for a period and restart it later. Some reasons for restarting a cluster are that you need to perform maintenance on a cluster or want to reduce resource costs. In OpenShift Container Platform, you can perform a [graceful shutdown of a cluster](../backup_and_restore/graceful-cluster-shutdown.xml#graceful-shutdown-cluster) so that you can easily restart the cluster later.
+As a cluster administrator, you might need to stop an OpenShift Container Platform cluster for a period and restart it later.
+
+Some reasons for restarting a cluster are that you need to perform maintenance on a cluster or want to reduce resource costs. In OpenShift Container Platform, you can perform a [graceful shutdown of a cluster](../backup_and_restore/graceful-cluster-shutdown.xml#graceful-shutdown-cluster) so that you can easily restart the cluster later.
 
 You must [back up etcd data](../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd) before shutting down a cluster; etcd is the key-value store for OpenShift Container Platform, which persists the state of all resource objects. An etcd backup plays a crucial role in disaster recovery. In OpenShift Container Platform, you can also [replace an unhealthy etcd member](../backup_and_restore/control_plane_backup_and_restore/replacing-unhealthy-etcd-member.xml#replacing-unhealthy-etcd-member).
 

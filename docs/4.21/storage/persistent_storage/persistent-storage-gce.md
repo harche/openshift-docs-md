@@ -26,7 +26,7 @@ High availability of storage in the infrastructure is left to the underlying sto
 
 # Creating the GCE storage class
 
-Storage classes are used to differentiate and delineate storage levels and usages. By defining a storage class, users can obtain dynamically provisioned persistent volumes.
+To enable dynamic provisioning of persistent volumes, create a storage class that defines storage characteristics and allows users to automatically provision volumes on-demand.
 
 # Creating the persistent volume claim
 

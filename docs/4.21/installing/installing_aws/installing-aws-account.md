@@ -71,7 +71,7 @@ Only the US-West region has endpoints for tagging. Omit this parameter if your c
 
 # AWS account limits
 
-The OpenShift Container Platform cluster uses several Amazon Web Services (AWS) components, and the default [Service Limits](https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html) affect your ability to install OpenShift Container Platform clusters.
+The OpenShift Container Platform cluster uses several Amazon Web Services (AWS) components, and the default service limits affect your ability to install OpenShift Container Platform clusters.
 
 If you use certain cluster configurations, deploy your cluster in certain AWS regions, or run multiple clusters from your account, you might need to request additional resources for your AWS account.
 
@@ -110,7 +110,7 @@ The following table summarizes the AWS components whose limits can impact your a
 <td style="text-align: left;"><p>Elastic IPs (EIPs)</p></td>
 <td style="text-align: left;"><p>0 to 1</p></td>
 <td style="text-align: left;"><p>5 EIPs per account</p></td>
-<td style="text-align: left;"><p>To provision the cluster in a highly available configuration, the installation program creates a public and private subnet for each <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html">availability zone within a region</a>. Each private subnet requires a <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html">NAT Gateway</a>, and each NAT gateway requires a separate <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html">elastic IP</a>. Review the <a href="https://aws.amazon.com/about-aws/global-infrastructure/">AWS region map</a> to determine how many availability zones are in each region. To take advantage of the default high availability, install the cluster in a region with at least three availability zones. To install a cluster in a region with more than five availability zones, you must increase the EIP limit.</p>
+<td style="text-align: left;"><p>To provision the cluster in a highly available configuration, the installation program creates a public and private subnet for each availability zone within a region. Each private subnet requires a NAT gateway, and each NAT gateway requires a separate elastic IP. Review the AWS region map to determine how many availability zones are in each region. To take advantage of the default high availability, install the cluster in a region with at least three availability zones. To install a cluster in a region with more than five availability zones, you must increase the EIP limit.</p>
 <div class="important">
 <p>To use the <code>us-east-1</code> region, you must increase the EIP limit for your account.</p>
 </div></td>
@@ -125,7 +125,7 @@ The following table summarizes the AWS components whose limits can impact your a
 <td style="text-align: left;"><p>Elastic Load Balancing (ELB/NLB)</p></td>
 <td style="text-align: left;"><p>3</p></td>
 <td style="text-align: left;"><p>20 per region</p></td>
-<td style="text-align: left;"><p>By default, each cluster creates internal and external network load balancers for the master API server and a single Classic Load Balancer for the router. Deploying more Kubernetes <code>Service</code> objects with type <code>LoadBalancer</code> will create additional <a href="https://aws.amazon.com/elasticloadbalancing/">load balancers</a>.</p></td>
+<td style="text-align: left;"><p>By default, each cluster creates internal and external network load balancers for the master API server and a single Classic Load Balancer for the router. Deploying more Kubernetes <code>Service</code> objects with type <code>LoadBalancer</code> will create additional load balancers.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p>NAT Gateways</p></td>
@@ -137,7 +137,7 @@ The following table summarizes the AWS components whose limits can impact your a
 <td style="text-align: left;"><p>Elastic Network Interfaces (ENIs)</p></td>
 <td style="text-align: left;"><p>At least 12</p></td>
 <td style="text-align: left;"><p>350 per region</p></td>
-<td style="text-align: left;"><p>The default installation creates 21 ENIs and an ENI for each availability zone in your region. For example, the <code>us-east-1</code> region contains six availability zones, so a cluster that is deployed in that zone uses 27 ENIs. Review the <a href="https://aws.amazon.com/about-aws/global-infrastructure/">AWS region map</a> to determine how many availability zones are in each region.</p>
+<td style="text-align: left;"><p>The default installation creates 21 ENIs and an ENI for each availability zone in your region. For example, the <code>us-east-1</code> region contains six availability zones, so a cluster that is deployed in that zone uses 27 ENIs. Review the AWS region map to determine how many availability zones are in each region.</p>
 <p>Additional ENIs are created for additional machines and ELB load balancers that are created by cluster usage and deployed workloads.</p></td>
 </tr>
 <tr class="odd">
@@ -160,6 +160,18 @@ The following table summarizes the AWS components whose limits can impact your a
 </tr>
 </tbody>
 </table>
+
+- [Service Limits (AWS documentation)](https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html)
+
+- [Availability zones within a region (AWS documentation)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html)
+
+- [NAT Gateway (AWS documentation)](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html)
+
+- [Elastic IP addresses (AWS documentation)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html)
+
+- [AWS global infrastructure](https://aws.amazon.com/about-aws/global-infrastructure/)
+
+- [Elastic Load Balancing (AWS documentation)](https://aws.amazon.com/elasticloadbalancing/)
 
 # Required AWS permissions for the IAM user
 
@@ -693,7 +705,7 @@ To ensure your cluster operates with the correct security permissions in OpenShi
 
 By default, the installation program creates IAM instance profiles for the bootstrap, control plane, and compute instances with the necessary permissions for the cluster to operate.
 
-The following lists specify the default permissions for control plane and compute machines:
+The following list specifies the default IAM role permissions for control plane instance profiles:
 
 - `ec2:AttachVolume`
 
@@ -771,7 +783,7 @@ The following lists specify the default permissions for control plane and comput
 
 - `kms:DescribeKey`
 
-<!-- -->
+The following list specifies the default IAM permissions for compute instance profiles:
 
 - `ec2:DescribeInstances`
 

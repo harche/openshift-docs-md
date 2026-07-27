@@ -387,6 +387,46 @@ You can also configure networking settings from the OpenShift Container Platform
     lo                  aa030e0f-21ca-498f-b6ce-bac7d4d793f0  loopback  lo
     ```
 
+# The baremetal-runtimecfg tool
+
+To prevent incorrect IP address assignments, learn how the `baremetal-runtimecfg` tool determines node IP addresses between your physical network and the Kubernetes control plane.
+
+The `baremetal-runtimecfg` tool uses the following selection logic sequence to determine the IP address for a node:
+
+1.  The tool looks at the `NODEIP_HINT` and all API and Ingress VIP addresses.
+
+2.  The tool selects an IP address on the same subnet.
+
+3.  If no address match is found, the tool looks at the default route and selects an IP address from the interface used by that route.
+
+The `baremetal-runtimecfg` tool uses the following component order of precedence to sort IP addresses for a node:
+
+1.  Default route priority
+
+2.  Link index
+
+3.  IP address family
+
+4.  Address subnet contains the default gateway
+
+5.  Public versus private
+
+6.  Real IPv6 versus IPv4-mapped IPv6 addresses
+
+7.  Alphanumeric stability
+
+If the wrong IP address is provided because a node has multiple IP addresses on the primary interface, such as `br-ex`, an IP address mismatch is likely the issue because of the following scenarios:
+
+- Specifically for a secondary IP address on the same subnet as the primary IP address. During a node reboot, if both IP addresses are candidates, the `baremetal-runtimecfg` tool might select the secondary IP address based on the sort criteria of the tool.
+
+- During a node reboot, if a primary IP address and a secondary IP address on the same subnet are both candidates, the `baremetal-runtimecfg` tool might select the secondary IP address based on sorting criteria of the tool.
+
+- If the `baremetal-runtimecfg` tool does not set a node IP for the Kubelet service, Kubelet chooses an IP address associated with the default route.
+
+<!-- -->
+
+- [Optional: Overriding the default node IP selection logic](../../../support/troubleshooting/troubleshooting-network-issues.xml#overriding-default-node-ip-selection-logic_troubleshooting-network-issues)
+
 # Creating a manifest object that includes a customized br-ex bridge
 
 By default, OpenShift Container Platform automatically configures the Open vSwitch (OVS) `br-ex` bridge on bare-metal nodes. For advanced networking requirements, you can override this default behavior on bare-metal platforms. To do this, create a `MachineConfig` object that includes an NMState configuration file.
@@ -2759,7 +2799,17 @@ The `provisioning` network is required for PXE booting. If you deploy without a 
 
 </div>
 
-## Deploying with dual-stack networking
+## Deploying IP addressing with dual-stack networking
+
+When deploying IP addressing with dual-stack networking for the bootstrap virtual machine (VM), the bootstrap VM functions with a single IP version.
+
+<div class="note">
+
+The following examples are for DHCP. DHCP-based dual stack clusters can deploy with one IPv4 and one IPv6 virtual IP address (VIP) each from Day 1.
+
+Deploying a cluster with static IP addresses involves configuring IP addresses for the bootstrap VM, API, and ingress VIPs. Configuring dual-stack with a static IP set in `install-config` requires one VIP each for API and ingress. Add secondary VIPs after deployment.
+
+</div>
 
 For dual-stack networking in OpenShift Container Platform clusters, you can configure IPv4 and IPv6 address endpoints for cluster nodes. To configure IPv4 and IPv6 address endpoints for cluster nodes, edit the `machineNetwork`, `clusterNetwork`, and `serviceNetwork` configuration settings in the `install-config.yaml` file. Each setting must have two CIDR entries each. For a cluster with the IPv4 family as the primary address family, specify the IPv4 setting first. For a cluster with the IPv6 family as the primary address family, specify the IPv6 setting first.
 
@@ -2779,7 +2829,7 @@ serviceNetwork:
 
 <div class="important">
 
-On a bare-metal platform, if you specified an NMState configuration in the `networkConfig` section of your `install-config.yaml` file, add `interfaces.wait-ip: ipv4+ipv6` to the NMState YAML file to resolve an issue that prevents your cluster from deploying on a dual-stack network.
+On a bare metal platform, if you specified an NMState configuration in the `networkConfig` section of your `install-config.yaml` file, add `interfaces.wait-ip: ipv4+ipv6` to the NMState YAML file to resolve an issue that prevents your cluster from deploying on a dual-stack network.
 
 <div class="formalpara-title">
 
@@ -3495,7 +3545,7 @@ When deploying remote nodes in separate subnets, you must place the `ingressVIP`
             node-role.kubernetes.io/master: ""
     ```
 
-7.  Consider backing up the `manifests` directory. The installer deletes the `manifests/` directory when creating the cluster.
+7.  Consider backing up the `manifests` directory. The installation program deletes the `manifests/` directory when creating the cluster.
 
 8.  Modify the `cluster-scheduler-02-config.yml` manifest to make the control plane nodes schedulable by setting the `mastersSchedulable` field to `true`. Control plane nodes are not schedulable by default. For example:
 

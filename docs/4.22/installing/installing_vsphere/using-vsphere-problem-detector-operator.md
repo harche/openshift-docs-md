@@ -1,4 +1,4 @@
-You can use the vSphere Problem Detector Operator to check a cluster that you deployed on VMware vSphere for common installation and misconfiguration issues that relate to storage.
+You can use the vSphere Problem Detector Operator to check a cluster that you deployed on VMware vSphere for common installation and configuration issues that relate to storage.
 
 # About the vSphere Problem Detector Operator
 
@@ -22,7 +22,7 @@ You can override the schedule for running the vSphere Problem Detector Operator 
 
 The vSphere Problem Detector Operator automatically runs the checks every hour. After the Operator starts, the Operator runs the checks immediately. After the Cluster Storage Operator starts and determines that a cluster runs on VMware vSphere, the Cluster Storage Operator starts the vSphere Problem Detector Operator. To run the checks immediately, you can scale the vSphere Problem Detector Operator to `0` and back to `1` so that the Cluster Storage Operator restarts the vSphere Problem Detector Operator.
 
-- Access to the cluster as a user with the `cluster-admin` role.
+- You have access to the cluster as a user with the `cluster-admin` role.
 
 <!-- -->
 
@@ -233,7 +233,7 @@ The `systemd` process has a 255 character limit for the length of the fully qual
 
 - The naming conventions require 205 characters of the 255 character limit.
 
-- The depolyment determines the datastore name and the cluster ID.
+- The deployment determines the datastore name and the cluster ID.
 
 - The datastore name and cluster ID substitute into the example pattern. The fully qualified path gets processed with the `systemd-escape` command to escape special characters. For example, after the escape operation, a hyphen character uses four characters, such as `\x2d`.
 

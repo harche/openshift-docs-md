@@ -12,7 +12,7 @@ These instructions assume that you are using Red Hat Enterprise Linux (RHEL) 8.
 
 - Python 3 is installed on your machine.
 
-1.  On a command line, add the repositories:
+1.  On a command line, add the following repositories:
 
     1.  Register with Red Hat Subscription Manager:
 
@@ -67,7 +67,7 @@ You can remove an OpenShift Container Platform cluster on Red Hat OpenStack Pla
 
 - All of the playbooks are in a common directory.
 
-1.  On a command line, run the playbooks that you downloaded:
+1.  On a command line, run the playbooks that you downloaded by entering the following command:
 
     ``` terminal
     $ ansible-playbook -i inventory.yaml  \
@@ -81,4 +81,4 @@ You can remove an OpenShift Container Platform cluster on Red Hat OpenStack Pla
 
 2.  Remove any DNS record changes you made for the OpenShift Container Platform installation.
 
-OpenShift Container Platform is removed from your infrastructure.
+    OpenShift Container Platform is removed from your infrastructure.

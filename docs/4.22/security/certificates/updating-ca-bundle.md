@@ -49,4 +49,4 @@ To trust a custom certificate authority for egress connections in OpenShift Cont
 
 - [Enabling the cluster-wide proxy](../../networking/configuring_network_settings/enable-cluster-wide-proxy.xml#nw-proxy-configure-object_config-cluster-wide-proxy)
 
-- [Proxy certificate customization](../../security/certificate_types_descriptions/proxy-certificates.xml#customization)
+- [Proxy certificate customization](../../security/certificate_types_descriptions/proxy-certificates.xml#proxy-cert-customization_proxy-certificates)

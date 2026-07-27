@@ -767,11 +767,7 @@ The process for rotating cloud credentials depends on the mode that the CCO is c
 
         - Google Cloud: `GCPProviderSpec`
 
-        <div class="formalpara-title">
-
-        **Partial example output for AWS**
-
-        </div>
+        The following example is partial output for the command on an AWS cluster:
 
         ``` json
         {
@@ -791,29 +787,23 @@ The process for rotating cloud credentials depends on the mode that the CCO is c
           -n <secret_namespace>
         ```
 
-        - Specify the name of a secret.
+        where:
 
-        - Specify the namespace that contains the secret.
+        `<secret_name>`
+        Specifies the name of a secret.
 
-          <div class="formalpara-title">
+        `<secret_namespace>`
+        Specifies the namespace that contains the secret.
 
-          **Example deletion of an AWS secret**
+        The following example is a command to delete an AWS secret:
 
-          </div>
+        ``` terminal
+        $ oc delete secret ebs-cloud-credentials -n openshift-cluster-csi-drivers
+        ```
 
-          ``` terminal
-          $ oc delete secret ebs-cloud-credentials -n openshift-cluster-csi-drivers
-          ```
+        You do not need to manually delete the credentials from your provider console. Deleting the referenced component secrets will cause the CCO to delete the existing credentials from the platform and create new ones.
 
-          You do not need to manually delete the credentials from your provider console. Deleting the referenced component secrets will cause the CCO to delete the existing credentials from the platform and create new ones.
-
-<div class="formalpara-title">
-
-**Verification**
-
-</div>
-
-To verify that the credentials have changed:
+<!-- -->
 
 1.  In the **Administrator** perspective of the web console, navigate to **Workloads** → **Secrets**.
 

@@ -166,6 +166,12 @@ The migration is disruptive and nodes in your cluster might be temporarily unava
 
 For more details about the migration process, including important service interruption considerations, see "Changing the MTU for the cluster network" in the additional resources for this procedure.
 
+## Prerequisites for changing the cluster network MTU
+
+Before you change the cluster network maximum transmission unit (MTU), verify that you have the required access, tools, and network infrastructure to support the new MTU value.
+
+Ensure that the following conditions are met before you begin:
+
 - You have installed the OpenShift CLI (`oc`).
 
 - You have access to the cluster using an account with `cluster-admin` permissions.
@@ -428,6 +434,12 @@ If you do not use the provided CloudFormation template to create your AWS infras
 ## CloudFormation template for the VPC subnet
 
 Use the CloudFormation template to deploy the private and public subnets in a zone on AWS Outposts infrastructure. The template provisions an `AWS::EC2::Subnet` and associates it with a specific AWS Outposts and VPC route table to reduce latency.
+
+<div class="formalpara-title">
+
+**CloudFormation template for VPC subnets**
+
+</div>
 
 ``` yaml
 AWSTemplateFormatVersion: 2010-09-09

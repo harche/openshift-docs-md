@@ -2,9 +2,9 @@ OpenShift Container Platform collects telemetry and configuration data about you
 
 A cluster that reports data to Red Hat through Telemetry and the Insights Operator is considered a *connected cluster*.
 
-**Telemetry** is the term that Red Hat uses to describe the information being sent to Red Hat by the OpenShift Container Platform Telemeter Client. Lightweight attributes are sent from connected clusters to Red Hat to enable subscription management automation, monitor the health of clusters, assist with support, and improve customer experience.
+Telemetry is the term that Red Hat uses to describe the information being sent to Red Hat by the OpenShift Container Platform Telemeter Client. Lightweight attributes are sent from connected clusters to Red Hat to enable subscription management automation, monitor the health of clusters, assist with support, and improve customer experience.
 
-The **Insights Operator** gathers OpenShift Container Platform configuration data and sends it to Red Hat. The data is used to produce insights about potential issues that a cluster might be exposed to. These insights are communicated to cluster administrators on [OpenShift Cluster Manager](https://console.redhat.com/openshift).
+The Insights Operator gathers OpenShift Container Platform configuration data and sends it to Red Hat. The data is used to produce insights about potential issues that a cluster might be exposed to. These insights are communicated to cluster administrators on [OpenShift Cluster Manager](https://console.redhat.com/openshift).
 
 More information is provided in this document about these two processes.
 
@@ -40,10 +40,9 @@ This debugging information is available to Red Hat Support and Engineering team
 
 ## Information collected by Telemetry
 
-The following information is collected by Telemetry:
+Telemetry collects specific information, such as system, sizing, and usage information.
 
-### System information
-
+System information
 - Version information, including the OpenShift Container Platform cluster version and installed update details that are used to determine update version availability
 
 - Update information, including the number of updates available per cluster, the channel and image repository used for an update, update progress information, and the number of errors that occur in an update
@@ -62,21 +61,19 @@ The following information is collected by Telemetry:
 
 - The name of the provider platform that OpenShift Container Platform is deployed on and the data center location
 
-### Sizing Information
-
+Sizing Information
 - Sizing information about clusters, machine types, and machines, including the number of CPU cores and the amount of RAM used for each
 
 - The number of etcd members and the number of objects stored in the etcd cluster
 
 - Number of application builds by build strategy type
 
-### Usage information
-
+Usage information
 - Usage information about components, features, and extensions
 
 - Usage details about Technology Previews and unsupported configurations
 
-Telemetry does not collect identifying information such as usernames or passwords. Red Hat does not intend to collect personal information. If Red Hat discovers that personal information has been inadvertently received, Red Hat will delete such information. To the extent that any telemetry data constitutes personal data, please refer to the [Red Hat Privacy Statement](https://www.redhat.com/en/about/privacy-policy) for more information about Red Hat’s privacy practices.
+  Telemetry does not collect identifying information such as usernames or passwords. Red Hat does not intend to collect personal information. If Red Hat discovers that personal information has been inadvertently received, Red Hat will delete such information. To the extent that any telemetry data constitutes personal data, please refer to the [Red Hat Privacy Statement](https://www.redhat.com/en/about/privacy-policy) for more information about Red Hat’s privacy practices.
 
 - [Showing data collected by Telemetry](../../support/remote_health_monitoring/showing-data-collected-by-remote-health-monitoring.xml#showing-data-collected-from-the-cluster_showing-data-collected-by-remote-health-monitoring)
 

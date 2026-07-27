@@ -1,4 +1,4 @@
-Learn more about administrative tasks that cluster admins must perform to successfully initialize an update, as well as optional guidelines for ensuring a successful update.
+Before you update your OpenShift Container Platform cluster, complete the required administrative tasks and review best practices to minimize disruption and avoid update failures.
 
 # Kubernetes API removals
 
@@ -82,11 +82,7 @@ Updating or deleting Gateway API resources can result in downtime and loss of se
     $ oc get crd | grep -F -e gateway.networking.k8s.io -e gateway.networking.x-k8s.io
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    **Example output:**
 
     ``` terminal
     gatewayclasses.gateway.networking.k8s.io
@@ -134,7 +130,7 @@ Follow best practices to ensure successful cluster updates. These best practices
 
 OpenShift Container Platform minimizes workload disruptions during an update. Updates do not begin unless the cluster is in an upgradeable state at the time of the update request.
 
-This design enforces some key conditions before initiating an update, but there are a number of actions you can take to increase your chances of a successful cluster update.
+This design enforces some key conditions before initiating an update, but there are several actions you can take to increase your chances of a successful cluster update.
 
 ## Choose versions recommended by the OpenShift Update Service
 
@@ -152,7 +148,7 @@ Failing to address critical alerts before beginning an update can cause problema
 
 In the **Administrator** perspective of the web console, navigate to **Observe** → **Alerting** to find critical alerts.
 
-## Ensure that the cluster is in an Upgradable state
+## Ensure that the cluster is in an Upgradeable state
 
 When one or more Operators have not reported their `Upgradeable` condition as `True` for more than an hour, the `ClusterNotUpgradeable` warning alert is triggered in the cluster. In most cases this alert does not block patch updates, but you cannot perform a minor version update until you resolve this alert and all Operators report `Upgradeable` as `True`.
 

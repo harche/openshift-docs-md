@@ -414,7 +414,7 @@ You might need to perform manual recovery steps if a disruption event prevents f
 
 For information about verifying that both control plane nodes and etcd are operating correctly, see "Verifying etcd health in a two-node OpenShift cluster with fencing".
 
-- [Restoring etcd from a backup](../../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd-restoring_backing-up-etcd).
+- [Restoring etcd from a backup](../../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd-restoring_backing-up-etcd)
 
 - [Verifying etcd health in a two-node OpenShift cluster with fencing](../installing_tnf/install-post-tnf.xml#installation-verifying-etcd-health_install-post-tnf)
 

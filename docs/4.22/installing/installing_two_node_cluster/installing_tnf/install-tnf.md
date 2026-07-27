@@ -200,7 +200,7 @@ pullSecret: '<pull_secret>'
 sshKey: '<ssh_public_key>'
 ```
 
-- `platform.baremetal.apiVIPs` and `ingressVIPs`: Specifies virtual IPs for the API and Ingress endpoints. Required for bare-metal platform; not applicable for none.
+- `platform.baremetal.apiVIPs` and `ingressVIPs`: Specifies virtual IPs for the API and Ingress endpoints. Required for bare-metal platform; not applicable for `none`.
 
 For other bare metal specific fields, see "Installation configuration parameters for the Agent-based Installer".
 

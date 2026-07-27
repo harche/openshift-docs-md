@@ -1,38 +1,32 @@
 You can install OpenShift Container Platform on Red Hat OpenStack Platform (RHOSP).
 
-# Prerequisites
+Prerequisites
+- You reviewed details about the OpenShift Container Platform installation and update processes.
 
-- You reviewed details about the [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation) processes.
+- You read the documentation on selecting a cluster installation method and preparing it for users.
 
-- You read the documentation on [selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing).
-
-# Choosing a method to install OpenShift Container Platform on OpenStack
-
+Choosing a method to install OpenShift Container Platform on OpenStack
 You can install OpenShift Container Platform on installer-provisioned or user-provisioned infrastructure. The default installation type uses installer-provisioned infrastructure, where the installation program provisions the underlying infrastructure for the cluster. You can also install OpenShift Container Platform on infrastructure that you provision. If you do not use infrastructure that the installation program provisions, you must manage and maintain the cluster resources yourself.
 
-See [Installation process](../../architecture/architecture-installation.xml#installation-process_architecture-installation) for more information about installer-provisioned and user-provisioned installation processes.
+For more information about installer-provisioned and user-provisioned installation processes, see "Installation process".
 
-## Installing a cluster on installer-provisioned infrastructure
-
+Installing a cluster on installer-provisioned infrastructure
 You can install a cluster on Red Hat OpenStack Platform (RHOSP) infrastructure that is provisioned by the OpenShift Container Platform installation program, by using one of the following methods:
 
-- **[Installing a cluster on OpenStack with customizations](../../installing/installing_openstack/installing-openstack-installer-custom.xml#installing-openstack-installer-custom)**: You can install a customized cluster on RHOSP. The installation program allows for some customization to be applied at the installation stage. Many other customization options are available [post-installation](../../post_installation_configuration/cluster-tasks.xml#post-install-cluster-tasks).
+- Installing a cluster on Red Hat OpenStack Platform (RHOSP) with customizations: You can install a customized cluster on RHOSP. The installation program allows for some customization to be applied at the installation stage. For other customization options, see "Postinstallation cluster tasks".
 
-- **[Installing a cluster on OpenStack in a restricted network](../../installing/installing_openstack/installing-openstack-installer-restricted.xml#installing-openstack-installer-restricted)**: You can install OpenShift Container Platform on RHOSP in a restricted or disconnected network by creating an internal mirror of the installation release content. You can use this method to install a cluster that does not require an active internet connection to obtain the software components. You can also use this installation method to ensure that your clusters only use container images that satisfy your organizational controls on external content.
+- Installing a cluster on Red Hat OpenStack Platform (RHOSP) in a restricted network: You can install OpenShift Container Platform on RHOSP in a restricted or disconnected network by creating an internal mirror of the installation release content. You can use this method to install a cluster that does not require an active internet connection to obtain the software components. You can also use this installation method to ensure that your clusters only use container images that satisfy your organizational controls on external content.
 
-## Installing a cluster on user-provisioned infrastructure
-
-You can install a cluster on RHOSP infrastructure that you provision, by using one of the following methods:
-
-- **[Installing a cluster on OpenStack on your own infrastructure](../../installing/installing_openstack/installing-openstack-user.xml#installing-openstack-user)**: You can install OpenShift Container Platform on user-provisioned RHOSP infrastructure. By using this installation method, you can integrate your cluster with existing infrastructure and modifications. For installations on user-provisioned infrastructure, you must create all RHOSP resources, like Nova servers, Neutron ports, and security groups. You can use the provided Ansible playbooks to assist with the deployment process.
+Installing a cluster on user-provisioned infrastructure
+You can install a cluster on RHOSP infrastructure that you provision. By using this installation method, you can integrate your cluster with existing infrastructure and modifications. For installations on user-provisioned infrastructure, you must create all RHOSP resources, like Nova servers, Neutron ports, and security groups. You can use the provided Ansible playbooks to assist with the deployment process.
 
 # Scanning RHOSP endpoints for legacy HTTPS certificates
 
-Beginning with OpenShift Container Platform 4.10, HTTPS certificates must contain subject alternative name (SAN) fields. Run the following script to scan each HTTPS endpoint in a Red Hat OpenStack Platform (RHOSP) catalog for legacy certificates that only contain the `CommonName` field.
+Beginning with OpenShift Container Platform 4.10, HTTPS certificates must contain subject alternative name (SAN) fields. You can run a script to scan each HTTPS endpoint in a Red Hat OpenStack Platform (RHOSP) catalog for legacy certificates that only contain the `CommonName` field.
 
 <div class="important">
 
-OpenShift Container Platform does not check the underlying RHOSP infrastructure for legacy certificates prior to installation or updates. Use the provided script to check for these certificates yourself. Failing to update legacy certificates prior to installing or updating a cluster will result in cluster dysfunction.
+OpenShift Container Platform does not check the underlying RHOSP infrastructure for legacy certificates before installation or updates. Use the provided script to check for these certificates yourself. Failing to update legacy certificates before installing or updating a cluster might result in issues for your cluster.
 
 </div>
 
@@ -51,8 +45,6 @@ OpenShift Container Platform does not check the underlying RHOSP infrastructure 
 - Populate the machine with RHOSP credentials for the target cloud.
 
 1.  Save the following script to your machine:
-
-    <div class="informalexample">
 
     ``` bash
     #!/usr/bin/env bash
@@ -125,29 +117,29 @@ OpenShift Container Platform does not check the underlying RHOSP infrastructure 
     fi
     ```
 
-    </div>
-
 2.  Run the script.
 
 3.  Replace any certificates that the script reports as `INVALID` with certificates that contain SAN fields.
 
-<div class="important">
+    <div class="important">
 
-You must replace all legacy HTTPS certificates before you install OpenShift Container Platform 4.10 or update a cluster to that version. Legacy certificates will be rejected with the following message:
+    You must replace all legacy HTTPS certificates before you install OpenShift Container Platform 4.10 or update a cluster to that version. Legacy certificates will be rejected with the following message:
 
-``` txt
-x509: certificate relies on legacy Common Name field, use SANs instead
-```
+    ``` txt
+    x509: certificate relies on legacy Common Name field, use SANs instead
+    ```
 
-</div>
+    </div>
 
 ## Scanning RHOSP endpoints for legacy HTTPS certificates manually
 
-Beginning with OpenShift Container Platform 4.10, HTTPS certificates must contain subject alternative name (SAN) fields. If you do not have access to the prerequisite tools that are listed in "Scanning RHOSP endpoints for legacy HTTPS certificates", perform the following steps to scan each HTTPS endpoint in a Red Hat OpenStack Platform (RHOSP) catalog for legacy certificates that only contain the `CommonName` field.
+Starting in OpenShift Container Platform 4.10, HTTPS certificates require subject alternative name (SAN) fields. If you do not have access to the prerequisite tools that are listed in "Scanning RHOSP endpoints for legacy HTTPS certificates", you can perform certain steps.
+
+These steps scan each HTTPS endpoint in a Red Hat OpenStack Platform (RHOSP) catalog for legacy certificates that only contain the `CommonName` field.
 
 <div class="important">
 
-OpenShift Container Platform does not check the underlying RHOSP infrastructure for legacy certificates prior to installation or updates. Use the following steps to check for these certificates yourself. Failing to update legacy certificates prior to installing or updating a cluster will result in cluster dysfunction.
+OpenShift Container Platform does not check the underlying RHOSP infrastructure for legacy certificates before installation or updates. Use the procedure steps to check for these certificates yourself. Failing to update legacy certificates before installing or updating a cluster might result in issues for your cluster.
 
 </div>
 
@@ -203,12 +195,28 @@ OpenShift Container Platform does not check the underlying RHOSP infrastructure 
 
         For each endpoint, look for output that resembles the previous example. If there is no output for an endpoint, the certificate of that endpoint is invalid and must be re-issued.
 
-<div class="important">
+        <div class="important">
 
-You must replace all legacy HTTPS certificates before you install OpenShift Container Platform 4.10 or update a cluster to that version. Legacy certificates are rejected with the following message:
+        You must replace all legacy HTTPS certificates before you install OpenShift Container Platform 4.10 or update a cluster to that version. Legacy certificates are rejected with the following message:
 
-``` txt
-x509: certificate relies on legacy Common Name field, use SANs instead
-```
+        ``` txt
+        x509: certificate relies on legacy Common Name field, use SANs instead
+        ```
 
-</div>
+        </div>
+
+# Additional resources
+
+- [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation)
+
+- [selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing)
+
+- [Installation process](../../architecture/architecture-installation.xml#installation-process_architecture-installation)
+
+- [Installing a cluster on Red Hat OpenStack Platform (RHOSP) with customizations](../../installing/installing_openstack/installing-openstack-installer-custom.xml#installing-openstack-installer-custom)
+
+- [Postinstallation cluster tasks](../../post_installation_configuration/cluster-tasks.xml#post-install-cluster-tasks)
+
+- [Installing a cluster on Red Hat OpenStack Platform (RHOSP) in a restricted network](../../installing/installing_openstack/installing-openstack-installer-restricted.xml#installing-openstack-installer-restricted)
+
+- [Installing a cluster on Red Hat OpenStack Platform (RHOSP) on your own infrastructure](../../installing/installing_openstack/installing-openstack-user.xml#installing-openstack-user)

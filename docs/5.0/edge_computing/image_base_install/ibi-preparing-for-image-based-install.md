@@ -294,7 +294,8 @@ The following table lists the components, resources, and configurations that you
 | `StorageClass.yaml`                                                | No, if it is used in `StorageLV.yaml` |
 | `StorageLV.yaml`                                                   | No                                    |
 | `StorageLVMCluster.yaml`                                           | No                                    |
-| `SriovVrbClusterConfig.yaml`                                       | Yes                                   |
+| `SriovFecClusterConfig.yaml`                                       | No                                    |
+| `SriovVrbClusterConfig.yaml`                                       | No                                    |
 
 Seed image configuration with RAN DU profile
 
@@ -303,8 +304,6 @@ The following list of resources and configurations can be applied as extra manif
 - `ClusterLogForwarder.yaml`
 
 - `ReduceMonitoringFootprint.yaml`
-
-- `SriovFecClusterConfig.yaml`
 
 - `PtpOperatorConfigForEvent.yaml`
 
@@ -469,14 +468,6 @@ Use the Lifecycle Agent to generate a seed image from a managed cluster. The Ope
 
     </div>
 
-<div class="formalpara-title">
-
-**Next steps**
-
-</div>
-
-If you want to generate more seed images, you must provision a new seed cluster with the version that you want to generate a seed image from.
-
 - After the cluster recovers and it is available, you can check the status of the `SeedGenerator` CR by running the following command:
 
   ``` terminal
@@ -502,3 +493,7 @@ If you want to generate more seed images, you must provision a new seed cluster 
       type: SeedGenCompleted
     observedGeneration: 1
   ```
+
+  The `SeedGenCompleted` type indicates that the seed image generation is complete.
+
+  If you want to generate more seed images, you must provision a new seed cluster with the version that you want to generate a seed image from.

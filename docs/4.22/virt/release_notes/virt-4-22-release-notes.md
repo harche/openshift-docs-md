@@ -277,3 +277,16 @@ If you are upgrading OpenShift Virtualization from version 4.20 to 4.22 and usin
 3.  Wait for the MCP to finish updating the worker nodes.
 
 [CNV-89504](https://redhat.atlassian.net/browse/CNV-89504)
+
+# Maintenance releases
+
+## OpenShift Virtualization 4.22.2 updates
+
+OpenShift Virtualization 4.17.2 is now available with updates to packages and images that fix several bugs and add enhancements.
+
+### New features and enhancements
+
+Self-service Technical Supportability Review
+You can use the self-service Technical Supportability Review (TSR) on the Red Hat Customer Portal to validate your cluster configuration against Red Hat common practices. The self-service TSR uses AI to evaluate your cluster’s `must-gather` data and provides a prioritized executive summary that identifies your cluster’s top risks and recommends corrective actions. The TSR performs hundreds of checks across the OpenShift Container Platform platform, including OpenShift Virtualization, and coverage is continually expanding.
+
+For more information, see [Technical Supportability Review with AI tool](https://access.redhat.com/support/cases/#/analyze) and [Red Hat Technical Supportability Review with AI: Proactive AI-Driven Cluster Assessments for OpenShift Container Platform](https://access.redhat.com/solutions/7141255).

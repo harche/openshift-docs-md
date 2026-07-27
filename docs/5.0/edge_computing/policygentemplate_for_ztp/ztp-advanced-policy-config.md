@@ -153,22 +153,22 @@ The following example procedure describes how to update fields in the generated 
             enabled: true
     ```
 
-<div class="note">
+    <div class="note">
 
-In the `/source-crs` folder that you extract from the `ztp-site-generate` container, the `$` syntax is not used for template substitution as implied by the syntax. Rather, if the `policyGen` tool sees the `$` prefix for a string and you do not specify a value for that field in the related `PolicyGenTemplate` CR, the field is omitted from the output CR entirely.
+    In the `/source-crs` folder that you extract from the `ztp-site-generate` container, the `$` syntax is not used for template substitution as implied by the syntax. Rather, if the `policyGen` tool sees the `$` prefix for a string and you do not specify a value for that field in the related `PolicyGenTemplate` CR, the field is omitted from the output CR entirely.
 
-An exception to this is the `$mcp` variable in `/source-crs` YAML files that is substituted with the specified value for `mcp` from the `PolicyGenTemplate` CR. For example, in `example/policygentemplates/group-du-standard-ranGen.yaml`, the value for `mcp` is `worker`:
+    An exception to this is the `$mcp` variable in `/source-crs` YAML files that is substituted with the specified value for `mcp` from the `PolicyGenTemplate` CR. For example, in `example/policygentemplates/group-du-standard-ranGen.yaml`, the value for `mcp` is `worker`:
 
-``` yaml
-spec:
-  bindingRules:
-    group-du-standard: ""
-  mcp: "worker"
-```
+    ``` yaml
+    spec:
+      bindingRules:
+        group-du-standard: ""
+      mcp: "worker"
+    ```
 
-The `policyGen` tool replace instances of `$mcp` with `worker` in the output CRs.
+    The `policyGen` tool replace instances of `$mcp` with `worker` in the output CRs.
 
-</div>
+    </div>
 
 # Adding custom content to the GitOps ZTP pipeline
 
@@ -196,7 +196,7 @@ Perform the following procedure to add new content to the GitOps ZTP pipeline.
                 └── ElasticsearchOperatorGroup.yaml
     ```
 
-    - The `source-crs` subdirectory must be in the same directory as the `kustomization.yaml` file.
+    The `source-crs` subdirectory must be in the same directory as the `kustomization.yaml` file.
 
 3.  Update the required `PolicyGenTemplate` CRs to include references to the content you added in the `source-crs/custom-crs` and `source-crs/elasticsearch` directories. For example:
 
@@ -261,7 +261,7 @@ Perform the following procedure to add new content to the GitOps ZTP pipeline.
           policyName: "group-dev-disable-nic-lldp"
     ```
 
-    - Set `fileName` to include the relative path to the file from the `/source-crs` parent directory.
+    Set `fileName` to include the relative path to the file from the `/source-crs` parent directory.
 
 4.  Commit the `PolicyGenTemplate` change in Git, and then push to the Git repository that is monitored by the GitOps ZTP Argo CD policies application.
 
@@ -389,11 +389,7 @@ Create a validator inform policy that signals when the GitOps Zero Touch Provisi
 
 1.  Create a standalone `PolicyGenTemplate` custom resource (CR) that contains the source file `validatorCRs/informDuValidator.yaml`. You only need one standalone `PolicyGenTemplate` CR for each cluster type. For example, this CR applies a validator inform policy for single-node OpenShift clusters:
 
-    <div class="formalpara-title">
-
-    **Example single-node cluster validator inform policy CR (group-du-sno-validator-ranGen.yaml)**
-
-    </div>
+    Example single-node cluster validator inform policy CR (group-du-sno-validator-ranGen.yaml):
 
     ``` yaml
     apiVersion: ran.openshift.io/v1
@@ -413,19 +409,28 @@ Create a validator inform policy that signals when the GitOps Zero Touch Provisi
           policyName: "du-policy"
     ```
 
-    - The name of the `{policy-gen-crs}` object. This name is also used as part of the names for the `placementBinding`, `placementRule`, and `policy` that are created in the requested `namespace`.
+    where:
 
-    - This value should match the `namespace` used in the group `policy-gen-crs`.
+    `metadata.name`
+    Specifies the name of the `{policy-gen-crs}` object. This name is also used as part of the names for the `placementBinding`, `placementRule`, and `policy` that are created in the requested `namespace`.
 
-    - The `group-du-*` label defined in `bindingRules` must exist in the `ClusterInstance` files.
+    `metadata.namespace`
+    Specifies the namespace. This value should match the `namespace` used in the group `policy-gen-crs`.
 
-    - The label defined in `bindingExcludedRules` must be\`ztp-done:\`. The `ztp-done` label is used in coordination with the Topology Aware Lifecycle Manager.
+    `spec.bindingRules`
+    Specifies the binding rules. The `group-du-*` label defined in `bindingRules` must exist in the `ClusterInstance` files.
 
-    - `mcp` defines the `MachineConfigPool` object that is used in the source file `validatorCRs/informDuValidator.yaml`. It should be `master` for single node and three-node cluster deployments and `worker` for standard cluster deployments.
+    `spec.bindingExcludedRules`
+    Specifies the binding excluded rules. The label defined in `bindingExcludedRules` must be `ztp-done:`. The `ztp-done` label is used in coordination with the Topology Aware Lifecycle Manager.
 
-    - Optional. The default value is `inform`.
+    `spec.mcp`
+    Specifies the `MachineConfigPool` object that is used in the source file `validatorCRs/informDuValidator.yaml`. It should be `master` for single node and three-node cluster deployments and `worker` for standard cluster deployments.
 
-    - This value is used as part of the name for the generated RHACM policy. The generated validator policy for the single node example is `group-du-sno-validator-du-policy`.
+    `spec.sourceFiles.remediationAction`
+    Specifies the remediation action. Optional. The default value is `inform`.
+
+    `spec.sourceFiles.policyName`
+    Specifies the name for the generated RHACM policy. The generated validator policy for the single node example is `group-du-sno-validator-du-policy`.
 
 2.  Commit the `PolicyGenTemplate` CR file in your Git repository and push the changes.
 
@@ -433,7 +438,9 @@ Create a validator inform policy that signals when the GitOps Zero Touch Provisi
 
 # Configuring power states using PolicyGenTemplate CRs
 
-For low latency and high-performance edge deployments, it is necessary to disable or limit C-states and P-states. With this configuration, the CPU runs at a constant frequency, which is typically the maximum turbo frequency. This ensures that the CPU is always running at its maximum speed, which results in high performance and low latency. This leads to the best latency for workloads. However, this also leads to the highest power consumption, which might not be necessary for all workloads.
+For low latency and high-performance edge deployments, it is necessary to disable or limit C-states and P-states.
+
+With this configuration, the CPU runs at a constant frequency, which is typically the maximum turbo frequency. This ensures that the CPU is always running at its maximum speed, which results in high performance and low latency. This leads to the best latency for workloads. However, this also leads to the highest power consumption, which might not be necessary for all workloads.
 
 Workloads can be classified as critical or non-critical, with critical workloads requiring disabled C-state and P-state settings for high performance and low latency, while non-critical workloads use C-state and P-state settings for power savings at the expense of some latency and performance. You can configure the following three power states using GitOps Zero Touch Provisioning (ZTP):
 
@@ -538,7 +545,7 @@ The power saving mode balances reduced power consumption with increased latency.
           - "cpufreq.default_governor=schedutil"
     ```
 
-    - The `schedutil` governor is recommended, however, other governors that can be used include `ondemand` and `powersave`.
+    The `schedutil` governor is recommended, however, other governors that can be used include `ondemand` and `powersave`.
 
 2.  Commit the `PolicyGenTemplate` change in Git, and then push to the Git repository being monitored by the GitOps ZTP Argo CD application.
 
@@ -580,7 +587,9 @@ The power saving mode balances reduced power consumption with increased latency.
 
 ## Maximizing power savings
 
-Limiting the maximum CPU frequency is recommended to achieve maximum power savings. Enabling C-states on the non-critical workload CPUs without restricting the maximum CPU frequency negates much of the power savings by boosting the frequency of the critical CPUs.
+Limiting the maximum CPU frequency is recommended to achieve maximum power savings.
+
+Enabling C-states on the non-critical workload CPUs without restricting the maximum CPU frequency negates much of the power savings by boosting the frequency of the critical CPUs.
 
 Maximize power savings by updating the `sysfs` plugin fields, setting an appropriate value for `max_perf_pct` in the `TunedPerformancePatch` CR for the reference configuration. This example based on the `group-du-sno-ranGen.yaml` describes the procedure to follow to restrict the maximum CPU frequency.
 
@@ -600,13 +609,13 @@ Maximize power savings by updating the `sysfs` plugin fields, setting an appropr
               /sys/devices/system/cpu/intel_pstate/max_perf_pct=<x>
     ```
 
-    - The `max_perf_pct` controls the maximum frequency the `cpufreq` driver is allowed to set as a percentage of the maximum supported CPU frequency. This value applies to all CPUs. You can check the maximum supported frequency in `/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq`. As a starting point, you can use a percentage that caps all CPUs at the `All Cores Turbo` frequency. The `All Cores Turbo` frequency is the frequency that all cores will run at when the cores are all fully occupied.
+    The `max_perf_pct` controls the maximum frequency the `cpufreq` driver is allowed to set as a percentage of the maximum supported CPU frequency. This value applies to all CPUs. You can check the maximum supported frequency in `/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq`. As a starting point, you can use a percentage that caps all CPUs at the `All Cores Turbo` frequency. The `All Cores Turbo` frequency is the frequency that all cores will run at when the cores are all fully occupied.
 
-      <div class="note">
+    <div class="note">
 
-      To maximize power savings, set a lower value. Setting a lower value for `max_perf_pct` limits the maximum CPU frequency, thereby reducing power consumption, but also potentially impacting performance. Experiment with different values and monitor the system’s performance and power consumption to find the optimal setting for your use-case.
+    To maximize power savings, set a lower value. Setting a lower value for `max_perf_pct` limits the maximum CPU frequency, thereby reducing power consumption, but also potentially impacting performance. Experiment with different values and monitor the system’s performance and power consumption to find the optimal setting for your use-case.
 
-      </div>
+    </div>
 
 2.  Commit the `PolicyGenTemplate` change in Git, and then push to the Git repository being monitored by the GitOps ZTP Argo CD application.
 
@@ -733,15 +742,22 @@ You can configure PTP events that use HTTP transport on managed clusters that yo
               minOffsetThreshold: -100
         ```
 
-        - Can be `PtpConfigMaster.yaml` or `PtpConfigSlave.yaml` depending on your requirements. For configurations based on `group-du-sno-ranGen.yaml` or `group-du-3node-ranGen.yaml`, use `PtpConfigSlave.yaml`.
+        where:
 
-        - Device specific interface name.
+        `fileName`
+        Specifies `PtpConfigMaster.yaml` or `PtpConfigSlave.yaml` depending on your requirements. For configurations based on `group-du-sno-ranGen.yaml` or `group-du-3node-ranGen.yaml`, use `PtpConfigSlave.yaml`.
 
-        - You must append the `--summary_interval -4` value to `ptp4lOpts` in `.spec.sourceFiles.spec.profile` to enable PTP fast events.
+        `spec.profile.interface`
+        Specifies the device specific interface name.
 
-        - Required `phc2sysOpts` values. `-m` prints messages to `stdout`. The `linuxptp-daemon` `DaemonSet` parses the logs and generates Prometheus metrics.
+        `spec.profile.ptp4lOpts`
+        Specifies the ptp4l options. You must append the `--summary_interval -4` value to `ptp4lOpts` in `.spec.sourceFiles.spec.profile` to enable PTP fast events.
 
-        - Optional. If the `ptpClockThreshold` stanza is not present, default values are used for the `ptpClockThreshold` fields. The stanza shows default `ptpClockThreshold` values. The `ptpClockThreshold` values configure how long after the PTP master clock is disconnected before PTP events are triggered. `holdOverTimeout` is the time value in seconds before the PTP clock event state changes to `FREERUN` when the PTP master clock is disconnected. The `maxOffsetThreshold` and `minOffsetThreshold` settings configure offset values in nanoseconds that compare against the values for `CLOCK_REALTIME` (`phc2sys`) or master offset (`ptp4l`). When the `ptp4l` or `phc2sys` offset value is outside this range, the PTP clock state is set to `FREERUN`. When the offset value is within this range, the PTP clock state is set to `LOCKED`.
+        `spec.profile.phc2sysOpts`
+        Specifies the required `phc2sysOpts` values. `-m` prints messages to `stdout`. The `linuxptp-daemon` `DaemonSet` parses the logs and generates Prometheus metrics.
+
+        `spec.ptpClockThreshold`
+        Specifies the PTP clock threshold settings. Optional. If the `ptpClockThreshold` stanza is not present, default values are used for the `ptpClockThreshold` fields. The stanza shows default `ptpClockThreshold` values. The `ptpClockThreshold` values configure how long after the PTP master clock is disconnected before PTP events are triggered. `holdOverTimeout` is the time value in seconds before the PTP clock event state changes to `FREERUN` when the PTP master clock is disconnected. The `maxOffsetThreshold` and `minOffsetThreshold` settings configure offset values in nanoseconds that compare against the values for `CLOCK_REALTIME` (`phc2sys`) or master offset (`ptp4l`). When the `ptp4l` or `phc2sys` offset value is outside this range, the PTP clock state is set to `FREERUN`. When the offset value is within this range, the PTP clock state is set to `LOCKED`.
 
 2.  Merge any other required changes and files with your custom site repository.
 

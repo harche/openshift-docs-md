@@ -1,12 +1,14 @@
 You can manually gather and upload Insights Operator archives to diagnose issues from a restricted network.
 
-To use the Insights Operator in a restricted network, you must:
+To use the Insights Operator in a restricted network, you must complete the following tasks:
 
 - Create a copy of your Insights Operator archive.
 
-- Upload the Insights Operator archive to [console.redhat.com](https://console.redhat.com).
+- Upload the Insights Operator archive to the Red Hat Hybrid Cloud Console.
 
 Additionally, you can select to obfuscate the Insights Operator data before data upload.
+
+- [Red Hat Hybrid Cloud Console](https://console.redhat.com)
 
 - [Enabling Insights Operator data obfuscation](../../support/remote_health_monitoring/remote-health-reporting-from-restricted-network.xml#insights-operator-enable-obfuscation_remote-health-reporting-from-restricted-network)
 

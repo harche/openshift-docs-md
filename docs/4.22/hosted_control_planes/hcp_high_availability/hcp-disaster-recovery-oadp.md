@@ -16,7 +16,7 @@ The disaster recovery process with OpenShift API for Data Protection (OADP) invo
 
 Before you can perform disaster recovery for hosted control planes on Amazon Web Services (AWS), you need to meet a few prerequisites and configure OpenShift API for Data Protection (OADP) on AWS S3 compatible storage.
 
-- You installed the OADP Operator on the management cluster. For more information, see "About installing OADP" in the *Additional resources* section.
+- You installed the OADP Operator on the management cluster. For more information, see "About installing OADP".
 
 - You created a storage class for the management cluster.
 
@@ -30,11 +30,11 @@ Before you can perform disaster recovery for hosted control planes on Amazon Web
 
 - Your hosted control planes pods are up and running.
 
-- You are using a supported version of OADP for your management cluster. For example, if your management cluster is on OpenShift Container Platform 4.20, you must use OADP version 1.5. For more information, see "Support for OpenShift API for Data Protection (OADP)" in the *Additional resources* section.
+- You are using a supported version of OADP for your management cluster. For example, if your management cluster is on OpenShift Container Platform 4.20, you must use OADP version 1.5. For more information, see "Support for OpenShift API for Data Protection (OADP)".
 
 <!-- -->
 
-- To prepare AWS to use OADP, follow the steps in "Configuring the OpenShift API for Data Protection with AWS S3 compatible storage" in the *Additional resources* section.
+- To prepare AWS to use OADP, follow the steps in "Configuring the OpenShift API for Data Protection with AWS S3 compatible storage".
 
   After you create the `DataProtectionApplication` object, new `velero` deployment and `node-agent` pods are created in the `openshift-adp` namespace.
 
@@ -54,7 +54,7 @@ Before you can perform disaster recovery for hosted control planes on Amazon Web
 
 Before you can perform disaster recovery for hosted control planes on bare metal, you need to meet a few prerequisites and configure the OpenShift API for Data Protection (OADP) with Multicloud Object Gateway.
 
-- You installed the OADP Operator on the management cluster. For more information, see "About installing OADP" in the *Additional resources* section.
+- You installed the OADP Operator on the management cluster. For more information, see "About installing OADP".
 
 - You created a storage class for the management cluster.
 
@@ -68,11 +68,11 @@ Before you can perform disaster recovery for hosted control planes on bare metal
 
 - Your hosted control planes pods are up and running.
 
-- You are using a supported version of OADP for your management cluster. For example, if your management cluster is on OpenShift Container Platform 4.20, you must use OADP version 1.5. For more information, see "Support for OpenShift API for Data Protection (OADP)" in the *Additional resources* section.
+- You are using a supported version of OADP for your management cluster. For example, if your management cluster is on OpenShift Container Platform 4.20, you must use OADP version 1.5. For more information, see "Support for OpenShift API for Data Protection (OADP)".
 
 <!-- -->
 
-- To prepare bare metal to use OADP, complete the steps in "Configuring the OpenShift API for Data Protection with Multicloud Object Gateway" in the *Additional resources* section.
+- To prepare bare metal to use OADP, complete the steps in "Configuring the OpenShift API for Data Protection with Multicloud Object Gateway".
 
   After you create the `DataProtectionApplication` object, new `velero` deployment and `node-agent` pods are created in the `openshift-adp` namespace.
 

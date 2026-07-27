@@ -8,7 +8,7 @@ If both the run-once pod and the Run Once Duration Override Operator have their 
 
 # Installing the Run Once Duration Override Operator
 
-You can use the web console to install the Run Once Duration Override Operator.
+Install the Run Once Duration Override Operator by using the web console to create the required namespace, install the Operator from the software catalog, and create a `RunOnceDurationOverride` instance.
 
 - You have access to the cluster with `cluster-admin` privileges.
 
@@ -84,7 +84,7 @@ You can use the web console to install the Run Once Duration Override Operator.
 
 # Enabling the run-once duration override on a namespace
 
-To apply the run-once duration override from the Run Once Duration Override Operator to run-once pods, you must enable it on each applicable namespace.
+Enable the run-once duration override on a namespace by adding the `runoncedurationoverrides.admission.runoncedurationoverride.openshift.io/enabled=true` label to the namespace.
 
 - The Run Once Duration Override Operator is installed.
 
@@ -97,9 +97,11 @@ To apply the run-once duration override from the Run Once Duration Override Oper
         runoncedurationoverrides.admission.runoncedurationoverride.openshift.io/enabled=true
     ```
 
-    - Specify the namespace to enable the run-once duration override on.
+    Replace \<namespace\> with the namespace to enable the run-once duration override on.
 
-After you enable the run-once duration override on this namespace, future run-once pods that are created in this namespace will have their `activeDeadlineSeconds` field set to the override value from the Run Once Duration Override Operator. Existing pods in this namespace will also have their `activeDeadlineSeconds` value set when they are updated next.
+    After you enable the run-once duration override on this namespace, future run-once pods that are created in this namespace will have their `activeDeadlineSeconds` field set to the override value from the Run Once Duration Override Operator. Existing pods in this namespace will also have their `activeDeadlineSeconds` value set when they are updated next.
+
+<!-- -->
 
 1.  Create a test run-once pod in the namespace that you enabled the run-once duration override on:
 
@@ -108,7 +110,7 @@ After you enable the run-once duration override on this namespace, future run-on
     kind: Pod
     metadata:
       name: example
-      namespace: <namespace>
+      namespace: namespace
     spec:
       restartPolicy: Never
       securityContext:
@@ -129,9 +131,13 @@ After you enable the run-once duration override on this namespace, future run-on
               while sleep 5; do date; done
     ```
 
-    - Replace `<namespace>` with the name of your namespace.
+    where:
 
-    - The `restartPolicy` must be `Never` or `OnFailure` to be a run-once pod.
+    `metadata.namespace`
+    Specifies your namespace.
+
+    `spec.restartPolicy`
+    Specifies the restart policy. The `restartPolicy` must be `Never` or `OnFailure` to be a run-once pod.
 
 2.  Verify that the pod has its `activeDeadlineSeconds` field set:
 
@@ -151,7 +157,7 @@ After you enable the run-once duration override on this namespace, future run-on
 
 # Updating the run-once active deadline override value
 
-You can customize the override value that the Run Once Duration Override Operator applies to run-once pods. The predefined value is `3600` seconds, or 1 hour.
+Update the `activeDeadlineSeconds` field in the `RunOnceDurationOverride` resource to customize the override value that the operator applies to run-once pods.
 
 - You have access to the cluster with `cluster-admin` privileges.
 
@@ -179,8 +185,11 @@ You can customize the override value that the Run Once Duration Override Operato
     # ...
     ```
 
-    - Set the `activeDeadlineSeconds` field to the desired value, in seconds.
+    where:
+
+    `spec.runOnceDurationOverride.spec.activeDeadlineSeconds`
+    Specifies the desired time limit value, in seconds.
 
 4.  Save the file to apply the changes.
 
-Any future run-once pods created in namespaces where the run-once duration override is enabled will have their `activeDeadlineSeconds` field set to this new value. Existing run-once pods in these namespaces will receive this new value when they are updated.
+    Any future run-once pods created in namespaces where the run-once duration override is enabled will have their `activeDeadlineSeconds` field set to this new value. Existing run-once pods in these namespaces will receive this new value when they are updated.

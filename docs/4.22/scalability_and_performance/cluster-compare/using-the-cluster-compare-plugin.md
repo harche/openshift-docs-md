@@ -30,65 +30,73 @@ Use the `cluster-compare` plugin with live clusters in non-production environmen
 
   - `-r` specifies a path to the `metadata.yaml` file of the reference configuration. You can specify a local directory or a URI.
 
-    <div class="formalpara-title">
+The following is example output:
 
-    **Example output**
+``` terminal
+...
 
-    </div>
+**********************************
 
-    ``` terminal
-    ...
+Cluster CR: operator.openshift.io/v1_Console_cluster
+Reference File: optional/console-disable/ConsoleOperatorDisable.yaml
+Diff Output: diff -u -N /tmp/MERGED-622469311/operator-openshift-io-v1_console_cluster /tmp/LIVE-2358803347/operator-openshift-io-v1_console_cluster
+/tmp/MERGED-622469311/operator-openshift-io-v1_console_cluster  2024-11-20 15:43:42.888633602 +0000
++++ /tmp/LIVE-2358803347/operator-openshift-io-v1_console_cluster   2024-11-20 15:43:42.888633602 +0000
+@@ -4,5 +4,5 @@
+   name: cluster
+ spec:
+   logLevel: Normal
+-  managementState: Removed
++  managementState: Managed
+   operatorLogLevel: Normal
 
-    **********************************
+**********************************
 
-    Cluster CR: operator.openshift.io/v1_Console_cluster
-    Reference File: optional/console-disable/ConsoleOperatorDisable.yaml
-    Diff Output: diff -u -N /tmp/MERGED-622469311/operator-openshift-io-v1_console_cluster /tmp/LIVE-2358803347/operator-openshift-io-v1_console_cluster
-    /tmp/MERGED-622469311/operator-openshift-io-v1_console_cluster  2024-11-20 15:43:42.888633602 +0000
-    +++ /tmp/LIVE-2358803347/operator-openshift-io-v1_console_cluster   2024-11-20 15:43:42.888633602 +0000
-    @@ -4,5 +4,5 @@
-       name: cluster
-     spec:
-       logLevel: Normal
-    -  managementState: Removed
-    +  managementState: Managed
-       operatorLogLevel: Normal
+…
 
-    **********************************
+Summary
+CRs with diffs: 5/49
+CRs in reference missing from the cluster: 1
+required-cluster-tuning:
+  cluster-tuning:
+    Missing CRs:
+    - required/cluster-tuning/disabling-network-diagnostics/DisableSnoNetworkDiag.yaml
+No CRs are unmatched to reference CRs
+Metadata Hash: 512a9bf2e57fd5a5c44bbdea7abb3ffd7739d4a1f14ef9021f6793d5cdf868f0
+No patched CRs
+```
 
-    …
+where:
 
-    Summary
-    CRs with diffs: 5/49
-    CRs in reference missing from the cluster: 1
-    required-cluster-tuning:
-      cluster-tuning:
-        Missing CRs:
-        - required/cluster-tuning/disabling-network-diagnostics/DisableSnoNetworkDiag.yaml
-    No CRs are unmatched to reference CRs
-    Metadata Hash: 512a9bf2e57fd5a5c44bbdea7abb3ffd7739d4a1f14ef9021f6793d5cdf868f0
-    No patched CRs
-    ```
+`Cluster CR`
+The CR under comparison. The plugin displays each CR with a difference from the corresponding template.
 
-    - The CR under comparison. The plugin displays each CR with a difference from the corresponding template.
+`Reference File`
+The template matching with the CR for comparison.
 
-    - The template matching with the CR for comparison.
+`Diff Output`
+The output in Linux diff format shows the difference between the template and the cluster CR.
 
-    - The output in Linux diff format shows the difference between the template and the cluster CR.
+`Summary`
+After the plugin reports the line diffs for each CR, the summary of differences are reported.
 
-    - After the plugin reports the line diffs for each CR, the summary of differences are reported.
+`CRs with diffs`
+The number of CRs in the comparison with differences from the corresponding templates.
 
-    - The number of CRs in the comparison with differences from the corresponding templates.
+`CRs in reference missing from the cluster`
+The number of CRs represented in the reference configuration, but missing from the live cluster.
 
-    - The number of CRs represented in the reference configuration, but missing from the live cluster.
+`Missing CRs`
+The list of CRs represented in the reference configuration, but missing from the live cluster.
 
-    - The list of CRs represented in the reference configuration, but missing from the live cluster.
+`No CRs are unmatched to reference CRs`
+The CRs that did not match to a corresponding template in the reference configuration.
 
-    - The CRs that did not match to a corresponding template in the reference configuration.
+`Metadata Hash`
+The metadata hash identifies the reference configuration.
 
-    - The metadata hash identifies the reference configuration.
-
-    - The list of patched CRs.
+`No patched CRs`
+The list of patched CRs.
 
 <div class="note">
 
@@ -142,11 +150,7 @@ For production environments, use the `cluster-compare` plugin with `must-gather`
 
   - `-R` searches the target directories recursively.
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following is example output:
 
     ``` terminal
     ...
@@ -182,25 +186,37 @@ For production environments, use the `cluster-compare` plugin with `must-gather`
     No patched CRs
     ```
 
-    - The CR under comparison. The plugin displays each CR with a difference from the corresponding template.
+    where:
 
-    - The template matching with the CR for comparison.
+    `Cluster CR`
+    The CR under comparison. The plugin displays each CR with a difference from the corresponding template.
 
-    - The output in Linux diff format shows the difference between the template and the cluster CR.
+    `Reference File`
+    The template matching with the CR for comparison.
 
-    - After the plugin reports the line diffs for each CR, the summary of differences are reported.
+    `Diff Output`
+    The output in Linux diff format shows the difference between the template and the cluster CR.
 
-    - The number of CRs in the comparison with differences from the corresponding templates.
+    `Summary`
+    After the plugin reports the line diffs for each CR, the summary of differences are reported.
 
-    - The number of CRs represented in the reference configuration, but missing from the live cluster.
+    `CRs with diffs`
+    The number of CRs in the comparison with differences from the corresponding templates.
 
-    - The list of CRs represented in the reference configuration, but missing from the live cluster.
+    `CRs in reference missing from the cluster`
+    The number of CRs represented in the reference configuration, but missing from the live cluster.
 
-    - The CRs that did not match to a corresponding template in the reference configuration.
+    `Missing CRs`
+    The list of CRs represented in the reference configuration, but missing from the live cluster.
 
-    - The metadata hash identifies the reference configuration.
+    `No CRs are unmatched to reference CRs`
+    The CRs that did not match to a corresponding template in the reference configuration.
 
-    - The list of patched CRs.
+    `Metadata Hash`
+    The metadata hash identifies the reference configuration.
+
+    `No patched CRs`
+    The list of patched CRs.
 
 <div class="note">
 
@@ -357,11 +373,16 @@ For further examples of using the `cluster-compare` plugin with the telco core a
         └── storage
     ```
 
-    - Configuration file for the reference configuration.
+    where:
 
-    - Directory for optional templates.
+    `metadata.yaml`
+    Configuration file for the reference configuration.
 
-    - Directory for required templates.
+    `optional`
+    Directory for optional templates.
+
+    `required`
+    Directory for required templates.
 
 3.  Compare the configuration for your cluster to the telco core reference configuration by running the following command:
 
@@ -369,11 +390,7 @@ For further examples of using the `cluster-compare` plugin with the telco core a
     $ oc cluster-compare -r out/telco-core-rds/configuration/reference-crs-kube-compare/metadata.yaml
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following is example output:
 
     ``` terminal
     W1212 14:13:06.281590   36629 compare.go:425] Reference Contains Templates With Types (kind) Not Supported By Cluster: BFDProfile, BGPAdvertisement, BGPPeer, ClusterLogForwarder, Community, IPAddressPool, MetalLB, MultiNetworkPolicy, NMState, NUMAResourcesOperator, NUMAResourcesScheduler, NodeNetworkConfigurationPolicy, SriovNetwork, SriovNetworkNodePolicy, SriovOperatorConfig, StorageCluster
@@ -449,25 +466,37 @@ For further examples of using the `cluster-compare` plugin with the telco core a
     No patched CRs
     ```
 
-    - The CR under comparison. The plugin displays each CR with a difference from the corresponding template.
+    where:
 
-    - The template matching with the CR for comparison.
+    `Cluster CR`
+    The CR under comparison. The plugin displays each CR with a difference from the corresponding template.
 
-    - The output in Linux diff format shows the difference between the template and the cluster CR.
+    `Reference File`
+    The template matching with the CR for comparison.
 
-    - After the plugin reports the line diffs for each CR, the summary of differences are reported.
+    `Diff Output`
+    The output in Linux diff format shows the difference between the template and the cluster CR.
 
-    - The number of CRs in the comparison with differences from the corresponding templates.
+    `Summary`
+    After the plugin reports the line diffs for each CR, the summary of differences are reported.
 
-    - The number of CRs represented in the reference configuration, but missing from the live cluster.
+    `CRs with diffs`
+    The number of CRs in the comparison with differences from the corresponding templates.
 
-    - The list of CRs represented in the reference configuration, but missing from the live cluster.
+    `CRs in reference missing from the cluster`
+    The number of CRs represented in the reference configuration, but missing from the live cluster.
 
-    - The CRs that did not match to a corresponding template in the reference configuration.
+    `Missing CRs`
+    The list of CRs represented in the reference configuration, but missing from the live cluster.
 
-    - The metadata hash identifies the reference configuration.
+    `No CRs are unmatched to reference CRs`
+    The CRs that did not match to a corresponding template in the reference configuration.
 
-    - The list of patched CRs.
+    `Metadata Hash`
+    The metadata hash identifies the reference configuration.
+
+    `No patched CRs`
+    The list of patched CRs.
 
 <div class="note">
 

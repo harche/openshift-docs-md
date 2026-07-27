@@ -410,11 +410,7 @@ To dynamically manage machine compute resources, you can create your own compute
         $ oc get machinesets -n openshift-machine-api
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         NAME                                DESIRED   CURRENT   READY   AVAILABLE   AGE
@@ -433,11 +429,7 @@ To dynamically manage machine compute resources, you can create your own compute
           -n openshift-machine-api -o yaml
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` yaml
         apiVersion: machine.openshift.io/v1beta1
@@ -494,11 +486,7 @@ To dynamically manage machine compute resources, you can create your own compute
   $ oc get machineset -n openshift-machine-api
   ```
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
+  The following is example output:
 
   ``` terminal
   NAME                                DESIRED   CURRENT   READY   AVAILABLE   AGE

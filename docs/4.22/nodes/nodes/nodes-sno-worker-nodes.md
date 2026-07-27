@@ -711,7 +711,7 @@ You can add a worker node to a single-node OpenShift cluster manually by booting
 
 # Approving the certificate signing requests for your machines
 
-When you add machines to a cluster, two pending certificate signing requests (CSRs) are generated for each machine that you added. You must confirm that these CSRs are approved or, if necessary, approve them yourself. The client requests must be approved first, followed by the server requests.
+When you add machines to a cluster, two pending certificate signing requests (CSRs) are generated for each machine. You must confirm that these CSRs are approved or, if necessary, approve them yourself. The client requests must be approved first, followed by the server requests.
 
 - You added machines to your cluster.
 
@@ -767,7 +767,7 @@ When you add machines to a cluster, two pending certificate signing requests (CS
 
     <div class="note">
 
-    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The subsequent serving certificate renewal requests are then automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After the client CSR is approved, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The subsequent serving certificate renewal requests are then automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
 
     </div>
 
@@ -796,7 +796,7 @@ When you add machines to a cluster, two pending certificate signing requests (CS
 
       <div class="note">
 
-      Some Operators might not become available until some CSRs are approved. Each node submits two CSRs, so you may need to run the command to approve CSRs multiple times.
+      Some Operators might not become available until some CSRs are approved. Each node submits two CSRs, so you might need to run the command to approve CSRs multiple times.
 
       </div>
 

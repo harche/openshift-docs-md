@@ -306,44 +306,44 @@ You can configure a machine set to deploy machines on Elastic Fabric Adapter (EF
 
 2.  Edit the following lines under the `providerSpec` field:
 
-``` yaml
-apiVersion: machine.openshift.io/v1beta1
-kind: MachineSet
-# ...
-spec:
-  template:
+    ``` yaml
+    apiVersion: machine.openshift.io/v1beta1
+    kind: MachineSet
+    # ...
     spec:
-      providerSpec:
-        value:
-          instanceType: <supported_instance_type>
-          networkInterfaceType: EFA
-          placement:
-            availabilityZone: <zone>
-            region: <region>
-          placementGroupName: <placement_group>
-          placementGroupPartition: <placement_group_partition_number>
-# ...
-```
+      template:
+        spec:
+          providerSpec:
+            value:
+              instanceType: <supported_instance_type>
+              networkInterfaceType: EFA
+              placement:
+                availabilityZone: <zone>
+                region: <region>
+              placementGroupName: <placement_group>
+              placementGroupPartition: <placement_group_partition_number>
+    # ...
+    ```
 
-where:
+    where:
 
-`spec.template.spec.providerSpec.value.instanceType`
-Specifies an instance type that [supports EFAs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html#efa-instance-types).
+    `spec.template.spec.providerSpec.value.instanceType`
+    Specifies an instance type that [supports EFAs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html#efa-instance-types).
 
-`spec.template.spec.providerSpec.value.networkInterfaceType`
-Specifies the `EFA` network interface type.
+    `spec.template.spec.providerSpec.value.networkInterfaceType`
+    Specifies the `EFA` network interface type.
 
-`spec.template.spec.providerSpec.value.placement.availabilityZone`
-Specifies the zone, for example, `us-east-1a`.
+    `spec.template.spec.providerSpec.value.placement.availabilityZone`
+    Specifies the zone, for example, `us-east-1a`.
 
-`spec.template.spec.providerSpec.value.placement.region`
-Specifies the region, for example, `us-east-1`.
+    `spec.template.spec.providerSpec.value.placement.region`
+    Specifies the region, for example, `us-east-1`.
 
-`spec.template.spec.providerSpec.value.placementGroupName`
-Specifies the name of the existing AWS placement group to deploy machines in.
+    `spec.template.spec.providerSpec.value.placementGroupName`
+    Specifies the name of the existing AWS placement group to deploy machines in.
 
-`spec.template.spec.providerSpec.value.placementGroupPartition`
-Specifies the partition number of the existing AWS placement group to deploy machines in. This value is optional.
+    `spec.template.spec.providerSpec.value.placementGroupPartition`
+    Optional: Specifies the partition number of the existing AWS placement group to deploy machines in.
 
 - In the AWS console, find a machine that the machine set created and verify the following in the machine properties:
 
@@ -667,12 +667,6 @@ For more information about the supported instance types, see the following NVIDI
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     NAME                                        STATUS   ROLES                  AGE     VERSION
     ip-10-0-52-50.us-east-2.compute.internal    Ready    worker                 3d17h   v1.35.4
@@ -683,17 +677,11 @@ For more information about the supported instance types, see the following NVIDI
     ip-10-0-74-50.us-east-2.compute.internal    Ready    worker                 3d17h   v1.35.4
     ```
 
-2.  View the machines and machine sets that exist in the `openshift-machine-api` namespace by running the following command. Each compute machine set is associated with a different availability zone within the AWS region. The installer automatically load balances compute machines across availability zones.
+2.  View the machines and machine sets that exist in the `openshift-machine-api` namespace by running the following command. Each compute machine set is associated with a different availability zone within the AWS region. The installation program automatically load balances compute machines across availability zones.
 
     ``` terminal
     $ oc get machinesets -n openshift-machine-api
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     NAME                                        DESIRED   CURRENT   READY   AVAILABLE   AGE
@@ -706,12 +694,6 @@ For more information about the supported instance types, see the following NVIDI
     ``` terminal
     $ oc get machines -n openshift-machine-api | grep worker
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     preserve-dsoc12r4-ktjfc-worker-us-east-2a-dts8r      Running   m5.xlarge   us-east-2   us-east-2a   3d11h
@@ -755,12 +737,6 @@ For more information about the supported instance types, see the following NVIDI
     $ oc -n openshift-machine-api get preserve-dsoc12r4-ktjfc-worker-us-east-2a -o json | diff preserve-dsoc12r4-ktjfc-worker-gpu-us-east-2a.json -
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     10c10
 
@@ -793,12 +769,6 @@ For more information about the supported instance types, see the following NVIDI
     $ oc create -f preserve-dsoc12r4-ktjfc-worker-gpu-us-east-2a.json
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     machineset.machine.openshift.io/preserve-dsoc12r4-ktjfc-worker-gpu-us-east-2a created
     ```
@@ -813,12 +783,6 @@ For more information about the supported instance types, see the following NVIDI
 
     The MachineSet replica count is set to `1` so a new `Machine` object is created automatically.
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     preserve-dsoc12r4-ktjfc-worker-gpu-us-east-2a   1         1         1       1           4m21s
     ```
@@ -828,12 +792,6 @@ For more information about the supported instance types, see the following NVIDI
     ``` terminal
     $ oc -n openshift-machine-api get machines | grep gpu
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     preserve-dsoc12r4-ktjfc-worker-gpu-us-east-2a    running    g4dn.xlarge   us-east-2   us-east-2a  4m36s
@@ -856,12 +814,6 @@ The NFD Operator identifies hardware device features in nodes. It solves the gen
     ``` terminal
     $ oc get pods -n openshift-nfd
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     NAME                                       READY    STATUS     RESTARTS   AGE

@@ -3867,6 +3867,441 @@ Ensure that you set `spec.recommend.priority` to the same value for all three `P
       I1115 09:41:17.117626 4143292 daemon.go:116] ------------------------------------
       ```
 
+## Configuring PTP boundary clock high availability with dual time receiver ports
+
+You can configure a Precision Time Protocol (PTP) Telecom Boundary Clock (T-BC) with dual time receiver ports for high availability by creating a `PtpConfig` custom resource (CR). The Alternate Best Master Clock Algorithm (A-BMCA) provides automatic failover between upstream timing paths.
+
+The configuration uses two profiles: one for the time receiver (TR) ports that synchronize from an upstream source, and one for the time transmitter (TT) port that distributes time downstream on a separate PTP domain.
+
+- You have installed the OpenShift CLI (`oc`).
+
+- You are logged in as a user with `cluster-admin` privileges.
+
+- You have installed the PTP Operator.
+
+- Your node has a supported multi-port NIC where the ports share a single Physical Hardware Clock (PHC), such as the Intel Westport Channel E810-XXVDA4T.
+
+- You have identified the interface names for the two ports on the same NIC that will serve as time receiver ports, as well as the interface that will serve as the leading interface for the NIC PHC.
+
+1.  Save the following `PtpConfig` CR definition in the `dual-port-tbc-ptp-config.yaml` file:
+
+    ``` yaml
+    apiVersion: ptp.openshift.io/v1
+    kind: PtpConfig
+    metadata:
+      name: t-bc
+      namespace: openshift-ptp
+      annotations:
+        ran.openshift.io/ztp-deploy-wave: "10"
+    spec:
+      profile:
+      - name: tbc-tr
+        phc2sysOpts: "-r -n 24 -N 8 -R 16 -u 0 -m -s <first_tr_interface>"
+        plugins:
+          e810:
+            enableDefaultConfig: false
+            interconnections:
+              - gnssInput: false
+                id: <leading_interface>
+                part: E810-XXVDA4T
+                phaseOutputConnectors:
+                - SMA1
+                upstreamPort: "<first_tr_interface>,<second_tr_interface>"
+            settings:
+              LocalHoldoverTimeout: 14400
+              LocalMaxHoldoverOffSet: 1500
+              MaxInSpecOffset: 100
+            pins:
+              <leading_interface>:
+                SMA1: 2 1
+                SMA2: 2 2
+                U.FL1: 0 1
+                U.FL2: 0 2
+        ptp4lConf: |
+          [<first_tr_interface>]
+          masterOnly 0
+          [<second_tr_interface>]
+          masterOnly 0
+          [global]
+          #
+          # Default Data Set
+          #
+          twoStepFlag 1
+          slaveOnly 1
+          priority1 128
+          priority2 128
+          domainNumber 24
+          clockClass 248
+          clockAccuracy 0xFE
+          offsetScaledLogVariance 0xFFFF
+          free_running 0
+          freq_est_interval 1
+          dscp_event 0
+          dscp_general 0
+          dataset_comparison G.8275.x
+          G.8275.defaultDS.localPriority 128
+          #
+          # Port Data Set
+          #
+          logAnnounceInterval -3
+          logSyncInterval -4
+          logMinDelayReqInterval -4
+          logMinPdelayReqInterval -4
+          announceReceiptTimeout 3
+          syncReceiptTimeout 0
+          delayAsymmetry 0
+          fault_reset_interval -4
+          neighborPropDelayThresh 20000000
+          masterOnly 0
+          G.8275.portDS.localPriority 128
+          #
+          # Run time options
+          #
+          assume_two_step 0
+          logging_level 6
+          path_trace_enabled 0
+          follow_up_info 0
+          hybrid_e2e 0
+          inhibit_multicast_service 0
+          net_sync_monitor 0
+          tc_spanning_tree 0
+          tx_timestamp_timeout 50
+          unicast_listen 0
+          unicast_master_table 0
+          unicast_req_duration 3600
+          use_syslog 1
+          verbose 0
+          summary_interval 0
+          kernel_leap 1
+          check_fup_sync 0
+          clock_class_threshold 135
+          #
+          # Servo Options
+          #
+          pi_proportional_const 0.60
+          pi_integral_const 0.0003
+          pi_proportional_scale 0.0
+          pi_proportional_exponent -0.3
+          pi_proportional_norm_max 0.7
+          pi_integral_scale 0.0
+          pi_integral_exponent 0.4
+          pi_integral_norm_max 0.3
+          step_threshold 2.0
+          first_step_threshold 0.00002
+          max_frequency 900000000
+          clock_servo pi
+          sanity_freq_limit 200000000
+          ntpshm_segment 0
+          #
+          # Transport options
+          #
+          transportSpecific 0x0
+          ptp_dst_mac 01:1B:19:00:00:00
+          p2p_dst_mac 01:80:C2:00:00:0E
+          udp_ttl 1
+          udp6_scope 0x0E
+          uds_address /var/run/ptp4l
+          #
+          # Default interface options
+          #
+          clock_type OC
+          network_transport L2
+          delay_mechanism E2E
+          time_stamping hardware
+          tsproc_mode filter
+          delay_filter moving_median
+          delay_filter_length 10
+          egressLatency 0
+          ingressLatency 0
+          boundary_clock_jbod 0
+        ptp4lOpts: "-2 --summary_interval -4"
+        ptpSchedulingPolicy: SCHED_FIFO
+        ptpSchedulingPriority: 10
+        ptpSettings:
+          clockType: "T-BC"
+          inSyncConditionThreshold: "10"
+          inSyncConditionTimes: "12"
+          logReduce: "false"
+          leadingInterface: <leading_interface>
+          upstreamPort: "<first_tr_interface>,<second_tr_interface>"
+        ts2phcConf: |
+          [global]
+          use_syslog  0
+          verbose 1
+          logging_level 7
+          ts2phc.pulsewidth 100000000
+          leapfile  /usr/share/zoneinfo/leap-seconds.list
+          domainNumber 24
+          uds_address /var/run/ptp4l.0.socket
+          [<leading_interface>]
+          ts2phc.extts_polarity rising
+          ts2phc.pin_index 1
+          ts2phc.extts_correction -10
+          ts2phc.master 0
+        ts2phcOpts: "-s generic -a --ts2phc.rh_external_pps 1"
+      - name: tbc-tt
+        ptp4lConf: |
+          [<tt_interface>]
+          masterOnly 1
+          [global]
+          #
+          # Default Data Set
+          #
+          twoStepFlag 1
+          slaveOnly 0
+          priority1 128
+          priority2 128
+          domainNumber 25
+          # ... remaining Port Data Set, Run time, Servo, and Transport options
+          # are the same as the tbc-tr profile ...
+          dataset_comparison G.8275.x
+          G.8275.defaultDS.localPriority 128
+          #
+          # Default interface options
+          #
+          clock_type OC
+          network_transport L2
+          delay_mechanism E2E
+          time_stamping hardware
+          tsproc_mode filter
+          delay_filter moving_median
+          delay_filter_length 10
+          egressLatency 0
+          ingressLatency 0
+          boundary_clock_jbod 0
+        ptp4lOpts: "-2 --summary_interval -4"
+        ptpSchedulingPolicy: SCHED_FIFO
+        ptpSchedulingPriority: 10
+        ptpSettings:
+          controllingProfile: tbc-tr
+          logReduce: "false"
+      recommend:
+      - match:
+        - nodeLabel: "node-role.kubernetes.io/<mcp>"
+        priority: 4
+        profile: tbc-tr
+      - match:
+        - nodeLabel: "node-role.kubernetes.io/<mcp>"
+        priority: 4
+        profile: tbc-tt
+    ```
+
+    where:
+
+    `<first_tr_interface>`
+    Specifies the first time receiver port interface name on the NIC. For example, `ens2f1`.
+
+    `<second_tr_interface>`
+    Specifies the second time receiver port interface name on the same NIC. For example, `ens2f3`.
+
+    `<leading_interface>`
+    Specifies the first port on the NIC, used as the leading interface for the PHC and phase output. For example, `ens2f0`.
+
+    `<tt_interface>`
+    Specifies the time transmitter port interface that distributes synchronized time downstream. For example, `ens2f2`.
+
+    `phc2sysOpts: "-r -n 24 -N 8 -R 16 -u 0 -m -s <first_tr_interface>"`
+    Specifies the `phc2sys` options for system clock synchronization. The `-s` flag sets the first time receiver port as the clock source, which also covers the backup port automatically during failover.
+
+    `plugins.e810`
+    Specifies the Intel E810 hardware plugin configuration, including pin assignments, holdover settings, and the upstream port list for dual time receiver operation.
+
+    `ptpSettings.upstreamPort`
+    Specifies both time receiver interfaces as a comma-separated list. This tells the PTP Operator which ports participate in the dual time receiver failover.
+
+    `ptpSettings.leadingInterface`
+    Specifies the leading interface on the NIC for PHC timing coordination.
+
+    `domainNumber 25` (TT profile)
+    Specifies a different PTP domain for the time transmitter profile. The TT profile distributes time on a separate domain from the upstream TR domain.
+
+    `controllingProfile: tbc-tr`
+    Specifies that the time transmitter profile is controlled by the time receiver profile.
+
+    `<mcp>`
+    Specifies the machine config pool label that selects the target nodes for this configuration.
+
+2.  Create the `PtpConfig` CR by running the following command:
+
+    ``` terminal
+    $ oc create -f dual-port-tbc-ptp-config.yaml
+    ```
+
+3.  Verify that the PTP Operator has applied the `PtpConfig` profiles by running the following command:
+
+    ``` terminal
+    $ oc get ptpconfig -n openshift-ptp
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    NAME   AGE
+    t-bc   10s
+    ```
+
+## Verifying the dual-port PTP boundary clock failover configuration
+
+After configuring a dual time receiver port Precision Time Protocol (PTP) boundary clock, you can verify that automatic failover works correctly by checking port states and simulating a failure on the active upstream path.
+
+- You have configured a dual time receiver port boundary clock as described in "Configuring PTP boundary clock high availability with dual time receiver ports".
+
+- The PTP boundary clock is running and synchronized to an upstream timing source.
+
+1.  Identify the `linuxptp-daemon` pod on the target node by running the following command:
+
+    ``` terminal
+    $ oc get pods -n openshift-ptp -o wide
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    NAME                            READY   STATUS    RESTARTS   AGE   IP               NODE
+    linuxptp-daemon-4xkbb           1/1     Running   0          43m   10.1.196.24      compute-0.example.com
+    ptp-operator-657bbb64c8-2f8sj   1/1     Running   0          43m   10.129.0.61      control-plane-1.example.com
+    ```
+
+2.  Check the PTP Operator logs to identify which port is active and which is in standby by running the following command:
+
+    ``` terminal
+    $ oc logs <linuxptp_daemon_pod> -n openshift-ptp -c linuxptp-daemon-container | grep -E "port.*SLAVE|MASTER_CLOCK_SELECTED|LOCKED"
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    ptp4l[1000.100]: port 1 (ens2f1): UNCALIBRATED to SLAVE on MASTER_CLOCK_SELECTED
+    ptp4l[1000.200]: BC FSM: HOLDOVER to LOCKED
+    ```
+
+    In this example, `ens2f1` is the active time receiver port in the `SLAVE` state and the boundary clock finite state machine (FSM) has reached the `LOCKED` state.
+
+3.  Simulate a failure on the active path by shutting down the active time receiver port. Run the following command on the target node:
+
+    ``` terminal
+    $ oc debug node/<node_name> -- chroot /host ip link set <active_interface> down
+    ```
+
+4.  Monitor the PTP Operator logs to verify that the standby port transitions to active by running the following command:
+
+    ``` terminal
+    $ oc logs -f <linuxptp_daemon_pod> -n openshift-ptp -c linuxptp-daemon-container | grep -E "SLAVE|FAULTY|HOLDOVER|LOCKED|UNCALIBRATED"
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    ptp4l[1500.300]: port 1 (ens2f1): SLAVE to FAULTY on FAULT_DETECTED
+    ptp4l[1500.400]: BC FSM: T-BC MOVE TO HOLDOVER
+    ptp4l[1500.500]: port 2 (ens2f3): UNCALIBRATED to SLAVE on MASTER_CLOCK_SELECTED
+    ptp4l[1515.600]: BC FSM: HOLDOVER to LOCKED
+    ```
+
+    The output confirms that the active port (`ens2f1`) enters the `FAULTY` state, the boundary clock briefly enters `HOLDOVER`, and the standby port (`ens2f3`) transitions to `SLAVE`. After approximately 15 seconds, the boundary clock FSM returns to the `LOCKED` state.
+
+5.  Restore the original active port by running the following command:
+
+    ``` terminal
+    $ oc debug node/<node_name> -- chroot /host ip link set <active_interface> up
+    ```
+
+6.  Verify that the boundary clock reselects the restored port and returns to the `LOCKED` state by running the following command:
+
+    ``` terminal
+    $ oc logs <linuxptp_daemon_pod> -n openshift-ptp -c linuxptp-daemon-container | tail -20 | grep -E "SLAVE|HOLDOVER|LOCKED"
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    ptp4l[1570.100]: BC FSM: T-BC MOVE TO HOLDOVER
+    ptp4l[1570.200]: port 1 (ens2f1): UNCALIBRATED to SLAVE on MASTER_CLOCK_SELECTED
+    ptp4l[1585.300]: BC FSM: HOLDOVER to LOCKED
+    ```
+
+    The output confirms that the boundary clock briefly enters `HOLDOVER` during reselection, the original port returns to `SLAVE`, and the FSM reaches `LOCKED` again after approximately 15 seconds.
+
+## PtpConfig CR parameters for dual-port boundary clock high availability
+
+The following tables describe the `PtpConfig` custom resource (CR) parameters that are specific to configuring dual time receiver port high availability for Precision Time Protocol (PTP) Telecom Boundary Clocks (T-BC) on Intel Westport Channel E810-XXVDA4T NICs.
+
+The T-BC configuration uses two profiles: a time receiver (TR) profile that synchronizes from upstream sources, and a time transmitter (TT) profile that distributes time downstream on a separate PTP domain.
+
+### Time receiver profile parameters
+
+The following table describes the time receiver (TR) profile parameters used in the dual-port high availability configuration.
+
+| Parameter                                      | Value                                                   | Description                                                                                                                                                                                                                                                  |
+|------------------------------------------------|---------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `phc2sysOpts`                                  | `"-r -n 24 -N 8 -R 16 -u 0 -m -s <first_tr_interface>"` | Specifies the `phc2sys` options for system clock synchronization. The `-s` flag sets the first time receiver port as the clock source. During failover, synchronization continues automatically through the backup port without changing this configuration. |
+| `plugins.e810.interconnections.upstreamPort`   | `"<first_tr_interface>,<second_tr_interface>"`          | Specifies both time receiver port interfaces as a comma-separated list in the E810 plugin configuration. This enables the PTP Operator to manage failover between the two upstream ports.                                                                    |
+| `plugins.e810.settings.LocalHoldoverTimeout`   | `14400`                                                 | Specifies the holdover timeout in seconds. The NIC maintains timing accuracy for this duration when both upstream paths are lost.                                                                                                                            |
+| `plugins.e810.settings.LocalMaxHoldoverOffSet` | `1500`                                                  | Specifies the maximum acceptable offset in nanoseconds during holdover before the clock is considered out of specification.                                                                                                                                  |
+| `plugins.e810.settings.MaxInSpecOffset`        | `100`                                                   | Specifies the maximum offset in nanoseconds that the clock tolerates while in the locked state.                                                                                                                                                              |
+| `ptp4lConf` interface sections                 | `[<interface>]` entries with `masterOnly 0`             | Specifies two interfaces on the same NIC as time receiver ports. Set `masterOnly 0` for each time receiver port so that both ports can synchronize from an upstream clock.                                                                                   |
+| `slaveOnly`                                    | `1`                                                     | Configures the TR profile to operate only as a time receiver. The profile does not distribute time downstream.                                                                                                                                               |
+| `boundary_clock_jbod`                          | `0`                                                     | Must remain `0` for dual-port configurations where both ports share the same Physical Hardware Clock (PHC). Setting this to `1` causes `ptp4l` to re-create the clock servo state on failover.                                                               |
+| `dataset_comparison`                           | `G.8275.x`                                              | Specifies the data set comparison algorithm. The `G.8275.x` value enables the Alternate Best Master Clock Algorithm (A-BMCA) for selecting the best time source among the receiver ports.                                                                    |
+| `ptpSettings.clockType`                        | `"T-BC"`                                                | Specifies that the node operates as a Telecom Boundary Clock.                                                                                                                                                                                                |
+| `ptpSettings.leadingInterface`                 | `<leading_interface>`                                   | Specifies the first port on the NIC, used for PHC timing coordination and phase output.                                                                                                                                                                      |
+| `ptpSettings.upstreamPort`                     | `"<first_tr_interface>,<second_tr_interface>"`          | Specifies both time receiver interfaces as a comma-separated list for the PTP Operator failover management.                                                                                                                                                  |
+
+Time receiver (TR) profile parameters for dual-port high availability
+
+### Time transmitter profile parameters
+
+The following table describes the time transmitter (TT) profile parameters used in the dual-port high availability configuration.
+
+| Parameter                        | Value                   | Description                                                                                                                                         |
+|----------------------------------|-------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| `domainNumber`                   | `25`                    | Specifies a PTP domain that is different from the TR profile domain. The TT profile distributes time on a separate domain from the upstream source. |
+| `slaveOnly`                      | `0`                     | Allows the TT profile to operate as a time transmitter, distributing time to downstream devices.                                                    |
+| `masterOnly`                     | `1` (interface section) | Configures the TT interface to transmit time only.                                                                                                  |
+| `ptpSettings.controllingProfile` | `tbc-tr`                | Specifies the TR profile name that controls this TT profile. The TT profile follows the clock state of the TR profile.                              |
+
+Time transmitter (TT) profile parameters
+
+### phc2sysOpts parameter reference
+
+The following table describes the individual `phc2sys` flags used in the dual time receiver port configuration.
+
+| Flag                      | Description                                                                                                                                                                                                  |
+|---------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `-r`                      | Synchronizes the system clock from the PTP hardware clock.                                                                                                                                                   |
+| `-n 24`                   | Specifies the PTP domain number. This value must match the `domainNumber` in the TR profile `ptp4lConf` section.                                                                                             |
+| `-N 8`                    | Specifies the number of controller updates per clock update for the servo filter.                                                                                                                            |
+| `-R 16`                   | Specifies the rate of system clock synchronization updates per second.                                                                                                                                       |
+| `-u 0`                    | Specifies the number of clock updates for which the servo must remain in a locked state before the clock is considered synchronized. A value of `0` disables this check.                                     |
+| `-m`                      | Prints messages to `stdout`. This flag enables log output for monitoring the `phc2sys` process.                                                                                                              |
+| `-s <first_tr_interface>` | Specifies the first time receiver port as the clock source for `phc2sys`. During failover, synchronization continues automatically through the backup port because both ports share the same PHC on the NIC. |
+
+phc2sys flags for dual time receiver port high availability
+
+- [High availability for PTP boundary clocks with dual time receiver ports](../../../networking/advanced_networking/ptp/about-ptp.xml#ptp-dual-ports-bc_about-ptp)
+
+- [Configuring linuxptp services as a boundary clock](../../../networking/advanced_networking/ptp/configuring-ptp.xml#configuring-linuxptp-services-as-boundary-clock_configuring-ptp)
+
 ## Boundary clocks without holdover on Intel Granite Rapids-D hardware
 
 Intel Granite Rapids-D (GNR-D) server platforms support Precision Time Protocol (PTP) boundary clock (BC) deployments without holdover for high-density Radio Access Network (RAN) sites that use onboard Network Acceleration Complex (NAC) ports and optional Carter Flat expansion network interface cards (NICs).

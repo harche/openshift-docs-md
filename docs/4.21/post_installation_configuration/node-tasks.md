@@ -10,13 +10,13 @@ Before you add more compute machines to a cluster that you installed on bare met
 
 - You installed a cluster on bare metal.
 
-- You have installation media and Red Hat Enterprise Linux CoreOS (RHCOS) images that you used to create your cluster. If you do not have these files, you must obtain them by following the instructions in the [installation procedure](../installing/installing_bare_metal/upi/installing-bare-metal.xml#installing-bare-metal).
+- You have installation media and Red Hat Enterprise Linux CoreOS (RHCOS) images that you used to create your cluster. If you do not have these files, you must obtain them by following the instructions in the installation procedure.
 
-## Creating RHCOS machines using an ISO image
+## Creating RHCOS machines by using an ISO image
 
 You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines for your bare metal cluster by using an ISO image to create the machines.
 
-- Obtain the URL of the Ignition config file for the compute machines for your cluster. You uploaded this file to your HTTP server during installation.
+- You have obtained the URL of the Ignition config file for the compute machines for your cluster. You uploaded this file to your HTTP server during installation.
 
 - You must have the OpenShift CLI (`oc`) installed.
 
@@ -34,7 +34,7 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines fo
     $ curl -k http://<HTTP_server>/worker.ign
     ```
 
-4.  You can access the ISO image for booting your new machine by running to following command:
+4.  You can access the ISO image for booting your new machine by running the following command:
 
     ``` terminal
     RHCOS_VHD_ORIGIN_URL=$(oc -n openshift-machine-config-operator get configmap/coreos-bootimages -o jsonpath='{.data.stream}' | jq -r '.architectures.<architecture>.artifacts.metal.formats.iso.disk.location')
@@ -87,13 +87,15 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines fo
 
 9.  Continue to create more compute machines for your cluster.
 
+- [Installing a cluster on bare metal](../installing/installing_bare_metal/upi/installing-bare-metal.xml#installing-bare-metal)
+
 ## Creating RHCOS machines by PXE or iPXE booting
 
 You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines for your bare-metal cluster by using PXE or iPXE booting.
 
-- Obtain the URL of the Ignition config file for the compute machines for your cluster. You uploaded this file to your HTTP server during installation.
+- You have obtained the URL of the Ignition config file for the compute machines for your cluster. You uploaded this file to your HTTP server during installation.
 
-- Obtain the URLs of the RHCOS ISO image, compressed metal BIOS, `kernel`, and `initramfs` files that you uploaded to your HTTP server during cluster installation.
+- You have obtained the URLs of the RHCOS ISO image, compressed metal BIOS, `kernel`, and `initramfs` files that you uploaded to your HTTP server during cluster installation.
 
 - You have access to the PXE booting infrastructure that you used to create the machines for your OpenShift Container Platform cluster during installation. The machines must boot from their local disks after RHCOS is installed on them.
 
@@ -160,7 +162,7 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines fo
 
       - If you use multiple NICs, specify a single interface in the `ip` option. For example, to use DHCP on a NIC named `eno1`, set `ip=eno1:dhcp`.
 
-      - This configuration does not enable serial console access on machines with a graphical console To configure a different console, add one or more `console=` arguments to the `kernel` line. For example, add `console=tty0 console=ttyS0` to set the first PC serial port as the primary console and the graphical console as a secondary console. For more information on setting up a serial terminal and/or console in RHCOS, see "How does one set up a serial terminal and/or console in Red Hat Enterprise Linux?" in the Additional resources section and "Enabling the serial console for PXE and ISO installation" in the "Advanced RHCOS installation configuration" section.
+      - This configuration does not enable serial console access on machines with a graphical console. To configure a different console, add one or more `console=` arguments to the `kernel` line. For example, add `console=tty0 console=ttyS0` to set the first PC serial port as the primary console and the graphical console as a secondary console. For more information on setting up a serial terminal and/or console in RHCOS, see "How does one set up a serial terminal and/or console in Red Hat Enterprise Linux?" in the Additional resources section and "Enabling the serial console for PXE and ISO installation" in the "Advanced RHCOS installation configuration" section.
 
       </div>
 
@@ -205,7 +207,7 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines fo
 
 ## Approving the certificate signing requests for your machines
 
-When you add machines to a cluster, two pending certificate signing requests (CSRs) are generated for each machine that you added. You must confirm that these CSRs are approved or, if necessary, approve them yourself. The client requests must be approved first, followed by the server requests.
+When you add machines to a cluster, two pending certificate signing requests (CSRs) are generated for each machine. You must confirm that these CSRs are approved or, if necessary, approve them yourself. The client requests must be approved first, followed by the server requests.
 
 - You added machines to your cluster.
 
@@ -261,7 +263,7 @@ When you add machines to a cluster, two pending certificate signing requests (CS
 
     <div class="note">
 
-    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The subsequent serving certificate renewal requests are then automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After the client CSR is approved, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The subsequent serving certificate renewal requests are then automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
 
     </div>
 
@@ -1866,15 +1868,15 @@ service DevicePlugin {
 
 ## Example device plugins
 
-- [Nvidia GPU device plugin for COS-based operating system](https://github.com/GoogleCloudPlatform/Container-engine-accelerators/tree/master/cmd/nvidia_gpu)
+- Nvidia GPU device plugin for COS-based operating system
 
-- [Nvidia official GPU device plugin](https://github.com/NVIDIA/k8s-device-plugin)
+- Nvidia official GPU device plugin
 
-- [Solarflare device plugin](https://github.com/vikaschoudhary16/sfc-device-plugin)
+- Solarflare device plugin
 
-- [KubeVirt device plugins: vfio and kvm](https://github.com/kubevirt/kubernetes-device-plugins)
+- KubeVirt device plugins: vfio and kvm
 
-- [Kubernetes device plugin for IBM® Crypto Express (CEX) cards](https://github.com/ibm-s390-cloud/k8s-cex-dev-plugin)
+- Kubernetes device plugin for IBM® Crypto Express (CEX) cards
 
 <div class="note">
 
@@ -1891,6 +1893,18 @@ For easy device plugin reference implementation, there is a stub device plugin i
 - Since device plugins must manage hardware resources, access to the host file system, as well as socket creation, they must be run in a privileged security context.
 
 - More specific details regarding deployment steps can be found with each device plugin implementation.
+
+<!-- -->
+
+- [Nvidia GPU device plugin for COS-based operating system](https://github.com/GoogleCloudPlatform/Container-engine-accelerators/tree/master/cmd/nvidia_gpu)
+
+- [Nvidia official GPU device plugin](https://github.com/NVIDIA/k8s-device-plugin)
+
+- [Solarflare device plugin](https://github.com/vikaschoudhary16/sfc-device-plugin)
+
+- [KubeVirt device plugins: vfio and kvm](https://github.com/kubevirt/kubernetes-device-plugins)
+
+- [Kubernetes device plugin for IBM® Crypto Express (CEX) cards](https://github.com/ibm-s390-cloud/k8s-cex-dev-plugin)
 
 ## Understanding the Device Manager
 

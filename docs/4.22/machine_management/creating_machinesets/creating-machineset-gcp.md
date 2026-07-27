@@ -776,12 +776,6 @@ The following table lists the validated instance types:
         machineType: a2-highgpu-1g
         onHostMaintenance: Terminate
 
-    <div class="formalpara-title">
-
-    **Example `a2-highgpu-1g.json` file**
-
-    </div>
-
     ``` json
     {
         "apiVersion": "machine.openshift.io/v1beta1",
@@ -891,12 +885,6 @@ The following table lists the validated instance types:
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     NAME                                                             STATUS     ROLES                  AGE     VERSION
     myclustername-2pt9p-master-0.c.openshift-qe.internal             Ready      control-plane,master   8h      v1.35.4
@@ -914,12 +902,6 @@ The following table lists the validated instance types:
     $ oc get machinesets -n openshift-machine-api
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     NAME                               DESIRED   CURRENT   READY   AVAILABLE   AGE
     myclustername-2pt9p-worker-a       1         1         1       1           8h
@@ -933,12 +915,6 @@ The following table lists the validated instance types:
     ``` terminal
     $ oc get machines -n openshift-machine-api | grep worker
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     myclustername-2pt9p-worker-a-mxtnz       Running   n2-standard-4   us-central1   us-central1-a   8h
@@ -989,12 +965,6 @@ The following table lists the validated instance types:
     $ oc get machineset/myclustername-2pt9p-worker-a -n openshift-machine-api -o json | diff ocp_4.17_machineset-a2-highgpu-1g.json -
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     15c15
     <         "name": "myclustername-2pt9p-worker-gpu-a",
@@ -1021,12 +991,6 @@ The following table lists the validated instance types:
     $ oc create -f ocp_4.17_machineset-a2-highgpu-1g.json
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     machineset.machine.openshift.io/myclustername-2pt9p-worker-gpu-a created
     ```
@@ -1041,12 +1005,6 @@ The following table lists the validated instance types:
 
     The `MachineSet` replica count is set to `1` so a new `Machine` object is created automatically.
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     myclustername-2pt9p-worker-gpu-a   1         1         1       1           5h24m
     ```
@@ -1056,12 +1014,6 @@ The following table lists the validated instance types:
     ``` terminal
     $ oc -n openshift-machine-api get machines | grep gpu
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     myclustername-2pt9p-worker-gpu-a-wxcr6   Running   a2-highgpu-1g   us-central1   us-central1-a   5h25m
@@ -1088,12 +1040,6 @@ The NFD Operator identifies hardware device features in nodes. It solves the gen
     ``` terminal
     $ oc get pods -n openshift-nfd
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     NAME                                       READY    STATUS     RESTARTS   AGE

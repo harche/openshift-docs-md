@@ -27,7 +27,9 @@ The requirement to use RHCOS applies only to user-provisioned infrastructure dep
 
 </div>
 
-# Minimum resource requirements for installing the two-node OpenShift cluster with fencing
+# Minimum resource requirements for installing a two-node OpenShift cluster with fencing
+
+Each cluster must meet minimum requirements so that the cluster runs as expected.
 
 Each cluster machine must meet the following minimum requirements:
 
@@ -244,6 +246,8 @@ A PTR record is not required for the OpenShift Container Platform application wi
 
 # Installer-provisioned DNS requirements
 
+In OpenShift Container Platform deployments, you must ensure that cluster components meet certain DNS name resolution criteria for internal communication, certificate validation, and automated node discovery purposes.
+
 Clients access the OpenShift Container Platform cluster nodes over the `baremetal` network. A network administrator must configure a subdomain or subzone where the canonical name extension is the cluster name.
 
 ``` text
@@ -311,7 +315,7 @@ You can use the `dig` command to verify DNS resolution.
 
 You must create a manifest object to modify the cluster’s network configuration after installation. The manifest configures the br-ex bridge, which manages external network connectivity for the cluster.
 
-For instructions on creating this manifest, "Creating a manifest file for a customized br-ex bridge".
+For instructions on creating this manifest, see "Creating a manifest file for a customized br-ex bridge".
 
 # Additional resources
 
@@ -319,4 +323,4 @@ For instructions on creating this manifest, "Creating a manifest file for a cust
 
 - [Creating a manifest file for a customized br-ex bridge](../../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#creating-manifest-file-customized-br-ex-bridge_ipi-install-installation-workflow)
 
-- [Configuring and managing high availability clusters in RHEL](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/configuring_and_managing_high_availability_clusters/index).
+- [Configuring and managing high availability clusters in RHEL](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/configuring_and_managing_high_availability_clusters/index)

@@ -89,7 +89,8 @@ The following table lists the components, resources, and configurations that you
 | `StorageClass.yaml`                                                | No, if it is used in `StorageLV.yaml` |
 | `StorageLV.yaml`                                                   | No                                    |
 | `StorageLVMCluster.yaml`                                           | No                                    |
-| `SriovVrbClusterConfig.yaml`                                       | Yes                                   |
+| `SriovFecClusterConfig.yaml`                                       | No                                    |
+| `SriovVrbClusterConfig.yaml`                                       | No                                    |
 
 Seed image configuration with RAN DU profile
 
@@ -118,22 +119,18 @@ Seed image configuration with RAN DU profile
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><p><code>SriovFecClusterConfig.yaml</code></p></td>
-<td style="text-align: left;"><p>Yes</p></td>
-</tr>
-<tr class="even">
 <td style="text-align: left;"><p><code>PtpOperatorConfigForEvent.yaml</code></p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>DefaultCatsrc.yaml</code></p></td>
 <td style="text-align: left;"><p>Yes</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>PtpConfig.yaml</code></p></td>
 <td style="text-align: left;"><p>If the interfaces of the target cluster are common with the seed cluster, you can include them in the seed image. Otherwise, apply it as extra manifests.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>SriovNetwork.yaml</code> <code>SriovNetworkNodePolicy.yaml</code></p></td>
 <td style="text-align: left;"><p>If the configuration, including namespaces, is exactly the same on both the seed and target cluster, you can include them in the seed image. Otherwise, apply them as extra manifests.</p></td>
 </tr>
@@ -291,14 +288,6 @@ Use the Lifecycle Agent to generate a seed image from a managed cluster. The Ope
 
     </div>
 
-<div class="formalpara-title">
-
-**Next steps**
-
-</div>
-
-If you want to generate more seed images, you must provision a new seed cluster with the version that you want to generate a seed image from.
-
 - After the cluster recovers and it is available, you can check the status of the `SeedGenerator` CR by running the following command:
 
   ``` terminal
@@ -324,6 +313,10 @@ If you want to generate more seed images, you must provision a new seed cluster 
       type: SeedGenCompleted
     observedGeneration: 1
   ```
+
+  The `SeedGenCompleted` type indicates that the seed image generation is complete.
+
+  If you want to generate more seed images, you must provision a new seed cluster with the version that you want to generate a seed image from.
 
 <!-- -->
 

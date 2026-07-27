@@ -1,24 +1,60 @@
 In OpenShift Container Platform 4.17, you can install a cluster on Red Hat OpenStack Platform (RHOSP) in a restricted network by creating an internal mirror of the installation release content.
 
-# Prerequisites
+Ensure that you meet the following prerequisites:
 
-- You reviewed details about the [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation) processes.
+- You reviewed details about the OpenShift Container Platform installation and update processes.
 
-- You read the documentation on [selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing).
+- You read the documentation on selecting a cluster installation method and preparing it for users.
 
-- You verified that OpenShift Container Platform 4.17 is compatible with your RHOSP version by using the [Supported platforms for OpenShift clusters](../../architecture/architecture-installation.xml#supported-platforms-for-openshift-clusters_architecture-installation) section. You can also compare platform support across different versions by viewing the [OpenShift Container Platform on RHOSP support matrix](https://access.redhat.com/articles/4679401).
+- You verified that OpenShift Container Platform 4.17 is compatible with your RHOSP version. For more information, see "Supported platforms for OpenShift Container Platform clusters". You can also compare platform support across different versions by viewing the "OpenShift Container Platform on RHOSP support matrix".
 
-- You [created a registry on your mirror host](../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images) and obtained the `imageContentSources` data for your version of OpenShift Container Platform.
+- You created a registry on your mirror host and obtained the `imageContentSources` data for your version of OpenShift Container Platform. Because the installation media is on the mirror host, you can use that computer to complete all installation steps.
 
-  <div class="important">
-
-  Because the installation media is on the mirror host, you can use that computer to complete all installation steps.
-
-  </div>
-
-- You understand performance and scalability practices for cluster scaling, control plane sizing, and etcd. For more information, see [Recommended practices for scaling the cluster](../../scalability_and_performance/recommended-performance-scale-practices/recommended-control-plane-practices.xml#recommended-host-practices).
+- You understand performance and scalability practices for cluster scaling, control plane sizing, and etcd. For more information, see "Recommended control plane practices".
 
 - You have the metadata service enabled in RHOSP.
+
+You can complete the following configurations after you install a cluster on Red Hat OpenStack Platform (RHOSP) in a disconnected environment:
+
+- Customize your cluster.
+
+- If the mirror registry that you used to install your cluster has a trusted CA, add it to the cluster by configuring additional trust stores.
+
+- Enable remote health reporting.
+
+- Register your disconnected cluster.
+
+- Configure image streams for the Cluster Samples Operator and the `must-gather` tool.
+
+- Learn how to use Operator Lifecycle Manager in disconnected environments.
+
+- If you did not configure RHOSP to accept application traffic over floating IP addresses, configure RHOSP access with floating IP addresses.
+
+<!-- -->
+
+- [Installation and update](../../architecture/architecture-installation.xml#architecture-installation)
+
+- [Selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing)
+
+- [Supported platforms for OpenShift Container Platform clusters](../../architecture/architecture-installation.xml#supported-platforms-for-openshift-clusters_architecture-installation)
+
+- [OpenShift Container Platform on RHOSP support matrix (Knowledgebase article)](https://access.redhat.com/articles/4679401)
+
+- [Mirroring images for a disconnected installation by using the `oc adm` command](../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images)
+
+- [Recommended control plane practices](../../scalability_and_performance/recommended-performance-scale-practices/recommended-control-plane-practices.xml#recommended-host-practices)
+
+- [Postinstallation cluster tasks](../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
+
+- [Image configuration resources](../../openshift_images/image-configuration.xml#images-configuration-cas_image-configuration)
+
+- [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+
+- [Registering your disconnected cluster](../../support/remote_health_monitoring/remote-health-reporting.xml#insights-operator-register-disconnected-cluster_remote-health-reporting)
+
+- [Using Operator Lifecycle Manager in disconnected environments](../../disconnected/using-olm.xml#olm-restricted-networks)
+
+- [Configuring network settings after installing RHOSP](../../installing/installing_openstack/installing-openstack-network-config.xml#installation-osp-configuring-api-floating-ip_installing-openstack-network-config)
 
 # About installations in restricted networks
 
@@ -40,7 +76,7 @@ Clusters in restricted networks have the following additional limitations and re
 
 # Resource guidelines for installing OpenShift Container Platform on RHOSP
 
-To support an OpenShift Container Platform installation, your Red Hat OpenStack Platform (RHOSP) quota must meet the following requirements:
+To support an OpenShift Container Platform installation, your Red Hat OpenStack Platform (RHOSP) quota must meet certain requirements.
 
 | Resource              | Value                                                                 |
 |-----------------------|-----------------------------------------------------------------------|
@@ -108,6 +144,10 @@ Compute machines host the applications that you run on OpenShift Container Platf
 
 </div>
 
+- [huge pages](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.1/html/configuring_the_compute_service_for_instance_creation/assembly_configuring-compute-nodes-for-performance_compute-performance#proc_configuring-huge-pages-on-compute-nodes_compute-performance)
+
+- [Configuring Compute nodes for performance](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.1/html-single/configuring_the_compute_service_for_instance_creation/configuring-compute-nodes-for-performance#configuring-compute-nodes-for-performance)
+
 ## Bootstrap machine
 
 During installation, a bootstrap machine is temporarily provisioned to stand up the control plane. After the production control plane is ready, the bootstrap machine is deprovisioned.
@@ -140,9 +180,9 @@ Swift is operated by a user account with the `swiftoperator` role. Add the role 
 
 <div class="important">
 
-If [the Red Hat OpenStack Platform (RHOSP) object storage service](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html-single/storage_guide/index#ch-manage-containers), commonly known as Swift, is available, OpenShift Container Platform uses it as the image registry storage. If it is unavailable, the installation program relies on the RHOSP block storage service, commonly known as Cinder.
+If [the Red Hat OpenStack Platform (RHOSP) object storage service](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html-single/storage_guide/index#ch-manage-containers), commonly known as Swift, is available, OpenShift Container Platform uses Swift as the image registry storage. If Swift is unavailable, the installation program relies on the RHOSP block storage service, commonly known as Cinder.
 
-If Swift is present and you want to use it, you must enable access to it. If it is not present, or if you do not want to use it, skip this section.
+If Swift is present and you want to use it, you must enable access to Swift. If Swift is not present, or if you do not want to use Swift, skip this section.
 
 </div>
 
@@ -150,7 +190,7 @@ If Swift is present and you want to use it, you must enable access to it. If it 
 
 RHOSP 17 sets the `rgw_max_attr_size` parameter of Ceph RGW to 256 characters. This setting causes issues with uploading container images to the OpenShift Container Platform registry. You must set the value of `rgw_max_attr_size` to at least 1024 characters.
 
-Before installation, check if your RHOSP deployment is affected by this problem. If it is, reconfigure Ceph RGW.
+Before installation, check if your RHOSP deployment is affected by this problem. If your deployment is affected by this problem, reconfigure Ceph RGW.
 
 </div>
 
@@ -160,21 +200,13 @@ Before installation, check if your RHOSP deployment is affected by this problem.
 
 - On [Ceph RGW](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html-single/deploying_an_overcloud_with_containerized_red_hat_ceph/index#ceph-rgw), the `account in url` option is enabled.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To enable Swift on RHOSP:
-
 1.  As an administrator in the RHOSP CLI, add the `swiftoperator` role to the account that will access Swift:
 
     ``` terminal
     $ openstack role add --user <user> --project <project> swiftoperator
     ```
 
-Your RHOSP deployment can now use Swift for the image registry.
+    Your RHOSP deployment can now use Swift for the image registry.
 
 # Defining parameters for the installation program
 
@@ -182,7 +214,7 @@ The OpenShift Container Platform installation program relies on a file that is c
 
 1.  Create the `clouds.yaml` file:
 
-    - If your RHOSP distribution includes the Horizon web UI, generate a `clouds.yaml` file in it.
+    - If your RHOSP distribution includes the Horizon web UI, generate a `clouds.yaml` file.
 
       <div class="important">
 
@@ -226,7 +258,7 @@ The OpenShift Container Platform installation program relies on a file that is c
 
         <div class="tip">
 
-        After you run the installer with a custom CA certificate, you can update the certificate by editing the value of the `ca-cert.pem` key in the `cloud-provider-config` keymap. On a command line, run:
+        After you run the installation program with a custom CA certificate, you can update the certificate by editing the value of the `ca-cert.pem` key in the `cloud-provider-config` keymap. You can then enter the following command:
 
         ``` terminal
         $ oc edit configmap -n openshift-config cloud-provider-config
@@ -248,11 +280,11 @@ The OpenShift Container Platform installation program relies on a file that is c
 
 # Setting OpenStack Cloud Controller Manager options
 
-Optionally, you can edit the OpenStack Cloud Controller Manager (CCM) configuration for your cluster. This configuration controls how OpenShift Container Platform interacts with Red Hat OpenStack Platform (RHOSP).
+Optionally, you can edit the Red Hat OpenStack Platform (RHOSP) Cloud Controller Manager (CCM) configuration for your cluster. This configuration controls how OpenShift Container Platform interacts with Red Hat OpenStack Platform (RHOSP).
 
 For a complete list of configuration parameters, see the "OpenStack Cloud Controller Manager reference guide" page in the "Installing on OpenStack" documentation.
 
-1.  If you have not already generated manifest files for your cluster, generate them by running the following command:
+1.  Generate manifest files for your cluster if you have not already done so by entering the following command:
 
     ``` terminal
     $ openshift-install --dir <destination_directory> create manifests
@@ -264,9 +296,7 @@ For a complete list of configuration parameters, see the "OpenStack Cloud Contro
     $ vi openshift/manifests/cloud-provider-config.yaml
     ```
 
-3.  Modify the options according to the CCM reference guide.
-
-    Configuring Octavia for load balancing is a common case. For example:
+3.  Modify the options according to the CCM reference guide. A common case is configuring Octavia for load balancing. For example:
 
     ``` text
     #...
@@ -280,43 +310,47 @@ For a complete list of configuration parameters, see the "OpenStack Cloud Contro
     #...
     ```
 
-    - This property sets the Octavia provider that your load balancer uses. It accepts `"ovn"` or `"amphora"` as values. If you choose to use OVN, you must also set `lb-method` to `SOURCE_IP_PORT`.
+    where:
 
-    - This property is required if you want to use multiple external networks with your cluster. The cloud provider creates floating IP addresses on the network that is specified here.
+    `lb-provider`
+    Specifies the Octavia provider that your load balancer uses. The parameter accepts `"ovn"` or `"amphora"` as values. If you choose to use OVN, you must also set `lb-method` to `SOURCE_IP_PORT`.
 
-    - This property controls whether the cloud provider creates health monitors for Octavia load balancers. Set the value to `True` to create health monitors. As of RHOSP 16.2, this feature is only available for the Amphora provider.
+    `floating-network-id`
+    This field is required if you want to use multiple external networks with your cluster. The cloud provider creates floating IP addresses on the network that is specified here.
 
-    - This property sets the frequency with which endpoints are monitored. The value must be in the `time.ParseDuration()` format. This property is required if the value of the `create-monitor` property is `True`.
+    `create-monitor`
+    Specifies whether the cloud provider creates health monitors for Octavia load balancers. Set the value to `True` to create health monitors. As of RHOSP 16.2, this feature is only available for the Amphora provider.
 
-    - This property sets the time that monitoring requests are open before timing out. The value must be in the `time.ParseDuration()` format. This property is required if the value of the `create-monitor` property is `True`.
+    `monitor-delay`
+    Specifies the frequency with which endpoints are monitored. The value must be in the `time.ParseDuration()` format. This field is required if the value of the `create-monitor` field is `True`.
 
-    - This property defines how many successful monitoring requests are required before a load balancer is marked as online. The value must be an integer. This property is required if the value of the `create-monitor` property is `True`.
+    `monitor-timeout`
+    Specifies the time that monitoring requests are open before timing out. The value must be in the `time.ParseDuration()` format. This field is required if the value of the `create-monitor` field is `True`.
+
+    `monitor-max-retries`
+    Specifies how many successful monitoring requests are required before a load balancer is marked as online. The value must be an integer. This field is required if the value of the `create-monitor` property is `True`.
 
     <div class="important">
 
-    Prior to saving your changes, verify that the file is structured correctly. Clusters might fail if properties are not placed in the appropriate section.
+    Before saving your changes, verify that the file is structured correctly. Clusters fail if properties are not placed in the appropriate section.
 
     </div>
 
     <div class="important">
 
-    You must set the value of the `create-monitor` property to `True` if you use services that have the value of the `.spec.externalTrafficPolicy` property set to `Local`. The OVN Octavia provider in RHOSP 16.2 does not support health monitors. Therefore, services that have `ETP` parameter values set to `Local` might not respond when the `lb-provider` value is set to `"ovn"`.
+    You must set the value of the `create-monitor` property to `True` if you use services that have the value of the `.spec.externalTrafficPolicy` property set to `Local`. The OVN Octavia provider in RHOSP 16.2 does not support health monitors. Therefore, services that have `ETP` parameter values set to `Local` do not respond when the `lb-provider` value is set to `"ovn"`.
 
     </div>
 
 4.  Save the changes to the file and proceed with installation.
 
-    <div class="tip">
-
-    You can update your cloud provider configuration after you run the installer. On a command line, run:
+5.  Optional: You can update your cloud provider configuration after you run the installation program by entering the following command:
 
     ``` terminal
     $ oc edit configmap -n openshift-config cloud-provider-config
     ```
 
-    After you save your changes, your cluster will take some time to reconfigure itself. The process is complete if none of your nodes have a `SchedulingDisabled` status.
-
-    </div>
+    After you save your changes, your cluster takes some time to reconfigure itself. The process is complete if none of your nodes have a `SchedulingDisabled` status.
 
 # Creating the RHCOS image for restricted network installations
 
@@ -342,7 +376,9 @@ Download the Red Hat Enterprise Linux CoreOS (RHCOS) image to install OpenShift
 
     You must decompress the image before the cluster can use it. The name of the downloaded file might not contain a compression extension, like `.gz` or `.tgz`. To find out if or how the file is compressed, in a command line, enter:
 
-        $ file <name_of_downloaded_file>
+    ``` terminal
+    $ file <name_of_downloaded_file>
+    ```
 
     </div>
 
@@ -362,7 +398,7 @@ Download the Red Hat Enterprise Linux CoreOS (RHCOS) image to install OpenShift
 
     </div>
 
-The image is now available for a restricted installation. Note the image name or location for use in OpenShift Container Platform deployment.
+    The image is now available for a restricted installation. Note the image name or location for use in OpenShift Container Platform deployment.
 
 # Creating the installation configuration file
 
@@ -469,7 +505,7 @@ You can customize the OpenShift Container Platform cluster you install on Red H
 
     </div>
 
-- [Installation configuration parameters for OpenStack](../../installing/installing_openstack/installation-config-parameters-openstack.xml#installation-config-parameters-openstack)
+- [Installation configuration parameters for RHOSP](../../installing/installing_openstack/installation-config-parameters-openstack.xml#installation-config-parameters-openstack)
 
 ## Configuring the cluster-wide proxy during installation
 
@@ -704,7 +740,7 @@ You must use a local key, not one that you configured with platform-specific app
 
 - When you install OpenShift Container Platform, provide the SSH public key to the installation program.
 
-# Enabling access to the environment
+# Access to the environment
 
 At deployment, all OpenShift Container Platform machines are created in a Red Hat OpenStack Platform (RHOSP)-tenant network. Therefore, they are not accessible directly in most RHOSP deployments.
 
@@ -759,40 +795,40 @@ Create floating IP (FIP) addresses for external access to the OpenShift Containe
 
     - `platform.openstack.apiFloatingIP`
 
-If you use these values, you must also enter an external network as the value of the `platform.openstack.externalNetwork` parameter in the `install-config.yaml` file.
+      If you use these values, you must also enter an external network as the value of the `platform.openstack.externalNetwork` parameter in the `install-config.yaml` file.
 
-<div class="tip">
+      <div class="tip">
 
-You can make OpenShift Container Platform resources available outside of the cluster by assigning a floating IP address and updating your firewall configuration.
+      You can make OpenShift Container Platform resources available outside of the cluster by assigning a floating IP address and updating your firewall configuration.
 
-</div>
+      </div>
 
 ## Completing installation without floating IP addresses
 
 You can install OpenShift Container Platform on Red Hat OpenStack Platform (RHOSP) without providing floating IP addresses.
 
-In the `install-config.yaml` file, do not define the following parameters:
+1.  In the `install-config.yaml` file, do not define the following parameters:
 
-- `platform.openstack.ingressFloatingIP`
+    - `platform.openstack.ingressFloatingIP`
 
-- `platform.openstack.apiFloatingIP`
+    - `platform.openstack.apiFloatingIP`
 
-If you cannot provide an external network, you can also leave `platform.openstack.externalNetwork` blank. If you do not provide a value for `platform.openstack.externalNetwork`, a router is not created for you, and, without additional action, the installer will fail to retrieve an image from Glance. You must configure external connectivity on your own.
+2.  If you cannot provide an external network, you can also leave `platform.openstack.externalNetwork` blank. If you do not provide a value for `platform.openstack.externalNetwork`, a router is not created for you, and, without additional action, the installer will fail to retrieve an image from Glance. You must configure external connectivity on your own.
 
-If you run the installer from a system that cannot reach the cluster API due to a lack of floating IP addresses or name resolution, installation fails. To prevent installation failure in these cases, you can use a proxy network or run the installer from a system that is on the same network as your machines.
+3.  If you run the installer from a system that cannot reach the cluster API due to a lack of floating IP addresses or name resolution, installation fails. To prevent installation failure in these cases, you can use a proxy network or run the installer from a system that is on the same network as your machines.
 
-<div class="note">
+    <div class="note">
 
-You can enable name resolution by creating DNS records for the API and Ingress ports. For example:
+    You can enable name resolution by creating DNS records for the API and Ingress ports. For example:
 
-``` dns
-api.<cluster_name>.<base_domain>.  IN  A  <api_port_IP>
-*.apps.<cluster_name>.<base_domain>. IN  A <ingress_port_IP>
-```
+    ``` dns
+    api.<cluster_name>.<base_domain>.  IN  A  <api_port_IP>
+    *.apps.<cluster_name>.<base_domain>. IN  A <ingress_port_IP>
+    ```
 
-If you do not control the DNS server, you can add the record to your `/etc/hosts` file. This action makes the API accessible to only you, which is not suitable for production deployment but does allow installation for development and testing.
+    If you do not control the DNS server, you can add the record to your `/etc/hosts` file. This action makes the API accessible to only you, which is not suitable for production deployment but does allow installation for development and testing.
 
-</div>
+    </div>
 
 # Deploying the cluster
 
@@ -866,7 +902,7 @@ When the cluster deployment completes successfully:
 
 You can verify your OpenShift Container Platform cluster’s status during or after installation.
 
-1.  In the cluster environment, export the administrator’s kubeconfig file:
+1.  In the cluster environment, export the administrator’s kubeconfig file by entering the following command:
 
     ``` terminal
     $ export KUBECONFIG=<installation_directory>/auth/kubeconfig
@@ -876,25 +912,25 @@ You can verify your OpenShift Container Platform cluster’s status during or af
 
       The `kubeconfig` file contains information about the cluster that is used by the CLI to connect a client to the correct cluster and API server.
 
-2.  View the control plane and compute machines created after a deployment:
+2.  View the control plane and compute machines created after a deployment by entering the following command:
 
     ``` terminal
     $ oc get nodes
     ```
 
-3.  View your cluster’s version:
+3.  View the version of your cluster by entering the following command:
 
     ``` terminal
     $ oc get clusterversion
     ```
 
-4.  View your Operators' status:
+4.  View the status of the cluster Operators by entering the following command:
 
     ``` terminal
     $ oc get clusteroperator
     ```
 
-5.  View all running pods in the cluster:
+5.  View all running pods in the cluster by entering the following command:
 
     ``` terminal
     $ oc get pods -A
@@ -943,11 +979,13 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 <!-- -->
 
-- See [Accessing the web console](../../web_console/web-console.xml#web-console) for more details about accessing and understanding the OpenShift Container Platform web console.
+- [Accessing the web console](../../web_console/web-console.xml#web-console)
 
 # Disabling the default software catalog sources
 
 Operator catalogs that source content provided by Red Hat and community projects are configured for the software catalog by default during an OpenShift Container Platform installation. In a restricted network environment, you must disable the default catalogs as a cluster administrator.
+
+Operator catalogs that source content provided by Red Hat and community projects are configured for the software catalog by default during an OpenShift Container Platform installation.
 
 - Disable the sources for the default catalogs by adding `disableAllDefaultSources: true` to the `OperatorHub` object:
 
@@ -968,20 +1006,4 @@ To provide metrics about cluster health and the success of updates, the Telemetr
 
 After you confirm that your [OpenShift Cluster Manager](https://console.redhat.com/openshift) inventory is correct, either maintained automatically by Telemetry or manually by using OpenShift Cluster Manager,use subscription watch to track your OpenShift Container Platform subscriptions at the account or multi-cluster level. For more information about subscription watch, see "Data Gathered and Used by Red Hat’s subscription services" in the *Additional resources* section.
 
-- See [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring) for more information about the Telemetry service
-
-# Next steps
-
-- [Customize your cluster](../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations).
-
-- If the mirror registry that you used to install your cluster has a trusted CA, add it to the cluster by [configuring additional trust stores](../../openshift_images/image-configuration.xml#images-configuration-cas_image-configuration).
-
-- If necessary, you can [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting).
-
-- If necessary, see [Registering your disconnected cluster](../../support/remote_health_monitoring/remote-health-reporting.xml#insights-operator-register-disconnected-cluster_remote-health-reporting)
-
-- [Configure image streams](../../post_installation_configuration/cluster-tasks.xml#post-install-must-gather-disconnected) for the Cluster Samples Operator and the `must-gather` tool.
-
-- Learn how to [use Operator Lifecycle Manager in disconnected environments](../../disconnected/using-olm.xml#olm-restricted-networks).
-
-- If you did not configure RHOSP to accept application traffic over floating IP addresses, [configure RHOSP access with floating IP addresses](../../installing/installing_openstack/installing-openstack-network-config.xml#installation-osp-configuring-api-floating-ip_installing-openstack-network-config).
+- [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)

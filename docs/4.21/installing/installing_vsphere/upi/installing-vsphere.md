@@ -8,21 +8,21 @@ The steps for performing a user-provisioned infrastructure installation are prov
 
 # Prerequisites
 
-- You have completed the tasks in [Preparing to install a cluster using user-provisioned infrastructure](../../../installing/installing_vsphere/upi/upi-vsphere-preparing-to-install.xml#upi-vsphere-preparing-to-install).
+- You have completed the tasks in "Preparing to install a cluster using user-provisioned infrastructure".
 
 - You reviewed your VMware platform licenses. Red Hat does not place any restrictions on your VMware licenses, but some VMware infrastructure components require licensing.
 
-- You reviewed details about the [OpenShift Container Platform installation and update](../../../architecture/architecture-installation.xml#architecture-installation) processes.
+- You reviewed details about the OpenShift Container Platform installation and update processes.
 
-- You read the documentation on [selecting a cluster installation method and preparing it for users](../../../installing/overview/installing-preparing.xml#installing-preparing).
+- You read the documentation on selecting a cluster installation method and preparing it for users.
 
-- You provisioned [persistent storage](../../../storage/understanding-persistent-storage.xml#understanding-persistent-storage) for your cluster. To deploy a private image registry, your storage must provide `ReadWriteMany` access modes.
+- You provisioned persistent storage for your cluster. To deploy a private image registry, your storage must provide `ReadWriteMany` access modes.
 
 - Completing the installation requires that you upload the Red Hat Enterprise Linux CoreOS (RHCOS) OVA on vSphere hosts. The machine from which you complete this process requires access to port 443 on the vCenter and ESXi hosts. You verified that port 443 is accessible.
 
 - If you use a firewall, you confirmed with the administrator that port 443 is accessible. Control plane nodes must be able to reach vCenter and ESXi hosts on port 443 for the installation to succeed.
 
-- If you use a firewall, you [configured it to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
+- If you use a firewall, you configured it to allow the sites that your cluster requires access to.
 
   <div class="note">
 
@@ -50,7 +50,9 @@ If your cluster cannot have direct internet access, you can perform a restricted
 
 # VMware vSphere region and zone enablement
 
-You can deploy an OpenShift Container Platform cluster to multiple vSphere data centers. Each data center can run multiple clusters. This configuration reduces the risk of a hardware failure or network outage that can cause your cluster to fail. To enable regions and zones, you must define multiple failure domains for your OpenShift Container Platform cluster.
+You can deploy an OpenShift Container Platform cluster to multiple vSphere data centers. Each data center can run multiple clusters. This configuration reduces the risk of a hardware failure or network outage that can cause your cluster to fail.
+
+To enable regions and zones, you must define multiple failure domains for your OpenShift Container Platform cluster.
 
 <div class="important">
 
@@ -139,7 +141,7 @@ Installing the cluster requires that you manually create the installation config
 
     </div>
 
-- [Installation configuration parameters](../../../installing/installing_vsphere/installation-config-parameters-vsphere.xml#installation-config-parameters-vsphere)
+- [Installation configuration parameters for vSphere](../../../installing/installing_vsphere/installation-config-parameters-vsphere.xml#installation-config-parameters-vsphere)
 
 ## Sample install-config.yaml file for a VMware vSphere cluster
 
@@ -546,9 +548,9 @@ To install OpenShift Container Platform on user-provisioned infrastructure on VM
     }
     ```
 
-    - Specify the URL of the bootstrap Ignition config file that you hosted.
+    The `<bootstrap_ignition_config_url>` placeholder specifies the URL of the bootstrap Ignition config file that you hosted.
 
-      When you create the virtual machine (VM) for the bootstrap machine, you use this Ignition config file.
+    When you create the virtual machine (VM) for the bootstrap machine, you use this Ignition config file.
 
 3.  Locate the following Ignition config files that the installation program created:
 
@@ -883,19 +885,25 @@ Because `/var` must be in place before a fresh installation of Red Hat Enterpri
           with_mount_unit: true
     ```
 
-    - The storage device name of the disk that you want to partition.
+    where:
 
-    - When adding a data partition to the boot disk, a minimum value of 25000 mebibytes is recommended. The root file system is automatically resized to fill all available space up to the specified offset. If no value is specified, or if the specified value is smaller than the recommended minimum, the resulting root file system will be too small, and future reinstalls of RHCOS might overwrite the beginning of the data partition.
+    `<device_name>`
+    Specifies the storage device name of the disk that you want to partition.
 
-    - The size of the data partition in mebibytes.
+    `<partition_start_offset>`
+    When adding a data partition to the boot disk, a minimum value of 25000 mebibytes is recommended. The root file system is automatically resized to fill all available space up to the specified offset. If no value is specified, or if the specified value is smaller than the recommended minimum, the resulting root file system will be too small, and future reinstalls of RHCOS might overwrite the beginning of the data partition.
 
-    - The `prjquota` mount option must be enabled for filesystems used for container storage.
+    `<partition_size>`
+    Specifies the size of the data partition in mebibytes.
 
-      <div class="note">
+    `prjquota`
+    This mount option must be enabled for filesystems used for container storage.
 
-      When creating a separate `/var` partition, you cannot use different instance types for worker nodes, if the different instance types do not have the same device name.
+    <div class="note">
 
-      </div>
+    When creating a separate `/var` partition, you cannot use different instance types for worker nodes, if the different instance types do not have the same device name.
+
+    </div>
 
 4.  Create a manifest from the Butane config and save it to the `clusterconfig/openshift` directory. For example, run the following command:
 
@@ -911,7 +919,7 @@ Because `/var` must be in place before a fresh installation of Red Hat Enterpri
     auth  bootstrap.ign  master.ign  metadata.json  worker.ign
     ```
 
-Now you can use the Ignition config files as input to the vSphere installation procedures to install Red Hat Enterprise Linux CoreOS (RHCOS) systems.
+    Now you can use the Ignition config files as input to the vSphere installation procedures to install Red Hat Enterprise Linux CoreOS (RHCOS) systems.
 
 # Waiting for the bootstrap process to complete
 
@@ -1008,7 +1016,7 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 # Approving the certificate signing requests for your machines
 
-When you add machines to a cluster, two pending certificate signing requests (CSRs) are generated for each machine that you added. You must confirm that these CSRs are approved or, if necessary, approve them yourself. The client requests must be approved first, followed by the server requests.
+When you add machines to a cluster, two pending certificate signing requests (CSRs) are generated for each machine. You must confirm that these CSRs are approved or, if necessary, approve them yourself. The client requests must be approved first, followed by the server requests.
 
 - You added machines to your cluster.
 
@@ -1064,7 +1072,7 @@ When you add machines to a cluster, two pending certificate signing requests (CS
 
     <div class="note">
 
-    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The subsequent serving certificate renewal requests are then automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After the client CSR is approved, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The subsequent serving certificate renewal requests are then automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
 
     </div>
 
@@ -1422,7 +1430,7 @@ Specifies the size of the persistent volume claim.
 
         By creating a custom PVC, you can leave the `claim` field blank for the default automatic creation of an `image-registry-storage` PVC.
 
-For instructions about configuring registry storage so that it references the correct PVC, see [Configuring the registry for vSphere](../../../registry/configuring_registry_storage/configuring-registry-storage-vsphere.xml#registry-configuring-storage-vsphere_configuring-registry-storage-vsphere).
+- [Configuring registry storage for VMware vSphere](../../../registry/configuring_registry_storage/configuring-registry-storage-vsphere.xml#registry-configuring-storage-vsphere_configuring-registry-storage-vsphere)
 
 # Completing installation on user-provisioned infrastructure
 
@@ -1550,7 +1558,7 @@ To finalize the installation on user-provisioned infrastructure, complete the cl
 
     See "Enabling multipathing with kernel arguments on RHCOS" in the *Postinstallation machine configuration tasks* documentation for more information.
 
-You can add extra compute machines after the cluster installation is completed by following [Adding compute machines to vSphere](../../../machine_management/user_infra/adding-vsphere-compute-user-infra.xml#adding-vsphere-compute-user-infra).
+- [Adding compute machines to vSphere manually](../../../machine_management/user_infra/adding-vsphere-compute-user-infra.xml#adding-vsphere-compute-user-infra)
 
 # Configuring vSphere DRS anti-affinity rules for control plane nodes
 
@@ -1566,33 +1574,25 @@ vSphere Distributed Resource Scheduler (DRS) anti-affinity rules can be configur
 
 </div>
 
-Create an anti-affinity rule by running the following command:
+1.  Create an anti-affinity rule by running the following command:
 
-<div class="formalpara-title">
+    ``` terminal
+    $ govc cluster.rule.create \
+      -name openshift4-control-plane-group \
+      -dc MyDatacenter -cluster MyCluster \
+      -enable \
+      -anti-affinity master-0 master-1 master-2
+    ```
 
-**Example command**
+    After creating the rule, your control plane nodes are automatically migrated by vSphere so they are not running on the same hosts. This might take some time while vSphere reconciles the new rule.
 
-</div>
+    <div class="note">
 
-``` terminal
-$ govc cluster.rule.create \
-  -name openshift4-control-plane-group \
-  -dc MyDatacenter -cluster MyCluster \
-  -enable \
-  -anti-affinity master-0 master-1 master-2
-```
+    The migration occurs automatically and might cause brief OpenShift API outage or latency until the migration finishes.
 
-After creating the rule, your control plane nodes are automatically migrated by vSphere so they are not running on the same hosts. This might take some time while vSphere reconciles the new rule. Successful command completion is shown in the following procedure.
+    </div>
 
-<div class="note">
-
-The migration occurs automatically and might cause brief OpenShift API outage or latency until the migration finishes.
-
-</div>
-
-The vSphere DRS anti-affinity rules need to be updated manually in the event of a control plane VM name change or migration to a new vSphere Cluster.
-
-1.  Remove any existing DRS anti-affinity rule by running the following command:
+2.  If a control plane VM name changes or migrates to a new vSphere Cluster, update the DRS anti-affinity rule manually. Remove the existing rule by running the following command:
 
     ``` terminal
     $ govc cluster.rule.remove \
@@ -1610,7 +1610,7 @@ The vSphere DRS anti-affinity rules need to be updated manually in the event of 
     [13-10-22 09:33:24] Reconfigure /MyDatacenter/host/MyCluster...OK
     ```
 
-2.  Create the rule again with updated names by running the following command:
+3.  Create the rule again with updated names by running the following command:
 
     ``` terminal
     $ govc cluster.rule.create \
@@ -1626,16 +1626,24 @@ To provide metrics about cluster health and the success of updates, the Telemetr
 
 After you confirm that your [OpenShift Cluster Manager](https://console.redhat.com/openshift) inventory is correct, either maintained automatically by Telemetry or manually by using OpenShift Cluster Manager,use subscription watch to track your OpenShift Container Platform subscriptions at the account or multi-cluster level. For more information about subscription watch, see "Data Gathered and Used by Red Hat’s subscription services" in the *Additional resources* section.
 
-- See [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring) for more information about the Telemetry service
+- [Preparing to install a cluster using user-provisioned infrastructure](../../../installing/installing_vsphere/upi/upi-vsphere-preparing-to-install.xml#upi-vsphere-preparing-to-install)
 
-# Next steps
+- [Installation and update](../../../architecture/architecture-installation.xml#architecture-installation)
 
-- [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations).
+- [Selecting a cluster installation method and preparing it for users](../../../installing/overview/installing-preparing.xml#installing-preparing)
 
-- If necessary, you can [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting).
+- [Understanding persistent storage](../../../storage/understanding-persistent-storage.xml#understanding-persistent-storage)
 
-- [Set up your registry and configure registry storage](../../../registry/configuring_registry_storage/configuring-registry-storage-vsphere.xml#configuring-registry-storage-vsphere).
+- [Configuring your firewall for OpenShift Container Platform](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
 
-- Optional: [View the events from the vSphere Problem Detector Operator](../../../installing/installing_vsphere/using-vsphere-problem-detector-operator.xml#vsphere-problem-detector-viewing-events_vsphere-problem-detector) to determine if the cluster has permission or storage configuration issues.
+- [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
-- Optional: if you created encrypted virtual machines, [create an encrypted storage class](../../../storage/container_storage_interface/persistent-storage-csi-vsphere.xml#vsphere-pv-encryption).
+- [Available cluster customizations](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
+
+- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+
+- [Configuring the registry for vSphere](../../../registry/configuring_registry_storage/configuring-registry-storage-vsphere.xml#configuring-registry-storage-vsphere)
+
+- [Viewing the events from the vSphere Problem Detector Operator](../../../installing/installing_vsphere/using-vsphere-problem-detector-operator.xml#vsphere-problem-detector-viewing-events_vsphere-problem-detector)
+
+- [vSphere persistent disks encryption](../../../storage/container_storage_interface/persistent-storage-csi-vsphere.xml#vsphere-pv-encryption)

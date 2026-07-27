@@ -2,7 +2,7 @@ Before you deploy an OpenShift Container Platform cluster on IBM® Power® Virtu
 
 # Available installation configuration parameters for IBM PowerVC
 
-To customize your cluster installation, configuration parameters are available to use in the `install-config.yaml` file.
+To customize your cluster installation, you can use configuration parameters in the `install-config.yaml` file.
 
 The following tables specify the required, optional, and IBM PowerVC-specific installation configuration parameters that you can set as part of the installation process.
 
@@ -99,7 +99,7 @@ Additional IBM PowerVC configuration parameters are described in the following t
   powervc:
     cloud:</code></pre></td>
 <td style="text-align: left;"><p>The name of the IBM PowerVC cloud to use from the list of clouds in the <code>clouds.yaml</code> file.</p>
-<p>In the cloud configuration in the <code>clouds.yaml</code> file, if possible, use application credentials rather than a user name and password combination. Using application credentials avoids disruptions from secret propogation that follow user name and password rotation.</p>
+<p>In the cloud configuration in the <code>clouds.yaml</code> file, if possible, use application credentials rather than a user name and password combination. Using application credentials avoids disruptions from secret propagation that follow user name and password rotation.</p>
 <p><strong>Value:</strong> String, for example <code>MyCloud</code>.</p></td>
 </tr>
 </tbody>

@@ -641,10 +641,10 @@
 - [Syncing LDAP groups](authentication/ldap-syncing.md)
 - **Managing cloud provider credentials**
   - [About the Cloud Credential Operator](authentication/managing_cloud_provider_credentials/about-cloud-credential-operator.md)
-  - [Mint mode](authentication/managing_cloud_provider_credentials/cco-mode-mint.md)
-  - [Passthrough mode](authentication/managing_cloud_provider_credentials/cco-mode-passthrough.md)
-  - [Manual mode with long-term credentials for components](authentication/managing_cloud_provider_credentials/cco-mode-manual.md)
-  - [Manual mode with short-term credentials for components](authentication/managing_cloud_provider_credentials/cco-short-term-creds.md)
+  - [About mint mode](authentication/managing_cloud_provider_credentials/cco-mode-mint.md)
+  - [About passthrough mode](authentication/managing_cloud_provider_credentials/cco-mode-passthrough.md)
+  - [About manual mode with long-term credentials for components](authentication/managing_cloud_provider_credentials/cco-mode-manual.md)
+  - [About manual mode with short-term credentials for components](authentication/managing_cloud_provider_credentials/cco-short-term-creds.md)
 
 ### Networking
 
@@ -2051,6 +2051,7 @@
   - [Self validation checkups](virt/post_installation_configuration/virt-self-validation-checkups.md)
   - [Allocate physical cores for virtual machines](virt/post_installation_configuration/virt-physical-cores-allocation-vms.md)
   - [Configuring higher VM workload density](virt/post_installation_configuration/virt-configuring-higher-vm-workload-density.md)
+  - [Virtual machine recovery from node failures](virt/post_installation_configuration/virt-vm-recovery-from-node-failures.md)
   - [Configuring certificate rotation](virt/post_installation_configuration/virt-configuring-certificate-rotation.md)
   - [Configuring KubeVirt Redfish for VM management](virt/post_installation_configuration/virt-kubevirt-redfish.md)
 - **Updating**

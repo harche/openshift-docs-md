@@ -6,21 +6,21 @@ You must set most of the network configuration parameters during installation, a
 
 # Prerequisites
 
-- You have completed the tasks in [Preparing to install a cluster using installer-provisioned infrastructure](../../../installing/installing_vsphere/ipi/ipi-vsphere-preparing-to-install.xml#ipi-vsphere-preparing-to-install).
+- You have completed the tasks in "Preparing to install a cluster using installer-provisioned infrastructure".
 
 - You reviewed your vSphere platform licenses. Red Hat does not place any restrictions on your vSphere licenses, but some vSphere infrastructure components require licensing.
 
-- You reviewed details about the [OpenShift Container Platform installation and update](../../../architecture/architecture-installation.xml#architecture-installation) processes.
+- You reviewed details about the OpenShift Container Platform installation and update processes.
 
-- You read the documentation on [selecting a cluster installation method and preparing it for users](../../../installing/overview/installing-preparing.xml#installing-preparing).
+- You read the documentation on selecting a cluster installation method and preparing it for users.
 
-- You provisioned [persistent storage](../../../storage/understanding-persistent-storage.xml#understanding-persistent-storage) for your cluster. To deploy a private image registry, your storage must provide `ReadWriteMany` access modes.
+- You provisioned persistent storage for your cluster. To deploy a private image registry, your storage must provide `ReadWriteMany` access modes.
 
 - The OpenShift Container Platform installer requires access to port 443 on the vCenter and ESXi hosts. You verified that port 443 is accessible.
 
 - If you use a firewall, you confirmed with the administrator that port 443 is accessible. Control plane nodes must be able to reach vCenter and ESXi hosts on port 443 for the installation to succeed.
 
-- If you use a firewall, you [configured it to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
+- If you use a firewall, you configured it to allow the sites that your cluster requires access to.
 
   <div class="note">
 
@@ -48,7 +48,9 @@ If your cluster cannot have direct internet access, you can perform a restricted
 
 # VMware vSphere region and zone enablement
 
-You can deploy an OpenShift Container Platform cluster to multiple vSphere data centers. Each data center can run multiple clusters. This configuration reduces the risk of a hardware failure or network outage that can cause your cluster to fail. To enable regions and zones, you must define multiple failure domains for your OpenShift Container Platform cluster.
+You can deploy an OpenShift Container Platform cluster to multiple vSphere data centers. Each data center can run multiple clusters. This configuration reduces the risk of a hardware failure or network outage that can cause your cluster to fail.
+
+To enable regions and zones, you must define multiple failure domains for your OpenShift Container Platform cluster.
 
 <div class="important">
 
@@ -361,7 +363,17 @@ Production environments can deny direct access to the internet and instead have 
 
     </div>
 
-## Deploying with dual-stack networking
+## Deploying IP addressing with dual-stack networking
+
+When deploying IP addressing with dual-stack networking for the bootstrap virtual machine (VM), the bootstrap VM functions with a single IP version.
+
+<div class="note">
+
+The following examples are for DHCP. DHCP-based dual stack clusters can deploy with one IPv4 and one IPv6 virtual IP address (VIP) each from Day 1.
+
+Deploying a cluster with static IP addresses involves configuring IP addresses for the bootstrap VM, API, and ingress VIPs. Configuring dual-stack with a static IP set in `install-config` requires one VIP each for API and ingress. Add secondary VIPs after deployment.
+
+</div>
 
 For dual-stack networking in OpenShift Container Platform clusters, you can configure IPv4 and IPv6 address endpoints for cluster nodes. To configure IPv4 and IPv6 address endpoints for cluster nodes, edit the `machineNetwork`, `clusterNetwork`, and `serviceNetwork` configuration settings in the `install-config.yaml` file. Each setting must have two CIDR entries each. For a cluster with the IPv4 family as the primary address family, specify the IPv4 setting first. For a cluster with the IPv6 family as the primary address family, specify the IPv6 setting first.
 
@@ -381,7 +393,7 @@ serviceNetwork:
 
 <div class="important">
 
-On a bare-metal platform, if you specified an NMState configuration in the `networkConfig` section of your `install-config.yaml` file, add `interfaces.wait-ip: ipv4+ipv6` to the NMState YAML file to resolve an issue that prevents your cluster from deploying on a dual-stack network.
+On a bare metal platform, if you specified an NMState configuration in the `networkConfig` section of your `install-config.yaml` file, add `interfaces.wait-ip: ipv4+ipv6` to the NMState YAML file to resolve an issue that prevents your cluster from deploying on a dual-stack network.
 
 <div class="formalpara-title">
 
@@ -675,7 +687,7 @@ For scenarios requiring multiple network interface controller (NIC), you can con
             - <VM_network10_name>
     ```
 
-    - Specifies the list of network adapters. You can specify up to 10 network adapters.
+    Where the `networks` section is a list that you populate with network adapter names. You can specify up to 10 network adapters.
 
 2.  Specify at least one of the following configurations in the `install-config.yaml` file:
 
@@ -1941,17 +1953,13 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 - "Remote health reporting"
 
-# Creating registry storage
-
-After you install the cluster, you must create storage for the registry Operator.
-
-## Image registry removed during installation
+# Image registry removed during installation
 
 On platforms that do not provide shareable object storage, the OpenShift Image Registry Operator bootstraps itself as `Removed`. This allows `openshift-installer` to complete installations on these platform types.
 
 After installation, you must edit the Image Registry Operator configuration to switch the `managementState` from `Removed` to `Managed`. When this has completed, you must configure storage.
 
-## Image registry storage configuration
+# Image registry storage configuration
 
 The Image Registry Operator is not initially available for platforms that do not provide default storage. After installation, you must configure your registry to use storage so that the Registry Operator is made available.
 
@@ -1959,7 +1967,7 @@ Configure a persistent volume, which is required for production clusters. Where 
 
 You can also allow the image registry to use block storage types by using the `Recreate` rollout strategy during upgrades.
 
-### Configuring registry storage for VMware vSphere
+## Configuring registry storage for VMware vSphere
 
 As a cluster administrator, following installation you must configure your registry to use storage.
 
@@ -2052,7 +2060,7 @@ Other NFS implementations on the marketplace might not have these issues. Contac
     image-registry   4.7       True        False         False      6h50m
     ```
 
-### Configuring block registry storage for VMware vSphere
+## Configuring block registry storage for VMware vSphere
 
 To allow the image registry to use block storage types such as vSphere Virtual Machine Disk (VMDK) during upgrades as a cluster administrator, you can use the `Recreate` rollout strategy.
 
@@ -2126,7 +2134,7 @@ Specifies the size of the persistent volume claim.
 
         By creating a custom PVC, you can leave the `claim` field blank for the default automatic creation of an `image-registry-storage` PVC.
 
-For instructions about configuring registry storage so that it references the correct PVC, see [Configuring the registry for vSphere](../../../registry/configuring_registry_storage/configuring-registry-storage-vsphere.xml#registry-configuring-storage-vsphere_configuring-registry-storage-vsphere).
+- [Configuring the registry for vSphere](../../../registry/configuring_registry_storage/configuring-registry-storage-vsphere.xml#registry-configuring-storage-vsphere_configuring-registry-storage-vsphere)
 
 # Telemetry access for OpenShift Container Platform
 
@@ -2134,7 +2142,7 @@ To provide metrics about cluster health and the success of updates, the Telemetr
 
 After you confirm that your [OpenShift Cluster Manager](https://console.redhat.com/openshift) inventory is correct, either maintained automatically by Telemetry or manually by using OpenShift Cluster Manager,use subscription watch to track your OpenShift Container Platform subscriptions at the account or multi-cluster level. For more information about subscription watch, see "Data Gathered and Used by Red Hat’s subscription services" in the *Additional resources* section.
 
-- See [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring) for more information about the Telemetry service
+- [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
 # Configuring network components to run on the control plane
 
@@ -2218,7 +2226,7 @@ When deploying remote nodes in separate subnets, you must place the `ingressVIP`
             node-role.kubernetes.io/master: ""
     ```
 
-7.  Consider backing up the `manifests` directory. The installer deletes the `manifests/` directory when creating the cluster.
+7.  Consider backing up the `manifests` directory. The installation program deletes the `manifests/` directory when creating the cluster.
 
 8.  Modify the `cluster-scheduler-02-config.yml` manifest to make the control plane nodes schedulable by setting the `mastersSchedulable` field to `true`. Control plane nodes are not schedulable by default. For example:
 
@@ -2230,12 +2238,20 @@ When deploying remote nodes in separate subnets, you must place the `ingressVIP`
 
     </div>
 
-# Next steps
+- [Preparing to install a cluster using installer-provisioned infrastructure](../../../installing/installing_vsphere/ipi/ipi-vsphere-preparing-to-install.xml#ipi-vsphere-preparing-to-install)
 
-- [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations).
+- [OpenShift Container Platform installation and update processes](../../../architecture/architecture-installation.xml#architecture-installation)
 
-- If necessary, you can [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting).
+- [Selecting a cluster installation method and preparing it for users](../../../installing/overview/installing-preparing.xml#installing-preparing)
 
-- [Set up your registry and configure registry storage](../../../registry/configuring_registry_storage/configuring-registry-storage-vsphere.xml#configuring-registry-storage-vsphere).
+- [Persistent storage](../../../storage/understanding-persistent-storage.xml#understanding-persistent-storage)
 
-- Optional: [View the events from the vSphere Problem Detector Operator](../../../installing/installing_vsphere/using-vsphere-problem-detector-operator.xml#vsphere-problem-detector-viewing-events_vsphere-problem-detector) to determine if the cluster has permission or storage configuration issues.
+- [Configuring your firewall to allow required sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
+
+- [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
+
+- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+
+- [Set up your registry and configure registry storage](../../../registry/configuring_registry_storage/configuring-registry-storage-vsphere.xml#configuring-registry-storage-vsphere)
+
+- [View the events from the vSphere Problem Detector Operator to determine if the cluster has permission or storage configuration issues](../../../installing/installing_vsphere/using-vsphere-problem-detector-operator.xml#vsphere-problem-detector-viewing-events_vsphere-problem-detector)

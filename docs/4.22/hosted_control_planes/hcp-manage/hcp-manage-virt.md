@@ -238,32 +238,32 @@ Mapping KubeVirt CSI storage classes to access and volume modes
 
 You can expose your infrastructure volume snapshot class to the hosted cluster by using KubeVirt CSI.
 
-- To map your volume snapshot class to the hosted cluster, use the `--infra-volumesnapshot-class-mapping` argument when creating a hosted cluster. Run the following command:
+- To map your volume snapshot class to the hosted cluster, use the `--infra-volumesnapshot-class-mapping` argument when creating a hosted cluster as shown in the following example:
 
   ``` terminal
   $ hcp create cluster kubevirt \
-    --name <hosted_cluster_name> \
-    --node-pool-replicas <worker_node_count> \
-    --pull-secret <path_to_pull_secret> \
-    --memory <memory> \
-    --cores <cpu> \
+    --name my-hosted-cluster \
+    --node-pool-replicas 2 \
+    --pull-secret /user/name/pullsecret \
+    --memory 8Gi \
+    --cores 2 \
     --infra-storage-class-mapping=<infrastructure_storage_class>/<hosted_storage_class> \
     --infra-volumesnapshot-class-mapping=<infrastructure_volume_snapshot_class>/<hosted_volume_snapshot_class>
   ```
 
-  - Specify the name of your hosted cluster, for instance, `example`.
+  - `--name` specifies the name of your hosted cluster.
 
-  - Specify the worker count, for example, `2`.
+  - `--node-pool-replicas` specifies the worker count.
 
-  - Specify the path to your pull secret, for example, `/user/name/pullsecret`.
+  - `--pull-secret` specifies the path to your pull secret.
 
-  - Specify a value for memory, for example, `8Gi`.
+  - `--memory` specifies a value for memory.
 
-  - Specify a value for CPU, for example, `2`.
+  - `--cores` specifies a value for CPU.
 
-  - Replace `<infrastructure_storage_class>` with the storage class present in the infrastructure cluster. Replace `<hosted_storage_class>` with the storage class present in the hosted cluster.
+  - `--infra-storage-class-mapping` specifies the storage classes. Replace `<infrastructure_storage_class>` with the storage class in the infrastructure cluster, and replace `<hosted_storage_class>` with the storage class in the hosted cluster.
 
-  - Replace `<infrastructure_volume_snapshot_class>` with the volume snapshot class present in the infrastructure cluster. Replace `<hosted_volume_snapshot_class>` with the volume snapshot class present in the hosted cluster.
+  - `--infra-volumesnapshot-class-mapping` specifies the volume snapshot classes. Replace `<infrastructure_volume_snapshot_class>` with the volume snapshot class in the infrastructure cluster, and replace `<hosted_volume_snapshot_class>` with the volume snapshot class in the hosted cluster.
 
     <div class="note">
 
@@ -275,15 +275,15 @@ You can expose your infrastructure volume snapshot class to the hosted cluster b
 
 You can map multiple volume snapshot classes to the hosted cluster by assigning them to a specific group. The infrastructure storage class and the volume snapshot class are compatible with each other only if they belong to a same group.
 
-- To map multiple volume snapshot classes to the hosted cluster, use the `group` option when creating a hosted cluster. Run the following command:
+- To map multiple volume snapshot classes to the hosted cluster, use the `group` option when creating a hosted cluster, as shown in the following example:
 
   ``` terminal
   $ hcp create cluster kubevirt \
-    --name <hosted_cluster_name> \
-    --node-pool-replicas <worker_node_count> \
-    --pull-secret <path_to_pull_secret> \
-    --memory <memory> \
-    --cores <cpu> \
+    --name my-hosted-cluster \
+    --node-pool-replicas 2 \
+    --pull-secret /user/name/pullsecret \
+    --memory 8Gi \
+    --cores 2 \
     --infra-storage-class-mapping=<infrastructure_storage_class>/<hosted_storage_class>,group=<group_name> \
     --infra-storage-class-mapping=<infrastructure_storage_class>/<hosted_storage_class>,group=<group_name> \
     --infra-storage-class-mapping=<infrastructure_storage_class>/<hosted_storage_class>,group=<group_name> \
@@ -291,132 +291,136 @@ You can map multiple volume snapshot classes to the hosted cluster by assigning 
     --infra-volumesnapshot-class-mapping=<infrastructure_volume_snapshot_class>/<hosted_volume_snapshot_class>,group=<group_name>
   ```
 
-  - Specify the name of your hosted cluster, for instance, `example`.
+  - `--name` specifies the name of your hosted cluster.
 
-  - Specify the worker count, for example, `2`.
+  - `--node-pool-replicas` specifies the worker count.
 
-  - Specify the path to your pull secret, for example, `/user/name/pullsecret`.
+  - `--pull-secret` specifies the path to your pull secret.
 
-  - Specify a value for memory, for example, `8Gi`.
+  - `--memory` specifies a value for memory.
 
-  - Specify a value for CPU, for example, `2`.
+  - `--cores` specifies a value for CPU.
 
-  - Replace `<infrastructure_storage_class>` with the storage class present in the infrastructure cluster. Replace `<hosted_storage_class>` with the storage class present in the hosted cluster. Replace `<group_name>` with the group name. For example, `infra-storage-class-mygroup/hosted-storage-class-mygroup,group=mygroup` and `infra-storage-class-mymap/hosted-storage-class-mymap,group=mymap`.
+  - `--infra-storage-class-mapping` specifies the storage classes. Replace `<infrastructure_storage_class>` with the storage class in the infrastructure cluster, `<hosted_storage_class>` with the storage class in the hosted cluster, and `<group_name>` with the group name. For example, `infra-storage-class-mygroup/hosted-storage-class-mygroup,group=mygroup` and `infra-storage-class-mymap/hosted-storage-class-mymap,group=mymap`.
 
-  - Replace `<infrastructure_volume_snapshot_class>` with the volume snapshot class present in the infrastructure cluster. Replace `<hosted_volume_snapshot_class>` with the volume snapshot class present in the hosted cluster. For example, `infra-vol-snap-mygroup/hosted-vol-snap-mygroup,group=mygroup` and `infra-vol-snap-mymap/hosted-vol-snap-mymap,group=mymap`.
+  - `--infra-volumesnapshot-class-mapping` specifies the volume snapshot classes. Replace `<infrastructure_volume_snapshot_class>` with the volume snapshot class in the infrastructure cluster and `<hosted_volume_snapshot_class>` with the volume snapshot class in the hosted cluster. For example, `infra-vol-snap-mygroup/hosted-vol-snap-mygroup,group=mygroup` and `infra-vol-snap-mymap/hosted-vol-snap-mymap,group=mymap`.
 
 ## Configuring KubeVirt VM root volume
 
-At cluster creation time, you can configure the storage class that is used to host the KubeVirt VM root volumes by using the `--root-volume-storage-class` argument.
+At cluster creation time, you can configure the storage class that is used to host the KubeVirt virtual machine (VM) root volumes by using the `--root-volume-storage-class` argument.
 
-- To set a custom storage class and volume size for KubeVirt VMs, run the following command:
+- To set a custom storage class and volume size for KubeVirt VMs, run a command as shown in the following example:
 
   ``` terminal
   $ hcp create cluster kubevirt \
-    --name <hosted_cluster_name> \
-    --node-pool-replicas <worker_node_count> \
-    --pull-secret <path_to_pull_secret> \
-    --memory <memory> \
-    --cores <cpu> \
-    --root-volume-storage-class <root_volume_storage_class> \
-    --root-volume-size <volume_size>
+    --name my-hosted-cluster \
+    --node-pool-replicas 2 \
+    --pull-secret /user/name/pullsecret \
+    --memory 8Gi \
+    --cores 2 \
+    --root-volume-storage-class ocs-storagecluster-ceph-rbd \
+    --root-volume-size 64
   ```
 
-  - Specify the name of your hosted cluster, for instance, `example`.
+  - `--name` specifies the name of your hosted cluster.
 
-  - Specify the worker count, for example, `2`.
+  - `--node-pool-replicas` specifies the worker count.
 
-  - Specify the path to your pull secret, for example, `/user/name/pullsecret`.
+  - `--pull-secret` specifies the path to your pull secret.
 
-  - Specify a value for memory, for example, `8Gi`.
+  - `--memory` specifies a value for memory.
 
-  - Specify a value for CPU, for example, `2`.
+  - `--cores` specifies a value for CPU.
 
-  - Specify a name of the storage class to host the KubeVirt VM root volumes, for example, `ocs-storagecluster-ceph-rbd`.
+  - `--root-volume-storage-class` specifies a name of the storage class to host the KubeVirt VM root volumes.
 
-  - Specify the volume size, for example, `64`.
+  - `--root-volume-size` specifies the volume size.
 
-    As a result, you get a hosted cluster created with VMs hosted on PVCs.
+    As a result, you get a hosted cluster created with VMs hosted on persistent volume claims (PVCs).
 
 ## Enabling KubeVirt VM image caching
 
-You can use KubeVirt VM image caching to optimize both cluster startup time and storage usage. KubeVirt VM image caching supports the use of a storage class that is capable of smart cloning and the `ReadWriteMany` access mode. For more information about smart cloning, see *Cloning a data volume using smart-cloning*.
+To optimize both cluster startup time and storage usage, you can use KubeVirt virtual machine (VM) image caching.
+
+KubeVirt VM image caching supports the use of a storage class that is capable of smart cloning and the `ReadWriteMany` access mode. For more information about smart cloning, see "Cloning a data volume using smart-cloning".
 
 Image caching works as follows:
 
-1.  The VM image is imported to a PVC that is associated with the hosted cluster.
+1.  The VM image is imported to a persistent volume claim (PVC) that is associated with the hosted cluster.
 
 2.  A unique clone of that PVC is created for every KubeVirt VM that is added as a worker node to the cluster.
 
 Image caching reduces VM startup time by requiring only a single image import. It can further reduce overall cluster storage usage when the storage class supports copy-on-write cloning.
 
-- To enable image caching, during cluster creation, use the `--root-volume-cache-strategy=PVC` argument by running the following command:
+- To enable image caching, during cluster creation, use the `--root-volume-cache-strategy=PVC` argument by running a command as shown in the following example:
 
   ``` terminal
   $ hcp create cluster kubevirt \
-    --name <hosted_cluster_name> \
-    --node-pool-replicas <worker_node_count> \
-    --pull-secret <path_to_pull_secret> \
-    --memory <memory> \
-    --cores <cpu> \
+    --name my-hosted-cluster \
+    --node-pool-replicas 2 \
+    --pull-secret /user/name/pullsecret \
+    --memory 8Gi \
+    --cores 2 \
     --root-volume-cache-strategy=PVC
   ```
 
-  - Specify the name of your hosted cluster, for instance, `example`.
+  - `--name` specifies the name of your hosted cluster.
 
-  - Specify the worker count, for example, `2`.
+  - `--node-pool-replicas` specifies the worker count.
 
-  - Specify the path to your pull secret, for example, `/user/name/pullsecret`.
+  - `--pull-secret` specifies the path to your pull secret.
 
-  - Specify a value for memory, for example, `8Gi`.
+  - `--memory` specifies a value for memory.
 
-  - Specify a value for CPU, for example, `2`.
+  - `--cores` specifies a value for CPU.
 
-  - Specify a strategy for image caching, for example, `PVC`.
-
-## KubeVirt CSI storage security and isolation
-
-KubeVirt Container Storage Interface (CSI) extends the storage capabilities of the underlying infrastructure cluster to hosted clusters. The CSI driver ensures secure and isolated access to the infrastructure storage classes and hosted clusters by using the following security constraints:
-
-- The storage of a hosted cluster is isolated from the other hosted clusters.
-
-- Worker nodes in a hosted cluster do not have a direct API access to the infrastructure cluster. The hosted cluster can provision storage on the infrastructure cluster only through the controlled KubeVirt CSI interface.
-
-- The hosted cluster does not have access to the KubeVirt CSI cluster controller. As a result, the hosted cluster cannot access arbitrary storage volumes on the infrastructure cluster that are not associated with the hosted cluster. The KubeVirt CSI cluster controller runs in a pod in the hosted control plane namespace.
-
-- Role-based access control (RBAC) of the KubeVirt CSI cluster controller limits the persistent volume claim (PVC) access to only the hosted control plane namespace. Therefore, KubeVirt CSI components cannot access storage from the other namespaces.
+  - `--root-volume-cache-strategy` specifies a strategy for image caching.
 
 <!-- -->
 
 - [Cloning a data volume using smart-cloning](../../virt/creating_vms_advanced/virt-creating-vms-by-cloning-pvcs.xml#smart-cloning_virt-creating-vms-by-cloning-pvcs)
 
+## KubeVirt CSI storage security and isolation
+
+KubeVirt Container Storage Interface (CSI) extends the storage capabilities of the underlying infrastructure cluster to hosted clusters.
+
+The CSI driver ensures secure and isolated access to the infrastructure storage classes and hosted clusters by using the following security constraints:
+
+- The storage of a hosted cluster is isolated from the other hosted clusters.
+
+- Compute nodes in a hosted cluster do not have a direct API access to the infrastructure cluster. The hosted cluster can provision storage on the infrastructure cluster only through the controlled KubeVirt CSI interface.
+
+- The hosted cluster does not have access to the KubeVirt CSI cluster controller. As a result, the hosted cluster cannot access arbitrary storage volumes on the infrastructure cluster that are not associated with the hosted cluster. The KubeVirt CSI cluster controller runs in a pod in the hosted control plane namespace.
+
+- Role-based access control (RBAC) of the KubeVirt CSI cluster controller limits the persistent volume claim (PVC) access to only the hosted control plane namespace. Therefore, KubeVirt CSI components cannot access storage from the other namespaces.
+
 ## Configuring etcd storage
 
 At cluster creation time, you can configure the storage class that is used to host etcd data by using the `--etcd-storage-class` argument.
 
-- To configure a storage class for etcd, run the following command:
+- To configure a storage class for etcd, run a command similar to the following example:
 
   ``` terminal
   $ hcp create cluster kubevirt \
-    --name <hosted_cluster_name> \
-    --node-pool-replicas <worker_node_count> \
-    --pull-secret <path_to_pull_secret> \
-    --memory <memory> \
-    --cores <cpu> \
-    --etcd-storage-class=<etcd_storage_class_name>
+    --name my-hosted-cluster \
+    --node-pool-replicas 2 \
+    --pull-secret /user/name/pullsecret \
+    --memory 8Gi \
+    --cores 2 \
+    --etcd-storage-class=lvm-storageclass
   ```
 
-  - Specify the name of your hosted cluster, for instance, `example`.
+  - `--name` specifies the name of your hosted cluster.
 
-  - Specify the worker count, for example, `2`.
+  - `--node-pool-replicas` specifies the worker count.
 
-  - Specify the path to your pull secret, for example, `/user/name/pullsecret`.
+  - `--pull-secret` specifies the path to your pull secret.
 
-  - Specify a value for memory, for example, `8Gi`.
+  - `--memory` specifies a value for memory.
 
-  - Specify a value for CPU, for example, `2`.
+  - `--cores` specifies a value for CPU.
 
-  - Specify the etcd storage class name, for example, `lvm-storageclass`. If you do not provide an `--etcd-storage-class` argument, the default storage class is used.
+  - `--etcd-storage-class` specifies the etcd storage class name. If you do not provide an `--etcd-storage-class` argument, the default storage class is used.
 
 # Attaching NVIDIA GPU devices by using the hcp CLI
 
@@ -436,29 +440,29 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 <!-- -->
 
-- You can attach the GPU device to node pools during cluster creation by running the following command:
+- You can attach the GPU device to node pools during cluster creation by running a command similar to the following example:
 
   ``` terminal
   $ hcp create cluster kubevirt \
-    --name <hosted_cluster_name> \
-    --node-pool-replicas <worker_node_count> \
-    --pull-secret <path_to_pull_secret> \
-    --memory <memory> \
-    --cores <cpu> \
-    --host-device-name="<gpu_device_name>,count:<value>"
+    --name my-hosted-cluster \
+    --node-pool-replicas 3 \
+    --pull-secret /user/name/pullsecret \
+    --memory 16Gi \
+    --cores 2 \
+    --host-device-name="nvidia-a100,count:2"
   ```
 
-  - Specify the name of your hosted cluster, for instance, `example`.
+  - `--name` specifies the name of your hosted cluster.
 
-  - Specify the worker count, for example, `3`.
+  - `--node-pool-replicas` specifies the worker count.
 
-  - Specify the path to your pull secret, for example, `/user/name/pullsecret`.
+  - `--pull-secret` specifies the path to your pull secret.
 
-  - Specify a value for memory, for example, `16Gi`.
+  - `--memory` specifies a value for memory.
 
-  - Specify a value for CPU, for example, `2`.
+  - `--cores` specifies a value for CPU.
 
-  - Specify the GPU device name and the count, for example, `--host-device-name="nvidia-a100,count:2"`. The `--host-device-name` argument takes the name of the GPU device from the infrastructure node and an optional count that represents the number of GPU devices you want to attach to each virtual machine (VM) in node pools. The default count is `1`. For example, if you attach 2 GPU devices to 3 node pool replicas, all 3 VMs in the node pool are attached to the 2 GPU devices.
+  - `--host-device-name` specifies the GPU device name and the count. The `--host-device-name` argument takes the name of the GPU device from the infrastructure node and an optional count that represents the number of GPU devices you want to attach to each virtual machine (VM) in node pools. The default count is `1`. For example, if you attach 2 GPU devices to 3 node pool replicas, all 3 VMs in the node pool are attached to the 2 GPU devices.
 
     <div class="tip">
 
@@ -478,101 +482,115 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 </div>
 
-- Attach one or more GPU devices to node pools:
+- To attach a single GPU device, configure the `NodePool` resource by using the following example configuration:
 
-  - To attach a single GPU device, configure the `NodePool` resource by using the following example configuration:
+  ``` yaml
+  apiVersion: hypershift.openshift.io/v1beta1
+  kind: NodePool
+  metadata:
+    name: <hosted_cluster_name>
+    namespace: <hosted_cluster_namespace>
+  spec:
+    arch: amd64
+    clusterName: <hosted_cluster_name>
+    management:
+      autoRepair: false
+      upgradeType: Replace
+    nodeDrainTimeout: 0s
+    nodeVolumeDetachTimeout: 0s
+    platform:
+      kubevirt:
+        attachDefaultNetwork: true
+        compute:
+          cores: <cpu>
+          memory: <memory>
+        hostDevices:
+        - count: <count>
+          deviceName: <gpu_device_name>
+        networkInterfaceMultiqueue: Enable
+        rootVolume:
+          persistent:
+            size: 32Gi
+          type: Persistent
+      type: KubeVirt
+    replicas: <worker_node_count>
+  ```
 
-    ``` yaml
-    apiVersion: hypershift.openshift.io/v1beta1
-    kind: NodePool
-    metadata:
-      name: <hosted_cluster_name>
-      namespace: <hosted_cluster_namespace>
-    spec:
-      arch: amd64
-      clusterName: <hosted_cluster_name>
-      management:
-        autoRepair: false
-        upgradeType: Replace
-      nodeDrainTimeout: 0s
-      nodeVolumeDetachTimeout: 0s
-      platform:
-        kubevirt:
-          attachDefaultNetwork: true
-          compute:
-            cores: <cpu>
-            memory: <memory>
-          hostDevices:
-          - count: <count>
-            deviceName: <gpu_device_name>
-          networkInterfaceMultiqueue: Enable
-          rootVolume:
-            persistent:
-              size: 32Gi
-            type: Persistent
-        type: KubeVirt
-      replicas: <worker_node_count>
-    ```
+  - `<hosted_cluster_name>` specifies the name of your hosted cluster; for example, `my-hosted-cluster`.
 
-    - Specify the name of your hosted cluster, for instance, `example`.
+  - `<hosted_cluster_namespace>` specifies the name of the hosted cluster namespace; for example, `my-hc-namespace`.
 
-    - Specify the name of the hosted cluster namespace, for example, `clusters`.
+  - `<cpu>` specifies a value for CPU; for example, `2`.
 
-    - Specify a value for CPU, for example, `2`.
+  - `<memory>` specifies a value for memory; for example, `16Gi`.
 
-    - Specify a value for memory, for example, `16Gi`.
+  - `<count>` specifies the number of GPU devices you want to attach to each virtual machine (VM) in node pools. For example, if you attach 2 GPU devices to 3 node pool replicas, all 3 VMs in the node pool are attached to the 2 GPU devices. The default count is `1`. The `hostDevices` field defines a list of different types of GPU devices that you can attach to node pools.
 
-    - The `hostDevices` field defines a list of different types of GPU devices that you can attach to node pools.
+  - `<gpu_device_name>` specifies the GPU device name; for example,`nvidia-a100`.
 
-    - Specify the number of GPU devices you want to attach to each virtual machine (VM) in node pools. For example, if you attach 2 GPU devices to 3 node pool replicas, all 3 VMs in the node pool are attached to the 2 GPU devices. The default count is `1`.
+  - `<worker_node_count>` specifies the worker count; for example, `3`.
 
-    - Specify the GPU device name, for example,`nvidia-a100`.
+- To attach multiple GPU devices, configure the `NodePool` resource by using the following example configuration:
 
-    - Specify the worker count, for example, `3`.
+  ``` yaml
+  apiVersion: hypershift.openshift.io/v1beta1
+  kind: NodePool
+  metadata:
+    name: <hosted_cluster_name>
+    namespace: <hosted_cluster_namespace>
+  spec:
+    arch: amd64
+    clusterName: <hosted_cluster_name>
+    management:
+      autoRepair: false
+      upgradeType: Replace
+    nodeDrainTimeout: 0s
+    nodeVolumeDetachTimeout: 0s
+    platform:
+      kubevirt:
+        attachDefaultNetwork: true
+        compute:
+          cores: <cpu>
+          memory: <memory>
+        hostDevices:
+        - count: <count>
+          deviceName: <gpu_device_name>
+        - count: <count>
+          deviceName: <gpu_device_name>
+        - count: <count>
+          deviceName: <gpu_device_name>
+        - count: <count>
+          deviceName: <gpu_device_name>
+        networkInterfaceMultiqueue: Enable
+        rootVolume:
+          persistent:
+            size: 32Gi
+          type: Persistent
+      type: KubeVirt
+    replicas: <worker_node_count>
+  ```
 
-  - To attach multiple GPU devices, configure the `NodePool` resource by using the following example configuration:
+  - `<hosted_cluster_name>` specifies the name of your hosted cluster; for example, `my-hosted-cluster`.
 
-    ``` yaml
-    apiVersion: hypershift.openshift.io/v1beta1
-    kind: NodePool
-    metadata:
-      name: <hosted_cluster_name>
-      namespace: <hosted_cluster_namespace>
-    spec:
-      arch: amd64
-      clusterName: <hosted_cluster_name>
-      management:
-        autoRepair: false
-        upgradeType: Replace
-      nodeDrainTimeout: 0s
-      nodeVolumeDetachTimeout: 0s
-      platform:
-        kubevirt:
-          attachDefaultNetwork: true
-          compute:
-            cores: <cpu>
-            memory: <memory>
-          hostDevices:
-          - count: <count>
-            deviceName: <gpu_device_name>
-          - count: <count>
-            deviceName: <gpu_device_name>
-          - count: <count>
-            deviceName: <gpu_device_name>
-          - count: <count>
-            deviceName: <gpu_device_name>
-          networkInterfaceMultiqueue: Enable
-          rootVolume:
-            persistent:
-              size: 32Gi
-            type: Persistent
-        type: KubeVirt
-      replicas: <worker_node_count>
-    ```
+  - `<hosted_cluster_namespace>` specifies the name of the hosted cluster namespace; for example, `my-hc-namespace`.
+
+  - `<cpu>` specifies a value for CPU; for example, `2`.
+
+  - `<memory>` specifies a value for memory; for example, `16Gi`.
+
+  - `<count>` specifies the number of GPU devices you want to attach to each VM in node pools. For example, if you attach 2 GPU devices to 3 node pool replicas, all 3 VMs in the node pool are attached to the 2 GPU devices. The default count is `1`. The `hostDevices` field defines a list of different types of GPU devices that you can attach to node pools.
+
+  - `<gpu_device_name>` specifies the GPU device name; for example,`nvidia-a100`.
+
+  - `<worker_node_count>` specifies the worker count; for example, `3`.
 
 # Evicting KubeVirt virtual machines
 
-In cases where KubeVirt virtual machines (VMs) cannot be live migrated, such as when you use GPU passthrough, the VMs must be evicted at the same time as the `NodePool` resource of the hosted cluster. Otherwise, the compute nodes might be shut down without being drained from the workload. This might also happen when you are upgrading the OpenShift Virtualization Operator. To achieve a synchronized restart, you can set the `evictionStrategy` parameter on the `hyperconverged` resource to ensure that only VMs that are drained from workloads are rebooted.
+In cases where KubeVirt virtual machines (VMs) cannot be live migrated, such as when you use GPU passthrough, the VMs must be evicted at the same time as the `NodePool` resource of the hosted cluster.
+
+Otherwise, the compute nodes might be shut down without being drained from the workload. This might also happen when you are upgrading the OpenShift Virtualization Operator.
+
+To achieve a synchronized restart, you can set the `evictionStrategy` parameter on the `hyperconverged` resource to ensure that only VMs that are drained from workloads are rebooted.
 
 1.  To learn more about the `hyperconverged` resource and the allowed values for the `evictionStrategy` parameter, enter the following command:
 
@@ -616,9 +634,9 @@ In cases where KubeVirt virtual machines (VMs) cannot be live migrated, such as 
 
 # Spreading node pool VMs by using topologySpreadConstraint
 
-By default, KubeVirt virtual machines (VMs) created by a node pool are scheduled on any available nodes that have the capacity to run the VMs. By default, the `topologySpreadConstraint` constraint is set to schedule VMs on multiple nodes.
+In some scenarios, node pool virtual machines (VMs) might run on the same node, which can cause availability issues. To avoid distribution of VMs on a single node, use the descheduler to continuously honor the `topologySpreadConstraint` constraint to spread VMs on multiple nodes.
 
-In some scenarios, node pool VMs might run on the same node, which can cause availability issues. To avoid distribution of VMs on a single node, use the descheduler to continuously honor the `topologySpreadConstraint` constraint to spread VMs on multiple nodes.
+By default, KubeVirt VMs created by a node pool are scheduled on any available nodes that have the capacity to run the VMs. The `topologySpreadConstraint` constraint is set to schedule VMs on multiple nodes.
 
 - You installed the Kube Descheduler Operator. For more information, see "Installing the descheduler".
 
@@ -657,11 +675,13 @@ In some scenarios, node pool VMs might run on the same node, which can cause ava
   # ...
   ```
 
-  - Sets the number of seconds between the descheduler running cycles.
+  where:
 
-  - This profile evicts pods that follow the soft topology constraint: `whenUnsatisfiable: ScheduleAnyway`.
+  `spec.deschedulingIntervalSeconds`
+  Sets the number of seconds between the descheduler running cycles.
 
-  - This profile balances resource usage between nodes and enables the strategies, such as `RemovePodsHavingTooManyRestarts` and `LowNodeUtilization`.
+  `spec.profiles`
+  The `SoftTopologyAndDuplicates` profile evicts pods that follow the `whenUnsatisfiable: ScheduleAnyway` soft topology constraint. The `KubeVirtRelieveAndMigrate` profile balances resource usage between nodes and enables strategies, such as `RemovePodsHavingTooManyRestarts` and `LowNodeUtilization`.
 
 <!-- -->
 

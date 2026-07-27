@@ -338,21 +338,15 @@ To resolve this issue, manually mirror the RHCOS image to the internal registry.
     $ oc apply -f rhcos-boot-kubevirt.yaml
     ```
 
-## Return non-bare-metal clusters to the late binding pool
+## Returning non-bare-metal clusters to the late binding pool
 
 If you are using late binding managed clusters without `BareMetalHosts`, you must complete additional manual steps to delete a late binding cluster and return the nodes back to the Discovery ISO.
 
 For late binding managed clusters without `BareMetalHosts`, removing cluster information does not automatically return all nodes to the Discovery ISO.
 
-<div class="formalpara-title">
+To unbind the non-bare-metal nodes with late binding, complete the following steps.
 
-**Procedure**
-
-</div>
-
-To unbind the non-bare-metal nodes with late binding, complete the following steps:
-
-1.  Remove the cluster information. For more information, see *Removing a cluster from management*.
+1.  Remove the cluster information. For more information, see "Removing a cluster from management".
 
 2.  Clean the root disks.
 
@@ -364,17 +358,17 @@ To unbind the non-bare-metal nodes with late binding, complete the following ste
 
 If you encounter issues with hosted control planes on bare metal, review the troubleshooting procedures to diagnose and resolve them.
 
-## Nodes fail to be added to hosted control planes on bare metal
+## Determining why nodes are not added to a hosted cluster on bare metal
 
-When you scale up a hosted control planes cluster with nodes that were provisioned by using Assisted Installer, the host fails to pull the ignition with a URL that contains port 22642. That URL is invalid for hosted control planes and indicates that an issue exists with the cluster.
+When you scale up a hosted cluster with nodes that were provisioned by using Assisted Installer, the host fails to pull the ignition with a URL that contains port `22642`. That URL is invalid for hosted control planes and indicates that an issue exists with the cluster.
 
-1.  To determine the issue, review the assisted-service logs:
+1.  To determine the issue, review the assisted-service logs by entering the following command:
 
     ``` terminal
     $ oc logs -n multicluster-engine <assisted_service_pod_name>
     ```
 
-    - Specify the Assisted Service pod name.
+    Replace `<assisted_service_pod_name>` with the Assisted Service pod name.
 
 2.  In the logs, find errors that resemble these examples:
 
@@ -390,7 +384,7 @@ When you scale up a hosted control planes cluster with nodes that were provision
 
     <div class="note">
 
-    To use hosted control planes, you must have multicluster engine Operator installed, either as a standalone operator or as part of Red Hat Advanced Cluster Management. Because the operator has a close association with Red Hat Advanced Cluster Management, the documentation for the operator is published within that product’s documentation. Even if you do not use Red Hat Advanced Cluster Management, the parts of its documentation that cover multicluster engine Operator are relevant to hosted control planes.
+    To use hosted control planes, you must have multicluster engine Operator installed, either as a standalone Operator or as part of Red Hat Advanced Cluster Management. Because the Operator has a close association with Red Hat Advanced Cluster Management, the documentation for the Operator is published within that product’s documentation. Even if you do not use Red Hat Advanced Cluster Management, the parts of its documentation that cover multicluster engine Operator are relevant to hosted control planes.
 
     </div>
 
@@ -398,7 +392,9 @@ When you scale up a hosted control planes cluster with nodes that were provision
 
 # Restarting hosted control plane components
 
-If you are an administrator for hosted control planes, you can use the `hypershift.openshift.io/restart-date` annotation to restart all control plane components for a particular `HostedCluster` resource. For example, you might need to restart control plane components for certificate rotation.
+If you are an administrator for hosted control planes, you can use the `hypershift.openshift.io/restart-date` annotation to restart all control plane components for a particular `HostedCluster` resource.
+
+For example, you might need to restart control plane components for certificate rotation.
 
 - To restart a control plane, annotate the `HostedCluster` resource by entering the following command:
 
@@ -409,7 +405,7 @@ If you are an administrator for hosted control planes, you can use the `hypershi
     hypershift.openshift.io/restart-date=$(date --iso-8601=seconds)
   ```
 
-  - The control plane is restarted whenever the value of the annotation changes. The `date` command serves as the source of a unique string. The annotation is treated as a string, not a timestamp.
+  The control plane is restarted whenever the value of the annotation changes. The `date` command serves as the source of a unique string. The annotation is treated as a string, not a timestamp.
 
 <div class="formalpara-title">
 
@@ -490,7 +486,7 @@ If you are a cluster instance administrator, you can pause the reconciliation of
         --type=merge
       ```
 
-      - Specify a timestamp in the RFC339 format, for example, `2024-03-03T03:28:48Z`. The reconciliation is paused until the specified time is passed.
+      Replace `<timestamp>` with a timestamp in the RFC339 format; for example, `2024-03-03T03:28:48Z`. The reconciliation is paused until the specified time is passed.
 
     - To pause the reconciliation indefinitely, enter the following command:
 
@@ -614,21 +610,19 @@ Ensure you are prepared to scale down the data plane to zero. Because the worklo
   $ oc get nodepool -n <hosted_cluster_namespace> <nodepool_name> -ojsonpath='{.spec.nodeDrainTimeout}'
   ```
 
-# Agent service failures and agents not joining the cluster
+# Resolving agent service failures for hosted control planes on IBM Z
 
-In some cases, agents might fail to join the cluster after booting the machines with the boot artifacts. You can confirm this issue by checking the `agent.service` logs for the following error:
+In some cases, agents might fail to join the cluster after booting the machines with the boot artifacts.
+
+You can confirm this issue by checking the `agent.service` logs for the following error:
 
     Error: copying system image from manifest list: Source image rejected: A signature was required, but no signature exists
 
-<div class="note">
-
 This issue occurs because image signature verification fails when no signature is present. As a workaround, you can disable signature verification by modifying the container policy.
-
-</div>
 
 1.  Add the `ignitionConfigOverride` field in the `InfraEnv` manifest to override the `/etc/containers/policy.json` file. This disables signature verification for container images.
 
-2.  Replace the base64-encoded content in the `ignitionConfigOverride` with the required `/etc/containers/policy.json` configuration according to your image registries.
+2.  Replace the base64-encoded content in the `ignitionConfigOverride` with the required `/etc/containers/policy.json` configuration according to your image registries. See the following example:
 
     <div class="formalpara-title">
 
@@ -669,7 +663,7 @@ This issue occurs because image signature verification fails when no signature i
 
     <div class="formalpara-title">
 
-    **Example InfraEnv manifest with `ignitionConfigOverride`**
+    **Example `InfraEnv` manifest with `ignitionConfigOverride`**
 
     </div>
 
@@ -687,11 +681,9 @@ This issue occurs because image signature verification fails when no signature i
       ignitionConfigOverride: '{"ignition":{"version":"3.2.0"},"storage":{"files":[{"path":"/etc/containers/policy.json","mode":420,"overwrite":true,"contents":{"source":"data:text/plain;charset=utf-8;base64,ewogICAgImRlZmF1bHQiOiBbCiAgICAgICAgewogICAgICAgICAgICAidHlwZSI6ICJpbnNlY3VyZUFjY2VwdEFueXRoaW5nIgogICAgICAgIH0KICAgIF0sCiAgICAidHJhbnNwb3J0cyI6CiAgICAgICAgewogICAgICAgICAgICAiZG9ja2VyLWRhZW1vbiI6CiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgIiI6IFt7InR5cGUiOiJpbnNlY3VyZUFjY2VwdEFueXRoaW5nIn1dCiAgICAgICAgICAgICAgICB9CiAgICAgICAgfQp9"}}]}}'
     ```
 
-# Troubleshooting internal subnets for hosted clusters
+# Known limitations for internal subnets for hosted clusters
 
-If you encounter issues releated to subnets on hosted control planes, the following information can help you determine the cause and find a resolution.
-
-The following known limitations exist related to internal subnets on hosted clusters:
+Several known limitations exist for internal subnets on hosted clusters.
 
 - IPv6 subnets are not supported.
 
@@ -714,22 +706,29 @@ When you try to configure the `ovnKubernetesConfig` object on a hosted cluster b
 
 ## Setting CIDR values in internal subnet fields
 
-If the `internalJoinSubnet` field and the `internalTransitSwitchSubnet` field are set to the same CIDR values, an error occurs.
+If the `internalJoinSubnet` field and the `internalTransitSwitchSubnet` field are set to the same classless inter-domain routing (CIDR) values, an error occurs.
 
 - Use different subnets for each field, as shown in the following example:
 
   ``` yaml
-  # ...
-  ovnKubernetesConfig:
-    ipv4:
-      internalJoinSubnet: "100.99.0.0/16"
-      internalTransitSwitchSubnet: "100.69.0.0/16"
+  apiVersion: hypershift.openshift.io/v1beta1
+  kind: HostedCluster
+  metadata:
+    # ...
+  spec:
+    #...
+    operatorConfiguration:
+      clusterNetworkOperator:
+        ovnKubernetesConfig:
+          ipv4:
+            internalJoinSubnet: "100.99.0.0/16"
+            internalTransitSwitchSubnet: "100.69.0.0/16"
   # ...
   ```
 
 ## Ensuring a valid IPv4 CIDR format
 
-If you do not specify subnets in a valid CIDR format, an error occurs.
+If you do not specify subnets in a valid classless inter-domain range (CIDR) format, an error occurs.
 
 - Ensure that the CIDR format follows the following format:
 
@@ -745,28 +744,28 @@ If you do not specify subnets in a valid CIDR format, an error occurs.
   `Y`
   is a value from `0` to `30`.
 
-<div class="formalpara-title">
+  <div class="formalpara-title">
 
-**Valid examples**
+  **Valid examples**
 
-</div>
+  </div>
 
-``` text
-100.99.0.0/16
-192.168.1.0/24
-```
+  ``` text
+  100.99.0.0/16
+  192.168.1.0/24
+  ```
 
-<div class="formalpara-title">
+  <div class="formalpara-title">
 
-**Invalid examples**
+  **Invalid examples**
 
-</div>
+  </div>
 
-``` text
-100.99.0.0
-256.1.1.0/16
-0.99.0.0/16
-```
+  ``` text
+  100.99.0.0
+  256.1.1.0/16
+  0.99.0.0/16
+  ```
 
 ## Avoiding an overlap between OVN subnets and CIDR values
 
@@ -816,7 +815,7 @@ After you change an existing configuration, the OVN component rollout might take
       --kubeconfig=hosted-kubeconfig
     ```
 
-If the rollout is stuck, you might need to revert the configuration change.
+    If the rollout is stuck, you might need to revert the configuration change.
 
 # Troubleshooting connectivity for hosted control planes
 

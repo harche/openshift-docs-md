@@ -1,6 +1,10 @@
-# Service accounts as OAuth clients
+To authenticate users when restricting access to a specific namespace, you can configure a service account as a constrained OAuth client by using static or dynamic redirect URI annotations.
 
-You can use a service account as a constrained form of OAuth client. Service accounts can request only a subset of scopes that allow access to some basic user information and role-based power inside of the service account’s own namespace:
+# About service accounts as OAuth clients
+
+You can configure a service account to function as a constrained OAuth client that can request a limited subset of scopes.
+
+Service accounts can request only a subset of scopes that allow access to the following basic user information and role-based power inside of the service account’s own namespace:
 
 - `user:info`
 
@@ -24,9 +28,7 @@ When using a service account as an OAuth client:
 
 - `redirect_uri` must match an annotation on the service account.
 
-## Redirect URIs for service accounts as OAuth clients
-
-Annotation keys must have the prefix `serviceaccounts.openshift.io/oauth-redirecturi.` or `serviceaccounts.openshift.io/oauth-redirectreference.` such as:
+Annotation keys in service accounts must have the prefix `serviceaccounts.openshift.io/oauth-redirecturi.` or `serviceaccounts.openshift.io/oauth-redirectreference.` such as:
 
     serviceaccounts.openshift.io/oauth-redirecturi.<name>
 
@@ -70,11 +72,16 @@ Now you can see that an `OAuthRedirectReference` allows us to reference the rout
 }
 ```
 
-- `kind` refers to the type of the object being referenced. Currently, only `route` is supported.
+where:
 
-- `name` refers to the name of the object. The object must be in the same namespace as the service account.
+`reference.kind`
+Specifies the type of the object being referenced. Currently, only `route` is supported.
 
-- `group` refers to the group of the object. Leave this blank, as the group for a route is the empty string.
+`reference.name`
+Specifies the name of the object. The object must be in the same namespace as the service account.
+
+`reference.group`
+Specifies the group of the object. Leave this blank, as the group for a route is the empty string.
 
 Both annotation prefixes can be combined to override the data provided by the reference object. For example:
 

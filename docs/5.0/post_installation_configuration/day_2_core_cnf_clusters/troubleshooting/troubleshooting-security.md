@@ -24,4 +24,4 @@ After you know which providers are configured, you can inspect the `openshift-au
     $ oc logs -n openshift-authentication <pod_name>
     ```
 
-- [Supported identity providers](../../../authentication/understanding-identity-provider.xml#supported-identity-providers)
+- [Supported identity providers](../../../authentication/understanding-identity-provider.xml#supported-identity-providers_understanding-identity-provider)

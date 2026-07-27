@@ -820,6 +820,8 @@ Engineering considerations
 
 ## cert-manager Operator
 
+The cert-manager Operator for OpenShift Container Platform manages the lifecycle of TLS certificates for hub cluster components and workloads.
+
 New in this release
 - cert-manager Operator is a new optional component in this release.
 
@@ -1192,6 +1194,8 @@ Installation CRs
 
 # Security reference CRs
 
+The following table lists the security reference configuration custom resources (CRs) for the hub cluster.
+
 | Component    | Reference CR                                        | Description                                                                                             | Optional |
 |--------------|-----------------------------------------------------|---------------------------------------------------------------------------------------------------------|----------|
 | Cert-Manager | `certManagerNS.yaml`                                | Defines the cert-manager-operator namespace.                                                            | Yes      |
@@ -1209,6 +1213,8 @@ Installation CRs
 Security CRs
 
 # Backup Recovery reference CRs
+
+The following table lists the backup and recovery reference configuration custom resources (CRs) for the hub cluster.
 
 | Component | Reference CR                     | Description                                                                               | Optional |
 |-----------|----------------------------------|-------------------------------------------------------------------------------------------|----------|

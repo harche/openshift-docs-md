@@ -6,6 +6,8 @@ If a cluster administrator has delegated Operator installation permissions to yo
 
 # About Operator installation from the software catalog
 
+When installing an Operator from the software catalog, you can choose where it is available, which update channel to follow, and whether OLM applies updates automatically or requires manual approval.
+
 The software catalog is a user interface for discovering Operators; it works in conjunction with Operator Lifecycle Manager (OLM), which installs and manages Operators on a cluster.
 
 As a user with the proper permissions, you can install an Operator from the software catalog by using the OpenShift Container Platform web console or CLI.
@@ -29,7 +31,9 @@ If you select manual updates, when a newer version of an Operator is available, 
 
 # Installing from the software catalog by using the web console
 
-You can install and subscribe to an Operator from software catalog by using the OpenShift Container Platform web console.
+To make an Operator available in selected namespaces, you can use the web console to choose its version, installation mode, and update approval strategy, and then install it from the software catalog.
+
+You can install and subscribe to an Operator from software catalog by using the OpenShift Container Platform web console. .Prerequisites
 
 - Access to an OpenShift Container Platform cluster using an account with Operator installation permissions.
 
@@ -110,6 +114,8 @@ You can install and subscribe to an Operator from software catalog by using the 
   </div>
 
 # Installing from the software catalog by using the CLI
+
+To install an Operator from the software catalog by using the CLI, you can identify the appropriate catalog, channel, and install mode, and then create the required `OperatorGroup` and `Subscription` objects.
 
 Instead of using the OpenShift Container Platform web console, you can install an Operator from the software catalog by using the CLI. Use the `oc` command to create or update a `Subscription` object.
 

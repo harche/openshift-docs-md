@@ -1,3 +1,5 @@
+You can prepare your cluster for users by configuring authentication and permissions, managing initial administrative access, and making Operators available through the software catalog.
+
 After installing OpenShift Container Platform, you can further expand and customize your cluster to your requirements, including taking steps to prepare for users.
 
 # Understanding identity provider configuration
@@ -125,6 +127,8 @@ Understand and apply role-based access control.
 
 ## RBAC overview
 
+You can use role-based access control to configure whether users and groups can perform specific actions on cluster or project resources by evaluating roles, rules, and bindings.
+
 Role-based access control (RBAC) objects determine whether a user is allowed to perform a given action within a project.
 
 Cluster administrators can use the cluster roles and bindings to control who has various access levels to the OpenShift Container Platform platform itself and all projects.
@@ -189,7 +193,7 @@ The relationships between cluster roles, local roles, cluster role bindings, loc
 
 <div class="warning">
 
-The `get pods/exec`, `get pods/*`, and `get *` rules grant execution privileges when they are applied to a role. Apply the principle of least privilege and assign only the minimal RBAC rights required for users and agents. For more information, see [RBAC rules allow execution privileges](https://access.redhat.com/solutions/6989997).
+The `get pods/exec`, `get pods/*`, and `get *` rules grant execution privileges when they are applied to a role. Apply the principle of least privilege and assign only the minimal RBAC rights required for users and agents. For more information, see "RBAC rules allow execution privileges".
 
 </div>
 
@@ -242,11 +246,17 @@ Cluster roles are roles defined at the cluster level but can be bound either at 
 
 #### Cluster role aggregation
 
-The default admin, edit, view, and cluster-reader cluster roles support [cluster role aggregation](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles), where the cluster rules for each role are dynamically updated as new rules are created. This feature is relevant only if you extend the Kubernetes API by creating custom resources.
+The default admin, edit, view, and cluster-reader cluster roles support cluster role aggregation, where the cluster rules for each role are dynamically updated as new rules are created. This feature is relevant only if you extend the Kubernetes API by creating custom resources.
+
+- [RBAC rules allow execution privileges](https://access.redhat.com/solutions/6989997)
+
+- [Cluster role aggregation](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles)
 
 ## Projects and namespaces
 
-A Kubernetes *namespace* provides a mechanism to scope resources in a cluster. The [Kubernetes documentation](https://kubernetes.io/docs/tasks/administer-cluster/namespaces/) has more information on namespaces.
+You can use projects and namespaces to organize and isolate cluster resources. These resources provide boundaries for access control, policies, quotas, and service accounts.
+
+A Kubernetes *namespace* provides a mechanism to scope resources in a cluster. The Kubernetes documentation has more information on namespaces.
 
 Namespaces provide a unique scope for:
 
@@ -281,9 +291,13 @@ Cluster administrators can create projects and delegate administrative rights fo
 
 Developers and administrators can interact with projects by using the CLI or the web console.
 
+- [Kubernetes documentation on namespaces](https://kubernetes.io/docs/tasks/administer-cluster/namespaces/)
+
 ## Default projects
 
-OpenShift Container Platform comes with a number of default projects, and projects starting with `openshift-` are the most essential to users. These projects host master components that run as pods and other infrastructure components. The pods created in these namespaces that have a [critical pod annotation](https://kubernetes.io/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/#rescheduler-guaranteed-scheduling-of-critical-add-ons) are considered critical, and the have guaranteed admission by kubelet. Pods created for master components in these namespaces are already marked as critical.
+Default projects host critical cluster and infrastructure components. By understanding their purpose, you can avoid making changes that could disrupt essential cluster services.
+
+OpenShift Container Platform includes several default projects, and projects starting with `openshift-` are the most essential to users. These projects host master components that run as pods and other infrastructure components. The pods created in these namespaces that have a critical pod annotation are considered critical, and the have guaranteed admission by kubelet. Pods created for master components in these namespaces are already marked as critical.
 
 <div class="important">
 
@@ -293,7 +307,11 @@ The following default projects are considered highly privileged: `default`, `kub
 
 </div>
 
+- [Guaranteed scheduling of critical add-ons](https://kubernetes.io/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/#rescheduler-guaranteed-scheduling-of-critical-add-ons)
+
 ## Viewing cluster roles and bindings
+
+You can view cluster roles and bindings by using the `oc` CLI to determine the permissions associated with roles and identify the users, groups, and service accounts assigned to them.
 
 You can use the `oc` CLI to view cluster roles and bindings by using the `oc describe` command.
 
@@ -587,6 +605,8 @@ Users with the `cluster-admin` default cluster role bound cluster-wide can perfo
 
 ## Viewing local roles and bindings
 
+You can view local role bindings by using the `oc` CLI to identify the users, groups, and service accounts that have roles within the current project or another project.
+
 You can use the `oc` CLI to view local roles and bindings by using the `oc describe` command.
 
 - Install the `oc` CLI.
@@ -671,6 +691,8 @@ You can use the `oc` CLI to view local roles and bindings by using the `oc descr
     ```
 
 ## Adding roles to users
+
+To grant a user access within a project, you can bind an appropriate role to the user and verify the resulting role binding.
 
 You can use the `oc adm` administrator CLI to manage the roles and bindings.
 
@@ -800,7 +822,7 @@ You can bind any of the default cluster roles to local users or groups in your p
 
 ## Creating a local role
 
-You can create a local role for a project and then bind it to a user.
+To define custom permissions within a project, you can create a local role and bind it to a user.
 
 1.  To create a local role for a project, run the following command:
 
@@ -832,7 +854,7 @@ You can create a local role for a project and then bind it to a user.
 
 ## Creating a cluster role
 
-You can create a cluster role.
+To define custom cluster-wide permissions, you can create a cluster role that specifies the verbs and resources users can access.
 
 1.  To create a cluster role, run the following command:
 
@@ -856,6 +878,8 @@ You can create a cluster role.
 
 ## Local role binding commands
 
+You can use local role binding commands to review, grant, or remove user and group permissions within the current or a specified project.
+
 When you manage a user or group’s associated roles for local role bindings using the following operations, a project may be specified with the `-n` flag. If it is not specified, then the current project is used.
 
 You can use the following commands for local RBAC management.
@@ -874,6 +898,8 @@ Local role binding operations
 
 ## Cluster role binding commands
 
+You can use cluster role binding commands to grant or remove roles for users and groups across all projects in the cluster.
+
 You can also manage cluster role bindings using the following operations. The `-n` flag is not used for these operations because cluster role bindings use non-namespaced resources.
 
 | Command                                                             | Description                                                                 |
@@ -886,6 +912,8 @@ You can also manage cluster role bindings using the following operations. The `-
 Cluster role binding operations
 
 ## Creating a cluster admin
+
+To grant a user full administrative access to the cluster, you can bind the `cluster-admin` cluster role to that user.
 
 The `cluster-admin` role is required to perform administrator level tasks on the OpenShift Container Platform cluster, such as modifying cluster resources.
 
@@ -900,6 +928,8 @@ The `cluster-admin` role is required to perform administrator level tasks on the
   ```
 
 ## Cluster role bindings for unauthenticated groups
+
+Unauthenticated groups do not have default access to cluster roles. As a cluster administrator, you can grant limited unauthenticated access when required, while ensuring that the change complies with organizational security standards.
 
 <div class="note">
 
@@ -1024,6 +1054,8 @@ If you mirrored Operator catalogs for use with disconnected clusters, you can po
 
 ### Creating the ImageContentSourcePolicy object
 
+To make mirrored Operator images available to a disconnected cluster, you can create an `ImageContentSourcePolicy` object that redirects image references to your mirror registry.
+
 After mirroring Operator catalog content to your mirror registry, create the required `ImageContentSourcePolicy` (ICSP) object. The ICSP object configures nodes to translate between the image references stored in Operator manifests and the mirrored registry.
 
 - On a host with access to the disconnected cluster, create the ICSP by running the following command to specify the `imageContentSourcePolicy.yaml` file in your manifests directory:
@@ -1038,7 +1070,9 @@ After mirroring Operator catalog content to your mirror registry, create the req
 
 ### Adding a catalog source to a cluster
 
-Adding a catalog source to an OpenShift Container Platform cluster enables the discovery and installation of Operators for users. Cluster administrators can create a `CatalogSource` object that references an index image. The software catalog uses catalog sources to populate the user interface.
+To make Operators from a custom index image available for installation, create a catalog source that adds the catalog content to your cluster.
+
+Cluster administrators can create a `CatalogSource` object that references an index image. The software catalog uses catalog sources to populate the user interface.
 
 <div class="tip">
 
@@ -1148,6 +1182,8 @@ Alternatively, you can use the web console to manage catalog sources. From the *
 
 # About Operator installation from the software catalog
 
+When installing an Operator from the software catalog, you can choose where it is available, which update channel to follow, and whether OLM applies updates automatically or requires manual approval.
+
 The software catalog is a user interface for discovering Operators; it works in conjunction with Operator Lifecycle Manager (OLM), which installs and manages Operators on a cluster.
 
 As a cluster administrator, you can install an Operator from the software catalog by using the OpenShift Container Platform web console or CLI. Subscribing an Operator to one or more namespaces makes the Operator available to developers on your cluster.
@@ -1169,7 +1205,9 @@ If you select manual updates, when a newer version of an Operator is available, 
 
 ## Installing from the software catalog by using the web console
 
-You can install and subscribe to an Operator from software catalog by using the OpenShift Container Platform web console.
+To make an Operator available in selected namespaces, you can use the web console to choose its version, installation mode, and update approval strategy, and then install it from the software catalog.
+
+You can install and subscribe to an Operator from software catalog by using the OpenShift Container Platform web console. .Prerequisites
 
 - Access to an OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
 
@@ -1254,6 +1292,8 @@ You can install and subscribe to an Operator from software catalog by using the 
   </div>
 
 ## Installing from the software catalog by using the CLI
+
+To install an Operator from the software catalog by using the CLI, you can identify the appropriate catalog, channel, and install mode, and then create the required `OperatorGroup` and `Subscription` objects.
 
 Instead of using the OpenShift Container Platform web console, you can install an Operator from the software catalog by using the CLI. Use the `oc` command to create or update a `Subscription` object.
 

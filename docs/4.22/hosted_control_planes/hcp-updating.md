@@ -211,13 +211,13 @@ As a cluster service provider or cluster administrator, you can manage the contr
 
 You can update a control plane by modifying the `HostedCluster` custom resource (CR) and a node by modifying its `NodePool` CR. Both the `HostedCluster` and `NodePool` CRs specify an OpenShift Container Platform release image in a `.release` field.
 
-To keep your hosted cluster fully operational during an update process, the control plane and the node versions must be compatible. For more information, see "Hosted cluster and node pool version skew policy" in the *Additional resources* section.
+To keep your hosted cluster fully operational during an update process, the control plane and the node versions must be compatible. For more information, see "Hosted cluster and node pool version skew policy".
 
 ## The multicluster engine Operator hub management cluster
 
 The multicluster engine for Kubernetes Operator requires a specific OpenShift Container Platform version for the management cluster to remain in a supported state. You can install the multicluster engine Operator from the software catalog in the OpenShift Container Platform web console.
 
-See the support matrixes for the multicluster engine Operator versions in the *Additional resources* section.
+For more information, see the support matrixes for the multicluster engine Operator versions.
 
 The multicluster engine Operator supports the following OpenShift Container Platform versions:
 

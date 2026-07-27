@@ -18,7 +18,7 @@ $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
 
 You can define a machine set YAML to provision nodes by specifying parameters such as `vmSize` and `image`. You can use this to automate and scale infrastructure consistently, to ensure compute nodes meet specific workload requirements within the cluster.
 
-The sample YAML defines a compute machine set that runs in the `1` Microsoft Azure zone in a region and creates nodes that are labeled with `node-role.kubernetes.io/<role>: ""`. The YAML file specifies a taint to prevent user workloads from being scheduled on infra nodes. After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
+The sample YAML defines a compute machine set that runs in the `1` Microsoft Azure zone in a region and creates nodes that are labeled with `node-role.kubernetes.io/<role>: ""`. ifdef::infra\[`node-role.kubernetes.io/infra: ""`. The YAML specifies a taint to prevent user workloads from being scheduled on infra nodes. After adding the `NoSchedule` taint on the infrastructure node, existing DNS pods running on that node are marked as `misscheduled`. You must either delete or [add toleration on `misscheduled` DNS pods](https://access.redhat.com/solutions/6592171).
 
 In the sample, `<infrastructure_id>` is the infrastructure ID label that is based on the cluster ID that you set when you provisioned the cluster, and `<role>` is the node label to add.
 
@@ -96,7 +96,7 @@ spec:
 where:
 
 `<infrastructure_id>`
-Specifies the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI installed, you can obtain the infrastructure ID by running the following command:
+Specifies the infrastructure ID that is based on the cluster ID that you set when you provisioned the cluster. If you have the OpenShift CLI (`oc`) installed, you can obtain the infrastructure ID by running the following command:
 
 ``` terminal
 $ oc get -o jsonpath='{.status.infrastructureName}{"\n"}' infrastructure cluster
@@ -167,11 +167,7 @@ To dynamically manage machine compute resources, you can create your own compute
         $ oc get machinesets -n openshift-machine-api
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         NAME                                DESIRED   CURRENT   READY   AVAILABLE   AGE
@@ -190,11 +186,7 @@ To dynamically manage machine compute resources, you can create your own compute
           -n openshift-machine-api -o yaml
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` yaml
         apiVersion: machine.openshift.io/v1beta1
@@ -251,11 +243,7 @@ To dynamically manage machine compute resources, you can create your own compute
   $ oc get machineset -n openshift-machine-api
   ```
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
+  The following is example output:
 
   ``` terminal
   NAME                                DESIRED   CURRENT   READY   AVAILABLE   AGE
@@ -533,15 +521,17 @@ You can save on costs by creating a compute machine set that deploys machines as
 
 # Machine sets that deploy machines on Ephemeral OS disks
 
-You can create a compute machine set running on Microsoft Azure that deploys machines on Ephemeral OS disks. Ephemeral OS disks use local VM capacity rather than remote Azure Storage. This configuration therefore incurs no additional cost and provides lower latency for reading, writing, and reimaging.
+You can create a compute machine set running on Microsoft Azure that deploys machines on Ephemeral OS disks. Ephemeral OS disks use local VM capacity rather than remote Microsoft Azure Storage. The configuration, therefore, incurs no additional cost and provides lower latency for reading, writing, and reimaging.
 
-- [Ephemeral OS disks for Azure VMs (Microsoft Azure documentation)](https://docs.microsoft.com/en-us/azure/virtual-machines/ephemeral-os-disks)
+- [Ephemeral OS disks for Azure VMs (Azure documentation)](https://docs.microsoft.com/en-us/azure/virtual-machines/ephemeral-os-disks)
 
 ## Creating machines on Ephemeral OS disks by using compute machine sets
 
-To improve performance and reduce storage costs, you can host the OS disk directly on the local storage of the virtual machines (VMs) rather than on remote Microsoft Azure Storage. You can launch machines on Ephemeral OS disks on Azure by editing your compute machine set YAML file.
+To improve performance and reduce storage costs, you can host the OS disk directly on the local storage of the virtual machines (VMs) rather than on remote Microsoft Azure Storage.
 
-- Have an existing Microsoft Azure cluster.
+You launch machines on Ephemeral OS disks on Azure by editing your compute machine set YAML file.
+
+- Have an existing Azure cluster.
 
 1.  Edit the custom resource (CR) by running the following command:
 
@@ -587,7 +577,7 @@ To improve performance and reduce storage costs, you can host the OS disk direct
     $ oc create -f <machine-set-config>.yaml
     ```
 
-- On the Microsoft Azure portal, review the **Overview** page for a machine deployed by the compute machine set, and verify that the `Ephemeral OS disk` field is set to `OS cache placement`.
+- On the Azure portal, review the **Overview** page for a machine deployed by the compute machine set, and verify that the `Ephemeral OS disk` field is set to `OS cache placement`.
 
 # Machine sets that deploy machines with ultra disks as data disks
 
@@ -601,7 +591,7 @@ Data disks do not support the ability to specify disk throughput or disk IOPS. Y
 
 </div>
 
-- [Microsoft Azure ultra disks documentation](https://docs.microsoft.com/en-us/azure/virtual-machines/disks-types#ultra-disks)
+- [Ultra disks (Azure documentation)](https://docs.microsoft.com/en-us/azure/virtual-machines/disks-types#ultra-disks)
 
 - [Machine sets that deploy machines on ultra disks using CSI PVCs](../../storage/container_storage_interface/persistent-storage-csi-azure.xml#machineset-azure-ultra-disk_persistent-storage-csi-azure)
 
@@ -970,12 +960,6 @@ For more information about related features and functionality, see the Microsoft
 
 2.  Edit the following section under the `providerSpec` field:
 
-    <div class="formalpara-title">
-
-    **Sample configuration**
-
-    </div>
-
     ``` yaml
     apiVersion: machine.openshift.io/v1beta1
     kind: MachineSet
@@ -1132,12 +1116,6 @@ By default, Microsoft Azure subscriptions do not have a quota for the Microsoft 
     $ oc get machineset -n openshift-machine-api
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     NAME                              DESIRED   CURRENT   READY   AVAILABLE   AGE
     myclustername-worker-centralus1   1         1         1       1           6h9m
@@ -1151,17 +1129,11 @@ By default, Microsoft Azure subscriptions do not have a quota for the Microsoft 
     $ oc get machineset -n openshift-machine-api myclustername-worker-centralus1 -o yaml > machineset-azure.yaml
     ```
 
-3.  View the content of the machineset:
+3.  View the content of the compute machine set:
 
     ``` terminal
     $ cat machineset-azure.yaml
     ```
-
-    <div class="formalpara-title">
-
-    **Example `machineset-azure.yaml` file**
-
-    </div>
 
     ``` yaml
     apiVersion: machine.openshift.io/v1beta1
@@ -1257,12 +1229,6 @@ By default, Microsoft Azure subscriptions do not have a quota for the Microsoft 
 
     - Change `.spec.template.spec.providerSpec.value.vmSize` to `Standard_NC4as_T4_v3`.
 
-      <div class="formalpara-title">
-
-      **Example `machineset-azure-gpu.yaml` file**
-
-      </div>
-
       ``` yaml
       apiVersion: machine.openshift.io/v1beta1
       kind: MachineSet
@@ -1347,12 +1313,6 @@ By default, Microsoft Azure subscriptions do not have a quota for the Microsoft 
     $ diff machineset-azure.yaml machineset-azure-gpu.yaml
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     14c14
     <   name: myclustername-worker-centralus1
@@ -1378,12 +1338,6 @@ By default, Microsoft Azure subscriptions do not have a quota for the Microsoft 
     $ oc create -f machineset-azure-gpu.yaml
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     machineset.machine.openshift.io/myclustername-nc4ast4-gpu-worker-centralus1 created
     ```
@@ -1393,12 +1347,6 @@ By default, Microsoft Azure subscriptions do not have a quota for the Microsoft 
     ``` terminal
     $ oc get machineset -n openshift-machine-api
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     NAME                                               DESIRED   CURRENT   READY   AVAILABLE   AGE
@@ -1413,12 +1361,6 @@ By default, Microsoft Azure subscriptions do not have a quota for the Microsoft 
     ``` terminal
     $ oc get machines -n openshift-machine-api
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     NAME                                                PHASE     TYPE                   REGION      ZONE   AGE
@@ -1437,12 +1379,6 @@ By default, Microsoft Azure subscriptions do not have a quota for the Microsoft 
     $ oc get nodes
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     NAME                                                STATUS   ROLES                  AGE     VERSION
     myclustername-master-0                              Ready    control-plane,master   6h39m   v1.35.4
@@ -1459,12 +1395,6 @@ By default, Microsoft Azure subscriptions do not have a quota for the Microsoft 
     ``` terminal
     $ oc get machineset -n openshift-machine-api
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     NAME                                   DESIRED   CURRENT   READY   AVAILABLE   AGE
@@ -1485,12 +1415,6 @@ By default, Microsoft Azure subscriptions do not have a quota for the Microsoft 
     oc get machineset -n openshift-machine-api
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     NAME                                          DESIRED   CURRENT   READY   AVAILABLE   AGE
     myclustername-nc4ast4-gpu-worker-centralus1   1         1         1       1           121m
@@ -1509,12 +1433,6 @@ By default, Microsoft Azure subscriptions do not have a quota for the Microsoft 
 
     The MachineSet replica count is set to `1` so a new `Machine` object is created automatically.
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
     ``` terminal
     myclustername-nc4ast4-gpu-worker-centralus1   1         1         1       1           121m
     ```
@@ -1524,12 +1442,6 @@ By default, Microsoft Azure subscriptions do not have a quota for the Microsoft 
     ``` terminal
     $ oc -n openshift-machine-api get machines | grep gpu
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     myclustername-nc4ast4-gpu-worker-centralus1-w9bqn   Running   Standard_NC4as_T4_v3   centralus   1      21m
@@ -1556,12 +1468,6 @@ The NFD Operator identifies hardware device features in nodes. It solves the gen
     ``` terminal
     $ oc get pods -n openshift-nfd
     ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
 
     ``` terminal
     NAME                                       READY    STATUS     RESTARTS   AGE

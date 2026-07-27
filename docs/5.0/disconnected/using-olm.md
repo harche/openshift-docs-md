@@ -44,6 +44,8 @@ You can search software on the [Red Hat Ecosystem Catalog](https://catalog.redh
 
 Operator catalogs that source content provided by Red Hat and community projects are configured for the software catalog by default during an OpenShift Container Platform installation. In a restricted network environment, you must disable the default catalogs as a cluster administrator. You can then configure the OperatorHub custom resource definition (CRD) to use local catalog sources for the software catalog.
 
+Operator catalogs that source content provided by Red Hat and community projects are configured for the software catalog by default during an OpenShift Container Platform installation.
+
 - Disable the sources for the default catalogs by adding `disableAllDefaultSources: true` to the `OperatorHub` object:
 
   ``` terminal
@@ -73,7 +75,9 @@ Many of the `opm` subcommands and flags for working with the SQLite database for
 
 # Adding a catalog source to a cluster
 
-Adding a catalog source to an OpenShift Container Platform cluster enables the discovery and installation of Operators for users. Cluster administrators can create a `CatalogSource` object that references an index image. The software catalog uses catalog sources to populate the user interface.
+To make Operators from a custom index image available for installation, create a catalog source that adds the catalog content to your cluster.
+
+Cluster administrators can create a `CatalogSource` object that references an index image. The software catalog uses catalog sources to populate the user interface.
 
 <div class="tip">
 
@@ -139,11 +143,7 @@ Alternatively, you can use the web console to manage catalog sources. From the *
         $ oc get pods -n openshift-marketplace
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         NAME                                    READY   STATUS    RESTARTS  AGE
@@ -157,11 +157,7 @@ Alternatively, you can use the web console to manage catalog sources. From the *
         $ oc get catalogsource -n openshift-marketplace
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         NAME                  DISPLAY               TYPE PUBLISHER  AGE
@@ -174,18 +170,14 @@ Alternatively, you can use the web console to manage catalog sources. From the *
         $ oc get packagemanifest -n openshift-marketplace
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         NAME                          CATALOG               AGE
         jaeger-product                My Operator Catalog   93s
         ```
 
-You can now install the Operators from the **Software Catalog** page on your OpenShift Container Platform web console.
+        You can now install the Operators from the **Software Catalog** page on your OpenShift Container Platform web console.
 
 - [Accessing images for Operators from private registries](../operators/admin/olm-managing-custom-catalogs.xml#olm-accessing-images-private-registries_olm-managing-custom-catalogs)
 

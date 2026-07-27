@@ -2,7 +2,7 @@ Before you deploy an OpenShift Container Platform cluster, you provide a customi
 
 # Available installation configuration parameters for IBM Power
 
-To customize your cluster installation, configuration parameters are available to use in the `install-config.yaml` file.
+To customize your cluster installation, you can use configuration parameters in the `install-config.yaml` file.
 
 The following tables specify the required, optional, and IBM Power-specific installation configuration parameters that you can set as part of the installation process.
 

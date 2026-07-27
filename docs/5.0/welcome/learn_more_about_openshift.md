@@ -125,7 +125,7 @@ Managing cluster components
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><a href="../authentication/understanding-authentication.xml#understanding-authentication">Manage authentication</a></p></td>
-<td style="text-align: left;"><p><a href="../authentication/understanding-identity-provider.xml#supported-identity-providers">Multiple identity providers</a></p></td>
+<td style="text-align: left;"><p><a href="../authentication/understanding-identity-provider.xml#supported-identity-providers_understanding-identity-provider">Supported identity providers</a></p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>Manage <a href="../security/certificates/replacing-default-ingress-certificate.xml#replacing-default-ingress">Ingress</a>, <a href="../security/certificates/api-server.xml#api-server-certificates">API server</a>, and <a href="../security/certificates/service-serving-certificate.xml#add-service-serving">Service</a> certificates</p></td>

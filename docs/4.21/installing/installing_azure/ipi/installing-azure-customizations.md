@@ -112,28 +112,22 @@ You should only modify the RHCOS image for compute machines to use an Azure Mark
 
 5.  Record the image details of your offer. You must update the `compute` section in the `install-config.yaml` file with values for `publisher`, `offer`, `sku`, and `version` before deploying the cluster. You may also update the `controlPlane` section to deploy control plane machines with the specified image details, or the `defaultMachinePlatform` section to deploy both control plane and compute machines with the specified image details. Use the latest available image for control plane and compute nodes.
 
-<div class="formalpara-title">
-
-**Sample `install-config.yaml` file with the Azure Marketplace compute nodes**
-
-</div>
-
-``` yaml
-apiVersion: v1
-baseDomain: example.com
-compute:
-- hyperthreading: Enabled
-  name: worker
-  platform:
-    azure:
-      type: Standard_D4s_v5
-      osImage:
-        publisher: redhat
-        offer: rh-ocp-worker
-        sku: rh-ocp-worker
-        version: 413.92.2023101700
-  replicas: 3
-```
+    ``` yaml
+    apiVersion: v1
+    baseDomain: example.com
+    compute:
+    - hyperthreading: Enabled
+      name: worker
+      platform:
+        azure:
+          type: Standard_D4s_v5
+          osImage:
+            publisher: redhat
+            offer: rh-ocp-worker
+            sku: rh-ocp-worker
+            version: 413.92.2023101700
+      replicas: 3
+    ```
 
 # Creating the installation configuration file
 
@@ -283,7 +277,7 @@ For OpenShift Container Platform version 4.19, RHCOS is based on RHEL version 9.
 
 - s390x architecture requires z14 ISA
 
-For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures) (RHEL documentation).
+For more information, see "Architectures".
 
 </div>
 
@@ -294,6 +288,10 @@ You are required to use Azure virtual machines that have the `premiumIO` paramet
 </div>
 
 If an instance type for your platform meets the minimum requirements for cluster machines, it is supported to use in OpenShift Container Platform.
+
+- [Architectures (RHEL documentation)](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures)
+
+<!-- -->
 
 - [Optimizing storage](../../../scalability_and_performance/optimization/optimizing-storage.xml#optimizing-storage)
 

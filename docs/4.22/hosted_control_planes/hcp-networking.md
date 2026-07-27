@@ -21,7 +21,7 @@ For more information, see "Control plane isolation" and "Distributing hosted clu
 
 - [Control plane isolation](../hosted_control_planes/hcp-networking.xml#hcp-isolation_hcp-networking)
 
-- [Node labeling for hosted control planes](../hosted_control_planes/hcp-prepare/hcp-distribute-workloads.xml#hcp-node-labeling_hcp-distribute-workloads)
+- [Distributing hosted cluster workloads](../hosted_control_planes/hcp-prepare/hcp-distribute-workloads.xml#hcp-distribute-workloads)
 
 ## Control plane isolation
 
@@ -375,7 +375,7 @@ To set up a load balancer and wildcard DNS record for the `*.apps` domain, perfo
 In hosted clusters, you can configure internal OVN subnets to avoid routing conflicts, customize network architecture, or enable virtual private cloud (VPC) peering.
 
 Avoid CIDR conflicts
-Connect VPCs that host Red Hat OpenShift Service on AWS clusters with other VPCs that use the default OVN internal subnets of 100.88.0.0/16 and 100.64.0.0/16. To avoid a conflict on a `kubevirt` hosted cluster, the HyperShift Operator sets the OVN join subnet to `100.66.0.0/16` instead of `100.64.0.0/16` or `100.65.0.0/16`. The default CIDR for the OVN gateway router is `100.64.0.0/16`. The default CIDR for the user-defined network (UDN) join subnet is `100.65.0.0/16`.
+Connect VPCs that host Red Hat OpenShift Service on AWS clusters with other VPCs that use the default OVN internal subnets of 100.88.0.0/16 and 100.64.0.0/16. To avoid a conflict on a `kubevirt` hosted cluster, the HyperShift Operator sets the OVN join subnet to `100.66.0.0/16` instead of `100.64.0.0/16` or `100.65.0.0/16`. The default classless inter-domain routing (CIDR) for the OVN gateway router is `100.64.0.0/16`. The default CIDR for the user-defined network (UDN) join subnet is `100.65.0.0/16`.
 
 Customize network architecture
 Configure internal OVN subnets to align with your corporate network policies.
@@ -444,12 +444,6 @@ You can configure internal OVN subnets in an existing hosted cluster or configur
 
 - To configure internal OVN subnets in an existing hosted cluster, enter the following command:
 
-  <div class="important">
-
-  When you make this change to an existing hosted cluster, the `ovnkube-node` DaemonSet is rolled out and the OVN components on compute nodes are restarted. During this process, you might experience brief network disruptions.
-
-  </div>
-
   ``` terminal
   $ oc patch hostedcluster <hosted_cluster_name> \
     -n <hosted_control_plane_namespace> \
@@ -472,11 +466,14 @@ You can configure internal OVN subnets in an existing hosted cluster or configur
 
   where:
 
-  `metadata`
-  Specifies the name of the hosted cluster and the name of the hosted control plane namespace.
-
   `spec.operatorConfiguration.clusterNetworkOperator.ovnKubernetesConfig.ipv4`
   Specifies the subnets to use. Both subnet fields in this section must be in a valid IPv4 CIDR notation, such as `192.168.1.0/24`. The prefix range is `/0` to `/30`, inclusive. The first octet cannot be 0, and the string length must be 9-18 characters. The subnet fields cannot use the same value. The subnet must be large enough to accommodate one IP address per node in the cluster. When you plan subnet size, consider future cluster growth. If you omit these fields, the default value for the `internalJoinSubnet` field is `100.64.0.0/16`, and the default value for the `internalTransitSwitchSubnet` field is `100.88.0.0/16`.
+
+  <div class="important">
+
+  When you make this change to an existing hosted cluster, the `ovnkube-node` DaemonSet is rolled out and the OVN components on compute nodes are restarted. During this process, you might experience brief network disruptions.
+
+  </div>
 
 1.  Verify that the hosted configuration is correct by entering the following command:
 
@@ -675,7 +672,9 @@ In hosted control planes, proxy support includes use cases beyond those in stand
 
 ## Control plane workloads that need to access external services
 
-Operators that run in the control plane need to access external services through the proxy that is configured for the hosted cluster. The proxy is usually accessible only through the data plane. The control plane workloads are as follows:
+Operators that run in the control plane need to access external services through the proxy that is configured for the hosted cluster. The proxy is usually accessible only through the data plane.
+
+The control plane workloads are as follows:
 
 - The Control Plane Operator needs to validate and obtain endpoints from certain identity providers when it creates the OAuth server configuration.
 
@@ -697,29 +696,39 @@ Some operations are not possible when a hosted cluster is reduced to zero comput
 
 ## Compute nodes that need to access an ignition endpoint
 
-When compute nodes need a proxy to access the ignition endpoint, you must configure the proxy in the user-data stub that is configured on the compute node when it is created. For cases where machines need a proxy to access the ignition URL, the proxy configuration is included in the stub.
+When compute nodes need a proxy to access the ignition endpoint, you must configure the proxy in the user-data stub that is configured on the compute node when it is created.
+
+For cases where machines need a proxy to access the ignition URL, the proxy configuration is included in the stub.
 
 The stub resembles the following example:
 
 ``` terminal
----
 {"ignition":{"config":{"merge":[{"httpHeaders":[{"name":"Authorization","value":"Bearer ..."},{"name":"TargetConfigVersionHash","value":"a4c1b0dd"}],"source":"https://ignition.controlplanehost.example.com/ignition","verification":{}}],"replace":{"verification":{}}},"proxy":{"httpProxy":"http://proxy.example.org:3128", "httpsProxy":"https://proxy.example.org:3129", "noProxy":"host.example.org"},"security":{"tls":{"certificateAuthorities":[{"source":"...","verification":{}}]}},"timeouts":{},"version":"3.2.0"},"passwd":{},"storage":{},"systemd":{}}
----
 ```
 
 ## Compute nodes that need to access the API server
 
-This use case is relevant to self-managed hosted control planes, not to Red Hat OpenShift Service on AWS with hosted control planes.
+For communication with the control plane, hosted control planes uses a local proxy in every compute node that listens on IP address 172.20.0.1 and forwards traffic to the API server. If an external proxy is required to access the API server, that local proxy needs to use the external proxy to send traffic out.
 
-For communication with the control plane, hosted control planes uses a local proxy in every compute node that listens on IP address 172.20.0.1 and forwards traffic to the API server. If an external proxy is required to access the API server, that local proxy needs to use the external proxy to send traffic out. When a proxy is not needed, hosted control planes uses `haproxy` for the local proxy, which only forwards packets via TCP. When a proxy is needed, hosted control planes uses a custom proxy, `control-plane-operator-kubernetes-default-proxy`, to send traffic through the external proxy.
+When a proxy is not needed, hosted control planes uses `haproxy` for the local proxy, which only forwards packets via TCP. When a proxy is needed, hosted control planes uses a custom proxy, `control-plane-operator-kubernetes-default-proxy`, to send traffic through the external proxy.
+
+<div class="note">
+
+This use case is relevant to self-managed hosted control planes, not to Red Hat OpenShift Service on AWS.
+
+</div>
 
 ## Management clusters that need external access
 
-The HyperShift Operator has a controller that monitors the OpenShift global proxy configuration of the management cluster and sets the proxy environment variables on its own deployment. Control plane deployments that need external access are configured with the proxy environment variables of the management cluster.
+The HyperShift Operator has a controller that monitors the OpenShift global proxy configuration of the management cluster and sets the proxy environment variables on its own deployment.
 
-## Management cluster that uses a proxy and a hosted cluster with a secondary network and no default pod network
+Control plane deployments that need external access are configured with the proxy environment variables of the management cluster.
 
-If a management cluster uses a proxy configuration and you are configuring a hosted cluster with a secondary network but are not attaching the default pod network, add the CIDR of the secondary network to the proxy configuration. Specifically, you need to add the CIDR of the secondary network to the `noProxy` section of the proxy configuration for the management cluster. Otherwise, the Kubernetes API server will route some API requests through the proxy. In the hosted cluster configuration, the CIDR of the secondary network is automatically added to the `noProxy` section.
+## Management cluster with a proxy and a hosted cluster with a secondary network and no default pod network
+
+If a management cluster uses a proxy configuration and you are configuring a hosted cluster with a secondary network but are not attaching the default pod network, add the CIDR of the secondary network to the proxy configuration.
+
+Specifically, you need to add the CIDR of the secondary network to the `noProxy` section of the proxy configuration for the management cluster. Otherwise, the Kubernetes API server will route some API requests through the proxy. In the hosted cluster configuration, the CIDR of the secondary network is automatically added to the `noProxy` section.
 
 - [Troubleshooting internal subnets for hosted clusters](../hosted_control_planes/hcp-troubleshooting.xml#hcp-ts-internal-subnets_hcp-troubleshooting)
 

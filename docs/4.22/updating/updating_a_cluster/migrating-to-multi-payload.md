@@ -102,7 +102,7 @@ The migrations must be complete and all the cluster operators must be stable bef
 
 - [Understanding update channels and releases](../../updating/understanding_updates/understanding-update-channels-release.xml#understanding-update-channels-releases)
 
-- [Selecting a cluster installation type](../../installing/overview/installing-preparing.xml#installing-preparing-selecting-cluster-type)
+- [Selecting a cluster installation type](../../installing/overview/installing-preparing.xml#installing-preparing-selecting-cluster-type_installing-preparing)
 
 - [About machine health checks](../../machine_management/deploying-machine-health-checks.xml#machine-health-checks-about_deploying-machine-health-checks)
 

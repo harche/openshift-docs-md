@@ -727,7 +727,9 @@ The SQLite database catalog format is deprecated, but still supported by Red Hat
 
 # Adding a catalog source to a cluster
 
-Adding a catalog source to an OpenShift Container Platform cluster enables the discovery and installation of Operators for users. Cluster administrators can create a `CatalogSource` object that references an index image. The software catalog uses catalog sources to populate the user interface.
+To make Operators from a custom index image available for installation, create a catalog source that adds the catalog content to your cluster.
+
+Cluster administrators can create a `CatalogSource` object that references an index image. The software catalog uses catalog sources to populate the user interface.
 
 <div class="tip">
 
@@ -1083,6 +1085,8 @@ You can access images from Operator from private registries by creating a secret
 # Disabling the default software catalog sources
 
 Operator catalogs that source content provided by Red Hat and community projects are configured for the software catalog by default during an OpenShift Container Platform installation. As a cluster administrator, you can disable the set of default catalogs.
+
+Operator catalogs that source content provided by Red Hat and community projects are configured for the software catalog by default during an OpenShift Container Platform installation.
 
 - Disable the sources for the default catalogs by adding `disableAllDefaultSources: true` to the `OperatorHub` object:
 

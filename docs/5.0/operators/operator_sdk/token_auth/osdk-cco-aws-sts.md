@@ -56,6 +56,12 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
 
     1.  Ensure your Operator has RBAC permission to create `CredentialsRequests` objects:
 
+        <div class="formalpara-title">
+
+        **Example `clusterPermissions` list**
+
+        </div>
+
         ``` yaml
         # ...
         install:
@@ -97,6 +103,12 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         ```
 
     2.  Ensure you have a `CredentialsRequest` object ready to be patched and applied. For example:
+
+        <div class="formalpara-title">
+
+        **Example `CredentialsRequest` object creation**
+
+        </div>
 
         ``` go
         import (
@@ -146,6 +158,12 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         ```
 
         Alternatively, if you are starting from a `CredentialsRequest` object in YAML form (for example, as part of your Operator project code), you can handle it differently:
+
+        <div class="formalpara-title">
+
+        **Example `CredentialsRequest` object creation in YAML form**
+
+        </div>
 
         ``` go
         // CredentialsRequest is a struct that represents a request for credentials
@@ -213,6 +231,12 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
 
     3.  Add the role ARN and web identity token path to the credentials request and apply it during Operator initialization:
 
+        <div class="formalpara-title">
+
+        **Example applying `CredentialsRequest` object during Operator initialization**
+
+        </div>
+
         ``` go
         // apply CredentialsRequest on install
         credReq := credreq.CredentialsRequestTemplate
@@ -228,6 +252,12 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         ```
 
     4.  Ensure your Operator can wait for a `Secret` object to show up from the CCO, as shown in the following example, which is called along with the other items you are reconciling in your Operator:
+
+        <div class="formalpara-title">
+
+        **Example wait for `Secret` object**
+
+        </div>
 
         ``` go
         // WaitForSecret is a function that takes a Kubernetes client, a namespace, and a v1 "k8s.io/api/core/v1" name as arguments
@@ -267,9 +297,15 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         }
         ```
 
-        - The `timeout` value is based on an estimate of how fast the CCO might detect an added `CredentialsRequest` object and generate a `Secret` object. You might consider lowering the time or creating custom feedback for cluster administrators that could be wondering why the Operator is not yet accessing the cloud resources.
+        The `timeout` value is based on an estimate of how fast the CCO might detect an added `CredentialsRequest` object and generate a `Secret` object. You might consider lowering the time or creating custom feedback for cluster administrators that could be wondering why the Operator is not yet accessing the cloud resources.
 
     5.  Set up the AWS configuration by reading the secret created by the CCO from the credentials request and creating the AWS config file containing the data from that secret:
+
+        <div class="formalpara-title">
+
+        **Example AWS configuration creation**
+
+        </div>
 
         ``` go
         func SharedCredentialsFileFromSecret(secret *corev1.Secret) (string, error) {
@@ -302,6 +338,12 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         </div>
 
     6.  Configure the AWS SDK session, for example:
+
+        <div class="formalpara-title">
+
+        **Example AWS SDK session configuration**
+
+        </div>
 
         ``` go
         sharedCredentialsFile, err := SharedCredentialsFileFromSecret(secret)

@@ -1,12 +1,14 @@
-Red Hat offers cluster administrators tools for gathering data for your cluster, monitoring, and troubleshooting.
+You can identify and resolve OpenShift Container Platform cluster issues by using diagnostic tools, support procedures, and remote health monitoring.
 
 # Get support
 
-[Get support](../support/getting-support.xml#getting-support): Visit the Red Hat Customer Portal to review knowledge base articles, submit a support case, and review additional product documentation and resources.
+Visit the Red Hat Customer Portal to review knowledge base articles, submit a support case, and review additional product documentation and resources.
 
 # Remote health monitoring issues
 
-[Remote health monitoring issues](../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring): OpenShift Container Platform collects telemetry and configuration data about your cluster and reports it to Red Hat by using the Telemeter Client and the Insights Operator. Red Hat uses this data to understand and resolve issues in a *connected cluster*. Similar to connected clusters, you can [Use remote health monitoring in a restricted network](../support/remote_health_monitoring/remote-health-reporting-from-restricted-network.xml#remote-health-reporting-from-restricted-network). OpenShift Container Platform collects data and monitors health using the following:
+Use the Telemetry Client and the Insights Operator to collect cluster telemetry and configuration data. The Red Hat support team uses this diagnostic information to proactively identify and resolve potential infrastructure issues.
+
+Red Hat uses this data to understand and resolve issues in a *connected cluster*. Similar to connected clusters, you can use remote health monitoring in a restricted network. OpenShift Container Platform collects data and monitors health using the following:
 
 - **Telemetry**: The Telemetry Client gathers and uploads the metrics values to Red Hat every four minutes and thirty seconds. Red Hat uses this data to:
 
@@ -22,13 +24,15 @@ Red Hat offers cluster administrators tools for gathering data for your cluster,
 
   - Provide a solution and preventive action in Red Hat OpenShift Cluster Manager.
 
-You can [review telemetry information](../support/remote_health_monitoring/showing-data-collected-by-remote-health-monitoring.xml#showing-data-collected-by-remote-health-monitoring).
+You can review telemetry information.
 
-If you have enabled remote health reporting, [Using Red Hat Lightspeed to identify issues with your cluster](../support/remote_health_monitoring/using-insights-to-identify-issues-with-your-cluster.xml#using-insights-to-identify-issues-with-your-cluster). You can optionally disable remote health reporting.
+If you have enabled remote health reporting, you can use Red Hat Lightspeed to identify issues with your cluster. You can optionally disable remote health reporting.
 
-# Gather data about your cluster
+# Cluster data collection
 
-[Gather data about your cluster](../support/gathering-cluster-data.xml#gathering-cluster-data): Red Hat recommends gathering your debugging information when opening a support case. This helps Red Hat Support to perform a root cause analysis. A cluster administrator can use the following to gather data about your cluster:
+Diagnostic tools and system logs provide the critical debugging information that the Red Hat Support team requires to troubleshoot and resolve cluster issues.
+
+A cluster administrator can use the following to gather data about your cluster:
 
 - **must-gather tool**: Use the `must-gather` tool to collect information about your cluster and to debug the issues.
 
@@ -42,11 +46,13 @@ If you have enabled remote health reporting, [Using Red Hat Lightspeed to ident
 
 - **Network trace**: Provide a network packet trace from a specific OpenShift Container Platform cluster node or a container to Red Hat Support to help troubleshoot network-related issues.
 
-# Troubleshooting issues
+# Issue resolution
 
-A cluster administrator can monitor and troubleshoot the following OpenShift Container Platform component issues:
+As an administrator, you can minimize the downtime for OpenShift Container Platform by monitoring system health and applying specific troubleshooting procedures.
 
-- [Installation issues](../support/troubleshooting/troubleshooting-installations.xml#troubleshooting-installations): OpenShift Container Platform installation proceeds through various stages. You can perform the following:
+You can troubleshoot these components by using the following procedures:
+
+- **Installation issues**: OpenShift Container Platform installation proceeds through various stages. You can perform the following:
 
   - Monitor the installation stages.
 
@@ -56,19 +62,19 @@ A cluster administrator can monitor and troubleshoot the following OpenShift Con
 
   - Gather logs from a failed installation.
 
-- [Node issues](../support/troubleshooting/verifying-node-health.xml#verifying-node-health): A cluster administrator can verify and troubleshoot node-related issues by reviewing the status, resource usage, and configuration of a node. You can query the following:
+- **Node issues**: A cluster administrator can verify and troubleshoot node-related issues by reviewing the status, resource usage, and configuration of a node. You can query the following:
 
   - Kubelet’s status on a node.
 
   - Cluster node journal logs.
 
-- [Crio issues](../support/troubleshooting/troubleshooting-crio-issues.xml#troubleshooting-crio-issues): A cluster administrator can verify CRI-O container runtime engine status on each cluster node. If you experience container runtime issues, perform the following:
+- **Crio issues**: A cluster administrator can verify CRI-O container runtime engine status on each cluster node. If you experience container runtime issues, perform the following:
 
   - Gather CRI-O journald unit logs.
 
   - Cleaning CRI-O storage.
 
-- [Operating system issues](../support/troubleshooting/troubleshooting-operating-system-issues.xml#troubleshooting-operating-system-issues): OpenShift Container Platform runs on Red Hat Enterprise Linux CoreOS. If you experience operating system issues, you can investigate kernel crash procedures. Ensure the following:
+- **Operating system issues**: OpenShift Container Platform runs on Red Hat Enterprise Linux CoreOS. If you experience operating system issues, you can investigate kernel crash procedures. Ensure the following:
 
   - Enable kdump.
 
@@ -76,7 +82,7 @@ A cluster administrator can monitor and troubleshoot the following OpenShift Con
 
   - Analyze a core dump.
 
-- [Network issues](../support/troubleshooting/troubleshooting-network-issues.xml#troubleshooting-network-issues): To troubleshoot Open vSwitch issues, a cluster administrator can perform the following:
+- **Network issues**: To troubleshoot Open vSwitch issues, a cluster administrator can perform the following:
 
   - Configure the Open vSwitch log level temporarily.
 
@@ -84,7 +90,7 @@ A cluster administrator can monitor and troubleshoot the following OpenShift Con
 
   - Display Open vSwitch logs.
 
-- [Operator issues](../support/troubleshooting/troubleshooting-operator-issues.xml#troubleshooting-operator-issues): A cluster administrator can do the following to resolve Operator issues:
+- **Operator issues**: A cluster administrator can do the following to resolve Operator issues:
 
   - Verify Operator subscription status.
 
@@ -92,30 +98,64 @@ A cluster administrator can monitor and troubleshoot the following OpenShift Con
 
   - Gather Operator logs.
 
-- [Pod issues](../support/troubleshooting/investigating-pod-issues.xml#investigating-pod-issues): A cluster administrator can troubleshoot pod-related issues by reviewing the status of a pod and completing the following:
+- **Pod issues**: A cluster administrator can troubleshoot pod-related issues by reviewing the status of a pod and completing the following:
 
   - Review pod and container logs.
 
   - Start debug pods with root access.
 
-- [Source-to-image issues](../support/troubleshooting/troubleshooting-s2i.xml#troubleshooting-s2i): A cluster administrator can observe the S2I stages to determine where in the S2I process a failure occurred. Gather the following to resolve Source-to-Image (S2I) issues:
+- **Source-to-image issues**: A cluster administrator can observe the S2I stages to determine where in the S2I process a failure occurred. Gather the following to resolve Source-to-Image (S2I) issues:
 
   - Source-to-Image diagnostic data.
 
   - Application diagnostic data to investigate application failure.
 
-- [Storage issues](../support/troubleshooting/troubleshooting-storage-issues.xml#troubleshooting-storage-issues): A multi-attach storage error occurs when the mounting volume on a new node is not possible because the failed node cannot unmount the attached volume. A cluster administrator can do the following to resolve multi-attach storage issues:
+- **Storage issues**: A multi-attach storage error occurs when the mounting volume on a new node is not possible because the failed node cannot unmount the attached volume. A cluster administrator can do the following to resolve multi-attach storage issues:
 
   - Enable multiple attachments by using RWX volumes.
 
   - Recover or delete the failed node when using an RWO volume.
 
-- [Monitoring issues](../support/troubleshooting/investigating-monitoring-issues.xml#investigating-monitoring-issues): A cluster administrator can follow the procedures on the troubleshooting page for monitoring. If the metrics for your user-defined projects are unavailable or if Prometheus is consuming a lot of disk space, check the following:
+- **Monitoring issues**: A cluster administrator can follow the procedures on the troubleshooting page for monitoring. If the metrics for your user-defined projects are unavailable or if Prometheus is consuming a lot of disk space, check the following:
 
   - Investigate why user-defined metrics are unavailable.
 
   - Determine why Prometheus is consuming a lot of disk space.
 
-<!-- -->
+- **OpenShift CLI (`oc`) issues**: Investigate OpenShift CLI (`oc`) issues by increasing the log level.
 
-- [OpenShift CLI (`oc`) issues](../support/troubleshooting/diagnosing-oc-issues.xml#diagnosing-oc-issues): Investigate OpenShift CLI (`oc`) issues by increasing the log level.
+# Additional resources
+
+- [Getting support](../support/getting-support.xml#getting-support)
+
+- [About remote health monitoring](../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+
+- [Using remote health monitoring in a restricted network](../support/remote_health_monitoring/remote-health-reporting-from-restricted-network.xml#remote-health-reporting-from-restricted-network)
+
+- [Troubleshooting installations](../support/troubleshooting/troubleshooting-installations.xml#troubleshooting-installations)
+
+- [Troubleshooting CRI-O issues](../support/troubleshooting/troubleshooting-crio-issues.xml#troubleshooting-crio-issues)
+
+- [Troubleshooting operating system issues](../support/troubleshooting/troubleshooting-operating-system-issues.xml#troubleshooting-operating-system-issues)
+
+- [Troubleshooting network issues](../support/troubleshooting/troubleshooting-network-issues.xml#troubleshooting-network-issues)
+
+- [Using Red Hat Lightspeed to identify issues with your cluster](../support/remote_health_monitoring/using-insights-to-identify-issues-with-your-cluster.xml#using-insights-to-identify-issues-with-your-cluster)
+
+- [Showing data collected by remote health monitoring](../support/remote_health_monitoring/showing-data-collected-by-remote-health-monitoring.xml#showing-data-collected-by-remote-health-monitoring)
+
+- [Gathering data about your cluster](../support/gathering-cluster-data.xml#gathering-cluster-data)
+
+- [Verifying node health](../support/troubleshooting/verifying-node-health.xml#verifying-node-health)
+
+- [Troubleshooting Operator issues](../support/troubleshooting/troubleshooting-operator-issues.xml#troubleshooting-operator-issues)
+
+- [Investigating pod issues](../support/troubleshooting/investigating-pod-issues.xml#investigating-pod-issues)
+
+- [Troubleshooting Source-to-Image](../support/troubleshooting/troubleshooting-s2i.xml#troubleshooting-s2i)
+
+- [Troubleshooting storage issues](../support/troubleshooting/troubleshooting-storage-issues.xml#troubleshooting-storage-issues)
+
+- [Investigating monitoring issues](../support/troubleshooting/investigating-monitoring-issues.xml#investigating-monitoring-issues)
+
+- [Diagnosing OpenShift CLI issues](../support/troubleshooting/diagnosing-oc-issues.xml#diagnosing-oc-issues)

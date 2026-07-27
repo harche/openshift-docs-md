@@ -20,7 +20,7 @@ You can encrypt your virtual machines with the following process. You can drain 
 
 2.  Shutdown the virtual machine associated with that node in the vCenter interface.
 
-3.  Right-click on the virtual machine in the vCenter interface and select **VM Policies** → **Edit VM Storage Policies**.
+3.  Right-click the virtual machine in the vCenter interface and select **VM Policies** → **Edit VM Storage Policies**.
 
 4.  Select an encrypted storage policy and select **OK**.
 
@@ -32,8 +32,8 @@ You can encrypt your virtual machines with the following process. You can drain 
 
 # Additional resources
 
-- [Working with nodes](../../nodes/nodes/nodes-nodes-working.xml#nodes-nodes-working-evacuating_nodes-nodes-working)
+- [Evacuating pods on nodes](../../nodes/nodes/nodes-nodes-working.xml#nodes-nodes-working-evacuating_nodes-nodes-working)
 
-- [vSphere encryption](../../storage/container_storage_interface/persistent-storage-csi-vsphere.xml#vsphere-pv-encryption)
+- [vSphere persistent disks encryption](../../storage/container_storage_interface/persistent-storage-csi-vsphere.xml#vsphere-pv-encryption)
 
 - [Requirements for encrypting virtual machines](../../installing/installing_vsphere/upi/upi-vsphere-installation-reqs.xml#installation-vsphere-encrypted-vms_upi-vsphere-installation-reqs)

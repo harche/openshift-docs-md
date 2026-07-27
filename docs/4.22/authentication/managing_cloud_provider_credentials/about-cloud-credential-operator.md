@@ -1,18 +1,24 @@
-The Cloud Credential Operator (CCO) manages cloud provider credentials as custom resource definitions (CRDs). The CCO syncs on `CredentialsRequest` custom resources (CRs) to allow OpenShift Container Platform components to request cloud provider credentials with the specific permissions that are required for the cluster to run.
+To allow OpenShift Container Platform components to request cloud provider credentials with the specific permissions that are required for the cluster to run, you can use the Cloud Credential Operator (CCO) to manage cloud provider credentials as custom resource definitions (CRDs).
 
-By setting different values for the `credentialsMode` parameter in the `install-config.yaml` file, the CCO can be configured to operate in several different modes. If no mode is specified, or the `credentialsMode` parameter is set to an empty string (`""`), the CCO operates in its default mode.
+You can configure the Cloud Credential Operator (CCO) to operate in several different modes. These options provide transparency and flexibility in how the CCO uses cloud credentials.
 
-# Modes
+# About Cloud Credential Operator modes
 
-By setting different values for the `credentialsMode` parameter in the `install-config.yaml` file, the CCO can be configured to operate in *mint*, *passthrough*, or *manual* mode. These options provide transparency and flexibility in how the CCO uses cloud credentials to process `CredentialsRequest` CRs in the cluster, and allow the CCO to be configured to suit the security requirements of your organization. Not all CCO modes are supported for all cloud providers.
+You can configure the Cloud Credential Operator (CCO) to operate in several different modes. These options provide transparency and flexibility in how the CCO uses cloud credentials to process `CredentialsRequest` CRs in the cluster to suit the security requirements of your organization.
 
-- **[Mint](../../authentication/managing_cloud_provider_credentials/cco-mode-mint.xml#cco-mode-mint)**: In mint mode, the CCO uses the provided admin-level cloud credential to create new credentials for components in the cluster with only the specific permissions that are required.
+By setting different values for the `credentialsMode` parameter in the `install-config.yaml` file, you can configure the CCO to operate in *mint*, *passthrough*, or *manual* mode.
 
-- **[Passthrough](../../authentication/managing_cloud_provider_credentials/cco-mode-passthrough.xml#cco-mode-passthrough)**: In passthrough mode, the CCO passes the provided cloud credential to the components that request cloud credentials.
+- **Mint**: In mint mode, the CCO uses the provided admin-level cloud credential to create new credentials for components in the cluster with only the specific permissions that are required.
 
-- **[Manual mode with long-term credentials for components](../../authentication/managing_cloud_provider_credentials/cco-mode-manual.xml#cco-mode-manual)**: In manual mode, you can manage long-term cloud credentials instead of the CCO.
+- **Passthrough**: In passthrough mode, the CCO passes the provided cloud credential to the components that request cloud credentials.
 
-- **[Manual mode with short-term credentials for components](../../authentication/managing_cloud_provider_credentials/cco-short-term-creds.xml#cco-short-term-creds)**: For some providers, you can use the CCO utility (`ccoctl`) during installation to implement short-term credentials for individual components. These credentials are created and managed outside the OpenShift Container Platform cluster.
+- **Manual mode with long-term credentials for components**: In manual mode, you can manage long-term cloud credentials instead of the CCO.
+
+- **Manual mode with short-term credentials for components**: For some providers, you can use the CCO utility (`ccoctl`) during installation to implement short-term credentials for individual components. These credentials are created and managed outside the OpenShift Container Platform cluster.
+
+If no mode is specified, or the `credentialsMode` parameter is set to an empty string (""), the CCO operates in its default mode.
+
+Not all CCO modes are supported for all cloud providers, as described in the following table:
 
 | Cloud provider                     | Mint | Passthrough | Manual with long-term credentials | Manual with short-term credentials |
 |------------------------------------|------|-------------|-----------------------------------|------------------------------------|
@@ -40,7 +46,9 @@ For platforms that support using the CCO in multiple modes, you can determine wh
 
 ## Determining the Cloud Credential Operator mode by using the web console
 
-Determine the Cloud Credential Operator (CCO) mode by using the web console. Before you perform upgrades or troubleshoot, ensure you understand your cluster’s credential management configuration.
+You can determine what mode the Cloud Credential Operator (CCO) is configured to use by using the web console.
+
+Before you perform upgrades or troubleshoot, ensure you understand your cluster’s credential management configuration.
 
 <div class="note">
 
@@ -138,7 +146,9 @@ Only Amazon Web Services (AWS), global Microsoft Azure, and Google Cloud cluster
 
 ## Determining the Cloud Credential Operator mode by using the CLI
 
-Determine the Cloud Credential Operator (CCO) mode by querying the cluster with the CLI. Before you perform upgrades or troubleshoot, ensure you understand your cluster’s credential management configuration.
+You can determine what mode the Cloud Credential Operator (CCO) is configured to use by using the CLI.
+
+Before you perform upgrades or troubleshoot, ensure you understand your cluster’s credential management configuration.
 
 <div class="note">
 
@@ -223,7 +233,9 @@ Only Amazon Web Services (AWS), global Microsoft Azure, and Google Cloud cluster
 
     - An empty output indicates that the cluster is using the CCO in manual mode but was not configured using the `ccoctl` utility.
 
-# Default behavior
+# About the Cloud Credential Operator default behavior
+
+To better manage cloud credentials, you should familiarize yourself with the default behaviors of the Cloud Credential Operator.
 
 For platforms on which multiple modes are supported (AWS, Azure, and Google Cloud), when the CCO operates in its default mode, it checks the provided credentials dynamically to determine for which mode they are sufficient to process `CredentialsRequest` CRs.
 
@@ -238,3 +250,11 @@ To resolve insufficient credentials issues, provide a credential with sufficient
 # Additional resources
 
 - [Cluster Operators reference page for the Cloud Credential Operator](../../operators/operator-reference.xml#cloud-credential-operator_operator-reference)
+
+- [About the Cloud Credential Operator in mint mode](../../authentication/managing_cloud_provider_credentials/cco-mode-mint.xml#cco-mode-mint)
+
+- [About the Cloud Credential Operator in passthrough mode](../../authentication/managing_cloud_provider_credentials/cco-mode-passthrough.xml#cco-mode-passthrough)
+
+- [About the Cloud Credential Operator in manual mode with long-term credentials for components](../../authentication/managing_cloud_provider_credentials/cco-mode-manual.xml#cco-mode-manual)
+
+- [About the Cloud Credential Operator in manual mode with short-term credentials for components](../../authentication/managing_cloud_provider_credentials/cco-short-term-creds.xml#cco-short-term-creds)

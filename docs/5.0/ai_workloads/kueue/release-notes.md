@@ -30,8 +30,6 @@ Currently, Red Hat build of Kueue is not supported on Red Hat build of MicroSh
 
 </div>
 
-/ Module included in the following assemblies:
-
 # Release notes for Red Hat build of Kueue version 1.4
 
 Red Hat build of Kueue version 1.4 is a generally available release that is supported on OpenShift Container Platform versions 4.18 and later. Red Hat build of Kueue version 1.4 uses [Kueue](https://kueue.sigs.k8s.io/docs/overview/) version 0.18.
@@ -48,6 +46,26 @@ This release introduces admission fair sharing, which balances workload admissio
 - Applies immediate admission penalties to prevent resource monopolization
 
 For more information, see [Admission fair sharing](../../ai_workloads/kueue/admission-fair-sharing.xml#admission-fair-sharing).
+
+## Fixed issues
+
+Use the `resourceNames` object to limit webhooks to only Red Hat build of Kueue resources
+You can restrict the `kueue-manager-role` `ClusterRole` webhook configurations and CRD rules to specific `resourceNames`, preventing the controller from modifying other Operators' webhook configurations or CRDs. Webhook rules are scoped to `kueue-mutating-webhook-configuration` and `kueue-validating-webhook-configuration`, as shown in this example:
+
+``` yaml
+resourceNames:
+  - kueue-mutating-webhook-configuration
+  - kueue-validating-webhook-configuration
+```
+
+([OCPBUGS-88495](https://issues.redhat.com/browse/OCPBUGS-88495))
+
+Removed secrets from the core API resources list
+The upstream version of Kueue moved the `secrets` RBAC to a namespace-scoped role (`kueue-manager-secrets-role`), but the `ClusterRole` was not updated to remove the cluster-wide secrets permission.
+
+This version of Red Hat build of Kueue removes the `secrets` resource type from the cluster-wide openshift-kueue-operator `ClusterRole`. The namespace-scoped `kueue-manager-secrets-role` role already exists and provides the necessary access.
+
+([OCPBUGS-88040](https://issues.redhat.com/browse/OCPBUGS-88040))
 
 # Release notes for Red Hat build of Kueue version 1.3.1
 

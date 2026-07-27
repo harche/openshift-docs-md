@@ -1,3 +1,5 @@
+This document describes advanced tasks for the Custom File Integrity Operator.
+
 # Reinitializing the database
 
 If the File Integrity Operator detects a change that was planned, it might be required to reinitialize the database.
@@ -30,44 +32,44 @@ If the File Integrity Operator detects a change that was planned, it might be re
 
 # Machine config integration
 
-In OpenShift Container Platform 4, the cluster node configuration is delivered through `MachineConfig` objects. You can assume that the changes to files that are caused by a `MachineConfig` object are expected and should not cause the file integrity scan to fail. To suppress changes to files caused by `MachineConfig` object updates, the File Integrity Operator watches the node objects; when a node is being updated, the AIDE scans are suspended for the duration of the update. When the update finishes, the database is reinitialized and the scans resume.
+In OpenShift Container Platform 4.17, the cluster node configuration is delivered through `MachineConfig` objects. You can assume that the changes to files that are caused by a `MachineConfig` object are expected and should not cause the file integrity scan to fail.
+
+To suppress changes to files caused by `MachineConfig` object updates, the File Integrity Operator watches the node objects; when a node is being updated, the AIDE scans are suspended for the duration of the update. When the update finishes, the database is reinitialized and the scans resume.
 
 This pause and resume logic only applies to updates through the `MachineConfig` API, as they are reflected in the node object annotations.
 
 # Exploring the daemon sets
 
-Each `FileIntegrity` object represents a scan on a number of nodes. The scan itself is performed by pods managed by a daemon set.
+Each `FileIntegrity` object represents a scan on several nodes. The scan itself is performed by pods managed by a daemon set. The config maps created by the AIDE daemon are not retained and are deleted after the File Integrity Operator processes them. However, on failure and error, the contents of these config maps are copied to the config map that the `FileIntegrityNodeStatus` object points to.
 
-To find the daemon set that represents a `FileIntegrity` object, run:
+1.  To find the daemon set that represents a `FileIntegrity` object, run:
 
-``` terminal
-$ oc -n openshift-file-integrity get ds/aide-worker-fileintegrity
-```
+    ``` terminal
+    $ oc -n openshift-file-integrity get ds/aide-worker-fileintegrity
+    ```
 
-To list the pods in that daemon set, run:
+2.  To list the pods in that daemon set, run:
 
-``` terminal
-$ oc -n openshift-file-integrity get pods -lapp=aide-worker-fileintegrity
-```
+    ``` terminal
+    $ oc -n openshift-file-integrity get pods -lapp=aide-worker-fileintegrity
+    ```
 
-To view logs of a single AIDE pod, call `oc logs` on one of the pods.
+3.  To view logs of a single AIDE pod, call `oc logs` on one of the pods:
 
-``` terminal
-$ oc -n openshift-file-integrity logs pod/aide-worker-fileintegrity-mr8x6
-```
+    ``` terminal
+    $ oc -n openshift-file-integrity logs pod/aide-worker-fileintegrity-mr8x6
+    ```
 
-<div class="formalpara-title">
+    <div class="formalpara-title">
 
-**Example output**
+    **Example output**
 
-</div>
+    </div>
 
-``` terminal
-Starting the AIDE runner daemon
-initializing AIDE db
-initialization finished
-running aide check
-...
-```
-
-The config maps created by the AIDE daemon are not retained and are deleted after the File Integrity Operator processes them. However, on failure and error, the contents of these config maps are copied to the config map that the `FileIntegrityNodeStatus` object points to.
+    ``` terminal
+    Starting the AIDE runner daemon
+    initializing AIDE db
+    initialization finished
+    running aide check
+    ...
+    ```

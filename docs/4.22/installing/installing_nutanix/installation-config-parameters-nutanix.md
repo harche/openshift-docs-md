@@ -2,7 +2,7 @@ Before you deploy an OpenShift Container Platform cluster on Nutanix, you provid
 
 # Available installation configuration parameters for Nutanix
 
-To customize your cluster installation, configuration parameters are available to use in the `install-config.yaml` file.
+To customize your cluster installation, you can use configuration parameters in the `install-config.yaml` file.
 
 The following tables specify the required, optional, and Nutanix-specific installation configuration parameters that you can set as part of the installation process.
 

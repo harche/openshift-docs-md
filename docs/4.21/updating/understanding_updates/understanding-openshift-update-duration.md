@@ -106,7 +106,7 @@ In addition to MCO, you should consider the impact of the following parameters:
 
 - [Machine Config Overview](../../machine_configuration/index.xml#machine-config-overview)
 
-- [Pod disruption budget](../../nodes/pods/nodes-pods-configuring.xml#nodes-pods-configuring-pod-distruption-about_nodes-pods-configuring)
+- [Understanding how to use pod disruption budgets to specify the number of pods that must be up](../../nodes/pods/nodes-pods-configuring.xml#nodes-pods-pod-disruption-about_nodes-pods-configuring)
 
 ## Example update duration of cluster Operators
 

@@ -1,3 +1,5 @@
+You can perform postinstallation troubleshooting and recovery tasks on a Two-node OpenShift cluster with fencing if you encounter issues with the cluster.
+
 <div class="important">
 
 Two-node OpenShift cluster with fencing is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
@@ -10,7 +12,9 @@ Use the following sections help you with recovering from issues in a two-node Op
 
 # Manually recovering from a disruption event when automated recovery is unavailable
 
-You might need to perform manual recovery steps if a disruption event prevents fencing from functioning correctly. In this case, you can run commands directly on the control plane nodes to recover the cluster. There are four main recovery scenarios, which should be attempted in the following order:
+You might need to perform manual recovery steps if a disruption event prevents fencing from functioning correctly. In this case, you can run commands directly on the control plane nodes to recover the cluster.
+
+There are four main recovery scenarios, which should be attempted in the following order:
 
 1.  Update fencing secrets: Refresh the Baseboard Management Console (BMC) credentials if they are incorrect or outdated.
 
@@ -158,9 +162,7 @@ Do an etcd backup before proceeding to ensure that you can restore the cluster i
 
 For information about verifying that both control plane nodes and etcd are operating correctly, see "Verifying etcd health in a two-node OpenShift cluster with fencing".
 
-# Additional resources
-
-- [Restoring etcd from a backup](../../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd-restoring_backing-up-etcd).
+- [Restoring etcd from a backup](../../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd-restoring_backing-up-etcd)
 
 - [Verifying etcd health in a two-node OpenShift cluster with fencing](../installing_tnf/install-post-tnf.xml#installation-verifying-etcd-health_install-post-tnf)
 
@@ -492,9 +494,7 @@ Do an etcd backup before proceeding to ensure that you can restore the cluster i
 
 For information about verifying that both control plane nodes and etcd are operating correctly, see "Verifying etcd health in a two-node OpenShift cluster with fencing".
 
-# Additional resources
-
-- [Restoring etcd from a backup](../../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd-restoring_backing-up-etcd).
+- [Restoring etcd from a backup](../../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd-restoring_backing-up-etcd)
 
 # Verifying etcd health in a two-node OpenShift cluster with fencing
 

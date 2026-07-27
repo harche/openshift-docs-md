@@ -101,6 +101,12 @@ The migration is disruptive and nodes in your cluster might be temporarily unava
 
 The following procedures describe how to change the cluster network MTU by using machine configs, Dynamic Host Configuration Protocol (DHCP), or an ISO image. If you use either the DHCP or ISO approaches, you must refer to configuration artifacts that you kept after installing your cluster to complete the procedure.
 
+# Prerequisites for changing the cluster network MTU
+
+Before you change the cluster network maximum transmission unit (MTU), verify that you have the required access, tools, and network infrastructure to support the new MTU value.
+
+Ensure that the following conditions are met before you begin:
+
 - You have installed the OpenShift CLI (`oc`).
 
 - You have access to the cluster using an account with `cluster-admin` permissions.

@@ -52,6 +52,17 @@ Review the OADP support matrix for version compatibility with OpenShift Containe
 <td style="text-align: left;"><p>Extended Update Support Term 2 (EUS Term 2)</p></td>
 </tr>
 <tr class="even">
+<td style="text-align: left;"><p>1.6</p></td>
+<td style="text-align: left;"><ul>
+<li><p>4.22</p></li>
+</ul></td>
+<td style="text-align: left;"><p>09 Jun 2026</p></td>
+<td style="text-align: left;"><p>Release of 1.7</p></td>
+<td style="text-align: left;"><p>Release of 1.8</p></td>
+<td style="text-align: left;"><p>30 Jun 2028</p></td>
+<td style="text-align: left;"><p>30 Jun 2029</p></td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"><p>1.5</p></td>
 <td style="text-align: left;"><ul>
 <li><p>4.19</p></li>
@@ -61,10 +72,12 @@ Review the OADP support matrix for version compatibility with OpenShift Containe
 <td style="text-align: left;"><p>17 June 2025</p></td>
 <td style="text-align: left;"><p>Release of 1.6</p></td>
 <td style="text-align: left;"><p>Release of 1.7</p></td>
-<td style="text-align: left;"><p>EUS must be on OpenShift Container Platform 4.21</p></td>
-<td style="text-align: left;"><p>EUS Term 2 must be on OpenShift Container Platform 4.21</p></td>
+<td style="text-align: left;"><p>30 Jun 2028</p></td>
+<td style="text-align: left;"><p>30 Jun 2029</p>
+<p>EUS must be on OpenShift Container Platform 4.21</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
+<td style="text-align: left;"><p>EUS Term 2 must be on OpenShift Container Platform 4.21</p></td>
 <td style="text-align: left;"><p>1.4</p></td>
 <td style="text-align: left;"><ul>
 <li><p>4.14</p></li>
@@ -78,10 +91,10 @@ Review the OADP support matrix for version compatibility with OpenShift Containe
 <td style="text-align: left;"><p>Release of 1.6</p></td>
 <td style="text-align: left;"><p>27 Jun 2026</p>
 <p>EUS must be on OpenShift Container Platform 4.16</p></td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;"><p>27 Jun 2027</p>
 <p>EUS Term 2 must be on OpenShift Container Platform 4.16</p></td>
-</tr>
-<tr class="even">
 <td style="text-align: left;"><p>1.3</p></td>
 <td style="text-align: left;"><ul>
 <li><p>4.12</p></li>
@@ -94,8 +107,6 @@ Review the OADP support matrix for version compatibility with OpenShift Containe
 <td style="text-align: left;"><p>Release of 1.5</p></td>
 <td style="text-align: left;"><p>31 Oct 2025</p>
 <p>EUS must be on OpenShift Container Platform 4.14</p></td>
-<td style="text-align: left;"><p>31 Oct 2026</p>
-<p>EUS Term 2 must be on OpenShift Container Platform 4.14</p></td>
 </tr>
 </tbody>
 </table>

@@ -8,6 +8,8 @@ For information on how OLM handles updates for installed Operators colocated in 
 
 # About Operator installation from the software catalog
 
+When installing an Operator from the software catalog, you can choose where it is available, which update channel to follow, and whether OLM applies updates automatically or requires manual approval.
+
 The software catalog is a user interface for discovering Operators; it works in conjunction with Operator Lifecycle Manager (OLM), which installs and manages Operators on a cluster.
 
 As a cluster administrator, you can install an Operator from the software catalog by using the OpenShift Container Platform web console or CLI. Subscribing an Operator to one or more namespaces makes the Operator available to developers on your cluster.
@@ -31,7 +33,9 @@ If you select manual updates, when a newer version of an Operator is available, 
 
 # Installing from the software catalog by using the web console
 
-You can install and subscribe to an Operator from software catalog by using the OpenShift Container Platform web console.
+To make an Operator available in selected namespaces, you can use the web console to choose its version, installation mode, and update approval strategy, and then install it from the software catalog.
+
+You can install and subscribe to an Operator from software catalog by using the OpenShift Container Platform web console. .Prerequisites
 
 - Access to an OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
 
@@ -120,6 +124,8 @@ You can install and subscribe to an Operator from software catalog by using the 
 - [Manually approving a pending Operator update](../../operators/admin/olm-upgrading-operators.xml#olm-approving-pending-upgrade_olm-upgrading-operators)
 
 # Installing from the software catalog by using the CLI
+
+To install an Operator from the software catalog by using the CLI, you can identify the appropriate catalog, channel, and install mode, and then create the required `OperatorGroup` and `Subscription` objects.
 
 Instead of using the OpenShift Container Platform web console, you can install an Operator from the software catalog by using the CLI. Use the `oc` command to create or update a `Subscription` object.
 
@@ -447,7 +453,9 @@ In most cases, the web console method of this procedure is preferred because it 
 
 6.  If you set the `installPlanApproval` field to `Manual`, manually approve the pending install plan to complete the Operator installation. For more information, see "Manually approving a pending Operator update".
 
-At this point, OLM is now aware of the selected Operator. A cluster service version (CSV) for the Operator should appear in the target namespace, and APIs provided by the Operator should be available for creation.
+    At this point, OLM is now aware of the selected Operator. A cluster service version (CSV) for the Operator should appear in the target namespace, and APIs provided by the Operator should be available for creation.
+
+<!-- -->
 
 1.  Check the status of the `Subscription` object for your installed Operator by running the following command:
 

@@ -2,7 +2,7 @@ Before you deploy an OpenShift Container Platform cluster on Amazon Web Services
 
 # Available installation configuration parameters for AWS
 
-To customize your cluster installation, configuration parameters are available to use in the `install-config.yaml` file.
+To customize your cluster installation, you can use configuration parameters in the `install-config.yaml` file.
 
 The following tables specify the required, optional, and AWS-specific installation configuration parameters that you can set as part of the installation process.
 
@@ -764,7 +764,7 @@ Optional AWS configuration parameters are described in the following table:
 <td style="text-align: left;"><pre><code>platform:
   aws:
     ipFamily:</code></pre></td>
-<td style="text-align: left;"><p>The IP address family for networks used by the cluster. Specify <code>IPv4`</code> for IPv4-only networking, <code>DualStackIPv4Primary</code> for dual-stack networking with IPv4 as the primary address family, or <code>DualStackIPv6Primary</code> for dual-stack networking with IPv6 as the primary address family. When using dual-stack, the VPC and subnets must be configured with both IPv4 and IPv6 CIDR blocks.</p>
+<td style="text-align: left;"><p>The IP address family for networks used by the cluster. Specify <code>IPv4</code> for IPv4-only networking, <code>DualStackIPv4Primary</code> for dual-stack networking with IPv4 as the primary address family, or <code>DualStackIPv6Primary</code> for dual-stack networking with IPv6 as the primary address family. When using dual-stack, the VPC and subnets must be configured with both IPv4 and IPv6 CIDR blocks.</p>
 <p>Consider the following requirements if you use dual-stack networking:</p>
 <ul>
 <li><p>All API and Ingress load balancers must be Network Load Balancers (NLB). Classic Load Balancers (CLB) do not support IPv6 addressing.</p></li>

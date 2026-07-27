@@ -727,7 +727,9 @@ The SQLite database catalog format is deprecated, but still supported by Red Hat
 
 # Adding a catalog source to a cluster
 
-Adding a catalog source to an OpenShift Container Platform cluster enables the discovery and installation of Operators for users. Cluster administrators can create a `CatalogSource` object that references an index image. The software catalog uses catalog sources to populate the user interface.
+To make Operators from a custom index image available for installation, create a catalog source that adds the catalog content to your cluster.
+
+Cluster administrators can create a `CatalogSource` object that references an index image. The software catalog uses catalog sources to populate the user interface.
 
 <div class="tip">
 
@@ -796,11 +798,7 @@ Alternatively, you can use the web console to manage catalog sources. From the *
         $ oc get pods -n openshift-marketplace
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         NAME                                    READY   STATUS    RESTARTS  AGE
@@ -814,11 +812,7 @@ Alternatively, you can use the web console to manage catalog sources. From the *
         $ oc get catalogsource -n openshift-marketplace
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         NAME                  DISPLAY               TYPE PUBLISHER  AGE
@@ -831,18 +825,14 @@ Alternatively, you can use the web console to manage catalog sources. From the *
         $ oc get packagemanifest -n openshift-marketplace
         ```
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following is example output:
 
         ``` terminal
         NAME                          CATALOG               AGE
         jaeger-product                My Operator Catalog   93s
         ```
 
-You can now install the Operators from the **Software Catalog** page on your OpenShift Container Platform web console.
+        You can now install the Operators from the **Software Catalog** page on your OpenShift Container Platform web console.
 
 - [Operator Lifecycle Manager concepts and resources → Catalog source](../../operators/understanding/olm/olm-understanding-olm.xml#olm-catalogsource_olm-understanding-olm)
 
@@ -1095,6 +1085,8 @@ You can access images from Operator from private registries by creating a secret
 # Disabling the default software catalog sources
 
 Operator catalogs that source content provided by Red Hat and community projects are configured for the software catalog by default during an OpenShift Container Platform installation. As a cluster administrator, you can disable the set of default catalogs.
+
+Operator catalogs that source content provided by Red Hat and community projects are configured for the software catalog by default during an OpenShift Container Platform installation.
 
 - Disable the sources for the default catalogs by adding `disableAllDefaultSources: true` to the `OperatorHub` object:
 

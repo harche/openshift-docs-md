@@ -6,7 +6,7 @@ Before you can install Red Hat OpenShift Service Mesh, you must subscribe to Op
 
 - Review the [OpenShift Container Platform 4.17 overview](../../architecture/architecture-installation.xml#installation-overview_architecture-installation).
 
-- Install OpenShift Container Platform 4.17. If you are installing Red Hat OpenShift Service Mesh on a [restricted network](../../installing/overview/installing-preparing.xml#supported-installation-methods-for-different-platforms), follow the instructions for your chosen OpenShift Container Platform infrastructure.
+- Install OpenShift Container Platform 4.17. If you are installing Red Hat OpenShift Service Mesh on a [restricted network](../../installing/overview/installing-preparing.xml#installing-preparing-supported-installation-methods-reference_installing-preparing), follow the instructions for your chosen OpenShift Container Platform infrastructure.
 
   - [Install OpenShift Container Platform 4.17 on AWS](../../installing/installing_aws/ipi/installing-aws-default.xml#installing-aws-default)
 

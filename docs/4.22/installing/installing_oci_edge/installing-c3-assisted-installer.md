@@ -1,8 +1,12 @@
+You can use the Assisted Installer to install a cluster on Oracle® Edge Cloud, so that you can run cluster workloads on on-premise infrastructure while still using Oracle® Cloud Infrastructure (OCI) services.
+
 With Oracle® Edge Cloud, you can run applications and middleware by using Oracle® Cloud Infrastructure (OCI) services on high performance cloud infrastructure in your data center.
 
 The following procedures describe a cluster installation on Oracle® Compute Cloud@Customer as an example.
 
 # Supported Oracle Edge Cloud infrastructures
+
+There are several different Oracle® Edge Cloud infrastructure offerings you can choose for your installation.
 
 The following table describes the support status of each Oracle® Edge Cloud infrastructure offering:
 
@@ -76,7 +80,9 @@ By implementing a bastion host, you can securely and efficiently manage access t
 
 # Running the Terraform script via the Home region
 
-Copy the Terraform scripts `createInfraResources.tf` and `terraform.tfvars` onto the bastion server. Then run the `createInfraResources.tf` script to create the Dynamic Group Identity resources on your Oracle Cloud Infrastructure (OCI) Home Region. These resources include dynamic groups, policies, and tags.
+Copy the Terraform scripts `createInfraResources.tf` and `terraform.tfvars` onto the bastion server. Then run the `createInfraResources.tf` script to create the Dynamic Group Identity resources on your Oracle Cloud Infrastructure (OCI) Home Region.
+
+These resources include dynamic groups, policies, and tags.
 
 - You have tenancy privileges to create Dynamic Groups and Policies. If not, you can manually provision them during this procedure.
 
@@ -301,4 +307,6 @@ Create, modify, and upload the four mandatory custom manifests provided by Oracl
 
 # Opening OpenShift Container Platform from the Oracle Edge Cloud web console
 
-For instructions to access the OpenShift Container Platform console from Oracle Edge Cloud, see steps 15 - 17 in the "Install the Cluster using the RH Assisted Installer UI" section of the [Oracle documentation](https://www.oracle.com/a/otn/docs/compute_cloud_at_customer_assisted_installer.pdf?source=:em:nl:mt::::PCATP).
+After cluster installation has been completed, access the OpenShift Container Platform console from Oracle Edge Cloud.
+
+- See steps 15 - 17 in the "Install the Cluster using the RH Assisted Installer UI" section of the [Oracle documentation](https://www.oracle.com/a/otn/docs/compute_cloud_at_customer_assisted_installer.pdf?source=:em:nl:mt::::PCATP).

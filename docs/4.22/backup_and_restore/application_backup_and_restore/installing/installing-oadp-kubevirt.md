@@ -1031,7 +1031,7 @@ The CSI Data Mover backups use Kopia regardless of `uploaderType`.
 
 # Additional resources
 
-- [Application backup and restore operations](../../../backup_and_restore/index.xml#application-backup-restore-operations-overview)
+- [Application backup and restore operations](../../../backup_and_restore/index.xml#application-backup-restore-operations-overview_backup-restore-overview)
 
 - [Backing up applications with File System Backup: Kopia or Restic](../../../backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-backing-up-applications-restic-doc.xml#oadp-backing-up-applications-restic-doc)
 

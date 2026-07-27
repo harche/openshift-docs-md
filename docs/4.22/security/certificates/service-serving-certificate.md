@@ -2,13 +2,13 @@ Service serving certificates provide automatic TLS encryption for service-to-ser
 
 # Understanding service serving certificates
 
-Service serving certificates are intended to support complex middleware applications that require encryption. These certificates are issued as TLS web server certificates.
+Service serving certificates are TLS web server certificates that OpenShift Container Platform issues for middleware applications that require encryption. The `service-ca` controller stores the certificate and key in a secret and automatically replaces them near expiration.
 
 The `service-ca` controller uses the `x509.SHA256WithRSA` signature algorithm to generate service certificates.
 
 The generated certificate and key are in PEM format, stored in `tls.crt` and `tls.key` respectively, within a created secret. The certificate and key are automatically replaced when they get close to expiration.
 
-The service CA certificate, which issues the service certificates, is valid for 26 months and is automatically rotated when there is less than 13 months validity left. After rotation, the previous service CA configuration is still trusted until its expiration. This allows a grace period for all affected services to refresh their key material before the expiration. If you do not upgrade your cluster during this grace period, which restarts services and refreshes their key material, you might need to manually restart services to avoid failures after the previous service CA expires.
+The service Certificate Authority (CA) certificate, which issues the service certificates, is valid for 26 months and is automatically rotated when there is less than 13 months validity left. After rotation, the previous service CA configuration is still trusted until its expiration. This allows a grace period for all affected services to refresh their key material before the expiration. If you do not upgrade your cluster during this grace period, which restarts services and refreshes their key material, you might need to manually restart services to avoid failures after the previous service CA expires.
 
 <div class="note">
 
@@ -25,13 +25,13 @@ $ for I in $(oc get ns -o jsonpath='{range .items[*]} {.metadata.name}{"\n"} {en
 
 # Add a service certificate
 
-To secure communication to your service, generate a signed serving certificate and key pair into a secret in the same namespace as the service.
+To secure internal communication to a service in OpenShift Container Platform, you can annotate the service to generate a signed serving certificate and key pair into a secret in the same namespace.
 
 The generated certificate is only valid for the internal service DNS name `<service.name>.<service.namespace>.svc`, and is only valid for internal communications. If your service is a headless service (no `clusterIP` value set), the generated certificate also contains a wildcard subject in the format of `*.<service.name>.<service.namespace>.svc`.
 
 <div class="important">
 
-Because the generated certificates contain wildcard subjects for headless services, you must not use the service CA if your client must differentiate between individual pods. In this case:
+Because the generated certificates contain wildcard subjects for headless services, you must not use the service Certificate Authority (CA) if your client must differentiate between individual pods. In this case:
 
 - Generate individual TLS certificates by using a different CA.
 
@@ -58,11 +58,11 @@ Because the generated certificates contain wildcard subjects for headless servic
 
       </div>
 
-    For example, use the following command to annotate the service `test1`:
+      For example, use the following command to annotate the service `test1`:
 
-    ``` terminal
-    $ oc annotate service test1 service.beta.openshift.io/serving-cert-secret-name=test1
-    ```
+      ``` terminal
+      $ oc annotate service test1 service.beta.openshift.io/serving-cert-secret-name=test1
+      ```
 
 2.  Examine the service to confirm that the annotations are present:
 
@@ -89,7 +89,7 @@ Because the generated certificates contain wildcard subjects for headless servic
 
 # Add the service CA bundle to a config map
 
-A pod can access the service Certificate Authority (CA) certificate by mounting a `ConfigMap` object that has the `service.beta.openshift.io/inject-cabundle=true` annotation. After annotating the config map, the cluster automatically injects the service CA certificate into the `service-ca.crt` key on the config map. Access to this CA certificate allows TLS clients to verify connections to services by using service serving certificates.
+To verify TLS connections to services that use serving certificates in OpenShift Container Platform, you can inject the service Certificate Authority (CA) certificate into a config map. Annotate the config map so that pods can mount the CA bundle from the `service-ca.crt` key.
 
 <div class="important">
 
@@ -162,15 +162,20 @@ After adding this annotation to a config map, the OpenShift Service CA Operator 
     # ...
     ```
 
-    - Specify the name of the config map that you annotated in an earlier step of the procedure.
+    where:
 
-    - `ca-bundle.crt` is required as the ConfigMap key.
+    `<config_map_name>`
+    Specifies the name of the config map that you annotated in an earlier step of the procedure.
 
-    - `tls-ca-bundle.pem` is required as the ConfigMap path.
+    ca-bundle.crt
+    Specifies the `ConfigMap` key. This is required.
+
+    tls-ca-bundle.pem
+    Specifies the `ConfigMap` path. This is required.
 
 # Add the service CA bundle to an API service
 
-You can annotate an `APIService` object with `service.beta.openshift.io/inject-cabundle=true` to have its `spec.caBundle` field populated with the service CA bundle. This allows the Kubernetes API server to validate the service CA certificate used to secure the targeted endpoint.
+To allow the Kubernetes API server in OpenShift Container Platform to validate the service Certificate Authority (CA) certificate that secures an API service endpoint, you can annotate an `APIService` object to inject the service CA bundle into the `spec.caBundle` field.
 
 1.  Annotate the API service with `service.beta.openshift.io/inject-cabundle=true`:
 
@@ -209,7 +214,7 @@ You can annotate an `APIService` object with `service.beta.openshift.io/inject-c
 
 # Add the service CA bundle to a custom resource definition
 
-You can annotate a `CustomResourceDefinition` (CRD) object with `service.beta.openshift.io/inject-cabundle=true` to have its `spec.conversion.webhook.clientConfig.caBundle` field populated with the service CA bundle. This allows the Kubernetes API server to validate the service CA certificate used to secure the targeted endpoint.
+You can annotate a `CustomResourceDefinition` (CRD) object with `service.beta.openshift.io/inject-cabundle=true` to have its `spec.conversion.webhook.clientConfig.caBundle` field populated with the service Certificate Authority (CA) bundle. This allows the Kubernetes API server to validate the service CA certificate used to secure the targeted endpoint.
 
 <div class="note">
 
@@ -258,7 +263,7 @@ The service CA bundle will only be injected into the CRD if the CRD is configure
 
 # Add the service CA bundle to a mutating webhook configuration
 
-You can annotate a `MutatingWebhookConfiguration` object with `service.beta.openshift.io/inject-cabundle=true` to have the `clientConfig.caBundle` field of each webhook populated with the service CA bundle. This allows the Kubernetes API server to validate the service CA certificate used to secure the targeted endpoint.
+To allow the Kubernetes API server in OpenShift Container Platform to validate the service Certificate Authority (CA) certificate that secures a mutating webhook endpoint, you can annotate a `MutatingWebhookConfiguration` object to inject the service CA bundle into each webhook `clientConfig.caBundle` field.
 
 <div class="note">
 
@@ -306,7 +311,7 @@ Do not set this annotation for admission webhook configurations that need to spe
 
 # Add the service CA bundle to a validating webhook configuration
 
-You can annotate a `ValidatingWebhookConfiguration` object with `service.beta.openshift.io/inject-cabundle=true` to have the `clientConfig.caBundle` field of each webhook populated with the service CA bundle. This allows the Kubernetes API server to validate the service CA certificate used to secure the targeted endpoint.
+To allow the Kubernetes API server in OpenShift Container Platform to validate the service Certificate Authority (CA) certificate that secures a validating webhook endpoint, you can annotate a `ValidatingWebhookConfiguration` object to inject the service CA bundle into each webhook `clientConfig.caBundle` field.
 
 <div class="note">
 
@@ -354,7 +359,7 @@ Do not set this annotation for admission webhook configurations that need to spe
 
 # Manually rotate the generated service certificate
 
-You can rotate the service certificate by deleting the associated secret. Deleting the secret results in a new one being automatically created, resulting in a new certificate.
+To replace a generated service serving certificate in OpenShift Container Platform, you can delete the TLS secret named in the service `serving-cert-secret-name` annotation. A new secret and certificate pair are created automatically.
 
 - A secret containing the certificate and key pair must have been generated for the service.
 
@@ -403,9 +408,9 @@ You can rotate the service certificate by deleting the associated secret. Deleti
 
 # Manually rotate the service CA certificate
 
-The service CA is valid for 26 months and is automatically refreshed when there is less than 13 months validity left.
+To refresh the service Certificate Authority (CA) certificate in OpenShift Container Platform outside the automatic renewal cycle, you can delete the `signing-key` secret in the `openshift-service-ca` namespace. Restart pods so that services use certificates signed by the new CA.
 
-If necessary, you can manually refresh the service CA by using the following procedure.
+The service CA is valid for 26 months and is automatically refreshed when less than 13 months of validity remain.
 
 <div class="warning">
 

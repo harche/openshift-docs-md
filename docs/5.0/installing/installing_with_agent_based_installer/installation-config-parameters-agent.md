@@ -4,7 +4,7 @@ When you create the `install-config.yaml` and `agent-config.yaml` files, you mus
 
 # Available installation configuration parameters
 
-To customize your cluster installation, configuration parameters are available to use in the `install-config.yaml` file.
+To customize your cluster installation, you can use configuration parameters in the `install-config.yaml` file.
 
 The following tables specify the required and optional installation configuration parameters that you can set as part of the Agent-based installation process.
 

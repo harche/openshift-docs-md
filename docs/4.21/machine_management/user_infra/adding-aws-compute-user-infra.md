@@ -1,4 +1,4 @@
-You can add more compute machines to your OpenShift Container Platform cluster on Amazon Web Services (AWS) that you created by using the sample CloudFormation templates.
+To scale your OpenShift Container Platform cluster on Amazon Web Services (AWS) after user-provisioned installation, you can add compute machines by creating CloudFormation stacks from your installation templates. You can then approve certificate signing requests so the new nodes join the cluster.
 
 # Prerequisites
 
@@ -8,7 +8,7 @@ You can add more compute machines to your OpenShift Container Platform cluster o
 
 # Adding more compute machines to your AWS cluster by using CloudFormation templates
 
-You can add more compute machines to your OpenShift Container Platform cluster on Amazon Web Services (AWS) that you created by using the sample CloudFormation templates.
+To scale your OpenShift Container Platform cluster on Amazon Web Services (AWS), you can add more compute machines by creating additional CloudFormation stacks from the sample templates that you used during installation.
 
 <div class="important">
 
@@ -31,8 +31,8 @@ If you do not use the provided CloudFormation template to create your compute no
     1.  Launch the template:
 
         ``` terminal
-        $ aws cloudformation create-stack --stack-name <name> \
-             --template-body file://<template>.yaml \
+        $ aws cloudformation create-stack --stack-name <name>
+             --template-body file://<template>.yaml
              --parameters file://<parameters>.json
         ```
 
@@ -52,7 +52,7 @@ If you do not use the provided CloudFormation template to create your compute no
 
 # Approving the certificate signing requests for your machines
 
-When you add machines to a cluster, two pending certificate signing requests (CSRs) are generated for each machine that you added. You must confirm that these CSRs are approved or, if necessary, approve them yourself. The client requests must be approved first, followed by the server requests.
+When you add machines to a cluster, two pending certificate signing requests (CSRs) are generated for each machine. You must confirm that these CSRs are approved or, if necessary, approve them yourself. The client requests must be approved first, followed by the server requests.
 
 - You added machines to your cluster.
 
@@ -108,7 +108,7 @@ When you add machines to a cluster, two pending certificate signing requests (CS
 
     <div class="note">
 
-    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The subsequent serving certificate renewal requests are then automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After the client CSR is approved, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The subsequent serving certificate renewal requests are then automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
 
     </div>
 

@@ -304,7 +304,7 @@ Download and install the new version of `oc`.
 
 You can verify your OpenShift Container Platform cluster’s status during or after installation.
 
-1.  In the cluster environment, export the administrator’s kubeconfig file:
+1.  In the cluster environment, export the administrator’s kubeconfig file by entering the following command:
 
     ``` terminal
     $ export KUBECONFIG=<installation_directory>/auth/kubeconfig
@@ -314,25 +314,25 @@ You can verify your OpenShift Container Platform cluster’s status during or af
 
       The `kubeconfig` file contains information about the cluster that is used by the CLI to connect a client to the correct cluster and API server.
 
-2.  View the control plane and compute machines created after a deployment:
+2.  View the control plane and compute machines created after a deployment by entering the following command:
 
     ``` terminal
     $ oc get nodes
     ```
 
-3.  View your cluster’s version:
+3.  View the version of your cluster by entering the following command:
 
     ``` terminal
     $ oc get clusterversion
     ```
 
-4.  View your Operators' status:
+4.  View the status of the cluster Operators by entering the following command:
 
     ``` terminal
     $ oc get clusteroperator
     ```
 
-5.  View all running pods in the cluster:
+5.  View all running pods in the cluster by entering the following command:
 
     ``` terminal
     $ oc get pods -A

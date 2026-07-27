@@ -387,10 +387,10 @@ The following high-level steps demonstrate how to expose a service through a net
             spec:
               containers:
               - name: server
-                image: nginx
+                image: registry.access.redhat.com/ubi9/httpd-24
                 ports:
                 - name: http
-                  containerPort: 80
+                  containerPort: 8080
         ---
         apiVersion: v1
         kind: Service
@@ -402,7 +402,7 @@ The following high-level steps demonstrate how to expose a service through a net
           - name: http
             port: 80
             protocol: TCP
-            targetPort: 80
+            targetPort: 8080
           selector:
             app: server
           type: LoadBalancer
@@ -417,10 +417,10 @@ The following high-level steps demonstrate how to expose a service through a net
 
 <!-- -->
 
-1.  Identify a MetalLB speaker pod by running the following command:
+1.  Identify a `frr-k8s` pod by running the following command:
 
     ``` terminal
-    $ oc get -n metallb-system pods -l component=speaker
+    $ oc get -n openshift-frr-k8s pods -l app=frr-k8s
     ```
 
     <div class="formalpara-title">
@@ -431,13 +431,13 @@ The following high-level steps demonstrate how to expose a service through a net
 
     ``` terminal
     NAME            READY   STATUS    RESTARTS   AGE
-    speaker-c6c5f   6/6     Running   0          69m
+    frr-k8s-abcde   7/7     Running   0          69m
     ```
 
-2.  Verify that the state of the BGP session is `Established` in the speaker pod by running the following command, replacing the variables to match your configuration:
+2.  Verify that the state of the BGP session is `Established` in the `frr-k8s` pod by running the following command, replacing the variables to match your configuration:
 
     ``` terminal
-    $ oc exec -n metallb-system <speaker_pod> -c frr -- vtysh -c "show bgp vrf <vrf_name> neigh"
+    $ oc exec -n openshift-frr-k8s <frr_k8s_pod> -c frr -- vtysh -c "show bgp vrf <vrf_name> neigh"
     ```
 
     <div class="formalpara-title">
@@ -447,8 +447,8 @@ The following high-level steps demonstrate how to expose a service through a net
     </div>
 
     ``` terminal
-    BGP neighbor is 192.168.30.1, remote AS 200, local AS 100, external link
-      BGP version 4, remote router ID 192.168.30.1, local router ID 192.168.30.71
+    BGP neighbor is 192.168.130.1, remote AS 200, local AS 100, external link
+      BGP version 4, remote router ID 192.168.130.1, local router ID 192.168.130.71
       BGP state = Established, up for 04:20:09
 
     ...
@@ -457,7 +457,7 @@ The following high-level steps demonstrate how to expose a service through a net
 3.  Verify that the service is advertised correctly by running the following command:
 
     ``` terminal
-    $ oc exec -n metallb-system <speaker_pod> -c frr -- vtysh -c "show bgp vrf <vrf_name> ipv4"
+    $ oc exec -n openshift-frr-k8s <frr_k8s_pod> -c frr -- vtysh -c "show bgp vrf <vrf_name> ipv4"
     ```
 
 # Additional resources

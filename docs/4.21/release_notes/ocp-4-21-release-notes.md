@@ -940,6 +940,60 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHSA-2026:40792 - OpenShift Container Platform 4.17.25 bug fix and security update
+
+Issued: 21 July 2026
+
+OpenShift Container Platform release 4.17.25 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:40792](https://access.redhat.com/errata/RHSA-2026:40792) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:40778](https://access.redhat.com/errata/RHBA-2026:40778) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.25 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, the `nested-container` Security Context Constraint (SCC) used an incorrect specification for UID ranges, causing the UID ranges to be completely missing. As a consequence, pods using the `nested-container` SCC did not have the expected UID range constraints applied. With this release, the SCC correctly uses `uidRangeMin` and `uidRangeMax` fields to specify the UID range from `0` to `65534` so that the `nested-container` SCC properly enforces UID range constraints. ([OCPBUGS-81747](https://redhat.atlassian.net/browse/OCPBUGS-81747))
+
+- Before this update, the Cluster API image overrides logic did not detect registry configuration. As a consequence, images were always pulled from `quay.io`, and registry overrides had no effect. The rest of the payload properly applied the overrides. With this release, the Cluster API image override logic detects the registry configuration and follows it. As a result, images are downloaded from the correct registry. For this feature to work as intended in environments where registry overrides are applied, 4.20.10 images must be mirrored to the target registry. Otherwise, images are not pulled and clusters are not created. ([OCPBUGS-86295](https://redhat.atlassian.net/browse/OCPBUGS-86295))
+
+- Before this update, in Telecom Boundary Clock (T-BC) configurations, the `cloud-event-proxy` parameter previously derived the `CLOCK_REALTIME` (E3) sync state incorrectly due to conflicting code paths and race conditions. As a consequence, status inconsistencies and inaccurate reporting occurred. With this release, the `phc2sys` service is the sole publisher of E3, which uses the `worst_of(phc2sys_state, E1_state)` logic and removes the unstable `masterOffsetSource` check. As a result, the `CLOCK_REALTIME` state now accurately reflects the `phc2sys` service offset and upstream PTP lock status. ([OCPBUGS-88704](https://redhat.atlassian.net/browse/OCPBUGS-88704))
+
+- Before this update, when you provisioned machines on an OpenStack cloud provider that does not support the optional Standard Attributes Tag extension, the Machine API Provider for OpenStack (MAPO) attempted to apply port tags during network port creation. As a consequence, network port creation failed and machine provisioning did not complete. With this release, MAPO checks whether the OpenStack Neutron `standard-attr-tag` extension is available before applying port tags. If the extension is not supported, MAPO skips tag assignment during provisioning. If you explicitly configure port tags on an unsupported OpenStack deployment, MAPO returns an error that prompts you to remove the port tags configuration. As a result, machine provisioning completes successfully on OpenStack deployments that do not support the tag extension. ([OCPBUGS-97825](https://redhat.atlassian.net/browse/OCPBUGS-97825))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
+## RHSA-2026:37186 - OpenShift Container Platform 4.17.24 bug fix and security update
+
+Issued: 14 July 2026
+
+OpenShift Container Platform release 4.17.24 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:37186](https://access.redhat.com/errata/RHSA-2026:37186) advisory. There are no RPM packages for this release.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.24 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, when you filtered projects on the **Projects** list page in the OpenShift Container Platform web console, the filter matched only the project `metadata.name` value and not the display name stored in the `openshift.io/display-name` annotation. As a consequence, typing a project’s display name in the filter toolbar returned no results even when a matching project existed. With this release, the **Projects** list filter includes the display name in its matching logic for both fuzzy and exact search modes. As a result, you can filter projects by either their technical name or their display name. ([OCPBUGS-90498](https://redhat.atlassian.net/browse/OCPBUGS-90498))
+
+- Before this update, when Prometheus compacted time series data, it attempted to enable direct I/O on files that were already open. Some file systems, such as IBM Storage Scale, do not support this operation. As a consequence, compaction failed with a `cannot enable Direct IO: invalid argument` error, Prometheus could not write chunks to disk, and memory usage in Prometheus pods increased until the pods hit their memory limits and restarted or affected other workloads on the node. With this release, Prometheus detects when a file system does not support direct I/O on open files and handles the condition gracefully. As a result, Prometheus writes chunks to disk and completes compaction successfully on these storage back ends. ([OCPBUGS-93920](https://redhat.atlassian.net/browse/OCPBUGS-93920))
+
+- Before this update, the ironic-agent container image was missing the `iproute` package at runtime, which provides the `ip` command required for network configuration. As a consequence, the Ironic Python Agent (IPA) failed to heartbeat to Ironic during bare-metal node cleaning, and node cleaning operations timed out. With this release, the ironic-agent container image build process is updated to retain required packages such as `iproute` and `psmisc`. As a result, IPA completes network configuration successfully and bare-metal node cleaning operations complete without timing out. ([OCPBUGS-95062](https://redhat.atlassian.net/browse/OCPBUGS-95062))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHSA-2026:34769 - OpenShift Container Platform 4.17.23 fixed issues advisory
 
 Issued: 07 July 2026

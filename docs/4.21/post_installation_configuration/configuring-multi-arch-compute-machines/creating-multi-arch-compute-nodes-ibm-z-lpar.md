@@ -1,14 +1,20 @@
-To create a cluster with multi-architecture compute machines on IBM Z® and IBM® LinuxONE (`s390x`) in an LPAR, you must have an existing single-architecture `x86_64` cluster. You can then add `s390x` compute machines to your OpenShift Container Platform cluster.
+To create a cluster with multi-architecture compute machines on IBM Z® and IBM® LinuxONE (`s390x`) in a logical partition (LPAR), you must have an existing single-architecture `x86_64` cluster. You can then add `s390x` compute machines to your OpenShift Container Platform cluster.
 
-Before you can add `s390x` nodes to your cluster, you must upgrade your cluster to one that uses the multi-architecture payload. For more information on migrating to the multi-architecture payload, see [Migrating to a cluster with multi-architecture compute machines](../../updating/updating_a_cluster/migrating-to-multi-payload.xml#migrating-to-multi-payload).
+Before you can add `s390x` nodes to your cluster, you must upgrade your cluster to one that uses the multi-architecture payload. For more information about migrating to the multi-architecture payload, see "Migrating to a cluster with multi-architecture compute machines".
 
-The following procedures explain how to create a RHCOS compute machine using an LPAR instance. This will allow you to add `s390x` nodes to your cluster and deploy a cluster with multi-architecture compute machines.
+You can create a RHCOS compute machine by using an LPAR instance. By using an LPAR instance, you can add `s390x` nodes to your cluster and deploy a cluster with multi-architecture compute machines.
 
 <div class="note">
 
-To create an IBM Z® or IBM® LinuxONE (`s390x`) cluster with multi-architecture compute machines on `x86_64`, follow the instructions for [Installing a cluster on IBM Z® and IBM® LinuxONE](../../installing/installing_ibm_z/preparing-to-install-on-ibm-z.xml#preparing-to-install-on-ibm-z). You can then add `x86_64` compute machines as described in [Creating a cluster with multi-architecture compute machines on bare metal, IBM Power, or IBM Z](./creating-multi-arch-compute-nodes-bare-metal.xml#creating-multi-arch-compute-nodes-bare-metal).
+To create an IBM Z® or IBM® LinuxONE (`s390x`) cluster with multi-architecture compute machines on `x86_64`, follow the instructions for "Installing a cluster on IBM Z® and IBM® LinuxONE". You can then add `x86_64` compute machines as described in "Creating a cluster with multi-architecture compute machines on bare metal, IBM Power, or IBM Z".
 
 </div>
+
+- [Migrating to a cluster with multi-architecture compute machines](../../updating/updating_a_cluster/migrating-to-multi-payload.xml#migrating-to-multi-payload)
+
+- [Installing a cluster on IBM Z® and IBM® LinuxONE](../../installing/installing_ibm_z/preparing-to-install-on-ibm-z.xml#preparing-to-install-on-ibm-z)
+
+- [Creating a cluster with multi-architecture compute machines on bare metal, IBM Power, or IBM Z](./creating-multi-arch-compute-nodes-bare-metal.xml#creating-multi-arch-compute-nodes-bare-metal)
 
 # Creating RHCOS machines on IBM Z in an LPAR
 
@@ -26,7 +32,7 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines ru
 
 2.  Upload the `worker.ign` Ignition config file you exported from your cluster to your HTTP server. Note the URL of this file.
 
-3.  You can validate that the Ignition file is available on the URL. The following example gets the Ignition config file for the compute node:
+3.  Validate that the Ignition file is available on the URL. The following example gets the Ignition config file for the compute node:
 
     ``` terminal
     $ curl -k http://<http_server>/worker.ign
@@ -51,7 +57,7 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines ru
 
 5.  Move the downloaded RHEL live `kernel`, `initramfs`, and `rootfs` files to an HTTP or HTTPS server that is accessible from the RHCOS guest you want to add.
 
-6.  Create a parameter file for the guest. The following parameters are specific for the virtual machine:
+6.  Create a parameter file for the guest. The following parameters are specific to the virtual machine:
 
     - Optional: To specify a static IP address, add an `ip=` parameter with the following entries, with each separated by a colon:
 
@@ -103,7 +109,7 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines ru
 
           <div class="note">
 
-          When you install with multiple paths, you must enable multipathing directly after the installation, not at a later point in time, as this can cause problems.
+          When you install with multiple paths, you must enable multipathing directly after the installation. Enabling multipathing much later can cause problems for your cluster.
 
           </div>
 
@@ -142,13 +148,13 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines ru
 
           Write all options in the parameter file as a single line and make sure that you have no newline characters.
 
-7.  Transfer the initramfs, kernel, parameter files, and RHCOS images to the LPAR, for example with FTP. For details about how to transfer the files with FTP and boot, see [Booting the installation on IBM Z® to install RHEL in an LPAR](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html-single/interactively_installing_rhel_over_the_network/index#installing-in-an-lpar_booting-the-installation-media).
+7.  As an example for FTP, transfer the initramfs, kernel, parameter files, and RHCOS images to the LPAR. For details about how to transfer the files with FTP and boot, see [Booting the installation on IBM Z® to install RHEL in an LPAR](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html-single/interactively_installing_rhel_over_the_network/index#installing-in-an-lpar_booting-the-installation-media).
 
-8.  Boot the machine
+8.  Boot the machine.
 
 # Approving the certificate signing requests for your machines
 
-When you add machines to a cluster, two pending certificate signing requests (CSRs) are generated for each machine that you added. You must confirm that these CSRs are approved or, if necessary, approve them yourself. The client requests must be approved first, followed by the server requests.
+When you add machines to a cluster, two pending certificate signing requests (CSRs) are generated for each machine. You must confirm that these CSRs are approved or, if necessary, approve them yourself. The client requests must be approved first, followed by the server requests.
 
 - You added machines to your cluster.
 
@@ -204,7 +210,7 @@ When you add machines to a cluster, two pending certificate signing requests (CS
 
     <div class="note">
 
-    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates will rotate, and more than two certificates will be present for each node. You must approve all of these certificates. After the client CSR is approved, the Kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The subsequent serving certificate renewal requests are then automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After the client CSR is approved, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The subsequent serving certificate renewal requests are then automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
 
     </div>
 

@@ -50,11 +50,7 @@ Install the `cluster-compare` plugin to compare a reference configuration with a
   $ oc cluster-compare -h
   ```
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
+  The following is example output:
 
   ``` terminal
   Compare a known valid reference configuration and a set of specific cluster configuration CRs.

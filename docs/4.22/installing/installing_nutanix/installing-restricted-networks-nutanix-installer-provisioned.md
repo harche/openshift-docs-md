@@ -2,7 +2,7 @@ In OpenShift Container Platform 4.17, you can install a cluster on Nutanix infra
 
 # Prerequisites
 
-- You have reviewed details about the [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation) processes.
+- You have reviewed details about the OpenShift Container Platform installation and update processes.
 
 - The installation program requires access to port 9440 on Prism Central and Prism Element. You verified that port 9440 is accessible.
 
@@ -10,11 +10,11 @@ In OpenShift Container Platform 4.17, you can install a cluster on Nutanix infra
 
   - You confirmed that port 9440 is accessible. Control plane nodes must be able to reach Prism Central and Prism Element on port 9440 for the installation to succeed.
 
-  - You configured the firewall to [grant access](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) to the sites that OpenShift Container Platform requires. This includes the use of Telemetry.
+  - You configured the firewall to grant access to the sites that OpenShift Container Platform requires. This includes the use of Telemetry.
 
-- If your Nutanix environment is using the default self-signed SSL/TLS certificate, replace it with a certificate that is signed by a CA. The installation program requires a valid CA-signed certificate to access to the Prism Central API. For more information about replacing the self-signed certificate, see the [Nutanix AOS Security Guide](https://portal.nutanix.com/page/documents/details?targetId=Nutanix-Security-Guide-v6_1:mul-security-ssl-certificate-pc-t.html).
+- If your Nutanix environment is using the default self-signed SSL/TLS certificate, replace it with a certificate that is signed by a CA. The installation program requires a valid CA-signed certificate to access to the Prism Central API. For more information about replacing the self-signed certificate, see the Nutanix AOS Security Guide.
 
-  If your Nutanix environment uses an internal CA to issue certificates, you must configure a cluster-wide proxy as part of the installation process. For more information, see [Configuring a custom PKI](../../networking/configuring_network_settings/configuring-a-custom-pki.xml#configuring-a-custom-pki).
+  If your Nutanix environment uses an internal CA to issue certificates, you must configure a cluster-wide proxy as part of the installation process. For more information, see "Configuring a custom PKI".
 
   <div class="important">
 
@@ -22,9 +22,9 @@ In OpenShift Container Platform 4.17, you can install a cluster on Nutanix infra
 
   </div>
 
-- You have a container image registry, such as Red Hat Quay. If you do not already have a registry, you can create a mirror registry using [*mirror registry for Red Hat OpenShift*](../../disconnected/installing-mirroring-creating-registry.xml#installing-mirroring-creating-registry).
+- You have a container image registry, such as Red Hat Quay. If you do not already have a registry, you can create a mirror registry using the *mirror registry for Red Hat OpenShift*.
 
-- You have used the [oc-mirror OpenShift CLI (oc) plugin](../../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2) to mirror all of the required OpenShift Container Platform content and other images, including the Nutanix CSI Operator, to your mirror registry.
+- You have used the oc-mirror OpenShift CLI (oc) plugin to mirror all of the required OpenShift Container Platform content and other images, including the Nutanix CSI Operator, to your mirror registry.
 
   <div class="important">
 
@@ -200,17 +200,17 @@ Prism Central requires access to the Red Hat Enterprise Linux CoreOS (RHCOS) im
 
 4.  Note the location of the downloaded image. You update the `platform` section in the installation configuration file (`install-config.yaml`) with the image’s location before deploying the cluster.
 
-<div class="formalpara-title">
+    <div class="formalpara-title">
 
-**Snippet of an `install-config.yaml` file that specifies the RHCOS image**
+    **Snippet of an `install-config.yaml` file that specifies the RHCOS image**
 
-</div>
+    </div>
 
-``` yaml
-platform:
-  nutanix:
-    clusterOSImage: http://example.com/images/rhcos-411.86.202210041459-0-nutanix.x86_64.qcow2
-```
+    ``` yaml
+    platform:
+      nutanix:
+        clusterOSImage: http://example.com/images/rhcos-411.86.202210041459-0-nutanix.x86_64.qcow2
+    ```
 
 # Creating the installation configuration file
 
@@ -438,49 +438,75 @@ imageContentSources:
   source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
 ```
 
-- Required. The installation program prompts you for this value.
+The installation program prompts you for the values of `baseDomain`, `metadata.name`, `platform.nutanix.apiVIP`, `platform.nutanix.ingressVIP`, `platform.nutanix.prismCentral.endpoint.address`, `platform.nutanix.prismCentral.endpoint.port`, `platform.nutanix.prismCentral.password`, and `platform.nutanix.prismCentral.username`.
 
-- The `controlPlane` section is a single mapping, but the compute section is a sequence of mappings. To meet the requirements of the different data structures, the first line of the `compute` section must begin with a hyphen, `-`, and the first line of the `controlPlane` section must not. Although both sections currently define a single machine pool, it is possible that future versions of OpenShift Container Platform will support defining multiple compute pools during installation. Only one control plane pool is used.
+where:
 
-- Whether to enable or disable simultaneous multithreading, or `hyperthreading`. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores. You can disable it by setting the parameter value to `Disabled`. If you disable simultaneous multithreading in some cluster machines, you must disable it in all cluster machines.
+`compute`
+The `compute` section is a sequence of mappings. The first line of the `compute` section must begin with a hyphen, `-`. Although this section currently defines a single machine pool, it is possible that future versions of OpenShift Container Platform will support defining multiple compute pools during installation.
 
-  <div class="important">
+`hyperthreading`
+Whether to enable or disable simultaneous multithreading, or `hyperthreading`. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores. You can disable it by setting the parameter value to `Disabled`. If you disable simultaneous multithreading in some cluster machines, you must disable it in all cluster machines.
 
-  If you disable simultaneous multithreading, ensure that your capacity planning accounts for the dramatically decreased machine performance.
+<div class="important">
 
-  </div>
+If you disable simultaneous multithreading, ensure that your capacity planning accounts for the dramatically decreased machine performance.
 
-- Optional: Provide additional configuration for the machine pool parameters for the compute and control plane machines.
+</div>
 
-- Optional: Provide one or more pairs of a prism category key and a prism category value. These category key-value pairs must exist in Prism Central. You can provide separate categories to compute machines, control plane machines, or all machines.
+`platform.nutanix`
+Optional: Provide additional configuration for the machine pool parameters for the compute and control plane machines.
 
-- The cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
+`categories`
+Optional: Provide one or more pairs of a prism category key and a prism category value. These category key-value pairs must exist in Prism Central. You can provide separate categories to compute machines, control plane machines, or all machines.
 
-- Optional: Specify a project with which VMs are associated. Specify either `name` or `uuid` for the project type, and then provide the corresponding UUID or project name. You can associate projects to compute machines, control plane machines, or all machines.
+`controlPlane`
+The `controlPlane` section is a single mapping. The first line of the `controlPlane` section must not begin with a hyphen. Only one control plane pool is used.
 
-- Optional: By default, the installation program downloads and installs the Red Hat Enterprise Linux CoreOS (RHCOS) image. If Prism Central does not have internet access, you can override the default behavior by hosting the RHCOS image on any HTTP server or Nutanix Objects and pointing the installation program to the image.
+`networkType`
+The cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
 
-- For `<local_registry>`, specify the registry domain name, and optionally the port, that your mirror registry uses to serve content. For example `registry.example.com` or `registry.example.com:5000`. For `<credentials>`, specify the base64-encoded user name and password for your mirror registry.
+`project`
+Optional: Specify a project with which VMs are associated. Specify either `name` or `uuid` for the project type, and then provide the corresponding UUID or project name. You can associate projects to compute machines, control plane machines, or all machines.
 
-- Whether to enable or disable FIPS mode. By default, FIPS mode is not enabled. If FIPS mode is enabled, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that are provided with RHCOS instead.
+`<password>`
+Required. The installation program prompts you for this value.
 
-  <div class="important">
+`<username>`
+Required. The installation program prompts you for this value.
 
-  When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
+`clusterOSImage`
+Optional: By default, the installation program downloads and installs the Red Hat Enterprise Linux CoreOS (RHCOS) image. If Prism Central does not have internet access, you can override the default behavior by hosting the RHCOS image on any HTTP server or Nutanix Objects and pointing the installation program to the image.
 
-  </div>
+`<local_registry>`
+Specify the registry domain name, and optionally the port, that your mirror registry uses to serve content. For example `registry.example.com` or `registry.example.com:5000`.
 
-- Optional: You can provide the `sshKey` value that you use to access the machines in your cluster.
+`<credentials>`
+Specify the base64-encoded user name and password for your mirror registry.
 
-  <div class="note">
+`fips`
+Whether to enable or disable FIPS mode. By default, FIPS mode is not enabled. If FIPS mode is enabled, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that are provided with RHCOS instead.
 
-  For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+<div class="important">
 
-  </div>
+When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
 
-- Provide the contents of the certificate file that you used for your mirror registry.
+</div>
 
-- Provide these values from the `metadata.name: release-0` section of the `imageContentSourcePolicy.yaml` file that was created when you mirrored the registry.
+`sshKey`
+Optional: You can provide the `sshKey` value that you use to access the machines in your cluster.
+
+<div class="note">
+
+For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+
+</div>
+
+`additionalTrustBundle`
+Provide the contents of the certificate file that you used for your mirror registry.
+
+`imageContentSources`
+Provide these values from the `metadata.name: release-0` section of the `imageContentSourcePolicy.yaml` file that was created when you mirrored the registry.
 
 ## Configuring failure domains
 
@@ -807,11 +833,16 @@ Installing the cluster requires that the Cloud Credential Operator (CCO) operate
           password: <password_for_prism_element>
     ```
 
-    - Specify the authentication type. Only basic authentication is supported.
+    where:
 
-    - Specify the Prism Central credentials.
+    `type`
+    Specifies the authentication type. Only basic authentication is supported.
 
-    - Optional: Specify the Prism Element credentials.
+    `prismCentral`
+    Specifies the Prism Central credentials.
+
+    `prismElements`
+    Optional: Specifies the Prism Element credentials.
 
 2.  Set a `$RELEASE_IMAGE` variable with the release image from your installation file by running the following command:
 
@@ -830,36 +861,41 @@ Installing the cluster requires that the Cloud Credential Operator (CCO) operate
       --to=<path_to_directory_for_credentials_requests>
     ```
 
-    - The `--included` parameter includes only the manifests that your specific cluster configuration requires.
+    where:
 
-    - Specify the location of the `install-config.yaml` file.
+    `--included`
+    Includes only the manifests that your specific cluster configuration requires.
 
-    - Specify the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
+    `<path_to_directory_with_installation_configuration>`
+    Specifies the location of the `install-config.yaml` file.
 
-      <div class="formalpara-title">
+    `<path_to_directory_for_credentials_requests>`
+    Specifies the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
 
-      **Sample `CredentialsRequest` object**
+    <div class="formalpara-title">
 
-      </div>
+    **Sample `CredentialsRequest` object**
 
-      ``` yaml
-        apiVersion: cloudcredential.openshift.io/v1
-        kind: CredentialsRequest
-        metadata:
-          annotations:
-            include.release.openshift.io/self-managed-high-availability: "true"
-          labels:
-            controller-tools.k8s.io: "1.0"
-          name: openshift-machine-api-nutanix
-          namespace: openshift-cloud-credential-operator
-        spec:
-          providerSpec:
-            apiVersion: cloudcredential.openshift.io/v1
-            kind: NutanixProviderSpec
-          secretRef:
-            name: nutanix-credentials
-            namespace: openshift-machine-api
-      ```
+    </div>
+
+    ``` yaml
+      apiVersion: cloudcredential.openshift.io/v1
+      kind: CredentialsRequest
+      metadata:
+        annotations:
+          include.release.openshift.io/self-managed-high-availability: "true"
+        labels:
+          controller-tools.k8s.io: "1.0"
+        name: openshift-machine-api-nutanix
+        namespace: openshift-cloud-credential-operator
+      spec:
+        providerSpec:
+          apiVersion: cloudcredential.openshift.io/v1
+          kind: NutanixProviderSpec
+        secretRef:
+          name: nutanix-credentials
+          namespace: openshift-machine-api
+    ```
 
 4.  Use the `ccoctl` tool to process all `CredentialsRequest` objects by running the following command:
 
@@ -870,11 +906,16 @@ Installing the cluster requires that the Cloud Credential Operator (CCO) operate
       --credentials-source-filepath=<path_to_credentials_file>
     ```
 
-    - Specify the path to the directory that contains the files for the component `CredentialsRequests` objects.
+    where:
 
-    - Optional: Specify the directory in which you want the `ccoctl` utility to create objects. By default, the utility creates objects in the directory in which the commands are run.
+    `<path_to_credentials_requests_directory>`
+    Specifies the path to the directory that contains the files for the component `CredentialsRequests` objects.
 
-    - Optional: Specify the directory that contains the credentials data YAML file. By default, `ccoctl` expects this file to be in `<home_directory>/.nutanix/credentials`.
+    `<ccoctl_output_dir>`
+    Optional: Specifies the directory in which you want the `ccoctl` utility to create objects. By default, the utility creates objects in the directory in which the commands are run.
+
+    `<path_to_credentials_file>`
+    Optional: Specifies the directory that contains the credentials data YAML file. By default, `ccoctl` expects this file to be in `<home_directory>/.nutanix/credentials`.
 
 5.  Edit the `install-config.yaml` configuration file so that the `credentialsMode` parameter is set to `Manual`.
 
@@ -891,7 +932,7 @@ Installing the cluster requires that the Cloud Credential Operator (CCO) operate
     ...
     ```
 
-    - Add this line to set the `credentialsMode` parameter to `Manual`.
+    Add the `credentialsMode` line to set the parameter to `Manual`.
 
 6.  Create the installation manifests by running the following command:
 
@@ -899,7 +940,7 @@ Installing the cluster requires that the Cloud Credential Operator (CCO) operate
     $ openshift-install create manifests --dir <installation_directory>
     ```
 
-    - Specify the path to the directory that contains the `install-config.yaml` file for your cluster.
+    For `<installation_directory>`, specify the path to the directory that contains the `install-config.yaml` file for your cluster.
 
 7.  Copy the generated credential files to the target manifests directory by running the following command:
 
@@ -1005,13 +1046,11 @@ When the cluster deployment completes successfully:
 
   </div>
 
-# Post installation
-
-Complete the following steps to complete the configuration of your cluster.
-
-## Disabling the default software catalog sources
+# Disabling the default software catalog sources
 
 Operator catalogs that source content provided by Red Hat and community projects are configured for the software catalog by default during an OpenShift Container Platform installation. In a restricted network environment, you must disable the default catalogs as a cluster administrator.
+
+Operator catalogs that source content provided by Red Hat and community projects are configured for the software catalog by default during an OpenShift Container Platform installation.
 
 - Disable the sources for the default catalogs by adding `disableAllDefaultSources: true` to the `OperatorHub` object:
 
@@ -1026,7 +1065,7 @@ Operator catalogs that source content provided by Red Hat and community projects
 
   </div>
 
-## Installing the policy resources into the cluster
+# Installing the policy resources into the cluster
 
 Mirroring the OpenShift Container Platform content using the oc-mirror OpenShift CLI (oc) plugin creates resources, which include `catalogSource-certified-operator-index.yaml` and `imageContentSourcePolicy.yaml`.
 
@@ -1072,13 +1111,17 @@ After you install the cluster, you must install these resources into the cluster
     $ oc get catalogsource --all-namespaces
     ```
 
-- [Adding a catalog to a cluster](../../extensions/catalogs/managing-catalogs.xml#olmv1-adding-a-catalog-to-a-cluster_managing-catalogs) in "Extensions"
+- [Adding a catalog to a cluster in Extensions](../../extensions/catalogs/managing-catalogs.xml#olmv1-adding-a-catalog-to-a-cluster_managing-catalogs)
 
-## Configuring the default storage container
+# Configuring the default storage container
 
 After you install the cluster, you must install the Nutanix CSI Operator and configure the default storage container for the cluster.
 
-For more information, see the Nutanix documentation for [installing the CSI Operator](https://opendocs.nutanix.com/openshift/operators/csi/) and [configuring registry storage](https://opendocs.nutanix.com/openshift/post-install/).
+## Additional resources
+
+- [Installing the CSI Operator](https://opendocs.nutanix.com/openshift/operators/csi/)
+
+- [Configuring registry storage](https://opendocs.nutanix.com/openshift/post-install/)
 
 # Telemetry access for OpenShift Container Platform
 
@@ -1088,12 +1131,22 @@ After you confirm that your [OpenShift Cluster Manager](https://console.redhat.c
 
 # Additional resources
 
+- [OpenShift Container Platform installation and update processes](../../architecture/architecture-installation.xml#architecture-installation)
+
+- [Configuring your firewall to grant required access](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
+
+- [Nutanix AOS Security Guide](https://portal.nutanix.com/page/documents/details?targetId=Nutanix-Security-Guide-v6_1:mul-security-ssl-certificate-pc-t.html)
+
+- [Configuring a custom PKI](../../networking/configuring_network_settings/configuring-a-custom-pki.xml#configuring-a-custom-pki)
+
+- [*mirror registry for Red Hat OpenShift*](../../disconnected/installing-mirroring-creating-registry.xml#installing-mirroring-creating-registry)
+
+- [oc-mirror OpenShift CLI (oc) plugin](../../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
+
 - [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
-# Next steps
+- [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
-- If necessary, see [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
-
-- If necessary, see [Registering your disconnected cluster](../../support/remote_health_monitoring/remote-health-reporting.xml#insights-operator-register-disconnected-cluster_remote-health-reporting)
+- [Registering your disconnected cluster](../../support/remote_health_monitoring/remote-health-reporting.xml#insights-operator-register-disconnected-cluster_remote-health-reporting)
 
 - [Customize your cluster](../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
