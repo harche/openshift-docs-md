@@ -60,4 +60,4 @@ You can create a new VM by copying an existing snapshot.
 
 # Additional resources
 
-- [Creating VMs by cloning PVCs](../../virt/creating_vms_advanced/virt-creating-vms-by-cloning-pvcs.xml#virt-creating-vms-by-cloning-pvcs)
+- [Creating VMs by cloning PVCs](../../virt/creating_vm/virt-creating-vms-by-cloning-pvcs.xml#virt-creating-vms-by-cloning-pvcs)

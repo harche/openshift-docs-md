@@ -50,11 +50,13 @@ To collect metrics from your specific applications, enable monitoring for user-d
 
     The status of the pods such as `prometheus-operator`, `prometheus-user-workload`, and `thanos-ruler-user-workload` must be `Running`.
 
-- [Setting up metrics collection for user-defined projects](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/4.21/html/configuring_user_workload_monitoring/configuring-metrics-uwm#setting-up-metrics-collection-for-user-defined-projects_configuring-metrics-uwm)
+- [Setting up metrics collection for user-defined projects](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/configuring_user_workload_monitoring/configuring-metrics-uwm#setting-up-metrics-collection-for-user-defined-projects_configuring-metrics-uwm)
 
 # Configuring metrics collection for cert-manager Operator for Red Hat OpenShift operands by using a ServiceMonitor
 
-The cert-manager Operator for Red Hat OpenShift operands expose metrics by default on port `9402` at the `/metrics` service endpoint. You can configure metrics collection for the cert-manager operands by creating a `ServiceMonitor` custom resource (CR) that enables Prometheus Operator to collect custom metrics. For more information, see "Configuring user workload monitoring".
+You can configure metrics collection for the cert-manager Operator for Red Hat OpenShift operands by creating a `ServiceMonitor` custom resource (CR).
+
+The cert-manager Operator for Red Hat OpenShift operands expose metrics by default on port `9402` at the `/metrics` service endpoint. The `ServiceMonitor` CR enables Prometheus Operator to collect custom metrics.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 

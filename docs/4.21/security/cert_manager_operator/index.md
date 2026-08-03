@@ -2,7 +2,7 @@ The cert-manager Operator for Red Hat OpenShift is a cluster-wide service that p
 
 # About the cert-manager Operator for Red Hat OpenShift
 
-The cert-manager project introduces certificate authorities and certificates as resource types in the Kubernetes API, which makes it possible to provide certificates on-demand to developers working within your cluster. The cert-manager Operator for Red Hat OpenShift provides a supported way to integrate cert-manager into your OpenShift Container Platform cluster.
+The `cert-manager` project introduces certificate authorities and certificates as resource types in the Kubernetes API, which makes it possible to provide certificates on-demand to developers working within your cluster. The cert-manager Operator for Red Hat OpenShift provides a supported way to integrate `cert-manager` into your OpenShift Container Platform cluster.
 
 The cert-manager Operator for Red Hat OpenShift provides the following features:
 

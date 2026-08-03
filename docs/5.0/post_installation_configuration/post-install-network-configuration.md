@@ -1,3 +1,5 @@
+You can configure networking after installation to manage cluster traffic, security, connectivity, and default network policies for new projects.
+
 After installing OpenShift Container Platform, you can further expand and customize your network to your requirements.
 
 # Using the Cluster Network Operator

@@ -6,9 +6,9 @@ Updating your OpenShift Container Platform cluster to version 4.14 might cause t
 
 </div>
 
-# Preparing for an Operator update
+# About preparing for an Operator update
 
-The subscription of an installed Operator specifies an update channel that tracks and receives updates for the Operator. You can change the update channel to start tracking and receiving updates from a newer channel.
+You can change the update channel to start tracking and receiving updates from a newer channel to access new features and bug fixes. The subscription of an installed Operator specifies an update channel that tracks and receives updates for the Operator.
 
 The names of update channels in a subscription can differ between Operators, but the naming scheme typically follows a common convention within a given Operator. For example, channel names might follow a minor release update stream for the application provided by the Operator (`1.2`, `1.3`) or a release frequency (`stable`, `fast`).
 
@@ -19,8 +19,6 @@ You cannot change installed Operators to a channel that is older than the curren
 </div>
 
 Red Hat Customer Portal Labs include an application that helps administrators prepare to update their Operators. See Additional resources.
-
-- [Red Hat OpenShift Container Platform Operator Update Information Checker](https://access.redhat.com/labs/ocpouic/)
 
 # Changing the update channel for an Operator
 
@@ -34,7 +32,7 @@ If the approval strategy in the subscription is set to **Automatic**, the update
 
 - An Operator previously installed using Operator Lifecycle Manager (OLM).
 
-1.  In web console, navigate to **Ecosystem** → **Installed Operators**.
+1.  In the web console, navigate to **Ecosystem** → **Installed Operators**.
 
 2.  Click the name of the Operator you want to change the update channel for.
 
@@ -48,9 +46,9 @@ If the approval strategy in the subscription is set to **Automatic**, the update
 
     For subscriptions with a **Manual** approval strategy, you can manually approve the update from the **Subscription** tab.
 
-# Manually approving a pending Operator update
+# Approving a pending Operator update manually
 
-If an installed Operator has the approval strategy in its subscription set to **Manual**, when new updates are released in its current update channel, the update must be manually approved before installation can begin.
+If an installed Operator has the approval strategy in its subscription set to **Manual**, you must manually approve the update before installation can begin. Manual approval reviews the changes and control when updates are applied to prevent unexpected downtime.
 
 - An Operator previously installed using Operator Lifecycle Manager (OLM).
 

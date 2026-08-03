@@ -8,27 +8,6 @@ To make data on a CD-ROM storage device available to a running virtual machine (
 
 Setting up a virtual CD-ROM drive requires rebooting the VM, but afterwards, you can insert and eject ISO images in the drive while the VM is running.
 
-- The `declarativeHotplugVolumes` feature gate is enabled. To ensure this, the `HyperConverged` CR must contain the `declarativeHotplugVolumes` feature gate in the `spec.featureGates` field:
-
-  ``` yaml
-  apiVersion: hco.kubevirt.io/v1
-  kind: HyperConverged
-  metadata:
-    name: kubevirt-hyperconverged
-    namespace: openshift-cnv
-  spec:
-    featureGates:
-      - name: declarativeHotplugVolumes
-  ```
-
-  Make sure the `state` field for this feature gate is not set, or set to `"Enabled"` (rather than to `"Disabled"`).
-
-  <div class="note">
-
-  The `declarativeHotplugVolumes` feature gate does not support hot plugging ephemeral volumes.
-
-  </div>
-
 - You have an ISO image of a CD-ROM available in the cluster.
 
 1.  Run the following command to edit the configuration of the VM in which you want to insert the CD-ROM:
@@ -92,27 +71,6 @@ Setting up a virtual CD-ROM drive requires rebooting the VM, but afterwards, you
 To make data on a CD-ROM storage device available to a running virtual machine (VM), create a virtual CD-ROM drive in the VM and insert the CD-ROM into the drive as an ISO image.
 
 Setting up a virtual CD-ROM drive requires rebooting the VM, but you can insert and eject ISO images in the drive while the VM is running.
-
-- The `declarativeHotplugVolumes` feature gate is enabled. To ensure this, the `HyperConverged` CR must contain the `declarativeHotplugVolumes` feature gate in the `spec.featureGates` field:
-
-  ``` yaml
-  apiVersion: hco.kubevirt.io/v1
-  kind: HyperConverged
-  metadata:
-    name: kubevirt-hyperconverged
-    namespace: openshift-cnv
-  spec:
-    featureGates:
-      - name: declarativeHotplugVolumes
-  ```
-
-  Make sure the `state` field for this feature gate is not set, or set to `"Enabled"` (rather than to `"Disabled"`).
-
-  <div class="note">
-
-  The `declarativeHotplugVolumes` feature gate does not support hot plugging ephemeral volumes.
-
-  </div>
 
 1.  In the OpenShift Container Platform web console, go to **Virtualization** → **VirtualMachines**.
 

@@ -144,8 +144,6 @@ Before using the procedure, ensure you understand the following Ingress Controll
 
 - The secret name is referenced in the Ingress Controller configuration. If you want to replace the default ingress certificate or use different secret name in Ingress Controller configuration, you must patch or edit the configuration to apply the change. This operation triggers a rolling update for router pods where new router pods load the new cert/key pair.
 
-For more information, see this [Red Hat Knowledgebase Solution](https://access.redhat.com/solutions/4542531).
-
 </div>
 
 - You have access to the cluster with `cluster-admin` privileges.
@@ -228,6 +226,8 @@ For more information, see this [Red Hat Knowledgebase Solution](https://access.
     ```
 
     After the certificate is in `Ready` status, the Ingress Controller on your cluster can start using the generated certificate secret.
+
+- [Red Hat Knowledgebase solution](https://access.redhat.com/solutions/4542531)
 
 # Additional resources
 

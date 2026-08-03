@@ -1,20 +1,12 @@
-You can remove the OpenShift Compliance Operator from your cluster by using the OpenShift Container Platform web console or the CLI.
+You can remove the OpenShift Compliance Operator from your cluster by using the OpenShift Container Platform web console or the OpenShift CLI (`oc`).
 
 # Uninstalling the OpenShift Compliance Operator from OpenShift Container Platform using the web console
 
 To remove the Compliance Operator, you must first delete the objects in the namespace. After the objects are removed, you can remove the Operator and its namespace by deleting the **openshift-compliance** project.
 
-- Access to an OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
+- Access to an OpenShift Container Platform cluster by using an account with `cluster-admin` permissions.
 
-- The OpenShift Compliance Operator must be installed.
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To remove the Compliance Operator by using the OpenShift Container Platform web console:
+- The OpenShift Compliance Operator is installed.
 
 1.  Go to the **Ecosystem** → **Installed Operators** → **Compliance Operator** page.
 
@@ -38,9 +30,9 @@ To remove the Compliance Operator by using the OpenShift Container Platform web 
 
 To remove the Compliance Operator, you must first delete the objects in the namespace. After the objects are removed, you can remove the Operator and its namespace by deleting the **openshift-compliance** project.
 
-- Access to an OpenShift Container Platform cluster using an account with `cluster-admin` permissions.
+- Access to an OpenShift Container Platform cluster by using an account with `cluster-admin` permissions.
 
-- The OpenShift Compliance Operator must be installed.
+- The OpenShift Compliance Operator is installed.
 
 1.  Delete all objects in the namespace.
 
@@ -119,3 +111,7 @@ To remove the Compliance Operator, you must first delete the objects in the name
     ``` terminal
     Error from server (NotFound): namespaces "openshift-compliance" not found
     ```
+
+- [Installing the Compliance Operator](../compliance-operator-installation.xml#compliance-operator-installation)
+
+- [Managing the Compliance Operator](../compliance-operator-manage.xml#compliance-operator-understanding)

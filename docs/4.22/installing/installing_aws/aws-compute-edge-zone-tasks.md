@@ -849,7 +849,7 @@ The installation program sets the following labels for the `edge` machine pools 
 
 - `machine.openshift.io/zone-type: <value_of_ZoneType>`
 
-The following procedure details how you can create a machine set configuraton that matches the `edge` compute pool configuration.
+The following procedure details how you can create a machine set configuration that matches the `edge` compute pool configuration.
 
 - You have created subnets in AWS Local Zones or Wavelength Zones.
 

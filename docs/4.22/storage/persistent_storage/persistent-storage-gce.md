@@ -12,7 +12,7 @@ OpenShift Container Platform 4.12 and later provides automatic migration for the
 
 CSI automatic migration should be seamless. Migration does not change how you use all existing API objects, such as persistent volumes, persistent volume claims, and storage classes.
 
-For more information about migration, see [CSI automatic migration](../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration).
+For more information about migration, see CSI automatic migration.
 
 </div>
 
@@ -24,25 +24,23 @@ High availability of storage in the infrastructure is left to the underlying sto
 
 - [GCE Persistent Disk](https://cloud.google.com/compute/docs/disks/)
 
-# Creating the GCE storage class
+- [CSI automatic migration](../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration)
+
+# About the GCE storage class
 
 To enable dynamic provisioning of persistent volumes, create a storage class that defines storage characteristics and allows users to automatically provision volumes on-demand.
 
 # Creating the persistent volume claim
 
-<div class="formalpara-title">
+You can create a persistent volume claim by using the OpenShift Container Platform web console to request storage resources for your applications by specifying the storage class, access mode, and size.
 
-**Prerequisites**
-
-</div>
-
-Storage must exist in the underlying infrastructure before it can be mounted as a volume in OpenShift Container Platform.
+- Storage exists in the underlying infrastructure.
 
 1.  In the OpenShift Container Platform web console, click **Storage** → **Persistent Volume Claims**.
 
 2.  In the persistent volume claims overview, click **Create Persistent Volume Claim**.
 
-3.  Define the desired options on the page that appears.
+3.  Define the required options on the page that is displayed.
 
     1.  Select the previously-created storage class from the drop-down menu.
 
@@ -56,6 +54,6 @@ Storage must exist in the underlying infrastructure before it can be mounted as 
 
 # Volume format
 
-Before OpenShift Container Platform mounts the volume and passes it to a container, it checks that the volume contains a file system as specified by the `fsType` arameter in the persistent volume definition. If the device is not formatted with the file system, all data from the device is erased and the device is automatically formatted with the given file system.
+You can use unformatted GCE volumes as persistent volumes, because OpenShift Container Platform automatically formats the device before mounting it to a container.
 
-This verification enables you to use unformatted GCE volumes as persistent volumes, because OpenShift Container Platform formats them before the first use.
+Before OpenShift Container Platform mounts the volume and passes it to a container, it checks that the volume contains a file system as specified by the `fsType` parameter in the persistent volume definition. If the device is not formatted with the file system, all data from the device is erased and the device is automatically formatted with the given file system.

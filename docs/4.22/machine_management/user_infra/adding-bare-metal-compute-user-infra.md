@@ -1,6 +1,10 @@
-You can add more compute machines to your OpenShift Container Platform cluster on bare metal or platform agnostic cluster.
+To scale your OpenShift Container Platform cluster on bare-metal or platform-agnostic infrastructure, you can add more compute machines. Create RHCOS machines, then approve their certificate signing requests.
 
 # Prerequisites
+
+There are several prerequisites that must be completed before you add compute machines to your cluster.
+
+The following prerequisites must be met:
 
 - You [installed a cluster on bare metal](../../installing/installing_bare_metal/upi/installing-bare-metal.xml#installing-bare-metal).
 
@@ -30,7 +34,7 @@ You must use the same ISO image that you used to install a cluster to deploy all
 
 ## Creating RHCOS machines by using an ISO image
 
-You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines for your bare metal cluster by using an ISO image to create the machines.
+To scale your OpenShift Container Platform bare metal cluster, you can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines by using an ISO image.
 
 - You have obtained the URL of the Ignition config file for the compute machines for your cluster. You uploaded this file to your HTTP server during installation.
 
@@ -105,7 +109,7 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines fo
 
 ## Creating RHCOS machines by PXE or iPXE booting
 
-You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines for your bare-metal cluster by using PXE or iPXE booting.
+To scale your OpenShift Container Platform bare metal cluster, you can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines by using PXE or iPXE booting.
 
 - You have obtained the URL of the Ignition config file for the compute machines for your cluster. You uploaded this file to your HTTP server during installation.
 
@@ -221,7 +225,7 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines fo
 
 # Approving the certificate signing requests for your machines
 
-When you add machines to a cluster, two pending certificate signing requests (CSRs) are generated for each machine. You must confirm that these CSRs are approved or, if necessary, approve them yourself. The client requests must be approved first, followed by the server requests.
+To allow newly added machines to join your OpenShift Container Platform cluster, you can confirm that pending certificate signing requests (CSRs) are approved or approve them yourself. Approve client requests first, then server requests.
 
 - You added machines to your cluster.
 

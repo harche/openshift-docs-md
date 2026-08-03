@@ -728,7 +728,11 @@ Before you upgrade a cluster with manually maintained credentials, you must crea
 
 1.  Create YAML files with secrets for any `CredentialsRequest` custom resources that the new release image adds. The secrets must be stored using the namespace and secret name defined in the `spec.secretRef` for each `CredentialsRequest` object.
 
+    <div class="formalpara-title">
+
     **Sample AWS `CredentialsRequest` object with secrets**
+
+    </div>
 
     ``` yaml
     apiVersion: cloudcredential.openshift.io/v1
@@ -754,7 +758,11 @@ Before you upgrade a cluster with manually maintained credentials, you must crea
       ...
     ```
 
+    <div class="formalpara-title">
+
     **Sample AWS `Secret` object**
+
+    </div>
 
     ``` yaml
     apiVersion: v1
@@ -773,7 +781,11 @@ Before you upgrade a cluster with manually maintained credentials, you must crea
 
     </div>
 
+    <div class="formalpara-title">
+
     **Sample Azure `CredentialsRequest` object with secrets**
+
+    </div>
 
     ``` yaml
     apiVersion: cloudcredential.openshift.io/v1
@@ -795,7 +807,11 @@ Before you upgrade a cluster with manually maintained credentials, you must crea
       ...
     ```
 
+    <div class="formalpara-title">
+
     **Sample Azure `Secret` object**
+
+    </div>
 
     ``` yaml
     apiVersion: v1
@@ -813,7 +829,11 @@ Before you upgrade a cluster with manually maintained credentials, you must crea
       azure_region: <base64_encoded_azure_region>
     ```
 
+    <div class="formalpara-title">
+
     **Sample Google Cloud `CredentialsRequest` object with secrets**
+
+    </div>
 
     ``` yaml
     apiVersion: cloudcredential.openshift.io/v1
@@ -837,7 +857,11 @@ Before you upgrade a cluster with manually maintained credentials, you must crea
       ...
     ```
 
+    <div class="formalpara-title">
+
     **Sample Google Cloud `Secret` object**
+
+    </div>
 
     ``` yaml
     apiVersion: v1
@@ -881,7 +905,11 @@ Modify the `CloudCredential` resource to include an `upgradeable-to` annotation.
     $ oc edit cloudcredential cluster
     ```
 
-    **Text to add:**
+    <div class="formalpara-title">
+
+    **Text to add**
+
+    </div>
 
     ``` yaml
     ...

@@ -106,7 +106,7 @@ For OpenShift Container Platform version 4.22, RHCOS is based on RHEL version 9.
 
 - s390x architecture requires z14 ISA
 
-For more information, see "Architectures".
+For more information, see "Architectures" in the RHEL documentation.
 
 </div>
 
@@ -4283,9 +4283,9 @@ The OpenShift Container Platform bootstrap process begins after the cluster node
     </div>
 
     ``` terminal
-    INFO Waiting up to 30m0s for the Kubernetes API at https://api.test.example.com:6443...
+    INFO Waiting up to 20m0s for the Kubernetes API at https://api.test.example.com:6443...
     INFO API v1.35.4 up
-    INFO Waiting up to 30m0s for bootstrapping to complete...
+    INFO Waiting up to 1h0m0s for bootstrapping to complete...
     INFO It is now safe to remove the bootstrap resources
     ```
 
@@ -4344,7 +4344,7 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 # Approving the certificate signing requests for your machines
 
-When you add machines to a cluster, two pending certificate signing requests (CSRs) are generated for each machine. You must confirm that these CSRs are approved or, if necessary, approve them yourself. The client requests must be approved first, followed by the server requests.
+To allow newly added machines to join your OpenShift Container Platform cluster, you can confirm that pending certificate signing requests (CSRs) are approved or approve them yourself. Approve client requests first, then server requests.
 
 - You added machines to your cluster.
 

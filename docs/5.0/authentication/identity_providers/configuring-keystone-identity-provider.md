@@ -1,12 +1,12 @@
 Configure the `keystone` identity provider to integrate your OpenShift Container Platform cluster with Keystone to enable shared authentication with an OpenStack Keystone v3 server configured to store users in an internal database. This configuration allows users to log in to OpenShift Container Platform with their Keystone credentials.
 
-# About identity providers in OpenShift Container Platform
+# Identity providers in OpenShift Container Platform
 
 You can configure identity providers by creating a custom resource (CR) that describes the provider and adding it to the cluster. Identity providers enable user authentication in OpenShift Container Platform beyond the default `kubeadmin` user.
 
 <div class="note">
 
-OpenShift Container Platform user names containing `/`, `:`, and `%` are not supported.
+OpenShift Container Platform usernames containing `/`, `:`, and `%` are not supported.
 
 </div>
 
@@ -122,15 +122,15 @@ spec:
 
 # Adding an identity provider to your cluster
 
-After you install your cluster, add an identity provider to it so your users can authenticate.
+Apply the OAuth custom resource (CR) to add an identity provider to your cluster so users can authenticate with external credentials instead of the default `kubeadmin` user.
 
-- Create an OpenShift Container Platform cluster.
+- You installed an OpenShift Container Platform cluster.
 
-- Create the custom resource (CR) for your identity providers.
+- You defined the CR for your identity provider.
 
-- You must be logged in as an administrator.
+- You are logged in as an administrator.
 
-1.  Apply the defined CR:
+1.  Apply the defined CR by running the following command:
 
     ``` terminal
     $ oc apply -f </path/to/CR>
@@ -142,13 +142,13 @@ After you install your cluster, add an identity provider to it so your users can
 
     </div>
 
-2.  Log in to the cluster as a user from your identity provider, entering the password when prompted.
+2.  Log in to the cluster as a user from your identity provider by running the following command, which prompts for your username and password:
 
     ``` terminal
     $ oc login -u <username>
     ```
 
-3.  Confirm that the user logged in successfully, and display the user name.
+3.  Confirm that the user logged in successfully and that the username displays by running the following command:
 
     ``` terminal
     $ oc whoami

@@ -170,6 +170,8 @@ $ oc patch etcd cluster -p='{"spec": {"forceRedeploymentReason": "recovery-'"$(d
 
 # Issues and workarounds for restoring a persistent storage state
 
+After restoring a cluster from an etcd snapshot, persistent storage resources might no longer match the current storage provider state. Identify and resolve outdated volume, credential, attachment, or device references to restore workloads safely.
+
 If your OpenShift Container Platform cluster uses persistent storage of any form, a state of the cluster is typically stored outside etcd. When you restore from an etcd backup, the status of the workloads in OpenShift Container Platform is also restored. However, if the etcd snapshot is old, the status might be invalid or outdated.
 
 <div class="important">

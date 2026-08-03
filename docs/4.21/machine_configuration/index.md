@@ -550,11 +550,31 @@ The node update process consists of the following phases and subphases that are 
 
 - **Update Executed**. The MCO cordons and drains the node and applies the new machine config to the node files and operating system, as needed. It contains the following sub-phases:
 
-  - **Cordoned**
+  - **Cordoned**. The MCO cordoned the node.
 
-  - **Drained**
+  - **Drained**. The MCO drained the node.
 
-  - **AppliedFilesAndOS**
+  - **AppliedFilesAndOS**. The MCO has updated the node files and operating system.
+
+  - **AppliedFiles**. The MCO has updated the node files.
+
+  - **AppliedOSImage**. The MCO has updated the operating system.
+
+    In order to see **AppliedFiles** and **AppliedOSImage** in the output, you must enable the `TechPreviewNoUpgrade` feature set on the cluster. These conditions replace **AppliedFilesAndOS**. For more information, see "Enabling features using feature gates".
+
+    <div class="note">
+
+    Enabling the `TechPreviewNoUpgrade` feature set cannot be undone and prevents minor version updates. These feature sets are not recommended on production clusters.
+
+    </div>
+
+    <div class="important">
+
+    The `AppliedFiles` and `AppliedOSImage` condition is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+    For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+    </div>
 
 - **PinnedImageSetsProgressing** The MCO is performing the steps needed to pin and pre-load container images.
 

@@ -1,21 +1,19 @@
 You can review the release notes to learn about the changes introduced through each release of the Red Hat OpenShift support for Windows Containers and the Windows Machine Config Operator (WMCO).
 
-# Release notes for Red Hat Windows Machine Config Operator 10.22.0
+# Release notes for Red Hat Windows Machine Config Operator 10.22.1
 
-Issued: 20 May 2026
+Issued: 28 July 2026
 
-You can review the following release notes to learn about the new features and bug fixes in the Windows Machine Config Operator (WMCO) version 10.22.0.
+You can review the release notes to learn about the bug fixes and Common Vulnerabilities and Exposures (CVEs) fixes in the Windows Machine Config Operator (WMCO) version 10.22.1.
 
-The components of the WMCO version 10.22.0 were released in [RHBA-2026:19710](https://access.redhat.com/errata/RHBA-2026:19710).
-
-## New features and improvements
-
-Windows Server 2025 support
-The WMCO now supports Windows Server 2025, OS Build [10.0.26100](https://support.microsoft.com/en-us/topic/may-12-2026-kb5087539-os-build-26100-32860-fe3fd635-23fc-41bd-b7a7-00e57c1c4f91) or later for all supported platforms.
-
-Kubernetes upgrade
-The WMCO now uses Kubernetes version 1.35.
+The components of the WMCO version 10.22.1 were released in [RHSA-2026:47173](https://access.redhat.com/errata/RHSA-2026:47173).
 
 ## Bug fixes
 
-- Before this update, if you enabled the `ClusterAPIMachineManagement` feature gate by enabling the `TechPreviewNoUpgrade` feature set, OpenShift Container Platform provisioned the `openshift-cluster-api` namespace. However, the WMCO was not adding the `windows-user-data` secret to that namespace, which is required by Cluster API compute machine sets. Because of the missing secret, CAPI-provisioned Windows machines would not bootstrap, remaining stuck in the `Pending` phase, and never joining the cluster. With this release, the OpenShift Container Platform now detects whether the `openshift-cluster-api` namespace exists and mirrors the `windows-user-data` secret into that namespace. CAPI-provisioned Windows machines successfully receive the bootstrap secret, are no longer getting stuck in `Pending` state, and join the cluster as expected. ([OCPBUGS-38401](https://issues.redhat.com/browse/OCPBUGS-38401))
+- Before this update, the SSH connection between the WMCO and a Windows node would terminate when the WMCO rebooted the node after a configuration update. As a consequence, the WMCO incorrectly treated the SSH disconnection as a reboot failure, preventing the Windows node from completing required reboots. With this release, the reboot validation process is modified to ignore SSH termination errors and instead verify a successful reboot by using explicit node reachability checks and the SSH reconnection. As a result, Windows nodes successfully reboot upon node configuration changes. ([OCPBUGS-98228](https://issues.redhat.com/browse/OCPBUGS-98228))
+
+## CVE fixes
+
+- [CVE-2026-54099](https://access.redhat.com/security/cve/cve-2026-54099)
+
+- [CVE-2026-54100](https://access.redhat.com/security/cve/cve-2026-54100)

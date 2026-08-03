@@ -10,7 +10,7 @@ For a comprehensive list of the default IBM Cloud® quotas and service limits, s
 
 ## Virtual Private Cloud (VPC)
 
-Each OpenShift Container Platform cluster creates its own VPC. The default quota of VPCs per region is 10 and will allow 10 clusters. To have more than 10 clusters in a single region, you must increase this quota.
+Each OpenShift Container Platform cluster creates its own VPC. The default quota of VPCs per region is 10 and allows 10 clusters. To have more than 10 clusters in a single region, you must increase this quota.
 
 ## Application load balancer
 
@@ -22,7 +22,7 @@ By default, each cluster creates three application load balancers (ALBs):
 
 - Load balancer for the router
 
-You can create additional `LoadBalancer` service objects to create additional ALBs. The default quota of VPC ALBs are 50 per region. To have more than 50 ALBs, you must increase this quota.
+You can create additional `LoadBalancer` service objects to create additional ALBs. The default quota of VPC ALBs is 50 per region. To have more than 50 ALBs, you must increase this quota.
 
 VPC ALBs are supported. Classic ALBs are not supported for IBM Cloud®.
 
@@ -70,13 +70,13 @@ If you plan to exceed the resources stated in the table, you must increase your 
 
 ## Block Storage Volumes
 
-For each VPC machine, a block storage device is attached for its boot volume. The default cluster configuration creates seven VPC machines, resulting in seven block storage volumes. Additional Kubernetes persistent volume claims (PVCs) of the IBM Cloud® storage class create additional block storage volumes. The default quota of VPC block storage volumes are 300 per region. To have more than 300 volumes, you must increase this quota.
+For each VPC machine, a block storage device is attached for its boot volume. The default cluster configuration creates seven VPC machines, resulting in seven block storage volumes. Additional Kubernetes persistent volume claims (PVCs) of the IBM Cloud® storage class create additional block storage volumes. The default quota of VPC block storage volumes is 300 per region. To have more than 300 volumes, you must increase this quota.
 
 - [Quotas and service limits (IBM Cloud® documentation)](https://cloud.ibm.com/docs/vpc?topic=vpc-quotas)
 
 - [Supported profiles (IBM Cloud® documentation)](https://cloud.ibm.com/docs/vpc?topic=vpc-profiles)
 
-# Configuring DNS resolution
+# DNS resolution configuration
 
 When installing a cluster on IBM Cloud®, the method for configuring DNS resolution depends on whether you are deploying a public or private cluster.
 

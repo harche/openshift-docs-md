@@ -78,7 +78,7 @@ O
 
 [Red Hat OpenShift Virtualization](../virt/release_notes/virt-5-0-release-notes.xml#virt-5-0-release-notes)
 
-[Red Hat build of OpenTelemetry](../observability/otel/otel-rn.xml#otel-rn)
+[Red Hat build of OpenTelemetry](https://docs.redhat.com/en/documentation/red_hat_build_of_opentelemetry/latest/html-single/release_notes_for_the_red_hat_build_of_opentelemetry/index)
 
 P
 [Power monitoring for Red Hat OpenShift](https://docs.redhat.com/en/documentation/power_monitoring_for_red_hat_openshift/latest/html/release_notes/index)

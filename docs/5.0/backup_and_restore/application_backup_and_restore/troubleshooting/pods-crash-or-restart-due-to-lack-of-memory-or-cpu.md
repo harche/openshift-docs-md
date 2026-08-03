@@ -33,6 +33,58 @@ Use the `configuration.velero.podConfig.resourceAllocations` specification field
 
   The `resourceAllocations` listed are for average usage.
 
+# Velero server terminates with OOMKilled when accessing large Kopia repositories
+
+If the Velero server accesses large Kopia repositories, the Velero pod might crash and report an `OOMKilled` event.
+
+During operations that access large Kopia repositories, such as backup deletion or checking repository existence, the Velero pod crashes and reports an `OOMKilled` event.
+
+This issue is typically caused by high memory usage when the Velero server loads many Kopia index blobs and related repository metadata. When the Backup Repository controller accesses a large-scale repository, the required memory can exceed the default limits.
+
+To resolve this issue, identify the peak memory usage and increase the memory limits in the `DataProtectionApplication` (DPA) custom resource (CR) so that the Velero server has enough memory to load the repository metadata.
+
+1.  Check the Velero logs around the time of the `OOMKilled` event for repository-open or index-loading activity.
+
+2.  Note the approximate maximum memory usage observed for the Velero pod by using a command such as `oc top pods`.
+
+3.  Edit the `DataProtectionApplication` CR:
+
+    ``` terminal
+    $ oc edit dpa <dpa_name> -n openshift-adp
+    ```
+
+    where:
+
+    `<dpa_name>`
+    Specifies the name of your `DataProtectionApplication` CR.
+
+4.  Increase the Velero container memory request or limit in the `spec.configuration.velero.podConfig` block to exceed the observed peak. For example:
+
+    ``` yaml
+    spec:
+      configuration:
+        velero:
+          podConfig:
+            resourceAllocations:
+              limits:
+                memory: <memory_limit>
+              requests:
+                memory: 512Mi
+    ```
+
+    where:
+
+    `<memory_limit>`
+    Specifies a value that exceeds the maximum memory usage you observed in the logs, for example, `2Gi`.
+
+5.  Save your changes.
+
+    The Velero pod redeploys automatically with the new limits.
+
+6.  Monitor the environment and repeat the process if necessary until `OOMKilled` events no longer occur.
+
+7.  Record the final stable memory values for your environment to use for future sizing guidance.
+
 # Setting resource requests for a Restic pod
 
 Use the `configuration.restic.podConfig.resourceAllocations` specification field to set specific resource requests for a `Restic` pod.

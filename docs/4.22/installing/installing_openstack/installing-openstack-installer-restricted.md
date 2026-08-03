@@ -58,9 +58,7 @@ You can complete the following configurations after you install a cluster on Red
 
 # About installations in restricted networks
 
-In OpenShift Container Platform 4.17, you can install a cluster in a restricted network without an active internet connection to obtain software components.
-
-Depending on the cloud platform where you install the cluster, you can complete a restricted network installation by using either installer-provisioned infrastructure or user-provisioned infrastructure.
+You can install OpenShift Container Platform 4.17 in a restricted network without an active internet connection to obtain software components. Restricted network installations can use installer-provisioned or user-provisioned infrastructure, depending on the cloud platform to which you are installing the cluster.
 
 If you choose to perform a restricted network installation on a cloud platform, you still require access to its cloud APIs. Some cloud functions, like Amazon Web Service’s Route 53 DNS and IAM services, require internet access. Depending on your network, you might require less internet access for an installation on bare metal hardware, Nutanix, or on VMware vSphere.
 
@@ -94,11 +92,11 @@ To support an OpenShift Container Platform installation, your Red Hat OpenStack
 
 Recommended resources for a default OpenShift Container Platform cluster on RHOSP
 
-A cluster might function with fewer than recommended resources, but its performance is not guaranteed.
+A cluster might function with fewer than recommended resources, but cluster performance is not guaranteed.
 
 <div class="important">
 
-If RHOSP object storage (Swift) is available and operated by a user account with the `swiftoperator` role, it is used as the default backend for the OpenShift Container Platform image registry. In this case, the volume storage requirement is 175 GB. Swift space requirements vary depending on the size of the image registry.
+If RHOSP object storage (Swift) is available and operated by a user account with the `swiftoperator` role, Swift is used as the default backend for the OpenShift Container Platform image registry. In this case, the volume storage requirement is 175 GB. Swift space requirements vary depending on the size of the image registry.
 
 </div>
 
@@ -200,13 +198,15 @@ Before installation, check if your RHOSP deployment is affected by this problem.
 
 - On [Ceph RGW](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html-single/deploying_an_overcloud_with_containerized_red_hat_ceph/index#ceph-rgw), the `account in url` option is enabled.
 
-1.  As an administrator in the RHOSP CLI, add the `swiftoperator` role to the account that will access Swift:
+<!-- -->
 
-    ``` terminal
-    $ openstack role add --user <user> --project <project> swiftoperator
-    ```
+- As an administrator in the RHOSP CLI, add the `swiftoperator` role to the account that will access Swift:
 
-    Your RHOSP deployment can now use Swift for the image registry.
+  ``` terminal
+  $ openstack role add --user <user> --project <project> swiftoperator
+  ```
+
+  Your RHOSP deployment can now use Swift for the image registry.
 
 # Defining parameters for the installation program
 
@@ -797,11 +797,11 @@ Create floating IP (FIP) addresses for external access to the OpenShift Containe
 
       If you use these values, you must also enter an external network as the value of the `platform.openstack.externalNetwork` parameter in the `install-config.yaml` file.
 
-      <div class="tip">
+<div class="tip">
 
-      You can make OpenShift Container Platform resources available outside of the cluster by assigning a floating IP address and updating your firewall configuration.
+You can make OpenShift Container Platform resources available outside of the cluster by assigning a floating IP address and updating your firewall configuration.
 
-      </div>
+</div>
 
 ## Completing installation without floating IP addresses
 

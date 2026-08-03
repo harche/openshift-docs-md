@@ -960,6 +960,12 @@ For more information about related features and functionality, see the Microsoft
 
 2.  Edit the following section under the `providerSpec` field:
 
+    <div class="formalpara-title">
+
+    **Sample configuration**
+
+    </div>
+
     ``` yaml
     apiVersion: machine.openshift.io/v1beta1
     kind: MachineSet
@@ -1116,6 +1122,12 @@ By default, Microsoft Azure subscriptions do not have a quota for the Microsoft 
     $ oc get machineset -n openshift-machine-api
     ```
 
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
     ``` terminal
     NAME                              DESIRED   CURRENT   READY   AVAILABLE   AGE
     myclustername-worker-centralus1   1         1         1       1           6h9m
@@ -1134,6 +1146,12 @@ By default, Microsoft Azure subscriptions do not have a quota for the Microsoft 
     ``` terminal
     $ cat machineset-azure.yaml
     ```
+
+    <div class="formalpara-title">
+
+    **Example `machineset-azure.yaml` file**
+
+    </div>
 
     ``` yaml
     apiVersion: machine.openshift.io/v1beta1
@@ -1229,6 +1247,12 @@ By default, Microsoft Azure subscriptions do not have a quota for the Microsoft 
 
     - Change `.spec.template.spec.providerSpec.value.vmSize` to `Standard_NC4as_T4_v3`.
 
+      <div class="formalpara-title">
+
+      **Example `machineset-azure-gpu.yaml` file**
+
+      </div>
+
       ``` yaml
       apiVersion: machine.openshift.io/v1beta1
       kind: MachineSet
@@ -1313,6 +1337,12 @@ By default, Microsoft Azure subscriptions do not have a quota for the Microsoft 
     $ diff machineset-azure.yaml machineset-azure-gpu.yaml
     ```
 
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
     ``` terminal
     14c14
     <   name: myclustername-worker-centralus1
@@ -1338,6 +1368,12 @@ By default, Microsoft Azure subscriptions do not have a quota for the Microsoft 
     $ oc create -f machineset-azure-gpu.yaml
     ```
 
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
     ``` terminal
     machineset.machine.openshift.io/myclustername-nc4ast4-gpu-worker-centralus1 created
     ```
@@ -1347,6 +1383,12 @@ By default, Microsoft Azure subscriptions do not have a quota for the Microsoft 
     ``` terminal
     $ oc get machineset -n openshift-machine-api
     ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
 
     ``` terminal
     NAME                                               DESIRED   CURRENT   READY   AVAILABLE   AGE
@@ -1361,6 +1403,12 @@ By default, Microsoft Azure subscriptions do not have a quota for the Microsoft 
     ``` terminal
     $ oc get machines -n openshift-machine-api
     ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
 
     ``` terminal
     NAME                                                PHASE     TYPE                   REGION      ZONE   AGE
@@ -1379,6 +1427,12 @@ By default, Microsoft Azure subscriptions do not have a quota for the Microsoft 
     $ oc get nodes
     ```
 
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
     ``` terminal
     NAME                                                STATUS   ROLES                  AGE     VERSION
     myclustername-master-0                              Ready    control-plane,master   6h39m   v1.35.4
@@ -1395,6 +1449,12 @@ By default, Microsoft Azure subscriptions do not have a quota for the Microsoft 
     ``` terminal
     $ oc get machineset -n openshift-machine-api
     ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
 
     ``` terminal
     NAME                                   DESIRED   CURRENT   READY   AVAILABLE   AGE
@@ -1415,6 +1475,12 @@ By default, Microsoft Azure subscriptions do not have a quota for the Microsoft 
     oc get machineset -n openshift-machine-api
     ```
 
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
     ``` terminal
     NAME                                          DESIRED   CURRENT   READY   AVAILABLE   AGE
     myclustername-nc4ast4-gpu-worker-centralus1   1         1         1       1           121m
@@ -1433,6 +1499,12 @@ By default, Microsoft Azure subscriptions do not have a quota for the Microsoft 
 
     The MachineSet replica count is set to `1` so a new `Machine` object is created automatically.
 
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
     ``` terminal
     myclustername-nc4ast4-gpu-worker-centralus1   1         1         1       1           121m
     ```
@@ -1442,6 +1514,12 @@ By default, Microsoft Azure subscriptions do not have a quota for the Microsoft 
     ``` terminal
     $ oc -n openshift-machine-api get machines | grep gpu
     ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
 
     ``` terminal
     myclustername-nc4ast4-gpu-worker-centralus1-w9bqn   Running   Standard_NC4as_T4_v3   centralus   1      21m
@@ -1468,6 +1546,12 @@ The NFD Operator identifies hardware device features in nodes. It solves the gen
     ``` terminal
     $ oc get pods -n openshift-nfd
     ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
 
     ``` terminal
     NAME                                       READY    STATUS     RESTARTS   AGE

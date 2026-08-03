@@ -1,4 +1,4 @@
-OpenShift Container Platform supports multiple types of storage, both for on-premise and cloud providers. In particular, OpenShift Container Platform can use storage types that support the Container Storage Interface.
+You should understand how OpenShift Container Platform secures attached storage to protect persistent data in containerized workloads. OpenShift Container Platform uses Security-Enhanced Linux (SELinux) capabilities, group ID (GID) annotations, and Container Storage Interface (CSI)-compliant storage providers to isolate storage access and prevent unauthorized data exposure.
 
 # Persistent volume plugins
 
@@ -18,7 +18,7 @@ OpenShift Container Platform provides plugins for multiple types of storage, inc
 
 - OpenStack Cinder \*
 
-- GCE Persistent Disks \*
+- Google Compute Engine (GCE) Persistent Disks \*
 
 - VMware vSphere \*
 
@@ -28,7 +28,7 @@ OpenShift Container Platform provides plugins for multiple types of storage, inc
 
 - Fibre Channel
 
-- iSCSI
+- Internet Small Computer Systems Interface (iSCSI)
 
 Plugins for those storage types with dynamic provisioning are marked with an asterisk (\*). Data in transit is encrypted via HTTPS for all OpenShift Container Platform components communicating with each other.
 
@@ -38,20 +38,22 @@ For example, NFS can support multiple read/write clients, but a specific NFS PV 
 
 # Shared storage
 
-For shared storage providers like NFS, the PV registers its group ID (GID) as an annotation on the PV resource. Then, when the PV is claimed by the pod, the annotated GID is added to the supplemental groups of the pod, giving that pod access to the contents of the shared storage.
+For shared storage providers such as Network File System (NFS), the persistent volume (PV) registers its group ID (GID) as an annotation on the PV resource.
+
+Then, when the PV is claimed by the pod, the annotated GID is added to the supplemental groups of the pod, giving that pod access to the contents of the shared storage.
 
 # Block storage
 
-For block storage providers like AWS Elastic Block Store (EBS), GCE Persistent Disks, and iSCSI, OpenShift Container Platform uses SELinux capabilities to secure the root of the mounted volume for non-privileged pods, making the mounted volume owned by and only visible to the container with which it is associated.
+For block storage providers such as AWS Elastic Block Store (EBS), Google Compute Engine (GCE) Persistent Disks, and Internet Small Computer Systems Interface (iSCSI), OpenShift Container Platform uses Security-Enhanced Linux (SELinux) capabilities to secure the root of the mounted volume for non-privileged pods, making the mounted volume owned by and only visible to the container with which it is associated.
 
 - [Understanding persistent storage](../../storage/understanding-persistent-storage.xml#understanding-persistent-storage)
 
-- [Configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-using-csi)
+- [Configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi)
 
 - [Dynamic provisioning](../../storage/dynamic-provisioning.xml#dynamic-provisioning)
 
 - [Persistent storage using NFS](../../storage/persistent_storage/persistent-storage-nfs.xml#persistent-storage-using-nfs)
 
-- [Persistent storage using AWS Elastic Block Store](../../storage/persistent_storage/persistent-storage-aws.xml#persistent-storage-using-aws-ebs)
+- [Persistent storage using AWS Elastic Block Store](../../storage/persistent_storage/persistent-storage-aws.xml#persistent-storage-aws)
 
 - [Persistent storage using GCE Persistent Disk](../../storage/persistent_storage/persistent-storage-gce.xml#persistent-storage-using-gce)

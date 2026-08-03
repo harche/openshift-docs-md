@@ -6,9 +6,11 @@ For more information, see [About the cert-manager Operator for Red Hat OpenShift
 
 # cert-manager Operator for Red Hat OpenShift 1.20.0
 
+Review the release notes for the cert-manager Operator for Red Hat OpenShift 1.20.0 to learn what is new and updated with this release.
+
 Issued: 2 July 2026
 
-The following advisories are available for the cert-manager Operator for Red Hat OpenShift 1.20.0:
+The following advisories are available for the cert-manager Operator for Red Hat OpenShift for OpenShift Container Platform 1.20.0:
 
 - [RHBA-2026:34294](https://access.redhat.com/errata/RHBA-2026:34294)
 
@@ -77,7 +79,7 @@ TLS arguments are applied per operand component as follows:
 
 - `cert-manager-cainjector`: metrics endpoint TLS flags only.
 
-  TLS profile enforcement is not yet supported for the IstioCSR and TrustManager operand.
+  TLS profile enforcement is not yet supported for the IstioCSR and TrustManager operands.
 
   To support this feature, the Operator now requires `get`, `list`, and `watch` permissions on the `apiservers` resource in the `config.openshift.io` API group.
 
@@ -103,9 +105,11 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 # cert-manager Operator for Red Hat OpenShift 1.19.0
 
+Review the release notes for the cert-manager Operator for Red Hat OpenShift 1.19.0 to learn what is new and updated with this release.
+
 Issued: 20 April 2026
 
-The following advisories are available for the cert-manager Operator for Red Hat OpenShift 1.19.0:
+The following advisories are available for the cert-manager Operator for Red Hat OpenShift for OpenShift Container Platform 1.19.0:
 
 - [RHBA-2026:9064](https://access.redhat.com/errata/RHBA-2026:9064)
 
@@ -125,7 +129,7 @@ Distribution of trust bundles with the trust manager operand (Technology Preview
 In this release, the cert-manager Operator for Red Hat OpenShift adds support for the trust-manager operand as a Technology Preview feature. You can now install the trust-manager operand to automate the secure distribution of trust bundles, such as certificate authority (CA) certificates, to application namespaces across your cluster. For more information, see [Distributing certificates by using trust-manager operand](../../security/cert_manager_operator/cert-manager-trust-manager.xml#cert-manager-trust-manager).
 
 Support for configuring the certificate request backoff duration
-In this release, the cert-manager Operator for Red Hat OpenShift adds support for the `--certificate-request-minimum-backoff-duration` flag. With this flag, you can configure the minimum backoff period for certificate requests by override the default configuration. For more information, see [Overridable arguments for the cert-manager components](../../security/cert_manager_operator/cert-manager-customizing-api-fields.xml#cert-manager-overridable-arguments_cert-manager-customizing-api-fields).
+In this release, the cert-manager Operator for Red Hat OpenShift adds support for the `--certificate-request-minimum-backoff-duration` flag. With this flag, you can configure the minimum backoff period for certificate requests by overriding the default configuration. For more information, see [Overridable arguments for the cert-manager components](../../security/cert_manager_operator/cert-manager-customizing-api-fields.xml#cert-manager-overridable-arguments_cert-manager-customizing-api-fields).
 
 ## Fixed issues
 

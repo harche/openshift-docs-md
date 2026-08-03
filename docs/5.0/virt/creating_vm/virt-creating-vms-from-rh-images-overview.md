@@ -40,9 +40,9 @@ Every template requires a boot source, which is a fully configured disk image in
 
 Provided boot sources are updated automatically to the latest version of the operating system. For auto-updated boot sources, persistent volume claims (PVCs) and volume snapshots are created with the cluster’s default storage class. If you select a different default storage class after configuration, you must delete the existing boot sources in the cluster namespace that are configured with the previous default storage class.
 
-# Configuring a custom namespace for golden images by using the web console
+# Configuring a custom namespace for boot source images by using the web console
 
-You can configure a custom namespace for golden images in your cluster by using the OpenShift Container Platform web console.
+You can configure a custom namespace for boot source images in your cluster by using the OpenShift Container Platform web console.
 
 1.  In the web console, select **Virtualization** → **Settings**.
 
@@ -50,7 +50,7 @@ You can configure a custom namespace for golden images in your cluster by using 
 
 3.  Click **Bootable volumes project**.
 
-4.  Select a namespace to use for golden images.
+4.  Select a namespace to use for boot source images.
 
     1.  If you already created a namespace, select it from the **Project** list.
 
@@ -60,39 +60,40 @@ You can configure a custom namespace for golden images in your cluster by using 
 
         2.  Click **Create**.
 
-# Configuring a custom namespace for golden images by using the CLI
+# Configuring a custom namespace for boot source images by using the CLI
 
-You can configure a custom namespace for golden images in your cluster by setting the `spec.commonBootImageNamespace` field in the `HyperConverged` custom resource (CR).
+You can configure a custom namespace for boot source images in your cluster by setting the `spec.workloadSources.commonBootImageNamespace` field in the `HyperConverged` custom resource (CR).
 
 - You installed the OpenShift CLI (`oc`).
 
-- You created a namespace to use for golden images.
+- You created a namespace to use for boot source images.
 
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
     ``` terminal
-    $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
+    $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
-2.  Configure the custom namespace by updating the value of the `spec.commonBootImageNamespace` field.
+2.  Configure the custom namespace by updating the value of the `spec.workloadSources.commonBootImageNamespace` field.
 
     Example configuration file:
 
     ``` yaml
-    apiVersion: hco.kubevirt.io/v1beta1
+    apiVersion: hco.kubevirt.io/v1
     kind: HyperConverged
     metadata:
       name: kubevirt-hyperconverged
       namespace: openshift-cnv
     spec:
-      commonBootImageNamespace: <custom_namespace>
+      workloadSources:
+        commonBootImageNamespace: <custom_namespace>
     # ...
     ```
 
     where:
 
-    `spec.commonBootImageNamespace`
-    Specifies the namespace to use for golden images.
+    `spec.workloadSources.commonBootImageNamespace`
+    Specifies the namespace to use for boot source images.
 
 3.  Save your changes and exit the editor.
 
@@ -104,4 +105,4 @@ You can configure a custom namespace for golden images in your cluster by settin
 
 - [Creating a VM from an instance type by using the web console](../../virt/creating_vm/virt-creating-vms-from-instance-types.xml#virt-creating-vms-from-instance-types)
 
-- [Creating a VM from a `VirtualMachine` manifest by using the command line](../../virt/creating_vms_advanced/virt-creating-vms-from-cli.xml#virt-creating-vms-from-cli)
+- [Creating a VM from a `VirtualMachine` manifest by using the command line](../../virt/creating_vm/virt-creating-vms-from-cli.xml#virt-creating-vms-from-cli)

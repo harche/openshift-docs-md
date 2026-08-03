@@ -1,3 +1,5 @@
+You can use Compliance Operator profiles to select the appropriate compliance benchmarks for your OpenShift Container Platform environment. Profiles target platform components, node configurations, or both depending on the compliance standard you need to meet.
+
 The Compliance Operator lets OpenShift Container Platform administrators describe the required compliance state of a cluster and provides them with an overview of gaps and ways to remediate them. The Compliance Operator assesses compliance of both the Kubernetes API resources of OpenShift Container Platform, as well as the nodes running the cluster. The Compliance Operator uses OpenSCAP, a NIST-certified tool, to scan and enforce security policies provided by the content.
 
 <div class="important">
@@ -156,6 +158,8 @@ There are several profiles available as part of the Compliance Operator installa
   $ oc get -n openshift-compliance -oyaml rules rhcos4-audit-rules-login-events
   ```
 
+  <div class="informalexample">
+
   ``` yaml
   apiVersion: compliance.openshift.io/v1alpha1
   checkType: Node
@@ -204,21 +208,31 @@ There are several profiles available as part of the Compliance Operator installa
     attacker attempting to remove evidence of an intrusion.
   ```
 
-## Compliance Operator profile types
+  </div>
 
-Compliance Operator rules are organized into profiles. Profiles can target the Platform or Nodes for OpenShift Container Platform, and some benchmarks include `rhcos4` Node profiles.
+<!-- -->
+
+- [ACSC Essential Eight - Hardening Linux Workstations and Servers](https://www.cyber.gov.au/acsc/view-all-content/publications/hardening-linux-workstations-and-servers)
+
+- [OpenSCAP project](https://www.open-scap.org/)
+
+- [NIST Security Content Automation Protocol (SCAP)](https://csrc.nist.gov/projects/security-content-automation-protocol)
+
+# Compliance Operator profile types
+
+To assess both platform and node compliance for your required benchmarks, you can select from different Compliance Operator profile types.
 
 Platform
 Platform profiles evaluate your OpenShift Container Platform cluster components. For example, a Platform-level rule can confirm whether APIServer configurations are using strong encryption cyphers.
 
 Node
-Node profiles evaluate the OpenShift or RHCOS configuration of each host. You can use two Node profiles: `ocp4` Node profiles and `rhcos4` Node profiles. The `ocp4` Node profiles evaluate the OpenShift configuration of each host. For example, they can confirm whether `kubeconfig` files have the correct permissions to meet a compliance standard. The `rhcos4` Node profiles evaluate the Red Hat Enterprise Linux CoreOS (RHCOS) configuration of each host. For example, they can confirm whether the SSHD service is configured to disable password logins.
+Node profiles evaluate the OpenShift or RHCOS configuration of each host. You can use two node profiles: `ocp4` node profiles and `rhcos4` node profiles. The `ocp4` node profiles evaluate the OpenShift configuration of each host. For example, they can confirm whether `kubeconfig` files have the correct permissions to meet a compliance standard. The `rhcos4` node profiles evaluate the Red Hat Enterprise Linux CoreOS (RHCOS) configuration of each host. For example, they can confirm whether the SSHD service is configured to disable password logins.
 
 <div class="important">
 
 For benchmarks that have Node and Platform profiles, such as PCI-DSS, you must run both profiles in your OpenShift Container Platform environment.
 
-For benchmarks that have `ocp4` Platform, `ocp4` Node, and `rhcos4` Node profiles, such as FedRAMP High, you must run all three profiles in your OpenShift Container Platform environment.
+For benchmarks that have `ocp4` Platform, `ocp4` Node, and `rhcos4` node profiles, such as FedRAMP High, you must run all three profiles in your OpenShift Container Platform environment.
 
 </div>
 

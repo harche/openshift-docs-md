@@ -190,7 +190,7 @@ The system creates storage profiles for each storage class automatically. You ca
     The `Clone Strategy` line indicates the clone strategy to be used.
 
     `status.dataImportCronSourceFormat`
-    `Data Import Cron Source Format` indicates whether golden images on this storage are stored as PVCs or volume snapshots.
+    `Data Import Cron Source Format` indicates whether boot source images on this storage are stored as PVCs or volume snapshots.
 
 ## Setting a default cloning strategy by using a storage profile
 

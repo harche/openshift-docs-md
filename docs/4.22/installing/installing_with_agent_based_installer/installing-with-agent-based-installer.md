@@ -1101,13 +1101,12 @@ spec:
   controlPlaneConfig:
     servingCertificates: {}
   platform:
-    agentBareMetal:
-      agentSelector:
-        matchLabels:
-          bla: aaa
+    agentBareMetal: {}
   pullSecretRef:
     name: pull-secret
 ```
+
+To declaratively bind specific bare-metal hosts to a cluster, use the `bmac.agent-install.openshift.io/cluster-reference` annotation on `BareMetalHost` resources.
 
 <div class="formalpara-title">
 
@@ -1148,6 +1147,8 @@ spec:
     matchLabels:
       cluster0-nmstate-label-name: cluster0-nmstate-label-value
 ```
+
+The `clusterRef` field and its child fields (`name` and `namespace`) are optional. To enable the late-binding workflow, remove the `clusterRef` field and its child fields from the `InfraEnv` CR. Hosts are then bound to clusters individually by using the `bmac.agent-install.openshift.io/cluster-reference` annotation on `BareMetalHost` resources.
 
 <div class="formalpara-title">
 

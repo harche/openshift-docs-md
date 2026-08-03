@@ -164,7 +164,7 @@ The migration is disruptive and nodes in your cluster might be temporarily unava
 
 </div>
 
-For more details about the migration process, including important service interruption considerations, see "Changing the MTU for the cluster network" in the additional resources for this procedure.
+For more details about the migration process, including important service interruption considerations, see "Changing the MTU for the cluster network".
 
 ## Prerequisites for changing the cluster network MTU
 

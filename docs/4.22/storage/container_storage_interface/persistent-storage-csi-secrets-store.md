@@ -136,7 +136,111 @@ To enable OpenShift Container Platform to mount secrets from external secret man
 
     3.  Click **Create**.
 
-- [Providing sensitive data to pods by using an external secrets store](../../nodes/pods/nodes-pods-secrets-store.xml#nodes-pods-secrets-store)
+# Installing the Secrets Store CSI driver by using the CLI
+
+The Secrets Store CSI driver is typically installed in the namespace `openshift-cluster-csi-drivers`. This namespace is present in the cluster as part of the installation of the Cluster Storage Operator.
+
+1.  Create an `OperatorGroup` object by running the following command:
+
+    ``` terminal
+    $ oc apply -f - <<EOF
+    apiVersion: operators.coreos.com/v1
+    kind: OperatorGroup
+    metadata:
+      name: openshift-cluster-csi-drivers
+      namespace: openshift-cluster-csi-drivers
+    spec: {}
+    EOF
+    ```
+
+2.  Create a `Subscription` object by running the following command:
+
+    ``` terminal
+    $ oc apply -f - <<EOF
+    apiVersion: operators.coreos.com/v1alpha1
+    kind: Subscription
+    metadata:
+      name: secrets-store-csi-driver-operator
+      namespace: openshift-cluster-csi-drivers
+    spec:
+      channel: stable
+      installPlanApproval: Automatic
+      name: secrets-store-csi-driver-operator
+      source: redhat-operators
+      sourceNamespace: openshift-marketplace
+    EOF
+    ```
+
+3.  Wait for the Operator to be up and running. You can check the Operator status by running the following command:
+
+    ``` terminal
+    $ oc get csv -n openshift-cluster-csi-drivers
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    NAME    DISPLAY     VERSION         RELEASE   REPLACES   PHASE
+    secrets-store-csi-driver-operator.v4.22.0-202607151755   Secrets Store CSI Driver Operator   4.22.0-202607151755                        Succeeded
+    ```
+
+4.  Create the Cluster CSI driver by running the following command:
+
+    ``` terminal
+    $ oc apply -f - <<EOF
+    apiVersion: operator.openshift.io/v1
+    kind: ClusterCSIDriver
+    metadata:
+      name: secrets-store.csi.k8s.io
+    spec:
+      managementState: Managed
+    EOF
+    ```
+
+- Verify that the Operator is running:
+
+  ``` terminal
+  $ oc get operator -n openshift-cluster-csi-drivers
+  ```
+
+  <div class="formalpara-title">
+
+  **Example output**
+
+  </div>
+
+  ``` terminal
+  NAME                                                             AGE
+  secrets-store-csi-driver-operator.openshift-cluster-csi-drivers   7m55s
+  ```
+
+- Verify that the pods are running:
+
+  ``` terminal
+  $ oc get pods -n openshift-cluster-csi-drivers
+  ```
+
+  <div class="formalpara-title">
+
+  **Example output**
+
+  </div>
+
+  ``` terminal
+  NAME                                                 READY   STATUS    RESTARTS   AGE
+  ....
+  ....
+  secrets-store-csi-driver-node-bhp2d                  3/3     Running   0          45s
+  secrets-store-csi-driver-operator-74696fc7bc-qjrl8   1/1     Running   0          7m40s
+  ```
+
+<!-- -->
+
+- [Mounting secrets from an external secrets store to a CSI volume](../../nodes/pods/nodes-pods-secrets-store.xml#mounting-secrets-external-secrets-store)
 
 # Uninstalling the Secrets Store CSI Driver Operator
 

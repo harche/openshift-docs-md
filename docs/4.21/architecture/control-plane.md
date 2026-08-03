@@ -1,4 +1,6 @@
-The *control plane*, which is composed of control plane machines, manages the OpenShift Container Platform cluster. The control plane machines manage workloads on the compute machines, which are also known as worker machines. The cluster itself manages all upgrades to the machines by the actions of the Cluster Version Operator (CVO), the Machine Config Operator, and a set of individual Operators.
+You can use a *control plane*, which is composed of control plane machines, to manage the OpenShift Container Platform cluster. The control plane machines manage workloads on the compute machines, which are also known as worker machines.
+
+The cluster manages all upgrades to the machines by the actions of the Cluster Version Operator (CVO), the Machine Config Operator, and a set of individual Operators.
 
 # Node configuration management with machine config pools
 
@@ -38,15 +40,14 @@ OpenShift Container Platform assigns hosts different roles. These roles define t
 
 <div class="note">
 
-The cluster also contains the definition for the `bootstrap` role. Because the bootstrap machine is used only during cluster installation, its function is explained in the cluster installation documentation.
+The cluster also contains the definition for the `bootstrap` role. The installation program uses the bootstrap machine only during cluster deployment. See the cluster installation documentation to learn more about its role.
 
 </div>
 
-## Control plane and node host compatibility
-
+Control plane and node host compatibility
 The OpenShift Container Platform version must match between control plane host and node host. For example, in a 4.17 cluster, all control plane hosts must be 4.17 and all nodes must be 4.17.
 
-Temporary mismatches during cluster upgrades are acceptable. For example, when upgrading from the previous OpenShift Container Platform version to 4.17, some nodes will upgrade to 4.17 before others. Prolonged skewing of control plane hosts and node hosts might expose older compute machines to bugs and missing features. Users should resolve skewed control plane hosts and node hosts as soon as possible.
+Temporary mismatches during cluster upgrades are acceptable. For example, when upgrading from the previous OpenShift Container Platform version to 4.17, some nodes upgrade to 4.17 before others. Prolonged skewing of control plane hosts and node hosts might expose older compute machines to bugs and missing features. Users can resolve skewed control plane hosts and node hosts as soon as possible.
 
 The `kubelet` service must not be newer than `kube-apiserver`, and can be up to two minor versions older depending on whether your OpenShift Container Platform version is odd or even. The table below shows the appropriate version compatibility:
 
@@ -59,8 +60,7 @@ The `kubelet` service must not be newer than `kube-apiserver`, and can be up to 
 
 2.  For example, OpenShift Container Platform 4.10, 4.12.
 
-## Cluster workers
-
+Cluster workers
 In a Kubernetes cluster, worker nodes run and manage the actual workloads requested by Kubernetes users. The worker nodes advertise their capacity and the scheduler, which is a control plane service, determines on which nodes to start pods and containers. The following important services run on each worker node:
 
 - CRI-O, which is the container engine.
@@ -71,25 +71,24 @@ In a Kubernetes cluster, worker nodes run and manage the actual workloads reques
 
 - The crun or runC low-level container runtime, which creates and runs containers.
 
-<div class="note">
+  <div class="note">
 
-For information about how to enable runC instead of the default crun, see the documentation for creating a `ContainerRuntimeConfig` CR.
+  For information about how to enable runC instead of the default crun, see the documentation for creating a `ContainerRuntimeConfig` CR.
 
-</div>
+  </div>
 
-In OpenShift Container Platform, compute machine sets control the compute machines, which are assigned the `worker` machine role. Machines with the `worker` role drive compute workloads that are governed by a specific machine pool that autoscales them. Because OpenShift Container Platform has the capacity to support multiple machine types, the machines with the `worker` role are classed as *compute* machines. In this release, the terms *worker machine* and *compute machine* are used interchangeably because the only default type of compute machine is the worker machine. In future versions of OpenShift Container Platform, different types of compute machines, such as infrastructure machines, might be used by default.
+  In OpenShift Container Platform, compute machine sets control the compute machines, which are assigned the `worker` machine role. Machines with the `worker` role drive compute workloads that are governed by a specific machine pool that autoscales them. Because OpenShift Container Platform has the capacity to support multiple machine types, the machines with the `worker` role are classed as *compute* machines. In this release, the terms *worker machine* and *compute machine* are used interchangeably because the only default type of compute machine is the worker machine. In future versions of OpenShift Container Platform, different types of compute machines, such as infrastructure machines, might be used by default.
 
-<div class="note">
+  <div class="note">
 
-Compute machine sets are groupings of compute machine resources under the `machine-api` namespace. Compute machine sets are configurations that are designed to start new compute machines on a specific cloud provider. Conversely, machine config pools (MCPs) are part of the Machine Config Operator (MCO) namespace. An MCP is used to group machines together so the MCO can manage their configurations and facilitate their upgrades.
+  Compute machine sets are groupings of compute machine resources under the `machine-api` namespace. Compute machine sets are configurations that start new compute machines on a specific cloud provider. Conversely, machine config pools (MCPs) are part of the Machine Config Operator (MCO) namespace. An MCP is used to group machines together so the MCO can manage their configurations and facilitate their upgrades.
 
-</div>
+  </div>
 
-## Cluster control planes
+Cluster control planes
+In a Kubernetes cluster, the *master* nodes run services that are required to control the Kubernetes cluster. In OpenShift Container Platform, the control plane consists of control plane machines that have a `master` machine role. They contain more than just the Kubernetes services for managing the OpenShift Container Platform cluster.
 
-In a Kubernetes cluster, the *master* nodes run services that are required to control the Kubernetes cluster. In OpenShift Container Platform, the control plane is comprised of control plane machines that have a `master` machine role. They contain more than just the Kubernetes services for managing the OpenShift Container Platform cluster.
-
-For most OpenShift Container Platform clusters, control plane machines are defined by a series of standalone machine API resources. For supported cloud provider and OpenShift Container Platform version combinations, control planes can be managed with control plane machine sets. Extra controls apply to control plane machines to prevent you from deleting all of the control plane machines and breaking your cluster.
+For most OpenShift Container Platform clusters, control plane machines are defined by a series of standalone machine API resources. For supported cloud provider and OpenShift Container Platform version combinations, control planes can be managed with control plane machine sets. Extra controls apply to control plane machines to prevent you from deleting all of the control plane machines and making the cluster inoperable.
 
 <div class="note">
 
@@ -150,15 +149,15 @@ OpenShift services that run on the control plane
 
 Some of these services on the control plane machines run as systemd services, while others run as static pods.
 
-Systemd services are appropriate for services that you need to always come up on that particular system shortly after it starts. For control plane machines, those include sshd, which allows remote login. It also includes services such as:
+Systemd services are appropriate for services that must always start on that particular system shortly after it starts. For control plane machines, such as those include sshd, that allow remote login. It also includes services such as:
 
 - The CRI-O container engine (crio), which runs and manages the containers. OpenShift Container Platform 4.17 uses CRI-O instead of the Docker Container Engine.
 
 - Kubelet (kubelet), which accepts requests for managing containers on the machine from control plane services.
 
-CRI-O and Kubelet must run directly on the host as systemd services because they need to be running before you can run other containers.
+  CRI-O and Kubelet must run directly on the host as systemd services because they need to be running before you can run other containers.
 
-The `installer-*` and `revision-pruner-*` control plane pods must run with root permissions because they write to the `/etc/kubernetes` directory, which is owned by the root user. These pods are in the following namespaces:
+  The `installer-*` and `revision-pruner-*` control plane pods must run with root permissions because they write to the `/etc/kubernetes` directory, which is owned by the root user. These pods are in the following namespaces:
 
 - `openshift-etcd`
 
@@ -168,15 +167,13 @@ The `installer-*` and `revision-pruner-*` control plane pods must run with root 
 
 - `openshift-kube-scheduler`
 
-<!-- -->
-
 - [Hosted control planes overview](../hosted_control_planes/index.xml#hcp-overview)
 
 # Operators in OpenShift Container Platform
 
-Operators are among the most important components of OpenShift Container Platform. They are the preferred method of packaging, deploying, and managing services on the control plane. They can also provide advantages to applications that users run.
+Operators are the foundational control plane extensions of OpenShift Container Platform. Use Operators as the preferred method to package, deploy, and manage services on the control plane, and to support your applications.
 
-Operators integrate with Kubernetes APIs and CLI tools such as `kubectl` and the OpenShift CLI (`oc`). They provide the means of monitoring applications, performing health checks, managing over-the-air (OTA) updates, and ensuring that applications remain in your specified state.
+Operators integrate with Kubernetes APIs and CLI tools such as `kubectl` and the OpenShift CLI (`oc`). Operators provide the means of monitoring applications, performing health checks, managing over-the-air (OTA) updates, and ensuring that applications remain in your specified state.
 
 Operators also offer a more granular configuration experience. You configure each component by modifying the API that the Operator exposes instead of modifying a global configuration file.
 
@@ -200,9 +197,11 @@ Cluster Operators are represented by a `ClusterOperator` object, which cluster a
 
 ## Add-on Operators
 
-Operator Lifecycle Manager (OLM) and the software catalog are default components in OpenShift Container Platform that help manage Kubernetes-native applications as Operators. Together they provide the system for discovering, installing, and managing the optional add-on Operators available on the cluster.
+Operator Lifecycle Manager (OLM) and the software catalog are default components in OpenShift Container Platform that help manage Kubernetes-native applications as Operators.
 
-Using the software catalog in the OpenShift Container Platform web console, cluster administrators and authorized users can select Operators to install from catalogs of Operators. After installing an Operator from the software catalog, it can be made available globally or in specific namespaces to run in user applications.
+Together they provide the system for discovering, installing, and managing the optional add-on Operators available on the cluster.
+
+Using the software catalog in the OpenShift Container Platform web console, cluster administrators and authorized users can select Operators to install from catalogs of Operators. After installing an Operator from the software catalog, you can make the Operator available globally or in specific namespaces to run in user applications.
 
 Default catalog sources are available that include Red Hat Operators, certified Operators, and community Operators. Cluster administrators can also add their own custom catalog sources, which can contain a custom set of Operators.
 
@@ -214,15 +213,16 @@ OLM does not manage the cluster Operators that comprise the OpenShift Container 
 
 - [Operator Lifecycle Manager (OLM) concepts and resources](../operators/understanding/olm/olm-understanding-olm.xml#olm-understanding-olm)
 
-- [Understanding the software catalog](../operators/understanding/olm-understanding-software-catalog.xml#olm-understanding-software-catalog).
+- [Understanding the software catalog](../operators/understanding/olm-understanding-software-catalog.xml#olm-understanding-software-catalog)
 
-# Overview of etcd
+# etcd key-value store
 
-etcd is a consistent, distributed key-value store that holds small amounts of data that can fit entirely in memory. Although etcd is a core component of many projects, it is the primary data store for Kubernetes, which is the standard system for container orchestration.
+etcd is a consistent, distributed key-value store that holds small amounts of data that can fit entirely in memory.
 
-## Benefits of using etcd
+Although etcd is a core component of many projects, etcd is the primary data store for Kubernetes, which is the standard system for container orchestration.
 
-By using etcd, you can benefit in several ways:
+Benefits of using etcd
+etcd provides the following benefits:
 
 - Maintain consistent uptime for your cloud-native applications, and keep them working even if individual servers fail
 
@@ -230,8 +230,7 @@ By using etcd, you can benefit in several ways:
 
 - Distribute configuration data to provide redundancy and resiliency for the configuration of nodes
 
-## How etcd works
-
+How etcd works
 To ensure a reliable approach to cluster configuration and management, etcd uses the etcd Operator. The Operator simplifies the use of etcd on a Kubernetes container platform like OpenShift Container Platform. With the etcd Operator, you can create or delete etcd members, resize clusters, perform backups, and upgrade etcd.
 
 The etcd Operator observes, analyzes, and acts:
@@ -242,7 +241,7 @@ The etcd Operator observes, analyzes, and acts:
 
 3.  It fixes the differences through the etcd cluster management APIs, the Kubernetes API, or both.
 
-etcd holds the cluster state, which is constantly updated. This state is continuously persisted, which leads to a high number of small changes at high frequency. As a result, it is critical to back the etcd cluster member with fast, low-latency I/O. For more information about best practices for etcd, see "Recommended etcd practices".
+    etcd holds the cluster state, which is constantly updated. etcd continuously persists this state, which leads to a high number of small changes at high frequency. As a result, you must back the etcd cluster member with fast, low-latency I/O. For more information about best practices for etcd, see "Recommended etcd practices".
 
 - [Recommended etcd practices](../etcd/etcd-practices.xml#recommended-etcd-practices)
 

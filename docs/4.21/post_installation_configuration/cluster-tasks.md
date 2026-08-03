@@ -1,3 +1,5 @@
+After installing OpenShift Container Platform, you can configure, scale, and maintain your cluster to meet operational requirements, including managing nodes and infrastructure workloads, enabling features, applying autoscaling, and maintaining etcd.
+
 After installing OpenShift Container Platform, you can further expand and customize your cluster to your requirements.
 
 # Available cluster customizations
@@ -115,6 +117,8 @@ For clusters managed by the multicluster engine for Kubernetes, you can add work
 If you incorrectly sized the worker nodes during deployment, adjust them by creating one or more new compute machine sets, scale them up, then scale the original compute machine set down before removing them.
 
 ## Understanding the difference between compute machine sets and the machine config pool
+
+Compute machine sets and machine config pools control different aspects of node lifecycle in OpenShift Container Platform. Understanding how each object relates to scaling and upgrades helps you configure nodes correctly.
 
 `MachineSet` objects describe OpenShift Container Platform nodes with respect to the cloud or machine provider.
 
@@ -2495,6 +2499,8 @@ If you deployed a bare-metal cluster, you can scale the cluster up to 5 nodes as
 
 ## etcd encryption
 
+You can encrypt sensitive resource data in etcd to provide an additional layer of protection if an etcd backup or storage data is exposed.
+
 By default, etcd data is not encrypted in OpenShift Container Platform. You can enable etcd encryption for your cluster to provide an additional layer of data security. For example, it can help protect the loss of sensitive data if an etcd backup is exposed to the incorrect parties.
 
 When you enable etcd encryption, the following OpenShift API server and Kubernetes API server resources are encrypted:
@@ -3091,6 +3097,8 @@ $ oc patch etcd cluster -p='{"spec": {"forceRedeploymentReason": "recovery-'"$(d
 - [Replacing a bare-metal control plane node](../installing/overview/index.xml#replacing-a-bare-metal-control-plane-node_bare-metal-expanding)
 
 ## Issues and workarounds for restoring a persistent storage state
+
+After restoring a cluster from an etcd snapshot, persistent storage resources might no longer match the current storage provider state. Identify and resolve outdated volume, credential, attachment, or device references to restore workloads safely.
 
 If your OpenShift Container Platform cluster uses persistent storage of any form, a state of the cluster is typically stored outside etcd. When you restore from an etcd backup, the status of the workloads in OpenShift Container Platform is also restored. However, if the etcd snapshot is old, the status might be invalid or outdated.
 

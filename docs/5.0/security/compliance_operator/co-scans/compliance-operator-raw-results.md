@@ -1,14 +1,8 @@
-When proving compliance for your OpenShift Container Platform cluster, you might need to provide the scan results for auditing purposes.
+When proving compliance for your OpenShift Container Platform cluster, you might need to give the scan results for auditing purposes.
 
 # Obtaining Compliance Operator raw results from a persistent volume
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-The Compliance Operator generates and stores the raw results in a persistent volume. These results are in Asset Reporting Format (ARF).
+You can view the results of Compliance Operator scans for auditing purposes. The Operator stores the raw results in a persistent volume in Asset Reporting Format (ARF).
 
 1.  Explore the `ComplianceSuite` object:
 

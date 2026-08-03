@@ -4,6 +4,16 @@ The Multiarch Tuning Operator (MTO) optimizes workload management within multi-a
 
 - [Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator](../../post_installation_configuration/configuring-multi-arch-compute-machines/multiarch-tuning-operator.xml#multiarch-tuning-operator)
 
+# Release notes for the Multiarch Tuning Operator 1.3.3
+
+The release notes for the Multiarch Tuning Operator 1.3.3 summarize all new features and enhancements, notable technical changes, major corrections from the previous version, and any known bugs upon general availability.
+
+Issued: 28 July 2026
+
+## Enhancements
+
+- MTO has been updated to use `go` version 1.26.4.
+
 # Release notes for the Multiarch Tuning Operator 1.3.2
 
 The release notes for the Multiarch Tuning Operator 1.3.2 summarize all new features and enhancements, notable technical changes, major corrections from the previous version, and any known bugs upon general availability.

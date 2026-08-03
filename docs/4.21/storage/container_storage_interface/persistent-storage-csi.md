@@ -1,12 +1,18 @@
-The Container Storage Interface (CSI) allows OpenShift Container Platform to consume storage from storage back ends that implement the [CSI interface](https://github.com/container-storage-interface/spec) as persistent storage.
+Container Storage Interface (CSI) is a standard specification enabling storage vendors to develop plugins that work across container orchestration systems. OpenShift Container Platform uses CSI drivers to provision and manage persistent storage, replacing in-tree storage plugins.
+
+# CSI architecture
+
+Container Storage Interface (CSI) architecture uses containerized drivers and bridge components for communication between OpenShift Container Platform and storage backends. Each driver requires controller deployments and daemon sets for volume operations. Multiple drivers can run simultaneously.
+
+The Container Storage Interface (CSI) allows OpenShift Container Platform to consume storage from storage back ends that implement the CSI interface as persistent storage.
 
 <div class="note">
 
-OpenShift Container Platform 4.17 supports version 1.6.0 of the [CSI specification](https://github.com/container-storage-interface/spec).
+OpenShift Container Platform 4.17 supports version 1.6.0 of the CSI specification.
 
 </div>
 
-# CSI architecture
+For more information about the CSI spec, see "CSI spec".
 
 CSI drivers are typically shipped as container images. These containers are not aware of OpenShift Container Platform where they run. To use CSI-compatible storage back end in OpenShift Container Platform, the cluster administrator must deploy several components that serve as a bridge between OpenShift Container Platform and the storage driver.
 
@@ -18,7 +24,11 @@ The following diagram provides a high-level overview about the components runnin
 
 It is possible to run multiple CSI drivers for different storage back ends. Each driver needs its own external controllers deployment and daemon set with the driver and CSI registrar.
 
+- [CSI spec](https://github.com/container-storage-interface/spec)
+
 ## External CSI controllers
+
+External Container Storage Interface (CSI) controllers run as deployments with containers handling volume provisioning, deletion, attachment, snapshotting, and resizing. Controller pods communicate with CSI drivers using UNIX Domain Sockets and run on infrastructure nodes to protect credentials.
 
 External CSI controllers is a deployment that deploys one or more pods with five containers:
 
@@ -36,35 +46,37 @@ The CSI attacher and CSI provisioner containers communicate with the CSI driver 
 
 <div class="note">
 
-The `attach`, `detach`, `provision`, and `delete` operations typically require the CSI driver to use credentials to the storage backend. Run the CSI controller pods on infrastructure nodes so the credentials are never leaked to user processes, even in the event of a catastrophic security breach on a compute node.
+The `attach`, `detach`, `provision`, and `delete` operations typically require the CSI driver to use credentials to the storage backend. Run the CSI controller pods on infrastructure nodes so the credentials are never leaked to user processes, even in case of a catastrophic security breach on a compute node.
 
 </div>
 
 <div class="note">
 
-The external attacher must also run for CSI drivers that do not support third-party `attach` or `detach` operations. The external attacher will not issue any `ControllerPublish` or `ControllerUnpublish` operations to the CSI driver. However, it still must run to implement the necessary OpenShift Container Platform attachment API.
+The external attacher must also run for CSI drivers that do not support third-party `attach` or `detach` operations. The external attacher does not issue any `ControllerPublish` or `ControllerUnpublish` operations to the CSI driver. However, it still must run to implement the necessary OpenShift Container Platform attachment API.
 
 </div>
 
 ## CSI driver daemon set
 
+CSI driver daemon sets run on every node to enable volume mounting and operations. Each pod contains a driver and registrar communicating with node services using UNIX Domain Sockets. The node driver uses minimal credentials and implements node-specific CSI operations like publish and stage.
+
 The CSI driver daemon set runs a pod on every node that allows OpenShift Container Platform to mount storage provided by the CSI driver to the node and use it in user workloads (pods) as persistent volumes (PVs). The pod with the CSI driver installed contains the following containers:
 
-- A CSI driver registrar, which registers the CSI driver into the `openshift-node` service running on the node. The `openshift-node` process running on the node then directly connects with the CSI driver using the UNIX Domain Socket available on the node.
+CSI driver registrar
+The CSI driver registrar registers the CSI driver into the `openshift-node` service running on the node. The `openshift-node` process running on the node then directly connects with the CSI driver using the UNIX Domain Socket available on the node.
 
-- A CSI driver.
-
+CSI driver
 The CSI driver deployed on the node should have as few credentials to the storage back end as possible. OpenShift Container Platform will only use the node plugin set of CSI calls such as `NodePublish`/`NodeUnpublish` and `NodeStage`/`NodeUnstage`, if these calls are implemented.
 
 # CSI drivers supported by OpenShift Container Platform
 
-OpenShift Container Platform installs certain CSI drivers by default, giving users storage options that are not possible with in-tree volume plugins.
+OpenShift Container Platform installs several CSI drivers by default, automatically deploying the driver Operator, driver, and storage class for supported backends. Default drivers provide enhanced features beyond in-tree plugins. Some drivers, such as AWS EFS and GCP Filestore, require manual installation.
 
 To create CSI-provisioned persistent volumes that mount to these supported storage assets, OpenShift Container Platform installs the necessary CSI driver Operator, the CSI driver, and the required storage class by default. For more details about the default namespace of the Operator and driver, see the documentation for the specific CSI Driver Operator.
 
 <div class="important">
 
-The AWS EFS and GCP Filestore CSI drivers are not installed by default, and must be installed manually. For instructions on installing the AWS EFS CSI driver, see [Setting up AWS Elastic File Service CSI Driver Operator](https://docs.redhat.com/documentation/openshift_dedicated/4/html/storage/using-container-storage-interface-csi#persistent-storage-efs-csi-driver-operator-setup_persistent-storage-csi-aws-efs). For instructions on installing the GCP Filestore CSI driver, see [Google Cloud Filestore CSI Driver Operator](https://docs.redhat.com/documentation/openshift_container_platform/4.17/html/storage/using-container-storage-interface-csi#persistent-storage-csi-google-cloud-file-overview).
+The AWS EFS CSI driver is not installed by default, and must be installed manually. For instructions about installing the AWS EFS CSI driver, see "Setting up the AWS Elastic File Service CSI Driver Operator".
 
 </div>
 
@@ -76,7 +88,7 @@ If your CSI driver is not listed in the following table, you must follow the ins
 
 </div>
 
-For a list of third-party-certified CSI drivers, see the *Red Hat ecosystem portal* under *Additional resources*.
+For a list of third-party-certified CSI drivers, see the "Red Hat ecosystem portal".
 
 | CSI driver                                         | CSI volume snapshots | CSI volume group snapshots <sup>\[1\]</sup> | CSI cloning        | CSI resize         | Inline ephemeral volumes | User namespaces     |
 |----------------------------------------------------|----------------------|---------------------------------------------|--------------------|--------------------|--------------------------|---------------------|
@@ -136,11 +148,15 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 <!-- -->
 
+- [Setting up the AWS EFS CSI Driver Operator](../../storage/container_storage_interface/persistent-storage-csi-aws-efs.xml#persistent-storage-efs-csi-driver-operator-setup_persistent-storage-csi-aws-efs)
+
 - [Red Hat ecosystem portal](https://catalog.redhat.com/)
 
 - [Third-party support policy](https://access.redhat.com/articles/third-party-software-support)
 
 # Dynamic provisioning
+
+Dynamic provisioning creates persistent volumes on-demand from storage class configurations. Container Storage Interface (CSI) drivers support specific parameters determining behavior. Create a default storage class to enable provisioning for claims without a specified class.
 
 Dynamic provisioning of persistent storage depends on the capabilities of the CSI driver and underlying storage back end. The provider of the CSI driver should document how to create a storage class in OpenShift Container Platform and the parameters available for configuration.
 
@@ -162,15 +178,15 @@ The created storage class can be configured to enable dynamic provisioning.
   EOF
   ```
 
-  - The name of the storage class that will be created.
+- `metadata.name`: Specifies the name of the storage class that will be created.
 
-  - The name of the CSI driver that has been installed.
+- `provisioner`: Specifies the name of the CSI driver that has been installed.
 
-  - The vSphere CSI driver supports all of the file systems supported by the underlying Red Hat Core operating system release, including XFS and Ext4.
+- `parameters.csi.storage.k8s.io/fstype`: The vSphere CSI driver supports all of the file systems supported by the underlying Red Hat Core operating system release, including XFS and Ext4.
 
 # Example using the CSI driver
 
-The following example installs a default MySQL template without any changes to the template.
+Deploy a MySQL application using Container Storage Interface (CSI) persistent storage to demonstrate dynamic volume provisioning. This example shows CSI drivers automatically creating and binding persistent volume claims to dynamically provisioned volumes without manual intervention.
 
 - The CSI driver has been deployed.
 
@@ -206,8 +222,6 @@ The following example installs a default MySQL template without any changes to t
   </div>
 
   ``` terminal
-  NAME              STATUS    VOLUME                                   CAPACITY
-  ACCESS MODES   STORAGECLASS   AGE
-  mysql             Bound     kubernetes-dynamic-pv-3271ffcb4e1811e8   1Gi
-  RWO            cinder         3s
+  NAME           STATUS         VOLUME                                   CAPACITY ACCESS MODES   STORAGECLASS   AGE
+  mysql          Bound          kubernetes-dynamic-pv-3271ffcb4e1811e8   1Gi      RWO            gp3-csi        3s
   ```

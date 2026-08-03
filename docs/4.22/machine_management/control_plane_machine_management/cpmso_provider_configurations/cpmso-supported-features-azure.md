@@ -556,6 +556,12 @@ For more information about related features and functionality, see the Microsoft
 
 2.  Edit the following section under the `providerSpec` field:
 
+    <div class="formalpara-title">
+
+    **Sample configuration**
+
+    </div>
+
     ``` yaml
     apiVersion: machine.openshift.io/v1
     kind: ControlPlaneMachineSet

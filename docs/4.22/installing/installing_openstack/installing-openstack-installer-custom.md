@@ -1,18 +1,42 @@
 In OpenShift Container Platform version 4.17, you can install a customized cluster on Red Hat OpenStack Platform (RHOSP). To customize the installation, modify parameters in the `install-config.yaml` before you install the cluster.
 
-# Prerequisites
+Ensure that you meet the following prerequisites:
 
-- You reviewed details about the [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation) processes.
+- You reviewed details about the OpenShift Container Platform installation and update processes.
 
-- You read the documentation on [selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing).
+- You read the documentation on selecting a cluster installation method and preparing it for users.
 
-- You verified that OpenShift Container Platform 4.17 is compatible with your RHOSP version by using the [Supported platforms for OpenShift clusters](../../architecture/architecture-installation.xml#supported-platforms-for-openshift-clusters_architecture-installation) section. You can also compare platform support across different versions by viewing the [OpenShift Container Platform on RHOSP support matrix](https://access.redhat.com/articles/4679401).
+- You verified that OpenShift Container Platform 4.17 is compatible with your RHOSP version by using the supported platforms for OpenShift Container Platform clusters section. You can also compare platform support across different versions by viewing the OpenShift Container Platform on RHOSP support matrix.
 
-- You have a storage service installed in RHOSP, such as block storage (Cinder) or object storage (Swift). Object storage is the recommended storage technology for OpenShift Container Platform registry cluster deployment. For more information, see [Optimizing storage](../../scalability_and_performance/optimization/optimizing-storage.xml#optimizing-storage).
+- You have a storage service installed in RHOSP, such as block storage (Cinder) or object storage (Swift). Object storage is the recommended storage technology for OpenShift Container Platform registry cluster deployment. For more information, see "Optimizing storage".
 
-- You understand performance and scalability practices for cluster scaling, control plane sizing, and etcd. For more information, see [Recommended practices for scaling the cluster](../../scalability_and_performance/recommended-performance-scale-practices/recommended-control-plane-practices.xml#recommended-host-practices).
+- You understand performance and scalability practices for cluster scaling, control plane sizing, and etcd. For more information, see "Recommended practices for scaling the cluster".
 
 - You have the metadata service enabled in RHOSP.
+
+You can complete the following configurations after you install a cluster on RHOSP with customizations:
+
+- Customize your cluster.
+
+- Enable remote health reporting.
+
+- Configure ingress cluster traffic by using a node port.
+
+- If you did not configure RHOSP to accept application traffic over floating IP addresses, configure RHOSP access with floating IP addresses.
+
+<!-- -->
+
+- [Installation and update](../../architecture/architecture-installation.xml#architecture-installation)
+
+- [Selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing)
+
+- [Supported platforms for OpenShift Container Platform clusters](../../architecture/architecture-installation.xml#supported-platforms-for-openshift-clusters_architecture-installation)
+
+- [OpenShift Container Platform on RHOSP support matrix (Red Hat Knowledgebase)](https://access.redhat.com/articles/4679401)
+
+- [Optimizing storage](../../scalability_and_performance/optimization/optimizing-storage.xml#optimizing-storage)
+
+- [Recommended practices for scaling the cluster](../../scalability_and_performance/recommended-performance-scale-practices/recommended-control-plane-practices.xml#recommended-host-practices)
 
 # Resource guidelines for installing OpenShift Container Platform on RHOSP
 
@@ -34,11 +58,11 @@ To support an OpenShift Container Platform installation, your Red Hat OpenStack
 
 Recommended resources for a default OpenShift Container Platform cluster on RHOSP
 
-A cluster might function with fewer than recommended resources, but its performance is not guaranteed.
+A cluster might function with fewer than recommended resources, but cluster performance is not guaranteed.
 
 <div class="important">
 
-If RHOSP object storage (Swift) is available and operated by a user account with the `swiftoperator` role, it is used as the default backend for the OpenShift Container Platform image registry. In this case, the volume storage requirement is 175 GB. Swift space requirements vary depending on the size of the image registry.
+If RHOSP object storage (Swift) is available and operated by a user account with the `swiftoperator` role, Swift is used as the default backend for the OpenShift Container Platform image registry. In this case, the volume storage requirement is 175 GB. Swift space requirements vary depending on the size of the image registry.
 
 </div>
 
@@ -305,13 +329,15 @@ Before installation, check if your RHOSP deployment is affected by this problem.
 
 - On [Ceph RGW](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html-single/deploying_an_overcloud_with_containerized_red_hat_ceph/index#ceph-rgw), the `account in url` option is enabled.
 
-1.  As an administrator in the RHOSP CLI, add the `swiftoperator` role to the account that will access Swift:
+<!-- -->
 
-    ``` terminal
-    $ openstack role add --user <user> --project <project> swiftoperator
-    ```
+- As an administrator in the RHOSP CLI, add the `swiftoperator` role to the account that will access Swift:
 
-    Your RHOSP deployment can now use Swift for the image registry.
+  ``` terminal
+  $ openstack role add --user <user> --project <project> swiftoperator
+  ```
+
+  Your RHOSP deployment can now use Swift for the image registry.
 
 # Configuring an image registry with custom storage on clusters that run on RHOSP
 
@@ -471,53 +497,55 @@ The OpenShift Container Platform installation process requires external network 
 
 - [Configure OpenStack’s networking service to have DHCP agents forward instances' DNS queries](https://docs.openstack.org/neutron/rocky/admin/config-dns-res.html#case-2-dhcp-agents-forward-dns-queries-from-instances)
 
-1.  Using the RHOSP CLI, verify the name and ID of the 'External' network:
+<!-- -->
 
-    ``` terminal
-    $ openstack network list --long -c ID -c Name -c "Router Type"
-    ```
+- Using the RHOSP CLI, verify the name and ID of the 'External' network:
 
-    <div class="formalpara-title">
+  ``` terminal
+  $ openstack network list --long -c ID -c Name -c "Router Type"
+  ```
 
-    **Example output**
+  <div class="formalpara-title">
 
-    </div>
+  **Example output**
 
-    ``` terminal
-    +--------------------------------------+----------------+-------------+
-    | ID                                   | Name           | Router Type |
-    +--------------------------------------+----------------+-------------+
-    | 148a8023-62a7-4672-b018-003462f8d7dc | public_network | External    |
-    +--------------------------------------+----------------+-------------+
-    ```
+  </div>
 
-A network with an external router type appears in the network list. If at least one does not, see [Creating a default floating IP network](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html/director_installation_and_usage/performing-overcloud-post-installation-tasks#creating-a-default-floating-ip-network) and [Creating a default provider network](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html/director_installation_and_usage/performing-overcloud-post-installation-tasks#creating-a-default-provider-network).
+  ``` terminal
+  +--------------------------------------+----------------+-------------+
+  | ID                                   | Name           | Router Type |
+  +--------------------------------------+----------------+-------------+
+  | 148a8023-62a7-4672-b018-003462f8d7dc | public_network | External    |
+  +--------------------------------------+----------------+-------------+
+  ```
 
-<div class="important">
+  A network with an external router type appears in the network list. If at least one does not, see [Creating a default floating IP network](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html/director_installation_and_usage/performing-overcloud-post-installation-tasks#creating-a-default-floating-ip-network) and [Creating a default provider network](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html/director_installation_and_usage/performing-overcloud-post-installation-tasks#creating-a-default-provider-network).
 
-If the external network’s CIDR range overlaps one of the default network ranges, you must change the matching network ranges in the `install-config.yaml` file before you start the installation process.
+  <div class="important">
 
-The default network ranges are:
+  If the external network’s CIDR range overlaps one of the default network ranges, you must change the matching network ranges in the `install-config.yaml` file before you start the installation process.
 
-| Network          | Range         |
-|------------------|---------------|
-| `machineNetwork` | 10.0.0.0/16   |
-| `serviceNetwork` | 172.30.0.0/16 |
-| `clusterNetwork` | 10.128.0.0/14 |
+  The default network ranges are:
 
-</div>
+  | Network          | Range         |
+  |------------------|---------------|
+  | `machineNetwork` | 10.0.0.0/16   |
+  | `serviceNetwork` | 172.30.0.0/16 |
+  | `clusterNetwork` | 10.128.0.0/14 |
 
-<div class="warning">
+  </div>
 
-If the installation program finds multiple networks with the same name, it sets one of them at random. To avoid this behavior, create unique names for resources in RHOSP.
+  <div class="warning">
 
-</div>
+  If the installation program finds multiple networks with the same name, it sets one of them at random. To avoid this behavior, create unique names for resources in RHOSP.
 
-<div class="note">
+  </div>
 
-If the Neutron trunk service plugin is enabled, a trunk port is created by default. For more information, see [Neutron trunk port](https://wiki.openstack.org/wiki/Neutron/TrunkPort).
+  <div class="note">
 
-</div>
+  If the Neutron trunk service plugin is enabled, a trunk port is created by default. For more information, see [Neutron trunk port](https://wiki.openstack.org/wiki/Neutron/TrunkPort).
+
+  </div>
 
 # Defining parameters for the installation program
 
@@ -759,7 +787,7 @@ You can customize the OpenShift Container Platform cluster you install on Red H
 
     </div>
 
-- [Installation configuration parameters for OpenStack](../../installing/installing_openstack/installation-config-parameters-openstack.xml#installation-config-parameters-openstack)
+- [Installation configuration parameters for RHOSP](../../installing/installing_openstack/installation-config-parameters-openstack.xml#installation-config-parameters-openstack)
 
 ## Configuring the cluster-wide proxy during installation
 
@@ -839,9 +867,9 @@ Production environments can deny direct access to the internet and instead have 
 
 ## Custom subnets in RHOSP deployments
 
-Optionally, you can deploy a cluster on a Red Hat OpenStack Platform (RHOSP) subnet of your choice. The subnet’s GUID is passed as the value of `platform.openstack.machinesSubnet` in the `install-config.yaml` file.
+Optionally, you can deploy a cluster on a Red Hat OpenStack Platform (RHOSP) subnet of your choice. The GUID of a subnet is passed as the value of `platform.openstack.machinesSubnet` in the `install-config.yaml` file.
 
-This subnet is used as the cluster’s primary subnet. By default, nodes and ports are created on it. You can create nodes and ports on a different RHOSP subnet by setting the value of the `platform.openstack.machinesSubnet` property to the subnet’s UUID.
+This subnet is used as the cluster’s primary subnet. By default, nodes and ports are created on the subnet. You can create nodes and ports on a different RHOSP subnet by setting the value of the `platform.openstack.machinesSubnet` property to the subnet’s UUID.
 
 Before you run the OpenShift Container Platform installer with a custom subnet, verify that your configuration meets the following requirements:
 
@@ -871,23 +899,23 @@ The CIDR ranges for networks are not adjustable after cluster installation. Red 
 
 </div>
 
-## Deploying a cluster with bare metal machines
+## Deploying a cluster with bare-metal machines
 
-If you want your cluster to use bare metal machines, modify the `install-config.yaml` file. Your cluster can have compute machines running on bare metal.
+If you want your cluster to use bare-metal machines, modify the `install-config.yaml` file. Your cluster can have compute machines running on bare metal.
 
 <div class="note">
 
-Be sure that your `install-config.yaml` file reflects whether the RHOSP network that you use for bare metal workers supports floating IP addresses or not.
+Be sure that your `install-config.yaml` file reflects whether the RHOSP network that you use for bare-metal workers supports floating IP addresses or not.
 
 </div>
 
-- The RHOSP [Bare Metal service (Ironic)](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.1/html/bare_metal_provisioning/index) is enabled and accessible via the RHOSP Compute API.
+- The Bare Metal service (Ironic) is enabled and accessible via the RHOSP Compute API.
 
-- Bare metal is available as [a RHOSP flavor](https://docs.redhat.com/en/documentation/red_hat_openstack_platform/17.1/html/configuring_the_bare_metal_provisioning_service/assembly_configuring-the-bare-metal-provisioning-service-after-deployment#proc_creating-flavors-for-launching-bare-metal-instances_bare-metal-post-deployment).
+- Bare metal is available as a RHOSP flavor.
 
-- If your cluster runs on an RHOSP version that is more than 16.1.6 and less than 16.2.4, bare metal workers do not function due to a [known issue](https://bugzilla.redhat.com/show_bug.cgi?id=2033953) that causes the metadata service to be unavailable for services on OpenShift Container Platform nodes.
+- If your cluster runs on an RHOSP version that is more than 16.1.6 and less than 16.2.4, bare-metal workers do not function due to a [known issue](https://bugzilla.redhat.com/show_bug.cgi?id=2033953) that causes the metadata service to be unavailable for services on OpenShift Container Platform nodes.
 
-- The RHOSP network supports both VM and bare metal server attachment.
+- The RHOSP network supports both VM and bare-metal server attachment.
 
 - If you want to deploy the machines on a pre-existing network, a RHOSP subnet is provisioned.
 
@@ -897,7 +925,7 @@ Be sure that your `install-config.yaml` file reflects whether the RHOSP network 
 
 1.  In the `install-config.yaml` file, edit the flavors for machines:
 
-    1.  Change the value of `compute.platform.openstack.type` to a bare metal flavor.
+    1.  Change the value of `compute.platform.openstack.type` to a bare-metal flavor.
 
     2.  If you want to deploy your machines on a pre-existing network, change the value of `platform.openstack.machinesSubnet` to the RHOSP subnet UUID of the network.
 
@@ -924,23 +952,27 @@ Be sure that your `install-config.yaml` file reflects whether the RHOSP network 
         ...
         ```
 
-        - Change this value to a bare metal flavor to use for compute machines.
+        where:
 
-        - If you want to use a pre-existing network, change this value to the UUID of the RHOSP subnet.
+        `compute.platform.openstack.type`
+        Specifies a bare-metal flavor to use for compute machines.
 
-Use the updated `install-config.yaml` file to complete the installation process. The compute machines that are created during deployment use the flavor that you added to the file.
+        `platform.openstack.machinesSubnet`
+        If you want to use a pre-existing network, change this value to the UUID of the RHOSP subnet.
 
-<div class="note">
+        Use the updated `install-config.yaml` file to complete the installation process. The compute machines that are created during deployment use the flavor that you added to the file.
 
-The installation program may time out while waiting for bare metal machines to boot.
+    <div class="note">
 
-If the installation program times out, restart and then complete the deployment by using the `wait-for` command of the installation program. For example:
+    The installation program may time out while waiting for bare-metal machines to boot.
 
-``` terminal
-$ ./openshift-install wait-for install-complete --log-level debug
-```
+    If the installation program times out, restart and then complete the deployment by using the `wait-for` command of the installation program. For example:
 
-</div>
+    ``` terminal
+    $ ./openshift-install wait-for install-complete --log-level debug
+    ```
+
+    </div>
 
 ## Cluster deployment on RHOSP provider networks
 
@@ -964,11 +996,13 @@ A cluster can support as many provider network connections as the network type a
 
 </div>
 
-You can learn more about provider and tenant networks in [the RHOSP documentation](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.1/html/networking_guide/networking-overview_rhosp-network#tenant-provider-networks_network-overview).
+You can learn more about provider and tenant networks in the RHOSP documentation.
 
 ### RHOSP provider network requirements for cluster installation
 
-Before you install an OpenShift Container Platform cluster, your Red Hat OpenStack Platform (RHOSP) deployment and provider network must meet a number of conditions:
+Before you install an OpenShift Container Platform cluster, your Red Hat OpenStack Platform (RHOSP) deployment and provider network must meet several conditions.
+
+These conditions are listed as follows:
 
 - The [RHOSP networking service (Neutron) is enabled](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.1/html/networking_guide/networking-overview_rhosp-network#install-networking_network-overview) and accessible through the RHOSP networking API.
 
@@ -982,47 +1016,51 @@ Before you install an OpenShift Container Platform cluster, your Red Hat OpenSt
 
   </div>
 
-- The RHOSP project that you use to install the cluster must own the provider network, as well as an appropriate subnet.
+- The RHOSP project that you use to install the cluster must own the provider network and an appropriate subnet.
 
-  <div class="tip">
+To learn more about creating networks on RHOSP, read the provider networks documentation.
 
-  To create a network for a project that is named "openshift," enter the following command
+1.  To create a network for a project that is named "openshift," enter the following command:
 
-  ``` terminal
-  $ openstack network create --project openshift
-  ```
+    ``` terminal
+    $ openstack network create --project openshift
+    ```
 
-  To create a subnet for a project that is named "openshift," enter the following command
+2.  To create a subnet for a project that is named "openshift," enter the following command:
 
-  ``` terminal
-  $ openstack subnet create --project openshift
-  ```
+    ``` terminal
+    $ openstack subnet create --project openshift
+    ```
 
-  To learn more about creating networks on RHOSP, read [the provider networks documentation](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.1/html/networking_guide/networking-overview_rhosp-network#tenant-provider-networks_network-overview).
+3.  If the cluster is owned by the `admin` user, you must run the installation program as that user to create ports on the network.
 
-  </div>
+    <div class="important">
 
-  If the cluster is owned by the `admin` user, you must run the installer as that user to create ports on the network.
+    Provider networks must be owned by the RHOSP project that is used to create the cluster. If they are not, the RHOSP Compute service (Nova) cannot request a port from that network.
 
-  <div class="important">
+    </div>
 
-  Provider networks must be owned by the RHOSP project that is used to create the cluster. If they are not, the RHOSP Compute service (Nova) cannot request a port from that network.
+4.  Verify that the provider network can reach the RHOSP metadata service IP address, which is `169.254.169.254` by default.
 
-  </div>
+    Depending on your RHOSP SDN and networking service configuration, you might need to provide the route when you create the subnet. For example:
 
-- Verify that the provider network can reach the RHOSP metadata service IP address, which is `169.254.169.254` by default.
+    ``` terminal
+    $ openstack subnet create --dhcp --host-route destination=169.254.169.254/32,gateway=192.0.2.2 ...
+    ```
 
-  Depending on your RHOSP SDN and networking service configuration, you might need to provide the route when you create the subnet. For example:
-
-  ``` terminal
-  $ openstack subnet create --dhcp --host-route destination=169.254.169.254/32,gateway=192.0.2.2 ...
-  ```
-
-- Optional: To secure the network, create [role-based access control (RBAC)](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.1/html/networking_guide/config-rbac-policies_rhosp-network#proc_create-rbac-policies_config-rbac-policies) rules that limit network access to a single project.
+5.  Optional: To secure the network, create role-based access control (RBAC) rules that limit network access to a single project.
 
 ### Deploying a cluster that has a primary interface on a provider network
 
 You can deploy an OpenShift Container Platform cluster that has its primary network interface on an Red Hat OpenStack Platform (RHOSP) provider network.
+
+<div class="tip">
+
+You can add additional networks, including provider networks, to the `platform.openstack.additionalNetworkIDs` list.
+
+After you deploy your cluster, you can attach pods to additional networks. For more information, see "Understanding multiple networks".
+
+</div>
 
 - Your Red Hat OpenStack Platform (RHOSP) deployment is configured as described by "RHOSP provider network requirements for cluster installation".
 
@@ -1036,54 +1074,48 @@ You can deploy an OpenShift Container Platform cluster that has its primary netw
 
 5.  Set the value of the `networking.machineNetwork.cidr` property to the CIDR block of the provider network subnet.
 
-<div class="important">
+    <div class="important">
 
-The `platform.openstack.apiVIPs` and `platform.openstack.ingressVIPs` properties must both be unassigned IP addresses from the `networking.machineNetwork.cidr` block.
+    The `platform.openstack.apiVIPs` and `platform.openstack.ingressVIPs` properties must both be unassigned IP addresses from the `networking.machineNetwork.cidr` block.
 
-</div>
+    </div>
 
-<div class="formalpara-title">
+    <div class="formalpara-title">
 
-**Section of an installation configuration file for a cluster that relies on a RHOSP provider network**
+    **Section of an installation configuration file for a cluster that relies on a RHOSP provider network**
 
-</div>
+    </div>
 
-``` yaml
-        ...
-        platform:
-          openstack:
-            apiVIPs:
-              - 192.0.2.13
-            ingressVIPs:
-              - 192.0.2.23
-            machinesSubnet: fa806b2f-ac49-4bce-b9db-124bc64209bf
-            # ...
-        networking:
-          machineNetwork:
-          - cidr: 192.0.2.0/24
-```
+    ``` yaml
+            ...
+            platform:
+              openstack:
+                apiVIPs:
+                  - 192.0.2.13
+                ingressVIPs:
+                  - 192.0.2.23
+                machinesSubnet: fa806b2f-ac49-4bce-b9db-124bc64209bf
+                # ...
+            networking:
+              machineNetwork:
+              - cidr: 192.0.2.0/24
+    ```
 
-- In OpenShift Container Platform 4.12 and later, the `apiVIP` and `ingressVIP` configuration settings are deprecated. Instead, use a list format to enter values in the `apiVIPs` and `ingressVIPs` configuration settings.
+    - In OpenShift Container Platform 4.12 and later, the `apiVIP` and `ingressVIP` configuration settings are deprecated. Instead, use a list format to enter values in the `apiVIPs` and `ingressVIPs` configuration settings.
 
-<div class="warning">
+      <div class="warning">
 
-You cannot set the `platform.openstack.externalNetwork` or `platform.openstack.externalDNS` parameters while using a provider network for the primary network interface.
+      You cannot set the `platform.openstack.externalNetwork` or `platform.openstack.externalDNS` parameters while using a provider network for the primary network interface.
 
-</div>
+      </div>
 
-When you deploy the cluster, the installer uses the `install-config.yaml` file to deploy the cluster on the provider network.
+      When you deploy the cluster, the installer uses the `install-config.yaml` file to deploy the cluster on the provider network.
 
-<div class="tip">
-
-You can add additional networks, including provider networks, to the `platform.openstack.additionalNetworkIDs` list.
-
-After you deploy your cluster, you can attach pods to additional networks. For more information, see [Understanding multiple networks](../../networking/multiple_networks/understanding-multiple-networks.xml#understanding-multiple-networks).
-
-</div>
+- [Understanding multiple networks](../../networking/multiple_networks/understanding-multiple-networks.xml#understanding-multiple-networks)
 
 ## Sample customized install-config.yaml file for RHOSP
 
-The following example `install-config.yaml` files demonstrate all of the possible Red Hat OpenStack Platform (RHOSP) customization options.
+The example `install-config.yaml` files demonstrate all of the possible Red Hat OpenStack Platform (RHOSP) customization options.
 
 <div class="important">
 
@@ -1364,36 +1396,36 @@ Create dual-stack networks and VIPs, then edit the `install-config.yaml` file to
 
     - `platform.openstack.controlPlanePort.network` specifies the network. Specifying the `network` under the `controlPlanePort` field is optional.
 
-<div class="note">
+      <div class="note">
 
-When using an installation host in an isolated dual-stack network, the IPv6 address might not be reassigned correctly upon reboot.
+      When using an installation host in an isolated dual-stack network, the IPv6 address might not be reassigned correctly upon reboot.
 
-To resolve this problem on Red Hat Enterprise Linux (RHEL) 8, create a file called `/etc/NetworkManager/system-connections/required-rhel8-ipv6.conf` that has the following configuration:
+      To resolve this problem on Red Hat Enterprise Linux (RHEL) 8, create a file called `/etc/NetworkManager/system-connections/required-rhel8-ipv6.conf` that has the following configuration:
 
-``` text
-[connection]
-type=ethernet
-[ipv6]
-addr-gen-mode=eui64
-method=auto
-```
+      ``` text
+      [connection]
+      type=ethernet
+      [ipv6]
+      addr-gen-mode=eui64
+      method=auto
+      ```
 
-To resolve this problem on RHEL 9, create a file called `/etc/NetworkManager/conf.d/required-rhel9-ipv6.conf` that has the following configuration:
+      To resolve this problem on RHEL 9, create a file called `/etc/NetworkManager/conf.d/required-rhel9-ipv6.conf` that has the following configuration:
 
-``` text
-[connection]
-ipv6.addr-gen-mode=0
-```
+      ``` text
+      [connection]
+      ipv6.addr-gen-mode=0
+      ```
 
-After you create and edit the file, reboot the installation host.
+      After you create and edit the file, reboot the installation host.
 
-</div>
+      </div>
 
-<div class="note">
+      <div class="note">
 
-The `ip=dhcp,dhcp6` kernel argument, which is set on all of the nodes, results in a single Network Manager connection profile that activates on many interfaces simultaneously. Because of this behavior, any additional network has the same connection enforced with the same UUID. If you need an interface-specific configuration, create a new connection profile for that interface so that the default connection is no longer enforced on it.
+      The `ip=dhcp,dhcp6` kernel argument, which is set on all of the nodes, results in a single Network Manager connection profile that activates on many interfaces simultaneously. Because of this behavior, any additional network has the same connection enforced with the same UUID. If you need an interface-specific configuration, create a new connection profile for that interface so that the default connection is no longer enforced on it.
 
-</div>
+      </div>
 
 ## Configuring a cluster with single-stack IPv6 networking
 
@@ -1501,11 +1533,11 @@ You cannot convert a dual-stack cluster into a single-stack IPv6 cluster.
 
     - `imageContentSources` specifies the mirror details. For more information on configuring a local image registry, see "Creating a mirror registry with mirror registry for Red Hat OpenShift".
 
-- See [Creating a mirror registry with mirror registry for Red Hat OpenShift](../../disconnected/installing-mirroring-creating-registry.xml#installing-mirroring-creating-registry)
+- [Creating a mirror registry with mirror registry for Red Hat OpenShift](../../disconnected/installing-mirroring-creating-registry.xml#installing-mirroring-creating-registry)
 
 ## Installation configuration for a cluster on OpenStack with a user-managed load balancer
 
-The following example `install-config.yaml` file demonstrates how to configure a cluster that uses an external, user-managed load balancer rather than the default internal load balancer.
+The example `install-config.yaml` file demonstrates how to configure a cluster that uses an external, user-managed load balancer rather than the default internal load balancer.
 
 ``` yaml
 apiVersion: v1
@@ -1542,9 +1574,13 @@ platform:
       type: UserManaged
 ```
 
-- Regardless of which load balancer you use, the load balancer is deployed to this subnet.
+where:
 
-- The `UserManaged` value indicates that you are using an user-managed load balancer.
+`platform.openstack.machineSubnet`
+Regardless of which load balancer you use, the load balancer is deployed to this subnet.
+
+`platform.openstack.loadBalancer.type`
+Specifies the `UserManaged` value, which indicates that you are using a user-managed load balancer.
 
 # Generating a key pair for cluster node SSH access
 
@@ -1693,11 +1729,11 @@ Create floating IP (FIP) addresses for external access to the OpenShift Containe
 
       If you use these values, you must also enter an external network as the value of the `platform.openstack.externalNetwork` parameter in the `install-config.yaml` file.
 
-      <div class="tip">
+<div class="tip">
 
-      You can make OpenShift Container Platform resources available outside of the cluster by assigning a floating IP address and updating your firewall configuration.
+You can make OpenShift Container Platform resources available outside of the cluster by assigning a floating IP address and updating your firewall configuration.
 
-      </div>
+</div>
 
 ## Completing installation without floating IP addresses
 
@@ -1875,7 +1911,7 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 <!-- -->
 
-- See [Accessing the web console](../../web_console/web-console.xml#web-console) for more details about accessing and understanding the OpenShift Container Platform web console.
+- [Accessing the web console](../../web_console/web-console.xml#web-console)
 
 # Telemetry access for OpenShift Container Platform
 
@@ -1883,14 +1919,14 @@ To provide metrics about cluster health and the success of updates, the Telemetr
 
 After you confirm that your [OpenShift Cluster Manager](https://console.redhat.com/openshift) inventory is correct, either maintained automatically by Telemetry or manually by using OpenShift Cluster Manager,use subscription watch to track your OpenShift Container Platform subscriptions at the account or multi-cluster level. For more information about subscription watch, see "Data Gathered and Used by Red Hat’s subscription services" in the *Additional resources* section.
 
-- See [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring) for more information about the Telemetry service
+- [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
-# Next steps
+# Additional resources
 
-- [Customize your cluster](../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations).
+- [Postinstallation cluster tasks](../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
 
-- If necessary, you can [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting).
+- [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
-- If you need to enable external access to node ports, [configure ingress cluster traffic by using a node port](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-nodeport.xml#nw-using-nodeport_configuring-ingress-cluster-traffic-nodeport).
+- [Configuring ingress cluster traffic by using a NodePort](../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-nodeport.xml#nw-using-nodeport_configuring-ingress-cluster-traffic-nodeport)
 
-- If you did not configure RHOSP to accept application traffic over floating IP addresses, [configure RHOSP access with floating IP addresses](../../installing/installing_openstack/installing-openstack-network-config.xml#installation-osp-configuring-api-floating-ip_installing-openstack-network-config).
+- [Configuring network settings after installing RHOSP](../../installing/installing_openstack/installing-openstack-network-config.xml#installation-osp-configuring-api-floating-ip_installing-openstack-network-config)

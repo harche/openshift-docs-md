@@ -1,12 +1,14 @@
-Red Hat delivers signatures for the images in the Red Hat Container Registries. Those signatures can be automatically verified when being pulled to OpenShift Container Platform 4 clusters by using the Machine Config Operator (MCO).
+To verify the integrity of the images in the Red Hat Container Registries between Red Hat registries and your infrastructure, you can enable signature verification.
 
-[Quay.io](https://quay.io/) serves most of the images that make up OpenShift Container Platform, and only the release image is signed. Release images refer to the approved OpenShift Container Platform images, offering a degree of protection against supply chain attacks. However, some extensions to OpenShift Container Platform, such as logging, monitoring, and service mesh, are shipped as Operators from the Operator Lifecycle Manager (OLM). Those images ship from the [Red Hat Ecosystem Catalog Container images](https://catalog.redhat.com/software/containers/explore) registry.
+Red Hat delivers signatures for the images in the Red Hat Container Registries. Those signatures can be automatically verified when being pulled to OpenShift Container Platform 4 clusters by using the Machine Config Operator (MCO).
 
 To verify the integrity of those images between Red Hat registries and your infrastructure, enable signature verification.
 
 # Enabling signature verification for Red Hat Container Registries
 
-Enabling container signature validation for Red Hat Container Registries requires writing a signature verification policy file specifying the keys to verify images from these registries. For RHEL8 nodes, the registries are already defined in `/etc/containers/registries.d` by default.
+To verify the integrity of the images in the Red Hat Container Registries, you can enable container signature validation for Red Hat Container Registries by writing a signature verification policy file specifying the keys to verify images from these registries.
+
+For RHEL8 nodes, the registries are already defined in `/etc/containers/registries.d` by default.
 
 1.  Create a Butane config file, `51-worker-rh-registry-trust.bu`, containing the necessary configuration for the worker nodes.
 
@@ -112,9 +114,13 @@ Enabling container signature validation for Red Hat Container Registries require
         rendered-worker-be3b3bce4f4aa52a62902304bac9da3c   a2178ad522c49ee330b0033bb5cb5ea132060b0a   3.5.0             48s
         ```
 
-        - New machine config
+        where:
 
-        - New rendered machine config
+        `51-worker-rh-registry-trust`
+        Specifies the new machine config.
+
+        `rendered-worker-be3b3bce4f4aa52a62902304bac9da3c`
+        Specifies the new rendered machine config.
 
     2.  Check that the worker machine config pool is updating with the new machine config:
 
@@ -134,7 +140,7 @@ Enabling container signature validation for Red Hat Container Registries require
         worker   rendered-worker-be3b3bce4f4aa52a62902304bac9da3c   False     True       False      3              0                   0                     0                      30m
         ```
 
-        - When the `UPDATING` field is `True`, the machine config pool is updating with the new machine config. When the field becomes `False`, the worker machine config pool has rolled out to the new machine config.
+        When the `UPDATING` field is `True`, the machine config pool is updating with the new machine config. When the field becomes `False`, the worker machine config pool has rolled out to the new machine config.
 
 5.  If your cluster uses any RHEL7 worker nodes, when the worker machine config pool is updated, create YAML files on those nodes in the `/etc/containers/registries.d` directory, which specify the location of the detached signatures for a given registry server. The following example works only for images hosted in `registry.access.redhat.com` and `registry.redhat.io`.
 
@@ -170,11 +176,11 @@ Enabling container signature validation for Red Hat Container Registries require
 
 # Verifying the signature verification configuration
 
-After you apply the machine configs to the cluster, the Machine Config Controller detects the new `MachineConfig` object and generates a new `rendered-worker-<hash>` version.
+After you apply the machine configs to the cluster, you can verify that the Machine Config Controller detected the new `MachineConfig` object and generated a new `rendered-worker-<hash>` version.
 
 - You enabled signature verification by using a machine config file.
 
-1.  On the command line, run the following command to display information about a desired worker:
+1.  On the command line, run the following command to display information about a required worker:
 
     ``` terminal
     $ oc describe machineconfigpool/worker
@@ -433,7 +439,7 @@ After you apply the machine configs to the cluster, the Machine Config Controlle
 
 # Understanding the verification of container images lacking verifiable signatures
 
-Each OpenShift Container Platform release image is immutable and signed with a Red Hat production key. During an OpenShift Container Platform update or installation, a release image might deploy container images that do not have verifiable signatures. Each signed release image digest is immutable. Each reference in the release image is to the immutable digest of another image, so the contents can be trusted transitively. In other words, the signature on the release image validates all release contents.
+Each OpenShift Container Platform release image is immutable and signed with a Red Hat production key. During cluster update or installation, a release image might deploy container images without a verifiable signature. The signature on the release image validates all release contents transitively.
 
 For example, the image references lacking a verifiable signature are contained in the signed OpenShift Container Platform release image:
 
@@ -448,9 +454,7 @@ $ oc adm release info quay.io/openshift-release-dev/ocp-release@sha256:2309578b6
 quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:9aafb914d5d7d0dec4edd800d02f811d7383a7d49e500af548eab5d00c1bffdb
 ```
 
-- Signed release image SHA.
-
-- Container image lacking a verifiable signature included in the release.
+The first line specifies the signed release image SHA. The second line specifies a container image lacking a verifiable signature that is included in the release.
 
 ## Automated verification during updates
 
@@ -458,18 +462,18 @@ Verification of signatures is automatic. The OpenShift Cluster Version Operator 
 
 Verification of signatures can also be done manually using the `skopeo` command-line utility.
 
-- [Introduction to OpenShift Updates](../../updating/understanding_updates/intro-to-updates.xml#understanding-openshift-updates)
-
 ## Using skopeo to verify signatures of Red Hat container images
 
-You can verify the signatures for container images included in an OpenShift Container Platform release image by pulling those signatures from [OCP release mirror site](https://mirror.openshift.com/pub/openshift-v4/signatures/openshift-release-dev/ocp-release/). Because the signatures on the mirror site are not in a format readily understood by Podman or CRI-O, you can use the `skopeo standalone-verify` command to verify that the your release images are signed by Red Hat.
+You can verify the signatures for container images included in an OpenShift Container Platform release image by pulling those signatures from the OpenShift Container Platform release mirror site.
+
+Because the signatures on the mirror site are not in a format readily understood by Podman or CRI-O, you can use the `skopeo standalone-verify` command to verify that your release images are signed by Red Hat.
 
 - You have installed the `skopeo` command-line utility.
 
 1.  Get the full SHA for your release by running the following command:
 
     ``` terminal
-    $ oc adm release info <release_version>  \
+    $ oc adm release info <release_version>
     ```
 
     - Substitute \<release_version\> with your release number, for example, `4.14.3`.
@@ -495,18 +499,18 @@ You can verify the signatures for container images included in an OpenShift Cont
 3.  Get the signature file for the specific release that you want to verify by running the following command:
 
     ``` terminal
-    $ curl -o signature-1 https://mirror.openshift.com/pub/openshift-v4/signatures/openshift-release-dev/ocp-release/sha256=<sha_from_version>/signature-1 \
+    $ curl -o signature-1 https://mirror.openshift.com/pub/openshift-v4/signatures/openshift-release-dev/ocp-release/sha256=<sha_from_version>/signature-1
     ```
 
-    - Replace `<sha_from_version>` with SHA value from the full link to the mirror site that matches the SHA of your release. For example, the link to the signature for the 4.12.23 release is `https://mirror.openshift.com/pub/openshift-v4/signatures/openshift-release-dev/ocp-release/sha256=e73ab4b33a9c3ff00c9f800a38d69853ca0c4dfa5a88e3df331f66df8f18ec55/signature-1`, and the SHA value is `e73ab4b33a9c3ff00c9f800a38d69853ca0c4dfa5a88e3df331f66df8f18ec55`.
+    Replace `<sha_from_version>` with SHA value from the full link to the mirror site that matches the SHA of your release. For example, the link to the signature for the 4.12.23 release is `https://mirror.openshift.com/pub/openshift-v4/signatures/openshift-release-dev/ocp-release/sha256=e73ab4b33a9c3ff00c9f800a38d69853ca0c4dfa5a88e3df331f66df8f18ec55/signature-1`, and the SHA value is `e73ab4b33a9c3ff00c9f800a38d69853ca0c4dfa5a88e3df331f66df8f18ec55`.
 
 4.  Get the manifest for the release image by running the following command:
 
     ``` terminal
-    $ skopeo inspect --raw docker://<quay_link_to_release> > manifest.json \
+    $ skopeo inspect --raw docker://<quay_link_to_release> > manifest.json
     ```
 
-    - Replace `<quay_link_to_release>` with the output of the `oc adm release info` command. For example, `quay.io/openshift-release-dev/ocp-release@sha256:e73ab4b33a9c3ff00c9f800a38d69853ca0c4dfa5a88e3df331f66df8f18ec55`.
+    Replace `<quay_link_to_release>` with the output of the `oc adm release info` command. For example, `quay.io/openshift-release-dev/ocp-release@sha256:e73ab4b33a9c3ff00c9f800a38d69853ca0c4dfa5a88e3df331f66df8f18ec55`.
 
 5.  Use skopeo to verify the signature:
 
@@ -534,4 +538,14 @@ You can verify the signatures for container images included in an OpenShift Cont
 
 # Additional resources
 
+- [Quay.io](https://quay.io/)
+
+- [Red Hat Ecosystem Catalog Container images](https://catalog.redhat.com/software/containers/explore)
+
+- [Introduction to OpenShift Updates](../../updating/understanding_updates/intro-to-updates.xml#understanding-openshift-updates)
+
 - [Machine Config Overview](../../machine_configuration/index.xml#machine-config-overview)
+
+- [OpenShift release signatures mirror site](https://mirror.openshift.com/pub/openshift-v4/signatures/openshift-release-dev/ocp-release/)
+
+- [Red Hat GPG release key](https://access.redhat.com/security/data/fd431d51.txt)

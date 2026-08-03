@@ -12,7 +12,7 @@ You can use one of the following procedures to mirror your OpenShift Container P
 
 To use mirror images for a disconnected installation with the Agent-based Installer, you must modify the `install-config.yaml` file.
 
-You can mirror the release image by using the output of either the `oc adm release mirror` or `oc mirror` command. This is dependent on which command you used to set up the mirror registry.
+You can mirror the release image by using the output of the `oc mirror` command.
 
 <div class="important">
 

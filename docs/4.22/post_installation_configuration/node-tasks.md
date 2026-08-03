@@ -1,3 +1,5 @@
+You can perform postinstallation node tasks to add and manage compute machines, configure node resources and hardware, improve availability, and control workload scheduling.
+
 After installing OpenShift Container Platform, you can further expand and customize your cluster to your requirements through certain node tasks.
 
 # Adding RHCOS compute machines to an OpenShift Container Platform cluster
@@ -14,7 +16,7 @@ Before you add more compute machines to a cluster that you installed on bare met
 
 ## Creating RHCOS machines by using an ISO image
 
-You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines for your bare metal cluster by using an ISO image to create the machines.
+To scale your OpenShift Container Platform bare metal cluster, you can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines by using an ISO image.
 
 - You have obtained the URL of the Ignition config file for the compute machines for your cluster. You uploaded this file to your HTTP server during installation.
 
@@ -91,7 +93,7 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines fo
 
 ## Creating RHCOS machines by PXE or iPXE booting
 
-You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines for your bare-metal cluster by using PXE or iPXE booting.
+To scale your OpenShift Container Platform bare metal cluster, you can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines by using PXE or iPXE booting.
 
 - You have obtained the URL of the Ignition config file for the compute machines for your cluster. You uploaded this file to your HTTP server during installation.
 
@@ -207,7 +209,7 @@ You can create more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines fo
 
 ## Approving the certificate signing requests for your machines
 
-When you add machines to a cluster, two pending certificate signing requests (CSRs) are generated for each machine. You must confirm that these CSRs are approved or, if necessary, approve them yourself. The client requests must be approved first, followed by the server requests.
+To allow newly added machines to join your OpenShift Container Platform cluster, you can confirm that pending certificate signing requests (CSRs) are approved or approve them yourself. Approve client requests first, then server requests.
 
 - You added machines to your cluster.
 
@@ -362,6 +364,8 @@ When you add machines to a cluster, two pending certificate signing requests (CS
     </div>
 
 ## Adding a new RHCOS worker node with a custom `/var` partition in AWS
+
+You can add an RHCOS worker node with a custom `/var` partition in AWS by creating a user data secret and a compute machine set that use the required device naming schema.
 
 OpenShift Container Platform supports partitioning devices during installation by using machine configs that are processed during the bootstrap. However, if you use `/var` partitioning, the device name must be determined at installation and cannot be changed. You cannot add different instance types as nodes if they have a different device naming schema. For example, if you configured the `/var` partition with the default AWS device name for `m4.large` instances, `dev/xvdb`, you cannot directly add an AWS `m5.large` instance, as `m5.large` instances use a `/dev/nvme1n1` device by default. The device might fail to partition due to the different naming schema.
 
@@ -663,6 +667,8 @@ $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
 
 ## About machine health checks
 
+You can use machine health checks to detect and remediate unhealthy machines automatically while limiting disruption to the targeted machine pool.
+
 <div class="note">
 
 You can only apply a machine health check to machines that are managed by compute machine sets or control plane machine sets.
@@ -704,6 +710,8 @@ There are limitations to consider before deploying a machine health check:
 - [About control plane machine sets](../machine_management/control_plane_machine_management/cpmso-about.xml#cpmso-about)
 
 ## Sample MachineHealthCheck resource
+
+You can use the sample `MachineHealthCheck` resource to configure health criteria, remediation limits, and startup timeouts for machines in a targeted pool.
 
 The `MachineHealthCheck` resource for all cloud-based installation types, and other than bare metal, resembles the following YAML file:
 
@@ -806,6 +814,8 @@ The allowed number of machines is rounded down when the percentage of `maxUnheal
 
 ## Creating a machine health check resource
 
+You can create a `MachineHealthCheck` resource to monitor and automatically remediate unhealthy machines in a machine set.
+
 You can create a `MachineHealthCheck` resource for machine sets in your cluster.
 
 <div class="note">
@@ -900,6 +910,8 @@ This guidance is relevant to fully automated, installer-provisioned infrastructu
 
 ## Understanding the difference between compute machine sets and the machine config pool
 
+Compute machine sets and machine config pools control different aspects of node lifecycle in OpenShift Container Platform. Understanding how each object relates to scaling and upgrades helps you configure nodes correctly.
+
 `MachineSet` objects describe OpenShift Container Platform nodes with respect to the cloud or machine provider.
 
 The `MachineConfigPool` object allows `MachineConfigController` components to define and provide the status of machines in the context of upgrades.
@@ -909,6 +921,8 @@ The `MachineConfigPool` object allows users to configure how upgrades are rolled
 The `NodeSelector` object can be replaced with a reference to the `MachineSet` object.
 
 # Recommended node host practices
+
+You can configure the `podsPerCore` and `maxPods` parameters to control the maximum number of pods that can be scheduled on a node.
 
 The OpenShift Container Platform node configuration file contains important options. For example, two parameters control the maximum number of pods that can be scheduled to a node: `podsPerCore` and `maxPods`.
 
@@ -1245,6 +1259,8 @@ The following procedure is an example to show how to configure the maximum numbe
     ```
 
 ## Modifying the number of unavailable worker nodes
+
+You can speed up kubelet configuration rollouts on large clusters by increasing the number of worker nodes that can be unavailable during machine config pool updates.
 
 By default, only one machine is allowed to be unavailable when applying the kubelet-related configuration to the available worker nodes. For a large cluster, it can take a long time for the configuration change to be reflected. At any time, you can adjust the number of machines that are updating to speed up the process.
 
@@ -1834,6 +1850,8 @@ The TuneD boot-loader plugin only supports Red Hat Enterprise Linux CoreOS (RHC
 
 A device plugin is a gRPC service running on nodes that manages specific hardware resources through an extension mechanism, enabling containers to consume these devices.
 
+The device plugin provides a consistent and portable solution to consume hardware devices across clusters. The device plugin provides support for these devices through an extension mechanism, which makes these devices available to Containers, provides health checks of these devices, and securely shares them.
+
 <div class="important">
 
 OpenShift Container Platform supports the device plugin API, but the device plugin Containers are supported by individual vendors.
@@ -1910,6 +1928,8 @@ For easy device plugin reference implementation, there is a stub device plugin i
 
 Device Manager advertises specialized node hardware resources through device plugins, enabling pods to consume hardware devices without requiring upstream code changes.
 
+Device Manager provides a mechanism for advertising specialized node hardware resources with the help of plugins known as device plugins.
+
 You can advertise specialized hardware without requiring any upstream code changes.
 
 <div class="important">
@@ -1931,6 +1951,8 @@ Additionally, device plugins can also perform several other device-specific oper
 ## Enabling Device Manager
 
 Enable Device Manager to allow device plugins to advertise specialized node hardware resources and make them available to pods without requiring code changes.
+
+Enable Device Manager to implement a device plugin to advertise specialized hardware without any upstream code changes.
 
 Device Manager provides a mechanism for advertising specialized node hardware resources with the help of plugins known as device plugins.
 
@@ -4165,6 +4187,8 @@ After you deployed your cluster to run nodes with static IP addresses, you can s
 
 ## Scaling machines to use static IP addresses
 
+You can add machines with pre-defined static IP addresses by creating machine resources that specify static network configuration in the machine YAML file.
+
 You can scale additional machine sets to use pre-defined static IP addresses on your cluster. For this configuration, you need to create a machine resource YAML file and then define static IP addresses in this file.
 
 - You deployed a cluster that runs at least one node with a configured static IP address.
@@ -4239,6 +4263,8 @@ You can scale additional machine sets to use pre-defined static IP addresses on 
 
 ## Machine set scaling of machines with configured static IP addresses
 
+You can scale machines with static IP addresses by configuring machine sets that request addresses through `IPAddressClaim` resources managed by your IP address management (IPAM) service.
+
 You can use a machine set to scale machines with configured static IP addresses.
 
 After you configure a machine set to request a static IP address for a machine, the machine controller creates an `IPAddressClaim` resource in the `openshift-machine-api` namespace. The external controller then creates an `IPAddress` resource and binds any static IP addresses to the `IPAddressClaim` resource.
@@ -4273,6 +4299,8 @@ status: {}
 The machine controller updates the machine with a status of `IPAddressClaimed` to indicate that a static IP address has successfully bound to the `IPAddressClaim` resource. The machine controller applies the same status to a machine with multiple `IPAddressClaim` resources that each contain a bound static IP address.The machine controller then creates a virtual machine and applies static IP addresses to any nodes listed in the `providerSpec` of a machine’s configuration.
 
 ## Using a machine set to scale machines with configured static IP addresses
+
+You can scale machines that use static IP addresses by configuring a machine set to request addresses from an IP address pool.
 
 You can use a machine set to scale machines with configured static IP addresses.
 

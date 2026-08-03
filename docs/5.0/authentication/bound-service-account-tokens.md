@@ -1,8 +1,10 @@
-You can use bound service account tokens, which improves the ability to integrate with cloud provider identity access management (IAM) services, such as OpenShift Container Platform on AWS IAM or Google Cloud IAM.
+You can use bound service account tokens, which improve the ability to integrate with cloud provider identity access management (IAM) services such as OpenShift Container Platform on AWS IAM or Google Cloud IAM.
 
 # About bound service account tokens
 
-You can use bound service account tokens to limit the scope of permissions for a given service account token. These tokens are audience and time-bound. This facilitates the authentication of a service account to an IAM role and the generation of temporary credentials mounted to a pod. You can request bound service account tokens by using volume projection and the TokenRequest API.
+You can use bound service account tokens to limit the scope of permissions for a given service account token.
+
+Bound service account tokens are audience-bound and time-bound. This facilitates the authentication of a service account to an IAM role and the generation of temporary credentials mounted to a pod. You can request bound service account tokens by using volume projection and the TokenRequest API.
 
 # Configuring bound service account tokens using volume projection
 
@@ -37,7 +39,7 @@ You can configure pods to request bound service account tokens by using volume p
           serviceAccountIssuer: https://test.default.svc
         ```
 
-        - This value should be a URL from which the recipient of a bound token can source the public keys necessary to verify the signature of the token. The default is `https://kubernetes.default.svc`.
+        This value should be a URL from which the recipient of a bound token can source the public keys necessary to verify the signature of the token. The default is `https://kubernetes.default.svc`.
 
     3.  Save the file to apply the changes.
 
@@ -54,13 +56,13 @@ You can configure pods to request bound service account tokens by using volume p
         3 nodes are at revision 12
         ```
 
-        - In this example, the latest revision number is `12`.
+        In this example, the latest revision number is `12`.
 
-          If the output shows a message similar to one of the following messages, the update is still in progress. Wait a few minutes and try again.
+        If the output shows a message similar to one of the following messages, the update is still in progress. Wait a few minutes and try again.
 
-          - `3 nodes are at revision 11; 0 nodes have achieved new revision 12`
+        - `3 nodes are at revision 11; 0 nodes have achieved new revision 12`
 
-          - `2 nodes are at revision 11; 1 nodes are at revision 12`
+        - `2 nodes are at revision 11; 1 nodes are at revision 12`
 
     5.  Optional: Force the holder to request a new bound token either by performing a rolling node restart or by manually restarting all pods in the cluster.
 
@@ -126,23 +128,31 @@ You can configure pods to request bound service account tokens by using volume p
                   audience: vault
         ```
 
-        - Prevents containers from running as root to minimize compromise risks.
+        where:
 
-        - Sets the default seccomp profile, limiting to essential system calls, to reduce risks.
+        `spec.securityContext.runAsNonRoot`
+        Specifies whether to restrict containers from running as root. When `true`, containers cannot run as root to minimize compromise risks.
 
-        - A reference to an existing service account.
+        `spec.securityContext.seccompProfile.type`
+        Specifies the seccomp profile to use. Set to `RuntimeDefault` to use the default seccomp profile, limiting to essential system calls, to reduce risks.
 
-        - The path relative to the mount point of the file to project the token into.
+        `spec.serviceAccountName`
+        Specifies an existing service account.
 
-        - Optionally set the expiration of the service account token, in seconds. The default value is 3600 seconds (1 hour), and this value must be at least 600 seconds (10 minutes). The kubelet starts trying to rotate the token if the token is older than 80 percent of its time to live or if the token is older than 24 hours.
+        `spec.volumes.projected.sources.serviceAccountToken.path`
+        Specifies a path relative to the mount point of the file to project the token into.
 
-        - Optionally set the intended audience of the token. The recipient of a token should verify that the recipient identity matches the audience claim of the token, and should otherwise reject the token. The audience defaults to the identifier of the API server.
+        `spec.volumes.projected.sources.serviceAccountToken.expirationSeconds`
+        Specifies the expiration of the service account token, in seconds. The default value is 3600 seconds (1 hour). This value must be at least 600 seconds (10 minutes). The kubelet starts trying to rotate the token if the token is older than 80 percent of its time to live or if the token is older than 24 hours. This parameter is optional.
 
-          <div class="note">
+        `spec.volumes.projected.sources.serviceAccountToken.audience`
+        Specifies the intended audience of the token. The recipient of a token should verify that the recipient identity matches the audience claim of the token, and should otherwise reject the token. The audience defaults to the identifier of the API server. This parameter is optional.
 
-          In order to prevent unexpected failure, OpenShift Container Platform overrides the `expirationSeconds` value to be one year from the initial token generation with the `--service-account-extend-token-expiration` default of `true`. You cannot change this setting.
+        <div class="note">
 
-          </div>
+        In order to prevent unexpected failure, OpenShift Container Platform overrides the `expirationSeconds` value to be one year from the initial token generation with the `--service-account-extend-token-expiration` default of `true`. You cannot change this setting.
+
+        </div>
 
     2.  Create the pod:
 
@@ -157,6 +167,8 @@ You can configure pods to request bound service account tokens by using volume p
     The kubelet rotates the token if it is older than 80 percent of its time to live, or if the token is older than 24 hours.
 
 # Creating bound service account tokens outside the pod
+
+You can create bound service tokens outside of the pod, if needed.
 
 - You have created a service account. This procedure assumes that the service account is named `build-robot`.
 
@@ -178,7 +190,7 @@ You can configure pods to request bound service account tokens by using volume p
   eyJhbGciOiJSUzI1NiIsImtpZCI6IkY2M1N4MHRvc2xFNnFSQlA4eG9GYzVPdnN3NkhIV0tRWmFrUDRNcWx4S0kifQ.eyJhdWQiOlsiaHR0cHM6Ly9pc3N1ZXIyLnRlc3QuY29tIiwiaHR0cHM6Ly9pc3N1ZXIxLnRlc3QuY29tIiwiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjIl0sImV4cCI6MTY3OTU0MzgzMCwiaWF0IjoxNjc5NTQwMjMwLCJpc3MiOiJodHRwczovL2lzc3VlcjIudGVzdC5jb20iLCJrdWJlcm5ldGVzLmlvIjp7Im5hbWVzcGFjZSI6ImRlZmF1bHQiLCJzZXJ2aWNlYWNjb3VudCI6eyJuYW1lIjoidGVzdC1zYSIsInVpZCI6ImM3ZjA4MjkwLWIzOTUtNGM4NC04NjI4LTMzMTM1NTVhNWY1OSJ9fSwibmJmIjoxNjc5NTQwMjMwLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6ZGVmYXVsdDp0ZXN0LXNhIn0.WyAOPvh1BFMUl3LNhBCrQeaB5wSynbnCfojWuNNPSilT4YvFnKibxwREwmzHpV4LO1xOFZHSi6bXBOmG_o-m0XNDYL3FrGHd65mymiFyluztxa2lgHVxjw5reIV5ZLgNSol3Y8bJqQqmNg3rtQQWRML2kpJBXdDHNww0E5XOypmffYkfkadli8lN5QQD-MhsCbiAF8waCYs8bj6V6Y7uUKTcxee8sCjiRMVtXKjQtooERKm-CH_p57wxCljIBeM89VdaR51NJGued4hVV5lxvVrYZFu89lBEAq4oyQN_d6N1vBWGXQMyoihnt_fQjn-NfnlJWk-3NSZDIluDJAv7e-MTEk3geDrHVQKNEzDei2-Un64hSzb-n1g1M0Vn0885wQBQAePC9UlZm8YZlMNk1tq6wIUKQTMv3HPfi5HtBRqVc2eVs0EfMX4-x-PHhPCasJ6qLJWyj6DvyQ08dP4DW_TWZVGvKlmId0hzwpg59TTcLR0iCklSEJgAVEEd13Aa_M0-faD11L3MhUGxw0qxgOsPczdXUsolSISbefs7OKymzFSIkTAn9sDQ8PHMOsuyxsK8vzfrR-E0z7MAeguZ2kaIY7cZqbN6WFy0caWgx46hrKem9vCKALefElRYbCg3hcBmowBcRTOqaFHLNnHghhU1LaRpoFzH7OUarqX9SGQ
   ```
 
-<!-- -->
+# Additional resources
 
 - [Rebooting a node gracefully](../nodes/nodes/nodes-nodes-rebooting.xml#nodes-nodes-rebooting-gracefully_nodes-nodes-rebooting)
 

@@ -385,9 +385,9 @@ Engineering considerations
 
 - Under x86_64, the `PerformanceProfile` may be customized with the following optional arguments in the `additionalKernelargs` list:
 
-  - The `vcio_pci` arguments support devices such as the FEC accelerator. You can omit them if they are not required for your workload.
+  - The `vfio_pci` arguments support devices such as the FEC accelerator. You can omit them if they are not required for your workload.
 
-  - To enable the `` acpi_idle` `` CPUIdle driver, for example, for Intel FlexRAN, add `intel_idle.max_cstate=0`
+  - To enable the `acpi_idle` CPUIdle driver, for example, for Intel FlexRAN, add `intel_idle.max_cstate=0`
 
 - Under aarch64, the `PerformanceProfile` must be adjusted depending on the needs of the platform:
 

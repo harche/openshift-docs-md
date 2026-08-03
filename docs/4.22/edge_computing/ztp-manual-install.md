@@ -457,6 +457,197 @@ You can manually deploy a single managed cluster using the assisted service and 
 
 - [Configuring managed cluster policies by using PolicyGenerator resources](../edge_computing/policygenerator_for_ztp/ztp-configuring-managed-clusters-policygenerator.xml#ztp-configuring-managed-clusters-policygenerator)
 
+# Late binding for bare-metal host pools in GitOps ZTP deployments
+
+In the standard GitOps ZTP flow, the `InfraEnv` custom resource (CR) references a specific `ClusterDeployment` CR, and all discovered hosts are automatically associated with that cluster. Late binding separates host discovery from cluster assignment, so you can manage a pool of bare-metal hosts independently from cluster lifecycle.
+
+With late binding, you create an `InfraEnv` CR without a `ClusterDeployment` reference, so that all hosts booted from the discovery ISO remain unbound and available for assignment to any cluster. You then use the `bmac.agent-install.openshift.io/cluster-reference` annotation on `BareMetalHost` resources to declaratively bind individual hosts to specific `ClusterDeployment` CRs. This annotation-based binding is compatible with GitOps workflows such as ArgoCD.
+
+Late binding in the GitOps ZTP workflow is designed for environments where hardware provisioning and cluster creation happen independently. Common scenarios include:
+
+- An infrastructure team boots a set of bare-metal servers from a single discovery ISO, and a platform team later assigns subsets of those hosts to different clusters as demand arises.
+
+- Hardware provisioning and cluster creation are handled by different teams at different times.
+
+- Spare bare metal capacity must be allocated to clusters as workload requirements change.
+
+If you are deploying a single cluster where all discovered hosts belong to that cluster, use the standard GitOps ZTP flow with a `ClusterDeployment` reference in the `InfraEnv` CR.
+
+- [Bind bare-metal hosts to clusters using the cluster-reference annotation in GitOps ZTP deployments](../edge_computing/ztp-manual-install.xml#ztp-binding-bmh-to-cluster-using-annotation_ztp-manual-install)
+
+- [`BareMetalHost` cluster-reference annotation reference](../edge_computing/ztp-manual-install.xml#ztp-bmh-cluster-reference-annotation-ref_ztp-manual-install)
+
+- [Binding and unbinding hosts in the RHACM documentation](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.17/html/clusters/cluster_mce_overview#bind-unbind-hosts)
+
+# Bind bare-metal hosts to clusters using the cluster-reference annotation in GitOps ZTP deployments
+
+In GitOps ZTP deployments, you can declaratively bind individual `BareMetalHost` resources from a shared `InfraEnv` pool to specific `ClusterDeployment` CRs by using the `bmac.agent-install.openshift.io/cluster-reference` annotation. This approach is compatible with GitOps workflows because the binding is managed through annotations on the `BareMetalHost` resource rather than by patching `Agent` CRs directly.
+
+- You have installed the OpenShift CLI (`oc`).
+
+- You have logged in to the hub cluster as a user with `cluster-admin` privileges.
+
+- You have created an `InfraEnv` CR without a `clusterRef` field. If you use the SiteConfig Operator, verify that the generated `InfraEnv` does not include a `clusterRef` field.
+
+- You have `BareMetalHost` resources that reference the shared `InfraEnv`. These resources are either generated automatically by the SiteConfig Operator from a `ClusterInstance` CR, or created manually with the `infraenvs.agent-install.openshift.io` label set to the name of the `InfraEnv` CR.
+
+- You have booted the hosts from the discovery ISO and `Agent` CRs have been created automatically for the discovered hosts.
+
+- You have created the target `ClusterDeployment` and `AgentClusterInstall` CRs for the cluster that you want to bind hosts to.
+
+1.  Verify that the `InfraEnv` CR does not have a `clusterRef` field set:
+
+    ``` terminal
+    $ oc get infraenv <infraenv_name> -n <namespace> -o jsonpath='{.spec.clusterRef}'
+    ```
+
+    If the command returns an empty result, the `InfraEnv` is configured for late binding. If a `clusterRef` value is returned, the `BareMetalHost` cluster-reference annotation is ignored and you must use the standard binding flow.
+
+2.  Verify that the `Agent` CRs exist and are not bound to a cluster:
+
+    ``` terminal
+    $ oc get agents -n <namespace>
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    NAME                                   CLUSTER   APPROVED   ROLE          STAGE
+    aaaaaaaa-1111-2222-3333-bbbbbbbbbbbb             false      auto-assign
+    cccccccc-4444-5555-6666-dddddddddddd             false      auto-assign
+    ```
+
+    Agents that are not bound to a cluster have an empty `CLUSTER` column.
+
+3.  Add the `bmac.agent-install.openshift.io/cluster-reference` annotation to the `BareMetalHost` resource to bind it to the target `ClusterDeployment` CR:
+
+    ``` terminal
+    $ oc annotate bmh <bmh_name> -n <namespace> \
+        bmac.agent-install.openshift.io/cluster-reference=<cluster_namespace>/<cluster_name>
+    ```
+
+    Replace `<cluster_namespace>/<cluster_name>` with the namespace and name of the target `ClusterDeployment` CR.
+
+    Alternatively, you can set the annotation declaratively in the `BareMetalHost` YAML manifest:
+
+    ``` yaml
+    apiVersion: metal3.io/v1alpha1
+    kind: BareMetalHost
+    metadata:
+      name: worker-01
+      namespace: my-infraenv-ns
+      annotations:
+        bmac.agent-install.openshift.io/cluster-reference: my-cluster-ns/my-cluster
+      labels:
+        infraenvs.agent-install.openshift.io: my-infraenv
+    spec:
+      online: true
+      bootMACAddress: 00:00:5E:00:53:01
+      bmc:
+        address: redfish-virtualmedia://192.0.2.10/redfish/v1/Systems/1
+        credentialsName: worker-01-bmc-secret
+    ```
+
+    The `bmac.agent-install.openshift.io/cluster-reference` annotation value uses the format `<namespace>/<name>`, referencing the target `ClusterDeployment`.
+
+4.  Verify that the `Agent` CR is bound to the correct `ClusterDeployment` CR by running the following command:
+
+    ``` terminal
+    $ oc get agents -n <namespace>
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    NAME                                   CLUSTER      APPROVED   ROLE          STAGE
+    aaaaaaaa-1111-2222-3333-bbbbbbbbbbbb   my-cluster   false      auto-assign
+    ```
+
+    The `CLUSTER` column shows the name of the target `ClusterDeployment`.
+
+5.  Verify the `Bound` condition on the `Agent` CR:
+
+    ``` terminal
+    $ oc get agent <agent_name> -n <namespace> \
+        -o jsonpath='{.status.conditions[?(@.type=="Bound")]}'
+    ```
+
+    A successfully bound agent shows `status: "True"` and `reason: "Bound"` in the output.
+
+    <div class="note">
+
+    Agents discovered by using a `BareMetalHost` resource are automatically approved for installation when the `bootMACAddress` in the `BareMetalHost` matches a NIC in the inventory of the discovered host. You do not need to manually approve these agents.
+
+    </div>
+
+6.  Optional: To unbind a host from a cluster before installation starts, set the annotation value to an empty string:
+
+    ``` terminal
+    $ oc annotate bmh <bmh_name> -n <namespace> \
+        bmac.agent-install.openshift.io/cluster-reference="" --overwrite
+    ```
+
+    The bare metal agent controller (BMAC) clears the `spec.clusterDeploymentName` field on the corresponding `Agent` CR, and the host returns to the unbound pool.
+
+    <div class="important">
+
+    You cannot unbind a host after cluster installation has started. If you try to unbind a host that is already installed or in an `error` or `canceled` state, the `Agent` CR `Bound` condition is set to `False` with the reason `UnbindingPendingUserAction`. For hosts discovered by using a `BareMetalHost` resource, the assisted controllers automatically use the `BareMetalHost` to boot the host back into the discovery ISO to complete the unbinding process. For hosts discovered without a `BareMetalHost` resource, you must manually reboot the host with the discovery ISO.
+
+    </div>
+
+- Verify that all agents are approved and bound to the correct cluster:
+
+  ``` terminal
+  $ oc get agents -n <namespace> -o custom-columns=NAME:.metadata.name,CLUSTER:.spec.clusterDeploymentName.name,APPROVED:.spec.approved
+  ```
+
+<!-- -->
+
+- [Late binding for bare-metal host pools in GitOps ZTP deployments](../edge_computing/ztp-manual-install.xml#ztp-late-binding-bare-metal-host-pools_ztp-manual-install)
+
+- [`BareMetalHost` cluster-reference annotation reference](../edge_computing/ztp-manual-install.xml#ztp-bmh-cluster-reference-annotation-ref_ztp-manual-install)
+
+- [Binding and unbinding hosts in the RHACM documentation](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.16/html/clusters/cluster_mce_overview#binding-and-unbinding-hosts)
+
+# BareMetalHost cluster-reference annotation
+
+The `bmac.agent-install.openshift.io/cluster-reference` annotation on `BareMetalHost` resources controls the declarative binding of discovered hosts to `ClusterDeployment` CRs. You can use this annotation to bind, unbind, or leave hosts unchanged in a late binding workflow.
+
+| Annotation state           | Value                | Effect on Agent CR                                                                                                         |
+|----------------------------|----------------------|----------------------------------------------------------------------------------------------------------------------------|
+| Set with cluster reference | `<namespace>/<name>` | Sets `spec.clusterDeploymentName` to the referenced `ClusterDeployment` CR. The `Agent` is bound to the specified cluster. |
+| Set with empty string      | `""`                 | Clears `spec.clusterDeploymentName`. The `Agent` is unbound from its current cluster and returns to the unbound pool.      |
+| Not set                    | N/A                  | No change to the `Agent` CR cluster reference. The host remains in its current state.                                      |
+
+Cluster-reference annotation states
+
+| Constraint                                     | Description                                                                                                                                                                                                 |
+|------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `InfraEnv` `clusterRef` takes precedence       | If the `InfraEnv` CR has a `clusterRef` field set, the `BareMetalHost` cluster-reference annotation is ignored. The `InfraEnv` CR must not have a `clusterRef` for late binding to work.                    |
+| Unbinding is blocked after installation starts | You can only unbind a host before cluster installation begins. After the installation starts, setting the annotation to an empty string results in an `UnbindingPendingUserAction` state on the `Agent` CR. |
+| `ClusterDeployment` CR must exist              | The `ClusterDeployment` CR referenced by the annotation must exist in the specified namespace. If the `ClusterDeployment` CR does not exist, the binding fails.                                             |
+| One `InfraEnv` CR per host                     | Each `BareMetalHost` CR is associated with a single `InfraEnv` CR through the `infraenvs.agent-install.openshift.io` label.                                                                                 |
+
+Constraints and precedence rules
+
+| Annotation                                                  | Description                                                                              |
+|-------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| `bmac.agent-install.openshift.io/cluster-reference`         | Binds the host to a specific `ClusterDeployment` CR. Value format: `<namespace>/<name>`. |
+| `bmac.agent-install.openshift.io/hostname`                  | Sets the hostname for the agent during deployment.                                       |
+| `bmac.agent-install.openshift.io/role`                      | Sets the role of the host, such as `master` or `worker`.                                 |
+| `bmac.agent-install.openshift.io/installer-args`            | Passes additional arguments to the OpenShift Container Platform installer.               |
+| `bmac.agent-install.openshift.io/ignition-config-overrides` | Provides ignition configuration overrides for the host.                                  |
+
+Related BareMetalHost bare metal agent controller (BMAC) annotations
+
 # Monitoring the managed cluster installation status
 
 Ensure that cluster provisioning was successful by checking the cluster status.
@@ -576,9 +767,9 @@ Use this procedure to diagnose any installation issues that might occur with the
 
     3.  Recreate the custom resources for the managed cluster.
 
-# RHACM generated cluster installation CRs reference
+# RHACM generated cluster installation CRs
 
-Red Hat Advanced Cluster Management (RHACM) supports deploying OpenShift Container Platform on single-node clusters, three-node clusters, and standard clusters with a specific set of installation custom resources (CRs) that you generate using `ClusterInstance` CRs for each cluster.
+Red Hat Advanced Cluster Management (RHACM) supports deploying OpenShift Container Platform on single-node clusters, three-node clusters, and standard clusters with a specific set of installation custom resources (CRs) that you generate by using `ClusterInstance` CRs for each cluster.
 
 <div class="note">
 
@@ -605,13 +796,13 @@ The following table lists the installation CRs that are automatically applied by
 <tbody>
 <tr class="odd">
 <td style="text-align: left;"><p><code>BareMetalHost</code></p></td>
-<td style="text-align: left;"><p>Contains the connection information for the Baseboard Management Controller (BMC) of the target bare-metal host.</p></td>
+<td style="text-align: left;"><p>Contains the connection information for the Baseboard Management Controller (BMC) of the target bare-metal host. In late binding scenarios where the <code>InfraEnv</code> CR is not bound to a <code>ClusterDeployment</code> CR, the optional <code>bmac.agent-install.openshift.io/cluster-reference</code> annotation on the <code>BareMetalHost</code> CR declaratively binds the host to a specific <code>ClusterDeployment</code> CR.</p></td>
 <td style="text-align: left;"><p>Provides access to the BMC to load and start the discovery image on the target server by using the Redfish protocol.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>InfraEnv</code></p></td>
 <td style="text-align: left;"><p>Contains information for installing OpenShift Container Platform on the target bare-metal host.</p></td>
-<td style="text-align: left;"><p>Used with <code>ClusterDeployment</code> to generate the discovery ISO for the managed cluster.</p></td>
+<td style="text-align: left;"><p>Used with <code>ClusterDeployment</code> to generate the discovery ISO for the managed cluster. Can also be created without a <code>ClusterDeployment</code> reference to enable late binding, where hosts are bound to clusters individually by using the <code>BareMetalHost</code> cluster-reference annotation.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>AgentClusterInstall</code></p></td>
@@ -641,7 +832,7 @@ The following table lists the installation CRs that are automatically applied by
 <tr class="even">
 <td style="text-align: left;"><p><code>KlusterletAddonConfig</code></p></td>
 <td style="text-align: left;"><p>Contains the list of services provided by the hub to be deployed to the <code>ManagedCluster</code> resource.</p></td>
-<td style="text-align: left;"><p>Tells the hub which addon services to deploy to the <code>ManagedCluster</code> resource.</p></td>
+<td style="text-align: left;"><p>Tells the hub which add-on services to deploy to the <code>ManagedCluster</code> resource.</p></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>Namespace</code></p></td>

@@ -1,43 +1,15 @@
-Although the [Compliance Operator](../../../security/compliance_operator/co-concepts/compliance-operator-understanding.xml#understanding-compliance-operator) automates many of the checks and remediations for the cluster, the full process of bringing a cluster into compliance often requires administrator interaction with the Compliance Operator API and other components. The `oc-compliance` plugin makes the process easier.
+Although the Compliance Operator automates many of the checks and remediations for the cluster, an administrator can use the `oc-compliance` plugin to perform the full process of bringing a cluster into compliance by interacting with the Compliance Operator API and other components.
+
+- [Understanding the Compliance Operator](../../../security/compliance_operator/co-concepts/compliance-operator-understanding.xml#understanding-compliance-operator)
 
 # Installing the oc-compliance plugin
 
-1.  Extract the `oc-compliance` image to get the `oc-compliance` binary:
+You can install the `oc-compliance` plugin to simplify compliance operations from the command line.
 
-    ``` terminal
-    $ podman run --rm -v ~/.local/bin:/mnt/out:Z registry.redhat.io/compliance/oc-compliance-rhel8:stable /bin/cp /usr/bin/oc-compliance /mnt/out/
-    ```
-
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
-
-    ``` terminal
-    W0611 20:35:46.486903   11354 manifest.go:440] Chose linux/amd64 manifest from the manifest list.
-    ```
-
-    You can now run `oc-compliance`.
-
-# Fetching raw results
-
-When a compliance scan finishes, the results of the individual checks are listed in the resulting `ComplianceCheckResult` custom resource (CR). However, an administrator or auditor might require the complete details of the scan. The OpenSCAP tool creates an Advanced Recording Format (ARF) formatted file with the detailed results. This ARF file is too large to store in a config map or other standard Kubernetes resource, so a persistent volume (PV) is created to contain it.
-
-- Fetching the results from the PV with the Compliance Operator is a four-step process. However, with the `oc-compliance` plugin, you can use a single command:
+- Extract the `oc-compliance` image to get the `oc-compliance` binary:
 
   ``` terminal
-  $ oc compliance fetch-raw <object-type> <object-name> -o <output-path>
-  ```
-
-- `<object-type>` can be either `scansettingbinding`, `compliancescan` or `compliancesuite`, depending on which of these objects the scans were launched with.
-
-- `<object-name>` is the name of the binding, suite, or scan object to gather the ARF file for, and `<output-path>` is the local directory to place the results.
-
-  For example:
-
-  ``` terminal
-  $ oc compliance fetch-raw scansettingbindings my-binding -o /tmp/
+  $ podman run --rm -v ~/.local/bin:/mnt/out:Z registry.redhat.io/compliance/oc-compliance-rhel8:stable /bin/cp /usr/bin/oc-compliance /mnt/out/
   ```
 
   <div class="formalpara-title">
@@ -47,60 +19,98 @@ When a compliance scan finishes, the results of the individual checks are listed
   </div>
 
   ``` terminal
-  Fetching results for my-binding scans: ocp4-cis, ocp4-cis-node-worker, ocp4-cis-node-master
-  Fetching raw compliance results for scan 'ocp4-cis'.......
-  The raw compliance results are available in the following directory: /tmp/ocp4-cis
-  Fetching raw compliance results for scan 'ocp4-cis-node-worker'...........
-  The raw compliance results are available in the following directory: /tmp/ocp4-cis-node-worker
-  Fetching raw compliance results for scan 'ocp4-cis-node-master'......
-  The raw compliance results are available in the following directory: /tmp/ocp4-cis-node-master
+  W0611 20:35:46.486903   11354 manifest.go:440] Chose linux/amd64 manifest from the manifest list.
   ```
 
-View the list of files in the directory:
+  You can now run `oc-compliance`.
 
-``` terminal
-$ ls /tmp/ocp4-cis-node-master/
-```
+# Fetching raw results
 
-<div class="formalpara-title">
+An administrator or auditor can review the complete detailed results of a scan as created by the OpenSCAP tool. These results contain more details than what is contained in the `ComplianceCheckResult` custom resource (CR).
 
-**Example output**
+When a compliance scan finishes, the results of the individual checks are listed in the resulting `ComplianceCheckResult` custom resource (CR). However, an administrator or auditor might require the complete details of the scan. The OpenSCAP tool creates an Advanced Recording Format (ARF) formatted file with the detailed results. This ARF file is too large to store in a config map or other standard Kubernetes resource, so a persistent volume (PV) is created to contain it.
 
-</div>
+1.  Fetch the results from the PV by running the following command:
 
-``` terminal
-ocp4-cis-node-master-ip-10-0-128-89.ec2.internal-pod.xml.bzip2  ocp4-cis-node-master-ip-10-0-150-5.ec2.internal-pod.xml.bzip2  ocp4-cis-node-master-ip-10-0-163-32.ec2.internal-pod.xml.bzip2
-```
+    ``` terminal
+    $ oc compliance fetch-raw <object-type> <object-name> -o <output-path>
+    ```
 
-Extract the results:
+    where:
 
-``` terminal
-$ bunzip2 -c resultsdir/worker-scan/worker-scan-stage-459-tqkg7-compute-0-pod.xml.bzip2 > resultsdir/worker-scan/worker-scan-ip-10-0-170-231.us-east-2.compute.internal-pod.xml
-```
+    - `<object-type>` can be either `scansettingbinding`, `compliancescan` or `compliancesuite`, depending on which of these objects the scans were launched with.
 
-View the results:
+    - `<object-name>` is the name of the binding, suite, or scan object to gather the ARF file for, and `<output-path>` is the local directory to place the results.
 
-``` terminal
-$ ls resultsdir/worker-scan/
-```
+      For example:
 
-<div class="formalpara-title">
+      ``` terminal
+      $ oc compliance fetch-raw scansettingbindings my-binding -o /tmp/
+      ```
 
-**Example output**
+      <div class="formalpara-title">
 
-</div>
+      **Example output**
 
-``` terminal
-worker-scan-ip-10-0-170-231.us-east-2.compute.internal-pod.xml
-worker-scan-stage-459-tqkg7-compute-0-pod.xml.bzip2
-worker-scan-stage-459-tqkg7-compute-1-pod.xml.bzip2
-```
+      </div>
+
+      ``` terminal
+      Fetching results for my-binding scans: ocp4-cis, ocp4-cis-node-worker, ocp4-cis-node-master
+      Fetching raw compliance results for scan 'ocp4-cis'.......
+      The raw compliance results are available in the following directory: /tmp/ocp4-cis
+      Fetching raw compliance results for scan 'ocp4-cis-node-worker'...........
+      The raw compliance results are available in the following directory: /tmp/ocp4-cis-node-worker
+      Fetching raw compliance results for scan 'ocp4-cis-node-master'......
+      The raw compliance results are available in the following directory: /tmp/ocp4-cis-node-master
+      ```
+
+2.  View the list of files in the directory:
+
+    ``` terminal
+    $ ls /tmp/ocp4-cis-node-master/
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    ocp4-cis-node-master-ip-10-0-128-89.ec2.internal-pod.xml.bzip2  ocp4-cis-node-master-ip-10-0-150-5.ec2.internal-pod.xml.bzip2  ocp4-cis-node-master-ip-10-0-163-32.ec2.internal-pod.xml.bzip2
+    ```
+
+3.  Extract the results:
+
+    ``` terminal
+    $ bunzip2 -c resultsdir/worker-scan/worker-scan-stage-459-tqkg7-compute-0-pod.xml.bzip2 > resultsdir/worker-scan/worker-scan-ip-10-0-170-231.us-east-2.compute.internal-pod.xml
+    ```
+
+4.  View the extracted results:
+
+    ``` terminal
+    $ ls resultsdir/worker-scan/
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    worker-scan-ip-10-0-170-231.us-east-2.compute.internal-pod.xml
+    worker-scan-stage-459-tqkg7-compute-0-pod.xml.bzip2
+    worker-scan-stage-459-tqkg7-compute-1-pod.xml.bzip2
+    ```
 
 # Re-running scans
 
 Although it is possible to run scans as scheduled jobs, you must often re-run a scan on demand, particularly after remediations are applied or when other changes to the cluster are made.
 
-- Rerunning a scan with the Compliance Operator requires use of an annotation on the scan object. However, with the `oc-compliance` plugin you can rerun a scan with a single command. Enter the following command to rerun the scans for the `ScanSettingBinding` object named `my-binding`:
+Rerunning a scan with the Compliance Operator requires the use of an annotation on the scan object. However, with the `oc-compliance` plugin you can rerun a scan with a single command.
+
+- Rerun the scans for the `ScanSettingBinding` object named `my-binding` by running the following command:
 
   ``` terminal
   $ oc compliance rerun-now scansettingbindings my-binding
@@ -119,7 +129,9 @@ Although it is possible to run scans as scheduled jobs, you must often re-run a 
 
 # Using ScanSettingBinding custom resources
 
-When using the `ScanSetting` and `ScanSettingBinding` custom resources (CRs) that the Compliance Operator provides, it is possible to run scans for multiple profiles while using a common set of scan options, such as `schedule`, `machine roles`, `tolerations`, and so on. While that is easier than working with multiple `ComplianceSuite` or `ComplianceScan` objects, it can confuse new users.
+When using the `ScanSetting` and `ScanSettingBinding` custom resources (CRs) that the Compliance Operator provides, it is possible to run scans for multiple profiles while using a common set of scan options, such as `schedule`, `machine roles`, `tolerations`, and so on.
+
+Although that is easier than working with multiple `ComplianceSuite` or `ComplianceScan` objects, it can confuse new users.
 
 The `oc compliance bind` subcommand helps you create a `ScanSettingBinding` CR.
 
@@ -222,11 +234,13 @@ The `oc compliance bind` subcommand helps you create a `ScanSettingBinding` CR.
 
 # Printing controls
 
-Compliance standards are generally organized into a hierarchy as follows:
+You can view a report of the compliance standards and controls that a given profile satisfies.
+
+Compliance standards are generally organized into a the following hierarchy:
 
 - A benchmark is the top-level definition of a set of controls for a particular standard. For example, FedRAMP Moderate or Center for Internet Security (CIS) v.1.6.0.
 
-- A control describes a family of requirements that must be met in order to be in compliance with the benchmark. For example, FedRAMP AC-01 (access control policy and procedures).
+- A control describes a family of requirements that must be met to be in compliance with the benchmark. For example, FedRAMP AC-01 (access control policy and procedures).
 
 - A rule is a single check that is specific for the system being brought into compliance, and one or more of these rules map to a control.
 
@@ -261,7 +275,9 @@ Compliance standards are generally organized into a hierarchy as follows:
 
 # Fetching compliance remediation details
 
-The Compliance Operator provides remediation objects that are used to automate the changes required to make the cluster compliant. The `fetch-fixes` subcommand can help you understand exactly which configuration remediations are used. Use the `fetch-fixes` subcommand to extract the remediation objects from a profile, rule, or `ComplianceRemediation` object into a directory to inspect.
+The Compliance Operator provides remediation objects that are used to automate the changes required to make the cluster compliant. You can use the `fetch-fixes` subcommand to help you understand exactly which configuration remediations are used.
+
+The `fetch-fixes` extracts the remediation objects from a profile, rule, or `ComplianceRemediation` object into a directory for you to inspect.
 
 1.  View the remediations for a profile:
 
@@ -291,7 +307,11 @@ The Compliance Operator provides remediation objects that are used to automate t
     Persisted rule fix to /tmp/ocp4-api-server-encryption-provider-config.yaml
     ```
 
-    - The `No fixes to persist` warning is expected whenever there are rules in a profile that do not have a corresponding remediation, because either the rule cannot be remediated automatically or a remediation was not provided.
+    <div class="note">
+
+    The `No fixes to persist` warning is expected whenever there are rules in a profile that do not have a corresponding remediation, because either the rule cannot be remediated automatically or a remediation was not provided.
+
+    </div>
 
 2.  You can view a sample of the YAML file. The `head` command will show you the first 10 lines:
 
@@ -376,7 +396,7 @@ Use caution before applying remediations directly. Some remediations might not b
 
 # Viewing ComplianceCheckResult object details
 
-When scans are finished running, `ComplianceCheckResult` objects are created for the individual scan rules. The `view-result` subcommand provides a human-readable output of the `ComplianceCheckResult` object details.
+When scans are finished running, `ComplianceCheckResult` objects are created for the individual scan rules. You can use the `view-result` subcommand to provide a human-readable output of the `ComplianceCheckResult` object details.
 
 - Run:
 

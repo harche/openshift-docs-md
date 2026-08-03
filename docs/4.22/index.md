@@ -581,6 +581,7 @@
   - [Configuring Zero Trust Workload Identity Manager SPIRE Federation](security/zero_trust_workload_identity_manager/zero-trust-manager-spire-federation.md)
   - [Using the SPIFFE Helper container image](security/zero_trust_workload_identity_manager/zero-trust-manager-spiffe-helper.md)
   - [Integrating OpenShift Service Mesh with Zero Trust Workload Identity Manager](security/zero_trust_workload_identity_manager/zero-trust-manager-mesh-integration.md)
+  - [Integrating SPIRE federation with multi-cluster Red Hat OpenShift Service Mesh](security/zero_trust_workload_identity_manager/zero-trust-manager-mesh-integration-multi-cluster.md)
   - [Enabling create-only mode for the Zero Trust Workload Identity Manager](security/zero_trust_workload_identity_manager/zero-trust-manager-reconciliation.md)
   - [SPIRE UpstreamAuthority plugins for Zero Trust Workload Identity Manager](security/zero_trust_workload_identity_manager/zero-trust-manager-plugins.md)
   - [Monitoring Zero Trust Workload Identity Manager](security/zero_trust_workload_identity_manager/zero-trust-manager-monitoring.md)
@@ -1343,6 +1344,7 @@
 - [Red Hat OpenShift support for Windows Containers overview](windows_containers/index.md)
 - **Release notes**
   - [Red Hat OpenShift support for Windows Containers release notes](windows_containers/wmco_rn/windows-containers-release-notes.md)
+  - [Past releases](windows_containers/wmco_rn/windows-containers-release-notes-past.md)
   - [Windows Machine Config Operator prerequisites](windows_containers/wmco_rn/windows-containers-release-notes-prereqs.md)
   - [Windows Machine Config Operator known limitations](windows_containers/wmco_rn/windows-containers-release-notes-limitations.md)
 - [Getting support](windows_containers/windows-containers-support.md)
@@ -1459,6 +1461,7 @@
   - [Installing Red Hat build of Kueue in a disconnected environment](ai_workloads/kueue/install-disconnected.md)
   - [Integrating the Leader Worker Set Operator](ai_workloads/kueue/integrating-lws.md)
   - [Integrating the JobSet Operator](ai_workloads/kueue/integrating-jobset.md)
+  - [Integrating Dynamic Resource Allocation](ai_workloads/kueue/kueue-dra-integrating-dynamic-resource-allocation.md)
   - [Configuring role-based permissions](ai_workloads/kueue/rbac-permissions.md)
   - [Configuring quotas](ai_workloads/kueue/configuring-quotas.md)
   - [Managing jobs and workloads](ai_workloads/kueue/managing-workloads.md)
@@ -1607,7 +1610,6 @@
   - **OADP VMFR**
     - [OADP VMFR](backup_and_restore/application_backup_and_restore/oadp-vmfr/oadp-vmfr.md)
     - [Using OADP VMFR](backup_and_restore/application_backup_and_restore/oadp-vmfr/oadp-using-vmfr.md)
-    - [OADP VMFR end-to-end workflow](backup_and_restore/application_backup_and_restore/oadp-vmfr/oadp-vmfr-end-to-end.md)
   - **OADP VMDP**
     - [OADP VMDP](backup_and_restore/application_backup_and_restore/oadp-vmdp/oadp-vmdp.md)
     - [Using OADP VMDP](backup_and_restore/application_backup_and_restore/oadp-vmdp/oadp-using-vmdp.md)
@@ -2056,20 +2058,18 @@
   - [Configuring KubeVirt Redfish for VM management](virt/post_installation_configuration/virt-kubevirt-redfish.md)
 - **Updating**
   - [Updating OpenShift Virtualization](virt/updating/upgrading-virt.md)
-- **Creating a virtual machine**
-  - [Creating VMs from instance types](virt/creating_vm/virt-creating-vms-from-instance-types.md)
-  - [Creating VMs from templates](virt/creating_vm/virt-creating-vms-from-templates.md)
+- **Creating virtual machines**
+  - [Creating virtual machines by using the CLI](virt/creating_vm/virt-creating-vms-from-cli.md)
+  - [Creating VMs by importing images from web pages](virt/creating_vm/virt-creating-vms-from-web-images.md)
+  - [Creating VMs by uploading images](virt/creating_vm/virt-creating-vms-uploading-images.md)
+  - [Creating VMs by using container disks](virt/creating_vm/virt-creating-vms-from-container-disks.md)
+  - [Creating VMs by cloning PVCs](virt/creating_vm/virt-creating-vms-by-cloning-pvcs.md)
   - [Configuring IBM Secure Execution virtual machines on IBM Z and IBM LinuxONE](virt/creating_vm/virt-configuring-ibm-secure-execution-vms-ibm-z.md)
   - [Creating AWS EC2 Windows License Included (LI) compliant VMs](virt/creating_vm/virt-creating-vms-aws-li-windows.md)
-- **Advanced VM creation**
-  - [Creating virtual machines from Red Hat images](virt/creating_vms_advanced/virt-creating-vms-from-rh-images-overview.md)
-  - [Heterogeneous cluster support](virt/creating_vms_advanced/virt-golden-image-heterogeneous-clusters.md)
-  - [Creating VMs by importing images from web pages](virt/creating_vms_advanced/virt-creating-vms-from-web-images.md)
-  - [Creating VMs by uploading images](virt/creating_vms_advanced/virt-creating-vms-uploading-images.md)
-  - [Cloning VMs](virt/creating_vms_advanced/virt-cloning-vms.md)
-  - [Creating virtual machines from the command line](virt/creating_vms_advanced/virt-creating-vms-from-cli.md)
-  - [Creating VMs by using container disks](virt/creating_vms_advanced/virt-creating-vms-from-container-disks.md)
-  - [Creating VMs by cloning PVCs](virt/creating_vms_advanced/virt-creating-vms-by-cloning-pvcs.md)
+  - [Creating VMs from instance types](virt/creating_vm/virt-creating-vms-from-instance-types.md)
+  - [Creating VMs from templates](virt/creating_vm/virt-creating-vms-from-templates.md)
+  - [Creating virtual machines from Red Hat images](virt/creating_vm/virt-creating-vms-from-rh-images-overview.md)
+  - [Cloning VMs](virt/creating_vm/virt-cloning-vms.md)
 - **Managing VMs**
   - [Listing virtual machines](virt/managing_vms/virt-list-vms.md)
   - [Install the QEMU guest agent](virt/managing_vms/virt-installing-qemu-guest-agent.md)
@@ -2144,6 +2144,7 @@
   - [Storage configuration overview](virt/storage/virt-storage-config-overview.md)
   - [Configuring storage profiles](virt/storage/virt-configuring-storage-profile.md)
   - [Managing automatic boot source updates](virt/storage/virt-automatic-bootsource-updates.md)
+  - [Heterogeneous cluster support](virt/storage/virt-boot-source-image-heterogeneous-clusters.md)
   - [Reserving PVC space for file system overhead](virt/storage/virt-reserving-pvc-space-fs-overhead.md)
   - [Configuring local storage by using HPP](virt/storage/virt-configuring-local-storage-with-hpp.md)
   - [Enabling user permissions to clone data volumes across namespaces](virt/storage/virt-enabling-user-permissions-to-clone-datavolumes.md)
@@ -2181,6 +2182,8 @@
 - **Backup and restore**
   - [Backup and restore by using VM snapshots](virt/backup_restore/virt-backup-restore-snapshots.md)
   - [Backing up and restoring virtual machines](virt/backup_restore/virt-backup-restore-overview.md)
+  - [Recover individual files from virtual machine backups](virt/backup_restore/virt-recovering-individual-files-from-vm-backups.md)
+  - [Use virtual machine file restore](virt/backup_restore/virt-using-vm-file-restore.md)
   - [Disaster recovery](virt/backup_restore/virt-disaster-recovery.md)
 
 ### AI applications

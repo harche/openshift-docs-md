@@ -1,4 +1,6 @@
-This section describes how to troubleshoot the Compliance Operator. The information can be useful either to diagnose a problem or provide information in a bug report. Some general tips:
+You can use the information on how to troubleshoot the Compliance Operator to learn how to diagnose a problem or provide information in a bug report.
+
+When troubleshooting, review the following general tips:
 
 - The Compliance Operator emits Kubernetes events when something important happens. You can either view all events in the cluster using the command:
 
@@ -6,7 +8,7 @@ This section describes how to troubleshoot the Compliance Operator. The informat
    $ oc get events -n openshift-compliance
   ```
 
-  Or view events for an object like a scan using the command:
+  Or view events for an object such as a scan using the command:
 
   ``` terminal
   $ oc describe -n openshift-compliance compliancescan/cis-compliance
@@ -25,13 +27,13 @@ This section describes how to troubleshoot the Compliance Operator. The informat
   $ date -d @1596184628.955853 --utc
   ```
 
-- Many custom resources, most importantly `ComplianceSuite` and `ScanSetting`, allow the `debug` option to be set. Enabling this option increases verbosity of the OpenSCAP scanner pods, as well as some other helper pods.
+- Many custom resources, most importantly `ComplianceSuite` and `ScanSetting`, allow the `debug` option to be set. Enabling this option increases verbosity of the OpenSCAP scanner pods, and some other helper pods.
 
 - If a single rule is passing or failing unexpectedly, it could be helpful to run a single scan or a suite with only that rule to find the rule ID from the corresponding `ComplianceCheckResult` object and use it as the `rule` attribute value in a `Scan` CR. Then, together with the `debug` option enabled, the `scanner` container logs in the scanner pod would show the raw OpenSCAP logs.
 
 # Anatomy of a scan
 
-The following sections outline the components and stages of Compliance Operator scans.
+Before troubleshooting Compliance Operator scans, familiarize yourself with the components and stages of Compliance Operator scans.
 
 ## Compliance sources
 
@@ -135,7 +137,7 @@ The `ComplianceScan` CRs are handled by the `scanctrl` controller. This is also 
 
 ### Pending phase
 
-The scan is validated for correctness in this phase. If some parameters like storage size are invalid, the scan transitions to DONE with ERROR result, otherwise proceeds to the Launching phase.
+The scan is validated for correctness in this phase. If some parameters such as storage size are invalid, the scan transitions to DONE with ERROR result, otherwise proceeds to the Launching phase.
 
 ### Launching phase
 
@@ -171,7 +173,7 @@ NAME                                                              READY   STATUS
 rhcos4-e8-worker-ip-10-0-169-90.eu-north-1.compute.internal-pod   0/2     Completed   0          39m   compliance.openshift.io/scan-name=rhcos4-e8-worker,targetNode=ip-10-0-169-90.eu-north-1.compute.internal,workload=scanner
 ```
 
-\+ The scan then proceeds to the Running phase.
+The scan then proceeds to the Running phase.
 
 ### Running phase
 
@@ -386,7 +388,7 @@ $ oc logs -l workload=<workload_name> -c <container_name>
 
 # Increasing Compliance Operator resource limits
 
-In some cases, the Compliance Operator might require more memory than the default limits allow. The best way to mitigate this issue is to set custom resource limits.
+In some cases, the Compliance Operator might require more memory than the default limits allow. You can mitigate this issue by setting custom resource limits.
 
 To increase the default memory and CPU limits of scanner pods, see *\`ScanSetting\` Custom resource*.
 
@@ -408,7 +410,7 @@ To increase the default memory and CPU limits of scanner pods, see *\`ScanSettin
 
 # Configuring Operator resource constraints
 
-The `resources` field defines Resource Constraints for all the containers in the Pod created by the Operator Lifecycle Manager (OLM).
+You can configure the `resources` field in the `compliance-operator` subscription object to define resource constraints for all the containers in the pod created by the Operator Lifecycle Manager (OLM).
 
 <div class="note">
 
@@ -438,7 +440,7 @@ Resource Constraints applied in this process overwrites the existing resource co
 
 # Configuring ScanSetting resources
 
-When using the Compliance Operator in a cluster that contains more than 500 MachineConfigs, the `ocp4-pci-dss-api-checks-pod` pod may pause in the `init` phase when performing a `Platform` scan.
+When using the Compliance Operator in a cluster that contains more than 500 MachineConfigs, the `ocp4-pci-dss-api-checks-pod` pod might pause in the `init` phase when performing a `Platform` scan.
 
 <div class="note">
 
@@ -508,7 +510,10 @@ Resource constraints applied in this process overwrites the existing resource co
       memory: 1024Mi
     ```
 
-    - The default setting is `500Mi`.
+    where:
+
+    `scanLimits.memory`
+    Specifies the default setting is `500Mi`.
 
 3.  Apply the `ScanSetting` CR to your cluster:
 
@@ -518,7 +523,7 @@ Resource constraints applied in this process overwrites the existing resource co
 
 # Configuring ScanSetting timeout
 
-The `ScanSetting` object has a timeout option that can be specified in the `ComplianceScanSetting` object as a duration string, such as `1h30m`. If the scan does not finish within the specified timeout, the scan reattempts until the `maxRetryOnTimeout` limit is reached.
+The `ScanSetting` object has a timeout option that you can specify in the `ComplianceScanSetting` object as a duration string, such as `1h30m`. If the scan does not finish within the specified timeout, the scan reattempts until the `maxRetryOnTimeout` limit is reached.
 
 - To set a `timeout` and `maxRetryOnTimeout` in ScanSetting, modify an existing `ScanSetting` object:
 
@@ -543,15 +548,19 @@ The `ScanSetting` object has a timeout option that can be specified in the `Comp
   maxRetryOnTimeout: 3
   ```
 
-  - The `timeout` variable is defined as a duration string, such as `1h30m`. The default value is `30m`. To disable the timeout, set the value to `0s`.
+  where:
 
-  - The `maxRetryOnTimeout` variable defines how many times a retry is attempted. The default value is `3`.
+  `timeout`
+  Specifies a duration string, such as `1h30m`. The default value is `30m`. To disable the timeout, set the value to `0s`.
+
+  `maxRetryOnTimeout`
+  Specifies the `maxRetryOnTimeout` variable defines how many times a retry is attempted. The default value is `3`.
 
 # Getting support
 
-If you experience difficulty with a procedure described in this documentation, or with OpenShift Container Platform in general, visit the [Red Hat Customer Portal](http://access.redhat.com).
+If you experience difficulty with a procedure described in this documentation, or with OpenShift Container Platform in general, visit the Red Hat Customer Portal.
 
-From the Customer Portal, you can:
+From the Red Hat Customer Portal, you can:
 
 - Search or browse through the Red Hat Knowledgebase of articles and solutions relating to Red Hat products.
 
@@ -561,4 +570,4 @@ From the Customer Portal, you can:
 
 To identify issues with your cluster, you can use Red Hat Lightspeed in [OpenShift Cluster Manager](https://console.redhat.com/openshift). Red Hat Lightspeed provides details about issues and, if available, information on how to solve a problem.
 
-If you have a suggestion for improving this documentation or have found an error, submit a [Jira issue](https://issues.redhat.com/secure/CreateIssueDetails!init.jspa?pid=12332330&summary=Documentation_issue&issuetype=1&components=12367614&priority=10200&versions=12385624) for the most relevant documentation component. Please provide specific details, such as the section name and OpenShift Container Platform version.
+To suggest improvements or report errors, provide specific details such as the section name and OpenShift Container Platform version.

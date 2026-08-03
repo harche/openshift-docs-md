@@ -47,6 +47,11 @@ This release introduces admission fair sharing, which balances workload admissio
 
 For more information, see [Admission fair sharing](../../ai_workloads/kueue/admission-fair-sharing.xml#admission-fair-sharing).
 
+Dynamic Resource Allocation (DRA) quota management for GPUs (Technology Preview)
+You can manage quotas for workloads that request GPUs through Dynamic Resource Allocation (DRA). When quota management is configured, Red Hat build of Kueue tracks DRA device requests toward quota alongside traditional resources such as CPU and memory, preventing teams from exceeding their allocated GPU resources.
+
+For more information, see [Integrating Dynamic Resource Allocation](../../ai_workloads/kueue/kueue-dra-integrating-dynamic-resource-allocation.xml#kueue-dra-integrating-dynamic-resource-allocation).
+
 ## Fixed issues
 
 Use the `resourceNames` object to limit webhooks to only Red Hat build of Kueue resources

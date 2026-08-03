@@ -30,7 +30,19 @@ To troubleshoot issues and control log volume, configure the log level for the c
       logLevel: <log_level>
     ```
 
-    The valid log level values for the `CertManager` resource are `Normal`, `Debug`, `Trace`, and `TraceAll`. To audit logs and perform common operations when there are no issues, set `logLevel` to `Normal` . To troubleshoot a minor issue by viewing verbose logs, set `logLevel` to `Debug` . To troubleshoot a major issue by viewing more verbose logs, you can set `logLevel` to `Trace`. To troubleshoot serious issues, set `logLevel` to `TraceAll`. The default `logLevel` is `Normal`.
+    The `CertManager` resource supports the following `logLevel` values:
+
+    `Normal`
+    Audits logs and records common operations. The default setting. Use this level when there are no issues.
+
+    `Debug`
+    Provides verbose logs. Use this level to troubleshoot minor issues.
+
+    `Trace`
+    Provides highly verbose logs. Use this level to troubleshoot major issues.
+
+    `TraceAll`
+    Provides maximum log detail. Use this level to troubleshoot serious issues.
 
     <div class="note">
 

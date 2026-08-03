@@ -1,8 +1,6 @@
-There might be some scenarios where you need to convert your OpenShift Container Platform cluster from a connected cluster to a disconnected cluster.
+You can convert your OpenShift Container Platform cluster from a connected cluster to a disconnected cluster.
 
 A disconnected cluster, also known as a restricted cluster, does not have an active connection to the internet. As such, you must mirror the contents of your registries and installation media. You can create this mirror registry on a host that can access both the internet and your closed network, or copy images to a device that you can move across network boundaries.
-
-This topic describes the general process for converting an existing, connected cluster into a disconnected cluster.
 
 # About the mirror registry
 
@@ -10,7 +8,7 @@ You must have access to the internet to obtain the necessary container images. U
 
 You can mirror the images that are required for OpenShift Container Platform installation and subsequent product updates to a container mirror registry such as Red Hat Quay, JFrog Artifactory, Sonatype Nexus Repository, or Harbor. If you do not have access to a large-scale container registry, you can use the *mirror registry for Red Hat OpenShift*, a small-scale container registry included with OpenShift Container Platform subscriptions.
 
-You can use any container registry that supports [Docker v2-2](https://docs.docker.com/registry/spec/manifest-v2-2), such as Red Hat Quay, the *mirror registry for Red Hat OpenShift*, Artifactory, Sonatype Nexus Repository, or Harbor. Regardless of your chosen registry, the procedure to mirror content from Red Hat hosted sites on the internet to an isolated image registry is the same. After you mirror the content, you configure each cluster to retrieve this content from your mirror registry.
+You can use any container registry that supports Docker v2-2, such as Red Hat Quay, the *mirror registry for Red Hat OpenShift*, Artifactory, Sonatype Nexus Repository, or Harbor. Regardless of your chosen registry, the procedure to mirror content from Red Hat hosted sites on the internet to an isolated image registry is the same. After you mirror the content, you configure each cluster to retrieve this content from your mirror registry.
 
 <div class="important">
 
@@ -30,31 +28,53 @@ Red Hat does not test third party registries with OpenShift Container Platform.
 
 </div>
 
-# Prerequisites
+# Prerequisites for converting a connected cluster to a disconnected cluster
+
+You must meet several prerequisites before converting a connected cluster to a disconnected cluster.
+
+The following prerequisites must be met:
 
 - The `oc` client is installed.
 
 - A running cluster.
 
-- An installed mirror registry, which is a container image registry that supports [Docker v2-2](https://docs.docker.com/registry/spec/manifest-v2-2/) in the location that will host the OpenShift Container Platform cluster, such as one of the following registries:
+- An installed mirror registry, which is a container image registry that supports Docker v2-2 in the location that will host the OpenShift Container Platform cluster, such as one of the following registries:
 
-  - [Red Hat Quay](https://www.redhat.com/en/technologies/cloud-computing/quay)
+  - Red Hat Quay
 
-  - [JFrog Artifactory](https://jfrog.com/artifactory/)
+  - JFrog Artifactory
 
-  - [Sonatype Nexus Repository](https://www.sonatype.com/products/repository-oss?topnav=true)
+  - Sonatype Nexus Repository
 
-  - [Harbor](https://goharbor.io/)
+  - Harbor
 
-  If you have a subscription to Red Hat Quay, see the documentation on deploying Red Hat Quay [for proof-of-concept purposes](https://docs.redhat.com/en/documentation/red_hat_quay/3/html/proof_of_concept_-_deploying_red_hat_quay) or [by using the Quay Operator](https://access.redhat.com/documentation/en-us/red_hat_quay/3/html/deploying_the_red_hat_quay_operator_on_openshift_container_platform/index).
+  If you have a subscription to Red Hat Quay, see the documentation on "Deploying Red Hat Quay for proof-of-concept purposes" or "Deploying Red Hat Quay by using the Quay Operator".
 
-- The mirror repository must be configured to share images. For example, a Red Hat Quay repository requires [Organizations](https://access.redhat.com/documentation/en-us/red_hat_quay/3/html-single/use_red_hat_quay/index#user-org-intro_use-quay) in order to share images.
+- The mirror repository must be configured to share images. For example, a Red Hat Quay repository requires organizations to share images. For more information, see the "Red Hat Quay documentation on organizations".
 
 - Access to the internet to obtain the necessary container images.
 
+<!-- -->
+
+- [Red Hat Quay](https://www.redhat.com/en/technologies/cloud-computing/quay)
+
+- [JFrog Artifactory](https://jfrog.com/artifactory/)
+
+- [Sonatype Nexus Repository](https://www.sonatype.com/products/repository-oss?topnav=true)
+
+- [Harbor](https://goharbor.io/)
+
+- [Deploying Red Hat Quay for proof-of-concept purposes](https://docs.redhat.com/en/documentation/red_hat_quay/3/html/proof_of_concept_-_deploying_red_hat_quay)
+
+- [Deploying Red Hat Quay by using the Quay Operator](https://access.redhat.com/documentation/en-us/red_hat_quay/3/html/deploying_the_red_hat_quay_operator_on_openshift_container_platform/index)
+
+- [Red Hat Quay documentation on organizations](https://access.redhat.com/documentation/en-us/red_hat_quay/3/html-single/use_red_hat_quay/index#user-org-intro_use-quay)
+
 # Preparing the cluster for mirroring
 
-Before disconnecting your cluster, you must mirror, or copy, the images to a mirror registry that is reachable by every node in your disconnected cluster. In order to mirror the images, you must prepare your cluster by:
+Before disconnecting your cluster, you must mirror, or copy, the images to a mirror registry that is reachable by every node in your disconnected cluster.
+
+To mirror the images, you must prepare your cluster by:
 
 - Adding the mirror registry certificates to the list of trusted CAs on your host.
 
@@ -68,7 +88,9 @@ Before disconnecting your cluster, you must mirror, or copy, the images to a mir
         $ cp </path/to/cert.crt> /usr/share/pki/ca-trust-source/anchors/
         ```
 
-        where; `</path/to/cert.crt>`
+        where:
+
+        `</path/to/cert.crt>`
         Specifies the path to the certificate on your local file system.
 
     2.  Update the CA trust. For example, in Linux:
@@ -240,9 +262,9 @@ As an alternative, use the oc-mirror plugin v2.
     $ oc image mirror <online_registry>/my/image:latest <mirror_registry>
     ```
 
-- For more information about mirroring Operator catalogs, see [Mirroring an Operator catalog](../disconnected/using-olm.xml#olm-mirror-catalog_olm-restricted-networks).
+- [Mirroring an Operator catalog](../disconnected/using-olm.xml#olm-mirror-catalog_olm-restricted-networks)
 
-- For more information about the `oc adm catalog mirror` command, see the [OpenShift CLI administrator command reference](../cli_reference/openshift_cli/administrator-cli-commands.xml#oc-adm-catalog-mirror).
+- [OpenShift CLI administrator command reference](../cli_reference/openshift_cli/administrator-cli-commands.xml#oc-adm-catalog-mirror)
 
 # Configuring the cluster for the mirror registry
 
@@ -256,240 +278,240 @@ You must:
 
 - Create an `ImageContentSourcePolicy` custom resource (ICSP), which associates the mirror registry with the source registry.
 
-  1.  Add mirror registry credential to the cluster global pull-secret:
+1.  Add mirror registry credential to the cluster global pull-secret:
 
-      ``` terminal
-      $ oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=<pull_secret_location>
-      ```
+    ``` terminal
+    $ oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=<pull_secret_location>
+    ```
 
-      - Provide the path to the new pull secret file.
+    For `<pull_secret_location>`, provide the path to the new pull secret file.
+
+    For example:
+
+    ``` terminal
+    $ oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=.mirrorsecretconfigjson
+    ```
+
+2.  Add the CA-signed mirror registry server certificate to the nodes in the cluster:
+
+    1.  Create a config map that includes the server certificate for the mirror registry:
+
+        ``` terminal
+        $ oc create configmap <config_map_name> --from-file=<mirror_address_host>..<port>=$path/ca.crt -n openshift-config
+        ```
 
         For example:
 
         ``` terminal
-        $ oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=.mirrorsecretconfigjson
+        $ oc create configmap registry-config --from-file=mirror.registry.com..443=/root/certs/ca-chain.cert.pem -n openshift-config
         ```
 
-  2.  Add the CA-signed mirror registry server certificate to the nodes in the cluster:
+    2.  Use the config map to update the `image.config.openshift.io/cluster` custom resource (CR). OpenShift Container Platform applies the changes to this CR to all nodes in the cluster:
 
-      1.  Create a config map that includes the server certificate for the mirror registry
+        ``` terminal
+        $ oc patch image.config.openshift.io/cluster --patch '{"spec":{"additionalTrustedCA":{"name":"<config_map_name>"}}}' --type=merge
+        ```
 
-          ``` terminal
-          $ oc create configmap <config_map_name> --from-file=<mirror_address_host>..<port>=$path/ca.crt -n openshift-config
-          ```
+        For example:
 
-          For example:
+        ``` terminal
+        $ oc patch image.config.openshift.io/cluster --patch '{"spec":{"additionalTrustedCA":{"name":"registry-config"}}}' --type=merge
+        ```
 
-          ``` terminal
-          S oc create configmap registry-config --from-file=mirror.registry.com..443=/root/certs/ca-chain.cert.pem -n openshift-config
-          ```
+3.  Create an ICSP to redirect container pull requests from the online registries to the mirror registry:
 
-      2.  Use the config map to update the `image.config.openshift.io/cluster` custom resource (CR). OpenShift Container Platform applies the changes to this CR to all nodes in the cluster:
+    1.  Create the `ImageContentSourcePolicy` custom resource:
 
-          ``` terminal
-          $ oc patch image.config.openshift.io/cluster --patch '{"spec":{"additionalTrustedCA":{"name":"<config_map_name>"}}}' --type=merge
-          ```
+        ``` yaml
+        apiVersion: operator.openshift.io/v1alpha1
+        kind: ImageContentSourcePolicy
+        metadata:
+          name: mirror-ocp
+        spec:
+          repositoryDigestMirrors:
+          - mirrors:
+            - mirror.registry.com:443/ocp/release
+            source: quay.io/openshift-release-dev/ocp-release
+          - mirrors:
+            - mirror.registry.com:443/ocp/release
+            source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
+        ```
 
-          For example:
+        where:
 
-          ``` terminal
-          $ oc patch image.config.openshift.io/cluster --patch '{"spec":{"additionalTrustedCA":{"name":"registry-config"}}}' --type=merge
-          ```
+        `spec.mirrors`
+        Specifies the name of the mirror image registry and repository.
 
-  3.  Create an ICSP to redirect container pull requests from the online registries to the mirror registry:
+        `spec.source`
+        Specifies the online registry and repository containing the content that is mirrored.
 
-      1.  Create the `ImageContentSourcePolicy` custom resource:
+    2.  Create the ICSP object:
 
-          ``` yaml
-          apiVersion: operator.openshift.io/v1alpha1
-          kind: ImageContentSourcePolicy
-          metadata:
-            name: mirror-ocp
-          spec:
-            repositoryDigestMirrors:
-            - mirrors:
-              - mirror.registry.com:443/ocp/release
-              source: quay.io/openshift-release-dev/ocp-release
-            - mirrors:
-              - mirror.registry.com:443/ocp/release
-              source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
-          ```
+        ``` terminal
+        $ oc create -f registryrepomirror.yaml
+        ```
 
-          - Specifies the name of the mirror image registry and repository.
+        <div class="formalpara-title">
 
-          - Specifies the online registry and repository containing the content that is mirrored.
+        **Example output**
 
-      2.  Create the ICSP object:
+        </div>
 
-          ``` terminal
-          $ oc create -f registryrepomirror.yaml
-          ```
+        ``` terminal
+        imagecontentsourcepolicy.operator.openshift.io/mirror-ocp created
+        ```
 
-          <div class="formalpara-title">
+        OpenShift Container Platform applies the changes to this CR to all nodes in the cluster.
 
-          **Example output**
+4.  Verify that the credentials, CA, and ICSP for mirror registry are added:
 
-          </div>
+    1.  Log in to a node:
 
-          ``` terminal
-          imagecontentsourcepolicy.operator.openshift.io/mirror-ocp created
-          ```
+        ``` terminal
+        $ oc debug node/<node_name>
+        ```
 
-          OpenShift Container Platform applies the changes to this CR to all nodes in the cluster.
+    2.  Set `/host` as the root directory within the debug shell:
 
-  4.  Verify that the credentials, CA, and ICSP for mirror registry were added:
+        ``` terminal
+        sh-4.4# chroot /host
+        ```
 
-      1.  Log into a node:
+    3.  Check the `config.json` file for the credentials:
 
-          ``` terminal
-          $ oc debug node/<node_name>
-          ```
+        ``` terminal
+        sh-4.4# cat /var/lib/kubelet/config.json
+        ```
 
-      2.  Set `/host` as the root directory within the debug shell:
+        <div class="formalpara-title">
 
-          ``` terminal
-          sh-4.4# chroot /host
-          ```
+        **Example output**
 
-      3.  Check the `config.json` file for the credentials:
+        </div>
 
-          ``` terminal
-          sh-4.4# cat /var/lib/kubelet/config.json
-          ```
+        ``` terminal
+        {"auths":{"brew.registry.redhat.io":{"xx=="},"brewregistry.stage.redhat.io":{"auth":"xxx=="},"mirror.registry.com:443":{"auth":"xx="}}}
+        ```
 
-          <div class="formalpara-title">
+        Ensure that the mirror registry and credentials are present.
 
-          **Example output**
+    4.  Change to the `certs.d` directory:
 
-          </div>
+        ``` terminal
+        sh-4.4# cd /etc/docker/certs.d/
+        ```
 
-          ``` terminal
-          {"auths":{"brew.registry.redhat.io":{"xx=="},"brewregistry.stage.redhat.io":{"auth":"xxx=="},"mirror.registry.com:443":{"auth":"xx="}}}
-          ```
+    5.  List the certificates in the `certs.d` directory:
 
-          - Ensure that the mirror registry and credentials are present.
+        ``` terminal
+        sh-4.4# ls
+        ```
 
-      4.  Change to the `certs.d` directory
+        <div class="formalpara-title">
 
-          ``` terminal
-          sh-4.4# cd /etc/docker/certs.d/
-          ```
+        **Example output**
 
-      5.  List the certificates in the `certs.d` directory:
+        </div>
 
-          ``` terminal
-          sh-4.4# ls
-          ```
+        ``` terminal
+        image-registry.openshift-image-registry.svc.cluster.local:5000
+        image-registry.openshift-image-registry.svc:5000
+        mirror.registry.com:443
+        ```
 
-          <div class="formalpara-title">
+        For `mirror.registry.com:443`, ensure that the mirror registry is in the list.
 
-          **Example output**
+    6.  Check that the ICSP added the mirror registry to the `registries.conf` file:
 
-          </div>
+        ``` terminal
+        sh-4.4# cat /etc/containers/registries.conf
+        ```
 
-              image-registry.openshift-image-registry.svc.cluster.local:5000
-              image-registry.openshift-image-registry.svc:5000
-              mirror.registry.com:443
+        <div class="formalpara-title">
 
-          - Ensure that the mirror registry is in the list.
+        **Example output**
 
-      6.  Check that the ICSP added the mirror registry to the `registries.conf` file:
+        </div>
 
-          ``` terminal
-          sh-4.4# cat /etc/containers/registries.conf
-          ```
+        ``` terminal
+        unqualified-search-registries = ["registry.access.redhat.com", "docker.io"]
 
-          <div class="formalpara-title">
+        [[registry]]
+          prefix = ""
+          location = "quay.io/openshift-release-dev/ocp-release"
+          mirror-by-digest-only = true
 
-          **Example output**
+          [[registry.mirror]]
+            location = "mirror.registry.com:443/ocp/release"
 
-          </div>
+        [[registry]]
+          prefix = ""
+          location = "quay.io/openshift-release-dev/ocp-v4.0-art-dev"
+          mirror-by-digest-only = true
 
-          ``` terminal
-          unqualified-search-registries = ["registry.access.redhat.com", "docker.io"]
+          [[registry.mirror]]
+            location = "mirror.registry.com:443/ocp/release"
+        ```
 
-          [[registry]]
-            prefix = ""
-            location = "quay.io/openshift-release-dev/ocp-release"
-            mirror-by-digest-only = true
+        The `registry.mirror` parameters indicate that the mirror registry is searched before the original registry.
 
-            [[registry.mirror]]
-              location = "mirror.registry.com:443/ocp/release"
+    7.  Exit the node.
 
-          [[registry]]
-            prefix = ""
-            location = "quay.io/openshift-release-dev/ocp-v4.0-art-dev"
-            mirror-by-digest-only = true
-
-            [[registry.mirror]]
-              location = "mirror.registry.com:443/ocp/release"
-          ```
-
-          The `registry.mirror` parameters indicate that the mirror registry is searched before the original registry.
-
-      7.  Exit the node.
-
-          ``` terminal
-          sh-4.4# exit
-          ```
+        ``` terminal
+        sh-4.4# exit
+        ```
 
 # Ensure applications continue to work
 
 Before disconnecting the cluster from the network, ensure that your cluster is working as expected and all of your applications are working as expected.
 
-<div class="formalpara-title">
+1.  Use the following commands to check the status of your cluster:
 
-**Procedure**
+    - Ensure your pods are running:
 
-</div>
+      ``` terminal
+      $ oc get pods --all-namespaces
+      ```
 
-Use the following commands to check the status of your cluster:
+      <div class="formalpara-title">
 
-- Ensure your pods are running:
+      **Example output**
 
-  ``` terminal
-  $ oc get pods --all-namespaces
-  ```
+      </div>
 
-  <div class="formalpara-title">
+      ``` terminal
+      NAMESPACE                                          NAME                                                          READY   STATUS      RESTARTS   AGE
+      kube-system                                        apiserver-watcher-ci-ln-47ltxtb-f76d1-mrffg-master-0          1/1     Running     0          39m
+      kube-system                                        apiserver-watcher-ci-ln-47ltxtb-f76d1-mrffg-master-1          1/1     Running     0          39m
+      kube-system                                        apiserver-watcher-ci-ln-47ltxtb-f76d1-mrffg-master-2          1/1     Running     0          39m
+      openshift-apiserver-operator                       openshift-apiserver-operator-79c7c646fd-5rvr5                 1/1     Running     3          45m
+      openshift-apiserver                                apiserver-b944c4645-q694g                                     2/2     Running     0          29m
+      openshift-apiserver                                apiserver-b944c4645-shdxb                                     2/2     Running     0          31m
+      openshift-apiserver                                apiserver-b944c4645-x7rf2                                     2/2     Running     0          33m
+       ...
+      ```
 
-  **Example output**
+    - Ensure your nodes are in the READY status:
 
-  </div>
+      ``` terminal
+      $ oc get nodes
+      ```
 
-  ``` terminal
-  NAMESPACE                                          NAME                                                          READY   STATUS      RESTARTS   AGE
-  kube-system                                        apiserver-watcher-ci-ln-47ltxtb-f76d1-mrffg-master-0          1/1     Running     0          39m
-  kube-system                                        apiserver-watcher-ci-ln-47ltxtb-f76d1-mrffg-master-1          1/1     Running     0          39m
-  kube-system                                        apiserver-watcher-ci-ln-47ltxtb-f76d1-mrffg-master-2          1/1     Running     0          39m
-  openshift-apiserver-operator                       openshift-apiserver-operator-79c7c646fd-5rvr5                 1/1     Running     3          45m
-  openshift-apiserver                                apiserver-b944c4645-q694g                                     2/2     Running     0          29m
-  openshift-apiserver                                apiserver-b944c4645-shdxb                                     2/2     Running     0          31m
-  openshift-apiserver                                apiserver-b944c4645-x7rf2                                     2/2     Running     0          33m
-   ...
-  ```
+      <div class="formalpara-title">
 
-- Ensure your nodes are in the READY status:
+      **Example output**
 
-  ``` terminal
-  $ oc get nodes
-  ```
+      </div>
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
-
-  ``` terminal
-  NAME                                       STATUS   ROLES    AGE   VERSION
-  ci-ln-47ltxtb-f76d1-mrffg-master-0         Ready    master   42m   v1.35.4
-  ci-ln-47ltxtb-f76d1-mrffg-master-1         Ready    master   42m   v1.35.4
-  ci-ln-47ltxtb-f76d1-mrffg-master-2         Ready    master   42m   v1.35.4
-  ci-ln-47ltxtb-f76d1-mrffg-worker-a-gsxbz   Ready    worker   35m   v1.35.4
-  ci-ln-47ltxtb-f76d1-mrffg-worker-b-5qqdx   Ready    worker   35m   v1.35.4
-  ci-ln-47ltxtb-f76d1-mrffg-worker-c-rjkpq   Ready    worker   34m   v1.35.4
-  ```
+      ``` terminal
+      NAME                                       STATUS   ROLES    AGE   VERSION
+      ci-ln-47ltxtb-f76d1-mrffg-master-0         Ready    master   42m   v1.35.4
+      ci-ln-47ltxtb-f76d1-mrffg-master-1         Ready    master   42m   v1.35.4
+      ci-ln-47ltxtb-f76d1-mrffg-master-2         Ready    master   42m   v1.35.4
+      ci-ln-47ltxtb-f76d1-mrffg-worker-a-gsxbz   Ready    worker   35m   v1.35.4
+      ci-ln-47ltxtb-f76d1-mrffg-worker-b-5qqdx   Ready    worker   35m   v1.35.4
+      ci-ln-47ltxtb-f76d1-mrffg-worker-c-rjkpq   Ready    worker   34m   v1.35.4
+      ```
 
 # Disconnect the cluster from the network
 
@@ -497,15 +519,19 @@ After mirroring all the required repositories and configuring your cluster to wo
 
 <div class="note">
 
-The Insights Operator is degraded when the cluster loses its Internet connection. You can avoid this problem by temporarily [disabling the Insights Operator](../support/remote_health_monitoring/remote-health-reporting.xml#insights-operator-new-pull-secret-disabled_remote-health-reporting) until you can restore it.
+The Insights Operator is degraded when the cluster loses its Internet connection. You can avoid this problem by temporarily disabling the Insights Operator until you can restore it. For more information, see "Disabling the Insights Operator".
 
 </div>
 
+- [Disabling the Insights Operator](../support/remote_health_monitoring/remote-health-reporting.xml#insights-operator-new-pull-secret-disabled_remote-health-reporting)
+
 # Restoring a degraded Insights Operator
 
-Disconnecting the cluster from the network necessarily causes the cluster to lose the Internet connection. The Insights Operator becomes degraded because it requires access to [Red Hat Lightspeed](https://console.redhat.com).
+Disconnecting the cluster from the network necessarily causes the cluster to lose the Internet connection. The Insights Operator becomes degraded because it requires access to Red Hat Lightspeed.
 
-This topic describes how to recover from a degraded Insights Operator.
+For more information, see documentation on "Red Hat Lightspeed".
+
+Use the following procedure to recover from a degraded Insights Operator.
 
 1.  Edit your `.dockerconfigjson` file to remove the `cloud.openshift.com` entry, for example:
 
@@ -537,6 +563,8 @@ This topic describes how to recover from a degraded Insights Operator.
     NAME       VERSION   AVAILABLE   PROGRESSING   DEGRADED   SINCE
     insights   4.5.41    True        False         False      3d
     ```
+
+- [Red Hat Lightspeed](https://console.redhat.com)
 
 # Restoring the network
 
@@ -587,7 +615,7 @@ If you want to reconnect a disconnected cluster and pull images from online regi
 
 3.  Wait for all the nodes to restart and return to the READY status and verify that the `registries.conf` file is pointing to the original registries and not the mirror registries:
 
-    1.  Log into a node:
+    1.  Log in to a node:
 
         ``` terminal
         $ oc debug node/<node_name>
@@ -615,4 +643,4 @@ If you want to reconnect a disconnected cluster and pull images from online regi
         unqualified-search-registries = ["registry.access.redhat.com", "docker.io"]
         ```
 
-        - The `registry` and `registry.mirror` entries created by the ICSPs you deleted are removed.
+        The `registry` and `registry.mirror` entries created by the ICSPs you deleted are removed.

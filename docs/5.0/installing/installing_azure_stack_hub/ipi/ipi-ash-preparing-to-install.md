@@ -1,8 +1,8 @@
-You prepare to install an OpenShift Container Platform cluster on Azure Stack Hub by completing the following steps:
+Prepare to install an OpenShift Container Platform cluster on Azure Stack Hub by verifying connectivity, configuring your account, generating SSH keys, downloading the installation program, installing the CLI, and setting up cloud credentials.
 
 - Verifying internet connectivity for your cluster.
 
-- [Configuring an Azure Stack Hub account](../../../installing/installing_azure_stack_hub/installing-azure-stack-hub-account.xml#installing-azure-stack-hub-account).
+- Configuring an Azure Stack Hub account. See "Configuring an Azure Stack Hub account".
 
 - Generating an SSH key pair. You can use this key pair to authenticate into the OpenShift Container Platform cluster’s nodes after it is deployed.
 
@@ -10,7 +10,7 @@ You prepare to install an OpenShift Container Platform cluster on Azure Stack Hu
 
 - Installing the OpenShift CLI (`oc`).
 
-- The Cloud Credential Operator (CCO) only supports your cloud provider in manual mode. As a result, you must [manually manage clould credentials](../../../installing/installing_azure_stack_hub/ipi/installing-azure-stack-hub-default.xml#manually-create-iam_installing-azure-stack-hub-default) by specifying the identity and access management (IAM) secrets for your cloud provider.
+- The Cloud Credential Operator (CCO) only supports your cloud provider in manual mode. As a result, you must manually manage cloud credentials by specifying the identity and access management (IAM) secrets for your cloud provider. See "Manually manage cloud credentials".
 
 # Internet access for OpenShift Container Platform
 
@@ -291,3 +291,9 @@ To provide metrics about cluster health and the success of updates, the Telemetr
 After you confirm that your [OpenShift Cluster Manager](https://console.redhat.com/openshift) inventory is correct, either maintained automatically by Telemetry or manually by using OpenShift Cluster Manager,use subscription watch to track your OpenShift Container Platform subscriptions at the account or multi-cluster level. For more information about subscription watch, see "Data Gathered and Used by Red Hat’s subscription services" in the *Additional resources* section.
 
 - [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+
+# Additional resources
+
+- [Configuring an Azure Stack Hub account](../../../installing/installing_azure_stack_hub/installing-azure-stack-hub-account.xml#installing-azure-stack-hub-account)
+
+- [Manually manage cloud credentials](../../../installing/installing_azure_stack_hub/ipi/installing-azure-stack-hub-default.xml#manually-create-iam_installing-azure-stack-hub-default)

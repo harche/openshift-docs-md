@@ -563,6 +563,12 @@ For more information about the supported instance types, see the following NVIDI
     $ oc get nodes
     ```
 
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
     ``` terminal
     NAME                                        STATUS   ROLES                  AGE     VERSION
     ip-10-0-52-50.us-east-2.compute.internal    Ready    worker                 3d17h   v1.34.2
@@ -579,6 +585,12 @@ For more information about the supported instance types, see the following NVIDI
     $ oc get machinesets -n openshift-machine-api
     ```
 
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
     ``` terminal
     NAME                                        DESIRED   CURRENT   READY   AVAILABLE   AGE
     preserve-dsoc12r4-ktjfc-worker-us-east-2a   1         1         1       1           3d11h
@@ -590,6 +602,12 @@ For more information about the supported instance types, see the following NVIDI
     ``` terminal
     $ oc get machines -n openshift-machine-api | grep worker
     ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
 
     ``` terminal
     preserve-dsoc12r4-ktjfc-worker-us-east-2a-dts8r      Running   m5.xlarge   us-east-2   us-east-2a   3d11h
@@ -633,6 +651,12 @@ For more information about the supported instance types, see the following NVIDI
     $ oc -n openshift-machine-api get preserve-dsoc12r4-ktjfc-worker-us-east-2a -o json | diff preserve-dsoc12r4-ktjfc-worker-gpu-us-east-2a.json -
     ```
 
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
     ``` terminal
     10c10
 
@@ -665,6 +689,12 @@ For more information about the supported instance types, see the following NVIDI
     $ oc create -f preserve-dsoc12r4-ktjfc-worker-gpu-us-east-2a.json
     ```
 
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
     ``` terminal
     machineset.machine.openshift.io/preserve-dsoc12r4-ktjfc-worker-gpu-us-east-2a created
     ```
@@ -679,6 +709,12 @@ For more information about the supported instance types, see the following NVIDI
 
     The MachineSet replica count is set to `1` so a new `Machine` object is created automatically.
 
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
     ``` terminal
     preserve-dsoc12r4-ktjfc-worker-gpu-us-east-2a   1         1         1       1           4m21s
     ```
@@ -688,6 +724,12 @@ For more information about the supported instance types, see the following NVIDI
     ``` terminal
     $ oc -n openshift-machine-api get machines | grep gpu
     ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
 
     ``` terminal
     preserve-dsoc12r4-ktjfc-worker-gpu-us-east-2a    running    g4dn.xlarge   us-east-2   us-east-2a  4m36s
@@ -710,6 +752,12 @@ The NFD Operator identifies hardware device features in nodes. It solves the gen
     ``` terminal
     $ oc get pods -n openshift-nfd
     ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
 
     ``` terminal
     NAME                                       READY    STATUS     RESTARTS   AGE

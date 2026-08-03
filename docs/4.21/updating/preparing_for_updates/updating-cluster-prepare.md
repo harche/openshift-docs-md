@@ -82,7 +82,11 @@ Updating or deleting Gateway API resources can result in downtime and loss of se
     $ oc get crd | grep -F -e gateway.networking.k8s.io -e gateway.networking.x-k8s.io
     ```
 
-    **Example output:**
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
 
     ``` terminal
     gatewayclasses.gateway.networking.k8s.io
@@ -154,7 +158,7 @@ When one or more Operators have not reported their `Upgradeable` condition as `T
 
 For more information about the `Upgradeable` condition, see "Understanding cluster Operator condition types" in the additional resources section.
 
-### SDN support removal
+## SDN support removal
 
 OpenShift SDN network plugin was deprecated in versions 4.15 and 4.16. With this release, the SDN network plugin is no longer supported and the content has been removed from the documentation.
 

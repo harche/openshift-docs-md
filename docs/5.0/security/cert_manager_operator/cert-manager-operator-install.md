@@ -1,10 +1,6 @@
-The cert-manager Operator for Red Hat OpenShift is not installed in OpenShift Container Platform by default. You can install the cert-manager Operator for Red Hat OpenShift by using the web console.
-
-<div class="note">
+The cert-manager Operator for Red Hat OpenShift is not installed in OpenShift Container Platform by default. You can install the cert-manager Operator for Red Hat OpenShift by using the web console and command-line interface (CLI).
 
 The cert-manager Operator for Red Hat OpenShift sets the `features.operators.openshift.io/token-auth-aws`, `features.operators.openshift.io/token-auth-azure`, and `features.operators.openshift.io/token-auth-gcp` annotations in the `ClusterServiceVersion` custom resource of the Operator. The OpenShift Container Platform web console requires the credential details when these annotations are set. Currently, the Operator does not use the values collected by the OpenShift web console and you can provide any value when asked for the input. For example, when installing on the managed OpenShift Container Platform cluster, the `identity-provider-arn` is asked and any value can be provided to proceed.
-
-</div>
 
 <div class="important">
 
@@ -12,9 +8,7 @@ The cert-manager Operator for Red Hat OpenShift version 1.15 or later supports t
 
 </div>
 
-# Installing the cert-manager Operator for Red Hat OpenShift
-
-## Installing the cert-manager Operator for Red Hat OpenShift by using the web console
+# Installing the cert-manager Operator for Red Hat OpenShift by using the web console
 
 You can use the web console to install the cert-manager Operator for Red Hat OpenShift.
 
@@ -87,9 +81,9 @@ You can use the web console to install the cert-manager Operator for Red Hat Ope
 
     You can use the cert-manager Operator for Red Hat OpenShift only after cert-manager pods are up and running.
 
-## Installing the cert-manager Operator for Red Hat OpenShift by using the CLI
+# Installing the cert-manager Operator for Red Hat OpenShift by using the CLI
 
-You can install the cert-manager Operator for Red Hat OpenShift by using the command-line interface(CLI).
+You can install the cert-manager Operator for Red Hat OpenShift by using the command-line interface (CLI).
 
 - You have access to the cluster with `cluster-admin` privileges.
 

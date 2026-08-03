@@ -38,9 +38,7 @@ While this document refers to only IBM Z®, all information in it also applies t
 
 # About installations in restricted networks
 
-In OpenShift Container Platform 4.17, you can install a cluster in a restricted network without an active internet connection to obtain software components.
-
-Depending on the cloud platform where you install the cluster, you can complete a restricted network installation by using either installer-provisioned infrastructure or user-provisioned infrastructure.
+You can install OpenShift Container Platform 4.17 in a restricted network without an active internet connection to obtain software components. Restricted network installations can use installer-provisioned or user-provisioned infrastructure, depending on the cloud platform to which you are installing the cluster.
 
 If you choose to perform a restricted network installation on a cloud platform, you still require access to its cloud APIs. Some cloud functions, like Amazon Web Service’s Route 53 DNS and IAM services, require internet access. Depending on your network, you might require less internet access for an installation on bare metal hardware, Nutanix, or on VMware vSphere.
 
@@ -1285,7 +1283,7 @@ When you have completed the fast-track installation of RHCOS and Ignition runs a
 
 ### LUKS encryption via CEX in an IBM Z or IBM LinuxONE environment
 
-Enabling hardware-based Linux Unified Key Setup (LUKS) encryption via IBM® Crypto Express (CEX) in an IBM Z® or IBM® LinuxONE environment requires additional steps, which are described in detail in this section.
+Enabling hardware-based Linux Unified Key Setup (LUKS) encryption via IBM® Crypto Express (CEX) in an IBM Z® or IBM® LinuxONE environment requires additional steps.
 
 - You have installed the `butane` utility.
 
@@ -1313,9 +1311,13 @@ Enabling hardware-based Linux Unified Key Setup (LUKS) encryption via IBM® Cryp
           - rd.luks.key=/etc/luks/cex.key
       ```
 
-      - Specifies whether to enable or disable FIPS mode. By default, FIPS mode is not enabled. If FIPS mode is enabled, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that are provided with RHCOS instead.
+      where:
 
-      - Specifies the location of the key that is required to decrypt the device. You can not change this value.
+      `openshift.fips`
+      Specifies whether to enable or disable FIPS mode. By default, FIPS mode is not enabled. If FIPS mode is enabled, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that are provided with RHCOS instead.
+
+      `openshift.kernel_arguments`
+      Specifies the location of the key that is required to decrypt the device. You cannot change this value.
 
 2.  Create a parameter file that includes `ignition.platform.id=metal` and `ignition.firstboot`.
 
@@ -1336,19 +1338,23 @@ Enabling hardware-based Linux Unified Key Setup (LUKS) encryption via IBM® Cryp
     rd.zfcp=0.0.5677,0x600606680g7f0056,0x034F000000000000
     ```
 
-    - Specifies the location of the Ignition configuration file. Use `master.ign` or `worker.ign`. You can only use the HTTP and HTTPS protocols.
+    where:
 
-    - Specifies the location of the `rootfs` artifact for the `kernel` and `initramfs` that you want to boot. You can only use the HTTP and HTTPS protocols.
+    `coreos.inst.ignition_url`
+    Specifies the location of the Ignition configuration file. Use `master.ign` or `worker.ign`. You can only use the HTTP and HTTPS protocols.
 
-      <div class="note">
+    `coreos.live.rootfs_url`
+    Specifies the location of the `rootfs` artifact for the `kernel` and `initramfs` that you want to boot. You can only use the HTTP and HTTPS protocols.
 
-      Write all options in the parameter file as a single line and make sure you have no newline characters.
+    <div class="note">
 
-      </div>
+    Write all options in the parameter file as a single line and make sure you have no newline characters.
+
+    </div>
 
 ### Configuring NBDE with static IP in an IBM Z or IBM LinuxONE environment
 
-Enabling NBDE disk encryption in an IBM Z® or IBM® LinuxONE environment requires additional steps, which are described in detail in this section.
+Enabling NBDE disk encryption in an IBM Z® or IBM® LinuxONE environment requires additional steps.
 
 - You have set up the External Tang Server. See [Network-bound disk encryption](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/security_hardening/configuring-automated-unlocking-of-encrypted-volumes-using-policy-based-decryption_security-hardening#network-bound-disk-encryption_configuring-automated-unlocking-of-encrypted-volumes-using-policy-based-decryption) for instructions.
 
@@ -1386,7 +1392,10 @@ Enabling NBDE disk encryption in an IBM Z® or IBM® LinuxONE environment requir
       fips: true
     ```
 
-    - Whether to enable or disable FIPS mode. By default, FIPS mode is not enabled. If FIPS mode is enabled, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that are provided with RHCOS instead.
+    where:
+
+    `openshift.fips`
+    Specifies whether to enable or disable FIPS mode. By default, FIPS mode is not enabled. If FIPS mode is enabled, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that are provided with RHCOS instead.
 
 2.  Create a customized initramfs file to boot the machine, by running the following command:
 
@@ -1426,9 +1435,13 @@ Enabling NBDE disk encryption in an IBM Z® or IBM® LinuxONE environment requir
     zfcp.allow_lun_scan=0
     ```
 
-    - Specify the location of the Ignition config file. Use `master.ign` or `worker.ign`. Only HTTP and HTTPS protocols are supported.
+    where:
 
-    - Specify the location of the `rootfs` artifact for the `kernel` and `initramfs` you are booting. Only HTTP and HTTPS protocols are supported.
+    `coreos.inst.ignition_url`
+    Specifies the location of the Ignition config file. Use `master.ign` or `worker.ign`. Only HTTP and HTTPS protocols are supported.
+
+    `coreos.live.rootfs_url`
+    Specifies the location of the `rootfs` artifact for the `kernel` and `initramfs` you are booting. Only HTTP and HTTPS protocols are supported.
 
     <div class="note">
 
@@ -1489,9 +1502,7 @@ Complete the following steps to create the machines in a fast-track installation
        --disk path=<ign_file>,format=raw,readonly=on,serial=ignition,startup_policy=optional
     ```
 
-    - If IBM® Secure Execution is enabled, add the `launchSecurity type="s390-pv"` parameter.
-
-    - If IBM® Secure Execution is enabled, replace `serial=ignition` with `serial=ignition_crypted`.
+    The `--launchSecurity type="s390-pv"` parameter is required only if IBM® Secure Execution is enabled. If IBM® Secure Execution is enabled, also replace `serial=ignition` with `serial=ignition_crypted` in the `--disk` parameter.
 
 ## Full installation on a new QCOW2 disk image
 
@@ -1521,7 +1532,7 @@ Complete the following steps to create the machines in a full installation on a 
 
     - rootfs: `rhcos-<version>-live-rootfs.<architecture>.img`
 
-2.  Move the downloaded RHEL live kernel, initramfs, and rootfs as well as the Ignition files to an HTTP or HTTPS server before you launch `virt-install`.
+2.  Move the downloaded RHEL live kernel, initramfs, and rootfs and the Ignition files to an HTTP or HTTPS server before you launch `virt-install`.
 
     <div class="note">
 
@@ -1537,7 +1548,7 @@ Complete the following steps to create the machines in a full installation on a 
        --name <vm_name> \
        --memory <memory_mb> \
        --vcpus <vcpus> \
-       --location <media_location>,kernel=<rhcos_kernel>,initrd=<rhcos_initrd> \ /
+       --location <media_location>,kernel=<rhcos_kernel>,initrd=<rhcos_initrd> \
        --disk <vm_name>.qcow2,size=<image_size>,cache=none,io=native \
        --network network=<virt_network_parm> \
        --boot hd \
@@ -1550,11 +1561,16 @@ Complete the following steps to create the machines in a full installation on a 
        --wait
     ```
 
-    - For the `--location` parameter, specify the location of the kernel/initrd on the HTTP or HTTPS server.
+    where:
 
-    - Specify the location of the Ignition config file. Use `bootstrap.ign`, `master.ign`, or `worker.ign`. Only HTTP and HTTPS protocols are supported.
+    `--location`
+    Specifies the location of the kernel and initrd on the HTTP or HTTPS server.
 
-    - Specify the location of the `rootfs` artifact for the `kernel` and `initramfs` you are booting. Only HTTP and HTTPS protocols are supported.
+    `coreos.inst.ignition_url`
+    Specifies the location of the Ignition config file. Use `bootstrap.ign`, `master.ign`, or `worker.ign`. Only HTTP and HTTPS protocols are supported.
+
+    `coreos.live.rootfs_url`
+    Specifies the location of the `rootfs` artifact for the `kernel` and `initramfs` you are booting. Only HTTP and HTTPS protocols are supported.
 
 ## Networking options for ISO installations
 
@@ -1748,9 +1764,9 @@ The OpenShift Container Platform bootstrap process begins after the cluster node
     </div>
 
     ``` terminal
-    INFO Waiting up to 30m0s for the Kubernetes API at https://api.test.example.com:6443...
+    INFO Waiting up to 20m0s for the Kubernetes API at https://api.test.example.com:6443...
     INFO API v1.35.4 up
-    INFO Waiting up to 30m0s for bootstrapping to complete...
+    INFO Waiting up to 1h0m0s for bootstrapping to complete...
     INFO It is now safe to remove the bootstrap resources
     ```
 
@@ -1807,7 +1823,7 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 # Approving the certificate signing requests for your machines
 
-When you add machines to a cluster, two pending certificate signing requests (CSRs) are generated for each machine. You must confirm that these CSRs are approved or, if necessary, approve them yourself. The client requests must be approved first, followed by the server requests.
+To allow newly added machines to join your OpenShift Container Platform cluster, you can confirm that pending certificate signing requests (CSRs) are approved or approve them yourself. Approve client requests first, then server requests.
 
 - You added machines to your cluster.
 

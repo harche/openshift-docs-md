@@ -1,3 +1,7 @@
+To use storage from a back-end that does not have a built-in plugin, you can extend OpenShift Container Platform through FlexVolume drivers and provide persistent storage to applications.
+
+FlexVolume is an out-of-tree plugin that uses an executable model to interface with drivers.
+
 <div class="important">
 
 FlexVolume is a deprecated feature. Deprecated functionality is still included in OpenShift Container Platform and continues to be supported; however, it will be removed in a future release of this product and is not recommended for new deployments.
@@ -8,15 +12,13 @@ For the most recent list of major functionality that has been deprecated or remo
 
 </div>
 
-OpenShift Container Platform supports FlexVolume, an out-of-tree plugin that uses an executable model to interface with drivers.
-
-To use storage from a back-end that does not have a built-in plugin, you can extend OpenShift Container Platform through FlexVolume drivers and provide persistent storage to applications.
-
 Pods interact with FlexVolume drivers through the `flexvolume` in-tree plugin.
 
 - [Expanding persistent volumes](../../storage/expanding-persistent-volumes.xml#expanding-persistent-volumes)
 
 # About FlexVolume drivers
+
+When working with FlexVolume drivers, it is helpful to understand how OpenShift Container Platform interact with the drivers.
 
 A FlexVolume driver is an executable file that resides in a well-defined directory on all nodes in the cluster. OpenShift Container Platform calls the FlexVolume driver whenever it needs to mount or unmount a volume represented by a `PersistentVolume` object with `flexVolume` as the source.
 
@@ -27,6 +29,8 @@ Attach and detach operations are not supported in OpenShift Container Platform f
 </div>
 
 # FlexVolume driver example
+
+When working with FlexVolume drivers, it is helpful to become familiar with structure of the driver.
 
 The first command-line argument of the FlexVolume driver is always an operation name. Other parameters are specific to each operation. Most of the operations take a JavaScript Object Notation (JSON) string as a parameter. This parameter is a complete JSON string, and not the name of a file with the JSON data.
 
@@ -55,13 +59,19 @@ The FlexVolume driver contains:
 }
 ```
 
-- All options from `flexVolume.options`.
+where:
 
-- The value of `flexVolume.fsType`.
+`fooServer`
+Specifies all options from `flexVolume.options`.
 
-- `ro`/`rw` based on `flexVolume.readOnly`.
+`kubernetes.io/fsType`
+Specifies the value of `flexVolume.fsType`.
 
-- All keys and their values from the secret referenced by `flexVolume.secretRef`.
+`kubernetes.io/readwrite`
+Specifies the value `ro` or `rw` based on `flexVolume.readOnly`.
+
+`kubernetes.io/secret/<key name>`
+Specifies all keys and their values from the secret referenced by `flexVolume.secretRef`.
 
 OpenShift Container Platform expects JSON data on standard output of the driver. When not specified, the output describes the result of the operation.
 
@@ -84,7 +94,7 @@ Operations should be idempotent, which means that the mounting of an already mou
 
 # Installing FlexVolume drivers
 
-FlexVolume drivers that are used to extend OpenShift Container Platform are executed only on the node. To implement FlexVolumes, a list of operations to call and the installation path are all that is required.
+You can implement FlexVolumes by using a list of operations to call and the installation path are all that is required. FlexVolume drivers that are used to extend OpenShift Container Platform are executed only on the node.
 
 - FlexVolume drivers must implement these operations:
 
@@ -118,24 +128,24 @@ FlexVolume drivers that are used to extend OpenShift Container Platform are exec
   `mountdevice`
   Mounts a volume’s device to a directory where individual pods can then bind mount.
 
-This call-out does not pass "secrets" specified in the FlexVolume spec. If your driver requires secrets, do not implement this call-out.
+  This call-out does not pass "secrets" specified in the FlexVolume spec. If your driver requires secrets, do not implement this call-out.
 
-- Arguments: `<mount-dir>` `<json>`
+  - Arguments: `<mount-dir>` `<json>`
 
-- Executed on: node
+  - Executed on: node
 
-- Expected output: default JSON
+  - Expected output: default JSON
 
   `unmountdevice`
   Unmounts a volume’s device from a directory.
 
-- Arguments: `<mount-dir>`
+  - Arguments: `<mount-dir>`
 
-- Executed on: node
+  - Executed on: node
 
-- Expected output: default JSON
+  - Expected output: default JSON
 
-  - All other operations should return JSON with `{"status": "Not supported"}` and exit code `1`.
+- All other operations should return JSON with `{"status": "Not supported"}` and exit code `1`.
 
 <div class="formalpara-title">
 
@@ -149,59 +159,66 @@ To install the FlexVolume driver:
 
 2.  Place the executable file at the volume plugin path: `/etc/kubernetes/kubelet-plugins/volume/exec/<vendor>~<driver>/<driver>`.
 
-For example, to install the FlexVolume driver for the storage `foo`, place the executable file at: `/etc/kubernetes/kubelet-plugins/volume/exec/openshift.com~foo/foo`.
+    For example, to install the FlexVolume driver for the storage `foo`, place the executable file at: `/etc/kubernetes/kubelet-plugins/volume/exec/openshift.com~foo/foo`.
 
 # Consuming storage using FlexVolume drivers
+
+You can consume a Fibre Channel volume by using a `PersistentVolume` object.
 
 Each `PersistentVolume` object in OpenShift Container Platform represents one storage asset in the storage back-end, such as a volume.
 
 - Use the `PersistentVolume` object to reference the installed storage.
 
-<div class="formalpara-title">
+  <div class="formalpara-title">
 
-**Persistent volume object definition using FlexVolume drivers example**
+  **Persistent volume object definition using FlexVolume drivers example**
 
-</div>
+  </div>
 
-``` yaml
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: pv0001
-spec:
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteOnce
-  flexVolume:
-    driver: openshift.com/foo
-    fsType: "ext4"
-    secretRef: foo-secret
-    readOnly: true
-    options:
-      fooServer: 192.168.0.1:1234
-      fooVolumeName: bar
-```
+  ``` yaml
+  apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: pv0001
+  spec:
+    capacity:
+      storage: 1Gi
+    accessModes:
+      - ReadWriteOnce
+    flexVolume:
+      driver: openshift.com/foo
+      fsType: "ext4"
+      secretRef: foo-secret
+      readOnly: true
+      options:
+        fooServer: 192.168.0.1:1234
+        fooVolumeName: bar
+  ```
 
-- The name of the volume. This is how it is identified through persistent volume claims or from pods. This name can be different from the name of the volume on back-end storage.
+  where:
 
-- The amount of storage allocated to this volume.
+  `metadata.name`
+  Specifies the name of the volume. This is how it is identified through persistent volume claims or from pods. This name can be different from the name of the volume on back-end storage.
 
-- The name of the driver. This field is mandatory.
+  `spec.capacity.storage`
+  Specifies the amount of storage allocated to this volume.
 
-- The file system that is present on the volume. This field is optional.
+  `spec.flexVolume.driver`
+  Specifies the name of the driver. This field is mandatory.
 
-- The reference to a secret. Keys and values from this secret are provided to the FlexVolume driver on invocation. This field is optional.
+  `spec.flexVolume.fsType`
+  Specifies the file system that is present on the volume. This field is optional.
 
-- The read-only flag. This field is optional.
+  `spec.flexVolume.secretRef`
+  Specifies the reference to a secret. Keys and values from this secret are provided to the FlexVolume driver on invocation. This field is optional.
 
-- The additional options for the FlexVolume driver. In addition to the flags specified by the user in the `options` field, the following flags are also passed to the executable:
+  `spec.flexVolume.readOnly`
+  Specifies the read-only flag. This field is optional.
 
-      "fsType":"<FS type>",
-      "readwrite":"<rw>",
-      "secret/key1":"<secret1>"
-      ...
-      "secret/keyN":"<secretN>"
+  `spec.flexVolume.options`
+  Specifies the additional options for the FlexVolume driver. In addition to the flags specified by the user in the `options` field, the following flags are also passed to the executable:
+
+  "fsType":"\<FS type\>", "readwrite":"\<rw\>", "secret/key1":"\<secret1\>" "secret/keyN":"\<secretN\>"
 
 <div class="note">
 

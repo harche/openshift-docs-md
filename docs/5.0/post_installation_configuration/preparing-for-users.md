@@ -8,13 +8,13 @@ The OpenShift Container Platform control plane includes a built-in OAuth server.
 
 As an administrator, you can configure OAuth to specify an identity provider after you install your cluster.
 
-## About identity providers in OpenShift Container Platform
+## Identity providers in OpenShift Container Platform
 
 You can configure identity providers by creating a custom resource (CR) that describes the provider and adding it to the cluster. Identity providers enable user authentication in OpenShift Container Platform beyond the default `kubeadmin` user.
 
 <div class="note">
 
-OpenShift Container Platform user names containing `/`, `:`, and `%` are not supported.
+OpenShift Container Platform usernames containing `/`, `:`, and `%` are not supported.
 
 </div>
 
@@ -1106,23 +1106,31 @@ Alternatively, you can use the web console to manage catalog sources. From the *
               interval: 30m
         ```
 
-        - If you mirrored content to local files before uploading to a registry, remove any backslash (`/`) characters from the `metadata.name` field to avoid an "invalid resource name" error when you create the object.
+        where:
 
-        - If you want the catalog source to be available globally to users in all namespaces, specify the `openshift-marketplace` namespace. Otherwise, you can specify a different namespace for the catalog to be scoped and available only for that namespace.
+        `metadata.name`
+        Specifies the value for the `metadata.name` parameter. If you mirrored content to local files before uploading to a registry, remove any backslash (`/`) characters from the `metadata.name` field to avoid an "invalid resource name" error when you create the object.
 
-        - Specify the value of `legacy` or `restricted`. If the field is not set, the default value is `legacy`. In a future OpenShift Container Platform release, it is planned that the default value will be `restricted`.
+        `metadata.namespace`
+        Specifies the value for the `metadata.namespace` parameter. If you want the catalog source to be available globally to users in all namespaces, specify the `openshift-marketplace` namespace. Otherwise, you can specify a different namespace for the catalog to be scoped and available only for that namespace.
 
-          <div class="note">
+        `spec.grpcPodConfig.securityContextConfig`
+        Specifies the value of `legacy` or `restricted`. If the field is not set, the default value is `legacy`. In a future OpenShift Container Platform release, it is planned that the default value will be `restricted`.
 
-          If your catalog cannot run with `restricted` permissions, it is recommended that you manually set this field to `legacy`.
+        <div class="note">
 
-          </div>
+        If your catalog cannot run with `restricted` permissions, it is recommended that you manually set this field to `legacy`.
 
-        - Specify your index image. If you specify a tag after the image name, for example `:v4.17`, the catalog source pod uses an image pull policy of `Always`, meaning the pod always pulls the image prior to starting the container. If you specify a digest, for example `@sha256:<id>`, the image pull policy is `IfNotPresent`, meaning the pod pulls the image only if it does not already exist on the node.
+        </div>
 
-        - Specify your name or an organization name publishing the catalog.
+        `spec.image`
+        Specifies your index image. If you specify a tag after the image name, for example `:v4.17`, the catalog source pod uses an image pull policy of `Always`, meaning the pod always pulls the image before starting the container. If you specify a digest, for example `@sha256:<id>`, the image pull policy is `IfNotPresent`, meaning the pod pulls the image only if it does not already exist on the node.
 
-        - Catalog sources can automatically check for new versions to keep up to date.
+        `spec.publisher`
+        Specifies your name or an organization name publishing the catalog.
+
+        `spec.updateStrategy.registryPoll`
+        Specifies the value for the `spec.updateStrategy.registryPoll` parameter. The catalog sources can automatically check for new versions to keep up to date.
 
     2.  Use the file to create the `CatalogSource` object:
 

@@ -218,7 +218,7 @@ After installing the Container Storage Interface (CSI) Driver Operator (a Red Ha
 
     - AWSEFSDriverControllerServiceControllerAvailable
 
-# Creating the AWS EFS storage class
+# About the AWS EFS storage class
 
 To enable dynamic provisioning of persistent volumes, create a storage class that defines storage characteristics and allows users to automatically provision volumes on-demand.
 
@@ -282,6 +282,10 @@ To enable dynamic provisioning of AWS Elastic File System (EFS) volumes by using
   A cluster admin can create several `StorageClass` objects, each using a different EFS volume.
 
   </div>
+
+<!-- -->
+
+- [AWS EFS CSI Driver Operator](https://github.com/openshift/aws-efs-csi-driver-operator)
 
 # AWS EFS CSI cross account support
 
@@ -892,8 +896,6 @@ If you have problems setting up dynamic provisioning, see *AWS EFS troubleshooti
 <!-- -->
 
 - [AWS EFS CSI driver](https://github.com/openshift/aws-efs-csi-driver)
-
-<!-- -->
 
 - [Creating the AWS EFS storage class](../../storage/container_storage_interface/persistent-storage-csi-aws-efs.xml#storage-create-storage-class_persistent-storage-csi-aws-efs)
 

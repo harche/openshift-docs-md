@@ -104,6 +104,8 @@ Ports used for control plane machine to control plane machine communications
 
 # VMware vSphere CSI Driver Operator requirements
 
+To successfully install and operate the vSphere CSI Driver Operator, verify that your environment meets the minimum VMware vSphere, vCenter, and virtual machine version requirements.
+
 To install the vSphere Container Storage Interface (CSI) Driver Operator, the following requirements must be met:
 
 - VMware vSphere version 8.0 Update 1 or later; or VMware vSphere Foundation (VVF) 9; or VMware Cloud Foundation (VCF) 5 or later
@@ -129,6 +131,8 @@ You can create a custom role for the Container Storage Interface (CSI) driver, t
 Installing an OpenShift Container Platform cluster in a vCenter is tested against a full list of privileges as described in the "Required vCenter account privileges" section. By adhering to the full list of privileges, you can reduce the possibility of unexpected and unsupported behaviors that might occur when creating a custom role with a set of restricted privileges.
 
 </div>
+
+To remove a third-party CSI driver, see "Removing a third-party vSphere CSI Driver".
 
 - [Removing a third-party vSphere CSI Driver Operator](../../../storage/container_storage_interface/persistent-storage-csi-vsphere.xml#persistent-storage-csi-vsphere-install-issues_persistent-storage-csi-vsphere)
 

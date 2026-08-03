@@ -18,7 +18,9 @@ Oracle Edge Cloud infrastructure support statuses
 
 # Installation process workflow
 
-The following workflow describes a high-level outline for the process of installing an OpenShift Container Platform cluster on Oracle Edge Cloud using the Agent-based Installer:
+To better understand the process, see a high-level outline of installing an OpenShift Container Platform cluster on Oracle Edge Cloud using the Agent-based Installer.
+
+The following workflow describes the general installation process:
 
 1.  Create Oracle Cloud Infrastructure (OCI) resources and services (Oracle).
 

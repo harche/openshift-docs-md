@@ -2,7 +2,7 @@ You can incrementally migrate single-node OpenShift clusters from `SiteConfig` c
 
 <div class="important">
 
-- The `SiteConfig` CR is deprecated from OpenShift Container Platform version 4.18 and will be removed in a future version.
+- The `SiteConfig` CR is deprecated from OpenShift Container Platform version 4.18 and removed from OpenShift Container Platform 4.21.
 
 - The `ClusterInstance` CR is available from Red Hat Advanced Cluster Management (RHACM) version 2.12 or later.
 

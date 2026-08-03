@@ -60,19 +60,15 @@ Storage classes are used to differentiate and delineate storage levels and usage
 
 # Creating the persistent volume claim
 
-<div class="formalpara-title">
+You can create a persistent volume claim by using the OpenShift Container Platform web console to request storage resources for your applications by specifying the storage class, access mode, and size.
 
-**Prerequisites**
-
-</div>
-
-Storage must exist in the underlying infrastructure before it can be mounted as a volume in OpenShift Container Platform.
+- Storage exists in the underlying infrastructure.
 
 1.  In the OpenShift Container Platform web console, click **Storage** → **Persistent Volume Claims**.
 
 2.  In the persistent volume claims overview, click **Create Persistent Volume Claim**.
 
-3.  Define the desired options on the page that appears.
+3.  Define the required options on the page that is displayed.
 
     1.  Select the previously-created storage class from the drop-down menu.
 

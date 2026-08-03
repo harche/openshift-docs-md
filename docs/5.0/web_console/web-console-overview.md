@@ -94,7 +94,7 @@ You can enable the **Developer** perspective with the following steps:
 
     </div>
 
-- [Learn more about Cluster Administrator](../welcome/learn_more_about_openshift.xml#cluster-administrator)
+- [Learn more about Cluster Administrator](../welcome/learn_more_about_openshift.xml#learn_more_about_openshift)
 
 - [Viewing the applications in your project](../applications/odc-viewing-application-composition-using-topology-view.xml#odc-viewing-application-composition-using-topology-view)
 

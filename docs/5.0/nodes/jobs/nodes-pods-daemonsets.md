@@ -8,11 +8,9 @@ You can use daemon sets to create shared storage, run a logging pod on every nod
 
 For security reasons, the cluster administrators and the project administrators can create daemon sets.
 
-For more information on daemon sets, see the [Kubernetes documentation](http://kubernetes.io/docs/admin/daemons/).
-
 <div class="important">
 
-Daemon set scheduling is incompatible with project’s default node selector. If you fail to disable it, the daemon set gets restricted by merging with the default node selector. This results in frequent pod recreates on the nodes that got unselected by the merged node selector, which in turn puts unwanted load on the cluster.
+Daemon set scheduling is incompatible with the project’s default node selector. If you fail to disable it, the daemon set gets restricted by merging with the default node selector. This results in frequent pod recreates on the nodes that got unselected by the merged node selector, which in turn puts unwanted load on the cluster.
 
 </div>
 
@@ -190,3 +188,7 @@ To update a daemon set, force new pod replicas to be created by deleting the old
         ``` terminal
         Node:        openshift-node02.hostname.com/10.14.20.137
         ```
+
+# Additional resources
+
+- [Kubernetes documentation about daemon sets](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/)

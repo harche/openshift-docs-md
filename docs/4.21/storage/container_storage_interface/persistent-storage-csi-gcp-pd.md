@@ -555,17 +555,39 @@ Your CMEK-protected PV is now ready to use with your OpenShift Container Platfor
 
 # User-managed encryption
 
-The user-managed encryption feature allows you to provide keys during installation that encrypt OpenShift Container Platform node root volumes, and enables all managed storage classes to use these keys to encrypt provisioned storage volumes. You must specify the custom key in the `platform.<cloud_type>.defaultMachinePlatform` field in the install-config YAML file.
+The user-managed encryption feature allows you to provide keys during installation that encrypt OpenShift Container Platform node root volumes, and enables all managed storage classes to use these keys to encrypt provisioned storage volumes.
+
+You must specify the custom key in the `platform.<cloud_type>.defaultMachinePlatform` field in the install-config YAML file.
 
 This features supports the following storage types:
 
 - Amazon Web Services (AWS) Elastic Block storage (EBS)
 
+  <div class="note">
+
+  If there is no encrypted key defined in the storage class, only set `encrypted: "true"` in the storage class. The AWS EBS CSI driver uses the AWS managed alias/aws/ebs, which is created by Amazon EBS automatically in each region by default to encrypt provisioned storage volumes. In addition, the managed storage classes all have the `encrypted: "true"` setting.
+
+  </div>
+
+  For information about installing AWS EBS with user-managed encryption, see "Optional AWS configuration parameters".
+
 - Microsoft Azure Disk storage
+
+  <div class="note">
+
+  If the OS (root) disk is encrypted, and there is no encrypted key defined in the storage class, Azure Disk CSI driver uses the OS disk encryption key by default to encrypt provisioned storage volumes.
+
+  </div>
+
+  For information about installing Azure Disk with user-managed encryption, see "Preparing an Azure Disk Encryption Set".
 
 - Google Cloud Platform (GCP) persistent disk (PD) storage
 
-- IBM Virtual Private Cloud (VPC) Block storage
+  For information about installing GCP PD with user-managed encryption, see "Additional Google Cloud configuration parameters".
+
+- IBM Cloud® Virtual Private Cloud (VPC) Block storage
+
+  For information about installing with IBM Cloud with user-managed encryption, see "User-managed encryption for IBM Cloud" and "Installing on IBM Cloud".
 
 For information about installing with user-managed encryption for GCP PD, see [Installation configuration parameters](../../installing/installing_gcp/installing-gcp-customizations.xml#installation-configuration-parameters_installing-gcp-customizations).
 

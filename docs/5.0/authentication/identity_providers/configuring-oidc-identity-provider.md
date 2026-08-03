@@ -1,12 +1,12 @@
 Configure the `oidc` identity provider to integrate with an OpenID Connect identity provider using an [Authorization Code Flow](http://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth).
 
-# About identity providers in OpenShift Container Platform
+# Identity providers in OpenShift Container Platform
 
 You can configure identity providers by creating a custom resource (CR) that describes the provider and adding it to the cluster. Identity providers enable user authentication in OpenShift Container Platform beyond the default `kubeadmin` user.
 
 <div class="note">
 
-OpenShift Container Platform user names containing `/`, `:`, and `%` are not supported.
+OpenShift Container Platform usernames containing `/`, `:`, and `%` are not supported.
 
 </div>
 
@@ -77,36 +77,32 @@ Red Hat tests and supports specific OpenID Connect (OIDC) providers with OpenShi
 
 # Creating the secret
 
-Identity providers use OpenShift Container Platform `Secret` objects in the `openshift-config` namespace to contain the client secret, client certificates, and keys.
+Create a Secret in the `openshift-config` namespace to store identity provider client secrets, certificates, or keys, so the OAuth custom resource (CR) can reference them.
 
-- Create a `Secret` object containing a string by using the following command:
+1.  Create a `Secret` object containing the client secret by running the following command:
 
-  ``` terminal
-  $ oc create secret generic <secret_name> --from-literal=clientSecret=<secret> -n openshift-config
-  ```
+    ``` terminal
+    $ oc create secret generic <secret_name> --from-literal=clientSecret=<secret> -n openshift-config
+    ```
 
-  <div class="tip">
+2.  Optional: Apply the following YAML to create the secret:
 
-  You can alternatively apply the following YAML to create the secret:
+    ``` yaml
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: <secret_name>
+      namespace: openshift-config
+    type: Opaque
+    data:
+      clientSecret: <base64_encoded_client_secret>
+    ```
 
-  ``` yaml
-  apiVersion: v1
-  kind: Secret
-  metadata:
-    name: <secret_name>
-    namespace: openshift-config
-  type: Opaque
-  data:
-    clientSecret: <base64_encoded_client_secret>
-  ```
+3.  Create a `Secret` object from a file by running the following command:
 
-  </div>
-
-- You can define a `Secret` object containing the contents of a file by using the following command:
-
-  ``` terminal
-  $ oc create secret generic <secret_name> --from-file=<path_to_file> -n openshift-config
-  ```
+    ``` terminal
+    $ oc create secret generic <secret_name> --from-file=<path_to_file> -n openshift-config
+    ```
 
 # Creating a config map
 
@@ -248,15 +244,15 @@ spec:
 
 # Adding an identity provider to your cluster
 
-After you install your cluster, add an identity provider to it so your users can authenticate.
+Apply the OAuth custom resource (CR) to add an identity provider to your cluster so users can authenticate with external credentials instead of the default `kubeadmin` user.
 
-- Create an OpenShift Container Platform cluster.
+- You installed an OpenShift Container Platform cluster.
 
-- Create the custom resource (CR) for your identity providers.
+- You defined the CR for your identity provider.
 
-- You must be logged in as an administrator.
+- You are logged in as an administrator.
 
-1.  Apply the defined CR:
+1.  Apply the defined CR by running the following command:
 
     ``` terminal
     $ oc apply -f </path/to/CR>
@@ -274,7 +270,7 @@ After you install your cluster, add an identity provider to it so your users can
 
     You can also access this page from the web console by navigating to **(?) Help** → **Command Line Tools** → **Copy Login Command**.
 
-3.  Log in to the cluster, passing in the token to authenticate.
+3.  Log in to the cluster by running the following command, passing in the token to authenticate:
 
     ``` terminal
     $ oc login --token=<token>
@@ -282,9 +278,9 @@ After you install your cluster, add an identity provider to it so your users can
 
     <div class="note">
 
-    If your OpenID Connect identity provider supports the resource owner password credentials (ROPC) grant flow, you can log in with a user name and password. You might need to take steps to enable the ROPC grant flow for your identity provider.
+    If your OpenID Connect identity provider supports the resource owner password credentials (ROPC) grant flow, you can log in with a username and password. You might need to take steps to enable the ROPC grant flow for your identity provider.
 
-    After the OIDC identity provider is configured in OpenShift Container Platform, you can log in by using the following command, which prompts for your user name and password:
+    After the OIDC identity provider is configured in OpenShift Container Platform, you can log in by running the following command, which prompts for your username and password:
 
     ``` terminal
     $ oc login -u <identity_provider_username> --server=<api_server_url_and_port>
@@ -292,7 +288,7 @@ After you install your cluster, add an identity provider to it so your users can
 
     </div>
 
-4.  Confirm that the user logged in successfully, and display the user name.
+4.  Confirm that the user logged in successfully and that the username displays by running the following command:
 
     ``` terminal
     $ oc whoami

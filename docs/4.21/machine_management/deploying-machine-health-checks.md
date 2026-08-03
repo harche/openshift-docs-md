@@ -16,6 +16,8 @@ $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
 
 # About machine health checks
 
+You can use machine health checks to detect and remediate unhealthy machines automatically while limiting disruption to the targeted machine pool.
+
 <div class="note">
 
 You can only apply a machine health check to machines that are managed by compute machine sets or control plane machine sets.
@@ -61,6 +63,8 @@ There are limitations to consider before deploying a machine health check:
 - [About the Control Plane Machine Set Operator](../machine_management/control_plane_machine_management/cpmso-about.xml#cpmso-about)
 
 # Sample MachineHealthCheck resource
+
+You can use the sample `MachineHealthCheck` resource to configure health criteria, remediation limits, and startup timeouts for machines in a targeted pool.
 
 The `MachineHealthCheck` resource for all cloud-based installation types, and other than bare metal, resembles the following YAML file:
 
@@ -162,6 +166,8 @@ The allowed number of machines is rounded down when the percentage of `maxUnheal
 </div>
 
 # Creating a machine health check resource
+
+You can create a `MachineHealthCheck` resource to monitor and automatically remediate unhealthy machines in a machine set.
 
 You can create a `MachineHealthCheck` resource for machine sets in your cluster.
 

@@ -1,8 +1,8 @@
-Use OADP virtual machine file restore (VMFR) to recover individual files from `kubevirt` VM backups without restoring the entire VM. You can browse, compare, and download files from multiple backups simultaneously.
+Recover individual files from virtual machine backups without restoring the entire VM. Browse, compare, and download files from multiple backups simultaneously through a web browser or SSH-based tools.
 
 # What problem is OADP VMFR solving
 
-Recover individual files from `kubevirt` virtual machine (VM) backups without restoring the entire VM. You can browse multiple backups simultaneously and retrieve only the files you need through standard tools such as a web browser or `rsync`.
+Recover individual files from virtual machine (VM) backups without restoring the entire VM. Browse multiple backups simultaneously and retrieve only the files you need through standard tools such as a web browser or `rsync`.
 
 Current VM backup recovery workflows require you to restore an entire virtual machine to access a single file. This uses substantial cluster resources and time. The virtual machine file restore (VMFR) feature addresses this problem by providing a Kubernetes-native mechanism for file-level recovery from VM backups created by OADP.
 
@@ -39,7 +39,7 @@ You have a namespace that runs multiple VMs with daily backups over several week
 
 # OADP VMFR custom resources
 
-Use OADP virtual machine file restore (VMFR) custom resources to discover VM backups and restore individual files from those backups. You can perform file-level recovery for `kubevirt` VMs.
+Use OADP virtual machine file restore (VMFR) custom resources to discover VM backups and restore individual files from those backups.
 
 The OADP VMFR feature uses the following custom resources (CRs) to perform file-level restore operations:
 
@@ -122,13 +122,13 @@ Configure your cluster environment to enable OADP virtual machine file restore (
 
 - You have configured the `DataProtectionApplication` (DPA) CR with the `vmFileRestore.enable` field set to `true`.
 
-- The DPA CR includes the `kubevirt` plugin in the `defaultPlugins` list.
+- The DPA CR includes the `kubevirt` Velero plugin in the `defaultPlugins` list.
 
 - OpenShift Virtualization is installed and running on the cluster.
 
 - You have a default storage class configured on the cluster.
 
-- You have existing Velero backups that contain `kubevirt` virtual machine data.
+- You have existing Velero backups that contain virtual machine data.
 
 # OADP VMFR file access methods
 
@@ -166,7 +166,7 @@ SSH access uses the following defaults:
 
 - Default port: `2222`
 
-- Remote path format: \`/restores/*\<date\>*/*\<backup_name\>*/*\<vm_name\>*/\_\<path_to_fi
+- Remote path format: `/restores/<date>/<backup_name>/<vm_name>/<path_to_file>`
 
 - SSH access uses key-based authentication only. Password-based logins are not supported.
 
@@ -176,7 +176,7 @@ Review the limitations of OADP virtual machine file restore (VMFR) to understand
 
 The following limitations apply to OADP VMFR:
 
-- VMFR supports only `kubevirt` VM backups created by OADP with the `kubevirt` Velero plugin. Backups created without this plugin are not supported.
+- VMFR supports only VM backups created by OADP with the `kubevirt` Velero plugin. Backups created without this plugin are not supported.
 
 - Restored files are mounted as read-only. You cannot modify files directly in the backup.
 

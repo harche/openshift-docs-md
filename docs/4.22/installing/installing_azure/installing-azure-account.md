@@ -846,7 +846,7 @@ Deploying a cluster using the Azure Marketplace image is not supported for the A
 
 # Supported Azure regions
 
-Base on your subscription, the installation program dynamically generates the list of available Microsoft Azure public regions.
+Based on your subscription, the installation program dynamically generates the list of available Microsoft Azure public regions.
 
 ## Supported Azure public regions
 

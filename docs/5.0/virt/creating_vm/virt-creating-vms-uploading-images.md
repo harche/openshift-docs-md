@@ -32,7 +32,7 @@ You can create a virtual machine (VM) from an uploaded operating system image by
 
 ## Generalizing a VM image
 
-You can generalize a Red Hat Enterprise Linux (RHEL) image to remove all system-specific configuration data before you use the image to create a golden image, a preconfigured snapshot of a virtual machine (VM). You can use a golden image to deploy new VMs.
+You can generalize a Red Hat Enterprise Linux (RHEL) image to remove all system-specific configuration data before you use the image to create a boot source image, a preconfigured snapshot of a virtual machine (VM). You can use a boot source image to deploy new VMs.
 
 You can generalize a RHEL VM by using the `virtctl`, `guestfs`, and `virt-sysprep` tools.
 
@@ -77,9 +77,9 @@ You can generalize a RHEL VM by using the `virtctl`, `guestfs`, and `virt-syspre
 
     <div class="note">
 
-    If your cluster configuration does not enable you to clone a VM, to avoid losing the data from your original VM, you can clone the VM PVC to a data volume instead. You can then use the cloned PVC to create a golden image.
+    If your cluster configuration does not enable you to clone a VM, to avoid losing the data from your original VM, you can clone the VM PVC to a data volume instead. You can then use the cloned PVC to create a boot source image.
 
-    If you are creating a golden image by cloning a PVC, continue with the next steps, using the cloned PVC.
+    If you are creating a boot source image by cloning a PVC, continue with the next steps, using the cloned PVC.
 
     </div>
 
@@ -109,7 +109,7 @@ You can generalize a RHEL VM by using the `virtctl`, `guestfs`, and `virt-syspre
 
     3.  From the **Volume name** list, select the correct PVC.
 
-    4.  In the **Volume name** field, enter a name for the new golden image.
+    4.  In the **Volume name** field, enter a name for the new boot source image.
 
     5.  From the **Preference** list, select the RHEL version you are using.
 
@@ -125,7 +125,7 @@ You can generalize a RHEL VM by using the `virtctl`, `guestfs`, and `virt-syspre
 
 </div>
 
-The new volume appears in the **Select volume to boot from** list. This is your new golden image. You can use this volume to create new VMs.
+The new volume appears in the **Select volume to boot from** list. This is your new boot source image. You can use this volume to create new VMs.
 
 # Creating a Windows VM
 
@@ -304,9 +304,9 @@ You can upload an operating system image by using the `virtctl` command-line too
 
 - [Installing and updating VirtIO drivers for Windows virtual machines](https://access.redhat.com/solutions/6957701)
 
-- [Cloning VMs](../../virt/creating_vms_advanced/virt-cloning-vms.xml#virt-cloning-vms)
+- [Cloning VMs](../../virt/creating_vm/virt-cloning-vms.xml#virt-cloning-vms)
 
-- [Cloning a PVC to a data volume](../../virt/creating_vms_advanced/virt-creating-vms-by-cloning-pvcs.xml#virt-cloning-pvc-to-dv-cli_virt-creating-vms-by-cloning-pvcs)
+- [Cloning a PVC to a data volume](../../virt/creating_vm/virt-creating-vms-by-cloning-pvcs.xml#virt-cloning-pvc-to-dv-cli_virt-creating-vms-by-cloning-pvcs)
 
 - [Sysprep (Generalize) a Windows installation](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/sysprep--generalize--a-windows-installation)
 

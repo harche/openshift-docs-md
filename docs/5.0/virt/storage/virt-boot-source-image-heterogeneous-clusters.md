@@ -2,39 +2,35 @@ A heterogeneous cluster is a cluster where nodes have differing architectures. H
 
 <div class="important">
 
-Golden image support for heterogeneous clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+Boot source image support for heterogeneous clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
 For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
 
-With heterogenous clusters, you can match workloads to hardware intended for the workload task instead of general purpose compute platforms. For example, GPU and general purpose compute resources could be combined and workloads assigned to the appropriate hardware.
+With heterogeneous clusters, you can match workloads to hardware intended for the workload task instead of general purpose compute platforms. For example, GPU and general purpose compute resources could be combined and workloads assigned to the appropriate hardware.
 
 <div class="important">
 
-If golden image support is disabled in a heterogeneous cluster, you can encounter inconsistencies between node and image architectures. This happens when images are used for virtual machine creation that do not match the node architecture. This can lead to the failure of virtual machine boot up or virtual machines that do not run as expected. The warning level alert `HCOMultiArchGoldenImagesDisabled` is produced when this feature is not enabled in a heterogeneous cluster.
+If boot source image support is disabled in a heterogeneous cluster, you can encounter inconsistencies between node and image architectures. This happens when images are used for virtual machine creation that do not match the node architecture. This can lead to the failure of virtual machine boot up or virtual machines that do not run as expected. The warning level alert `HCOMultiArchGoldenImagesDisabled` is produced when this feature is not enabled in a heterogeneous cluster.
 
 </div>
 
 If you have a heterogeneous cluster but do not want to enable multiple architecture support, you can modify the workloads node placement in the `HyperConverged` custom resource (CR) to include only nodes with a specific architecture.
 
-Golden image support for heterogeneous clusters extends golden image support in the following areas:
+Boot source image support in heterogeneous clusters enables VM creators to deploy persistent VMs with specific architectures, and to define custom boot images that support heterogeneous clusters.
 
-- Enables VM creators to deploy persistent virtual machines with specific architectures.
+The same image can be used with nodes of different architectures if the boot image supports the required architectures. For example, a boot image that supports both ARM and AMD architectures can be used with both types of nodes.
 
-- Enables VM creators to define custom golden images that support heterogenous clusters.
-
-The same golden image can be used with nodes of different architectures if the boot image supports the required architectures. For example, a golden image that supports both ARM and AMD architectures can be used with both types of nodes.
-
-Golden image support for heterogeneous clusters is not enabled by default. You can enable heterogenous cluster support by setting the feature gate in the `HyperConverged` CR.
+Boot source image support for heterogeneous clusters is not enabled by default. You can enable heterogeneous cluster support by setting the feature gate in the `HyperConverged` CR.
 
 # Enabling heterogeneous cluster support
 
-You can enable golden image support for heterogeneous clusters by setting the `enableMultiArchBootImageImport` feature gate to `true` in the `HyperConverged` custom resource (CR).
+You can enable boot source image support for heterogeneous clusters by setting the `enableMultiArchBootImageImport` feature gate to `true` in the `HyperConverged` custom resource (CR).
 
 <div class="important">
 
-Golden image support for heterogeneous clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+Boot source image support for heterogeneous clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
 For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
@@ -54,13 +50,13 @@ For more information about the support scope of Red Hat Technology Preview featu
     "value": {"name": "enableMultiArchBootImageImport"}}]'
   ```
 
-# Modifying a common golden image source in a heterogeneous cluster
+# Modifying a common boot source image in a heterogeneous cluster
 
-You can modify the image source of a common golden image in a heterogeneous cluster by specifying the supported architectures in the `ssp.kubevirt.io/dict.architectures` annotation in the `HyperConverged` custom resource (CR).
+You can modify the source of a common boot source image in a heterogeneous cluster by specifying the supported architectures in the `ssp.kubevirt.io/dict.architectures` annotation in the `HyperConverged` custom resource (CR).
 
 <div class="important">
 
-Golden image support for heterogeneous clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+Boot source image support for heterogeneous clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
 For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
@@ -103,13 +99,13 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 3.  Save and exit the editor to update the `HyperConverged` CR.
 
-# Adding a custom golden image in a heterogeneous cluster
+# Adding a custom boot source image in a heterogeneous cluster
 
-Add a custom golden image in a heterogeneous cluster by editing the `HyperConverged` custom resource (CR).
+Add a custom boot source image in a heterogeneous cluster by editing the `HyperConverged` custom resource (CR).
 
 <div class="important">
 
-Golden image support for heterogeneous clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+Boot source image support for heterogeneous clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
 For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
@@ -123,7 +119,7 @@ For more information about the support scope of Red Hat Technology Preview featu
     $ oc edit hco kubevirt-hyperconverged -n openshift-cnv
     ```
 
-2.  Edit the `HyperConverged` CR, to add the custom golden image. You must add the appropriate values for `ssp.kubevirt.io/dict.architectures` annotation in the `dataImportCronTemplates` section. For example:
+2.  Edit the `HyperConverged` CR, to add the custom boot source image. You must add the appropriate values for the `ssp.kubevirt.io/dict.architectures` annotation in the `dataImportCronTemplates` section. For example:
 
     ``` yaml
     apiVersion: hco.kubevirt.io/v1
@@ -156,7 +152,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 
     <div class="note">
 
-    An image may support more architectures than you want to use in your cluster. You do not have to list all of the architectures an image supports, only those for which you want to create a boot source.
+    An image may support more architectures than you want to use in your cluster. You do not have to list all of the architectures an image supports, only those for which you want to create a boot source image.
 
     </div>
 
@@ -166,7 +162,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 <div class="important">
 
-Golden image support for heterogeneous clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+Boot source image support for heterogeneous clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
 For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 

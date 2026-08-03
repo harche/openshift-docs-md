@@ -1,6 +1,6 @@
-OpenShift Container Platform supports Amazon Elastic Block Store (EBS) volumes. You can provision your OpenShift Container Platform cluster with persistent storage by using [Amazon EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html).
+OpenShift Container Platform supports Amazon Elastic Block Store (EBS) volumes. You can provision your OpenShift Container Platform cluster with persistent storage by using Amazon EC2.
 
-The Kubernetes persistent volume framework allows administrators to provision a cluster with persistent storage and gives users a way to request those resources without having any knowledge of the underlying infrastructure. You can dynamically provision Amazon EBS volumes. Persistent volumes are not bound to a single project or namespace; they can be shared across the OpenShift Container Platform cluster. Persistent volume claims are specific to a project or namespace and can be requested by users. You can define a KMS key to encrypt container-persistent volumes on AWS. By default, newly created clusters using OpenShift Container Platform version 4.10 and later use gp3 storage and the [AWS EBS CSI driver](https://github.com/openshift/aws-ebs-csi-driver).
+The Kubernetes persistent volume framework allows administrators to provision a cluster with persistent storage and gives users a way to request those resources without having any knowledge of the underlying infrastructure. You can dynamically provision Amazon EBS volumes. Persistent volumes are not bound to a single project or namespace; they can be shared across the OpenShift Container Platform cluster. Persistent volume claims are specific to a project or namespace and can be requested by users. You can define a KMS key to encrypt container-persistent volumes on AWS. By default, newly created clusters by using OpenShift Container Platform version 4.10 and later use gp3 storage and the AWS EBS CSI driver.
 
 <div class="important">
 
@@ -12,29 +12,25 @@ High-availability of storage in the infrastructure is left to the underlying sto
 
 OpenShift Container Platform 4.12 and later provides automatic migration for the AWS Block in-tree volume plugin to its equivalent CSI driver.
 
-CSI automatic migration should be seamless. Migration does not change how you use all existing API objects, such as persistent volumes, persistent volume claims, and storage classes. For more information about migration, see [CSI automatic migration](../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration).
+CSI automatic migration should be seamless. Migration does not change how you use all existing API objects, such as persistent volumes, persistent volume claims, and storage classes. For more information about migration, see CSI automatic migration.
 
 </div>
 
-# Creating the EBS storage class
+# About the EBS storage class
 
 To enable dynamic provisioning of persistent volumes, create a storage class that defines storage characteristics and allows users to automatically provision volumes on-demand.
 
 # Creating the persistent volume claim
 
-<div class="formalpara-title">
+You can create a persistent volume claim to dynamically provision and bind storage from a pre-configured storage class, so that your applications can consume persistent storage in OpenShift Container Platform.
 
-**Prerequisites**
-
-</div>
-
-Storage must exist in the underlying infrastructure before it can be mounted as a volume in OpenShift Container Platform.
+- Storage must exist in the underlying infrastructure before it can be mounted as a volume in OpenShift Container Platform.
 
 1.  In the OpenShift Container Platform web console, click **Storage** → **Persistent Volume Claims**.
 
 2.  In the persistent volume claims overview, click **Create Persistent Volume Claim**.
 
-3.  Define the desired options on the page that appears.
+3.  Define the required options on the page that is displayed.
 
     1.  Select the previously-created storage class from the drop-down menu.
 
@@ -48,13 +44,13 @@ Storage must exist in the underlying infrastructure before it can be mounted as 
 
 # Volume format
 
-Before OpenShift Container Platform mounts the volume and passes it to a container, it checks that the volume contains a file system as specified by the `fsType` arameter in the persistent volume definition. If the device is not formatted with the file system, all data from the device is erased and the device is automatically formatted with the given file system.
+You can use unformatted AWS volumes as persistent volumes, because OpenShift Container Platform automatically formats the device before mounting it to a container.
 
-This verification enables you to use unformatted AWS volumes as persistent volumes, because OpenShift Container Platform formats them before the first use.
+Before OpenShift Container Platform mounts the volume and passes it to a container, it checks that the volume contains a file system as specified by the `fsType` parameter in the persistent volume definition. If the device is not formatted with the file system, all data from the device is erased and the device is automatically formatted with the given file system.
 
 # Maximum number of EBS volumes on a node
 
-By default, OpenShift Container Platform supports a maximum of 39 EBS volumes attached to one node. This limit is consistent with the [AWS volume limits](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/volume_limits.html#linux-specific-volume-limits). The volume limit depends on the instance type.
+By default, you can attach a maximum of 39 EBS volumes attached to one node. This limit is consistent with the AWS volume limits. The volume limit depends on the instance type.
 
 <div class="important">
 
@@ -62,11 +58,9 @@ As a cluster administrator, you must use either in-tree or Container Storage Int
 
 </div>
 
-For information about accessing additional storage options, such as volume snapshots, that are not possible with in-tree volume plug-ins, see [AWS Elastic Block Store CSI Driver Operator](../../storage/container_storage_interface/persistent-storage-csi-ebs.xml#persistent-storage-csi-ebs).
-
 # Encrypting container persistent volumes on AWS with a KMS key
 
-Defining a KMS key to encrypt container-persistent volumes on AWS is useful when you have explicit compliance and security guidelines when deploying to AWS.
+You can define a KMS key to encrypt container-persistent volumes on AWS if you have explicit compliance and security guidelines when deploying to AWS.
 
 - Underlying infrastructure must contain storage.
 
@@ -90,11 +84,16 @@ Defining a KMS key to encrypt container-persistent volumes on AWS is useful when
     EOF
     ```
 
-    - Specifies the name of the storage class.
+    where:
 
-    - File system that is created on provisioned volumes.
+    `metadata.name`
+    Specifies the name of the storage class.
 
-    - Specifies the full Amazon Resource Name (ARN) of the key to use when encrypting the container-persistent volume. If you do not provide any key, but the `encrypted` field is set to `true`, then the default KMS key is used. See [Finding the key ID and key ARN on AWS](https://docs.aws.amazon.com/kms/latest/developerguide/find-cmk-id-arn.html) in the AWS documentation.
+    `parameters.fsType`
+    Specifies the file system that is created on provisioned volumes.
+
+    `parameters.kmsKeyId`
+    Specifies the full Amazon Resource Name (ARN) of the key to use when encrypting the container-persistent volume. If you do not provide any key, but the `encrypted` field is set to `true`, then the default KMS key is used.
 
 2.  Create a persistent volume claim (PVC) with the storage class specifying the KMS key:
 
@@ -140,4 +139,10 @@ Defining a KMS key to encrypt container-persistent volumes on AWS is useful when
 
 # Additional resources
 
-- See [AWS Elastic Block Store CSI Driver Operator](../../storage/container_storage_interface/persistent-storage-csi-ebs.xml#persistent-storage-csi-ebs) for information about accessing additional storage options, such as volume snapshots, that are not possible with in-tree volume plugins.
+- [Amazon EC2 documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html)
+
+- [AWS EBS CSI driver](https://github.com/openshift/aws-ebs-csi-driver)
+
+- [CSI automatic migration](../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration)
+
+- [AWS Elastic Block Store CSI Driver Operator](../../storage/container_storage_interface/persistent-storage-csi-ebs.xml#persistent-storage-csi-ebs)

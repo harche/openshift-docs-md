@@ -4,6 +4,8 @@ Device plugins allow you to use a particular device type (GPU, InfiniBand, or ot
 
 A device plugin is a gRPC service running on nodes that manages specific hardware resources through an extension mechanism, enabling containers to consume these devices.
 
+The device plugin provides a consistent and portable solution to consume hardware devices across clusters. The device plugin provides support for these devices through an extension mechanism, which makes these devices available to Containers, provides health checks of these devices, and securely shares them.
+
 <div class="important">
 
 OpenShift Container Platform supports the device plugin API, but the device plugin Containers are supported by individual vendors.
@@ -80,6 +82,8 @@ For easy device plugin reference implementation, there is a stub device plugin i
 
 Device Manager advertises specialized node hardware resources through device plugins, enabling pods to consume hardware devices without requiring upstream code changes.
 
+Device Manager provides a mechanism for advertising specialized node hardware resources with the help of plugins known as device plugins.
+
 You can advertise specialized hardware without requiring any upstream code changes.
 
 <div class="important">
@@ -101,6 +105,8 @@ Additionally, device plugins can also perform several other device-specific oper
 # Enabling Device Manager
 
 Enable Device Manager to allow device plugins to advertise specialized node hardware resources and make them available to pods without requiring code changes.
+
+Enable Device Manager to implement a device plugin to advertise specialized hardware without any upstream code changes.
 
 Device Manager provides a mechanism for advertising specialized node hardware resources with the help of plugins known as device plugins.
 

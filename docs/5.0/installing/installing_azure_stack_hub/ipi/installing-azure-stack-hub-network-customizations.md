@@ -22,6 +22,8 @@ While you can select `azure` when using the installation program to deploy a clu
 
 # Uploading the RHCOS cluster image
 
+To make the RHCOS cluster image accessible during deployment, you can download and upload the image to your Azure Stack Hub environment.
+
 You must download the RHCOS virtual hard disk (VHD) cluster image and upload it to your Azure Stack Hub environment so that it is accessible during deployment.
 
 - Generate the Ignition config files for your cluster.
@@ -157,47 +159,70 @@ additionalTrustBundle: |
     -----END CERTIFICATE-----
 ```
 
-- Required.
+where:
 
-- If you do not provide these parameters and values, the installation program provides the default value.
+`baseDomain`
+Specifies the base domain for your cluster. This parameter is required.
 
-- The `controlPlane` section is a single mapping, but the `compute` section is a sequence of mappings. To meet the requirements of the different data structures, the first line of the `compute` section must begin with a hyphen, `-`, and the first line of the `controlPlane` section must not. Although both sections currently define a single machine pool, it is possible that future versions of OpenShift Container Platform will support defining multiple compute pools during installation. Only one control plane pool is used.
+`controlPlane`
+Specifies the configuration for the machines that form the control plane. The `controlPlane` section is a single mapping. To meet the requirements of the different data structures, the first line of the `compute` section must begin with a hyphen, `-`, and the first line of the `controlPlane` section must not. Although both sections currently define a single machine pool, it is possible that future versions of OpenShift Container Platform will support defining multiple compute pools during installation. Only one control plane pool is used. If you do not provide these parameter, the installation program provides the default value.
 
-- You can specify the size of the disk to use in GB. Minimum recommendation for control plane nodes is 1024 GB.
+`compute`
+Specifies the configuration for the machines that form the compute plane. The `compute` section is a sequence of mappings. To meet the requirements of the different data structures, the first line of the `compute` section must begin with a hyphen, `-`, and the first line of the `controlPlane` section must not. Although both sections currently define a single machine pool, it is possible that future versions of OpenShift Container Platform will support defining multiple compute pools during installation. If you do not provide these parameter, the installation program provides the default value.
 
-- The name of the cluster.
+`controlPlane.platform.azure.osDisk.diskSizeGB`
+Specifies the size of the disk to use in GB. Minimum recommendation for control plane nodes is 1024 GB.
 
-- The cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
+`compute.platform.azure.osDisk.diskSizeGB`
+Specifies the size of the disk to use in GB.
 
-- The Azure Resource Manager endpoint that your Azure Stack Hub operator provides.
+`metadata.name`
+Specifies the name of the cluster. This parameter is required.
 
-- The name of the resource group that contains the DNS zone for your base domain.
+`networking.networkType`
+Specifies the cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
 
-- The name of your Azure Stack Hub local region.
+`platform.azure.armEndpoint`
+Specifies the Azure Resource Manager endpoint that your Azure Stack Hub operator provides. This parameter is required.
 
-- The name of an existing resource group to install your cluster to. If undefined, a new resource group is created for the cluster.
+`platform.azure.baseDomainResourceGroupName`
+Specifies the name of the resource group that contains the DNS zone for your base domain. This parameter is required.
 
-- The URL of a storage blob in the Azure Stack environment that contains an RHCOS VHD.
+`platform.azure.region`
+Specifies the name of your Azure Stack Hub local region. This parameter is required.
 
-- The pull secret required to authenticate your cluster.
+`platform.azure.resourceGroupName`
+Specifies the name of an existing resource group to install your cluster to. If undefined, a new resource group is created for the cluster.
 
-- Whether to enable or disable FIPS mode. By default, FIPS mode is not enabled. If FIPS mode is enabled, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that are provided with RHCOS instead.
+`platform.azure.cloudName`
+Specifies the `platform.azure.cloudName` parameter. This parameter is required.
 
-  <div class="important">
+`platform.azure.clusterOSimage`
+Specifies the URL of a storage blob in the Azure Stack environment that contains an RHCOS VHD.
 
-  When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
+`pullSecret`
+Specifies the pull secret required to authenticate your cluster. This parameter is required.
 
-  </div>
+`fips`
+Specifies whether to enable or disable FIPS mode. By default, FIPS mode is not enabled. If FIPS mode is enabled, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that are provided with RHCOS instead.
 
-- You can optionally provide the `sshKey` value that you use to access the machines in your cluster.
+<div class="important">
 
-  <div class="note">
+When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
 
-  For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+</div>
 
-  </div>
+`sshKey`
+Specifies the `sshKey` value that you use to access the machines in your cluster. This parameter is optional.
 
-- If the Azure Stack Hub environment is using an internal Certificate Authority (CA), adding the CA certificate is required.
+<div class="note">
+
+For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+
+</div>
+
+`additionalTrustBundle`
+Specifies the certificate trust bundle. If the Azure Stack Hub environment is using an internal Certificate Authority (CA), adding the CA certificate is required.
 
 # Manually manage cloud credentials
 
@@ -325,7 +350,7 @@ The Cloud Credential Operator (CCO) only supports your cloud provider in manual 
 
 # Configuring the cluster to use an internal CA
 
-If the Azure Stack Hub environment is using an internal Certificate Authority (CA), update the `cluster-proxy-01-config.yaml file` to configure the cluster to use the internal CA.
+If the Azure Stack Hub environment is using an internal Certificate Authority (CA), update the `cluster-proxy-01-config.yaml` file to configure the cluster to use the internal CA.
 
 - Create the `install-config.yaml` file and specify the certificate trust bundle in `.pem` format.
 

@@ -1,3 +1,5 @@
+You can change your cluster’s cloud provider credentials configuration to meet security and authentication requirements. You can rotate or remove credentials, or enable supported short-term credential methods.
+
 For supported configurations, you can change how OpenShift Container Platform authenticates with your cloud provider.
 
 To determine which cloud credentials strategy your cluster uses, see [Determining the Cloud Credential Operator mode](../authentication/managing_cloud_provider_credentials/about-cloud-credential-operator.xml#cco-determine-mode_about-cloud-credential-operator).
@@ -659,6 +661,8 @@ The process to rotate OIDC bound service account signer keys is disruptive and t
 
 ## Rotating IBM Cloud credentials
 
+You can rotate API keys for existing IBM Cloud service IDs and update the corresponding cluster secrets to maintain valid cloud provider credentials.
+
 You can rotate API keys for your existing service IDs and update the corresponding secrets.
 
 - You have configured the `ccoctl` utility.
@@ -820,6 +824,8 @@ The process for rotating cloud credentials depends on the mode that the CCO is c
 After installing OpenShift Container Platform, some organizations require the removal of the cloud provider credentials that were used during the initial installation. To allow the cluster to use the new credentials, you must update the secrets that the [Cloud Credential Operator (CCO)](../operators/operator-reference.xml#cloud-credential-operator_cluster-operators-ref) uses to manage cloud provider credentials.
 
 ## Removing cloud provider credentials
+
+You can remove administrator-level cloud provider credentials from a cluster that uses the Cloud Credential Operator in mint mode to reduce the risk of credential exposure after installation.
 
 For clusters that use the Cloud Credential Operator (CCO) in mint mode, the administrator-level credential is stored in the `kube-system` namespace. The CCO uses the `admin` credential to process the `CredentialsRequest` objects in the cluster and create users for components with limited permissions.
 

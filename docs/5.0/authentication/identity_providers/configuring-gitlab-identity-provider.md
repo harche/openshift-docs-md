@@ -1,12 +1,12 @@
 Configure the `gitlab` identity provider using [GitLab.com](https://gitlab.com/) or any other GitLab instance as an identity provider.
 
-# About identity providers in OpenShift Container Platform
+# Identity providers in OpenShift Container Platform
 
 You can configure identity providers by creating a custom resource (CR) that describes the provider and adding it to the cluster. Identity providers enable user authentication in OpenShift Container Platform beyond the default `kubeadmin` user.
 
 <div class="note">
 
-OpenShift Container Platform user names containing `/`, `:`, and `%` are not supported.
+OpenShift Container Platform usernames containing `/`, `:`, and `%` are not supported.
 
 </div>
 
@@ -18,36 +18,32 @@ If you use GitLab version 7.7.0 to 11.0, you connect using the [OAuth integratio
 
 # Creating the secret
 
-Identity providers use OpenShift Container Platform `Secret` objects in the `openshift-config` namespace to contain the client secret, client certificates, and keys.
+Create a Secret in the `openshift-config` namespace to store identity provider client secrets, certificates, or keys, so the OAuth custom resource (CR) can reference them.
 
-- Create a `Secret` object containing a string by using the following command:
+1.  Create a `Secret` object containing the client secret by running the following command:
 
-  ``` terminal
-  $ oc create secret generic <secret_name> --from-literal=clientSecret=<secret> -n openshift-config
-  ```
+    ``` terminal
+    $ oc create secret generic <secret_name> --from-literal=clientSecret=<secret> -n openshift-config
+    ```
 
-  <div class="tip">
+2.  Optional: Apply the following YAML to create the secret:
 
-  You can alternatively apply the following YAML to create the secret:
+    ``` yaml
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: <secret_name>
+      namespace: openshift-config
+    type: Opaque
+    data:
+      clientSecret: <base64_encoded_client_secret>
+    ```
 
-  ``` yaml
-  apiVersion: v1
-  kind: Secret
-  metadata:
-    name: <secret_name>
-    namespace: openshift-config
-  type: Opaque
-  data:
-    clientSecret: <base64_encoded_client_secret>
-  ```
+3.  Create a `Secret` object from a file by running the following command:
 
-  </div>
-
-- You can define a `Secret` object containing the contents of a file by using the following command:
-
-  ``` terminal
-  $ oc create secret generic <secret_name> --from-file=<path_to_file> -n openshift-config
-  ```
+    ``` terminal
+    $ oc create secret generic <secret_name> --from-file=<path_to_file> -n openshift-config
+    ```
 
 # Creating a config map
 
@@ -123,15 +119,15 @@ spec:
 
 # Adding an identity provider to your cluster
 
-After you install your cluster, add an identity provider to it so your users can authenticate.
+Apply the OAuth custom resource (CR) to add an identity provider to your cluster so users can authenticate with external credentials instead of the default `kubeadmin` user.
 
-- Create an OpenShift Container Platform cluster.
+- You installed an OpenShift Container Platform cluster.
 
-- Create the custom resource (CR) for your identity providers.
+- You defined the CR for your identity provider.
 
-- You must be logged in as an administrator.
+- You are logged in as an administrator.
 
-1.  Apply the defined CR:
+1.  Apply the defined CR by running the following command:
 
     ``` terminal
     $ oc apply -f </path/to/CR>
@@ -143,13 +139,13 @@ After you install your cluster, add an identity provider to it so your users can
 
     </div>
 
-2.  Log in to the cluster as a user from your identity provider, entering the password when prompted.
+2.  Log in to the cluster as a user from your identity provider by running the following command, which prompts for your username and password:
 
     ``` terminal
     $ oc login -u <username>
     ```
 
-3.  Confirm that the user logged in successfully, and display the user name.
+3.  Confirm that the user logged in successfully and that the username displays by running the following command:
 
     ``` terminal
     $ oc whoami

@@ -198,6 +198,13 @@ The following table describes resource utilization under reference application l
 
 Resource utilization under reference application load
 
+Disconnected environment
+RAN DU clusters are typically deployed in disconnected environments without direct access to the internet. All container images needed to install, configure, and operate the cluster must be available in a disconnected registry.
+
+In OpenShift Container Platform 4.17 and later, pulling OpenShift images from a disconnected mirror registry requires copying the image signatures into that registry during the mirroring process. The `oc adm mirror` command does not mirror signatures and must not be used. Instead, use the `oc mirror` plugin v2 to ensure signatures are properly mirrored.
+
+- [Mirroring images for a disconnected installation by using the oc-mirror plugin v2](../disconnected/about-installing-oc-mirror-v2.xml#about-installing-oc-mirror-v2)
+
 # Telco RAN DU application workloads
 
 Develop RAN DU applications that are subject to the following requirements and limitations.
@@ -401,7 +408,7 @@ Engineering considerations
 
 - Under x86_64, the `PerformanceProfile` may be customized with the following optional arguments in the `additionalKernelargs` list:
 
-  - The `vcio_pci` arguments support devices such as the FEC accelerator. You can omit them if they are not required for your workload.
+  - The `vfio_pci` arguments support devices such as the FEC accelerator. You can omit them if they are not required for your workload.
 
   - To enable the `acpi_idle` CPUIdle driver, for example, for Intel FlexRAN, add `intel_idle.max_cstate=0`
 

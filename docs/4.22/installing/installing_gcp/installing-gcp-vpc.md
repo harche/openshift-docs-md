@@ -320,7 +320,7 @@ For OpenShift Container Platform version 4.22, RHCOS is based on RHEL version 9.
 
 - s390x architecture requires z14 ISA
 
-For more information, see "Architectures".
+For more information, see "Architectures" in the RHEL documentation.
 
 </div>
 

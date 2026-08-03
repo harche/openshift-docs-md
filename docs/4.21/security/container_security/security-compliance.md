@@ -1,8 +1,8 @@
-For many OpenShift Container Platform customers, regulatory readiness, or compliance, on some level is required before any systems can be put into production. That regulatory readiness can be imposed by national standards, industry standards or the organization’s corporate governance framework.
+You should understand the regulatory readiness, or compliance, that is required before any systems can be put into production. That regulatory readiness can be imposed by national standards, industry standards or the organization’s corporate governance framework.
 
 # Understanding compliance and risk management
 
-FIPS compliance is one of the most critical components required in highly secure environments, to ensure that only supported cryptographic technologies are allowed on nodes.
+FIPS compliance is one of the most critical components required in highly secure environments to ensure that only supported cryptographic technologies are allowed on nodes.
 
 <div class="important">
 
@@ -12,6 +12,6 @@ When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreO
 
 </div>
 
-To understand Red Hat’s view of OpenShift Container Platform compliance frameworks, refer to the Risk Management and Regulatory Readiness chapter of the [OpenShift Security Guide Book](https://access.redhat.com/articles/5059881).
+To understand Red Hat’s view of OpenShift Container Platform compliance frameworks, refer to the Risk Management and Regulatory Readiness chapter of the OpenShift Security Guide Book.
 
 - [Installing a cluster in FIPS mode](../../installing/overview/installing-fips.xml#installing-fips-mode_installing-fips)

@@ -200,11 +200,92 @@ You can connect a virtual machine (VM) to multiple secondary cluster-scoped user
     `<filename>`
     Specifies the name of your `VirtualMachine` manifest YAML file.
 
-    <div class="note">
+# Considerations when running OpenShift Virtualization on IBM Z®
 
-    When running OpenShift Virtualization on IBM Z®, be aware that certain network interfaces, such as OSA, RoCE, and HiperSockets, only forward network traffic to devices that are registered with the respective interface. As a result, any traffic that is destined for unregistered devices is not forwarded.
+When running OpenShift Virtualization on IBM Z®, the required network configuration depends on the hardware generation and the network adapter in use. Network interfaces on IBM Z® behave differently from standard Ethernet devices, which affects how the bridge forwards virtual machine traffic.
 
-    </div>
+Review the following considerations before configuring a user-defined network (UDN) for virtual machines on IBM Z®. Applying the correct settings ensures stable layer 2 connectivity between the virtual machine and the network bridge.
+
+# Configuring a RoCE adapter for virtual machine networking on IBM Z®
+
+On IBM Z® z17, RoCE adapters support promiscuous mode at the hardware level, which forwards traffic for all virtual machine MAC addresses without manual registration. On earlier IBM Z® generations, each virtual machine MAC address must be manually registered with the RoCE interface because promiscuous mode is not available.
+
+Use the following procedure to enable promiscuous mode on IBM Z® z17.
+
+- You have access to the LPAR configuration for the IBM Z® z17 system.
+
+- You have the name of the RoCE network interface, for example `ens329`.
+
+1.  Enable promiscuous mode on the RoCE adapter at the hardware level in the LPAR. See [Configuring FIDPARM to support promiscuous mode on a VF](https://www.ibm.com/docs/en/linux-on-systems?topic=mode-configuring-fidparm-support-promiscuous-vf)
+
+2.  Enable promiscuous mode on the corresponding network interface by running the following command:
+
+    ``` terminal
+    $ ip link set dev <interface> promisc on
+    ```
+
+    where `<interface>` is the name of the RoCE network interface, for example `ens329`.
+
+<!-- -->
+
+1.  Verify that promiscuous mode is active by running the following command:
+
+    ``` terminal
+    $ ip link show dev <interface>
+    ```
+
+    Example output:
+
+    ``` terminal
+    3: ens329: <BROADCAST,MULTICAST,PROMISC,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
+        link/ether 22:4b:c0:53:05:be brd ff:ff:ff:ff:ff:ff
+        altname enp0s0
+    ```
+
+    The presence of the `PROMISC` flag confirms that promiscuous mode is active.
+
+# Configuring OSA and HiperSockets adapters for virtual machine networking on IBM Z®
+
+You can configure OSA and HiperSockets interfaces on IBM Z® for virtual machine networking by enabling Virtual NIC Characteristics (VNICC) attributes on the qeth driver. Without them, the qeth driver silently drops packets destined for virtual machine MAC addresses.
+
+- You have the bus ID of the qeth network device, for example `0.0.1100`.
+
+- The `chzdev` command-line tool is available on the host node.
+
+1.  Enable flooding on the qeth device by running the following command:
+
+    ``` terminal
+    $ echo 1 > /sys/devices/qeth/0.0.1100/vnicc/flooding
+    ```
+
+2.  Enable multicast flooding on the qeth device by running the following command:
+
+    ``` terminal
+    $ echo 1 > /sys/devices/qeth/0.0.1100/vnicc/mcast_flooding
+    ```
+
+3.  Enable MAC address learning on the qeth device by running the following command:
+
+    ``` terminal
+    $ echo 1 > /sys/devices/qeth/0.0.1100/vnicc/learning
+    ```
+
+4.  Or, enable MAC address learning by using `chzdev`:
+
+    ``` terminal
+    $ sudo chzdev <device_bus_id> vnicc/learning=1
+    ```
+
+    where:
+
+    `chzdev`
+    Specifies the tool to configure IBM Z® devices.
+
+    `<device_bus_id>`
+    Specifies the bus ID of the qeth network device, for example `0.0.1100`.
+
+    `vnicc/learning=1`
+    Enables MAC address learning.
 
 # Additional resources
 

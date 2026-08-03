@@ -503,8 +503,6 @@ When operators or components are installed, enabled, uninstalled, or disabled, y
 
 - [Minimizing node disruption with MachineConfig changes](../../machine_configuration/machine-config-node-disruption.xml#machine-config-node-disruption)
 
-- [Custom nftables firewall rules in OpenShift](https://access.redhat.com/articles/7090422)
-
 # Generate nftables firewall rules in Butane format
 
 You can generate `nftables` firewall rules in Butane format by using the `commatrix` plugin. The generated Butane configs contain `nftables` rules that allow the ingress flows defined in the communication matrix and block all other ingress flows.

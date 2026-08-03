@@ -1,6 +1,6 @@
-In OpenShift Container Platform version 4.17, you can install a cluster on Microsoft Azure Stack Hub by using infrastructure that you provide.
+You can install a cluster on Microsoft Azure Stack Hub by using infrastructure that you provide.
 
-Several [Azure Resource Manager](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/overview) (ARM) templates are provided to assist in completing these steps or to help model your own.
+Several Azure Resource Manager (ARM) templates are provided to assist in completing these steps or to help model your own. See "Azure Resource Manager templates overview".
 
 <div class="important">
 
@@ -9,6 +9,10 @@ The steps for performing a user-provisioned infrastructure installation are prov
 </div>
 
 # Prerequisites
+
+Before you install a cluster on Azure Stack Hub by using Azure Resource Manager (ARM) templates, you must complete prerequisites.
+
+The following prerequisites are required:
 
 - You reviewed details about the [OpenShift Container Platform installation and update](../../../architecture/architecture-installation.xml#architecture-installation) processes.
 
@@ -30,13 +34,15 @@ The steps for performing a user-provisioned infrastructure installation are prov
 
 # Configuring your Azure Stack Hub project
 
-Before you can install OpenShift Container Platform, you must configure an Azure project to host it.
+Before you install OpenShift Container Platform, you must configure an Azure project to host it.
 
 <div class="important">
 
-All Azure Stack Hub resources that are available through public endpoints are subject to resource name restrictions, and you cannot create resources that use certain terms. For a list of terms that Azure Stack Hub restricts, see [Resolve reserved resource name errors](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-reserved-resource-name) in the Azure documentation.
+All Azure Stack Hub resources that are available through public endpoints are subject to resource name restrictions, and you cannot create resources that use certain terms. For a list of terms that Azure Stack Hub restricts, see "Resolve reserved resource name errors".
 
 </div>
+
+- [Resolve reserved resource name errors (Azure documentation)](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-reserved-resource-name)
 
 ## Azure Stack Hub account limits
 
@@ -147,9 +153,11 @@ To increase an account limit, file a support request on the Azure portal. For mo
 
 ## Configuring a DNS zone in Azure Stack Hub
 
-To successfully install OpenShift Container Platform on Azure Stack Hub, you must create DNS records in an Azure Stack Hub DNS zone. The DNS zone must be authoritative for the domain. To delegate a registrar’s DNS zone to Azure Stack Hub, see Microsoft’s documentation for [Azure Stack Hub datacenter DNS integration](https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-integrate-dns?view=azs-2102).
+To successfully install OpenShift Container Platform on Azure Stack Hub, you must create DNS records in an Azure Stack Hub DNS zone. The DNS zone must be authoritative for the domain. To delegate a registrar’s DNS zone to Azure Stack Hub, see "Azure Stack Hub datacenter DNS integration".
 
-You can view Azure’s DNS solution by visiting this [example for creating DNS zones](#installation-azure-create-dns-zones_installing-azure-stack-hub-user-infra).
+- [Azure Stack Hub datacenter DNS integration (Microsoft documentation)](https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-integrate-dns?view=azs-2102)
+
+- [Example for creating DNS zones](../../../installing/installing_azure_stack_hub/upi/installing-azure-stack-hub-user-infra.xml#installation-azure-create-dns-zones_installing-azure-stack-hub-user-infra)
 
 ## Certificate signing requests management
 
@@ -159,15 +167,13 @@ The `kube-controller-manager` only approves the kubelet client CSRs. The `machin
 
 ## Required Azure Stack Hub roles
 
-Your Microsoft Azure Stack Hub account must have the following roles for the subscription that you use:
-
-- `Owner`
+Your Microsoft Azure Stack Hub account must have the `Owner` role for the subscription that you use.
 
 To set roles on the Azure portal, see the [Manage access to resources in Azure Stack Hub with role-based access control](https://docs.microsoft.com/en-us/azure-stack/user/azure-stack-manage-permissions?view=azs-2102) in the Microsoft documentation.
 
 ## Creating a service principal
 
-Because OpenShift Container Platform and its installation program create Microsoft Azure resources by using the Azure Resource Manager, you must create a service principal to represent it.
+To enable OpenShift Container Platform to create Azure resources, you must create a service principal that represents the installation program in Azure Resource Manager.
 
 - Install or update the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-yum?view=azure-cli-latest).
 
@@ -179,9 +185,9 @@ Because OpenShift Container Platform and its installation program create Microso
     $ az cloud register -n AzureStackCloud --endpoint-resource-manager <endpoint>
     ```
 
-    - Specify the Azure Resource Manager endpoint, \`https://management.\<region\>.\<fqdn\>/\`.
+    `<endpoint>` is the Azure Resource Manager endpoint, \`https://management.\<region\>.\<fqdn\>/\`.
 
-      See the [Microsoft documentation](https://docs.microsoft.com/en-us/azure-stack/mdc/azure-stack-version-profiles-azurecli-2-tzl#connect-to-azure-stack-hub) for details.
+    See the [Microsoft documentation](https://docs.microsoft.com/en-us/azure-stack/mdc/azure-stack-version-profiles-azurecli-2-tzl#connect-to-azure-stack-hub) for details.
 
 2.  Set the active environment:
 
@@ -261,7 +267,7 @@ Because OpenShift Container Platform and its installation program create Microso
         }
         ```
 
-        - Ensure that the value of the `tenantId` parameter is the correct subscription ID.
+        Ensure that the value of the `tenantId` parameter is the correct subscription ID.
 
     3.  If you are not using the right subscription, change the active subscription:
 
@@ -269,7 +275,7 @@ Because OpenShift Container Platform and its installation program create Microso
         $ az account set -s <subscription_id>
         ```
 
-        - Specify the subscription ID.
+        For `<subscription_id>`, specify the subscription ID.
 
     4.  Verify the subscription ID update:
 
@@ -304,34 +310,39 @@ Because OpenShift Container Platform and its installation program create Microso
 
     ``` terminal
     $ az ad sp create-for-rbac --role Contributor --name <service_principal> \
-      --scopes /subscriptions/<subscription_id>
+      --scopes /subscriptions/<subscription_id> \
       --years <years>
     ```
 
-    - Specify the service principal name.
+    where:
 
-    - Specify the subscription ID.
+    `<service_principal>`
+    Specifies the service principal name.
 
-    - Specify the number of years. By default, a service principal expires in one year. By using the `--years` option you can extend the validity of your service principal.
+    `<subscription_id>`
+    Specifies the subscription ID.
 
-      <div class="formalpara-title">
+    `<years>`
+    Specifies the number of years. By default, a service principal expires in one year. By using the `--years` option you can extend the validity of your service principal.
 
-      **Example output**
+    <div class="formalpara-title">
 
-      </div>
+    **Example output**
 
-      ``` terminal
-      Creating 'Contributor' role assignment under scope '/subscriptions/<subscription_id>'
-      The output includes credentials that you must protect. Be sure that you do not
-      include these credentials in your code or check the credentials into your source
-      control. For more information, see https://aka.ms/azadsp-cli
-      {
-        "appId": "ac461d78-bf4b-4387-ad16-7e32e328aec6",
-        "displayName": <service_principal>",
-        "password": "00000000-0000-0000-0000-000000000000",
-        "tenantId": "8049c7e9-c3de-762d-a54e-dc3f6be6a7ee"
-      }
-      ```
+    </div>
+
+    ``` terminal
+    Creating 'Contributor' role assignment under scope '/subscriptions/<subscription_id>'
+    The output includes credentials that you must protect. Be sure that you do not
+    include these credentials in your code or check the credentials into your source
+    control. For more information, see https://aka.ms/azadsp-cli
+    {
+      "appId": "ac461d78-bf4b-4387-ad16-7e32e328aec6",
+      "displayName": <service_principal>",
+      "password": "00000000-0000-0000-0000-000000000000",
+      "tenantId": "8049c7e9-c3de-762d-a54e-dc3f6be6a7ee"
+    }
+    ```
 
 8.  Record the values of the `appId` and `password` parameters from the previous output. You need these values during OpenShift Container Platform installation.
 
@@ -477,45 +488,66 @@ additionalTrustBundle: |
 sshKey: ssh-ed25519 AAAA...
 ```
 
-- The `controlPlane` section is a single mapping, but the `compute` section is a sequence of mappings. To meet the requirements of the different data structures, the first line of the `compute` section must begin with a hyphen, `-`, and the first line of the `controlPlane` section must not. Only one control plane pool is used.
+where:
 
-- You can specify the size of the disk to use in GB. Minimum recommendation for control plane nodes is 1024 GB.
+`controlPlane`
+Specifies the configuration for the machines that form the control plane. The `controlPlane` section is a single mapping. To meet the requirements of the different data structures, the first line of the `compute` section must begin with a hyphen, `-`, and the first line of the `controlPlane` section must not. Only one control plane pool is used.
 
-- Specify the name of the cluster.
+`compute`
+Specifies the configuration for the machines that form the compute plane. The `compute` section is a sequence of mappings. To meet the requirements of the different data structures, the first line of the `compute` section must begin with a hyphen, `-`, and the first line of the `controlPlane` section must not.
 
-- The cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
+`controlPlane.platform.azure.osDisk.diskSizeGB`
+Specifies the size of the disk to use in GB. Minimum recommendation for control plane nodes is 1024 GB.
 
-- Specify the Azure Resource Manager endpoint that your Azure Stack Hub operator provides.
+`compute.platform.azure.osDisk.diskSizeGB`
+Specifies the size of the disk to use in GB.
 
-- Specify the name of the resource group that contains the DNS zone for your base domain.
+`metadata.name`
+Specifies the name of the cluster.
 
-- Specify the name of your Azure Stack Hub local region.
+`networking.networkType`
+Specifies the cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
 
-- Specify the name of an already existing resource group to install your cluster to. If undefined, a new resource group is created for the cluster.
+`platform.azure.armEndpoint`
+Specifies the Azure Resource Manager endpoint that your Azure Stack Hub operator provides.
 
-- Specify the Azure Stack Hub environment as your target platform.
+`platform.azure.baseDomainResourceGroupName`
+Specifies the name of the resource group that contains the DNS zone for your base domain.
 
-- Specify the pull secret required to authenticate your cluster.
+`platform.azure.region`
+Specifies the name of your Azure Stack Hub local region.
 
-- Whether to enable or disable FIPS mode. By default, FIPS mode is not enabled. If FIPS mode is enabled, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that are provided with RHCOS instead.
+`platform.azure.resourceGroupName`
+Specifies the name of an already existing resource group to install your cluster to. If undefined, a new resource group is created for the cluster.
 
-  <div class="important">
+`platform.azure.cloudName`
+Specifies the Azure Stack Hub environment as your target platform.
 
-  To enable FIPS mode for your cluster, you must run the installation program from a Red Hat Enterprise Linux (RHEL) computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see [Installing the system in FIPS mode](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/security_hardening/assembly_installing-the-system-in-fips-mode_security-hardening).
+`pullSecret`
+Specifies the pull secret required to authenticate your cluster.
 
-  When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
+`fips`
+Specifies whether to enable or disable FIPS mode. By default, FIPS mode is not enabled. If FIPS mode is enabled, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that are provided with RHCOS instead.
 
-  </div>
+<div class="important">
 
-- If your Azure Stack Hub environment uses an internal certificate authority (CA), add the necessary certificate bundle in `.pem` format.
+To enable FIPS mode for your cluster, you must run the installation program from a Red Hat Enterprise Linux (RHEL) computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see [Installing the system in FIPS mode](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/security_hardening/assembly_installing-the-system-in-fips-mode_security-hardening).
 
-- You can optionally provide the `sshKey` value that you use to access the machines in your cluster.
+When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
 
-  <div class="note">
+</div>
 
-  For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+`additionalTrustBundle`
+Specifies the certificate trust bundle. If your Azure Stack Hub environment uses an internal certificate authority (CA), add the necessary certificate bundle in `.pem` format.
 
-  </div>
+`sshKey`
+Specifies the `sshKey` value that you use to access the machines in your cluster. This parameter is optional.
+
+<div class="note">
+
+For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+
+</div>
 
 ## Configuring the cluster-wide proxy during installation
 
@@ -595,7 +627,7 @@ Production environments can deny direct access to the internet and instead have 
 
 ## Exporting common variables for ARM templates
 
-You must export a common set of variables that are used with the provided Azure Resource Manager (ARM) templates used to assist in completing a user-provided infrastructure install on Microsoft Azure Stack Hub.
+To deploy Azure infrastructure with the provided ARM templates, you must export a common set of variables that are used with the provided Azure Resource Manager (ARM) templates used to assist in completing a user-provided infrastructure install on Microsoft Azure Stack Hub.
 
 <div class="note">
 
@@ -950,7 +982,9 @@ The installation configuration file transforms into the Kubernetes manifests. Th
 
 ## Optional: Creating a separate `/var` partition
 
-It is recommended that disk partitioning for OpenShift Container Platform be left to the installer. However, there are cases where you might want to create separate partitions in a part of the filesystem that you expect to grow.
+To isolate growing storage for containers, etcd, or logs, you can optionally create a separate `/var` partition on worker nodes before you generate Ignition configs.
+
+It is recommended that disk partitioning for OpenShift Container Platform be left to the installation program. However, there are cases where you might want to create separate partitions in a part of the filesystem that you expect to grow.
 
 OpenShift Container Platform supports the addition of a single partition to attach storage to either the `/var` partition or a subdirectory of `/var`. For example:
 
@@ -1040,19 +1074,25 @@ If you follow the steps to create a separate `/var` partition in this procedure,
           with_mount_unit: true
     ```
 
-    - The storage device name of the disk that you want to partition.
+    where:
 
-    - When adding a data partition to the boot disk, a minimum value of 25000 MiB (Mebibytes) is recommended. The root file system is automatically resized to fill all available space up to the specified offset. If no value is specified, or if the specified value is smaller than the recommended minimum, the resulting root file system will be too small, and future reinstalls of RHCOS might overwrite the beginning of the data partition.
+    `<device_name>`
+    Specifies the storage device name of the disk that you want to partition.
 
-    - The size of the data partition in mebibytes.
+    `<partition_start_offset>`
+    Specifies the `start_mib` parameter. When adding a data partition to the boot disk, a minimum value of 25000 MiB (Mebibytes) is recommended. The root file system is automatically resized to fill all available space up to the specified offset. If no value is specified, or if the specified value is smaller than the recommended minimum, the resulting root file system will be too small, and future reinstalls of RHCOS might overwrite the beginning of the data partition.
 
-    - The `prjquota` mount option must be enabled for filesystems used for container storage.
+    `<partition_size>`
+    Specifies the size of the data partition in mebibytes.
 
-      <div class="note">
+    `storage.filesystems.mount_options`
+    The `prjquota` mount option must be enabled for filesystems used for container storage.
 
-      When creating a separate `/var` partition, you cannot use different instance types for worker nodes, if the different instance types do not have the same device name.
+    <div class="note">
 
-      </div>
+    When creating a separate `/var` partition, you cannot use different instance types for worker nodes, if the different instance types do not have the same device name.
+
+    </div>
 
 5.  Create a manifest from the Butane config and save it to the `clusterconfig/openshift` directory. For example, run the following command:
 
@@ -1075,7 +1115,9 @@ If you follow the steps to create a separate `/var` partition in this procedure,
 
 # Creating the Azure resource group
 
-You must create a Microsoft Azure [resource group](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview#resource-groups). This is used during the installation of your OpenShift Container Platform cluster on Azure Stack Hub.
+You must create a Microsoft Azure resource group. The resource group is used when you install your OpenShift Container Platform cluster on Azure Stack Hub.
+
+For more information, see "Azure resource groups".
 
 - Create the resource group in a supported Azure region:
 
@@ -1083,7 +1125,13 @@ You must create a Microsoft Azure [resource group](https://docs.microsoft.com/en
   $ az group create --name ${RESOURCE_GROUP} --location ${AZURE_REGION}
   ```
 
+<!-- -->
+
+- [Azure resource groups (Azure documentation)](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview#resource-groups)
+
 # Uploading the RHCOS cluster image and bootstrap Ignition config file
+
+To make the RHCOS cluster image and bootstrap Ignition config accessible during deployment, you can upload them to an Azure storage container.
 
 The Azure client does not support deployments based on files existing locally. You must copy and store the RHCOS virtual hard disk (VHD) cluster image and bootstrap Ignition config file in a storage container so they are accessible during deployment.
 
@@ -1157,7 +1205,7 @@ The Azure client does not support deployments based on files existing locally. Y
 
 # Example for creating DNS zones
 
-DNS records are required for clusters that use user-provisioned infrastructure. You should choose the DNS strategy that fits your scenario.
+To create the required DNS zones for a user-provisioned cluster, you can add public and private DNS zones that resolve your cluster domain. You should choose the DNS strategy that fits your scenario.
 
 For this example, [Azure Stack Hub’s datacenter DNS integration](https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-integrate-dns?view=azs-2102) is used, so you will create a DNS zone.
 
@@ -1175,11 +1223,13 @@ The DNS zone is not required to exist in the same resource group as the cluster 
 
   You can skip this step if you are using a DNS zone that already exists.
 
-You can learn more about [configuring a DNS zone in Azure Stack Hub](#installation-azure-stack-hub-network-config_installing-azure-stack-hub-user-infra) by visiting that section.
+<!-- -->
+
+- [Example for creating DNS zones](../../../installing/installing_azure_stack_hub/upi/installing-azure-stack-hub-user-infra.xml#installation-azure-create-dns-zones_installing-azure-stack-hub-user-infra)
 
 # Creating a VNet in Azure Stack Hub
 
-You must create a virtual network (VNet) in Microsoft Azure Stack Hub for your OpenShift Container Platform cluster to use. You can customize the VNet to meet your requirements. One way to create the VNet is to modify the provided Azure Resource Manager (ARM) template.
+To provide network connectivity for your cluster on Microsoft Azure Stack Hub, you can create a virtual network (VNet) by using the Azure Resource Manager (ARM) template.
 
 <div class="note">
 
@@ -1197,11 +1247,11 @@ If you do not use the provided ARM template to create your Azure Stack Hub infra
       --parameters baseName="${INFRA_ID}"
     ```
 
-    - The base name to be used in resource names; this is usually the cluster’s infrastructure ID.
+    `baseName` specifies the base name to be used in resource names; this is usually the cluster’s infrastructure ID.
 
 ## ARM template for the VNet
 
-You can use the following Azure Resource Manager (ARM) template to deploy the VNet that you need for your OpenShift Container Platform cluster:
+Use the `01_vnet.json` Azure Resource Manager (ARM) template to deploy the virtual network (VNet) for your OpenShift Container Platform cluster.
 
 ``` json
 link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azurestack/01_vnet.json[role=include]
@@ -1209,7 +1259,7 @@ link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azur
 
 # Deploying the RHCOS cluster image for the Azure Stack Hub infrastructure
 
-You must use a valid Red Hat Enterprise Linux CoreOS (RHCOS) image for Microsoft Azure Stack Hub for your OpenShift Container Platform nodes.
+To provision cluster nodes on Microsoft Azure Stack Hub, you must use a valid Red Hat Enterprise Linux CoreOS (RHCOS) image for Microsoft Azure Stack Hub for your OpenShift Container Platform nodes.
 
 - Store the RHCOS virtual hard disk (VHD) cluster image in an Azure storage container.
 
@@ -1234,17 +1284,23 @@ You must use a valid Red Hat Enterprise Linux CoreOS (RHCOS) image for Microsof
       --parameters architecture="<architecture>"
     ```
 
-    - The blob URL of the RHCOS VHD to be used to create master and worker machines.
+    where:
 
-    - The base name to be used in resource names; this is usually the cluster’s infrastructure ID.
+    `vhdBlobURL`
+    Specifies the blob URL of the RHCOS VHD to be used to create master and worker machines.
 
-    - The name of your Azure storage account.
+    `baseName`
+    Specifies the base name to be used in resource names; this is usually the cluster’s infrastructure ID.
 
-    - Specify the system architecture. Valid values are `x64` (default) or `Arm64`.
+    `storageAccount`
+    Specifies the name of your Azure storage account.
+
+    `architecture`
+    Specifies the system architecture. Valid values are `x64` (default) or `Arm64`.
 
 ## ARM template for image storage
 
-You can use the following Azure Resource Manager (ARM) template to deploy the stored Red Hat Enterprise Linux CoreOS (RHCOS) image that you need for your OpenShift Container Platform cluster:
+Use the `02_storage.json` Azure Resource Manager (ARM) template to deploy stored Red Hat Enterprise Linux CoreOS (RHCOS) image resources for your OpenShift Container Platform cluster.
 
 ``` json
 link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azurestack/02_storage.json[role=include]
@@ -1297,7 +1353,7 @@ Ports used for control plane machine to control plane machine communications
 
 # Creating networking and load balancing components in Azure Stack Hub
 
-You must configure networking and load balancing in Microsoft Azure Stack Hub for your OpenShift Container Platform cluster to use. One way to create these components is to modify the provided Azure Resource Manager (ARM) template.
+To enable cluster communication on Microsoft Azure Stack Hub, you must deploy networking and load balancing components by using the Azure Resource Manager (ARM) template.
 
 Load balancing requires the following DNS records:
 
@@ -1323,7 +1379,7 @@ If you do not use the provided ARM template to create your Azure Stack Hub infra
       --parameters baseName="${INFRA_ID}"
     ```
 
-    - The base name to be used in resource names; this is usually the cluster’s infrastructure ID.
+    The `baseName` specifies the base name to be used in resource names; this is usually the cluster’s infrastructure ID.
 
 3.  Create an `api` DNS record and an `api-int` DNS record. When creating the API DNS records, the `${BASE_DOMAIN_RESOURCE_GROUP}` variable must point to the resource group where the DNS zone exists.
 
@@ -1365,7 +1421,7 @@ If you do not use the provided ARM template to create your Azure Stack Hub infra
 
 ## ARM template for the network and load balancers
 
-You can use the following Azure Resource Manager (ARM) template to deploy the networking objects and load balancers that you need for your OpenShift Container Platform cluster:
+Use the `03_infra.json` Azure Resource Manager (ARM) template to deploy networking objects and load balancers for your OpenShift Container Platform cluster.
 
 ``` json
 link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azurestack/03_infra.json[role=include]
@@ -1373,7 +1429,7 @@ link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azur
 
 # Creating the bootstrap machine in Azure Stack Hub
 
-You must create the bootstrap machine in Microsoft Azure Stack Hub to use during OpenShift Container Platform cluster initialization. One way to create this machine is to modify the provided Azure Resource Manager (ARM) template.
+To initialize your OpenShift Container Platform cluster on Microsoft Azure Stack Hub, you must deploy the bootstrap machine by using the `04_bootstrap.json` ARM template.
 
 <div class="note">
 
@@ -1423,15 +1479,20 @@ If you do not use the provided ARM template to create your bootstrap machine, yo
       --parameters diagnosticsStorageAccountName="${CLUSTER_NAME}sa"
     ```
 
-    - The bootstrap Ignition content for the bootstrap cluster.
+    where:
 
-    - The base name to be used in resource names; this is usually the cluster’s infrastructure ID.
+    `bootstrapIgnition`
+    Specifies the bootstrap Ignition content for the bootstrap cluster.
 
-    - The name of the storage account for your cluster.
+    `baseName`
+    Specifies the base name to be used in resource names; this is usually the cluster’s infrastructure ID.
+
+    `diagnosticsStorageAccountName`
+    Specifies the name of the storage account for your cluster.
 
 ## ARM template for the bootstrap machine
 
-You can use the following Azure Resource Manager (ARM) template to deploy the bootstrap machine that you need for your OpenShift Container Platform cluster:
+Use the `04_bootstrap.json` Azure Resource Manager (ARM) template to deploy the bootstrap machine for your OpenShift Container Platform cluster.
 
 ``` json
 link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azurestack/04_bootstrap.json[role=include]
@@ -1439,7 +1500,7 @@ link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azur
 
 # Creating the control plane machines in Azure Stack Hub
 
-You must create the control plane machines in Microsoft Azure Stack Hub for your cluster to use. One way to create these machines is to modify the provided Azure Resource Manager (ARM) template.
+To form the control plane for your cluster on Microsoft Azure Stack Hub, you must deploy control plane machines by using the Azure Resource Manager (ARM) template.
 
 If you do not use the provided ARM template to create your control plane machines, you must review the provided information and manually create the infrastructure. If your cluster does not initialize correctly, consider contacting Red Hat support with your installation logs.
 
@@ -1463,15 +1524,20 @@ If you do not use the provided ARM template to create your control plane machine
       --parameters diagnosticsStorageAccountName="${CLUSTER_NAME}sa"
     ```
 
-    - The Ignition content for the control plane nodes (also known as the master nodes).
+    where:
 
-    - The base name to be used in resource names; this is usually the cluster’s infrastructure ID.
+    `masterIgnition`
+    Specifies the Ignition content for the control plane nodes (also known as the master nodes).
 
-    - The name of the storage account for your cluster.
+    `baseName`
+    Specifies the base name to be used in resource names; this is usually the cluster’s infrastructure ID.
+
+    `diagnosticsStorageAccountName`
+    Specifies the name of the storage account for your cluster.
 
 ## ARM template for control plane machines
 
-You can use the following Azure Resource Manager (ARM) template to deploy the control plane machines that you need for your OpenShift Container Platform cluster:
+Use the `05_masters.json` Azure Resource Manager (ARM) template to deploy the control plane machines for your OpenShift Container Platform cluster.
 
 ``` json
 link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azurestack/05_masters.json[role=include]
@@ -1479,7 +1545,7 @@ link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azur
 
 # Wait for bootstrap completion and remove bootstrap resources in Azure Stack Hub
 
-After you create all of the required infrastructure in Microsoft Azure Stack Hub, wait for the bootstrap process to complete on the machines that you provisioned by using the Ignition config files that you generated with the installation program.
+To complete cluster initialization on Microsoft Azure Stack Hub, you can wait for the bootstrap process to finish and then delete bootstrap resources.
 
 - Create the control plane machines.
 
@@ -1490,11 +1556,15 @@ After you create all of the required infrastructure in Microsoft Azure Stack Hub
         --log-level info
     ```
 
-    - For `<installation_directory>`, specify the path to the directory that you stored the installation files in.
+    where:
 
-    - To view different installation details, specify `warn`, `debug`, or `error` instead of `info`.
+    `<installation_directory>`
+    Specifies the path to the directory that you stored the installation files in.
 
-      If the command exits without a `FATAL` warning, your production control plane has initialized.
+    `--log-level info`
+    Specifies the installation details. Specify `warn`, `debug`, or `error` instead of `info` to view different installation details.
+
+    If the command exits without a `FATAL` warning, your production control plane has initialized.
 
 2.  Delete the bootstrap resources:
 
@@ -1538,7 +1608,9 @@ After you create all of the required infrastructure in Microsoft Azure Stack Hub
 
 # Creating additional worker machines in Azure Stack Hub
 
-You can create worker machines in Microsoft Azure Stack Hub for your cluster to use by launching individual instances discretely or by automated processes outside the cluster, such as auto scaling groups. You can also take advantage of the built-in cluster scaling mechanisms and the machine API in OpenShift Container Platform.
+To add compute capacity on Microsoft Azure Stack Hub, you can create worker machines in Microsoft Azure Stack Hub for your cluster to use by launching individual instances discretely or by automated processes outside the cluster, such as auto scaling groups.
+
+You can also take advantage of the built-in cluster scaling mechanisms and the machine API in OpenShift Container Platform.
 
 In this example, you manually launch one instance by using the Azure Resource Manager (ARM) template. Additional instances can be launched by including additional resources of type `06_workers.json` in the file.
 
@@ -1558,19 +1630,24 @@ If you do not use the provided ARM template to create your control plane machine
     $ az deployment group create -g ${RESOURCE_GROUP} \
       --template-file "<installation_directory>/06_workers.json" \
       --parameters workerIgnition="${WORKER_IGNITION}" \
-      --parameters baseName="${INFRA_ID}"
+      --parameters baseName="${INFRA_ID}" \
       --parameters diagnosticsStorageAccountName="${CLUSTER_NAME}sa"
     ```
 
-    - The Ignition content for the worker nodes.
+    where:
 
-    - The base name to be used in resource names; this is usually the cluster’s infrastructure ID.
+    `workerIgnition`
+    Specifies the Ignition content for the worker nodes.
 
-    - The name of the storage account for your cluster.
+    `baseName`
+    Specifies the base name to be used in resource names; this is usually the cluster’s infrastructure ID.
+
+    `diagnosticsStorageAccountName`
+    Specifies the name of the storage account for your cluster.
 
 ## ARM template for worker machines
 
-You can use the following Azure Resource Manager (ARM) template to deploy the worker machines that you need for your OpenShift Container Platform cluster:
+Use the `06_workers.json` Azure Resource Manager (ARM) template to deploy worker machines for your OpenShift Container Platform cluster.
 
 ``` json
 link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/azurestack/06_workers.json[role=include]
@@ -1619,7 +1696,7 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 # Approving the certificate signing requests for your machines
 
-When you add machines to a cluster, two pending certificate signing requests (CSRs) are generated for each machine. You must confirm that these CSRs are approved or, if necessary, approve them yourself. The client requests must be approved first, followed by the server requests.
+To allow newly added machines to join your OpenShift Container Platform cluster, you can confirm that pending certificate signing requests (CSRs) are approved or approve them yourself. Approve client requests first, then server requests.
 
 - You added machines to your cluster.
 
@@ -1775,7 +1852,9 @@ When you add machines to a cluster, two pending certificate signing requests (CS
 
 # Adding the Ingress DNS records
 
-If you removed the DNS Zone configuration when creating Kubernetes manifests and generating Ignition configs, you must manually create DNS records that point at the Ingress load balancer. You can create either a wildcard `*.apps.{baseDomain}.` or specific records. You can use A, CNAME, and other records per your requirements.
+If you removed the DNS Zone configuration when creating Kubernetes manifests and generating Ignition configs, you must manually create DNS records that point at the Ingress load balancer. You can create either a wildcard `*.apps.{baseDomain}.` or specific records.
+
+You can use A, CNAME, and other records per your requirements.
 
 - You deployed an OpenShift Container Platform cluster on Microsoft Azure Stack Hub by using infrastructure that you provisioned.
 
@@ -1820,29 +1899,27 @@ If you removed the DNS Zone configuration when creating Kubernetes manifests and
         $ az network dns record-set a add-record -g ${BASE_DOMAIN_RESOURCE_GROUP} -z ${BASE_DOMAIN} -n *.apps.${CLUSTER_NAME} -a ${PUBLIC_IP_ROUTER} --ttl 300
         ```
 
-If you prefer to add explicit domains instead of using a wildcard, you can create entries for each of the cluster’s current routes:
+    If you prefer to add explicit domains instead of using a wildcard, you can create entries for each of the cluster’s current routes:
 
-``` terminal
-$ oc get --all-namespaces -o jsonpath='{range .items[*]}{range .status.ingress[*]}{"\n"}{end}{end}' routes
-```
+    \+
 
-<div class="formalpara-title">
+    ``` terminal
+    $ oc get --all-namespaces -o jsonpath='{range .items[*]}{range .status.ingress[*]}{"\n"}{end}{end}' routes
+    ```
 
-**Example output**
+    \+ .Example output
 
-</div>
-
-``` terminal
-oauth-openshift.apps.cluster.basedomain.com
-console-openshift-console.apps.cluster.basedomain.com
-downloads-openshift-console.apps.cluster.basedomain.com
-alertmanager-main-openshift-monitoring.apps.cluster.basedomain.com
-prometheus-k8s-openshift-monitoring.apps.cluster.basedomain.com
-```
+    ``` terminal
+    oauth-openshift.apps.cluster.basedomain.com
+    console-openshift-console.apps.cluster.basedomain.com
+    downloads-openshift-console.apps.cluster.basedomain.com
+    alertmanager-main-openshift-monitoring.apps.cluster.basedomain.com
+    prometheus-k8s-openshift-monitoring.apps.cluster.basedomain.com
+    ```
 
 # Completing an Azure Stack Hub installation on user-provisioned infrastructure
 
-After you start the OpenShift Container Platform installation on Microsoft Azure Stack Hub user-provisioned infrastructure, you can monitor the cluster events until the cluster is ready.
+After you start the OpenShift Container Platform installation on Microsoft Azure Stack Hub user-provisioned infrastructure, you can monitor cluster events with the installation program until the cluster is ready.
 
 - Deploy the bootstrap machine for an OpenShift Container Platform cluster on user-provisioned Azure Stack Hub infrastructure.
 
@@ -1856,6 +1933,8 @@ After you start the OpenShift Container Platform installation on Microsoft Azure
   $ ./openshift-install --dir <installation_directory> wait-for install-complete
   ```
 
+  For `<installation_directory>`, specify the path to the directory that you stored the installation files in.
+
   <div class="formalpara-title">
 
   **Example output**
@@ -1866,16 +1945,18 @@ After you start the OpenShift Container Platform installation on Microsoft Azure
   INFO Waiting up to 30m0s for the cluster to initialize...
   ```
 
-  - For `<installation_directory>`, specify the path to the directory that you stored the installation files in.
+  <div class="important">
 
-    <div class="important">
+  - The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
-    - The Ignition config files that the installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
+  - It is recommended that you use Ignition config files within 12 hours after they are generated because the 24-hour certificate rotates from 16 to 22 hours after the cluster is installed. By using the Ignition config files within 12 hours, you can avoid installation failure if the certificate update runs during installation.
 
-    - It is recommended that you use Ignition config files within 12 hours after they are generated because the 24-hour certificate rotates from 16 to 22 hours after the cluster is installed. By using the Ignition config files within 12 hours, you can avoid installation failure if the certificate update runs during installation.
-
-    </div>
+  </div>
 
 <!-- -->
 
 - [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+
+# Additional resources
+
+- [Azure Resource Manager templates overview (Azure documentation)](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/overview)

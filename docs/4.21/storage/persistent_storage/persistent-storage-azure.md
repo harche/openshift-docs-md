@@ -1,10 +1,12 @@
-OpenShift Container Platform supports Microsoft Azure Disk volumes. You can provision your OpenShift Container Platform cluster with persistent storage using Azure. Some familiarity with Kubernetes and Azure is assumed. The Kubernetes persistent volume framework allows administrators to provision a cluster with persistent storage and gives users a way to request those resources without having any knowledge of the underlying infrastructure. Azure Disk volumes can be provisioned dynamically. Persistent volumes are not bound to a single project or namespace; they can be shared across the OpenShift Container Platform cluster. Persistent volume claims are specific to a project or namespace and can be requested by users.
+OpenShift Container Platform supports Microsoft Azure Disk volumes. You can provision your OpenShift Container Platform cluster with persistent storage by using Azure. Some familiarity with Kubernetes and Azure is assumed.
+
+The Kubernetes persistent volume framework allows administrators to provision a cluster with persistent storage and gives users a way to request those resources without having any knowledge of the underlying infrastructure. Azure Disk volumes can be provisioned dynamically. Persistent volumes are not bound to a single project or namespace; they can be shared across the OpenShift Container Platform cluster. Persistent volume claims are specific to a project or namespace and can be requested by users.
 
 <div class="important">
 
 OpenShift Container Platform 4.11 and later provides automatic migration for the Azure Disk in-tree volume plugin to its equivalent CSI driver.
 
-CSI automatic migration should be seamless. Migration does not change how you use all existing API objects, such as persistent volumes, persistent volume claims, and storage classes. For more information about migration, see [CSI automatic migration](../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration).
+CSI automatic migration should be seamless. Migration does not change how you use all existing API objects, such as persistent volumes, persistent volume claims, and storage classes. For more information about migration, see CSI automatic migration.
 
 </div>
 
@@ -14,11 +16,13 @@ High availability of storage in the infrastructure is left to the underlying sto
 
 </div>
 
+- [CSI automatic migration](../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration)
+
 - [Microsoft Azure Disk](https://azure.microsoft.com/en-us/services/storage/disks)
 
 # Creating the Azure storage class
 
-Storage classes are used to differentiate and delineate storage levels and usages. By defining a storage class, users can obtain dynamically provisioned persistent volumes.
+You can use storage classes to differentiate and delineate storage levels and usages. By defining a storage class, you can obtain dynamically provisioned persistent volumes.
 
 1.  In the OpenShift Container Platform web console, click **Storage** → **Storage Classes**.
 
@@ -60,19 +64,15 @@ Storage classes are used to differentiate and delineate storage levels and usage
 
 # Creating the persistent volume claim
 
-<div class="formalpara-title">
+You can create a persistent volume claim to dynamically provision and bind storage from a pre-configured storage class, so that your applications can consume persistent storage in OpenShift Container Platform.
 
-**Prerequisites**
-
-</div>
-
-Storage must exist in the underlying infrastructure before it can be mounted as a volume in OpenShift Container Platform.
+- Storage must exist in the underlying infrastructure before it can be mounted as a volume in OpenShift Container Platform.
 
 1.  In the OpenShift Container Platform web console, click **Storage** → **Persistent Volume Claims**.
 
 2.  In the persistent volume claims overview, click **Create Persistent Volume Claim**.
 
-3.  Define the desired options on the page that appears.
+3.  Define the required options on the page that is displayed.
 
     1.  Select the previously-created storage class from the drop-down menu.
 
@@ -86,9 +86,9 @@ Storage must exist in the underlying infrastructure before it can be mounted as 
 
 # Volume format
 
-Before OpenShift Container Platform mounts the volume and passes it to a container, it checks that it contains a file system as specified by the `fsType` parameter in the persistent volume definition. If the device is not formatted with the file system, all data from the device is erased and the device is automatically formatted with the given file system.
+You can use unformatted Azure volumes as persistent volumes, because OpenShift Container Platform automatically formats the device before mounting it to a container.
 
-This allows using unformatted Azure volumes as persistent volumes, because OpenShift Container Platform formats them before the first use.
+OpenShift Container Platform verifies that a volume contains the file system specified by the `fsType` parameter in the persistent volume definition before mounting it to a container. An unformatted device is erased and automatically formatted with the specified file system.
 
 # Machine sets that deploy machines with ultra disks using PVCs
 
@@ -143,7 +143,7 @@ You can deploy machines with ultra disks on Microsoft Azure by editing your mach
     `spec.template.spec.providerSpec.value.ultraSSDCapability`
     Enables the use of ultra disks.
 
-3.  Create a machine set using the updated configuration by running the following command:
+3.  Create a machine set by using the updated configuration by running the following command:
 
     ``` terminal
     $ oc create -f <machine_set_name>.yaml

@@ -89,7 +89,7 @@ There are three main types of task suitable to run as a job:
 
   - OpenShift Container Platform coordinates pods to determine what each should work on or use an external queue service.
 
-  - Each pod is independently capable of determining whether or not all peer pods are complete and that the entire job is done.
+  - Each pod is independently capable of determining whether all peer pods are complete and that the entire job is done.
 
   - When any pod from the job terminates with success, no new pods are created.
 
@@ -97,14 +97,12 @@ There are three main types of task suitable to run as a job:
 
   - When any pod has exited with success, no other pod should be doing any work for this task or writing any output. Pods should all be in the process of exiting.
 
-    For more information about how to make use of the different types of job, see [Job Patterns](https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/#job-patterns) in the Kubernetes documentation.
-
 Cron job
 A job can be scheduled to run multiple times, using a cron job.
 
-A *cron job* builds on a regular job by allowing you to specify how the job should be run. Cron jobs are part of the [Kubernetes](http://kubernetes.io/docs/user-guide/cron-jobs) API, which can be managed with `oc` commands like other object types.
+You can use a cron job to specify how the job runs. Cron jobs are part of the Kubernetes API, which can be managed with `oc` commands like other object types.
 
-Cron jobs are useful for creating periodic and recurring tasks, like running backups or sending emails. Cron jobs can also schedule individual tasks for a specific time, such as if you want to schedule a job for a low activity period. A cron job creates a `Job` object based on the timezone configured on the control plane node that runs the cronjob controller.
+Cron jobs are useful for creating periodic and recurring tasks, such as running backups or sending emails. Cron jobs can also schedule individual tasks for a specific time, such as if you want to schedule a job for a low activity period. A cron job creates a `Job` object based on the time zone configured on the control plane node that runs the cronjob controller.
 
 <div class="warning">
 
@@ -180,9 +178,15 @@ The job specification restart policy only applies to the *pods*, and not the *jo
 
 As such, `restartPolicy: Never` or `--restart=Never` results in the same behavior as `restartPolicy: OnFailure` or `--restart=OnFailure`. That is, when a job fails it is restarted automatically until it succeeds (or is manually discarded). The policy only sets which subsystem performs the restart.
 
-With the `Never` policy, the *job controller* performs the restart. With each attempt, the job controller increments the number of failures in the job status and create new pods. This means that with each failed attempt, the number of pods increases.
+With the `Never` policy, the *job controller* performs the restart. With each attempt, the job controller increments the number of failures in the job status and creates new pods. This means that with each failed attempt, the number of pods increases.
 
-With the `OnFailure` policy, *kubelet* performs the restart. Each attempt does not increment the number of failures in the job status. In addition, kubelet will retry failed jobs starting pods on the same nodes.
+With the `OnFailure` policy, *kubelet* performs the restart. Each attempt does not increment the number of failures in the job status. In addition, kubelet retries failed jobs starting pods on the same nodes.
+
+## Additional resources
+
+- [Job patterns (Kubernetes documentation)](https://kubernetes.io/docs/concepts/workloads/controllers/job/#job-patterns)
+
+- [Cron jobs (Kubernetes documentation)](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/)
 
 # Creating jobs
 

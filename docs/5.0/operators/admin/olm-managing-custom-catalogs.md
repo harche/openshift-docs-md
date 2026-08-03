@@ -766,23 +766,31 @@ Alternatively, you can use the web console to manage catalog sources. From the *
               interval: 30m
         ```
 
-        - If you want the catalog source to be available globally to users in all namespaces, specify the `openshift-marketplace` namespace. Otherwise, you can specify a different namespace for the catalog to be scoped and available only for that namespace.
+        where:
 
-        - Optional: Set the `olm.catalogImageTemplate` annotation to your index image name and use one or more of the Kubernetes cluster version variables as shown when constructing the template for the image tag.
+        `metadata.namespace`
+        Specifies the value for the `metadata.namespace` parameter. If you want the catalog source to be available globally to users in all namespaces, specify the `openshift-marketplace` namespace. Otherwise, you can specify a different namespace for the catalog to be scoped and available only for that namespace.
 
-        - Specify the value of `legacy` or `restricted`. If the field is not set, the default value is `legacy`. In a future OpenShift Container Platform release, it is planned that the default value will be `restricted`.
+        `metadata.annotations`
+        Specifies the value for the `metadata.annotations` parameter. This is optional to set the `olm.catalogImageTemplate` annotation to your index image name and use one or more of the Kubernetes cluster version variables as shown when constructing the template for the image tag.
 
-          <div class="note">
+        `spec.grpcPodConfig.securityContextConfig`
+        Specifies the value of `legacy` or `restricted`. If the field is not set, the default value is `legacy`. In a future OpenShift Container Platform release, it is planned that the default value will be `restricted`.
 
-          If your catalog cannot run with `restricted` permissions, it is recommended that you manually set this field to `legacy`.
+        <div class="note">
 
-          </div>
+        If your catalog cannot run with `restricted` permissions, it is recommended that you manually set this field to `legacy`.
 
-        - Specify your index image. If you specify a tag after the image name, for example `:v4.17`, the catalog source pod uses an image pull policy of `Always`, meaning the pod always pulls the image prior to starting the container. If you specify a digest, for example `@sha256:<id>`, the image pull policy is `IfNotPresent`, meaning the pod pulls the image only if it does not already exist on the node.
+        </div>
 
-        - Specify your name or an organization name publishing the catalog.
+        `spec.image`
+        Specifies your index image. If you specify a tag after the image name, for example `:v4.17`, the catalog source pod uses an image pull policy of `Always`, meaning the pod always pulls the image before starting the container. If you specify a digest, for example `@sha256:<id>`, the image pull policy is `IfNotPresent`, meaning the pod pulls the image only if it does not already exist on the node.
 
-        - Catalog sources can automatically check for new versions to keep up to date.
+        `spec.publisher`
+        Specifies your name or an organization name publishing the catalog.
+
+        `spec.updateStrategy.registryPoll`
+        Specifies the value for the `spec.updateStrategy.registryPoll` parameter. The catalog sources can automatically check for new versions to keep up to date.
 
     2.  Use the file to create the `CatalogSource` object:
 

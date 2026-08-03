@@ -24,18 +24,14 @@ You can install OpenShift Container Platform on Oracle Edge Cloud by using the A
 
 For an alternative installation method, see "Installing a cluster on Oracle® Edge Cloud by using the Agent-based Installer".
 
-- Ensure that your installation meets the prerequisites specified for Oracle. For details, see the "Access and Considerations" section in the [Oracle documentation](https://www.oracle.com/a/otn/docs/compute_cloud_at_customer_assisted_installer.pdf?source=:em:nl:mt::::PCATP).
+Preinstallation considerations
+- Ensure that your installation meets the prerequisites specified for Oracle. For details, see the "Access and Considerations" section in the Oracle documentation.
 
-- Ensure that your infrastructure is certified and uses a compatible cloud instance type. For details, see [Oracle Cloud Infrastructure](https://catalog.redhat.com/cloud/detail/216977).
+- Ensure that your infrastructure is certified and uses a compatible cloud instance type. For details, see "Oracle Cloud Infrastructure".
 
 - Ensure that you are performing the installation on a virtual machine.
 
-<div class="formalpara-title">
-
-**Installation process**
-
-</div>
-
+Installation process
 The installation process builds a bastion host within the designated compartment of the OpenShift Container Platform cluster. The bastion host is used to run two Terraform scripts:
 
 - The first script builds IAM Resources in the OCI Home region of the Oracle® Edge Cloud system (two Dynamic Groups and one Policy).
@@ -46,12 +42,7 @@ The bastion host is installed in the designated OpenShift Container Platform Com
 
 The installation process subsequently provisions three control plane (master) nodes and three compute (worker) nodes, together with the external and internal Load Balancers that form the cluster. This is the standard implementation for Oracle Edge Cloud.
 
-<div class="formalpara-title">
-
-**Main steps**
-
-</div>
-
+Main steps
 The main steps of the procedure are as follows:
 
 1.  Preparing the Oracle® Edge Cloud bastion server.
@@ -63,6 +54,10 @@ The main steps of the procedure are as follows:
 4.  Running the Terraform script via the Oracle® Edge Cloud region.
 
 5.  Installing the cluster by using the Assisted Installer web console.
+
+- [Access and considerations (Oracle documentation)](https://www.oracle.com/a/otn/docs/compute_cloud_at_customer_assisted_installer.pdf?source=:em:nl:mt::::PCATP)
+
+- [Oracle Cloud Infrastructure](https://catalog.redhat.com/cloud/detail/216977)
 
 # Preparing the OCI bastion server
 
@@ -76,7 +71,7 @@ By implementing a bastion host, you can securely and efficiently manage access t
 
 3.  Install and configure the OCI command-line interface (CLI). For details, see the "Installing and Configuring the OCI CLI" section in the [Oracle documentation](https://www.oracle.com/a/otn/docs/compute_cloud_at_customer_assisted_installer.pdf?source=:em:nl:mt::::PCATP).
 
-- [Quick start - Installing the CLI (Oracle documentation)](https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/cliinstall.htm).
+- [Quick start - Installing the CLI (Oracle documentation)](https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/cliinstall.htm)
 
 # Running the Terraform script via the Home region
 
@@ -96,7 +91,7 @@ These resources include dynamic groups, policies, and tags.
 
 5.  Run the `createInfraResources.tf` Terraform script.
 
-For the full procedure, see the "Terraform Script Execution Part-1 (Run Script via Home Region)" section in the [Oracle documentation](https://www.oracle.com/a/otn/docs/compute_cloud_at_customer_assisted_installer.pdf?source=:em:nl:mt::::PCATP).
+    For the full procedure, see the "Terraform Script Execution Part-1 (Run Script via Home Region)" section in the [Oracle documentation](https://www.oracle.com/a/otn/docs/compute_cloud_at_customer_assisted_installer.pdf?source=:em:nl:mt::::PCATP).
 
 # Preparing the OCI image
 
@@ -199,7 +194,7 @@ Convert the ISO image to an Oracle Cloud Infrastructure (OCI) image and upload i
 
 4.  Copy the Oracle Cloud Identifier (OCID) of the image for use in the next procedure.
 
-For the full procedure, see step 6 - 8 in the "OpenShift Image Preparation" section of the [Oracle documentation](https://www.oracle.com/a/otn/docs/compute_cloud_at_customer_assisted_installer.pdf?source=:em:nl:mt::::PCATP).
+    For the full procedure, see step 6 - 8 in the "OpenShift Image Preparation" section of the [Oracle documentation](https://www.oracle.com/a/otn/docs/compute_cloud_at_customer_assisted_installer.pdf?source=:em:nl:mt::::PCATP).
 
 # Running the Terraform script via the C3 region
 
@@ -217,7 +212,7 @@ This procedure deploys a cluster consisting of three control plane (master) and 
 
 5.  Stop and restart the instances one by one on the Oracle® Edge Cloud portal.
 
-For the full procedure, see the "Terraform Script Execution - Part 2" section in the [Oracle documentation](https://www.oracle.com/a/otn/docs/compute_cloud_at_customer_assisted_installer.pdf?source=:em:nl:mt::::PCATP).
+    For the full procedure, see the "Terraform Script Execution - Part 2" section in the [Oracle documentation](https://www.oracle.com/a/otn/docs/compute_cloud_at_customer_assisted_installer.pdf?source=:em:nl:mt::::PCATP).
 
 # Completing the installation by using the Assisted Installer web console
 

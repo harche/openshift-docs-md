@@ -225,7 +225,7 @@ You can deploy machines with ultra disks on Microsoft Azure by editing your mach
 
 - Have an existing Microsoft Azure cluster.
 
-1.  Create a custom secret in the `openshift-machine-api` namespace using the `master` data secret by running the following command:
+1.  Create a custom secret in the `openshift-machine-api` namespace by using the `master` data secret by running the following command:
 
     ``` terminal
     $ oc -n openshift-machine-api \
@@ -555,6 +555,12 @@ For more information about related features and functionality, see the Microsoft
 1.  In a text editor, open the YAML file for an existing machine set or create a new one.
 
 2.  Edit the following section under the `providerSpec` field:
+
+    <div class="formalpara-title">
+
+    **Sample configuration**
+
+    </div>
 
     ``` yaml
     apiVersion: machine.openshift.io/v1

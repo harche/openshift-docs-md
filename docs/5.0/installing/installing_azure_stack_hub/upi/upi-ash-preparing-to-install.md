@@ -1,8 +1,8 @@
-You prepare to install an OpenShift Container Platform cluster on Azure Stack Hub by completing the following steps:
+Prepare to install an OpenShift Container Platform cluster on Azure Stack Hub by verifying connectivity, configuring your account, generating SSH keys, downloading the installation program, and installing the CLI.
 
 - Verifying internet connectivity for your cluster.
 
-- [Configuring an Azure Stack Hub account](../../../installing/installing_azure_stack_hub/installing-azure-stack-hub-account.xml#installing-azure-stack-hub-account).
+- Configuring an Azure Stack Hub account. See the "Configuring an Azure Stack Hub account".
 
 - Generating an SSH key pair. You can use this key pair to authenticate into the OpenShift Container Platform cluster’s nodes after it is deployed.
 
@@ -281,3 +281,7 @@ Download and install the new version of `oc`.
   ``` terminal
   $ oc <command>
   ```
+
+# Additional resources
+
+- [Configuring an Azure Stack Hub account](../../../installing/installing_azure_stack_hub/installing-azure-stack-hub-account.xml#installing-azure-stack-hub-account)

@@ -56,7 +56,7 @@ You can configure the Node Health Check Operator to monitor node status and trig
     metadata:
       name: nodehealthcheck-sample
     spec:
-      minHealthy: 1
+      minHealthy: <count>
       pauseRequests:
         - <pause_test_cluster>
       remediationTemplate:
@@ -87,7 +87,11 @@ You can configure the Node Health Check Operator to monitor node status and trig
 
     where:
 
-    - `spec.minHealthy` defines the number of worker nodes required to host VMs that migrate from failed nodes. For critical environments, set this value to the minimum number of nodes that you require to maintain the cluster workload.
+    - `spec.minHealthy` defines the number of worker nodes required to host VMs that migrate from failed nodes.
+
+      - For critical environments, set this value to the minimum number of nodes that you require to maintain the cluster workload.
+
+      - For hyperconverged storage, set this value to one less than your number of nodes to limit remediation to a single worker-node failure and maintain storage stability.
 
     - `spec.remediationTemplate` defines the remediation template to use when the Node Health Check Operator detects an unhealthy node. This example uses the Self Node Remediation Operator.
 

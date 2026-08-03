@@ -43,7 +43,18 @@ Red Hat tested authenticating to OpenShift Container Platform by using the Azur
 For more information, see [Enabling direct authentication with an external OIDC identity provider](../authentication/external-auth.xml#external-auth).
 
 ConsoleLink support for email links
-The `ConsoleLink` Custom Resource Definition supports `mailto:` links. You can create email links in the OpenShift web console that open the default email client.
+The `ConsoleLink` Custom Resource Definition supports `mailto:` links. The contact email link displays in the **User menu** under the **username** and opens the default email client with the email address prefilled.
+
+``` yaml
+apiVersion: console.openshift.io/v1
+kind: ConsoleLink
+metadata:
+  name: example-contact-mail
+spec:
+  href: 'mailto:support@example.com'
+  location: UserMenu
+  text: Contact Mail Link
+```
 
 Impersonating a user with multiple group memberships in the console
 Cluster administrators can impersonate a user with multiple group memberships at the same time in the OpenShift web console. This supports reproducing effective permissions for RBAC troubleshooting.
@@ -55,7 +66,7 @@ Quick starts for Trusted Profile Analyzer and Trusted Artifact Signer
 With this update, the OpenShift Console adds two quick starts for Trusted Profile Analyzer and Trusted Artifact Signer to the Overview page, making them easier to find and use. This change simplifies the user journey, improves the user experience, and strengthens product integration by highlighting Red Hat’s security ecosystem within the platform.
 
 Grouping Helm charts under the Ecosystem header
-Before this update, the OpenShift Console introduced the unified view in 4.19, and the **Helm** UI displayed in the **Admin** view but outside the **Ecosystem** menu. With this update, the OpenShift Console displays **Helm** under **Ecosystem**, centralizing software management navigation in one location within the unified view.
+Before this update, the OpenShift Console introduced the unified view in 4.19, and the **Helm** UI displayed in the **Core platform** view but outside the **Ecosystem** menu. With this update, the OpenShift Console displays **Helm** under **Ecosystem**, centralizing software management navigation in one location within the unified view.
 
 ## Autoscaling
 

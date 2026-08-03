@@ -1,4 +1,4 @@
-You can change the secondary network of a virtual machine (VM) without rebooting your VM. The change is transparent to the guest operating system, preserving properties like the MAC address.
+You can change the secondary network of a virtual machine (VM) without rebooting your VM. The change is transparent to the guest operating system, preserving properties such as the MAC address.
 
 By hot swapping the secondary network, you can move a running VM to a different network segment or VLAN and apply new network policies or reconfigure network topology without interrupting the workload. OpenShift Virtualization supports hot swapping for VMs that are connected to an OVN-Kubernetes localnet and a Linux bridge secondary network.
 
@@ -107,6 +107,36 @@ You can hot swap a virtual machine (VM) secondary network by using the command l
     ``` terminal
     $ virtctl console vm-fedora
     ```
+
+# Hot swapping a virtual machine secondary network by using the web console
+
+You can hot swap the secondary network of a running virtual machine (VM) by using the OpenShift Container Platform web console. Hot swapping the secondary network preserves the workload and avoids the need for a VM reboot.
+
+- The VM is running and is live migratable.
+
+- The target `NetworkAttachmentDefinition` object exists in the same namespace as the VM. If you created a `ClusterUserDefinedNetwork` object, verify that the cluster user-defined network controller has created the corresponding `NetworkAttachmentDefinition` object.
+
+1.  Navigate to **Virtualization** → **VirtualMachines** in the web console.
+
+2.  Click a running VM to view the **VirtualMachine details** page.
+
+3.  Click the **Configuration** tab and then click the **Network interfaces** tab.
+
+4.  Click the Options menu ![kebab](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAjCAIAAADqn+bCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA+0lEQVRIie2WMQqEMBBFJ47gUXRBLyBYqbUXULCx9CR2XsAb6AlUEM9kpckW7obdZhwWYWHXX/3i8TPJZEKEUgpOlXFu3JX4V4kmB2qaZhgGKSUiZlkWxzEBC84N9zxv27bdO47Tti0Bs3at4wBgXVca/lJnfN/XPggCGmadIwAsywIAiGhZFk1ydy2EYJKgGCqK4vZUVVU0zKpxnmftp2mi4S/1GhG1N82DMWNNYVmW4zgqpRAxTVMa5t4evlg11nXd9/1eY57nSZIQMKtG13WllLu3bbvrOgJmdUbHwfur8Xniqw6Hh5UYRdGDNowwDA+WvP4UV+JPJ94B1gKUWcTOCT0AAAAASUVORK5CYII=) beside the network interface that you want to modify and select **Edit**.
+
+5.  Select the target network from the **Network** list.
+
+6.  Click **Save**.
+
+    The network interface row displays a **Pending** label. A warning banner indicates that the VM has pending network changes. The pending changes are applied during the next live migration or reboot.
+
+<!-- -->
+
+1.  On the **VirtualMachine details** page, click the **Diagnostics** tab.
+
+2.  Check the **Status conditions** table and verify that the `MigrationRequired` condition is listed with the reason `AutoMigrationDueToLiveUpdate`.
+
+    After the live migration completes, the `MigrationRequired` condition disappears and the **Pending** label is removed from the network interface.
 
 # Additional resources
 
