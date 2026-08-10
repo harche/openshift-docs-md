@@ -349,6 +349,7 @@ Root: ./
 |backup_and_restore/application_backup_and_restore/installing:{configuring-oadp-multiple-bsl.md}
 |backup_and_restore/application_backup_and_restore/installing:{configuring-oadp-multiple-vsl.md}
 |backup_and_restore/application_backup_and_restore/installing:{uninstalling-oadp.md}
+|backup_and_restore/application_backup_and_restore/cli-tools:{oadp-cli-plugin.md}
 |backup_and_restore/application_backup_and_restore/backing_up_and_restoring:{backing-up-applications.md,oadp-creating-backup-cr.md,oadp-parallel-backup-processing-in-oadp.md,oadp-enabling-parallel-backup-processing.md,oadp-backing-up-pvs-csi-doc.md,oadp-backing-up-applications-restic-doc.md,oadp-creating-backup-hooks-doc.md,oadp-scheduling-backups-doc.md,oadp-deleting-backups.md,oadp-about-kopia.md}
 |backup_and_restore/application_backup_and_restore/backing_up_and_restoring:{restoring-applications.md}
 |backup_and_restore/application_backup_and_restore/oadp-self-service:{oadp-self-service.md,oadp-self-service-cluster-admin-use-cases.md,oadp-self-service-namespace-admin-use-cases.md,oadp-self-service-troubleshooting.md}
@@ -424,7 +425,7 @@ Root: ./
 |virt/storage:{virt-storage-config-overview.md,virt-configuring-storage-profile.md,virt-automatic-bootsource-updates.md,virt-boot-source-image-heterogeneous-clusters.md,virt-reserving-pvc-space-fs-overhead.md,virt-configuring-local-storage-with-hpp.md,virt-enabling-user-permissions-to-clone-datavolumes.md,virt-configuring-cdi-for-namespace-resourcequota.md,virt-preparing-cdi-scratch-space.md,virt-using-preallocation-for-datavolumes.md,virt-managing-data-volume-annotations.md,virt-storage-with-csi-paradigm.md,install-configure-fusion-access-san.md}
 |virt/live_migration:{virt-about-live-migration.md,virt-configuring-live-migration.md,virt-initiating-live-migration.md,virt-configuring-cross-cluster-live-migration-network.md,virt-about-mtv-providers.md}
 |virt/nodes:{virt-node-maintenance.md,virt-eviction-strategies.md,virt-managing-node-labeling-obsolete-cpu-models.md,virt-preventing-node-reconciliation.md,virt-activating-ksm.md}
-|virt/monitoring:{virt-monitoring-overview.md,virt-running-cluster-checkups.md,virt-storage-checkups.md,virt-prometheus-queries.md,virt-exposing-custom-metrics-for-vms.md,virt-exposing-downward-metrics.md,virt-monitoring-vm-health.md,virt-runbooks.md}
+|virt/monitoring:{virt-monitoring-overview.md,virt-running-cluster-checkups.md,virt-storage-checkups.md,virt-prometheus-queries.md,virt-exposing-custom-metrics-for-vms.md,virt-exposing-downward-metrics.md,virt-monitoring-vm-health.md,virt-standalone-observability-controller.md,virt-runbooks.md}
 |virt/support:{virt-support-overview.md,virt-collecting-virt-data.md,virt-troubleshooting.md}
 |virt/backup_restore:{virt-backup-restore-snapshots.md,virt-backup-restore-overview.md,virt-recovering-individual-files-from-vm-backups.md,virt-using-vm-file-restore.md,virt-disaster-recovery.md}
 

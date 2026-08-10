@@ -2,9 +2,9 @@ The OpenShift Container Platform web console is a user interface accessible from
 
 # Prerequisites
 
-- You must use one of the following supported web browsers: Edge, Chrome, Safari, or Mozilla Firefox. IE 11 and earlier is not supported.
+- You must use one of the following supported web browsers: Edge, Chrome, Safari, or Mozilla Firefox. Internet Explorer 11 and earlier is not supported.
 
-- Review the [OpenShift ContainerPlatform 4.x Tested Integrations](https://access.redhat.com/articles/4128421) page before you create the supporting infrastructure for your cluster.
+- Review the OpenShift Container Platform 4.x Tested Integrations page before you create the supporting infrastructure for your cluster.
 
 # Understanding and accessing the web console
 
@@ -29,5 +29,7 @@ For existing clusters that you did not install, you can use `oc whoami --show-co
 The `dir` parameter specifies the `assets` directory, which stores the manifest files, the ISO image, and the `auth` directory. The `auth` directory stores the `kubeadmin-password` and `kubeconfig` files. As a `kubeadmin` user, you can use the `kubeconfig` file to access the cluster with the following setting: `export KUBECONFIG=<install_directory>/auth/kubeconfig`. The `kubeconfig` is specific to the generated ISO image, so if the `kubeconfig` is set and the `oc` command fails, it is possible that the system did not boot with the generated ISO image. To perform debugging, during the bootstrap process, you can log in to the console as the `core` user by using the contents of the `kubeadmin-password` file.
 
 </div>
+
+- [OpenShift Container Platform 4.x Tested Integrations](https://access.redhat.com/articles/4128421)
 
 - [Enabling feature sets using the web console](../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features)

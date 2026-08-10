@@ -1,4 +1,4 @@
-As a cluster administrator, you can manage Operator conditions by using Operator Lifecycle Manager (OLM).
+You can manage Operator conditions in OpenShift Container Platform by using Operator Lifecycle Manager (OLM).
 
 # Overriding Operator conditions
 
@@ -50,7 +50,7 @@ For example, consider a known version of an Operator that always communicates th
         lastTransitionTime: "2020-08-24T23:15:55Z"
     ```
 
-    - Allows the cluster administrator to change the upgrade readiness to `True`.
+    Setting the 'type' field to `Upgradeable` allows the cluster administrator to change the upgrade readiness to `True`.
 
 # Updating your Operator to use Operator conditions
 

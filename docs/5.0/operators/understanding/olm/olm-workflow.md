@@ -1,4 +1,4 @@
-This guide outlines the workflow of Operator Lifecycle Manager (OLM) in OpenShift Container Platform.
+The Operator Lifecycle Manager (OLM) resolves Operator installs and upgrades in OpenShift Container Platform. The OLM lifecycle involves interacting with catalog sources, subscriptions, and cluster service versions (CSVs).
 
 # Operator installation and upgrade workflow in OLM
 

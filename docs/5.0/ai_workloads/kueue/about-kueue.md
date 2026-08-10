@@ -1,4 +1,6 @@
-Red Hat build of Kueue is a Kubernetes-native system that manages access to resources for jobs. Red Hat build of Kueue can determine when a job waits, is admitted to start by creating pods, or should be *preempted*, meaning that active pods for that job are deleted.
+You can use Red Hat build of Kueue to manage when jobs in your Kubernetes cluster start, get preempted, or wait for resources. Red Hat build of Kueue optimizes resource utilization by enforcing quotas and scheduling policies across your workloads.
+
+Red Hat build of Kueue can determine when a job waits, is admitted to start by creating pods, or should be *preempted*, meaning that active pods for that job are deleted.
 
 <div class="note">
 
@@ -6,13 +8,13 @@ In the context of Red Hat build of Kueue, a job can be defined as a one-time or
 
 </div>
 
-Red Hat build of Kueue is based on the [Kueue](https://kueue.sigs.k8s.io/docs/) open source project.
+Red Hat build of Kueue is based on the Kueue open source project.
 
-Red Hat build of Kueue is compatible with environments that use heterogeneous, elastic resources. This means that the environment has many different resource types, and those resources are capable of dynamic scaling.
+Red Hat build of Kueue is compatible with environments that use heterogeneous, elastic resources, where many different resource types exist and those resources are capable of dynamic scaling.
 
 Red Hat build of Kueue does not replace any existing components in a Kubernetes cluster, but instead integrates with the existing Kubernetes API server, scheduler, and cluster autoscaler components.
 
-Red Hat build of Kueue supports all-or-nothing semantics. This means that either an entire job with all of its components is admitted to the cluster, or the entire job is rejected if it does not fit on the cluster.
+Red Hat build of Kueue supports all-or-nothing semantics, where either an entire job with all of its components is admitted to the cluster, or the entire job is rejected if it does not fit on the cluster.
 
 # Personas
 
@@ -47,3 +49,7 @@ The Red Hat build of Kueue workflow can be described at a high level as follows
 6.  The Kubernetes scheduler assigns pods to a node in the cluster.
 
 7.  The Kubernetes cluster autoscaler provisions more nodes as required.
+
+# Additional resources
+
+- [Kueue (upstream documentation)](https://kueue.sigs.k8s.io/docs/)

@@ -117,13 +117,13 @@ Cluster roles are roles defined at the cluster level but can be bound either at 
 
 </div>
 
-### Cluster role aggregation
+## Cluster role aggregation
 
 The default admin, edit, view, and cluster-reader cluster roles support cluster role aggregation, where the cluster rules for each role are dynamically updated as new rules are created. This feature is relevant only if you extend the Kubernetes API by creating custom resources.
 
 - [RBAC rules allow execution privileges](https://access.redhat.com/solutions/6989997)
 
-- [Cluster role aggregation](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles)
+- [Aggregated ClusterRoles (Kubernetes documentation)](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles)
 
 # Projects and namespaces
 
@@ -170,7 +170,7 @@ Developers and administrators can interact with projects by using the CLI or the
 
 Default projects host critical cluster and infrastructure components. By understanding their purpose, you can avoid making changes that could disrupt essential cluster services.
 
-OpenShift Container Platform includes several default projects, and projects starting with `openshift-` are the most essential to users. These projects host master components that run as pods and other infrastructure components. The pods created in these namespaces that have a critical pod annotation are considered critical, and the have guaranteed admission by kubelet. Pods created for master components in these namespaces are already marked as critical.
+OpenShift Container Platform includes several default projects, and projects starting with `openshift-` are the most essential to users. These projects host master components that run as pods and other infrastructure components. The pods created in these namespaces that have a critical pod annotation are considered critical, and they have guaranteed admission by kubelet. Pods created for master components in these namespaces are already marked as critical.
 
 <div class="important">
 
@@ -180,7 +180,7 @@ The following default projects are considered highly privileged: `default`, `kub
 
 </div>
 
-- [Guaranteed scheduling of critical add-ons](https://kubernetes.io/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/#rescheduler-guaranteed-scheduling-of-critical-add-ons)
+- [Guaranteed Scheduling For Critical Add-On Pods (Kubernetes documentation)](https://kubernetes.io/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/#rescheduler-guaranteed-scheduling-of-critical-add-ons)
 
 # Viewing cluster roles and bindings
 
@@ -691,11 +691,11 @@ You can bind any of the default cluster roles to local users or groups in your p
       Group  system:serviceaccounts:joe
     ```
 
-    - The `alice` user has been added to the `admins` `RoleBinding`.
+    The `alice` user has been added to the `admins` `RoleBinding`.
 
 # Creating a local role
 
-To define custom permissions within a project, you can create a local role and bind it to a user.
+You can create a local role and bind it to a user to define custom permissions within a project.
 
 1.  To create a local role for a project, run the following command:
 
@@ -729,25 +729,25 @@ To define custom permissions within a project, you can create a local role and b
 
 To define custom cluster-wide permissions, you can create a cluster role that specifies the verbs and resources users can access.
 
-1.  To create a cluster role, run the following command:
+- To create a cluster role, run the following command:
 
-    ``` terminal
-    $ oc create clusterrole <name> --verb=<verb> --resource=<resource>
-    ```
+  ``` terminal
+  $ oc create clusterrole <name> --verb=<verb> --resource=<resource>
+  ```
 
-    In this command, specify:
+  In this command, specify:
 
-    - `<name>`, the local role’s name
+  - `<name>`, the local role’s name
 
-    - `<verb>`, a comma-separated list of the verbs to apply to the role
+  - `<verb>`, a comma-separated list of the verbs to apply to the role
 
-    - `<resource>`, the resources that the role applies to
+  - `<resource>`, the resources that the role applies to
 
-    For example, to create a cluster role that allows a user to view pods, run the following command:
+  For example, to create a cluster role that allows a user to view pods, run the following command:
 
-    ``` terminal
-    $ oc create clusterrole podviewonly --verb=get --resource=pod
-    ```
+  ``` terminal
+  $ oc create clusterrole podviewonly --verb=get --resource=pod
+  ```
 
 # Local role binding commands
 

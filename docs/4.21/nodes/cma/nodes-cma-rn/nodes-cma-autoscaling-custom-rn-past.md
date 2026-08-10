@@ -454,7 +454,7 @@ Note the new features and enhancements in this release:
 
 - must-gather support
 
-  You can now collect data about the Custom Metrics Autoscaler Operator and its components by using the OpenShift Container Platform `must-gather` tool. Currently, the process for using the `must-gather` tool with the Custom Metrics Autoscaler is different from that of other operators. See "Gathering debugging data" in the *Additional resources* section for more information.
+  You can now collect data about the Custom Metrics Autoscaler Operator and its components by using the OpenShift Container Platform `must-gather` tool. Currently, the process for using the `must-gather` tool with the Custom Metrics Autoscaler is different from that of other Operators. For more information, see "Gathering debugging data".
 
 ## Custom Metrics Autoscaler Operator 2.8.2 release notes
 

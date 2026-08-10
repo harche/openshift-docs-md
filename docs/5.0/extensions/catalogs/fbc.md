@@ -2,7 +2,7 @@ Operator Lifecycle Manager (OLM) v1 in OpenShift Container Platform supports *fi
 
 # Highlights
 
-*File-based catalogs* are the latest iteration of the catalog format in Operator Lifecycle Manager (OLM). It is a plain text-based (JSON or YAML) and declarative config evolution of the earlier SQLite database format, and it is fully backwards compatible. The goal of this format is to enable Operator catalog editing, composability, and extensibility.
+File-based catalogs are the latest plain text (JSON or YAML) catalog format for Operator Lifecycle Manager (OLM). This format enables catalog editing, composability, and extensibility while remaining compatible with earlier SQLite-based catalogs.
 
 Editing
 With file-based catalogs, users interacting with the contents of a catalog are able to make direct changes to the format and verify that their changes are valid. Because this format is plain text JSON or YAML, catalog maintainers can easily manipulate catalog metadata by hand or with widely known and supported JSON or YAML tooling, such as the `jq` CLI.
@@ -34,6 +34,16 @@ The file-based catalog specification is a low-level representation of a catalog.
 For example, a tool could translate a high-level API, such as `(mode=semver)`, down to the low-level, file-based catalog format for upgrade paths. Or a catalog maintainer might need to customize all of the bundle metadata by adding a new property to bundles that meet a certain criteria.
 
 While this extensibility allows for additional official tooling to be developed on top of the low-level APIs for future OpenShift Container Platform releases, the major benefit is that catalog maintainers have this capability as well.
+
+<div class="important">
+
+As of OpenShift Container Platform 4.11, the default Red Hat-provided Operator catalog releases in the file-based catalog format. The default Red Hat-provided Operator catalogs for OpenShift Container Platform 4.6 through 4.10 released in the deprecated SQLite database format.
+
+The `opm` subcommands, flags, and functionality related to the SQLite database format are also deprecated and will be removed in a future release. The features are still supported and must be used for catalogs that use the deprecated SQLite database format.
+
+Many of the `opm` subcommands and flags for working with the SQLite database format, such as `opm index prune`, do not work with the file-based catalog format.
+
+</div>
 
 # Directory structure
 
@@ -82,7 +92,7 @@ This recommended structure has the property that each subdirectory in the direct
 
 # Schemas
 
-File-based catalogs use a format, based on the [CUE language specification](https://cuelang.org/docs/references/spec/), that can be extended with arbitrary schemas. The following `_Meta` CUE schema defines the format that all file-based catalog blobs must adhere to:
+File-based catalogs on OpenShift Container Platform use a CUE-based format with schemas that define catalog structure for Operator Lifecycle Manager (OLM). Each Operator package requires one `olm.package` blob, at least one `olm.channel` blob, and one or more `olm.bundle` blobs.
 
 <div class="formalpara-title">
 
@@ -117,10 +127,6 @@ No CUE schemas listed in this specification should be considered exhaustive. The
 
 </div>
 
-An Operator Lifecycle Manager (OLM) catalog currently uses three schemas (`olm.package`, `olm.channel`, and `olm.bundle`), which correspond to OLM’s existing package and bundle concepts.
-
-Each Operator package in a catalog requires exactly one `olm.package` blob, at least one `olm.channel` blob, and one or more `olm.bundle` blobs.
-
 <div class="note">
 
 All `olm.*` schemas are reserved for OLM-defined schemas. Custom schemas must use a unique prefix, such as a domain that you own.
@@ -129,7 +135,7 @@ All `olm.*` schemas are reserved for OLM-defined schemas. Custom schemas must us
 
 ## olm.package schema
 
-The `olm.package` schema defines package-level metadata for an Operator. This includes its name, description, default channel, and icon.
+The `olm.package` schema specifies package-level metadata for Operators in file-based catalogs, including name, default channel, and icon. Use this schema reference when you build or validate Operator package definitions for Operator Lifecycle Manager (OLM).
 
 ``` go
 #Package: {
@@ -198,6 +204,8 @@ You can update an Operator incrementally while keeping previously installed vers
 
 ## olm.bundle schema
 
+The `olm.bundle` schema defines the structure of bundle entries stored in an Operator catalog index. It specifies required fields such as package name, bundle name, image reference, and optional properties and related images.
+
 ``` go
 #Bundle: {
   schema: "olm.bundle"
@@ -228,9 +236,7 @@ You can update an Operator incrementally while keeping previously installed vers
 
 ## olm.deprecations schema
 
-The optional `olm.deprecations` schema defines deprecation information for packages, bundles, and channels in a catalog. Operator authors can use this schema to provide relevant messages about their Operators, such as support status and recommended upgrade paths, to users running those Operators from a catalog.
-
-When this schema is defined, the OpenShift Container Platform web console displays warning badges for the affected elements of the Operator, including any custom deprecation messages, on both the pre- and post-installation pages of the software catalog.
+The optional `olm.deprecations` schema defines deprecation information for packages, bundles, and channels in an Operator catalog. When you define this schema, the web console displays warning badges and deprecation messages in the software catalog.
 
 An `olm.deprecations` schema entry contains one or more of the following `reference` types, which indicates the deprecation scope. After the Operator is installed, any specified messages can be viewed as status conditions on the related `Subscription` object.
 
@@ -243,6 +249,12 @@ An `olm.deprecations` schema entry contains one or more of the following `refere
 Deprecation `reference` types
 
 Each `reference` type has their own requirements, as detailed in the following example.
+
+<div class="formalpara-title">
+
+**Example `olm.deprecations` schema with each `reference` type**
+
+</div>
 
 ``` yaml
 schema: olm.deprecations
@@ -267,15 +279,7 @@ entries:
     install my-operator.v1.72.0 for support.
 ```
 
-- Each deprecation schema must have a `package` value, and that package reference must be unique across the catalog. There must not be an associated `name` field.
-
-- The `olm.package` schema must not include a `name` field, because it is determined by the `package` field defined earlier in the schema.
-
-- All `message` fields, for any `reference` type, must be a non-zero length and represented as an opaque text blob.
-
-- The `name` field for the `olm.channel` schema is required.
-
-- The `name` field for the `olm.bundle` schema is required.
+\+ \* Each deprecation schema must have a `package` value, and that package reference must be unique across the catalog. There must not be an associated `name` field. \* The `olm.package` schema must not include a `name` field, because it is determined by the `package` field defined earlier in the schema. \* All `message` fields, for any `reference` type, must be a non-zero length and represented as an opaque text blob. \* The `name` field for the `olm.channel` schema is required. \* The `name` field for the `olm.bundle` schema is required.
 
 <div class="note">
 
@@ -310,6 +314,12 @@ OLM defines a handful of property types, again using the reserved `olm.*` prefix
 
 The `olm.package` property defines the package name and version. This is a required property on bundles, and there must be exactly one of these properties. The `packageName` field must match the bundle’s first-class `package` field, and the `version` field must be a valid semantic version.
 
+<div class="formalpara-title">
+
+**`olm.package` property**
+
+</div>
+
 ``` go
 #PropertyPackage: {
   type: "olm.package"
@@ -323,6 +333,12 @@ The `olm.package` property defines the package name and version. This is a requi
 ## olm.gvk property
 
 The `olm.gvk` property defines the group/version/kind (GVK) of a Kubernetes API that is provided by this bundle. This property is used by OLM to resolve a bundle with this property as a dependency for other bundles that list the same GVK as a required API. The GVK must adhere to Kubernetes GVK validations.
+
+<div class="formalpara-title">
+
+**`olm.gvk` property**
+
+</div>
 
 ``` go
 #PropertyGVK: {
@@ -339,6 +355,12 @@ The `olm.gvk` property defines the group/version/kind (GVK) of a Kubernetes API 
 
 The `olm.package.required` property defines the package name and version range of another package that this bundle requires. For every required package property a bundle lists, OLM ensures there is an Operator installed on the cluster for the listed package and in the required version range. The `versionRange` field must be a valid semantic version (semver) range.
 
+<div class="formalpara-title">
+
+**`olm.package.required` property**
+
+</div>
+
 ``` go
 #PropertyPackageRequired: {
   type: "olm.package.required"
@@ -353,6 +375,12 @@ The `olm.package.required` property defines the package name and version range o
 
 The `olm.gvk.required` property defines the group/version/kind (GVK) of a Kubernetes API that this bundle requires. For every required GVK property a bundle lists, OLM ensures there is an Operator installed on the cluster that provides it. The GVK must adhere to Kubernetes GVK validations.
 
+<div class="formalpara-title">
+
+**`olm.gvk.required` property**
+
+</div>
+
 ``` terminal
 #PropertyGVKRequired: {
   type: "olm.gvk.required"
@@ -366,7 +394,7 @@ The `olm.gvk.required` property defines the group/version/kind (GVK) of a Kubern
 
 # Example catalog
 
-With file-based catalogs, catalog maintainers can focus on Operator curation and compatibility. Because Operator authors have already produced Operator-specific catalogs for their Operators, catalog maintainers can build their catalog by rendering each Operator catalog into a subdirectory of the catalog’s root directory.
+With file-based catalogs, catalog maintainers can focus on Operator curation and compatibility. Because Operator authors have already produced Operator-specific catalogs for their Operators, catalog maintainers can build their catalog by rendering each Operator catalog into a subdirectory of the root catalog directory.
 
 There are many possible ways to build a file-based catalog; the following steps outline a simple approach:
 
@@ -414,7 +442,7 @@ There are many possible ways to build a file-based catalog; the following steps 
 
 # Guidelines
 
-Consider the following guidelines when maintaining file-based catalogs.
+Follow these guidelines when maintaining file-based Operator catalogs. Treat bundle images and metadata as immutable. Store catalog metadata in source control as the source of truth.
 
 ## Immutable bundles
 
@@ -436,6 +464,12 @@ Catalog metadata should be stored in source control and treated as the source of
 
 2.  Build and push the catalog image. Use a consistent tagging taxonomy, such as `:latest` or `:<target_cluster_version>`, so that users can receive updates to a catalog as they become available.
 
+<div class="note">
+
+For more information about creating file-based catalogs by using the `opm` CLI, see "Managing custom catalogs".
+
+</div>
+
 # CLI usage
 
 For instructions about creating file-based catalogs by using the `opm` CLI, see [Managing custom catalogs](../../operators/admin/olm-managing-custom-catalogs.xml#olm-creating-fb-catalog-image_olm-managing-custom-catalogs).
@@ -444,7 +478,9 @@ For reference documentation about the `opm` CLI commands related to managing fil
 
 # Automation
 
-Operator authors and catalog maintainers are encouraged to automate their catalog maintenance with CI/CD workflows. Catalog maintainers can further improve on this by building GitOps automation to accomplish the following tasks:
+Operator authors and catalog maintainers can automate file-based catalog maintenance with CI/CD workflows.
+
+Catalog maintainers can use GitOps automation to accomplish the following example tasks:
 
 - Check that pull request (PR) authors are permitted to make the requested changes, for example by updating their package’s image reference.
 

@@ -46,6 +46,8 @@ Optional parameter. The link state of virtual function (VF). Allowed values are 
 `capabilities`
 Optional parameter. The capabilities to configure for this network. You can specify `'{ "ips": true }'` to enable IP address support or `'{ "infinibandGUID": true }'` to enable IB Global Unique Identifier (GUID) support.
 
+- [Checking SR-IOV Network Operator status with Ready conditions](../../networking/networking_operators/sr-iov-operator/configuring-sriov-operator.xml#nw-sriov-monitoring-conditions-proc_configuring-sriov-operator)
+
 ## Creating a configuration for assignment of dual-stack IP addresses dynamically
 
 You can dynamically assign dual-stack IP addresses to a secondary network so that pods can communicate over both IPv4 and IPv6 addresses.

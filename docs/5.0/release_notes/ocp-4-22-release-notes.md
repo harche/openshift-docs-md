@@ -267,6 +267,13 @@ For more information, see [Checking MetalLB configuration status](../networking/
 
 <!-- -->
 
+SR-IOV Network Operator reports Ready conditions on key custom resources
+You can now monitor the health of SR-IOV Network Operator resources by using a standard `Ready` condition on `SriovNetwork`, `SriovIBNetwork`, and `SriovOperatorConfig` custom resources. Use the OpenShift CLI (`oc`) to inspect the condition status, wait for the `Ready` condition to be `True`, and troubleshoot provisioning or configuration failures from the condition `reason` and `message` fields.
+
+For more information, see [About Ready conditions for the SR-IOV Network Operator](../networking/networking_operators/sr-iov-operator/configuring-sriov-operator.xml#nw-sriov-about-k8s-conditions_configuring-sriov-operator).
+
+<!-- -->
+
 Multi-network policy backend uses nftables
 With this release, the multi-network policy backend uses `nftables` instead of `iptables`. The `iptables` backend has been removed and there is no option to revert to it. The `MultiNetworkPolicy` API and user-facing configuration are unchanged, so your existing multi-network policies continue to work without modification.
 

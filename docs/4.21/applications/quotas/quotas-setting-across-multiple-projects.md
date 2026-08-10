@@ -1,4 +1,4 @@
-A multi-project quota, defined by a `ClusterResourceQuota` object, allows quotas to be shared across multiple projects. Resources used in each selected project are aggregated and that aggregate is used to limit resources across all the selected projects.
+A multi-project quota, defined by a `ClusterResourceQuota` object, shares quotas across multiple projects. The system aggregates the resources used in each selected project and applies the aggregate limit across all selected projects.
 
 This guide describes how cluster administrators can set and manage resource quotas across multiple projects.
 
@@ -12,7 +12,7 @@ The following default projects are considered highly privileged: `default`, `kub
 
 # Selecting multiple projects during quota creation
 
-When creating quotas, you can select multiple projects based on annotation selection, label selection, or both.
+To aggregate resource usage and enforce consistent limits across multiple namespaces, you can select target projects by using annotation or label selectors when creating a `ClusterResourceQuota` object.
 
 1.  To select projects based on annotations, run the following command:
 
@@ -58,17 +58,24 @@ When creating quotas, you can select multiple projects based on annotation selec
           secrets: "9"
     ```
 
-    - The `ResourceQuotaSpec` object that will be enforced over the selected projects.
+    where:
 
-    - A simple key-value selector for annotations.
+    `spec.quota`
+    The `ResourceQuotaSpec` object that will be enforced over the selected projects.
 
-    - A label selector that can be used to select projects.
+    `spec.selector.annotations`
+    A simple key-value selector for annotations.
 
-    - A per-namespace map that describes current quota usage in each selected project.
+    `spec.selector.labels`
+    A label selector that can be used to select projects.
 
-    - The aggregate usage across all selected projects.
+    `status.namespaces`
+    A per-namespace map that describes current quota usage in each selected project.
 
-      This multi-project quota document controls all projects requested by `<user_name>` using the default project request endpoint. You are limited to 10 pods and 20 secrets.
+    `status.total`
+    The aggregate usage across all selected projects.
+
+    This multi-project quota document controls all projects requested by `<user_name>` using the default project request endpoint. You are limited to 10 pods and 20 secrets.
 
 2.  Similarly, to select projects based on labels, run this command:
 
@@ -78,60 +85,66 @@ When creating quotas, you can select multiple projects based on annotation selec
         --hard=pods=10 --hard=secrets=20
     ```
 
-    - Both `clusterresourcequota` and `clusterquota` are aliases of the same command. `for-name` is the name of the `ClusterResourceQuota` object.
+    where:
 
-    - To select projects by label, provide a key-value pair by using the format `--project-label-selector=key=value`.
+    `clusterresourcequota`
+    Both `clusterresourcequota` and `clusterquota` are aliases of the same command. `for-name` is the name of the `ClusterResourceQuota` object.
 
-      This creates the following `ClusterResourceQuota` object definition:
+    `--project-label-selector`
+    To select projects by label, provide a key-value pair by using the format `--project-label-selector=key=value`.
 
-      ``` yaml
-      apiVersion: quota.openshift.io/v1
-      kind: ClusterResourceQuota
-      metadata:
-        creationTimestamp: null
-        name: for-name
-      spec:
-        quota:
-          hard:
-            pods: "10"
-            secrets: "20"
-        selector:
-          annotations: null
-          labels:
-            matchLabels:
-              name: frontend
-      ```
+    This creates the following `ClusterResourceQuota` object definition:
+
+    ``` yaml
+    apiVersion: quota.openshift.io/v1
+    kind: ClusterResourceQuota
+    metadata:
+      creationTimestamp: null
+      name: for-name
+    spec:
+      quota:
+        hard:
+          pods: "10"
+          secrets: "20"
+      selector:
+        annotations: null
+        labels:
+          matchLabels:
+            name: frontend
+    ```
 
 # Viewing applicable cluster resource quotas
 
-A project administrator is not allowed to create or modify the multi-project quota that limits his or her project, but the administrator is allowed to view the multi-project quota documents that are applied to his or her project. The project administrator can do this via the `AppliedClusterResourceQuota` resource.
+View the multi-project quota documents applied to your project by using the `AppliedClusterResourceQuota` resource. Although, as an administrator, you cannot create or modify multi-project quotas, you can monitor your project’s resource limits.
 
-1.  To view quotas applied to a project, run:
+- To view quotas applied to a project, run:
 
-    ``` terminal
-    $ oc describe AppliedClusterResourceQuota
-    ```
+  ``` terminal
+  $ oc describe AppliedClusterResourceQuota
+  ```
 
-    <div class="formalpara-title">
+  <div class="formalpara-title">
 
-    **Example output**
+  **Example output**
 
-    </div>
+  </div>
 
-    ``` terminal
-    Name:   for-user
-    Namespace:  <none>
-    Created:  19 hours ago
-    Labels:   <none>
-    Annotations:  <none>
-    Label Selector: <null>
-    AnnotationSelector: map[openshift.io/requester:<user-name>]
-    Resource  Used  Hard
-    --------  ----  ----
-    pods        1     10
-    secrets     9     20
-    ```
+  ``` terminal
+  Name:   for-user
+  Namespace:  <none>
+  Created:  19 hours ago
+  Labels:   <none>
+  Annotations:  <none>
+  Label Selector: <null>
+  AnnotationSelector: map[openshift.io/requester:<user-name>]
+  Resource  Used  Hard
+  --------  ----  ----
+  pods        1     10
+  secrets     9     20
+  ```
 
 # Selection granularity
 
-Because of the locking consideration when claiming quota allocations, the number of active projects selected by a multi-project quota is an important consideration. Selecting more than 100 projects under a single multi-project quota can have detrimental effects on API server responsiveness in those projects.
+When you create a multi-project quota, restrict the number of active projects to avoid degrading API server responsiveness.
+
+When you configure a multi-project quota using a `ClusterResourceQuota` object, restrict the number of selected active projects to 100 or fewer. Because quota allocation claims require system locking, selecting more than 100 projects under a single multi-project quota can severely degrade API server responsiveness across those projects.

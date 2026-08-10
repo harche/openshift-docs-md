@@ -867,7 +867,9 @@ An Azure Key Vault, a disk encryption set, and an encryption key are required to
 
 # Configuring trusted launch for Azure virtual machines by using machine sets
 
-OpenShift Container Platform 4.17 supports trusted launch for Microsoft Azure virtual machines (VMs). By editing the machine set YAML file, you can configure the trusted launch options that a machine set uses for machines that it deploys. For example, you can configure these machines to use UEFI security features such as Secure Boot or a dedicated virtual Trusted Platform Module (vTPM) instance.
+By editing the machine set YAML file, you can configure the trusted launch for Microsoft Azure virtual machines (VMs) options that a machine set uses for machines that it deploys.
+
+For example, you can configure these machines to use UEFI security features such as Secure Boot or a dedicated virtual Trusted Platform Module (vTPM) instance.
 
 <div class="note">
 
@@ -942,7 +944,7 @@ For more information about related features and functionality, see the Microsoft
 
 # Configuring Azure confidential virtual machines by using machine sets
 
-OpenShift Container Platform 4.17 supports Microsoft Azure confidential virtual machines (VMs). By enabling Azure confidential VMs, you can use memory encryption to improve data confidentiality.
+You can enable Microsoft Azure confidential virtual machines (VMs) to use memory encryption to improve data confidentiality.
 
 <div class="note">
 
@@ -1020,7 +1022,7 @@ For more information about related features and functionality, see the Microsoft
 
 # Accelerated Networking for Microsoft Azure VMs
 
-Accelerated Networking uses single root I/O virtualization (SR-IOV) to provide Microsoft Azure VMs with a more direct path to the switch. This enhances network performance. You can enable this feature during or after installation.
+You can enable Accelerated Networking, which uses single root I/O virtualization (SR-IOV) to provide Microsoft Azure VMs with a more direct path to the switch, during or after installation. This enhances network performance.
 
 ## Limitations
 
@@ -1613,7 +1615,7 @@ The NFD Operator identifies hardware device features in nodes. It solves the gen
 
 ## Enabling Accelerated Networking on an existing Microsoft Azure cluster
 
-You can enable Accelerated Networking on Microsoft Azure by adding `acceleratedNetworking` to your machine set YAML file. This uses SR-IOV to help improve network performance for new node.
+You can enable Accelerated Networking on Microsoft Azure by adding `acceleratedNetworking` to your machine set YAML file. Accelerated Networking uses SR-IOV to help improve network performance for new nodes.
 
 - Have an existing Azure cluster where the Machine API is operational.
 

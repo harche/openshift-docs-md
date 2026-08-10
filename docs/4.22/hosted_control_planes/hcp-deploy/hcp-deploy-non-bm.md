@@ -299,6 +299,8 @@ When you create a hosted cluster with the Agent platform, the HyperShift Operato
       --namespace my-hosted-cluster-namespace \
       --control-plane-availability-policy HighlyAvailable \
       --release-image=quay.io/openshift-release-dev/ocp-release:4.22.0-multi \
+      --disable-cluster-capabilities=<capability> \
+      --enable-cluster-capabilities=<capability> \
       --node-pool-replicas 3
     ```
 
@@ -321,6 +323,10 @@ When you create a hosted cluster with the Agent platform, the HyperShift Operato
     - `--control-plane-availability-policy` specifies the availability policy for the hosted control plane components. Supported options are `SingleReplica` and `HighlyAvailable`. The default value is `HighlyAvailable`.
 
     - `--release-image` specifies the supported OpenShift Container Platform version that you want to use.
+
+    - `--disable-cluster-capabilities` specifies that you want to disable optional capabilities in the hosted cluster. This flag is optional. For more information, see "Capabilities for hosted clusters".
+
+    - `--enable-cluster-capabilities` specifies that you want to enable optional capabilities in the hosted cluster. This flag is optional. For more information, see "Capabilities for hosted clusters".
 
     - `--node-pool-replicas` specifies the node pool replica count. You must specify the replica count as `0` or greater to create the same number of replicas. Otherwise, no node pools are created.
 
@@ -450,6 +456,137 @@ You can use a mirror registry to create a hosted cluster on non-bare-metal agent
 - [Accessing the hosted cluster](../../hosted_control_planes/hcp-manage/hcp-manage-bm.xml#hcp-bm-access_hcp-manage-bm)
 
 - [Configuring a custom API server certificate in a hosted cluster](../../hosted_control_planes/hcp-certificates.xml#hcp-custom-cert_hcp-certificates)
+
+# Capabilities for hosted clusters
+
+To reduce resource consumption and prevent unnecessary Operators and operands from being deployed, administrators can enable or disable optional OpenShift Container Platform components when they create a hosted cluster.
+
+When capabilities are not specified on a `HostedCluster` resource, the cluster uses the OpenShift Container Platform version’s `DefaultCapabilitySet` settings, excluding the `baremetal` capability. As a result, most optional components are enabled by default.
+
+<div class="important">
+
+Capabilities are immutable after cluster creation. You cannot change them after you create the `HostedCluster` resource.
+
+</div>
+
+## Capabilities that you can enable or disable for a hosted cluster
+
+Familiarize yourself with the supported capabilities that you can enable or disable for a `HostedCluster` resource.
+
+The capabilities are described in the following table:
+
+| Capability          | Description                                                                                                                                                        |
+|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `ImageRegistry`     | The OpenShift Image Registry Operator and its operands, including cloud storage infrastructure, such as S3 buckets and Identity and Access Management (IAM) users. |
+| `openshift-samples` | The OpenShift Samples Operator, which manages example `ImageStreams` and templates.                                                                                |
+| `Insights`          | The Insights Operator, which collects and uploads cluster telemetry data.                                                                                          |
+| `baremetal`         | The Bare Metal Infrastructure Operator. This capability is excluded from the default set. If needed, you must explicitly enable it.                                |
+| `Console`           | The OpenShift Web Console Operator and its operands.                                                                                                               |
+| `NodeTuning`        | The Node Tuning Operator, which manages node-level performance tuning by using TuneD and performance profiles.                                                     |
+| `Ingress`           | The OpenShift Ingress Operator, which manages the default router of the cluster.                                                                                   |
+
+The following rules apply when you combine capability settings:
+
+No overlap
+A capability cannot be in both the `enabled` and `disabled` lists simultaneously.
+
+Console requires Ingress
+You can disable the `Ingress` capability only if the `Console` capability is also disabled because the console depends on Ingress.
+
+Version requirement
+You must use OpenShift Container Platform 4.20 or later to disable any of the following capabilities: `openshift-samples`, `Insights`, `Console`, `NodeTuning`, and `Ingress`. You can disable `ImageRegistry` and `baremetal` on versions earlier than 4.20.
+
+Bare metal default exclusion
+The `baremetal` capability is excluded from the default set. You can add it to the cluster by explicitly enabling it.
+
+## Setting capabilities for a hosted cluster
+
+To reduce unnecessary resource consumption, you can control which optional capabilities are enabled for a hosted cluster when you create the cluster.
+
+<div class="important">
+
+Capabilities are immutable after cluster creation. You cannot change them after you create the `HostedCluster` resource.
+
+</div>
+
+You can specify which capabilities are enabled by either using the `hcp` command-line interface (CLI) or by setting the `HostedCluster` manifest.
+
+- To specify which capabilities are enabled in a hosted cluster by using the CLI, you can add the `--disable-cluster-capabilities` flag, the `--enable-cluster-capabilities` flag, or both. The following example shows how to disable the `ImageRegistry`, `Console`, and `Ingress` capabilities and enable the `baremetal` capability while you create a hosted cluster on AWS by using the `hcp` command-line interface:
+
+  ``` terminal
+  $ hcp create cluster aws \
+      --name my-hosted-cluster \
+      --disable-cluster-capabilities=ImageRegistry,Console,Ingress \
+      --enable-cluster-capabilities=baremetal
+  ```
+
+  You can specify multiple capabilities as a comma-separated list. The supported values are as follows:
+
+  - `ImageRegistry`
+
+  - `openshift-samples`
+
+  - `Insights`
+
+  - `baremetal`
+
+  - `Console`
+
+  - `NodeTuning`
+
+  - `Ingress`
+
+- To specify which capabilities are enabled in a hosted cluster by using the `HostedCluster` manifest at cluster creation time, see the following examples:
+
+  - To directly disable capabilities in a hosted cluster, add the `spec.capabilities.disabled` section in the `HostedCluster` resource:
+
+    ``` yaml
+    apiVersion: hypershift.openshift.io/v1beta1
+    kind: HostedCluster
+    metadata:
+      name: my-hosted-cluster
+      namespace: my-cluster-namespace
+    spec:
+      capabilities:
+        disabled:
+          - ImageRegistry
+          - Console
+          - Ingress
+      # ...
+    ```
+
+  - To explicitly enable a capability that is not part of the default set of capabilities, such as the `baremetal` capability, see the following example:
+
+    ``` yaml
+    apiVersion: hypershift.openshift.io/v1beta1
+    kind: HostedCluster
+    metadata:
+      name: my-hosted-cluster
+      namespace: my-cluster-namespace
+    spec:
+      capabilities:
+        enabled:
+          - baremetal
+      # ...
+    ```
+
+  - You can use both `enabled` and `disabled` if no capabilities are in both lists. See the following example:
+
+    ``` yaml
+    apiVersion: hypershift.openshift.io/v1beta1
+    kind: HostedCluster
+    metadata:
+      name: my-hosted-cluster
+      namespace: my-cluster-namespace
+    spec:
+      capabilities:
+        enabled:
+          - baremetal
+        disabled:
+          - ImageRegistry
+          - openshift-samples
+      # ...
+    ```
 
 # Verifying hosted cluster creation on non-bare-metal agent machines
 

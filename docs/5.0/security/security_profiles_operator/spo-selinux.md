@@ -1,4 +1,4 @@
-Create and manage SELinux profiles and bind them to workloads.
+To control what namespaced workloads can access on RHCOS nodes, use the Security Profiles Operator to create SELinux profiles, bind them to pods, and record policies from running applications.
 
 <div class="important">
 
@@ -112,11 +112,11 @@ The `SelinuxProfile` object has several features that allow for better security 
     nginx-secure
     ```
 
-# Applying SELinux profiles to a pod
+# Apply SELinux profiles to a pod
 
-Create a pod to apply one of the created profiles.
+To enforce a recorded or custom SELinux profile on a workload, create a pod that references the profile in its security context.
 
-For SELinux profiles, the namespace must be labelled to allow [privileged](https://kubernetes.io/docs/concepts/security/pod-security-standards/) workloads.
+For SELinux profiles, the namespace must be labeled to allow [privileged](https://kubernetes.io/docs/concepts/security/pod-security-standards/) workloads.
 
 1.  Apply the `scc.podSecurityLabelSync=false` label to the `nginx-deploy` namespace by running the following command:
 
@@ -177,7 +177,7 @@ For SELinux profiles, the namespace must be labelled to allow [privileged](https
 
     </div>
 
-## Applying SELinux log policies
+## Apply SELinux log policies
 
 To log policy violations or AVC denials, set the `SElinuxProfile` profile to `permissive`.
 
@@ -281,11 +281,11 @@ You can use the `ProfileBinding` resource to bind a security profile to the `Sec
   profile.process
   ```
 
-## Replicating controllers and SecurityContextConstraints
+## Replicate controllers and SecurityContextConstraints
 
-You can deploy SELinux policies for replicating controllers, such as deployments or daemon sets.
+Deploy SELinux policies for replicating controllers such as deployments or daemon sets so the pods those controllers create can use custom SELinux policies.
 
-Note that the `Pod` objects spawned by the controllers are not running with the identity of the user who creates the workload. Unless a `ServiceAccount` is selected, the pods might revert to using a restricted `SecurityContextConstraints` (SCC) which does not allow use of custom security policies.
+Pods that the controllers create do not run with the identity of the user who creates the workload. Unless you select a `ServiceAccount`, the pods might use a restricted `SecurityContextConstraints` (SCC) object that does not allow custom security policies.
 
 1.  Create a project by running the following command:
 
@@ -383,9 +383,9 @@ Note that the `Pod` objects spawned by the controllers are not running with the 
 
     Ensure that your SCC is usable by only the correct service account. Refer to *Additional resources* for more information.
 
-# Recording profiles from workloads
+# Record profiles from workloads
 
-The Security Profiles Operator can record system calls with `ProfileRecording` objects, making it easier to create baseline profiles for applications.
+The Security Profiles Operator can record system calls with `ProfileRecording` objects to create baseline profiles for applications.
 
 When using the log enricher for recording SELinux profiles, verify the log enricher feature is enabled. See *Additional resources* for more information.
 
@@ -504,7 +504,7 @@ A container with `privileged: true` security context restraints prevents log-bas
 
     <div class="formalpara-title">
 
-    **Example output for selinuxprofile**
+    **Example output for SELinux profile**
 
     </div>
 
@@ -514,9 +514,9 @@ A container with `privileged: true` security context restraints prevents log-bas
     test-recording-redis   test-recording-redis.process   Installed
     ```
 
-## Merging per-container profile instances
+## Merge per-container profile instances
 
-By default, each container instance records into a separate profile. The Security Profiles Operator can merge the per-container profiles into a single profile. Merging profiles is useful when deploying applications using `ReplicaSet` or `Deployment` objects.
+To reuse one recorded profile when deploying applications with a `ReplicaSet` or `Deployment`, configure the Security Profiles Operator to merge per-container profile instances into a single profile instead of keeping a separate profile for each container.
 
 1.  Edit a `ProfileRecording` object to include a `mergeStrategy: containers` variable:
 
@@ -589,7 +589,7 @@ By default, each container instance records into a separate profile. The Securit
 
     <div class="formalpara-title">
 
-    **Example output for selinuxprofiles**
+    **Example output for SELinux profile**
 
     </div>
 
@@ -606,11 +606,13 @@ By default, each container instance records into a separate profile. The Securit
 
 ## About seLinuxContext: RunAsAny
 
-Recording of SELinux policies is implemented with a webhook that injects a special SELinux type to the pods being recorded. The SELinux type makes the pod run in `permissive` mode, logging all the AVC denials into `audit.log`. By default, a workload is not allowed to run with a custom SELinux policy, but uses an auto-generated type.
+To record SELinux policies, a webhook injects a permissive SELinux type so the pod logs AVC denials while recording.
+
+The SELinux type makes the pod run in `permissive` mode, logging all the AVC denials into `audit.log`. By default, a workload is not allowed to run with a custom SELinux policy, but uses an automatically generated type.
 
 To record a workload, the workload must use a service account that has permissions to use an SCC that allows the webhook to inject the permissive SELinux type. The `privileged` SCC contains `seLinuxContext: RunAsAny`.
 
-In addition, the namespace must be labeled with `pod-security.kubernetes.io/enforce: privileged` if your cluster enables the [Pod Security Admission](https://kubernetes.io/docs/concepts/security/pod-security-admission/) because only the `privileged` [Pod Security Standard](https://kubernetes.io/docs/concepts/security/pod-security-standards/#privileged) allows using a custom SELinux policy.
+In addition, the namespace must be labeled with `pod-security.kubernetes.io/enforce: privileged` if your cluster enables Pod Security Admission, because only the `privileged` Pod Security Standard allows using a custom SELinux policy.
 
 # Additional resources
 
@@ -618,6 +620,10 @@ In addition, the namespace must be labeled with `pod-security.kubernetes.io/enfo
 
 - [Managing SCCs in OpenShift](https://cloud.redhat.com/blog/managing-sccs-in-openshift)
 
-- [Using the log enricher](../../security/security_profiles_operator/spo-advanced.xml#spo-log-enricher_spo-advanced)
-
 - [About security profiles](../../security/security_profiles_operator/spo-understanding.xml#spo-about_spo-understanding)
+
+- [Use the log enricher](../../security/security_profiles_operator/spo-advanced.xml#spo-log-enricher_spo-advanced)
+
+- [Pod Security Admission](https://kubernetes.io/docs/concepts/security/pod-security-admission/)
+
+- [Pod Security Standard](https://kubernetes.io/docs/concepts/security/pod-security-standards/#privileged)

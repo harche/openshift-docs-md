@@ -379,6 +379,8 @@ Avoid storing all hosted cluster information in a shared namespace. If you creat
       --arch <architecture_of_the_nodepool> \
       --release-image <ocp_release_image_for_the_cluster> \
       --image-content-sources <path_to_image_content_sources_file> \
+      --disable-cluster-capabilities=<capability> \
+      --enable-cluster-capabilities=<capability> \
       --additional-trust-bundle <path_to_ca_bundle_file>
     ```
 
@@ -399,6 +401,10 @@ Avoid storing all hosted cluster information in a shared namespace. If you creat
     - `--release-image` defines the OpenShift Container Platform release image for the cluster, for example, `quay.io/openshift-release-dev/ocp-release:4.20.14-multi`. You can use the `--release-image` flag to set up the hosted cluster with a specific OpenShift Container Platform release.
 
     - `--image-content-sources` specifies the path to a file with image content sources.
+
+    - `--disable-cluster-capabilities` specifies that you want to disable optional capabilities. This flag is optional. For more information, see "Capabilities for hosted clusters".
+
+    - `--enable-cluster-capabilities` specifies that you want to enable optional capabilities in the hosted cluster. This flag is optional. For more information, see "Capabilities for hosted clusters".
 
     - `--additional-trust-bundle` specifies the path to a file with user CA bundle.
 

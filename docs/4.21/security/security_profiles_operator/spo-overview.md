@@ -1,15 +1,27 @@
-OpenShift Container Platform Security Profiles Operator (SPO) provides a way to define secure computing ([seccomp](https://kubernetes.io/docs/tutorials/security/seccomp/)) profiles and SELinux profiles as custom resources, synchronizing profiles to every node in a given namespace. For the latest updates, see the [release notes](../../security/security_profiles_operator/spo-release-notes.xml#spo-release-notes).
+With the OpenShift Container Platform Security Profiles Operator (SPO), you can define seccomp and SELinux profiles as custom resources and keep them synchronized across every node in a namespace.
 
-The SPO can distribute custom resources to each node while a reconciliation loop ensures that the profiles stay up-to-date. See [Understanding the Security Profiles Operator](../../security/security_profiles_operator/spo-understanding.xml#spo-understanding).
+The SPO distributes seccomp and SELinux profile custom resources to each node and keeps them up to date when profiles change. You can also bind policies to pods and record workloads. See Additional resources for advanced tasks such as enabling the log enricher, configuring webhooks and metrics, or restricting profiles to a single namespace, and for advanced audit logging that correlates cluster users with actions during `oc exec`, `oc rsh`, and `oc debug` sessions.
 
-The SPO manages SELinux policies and seccomp profiles for namespaced workloads. For more information, see [Enabling the Security Profiles Operator](../../security/security_profiles_operator/spo-enabling.xml#spo-enabling).
+# Additional resources
 
-You can create [seccomp](../../security/security_profiles_operator/spo-seccomp.xml#spo-seccomp) and [SELinux](../../security/security_profiles_operator/spo-selinux.xml#spo-selinux) profiles, bind policies to pods, record workloads, and synchronize all worker nodes in a namespace.
+- [Security Profiles Operator release notes](../../security/security_profiles_operator/spo-release-notes.xml#spo-release-notes)
 
-Use [Advanced Security Profile Operator tasks](../../security/security_profiles_operator/spo-advanced.xml#spo-advanced) to enable the log enricher, configure webhooks and metrics, or restrict profiles to a single namespace.
+- [Security Profiles Operator support](../../security/security_profiles_operator/spo-support.xml#spo-support)
 
-Use [SPO Advanced Audit Logging](../../security/security_profiles_operator/spo-logging.xml#spo-advanced) to access logs in RHCOS containers for container-level security audit features.
+- [Understanding the Security Profiles Operator](../../security/security_profiles_operator/spo-understanding.xml#spo-understanding)
 
-[Troubleshoot the Security Profiles Operator](../../security/security_profiles_operator/spo-troubleshooting.xml#spo-inspecting-seccomp-profiles_spo-troubleshooting) as needed, or engage [Red Hat support](https://access.redhat.com/support/).
+- [Enabling the Security Profiles Operator](../../security/security_profiles_operator/spo-enabling.xml#spo-enabling)
 
-You can [Uninstall the Security Profiles Operator](../../security/security_profiles_operator/spo-uninstalling.xml#spo-uninstalling) by removing the profiles before removing the Operator.
+- [Managing seccomp profiles](../../security/security_profiles_operator/spo-seccomp.xml#spo-seccomp)
+
+- [Managing SELinux profiles](../../security/security_profiles_operator/spo-selinux.xml#spo-selinux)
+
+- [Advanced Security Profiles Operator tasks](../../security/security_profiles_operator/spo-advanced.xml#spo-advanced)
+
+- [Advanced Audit Logging Framework](../../security/security_profiles_operator/spo-logging.xml#spo-audit-logging)
+
+- [Troubleshooting the Security Profiles Operator](../../security/security_profiles_operator/spo-troubleshooting.xml#spo-inspecting-seccomp-profiles_spo-troubleshooting)
+
+- [Uninstalling the Security Profiles Operator](../../security/security_profiles_operator/spo-uninstalling.xml#spo-uninstalling)
+
+- [seccomp](https://kubernetes.io/docs/tutorials/security/seccomp/)

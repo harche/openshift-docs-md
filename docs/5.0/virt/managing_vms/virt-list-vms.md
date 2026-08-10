@@ -28,53 +28,55 @@ You can list all of the virtual machines (VMs) in your cluster by using the web 
 
 2.  Optional: Enable the **Show only projects with VirtualMachines** option above the tree view to limit the displayed projects.
 
-3.  Click the **Virtual machines** tab.
+3.  Select a project or cluster in the tree view to automatically filter the VM list to that selection.
 
-4.  Optional: Click the **Search virtual machines** text box and begin to type the name of a virtual machine. A list of filtered virtual machine names will appear and change as you type.
+4.  Click the **Virtual machines** tab.
 
-5.  Optional: Click the **Advanced search** button next to the search bar to use more search options.
+5.  Optional: Click the **Search virtual machines** text box and begin to type the name of a virtual machine. A list of filtered virtual machine names will appear and change as you type.
+
+6.  Optional: Click the **Advanced search** button next to the search bar to use more search options.
 
     1.  Use the fields provided to further filter your virtual machine search.
 
-        | Field                          | Description                                                                                                                                            |
-        |--------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-        | Name                           | The virtual machine name.                                                                                                                              |
-        | Project                        | A project that is part of your deployment.                                                                                                             |
-        | Description                    | Text in the description of the virtual machine.                                                                                                        |
-        | Status                         | The status of the virtual machine.                                                                                                                     |
-        | Operating system               | The operating system of the virtual machine.                                                                                                           |
-        | vCPU                           | The number of vCPUs alotted to the virtual machine. Select a modifying expression and enter a value to search on.                                      |
-        | Memory                         | The amount of memory alotted to the virtual machine. Select a modifying expression, enter a value to search on, and select what that value represents. |
-        | Storage class                  | The storage class the virtual machine uses.                                                                                                            |
-        | Hardware devices               | The type of hardware device assocaited with the virtual machine.                                                                                       |
-        | Date created                   | The date range the virtual machine was created in.                                                                                                     |
-        | Labels                         | The labels associated with the virtual machine.                                                                                                        |
-        | Scheduling                     | The scheduling logic associated with the virtual machine.                                                                                              |
-        | Nodes                          | The nodes associated with the virtual machine.                                                                                                         |
-        | IP address                     | The IP address of the virtual machine.                                                                                                                 |
-        | Network Attachment Definitions | Select the appropriate definition.                                                                                                                     |
+        | Field                          | Description                                                                                                                                             |
+        |--------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+        | Name                           | The virtual machine name.                                                                                                                               |
+        | Project                        | A project that is part of your deployment.                                                                                                              |
+        | Description                    | Text in the description of the virtual machine.                                                                                                         |
+        | Status                         | The status of the virtual machine.                                                                                                                      |
+        | Operating system               | The operating system of the virtual machine.                                                                                                            |
+        | vCPU                           | The number of vCPUs allotted to the virtual machine. Select a modifying expression and enter a value to search on.                                      |
+        | Memory                         | The amount of memory allotted to the virtual machine. Select a modifying expression, enter a value to search on, and select what that value represents. |
+        | Storage class                  | The storage class the virtual machine uses.                                                                                                             |
+        | Hardware devices               | The type of hardware device associated with the virtual machine.                                                                                        |
+        | Date created                   | The date range the virtual machine was created in.                                                                                                      |
+        | Labels                         | The labels associated with the virtual machine.                                                                                                         |
+        | Scheduling                     | The scheduling logic associated with the virtual machine.                                                                                               |
+        | Nodes                          | The nodes associated with the virtual machine.                                                                                                          |
+        | IP address                     | The IP address of the virtual machine.                                                                                                                  |
+        | Network Attachment Definitions | Select the appropriate definition.                                                                                                                      |
 
     2.  Click **Search**.
 
     3.  Optional: Click **Clear all** to clear all search criteria.
 
-6.  Optional: Click **Save search** to save the current for reuse later.
+7.  Optional: Click **Save search** to save the current for reuse later.
 
-7.  Optional: Select a saved search from the **Saved searches** list to reuse.
+8.  Optional: Select a saved search from the **Saved searches** list to reuse.
 
-8.  Optional: Filter the list of virtual machines by project using the **Project** list.
+9.  Optional: Filter the list of virtual machines by project or cluster by using the **Project** or **Cluster** list.
 
-9.  Optional: Filter the list of virtual machines by status using the **Status** list.
+10. Optional: Filter the list of virtual machines by status using the **Status** list.
 
-10. Optional: Filter the list of virtual machines by operating system using the **Operating system** list.
+11. Optional: Filter the list of virtual machines by operating system using the **Operating system** list.
 
-11. Optional: Filter the list of virtual machines by name using the **Search by name** field.
+12. Optional: Filter the list of virtual machines by name using the **Search by name** field.
 
-12. Optional: Use the **Selection** list to quickly select or deselect a group of virtual machines.
+13. Optional: Use the **Selection** list to quickly select or deselect a group of virtual machines.
 
-13. Optional: Use the **Actions** list to perform an action on all selected virtual machines.
+14. Optional: Use the **Actions** list to perform an action on all selected virtual machines.
 
-14. Optional: Click the **More actions** icon beside an individual virtual machine listing to perform an action on that virtual machine.
+15. Optional: Click the **More actions** icon beside an individual virtual machine listing to perform an action on that virtual machine.
 
 # Organize virtual machines by using the web console
 

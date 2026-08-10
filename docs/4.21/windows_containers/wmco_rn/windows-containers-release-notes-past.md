@@ -1,6 +1,6 @@
 You can review the following release notes to learn about changes in previous versions of the Custom Metrics Autoscaler Operator.
 
-For the current version, see [Red Hat OpenShift support for Windows Containers release notes](../../windows_containers/wmco_rn/windows-containers-release-notes.xml#windows-containers-release-notes).
+For the current Red Hat OpenShift support for Windows Containers release notes, see "Red Hat OpenShift support for Windows Containers release notes".
 
 # Release notes for Red Hat Windows Machine Config Operator 10.21.0
 

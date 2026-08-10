@@ -1,8 +1,8 @@
-As a cluster administrator, you can update Operators that have been previously installed using Operator Lifecycle Manager (OLM) on your OpenShift Container Platform cluster.
+You can update Operators previously installed with Operator Lifecycle Manager (OLM) on your OpenShift Container Platform cluster.
 
 <div class="note">
 
-For information on how OLM handles updates for installed Operators colocated in the same namespace, as well as an alternative method for installing Operators with custom global Operator groups, see [Multitenancy and Operator colocation](../../operators/understanding/olm/olm-colocation.xml#olm-colocation).
+For information on how OLM handles updates for installed Operators colocated in the same namespace, as well as an alternative method for installing Operators with custom global Operator groups, see "Multitenancy and Operator colocation".
 
 </div>
 
@@ -18,11 +18,15 @@ You cannot change installed Operators to a channel that is older than the curren
 
 </div>
 
-Red Hat Customer Portal Labs include an application that helps administrators prepare to update their Operators. See Additional resources.
+Red Hat Customer Portal Labs include an application that helps administrators prepare to update their Operators.
+
+You can use these tools to search for Operators and verify the available Operator versions per update channel across different releases of OpenShift Container Platform. Operators managed by Cluster Version Operator (CVO) are not included.
+
+- [OpenShift Container Platform Operator Update Information Checker](https://access.redhat.com/labs/ocpouic/)
 
 # Changing the update channel for an Operator
 
-You can change the update channel for an Operator by using the OpenShift Container Platform web console.
+To change the update channel for an installed Operator, you can use the OpenShift Container Platform web console. The update channel determines which Operator versions your subscription tracks and receives.
 
 <div class="tip">
 
@@ -67,5 +71,7 @@ If an installed Operator has the approval strategy in its subscription set to **
 # Additional resources
 
 - [Red Hat OpenShift Container Platform Operator Update Information Checker](https://access.redhat.com/labs/ocpouic/)
+
+- [Multitenancy and Operator colocation](../../operators/understanding/olm/olm-colocation.xml#olm-colocation)
 
 - [Using Operator Lifecycle Manager in disconnected environments](../../disconnected/using-olm.xml#olm-restricted-networks)

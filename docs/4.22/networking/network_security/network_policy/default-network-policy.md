@@ -30,7 +30,7 @@ To create your own custom project template:
 
 5.  Edit the project configuration resource using the web console or CLI.
 
-    - Using the web console:
+    - Using the web console, complete the following tasks:
 
       1.  Navigate to the **Administration** → **Cluster Settings** page.
 
@@ -38,7 +38,7 @@ To create your own custom project template:
 
       3.  Find the entry for **Project** and click **Edit YAML**.
 
-    - Using the CLI:
+    - Using the CLI, complete the following tasks:
 
       1.  Edit the `project.config.openshift.io/cluster` resource:
 
@@ -46,7 +46,7 @@ To create your own custom project template:
           $ oc edit project.config.openshift.io/cluster
           ```
 
-6.  Update the `spec` section to include the `projectRequestTemplate` and `name` parameters, and set the name of your uploaded project template. The default name is `project-request`.
+6.  Update the `spec` section to include the `projectRequestTemplate` and `name` parameters. Ensure you set the name of your uploaded project template. The default name is `project-request`.
 
     <div class="formalpara-title">
 

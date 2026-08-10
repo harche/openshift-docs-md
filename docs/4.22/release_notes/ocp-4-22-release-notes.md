@@ -26,7 +26,9 @@ For more information about NIST post-quantum cryptography standards, see [Post-Q
 
 # OpenShift Container Platform layered and dependent component support and compatibility
 
-The scope of support for layered and dependent components of OpenShift Container Platform changes independently of the OpenShift Container Platform version. To determine the current support status and compatibility for an add-on, refer to its release notes. For more information, see the [Red Hat OpenShift Container Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift).
+The scope of support for layered and dependent components of OpenShift Container Platform changes independently of the OpenShift Container Platform version.
+
+To determine the current support status and compatibility for an add-on, refer to its release notes. For more information, see the [Red Hat OpenShift Container Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift).
 
 # New features and enhancements
 
@@ -34,8 +36,7 @@ This release adds improvements related to the following components and concepts:
 
 ## AI applications
 
-### MCP server for Red Hat OpenShift Container Platform (Technology Preview)
-
+MCP server for Red Hat OpenShift Container Platform (Technology Preview)
 OpenShift Container Platform 4.22 introduces MCP server for Red Hat OpenShift Container Platform as a Technology Preview feature.
 
 When a problem occurs on your OpenShift Container Platform cluster, you want to determine exactly what is happening, so that you can fix the issue as soon as possible. The MCP server for Red Hat OpenShift Container Platform feature provides an AI tool for this purpose to quickly and easily diagnose your OpenShift Container Platform cluster.
@@ -439,8 +440,7 @@ With this update, you can collect diagnostic data by using custom images in the 
 
 ## Storage
 
-### New VolumeSnapshotClass csi-gce-pd-vsc-images is generally available
-
+New VolumeSnapshotClass csi-gce-pd-vsc-images is generally available
 By default, you cannot restore more than six volumes per snapshot per hour. So in Kubevirt environments, you normally cannot create more than six VMs per hour from a "golden image" (templates saved as snapshots).
 
 For Google Cloud Platform (GCP) persistent disk (PD) storage Container Storage Interface (CSI), there is now a non-default `VolumeSnapshotClass`, named `csi-gce-pd-vsc-images`, that uses the `snapshot-type: images` parameter. When using KubeVirt, it allows you to overcome the six VMs per hour restriction, so that you can create VMs from "golden images".
@@ -449,8 +449,7 @@ This feature is generally available in OpenShift Container Platform 4.22.
 
 For more information, see [Volume snapshots CRD: VolumeSnapshotClass](../storage/container_storage_interface/persistent-storage-csi-snapshots.xml#volume-snapshot-crds).
 
-### Support for Hyperdisk Balanced High Availability volumes is generally available
-
+Support for Hyperdisk Balanced High Availability volumes is generally available
 OpenShift Container Platform 4.22 introduces support for Hyperdisk Balanced High Availability volumes as generally available.
 
 Hyperdisk Balanced High Availability volumes are useful for:
@@ -461,8 +460,7 @@ Hyperdisk Balanced High Availability volumes are useful for:
 
 For more information, see [Hyperdisk-balanced high availability disks overview](../storage/container_storage_interface/persistent-storage-csi-gcp-pd.xml#persistent-storage-csi-gcp-hyperdisk-ha-overview_persistent-storage-csi-gcp-pd).
 
-### Local Storage Operator symlinks management is generally available
-
+Local Storage Operator symlinks management is generally available
 To prevent storage breakage during OpenShift Container Platform upgrades, OpenShift Container Platform 4.22 provides a mechanism, the `LocalVolumeDeviceLink` Custom Resource Definition, to detect, alert, and remap broken symlinks without manual node-level intervention.
 
 The Local Storage Operator (LSO) traditionally creates persistent volumes (PVs) based on `/dev/disk/by-id/` paths, following the assumption that they are stable. However, Linux kernel updates, firmware updates, or `udev` rule changes can cause these supposedly stable names to change or disappear.
@@ -477,20 +475,17 @@ Administrators have the following notification and correction options to deal wi
 
 For more information, see [Local Storage Operator symlinks management](../storage/persistent_storage_local/persistent-storage-local.xml#local-storage-symlinks-top-level_persistent-storage-local).
 
-### Mutable CSI node allocatable property is generally available
-
+Mutable CSI node allocatable property is generally available
 This feature allows for dynamically updating the maximum number of storage volumes a node can handle. Without this feature, volume limits are essentially immutable when a node first joins the cluster. If the environment changes—for example, if you attach a new network interface (ENI) that shares a hardware "slot" with your storage—OpenShift Container Platform does not recognize it has fewer slots available for disks, leading to pods becoming stuck.
 
 This feature is only supported on AWS Elastic Block Storage (EBS).
 
 Mutable CSI node allocatable property was introduced in OpenShift Container Platform 4.21 as a Technical Preview feature. In OpenShift Container Platform 4.22, it is supported as generally available.
 
-### Updated release of the Secrets Store CSI Driver Operator
-
+Updated release of the Secrets Store CSI Driver Operator
 The Secrets Store CSI Driver Operator version v4.22 is now based on the upstream version v1.5.6 release of secrets-store-csi-driver. OpenShift Container Platform 4.22 enables Secrets Store CSI Driver on IBM Z®.
 
-### European Sovereign Cloud (EUSC) region (Technology Preview)
-
+European Sovereign Cloud (EUSC) region (Technology Preview)
 European Sovereign Cloud (EUSC) region acts as a "digital fortress" built within a specific country’s borders. Sovereign Clouds are specifically designed to meet strict legal, jurisdictional, and security requirements of a particular nation or entity.
 
 In the context of storage, EUSC ensures that all data, including primary storage, backups, and the resulting metadata, resides physically within the specific nation’s borders and remains exclusively under its legal jurisdiction.
@@ -542,6 +537,10 @@ Unused Cluster API Operator image removed from release image
 With this update, the OpenShift Container Platform release image no longer includes the `cluster-api-operator` image. As a result, you can no longer pull this image from the release image manually. If you mirror the release image, you can delete this image from your mirror. ([OCPBUGS-61949](https://redhat.atlassian.net/browse/OCPBUGS-61949))
 
 # Deprecated and removed features
+
+You can plan your cluster maintenance and upgrades effectively based on the features that are deprecated or removed in OpenShift Container Platform.
+
+Review the following tables based on various functions such as images, installation, machine management, and so on.
 
 ## Images deprecated and removed features
 
@@ -668,7 +667,7 @@ For more information on DRA, see [Allocating GPUs to pods by using DRA](../nodes
 
 # Fixed issues
 
-The following issues are fixed for this release:
+Review the list of issues resolved in this OpenShift Container Platform release. You can see if issues affecting your clusters or environments are fixed.
 
 ## API Server and Authentication
 
@@ -1292,6 +1291,70 @@ This section will continue to be updated over time to provide notes on enhanceme
 For any OpenShift Container Platform release, always review the instructions on [updating your cluster](../updating/updating_a_cluster/updating-cluster-web-console.xml#updating-cluster-web-console) properly.
 
 </div>
+
+## RHSA-2026:48693 - OpenShift Container Platform 4.17.8 bug fix and security update
+
+Issued: 04 August 2026
+
+OpenShift Container Platform release 4.17.8 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:48693](https://access.redhat.com/errata/RHSA-2026:48693) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:48694](https://access.redhat.com/errata/RHBA-2026:48694) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.22.8 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, setting the `.spec.timeZone` parameter in a cron job might have crashed the kube-state-metrics (KSM) pod. This issue removed the cluster metrics and monitoring alerts. With this release, kube-state-metrics (KSM) gracefully skip cron job objects with unparseable schedules instead of crashing. As a result, the KSM pod remains stable and continues to serve metrics for all cluster resources, even when individual cron job objects have schedules or time zones that cannot be parsed. ([OCPBUGS-87957](https://redhat.atlassian.net/browse/OCPBUGS-87957))
+
+- Before this update, KubeVirt-based `NodePool` resources incorrectly reported `ClusterNetworkCIDRConflict` errors because the controller flagged OVN-Kubernetes internal overlay IP addresses as conflicting with the cluster network. With this release, Classless Inter-Domain Routing (CIDR) conflict detection is triggered only when all the non-link local addresses for the machine fall within the cluster network. As a result, when external addresses exist, in-network addresses are correctly treated as expected container network interface (CNI) internal IP addresses, which prevents false positive conflict reports. ([OCPBUGS-97921](https://redhat.atlassian.net/browse/OCPBUGS-97921))
+
+- Before this update, on hosted control plane (HCP) clusters where the management cluster required a proxy for outbound internet access, the `Konnectivity` proxy sidecar containers did not receive the management cluster proxy environment variables such as `HTTP_PROXY`, `HTTPS_PROXY`, and `NO_PROXY`. As a consequence, cloud API calls to Amazon Web Services (AWS), Microsoft Azure, or IBM Cloud® endpoints made through the direct cloud API bypass path failed with TLS handshake timeouts. With this release, management cluster proxy environment variables are propagated to the `Konnectivity` sidecar containers when the direct cloud API connection feature is enabled. As a result, cloud API calls succeed through the proxy. ([OCPBUGS-99299](https://redhat.atlassian.net/browse/OCPBUGS-99299))
+
+- Before this update, Alertmanager crashed because the `tzdata` package was missing in the OpenShift Container Platform base images, This issue caused the absence of the `/usr/share/zoneinfo` directory. As a consequence, Alertmanager pods failed to start, which made time-based alerts inaccessible for the time zones. With this release, the `tzdata` package has been reinstated in OpenShift Container Platform images. As a result, Alertmanager does not crash on startup when location fields are present in the `active_interval` or `mute_interval` entries. ([OCPBUGS-99442](https://redhat.atlassian.net/browse/OCPBUGS-99442))
+
+- Before this update, the web console storage unit parser treated a `findIndex` result of `0` for the largest unit, `Ei` or `EiB`, as not found, and the binary byte unit list omitted `EiB`. As a consequence, creating a persistent volume claim (PVC) with an exbibyte-sized request, for example `1Ei` or `1EiB`, displayed the requested capacity as `0 B` on the PVC details page, even though the API stored the correct value. With this release, the unit lookup logic recognizes index `0` as valid and includes `EiB` in the binary byte units used for humanization. As a result, the PVC details page displays the correct capacity, for example `1 EiB`, when storage is requested in exbibyte units. ([OCPBUGS-99545](https://redhat.atlassian.net/browse/OCPBUGS-99545))
+
+- Before this update, locale files under `locales/{xx}/olm.json` translated the Kubernetes custom resource kind names `CatalogSource` and `OperatorGroup` into local languages. As a consequence, in non-English UI locales, Operator Lifecycle Manager (OLM) pages displayed localized labels for these resource kinds that did not match the API, the CLI (`oc`), or YAML, which caused inconsistency and confusion. With this release, the canonical English kind names `CatalogSource` and `OperatorGroup` are restored in the affected OLM locale files so that they are not translated. As a result, `CatalogSource` and `OperatorGroup` labels are in English across all locales and stay consistent with the API and CLI. ([OCPBUGS-99548](https://redhat.atlassian.net/browse/OCPBUGS-99548))
+
+- Before this update, the Cluster Monitoring Operator (CMO) checked only the `openshift-config/pull-secret` for the `cloud.openshift.com` authentication token used by the telemeter client. As a consequence, on platforms where this secret did not contain the token, such as the Microsoft Azure Red Hat OpenShift hosted control plane, the telemeter client was not deployed, which prevented cluster registration in Red Hat OpenShift Cluster Manager. With this release, the CMO falls back to `kube-system/global-pull-secret` if the token is not found in the primary secret. As a result, the telemeter client is deployed correctly. ([OCPBUGS-99748](https://redhat.atlassian.net/browse/OCPBUGS-99748))
+
+### Updating
+
+To update an OpenShift Container Platform 4.22 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
+## RHSA-2026:44237 - OpenShift Container Platform 4.17.7 bug fix and security update
+
+Issued: 28 July 2026
+
+OpenShift Container Platform release 4.17.7 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:44237](https://access.redhat.com/errata/RHSA-2026:44237) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:44229](https://access.redhat.com/errata/RHBA-2026:44229) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.22.7 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, when multiple KubeVirt virtual machines shared the same hostname on localnet or layer2 networks, OVN-Kubernetes could not correctly discover virtual machine names from virt-launcher pods. As a consequence, live migration failed for these virtual machines. With this release, the method by which OVN-Kubernetes discovers virtual machine names from virt-launcher pods has been updated. As a result, virtual machines can live migrate without issues even when sharing a hostname. ([OCPBUGS-88733](https://issues.redhat.com/browse/OCPBUGS-88733))
+
+- Before this update, during pod deletion on localnet topologies with interconnect, the `enableSourceLSPFailedLiveMigration` attribute attempted to re-enable the logical switch port (LSP) of the source pod after a failed live migration. This occurred even if the source pod was not on the local node. As a consequence, target pod cleanup was blocked, creating a stale LSP for an already deleted virtual machine and causing a loss of network connectivity. With this release, a locality guard ensures that the source LSP is re-enabled only when the source pod is scheduled in the local zone or the network uses layer2 interconnect transport. As a result, the system re-enables the source LSP only if the source pod is in the local zone, or if the network uses a layer 2 interconnect transport. As a result, the system prevents stale LSPs and maintains network connectivity after a live migration. ([OCPBUGS-88734](https://issues.redhat.com/browse/OCPBUGS-88734))
+
+- Before this update, the Vertical Pod Autoscaler (VPA) Operator required a control plane node for running VPA controllers, even on hosted control planes clusters where no such nodes exist in the guest cluster. As a consequence, installing the VPA Operator on hosted control planes clusters failed. With this release, VPA controllers can run on any available nodes in hosted control planes clusters. As a result, the VPA Operator installs successfully on hosted control planes clusters. ([OCPBUGS-89265](https://issues.redhat.com/browse/OCPBUGS-89265))
+
+- Before this update, when managing a high volume of `BareMetalHost` resources on a single Multicluster Engine instance, the BareMetal Operator issued excessive requests to the Provisioner API during reconciliation. As a consequence, VirtualMedia injection and node reconciliation were noticeably slower at this scale. With this release, the BareMetal Operator reconciliation loop is optimized to issue fewer requests to the Provisioner API. As a result, responsiveness improves when managing large numbers of BareMetalHost resources. ([OCPBUGS-94109](https://issues.redhat.com/browse/OCPBUGS-94109))
+
+- Before this update, when telemeter-client availability flickered because of monitoring pod restarts or node disruptions, the console Operator produced different ConfigMap content on each sync cycle. As a consequence, continuous console pod rollouts destroyed in-memory sessions and logged users out of the OpenShift Container Platform web console approximately every 5 minutes. With this release, the telemetry configuration always produces a stable key set regardless of telemeter-client availability. As a result, unnecessary console pod rollouts are prevented and users are no longer logged out unexpectedly. ([OCPBUGS-97828](https://issues.redhat.com/browse/OCPBUGS-97828))
+
+### Updating
+
+To update an OpenShift Container Platform 4.22 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
 
 ## RHSA-2026:40768 - OpenShift Container Platform 4.17.6 bug fix and security update
 

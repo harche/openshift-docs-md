@@ -270,6 +270,33 @@ The following query returns the top 3 VMs waiting for I/O at every given moment 
 topk(3, sum by (name, namespace) (rate(kubevirt_vmi_vcpu_wait_seconds_total[6m]))) > 0
 ```
 
+## vGPU metrics
+
+You can monitor virtual machines using NVIDIA GPUs with this metric.
+
+`kubevirt_vmi_gpu_info`
+Returns information about the GPU resources attached to the virtual machine. This metric is implemented as a Gauge with the following metadata attached:
+
+- **Node** - The associated virtual machine using the GPU resource.
+
+- **Namespace** - The associated namespace using the GPU resource.
+
+- **Pod** - The associated pod using the GPU resource.
+
+- **Resource** - The `Extended Resource` type defined in the virtual machine specification.
+
+- **UUID** - The unique hardware identifier of the GPU resource.
+
+  Implement the Data Center GPU Manager Exporter (`dcgm-exporter`) in the virtual machine with the attached GPU resources.
+
+  <div class="note">
+
+  For information on implementing the `dcgm-exporter`, see [Install DCGM Exporter](https://docs.nvidia.com/datacenter/dcgm/latest/installation/install-dcgm-exporter.html).
+
+  </div>
+
+  Expose the `dcgm-exporter` with a `Service` object. For information on configuring a `Service` object for this purpose, see [Configuring the node exporter service](https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/virtualization/monitoring#virt-configuring-node-exporter-service_virt-exposing-custom-metrics-for-vms). This section describes how to configure a node exporter service. It is the same process to configure the `dcgm-exporter`. Substitute your `dcgm-exporter` configuration where appropriate.
+
 ## Network metrics
 
 The following queries can identify virtual machines that are saturating the network:

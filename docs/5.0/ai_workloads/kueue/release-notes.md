@@ -2,7 +2,7 @@ Red Hat build of Kueue is released as an Operator that is supported on OpenShif
 
 # Compatible environments
 
-Before you install Red Hat build of Kueue, review this section to ensure that your cluster meets the requirements.
+Your cluster must meet specific architecture and platform requirements before you can install Red Hat build of Kueue.
 
 ## Supported architectures
 

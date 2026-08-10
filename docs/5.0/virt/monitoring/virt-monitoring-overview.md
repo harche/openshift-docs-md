@@ -17,5 +17,8 @@ Configure the `node-exporter` service to expose internal VM metrics and processe
 [VM health checks](../../virt/monitoring/virt-monitoring-vm-health.xml#virt-monitoring-vm-health)
 Configure readiness, liveness, and guest agent ping probes and a watchdog for VMs.
 
+[Standalone observability controller](../../virt/monitoring/virt-standalone-observability-controller.xml#virt-standalone-observability-controller)
+Enable the standalone observability controller to update monitoring and alerts independently of the OpenShift Virtualization control plane.
+
 [Runbooks](../../virt/monitoring/virt-runbooks.xml#virt-runbooks)
 Diagnose and resolve issues that trigger OpenShift Virtualization [alerts](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/monitoring_key_concepts/key-concepts#about-managing-alerts_key-concepts) in the OpenShift Container Platform web console.

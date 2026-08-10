@@ -1,4 +1,4 @@
-You can modify the OpenShift Container Platform web console to set a logout redirect URL or disable the quick start tutorials.
+You can change the OpenShift Container Platform web console to set a logout redirect URL or disable the quick start tutorials.
 
 # Prerequisites
 
@@ -8,29 +8,29 @@ You can modify the OpenShift Container Platform web console to set a logout redi
 
 You can configure the web console settings by editing the `console.config.openshift.io` resource.
 
-- Edit the `console.config.openshift.io` resource:
+1.  Edit the `console.config.openshift.io` resource:
 
-  ``` terminal
-  $ oc edit console.config.openshift.io cluster
-  ```
+    ``` terminal
+    $ oc edit console.config.openshift.io cluster
+    ```
 
-  The following example displays the sample resource definition for the console:
+    The following example displays the sample resource definition for the console:
 
-  ``` yaml
-  apiVersion: config.openshift.io/v1
-  kind: Console
-  metadata:
-    name: cluster
-  spec:
-    authentication:
-      logoutRedirect: ""
-  status:
-    consoleURL: ""
-  ```
+    ``` yaml
+    apiVersion: config.openshift.io/v1
+    kind: Console
+    metadata:
+      name: cluster
+    spec:
+      authentication:
+        logoutRedirect: ""
+    status:
+      consoleURL: ""
+    ```
 
-  - Specify the URL of the page to load when a user logs out of the web console. If you do not specify a value, the user returns to the login page for the web console. Specifying a `logoutRedirect` URL allows your users to perform single logout (SLO) through the identity provider to destroy their single sign-on session.
+    The `logoutRedirect` field specifies the URL of the page to load when a user logs out of the web console. If you do not specify a value, the user returns to the login page for the web console. Specifying a `logoutRedirect` URL allows your users to perform single logout (SLO) through the identity provider to delete their single sign-on session.
 
-  - The web console URL. To update this to a custom value, see **Customizing the web console URL**.
+    The `consoleURL` field is the web console URL. To update this to a custom value, see **Customizing the web console URL**.
 
 # Disabling quick starts in the web console
 
@@ -38,7 +38,7 @@ You can use the **Administrator** perspective of the web console to disable one 
 
 - You have cluster administrator permissions and are logged in to the web console.
 
-1.  In the **Administrator** perspective, navigate to **Administation** → **Cluster Settings**.
+1.  In the **Administrator** perspective, navigate to **Administration** → **Cluster Settings**.
 
 2.  On the **Cluster Settings** page, click the **Configuration** tab.
 

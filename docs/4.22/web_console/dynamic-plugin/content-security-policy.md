@@ -1,4 +1,4 @@
-You can specify Content Security Policy (CSP) directives for your dynamic plugin using the `contentSecurityPolicy` field in the `ConsolePluginSpec` file. This field helps mitigate potential security risks by specifying which sources are allowed for fetching content like scripts, styles, images, and fonts. For dynamic plugins that require loading resources from external sources, defining custom CSP rules ensures secure integration into the OpenShift Container Platform console.
+Specify Content Security Policy (CSP) directives for your dynamic plugin using the `contentSecurityPolicy` field in `ConsolePluginSpec`. CSP restricts which sources supply scripts, styles, images, and fonts, mitigating risks for plugins loading resources externally.
 
 <div class="important">
 

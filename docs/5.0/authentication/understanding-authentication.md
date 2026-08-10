@@ -1,4 +1,4 @@
-You can interact with OpenShift Container Platform, by first authenticating to the cluster. The authentication layer identifies the user associated with requests to the OpenShift Container Platform API. The authorization layer then uses information about the requesting user to determine if the request is allowed.
+To interact with OpenShift Container Platform, log in so the authentication layer can verify your identity. The authorization layer then uses your identity to determine which actions and resources you can access.
 
 As an administrator, you can configure authentication for OpenShift Container Platform.
 
@@ -91,7 +91,9 @@ If the authenticating proxy cannot support `WWW-Authenticate` challenges, or if 
 
 ### API impersonation
 
-You can configure a request to the OpenShift Container Platform API to act as though it originated from another user. For more information, see [User impersonation](https://kubernetes.io/docs/reference/access-authn-authz/authentication/#user-impersonation) in the Kubernetes documentation.
+You can configure API requests in OpenShift Container Platform to act as another user. Impersonation allows you to perform actions on behalf of another account without switching credentials.
+
+- [User impersonation (Kubernetes documentation)](https://kubernetes.io/docs/reference/access-authn-authz/authentication/#user-impersonation)
 
 ### Authentication metrics for Prometheus
 

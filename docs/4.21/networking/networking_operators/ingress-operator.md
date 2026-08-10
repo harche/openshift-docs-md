@@ -354,13 +354,9 @@ When using one of the predefined profile types, the effective profile configurat
 
 ### Configuring the TLS security profile for the Ingress Controller
 
-To configure a TLS security profile for an Ingress Controller, edit the `IngressController` custom resource (CR) to specify a predefined or custom TLS security profile. If a TLS security profile is not configured, the default value is based on the TLS security profile set for the API server.
+To configure a TLS security profile for an Ingress Controller, edit the `IngressController` custom resource (CR) to specify a predefined or custom TLS security profile.
 
-<div class="formalpara-title">
-
-**Sample `IngressController` CR that configures the `Old` TLS security profile**
-
-</div>
+If a TLS security profile is not configured, the default value is based on the TLS security profile set for the API server, as shown in the following example:
 
 ``` yaml
 apiVersion: operator.openshift.io/v1
@@ -370,7 +366,6 @@ spec:
   tlsSecurityProfile:
     old: {}
     type: Old
- ...
 ```
 
 The TLS security profile defines the minimum TLS version and the TLS ciphers for TLS connections for Ingress Controllers.
@@ -390,7 +385,7 @@ The Ingress Operator also converts the TLS `1.0` of an `Old` or `Custom` profile
 1.  Edit the `IngressController` CR in the `openshift-ingress-operator` project to configure the TLS security profile:
 
     ``` terminal
-    $ oc edit IngressController default -n openshift-ingress-operator
+    $ oc edit IngressController default -n openshift-ingress-operator.
     ```
 
 2.  Add the `spec.tlsSecurityProfile` field:
@@ -418,19 +413,11 @@ The Ingress Operator also converts the TLS `1.0` of an `Old` or `Custom` profile
      ...
     ```
 
-    - Specify the TLS security profile type (`Old`, `Intermediate`, or `Custom`). The default is `Intermediate`.
+    - Specify the value for the `spec.tlsSecurityProfile` parameter. The TLS security profile types are `Old`, `Intermediate`, or `Custom`. The default type is `Intermediate`.
 
-    - Specify the appropriate field for the selected type:
+    - Specify the appropriate field for the selected `spec.tlsSecurityProfile.type`. The fields are `old: {}`, `intermediate: {}`, `modern: {}`, or `custom:`.
 
-      - `old: {}`
-
-      - `intermediate: {}`
-
-      - `modern: {}`
-
-      - `custom:`
-
-    - For the `custom` type, specify a list of TLS ciphers and minimum accepted TLS version.
+    - For the `custom` type, specify a list of TLS ciphers and the minimum accepted TLS version.
 
 3.  Save the file to apply the changes.
 

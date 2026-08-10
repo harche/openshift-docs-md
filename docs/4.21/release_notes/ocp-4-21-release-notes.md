@@ -18,11 +18,13 @@ For more information about the NIST validation program, see [Cryptographic Modul
 
 # OpenShift Container Platform layered and dependent component support and compatibility
 
-The scope of support for layered and dependent components of OpenShift Container Platform changes independently of the OpenShift Container Platform version. To determine the current support status and compatibility for an add-on, refer to its release notes. For more information, see the [Red Hat OpenShift Container Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift).
+The scope of support for layered and dependent components of OpenShift Container Platform changes independently of the OpenShift Container Platform version.
+
+To determine the current support status and compatibility for an add-on, refer to its release notes. For more information, see the [Red Hat OpenShift Container Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift).
 
 # New features and enhancements
 
-This release adds improvements related to the following components and concepts:
+You can take advantage of the latest platform improvements by reviewing the new features and enhancements in OpenShift Container Platform4.17.
 
 ## API server
 
@@ -490,6 +492,10 @@ With this update, the Dynamic Resource Allocation (DRA) is disabled so that the 
 
 # Deprecated and removed features
 
+You must plan to migrate from deprecated features, because they are scheduled for removal in a future release.
+
+Review the following tables to identify features that are deprecated or removed in OpenShift Container Platform 4.17.
+
 ## Images deprecated and removed features
 
 | Feature                  | 4.19       | 4.20       | 4.21       |
@@ -593,6 +599,8 @@ Workloads deprecated and removed tracker
 
 # Deprecated features
 
+This section includes deprecated features for OpenShift Container Platform 4.17.
+
 Deprecation of Fujitsu Integrated Remote Management Controller (iRMC) driver for bare-metal machines
 As of OpenShift Container Platform 4.21, support for the Fujitsu iRMC baseboard management controller (BMC) driver has been deprecated and will be removed in a future release. If a `BareMetalHost` resource contains a BMC address with `irmc://` as its URI scheme, the resource must be updated to use another BMC scheme, such as `redfish://` or `ipmi://`. Once support for this driver is removed, hosts that use `irmc://` URI schemes will become unmanageable.
 
@@ -607,7 +615,7 @@ The ability to configure swap memory is no longer available in OpenShift Contain
 
 # Fixed issues
 
-The following issues are fixed for this release:
+Review the list of issues resolved in this OpenShift Container Platform release. You can see if issues affecting your clusters or environments are fixed.
 
 ## Installer
 
@@ -643,7 +651,9 @@ The following issues are fixed for this release:
 
 # Technology Preview features status
 
-Some features in this release are currently in Technology Preview. These experimental features are not intended for production use. Note the following scope of support on the Red Hat Customer Portal for these features:
+Some features in this release are currently in Technology Preview. These experimental features are not intended for production use.
+
+Note the following scope of support on the Red Hat Customer Portal for these features:
 
 [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview)
 
@@ -950,6 +960,76 @@ This section will continue to be updated over time to provide notes on enhanceme
 For any OpenShift Container Platform release, always review the instructions on [updating your cluster](../updating/updating_a_cluster/updating-cluster-web-console.xml#updating-cluster-web-console) properly.
 
 </div>
+
+## RHSA-2026:48670 - OpenShift Container Platform 4.17.27 bug fix and security update
+
+Issued: 04 August 2026
+
+OpenShift Container Platform release 4.17.27 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:48670](https://access.redhat.com/errata/RHSA-2026:48670) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:48668](https://access.redhat.com/errata/RHBA-2026:48668) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.27 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, the installation program did not support the Azure Government API version `2019-11-01` for `storageAccounts`, which caused the installation program to fail. As a consequence, users were unable to create clusters in Azure Government environments. With this release, the Azure client has been updated to support the correct API version for `storageAccounts`. As a result, Azure Government users can now successfully create clusters while using boot diagnostics with a custom storage account. ([OCPBUGS-76552](https://redhat.atlassian.net/browse/OCPBUGS-76552))
+
+- Before this update, the upgrade to the multicluster engine (MCE) for Kubernetes Operator 2.11.0 caused incorrect cluster network classless inter-domain routing (CIDR) validation. This issue falsely flagged Open Virtual Networking (OVN) internal interfaces as conflicting with CIDR. As a consequence, deployment issues with OVN-Kubernetes networking occurred in MCE 2.11.0. With this release, the CIDR validation logic in MCE 2.11.0 excludes OVN-Kubernetes internal overlay IP addresses from conflict detection. As a result, KubeVirt node pools do not report false cluster network conflict issues after upgrading to MCE 2.11.0. ([OCPBUGS-97922](https://redhat.atlassian.net/browse/OCPBUGS-97922))
+
+- Before this update, when telemeter-client availability flickered because of monitoring pod restarts or node disruptions, the Console Operator produced different `ConfigMap` content on each sync cycle. As a consequence, continuous console pod rollouts deleted in-memory sessions and logged users out of the OpenShift Container Platform web console approximately every five minutes. With this release, the telemetry configuration always produces a stable key set regardless of telemeter-client availability. As a result, unnecessary console pod rollouts are prevented and you are not logged out unexpectedly. ([OCPBUGS-98987](https://redhat.atlassian.net/browse/OCPBUGS-98987))
+
+- Before this update, during pod deletion on localnet topologies with interconnect, the `enableSourceLSPFailedLiveMigration` attribute attempted to re-enable the logical switch port (LSP) of the source pod after a failed live migration. This occurred even if the source pod was not on the local node. As a consequence, target pod cleanup was blocked, creating a stale LSP for an already deleted virtual machine and causing a loss of network connectivity. With this release, a locality guard ensures that the source LSP is re-enabled only when the source pod is scheduled in the local zone or the network uses layer2 interconnect transport. As a result, the system prevents stale LSPs and maintains network connectivity after a live migration. ([OCPBUGS-99276](https://redhat.atlassian.net/browse/OCPBUGS-99276) and [OCPBUGS-99277](https://redhat.atlassian.net/browse/OCPBUGS-99277))
+
+- Before this update, cron job objects with specified `.spec.timeZone` fields caused the kube-state-metrics (KSM) pod to fail and stop reporting all cluster metrics. With this release, the KSM pod skips cron jobs with unparseable schedules instead of failing. A new `kube_cronjob_schedule_invalid` metric identifies these specific issues. As a result, the KSM pod remains stable and continues serving metrics for all cluster resources, even when individual cron jobs have schedules or time zones that cannot be parsed. ([OCPBUGS-99400](https://redhat.atlassian.net/browse/OCPBUGS-99400))
+
+- Before this update, Alertmanager crashed because the `tzdata` package was missing in the OpenShift Container Platform base images. This issue caused the absence of the `/usr/share/zoneinfo` directory. As a consequence, Alertmanager pods failed to start, which made time-based alerts inaccessible for the time zones. With this release, the `tzdata` package has been reinstated in OpenShift Container Platform images. As a result, Alertmanager does not crash on startup when location fields are present in the `active_interval` or `mute_interval` entries. ([OCPBUGS-99446](https://redhat.atlassian.net/browse/OCPBUGS-99446))
+
+- Before this update, the web console storage unit parser treated a `findIndex` result of `0` for the largest unit, `Ei` or `EiB`, as not found, and the binary byte unit list omitted `EiB`. As a consequence, creating a persistent volume claim (PVC) with an exbibyte-sized request, for example `1Ei` or `1EiB`, displayed the requested capacity as `0 B` on the PVC details page, even though the API stored the correct value. With this release, the unit lookup logic recognizes index `0` as valid and includes `EiB` in the binary byte units used for humanization. As a result, the PVC details page displays the correct capacity, for example `1 EiB`, when storage is requested in exbibyte units. ([OCPBUGS-99544](https://redhat.atlassian.net/browse/OCPBUGS-99544))
+
+- Before this update, locale files under `locales/{xx}/olm.json` translated the Kubernetes custom resource kind names `CatalogSource` and `OperatorGroup` into local languages. As a consequence, in non-English UI locales, Operator Lifecycle Manager (OLM) pages displayed localized labels for these resource kinds that did not match the API, the CLI (`oc`), or YAML, which caused inconsistency and confusion. With this release, the canonical English kind names `CatalogSource` and `OperatorGroup` are restored in the affected OLM locale files so that they are not translated. As a result, `CatalogSource` and `OperatorGroup` labels are in English across all locales and stay consistent with the API and CLI. ([OCPBUGS-99546](https://redhat.atlassian.net/browse/OCPBUGS-99548))
+
+- Before this update, on hosted control plane (HCP) clusters where the management cluster required a proxy for outbound internet access, the `Konnectivity` proxy sidecar containers did not receive the management cluster proxy environment variables such as `HTTP_PROXY`, `HTTPS_PROXY`, and `NO_PROXY`. As a consequence, cloud API calls to {aws}, {azure}, or {ibm-cloud} endpoints made through the direct cloud API bypass path failed with TLS handshake timeouts. With this release, management cluster proxy environment variables are propagated to the `Konnectivity` sidecar containers when the direct cloud API connection feature is enabled. As a result, cloud API calls succeed through the proxy. ([OCPBUGS-99646](https://redhat.atlassian.net/browse/OCPBUGS-99646))
+
+- Before this update, the Cluster Monitoring Operator (CMO) checked only the `openshift-config/pull-secret` for the `cloud.openshift.com` authentication token used by the telemeter client. As a consequence, on platforms where this secret did not contain the token, such as the Microsoft Azure Red Hat OpenShift hosted control plane, the telemeter client was not deployed, which prevented cluster registration in Red Hat OpenShift Cluster Manager. With this release, the CMO falls back to `kube-system/global-pull-secret` if the token is not found in the primary secret. As a result, the telemeter client is deployed correctly. ([OCPBUGS-99763](https://redhat.atlassian.net/browse/OCPBUGS-99763))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
+## RHSA-2026:44267 - OpenShift Container Platform 4.17.26 bug fix and security update
+
+Issued: 28 July 2026
+
+OpenShift Container Platform release 4.17.26 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:44267](https://access.redhat.com/errata/RHSA-2026:44267) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:44260](https://access.redhat.com/errata/RHBA-2026:44260) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.26 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, the Operator used the `reflect.DeepEqual` parameter for node label comparison which required an exact label match instead of Kubernetes label selector semantics. As a consequence, the `IngressNodeFirewallNodeState` objects were not created for nodes added after the Operator startup. With this release, the `reflect.DeepEqual` parameter is replaced with the `labels.SelectorFromSet().Matches()` parameter for correct Kubernetes label selector matching. As a result, the Operator correctly creates the `IngressNodeFirewallNodeState` object for dynamically added nodes and label changes. ([OCPBUGS-94092](https://redhat.atlassian.net/browse/OCPBUGS-94092))
+
+- Before this update, the Cluster Ingress Operator (CIO) log level was changed from `DEBUG` to `INFO`, but the `recorder.Event()` function calls continued to be echoed by controller-runtime only at the `DEBUG` level. As a consequence, operational events such as certificate lifecycle, DNS record changes, and IngressController status updates were no longer visible in the Operator logs. With this release, explicit `log.Info()` function calls are added alongside each `recorder.Event()` function call. As a result, the same information is emitted at `INFO` level and the operational events are visible in the Operator logs at `INFO` level.([OCPBUGS-94189](https://redhat.atlassian.net/browse/OCPBUGS-94189))
+
+- Before this update, when OVN-Kubernetes updated NetworkPolicy address sets for User Defined Networks, address set updates could fail with an `object not found` error if the address set was missing from the local cache. As a consequence, pods on affected User Defined Networks could fail service connectivity and health checks, and a restart of `ovnkube-controller` was required to recover. With this release, address set updates no longer treat a missing cache entry as a hard failure and allow the address set to be created when needed. As a result, NetworkPolicy address sets for User Defined Networks update correctly without requiring an `ovnkube-controller` restart. ([OCPBUGS-98398](https://redhat.atlassian.net/browse/OCPBUGS-98398))
+
+- Before this update, the Cluster Ingress Operator on OpenShift Container Platform 4.21 pinned Istio to v1.27.3, which was missing security fixes available in newer patch releases. As a consequence, Gateway API deployments ran an Istio control plane with known CVE vulnerabilities that had already been fixed upstream. With this release, the default Istio version is updated from v1.27.3 to v1.27.8, which includes the latest security fixes for the 1.27 stream. As a result, Gateway API deployments on OpenShift Container Platform 4.21 run Istio v1.27.8 with important CVE fixes applied. ([OCPBUGS-98966](https://redhat.atlassian.net/browse/OCPBUGS-98966))
+
+- Before this update, when you navigated to the **Cluster Dashboard Overview** page and clicked the **Insights** window on the **Status** card, an underlying UI component rendered the text incorrectly. As a consequence, the icons for the four severity levels (**Critical**, **Important**, **Moderate**, and **Low**) appeared, but the actual issue counts and the links to the **Insights** advisor were missing. With this release, the link component inside the **Insights** severity window is updated to ensure that the text and links render properly. As a result, each severity level in the **Insights** window now successfully displays its icon, the correct issue count, and a clickable link to the **Insights** advisor. ([OCPBUGS-99163](https://redhat.atlassian.net/browse/OCPBUGS-99163))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
 
 ## RHSA-2026:40792 - OpenShift Container Platform 4.17.25 bug fix and security update
 

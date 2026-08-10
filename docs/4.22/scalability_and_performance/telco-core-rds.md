@@ -179,7 +179,7 @@ Engineering Considerations
 
 - [Applying MachineConfigPool labels to nodes before the update](../updating/updating_a_cluster/update-using-custom-machine-config-pools.xml#update-using-custom-machine-config-pools)
 
-- [Understanding how to use pod disruption budgets to specify the number of pods that must be up](../nodes/pods/nodes-pods-configuring.xml#nodes-pods-pod-distruption-about_nodes-pods-configuring)
+- [Understanding how to use pod disruption budgets to specify the number of pods that must be up](../nodes/pods/nodes-pods-configuring.xml#nodes-pods-pod-disruption-about_nodes-pods-configuring)
 
 - [Placing pods relative to other pods using affinity and anti-affinity rules](../nodes/scheduling/nodes-scheduler-pod-affinity.xml#nodes-scheduler-pod-affinity)
 

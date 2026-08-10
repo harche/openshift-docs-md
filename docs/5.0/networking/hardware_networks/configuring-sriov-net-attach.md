@@ -90,6 +90,8 @@ Optional: Specifies the capabilities to configure for this additional network. Y
 
 - [Configuring namespaced SR-IOV resources](../../networking/hardware_networks/configuring-namespaced-sriov-resources.xml#introduction-to-namespaced-sriovnetwork-resources_configuring-namespaced-sriov-resources)
 
+- [Checking SR-IOV Network Operator status with Ready conditions](../../networking/networking_operators/sr-iov-operator/configuring-sriov-operator.xml#nw-sriov-monitoring-conditions-proc_configuring-sriov-operator)
+
 ## Creating a configuration for assignment of dual-stack IP addresses dynamically
 
 You can dynamically assign dual-stack IP addresses to a secondary network so that pods can communicate over both IPv4 and IPv6 addresses.

@@ -2990,27 +2990,21 @@ Follow this procedure to defragment etcd data on each etcd member.
 
 ## Restoring to an earlier cluster state for more than one node
 
-You can use a saved etcd backup to restore an earlier cluster state or restore a cluster that has lost the majority of control plane hosts.
+To restore your OpenShift Container Platform cluster with more than one control plane node to an earlier state, use a saved etcd snapshot after quorum loss or critical data deletion.
 
-For a Two-Node with Fencing (TNF) setup, a single surviving node can continue to operate in degraded mode. Use a saved etcd backup to restore an earlier cluster state if only one node is operational, or when both nodes have failed and you need to restart the cluster from a known safe state. In both cases, perform the restore procedure on a single node. The peer node automatically synchronizes its data with the restored node when it rejoins the cluster.
+For a Two-Node with Fencing (TNF) setup, a single surviving node can continue to operate in degraded mode. Use a saved etcd backup to restore an earlier cluster state if only one node is operational, or when both nodes have failed and you need to restart the cluster from a known safe state. In both cases, perform the restore procedure on a single node. The peer node automatically synchronizes data with the restored node when it rejoins the cluster.
 
-For a 3-node HA cluster, shut down etcd on the following number of hosts:
+Before you restore from backup on the recovery host, shut down etcd on enough control plane nodes so the remaining members cannot form a quorum:
 
-- For 3-node clusters: Shut down etcd on 2 hosts.
+- Shut down etcd on 2 hosts in a 3-node cluster.
 
-- For 4-node and 5-node clusters: Shut down etcd on 3 hosts.
+- Shut down etcd on 3 hosts in a 4-node or 5-node cluster.
 
-Quorum requires a simple majority of nodes. The minimum number of nodes required for a quorum is as follows:
-
-- For 3-node HA cluster: 2.
-
-- For 4-node and 5-node HA clusters: 3.
-
-If you start a new cluster from backup on your recovery host, the other etcd members might still form a quorum and continue service.
+If too few hosts are shut down, the other etcd members might still form a quorum and continue service while you restore.
 
 <div class="note">
 
-If your cluster uses a control plane machine set, see "Recovering a degraded etcd Operator" in "Troubleshooting the control plane machine set" for an etcd recovery procedure. For OpenShift Container Platform on a single node, see "Restoring to an earlier cluster state for a single node".
+If your cluster uses a control plane machine set, see "Recovering a degraded etcd Operator" in the control plane machine set troubleshooting topic for an etcd recovery procedure. For OpenShift Container Platform on a single node, follow the procedure to restore to an earlier cluster state for a single node.
 
 </div>
 
@@ -3020,15 +3014,15 @@ When you restore your cluster, you must use an etcd backup that was taken from t
 
 </div>
 
-- Access to the cluster as a user with the `cluster-admin` role through a certificate-based `kubeconfig` file, like the one that was used during installation.
+- You have access to the cluster as a user with the `cluster-admin` role through a certificate-based `kubeconfig` file, like the one that was used during installation.
 
-- A healthy control plane host to use as the recovery host.
+- You have a healthy control plane host to use as the recovery host.
 
 - You have SSH access to control plane hosts.
 
-- A backup directory containing both the `etcd` snapshot and the resources for the static pods, which were from the same backup. The file names in the directory must be in the following formats: `snapshot_<datetimestamp>.db` and `static_kuberesources_<datetimestamp>.tar.gz`.
+- You have a backup directory containing both the `etcd` snapshot and the resources for the static pods, which were from the same backup. The file names in the directory must be in the following formats: `snapshot_<datetimestamp>.db` and `static_kuberesources_<datetimestamp>.tar.gz`.
 
-- Nodes must be accessible or bootable.
+- Control plane nodes are accessible or bootable.
 
 <div class="important">
 
@@ -3040,7 +3034,7 @@ For non-recovery control plane nodes, it is not required to establish SSH connec
 
 2.  Establish SSH connectivity to each of the control plane nodes, including the recovery host.
 
-    `kube-apiserver` becomes inaccessible after the restore process starts, so you cannot access the control plane nodes. For this reason, it is recommended to establish SSH connectivity to each control plane host in a separate terminal.
+    `kube-apiserver` becomes inaccessible after the restore process starts, so you cannot access the control plane nodes. Establish SSH connectivity to each control plane host in a separate terminal.
 
     <div class="important">
 
@@ -3048,7 +3042,7 @@ For non-recovery control plane nodes, it is not required to establish SSH connec
 
     </div>
 
-3.  Using SSH, connect to each control plane node and run the following command to disable etcd:
+3.  Using SSH, connect to each control plane node to disbale etcd by running the following command:
 
     ``` terminal
     $ sudo -E /usr/local/bin/disable-etcd.sh
@@ -3058,7 +3052,7 @@ For non-recovery control plane nodes, it is not required to establish SSH connec
 
     This procedure assumes that you copied the `backup` directory containing the etcd snapshot and the resources for the static pods to the `/home/core/` directory of your recovery control plane host.
 
-5.  Use SSH to connect to the recovery host. To restore the cluster from an earlier backup, run the following command:
+5.  Use SSH to connect to the recovery host. Restore the cluster from an earlier backup by running the following command:
 
     ``` terminal
     $ sudo -E /usr/local/bin/cluster-restore.sh /home/core/<etcd-backup-directory>
@@ -3066,7 +3060,11 @@ For non-recovery control plane nodes, it is not required to establish SSH connec
 
 6.  Exit the SSH session.
 
-7.  When the API responds, to turn off the etcd Operator quorum guard, run the following command:
+7.  When the API responds, turn off the etcd Operator quorum guard by running the following command:
+
+    ``` terminal
+    $ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides": {"useUnsupportedUnsafeNonHANonProductionUnstableEtcd": true}}}'
+    ```
 
     <div class="important">
 
@@ -3076,13 +3074,9 @@ For non-recovery control plane nodes, it is not required to establish SSH connec
 
     - Turn the etcd Operator quorum off.
 
-    - Turn the etcd Operator quorum on back.
+    - Turn the etcd Operator quorum back on.
 
     </div>
-
-    ``` terminal
-    $ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides": {"useUnsupportedUnsafeNonHANonProductionUnstableEtcd": true}}}'
-    ```
 
 8.  Monitor the recovery progress of the control plane by running the following command:
 
@@ -3122,7 +3116,7 @@ $ oc patch etcd cluster -p='{"spec": {"forceRedeploymentReason": "recovery-'"$(d
 
 ## Issues and workarounds for restoring a persistent storage state
 
-After restoring a cluster from an etcd snapshot, persistent storage resources might no longer match the current storage provider state. Identify and resolve outdated volume, credential, attachment, or device references to restore workloads safely.
+To restore workloads safely after an etcd snapshot restore, identify and resolve outdated persistent storage references, including volumes, credentials, attachments, and devices on your OpenShift Container Platform cluster.
 
 If your OpenShift Container Platform cluster uses persistent storage of any form, a state of the cluster is typically stored outside etcd. When you restore from an etcd backup, the status of the workloads in OpenShift Container Platform is also restored. However, if the etcd snapshot is old, the status might be invalid or outdated.
 
@@ -3138,7 +3132,7 @@ The following are some example scenarios that produce an out-of-date status:
 
 - Pod P1 is using volume A, which is attached to node X. If the etcd snapshot is taken while another pod uses the same volume on node Y, then when the etcd restore is performed, pod P1 might not be able to start correctly due to the volume still being attached to node Y. OpenShift Container Platform is not aware of the attachment, and does not automatically detach it. When this occurs, the volume must be manually detached from node Y so that the volume can attach on node X, and then pod P1 can start.
 
-- Cloud provider or storage provider credentials were updated after the etcd snapshot was taken. This causes any CSI drivers or Operators that depend on the those credentials to not work. You might have to manually update the credentials required by those drivers or Operators.
+- Cloud provider or storage provider credentials were updated after the etcd snapshot was taken. This causes any CSI drivers or Operators that depend on those credentials to not work. You might have to manually update the credentials required by those drivers or Operators.
 
 - A device is removed or renamed from OpenShift Container Platform nodes after the etcd snapshot is taken. The Local Storage Operator creates symlinks for each PV that it manages from `/dev/disk/by-id` or `/dev` directories. This situation might cause the local PVs to refer to devices that no longer exist.
 
@@ -3148,7 +3142,7 @@ The following are some example scenarios that produce an out-of-date status:
 
   2.  Remove symlinks from respective nodes.
 
-  3.  Delete `LocalVolume` or `LocalVolumeSet` objects (see *Storage* → *Configuring persistent storage* → *Persistent storage using local volumes* → *Deleting the Local Storage Operator Resources*).
+  3.  Delete `LocalVolume` or `LocalVolumeSet` objects. For more information, see "Deleting the Local Storage Operator resources".
 
 # Pod disruption budgets
 

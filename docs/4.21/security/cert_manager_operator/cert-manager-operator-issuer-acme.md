@@ -1,7 +1,5 @@
 The cert-manager Operator for Red Hat OpenShift supports using Automated Certificate Management Environment (ACME) CA servers, such as *Let’s Encrypt*, to issue certificates. Explicit credentials are configured by specifying the secret details in the `Issuer` API object. Ambient credentials are extracted from the environment, metadata services, or local files which are not explicitly configured in the `Issuer` API object.
 
-<div class="note">
-
 The `Issuer` object is namespace scoped. It can only issue certificates from the same namespace. You can also use the `ClusterIssuer` object to issue certificates across all namespaces in the cluster.
 
 <div class="formalpara-title">
@@ -19,8 +17,6 @@ spec:
   acme:
     ...
 ```
-
-</div>
 
 <div class="note">
 
@@ -47,20 +43,16 @@ The cert-manager Operator for Red Hat OpenShift supports the following challenge
 HTTP-01
 With the HTTP-01 challenge type, you provide a computed key at an HTTP URL endpoint in your domain. If the ACME CA server can get the key from the URL, it can validate you as the owner of the domain.
 
-For more information, see [HTTP01](https://cert-manager.io/docs/configuration/acme/http01/) in the upstream cert-manager documentation.
-
 <div class="note">
 
 HTTP-01 requires that the Let’s Encrypt servers can access the route of the cluster. If an internal or private cluster is behind a proxy, the HTTP-01 validations for certificate issuance fail.
 
-The HTTP-01 challenge is restricted to port 80. For more information, see [HTTP-01 challenge](https://letsencrypt.org/docs/challenge-types/#http-01-challenge) (Let’s Encrypt).
+The HTTP-01 challenge is restricted to port 80.
 
 </div>
 
 DNS-01
 With the DNS-01 challenge type, you provide a computed key at a DNS TXT record. If the ACME CA server can get the key by DNS lookup, it can validate you as the owner of the domain.
-
-For more information, see [DNS01](https://cert-manager.io/docs/configuration/acme/dns01/) in the upstream cert-manager documentation.
 
 ## Supported DNS-01 providers
 
@@ -478,7 +470,7 @@ You can use cert-manager Operator for Red Hat OpenShift to set up an ACME issuer
 
 You can use the cert-manager Operator for Red Hat OpenShift to set up an ACME issuer to solve DNS-01 challenges by using explicit credentials on Google Cloud. This procedure uses *Let’s Encrypt* as the ACME CA server and shows how to solve DNS-01 challenges with Google Cloud DNS.
 
-- You have set up a Google Cloud service account with a desired role for Google Cloud DNS. For more information, see [Google Cloud DNS](https://cert-manager.io/docs/configuration/acme/dns01/google/) in the upstream cert-manager documentation.
+- You have set up a Google Cloud service account with a desired role for Google Cloud DNS.
 
   <div class="note">
 
@@ -679,6 +671,9 @@ You can use the cert-manager Operator for Red Hat OpenShift to set up an ACME is
         `<issuer_name>`
         Specifies a name for the issuer.
 
+        `<issuer_namespace>`
+        Specifies a namespace for the issuer.
+
         `<secret_private_key>`
         Specifies the name of the secret to store the ACME account private key in.
 
@@ -698,7 +693,7 @@ You can use the cert-manager Operator for Red Hat OpenShift to set up an ACME is
 
 You can use cert-manager Operator for Red Hat OpenShift to set up an ACME issuer to solve DNS-01 challenges by using explicit credentials on Microsoft Azure. This procedure uses *Let’s Encrypt* as the ACME CA server and shows how to solve DNS-01 challenges with Azure DNS.
 
-- You have set up a service principal with desired role for Azure DNS. For more information, see [Azure DNS](https://cert-manager.io/docs/configuration/acme/dns01/azuredns/) in the upstream cert-manager documentation.
+- You have set up a service principal with desired role for Azure DNS.
 
   <div class="note">
 
@@ -834,6 +829,10 @@ You can use cert-manager Operator for Red Hat OpenShift to set up an ACME issuer
 
 # Additional resources
 
+- [Azure DNS](https://cert-manager.io/docs/configuration/acme/dns01/azuredns/)
+
+- [Google Cloud DNS](https://cert-manager.io/docs/configuration/acme/dns01/google/)
+
 - [Configuring cloud credentials for the cert-manager Operator for Red Hat OpenShift for the AWS Security Token Service cluster](../../security/cert_manager_operator/cert-manager-authenticate.xml#cert-manager-configure-cloud-credentials-aws-sts_cert-manager-authenticate)
 
 - [Configuring cloud credentials for the cert-manager Operator for Red Hat OpenShift on AWS](../../security/cert_manager_operator/cert-manager-authenticate.xml#cert-manager-configure-cloud-credentials-aws-non-sts_cert-manager-authenticate)
@@ -841,3 +840,9 @@ You can use cert-manager Operator for Red Hat OpenShift to set up an ACME issuer
 - [Configuring cloud credentials for the cert-manager Operator for Red Hat OpenShift with Google Cloud Workload Identity](../../security/cert_manager_operator/cert-manager-authenticate.xml#cert-manager-configure-cloud-credentials-gcp-sts_cert-manager-authenticate)
 
 - [Configuring cloud credentials for the cert-manager Operator for Red Hat OpenShift on Google Cloud](../../security/cert_manager_operator/cert-manager-authenticate.xml#cert-manager-configure-cloud-credentials-gcp-non-sts_cert-manager-authenticate)
+
+- [HTTP01](https://cert-manager.io/docs/configuration/acme/http01/)
+
+- [HTTP-01 challenge](https://letsencrypt.org/docs/challenge-types/#http-01-challenge)
+
+- [DNS01](https://cert-manager.io/docs/configuration/acme/dns01/)

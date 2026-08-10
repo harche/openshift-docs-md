@@ -1,4 +1,4 @@
-You can get support for OpenShift Container Platform by searching the knowledge base, submitting a support case, and using remote health monitoring tools.
+To resolve issues with your OpenShift Container Platform cluster, you can search the Red Hat Knowledgebase, submit a support case, and use remote health monitoring tools.
 
 # Getting support
 

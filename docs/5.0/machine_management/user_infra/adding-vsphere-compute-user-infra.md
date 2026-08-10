@@ -1,12 +1,16 @@
 You can add more compute machines to your OpenShift Container Platform cluster on VMware vSphere manually.
 
+# Prerequisites
+
+There are several prerequisites that must be completed before you add more compute machines to your OpenShift Container Platform cluster on VMware vSphere manually.
+
 <div class="note">
 
 You can also [use compute machine sets](../../machine_management/creating_machinesets/creating-machineset-vsphere.xml#creating-machineset-vsphere) to automate the creation of additional VMware vSphere compute machines for your cluster.
 
 </div>
 
-# Prerequisites
+The following prerequisites must be met:
 
 - You [installed a cluster on vSphere](../../installing/installing_vsphere/upi/installing-vsphere.xml#installing-vsphere).
 
@@ -20,9 +24,7 @@ If you do not have access to the Red Hat Enterprise Linux CoreOS (RHCOS) images
 
 # Adding more compute machines to a cluster in vSphere
 
-You can add more compute machines to a user-provisioned OpenShift Container Platform cluster on VMware vSphere.
-
-After your vSphere template deploys in your OpenShift Container Platform cluster, you can deploy a virtual machine (VM) for a machine in that cluster.
+To scale a user-provisioned OpenShift Container Platform cluster on VMware vSphere, you can add more compute machines by cloning the vSphere template into a virtual machine (VM).
 
 - Obtain the base64-encoded Ignition file for your compute machines.
 

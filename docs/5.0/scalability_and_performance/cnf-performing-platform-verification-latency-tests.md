@@ -50,28 +50,32 @@ The tests introduce the following environment variables:
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>LATENCY_TEST_CPUS</code></p></td>
-<td style="text-align: left;"><p>Specifies the number of CPUs that the pod running the latency tests uses. If you do not set the variable, the default configuration includes all isolated CPUs.</p></td>
+<td style="text-align: left;"><p>Specifies the number of CPUs that the pod running the latency tests uses. If you do not set the variable, the default configuration includes all isolated CPUs. When <code>LATENCY_TEST_MEMORY</code> is unset, this value is also used to calculate the default memory request and limit for the latency test pod.</p></td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;"><p><code>LATENCY_TEST_MEMORY</code></p></td>
+<td style="text-align: left;"><p>Specifies the memory request and limit for the pod that runs the latency tests. If you do not set the variable, the test allocates 32Mi of memory per <code>LATENCY_TEST_CPUS</code>, with a minimum of 1Gi. To override the calculated value, set <code>LATENCY_TEST_MEMORY</code> to a valid Kubernetes quantity greater than <code>0</code>, for example <code>2Gi</code>.</p></td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><p><code>LATENCY_TEST_RUNTIME</code></p></td>
 <td style="text-align: left;"><p>Specifies the amount of time in seconds that the latency test must run. The default value is 300 seconds.</p>
 <div class="note">
 <p>To prevent the Ginkgo 2.0 test suite from timing out before the latency tests complete, set the <code>-ginkgo.timeout</code> flag to a value greater than <code>LATENCY_TEST_RUNTIME</code> + 2 minutes. If you also set a <code>LATENCY_TEST_DELAY</code> value then you must set <code>-ginkgo.timeout</code> to a value greater than <code>LATENCY_TEST_RUNTIME</code> + <code>LATENCY_TEST_DELAY</code> + 2 minutes. The default timeout value for the Ginkgo 2.0 test suite is 1 hour.</p>
 </div></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>HWLATDETECT_MAXIMUM_LATENCY</code></p></td>
 <td style="text-align: left;"><p>Specifies the maximum acceptable hardware latency in microseconds for the workload and operating system. If you do not set the value of <code>HWLATDETECT_MAXIMUM_LATENCY</code> or <code>MAXIMUM_LATENCY</code>, the tool compares the default expected threshold (20μs) and the actual maximum latency in the tool itself. Then, the test fails or succeeds accordingly.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>CYCLICTEST_MAXIMUM_LATENCY</code></p></td>
 <td style="text-align: left;"><p>Specifies the maximum latency in microseconds that all threads expect before waking up during the <code>cyclictest</code> run. If you do not set the value of <code>CYCLICTEST_MAXIMUM_LATENCY</code> or <code>MAXIMUM_LATENCY</code>, the tool skips the comparison of the expected and the actual maximum latency.</p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;"><p><code>OSLAT_MAXIMUM_LATENCY</code></p></td>
 <td style="text-align: left;"><p>Specifies the maximum acceptable latency in microseconds for the <code>oslat</code> test results. If you do not set the value of <code>OSLAT_MAXIMUM_LATENCY</code> or <code>MAXIMUM_LATENCY</code>, the tool skips the comparison of the expected and the actual maximum latency.</p></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;"><p><code>MAXIMUM_LATENCY</code></p></td>
 <td style="text-align: left;"><p>Unified variable that specifies the maximum acceptable latency in microseconds. Applicable for all available latency tools.</p></td>
 </tr>
@@ -112,21 +116,33 @@ The procedure runs the three individual tests `hwlatdetect`, `cyclictest`, and `
 
     ``` terminal
     $ podman run -v $(pwd)/:/kubeconfig:Z -e KUBECONFIG=/kubeconfig/kubeconfig \
-    -e LATENCY_TEST_RUNTIME=600\
+    -e LATENCY_TEST_RUNTIME=600 \
     -e MAXIMUM_LATENCY=20 \
     registry.redhat.io/openshift4/cnf-tests-rhel9:v4.17 /usr/bin/test-run.sh \
     --ginkgo.v --ginkgo.timeout="24h"
     ```
 
-    The LATENCY_TEST_RUNTIME is shown in seconds, in this case 600 seconds (10 minutes). The test runs successfully when the maximum observed latency is lower than MAXIMUM_LATENCY (20 μs).
+    The `LATENCY_TEST_RUNTIME` is shown in seconds, in this case 600 seconds (10 minutes). The test runs successfully when the maximum observed latency is lower than `MAXIMUM_LATENCY` (20 μs).
 
     If the results exceed the latency threshold, the test fails.
 
-3.  Optional: Append `--ginkgo.dry-run` flag to run the latency tests in dry-run mode. This is useful for checking what commands the tests run.
+3.  Optional: To override the default memory request and limit for the latency test pod, set the `LATENCY_TEST_MEMORY` variable. Use this option when the default value, which is the greater of `32Mi` multiplied by `LATENCY_TEST_CPUS` or `1Gi`, is not enough for your test. For example:
 
-4.  Optional: Append `--ginkgo.v` flag to run the tests with increased verbosity.
+    ``` terminal
+    $ podman run -v $(pwd)/:/kubeconfig:Z -e KUBECONFIG=/kubeconfig/kubeconfig \
+    -e LATENCY_TEST_RUNTIME=600 \
+    -e LATENCY_TEST_CPUS=40 \
+    -e LATENCY_TEST_MEMORY=2Gi \
+    -e MAXIMUM_LATENCY=20 \
+    registry.redhat.io/openshift4/cnf-tests-rhel9:v4.17 /usr/bin/test-run.sh \
+    --ginkgo.v --ginkgo.timeout="24h"
+    ```
 
-5.  Optional: Append `--ginkgo.timeout="24h"` flag to ensure the Ginkgo 2.0 test suite does not timeout before the latency tests complete.
+4.  Optional: Append `--ginkgo.dry-run` flag to run the latency tests in dry-run mode. This is useful for checking what commands the tests run.
+
+5.  Optional: Append `--ginkgo.v` flag to run the tests with increased verbosity.
+
+6.  Optional: Append `--ginkgo.timeout="24h"` flag to ensure the Ginkgo 2.0 test suite does not timeout before the latency tests complete.
 
     <div class="important">
 
@@ -158,6 +174,8 @@ When executing `podman` commands as a non-root or non-privileged user, mounting 
   ```
 
   The `hwlatdetect` test runs for 10 minutes (600 seconds). The test runs successfully when the maximum observed latency is lower than `MAXIMUM_LATENCY` (20 μs).
+
+  If you do not set `LATENCY_TEST_MEMORY`, the test allocates 32Mi of memory per `LATENCY_TEST_CPUS`, with a minimum of `1Gi`. To override that value, set `LATENCY_TEST_MEMORY` to a valid Kubernetes quantity, for example `2Gi`.
 
   If the results exceed the latency threshold, the test fails.
 
@@ -340,6 +358,8 @@ When executing `podman` commands as a non-root or non-privileged user, mounting 
 
   The command runs the `cyclictest` tool for 10 minutes (600 seconds). The test runs successfully when the maximum observed latency is lower than `MAXIMUM_LATENCY` (in this example, 20 μs). Latency spikes of 20 μs and above are generally not acceptable for telco RAN workloads.
 
+  If you do not set `LATENCY_TEST_MEMORY`, the test allocates 32Mi of memory per `LATENCY_TEST_CPUS`, with a minimum of `1Gi`. To override that value, set `LATENCY_TEST_MEMORY` to a valid Kubernetes quantity, for example `2Gi`.
+
   If the results exceed the latency threshold, the test fails.
 
   <div class="important">
@@ -480,6 +500,8 @@ When executing `podman` commands as a non-root or non-privileged user, mounting 
 
   `LATENCY_TEST_CPUS` specifies the number of CPUs to test with the `oslat` command.
 
+  If you do not set `LATENCY_TEST_MEMORY`, the test allocates 32Mi of memory per `LATENCY_TEST_CPUS`, with a minimum of `1Gi`. To override that value, set `LATENCY_TEST_MEMORY` to a valid Kubernetes quantity, for example `2Gi`.
+
   The command runs the `oslat` tool for 10 minutes (600 seconds). The test runs successfully when the maximum observed latency is lower than `MAXIMUM_LATENCY` (20 μs).
 
   If the results exceed the latency threshold, the test fails.
@@ -490,7 +512,7 @@ When executing `podman` commands as a non-root or non-privileged user, mounting 
 
   </div>
 
-  In this example failure output, the measured latency is outside the maximum allowed value.
+  The following shows a sample output:
 
   ``` terminal
   running /usr/bin/cnftests -ginkgo.v -ginkgo.focus=oslat
@@ -524,6 +546,8 @@ When executing `podman` commands as a non-root or non-privileged user, mounting 
   --- FAIL: TestTest (161.42s)
   FAIL
   ```
+
+  In this example, the measured latency is outside the maximum allowed value as indicated by the line "The current latency 304 is bigger than the expected one".
 
 # Generating a latency test failure report
 
@@ -781,3 +805,5 @@ To troubleshoot errors when running latency tests, verify that your cluster is a
   ```
 
   If this command does not work, an error related to spanning across DNS, MTU size, or firewall access might be occurring.
+
+- If the latency test pod is terminated with an `OOMKilled` status when you use a high `LATENCY_TEST_CPUS` value, set the `LATENCY_TEST_MEMORY` environment variable to a larger memory quantity, for example `2Gi`, and run the test again.

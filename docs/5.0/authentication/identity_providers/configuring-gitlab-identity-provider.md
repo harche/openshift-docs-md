@@ -45,32 +45,30 @@ Create a Secret in the `openshift-config` namespace to store identity provider c
     $ oc create secret generic <secret_name> --from-file=<path_to_file> -n openshift-config
     ```
 
-# Creating a config map
+# Creating a 'ConfigMap'
 
-Identity providers use OpenShift Container Platform `ConfigMap` objects in the `openshift-config` namespace to contain the certificate authority bundle. These are primarily used to contain certificate bundles needed by the identity provider.
+Create a `ConfigMap` object in the `openshift-config` namespace to store the certificate authority bundle that identity providers use to validate secure connections to the remote authentication service.
 
-- Define an OpenShift Container Platform `ConfigMap` object containing the certificate authority by using the following command. The certificate authority must be stored in the `ca.crt` key of the `ConfigMap` object.
+1.  Define an OpenShift Container Platform `ConfigMap` object containing the certificate authority by running the following command:
 
-  ``` terminal
-  $ oc create configmap ca-config-map --from-file=ca.crt=/path/to/ca -n openshift-config
-  ```
+    ``` terminal
+    $ oc create configmap ca-config-map --from-file=ca.crt=/path/to/ca -n openshift-config
+    ```
 
-  <div class="tip">
+2.  Optional: Apply the following YAML to create the config map:
 
-  You can alternatively apply the following YAML to create the config map:
+    ``` yaml
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: ca-config-map
+      namespace: openshift-config
+    data:
+      ca.crt: |
+        <CA_certificate_PEM>
+    ```
 
-  ``` yaml
-  apiVersion: v1
-  kind: ConfigMap
-  metadata:
-    name: ca-config-map
-    namespace: openshift-config
-  data:
-    ca.crt: |
-      <CA_certificate_PEM>
-  ```
-
-  </div>
+    The certificate authority must be stored in the `ca.crt` key of the `ConfigMap` object.
 
 # Sample GitLab CR
 
@@ -119,7 +117,7 @@ spec:
 
 # Adding an identity provider to your cluster
 
-Apply the OAuth custom resource (CR) to add an identity provider to your cluster so users can authenticate with external credentials instead of the default `kubeadmin` user.
+Apply the identity provider custom resource (CR) to your cluster so users can authenticate with the configured identity provider.
 
 - You installed an OpenShift Container Platform cluster.
 
@@ -139,7 +137,7 @@ Apply the OAuth custom resource (CR) to add an identity provider to your cluster
 
     </div>
 
-2.  Log in to the cluster as a user from your identity provider by running the following command, which prompts for your username and password:
+2.  Log in to the cluster with credentials from the configured identity provider by running the following command. Enter the password when prompted:
 
     ``` terminal
     $ oc login -u <username>

@@ -1,14 +1,24 @@
-TLS security profiles provide a way for servers to regulate which ciphers a client can use when connecting to the server. This ensures that OpenShift Container Platform components use cryptographic libraries that do not allow known insecure protocols, ciphers, or algorithms.
+To enforce secure cryptographic libraries for the OpenShift Container Platform components, cluster administrators can configure TLS security profiles to control cipher usage when the client connects to the Ingress Controller, the control plane, or the kubelet.
 
-Cluster administrators can choose which TLS security profile to use for each of the following components:
+The control plane includes the following components:
 
-- the Ingress Controller
+- Kubernetes API server
 
-- the control plane
+- Kubernetes controller manager
 
-  This includes the Kubernetes API server, Kubernetes controller manager, Kubernetes scheduler, OpenShift API server, OpenShift OAuth API server, OpenShift OAuth server, etcd, the Machine Config Operator, and the Machine Config Server.
+- Kubernetes scheduler
 
-- the kubelet, when it acts as an HTTP server for the Kubernetes API server
+- OpenShift API server
+
+- OpenShift OAuth API server
+
+- OpenShift OAuth server
+
+- etcd
+
+- Machine Config Operator
+
+- Machine Config Server.
 
 # Understanding TLS security profiles
 
@@ -72,7 +82,7 @@ When using one of the predefined profile types, the effective profile configurat
 
 # Viewing TLS security profile details
 
-You can view the minimum TLS version and ciphers for the predefined TLS security profiles for each of the following components: Ingress Controller, control plane, and kubelet.
+To check the minimum TLS version and ciphers that a security profile applies in OpenShift Container Platform, you can inspect the profile configuration for the Ingress Controller, control plane, or kubelet. Use the `oc explain` command to display settings for a predefined or custom profile.
 
 <div class="important">
 
@@ -86,35 +96,35 @@ The effective configuration of minimum TLS version and list of ciphers for a pro
   $ oc explain <component>.spec.tlsSecurityProfile.<profile>
   ```
 
-  - For `<component>`, specify `ingresscontroller`, `apiserver`, or `kubeletconfig`. For `<profile>`, specify `old`, `intermediate`, or `custom`.
+- For `<component>`, specify `ingresscontroller`, `apiserver`, or `kubeletconfig`. For `<profile>`, specify `old`, `intermediate`, or `custom`.
 
-    For example, to check the ciphers included for the `intermediate` profile for the control plane:
+  For example, to check the ciphers included for the `intermediate` profile for the control plane:
 
-    ``` terminal
-    $ oc explain apiserver.spec.tlsSecurityProfile.intermediate
-    ```
+  ``` terminal
+  $ oc explain apiserver.spec.tlsSecurityProfile.intermediate
+  ```
 
-    <div class="formalpara-title">
+  <div class="formalpara-title">
 
-    **Example output**
+  **Example output**
 
-    </div>
+  </div>
 
-    ``` terminal
-    KIND:     APIServer
-    VERSION:  config.openshift.io/v1
+  ``` terminal
+  KIND:     APIServer
+  VERSION:  config.openshift.io/v1
 
-    DESCRIPTION:
-        intermediate is a TLS security profile based on:
-        https://wiki.mozilla.org/Security/Server_Side_TLS#Intermediate_compatibility_.28recommended.29
-        and looks like this (yaml):
-        ciphers: - TLS_AES_128_GCM_SHA256 - TLS_AES_256_GCM_SHA384 -
-        TLS_CHACHA20_POLY1305_SHA256 - ECDHE-ECDSA-AES128-GCM-SHA256 -
-        ECDHE-RSA-AES128-GCM-SHA256 - ECDHE-ECDSA-AES256-GCM-SHA384 -
-        ECDHE-RSA-AES256-GCM-SHA384 - ECDHE-ECDSA-CHACHA20-POLY1305 -
-        ECDHE-RSA-CHACHA20-POLY1305 - DHE-RSA-AES128-GCM-SHA256 -
-        DHE-RSA-AES256-GCM-SHA384 minTLSVersion: TLSv1.2
-    ```
+  DESCRIPTION:
+      intermediate is a TLS security profile based on:
+      https://wiki.mozilla.org/Security/Server_Side_TLS#Intermediate_compatibility_.28recommended.29
+      and looks like this (yaml):
+      ciphers: - TLS_AES_128_GCM_SHA256 - TLS_AES_256_GCM_SHA384 -
+      TLS_CHACHA20_POLY1305_SHA256 - ECDHE-ECDSA-AES128-GCM-SHA256 -
+      ECDHE-RSA-AES128-GCM-SHA256 - ECDHE-ECDSA-AES256-GCM-SHA384 -
+      ECDHE-RSA-AES256-GCM-SHA384 - ECDHE-ECDSA-CHACHA20-POLY1305 -
+      ECDHE-RSA-CHACHA20-POLY1305 - DHE-RSA-AES128-GCM-SHA256 -
+      DHE-RSA-AES256-GCM-SHA384 minTLSVersion: TLSv1.2
+  ```
 
 - View all details for the `tlsSecurityProfile` field of a component:
 
@@ -122,76 +132,66 @@ The effective configuration of minimum TLS version and list of ciphers for a pro
   $ oc explain <component>.spec.tlsSecurityProfile
   ```
 
-  - For `<component>`, specify `ingresscontroller`, `apiserver`, or `kubeletconfig`.
+- For `<component>`, specify `ingresscontroller`, `apiserver`, or `kubeletconfig`.
 
-    For example, to check all details for the `tlsSecurityProfile` field for the Ingress Controller:
+  For example, to check all details for the `tlsSecurityProfile` field for the Ingress Controller:
 
-    ``` terminal
-    $ oc explain ingresscontroller.spec.tlsSecurityProfile
-    ```
+  ``` terminal
+  $ oc explain ingresscontroller.spec.tlsSecurityProfile
+  ```
 
-    <div class="formalpara-title">
+  <div class="formalpara-title">
 
-    **Example output**
+  **Example output**
 
-    </div>
+  </div>
 
-    ``` terminal
-    KIND:     IngressController
-    VERSION:  operator.openshift.io/v1
+  ``` terminal
+  KIND:     IngressController
+  VERSION:  operator.openshift.io/v1
 
-    RESOURCE: tlsSecurityProfile <Object>
+  RESOURCE: tlsSecurityProfile <Object>
 
-    DESCRIPTION:
-         ...
+  DESCRIPTION:
+       ...
 
-    FIELDS:
-       custom   <>
-         custom is a user-defined TLS security profile. Be extremely careful using a
-         custom profile as invalid configurations can be catastrophic. An example
-         custom profile looks like this:
-         ciphers: - ECDHE-ECDSA-CHACHA20-POLY1305 - ECDHE-RSA-CHACHA20-POLY1305 -
-         ECDHE-RSA-AES128-GCM-SHA256 - ECDHE-ECDSA-AES128-GCM-SHA256 minTLSVersion:
-         TLSv1.1
+  FIELDS:
+     custom   <>
+       custom is a user-defined TLS security profile. Be extremely careful using a
+       custom profile as invalid configurations can be catastrophic. An example
+       custom profile looks like this:
+       ciphers: - ECDHE-ECDSA-CHACHA20-POLY1305 - ECDHE-RSA-CHACHA20-POLY1305 -
+       ECDHE-RSA-AES128-GCM-SHA256 - ECDHE-ECDSA-AES128-GCM-SHA256 minTLSVersion:
+       TLSv1.1
 
-       intermediate <>
-         intermediate is a TLS security profile based on:
-         https://wiki.mozilla.org/Security/Server_Side_TLS#Intermediate_compatibility_.28recommended.29
-         and looks like this (yaml):
-         ...
+     intermediate <>
+       intermediate is a TLS security profile based on:
+       https://wiki.mozilla.org/Security/Server_Side_TLS#Intermediate_compatibility_.28recommended.29
+       and looks like this (yaml):
+       (A list of ciphers and the minimum version for the intermediate profile opens here.)
 
-       modern   <>
-         modern is a TLS security profile based on:
-         https://wiki.mozilla.org/Security/Server_Side_TLS#Modern_compatibility and
-         looks like this (yaml):
-         ...
-         NOTE: Currently unsupported.
+     modern   <>
+       modern is a TLS security profile based on:
+       https://wiki.mozilla.org/Security/Server_Side_TLS#Modern_compatibility and
+       looks like this (yaml):
+       (A list of ciphers and the minimum version for the modern profile opens here.)
+       NOTE: Currently unsupported.
 
-       old  <>
-         old is a TLS security profile based on:
-         https://wiki.mozilla.org/Security/Server_Side_TLS#Old_backward_compatibility
-         and looks like this (yaml):
-         ...
+     old  <>
+       old is a TLS security profile based on:
+       https://wiki.mozilla.org/Security/Server_Side_TLS#Old_backward_compatibility
+       and looks like this (yaml):
+       (A list of ciphers and the minimum version for the old profile opens here.)
 
-       type <string>
-         ...
-    ```
-
-  - Lists ciphers and minimum version for the `intermediate` profile here.
-
-  - Lists ciphers and minimum version for the `modern` profile here.
-
-  - Lists ciphers and minimum version for the `old` profile here.
+     type <string>
+       ...
+  ```
 
 # Configuring the TLS security profile for the Ingress Controller
 
-To configure a TLS security profile for an Ingress Controller, edit the `IngressController` custom resource (CR) to specify a predefined or custom TLS security profile. If a TLS security profile is not configured, the default value is based on the TLS security profile set for the API server.
+To configure a TLS security profile for an Ingress Controller, edit the `IngressController` custom resource (CR) to specify a predefined or custom TLS security profile.
 
-<div class="formalpara-title">
-
-**Sample `IngressController` CR that configures the `Old` TLS security profile**
-
-</div>
+If a TLS security profile is not configured, the default value is based on the TLS security profile set for the API server, as shown in the following example:
 
 ``` yaml
 apiVersion: operator.openshift.io/v1
@@ -201,7 +201,6 @@ spec:
   tlsSecurityProfile:
     old: {}
     type: Old
- ...
 ```
 
 The TLS security profile defines the minimum TLS version and the TLS ciphers for TLS connections for Ingress Controllers.
@@ -221,7 +220,7 @@ The Ingress Operator also converts the TLS `1.0` of an `Old` or `Custom` profile
 1.  Edit the `IngressController` CR in the `openshift-ingress-operator` project to configure the TLS security profile:
 
     ``` terminal
-    $ oc edit IngressController default -n openshift-ingress-operator
+    $ oc edit IngressController default -n openshift-ingress-operator.
     ```
 
 2.  Add the `spec.tlsSecurityProfile` field:
@@ -249,19 +248,11 @@ The Ingress Operator also converts the TLS `1.0` of an `Old` or `Custom` profile
      ...
     ```
 
-    - Specify the TLS security profile type (`Old`, `Intermediate`, or `Custom`). The default is `Intermediate`.
+    - Specify the value for the `spec.tlsSecurityProfile` parameter. The TLS security profile types are `Old`, `Intermediate`, or `Custom`. The default type is `Intermediate`.
 
-    - Specify the appropriate field for the selected type:
+    - Specify the appropriate field for the selected `spec.tlsSecurityProfile.type`. The fields are `old: {}`, `intermediate: {}`, `modern: {}`, or `custom:`.
 
-      - `old: {}`
-
-      - `intermediate: {}`
-
-      - `modern: {}`
-
-      - `custom:`
-
-    - For the `custom` type, specify a list of TLS ciphers and minimum accepted TLS version.
+    - For the `custom` type, specify a list of TLS ciphers and the minimum accepted TLS version.
 
 3.  Save the file to apply the changes.
 
@@ -301,7 +292,9 @@ The Ingress Operator also converts the TLS `1.0` of an `Old` or `Custom` profile
 
 # Configuring the TLS security profile for the control plane
 
-To configure a TLS security profile for the control plane, edit the `APIServer` custom resource (CR) to specify a predefined or custom TLS security profile. Setting the TLS security profile in the `APIServer` CR propagates the setting to the following control plane components:
+To configure a TLS security profile for the control plane, edit the `APIServer` custom resource (CR) to specify a predefined or custom TLS security profile.
+
+Setting the TLS security profile in the `APIServer` CR propagates the setting to the following control plane components:
 
 - Kubernetes API server
 
@@ -321,19 +314,15 @@ To configure a TLS security profile for the control plane, edit the `APIServer` 
 
 - Machine Config Server
 
-If a TLS security profile is not configured, the default TLS security profile is `Intermediate`.
-
 <div class="note">
 
 The default TLS security profile for the Ingress Controller is based on the TLS security profile set for the API server.
 
 </div>
 
-<div class="formalpara-title">
+If a TLS security profile is not configured, the default TLS security profile is `Intermediate`.
 
-**Sample `APIServer` CR that configures the `Old` TLS security profile**
-
-</div>
+The following YAML is a sample `APIServer` CR that configures the `Old` TLS security profile.
 
 ``` yaml
 apiVersion: config.openshift.io/v1
@@ -383,116 +372,108 @@ You can see the configured TLS security profile in the `APIServer` custom resour
           minTLSVersion: VersionTLS11
     ```
 
-    - Specify the TLS security profile type (`Old`, `Intermediate`, or `Custom`). The default is `Intermediate`.
+    - Specify the value for the `spec.tlsSecurityProfile.type` parameter. The TLS security profile types are `Old`, `Intermediate`, or `Custom`. The default type is `Intermediate`.
 
-    - Specify the appropriate field for the selected type:
+    - Specify the appropriate field for the selected `spec.tlsSecurityProfile`. The fields are `old: {}`, `intermediate: {}`, `modern: {}`, or `custom:`.
 
-      - `old: {}`
-
-      - `intermediate: {}`
-
-      - `modern: {}`
-
-      - `custom:`
-
-    - For the `custom` type, specify a list of TLS ciphers and minimum accepted TLS version.
+    - For the `custom` type, specify a list of TLS ciphers and the minimum accepted TLS version.
 
 3.  Save the file to apply the changes.
 
-- Verify that the TLS security profile is set in the `APIServer` CR:
+<!-- -->
 
-  ``` terminal
-  $ oc describe apiserver cluster
-  ```
+1.  Verify that the TLS security profile is set in the `APIServer` CR:
 
-  <div class="formalpara-title">
+    ``` terminal
+    $ oc describe apiserver cluster
+    ```
 
-  **Example output**
+    <div class="formalpara-title">
 
-  </div>
+    **Example output**
 
-  ``` terminal
-  Name:         cluster
-  Namespace:
-   ...
-  API Version:  config.openshift.io/v1
-  Kind:         APIServer
-   ...
-  Spec:
-    Audit:
-      Profile:  Default
-    Tls Security Profile:
-      Custom:
-        Ciphers:
-          ECDHE-ECDSA-CHACHA20-POLY1305
-          ECDHE-RSA-CHACHA20-POLY1305
-          ECDHE-RSA-AES128-GCM-SHA256
-          ECDHE-ECDSA-AES128-GCM-SHA256
-        Min TLS Version:  VersionTLS11
-      Type:               Custom
-   ...
-  ```
+    </div>
 
-- Verify that the TLS security profile is set in the `etcd` CR:
+    ``` terminal
+    Name:         cluster
+    Namespace:
+     ...
+    API Version:  config.openshift.io/v1
+    Kind:         APIServer
+     ...
+    Spec:
+      Audit:
+        Profile:  Default
+      Tls Security Profile:
+        Custom:
+          Ciphers:
+            ECDHE-ECDSA-CHACHA20-POLY1305
+            ECDHE-RSA-CHACHA20-POLY1305
+            ECDHE-RSA-AES128-GCM-SHA256
+            ECDHE-ECDSA-AES128-GCM-SHA256
+          Min TLS Version:  VersionTLS11
+        Type:               Custom
+     ...
+    ```
 
-  ``` terminal
-  $ oc describe etcd cluster
-  ```
+2.  Verify that the TLS security profile is set in the `etcd` CR:
 
-  <div class="formalpara-title">
+    ``` terminal
+    $ oc describe etcd cluster
+    ```
 
-  **Example output**
+    <div class="formalpara-title">
 
-  </div>
+    **Example output**
 
-  ``` terminal
-  Name:         cluster
-  Namespace:
-   ...
-  API Version:  operator.openshift.io/v1
-  Kind:         Etcd
-   ...
-  Spec:
-    Log Level:         Normal
-    Management State:  Managed
-    Observed Config:
-      Serving Info:
-        Cipher Suites:
-          TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
-          TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
-          TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
-          TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
-        Min TLS Version:           VersionTLS12
-   ...
-  ```
+    </div>
 
-- Verify that the TLS security profile is set in the Machine Config Server pod:
+    ``` terminal
+    Name:         cluster
+    Namespace:
+     ...
+    API Version:  operator.openshift.io/v1
+    Kind:         Etcd
+     ...
+    Spec:
+      Log Level:         Normal
+      Management State:  Managed
+      Observed Config:
+        Serving Info:
+          Cipher Suites:
+            TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+            TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+            TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+            TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+            TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
+            TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+          Min TLS Version:           VersionTLS12
+     ...
+    ```
 
-  ``` terminal
-  $ oc logs machine-config-server-5msdv -n openshift-machine-config-operator
-  ```
+3.  Verify that the TLS security profile is set in the Machine Config Server pod:
 
-  <div class="formalpara-title">
+    ``` terminal
+    $ oc logs machine-config-server-5msdv -n openshift-machine-config-operator
+    ```
 
-  **Example output**
+    <div class="formalpara-title">
 
-  </div>
+    **Example output**
 
-  ``` terminal
-  # ...
-  I0905 13:48:36.968688       1 start.go:51] Launching server with tls min version: VersionTLS12 & cipher suites [TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256 TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256]
-  # ...
-  ```
+    </div>
+
+    ``` terminal
+    # ...
+    I0905 13:48:36.968688       1 start.go:51] Launching server with tls min version: VersionTLS12 & cipher suites [TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256 TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256]
+    # ...
+    ```
 
 # Configuring the TLS security profile for the kubelet
 
-You can configure a TLS security profile for the kubelet when it is acting as an HTTP server by creating a `KubeletConfig` custom resource (CR) to specify a predefined or custom TLS security profile for specific nodes.
+To configure TLS ciphers and minimum versions for the kubelet HTTP server in OpenShift Container Platform, apply a predefined or custom TLS security profile through a `KubeletConfig` custom resource (CR). Without a custom profile, the kubelet defaults to the `Intermediate` profile.
 
-If a TLS security profile is not configured, the default TLS security profile, `Intermediate`, is used.
-
-The kubelet uses its HTTP/GRPC server to communicate with the Kubernetes API server, which sends commands to pods, gathers logs, and run exec commands on pods through the kubelet.
+- The kubelet uses its HTTP/GRPC server to communicate with the Kubernetes API server, which sends commands to pods, gathers logs, and run exec commands on pods through the kubelet.
 
 <div class="formalpara-title">
 

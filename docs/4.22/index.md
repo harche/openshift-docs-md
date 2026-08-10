@@ -1589,6 +1589,8 @@
     - [Configuring OADP with multiple Volume Snapshot Locations](backup_and_restore/application_backup_and_restore/installing/configuring-oadp-multiple-vsl.md)
   - **Uninstalling OADP**
     - [Uninstalling OADP](backup_and_restore/application_backup_and_restore/installing/uninstalling-oadp.md)
+  - **OADP CLI plugin**
+    - [Using the OADP CLI plugin](backup_and_restore/application_backup_and_restore/cli-tools/oadp-cli-plugin.md)
   - **OADP backing up**
     - [Backing up applications](backup_and_restore/application_backup_and_restore/backing_up_and_restoring/backing-up-applications.md)
     - [Creating a Backup CR](backup_and_restore/application_backup_and_restore/backing_up_and_restoring/oadp-creating-backup-cr.md)

@@ -355,6 +355,7 @@ Root: ./
 |backup_and_restore/application_backup_and_restore/installing:{configuring-oadp-multiple-bsl.md}
 |backup_and_restore/application_backup_and_restore/installing:{configuring-oadp-multiple-vsl.md}
 |backup_and_restore/application_backup_and_restore/installing:{uninstalling-oadp.md}
+|backup_and_restore/application_backup_and_restore/cli-tools:{oadp-cli-plugin.md}
 |backup_and_restore/application_backup_and_restore/backing_up_and_restoring:{backing-up-applications.md,oadp-creating-backup-cr.md,oadp-parallel-backup-processing-in-oadp.md,oadp-enabling-parallel-backup-processing.md,oadp-backing-up-pvs-csi-doc.md,oadp-backing-up-applications-restic-doc.md,oadp-creating-backup-hooks-doc.md,oadp-scheduling-backups-doc.md,oadp-deleting-backups.md,oadp-about-kopia.md}
 |backup_and_restore/application_backup_and_restore/backing_up_and_restoring:{restoring-applications.md}
 |backup_and_restore/application_backup_and_restore/oadp-self-service:{oadp-self-service.md,oadp-self-service-cluster-admin-use-cases.md,oadp-self-service-namespace-admin-use-cases.md,oadp-self-service-troubleshooting.md}

@@ -1,4 +1,4 @@
-Understanding the state of the system in Operator Lifecycle Manager (OLM) is important for making decisions about and debugging problems with installed Operators. OLM provides insight into subscriptions and related catalog sources regarding their state and actions performed. This helps users better understand the healthiness of their Operators.
+You can view the status of installed Operators in OpenShift Container Platform through Operator Lifecycle Manager (OLM). OLM reports subscription and catalog source conditions to help you assess Operator health.
 
 # Operator subscription condition types
 
@@ -195,6 +195,6 @@ You can view the status of an Operator catalog source by using the CLI.
 
 - [Operator Lifecycle Manager concepts and resources → Catalog source](../../operators/understanding/olm/olm-understanding-olm.xml#olm-catalogsource_olm-understanding-olm)
 
-- gRPC documentation: [States of Connectivity](https://grpc.github.io/grpc/core/md_doc_connectivity-semantics-and-api.html)
+- [gRPC documentation: States of Connectivity](https://grpc.github.io/grpc/core/md_doc_connectivity-semantics-and-api.html)
 
 - [Accessing images for Operators from private registries](../../operators/admin/olm-managing-custom-catalogs.xml#olm-accessing-images-private-registries_olm-managing-custom-catalogs)

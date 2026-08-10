@@ -89,7 +89,7 @@ To create an OpenShift Container Platform cluster on OpenShift Virtualization, y
 
 - [Persistent storage using Logical Volume Manager Storage](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#persistent-storage-using-lvms)
 
-## Firewall and port requirements
+## OpenShift Virtualization firewall and port requirements
 
 Ensure that you meet the firewall and port requirements so that ports can communicate between the management cluster, the control plane, and hosted clusters.
 

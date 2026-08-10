@@ -1,28 +1,8 @@
-This document describes the process to gracefully shut down your cluster. You might need to temporarily shut down your cluster for maintenance reasons, or to save on resource costs.
-
-# Prerequisites
-
-- Take an [etcd backup](../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backing-up-etcd-data_backup-etcd) prior to shutting down the cluster.
-
-  <div class="important">
-
-  It is important to take an etcd backup before performing this procedure so that your cluster can be restored if you encounter any issues when restarting the cluster.
-
-  For example, the following conditions can cause the restarted cluster to malfunction:
-
-  - etcd data corruption during shutdown
-
-  - Node failure due to hardware
-
-  - Network connectivity issues
-
-  If your cluster fails to recover, follow the steps to [restore to a previous cluster state](../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state).
-
-  </div>
+You can shut down your OpenShift Container Platform cluster for planned maintenance by cordoning nodes, draining workloads, and stopping nodes in order. Graceful shutdown preserves cluster state so you can restart the cluster when maintenance is complete.
 
 # Shutting down the cluster
 
-You can shut down your cluster in a graceful manner so that it can be restarted at a later date.
+You can shut down a OpenShift Container Platform cluster gracefully by cordoning nodes, draining worker nodes, and stopping nodes in order. This preserves cluster data so you can restart the cluster after maintenance or a planned outage.
 
 <div class="note">
 
@@ -30,13 +10,31 @@ You can shut down a cluster until a year from the installation date and expect i
 
 </div>
 
+Take an etcd backup before shutting down the cluster so that you can restore the cluster if you encounter issues when restarting it.
+
+You might need to restore from the backup if any of the following conditions occur:
+
+- etcd data is corrupted during shutdown
+
+- A node fails because of hardware
+
+- Network connectivity is interrupted
+
+If the cluster does not recover after restart, follow the steps to restore to a previous cluster state.
+
 - You have access to the cluster as a user with the `cluster-admin` role.
 
-- You have taken an etcd backup.
+- You created an etcd backup before shutting down the cluster.
+
+  <div class="important">
+
+  Without a recent etcd backup, you might not be able to restore the cluster if shutdown or restart fails.
+
+  </div>
 
 - If you are running a single-node OpenShift cluster, you must evacuate all workload pods off of the cluster before you shut it down.
 
-1.  If you are shutting the cluster down for an extended period, determine the date on which certificates expire and run the following command:
+1.  If you are shutting the cluster down for an extended period, determine the date on which certificates expire by running the following command:
 
     ``` terminal
     $ oc -n openshift-kube-apiserver-operator get secret kube-apiserver-to-kubelet-signer -o jsonpath='{.metadata.annotations.auth\.openshift\.io/certificate-not-after}'
@@ -49,12 +47,12 @@ You can shut down a cluster until a year from the installation date and expect i
     </div>
 
     ``` terminal
-    2022-08-05T14:37:50Zuser@user:~ $
+    2030-08-05T14:37:50Z
     ```
 
-    - To ensure that the cluster can restart gracefully, plan to restart it on or before the specified date. As the cluster restarts, the process might require you to manually approve the pending certificate signing requests (CSRs) to recover kubelet certificates.
+    Plan to restart the cluster on or before the displayed date so the cluster can restart gracefully. When the cluster restarts, you might need to manually approve pending certificate signing requests (CSRs) to recover kubelet certificates.
 
-2.  Mark all the nodes in the cluster as unschedulable. You can do this from your cloud provider’s web console, or by running the following loop:
+2.  Mark all the nodes in the cluster as unschedulable by running the following command:
 
     ``` terminal
     $ for node in $(oc get nodes -o jsonpath='{.items[*].metadata.name}'); do echo ${node} ; oc adm cordon ${node} ; done
@@ -81,13 +79,19 @@ You can shut down a cluster until a year from the installation date and expect i
     node/ci-ln-mgdnf4b-72292-n547t-worker-c-vcmtn cordoned
     ```
 
-3.  Evacuate the pods using the following method:
+3.  Evacuate the pods by running the following command:
 
     ``` terminal
     $ for node in $(oc get nodes -l node-role.kubernetes.io/worker -o jsonpath='{.items[*].metadata.name}'); do echo ${node} ; oc adm drain ${node} --delete-emptydir-data --ignore-daemonsets=true --timeout=15s --force ; done
     ```
 
-4.  Shut down all of the nodes in the cluster. You can do this from the web console for your cloud provider web console, or by running the following loop. Shutting down the nodes by using one of these methods allows pods to terminate gracefully, which reduces the chance for data corruption.
+    Draining worker nodes before shutdown allows pods to terminate gracefully, which reduces the chance of data corruption.
+
+4.  Shut down all of the nodes in the cluster by running the following command:
+
+    ``` terminal
+    $ for node in $(oc get nodes -o jsonpath='{.items[*].metadata.name}'); do oc debug node/${node} -- chroot /host shutdown -h 1; done
+    ```
 
     <div class="note">
 
@@ -95,35 +99,31 @@ You can shut down a cluster until a year from the installation date and expect i
 
     </div>
 
+    The `-h 1` option indicates how long, in minutes, this process lasts before the control plane nodes are shut down. For large-scale clusters with 10 nodes or more, set to `-h 10` or longer to ensure all the compute nodes have time to shut down first.
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
     ``` terminal
-    $ for node in $(oc get nodes -o jsonpath='{.items[*].metadata.name}'); do oc debug node/${node} -- chroot /host shutdown -h 1; done
+    Starting pod/ip-10-0-130-169us-east-2computeinternal-debug ...
+    To use host binaries, run `chroot /host`
+    Shutdown scheduled for Mon 2021-09-13 09:36:17 UTC, use 'shutdown -c' to cancel.
+    Removing debug pod ...
+    Starting pod/ip-10-0-150-116us-east-2computeinternal-debug ...
+    To use host binaries, run `chroot /host`
+    Shutdown scheduled for Mon 2021-09-13 09:36:29 UTC, use 'shutdown -c' to cancel.
     ```
 
-    - `-h 1` indicates how long, in minutes, this process lasts before the control plane nodes are shut down. For large-scale clusters with 10 nodes or more, set to `-h 10` or longer to make sure all the compute nodes have time to shut down first.
+    <div class="note">
 
-      <div class="formalpara-title">
+    It is not necessary to drain control plane nodes of the standard pods that ship with OpenShift Container Platform before shutdown. Cluster administrators are responsible for ensuring a clean restart of workloads they deploy after the cluster is restarted. If you drained control plane nodes before shutdown because of custom workloads, you must mark the control plane nodes as schedulable before the cluster is functional again after restart.
 
-      **Example output**
+    </div>
 
-      </div>
-
-      ``` terminal
-      Starting pod/ip-10-0-130-169us-east-2computeinternal-debug ...
-      To use host binaries, run `chroot /host`
-      Shutdown scheduled for Mon 2021-09-13 09:36:17 UTC, use 'shutdown -c' to cancel.
-      Removing debug pod ...
-      Starting pod/ip-10-0-150-116us-east-2computeinternal-debug ...
-      To use host binaries, run `chroot /host`
-      Shutdown scheduled for Mon 2021-09-13 09:36:29 UTC, use 'shutdown -c' to cancel.
-      ```
-
-      <div class="note">
-
-      It is not necessary to drain control plane nodes of the standard pods that ship with OpenShift Container Platform prior to shutdown. Cluster administrators are responsible for ensuring a clean restart of their own workloads after the cluster is restarted. If you drained control plane nodes prior to shutdown because of custom workloads, you must mark the control plane nodes as schedulable before the cluster will be functional again after restart.
-
-      </div>
-
-5.  Shut off any cluster dependencies that are no longer needed, such as external storage or an LDAP server. Be sure to consult your vendor’s documentation before doing so.
+5.  Shut off any cluster dependencies that are no longer needed, such as external storage or a Lightweight Directory Access Protocol (LDAP) server. Be sure to consult documentation from the vendor before doing so.
 
     <div class="important">
 
@@ -132,5 +132,9 @@ You can shut down a cluster until a year from the installation date and expect i
     </div>
 
 # Additional resources
+
+- [Backing up etcd](../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd)
+
+- [Restoring to a previous cluster state](../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
 
 - [Restarting the cluster gracefully](../backup_and_restore/graceful-cluster-restart.xml#graceful-restart-cluster)

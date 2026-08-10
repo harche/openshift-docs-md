@@ -20,7 +20,7 @@ You can run the OpenShift Cluster Capacity Tool from the command line to estimat
 
 You create a sample pod spec file, which the tool uses for estimating resource usage. The pod spec specifies its resource requirements as `limits` or `requests`. The cluster capacity tool takes the pod’s resource requirements into account for its estimation analysis.
 
-1.  Run the OpenShift Cluster Capacity Tool, which is available as a container image from the Red Hat Ecosystem Catalog. See the link in the "Additional resources" section.
+1.  Run the OpenShift Cluster Capacity Tool, which is available as a container image from the Red Hat Ecosystem Catalog.
 
 2.  Create a sample pod spec file:
 
@@ -127,7 +127,7 @@ You create a sample pod spec file, which the tool uses for estimating resource u
 
 You can run the OpenShift Cluster Capacity Tool as a job inside of a pod by using a `ConfigMap` object. This allows you to run the tool multiple times without needing user intervention.
 
-- Download and install the OpenShift Cluster Capacity Tool from the `cluster-capacity` repository. See the link in the "Additional resources" section.
+- Download and install the OpenShift Cluster Capacity Tool from the `cluster-capacity` repository.
 
 1.  Create the cluster role:
 

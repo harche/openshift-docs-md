@@ -12,6 +12,8 @@ Before beginning your cluster installation, you must complete prerequisite tasks
 
 - If you use a firewall or proxy, you configured it to allow the sites that your cluster requires access to. For more information, see "Configuring your firewall".
 
+- You configured your firewall to allow TCP traffic on port `8090` from all hosts to the rendezvous host so that hosts can reach the Assisted Service API during discovery and bootstrap. For more information, see "Port requirements for the rendezvous host".
+
 <!-- -->
 
 - [Installation and update](../../architecture/architecture-installation.xml#architecture-installation)
@@ -19,6 +21,8 @@ Before beginning your cluster installation, you must complete prerequisite tasks
 - [Selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing)
 
 - [Configuring your firewall](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
+
+- [Port requirements for the rendezvous host](../../installing/installing_with_agent_based_installer/preparing-to-install-with-agent-based-installer.xml#agent-install-networking-ports_preparing-to-install-with-agent-based-installer)
 
 # Downloading the Agent-based Installer
 

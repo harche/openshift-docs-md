@@ -80,7 +80,7 @@ This structure can be used to construct a Common Expression Language (CEL) expre
 
 # Operator dependencies
 
-The dependencies of an Operator are listed in a `dependencies.yaml` file in the `metadata/` folder of a bundle. This file is optional and currently only used to specify explicit Operator-version dependencies.
+Operator dependencies define relationships between Operators that Operator Lifecycle Manager (OLM) must resolve during installation on OpenShift Container Platform. You can list these dependencies in the optional `dependencies.yaml` file in a bundle’s `metadata/` folder.
 
 The dependency list contains a `type` field for each item to specify what kind of dependency this is. The following types of Operator dependencies are supported:
 

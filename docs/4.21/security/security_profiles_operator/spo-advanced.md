@@ -183,9 +183,9 @@ The controller-runtime `metrics` and the DaemonSet endpoint `metrics-spod` provi
 
 Available controller-runtime metrics
 
-# Using the log enricher
+# Use the log enricher
 
-The Security Profiles Operator contains a log enrichment feature, which is disabled by default. The log enricher container runs with `privileged` permissions to read the audit logs from the local node. The log enricher runs within the host PID namespace, `hostPID`.
+The Security Profiles Operator contains a log enrichment feature, which is disabled by default. The log enricher container runs with `privileged` permissions in the host PID namespace (`hostPID`) so it can read audit logs from the local node.
 
 <div class="important">
 
@@ -302,11 +302,11 @@ You can use the Security Profiles Operator log enricher to trace an application.
     …
     ```
 
-# Configuring webhooks
+# Configure webhooks
 
-Profile binding and profile recording objects can use webhooks. Profile binding and recording object configurations are `MutatingWebhookConfiguration` CRs, managed by the Security Profiles Operator.
+Configure webhooks for profile binding and recording so you can limit them to selected namespaces or objects, or allow requests to continue if a webhook fails. Profile binding and recording object configurations are `MutatingWebhookConfiguration` CRs, managed by the Security Profiles Operator.
 
-To change the webhook configuration, the `spod` CR exposes a `webhookOptions` field that allows modification of the `failurePolicy`, `namespaceSelector`, and `objectSelector` variables. This allows you to set the webhooks to "soft-fail" or restrict them to a subset of a namespaces so that even if the webhooks failed, other namespaces or resources are not affected.
+To change the webhook configuration, edit the `webhookOptions` field in the `spod` custom resource. You can modify the `failurePolicy`, `namespaceSelector`, and `objectSelector` variables to set the webhooks to soft-fail or to restrict them to a subset of namespaces. If a webhook fails, other namespaces or resources are not affected.
 
 1.  Set the `recording.spo.io` webhook configuration to record only pods labeled with `spo-record=true` by creating the following patch file:
 

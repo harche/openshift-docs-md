@@ -1,4 +1,4 @@
-Cluster administrators and Operator catalog maintainers can create and manage custom catalogs packaged using the [bundle format](../../operators/understanding/olm-packaging-format.xml#olm-bundle-format_olm-packaging-format) on Operator Lifecycle Manager (OLM) in OpenShift Container Platform.
+Cluster administrators and Operator catalog maintainers can create and manage custom catalogs packaged using the bundle format on Operator Lifecycle Manager (OLM) in OpenShift Container Platform.
 
 <div class="important">
 
@@ -6,11 +6,17 @@ Kubernetes periodically deprecates certain APIs that are removed in subsequent r
 
 </div>
 
+- [Bundle format](../../operators/understanding/olm-packaging-format.xml#olm-bundle-format_olm-packaging-format)
+
 - [Red Hat-provided Operator catalogs](../../operators/understanding/olm-rh-catalogs.xml#olm-rh-catalogs)
 
 # Prerequisites
 
-- You have installed the [`opm` CLI](../../cli_reference/opm/cli-opm-install.xml#cli-opm-install).
+- You have installed the `opm` CLI.
+
+<!-- -->
+
+- [`opm` CLI installation](../../cli_reference/opm/cli-opm-install.xml#cli-opm-install)
 
 # File-based catalogs
 
@@ -22,7 +28,7 @@ As of OpenShift Container Platform 4.11, the default Red Hat-provided Operator c
 
 The `opm` subcommands, flags, and functionality related to the SQLite database format are also deprecated and will be removed in a future release. The features are still supported and must be used for catalogs that use the deprecated SQLite database format.
 
-Many of the `opm` subcommands and flags for working with the SQLite database format, such as `opm index prune`, do not work with the file-based catalog format. For more information about working with file-based catalogs, see [Operator Framework packaging format](../../operators/understanding/olm-packaging-format.xml#olm-file-based-catalogs_olm-packaging-format) and [Mirroring images for a disconnected installation using the oc-mirror plugin](../../disconnected/installing-mirroring-disconnected.xml#installing-mirroring-disconnected).
+Many of the `opm` subcommands and flags for working with the SQLite database format, such as `opm index prune`, do not work with the file-based catalog format. For more information about working with file-based catalogs, see "Operator Framework packaging format" and "Mirroring images for a disconnected installation using the oc-mirror plugin".
 
 </div>
 
@@ -181,21 +187,19 @@ You can use the `opm` CLI to create a catalog image that uses the plain text *fi
         $ podman push <registry>/<namespace>/<catalog_image_name>:<tag>
         ```
 
+- [Docker v2-2](https://docs.docker.com/registry/spec/manifest-v2-2/)
+
 - [`opm` CLI reference](../../cli_reference/opm/cli-opm-ref.xml#cli-opm-ref)
+
+- [Operator Framework packaging format](../../operators/understanding/olm-packaging-format.xml#olm-file-based-catalogs_olm-packaging-format)
+
+- [Mirroring images for a disconnected installation using the oc-mirror plugin](../../disconnected/installing-mirroring-disconnected.xml#installing-mirroring-disconnected)
 
 ## Updating or filtering a file-based catalog image
 
-You can use the `opm` CLI to update or filter a catalog image that uses the file-based catalog format. By extracting the contents of an existing catalog image, you can modify the catalog as needed, for example:
+To keep your catalog accurate and ensure users can safely upgrade installed Operators, you can use the `opm` CLI to extract, edit, and rebuild a file-based catalog image. You can also specify deprecation messages for packages, channels, and bundles.
 
-- Adding packages
-
-- Removing packages
-
-- Updating existing package entries
-
-- Detailing deprecation messages per package, channel, and bundle
-
-You can then rebuild the image as an updated version of the catalog.
+After you complete the changes, you can rebuild the image as an updated version of the catalog.
 
 <div class="note">
 
@@ -342,6 +346,8 @@ For more information about the oc-mirror plugin and this use case, see the "Keep
 - [Adding a catalog source to a cluster](../../disconnected/using-olm.xml#olm-creating-catalog-from-index_olm-restricted-networks)
 
 # SQLite-based catalogs
+
+SQLite-based Operator catalogs in OpenShift Container Platform use index images that you create, update, and prune with the `opm` CLI.
 
 <div class="important">
 
@@ -605,7 +611,7 @@ If you do not want to update your SQLite database catalog image or migrate your 
 
 ## Migrating SQLite database catalogs to the file-based catalog format
 
-You can update your deprecated SQLite database format catalogs to the file-based catalog format.
+You can update your deprecated SQLite database format catalogs to the file-based catalog format by using the `opm migrate` command.
 
 - You have a SQLite database catalog source.
 
@@ -656,11 +662,11 @@ You can rebuild your SQLite database catalog image with the latest version of th
 
 ## Configuring catalogs to run with elevated permissions
 
-If you do not want to update your SQLite database catalog image or migrate your catalog to the file-based catalog format, you can perform the following actions to ensure your catalog source runs when the default pod security enforcement changes to restricted:
+If you do not want to update your SQLite database catalog image or migrate your catalog to the file-based catalog format, you can set the catalog security mode to legacy and label the catalog source namespace for baseline or privileged pod security enforcement.
 
-- Manually set the catalog security mode to legacy in your catalog source definition. This action ensures your catalog runs with legacy permissions even if the default catalog security mode changes to restricted.
+- Manually setting the catalog security mode to legacy in your catalog source definition ensures your catalog runs with legacy permissions even if the default catalog security mode changes to restricted.
 
-- Label the catalog source namespace for baseline or privileged pod security enforcement.
+- Labeling the catalog source namespace for baseline or privileged pod security enforcement ensures your catalog runs with the elevated pod security admission standard.
 
 <div class="note">
 
@@ -850,6 +856,8 @@ Alternatively, you can use the web console to manage catalog sources. From the *
 
 # Accessing images for Operators from private registries
 
+To install Operators from private registries by using Operator Lifecycle Manager (OLM) in OpenShift Container Platform, you can create pull secrets and reference them from catalog sources.
+
 If certain images relevant to Operators managed by Operator Lifecycle Manager (OLM) are hosted in an authenticated container image registry, also known as a private registry, OLM and the software catalog are unable to pull the images by default. To enable access, you can create a pull secret that contains the authentication credentials for the registry. By referencing one or more pull secrets in a catalog source, OLM can handle placing the secrets in the Operator and catalog namespace to allow installation.
 
 Other images required by an Operator or its Operands might require access to private registries as well. OLM does not handle placing the secrets in target tenant namespaces for this scenario, but authentication credentials can be added to the global cluster pull secret or individual namespace service accounts to enable the required access.
@@ -866,8 +874,6 @@ Operator and Operand images
 If an Operator installed from a catalog source uses a private image, either for the Operator image itself or one of the Operand images it watches, the Operator will fail to install because the deployment will not have access to the required registry authentication. Referencing secrets in a catalog source does not enable OLM to place the secrets in target tenant namespaces in which Operands are installed.
 
 Instead, the authentication details can be added to the global cluster pull secret in the `openshift-config` namespace, which provides access to all namespaces on the cluster. Alternatively, if providing access to the entire cluster is not permissible, the pull secret can be added to the `default` service accounts of the target tenant namespaces.
-
-You can access images from Operator from private registries by creating a secret for your registry credentials and adding the secret for use with relevant catalogs.
 
 - You have at least one of the following hosted in a private registry:
 
@@ -1084,11 +1090,11 @@ You can access images from Operator from private registries by creating a secret
               --for=pull
           ```
 
-- See [What is a secret?](../../cicd/builds/creating-build-inputs.xml#builds-secrets-overview_creating-build-inputs) for more information on the types of secrets, including those used for registry credentials.
+- [What is a secret?](../../cicd/builds/creating-build-inputs.xml#builds-secrets-overview_creating-build-inputs)
 
-- See [Updating the global cluster pull secret](../../openshift_images/managing_images/using-image-pull-secrets.xml#images-update-global-pull-secret_using-image-pull-secrets) for more details on the impact of changing this secret.
+- [Updating the global cluster pull secret](../../openshift_images/managing_images/using-image-pull-secrets.xml#images-update-global-pull-secret_using-image-pull-secrets)
 
-- See [Allowing pods to reference images from other secured registries](../../openshift_images/managing_images/using-image-pull-secrets.xml#images-allow-pods-to-reference-images-from-secure-registries_using-image-pull-secrets) for more details on linking pull secrets to service accounts per namespace.
+- [Allowing pods to reference images from other secured registries](../../openshift_images/managing_images/using-image-pull-secrets.xml#images-allow-pods-to-reference-images-from-secure-registries_using-image-pull-secrets)
 
 # Disabling the default software catalog sources
 

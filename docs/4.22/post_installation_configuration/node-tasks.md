@@ -667,7 +667,7 @@ $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
 
 ## About machine health checks
 
-You can use machine health checks to detect and remediate unhealthy machines automatically while limiting disruption to the targeted machine pool.
+You can use machine health checks to detect and remediate unhealthy machines automatically, limiting disruption to the targeted machine pool.
 
 <div class="note">
 
@@ -709,9 +709,9 @@ There are limitations to consider before deploying a machine health check:
 
 - [About control plane machine sets](../machine_management/control_plane_machine_management/cpmso-about.xml#cpmso-about)
 
-## Sample MachineHealthCheck resource
+## About the MachineHealthCheck custom resource
 
-You can use the sample `MachineHealthCheck` resource to configure health criteria, remediation limits, and startup timeouts for machines in a targeted pool.
+You control how a machine health check remediates unhealthy machines by using a `MachineHealthCheck` custom resource (CR) to configure health criteria, remediation limits, and startup timeouts for machines in a targeted pool.
 
 The `MachineHealthCheck` resource for all cloud-based installation types, and other than bare metal, resembles the following YAML file:
 
@@ -738,17 +738,28 @@ spec:
   nodeStartupTimeout: "10m"
 ```
 
-- Specify the name of the machine health check to deploy.
+where:
 
-- Specify a label for the machine pool that you want to check.
+`metadata.name`
+Specifies the name of the machine health check to deploy.
 
-- Specify the machine set to track in `<cluster_name>-<label>-<zone>` format. For example, `prod-node-us-east-1a`.
+`spec.selector.matchLabels`
+Specifies the machine pool and machine set to check by adding labels:
 
-- Specify the timeout duration for a node condition. If a condition is met for the duration of the timeout, the machine will be remediated. Long timeouts can result in long periods of downtime for a workload on an unhealthy machine.
+- `machine.openshift.io/cluster-api-machine-role`: Specifies a label for the machine pool that you want to check.
 
-- Specify the amount of machines allowed to be concurrently remediated in the targeted pool. This can be set as a percentage or an integer. If the number of unhealthy machines exceeds the limit set by `maxUnhealthy`, remediation is not performed.
+- `machine.openshift.io/cluster-api-machine-type`: Specifies a label for the machine pool that you want to check.
 
-- Specify the timeout duration that a machine health check must wait for a node to join the cluster before a machine is determined to be unhealthy.
+- `machine.openshift.io/cluster-api-machineset`: Specifies the machine set to track in the `<cluster_name>-<label>-<zone>` format. For example, `prod-node-us-east-1a`.
+
+`spec.unhealthyConditions.timeout`
+Specifies the timeout duration for a node condition. If a condition is met for the duration of the timeout, the machine will be remediated. Long timeouts can result in long periods of downtime for a workload on an unhealthy machine.
+
+`spec.maxUnhealthy`
+Specifies the amount of machines allowed to be concurrently remediated in the targeted pool. This can be set as a percentage or an integer. If the number of unhealthy machines exceeds the limit set by `maxUnhealthy`, remediation is not performed.
+
+`spec.nodeStartupTimeout`
+Specifies the timeout duration that a machine health check must wait for a node to join the cluster before a machine is determined to be unhealthy.
 
 <div class="note">
 
@@ -756,11 +767,11 @@ The `matchLabels` are examples only; you must map your machine groups based on y
 
 </div>
 
-### Short-circuiting machine health check remediation
+## About short-circuiting machine health check remediation
 
-Short-circuiting ensures that machine health checks remediate machines only when the cluster is healthy. Short-circuiting is configured through the `maxUnhealthy` field in the `MachineHealthCheck` resource.
+You can use machine health check short-circuiting to ensure that machine health checks remediate machines only when the cluster is healthy, by configuring the `maxUnhealthy` field in the `MachineHealthCheck` resource.
 
-If the user defines a value for the `maxUnhealthy` field, before remediating any machines, the `MachineHealthCheck` compares the value of `maxUnhealthy` with the number of machines within its target pool that it has determined to be unhealthy. Remediation is not performed if the number of unhealthy machines exceeds the `maxUnhealthy` limit.
+If you define a value for the `maxUnhealthy` field, before remediating any machines, the `MachineHealthCheck` compares the value of `maxUnhealthy` with the number of machines within its target pool that it has determined to be unhealthy. Remediation is not performed if the number of unhealthy machines exceeds the `maxUnhealthy` limit.
 
 <div class="important">
 
@@ -782,8 +793,7 @@ If the etcd cluster is degraded, manual intervention might be required. If a sca
 
 The `maxUnhealthy` field can be set as either an integer or percentage. There are different remediation implementations depending on the `maxUnhealthy` value.
 
-#### Setting maxUnhealthy by using an absolute value
-
+Setting maxUnhealthy by using an absolute value
 If `maxUnhealthy` is set to `2`:
 
 - Remediation will be performed if 2 or fewer nodes are unhealthy
@@ -792,8 +802,7 @@ If `maxUnhealthy` is set to `2`:
 
 These values are independent of how many machines are being checked by the machine health check.
 
-#### Setting maxUnhealthy by using percentages
-
+Setting maxUnhealthy by using percentages
 If `maxUnhealthy` is set to `40%` and there are 25 machines being checked:
 
 - Remediation will be performed if 10 or fewer nodes are unhealthy
@@ -815,8 +824,6 @@ The allowed number of machines is rounded down when the percentage of `maxUnheal
 ## Creating a machine health check resource
 
 You can create a `MachineHealthCheck` resource to monitor and automatically remediate unhealthy machines in a machine set.
-
-You can create a `MachineHealthCheck` resource for machine sets in your cluster.
 
 <div class="note">
 
@@ -3394,7 +3401,7 @@ It is recommended that you reserve resources for incompressible resources such a
 
 </div>
 
-For more details, see Allocating Resources for Nodes in the *Additional resources* section.
+For more details, see "Allocating Resources for Nodes".
 
 - [Allocating resources for nodes](../nodes/nodes/nodes-nodes-resources-configuring.xml#nodes-nodes-resources-configuring-setting_nodes-nodes-resources-configuring)
 

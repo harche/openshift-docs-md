@@ -207,7 +207,7 @@ After you enable the Assisted Installer as an add-on to multicluster engine Oper
       --pull-secret=<path_to_pull_secret> \
       --agent-namespace=<hosted_control_plane_namespace> \
       --base-domain=<base_domain> \
-      --api-server-address=api.<hosted_cluster_name>.<base_domain>
+      --api-server-address=api.<hosted_cluster_name>.<base_domain> \
       --etcd-storage-class=<etcd_storage_class> \
       --ssh-key=<path_to_ssh_key> \
       --namespace=<hosted_cluster_namespace> \
@@ -215,8 +215,7 @@ After you enable the Assisted Installer as an add-on to multicluster engine Oper
       --release-image=quay.io/openshift-release-dev/ocp-release:<ocp_release_image>-multi \
       --node-pool-replicas=<node_pool_replica_count> \
       --render \
-      --render-sensitive \
-      --ssh-key <home_directory>/<path_to_ssh_key>/<ssh_key> > hosted-cluster-config.yaml
+      --render-sensitive > hosted-cluster-config.yaml
     ```
 
     where:
@@ -242,8 +241,6 @@ After you enable the Assisted Installer as an add-on to multicluster engine Oper
     - `--release-image` specifies the supported OpenShift Container Platform version that you want to use, such as `4.21.0-multi`. If you are using a disconnected environment, replace `<ocp_release_image>` with the digest image. To extract the OpenShift Container Platform release image digest, see "Extracting the release image digest".
 
     - `--node-pool-replicas` specifies the node pool replica count, such as `3`. You must specify the replica count as `0` or greater to create the same number of replicas. Otherwise, you do not create node pools.
-
-    - `--ssh-key` specifies the path to the SSH key, such as `user/.ssh/id_rsa`.
 
 3.  Configure the service publishing strategy. By default, hosted clusters use the `NodePort` service publishing strategy because node ports are always available without additional infrastructure. However, you can configure the service publishing strategy to use a load balancer.
 

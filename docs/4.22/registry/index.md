@@ -60,7 +60,9 @@ Image data is stored in two locations. The actual image data is stored in a conf
 
 # Automatically pruning images
 
-To reclaim storage in the OpenShift image registry in OpenShift Container Platform and set how long the cluster keeps images, you can configure the automatic image pruner. You set the schedule, suspension, and retention options on the pruning custom resource (CR).
+To reclaim storage in the OpenShift image registry in OpenShift Container Platform and define image retention period, you can configure the automatic image pruner.
+
+You set the schedule, suspension, and retention options on the pruning custom resource (CR).
 
 - You have access to an OpenShift Container Platform cluster using an account with cluster administrator permissions.
 

@@ -1,4 +1,4 @@
-If you experience difficulty with a procedure described in this documentation, or with Red Hat build of Kueue in general, visit the [Red Hat Customer Portal](http://access.redhat.com).
+If you experience difficulty with a procedure described in this documentation, or with Red Hat build of Kueue in general, visit the Red Hat Customer Portal.
 
 From the Customer Portal, you can:
 
@@ -10,11 +10,13 @@ From the Customer Portal, you can:
 
 # About the Red Hat Knowledgebase
 
-The [Red Hat Knowledgebase](https://access.redhat.com/knowledgebase) provides rich content aimed at helping you make the most of Red Hat’s products and technologies. The Red Hat Knowledgebase consists of articles, product documentation, and videos outlining best practices on installing, configuring, and using Red Hat products. In addition, you can search for solutions to known issues, each providing concise root cause descriptions and remedial steps.
+The Red Hat Knowledgebase provides rich content aimed at helping you make the most of Red Hat’s products and technologies. The Red Hat Knowledgebase consists of articles, product documentation, and videos outlining best practices on installing, configuring, and using Red Hat products. In addition, you can search for solutions to known issues, each providing concise root cause descriptions and remedial steps.
 
 # Collecting data for Red Hat Support
 
-You can use the `oc adm must-gather` CLI command to collect the information about your Red Hat build of Kueue instance that is most likely needed for debugging issues, including:
+You can use the `oc adm must-gather` CLI command to collect the information about your Red Hat build of Kueue instance that is most likely needed for debugging issues.
+
+Information collected includes:
 
 - Red Hat build of Kueue custom resources, such as workloads, cluster queues, local queues, resource flavors, admission checks, and their corresponding cluster resource definitions (CRDs)
 
@@ -43,10 +45,18 @@ Collected data is written into a new directory named `must-gather/` in the curre
 
     Where `<version>` is your current version of Red Hat build of Kueue.
 
-3.  Create a compressed file from the `must-gather` directory that was just created in your working directory. Make sure you provide the date and cluster ID for the unique `must-gather` data. For more information about how to find the cluster ID, see [How to find the cluster-id or name on OpenShift cluster](https://access.redhat.com/solutions/5280291).
+3.  Create a compressed file from the `must-gather` directory that was just created in your working directory. Make sure you provide the date and cluster ID for the unique `must-gather` data. For more information about how to find the cluster ID, see "How to find the cluster-id or name on OpenShift cluster".
 
-4.  Attach the compressed file to your support case on the [the **Customer Support** page](https://access.redhat.com/support/cases/#/case/list) of the Red Hat Customer Portal.
+4.  Attach the compressed file to your support case on the **Customer Support** page of the Red Hat Customer Portal.
 
 # Additional resources
+
+- [Red Hat Customer Portal](https://access.redhat.com)
+
+- [Red Hat Knowledgebase](https://access.redhat.com/knowledgebase)
+
+- [How to find the cluster-id or name on OpenShift cluster](https://access.redhat.com/solutions/5280291)
+
+- [Customer Support page](https://access.redhat.com/support/cases/#/case/list)
 
 - [Support overview](../../support/index.xml#support-overview)

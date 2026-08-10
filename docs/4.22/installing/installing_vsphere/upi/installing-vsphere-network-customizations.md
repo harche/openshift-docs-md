@@ -1354,9 +1354,7 @@ To install OpenShift Container Platform on user-provisioned infrastructure on VM
 
 # Adding more compute machines to a cluster in vSphere
 
-You can add more compute machines to a user-provisioned OpenShift Container Platform cluster on VMware vSphere.
-
-After your vSphere template deploys in your OpenShift Container Platform cluster, you can deploy a virtual machine (VM) for a machine in that cluster.
+To scale a user-provisioned OpenShift Container Platform cluster on VMware vSphere, you can add more compute machines by cloning the vSphere template into a virtual machine (VM).
 
 - Obtain the base64-encoded Ignition file for your compute machines.
 

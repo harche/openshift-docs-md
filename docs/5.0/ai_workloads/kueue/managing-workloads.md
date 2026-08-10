@@ -2,9 +2,7 @@ Red Hat build of Kueue does not directly manipulate jobs that are created by us
 
 # Labeling namespaces to allow Red Hat build of Kueue to manage jobs
 
-The Red Hat build of Kueue Operator uses an opt-in webhook mechanism to ensure that policies are only enforced for the jobs and namespaces that it is expected to target.
-
-You must label the namespaces where you want Red Hat build of Kueue to manage jobs with the `kueue.openshift.io/managed=true` label.
+You must add the `kueue.openshift.io/managed=true` label to each namespace where you want Red Hat build of Kueue to manage jobs, because the Operator only enforces policies on labeled namespaces.
 
 - You have cluster administrator permissions.
 
@@ -20,7 +18,7 @@ You must label the namespaces where you want Red Hat build of Kueue to manage j
   $ oc label namespace <namespace> kueue.openshift.io/managed=true
   ```
 
-When you add this label, you instruct the Red Hat build of Kueue Operator that the namespace is managed by its webhook admission controllers. As a result, any Red Hat build of Kueue resources within that namespace are properly validated and mutated.
+  When you add this label, you instruct the Red Hat build of Kueue Operator that the namespace is managed by its webhook admission controllers. As a result, any Red Hat build of Kueue resources within that namespace are properly validated and mutated.
 
 # Configuring label policies for jobs
 

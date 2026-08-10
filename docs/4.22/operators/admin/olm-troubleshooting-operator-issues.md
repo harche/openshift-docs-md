@@ -195,7 +195,7 @@ You can view the status of an Operator catalog source by using the CLI.
 
 - [Operator Lifecycle Manager concepts and resources → Catalog source](../../operators/understanding/olm/olm-understanding-olm.xml#olm-catalogsource_olm-understanding-olm)
 
-- gRPC documentation: [States of Connectivity](https://grpc.github.io/grpc/core/md_doc_connectivity-semantics-and-api.html)
+- [gRPC documentation: States of Connectivity](https://grpc.github.io/grpc/core/md_doc_connectivity-semantics-and-api.html)
 
 - [Accessing images for Operators from private registries](../../operators/admin/olm-managing-custom-catalogs.xml#olm-accessing-images-private-registries_olm-managing-custom-catalogs)
 

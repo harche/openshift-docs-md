@@ -6,7 +6,7 @@ As of OpenShift Container Platform 4.11, the default Red Hat-provided Operator c
 
 The `opm` subcommands, flags, and functionality related to the SQLite database format are also deprecated and will be removed in a future release. The features are still supported and must be used for catalogs that use the deprecated SQLite database format.
 
-Many of the `opm` subcommands and flags for working with the SQLite database format, such as `opm index prune`, do not work with the file-based catalog format. For more information about working with file-based catalogs, see [Managing custom catalogs](../../operators/admin/olm-managing-custom-catalogs.xml#olm-managing-custom-catalogs), [Operator Framework packaging format](../../operators/understanding/olm-packaging-format.xml#olm-file-based-catalogs_olm-packaging-format), and [Mirroring images for a disconnected installation using the oc-mirror plugin](../../disconnected/installing-mirroring-disconnected.xml#installing-mirroring-disconnected).
+Many of the `opm` subcommands and flags for working with the SQLite database format, such as `opm index prune`, do not work with the file-based catalog format. For more information about working with file-based catalogs, see "Managing custom catalogs", "Operator Framework packaging format", and "Mirroring images for a disconnected installation using the oc-mirror plugin".
 
 </div>
 
@@ -38,6 +38,8 @@ When creating custom catalog images, previous versions of OpenShift Container Pl
 
 - [Packaging format](../../operators/understanding/olm-packaging-format.xml#olm-file-based-catalogs_olm-packaging-format)
 
+- [Mirroring images for a disconnected installation using the oc-mirror plugin](../../disconnected/installing-mirroring-disconnected.xml#installing-mirroring-disconnected)
+
 - [Using Operator Lifecycle Manager in disconnected environments](../../disconnected/using-olm.xml#olm-restricted-networks)
 
 # About Red Hat-provided Operator catalogs
@@ -46,11 +48,11 @@ The Red Hat-provided catalog sources are installed by default in the `openshift-
 
 The following Operator catalogs are distributed by Red Hat:
 
-| Catalog               | Index image                                                | Description                                                                                                                                                                                                                                                |
-|-----------------------|------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `redhat-operators`    | `registry.redhat.io/redhat/redhat-operator-index:v4.17`    | Red Hat products packaged and shipped by Red Hat. Supported by Red Hat.                                                                                                                                                                                    |
-| `certified-operators` | `registry.redhat.io/redhat/certified-operator-index:v4.17` | Products from leading independent software vendors (ISVs). Red Hat partners with ISVs to package and ship. Supported by the ISV.                                                                                                                           |
-| `community-operators` | `registry.redhat.io/redhat/community-operator-index:v4.17` | Software maintained by relevant representatives in the [redhat-openshift-ecosystem/community-operators-prod/operators](https://github.com/redhat-openshift-ecosystem/community-operators-prod/tree/main/operators) GitHub repository. No official support. |
+| Catalog               | Index image                                                | Description                                                                                                                      |
+|-----------------------|------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| `redhat-operators`    | `registry.redhat.io/redhat/redhat-operator-index:v4.17`    | Red Hat products packaged and shipped by Red Hat. Supported by Red Hat.                                                          |
+| `certified-operators` | `registry.redhat.io/redhat/certified-operator-index:v4.17` | Products from leading independent software vendors (ISVs). Red Hat partners with ISVs to package and ship. Supported by the ISV. |
+| `community-operators` | `registry.redhat.io/redhat/community-operator-index:v4.17` | Software maintained by relevant representatives in the community Operators GitHub repository. No official support.               |
 
 During a cluster upgrade, the index image tag for the default Red Hat-provided catalog sources are updated automatically by the Cluster Version Operator (CVO) so that Operator Lifecycle Manager (OLM) pulls the updated version of the catalog. For example during an upgrade from OpenShift Container Platform 4.8 to 4.9, the `spec.image` field in the `CatalogSource` object for the `redhat-operators` catalog is updated from:
 
@@ -63,3 +65,5 @@ to:
 ``` terminal
 registry.redhat.io/redhat/redhat-operator-index:v4.9
 ```
+
+- [Community Operators (GitHub)](https://github.com/redhat-openshift-ecosystem/community-operators-prod/tree/main/operators)

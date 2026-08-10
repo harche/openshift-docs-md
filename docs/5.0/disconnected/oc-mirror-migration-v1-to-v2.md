@@ -1,4 +1,4 @@
-The oc-mirror v2 plugin introduces major changes to image mirroring workflows. This guide provides step-by-step instructions for migration while ensuring compatibility with oc-mirror plugin v2.
+The oc-mirror v2 plugin introduces major changes to image mirroring workflows. Understand the migration process and check for compatibility with oc-mirror plugin v2 to ensure a successful migration.
 
 <div class="important">
 
@@ -78,7 +78,7 @@ Before migrating from oc-mirror plugin v1 to v2, you must review the updated mir
 
 # Migrating to oc-mirror plugin v2
 
-To migrate from oc-mirror plugin v1 to v2, you must manually update the `ImageSetConfiguration` file, modify mirroring commands, and clean up v1 artifacts. Follow these steps to complete the migration.
+To migrate from oc-mirror plugin v1 to v2, you must manually update the `ImageSetConfiguration` file, modify mirroring commands, and clean up v1 artifacts.
 
 1.  Modify the API version and remove deprecated fields in your `ImageSetConfiguration`.
 

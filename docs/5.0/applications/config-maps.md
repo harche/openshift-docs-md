@@ -1,6 +1,6 @@
-Config maps allow you to decouple configuration artifacts from image content to keep containerized applications portable.
+By using a config map, you can decouple configuration artifacts from image content to keep containerized applications portable.
 
-The following sections define config maps and how to create and use them.
+The following sections define config maps, explain how to create and use them, and describe use cases for consuming `ConfigMap` objects in pods.
 
 # Understanding config maps
 
@@ -77,10 +77,6 @@ They can only be referenced by pods in the same project.
 This includes any pods created by using the CLI, or indirectly from a replication controller. It does not include pods created by using the OpenShift Container Platform node’s `--manifest-url` flag, its `--config` flag, or its REST API because these are not common ways to create pods.
 
 - [Creating and using config maps](../nodes/pods/nodes-pods-configmaps.xml)
-
-# Use cases: Consuming config maps in pods
-
-The following sections describe some uses cases when consuming `ConfigMap` objects in pods.
 
 ## Populating environment variables in containers by using config maps
 

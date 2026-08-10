@@ -322,7 +322,7 @@ You can deploy machines with ultra disks on Microsoft Azure by editing your mach
     `spec.template.spec.providerSpec.value.ultraSSDCapability`
     Enables the use of ultra disks.
 
-3.  Create a machine set using the updated configuration by running the following command:
+3.  Create a machine set by using the updated configuration by running the following command:
 
     ``` terminal
     $ oc create -f <machine_set_name>.yaml

@@ -6,9 +6,9 @@ The Security Profiles Operator supports only Red Hat Enterprise Linux CoreOS (RH
 
 </div>
 
-# About Security Profiles
+# About security profiles
 
-Security profiles can increase security at the container level in your cluster.
+Security profiles limit what containers can do on a node, so you can reduce the attack surface of workloads in your cluster.
 
 Seccomp security profiles list the syscalls a process can make. Permissions are broader than SELinux, enabling users to restrict operations system-wide, such as `write`.
 

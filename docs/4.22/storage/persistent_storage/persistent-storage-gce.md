@@ -32,9 +32,9 @@ To enable dynamic provisioning of persistent volumes, create a storage class tha
 
 # Creating the persistent volume claim
 
-You can create a persistent volume claim by using the OpenShift Container Platform web console to request storage resources for your applications by specifying the storage class, access mode, and size.
+You can create a persistent volume claim to dynamically provision and bind storage from a pre-configured storage class, so that your applications can consume persistent storage in OpenShift Container Platform.
 
-- Storage exists in the underlying infrastructure.
+- Storage must exist in the underlying infrastructure before it can be mounted as a volume in OpenShift Container Platform.
 
 1.  In the OpenShift Container Platform web console, click **Storage** → **Persistent Volume Claims**.
 

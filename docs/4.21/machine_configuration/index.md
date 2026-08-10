@@ -90,7 +90,7 @@ You should know the following details about the MCO, machine configs, and how th
 
 - MCO is only supported for writing to files in `/etc` and `/var` directories, although there are symbolic links to some directories that can be writeable by being symbolically linked to one of those areas. The `/opt` and `/usr/local` directories are examples.
 
-- Ignition is the configuration format used in MachineConfigs. For details, see the "Configuration Specification v3.5.0 (Ignition documentation)" in the *Additional resources* section.
+- Ignition is the configuration format used in MachineConfigs. For details, see "Configuration Specification v3.5.0 (Ignition documentation)".
 
 - Although Ignition config settings can be delivered directly at OpenShift Container Platform installation time, and are formatted in the same way that MCO delivers Ignition configs, MCO has no way of seeing what those original Ignition configs are. Therefore, you should wrap Ignition config settings into a machine config before deploying them.
 
@@ -98,7 +98,7 @@ You should know the following details about the MCO, machine configs, and how th
 
 - A key reason for using a machine config is that it will be applied when you spin up new nodes for a pool in your OpenShift Container Platform cluster. The `machine-api-operator` provisions a new machine and MCO configures it.
 
-MCO uses Ignition as the configuration format. OpenShift Container Platform 4.6 moved from Ignition config specification version 2 to version 3. For more information, see the "Configuration Specification v3.5.0 (Ignition documentation)" in the *Additional resources* section.
+MCO uses Ignition as the configuration format. OpenShift Container Platform 4.6 moved from Ignition config specification version 2 to version 3. For more information, see the "Configuration Specification v3.5.0 (Ignition documentation)".
 
 ## What can you change with machine configs?
 
@@ -124,7 +124,7 @@ The kinds of components that MCO can change include:
 
 - **kernelType**: Optionally identify a non-standard kernel to use instead of the standard kernel. Use `realtime` to use the RT kernel (for RAN). This is only supported on select platforms. Use the `64k-pages` parameter to enable the 64k page size kernel. This setting is exclusive to machines with 64-bit ARM architectures.
 
-- **fips**: Enable FIPS mode. FIPS should be set at installation-time setting and not a postinstallation procedure. For more information, see "Using system-wide cryptographic policies" in the *Additional resources* section.
+- **fips**: Enable FIPS mode. FIPS should be set at installation-time setting and not a postinstallation procedure. For more information, see "Using system-wide cryptographic policies".
 
   <div class="important">
 
@@ -212,7 +212,7 @@ Throughout this process, the MCO maintains the required number of pods based on 
 
 <div class="note">
 
-There are conditions which can prevent the MCO from draining a node. If the MCO fails to drain a node, the Operator will be unable to reboot the node, preventing any changes made to the node through a machine config. For more information and mitigation steps, see the "MCCDrainError" runbook in the *Additional resources* section.
+There are conditions which can prevent the MCO from draining a node. If the MCO fails to drain a node, the Operator will be unable to reboot the node, preventing any changes made to the node through a machine config. For more information and mitigation steps, see the "MCCDrainError" runbook.
 
 </div>
 
@@ -338,7 +338,7 @@ You can correct configuration drift and return the node to the `Ready` state by 
 
 - Ensure that the contents and file permissions of the files on the node match what is configured in the machine config. You can manually rewrite the file contents or change the file permissions.
 
-- Generate a force file on the degraded node. The force file causes the MCD to bypass the usual configuration drift detection and reapplies the current machine config. For more information, see "How to skip validation of failing / stuck MachineConfig in OCP 4?" in the *Additional resources* section.
+- Generate a force file on the degraded node. The force file causes the MCD to bypass the usual configuration drift detection and reapplies the current machine config. For more information, see "How to skip validation of failing / stuck MachineConfig in OCP 4?".
 
   <div class="note">
 
@@ -1098,9 +1098,9 @@ For more information on the meaning of these fields, see "About checking machine
 
 # Viewing and interacting with certificates
 
-Machine Config Operator certificates are used to secure connections between the Red Hat Enterprise Linux CoreOS (RHCOS) nodes and the Machine Config Server.
+You can secure connections between Red Hat Enterprise Linux CoreOS (RHCOS) nodes and the Machine Config Server by viewing, interacting with, and extracting detailed information from Machine Config Operator and image registry certificates.
 
-For more information, see "Machine Config Operator certificates" in the *Additional resources* section.
+For more information, see "Machine Config Operator certificates".
 
 The following certificates are handled in the cluster by the Machine Config Controller (MCC) and can be found in the `ControllerConfig` resource:
 

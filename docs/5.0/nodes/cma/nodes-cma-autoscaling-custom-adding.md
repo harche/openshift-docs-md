@@ -178,7 +178,7 @@ You can create a custom metrics autoscaler for a workload that is created by a `
 
     - Specifies the trigger to use as the basis for scaling, as described in the "Understanding the custom metrics autoscaler triggers" section. This example uses OpenShift Container Platform monitoring.
 
-    - Optional: Specifies a trigger authentication or a cluster trigger authentication. For more information, see *Understanding the custom metrics autoscaler trigger authentication* in the *Additional resources* section.
+    - Optional: Specifies a trigger authentication or a cluster trigger authentication. For more information, see "Understanding the custom metrics autoscaler trigger authentication".
 
       - Enter `TriggerAuthentication` to use a trigger authentication. This is the default.
 
@@ -330,11 +330,11 @@ For more information about the support scope of Red Hat Technology Preview featu
 
       - `gradual`: The autoscaler does not terminate an existing job if its associated scaled job is updated. The autoscaler creates new jobs with the latest specs.
 
-    - Optional: Specifies a scaling strategy: `default`, `custom`, or `accurate`. The default is `default`. For more information, see the link in the "Additional resources" section that follows.
+    - Optional: Specifies a scaling strategy: `default`, `custom`, or `accurate`. The default is `default`.
 
-    - Specifies the trigger to use as the basis for scaling, as described in the "Understanding the custom metrics autoscaler triggers" section.
+    - Specifies the trigger to use as the basis for scaling. For more information, see "Understanding custom metrics autoscaler triggers".
 
-    - Optional: Specifies a trigger authentication or a cluster trigger authentication. For more information, see *Understanding the custom metrics autoscaler trigger authentication* in the *Additional resources* section.
+    - Optional: Specifies a trigger authentication or a cluster trigger authentication. For more information, see "Understanding custom metrics autoscaler trigger authentications".
 
       - Enter `TriggerAuthentication` to use a trigger authentication. This is the default.
 
@@ -382,5 +382,7 @@ For more information about the support scope of Red Hat Technology Preview featu
     - If `False`, scaling is not taking place because there are no metrics or there is a problem in one or more of the objects you created.
 
 # Additional resources
+
+- [Understanding custom metrics autoscaler triggers](../../nodes/cma/nodes-cma-autoscaling-custom-trigger.xml#nodes-cma-autoscaling-custom-overview-trigger)
 
 - [Understanding custom metrics autoscaler trigger authentications](../../nodes/cma/nodes-cma-autoscaling-custom-trigger-auth.xml#nodes-cma-autoscaling-custom-trigger-auth)

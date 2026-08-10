@@ -1,14 +1,4 @@
-When opening a support case, it is helpful to provide debugging information about your cluster to Red Hat Support. You can use tools such as `must-gather`, `sosreport`, and cluster node journal logs to collect diagnostic data.
-
-When opening a support case, it is helpful to provide debugging information about your cluster to Red Hat Support.
-
-It is recommended to provide:
-
-- [Data gathered using the `oc adm must-gather` command](../support/gathering-cluster-data.xml#support_gathering_data_gathering-cluster-data)
-
-- The [unique cluster ID](../support/gathering-cluster-data.xml#support-get-cluster-id_gathering-cluster-data)
-
-- The results of a self-service [Technical Supportability Review (TSR)](../support/gathering-cluster-data.xml#about-self-service-tsr_gathering-cluster-data) analysis of your `must-gather` data
+You can gather debugging information about your OpenShift Container Platform cluster to provide to Red Hat Support when opening a support case.
 
 # About the must-gather tool
 

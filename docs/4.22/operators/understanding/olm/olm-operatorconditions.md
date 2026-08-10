@@ -2,9 +2,7 @@ This guide outlines how Operator Lifecycle Manager (OLM) uses Operator condition
 
 # About Operator conditions
 
-As part of its role in managing the lifecycle of an Operator, Operator Lifecycle Manager (OLM) infers the state of an Operator from the state of Kubernetes resources that define the Operator. While this approach provides some level of assurance that an Operator is in a given state, there are many instances where an Operator might need to communicate information to OLM that could not be inferred otherwise. This information can then be used by OLM to better manage the lifecycle of the Operator.
-
-OLM provides a custom resource definition (CRD) called `OperatorCondition` that allows Operators to communicate conditions to OLM. There are a set of supported conditions that influence management of the Operator by OLM when present in the `Spec.Conditions` array of an `OperatorCondition` resource.
+Operator Lifecycle Manager (OLM) infers Operator state from Kubernetes resources, but some conditions require explicit communication. You can use the `OperatorCondition` custom resource definition (CRD) to tell OLM about supported conditions that affect lifecycle management.
 
 <div class="note">
 
@@ -59,6 +57,6 @@ spec:
 
 - [Managing Operator conditions](../../../operators/admin/olm-managing-operatorconditions.xml#olm-operatorconditions)
 
-- [Using pod disruption budgets to specify the number of pods that must be up](../../../nodes/pods/nodes-pods-configuring.xml#nodes-pods-configuring-pod-distruption-about_nodes-pods-configuring)
+- [Understanding how to use pod disruption budgets to specify the number of pods that must be up](../../../nodes/pods/nodes-pods-configuring.xml#nodes-pods-pod-disruption-about_nodes-pods-configuring)
 
 - [Graceful termination](../../../applications/deployments/route-based-deployment-strategies.xml#deployments-graceful-termination_route-based-deployment-strategies)

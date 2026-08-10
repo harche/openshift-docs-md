@@ -1,4 +1,4 @@
-You can summarize your cluster specifications by querying the `clusterversion` resource to view cluster version information and component status.
+You can query the `clusterversion` resource to obtain a summary of your OpenShift Container Platform cluster specifications to help Red Hat Support troubleshoot issues.
 
 # Summarizing cluster specifications by using a cluster version object
 

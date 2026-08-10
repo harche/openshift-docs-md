@@ -159,17 +159,9 @@ You can use the `opm` CLI to create a catalog image that uses the plain text *fi
 
 # Updating or filtering a file-based catalog image
 
-You can use the `opm` CLI to update or filter a catalog image that uses the file-based catalog format. By extracting the contents of an existing catalog image, you can modify the catalog as needed, for example:
+To keep your catalog accurate and ensure users can safely upgrade installed Operators, you can use the `opm` CLI to extract, edit, and rebuild a file-based catalog image. You can also specify deprecation messages for packages, channels, and bundles.
 
-- Adding packages
-
-- Removing packages
-
-- Updating existing package entries
-
-- Detailing deprecation messages per package, channel, and bundle
-
-You can then rebuild the image as an updated version of the catalog.
+After you complete the changes, you can rebuild the image as an updated version of the catalog.
 
 <div class="note">
 

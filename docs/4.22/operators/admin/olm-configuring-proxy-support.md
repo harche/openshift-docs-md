@@ -4,7 +4,7 @@ If a global proxy is configured on your OpenShift Container Platform cluster, Op
 
 <!-- -->
 
-- [Configuring a custom PKI](../../networking/configuring_network_settings/configuring-a-custom-pki.xml#configuring-a-custom-pki) (custom CA certificate)
+- [Configuring a custom PKI (custom CA certificate)](../../networking/configuring_network_settings/configuring-a-custom-pki.xml#configuring-a-custom-pki)
 
 # Overriding proxy settings of an Operator
 

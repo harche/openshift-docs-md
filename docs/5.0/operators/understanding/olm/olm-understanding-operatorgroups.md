@@ -1,18 +1,14 @@
-This guide outlines the use of Operator groups with Operator Lifecycle Manager (OLM) in OpenShift Container Platform.
+Operator groups control which namespaces an Operator watches and how Operator Lifecycle Manager (OLM) manages related Operators in OpenShift Container Platform. You can use them to configure install modes, target namespaces, and access for OLM-managed Operators.
 
 # About Operator groups
 
-An *Operator group*, defined by the `OperatorGroup` resource, provides multitenant configuration to OLM-installed Operators. An Operator group selects target namespaces in which to generate required RBAC access for its member Operators.
+An Operator group defines multitenant configuration for OLM-installed Operators through an `OperatorGroup` resource. An Operator group selects target namespaces where the required RBAC access is generated for member Operators .
 
 The set of target namespaces is provided by a comma-delimited string stored in the `olm.targetNamespaces` annotation of a cluster service version (CSV). This annotation is applied to the CSV instances of member Operators and is projected into their deployments.
 
 # Operator group membership
 
-An Operator is considered a *member* of an Operator group if the following conditions are true:
-
-- The CSV of the Operator exists in the same namespace as the Operator group.
-
-- The install modes in the CSV of the Operator support the set of namespaces targeted by the Operator group.
+An Operator becomes a member of an Operator group when its cluster service version (CSV) is in the same namespace and its install modes support the group’s target namespaces.
 
 An install mode in a CSV consists of an `InstallModeType` field and a boolean `Supported` field. The spec of a CSV can contain a set of install modes of four distinct `InstallModeTypes`:
 
@@ -33,7 +29,13 @@ If the spec of a CSV omits an entry of `InstallModeType`, then that type is cons
 
 # Target namespace selection
 
-You can explicitly name the target namespace for an Operator group using the `spec.targetNamespaces` parameter:
+You can explicitly name the target namespace for an Operator group using the `spec.targetNamespaces` parameter.
+
+<div class="formalpara-title">
+
+**Example Operator group**
+
+</div>
 
 ``` yaml
 apiVersion: operators.coreos.com/v1
@@ -79,6 +81,8 @@ The resolved set of selected namespaces is shown in the `status.namespaces` para
 
 # Operator group CSV annotations
 
+Member cluster service versions (CSVs) of an Operator group carry annotations that identify the group name, namespace, and target namespace selection.
+
 Member CSVs of an Operator group have the following annotations:
 
 | Annotation                                 | Description                                                                                        |
@@ -123,7 +127,9 @@ status:
 
 # Role-based access control
 
-When an Operator group is created, three cluster roles are generated. When the cluster roles are generated, they are automatically suffixed with a hash value to ensure that each cluster role is unique. Each Operator group contains a single aggregation rule with a cluster role selector set to match a label, as shown in the following table:
+When an Operator group is created, three cluster roles are generated. When the cluster roles are generated, they are automatically suffixed with a hash value to ensure that each cluster role is unique.
+
+Each Operator group contains a single aggregation rule with a cluster role selector set to match a label, as shown in the following table:
 
 | Cluster role                                     | Label to match                                                     |
 |--------------------------------------------------|--------------------------------------------------------------------|
@@ -281,13 +287,15 @@ Cluster roles generated for each API resource from a CRD
 
 Cluster roles generated for each API resource from an API service
 
+## Additional roles and role bindings
+
 - If the CSV defines exactly one target namespace that contains `*`, then a cluster role and corresponding cluster role binding are generated for each permission defined in the `permissions` field of the CSV. All resources generated are given the `olm.owner: <csv_name>` and `olm.owner.namespace: <csv_namespace>` labels.
 
 - If the CSV does *not* define exactly one target namespace that contains `*`, then all roles and role bindings in the Operator namespace with the `olm.owner: <csv_name>` and `olm.owner.namespace: <csv_namespace>` labels are copied into the target namespace.
 
 # Copied CSVs
 
-OLM creates copies of all active member CSVs of an Operator group in each of the target namespaces of that Operator group. The purpose of a copied CSV is to tell users of a target namespace that a specific Operator is configured to watch resources created there.
+Operator Lifecycle Manager (OLM) creates copies of all active member CSVs of an Operator group in each of the target namespaces of that Operator group. The purpose of a copied CSV is to tell users of a target namespace that a specific Operator is configured to watch resources created there.
 
 Copied CSVs have a status reason `Copied` and are updated to match the status of their source CSV. The `olm.targetNamespaces` annotation is stripped from copied CSVs before they are created on the cluster. Omitting the target namespace selection avoids the duplication of target namespaces between tenants.
 
@@ -329,7 +337,7 @@ By default, the `disableCopiedCSVs` field is disabled. After enabling a `disable
 
 # Static Operator groups
 
-An Operator group is *static* if its `spec.staticProvidedAPIs` field is set to `true`. As a result, OLM does not modify the `olm.providedAPIs` annotation of an Operator group, which means that it can be set in advance. This is useful when a user wants to use an Operator group to prevent resource contention in a set of namespaces but does not have active member CSVs that provide the APIs for those resources.
+A static Operator group has `spec.staticProvidedAPIs` set to `true`, so OLM does not modify the `olm.providedAPIs` annotation. You can set this annotation in advance to reserve API ownership and prevent resource contention without active member CSVs.
 
 Below is an example of an Operator group that protects `Prometheus` resources in all namespaces with the `something.cool.io/cluster-monitoring: "true"` annotation:
 

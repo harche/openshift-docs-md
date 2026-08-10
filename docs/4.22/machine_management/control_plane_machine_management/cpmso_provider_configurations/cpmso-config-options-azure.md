@@ -129,7 +129,7 @@ If the cluster uses a different zone for each failure domain, configure this par
 
 # Sample Azure failure domain configuration
 
-To prevent downtime for your application due to the failure of a single Microsoft Azure region, you can configure failure domains in the control plane machine set. To use failure domains, you configure appropriate values in the `failureDomains` section of the `ControlPlaneMachineSet` custom resource (CR).
+To prevent downtime for your applications due to the failure of a single Microsoft Azure region, you can configure failure domains in the control plane machine set by configuring appropriate values in the `failureDomains` section of the `ControlPlaneMachineSet` object.
 
 The control plane machine set concept of a failure domain is analogous to the Azure concept of an [*Azure availability zone*](https://learn.microsoft.com/en-us/azure/azure-web-pubsub/concept-availability-zones). The `ControlPlaneMachineSet` CR spreads control plane machines across more than one failure domain when possible.
 

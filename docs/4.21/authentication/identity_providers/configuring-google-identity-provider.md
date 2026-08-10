@@ -93,7 +93,7 @@ Specifies a hosted domain used to restrict sign-in accounts. Optional if the `lo
 
 # Adding an identity provider to your cluster
 
-Apply the OAuth custom resource (CR) to add an identity provider to your cluster so users can authenticate with external credentials instead of the default `kubeadmin` user.
+Apply the identity provider custom resource (CR) to your cluster so users can authenticate with the configured identity provider.
 
 - You installed an OpenShift Container Platform cluster.
 
@@ -119,7 +119,7 @@ Apply the OAuth custom resource (CR) to add an identity provider to your cluster
 
     You can also access this page from the web console by navigating to **(?) Help** → **Command Line Tools** → **Copy Login Command**.
 
-3.  Log in to the cluster by running the following command, passing in the token to authenticate:
+3.  Log in to the cluster by running the following command and pass in the token to authenticate:
 
     ``` terminal
     $ oc login --token=<token>

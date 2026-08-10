@@ -31,7 +31,10 @@ To encrypt traffic between external clients and your applications, configure cer
     EOF
     ```
 
-    Replace `<namespace>` with the namespace where the `Issuer` is located. It must be the same as the namespace of your route.
+    where:
+
+    `<namespace>`
+    Specifies the namespace where the `Issuer` is located. It must be the same as the route namespace.
 
 2.  Create a `Certificate` object for the route by running the following command. The `secretName` specifies the TLS secret that is going to be issued and managed by cert-manager and will also be referenced in your route in the following steps.
 
@@ -96,7 +99,10 @@ To encrypt traffic between external clients and your applications, configure cer
       --namespace=<namespace>
     ```
 
-    Replace `<namespace>` with the namespace where both your secret and route are located.
+    where:
+
+    `<namespace>`
+    Specifies the namespace where both your secret and route are located.
 
 5.  Create a route for your service resource, that uses edge TLS termination and a custom hostname, by running the following command. The hostname is used when creating a `Certificate` resource in the next step.
 
@@ -133,7 +139,7 @@ To encrypt traffic between external clients and your applications, configure cer
     where:
 
     `<route_name>`
-    Specifies the route name.
+    Specifies the name of your route.
 
     `<namespace>`
     Specifies the namespace where both your secret and route are located.
@@ -150,7 +156,10 @@ To encrypt traffic between external clients and your applications, configure cer
     $ oc get secret -n <namespace>
     ```
 
-    Replace `<namespace>` with the namespace name where both your secret and route reside.
+    where:
+
+    `<namespace>`
+    Specifies the namespace where both your secret and route are located.
 
 2.  Verify that the router is using the referenced external certificate by running the following command. The command should return with the status code `200 OK`.
 
@@ -158,7 +167,10 @@ To encrypt traffic between external clients and your applications, configure cer
     $ curl -IsS https://<hostname>
     ```
 
-    Replace `<hostname>` with the hostname of your route.
+    where:
+
+    `<hostname>`
+    Specifies the hostname of your route.
 
 3.  Verify the `subject`, `subjectAltName`, and `issuer` fields of your server certificate are all as expected from the curl verbose outputs by running the following command:
 
@@ -166,7 +178,12 @@ To encrypt traffic between external clients and your applications, configure cer
     $ curl -v https://<hostname>
     ```
 
-    Replace `<hostname>` with the hostname of your route. The certificate from the secret secures the route. The `cert-manager` component manages the lifecycle of the certificate.
+    where:
+
+    `<hostname>`
+    Specifies the hostname of your route.
+
+The certificate from the referenced secret secures the route. The `cert-manager` component issues the certificate and automatically manages the certificate lifecycle.
 
 # Additional resources
 

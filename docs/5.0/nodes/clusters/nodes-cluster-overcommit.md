@@ -858,7 +858,7 @@ It is recommended that you reserve resources for incompressible resources such a
 
 </div>
 
-For more details, see Allocating Resources for Nodes in the *Additional resources* section.
+For more details, see "Allocating Resources for Nodes".
 
 ## Disabling overcommitment for a node
 

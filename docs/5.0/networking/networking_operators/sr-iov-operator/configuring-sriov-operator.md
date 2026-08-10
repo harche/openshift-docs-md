@@ -39,6 +39,14 @@ To manage SR-IOV network devices and network attachments in your cluster, config
     $ oc apply -f sriovOperatorConfig.yaml
     ```
 
+- Confirm that the `SriovOperatorConfig` object is ready by running the following command:
+
+  ``` terminal
+  $ oc get sriovoperatorconfig default -n openshift-sriov-network-operator
+  ```
+
+  A value of `True` in the `Ready` column indicates that the Operator reconciled the configuration successfully.
+
 # SR-IOV Network Operator config custom resource
 
 To customize the SR-IOV Network Operator, configure the `sriovoperatorconfig` custom resource.
@@ -118,6 +126,131 @@ The following table describes the `sriovoperatorconfig` CR fields:
 </table>
 
 SR-IOV Network Operator config custom resource
+
+# About Ready conditions for the SR-IOV Network Operator
+
+You can monitor the health and readiness of SR-IOV Network Operator resources by using `Ready` conditions in the resource status.
+
+Conditions give a consistent, machine-readable view of whether a resource has reached the required state, so that you can automate workflows and troubleshoot failures without relying only on Operator logs.
+
+The SR-IOV Network Operator reports a `Ready` condition on the following objects:
+
+- `SriovNetwork`
+
+- `SriovIBNetwork`
+
+- `SriovOperatorConfig`
+
+The following table describes the possible `Ready` condition values for each object.
+
+| Object                | `Ready` status | Description                                                                                                                                      |
+|-----------------------|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| `SriovNetwork`        | `True`         | The Operator created a valid `NetworkAttachmentDefinition` object and the Ethernet network is ready for pods to use.                             |
+| `SriovNetwork`        | `False`        | Provisioning failed. Common reasons include a missing or invalid `NetworkAttachmentDefinition` object or a target namespace that does not exist. |
+| `SriovIBNetwork`      | `True`         | The Operator created a valid `NetworkAttachmentDefinition` object and the InfiniBand network is ready for pods to use.                           |
+| `SriovIBNetwork`      | `False`        | Provisioning failed. Common reasons include a missing or invalid `NetworkAttachmentDefinition` object or a target namespace that does not exist. |
+| `SriovOperatorConfig` | `True`         | The Operator reconciled the configuration successfully.                                                                                          |
+| `SriovOperatorConfig` | `False`        | The Operator could not reconcile the configuration, or the requested configuration is not supported.                                             |
+
+SR-IOV Network Operator Ready condition
+
+When the `Ready` condition is `False`, the condition `reason` and `message` fields identify the failure. The following reasons are commonly reported:
+
+| Reason                                | Applies to                       | Description                                                                                 |
+|---------------------------------------|----------------------------------|---------------------------------------------------------------------------------------------|
+| `NetworkReady`                        | `SriovNetwork`, `SriovIBNetwork` | The Operator provisioned the `NetworkAttachmentDefinition` object and the network is ready. |
+| `NetworkAttachmentDefinitionNotFound` | `SriovNetwork`, `SriovIBNetwork` | The expected `NetworkAttachmentDefinition` object was not found.                            |
+| `NetworkAttachmentDefinitionInvalid`  | `SriovNetwork`, `SriovIBNetwork` | The `NetworkAttachmentDefinition` object is invalid or the Operator could not apply it.     |
+| `NamespaceNotFound`                   | `SriovNetwork`, `SriovIBNetwork` | The target namespace for the network does not exist.                                        |
+| `OperatorConfigReady`                 | `SriovOperatorConfig`            | The Operator configuration reconciled successfully.                                         |
+| `OperatorConfigSyncFailed`            | `SriovOperatorConfig`            | The Operator failed to synchronize the configuration.                                       |
+| `UnsupportedConfiguration`            | `SriovOperatorConfig`            | The requested Operator configuration is not supported.                                      |
+
+Common Ready condition reasons
+
+You can use the OpenShift CLI (`oc`) to inspect these conditions and wait for resources to become ready. For example, automation can wait for an `SriovNetwork` object to report `Ready` before attaching pods to the secondary network.
+
+# Checking SR-IOV Network Operator status with Ready conditions
+
+You can check the `Ready` condition on `SriovNetwork`, `SriovIBNetwork`, and `SriovOperatorConfig` objects to confirm that the SR-IOV Network Operator applied your configuration. You can also wait for the condition before you attach workloads or continue automation.
+
+- You have installed the OpenShift CLI (`oc`).
+
+- You have logged in as a user with `cluster-admin` privileges.
+
+- You have installed the SR-IOV Network Operator.
+
+- You have an `SriovNetwork`, `SriovIBNetwork`, or `SriovOperatorConfig` object to check.
+
+1.  Check the `Ready` column for network resources by running the following command:
+
+    ``` terminal
+    $ oc get sriovnetwork,sriovibnetwork -n openshift-sriov-network-operator
+    ```
+
+    Example output:
+
+    ``` terminal
+    NAME                                                 AGE   READY
+    sriovnetwork.sriovnetwork.openshift.io/net-attach-1  5m    True
+
+    NAME                                                   AGE   READY
+    sriovibnetwork.sriovnetwork.openshift.io/ib-attach-1   5m    True
+    ```
+
+2.  Check the `Ready` column for the Operator configuration by running the following command:
+
+    ``` terminal
+    $ oc get sriovoperatorconfig -n openshift-sriov-network-operator
+    ```
+
+    Example output:
+
+    ``` terminal
+    NAME      AGE   READY
+    default   1d    True
+    ```
+
+3.  Inspect the condition details for a network resource by running the following command:
+
+    ``` terminal
+    $ oc describe sriovnetwork <network_name> -n openshift-sriov-network-operator
+    ```
+
+    Example output:
+
+    ``` terminal
+    Status:
+      Conditions:
+        Last Transition Time:  2026-07-27T15:40:00Z
+        Message:               NetworkAttachmentDefinition is provisioned and ready
+        Observed Generation:   1
+        Reason:                NetworkReady
+        Status:                True
+        Type:                  Ready
+    ```
+
+4.  Optional: Wait for a network resource to become ready by running the following command:
+
+    ``` terminal
+    $ oc wait sriovnetwork/<network_name> -n openshift-sriov-network-operator \
+      --for=condition=Ready --timeout=2m
+    ```
+
+    Replace `<network_name>` with the name of your `SriovNetwork` or `SriovIBNetwork` object. For an InfiniBand network, use `sriovibnetwork/<network_name>`.
+
+5.  Optional: Wait for the Operator configuration to become ready by running the following command:
+
+    ``` terminal
+    $ oc wait sriovoperatorconfig/default -n openshift-sriov-network-operator \
+      --for=condition=Ready --timeout=2m
+    ```
+
+- If the `Ready` condition is `False`, review the `Reason` and `Message` fields from the `oc describe` output.
+
+- For network resources, confirm that the target namespace exists and that the related `SriovNetworkNodePolicy` object and device configuration are valid.
+
+- For the `SriovOperatorConfig` object, correct unsupported configuration values and check the SR-IOV Network Operator pod logs in the `openshift-sriov-network-operator` namespace.
 
 # About the Network Resources Injector
 

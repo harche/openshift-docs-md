@@ -1,22 +1,38 @@
-# Overview
+You can provision and manage Google Cloud Platform (GCP) persistent disk (PD) storage in OpenShift Container Platform by using the GCP PD Container Storage Interface (CSI) Driver Operator and driver, which provide dynamic volume provisioning and eliminate the need to pre-provision storage.
 
-OpenShift Container Platform can provision persistent volumes (PVs) using the Container Storage Interface (CSI) driver for Google Cloud Platform (GCP) persistent disk (PD) storage.
+# Overview of GCP PD CSI Driver Operator
 
-Familiarity with [persistent storage](../../storage/understanding-persistent-storage.xml#understanding-persistent-storage) and [configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi) is recommended when working with a Container Storage Interface (CSI) Operator and driver.
+You can provision and manage Google Cloud Platform (GCP) persistent disk (PD) storage in OpenShift Container Platform by using the GCP PD Container Storage Interface (CSI) Driver Operator and driver, which are installed by default.
+
+Familiarity with persistent storage and configuring CSI volumes is recommended when working with a CSI Operator and driver. For more information, see "Understanding persistent storage" and "Configuring CSI volumes".
 
 To create CSI-provisioned persistent volumes (PVs) that mount to GCP PD storage assets, OpenShift Container Platform installs the GCP PD CSI Driver Operator and the GCP PD CSI driver by default in the `openshift-cluster-csi-drivers` namespace.
 
-- **GCP PD CSI Driver Operator**: By default, the Operator provides a storage class that you can use to create PVCs. You can disable this default storage class if desired (see [Managing the default storage class](../../storage/container_storage_interface/persistent-storage-csi-sc-manage.xml#persistent-storage-csi-sc-manage)). You also have the option to create the GCP PD storage class as described in [Persistent storage using GCE Persistent Disk](../../storage/persistent_storage/persistent-storage-gce.xml#persistent-storage-using-gce).
+GCP PD CSI Driver Operator
+By default, the GCP PD CSI Driver Operator provides a storage class that you can use to create PVCs. You can disable this default storage class if desired (see "Managing the default storage class"). You also have the option to create the GCP PD storage class as described in "Persistent storage using GCE Persistent Disk".
 
-- **GCP PD driver**: The driver enables you to create and mount GCP PD PVs.
+GCP PD driver
+The GCP PD driver enables you to create and mount GCP PD PVs.
 
-  GCP PD CSI driver supports the C3 instance type for bare metal and N4 machine series. The C3 instance type and N4 machine series support the hyperdisk-balanced disks. For more information, see Section *C3 instance type for bare metal and N4 machine series*.
+GCP PD CSI driver supports the C3 instance type for bare metal and N4 machine series. The C3 instance type and N4 machine series support the hyperdisk-balanced disks. For more information, see "C3 instance type for bare metal and N4 machine series".
 
 <div class="note">
 
-OpenShift Container Platform provides automatic migration for the GCE Persistent Disk in-tree volume plugin to its equivalent CSI driver. For more information, see [CSI automatic migration](../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration).
+OpenShift Container Platform provides automatic migration for the GCE Persistent Disk in-tree volume plugin to its equivalent CSI driver. For more information, see "CSI automatic migration".
 
 </div>
+
+- [Understanding persistent storage](../../storage/understanding-persistent-storage.xml#understanding-persistent-storage)
+
+- [Configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi)
+
+- [Managing the default storage class](../../storage/container_storage_interface/persistent-storage-csi-sc-manage.xml#persistent-storage-csi-sc-manage)
+
+- [Persistent storage using GCE Persistent Disk](../../storage/persistent_storage/persistent-storage-gce.xml#persistent-storage-using-gce)
+
+- [C3 instance type for bare metal and N4 machine series](../../storage/container_storage_interface/persistent-storage-csi-gcp-pd.xml#persistent-storage-csi-gcp-hyperdisk-overview_persistent-storage-csi-gcp-pd)
+
+- [CSI automatic migration](../../storage/container_storage_interface/persistent-storage-csi-migration.xml#persistent-storage-csi-migration)
 
 # About CSI
 
@@ -26,7 +42,7 @@ CSI Operators give OpenShift Container Platform users storage options, such as v
 
 # Reducing permissions while using the GCP PD CSI Driver Operator
 
-The default installation allows the Google Cloud Platform (GCP) persistent disk (PD) Container Storage Interface (CSI) Driver to impersonate any service account in the Google Cloud project. You can reduce the scope of permissions granted to the GCP PD CSI Driver service account in your Google Cloud project to only the required node service accounts.
+By default, the Google Cloud Platform (GCP) persistent disk (PD) Container Storage Interface (CSI) Driver can impersonate any service account in the Google Cloud project. You can reduce the scope of permissions to only the required node service accounts.
 
 To reduce permissions, grant the `iam.serviceAccountUser` role to the control plane and compute node service accounts, and then remove the `iam.serviceAccountUser` role from the project-wide service account, thus reducing the scope of the permission.
 
@@ -63,7 +79,9 @@ Reducing permissions only applies to GCP clusters using Workload Identity Federa
 
 # GCP PD CSI driver storage class parameters
 
-The Google Cloud Platform (GCP) persistent disk (PD) Container Storage Interface (CSI) driver uses the CSI `external-provisioner` sidecar as a controller. This is a separate helper container that is deployed with the CSI driver. The sidecar manages persistent volumes (PVs) by triggering the `CreateVolume` operation.
+To configure persistent volume provisioning behavior for Google Cloud Platform (GCP) persistent disk (PD), use storage class parameters that control disk type, replication, and encryption settings.
+
+The GCP PD Container Storage Interface (CSI) driver uses the CSI `external-provisioner` sidecar as a controller. This is a separate helper container that is deployed with the CSI driver. The sidecar manages persistent volumes (PVs) by triggering the `CreateVolume` operation.
 
 The GCP PD CSI driver uses the `csi.storage.k8s.io/fstype` parameter key to support dynamic provisioning. The following table describes all the GCP PD CSI storage class parameters that are supported by OpenShift Container Platform.
 
@@ -90,7 +108,7 @@ The GCP PD CSI driver uses the `csi.storage.k8s.io/fstype` parameter key to supp
 <td style="text-align: left;"><p><code>pd-standard</code></p></td>
 <td style="text-align: left;"><p>Allows you to choose between standard PVs or solid-state-drive PVs.</p>
 <p>The driver does not validate the value, thus all the possible values are accepted.</p>
-<p>For <code>hyperdisk-balanced</code>, be sure to check the limitations under Section <em>C3 and N4 instance type limitations</em>.</p></td>
+<p>For <code>hyperdisk-balanced</code>, be sure to check the limitations under "C3 and N4 instance type limitations".</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p><code>replication-type</code></p></td>
@@ -109,9 +127,15 @@ The GCP PD CSI driver uses the `csi.storage.k8s.io/fstype` parameter key to supp
 
 CreateVolume Parameters
 
-# C3 instance type for bare metal and N4 machine series
+- [C3 and N4 instance type limitations](../../storage/container_storage_interface/persistent-storage-csi-gcp-pd.xml#persistent-storage-csi-gcp-hyperdisk-limitations_persistent-storage-csi-gcp-pd)
+
+# C3 instance type for bare metal and N4 machines series
+
+You can use hyperdisk-balanced storage on Google Cloud Platform (GCP) C3 bare metal and N4 machine series instances to achieve high performance.
 
 ## C3 and N4 instance type limitations
+
+Before deploying hyperdisk-balanced disks on C3 bare metal or N4 machine series instances, review the volume size, cloning, resizing, and storage class requirements to ensure successful configuration.
 
 The GCP PD CSI driver support for the C3 instance type for bare metal and N4 machine series have the following limitations:
 
@@ -127,39 +151,41 @@ The GCP PD CSI driver support for the C3 instance type for bare metal and N4 mac
 
   You need to manually create a storage class.
 
-  For information about creating the storage class, see Step 2 in Section *Setting up hyperdisk-balanced disks*.
+  For information about creating the storage class, see Step 2 in "Setting up hyperdisk-balanced disks".
 
   </div>
 
 - Clusters with mixed virtual machines (VMs) that use different storage types, for example, N2 and N4, are not supported. This is due to hyperdisks-balanced disks not being usable on most legacy VMs. Similarly, regular persistent disks are not usable on N4/C3 VMs.
 
-- A GCP cluster with c3-standard-2, c3-standard-4, n4-standard-2, and n4-standard-4 nodes can erroneously exceed the maximum attachable disk number, which should be 16 ([JIRA link](https://issues.redhat.com/browse/OCPBUGS-39258)).
+- A GCP cluster with c3-standard-2, c3-standard-4, n4-standard-2, and n4-standard-4 nodes can erroneously exceed the maximum attachable disk number, which should be 16. For more information, see "OCPBUGS-39258".
 
-- [Additional limitations](https://cloud.google.com/compute/docs/disks/hyperdisks#limitations).
+- For more limitations, see Google Cloud documentation "Limitations for Hyperdisk".
+
+<!-- -->
+
+- [Setting up hyperdisk-balanced disk](../../storage/container_storage_interface/persistent-storage-csi-gcp-pd.xml#persistent-storage-csi-gcp-hyperdisk-storage-pools-procedure_persistent-storage-csi-gcp-pd)
+
+- [OCPBUGS-39258](https://issues.redhat.com/browse/OCPBUGS-39258)
+
+- [Limitations for Hyperdisk](https://cloud.google.com/compute/docs/disks/hyperdisks#limitations)
 
 ## Storage pools for hyperdisk-balanced disks overview
 
-Hyperdisk storage pools can be used with Compute Engine for large-scale storage. A hyperdisk storage pool is a purchased collection of capacity, throughput, and IOPS, which you can then provision for your applications as needed. You can use hyperdisk storage pools to create and manage disks in pools and use the disks across multiple workloads. By managing disks in aggregate, you can save costs while achieving expected capacity and performance growth. By using only the storage that you need in hyperdisk storage pools, you reduce the complexity of forecasting capacity and reduce management by going from managing hundreds of disks to managing a single storage pool.
+You can simplify storage management and reduce costs by using hyperdisk storage pools to aggregate capacity, throughput, and IOPS into a single pool instead of managing individual disks.
 
-To set up storage pools, see [Setting up hyperdisk-balanced disks](../../storage/container_storage_interface/persistent-storage-csi-gcp-pd.xml#persistent-storage-csi-gcp-hyperdisk-storage-pools-procedure_persistent-storage-csi-gcp-pd).
+Hyperdisk storage pools can be used with Compute Engine for large-scale storage. A hyperdisk storage pool is a purchased collection of capacity, throughput, and IOPS, which you can then provision for your applications as needed. You can use hyperdisk storage pools to create and manage disks in pools and use the disks across multiple workloads. By managing disks in aggregate, you can save costs while achieving expected capacity and performance growth. By using only the storage that you need in hyperdisk storage pools, you reduce the complexity of forecasting capacity and reduce management by going from managing hundreds of disks to managing a single storage pool.
 
 ## Setting up hyperdisk-balanced disks
 
+To provision high-performance hyperdisk-balanced storage volumes, configure a storage class, create persistent volume claims, and deploy applications that use the hyperdisk storage.
+
 - Access to the cluster with administrative privileges
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-Complete the following steps to set up hyperdisk-balanced disks:
 
 1.  Create a GCP cluster with attached disks provisioned with hyperdisk-balanced disks.
 
 2.  Create a storage class specifying the hyperdisk-balanced disks during installation:
 
-    1.  Follow the procedure in the *Installing a cluster on GCP with customizations* section.
+    1.  Follow the procedure in "Installing a cluster on GCP with customizations".
 
         For your install-config.yaml file, use the following example file:
 
@@ -202,9 +228,9 @@ Complete the following steps to set up hyperdisk-balanced disks:
                 diskType: hyperdisk-balanced
         ```
 
-        - Specifies the node type as n4-standard-4.
+        - `controlPlane.platform.gcp.type` and `compute.platform.gcp.type`: Specifies the node type as n4-standard-4.
 
-        - Specifies the node has the root disk backed by hyperdisk-balanced disk type. All nodes in the cluster should use the same disk type, either hyperdisks-balanced or pd-\*.
+        - `controlPlane.platform.gcp.osDisk.diskType` and `compute.platform.osDisk.diskType`: Specifies the node has the root disk backed by hyperdisk-balanced disk type. All nodes in the cluster should use the same disk type, either hyperdisks-balanced or pd-\*.
 
           <div class="note">
 
@@ -212,7 +238,7 @@ Complete the following steps to set up hyperdisk-balanced disks:
 
           </div>
 
-    2.  After step 3 in *Incorporating the Cloud Credential Operator utility manifests* section, copy the following manifests into the manifests directory created by the installation program:
+    2.  After step 3 in "Incorporating the Cloud Credential Operator utility manifests", copy the following manifests into the manifests directory created by the installation program:
 
         - cluster_csi_driver.yaml - specifies opting out of the default storage class creation
 
@@ -236,7 +262,7 @@ Complete the following steps to set up hyperdisk-balanced disks:
             storageClassState: Unmanaged
           ```
 
-          - Specifies disabling creation of the default OpenShift Container Platform storage classes.
+          `spec.storageClassState` specifies disabling creation of the default OpenShift Container Platform storage classes.
 
           <div class="formalpara-title">
 
@@ -269,19 +295,19 @@ Complete the following steps to set up hyperdisk-balanced disks:
           ...
           ```
 
-          - Specify the name for your storage class. In this example, it is `hyperdisk-sc`.
+        - `metadata`.name: Specifies the name for your storage class. In this example, it is `hyperdisk-sc`.
 
-          - `pd.csi.storage.gke.io` specifies GCP CSI provisioner.
+        - `provisioner`: `pd.csi.storage.gke.io` specifies GCP CSI provisioner.
 
-          - Specifies using hyperdisk-balanced disks.
+        - `parameters.type`: Specifies using hyperdisk-balanced disks.
 
-          - Specifies the throughput value in MiBps using the "Mi" qualifier. For example, if your required throughput is 250 MiBps, specify "250Mi". If you do not specify a value, the capacity is based upon the disk type default.
+        - `parameters.provisioned-throughput-on-create`: Specifies the throughput value in MiBps using the "Mi" qualifier. For example, if your required throughput is 250 MiBps, specify "250Mi". If you do not specify a value, the capacity is based upon the disk type default.
 
-          - Specifies the IOPS value without any qualifiers. For example, if you require 7,000 IOPS, specify "7000". If you do not specify a value, the capacity is based upon the disk type default.
+        - `parameters.provisioned-iops-on-create`: Specifies the IOPS value without any qualifiers. For example, if you require 7,000 IOPS, specify "7000". If you do not specify a value, the capacity is based upon the disk type default.
 
-          - If using storage pools, specify a list of specific storage pools that you want to use in the format: projects/PROJECT_ID/zones/ZONE/storagePools/STORAGE_POOL_NAME.
+        - `parameters.storage-pools`: If using storage pools, specifies a list of specific storage pools that you want to use in the format: projects/PROJECT_ID/zones/ZONE/storagePools/STORAGE_POOL_NAME.
 
-          - If using storage pools, set `allowedTopologies` to restrict the topology of provisioned volumes to where the storage pool exists. In this example, `us-east4-c`.
+        - `parameters.allowedTopologies`: If using storage pools, set `allowedTopologies` to restrict the topology of provisioned volumes to where the storage pool exists. In this example, `us-east4-c`.
 
 3.  Create a persistent volume claim (PVC) that uses the hyperdisk-specific storage class using the following example YAML file:
 
@@ -305,9 +331,9 @@ Complete the following steps to set up hyperdisk-balanced disks:
           storage: 2048Gi
     ```
 
-    - PVC references the storage pool-specific storage class. In this example, `hyperdisk-sc`.
+    - `spec.storageClassName`: The PVC references the storage pool-specific storage class. In this example, `hyperdisk-sc`.
 
-    - Target storage capacity of the hyperdisk-balanced volume. In this example, `2048Gi`.
+    - `spec.resources.requests.storage`: Target storage capacity of the hyperdisk-balanced volume. In this example, `2048Gi`.
 
 4.  Create a deployment that uses the PVC that you just created. Using a deployment helps ensure that your application has access to the persistent storage even after the pod restarts and rescheduling:
 
@@ -350,9 +376,9 @@ Complete the following steps to set up hyperdisk-balanced disks:
                   claimName: my-pvc
         ```
 
-        - Specifies the machine family. In this example, it is `n4`.
+        - `spec.template.spec.nodeSelector`: Specifies the machine family. In this example, it is `n4`.
 
-        - Specifies the name of the PVC created in the preceding step. In this example, it is `my-pfc`.
+        - `spec.template.spec.volumes.persistentVolumeClaim.claimName`: Specifies the name of the PVC created in the preceding step. In this example, it is `my-pfc`.
 
     3.  Confirm that the deployment was successfully created by running the following command:
 
@@ -409,7 +435,7 @@ Complete the following steps to set up hyperdisk-balanced disks:
         c4a-rhel-vm                                 us-central1-a   zone            50       hyperdisk-balanced  READY
         ```
 
-        - Hyperdisk-balanced disk.
+        Where `c4a-rhel.vm` is a hyperdisk-balanced disk.
 
     6.  If using storage pools, check that the volume is provisioned as specified in your storage class and PVC by running the following command:
 
@@ -428,11 +454,13 @@ Complete the following steps to set up hyperdisk-balanced disks:
         pvc-1ff52479-4c81-4481-aa1d-b21c8f8860c6  READY   3000              140                     2048
         ```
 
-## Additional resources
+- [Create a Hyperdisk Storage Pool](https://cloud.google.com/compute/docs/disks/create-storage-pools#create-pool)
 
 - [Installing a cluster on GCP with customizations](../../installing/installing_gcp/installing-gcp-customizations.xml#installing-gcp-customizations)
 
 # Creating a custom-encrypted persistent volume
+
+To enhance data security beyond default encryption, create persistent volumes with customer-managed encryption keys (CMEK) that use Google Cloud Key Management Service for encryption control.
 
 When you create a `PersistentVolumeClaim` object, OpenShift Container Platform provisions a new persistent volume (PV) and creates a `PersistentVolume` object. You can add a custom encryption key in Google Cloud Platform (GCP) to protect a PV in your cluster by encrypting the newly created PV.
 
@@ -442,17 +470,15 @@ For encryption, the newly attached PV that you create uses customer-managed encr
 
 - You have created a Cloud KMS key ring and key version.
 
-For more information about CMEK and Cloud KMS resources, see [Using customer-managed encryption keys (CMEK)](https://cloud.google.com/kubernetes-engine/docs/how-to/using-cmek).
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To create a custom-encrypted PV, complete the following steps:
+For more information about CMEK and Cloud KMS resources, see Google Cloud documentation "Using customer-managed encryption keys (CMEK)".
 
 1.  Create a storage class with the Cloud KMS key. The following example enables dynamic provisioning of encrypted volumes:
+
+    <div class="formalpara-title">
+
+    **Example**
+
+    </div>
 
     ``` yaml
     apiVersion: storage.k8s.io/v1
@@ -467,15 +493,15 @@ To create a custom-encrypted PV, complete the following steps:
       disk-encryption-kms-key: projects/<key-project-id>/locations/<location>/keyRings/<key-ring>/cryptoKeys/<key>
     ```
 
-    - This field must be the resource identifier for the key that will be used to encrypt new disks. Values are case-sensitive. For more information about providing key ID values, see [Retrieving a resource’s ID](https://cloud.google.com/kms/docs/resource-hierarchy#retrieve_resource_id) and [Getting a Cloud KMS resource ID](https://cloud.google.com/kms/docs/getting-resource-ids).
+    The `parameters.disk-encryption-kms-key` field must be the resource identifier for the key that will be used to encrypt new disks. Values are case-sensitive. For more information about providing key ID values, see Google Cloud documentation "Retrieving a resource’s ID" and "Getting a Cloud KMS resource ID".
 
-      <div class="note">
+    <div class="note">
 
-      You cannot add the `disk-encryption-kms-key` parameter to an existing storage class. However, you can delete the storage class and recreate it with the same name and a different set of parameters. If you do this, the provisioner of the existing class must be `pd.csi.storage.gke.io`.
+    You cannot add the `disk-encryption-kms-key` parameter to an existing storage class. However, you can delete the storage class and re-create it with the same name and a different set of parameters. If you do this, the provisioner of the existing class must be `pd.csi.storage.gke.io`.
 
-      </div>
+    </div>
 
-2.  Deploy the storage class on your OpenShift Container Platform cluster using the `oc` command:
+2.  Deploy the storage class on your OpenShift Container Platform cluster by using the `oc` command:
 
     ``` terminal
     $ oc describe storageclass csi-gce-pd-cmek
@@ -551,7 +577,13 @@ To create a custom-encrypted PV, complete the following steps:
 
     </div>
 
-Your CMEK-protected PV is now ready to use with your OpenShift Container Platform cluster.
+    Your CMEK-protected PV is now ready to use with your OpenShift Container Platform cluster.
+
+- [Using customer-managed encryption keys (CMEK)](https://cloud.google.com/kubernetes-engine/docs/how-to/using-cmek)
+
+- [Retrieving a resource’s ID](https://cloud.google.com/kms/docs/resource-hierarchy#retrieve_resource_id)
+
+- [Getting a Cloud KMS resource ID](https://cloud.google.com/kms/docs/getting-resource-ids)
 
 # User-managed encryption
 
@@ -589,10 +621,10 @@ This features supports the following storage types:
 
   For information about installing with IBM Cloud with user-managed encryption, see "User-managed encryption for IBM Cloud" and "Installing on IBM Cloud".
 
-For information about installing with user-managed encryption for GCP PD, see [Installation configuration parameters](../../installing/installing_gcp/installing-gcp-customizations.xml#installation-configuration-parameters_installing-gcp-customizations).
+<!-- -->
+
+- [Additional Google Cloud configuration parameters](../../installing/installing_gcp/installation-config-parameters-gcp.xml#installation-configuration-parameters-additional-gcp_installation-config-parameters-gcp)
 
 # Additional resources
 
 - [Persistent storage using GCE Persistent Disk](../../storage/persistent_storage/persistent-storage-gce.xml#persistent-storage-using-gce)
-
-- [Configuring CSI volumes](../../storage/container_storage_interface/persistent-storage-csi.xml#persistent-storage-csi)

@@ -33,9 +33,9 @@ Use the `SeccompProfile` object to create seccomp profiles.
 
     An `init` container creates the root directory of the Security Profiles Operator to run the Operator without `root` group or user ID privileges. A symbolic link is created from the rootless profile storage `/var/lib/openshift-security-profiles` to the default `seccomp` root path inside of the kubelet root `/var/lib/kubelet/seccomp/operator`.
 
-# Applying seccomp profiles to a pod
+# Apply seccomp profiles to a pod
 
-Create a pod to apply one of the created profiles.
+To enforce a recorded or custom seccomp profile on a workload, create a pod that references the profile in its security context.
 
 1.  Create a pod object that defines a `securityContext`:
 
@@ -224,9 +224,9 @@ You can use the `ProfileBinding` resource to bind a security profile to the `Sec
   {"localhostProfile":"operator/profile.json","type":"Localhost"}
   ```
 
-# Recording profiles from workloads
+# Record profiles from workloads
 
-The Security Profiles Operator can record system calls with `ProfileRecording` objects, making it easier to create baseline profiles for applications.
+The Security Profiles Operator can record system calls with `ProfileRecording` objects to create baseline profiles for applications.
 
 When using the log enricher for recording seccomp profiles, verify the log enricher feature is enabled. See *Additional resources* for more information.
 
@@ -345,7 +345,7 @@ A container with `privileged: true` security context restraints prevents log-bas
 
     <div class="formalpara-title">
 
-    **Example output for seccompprofile**
+    **Example output for seccomp profile**
 
     </div>
 
@@ -355,9 +355,9 @@ A container with `privileged: true` security context restraints prevents log-bas
     test-recording-redis   Installed   2m48s
     ```
 
-## Merging per-container profile instances
+## Merge per-container profile instances
 
-By default, each container instance records into a separate profile. The Security Profiles Operator can merge the per-container profiles into a single profile. Merging profiles is useful when deploying applications using `ReplicaSet` or `Deployment` objects.
+To reuse one recorded profile when deploying applications with a `ReplicaSet` or `Deployment`, configure the Security Profiles Operator to merge per-container profile instances into a single profile instead of keeping a separate profile for each container.
 
 1.  Edit a `ProfileRecording` object to include a `mergeStrategy: containers` variable:
 
@@ -430,7 +430,7 @@ By default, each container instance records into a separate profile. The Securit
 
     <div class="formalpara-title">
 
-    **Example output for seccompprofiles**
+    **Example output for seccomp profile**
 
     </div>
 

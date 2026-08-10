@@ -17,7 +17,7 @@ This procedure requires API downtime.
       kube-apiserver openshift-apiserver openshift-oauth-apiserver
     ```
 
-2.  To take an etcd snapshot, use the `exec` command in each etcd container by entering the following command:
+2.  To take an etcd snapshot, use the `exec` command in the etcd container by entering the following command:
 
     ``` terminal
     $ oc exec -it <etcd_pod_name> -n <hosted_cluster_namespace> -- \
@@ -29,7 +29,7 @@ This procedure requires API downtime.
       snapshot save /var/lib/data/snapshot.db
     ```
 
-3.  To check the snapshot status, use the `exec` command in each etcd container by running the following command:
+3.  To check the snapshot status, use the `exec` command in the etcd container by running the following command:
 
     ``` terminal
     $ oc exec -it <etcd_pod_name> -n <hosted_cluster_namespace> -- \
@@ -120,19 +120,13 @@ If you have a snapshot of etcd from your hosted cluster, you can restore it. Cur
 
 To restore an etcd snapshot, you change the output from the `create cluster --render` command and define a `restoreSnapshotURL` value in the etcd section of the `HostedCluster` specification.
 
-<div class="note">
+<div class="important">
 
-The `--render` flag in the `hcp create` command does not render the secrets. To render the secrets, you must use both the `--render` and the `--render-sensitive` flags in the `hcp create` command.
-
-</div>
-
-<div class="formalpara-title">
-
-**Prerequisites**
+If the snapshot that you are restoring is from a hosted cluster with `LoadBalancer` services, the load balancer IPs might no longer be valid. In that case, you must delete and re-create the `LoadBalancer` services.
 
 </div>
 
-You took an etcd snapshot on a hosted cluster.
+- You took an etcd snapshot on a hosted cluster.
 
 1.  Delete the hosted cluster that you backed up in "Taking a snapshot of etcd for a hosted cluster" by entering the following command:
 
@@ -188,6 +182,12 @@ You took an etcd snapshot on a hosted cluster.
     - `<value_for_cpu>` specifies the CPU value, such as `2`.
 
     - `<release_image_reference>` specifies the OpenShift Container Platform release image for the cluster, for example, `quay.io/openshift-release-dev/ocp-release:4.20.14-multi`. You can use the `--release-image` flag to set up the hosted cluster with a specific OpenShift Container Platform release.
+
+      <div class="note">
+
+      The `--render` flag in the `hcp create` command does not render the secrets. To render the secrets, you must use both the `--render` and the `--render-sensitive` flags in the `hcp create` command.
+
+      </div>
 
       <div class="formalpara-title">
 

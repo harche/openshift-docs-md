@@ -106,6 +106,10 @@ The SR-IOV Network resources injector and SR-IOV Network Operator webhook are en
 
 - [Configuring multi-network policy](../../networking/multiple_networks/secondary_networks/configuring-multi-network-policy.xml#configuring-multi-network-policy)
 
+- [About Ready conditions for the SR-IOV Network Operator](../../networking/networking_operators/sr-iov-operator/configuring-sriov-operator.xml#nw-sriov-about-k8s-conditions_configuring-sriov-operator)
+
+- [Checking SR-IOV Network Operator status with Ready conditions](../../networking/networking_operators/sr-iov-operator/configuring-sriov-operator.xml#nw-sriov-monitoring-conditions-proc_configuring-sriov-operator)
+
 # Next steps
 
 - [Configuring the SR-IOV Network Operator](../../networking/networking_operators/sr-iov-operator/configuring-sriov-operator.xml#configuring-sriov-operator)
