@@ -34,20 +34,20 @@ Delete a backup by creating a `DeleteBackupRequest` custom resource (CR). This h
     $ oc apply -f <deletebackuprequest_cr_filename>
     ```
 
-# Deleting a backup by using the Velero CLI
+# Deleting a backup by using the OADP CLI
 
-Delete a backup by using the Velero CLI to run the `velero backup delete` command. This helps you to quickly remove backups and their associated volume artifacts from storage.
+Delete a backup by using the OADP CLI to run the `oc oadp backup delete` command. This helps you to quickly remove backups and their associated volume artifacts from storage.
 
 - You have run a backup of your application.
 
-- You downloaded the Velero CLI and can access the Velero binary in your cluster.
+- You have downloaded the OADP CLI binary from your cluster and can access the `oc oadp` commands.
 
 <!-- -->
 
-- To delete the backup, run the following Velero command:
+- To delete the backup, run the following command:
 
   ``` terminal
-  $ velero backup delete <backup_name> -n openshift-adp
+  $ oc oadp backup delete <backup_name> -n openshift-adp
   ```
 
   Replace `<backup_name>` with the name of the backup.

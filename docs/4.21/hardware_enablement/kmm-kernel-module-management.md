@@ -354,7 +354,7 @@ To adapt the Kernel Module Management (KMM) Operator to your OpenShift Container
 
 <!-- -->
 
-- For more information, see [Installing the Kernel Module Management Operator](../hardware_enablement/kmm-kernel-module-management.xml#kmm-install_kernel-module-management-operator).
+- [Installing the Kernel Module Management Operator](../hardware_enablement/kmm-kernel-module-management.xml#kmm-install_kernel-module-management-operator)
 
 ## Unloading the kernel module
 
@@ -382,7 +382,7 @@ The Linux kernel accepts the `firmware_class.path` parameter as a search path fo
 
 <!-- -->
 
-- For more information about the `worker.setFirmwareClassPath` path, see [Configuring the Kernel Module Management Operator](../hardware_enablement/kmm-kernel-module-management.xml#kmm-configuring-kmmo_kernel-module-management-operator).
+- [Configuring the Kernel Module Management Operator](../hardware_enablement/kmm-kernel-module-management.xml#kmm-configuring-kmmo_kernel-module-management-operator)
 
 # Uninstalling the Kernel Module Management Operator
 
@@ -643,57 +643,79 @@ spec:
     node-role.kubernetes.io/worker: ""
 ```
 
-- Required.
+where:
 
-- Optional.
+`spec.moduleLoader.container.modprobe.moduleName`
+Specifies the name of the module to load. This parameter is required.
 
-- Optional: Copies the contents of this path into the path specified in `worker.setFirmwareClassPath` (which is preset to `/var/lib/firmware`) of the `kmm-operator-manager-config` config map. This action occurs before `modprobe` is called to insert the kernel module.
+`spec.moduleLoader.container.modprobe.dirName`
+Specifies the directory name to use for the module. This parameter is optional.
 
-- Optional.
+`spec.moduleLoader.container.modprobe.firmwarePath`
+Specifies the path to the firmware to use for the module. This field is optional. Copies the contents of this path into the path specified in `worker.setFirmwareClassPath` (which is preset to `/var/lib/firmware`) of the `kmm-operator-manager-config` config map. This action occurs before `modprobe` is called to insert the kernel module.
 
-- At least one kernel item is required.
+`spec.moduleLoader.container.modprobe.parameters`
+Specifies the parameters to pass to the module. This parameter is optional.
 
-- For each node running a kernel matching the regular expression, KMM checks if you have included a tag or a digest. If you have not specified a tag or digest in the container image, then the validation webhook returns an error and does not apply the module.
+`spec.moduleLoader.container.kernelMappings`
+Specifies at least one kernel item. This parameter is required.
 
-- For any other kernel, build the image using the Dockerfile in the `my-kmod` ConfigMap.
+`spec.moduleLoader.container.kernelMappings.regexp`
+Specifies a tag or digest. Foreach node running a kernel matching the regular expression, KMM checks if you have included a tag or a digest. If you have not specified a tag or digest in the container image, then the validation webhook returns an error and does not apply the module.
 
-- The container image that holds the customer’s kmods. This container should contain the `cp` binary.
+`spec.moduleLoader.container.kernelMappings.regexp`
+Specifies that for any other kernel, build the image using the Dockerfile in the `my-kmod` ConfigMap.
 
-- Optional.
+`spec.moduleLoader.container.kernelMappings.containerImage`
+Specifies the container image that holds the customer’s kmods. This container should contain the `cp` binary.
 
-- Optional: A value for `some-kubernetes-secret` can be obtained from the build environment at `/run/secrets/some-kubernetes-secret`.
+`spec.moduleLoader.container.kernelMappings.build.buildArgs`
+Specifies an optional field.
 
-- This field has no effect. When building kmod images or signing kmods within a kmod image, you might sometimes need to pull base images from a registry that serves a certificate signed by an untrusted Certificate Authority (CA). In order for KMM to trust that CA, it must also trust the new CA by replacing the cluster’s CA bundle.
+`spec.moduleLoader.container.kernelMappings.build.secrets`
+Specifies that a value for `some-kubernetes-secret` can be obtained from the build environment at `/run/secrets/some-kubernetes-secret`. This field is optional.
 
-  See "Additional resources" to learn how to replace the cluster’s CA bundle.
+`spec.moduleLoader.container.kernelMappings.build.baseImageRegistryTLS`
+This fied has no effect. When building kmod images or signing kmods within a kmod image, you might sometimes need to pull base images from a registry that serves a certificate signed by an untrusted Certificate Authority (CA). In order for KMM to trust that CA, it must also trust the new CA by replacing the cluster’s CA bundle. See "Replacing the CA Bundle certificate" to learn how to replace the cluster’s CA bundle.
 
-- Optional: Avoid using this parameter. If set to `true`, the build skips any TLS server certificate validation when pulling the image in the Dockerfile `FROM` instruction using plain HTTP.
+`spec.moduleLoader.container.kernelMappings.build.baseImageRegistryTLS.insecureSkipTLSVerify`
+Specifies to an optional parameter; avoid using it. If set to `true`, the build skips any TLS server certificate validation when pulling the image in the Dockerfile `FROM` instruction using plain HTTP. This parameter is optional.
 
-- Required.
+`spec.moduleLoader.container.kernelMappings.build.dockerfileConfigMap`
+Specifies the `dockerfileConfigMap` parameter. This parameter is required.
 
-- Required: A secret holding the public secureboot key with the key 'cert'.
+`spec.moduleLoader.container.kernelMappings.sign.certSecret`
+Specifies the `certSecret` parameter. This parameter is required.
 
-- Required: A secret holding the private secureboot key with the key 'key'.
+`spec.moduleLoader.container.kernelMappings.sign.keySecret`
+Specifies the `keySecret` parameter. This parameter is required.
 
-- Optional: Avoid using this parameter. If set to `true`, KMM is allowed to check if the container image already exists using plain HTTP.
+`spec.moduleLoader.container.kernelMappings.registryTLS`
+Specifies an optional parameter; avoid using it. If set to `true`, KMM is allowed to check if the container image already exists using plain HTTP.
 
-- Optional: Avoid using this parameter. If set to `true`, KMM skips any TLS server certificate validation when checking if the container image already exists.
+`spec.moduleLoader.container.kernelMappings.registryTLS.insecure`
+Specifies a optional parameter; avoid using it. If set to `true`, KMM skips any TLS server certificate validation when checking if the container image already exists.
 
-- Optional.
+`spec.moduleLoader.serviceAccountName`
+Specifies the `serviceAccountName` parameter. This parameter is optional.
 
-- Optional.
+`spec.devicePlugin`
+Specifies the `devicePlugin` parameter. This parameter is optional.
 
-- Required: If the device plugin section is present.
+`spec.devicePlugin.container.image`
+Specifies the `image` parameter. This parameter is required if the device plugin section is present.
 
-- Optional.
+`spec.devicePlugin.container.volumeMounts`
+Specifies the `volumeMounts` parameter. This parameter is optional.
 
-- Optional.
+`spec.devicePlugin.volumes`
+Specifies the `volumes` parameter. This parameter is optional.
 
-- Optional.
+`spec.devicePlugin.serviceAccountName`
+Specifies the `serviceAccountName` parameter. This parameter is optional.
 
-- Optional: Used to pull module loader and device plugin images.
-
-<!-- -->
+`spec.imageRepoSecret`
+Specifies the `imageRepoSecret` parameter. This parameter is used to pull module loader and device plugin images.
 
 - [Replacing the CA Bundle certificate](../security/certificates/updating-ca-bundle.xml#ca-bundle-replacing_updating-ca-bundle)
 
@@ -772,6 +794,8 @@ In addition to the `.ko` files, the kmod image also requires the `cp` binary to 
 
 Run the `depmod` utlity at the end of the build process to generate `modules.dep` and `.map` files. This is especially useful if your kmod image contains several kernel modules and if one of the modules depends on another module.
 
+If you are building your image on OpenShift Container Platform, consider using the Driver Toolkit (DTK). For further information, see [How to use entitled image builds to build DriverContainers with UBI on OpenShift](https://cloud.redhat.com/blog/how-to-use-entitled-image-builds-to-build-drivercontainers-with-ubi-on-openshift).
+
 <div class="note">
 
 You must have a Red Hat subscription to download the `kernel-devel` package.
@@ -784,15 +808,7 @@ You must have a Red Hat subscription to download the `kernel-devel` package.
   $ depmod -b /opt ${KERNEL_FULL_VERSION}+`.
   ```
 
-  <div class="formalpara-title">
-
-  **Example Dockerfile**
-
-  </div>
-
-  If you are building your image on OpenShift Container Platform, consider using the Driver Toolkit (DTK).
-
-  For further information, see [using an entitled build](https://cloud.redhat.com/blog/how-to-use-entitled-image-builds-to-build-drivercontainers-with-ubi-on-openshift).
+  The following example Dockerfile shows how to run `depmod` at the end of the build:
 
   ``` yaml
   apiVersion: v1
@@ -854,21 +870,31 @@ Otherwise, KMM creates a `Build` resource to build your image. After the image i
     insecureSkipTLSVerify: false
 ```
 
-- Optional.
+where:
 
-- Optional.
+`spec.moduleLoader.container.kernelMappings.build.buildArgs`
+Specifies build arguments. This field is optional.
 
-- Will be mounted in the build pod as `/run/secrets/some-kubernetes-secret`.
+`spec.moduleLoader.container.kernelMappings.build.secrets`
+Specifies secrets. This field is optional.
 
-- Optional: Avoid using this parameter. If set to `true`, the build will be allowed to pull the image in the Dockerfile `FROM` instruction using plain HTTP.
+`spec.moduleLoader.container.kernelMappings.build.secrets.name`
+Specifies that the secret will be mounted in the file path of the build pod as `/run/secrets/some-kubernetes-secret`.
 
-- Optional: Avoid using this parameter. If set to `true`, the build will skip any TLS server certificate validation when pulling the image in the Dockerfile `FROM` instruction using plain HTTP.
+`spec.moduleLoader.container.kernelMappings.build.baseImageRegistryTLS.insecure`
+Specifies an optional parameter; avoid using this parameter. If set to `true`, the build will be allowed to pull the image in the Dockerfile `FROM` instruction using plain HTTP.
 
-- Required.
+`spec.moduleLoader.container.kernelMappings.build.baseImageRegistryTLS.insecureSkipTLSVerify`
+Specifies an optional parameter; avoid using this parameter. If set to `true`, the build will skip any TLS server certificate validation when pulling the image in the Dockerfile `FROM` instruction using plain HTTP.
 
-- Optional: Avoid using this parameter. If set to `true`, KMM will be allowed to check if the container image already exists using plain HTTP.
+`spec.moduleLoader.container.kernelMappings.build.dockerfileConfigMap`
+Specifies the Dockerfile ConfigMap. This field is required.
 
-- Optional: Avoid using this parameter. If set to `true`, KMM will skip any TLS server certificate validation when checking if the container image already exists.
+`spec.moduleLoader.container.kernelMappings.registryTLS.insecure`
+Specifies an optional parameter; avoid using this parameter. If set to `true`, KMM will be allowed to check if the container image already exists using plain HTTP.
+
+`spec.moduleLoader.container.kernelMappings.registryTLS.insecureSkipTLSVerify`
+Specifies an optional parameter; avoid using this parameter. If set to `true`, KMM will skip any TLS server certificate validation when checking if the container image already exists.
 
 Successful build pods are garbage collected immediately, unless the `job.gcDelay` parameter is set in the Operator configuration. Failed build pods are always preserved and must be deleted manually by the administrator for the build to be restarted.
 
@@ -908,7 +934,7 @@ To build kernel module loader images in OpenShift Container Platform, you can us
 
 On Secure Boot-enabled OpenShift Container Platform systems, out-of-tree kernel modules must be signed with keys enrolled in the Machine Owner’s Key (MOK) database. For kernel modules built out of tree, KMM supports signing kmods through the `sign` section of the kernel mapping in a `Module` custom resource.
 
-For more details on using Secure Boot, see [Generating a public and private key pair](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/managing_monitoring_and_updating_the_kernel/signing-a-kernel-and-modules-for-secure-boot_managing-monitoring-and-updating-the-kernel#generating-a-public-and-private-key-pair_signing-a-kernel-and-modules-for-secure-boot)
+For more details on using Secure Boot, see "Generating a public and private key pair".
 
 ## Prerequisites
 
@@ -917,6 +943,10 @@ For more details on using Secure Boot, see [Generating a public and private key 
 - At least one secure-boot enabled node with the public key enrolled in its MOK database.
 
 - Either a pre-built driver container image, or the source code and Dockerfile needed to build one in-cluster.
+
+<!-- -->
+
+- [Generating a public and private key pair](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/managing_monitoring_and_updating_the_kernel/signing-a-kernel-and-modules-for-secure-boot_managing-monitoring-and-updating-the-kernel#generating-a-public-and-private-key-pair_signing-a-kernel-and-modules-for-secure-boot)
 
 # Adding the keys for secureboot
 
@@ -977,7 +1007,7 @@ For details on how to extract the public and private key pair, see [Signing kern
       key: <base64_encoded_secureboot_private_key>
     ```
 
-    - `namespace` - Replace `default` with a valid namespace.
+    Replace `default` with a valid namespace.
 
 4.  Apply the YAML file:
 
@@ -1035,10 +1065,10 @@ KMM then loads the signed kmods onto all the nodes with that match the selector.
           # the kmods will be deployed on all nodes in the cluster with a kernel that matches the regexp
           - regexp: '^.*\.x86_64$'
             # the container to produce containing the signed kmods
-            containerImage: <image_name>
+            containerImage: <container_image_name>
             sign:
               # the image containing the unsigned kmods (we need this because we are not building the kmods within the cluster)
-              unsignedImage: <image_name>
+              unsignedImage: <unsigned_image_name>
               keySecret: # a secret holding the private secureboot key with the key 'key'
                 name: <private_key_secret_name>
               certSecret: # a secret holding the public secureboot key with the key 'cert'
@@ -1052,11 +1082,16 @@ KMM then loads the signed kmods onto all the nodes with that match the selector.
       kubernetes.io/arch: amd64
   ```
 
-  - The name of the kmod to load.
+  where:
 
-  - The name of the container image. For example, `quay.io/myuser/my-driver:<kernelversion`.
+  `<module_name>`
+  Specifies the name of the kmod to load.
 
-  - The name of the unsigned image. For example, `quay.io/myuser/my-driver:<kernelversion`.
+  `<container_image_name>`
+  Specifies the name of the container image. For example, `quay.io/myuser/my-driver:<kernelversion`.
+
+  `<unsigned_image_name>`
+  Specifies the name of the unsigned image. For example, `quay.io/myuser/my-driver:<kernelversion`.
 
 # Specifying files to sign
 
@@ -1211,11 +1246,16 @@ After it is signed, you can safely delete the temporary image from the registry.
       kubernetes.io/arch: amd64
   ```
 
-  - Replace `default` with a valid namespace.
+  where:
 
-  - The default `serviceAccountName` does not have the required permissions to run a module that is privileged. For information on creating a service account, see "Creating service accounts" in the "Additional resources" of this section.
+  `metadata.namespace`
+  Specifies the namespace where the module will be deployed.
 
-  - Used as `imagePullSecrets` in the `DaemonSet` object and to pull and push for the build and sign features.
+  `spec.moduleLoader.serviceAccountName`
+  Specifies the service account that will be used to run the module. The default service account does not have the required permissions to run a module that is privileged. For information on creating a service account, see "Creating service accounts".
+
+  `spec.imageRepoSecret`
+  Specifies that it is used as `imagePullSecrets` in the `DaemonSet` object and to pull and push for the build and sign features.
 
 <!-- -->
 
@@ -1327,6 +1367,8 @@ To deploy KMM-Hub for multi-cluster kernel module management on OpenShift Contai
 
 To install KMM-Hub on OpenShift Container Platform using Operator Lifecycle Manager, you can use the **Operators** section of the OpenShift web console.
 
+- Use the **Operators** section of the OpenShift console to install KMM-Hub.
+
 ### Installing KMM-Hub by creating KMM resources
 
 To install KMM-Hub programmatically on OpenShift Container Platform, you can create `Namespace`, `OperatorGroup`, and `Subscription` resources.
@@ -1382,13 +1424,19 @@ spec:
     wants-my-mcm: 'true'
 ```
 
-- `moduleSpec`: Contains `moduleLoader` and `devicePlugin` sections, similar to a `Module` resource.
+where:
 
-- Selects nodes within the `ManagedCluster`.
+`spec.moduleSpec`
+Specifies the `moduleLoader` and `devicePlugin` sections, similar to a `Module` resource.
 
-- Specifies in which namespace the `Module` should be created.
+`spec.moduleSpec.selector`
+Specifies nodes within the `ManagedCluster`.
 
-- Selects `ManagedCluster` objects.
+`spec.spokeNamespace`
+Specifies in which namespace the `Module` should be created.
+
+`spec.selector`
+Specifies `ManagedCluster` objects.
 
 If build or signing instructions are present in `.spec.moduleSpec`, those pods are run on the hub cluster in the operator’s namespace.
 
@@ -1497,9 +1545,13 @@ You can install KMM on the spokes cluster through a RHACM `Policy` object. In ad
           kind: Policy
           name: install-kmm
 
-  - This environment variable is required when running KMM on a spoke cluster.
+  where:
 
-  - The `spec.clusterSelector` field can be customized to target select clusters only.
+  `spec.policy-templates.objectDefinition.spec.object-templates.objectDefinition.spec.config.env.name`
+  Specifies the environment variable name on the `Subscription` object entry. This variable is required when running KMM on a spoke cluster.
+
+  `spec.clusterSelector`
+  Specifies that on the `PlacementRule` object entry, this field can be customized to target select clusters only.
 
 # Customizing upgrades for kernel modules
 
@@ -1658,9 +1710,13 @@ spec:
   maxUnavailable: 1
 ```
 
-- Matches the labels in the MachineConfig.
+where:
 
-- Matches the labels on the node.
+`spec.machineConfigSelector`
+Specifies labels that match in the MachineConfig.
+
+`spec.nodeSelector`
+Specifies labels that match on the node.
 
 There are predefined `MachineConfigPools` in the OCP cluster:
 
@@ -1777,11 +1833,11 @@ On OpenShift Container Platform nodes, the set of default lookup paths for firmw
         - 'firmware_class.path=/var/lib/firmware'
     ```
 
-    - You can configure the label based on your needs. In the case of single-node OpenShift, use either `control-pane` or `master` objects.
+    You can configure the label based on your needs. In the case of single-node OpenShift, use either `control-pane` or `master` objects.
 
 2.  By applying the `MachineConfig` CR, the nodes are automatically rebooted.
 
-- [Machine Config Operator](../machine_configuration/index.xml#machine-config-operator_machine-config-overview).
+- [Machine Config Operator](../machine_configuration/index.xml#machine-config-operator_machine-config-overview)
 
 ## Building a kmod image
 
@@ -1824,7 +1880,10 @@ To configure firmware file paths for kernel modules on OpenShift Container Platf
           firmwarePath: /firmware
   ```
 
-  - Optional: Copies `/firmware/*` into `/var/lib/firmware/` on the node.
+  where:
+
+  `spec.moduleLoader.container.modprobe.firmwarePath`
+  Specifies that `/firmware/*` is copied into the files path `/var/lib/firmware/` on the node. This parameter is optional.
 
 # Day 0 through Day 2 kmod installation
 

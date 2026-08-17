@@ -1,16 +1,30 @@
-In OpenShift Container Platform version 4.17, you can install a private cluster into an existing VPC and IBM Power® Virtual Server Workspace. The installation program provisions the rest of the required infrastructure, which you can further customize. To customize the installation, you modify parameters in the `install-config.yaml` file before you install the cluster.
+To install a private OpenShift Container Platform cluster on IBM Power® Virtual Server, deploy into an existing Virtual Private Cloud (VPC) and workspace. The installation program provisions the remaining infrastructure, which you can then customize.
 
 # Prerequisites
 
-- You reviewed details about the [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation) processes.
+Before you install a OpenShift Container Platform cluster on IBM Power® Virtual Server, complete the prerequisite tasks to configure your IBM Cloud® account, firewall, and credential utility.
 
-- You read the documentation on [selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing).
+- You reviewed details about the OpenShift Container Platform installation and update processes.
 
-- You [configured an IBM Cloud® account](../../installing/installing_ibm_powervs/installing-ibm-cloud-account-power-vs.xml#installing-ibm-cloud-account-power-vs) to host the cluster.
+- You read the documentation on selecting a cluster installation method and preparing it for users.
 
-- If you use a firewall, you [configured it to allow the sites](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
+- You configured an IBM Cloud® account to host the cluster.
 
-- You configured the `ccoctl` utility before you installed the cluster. For more information, see [Configuring the Cloud Credential Operator utility](../../installing/installing_ibm_powervs/preparing-to-install-on-ibm-power-vs.xml#cco-ccoctl-configuring_preparing-to-install-on-ibm-power-vs).
+- If you use a firewall, you configured it to allow the sites that your cluster requires access to.
+
+- You configured the `ccoctl` utility before you installed the cluster.
+
+<!-- -->
+
+- [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation)
+
+- [Selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing)
+
+- [Configuring an IBM Cloud® account](../../installing/installing_ibm_powervs/installing-ibm-cloud-account-power-vs.xml#installing-ibm-cloud-account-power-vs)
+
+- [Configuring your firewall](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
+
+- [Configuring the Cloud Credential Operator utility](../../installing/installing_ibm_powervs/preparing-to-install-on-ibm-power-vs.xml#cco-ccoctl-configuring_preparing-to-install-on-ibm-power-vs)
 
 # Private clusters
 
@@ -58,7 +72,9 @@ You will also need to create an IBM® DNS service containing a DNS zone that mat
 
 Private clusters on IBM Power® Virtual Server are subject only to the limitations associated with the existing VPC that was used for cluster deployment.
 
-# Requirements for using your VPC
+# Requirements for using your Virtual Private Cloud (VPC)
+
+You must correctly configure the existing VPC and its subnets before you install the cluster. The installation program does not create a VPC or VPC subnet in this scenario.
 
 You must correctly configure the existing VPC and its subnets before you install the cluster. The installation program does not create a VPC or VPC subnet in this scenario.
 
@@ -68,7 +84,7 @@ The installation program cannot:
 
 - Set route tables for the subnets
 
-- Set VPC options like DHCP
+- Set VPC options such as DHCP
 
 <div class="note">
 
@@ -76,7 +92,7 @@ The installation program requires that you use the cloud-provided DNS server. Us
 
 </div>
 
-## VPC validation
+## Virtual Private Cloud (VPC) validation
 
 The VPC and all of the subnets must be in an existing resource group. The cluster is deployed to this resource group.
 
@@ -88,7 +104,7 @@ As part of the installation, specify the following in the `install-config.yaml` 
 
 - The name of the VPC subnet
 
-To ensure that the subnets that you provide are suitable, the installation program confirms that all of the subnets you specify exists.
+To ensure that the subnets that you give are suitable, the installation program confirms that all of the subnets you specify exist.
 
 <div class="note">
 
@@ -98,7 +114,7 @@ Subnet IDs are not supported.
 
 ## Isolation between clusters
 
-If you deploy OpenShift Container Platform to an existing network, the isolation of cluster services is reduced in the following ways:
+If you deploy OpenShift Container Platform to an existing network, cluster service isolation decreases in the following ways:
 
 - ICMP Ingress is allowed to the entire network.
 
@@ -352,11 +368,11 @@ If an instance type for your platform meets the minimum requirements for cluster
 
 ## Sample customized install-config.yaml file for IBM Power Virtual Server
 
-You can customize the `install-config.yaml` file to specify more details about your OpenShift Container Platform cluster’s platform or modify the values of the required parameters.
+You can customize the `install-config.yaml` file to specify more details about your OpenShift Container Platform cluster’s platform or change the values of the required parameters.
 
 <div class="important">
 
-This sample YAML file is provided for reference only. You must obtain your `install-config.yaml` file by using the installation program and modify it.
+This sample YAML file is for reference only. You must obtain your `install-config.yaml` file by using the installation program and change it.
 
 </div>
 
@@ -397,7 +413,7 @@ platform:
     powervsResourceGroup: "ibmcloud-resource-group"
     region: powervs-region
     vpcName: name-of-existing-vpc
-    vpcRegion : vpc-region
+    vpcRegion: vpc-region
     zone: powervs-zone
     serviceInstanceGUID: "powervs-region-service-instance-guid"
 publish: Internal
@@ -405,43 +421,61 @@ pullSecret: '{"auths": ...}'
 sshKey: ssh-ed25519 AAAA...
 ```
 
-- If you do not provide these parameters and values, the installation program provides the default value.
+where:
 
-- The `controlPlane` section is a single mapping, but the compute section is a sequence of mappings. To meet the requirements of the different data structures, the first line of the `compute` section must begin with a hyphen, `-`, and the first line of the `controlPlane` section must not. Both sections currently define a single machine pool. Only one control plane pool is used.
+`compute`
+Specifies parameters where, if you do not provide values, the installation program provides the default value. The first line of the `compute` section must begin with a hyphen, `-`. Both sections currently define a single machine pool.
 
-- Whether to enable or disable simultaneous multithreading, or `hyperthreading`. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores. You can disable it by setting the parameter value to `Disabled`. If you disable simultaneous multithreading in some cluster machines, you must disable it in all cluster machines.
+`compute.hyperthreading`
+Specifies whether to enable or disable simultaneous multithreading, or `hyperthreading`. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores. You can disable it by setting the parameter value to `Disabled`. If you disable simultaneous multithreading in some cluster machines, you must disable it in all cluster machines.
 
-- The smtLevel specifies the level of SMT to set to the control plane and compute machines. The supported values are 1, 2, 4, 8, `'off'` and `'on'`. The default value is 8. The smtLevel `'off'` sets SMT to off and smtlevel `'on'` sets SMT to the default value 8 on the cluster nodes.
+`compute.platform.powervs.smtLevel`
+Specifies the level of SMT to set to the compute machines. The supported values are 1, 2, 4, 8, `'off'`, and `'on'`. The default value is 8. The smtLevel `'off'` sets SMT to off, and smtLevel `'on'` sets SMT to the default value 8 on the cluster nodes.
 
-  <div class="note">
+`controlPlane`
+Specifies parameters where, if you do not provide values, the installation program provides the default value. The `controlPlane` section is a single mapping, and its first line must not begin with a hyphen. Only one control plane pool is used.
 
-  When simultaneous multithreading (SMT), or hyperthreading is not enabled, one vCPU is equivalent to one physical core. When enabled, total vCPUs is computed as (Thread(s) per core \* Core(s) per socket) \* Socket(s). The smtLevel controls the threads per core. Lower SMT levels may require additional assigned cores when deploying the cluster nodes. You can do this by setting the `'processors'` parameter in the `install-config.yaml` file to an appropriate value to meet the requirements for deploying OpenShift Container Platform successfully.
+`controlPlane.hyperthreading`
+Specifies whether to enable or disable simultaneous multithreading, or `hyperthreading`. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores. You can disable it by setting the parameter value to `Disabled`. If you disable simultaneous multithreading in some cluster machines, you must disable it in all cluster machines.
 
-  </div>
+<div class="important">
 
-- The machine CIDR must contain the subnets for the compute machines and control plane machines.
+When multithreading (SMT) is disabled, each vCPU is equivalent to one physical core. Disable SMT only if you have specific requirements.
 
-- The cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
+</div>
 
-- Specify the name of an existing VPC.
+`controlPlane.platform.powervs.smtLevel`
+Specifies the level of SMT to set to the control plane. The supported values are 1, 2, 4, 8, `'off'`, and `'on'`. The default value is 8. The smtLevel `'off'` sets SMT to off, and smtLevel `'on'` sets SMT to the default value 8 on the cluster nodes.
 
-- Specify how to publish the user-facing endpoints of your cluster. Set publish to `Internal` to deploy a private cluster.
+<div class="note">
 
-- Required. The installation program prompts you for this value.
+When simultaneous multithreading (SMT) is not enabled, one vCPU is equivalent to one physical core. When enabled, total vCPUs is computed as (Thread(s) per core \* Core(s) per socket) \* Socket(s). The smtLevel controls the threads per core. Lower SMT levels may require additional assigned cores when deploying the cluster nodes. You can do this by setting the `'processors'` parameter in the `install-config.yaml` file to an appropriate value to meet the requirements for deploying OpenShift Container Platform successfully.
 
-- Provide the `sshKey` value that you use to access the machines in your cluster.
+</div>
 
-  <div class="important">
+`networking.clusterNetwork.cidr`
+Specifies the CIDR. The machine CIDR must contain the subnets for the compute machines and control plane machines.
 
-  If you disable simultaneous multithreading, ensure that your capacity planning accounts for the dramatically decreased machine performance.
+`networking.networkType`
+Specifies the cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
 
-  </div>
+`platform.powervs.vpcName`
+Specifies the name of an existing VPC.
 
-  <div class="note">
+`publish`
+Specifies how to publish the user-facing endpoints of your cluster. Set `publish` to `Internal` to deploy a private cluster.
 
-  For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+`pullSecret`
+Specifies your pull secret. The installation program prompts you for this value. This value is required.
 
-  </div>
+`sshKey`
+Specifies the SSH key to use to access the machines in your cluster. This value is optional.
+
+<div class="note">
+
+For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+
+</div>
 
 ## Configuring the cluster-wide proxy during installation
 
@@ -886,10 +920,10 @@ To provide metrics about cluster health and the success of updates, the Telemetr
 
 After you confirm that your [OpenShift Cluster Manager](https://console.redhat.com/openshift) inventory is correct, either maintained automatically by Telemetry or manually by using OpenShift Cluster Manager,use subscription watch to track your OpenShift Container Platform subscriptions at the account or multi-cluster level. For more information about subscription watch, see "Data Gathered and Used by Red Hat’s subscription services" in the *Additional resources* section.
 
+# Additional resources
+
 - [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
-# Next steps
+- [Available cluster customizations](../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
 
-- [Customize your cluster](../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
-
-- Optional: [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)

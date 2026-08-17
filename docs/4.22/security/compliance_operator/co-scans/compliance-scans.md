@@ -14,7 +14,7 @@ $ oc explain scansettingbindings
 
 # Running compliance scans
 
-You can run a scan using the Center for Internet Security (CIS) profiles. For convenience, the Compliance Operator creates a `ScanSetting` object with reasonable defaults on startup. This `ScanSetting` object is named `default`.
+You can run a scan using the Center for Internet Security (CIS) profiles to evaluate cluster compliance against CIS benchmarks. For convenience, the Compliance Operator creates a `ScanSetting` object with reasonable defaults on startup. This `ScanSetting` object is named `default`.
 
 <div class="note">
 
@@ -24,7 +24,7 @@ For all-in-one control plane and worker nodes, the compliance scan runs twice on
 
 <div class="important">
 
-Compliance Operator scans report `INCONSISTENT` on clusters with multi-architecture compute machines whether the control plane uses `aarch64` or `x86` CPUs. This is due to the same rule behaving differently on different architectures. This should only be applicable for node scans, where the Compliance Operator aggregates results from multiple nodes into a single result.
+Compliance Operator scans report `INCONSISTENT` on clusters with multi-architecture compute machines whether the control plane uses `aarch64` or `x86` CPUs. This is due to the same rule behaving differently on different architectures. This applies only to node scans, where the Compliance Operator aggregates results from multiple nodes into a single result.
 
 </div>
 
@@ -225,8 +225,6 @@ For more information about inconsistent scan results, see Compliance Operator sh
 
     The scans progress through the scanning phases and eventually reach the `DONE` phase when complete. In most cases, the result of the scan is `NON-COMPLIANT`. You can review the scan results and start applying remediations to make the cluster compliant.
 
-- [Compliance Operator shows INCONSISTENT scan result with worker node](https://access.redhat.com/solutions/6970861)
-
 # Setting custom storage size for results
 
 Although `ComplianceCheckResult` custom resources summarize one check across all scanned nodes, raw scanner results in ARF format are too large to store in etcd-backed Kubernetes resources. You can store them on a per-scan persistent volume and increase the default 1 GiB size by setting the `rawResultStorage.size` value in a `ScanSetting` or `ComplianceScan` resource.
@@ -370,8 +368,6 @@ Increasing the memory limit for the Compliance Operator or the scanner pods is n
 
 </div>
 
-- [Increasing Compliance Operator resource limits](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/security_and_compliance/compliance-operator#compliance-increasing-operator-limits_compliance-troubleshooting)
-
 # Configuring the hosted control planes management cluster
 
 If you are hosting your own Hosted control planes or Hypershift environment and want to scan a Hosted Cluster from the management cluster, you will need to set the name and prefix namespace for the target Hosted Cluster. You can achieve this by creating a `TailoredProfile`.
@@ -453,7 +449,7 @@ Only `ocp4-cis` and `ocp4-pci-dss` profiles are supported in hosted control plan
 
 # Applying resource requests and limits
 
-You can configure a container’s requests and limits for memory and CPU to define defines how much CPU time and memory that the container can use.
+You can configure a container’s requests and limits for memory and CPU to define how much CPU time and memory that the container can use.
 
 When the kubelet starts a container as part of a Pod, the kubelet passes that container’s requests and limits for memory and CPU to the container runtime. In Linux, the container runtime configures the kernel cgroups that apply and enforce the limits you defined.
 
@@ -542,3 +538,11 @@ Specifies that the container is requesting 64 Mi of memory and 250 m CPU.
 
 `spec.containers.resources.limits`
 Specifies the container’s limits are 128 Mi of memory and 500 m CPU.
+
+# Additional resources
+
+- [Increasing Compliance Operator resource limits](compliance-operator-troubleshooting.xml#compliance-increasing-operator-limits_compliance-troubleshooting)
+
+- [Compliance Operator shows INCONSISTENT scan result with worker node](https://access.redhat.com/solutions/6970861)
+
+- [Managing Compliance Operator result and remediation](compliance-operator-remediation.xml#compliance-operator-remediation)

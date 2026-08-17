@@ -34,7 +34,7 @@ You can configure the following types of identity providers:
 | [Google](../authentication/identity_providers/configuring-google-identity-provider.xml#configuring-google-identity-provider)                                           | Configure a `google` identity provider using [Google’s OpenID Connect integration](https://developers.google.com/identity/protocols/OpenIDConnect).                                                                                      |
 | [OpenID Connect](../authentication/identity_providers/configuring-oidc-identity-provider.xml#configuring-oidc-identity-provider)                                       | Configure an `oidc` identity provider to integrate with an OpenID Connect identity provider using an [Authorization Code Flow](http://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth).                                       |
 
-After you define an identity provider, you can [use RBAC to define and apply permissions](../authentication/using-rbac.xml#authorization-overview_using-rbac).
+Once an identity provider has been defined, you can [use RBAC to define and apply permissions](../authentication/using-rbac.xml#authorization-overview_using-rbac).
 
 ## Identity provider parameters
 
@@ -123,7 +123,7 @@ Specifies an existing secret containing a file generated using [`htpasswd`](http
 
 # Using RBAC to define and apply permissions
 
-Understand and apply role-based access control.
+Understand and apply role-based access control (RBAC) to manage user and service account permissions in your cluster.
 
 ## RBAC overview
 
@@ -1048,11 +1048,15 @@ If you follow this procedure before another user is a `cluster-admin`, then Open
 
 If you mirrored Operator catalogs for use with disconnected clusters, you can populate the software catalog with the Operators from your mirrored catalogs. You can use the generated manifests from the mirroring process to create the required `ImageContentSourcePolicy` and `CatalogSource` objects.
 
-## Prerequisites
+**Prerequisites**
+
+- You mirrored Operator catalogs for use with disconnected clusters.
+
+<!-- -->
 
 - [Mirroring Operator catalogs for use with disconnected clusters](../disconnected/installing-mirroring-installation-images.xml#olm-mirror-catalog_installing-mirroring-installation-images)
 
-### Creating the ImageContentSourcePolicy object
+## Creating the ImageContentSourcePolicy object
 
 To make mirrored Operator images available to a disconnected cluster, you can create an `ImageContentSourcePolicy` object that redirects image references to your mirror registry.
 
@@ -1068,7 +1072,7 @@ After mirroring Operator catalog content to your mirror registry, create the req
 
   You can now create a `CatalogSource` object to reference your mirrored index image and Operator content.
 
-### Adding a catalog source to a cluster
+## Adding a catalog source to a cluster
 
 To make Operators from a custom index image available for installation, create a catalog source that adds the catalog content to your cluster.
 
@@ -1692,7 +1696,7 @@ In most cases, the web console method of this procedure is preferred because it 
 
 <div class="formalpara-title">
 
-**Results**
+**Verification**
 
 </div>
 

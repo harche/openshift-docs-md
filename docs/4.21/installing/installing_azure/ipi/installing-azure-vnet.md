@@ -655,15 +655,23 @@ Production environments can deny direct access to the internet and instead have 
 
     </div>
 
-- For more details about Accelerated Networking, see [Accelerated Networking for Microsoft Azure VMs](../../../machine_management/creating_machinesets/creating-machineset-azure.xml#machineset-azure-accelerated-networking_creating-machineset-azure).
+- [Accelerated Networking for Microsoft Azure VMs](../../../machine_management/creating_machinesets/creating-machineset-azure.xml#machineset-azure-accelerated-networking_creating-machineset-azure)
 
 # Alternatives to storing administrator-level secrets in the kube-system project
 
-By default, administrator secrets are stored in the `kube-system` project. If you configured the `credentialsMode` parameter in the `install-config.yaml` file to `Manual`, you must use one of the following alternatives:
+To avoid storing administrator-level secrets in the `kube-system` project, you can configure your cluster to use manually managed long-term cloud credentials or short-term credentials that are managed outside the cluster.
 
-- To manage long-term cloud credentials manually, follow the procedure in [Manually creating long-term credentials](../../../installing/installing_azure/ipi/installing-azure-vnet.xml#manually-create-iam_installing-azure-vnet).
+By default, administrator-level secrets are stored in the `kube-system` project. If you set the `credentialsMode` parameter in the `install-config.yaml` file to `Manual`, choose one of the following credential management options:
 
-- To implement short-term credentials that are managed outside the cluster for individual components, follow the procedures in [Configuring an Azure cluster to use short-term credentials](../../../installing/installing_azure/ipi/installing-azure-vnet.xml#installing-azure-with-short-term-creds_installing-azure-vnet).
+- To manage long-term cloud credentials manually, follow the procedure in "Manually creating long-term credentials".
+
+- To use short-term credentials that are managed outside the cluster for individual components, follow the procedures in "Configuring an Azure cluster to use short-term credentials".
+
+<!-- -->
+
+- [Manually creating long-term credentials](../../../installing/installing_azure/ipi/installing-restricted-networks-azure-installer-provisioned.xml#manually-create-iam_installing-restricted-networks-azure-installer-provisioned)
+
+- [Configuring an Azure cluster to use short-term credentials](../../../installing/installing_azure/ipi/installing-restricted-networks-azure-installer-provisioned.xml#installing-azure-with-short-term-creds_installing-restricted-networks-azure-installer-provisioned)
 
 ## Manually creating long-term credentials
 
@@ -1354,8 +1362,6 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 - [Accessing the web console](../../../web_console/web-console.xml#web-console)
 
-# Next steps
+- [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
 
-- [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations).
-
-- If necessary, you can [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting).
+- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)

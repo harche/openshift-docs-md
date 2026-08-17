@@ -20,7 +20,7 @@ Before deploying the Compliance Operator, you are required to define persistent 
 
 <div class="important">
 
-If the `restricted` Security Context Constraints (SCC) have been modified to contain the `system:authenticated` group or has added `requiredDropCapabilities`, the Compliance Operator might not function properly due to permissions issues. You can create a custom SCC for the Compliance Operator scanner pod service account. For more information, see "Creating a custom SCC for the Compliance Operator".
+If the `restricted` Security Context Constraints (SCC) have been modified to contain the `system:authenticated` group or has added `requiredDropCapabilities`, the Compliance Operator might not function properly due to permissions issues. You can create a custom SCC for the Compliance Operator scanner pod service account. For more information, see Additional resources.
 
 </div>
 
@@ -281,17 +281,9 @@ Red Hat OpenShift Service on AWS Hosted control planes clusters have restricted
     $ oc get deploy -n openshift-compliance
     ```
 
-<div class="important">
+# Installing the Compliance Operator on hosted control planes
 
-If the `restricted` Security Context Constraints (SCC) have been modified to contain the `system:authenticated` group or has added `requiredDropCapabilities`, the Compliance Operator may not function properly due to permissions issues.
-
-You can create a custom SCC for the Compliance Operator scanner pod service account. For more information, see "Creating a custom SCC for the Compliance Operator".
-
-</div>
-
-# Installing the Compliance Operator on Hypershift hosted control planes
-
-You can install the Compliance Operator in hosted control planes by using the software catalog by creating a `Subscription` file.
+Install the Compliance Operator on hosted control planes by creating a `Subscription` file in the software catalog so you can run compliance scans in a hosted control plane environment.
 
 <div class="important">
 
@@ -401,6 +393,8 @@ For more information about the support scope of Red Hat Technology Preview featu
     ``` terminal
     $ oc get deploy -n openshift-compliance
     ```
+
+# Additional resources
 
 - [Compliance Operator reports incorrect results on Managed Services](https://access.redhat.com/solutions/6983418)
 

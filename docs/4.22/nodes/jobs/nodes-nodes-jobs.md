@@ -2,7 +2,7 @@ Jobs execute one-time or scheduled tasks in your cluster, tracking completion st
 
 A *job* executes a task in your OpenShift Container Platform cluster.
 
-A job tracks the overall progress of a task and updates its status with information about active, succeeded, and failed pods. Deleting a job will clean up any pod replicas it created. Jobs are part of the Kubernetes API, which can be managed with `oc` commands like other object types.
+A job tracks the overall progress of a task and updates its status with information about active, succeeded, and failed pods. Deleting a job cleans up any pod replicas it created. Jobs are part of the Kubernetes API, which can be managed with `oc` commands like other object types.
 
 <div class="formalpara-title">
 

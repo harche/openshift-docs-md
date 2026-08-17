@@ -1,3 +1,5 @@
+Back up etcd data regularly and store it in a secure location so you can restore your cluster to a previous state, using a snapshot from the same z-stream release.
+
 As the key-value store for OpenShift Container Platform, etcd persists the state of all resource objects.
 
 Back up the etcd data for your cluster regularly and store it in a secure location, ideally outside the OpenShift Container Platform environment. Do not take an etcd backup before the first certificate rotation completes, which occurs 24 hours after installation, otherwise the backup will contain expired certificates. It is also recommended to take etcd backups during non-peak usage hours because the etcd snapshot has a high I/O cost.
@@ -10,7 +12,7 @@ Back up your cluster’s etcd data by performing a single invocation of the back
 
 </div>
 
-After you have an etcd backup, you can [restore to a previous cluster state](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state).
+After you have an etcd backup, you can restore to a previous cluster state.
 
 # Backing up etcd data
 
@@ -111,7 +113,11 @@ For a Two-Node with Fencing (TNF) setup, follow the steps to back up etcd data o
 
       </div>
 
+- [Restoring to an earlier cluster state](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
+
 # Creating automated etcd backups
+
+Enable automated etcd backups so your cluster can create single and recurring backups through the Backup API.
 
 The automated backup feature for etcd supports both recurring and single backups. Recurring backups create a cron job that starts a single backup each time the job triggers.
 
@@ -122,8 +128,6 @@ Automating etcd backups is a Technology Preview feature only. Technology Preview
 For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
 </div>
-
-Follow these steps to enable automated backups for etcd.
 
 <div class="warning">
 
@@ -379,7 +383,7 @@ Follow these steps to create a single etcd backup by creating and applying a cus
 
 ## Creating recurring automated etcd backups
 
-Follow these steps to create automated recurring backups of etcd.
+Create a scheduled `Backup` custom resource with a persistent volume claim to automate recurring etcd backups and retain them by count or size for disaster recovery.
 
 Use dynamically-provisioned storage to keep the created etcd backup data in a safe, external location if possible. If dynamically-provisioned storage is not available, consider storing the backup data on an NFS share to make backup recovery more accessible.
 
@@ -407,19 +411,19 @@ Use dynamically-provisioned storage to keep the created etcd backup data in a sa
           storageClassName: etcd-backup-local-storage
         ```
 
-        - The amount of storage available to the PVC. Adjust this value for your requirements.
+        The `spec.resources.requests.storage` field defines the amount of storage available to the PVC. Adjust this value for your requirements.
 
-          <div class="note">
+        <div class="note">
 
-          Each of the following providers require changes to the `accessModes` and `storageClassName` keys:
+        Each of the following providers require changes to the `accessModes` and `storageClassName` keys:
 
-          | Provider                                                   | `accessModes` value | `storageClassName` value |
-          |------------------------------------------------------------|---------------------|--------------------------|
-          | AWS with the `versioned-installer-efc_operator-ci` profile | `- ReadWriteMany`   | `efs-sc`                 |
-          | Google Cloud                                               | `- ReadWriteMany`   | `filestore-csi`          |
-          | Microsoft Azure                                            | `- ReadWriteMany`   | `azurefile-csi`          |
+        | Provider                                                   | `accessModes` value | `storageClassName` value |
+        |------------------------------------------------------------|---------------------|--------------------------|
+        | AWS with the `versioned-installer-efc_operator-ci` profile | `- ReadWriteMany`   | `efs-sc`                 |
+        | Google Cloud                                               | `- ReadWriteMany`   | `filestore-csi`          |
+        | Microsoft Azure                                            | `- ReadWriteMany`   | `azurefile-csi`          |
 
-          </div>
+        </div>
 
     2.  Apply the PVC by running the following command:
 
@@ -502,9 +506,9 @@ Use dynamically-provisioned storage to keep the created etcd backup data in a sa
                   - <example_master_node>
         ```
 
-        - The amount of storage available to the PV. Adjust this value for your requirements.
+        - The `spec.capacity.storage` field defines the amount of storage available to the PV. Adjust this value for your requirements.
 
-        - Replace this value with the master node to attach this PV to.
+        - Replace `<example_master_node>` with the master node to attach this PV to.
 
           <div class="tip">
 
@@ -550,7 +554,7 @@ Use dynamically-provisioned storage to keep the created etcd backup data in a sa
           storageClassName: etcd-backup-local-storage
         ```
 
-        - The amount of storage available to the PVC. Adjust this value for your requirements.
+        The `spec.resources.requests.storage` field defines the amount of storage available to the PVC. Adjust this value for your requirements.
 
     6.  Apply the PVC by running the following command:
 
@@ -574,7 +578,7 @@ Use dynamically-provisioned storage to keep the created etcd backup data in a sa
           pvcName: etcd-backup-pvc
       ```
 
-      - The `CronTab` schedule for recurring backups. Adjust this value for your needs.
+      The `spec.etcd.schedule` field is a `CronTab` schedule for recurring backups. Adjust this value for your needs.
 
     - To use retention based on the maximum number of backups, add the following key-value pairs to the `etcd` key:
 
@@ -587,9 +591,9 @@ Use dynamically-provisioned storage to keep the created etcd backup data in a sa
               maxNumberOfBackups: 5
       ```
 
-      - The retention type. Defaults to `RetentionNumber` if unspecified.
+      - The `spec.etcd.retentionPolicy.retentionType` field defines the retention type. Defaults to `RetentionNumber` if unspecified.
 
-      - The maximum number of backups to retain. Adjust this value for your needs. Defaults to 15 backups if unspecified.
+      - The `spec.etcd.retentionNumber.maxNumberOfBackups` field defines the maximum number of backups to retain. Adjust this value for your needs. Defaults to 15 backups if unspecified.
 
         <div class="warning">
 
@@ -608,13 +612,13 @@ Use dynamically-provisioned storage to keep the created etcd backup data in a sa
               maxSizeOfBackupsGb: 20
       ```
 
-      - The maximum file size of the retained backups in gigabytes. Adjust this value for your needs. Defaults to 10 GB if unspecified.
+      The `spec.etcd.retentionPolicy.retentionSize.maxSizeOfBackupsGb` field defines the maximum file size of the retained backups in gigabytes. Adjust this value for your needs. Defaults to 10 GB if unspecified.
 
-        <div class="warning">
+      <div class="warning">
 
-        A known issue causes the maximum size of retained backups to be up to 10 GB greater than the configured value.
+      A known issue causes the maximum size of retained backups to be up to 10 GB greater than the configured value.
 
-        </div>
+      </div>
 
 4.  Create the cron job defined by the CRD by running the following command:
 

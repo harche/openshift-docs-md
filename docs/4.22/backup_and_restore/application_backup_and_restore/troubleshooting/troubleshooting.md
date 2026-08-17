@@ -1,8 +1,8 @@
-Troubleshoot OpenShift API for Data Protection (OADP) issues by using diagnostic tools such as the Velero CLI, webhooks, `must-gather` custom resource, and other methods. This helps you identify and resolve problems with backup and restore operations.
+Troubleshoot OpenShift API for Data Protection (OADP) issues by using diagnostic tools such as the OADP CLI, webhooks, `must-gather` custom resource, and other methods. This helps you identify and resolve problems with backup and restore operations.
 
 You can troubleshoot OADP issues by using the following methods:
 
-- Debug Velero custom resources (CRs) by using the OpenShift CLI tool or the Velero CLI tool. The Velero CLI tool provides more detailed logs and information.
+- Debug Velero custom resources (CRs) by using the OpenShift CLI tool.
 
 - Debug Velero or Restic pod crashes, which are caused due to a lack of memory or CPU.
 
@@ -20,9 +20,9 @@ You can troubleshoot OADP issues by using the following methods:
 
 # Additional resources
 
-- [Debugging with the OpenShift CLI tool](../../../backup_and_restore/application_backup_and_restore/troubleshooting/velero-cli-tool.xml#oadp-debugging-oc-cli_velero-cli-tool)
+- [Debugging with the OpenShift CLI tool](../../../backup_and_restore/application_backup_and_restore/troubleshooting/oadp-cli-tool.xml#oadp-debugging-oc-cli_oadp-cli-tool)
 
-- [Debugging with the Velero CLI tool](../../../backup_and_restore/application_backup_and_restore/troubleshooting/velero-cli-tool.xml#migration-debugging-velero-resources_velero-cli-tool)
+- [Debugging backups and restores using the OADP CLI](../../../backup_and_restore/application_backup_and_restore/troubleshooting/oadp-cli-tool.xml#migration-debugging-velero-resources_oadp-cli-tool)
 
 - [Pods crash or restart due to lack of memory or CPU](../../../backup_and_restore/application_backup_and_restore/troubleshooting/pods-crash-or-restart-due-to-lack-of-memory-or-cpu.xml#pods-crash-or-restart-due-to-lack-of-memory-or-cpu)
 

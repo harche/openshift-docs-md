@@ -553,7 +553,13 @@ You can restore the hosted cluster into a new management cluster by creating the
 
 - If you are using a replace update, you need some spare nodes for the `InfraEnv` resource to deploy the worker nodes.
 
-<!-- -->
+<div class="important">
+
+Restoring a hosted cluster to a new management cluster is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
 
 - You configured the new management cluster to use OpenShift API for Data Protection (OADP). The new management cluster must have the same Data Protection Application (DPA) as the management cluster that you backed up from so that the `Restore` CR can access the backup storage.
 
@@ -860,28 +866,22 @@ When you use OpenShift API for Data Protection (OADP) to back up and restore a h
     $ watch "echo BackupRepositories:;echo;oc get backuprepositories.velero.io -A;echo; echo BackupStorageLocations: ;echo; oc get backupstoragelocations.velero.io -A;echo;echo DataUploads: ;echo;oc get datauploads.velero.io -A;echo;echo DataDownloads: ;echo;oc get datadownloads.velero.io -n openshift-adp; echo;echo VolumeSnapshotLocations: ;echo;oc get volumesnapshotlocations.velero.io -A;echo;echo Backups:;echo;oc get backup -A; echo;echo Restores:;echo;oc get restore -A"
     ```
 
-# Using the Velero CLI to describe the Backup and Restore resources
+# Using the OADP CLI to describe the Backup and Restore resources
 
-When you use OpenShift API for Data Protection, you can get more details of the `Backup` and `Restore` resources by using the `velero` command-line interface (CLI).
+When you use OpenShift API for Data Protection, you can get more details of the `Backup` and `Restore` resources by using the OADP command-line interface (CLI).
 
-1.  Create an alias to use the `velero` CLI from a container by running the following command:
-
-    ``` terminal
-    $ alias velero='oc -n openshift-adp exec deployment/velero -c velero -it -- ./velero'
-    ```
-
-2.  Get details of your `Restore` custom resource (CR) by running the following command:
+1.  Get details of your `Restore` custom resource (CR) by running the following command:
 
     ``` terminal
-    $ velero restore describe <restore_resource_name> --details
+    $ oc oadp restore describe <restore_resource_name> --details
     ```
 
     Replace `<restore_resource_name>` with the name of your `Restore` resource.
 
-3.  Get details of your `Backup` CR by running the following command:
+2.  Get details of your `Backup` CR by running the following command:
 
     ``` terminal
-    $ velero restore describe <backup_resource_name> --details
+    $ oc oadp backup describe <backup_resource_name> --details
     ```
 
     Replace `<backup_resource_name>` with the name of your `Backup` resource.

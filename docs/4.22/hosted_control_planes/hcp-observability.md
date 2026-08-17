@@ -262,6 +262,342 @@ When a dashboard is generated, the following strings are replaced with values th
 
 To set a custom cluster identifier when you create the hosted cluster, see "Customized hosted cluster identifiers".
 
+# Control plane metrics for hosted control planes
+
+You can observe hosted control plane health from the hosted cluster monitoring stack when metrics forwarding is enabled.
+
+With propagated metrics, you can diagnose API server, etcd, Operator, and scheduling issues from the hosted cluster web console and CLI without management cluster credentials.
+
+This capability is available in OpenShift Container Platform 4.22 and later.
+
+Before OpenShift Container Platform 4.22, control plane components for hosted control planes ran on the management cluster and were invisible to the Cluster Monitoring Operator stack in the hosted cluster. Hosted cluster administrators could not query metrics such as `apiserver_request_total`, `etcd_mvcc_db_total_size_in_bytes`, or `csv_succeeded` from the hosted cluster Prometheus.
+
+With metrics forwarding, selected control plane metrics are propagated from the management cluster into the hosted cluster platform Prometheus.
+
+After you enable forwarding on the `HostedCluster` resource, you can use familiar PromQL queries, alerts, and dashboards.
+
+## Metrics forwarding architecture
+
+When you enable metrics forwarding, hosted control planes deploys components on both the management cluster and the hosted cluster.
+
+On the management cluster, in the hosted control plane namespace, the following steps take place:
+
+- The `endpoint-resolver` deployment discovers pod IP addresses for control plane components.
+
+- The `metrics-proxy` deployment scrapes control plane pods, applies per-component metric filters, injects OpenShift Container Platform-compatible labels, and serves aggregated metrics at paths, such as `/metrics/kube-apiserver` and `/metrics/etcd`, behind a TLS-passthrough Route.
+
+On the hosted cluster, in the `openshift-monitoring` namespace, the following steps take place:
+
+- The `control-plane-metrics-forwarder` deployment runs HAProxy and TCP-proxies scrape requests to the management cluster `metrics-proxy` Route.
+
+- A `PodMonitor` named `control-plane-metrics-forwarder` configures platform Prometheus to scrape the forwarder using mutual TLS (mTLS).
+
+The data path is as follows:
+
+1.  Platform Prometheus in the hosted cluster discovers the `PodMonitor` and scrapes the metrics-forwarder.
+
+2.  The metrics-forwarder forwards the scrape over mTLS to the management cluster `metrics-proxy` Route.
+
+3.  The metrics-proxy scrapes control plane pods through the endpoint-resolver and returns filtered, relabeled metrics.
+
+## Enabling metrics forwarding
+
+Enable metrics forwarding so that you can observe hosted control plane health from the hosted cluster monitoring stack.
+
+If you are a hosted cluster administrator without management cluster access, ask a platform administrator enable metrics forwarding on your `HostedCluster` resource.
+
+- You have a hosted cluster that is version 4.22 or later.
+
+- You have the multicluster engine for Kubernetes Operator version 2.17 or later.
+
+- You are logged in to the management cluster. Alternatively, you can use a `kubeconfig` file with access to the namespace that contains the `HostedCluster` resource. The `HostedCluster` object exists on the management cluster; annotating it from a hosted cluster `kubeconfig` file fails or targets the wrong resource.
+
+<!-- -->
+
+- Add the `hypershift.openshift.io/enable-metrics-forwarding=true` annotation to the `HostedCluster` resource on the management cluster by entering the following command:
+
+  ``` terminal
+  $ oc annotate hostedcluster -n <hosted_cluster_namespace> <hosted_cluster_name> \
+    hypershift.openshift.io/enable-metrics-forwarding=true
+  ```
+
+  Replace `<hosted_cluster_namespace>` with the namespace of the hosted cluster and `<hosted_cluster_name>` with the name of the hosted cluster.
+
+- To disable metrics forwarding, remove the annotation by entering the following command:
+
+  ``` terminal
+  $ oc annotate hostedcluster -n <hosted_cluster_namespace> <hosted_cluster_name> \
+    hypershift.openshift.io/enable-metrics-forwarding-
+  ```
+
+## Querying control plane metrics in hosted clusters by using the CLI
+
+After you enable metrics forwarding, you can verify that control plane metrics are ingested and query them from the CLI.
+
+Use the same PromQL patterns as standalone OpenShift Container Platform clusters because the metrics-proxy injects compatible labels.
+
+- Metrics forwarding is enabled on the `HostedCluster` resource. For enablement steps, see "Enabling metrics forwarding".
+
+- You have `cluster-admin` access to the hosted cluster.
+
+- At least two minutes have elapsed since you enabled forwarding so Prometheus can complete initial scrapes.
+
+1.  Verify that the `control-plane-metrics-forwarder` deployment exists in the `openshift-monitoring` namespace:
+
+    ``` terminal
+    $ oc get deployment control-plane-metrics-forwarder -n openshift-monitoring
+    ```
+
+    <div class="note">
+
+    Control plane metrics are available when the Cluster Monitoring Operator and platform Prometheus are running, even if no compute nodes are scheduled. Data-plane node and workload metrics still require compute nodes.
+
+    </div>
+
+2.  Verify that the `control-plane-metrics-forwarder` `PodMonitor` exists:
+
+    ``` terminal
+    $ oc get podmonitor control-plane-metrics-forwarder -n openshift-monitoring
+    ```
+
+3.  Optional: Verify that management-cluster components are running by logging in to the management cluster:
+
+    1.  Enter the following command:
+
+        ``` terminal
+        $ oc get deployment endpoint-resolver metrics-proxy -n <hcp_namespace>
+        ```
+
+        Replace `<hcp_namespace>` with the namespace for your hosted cluster. Typically, the format of the namespace is `<hosted_cluster_namespace>-<hosted_cluster_name>`.
+
+    2.  Enter the following command:
+
+        ``` terminal
+        $ oc get route metrics-proxy -n <hcp_namespace>
+        ```
+
+4.  Verify that Prometheus scraped targets for the forwarder report:
+
+    ``` terminal
+    $ oc exec -n openshift-monitoring prometheus-k8s-0 -c prometheus -- \
+      curl -s http://localhost:9090/api/v1/targets \
+      | jq '.data.activeTargets[] | select(.scrapePool | contains("control-plane-metrics-forwarder")) | {scrapePool, scrapeUrl: .scrapeUrl, health}'
+    ```
+
+    You should see one target per forwarded component with the status of `"health": "up"`.
+
+5.  Confirm that Kubernetes API server metrics are ingested by querying `apiserver_request_total`:
+
+    ``` terminal
+    $ oc exec -n openshift-monitoring prometheus-k8s-0 -c prometheus -- \
+      curl -gs 'http://localhost:9090/api/v1/query?query=apiserver_request_total{job="apiserver"}' \
+      | jq '.data.result | length'
+    ```
+
+    A nonzero result confirms that API server metrics are available in the guest cluster monitoring stack.
+
+- [Exposed metrics](../operators/understanding/olm/olm-understanding-metrics.xml#olm-metrics_olm-understanding-metrics)
+
+## Querying control plane metrics in hosted clusters by using the web console
+
+After you enable metrics forwarding, you can verify that control plane metrics are ingested and query them from the web console.
+
+Use the same PromQL patterns as standalone OpenShift Container Platform clusters because the metrics-proxy injects compatible labels.
+
+- Metrics forwarding is enabled on the `HostedCluster` resource. For enablement steps, see "Enabling metrics forwarding".
+
+- You have `cluster-admin` access to the hosted cluster.
+
+- At least two minutes have elapsed since you enabled forwarding so Prometheus can complete initial scrapes.
+
+1.  Log in to the OpenShift Container Platform web console for the hosted cluster.
+
+2.  Click **Observe** → **Metrics**.
+
+3.  In the query field, enter a PromQL expression and run the query.
+
+    Use the following examples:
+
+    <div class="formalpara-title">
+
+    **Operator health**
+
+    </div>
+
+    ``` text
+    csv_succeeded{job="olm-operator-metrics"} == 0
+    ```
+
+    This query lists CSVs that are not in the `Succeeded` state.
+
+    <div class="formalpara-title">
+
+    **API server request rate**
+
+    </div>
+
+    ``` text
+    sum(rate(apiserver_request_total{job="apiserver"}[5m])) by (verb, code)
+    ```
+
+    <div class="formalpara-title">
+
+    **Scheduler activity**
+
+    </div>
+
+    ``` text
+    sum(rate(scheduler_schedule_attempts_total[5m])) by (result)
+    ```
+
+    This query is available on OpenShift Container Platform 4.22 and later with metrics forwarding enabled.
+
+    <div class="formalpara-title">
+
+    **Workload-oriented API saturation**
+
+    </div>
+
+    ``` text
+    apiserver_current_inflight_requests{job="apiserver"}
+    ```
+
+    <div class="formalpara-title">
+
+    **Scheduling backlog**
+
+    </div>
+
+    ``` text
+    scheduler_pending_pods
+    ```
+
+    <div class="formalpara-title">
+
+    **Controller workqueue depth**
+
+    </div>
+
+    ``` text
+    workqueue_depth{job="kube-controller-manager"}
+    ```
+
+    For `csv_succeeded` and other OLM metrics, see "Exposed metrics".
+
+- Prometheus targets for `control-plane-metrics-forwarder` scrape pools report the `health: up` status.
+
+- PromQL queries for `apiserver_request_total{job="apiserver"}` return nonzero results.
+
+- Example queries in the web console return time series for enabled components.
+
+<!-- -->
+
+- [Exposed metrics](../operators/understanding/olm/olm-understanding-metrics.xml#olm-metrics_olm-understanding-metrics)
+
+## Importing control plane health dashboards
+
+You can import a sample Grafana dashboard that visualizes propagated control plane metrics in the hosted cluster web console. The dashboard covers API server, etcd, cluster Operators, scheduler, controller manager, and OLM health panels.
+
+- Metrics forwarding is enabled and verified.
+
+- The HyperShift Operator uses `METRICS_SET=All` or `METRICS_SET=SRE` with a matching `sre-metric-set` `ConfigMap` object in the hosted control plane namespace. The default `Telemetry` metrics set forwards only a small metric subset and leaves most dashboard panels empty.
+
+- You have `cluster-admin` access to the hosted cluster.
+
+1.  Download the sample dashboard JSON file by entering the following command:
+
+    ``` terminal
+    $ curl -LO https://raw.githubusercontent.com/openshift/hypershift/main/contrib/metrics/guest-control-plane-dashboard.json
+    ```
+
+    <div class="note">
+
+    If you deploy user-workload Grafana through the Grafana Operator, import the dashboard JSON as a `GrafanaDashboard` custom resource instead of using a console `ConfigMap` object.
+
+    </div>
+
+2.  Create a `ConfigMap` object from the dashboard file in the `openshift-config-managed` namespace by entering the following command:
+
+    ``` terminal
+    $ oc create configmap guest-control-plane-dashboard \
+      --from-file=guest-control-plane-dashboard.json=guest-control-plane-dashboard.json \
+      -n openshift-config-managed
+    ```
+
+3.  Label the `ConfigMap` object so the console discovers it as a dashboard by entering the following command:
+
+    ``` terminal
+    $ oc label configmap guest-control-plane-dashboard \
+      console.openshift.io/dashboard=true \
+      -n openshift-config-managed
+    ```
+
+4.  Log in to the web console and click **Observe** → **Dashboards**.
+
+5.  Select the **Hosted Cluster Control Plane** dashboard.
+
+6.  Optional: If you use `METRICS_SET=SRE` on the HyperShift Operator, configure the Operator and create or update the `sre-metric-set` `ConfigMap` object in the hosted control plane namespace with relabel configurations that forward the dashboard metric names.
+
+    1.  Log in to the management cluster and set the metrics set on the HyperShift Operator by entering the following command:
+
+        ``` terminal
+        $ oc set env -n hypershift deployment/operator METRICS_SET=SRE
+        ```
+
+    2.  Replace `<hcp_namespace>` with your hosted control plane namespace and create the `ConfigMap` object:
+
+        ``` yaml
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+          name: sre-metric-set
+          namespace: <hcp_namespace>
+        data:
+          config: |
+            kubeAPIServer:
+              - action: keep
+                sourceLabels: ["__name__"]
+                regex: "(apiserver_request_total|apiserver_request_duration_seconds_bucket|apiserver_current_inflight_requests|apiserver_storage_objects)"
+            etcd:
+              - action: keep
+                sourceLabels: ["__name__"]
+                regex: "(etcd_mvcc_db_total_size_in_bytes|etcd_mvcc_db_total_size_in_use_in_bytes|etcd_disk_wal_fsync_duration_seconds_bucket|etcd_disk_backend_commit_duration_seconds_bucket|etcd_network_peer_round_trip_time_seconds_bucket|etcd_server_leader_changes_seen_total|etcd_server_has_leader)"
+            kubeControllerManager:
+              - action: keep
+                sourceLabels: ["__name__"]
+                regex: "(workqueue_depth|workqueue_adds_total)"
+            kubeScheduler:
+              - action: keep
+                sourceLabels: ["__name__"]
+                regex: "(scheduler_e2e_scheduling_duration_seconds_count|scheduler_schedule_attempts_total|scheduler_pending_pods)"
+            cvo:
+              - action: keep
+                sourceLabels: ["__name__"]
+                regex: "(cluster_version|cluster_operator_up|cluster_operator_conditions)"
+            olm:
+              - action: keep
+                sourceLabels: ["__name__"]
+                regex: "(csv_succeeded)"
+        ```
+
+        This configuration forwards 20 metric names across five components that the dashboard uses.
+
+        For full `SRE` metrics set configuration, see "Configuring the SRE metrics set".
+
+    3.  Apply the `ConfigMap` object on the management cluster:
+
+        ``` terminal
+        $ oc apply -f sre-metric-set.yaml
+        ```
+
+        The Control Plane Operator detects the `ConfigMap` object change and updates the `metrics-proxy` configuration.
+
+- The dashboard is displayed under **Observe** → **Dashboards** in the web console.
+
+- Panels display data when the configured metrics set includes the required metric names.
+
+- The etcd database size panels show current use relative to the 8 GB limit.
+
 # Connectivity monitoring for hosted control planes
 
 Cluster service providers can monitor connectivity metrics to ensure proper function during an update. They can also use the metrics to find connectivity issues between the control plane and the data plane, or vice versa.

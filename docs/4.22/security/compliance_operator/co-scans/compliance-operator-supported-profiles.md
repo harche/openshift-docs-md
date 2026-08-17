@@ -8,10 +8,6 @@ The Compliance Operator might report incorrect results on some managed platforms
 
 </div>
 
-- [Red Hat Knowledgebase Solution \#6983418](https://access.redhat.com/solutions/6983418)
-
-- [Product Compliance](https://access.redhat.com/compliance)
-
 # Compliance profiles
 
 When working with the Compliance Operator (CO), you can use the profiles provided by the Operator to meet industry standard benchmarks.
@@ -75,7 +71,7 @@ Supported Essential Eight compliance profiles
 
 <div class="important">
 
-Applying automatic remedations to any profile, such as `rhcos4-stig`, that uses the `service-sshd-disabled` rule, automatically disables the `sshd` service. This situation blocks SSH access to control plane nodes and compute nodes. To keep the SSH access enabled, create a `TailoredProfile` object and set the `rhcos4-service-sshd-disabled` rule value for the `disableRules` parameter.
+Applying automatic remediations to any profile, such as `rhcos4-stig`, that uses the `service-sshd-disabled` rule, automatically disables the `sshd` service. This situation blocks SSH access to control plane nodes and compute nodes. To keep the SSH access enabled, create a `TailoredProfile` object and set the `rhcos4-service-sshd-disabled` rule value for the `disableRules` parameter.
 
 </div>
 
@@ -146,18 +142,18 @@ Supported PCI-DSS compliance profiles
 
 <div class="important">
 
-Applying automatic remedations to any profile, such as `rhcos4-stig`, that uses the `service-sshd-disabled` rule, automatically disables the `sshd` service. This situation blocks SSH access to control plane nodes and compute nodes. To keep the SSH access enabled, create a `TailoredProfile` object and set the `rhcos4-service-sshd-disabled` rule value for the `disableRules` parameter.
+Applying automatic remediations to any profile, such as `rhcos4-stig`, that uses the `service-sshd-disabled` rule, automatically disables the `sshd` service. This situation blocks SSH access to control plane nodes and compute nodes. To keep the SSH access enabled, create a `TailoredProfile` object and set the `rhcos4-service-sshd-disabled` rule value for the `disableRules` parameter.
 
 </div>
 
 | Profile                              | Profile title                                                                                                                | Application           | Industry compliance benchmark                          | Supported architectures | Supported platforms                                                    |
 |--------------------------------------|------------------------------------------------------------------------------------------------------------------------------|-----------------------|--------------------------------------------------------|-------------------------|------------------------------------------------------------------------|
-| ocp4-stig <sup>\[1\]</sup>           | Defense Information Systems Agency Security Technical Implementation Guide (DISA STIG) for Red Hat Openshift<sup>\[3\]</sup> | Platform              | [DISA-STIG](https://public.cyber.mil/stigs/downloads/) | `x86_64` `ppc64le`      |                                                                        |
-| ocp4-stig-node <sup>\[1\]</sup>      | Defense Information Systems Agency Security Technical Implementation Guide (DISA STIG) for Red Hat Openshift<sup>\[3\]</sup> | Node <sup>\[2\]</sup> | [DISA-STIG](https://public.cyber.mil/stigs/downloads/) | `x86_64` `ppc64le`      | Red Hat OpenShift Service on AWS with hosted control planes (ROSA HCP) |
-| ocp4-stig-v2r3                       | Defense Information Systems Agency Security Technical Implementation Guide (DISA STIG) for Red Hat Openshift V2R3            | Platform              | [DISA-STIG](https://public.cyber.mil/stigs/downloads/) | `x86_64` `ppc64le`      |                                                                        |
-| ocp4-stig-node-v2r3 <sup>\[1\]</sup> | Defense Information Systems Agency Security Technical Implementation Guide (DISA STIG) for Red Hat Openshift V2R3            | Node                  | [DISA-STIG](https://public.cyber.mil/stigs/downloads/) | `x86_64` `ppc64le`      |                                                                        |
-| rhcos4-stig<sup>\[1\]</sup>          | Defense Information Systems Agency Security Technical Implementation Guide (DISA STIG) for Red Hat Openshift<sup>\[3\]</sup> | Node                  | [DISA-STIG](https://public.cyber.mil/stigs/downloads/) | `x86_64` `ppc64le`      | Red Hat OpenShift Service on AWS with hosted control planes (ROSA HCP) |
-| rhcos4-stig-v2r3                     | Defense Information Systems Agency Security Technical Implementation Guide (DISA STIG) for Red Hat Openshift V2R3            | Node                  | [DISA-STIG](https://public.cyber.mil/stigs/downloads/) | `x86_64` `ppc64le`      | Red Hat OpenShift Service on AWS with hosted control planes (ROSA HCP) |
+| ocp4-stig <sup>\[1\]</sup>           | Defense Information Systems Agency Security Technical Implementation Guide (DISA STIG) for Red Hat OpenShift<sup>\[3\]</sup> | Platform              | [DISA-STIG](https://public.cyber.mil/stigs/downloads/) | `x86_64` `ppc64le`      |                                                                        |
+| ocp4-stig-node <sup>\[1\]</sup>      | Defense Information Systems Agency Security Technical Implementation Guide (DISA STIG) for Red Hat OpenShift<sup>\[3\]</sup> | Node <sup>\[2\]</sup> | [DISA-STIG](https://public.cyber.mil/stigs/downloads/) | `x86_64` `ppc64le`      | Red Hat OpenShift Service on AWS with hosted control planes (ROSA HCP) |
+| ocp4-stig-v2r3                       | Defense Information Systems Agency Security Technical Implementation Guide (DISA STIG) for Red Hat OpenShift V2R3            | Platform              | [DISA-STIG](https://public.cyber.mil/stigs/downloads/) | `x86_64` `ppc64le`      |                                                                        |
+| ocp4-stig-node-v2r3 <sup>\[1\]</sup> | Defense Information Systems Agency Security Technical Implementation Guide (DISA STIG) for Red Hat OpenShift V2R3            | Node                  | [DISA-STIG](https://public.cyber.mil/stigs/downloads/) | `x86_64` `ppc64le`      |                                                                        |
+| rhcos4-stig<sup>\[1\]</sup>          | Defense Information Systems Agency Security Technical Implementation Guide (DISA STIG) for Red Hat OpenShift<sup>\[3\]</sup> | Node                  | [DISA-STIG](https://public.cyber.mil/stigs/downloads/) | `x86_64` `ppc64le`      | Red Hat OpenShift Service on AWS with hosted control planes (ROSA HCP) |
+| rhcos4-stig-v2r3                     | Defense Information Systems Agency Security Technical Implementation Guide (DISA STIG) for Red Hat OpenShift V2R3            | Node                  | [DISA-STIG](https://public.cyber.mil/stigs/downloads/) | `x86_64` `ppc64le`      | Red Hat OpenShift Service on AWS with hosted control planes (ROSA HCP) |
 
 Supported STIG compliance profiles
 
@@ -209,3 +205,9 @@ For benchmarks that have `ocp4` Platform, `ocp4` Node, and `rhcos4` node profile
 In a cluster with many Nodes, both `ocp4` Node and `rhcos4` Node scans might take a long time to complete.
 
 </div>
+
+# Additional resources
+
+- [Red Hat Knowledgebase Solution \#6983418](https://access.redhat.com/solutions/6983418)
+
+- [Product Compliance](https://access.redhat.com/compliance)

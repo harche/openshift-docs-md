@@ -4,10 +4,10 @@ You can install an OpenShift Container Platform cluster on Nutanix by using a va
 
 You must install the OpenShift Container Platform cluster to a Nutanix environment that meets specific version requirements.
 
-| Component     | Required version   |
-|---------------|--------------------|
-| Nutanix AOS   | 6.5.2.7 or later   |
-| Prism Central | pc.2022.6 or later |
+| Component     | Required version |
+|---------------|------------------|
+| Nutanix AOS   | 7.3 and later    |
+| Prism Central | 7.3 and later    |
 
 Version requirements for Nutanix virtual environments
 

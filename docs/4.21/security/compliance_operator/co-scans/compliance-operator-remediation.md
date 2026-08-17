@@ -97,7 +97,13 @@ ComplianceCheckResult Status
 
 # Reviewing a remediation
 
-You can review a `ComplianceRemediation` object and its owning `ComplianceCheckResult` object to understand what a check verifies, its severity and security controls, and how the remediation fixes the issue. After the first scan, check for remediations with the state `MissingDependencies`.
+You can review a `ComplianceRemediation` object and the `ComplianceCheckResult` object to understand what a check verifies, its severity and security controls, and how the remediation fixes the issue. After the first scan, check for remediations with the state `MissingDependencies`.
+
+The `ComplianceCheckResult` object includes human-readable descriptions of what the check does and what security hardening it enforces.
+
+The remediation payload is stored in the `spec.current` attribute. The payload can be any Kubernetes object, but because this remediation was produced by a node scan, the remediation payload in the following example is a `MachineConfig` object. For Platform scans, the remediation payload is often a different kind of an object (for example, a `ConfigMap` or `Secret` object). Typically, applying that remediation is up to the administrator. Otherwise, the Compliance Operator would have required a very broad set of permissions to manipulate any generic Kubernetes object. An example of remediating a Platform check is provided later in the text.
+
+To see exactly what the remediation does when applied, the `MachineConfig` object contents use the Ignition objects for the configuration. See the link to "Ignition specification" in Additional resources for further information about the format. In the following example, the `spec.config.storage.files[0].path` attribute specifies the file that is being created by this remediation (`/etc/sysctl.d/75-sysctl_net_ipv4_conf_all_accept_redirects.conf`) and the `spec.config.storage.files[0].contents.source` attribute specifies the contents of that file.
 
 1.  Review the example of a check and a remediation called `sysctl-net-ipv4-conf-all-accept-redirects`. This example is redacted to only show `spec` and `status` and omits `metadata`:
 
@@ -123,17 +129,13 @@ You can review a `ComplianceRemediation` object and its owning `ComplianceCheckR
       applicationState: NotApplied
     ```
 
-    The remediation payload is stored in the `spec.current` attribute. The payload can be any Kubernetes object, but because this remediation was produced by a node scan, the remediation payload in the above example is a `MachineConfig` object. For Platform scans, the remediation payload is often a different kind of an object (for example, a `ConfigMap` or `Secret` object), but typically applying that remediation is up to the administrator, because otherwise the Compliance Operator would have required a very broad set of permissions to manipulate any generic Kubernetes object. An example of remediating a Platform check is provided later in the text.
-
-    To see exactly what the remediation does when applied, the `MachineConfig` object contents use the Ignition objects for the configuration. See the [Ignition specification](https://coreos.github.io/ignition/specs/) for further information about the format. In our example, `the spec.config.storage.files[0].path` attribute specifies the file that is being create by this remediation (`/etc/sysctl.d/75-sysctl_net_ipv4_conf_all_accept_redirects.conf`) and the `spec.config.storage.files[0].contents.source` attribute specifies the contents of that file.
+2.  Use the following Python script to view the contents:
 
     <div class="note">
 
     The contents of the files are URL-encoded.
 
     </div>
-
-2.  Use the following Python script to view the contents:
 
     ``` terminal
     $ echo "net.ipv4.conf.all.accept_redirects%3D0" | python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(''.join(sys.stdin.readlines())))"
@@ -340,7 +342,7 @@ The boolean attribute `spec.apply` controls whether the remediation should be ap
 
 # Remediating a platform check manually
 
-Typically, administrators must manually remediate checks for Platform scans.
+You must manually remediate checks from Platform scans so you can fix findings that the Compliance Operator cannot apply automatically.
 
 Manual remediations are necessary for the following reasons:
 
@@ -394,6 +396,12 @@ When you update compliance content to a newer version, the Compliance Operator m
 
 The previously applied remediation contents would then be stored in the `spec.outdated` attribute of a `ComplianceRemediation` object and the new updated contents would be stored in the `spec.current` attribute. After updating the content to a newer version, the administrator then needs to review the remediation. If the `spec.outdated` attribute exists, it would be used to render the resulting `MachineConfig` object. After the `spec.outdated` attribute is removed, the Compliance Operator re-renders the resulting `MachineConfig` object, which causes the Operator to push the configuration to the nodes.
 
+<div class="important">
+
+The Compliance Operator does not automatically resolve dependency issues that can occur between remediations. Users should perform a rescan after remediations are applied to ensure accurate results.
+
+</div>
+
 1.  Search for any outdated remediations:
 
     ``` terminal
@@ -444,15 +452,15 @@ The previously applied remediation contents would then be stored in the `spec.ou
 
 4.  Verify that the nodes apply the newer remediation version and reboot.
 
-    <div class="important">
-
-    The Compliance Operator does not automatically resolve dependency issues that can occur between remediations. Users should perform a rescan after remediations are applied to ensure accurate results.
-
-    </div>
-
 # Unapplying a remediation
 
-You can unapply a remediation that was previously applied.
+You can unapply a remediation that was previously applied to roll back a change when you need to revert it.
+
+<div class="important">
+
+The Compliance Operator does not automatically resolve dependency issues that can occur between remediations. Users should perform a rescan after remediations are applied to ensure accurate results.
+
+</div>
 
 1.  Set the `apply` flag to `false`:
 
@@ -467,12 +475,6 @@ You can unapply a remediation that was previously applied.
     <div class="important">
 
     All affected nodes with the remediation will be rebooted.
-
-    </div>
-
-    <div class="important">
-
-    The Compliance Operator does not automatically resolve dependency issues that can occur between remediations. Users should perform a rescan after remediations are applied to ensure accurate results.
 
     </div>
 
@@ -616,5 +618,7 @@ If possible, a remediation is still created so that the cluster can converge to 
 # Additional resources
 
 - [Modifying nodes](../../../nodes/nodes/nodes-nodes-managing.xml#nodes-nodes-managing-about_nodes-nodes-managing)
+
+- [Ignition specification](https://coreos.github.io/ignition/specs/)
 
 - [Installing the system in FIPS mode](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/security_hardening/assembly_installing-the-system-in-fips-mode_security-hardening)

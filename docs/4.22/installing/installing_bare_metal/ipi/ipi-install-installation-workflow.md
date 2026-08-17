@@ -1,10 +1,14 @@
-# Installing RHEL on the provisioner node
+Before you can install an OpenShift Container Platform cluster on bare metal, you must set up your environment for installation.
 
-With the configuration of the prerequisites complete, the next step is to install RHEL 9.x on the provisioner node. The installer uses the provisioner node as the orchestrator while installing the OpenShift Container Platform cluster. For the purposes of this document, installing RHEL on the provisioner node is out of scope. However, options include but are not limited to using a RHEL Satellite server, PXE, or installation media.
+# Installations RHEL on the provisioner node
+
+With the configuration of the prerequisites complete, the next step is to install RHEL 9.x on the provisioner node. The installer uses the provisioner node as the orchestrator while installing the OpenShift Container Platform cluster.
+
+For the purposes of this document, installing RHEL on the provisioner node is out of scope. However, options include but are not limited to using a RHEL Satellite server, PXE, or installation media.
 
 # Preparing the provisioner node for OpenShift Container Platform installation
 
-Perform the following steps to prepare the environment.
+Begin to set up your environment for cluster installation by preparing the provisioner node.
 
 1.  Log in to the provisioner node via `ssh`.
 
@@ -112,7 +116,7 @@ Perform the following steps to prepare the environment.
 
 The OpenShift Container Platform installation program installs the `chrony` Network Time Protocol (NTP) service on the cluster nodes. To complete installation, each node must have access to an NTP time server. You can verify NTP server synchronization by using the `chrony` service.
 
-For disconnected clusters, you must configure the NTP servers on the control plane nodes. For more information see the *Additional resources* section.
+For disconnected clusters, you must configure the NTP servers on the control plane nodes. For more information see "Configuring NTP for disconnected clusters".
 
 - You installed the `chrony` package on the target node.
 
@@ -159,9 +163,9 @@ For disconnected clusters, you must configure the NTP servers on the control pla
     ...
     ```
 
-- [Optional: Configuring NTP for disconnected clusters](../../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#configuring-ntp-for-disconnected-clusters_ipi-install-installation-workflow)
-
 - [Network Time Protocol (NTP)](../../../installing/installing_bare_metal/ipi/ipi-install-prerequisites.xml#network-requirements-ntp_ipi-install-prerequisites)
+
+- [Optional: Configuring NTP for disconnected clusters](../../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#configuring-ntp-for-disconnected-clusters_ipi-install-installation-workflow)
 
 # Configuring networking
 
@@ -629,7 +633,7 @@ The following list of interface names are reserved and you cannot use the names 
     # ...
     ```
 
-- Scaling compute nodes to apply the manifest object that includes a customized `br-ex` bridge to each compute node that exists in your cluster. For more information, see "Expanding the cluster" in the *Additional resources* section.
+- Scaling compute nodes to apply the manifest object that includes a customized `br-ex` bridge to each compute node that exists in your cluster. For more information, see "Expanding the cluster".
 
 <!-- -->
 
@@ -696,11 +700,19 @@ Additionally, you must create a `BareMetalHost` CR that defines information for 
     $ oc scale machineset <machineset_name> --replicas=<n>
     ```
 
-    - \<n\>: Where `<machineset_name>` is the name of the machine set and `<n>` is the number of compute nodes.
+    where:
+
+    `<machineset_name>`
+    Specifies the name of the machine set.
+
+    `<n>`
+    Specifies the number of compute nodes.
 
 # Establishing communication between subnets
 
-In a typical OpenShift Container Platform cluster setup, all nodes, including the control plane and compute nodes, reside in the same network. However, for edge computing scenarios, it can be beneficial to locate compute nodes closer to the edge. This often involves using different network segments or subnets for the remote nodes than the subnet used by the control plane and local compute nodes. Such a setup can reduce latency for the edge and allow for enhanced scalability.
+In a typical OpenShift Container Platform cluster setup, all nodes, including the control plane and compute nodes, reside in the same network. However, for edge computing scenarios, it can be beneficial to locate compute nodes closer to the edge.
+
+This often involves using different network segments or subnets for the remote nodes than the subnet used by the control plane and local compute nodes. Such a setup can reduce latency for the edge and allow for enhanced scalability.
 
 Before installing OpenShift Container Platform, you must configure the network properly to ensure that the edge subnets containing the remote nodes can reach the subnet containing the control plane nodes and receive traffic from the control plane too.
 
@@ -864,23 +876,25 @@ In this procedure, the cluster spans two subnets:
 
 # Retrieving the OpenShift Container Platform installer
 
-Use the `stable-4.x` version of the installation program and your selected architecture to deploy the generally available stable version of OpenShift Container Platform:
+Use the `stable-4.x` version of the installation program and your selected architecture to deploy the generally available stable version of OpenShift Container Platform.
 
-``` terminal
-$ export VERSION=stable-4.17
-```
+- Retrieve the installation program by running one of the following commands:
 
-``` terminal
-$ export RELEASE_ARCH=<architecture>
-```
+  ``` terminal
+  $ export VERSION=stable-4.17
+  ```
 
-``` terminal
-$ export RELEASE_IMAGE=$(curl -s https://mirror.openshift.com/pub/openshift-v4/$RELEASE_ARCH/clients/ocp/$VERSION/release.txt | grep 'Pull From: quay.io' | awk -F ' ' '{print $3}')
-```
+  ``` terminal
+  $ export RELEASE_ARCH=<architecture>
+  ```
+
+  ``` terminal
+  $ export RELEASE_IMAGE=$(curl -s https://mirror.openshift.com/pub/openshift-v4/$RELEASE_ARCH/clients/ocp/$VERSION/release.txt | grep 'Pull From: quay.io' | awk -F ' ' '{print $3}')
+  ```
 
 # Extracting the OpenShift Container Platform installer
 
-After retrieving the installer, the next step is to extract it.
+Extract the OpenShift Container Platform installer after retrieving it to prepare for the installation of the cluster.
 
 1.  Set the environment variables:
 
@@ -1007,7 +1021,7 @@ Install a container that contains the images.
     registry.access.redhat.com/ubi9/httpd-24
     ```
 
-    - Creates a caching webserver with the name `rhcos_image_cache`. This pod serves the `bootstrapOSImage` image in the `install-config.yaml` file for deployment.
+    This command creates a caching webserver with the name `rhcos_image_cache`. This pod serves the `bootstrapOSImage` image in the `install-config.yaml` file for deployment.
 
 11. Generate the `bootstrapOSImage` configuration:
 
@@ -1031,9 +1045,9 @@ Install a container that contains the images.
         bootstrapOSImage: <bootstrap_os_image>
     ```
 
-    - Replace `<bootstrap_os_image>` with the value of `$BOOTSTRAP_OS_IMAGE`.
+    Replace `<bootstrap_os_image>` with the value of `$BOOTSTRAP_OS_IMAGE`.
 
-      See the "Configuring the install-config.yaml file" section for additional details.
+    See the "Configuring the install-config.yaml file" section for additional details.
 
 # Services for a user-managed load balancer
 
@@ -1506,7 +1520,9 @@ Interval: 10
 
 # Setting the cluster node hostnames through DHCP
 
-On Red Hat Enterprise Linux CoreOS (RHCOS) machines, `NetworkManager` sets the hostnames. By default, DHCP provides the hostnames to `NetworkManager`, which is the recommended method. `NetworkManager` gets the hostnames through a reverse DNS lookup in the following cases:
+On Red Hat Enterprise Linux CoreOS (RHCOS) machines, `NetworkManager` sets the hostnames. By default, DHCP provides the hostnames to `NetworkManager`, which is the recommended method.
+
+The `NetworkManager` gets the hostnames through a reverse DNS lookup in the following cases:
 
 - If DHCP does not provide the hostnames
 
@@ -1514,7 +1530,7 @@ On Red Hat Enterprise Linux CoreOS (RHCOS) machines, `NetworkManager` sets the 
 
 - If you use another method to set the hostnames
 
-Reverse DNS lookup occurs after the network has been initialized on a node, and can increase the time it takes `NetworkManager` to set the hostname. Other system services can start prior to `NetworkManager` setting the hostname, which can cause those services to use a default hostname such as `localhost`.
+Reverse DNS lookup occurs after the network has been initialized on a node, and can increase the time it takes `NetworkManager` to set the hostname. Other system services can start before `NetworkManager` setting the hostname, which can cause those services to use a default hostname such as `localhost`.
 
 <div class="tip">
 
@@ -1614,27 +1630,30 @@ To retain high availability (HA) while reducing infrastructure costs for your cl
     # ...
     ```
 
-    - Defines the arbiter machine pool. You must configure this field to deploy a cluster with an arbiter node.
+    where:
 
-    - Set the `replicas` field to `1` for the arbiter pool. You cannot set this field to a value that is greater than 1.
+    `arbiter`
+    Specifies the arbiter machine pool. You must configure this field to deploy a cluster with an arbiter node.
 
-    - Specifies a name for the arbiter machine pool.
+    `arbiter.replicas`
+    Specifies the value for the `arbiter.replicas` parameter. Set the `replicas` field to `1` for the arbiter pool. You cannot set this field to a value that is greater than 1.
 
-    - Defines the control plane machine pool.
+    `arbiter.name`
+    Specifies a name for the arbiter machine pool.
 
-    - When an arbiter pool is defined, two control plane replicas are valid.
+    `controlPlane`
+    Specifies the control plane machine pool.
+
+    `controlPlane.replicas`
+    Specifies the value for the `controlPlane.replicas` parameter. When an arbiter pool is defined, two control plane replicas are valid.
 
 2.  Save the modified `install-config.yaml` file.
 
 - [Installing a cluster](../../../installing/installing_bare_metal/ipi/ipi-install-installing-a-cluster.xml#ipi-install-installing-a-cluster)
 
-<!-- -->
-
 - [Understanding feature gates](../../../nodes/clusters/nodes-cluster-enabling-features.xml#nodes-cluster-enabling-features-about_nodes-cluster-enabling-features)
 
 # Configuring the install-config.yaml file
-
-## Configuring the install-config.yaml file
 
 The `install-config.yaml` file requires some additional details. Most of the information teaches the installation program and the resulting cluster enough about the available hardware that it is able to fully manage it.
 
@@ -1723,35 +1742,44 @@ The installation program no longer needs the `clusterOSImage` RHCOS image becaus
     sshKey: '<ssh_pub_key>'
     ```
 
-    - Scale the compute machines based on the number of compute nodes that are part of the OpenShift Container Platform cluster. Valid options for the `replicas` value are `0` and integers greater than or equal to `2`. Set the number of replicas to `0` to deploy a three-node cluster, which contains only three control plane machines. A three-node cluster is a smaller, more resource-efficient cluster that can be used for testing, development, and production. You cannot install the cluster with only one compute node.
+    where:
 
-    - An optional list of additional NTP server domain names or IP addresses to add to each host configuration when the cluster host clocks are out of synchronization.
+    `compute.replicas`
+    Specifies the value for the `compute.replicas` parameter. Scale the compute machines based on the number of compute nodes that are part of the OpenShift Container Platform cluster. Valid options for the `replicas` value are `0` and integers greater than or equal to `2`. Set the number of replicas to `0` to deploy a three-node cluster, which contains only three control plane machines. A three-node cluster is a smaller, more resource-efficient cluster that can be used for testing, development, and production. You cannot install the cluster with only one compute node.
 
-    - When deploying a cluster with static IP addresses, you must set the `bootstrapExternalStaticIP` configuration setting to specify the static IP address of the bootstrap VM when there is no DHCP server on the bare metal network.
+    `platform.baremetal.additionalNTPServers`
+    Specifies the optional list of additional NTP server domain names or IP addresses to add to each host configuration when the cluster host clocks are out of synchronization.
 
-    - When deploying a cluster with static IP addresses, you must set the `bootstrapExternalStaticGateway` configuration setting to specify the gateway IP address for the bootstrap VM when there is no DHCP server on the bare metal network.
+    `platform.baremetal.bootstrapExternalStaticIP`
+    Specifies the value for the `bootstrapExternalStaticIP` parameter. When deploying a cluster with static IP addresses, you must set the `bootstrapExternalStaticIP` configuration setting to specify the static IP address of the bootstrap VM when there is no DHCP server on the bare metal network.
 
-    - When deploying a cluster with static IP addresses, you must set the `bootstrapExternalStaticDNS` configuration setting to specify the DNS address for the bootstrap VM when there is no DHCP server on the bare metal network.
+    `platform.baremetal.bootstrapExternalStaticGateway`
+    Specifies the value for the `bootstrapExternalStaticGateway` parameter. When deploying a cluster with static IP addresses, you must set the `bootstrapExternalStaticGateway` configuration setting to specify the gateway IP address for the bootstrap VM when there is no DHCP server on the bare metal network.
 
-    - See the BMC addressing sections for more options.
+    `platform.baremetal.bootstrapExternalStaticDNS`
+    Specifies the value for the `bootstrapExternalStaticDNS` parameter. When deploying a cluster with static IP addresses, you must set the `bootstrapExternalStaticDNS` configuration setting to specify the DNS address for the bootstrap VM when there is no DHCP server on the bare metal network.
 
-    - To set the path to the installation disk drive, enter the kernel name of the disk. For example, `/dev/sda`.
+    `platform.baremetal.hosts.bmc.address`
+    Specifies the value for the `platform.baremetal.hosts.bmc.address` parameter. See the BMC addressing sections for more options.
 
-      <div class="important">
+    `platform.baremetal.hosts.rootDeviceHints.deviceName`
+    Specifies the value for the `platform.baremetal.hosts.rootDeviceHints.deviceName` parameter. To set the path to the installation disk drive, enter the kernel name of the disk. For example, `/dev/sda`.
 
-      Because the disk discovery order is not guaranteed, the kernel name of the disk can change across booting options for machines with multiple disks. For example, `/dev/sda` becomes `/dev/sdb` and vice versa. To avoid this issue, you must use persistent disk attributes, such as the disk World Wide Name (WWN) or `/dev/disk/by-path/`. It is recommended to use the `/dev/disk/by-path/<device_path>` link to the storage location. To use the disk WWN, replace the `deviceName` parameter with the `wwnWithExtension` parameter. Depending on the parameter that you use, enter either of the following values:
+    <div class="important">
 
-      - The disk name. For example, `/dev/sda`, or `/dev/disk/by-path/`.
+    Because the disk discovery order is not guaranteed, the kernel name of the disk can change across booting options for machines with multiple disks. For example, `/dev/sda` becomes `/dev/sdb` and vice versa. To avoid this issue, you must use persistent disk attributes, such as the disk World Wide Name (WWN) or `/dev/disk/by-path/`. It is recommended to use the `/dev/disk/by-path/<device_path>` link to the storage location. To use the disk WWN, replace the `deviceName` parameter with the `wwnWithExtension` parameter. Depending on the parameter that you use, enter either of the following values:
 
-      - The disk WWN. For example, `"0x64cd98f04fde100024684cf3034da5c2"`. Ensure that you enter the disk WWN value within quotes so that it is used as a string value and not a hexadecimal value.
+    - The disk name. For example, `/dev/sda`, or `/dev/disk/by-path/`.
 
-      Failure to meet these requirements for the `rootDeviceHints` parameter might result in the following error:
+    - The disk WWN. For example, `"0x64cd98f04fde100024684cf3034da5c2"`. Ensure that you enter the disk WWN value within quotes so that it is used as a string value and not a hexadecimal value.
 
-      ``` text
-      ironic-inspector inspection failed: No disks satisfied root device hints
-      ```
+    Failure to meet these requirements for the `rootDeviceHints` parameter might result in the following error:
 
-      </div>
+    ``` text
+    ironic-inspector inspection failed: No disks satisfied root device hints
+    ```
+
+    </div>
 
     <div class="note">
 
@@ -2216,77 +2244,79 @@ platform:
 
 When installing using the Redfish API, the installation program calls several Redfish endpoints on the baseboard management controller (BMC) when using installer-provisioned infrastructure on bare metal. If you use Redfish, ensure that your BMC supports all of the Redfish APIs before installation.
 
-1.  Set the IP address or hostname of the BMC by running the following command:
+1.  Set the IP address or hostname and ID of the BMC:
 
-    ``` terminal
-    $ export SERVER=<ip_address>
-    ```
+    1.  Set the IP address or hostname of the BMC by running the following command:
 
-    - Replace `<ip_address>` with the IP address or hostname of the BMC.
+        ``` terminal
+        $ export SERVER=<ip_address>
+        ```
 
-2.  Set the ID of the system by running the following command:
+        Replace `<ip_address>` with the IP address or hostname of the BMC.
 
-    ``` terminal
-    $ export SystemID=<system_id>
-    ```
+    2.  Set the ID of the system by running the following command:
 
-    - Replace `<system_id>` with the system ID. For example, `System.Embedded.1` or `1`. See the following vendor-specific BMC sections for details.
+        ``` terminal
+        $ export SystemID=<system_id>
+        ```
 
-<!-- -->
+        Replace `<system_id>` with the system ID. For example, `System.Embedded.1` or `1`. See the following vendor-specific BMC sections for details.
 
-1.  Check `power on` support by running the following command:
+2.  Check the list of Redfish APIs:
 
-    ``` terminal
-    $ curl -u $USER:$PASS -X POST -H'Content-Type: application/json' -H'Accept: application/json' -d '{"ResetType": "On"}' https://$SERVER/redfish/v1/Systems/$SystemID/Actions/ComputerSystem.Reset
-    ```
+    1.  Check `power on` support by running the following command:
 
-2.  Check `power off` support by running the following command:
+        ``` terminal
+        $ curl -u $USER:$PASS -X POST -H'Content-Type: application/json' -H'Accept: application/json' -d '{"ResetType": "On"}' https://$SERVER/redfish/v1/Systems/$SystemID/Actions/ComputerSystem.Reset
+        ```
 
-    ``` terminal
-    $ curl -u $USER:$PASS -X POST -H'Content-Type: application/json' -H'Accept: application/json' -d '{"ResetType": "ForceOff"}' https://$SERVER/redfish/v1/Systems/$SystemID/Actions/ComputerSystem.Reset
-    ```
+    2.  Check `power off` support by running the following command:
 
-3.  Check the temporary boot implementation that uses `pxe` by running the following command:
+        ``` terminal
+        $ curl -u $USER:$PASS -X POST -H'Content-Type: application/json' -H'Accept: application/json' -d '{"ResetType": "ForceOff"}' https://$SERVER/redfish/v1/Systems/$SystemID/Actions/ComputerSystem.Reset
+        ```
 
-    ``` terminal
-    $ curl -u $USER:$PASS -X PATCH -H "Content-Type: application/json" -H "If-Match: <ETAG>"  https://$Server/redfish/v1/Systems/$SystemID/ -d '{"Boot": {"BootSourceOverrideTarget": "pxe", "BootSourceOverrideEnabled": "Once"}}
-    ```
+    3.  Check the temporary boot implementation that uses `pxe` by running the following command:
 
-4.  Check the status of setting the firmware boot mode that uses `Legacy` or `UEFI` by running the following command:
+        ``` terminal
+        $ curl -u $USER:$PASS -X PATCH -H "Content-Type: application/json" -H "If-Match: <ETAG>"  https://$Server/redfish/v1/Systems/$SystemID/ -d '{"Boot": {"BootSourceOverrideTarget": "pxe", "BootSourceOverrideEnabled": "Once"}}
+        ```
 
-    ``` terminal
-    $ curl -u $USER:$PASS -X PATCH -H "Content-Type: application/json" -H "If-Match: <ETAG>"  https://$Server/redfish/v1/Systems/$SystemID/ -d '{"Boot": {"BootSourceOverrideMode":"UEFI"}}
-    ```
+    4.  Check the status of setting the firmware boot mode that uses `Legacy` or `UEFI` by running the following command:
 
-<!-- -->
+        ``` terminal
+        $ curl -u $USER:$PASS -X PATCH -H "Content-Type: application/json" -H "If-Match: <ETAG>"  https://$Server/redfish/v1/Systems/$SystemID/ -d '{"Boot": {"BootSourceOverrideMode":"UEFI"}}
+        ```
 
-1.  Check the ability to set the temporary boot device that uses `cd` or `dvd` by running the following command:
+3.  Check the list of Redfish virtual media APIs:
 
-    ``` terminal
-    $ curl -u $USER:$PASS -X PATCH -H "Content-Type: application/json" -H "If-Match: <ETAG>" https://$Server/redfish/v1/Systems/$SystemID/ -d '{"Boot": {"BootSourceOverrideTarget": "cd", "BootSourceOverrideEnabled": "Once"}}'
-    ```
+    1.  Check the ability to set the temporary boot device that uses `cd` or `dvd` by running the following command:
 
-2.  Virtual media might use `POST` or `PATCH`, depending on your hardware. Check the ability to mount virtual media by running one of the following commands:
+        ``` terminal
+        $ curl -u $USER:$PASS -X PATCH -H "Content-Type: application/json" -H "If-Match: <ETAG>" https://$Server/redfish/v1/Systems/$SystemID/ -d '{"Boot": {"BootSourceOverrideTarget": "cd", "BootSourceOverrideEnabled": "Once"}}'
+        ```
 
-    ``` terminal
-    $ curl -u $USER:$PASS -X POST -H "Content-Type: application/json" https://$Server/redfish/v1/Managers/$ManagerID/VirtualMedia/$VmediaId -d '{"Image": "https://example.com/test.iso", "TransferProtocolType": "HTTPS", "UserName": "", "Password":""}'
-    ```
+    2.  Virtual media might use `POST` or `PATCH`, depending on your hardware. Check the ability to mount virtual media by running one of the following commands:
 
-    ``` terminal
-    $ curl -u $USER:$PASS -X PATCH -H "Content-Type: application/json" -H "If-Match: <ETAG>" https://$Server/redfish/v1/Managers/$ManagerID/VirtualMedia/$VmediaId -d '{"Image": "https://example.com/test.iso", "TransferProtocolType": "HTTPS", "UserName": "", "Password":""}'
-    ```
+        ``` terminal
+        $ curl -u $USER:$PASS -X POST -H "Content-Type: application/json" https://$Server/redfish/v1/Managers/$ManagerID/VirtualMedia/$VmediaId -d '{"Image": "https://example.com/test.iso", "TransferProtocolType": "HTTPS", "UserName": "", "Password":""}'
+        ```
 
-<div class="note">
+        ``` terminal
+        $ curl -u $USER:$PASS -X PATCH -H "Content-Type: application/json" -H "If-Match: <ETAG>" https://$Server/redfish/v1/Managers/$ManagerID/VirtualMedia/$VmediaId -d '{"Image": "https://example.com/test.iso", "TransferProtocolType": "HTTPS", "UserName": "", "Password":""}'
+        ```
 
-The `PowerOn` and `PowerOff` commands for Redfish APIs are the same for the Redfish virtual media APIs. In some hardware, you might only find the `VirtualMedia` resource under `Systems/$SystemID` instead of `Managers/$ManagerID`. For the `VirtualMedia` resource, the `UserName` and `Password` fields are optional.
+        <div class="note">
 
-</div>
+        The `PowerOn` and `PowerOff` commands for Redfish APIs are the same for the Redfish virtual media APIs. In some hardware, you might only find the `VirtualMedia` resource under `Systems/$SystemID` instead of `Managers/$ManagerID`. For the `VirtualMedia` resource, the `UserName` and `Password` fields are optional.
 
-<div class="important">
+        </div>
 
-`HTTPS` and `HTTP` are the only supported parameter types for `TransferProtocolTypes`.
+        <div class="important">
 
-</div>
+        `HTTPS` and `HTTP` are the only supported parameter types for `TransferProtocolTypes`.
+
+        </div>
 
 ## BMC addressing for Dell iDRAC
 
@@ -2760,7 +2790,7 @@ Subfields
 
 ## Setting proxy settings
 
-To deploy an OpenShift Container Platform cluster while using a proxy, make the following changes to the `install-config.yaml` file.
+You can deploy an OpenShift Container Platform cluster while using a proxy by editing the `install-config.yaml` file.
 
 1.  Add proxy values under the `proxy` key mapping:
 
@@ -2791,25 +2821,27 @@ To deploy an OpenShift Container Platform cluster while using a proxy, make the 
 
 ## Deploying with no provisioning network
 
-To deploy an OpenShift Container Platform cluster without a `provisioning` network, make the following changes to the `install-config.yaml` file.
+You can deploy an OpenShift Container Platform cluster without a `provisioning` network, by changing the `install-config.yaml` file.
 
-``` yaml
-platform:
-  baremetal:
-    apiVIPs:
-      - <api_VIP>
-    ingressVIPs:
-      - <ingress_VIP>
-    provisioningNetwork: "Disabled"
-```
+- Make the following changes to the `install-config.yaml` file:
 
-- Add the `provisioningNetwork` configuration setting, if needed, and set it to `Disabled`.
+  ``` yaml
+  platform:
+    baremetal:
+      apiVIPs:
+        - <api_VIP>
+      ingressVIPs:
+        - <ingress_VIP>
+      provisioningNetwork: "Disabled"
+  ```
 
-<div class="important">
+  Add the `provisioningNetwork` configuration setting, if needed, and set it to `Disabled`.
 
-The `provisioning` network is required for PXE booting. If you deploy without a `provisioning` network, you must use a virtual media BMC addressing option such as `redfish-virtualmedia` or `idrac-virtualmedia`. See "Redfish virtual media for HPE iLO" in the "BMC addressing for HPE iLO" section or "Redfish virtual media for Dell iDRAC" in the "BMC addressing for Dell iDRAC" section for additional details.
+  <div class="important">
 
-</div>
+  The `provisioning` network is required for PXE booting. If you deploy without a `provisioning` network, you must use a virtual media BMC addressing option such as `redfish-virtualmedia` or `idrac-virtualmedia`. See "Redfish virtual media for HPE iLO" in the "BMC addressing for HPE iLO" section or "Redfish virtual media for Dell iDRAC" in the "BMC addressing for Dell iDRAC" section for additional details.
+
+  </div>
 
 ## Deploying IP addressing with dual-stack networking
 
@@ -2933,7 +2965,7 @@ If you use a provisioning network, configure it by using the `dnsmasq` tool in I
             next-hop-interface: <next_hop_nic1_name>
         ```
 
-        - Replace `<nic1_name>`, `<ip_address>`, `<dns_ip_address>`, `<next_hop_ip_address>` and `<next_hop_nic1_name>` with appropriate values.
+        Replace `<nic1_name>`, `<ip_address>`, `<dns_ip_address>`, `<next_hop_ip_address>` and `<next_hop_nic1_name>` with appropriate values.
 
     2.  Test the configuration file by running the following command:
 
@@ -2979,19 +3011,21 @@ If you use a provisioning network, configure it by using the `dnsmasq` tool in I
                   next-hop-interface: <next_hop_nic1_name>
     ```
 
-    - Add the NMState YAML syntax to configure the host interfaces.
+    For `hosts.networkconfig.interfaces`, add the NMState YAML syntax to configure the host interfaces.
 
-    - Replace `<nic1_name>`, `<ip_address>`, `<dns_ip_address>`, `<next_hop_ip_address>` and `<next_hop_nic1_name>` with appropriate values.
+    Replace `<nic1_name>`, `<ip_address>`, `<dns_ip_address>`, `<next_hop_ip_address>` and `<next_hop_nic1_name>` with appropriate values.
 
-      <div class="important">
+    <div class="important">
 
-      After deploying the cluster, you cannot modify the `networkConfig` configuration setting of `install-config.yaml` file to make changes to the host network interface. Use the Kubernetes NMState Operator to make changes to the host network interface after deployment.
+    After deploying the cluster, you cannot modify the `networkConfig` configuration setting of `install-config.yaml` file to make changes to the host network interface. Use the Kubernetes NMState Operator to make changes to the host network interface after deployment.
 
-      </div>
+    </div>
 
 ## Configuring host network interfaces for subnets
 
-For edge computing scenarios, it can be beneficial to locate compute nodes closer to the edge. To locate remote nodes in subnets, you might use different network segments or subnets for the remote nodes than you used for the control plane subnet and local compute nodes. You can reduce latency for the edge and allow for enhanced scalability by setting up subnets for edge computing scenarios.
+For edge computing scenarios, it can be beneficial to locate compute nodes closer to the edge. To locate remote nodes in subnets, you might use different network segments or subnets for the remote nodes than you used for the control plane subnet and local compute nodes.
+
+You can reduce latency for the edge and allow for enhanced scalability by setting up subnets for edge computing scenarios.
 
 <div class="important">
 
@@ -3038,13 +3072,19 @@ Deploying a cluster with multiple subnets requires using virtual media, such as 
           - <dns_ip>
     ```
 
-    - Replace `<interface_name>` with the interface name.
+    where:
 
-    - Replace `<node_ip>` with the IP address of the node.
+    `networkConfig.interfaces.name`
+    Specifies the interface name.
 
-    - Replace `<gateway_ip>` with the IP address of the gateway.
+    `networkConfig.interfaces.ipv4.address.ip`
+    Specifies the IP address of the node.
 
-    - Replace `<dns_ip>` with the IP address of the DNS server.
+    `networkConfig.interfaces.ipv4.gateway`
+    Specifies the IP address of the gateway.
+
+    `networkConfig.dns-resolver.cofig.server`
+    Specifies the IP address of the DNS server.
 
 ## Configuring address generation modes for SLAAC in dual-stack networks
 
@@ -3063,7 +3103,7 @@ For dual-stack clusters that use Stateless Address AutoConfiguration (SLAAC), yo
             addr-gen-mode: <address_mode>
         ```
 
-        - Replace `<address_mode>` with the type of address generation mode required for IPv6 addresses in the cluster. Valid values are `eui64`, `stable-privacy`, or `random`.
+        Replace `<address_mode>` with the type of address generation mode required for IPv6 addresses in the cluster. Valid values are `eui64`, `stable-privacy`, or `random`.
 
     2.  Test the configuration file by running the following command:
 
@@ -3071,7 +3111,7 @@ For dual-stack clusters that use Stateless Address AutoConfiguration (SLAAC), yo
         $ nmstatectl gc <nmstate_yaml_file>
         ```
 
-        - Replace `<nmstate_yaml_file>` with the name of the test configuration file.
+        Replace `<nmstate_yaml_file>` with the name of the test configuration file.
 
 2.  Add the NMState configuration to the `hosts.networkConfig` section within the install-config.yaml file:
 
@@ -3096,7 +3136,7 @@ For dual-stack clusters that use Stateless Address AutoConfiguration (SLAAC), yo
     ...
     ```
 
-    - Replace `<address_mode>` with the type of address generation mode required for IPv6 addresses in the cluster. Valid values are `eui64`, `stable-privacy`, or `random`.
+    Replace `<address_mode>` with the type of address generation mode required for IPv6 addresses in the cluster. Valid values are `eui64`, `stable-privacy`, or `random`.
 
 ## Configuring host network interfaces for dual-port NIC
 
@@ -3214,43 +3254,59 @@ Errors in the YAML syntax might result in a failure to apply the network configu
                     table-id: 254
     ```
 
-    - The `networkConfig` field has information about the network configuration of the host, with subfields including `interfaces`, `dns-resolver`, and `routes`.
+    where:
 
-    - The `interfaces` field is an array of network interfaces defined for the host.
+    `hosts.networkconfig`
+    Specifies the value for the `hosts.networkconfig` parameter. The `networkConfig` field has information about the network configuration of the host, with subfields including `interfaces`, `dns-resolver`, and `routes`.
 
-    - The name of the interface.
+    `hosts.networkconfig.interfaces`
+    Specifies an array of network interfaces defined for the host.
 
-    - The type of interface. This example creates a ethernet interface.
+    `hosts.networkconfig.interfaces.name`
+    Specifies the name of the interface.
 
-    - Set this to \`false to disable DHCP for the physical function (PF) if it is not strictly required.
+    `hosts.networkconfig.interfaces.type`
+    Specifies the type of interface. This example creates a ethernet interface.
 
-    - Set to the number of SR-IOV virtual functions (VFs) to instantiate.
+    `hosts.networkconfig.interfaces.ipv4.dhcp`
+    Specifies the value for the `dhcp` parameter. Set this to `false` to disable DHCP for the physical function (PF) if it is not strictly required.
 
-    - Set this to `up`.
+    `hosts.networkconfig.interfaces.ethernet.sr-iov.total-vfs`
+    Specifies the value for the `sr-iov.total-vfs` parameter. Set to the number of SR-IOV virtual functions (VFs) to instantiate.
 
-    - Set this to `false` to disable IPv4 addressing for the VF attached to the bond.
+    `hosts.networkconfig.interfaces.state`
+    Specifies the value for the `state` parameter. Set this to `up`.
 
-    - Sets a minimum transmission rate, in Mbps, for the VF. This sample value sets a rate of 100 Mbps.
+    `hosts.networkconfig.interfaces.ipv4.enabled`
+    Specifies the value for the `ipv4.enabled` parameter. Set this to `false` to disable IPv4 addressing for the VF attached to the bond.
 
-      - This value must be less than or equal to the maximum transmission rate.
+    `hosts.networkconfig.interfaces.min-tx-rate`
+    Specifies the value for the `min-tx-rate` parameter. Sets a minimum transmission rate, in Mbps, for the VF. This sample value sets a rate of 100 Mbps.
 
-      - Intel NICs do not support the `min-tx-rate` parameter. For more information, see [**BZ#1772847**](https://bugzilla.redhat.com/show_bug.cgi?id=1772847).
+    - This value must be less than or equal to the maximum transmission rate.
 
-    - Sets a maximum transmission rate, in Mbps, for the VF. This sample value sets a rate of 200 Mbps.
+    - Intel NICs do not support the `min-tx-rate` parameter. For more information, see [**BZ#1772847**](https://bugzilla.redhat.com/show_bug.cgi?id=1772847).
 
-    - Sets the needed bond mode.
+    `hosts.networkconfig.interfaces.max-tx-rate`
+    Specifies the value for the `max-tx-rate` parameter. Sets a maximum transmission rate, in Mbps, for the VF. This sample value sets a rate of 200 Mbps.
 
-    - Sets the preferred port of the bonding interface. The bond uses the primary device as the first device of the bonding interfaces. The bond does not abandon the primary device interface unless it fails. This setting is particularly useful when one NIC in the bonding interface is faster and, therefore, able to handle a bigger load. This setting is only valid when the bonding interface is in active-backup mode (mode 1).
+    `hosts.networkconfig.interfaces.link-aggregation.mode`
+    Specifies the needed bond mode.
 
-    - Sets a static IP address for the bond interface. This is the node IP address.
+    `hosts.networkconfig.interfaces.link-aggregation.options.primary`
+    Specifies the preferred port of the bonding interface. The bond uses the primary device as the first device of the bonding interfaces. The bond does not abandon the primary device interface unless it fails. This setting is particularly useful when one NIC in the bonding interface is faster and, therefore, able to handle a bigger load. This setting is only valid when the bonding interface is in active-backup mode (mode 1).
 
-    - Sets `bond0` as the gateway for the default route.
+    `hosts.networkconfig.interfaces.ipv4.address.ip`
+    Specifies the static IP address for the bond interface. This is the node IP address.
 
-      <div class="important">
+    `hosts.networkconfig.routes.config.next-hop-interface`
+    Specifies the value for the `routes.config.next-hop-interface` parameter. Sets `bond0` as the gateway for the default route.
 
-      After deploying the cluster, you cannot change the `networkConfig` configuration setting of the `install-config.yaml` file to make changes to the host network interface. Use the Kubernetes NMState Operator to make changes to the host network interface after deployment.
+    <div class="important">
 
-      </div>
+    After deploying the cluster, you cannot change the `networkConfig` configuration setting of the `install-config.yaml` file to make changes to the host network interface. Use the Kubernetes NMState Operator to make changes to the host network interface after deployment.
+
+    </div>
 
 - [Configuring network bonding](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/configuring_and_managing_networking/configuring-network-bonding_configuring-and-managing-networking)
 
@@ -3293,59 +3349,71 @@ Configuration of multiple cluster nodes is only available for initial deployment
 
 ## Configuring managed Secure Boot
 
-You can enable managed Secure Boot when deploying an installer-provisioned cluster using Redfish BMC addressing, such as `redfish`, `redfish-virtualmedia`, or `idrac-virtualmedia`. To enable managed Secure Boot, add the `bootMode` configuration setting to each node:
+You can enable managed Secure Boot when deploying an installer-provisioned cluster by using Redfish BMC addressing, such as `redfish`, `redfish-virtualmedia`, or `idrac-virtualmedia`.
 
-<div class="formalpara-title">
+- Add the `bootMode` configuration setting for each node to enable managed Secure Boot.
 
-**Example**
+  <div class="formalpara-title">
 
-</div>
+  **Example**
 
-``` yaml
-hosts:
-  - name: openshift-master-0
-    role: master
-    bmc:
-      address: redfish://<out_of_band_ip>
-      username: <username>
-      password: <password>
-    bootMACAddress: <NIC1_mac_address>
-    rootDeviceHints:
-     deviceName: "/dev/sda"
-    bootMode: UEFISecureBoot
-```
+  </div>
 
-- Ensure the `bmc.address` setting uses `redfish`, `redfish-virtualmedia`, or `idrac-virtualmedia` as the protocol. See "BMC addressing for HPE iLO" or "BMC addressing for Dell iDRAC" for additional details.
+  ``` yaml
+  hosts:
+    - name: openshift-master-0
+      role: master
+      bmc:
+        address: redfish://<out_of_band_ip>
+        username: <username>
+        password: <password>
+      bootMACAddress: <NIC1_mac_address>
+      rootDeviceHints:
+       deviceName: "/dev/sda"
+      bootMode: UEFISecureBoot
+  ```
 
-- The `bootMode` setting is `UEFI` by default. Change it to `UEFISecureBoot` to enable managed Secure Boot.
+  - For `hosts.bmc.address`: Ensure the `bmc.address` setting uses `redfish`, `redfish-virtualmedia`, or `idrac-virtualmedia` as the protocol. See "BMC addressing for HPE iLO" or "BMC addressing for Dell iDRAC" for additional details.
 
-<div class="note">
+  - For `hosts.bbootMode`: The `bootMode` setting is `UEFI` by default. Change it to `UEFISecureBoot` to enable managed Secure Boot.
 
-See "Configuring nodes" in the "Prerequisites" to ensure the nodes can support managed Secure Boot. If the nodes do not support managed Secure Boot, see "Configuring nodes for Secure Boot manually" in the "Configuring nodes" section. Configuring Secure Boot manually requires Redfish virtual media.
+    <div class="note">
 
-</div>
+    See "Configuring nodes" in the "Prerequisites" to ensure the nodes can support managed Secure Boot. If the nodes do not support managed Secure Boot, see "Configuring nodes for Secure Boot manually" in the "Configuring nodes" section. Configuring Secure Boot manually requires Redfish virtual media.
 
-<div class="note">
+    </div>
 
-Red Hat does not support Secure Boot with IPMI, because IPMI does not provide Secure Boot management facilities.
+    <div class="note">
 
-</div>
+    Red Hat does not support Secure Boot with IPMI, because IPMI does not provide Secure Boot management facilities.
+
+    </div>
 
 # Manifest configuration files
 
+You can customize your cluster installation by editing the manifest configuration files.
+
 ## Creating the OpenShift Container Platform manifests
 
-1.  Create the OpenShift Container Platform manifests.
+Create manifest files to begin customizing your cluster installation.
 
-    ``` terminal
-    $ ./openshift-baremetal-install --dir ~/clusterconfigs create manifests
-    ```
+- Create the OpenShift Container Platform manifests by running the following command:
 
-    ``` terminal
-    INFO Consuming Install Config from target directory
-    WARNING Making control-plane schedulable by setting MastersSchedulable to true for Scheduler cluster settings
-    WARNING Discarding the OpenShift Manifest that was provided in the target directory because its dependencies are dirty and it needs to be regenerated
-    ```
+  ``` terminal
+  $ ./openshift-baremetal-install --dir ~/clusterconfigs create manifests
+  ```
+
+  <div class="formalpara-title">
+
+  **Example output**
+
+  </div>
+
+  ``` terminal
+  INFO Consuming Install Config from target directory
+  WARNING Making control-plane schedulable by setting MastersSchedulable to true for Scheduler cluster settings
+  WARNING Discarding the OpenShift Manifest that was provided in the target directory because its dependencies are dirty and it needs to be regenerated
+  ```
 
 ## Configuring NTP for disconnected clusters
 
@@ -3617,7 +3685,7 @@ By default, the installation program deploys two routers. If the cluster has no 
 
 ## Configuring the BIOS
 
-The following procedure configures the BIOS during the installation process.
+You can configures the BIOS during the installation process.
 
 1.  Create the manifests.
 
@@ -3649,7 +3717,7 @@ The following procedure configures the BIOS during the installation process.
 
 ## Configuring the RAID
 
-The following procedure configures a redundant array of independent disks (RAID) using baseboard management controllers (BMCs) during the installation process.
+You can configure a redundant array of independent disks (RAID) using baseboard management controllers (BMCs) during the installation process.
 
 <div class="note">
 
@@ -3691,7 +3759,7 @@ Hardware RAID support by vendor
               sizeGibibytes: 0
         ```
 
-        - `level` is a required field, and the others are optional fields.
+        The `level` parameter is a required field, and the others are optional fields.
 
     2.  If you added an empty RAID configuration to the `spec` section, the empty configuration causes the node to delete the original RAID configuration during the `preparing` phase, but does not perform a new configuration. For example:
 
@@ -3711,13 +3779,7 @@ You can make changes to operating systems on OpenShift Container Platform nodes 
 
 The `MachineConfig` specification includes an ignition config for configuring the machines at first boot. This config object can be used to modify files, systemd services, and other operating system features running on OpenShift Container Platform machines.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-Use the ignition config to configure storage on nodes. The following `MachineSet` manifest example demonstrates how to add a partition to a device on a primary node. In this example, apply the manifest before installation to have a partition named `recovery` with a size of 16 GiB on the primary node.
+Use the ignition config to configure storage on nodes. The following `MachineSet` manifest example demonstrates about adding a partition to a device on a primary node. In this example, apply the manifest before installation to have a partition named `recovery` with a size of 16 GiB on the primary node.
 
 1.  Create a `custom-partitions.yaml` file and include a `MachineConfig` object that contains your partition layout:
 
@@ -3769,17 +3831,19 @@ A local, or mirrored, copy of the registry requires the following:
 
 <div class="note">
 
-Creating a disconnected registry on a registry node is optional. If you need to create a disconnected registry on a registry node, you must complete all of the following sub-sections.
+- Creating a disconnected registry on a registry node is optional. If you need to create a disconnected registry on a registry node, you must complete all of the following sub-sections.
+
+- If you have already prepared a mirror registry for a disconnected installation by mirroring images, you can skip directly to "Modify the install-config.yaml file to use the disconnected registry" section. For more information about preparing a mirror registry for a disconnected installation by mirroring images see, "Mirroring images for a disconnected installation".
 
 </div>
 
-## Prerequisites
-
-- If you have already prepared a mirror registry for [Mirroring images for a disconnected installation](../../../disconnected/installing-mirroring-installation-images.xml#prerequisites_installing-mirroring-installation-images), you can skip directly to [Modify the install-config.yaml file to use the disconnected registry](../../../installing/installing_bare_metal/ipi/ipi-install-installation-workflow.xml#ipi-modify-install-config-for-a-disconnected-registry_ipi-install-installation-workflow).
+- [Mirroring images for a disconnected installation](../../../disconnected/installing-mirroring-installation-images.xml#prerequisites_installing-mirroring-installation-images)
 
 ## Preparing the registry node to host the mirrored registry
 
-The following steps must be completed prior to hosting a mirrored registry on bare metal.
+Prepare a registry node to host your local mirror registry for a OpenShift Container Platform installation.
+
+Complete the following steps before hosting a mirrored registry on bare metal.
 
 1.  Open the firewall port on the registry node:
 
@@ -3808,6 +3872,8 @@ The following steps must be completed prior to hosting a mirrored registry on ba
     ```
 
 ## Mirroring the OpenShift Container Platform image repository for a disconnected registry
+
+Mirror the OpenShift Container Platform image repository to a local registry to provide your disconnected environment with the container images.
 
 Complete the following steps to mirror the OpenShift Container Platform image repository for a disconnected registry.
 
@@ -3883,7 +3949,7 @@ As an alternative, use the oc-mirror plugin v2.
         $ ARCHITECTURE=<cluster_architecture>
         ```
 
-        - Specify the architecture of the cluster, such as `x86_64`, `aarch64`, `s390x`, or `ppc64le`.
+        For `<cluster_architecture>`, specify the architecture of the cluster, such as `x86_64`, `aarch64`, `s390x`, or `ppc64le`.
 
     8.  Export the path to the directory to host the mirrored images:
 
@@ -3891,7 +3957,7 @@ As an alternative, use the oc-mirror plugin v2.
         $ REMOVABLE_MEDIA_PATH=<path>
         ```
 
-        - Specify the full path, including the initial forward slash (/) character.
+        For `<path>`, specify the full path, including the initial forward slash (/) character.
 
 3.  Mirror the version images to the mirror registry:
 
@@ -3922,7 +3988,7 @@ As an alternative, use the oc-mirror plugin v2.
           $ oc image mirror -a ${LOCAL_SECRET_JSON} --from-dir=${REMOVABLE_MEDIA_PATH}/mirror "file://openshift/release:${OCP_RELEASE}*" ${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}
           ```
 
-          - For `REMOVABLE_MEDIA_PATH`, you must use the same path that you specified when you mirrored the images.
+          For `REMOVABLE_MEDIA_PATH`, you must use the same path that you specified when you mirrored the images.
 
     - If the local container registry is connected to the mirror host, take the following actions:
 
@@ -4026,6 +4092,8 @@ On the provisioner node, the `install-config.yaml` file should use the newly cre
     ```
 
 # Validation checklist for installation
+
+Ensure that all required steps are completed before installing OpenShift Container Platform.
 
 - [ ] OpenShift Container Platform installer has been retrieved.
 

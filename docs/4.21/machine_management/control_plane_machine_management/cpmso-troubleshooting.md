@@ -103,7 +103,7 @@ When the etcd Operator is degraded, manual intervention is required to force the
 
     Before continuing, ensure that your cluster has two healthy control plane machines. Performing the actions in this procedure on more than one control plane machine risks losing etcd quorum and can cause data loss.
 
-    If you have lost the majority of your control plane hosts, leading to etcd quorum loss, then you must follow the disaster recovery procedure "Restoring to a previous cluster state" instead of this procedure.
+    If you have lost the majority of your control plane hosts, leading to etcd quorum loss, then you must follow the disaster recovery procedure "Restoring to an earlier cluster state" instead of this procedure.
 
     </div>
 
@@ -117,7 +117,7 @@ When the etcd Operator is degraded, manual intervention is required to force the
 
     The etcd Operator removes the failed machine from the cluster and can then safely add new etcd members.
 
-- [Restoring to a previous cluster state](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
+- [Restoring to an earlier cluster state](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
 
 # Upgrading clusters that run on RHOSP
 

@@ -91,10 +91,6 @@ In some clusters, the default `PriorityClass` object can be too low to guarantee
   `PriorityClass`
   If the `PriorityClass` referenced in the `ScanSetting` cannot be found, the Operator will leave the `PriorityClass` empty, issue a warning, and continue scheduling scans without a `PriorityClass`.
 
-<!-- -->
-
-- [Configuring priority and preemption](../../../nodes/pods/nodes-pods-priority.xml#nodes-pods-priority-configuring_nodes-pods-priority)
-
 # Using raw tailored profiles
 
 Although the `TailoredProfile` CR enables the most common tailoring operations, you can use the XCCDF standard for more flexibility in tailoring OpenSCAP profiles.
@@ -229,14 +225,14 @@ Although you can use the `autoApplyRemediations` boolean parameter in a `Complia
 
 In some cases, a scan with newer content might mark remediations as `OUTDATED`. As an administrator, you can apply the `compliance.openshift.io/remove-outdated` annotation to apply new remediations and remove the outdated ones.
 
+Alternatively, set the `autoUpdateRemediations` flag in a `ScanSetting` or `ComplianceSuite` object to update the remediations automatically.
+
 - Apply the `compliance.openshift.io/remove-outdated` annotation:
 
   ``` terminal
   $ oc -n openshift-compliance \
   annotate compliancesuites/workers-compliancesuite compliance.openshift.io/remove-outdated=
   ```
-
-Alternatively, set the `autoUpdateRemediations` flag in a `ScanSetting` or `ComplianceSuite` object to update the remediations automatically.
 
 # Creating a custom SCC for the Compliance Operator
 
@@ -336,5 +332,7 @@ In some environments, you must create a custom Security Context Constraints (SCC
     ```
 
 # Additional resources
+
+- [Configuring priority and preemption](../../../nodes/pods/nodes-pods-priority.xml#nodes-pods-priority-configuring_nodes-pods-priority)
 
 - [Managing security context constraints](../../../authentication/managing-security-context-constraints.xml#managing-pod-security-policies)

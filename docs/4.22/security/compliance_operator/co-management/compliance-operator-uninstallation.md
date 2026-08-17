@@ -112,6 +112,8 @@ To remove the Compliance Operator, you must first delete the objects in the name
     Error from server (NotFound): namespaces "openshift-compliance" not found
     ```
 
+# Additional resources
+
 - [Installing the Compliance Operator](../compliance-operator-installation.xml#compliance-operator-installation)
 
 - [Managing the Compliance Operator](../compliance-operator-manage.xml#compliance-operator-understanding)

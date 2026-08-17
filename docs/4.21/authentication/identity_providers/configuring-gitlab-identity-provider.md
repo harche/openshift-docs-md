@@ -18,7 +18,7 @@ If you use GitLab version 7.7.0 to 11.0, you connect using the [OAuth integratio
 
 # Creating the secret
 
-Create a Secret in the `openshift-config` namespace to store identity provider client secrets, certificates, or keys, so the OAuth custom resource (CR) can reference them.
+Create a `Secret` object in the `openshift-config` namespace to store the client secret and related credentials for the identity provider configuration.
 
 1.  Create a `Secret` object containing the client secret by running the following command:
 
@@ -137,7 +137,7 @@ Apply the identity provider custom resource (CR) to your cluster so users can au
 
     </div>
 
-2.  Log in to the cluster with credentials from the configured identity provider by running the following command. Enter the password when prompted:
+2.  Log in to the cluster as a user from your identity provider by running the following command, entering the password when prompted:
 
     ``` terminal
     $ oc login -u <username>

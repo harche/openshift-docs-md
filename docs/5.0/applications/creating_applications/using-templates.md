@@ -1,36 +1,36 @@
-The following sections provide an overview of templates, as well as how to use and create them.
+You can use templates to deploy preconfigured applications and create reusable object definitions on your OpenShift Container Platform cluster. Upload, instantiate, and author templates from the web console or CLI to speed up application creation.
 
 # Understanding templates
 
-A template describes a set of objects that can be parameterized and processed to produce a list of objects for creation by OpenShift Container Platform. A template can be processed to create anything you have permission to create within a project, for example services, build configurations, and deployment configurations. A template can also define a set of labels to apply to every object defined in the template.
+You can use templates to describe reusable, parameterized object sets that OpenShift Container Platform processes into resources such as `Service` and `DeploymentConfig` objects. Templates help you deploy the same application structure consistently from the web console or CLI.
 
-You can create a list of objects from a template using the CLI or, if a template has been uploaded to your project or the global template library, using the web console.
+A template can be processed to create anything you have permission to create within a project. A template can also define a set of labels to apply to every object defined in the template.
 
 # Uploading a template
 
-If you have a JSON or YAML file that defines a template, you can upload the template to projects using the CLI. This saves the template to the project for repeated use by any user with appropriate access to that project. Instructions about writing your own templates are provided later in this topic.
+To add a template to your OpenShift Container Platform project, upload a JSON or YAML template file with the CLI. Uploaded templates are saved to the project template library for reuse by users with access to that project.
 
 - Upload a template using one of the following methods:
 
-  - Upload a template to your current project’s template library, pass the JSON or YAML file with the following command:
+  - Upload a JSON or YAML template file to the template library of your current project by running the following command:
 
     ``` terminal
     $ oc create -f <filename>
     ```
 
-  - Upload a template to a different project using the `-n` option with the name of the project:
+  - Upload a template to a different project using the `-n` option with the name of the project by running the following command:
 
     ``` terminal
     $ oc create -f <filename> -n <project>
     ```
 
-The template is now available for selection using the web console or the CLI.
+    The template is now available for selection using the web console or the CLI.
 
 # Creating an application by using the web console
 
-You can use the web console to create an application from a template.
+To create an application from a template on your OpenShift Container Platform cluster, use the web console **Developer Catalog**. Select a template or builder image and configure the generated objects before you deploy.
 
-1.  Navigate to your project and click **+Add**
+1.  Navigate to your project and click **+Add**.
 
 2.  Click **All services** in the **Developer Catalog** tile.
 
@@ -38,7 +38,7 @@ You can use the web console to create an application from a template.
 
     <div class="note">
 
-    Only image stream tags that have the `builder` tag listed in their annotations appear in this list, as demonstrated here:
+    Only image stream tags that have the `builder` tag listed in their annotations appear in this list, as demonstrated in the following example. Include `builder` in the `tags` annotation so the image stream tag appears in the web console as a builder.
 
     </div>
 
@@ -61,19 +61,19 @@ You can use the web console to create an application from a template.
     # ...
     ```
 
-    - Including `builder` here ensures this image stream tag appears in the web console as a builder.
-
 4.  Modify the settings in the new application screen to configure the objects to support your application.
 
 # Creating objects from templates by using the CLI
 
-You can use the CLI to process templates and use the configuration that is generated to create objects.
+You can use the CLI to create objects from templates on your OpenShift Container Platform cluster by processing a template into a list of objects in your project. Use CLI commands to manage template labels, parameters, and generated object lists.
 
 ## Adding labels
 
-Labels are used to manage and organize generated objects, such as pods. The labels specified in the template are applied to every object that is generated from the template.
+To add labels when you process a template on your OpenShift Container Platform cluster, pass label selectors to the `oc process` command. The labels specified in the template are applied to every object that is generated from the template.
 
-- Add labels in the template from the command line:
+Labels are used to manage and organize generated objects, such as pods.
+
+- Add labels in the template by running the following command:
 
   ``` terminal
   $ oc process -f <filename> -l name=otherLabel
@@ -81,24 +81,115 @@ Labels are used to manage and organize generated objects, such as pods. The labe
 
 ## Listing parameters
 
-The list of parameters that you can override are listed in the `parameters` section of the template.
+You can list template parameters on your OpenShift Container Platform cluster to see which values you can override before processing a template. Use the `oc process --parameters` command with a template file or uploaded template name.
 
-1.  You can list parameters with the CLI by using the following command and specifying the file to be used:
+- List template parameters from a local template file by running the following command:
+
+  ``` terminal
+  $ oc process --parameters -f <filename>
+  ```
+
+- List template parameters from an uploaded template by running the following command:
+
+  ``` terminal
+  $ oc process --parameters -n <project> <template_name>
+  ```
+
+  For example, to list parameters for the `rails-postgresql-example` quick start template in the default `openshift` project, run the following command:
+
+  ``` terminal
+  $ oc process --parameters -n openshift rails-postgresql-example
+  ```
+
+  <div class="formalpara-title">
+
+  **Example output**
+
+  </div>
+
+  ``` terminal
+  NAME                         DESCRIPTION                                                                                              GENERATOR           VALUE
+  SOURCE_REPOSITORY_URL        The URL of the repository with your application source code                                                                  https://github.com/sclorg/rails-ex.git
+  SOURCE_REPOSITORY_REF        Set this to a branch name, tag or other ref of your repository if you are not using the default branch
+  CONTEXT_DIR                  Set this to the relative path to your project if it is not in the root of your repository
+  APPLICATION_DOMAIN           The exposed hostname that will route to the Rails service                                                                    rails-postgresql-example.openshiftapps.com
+  GITHUB_WEBHOOK_SECRET        A secret string used to configure the GitHub webhook                                                     expression          [a-zA-Z0-9]{40}
+  SECRET_KEY_BASE              Your secret key for verifying the integrity of signed cookies                                            expression          [a-z0-9]{127}
+  APPLICATION_USER             The application user that is used within the sample application to authorize access on pages                                 openshift
+  APPLICATION_PASSWORD         The application password that is used within the sample application to authorize access on pages                             secret
+  DATABASE_SERVICE_NAME        Database service name                                                                                                        postgresql
+  POSTGRESQL_USER              database username                                                                                        expression          user[A-Z0-9]{3}
+  POSTGRESQL_PASSWORD          database password                                                                                        expression          [a-zA-Z0-9]{8}
+  POSTGRESQL_DATABASE          database name                                                                                                                root
+  POSTGRESQL_MAX_CONNECTIONS   database max connections                                                                                                     10
+  POSTGRESQL_SHARED_BUFFERS    database shared buffers                                                                                                      12MB
+  ```
+
+  The output identifies several parameters that are generated with a regular expression-like generator when the template is processed.
+
+## Generating a list of objects
+
+To preview objects a template creates on your OpenShift Container Platform cluster, run `oc process` on the template without applying it. Review the generated object list and save it to a file before you create resources in your project.
+
+- Process a file defining a template to return the list of objects to standard output by running the following command:
+
+  ``` terminal
+  $ oc process -f <filename>
+  ```
+
+- Process an uploaded template in the current project to return the list of objects to standard output by running the following command:
+
+  ``` terminal
+  $ oc process <template_name>
+  ```
+
+- Create objects from a template by processing the template and piping the output to `oc create` by running the following command:
+
+  ``` terminal
+  $ oc process -f <filename> | oc create -f -
+  ```
+
+- Create objects from an uploaded template in the current project by processing the template and piping the output to `oc create` by running the following command:
+
+  ``` terminal
+  $ oc process <template> | oc create -f -
+  ```
+
+- You can override any parameter values defined in the file by adding the `-p` option for each `<name>=<value>` pair you want to override. A parameter reference appears in any text field inside the template items.
+
+  For example, in the following the `POSTGRESQL_USER` and `POSTGRESQL_DATABASE` parameters of a template are overridden to output a configuration with customized environment variables:
+
+  - Create a list of objects from a template by running the following command:
 
     ``` terminal
-    $ oc process --parameters -f <filename>
+    $ oc process -f my-rails-postgresql \
+        -p POSTGRESQL_USER=bob \
+        -p POSTGRESQL_DATABASE=mydatabase
     ```
 
-    Alternatively, if the template is already uploaded:
+  - Create the objects from the processed output by running the following command:
 
     ``` terminal
-    $ oc process --parameters -n <project> <template_name>
+    $ oc process -f my-rails-postgresql \
+        -p POSTGRESQL_USER=bob \
+        -p POSTGRESQL_DATABASE=mydatabase \
+        | oc create -f -
     ```
 
-    For example, the following shows the output when listing the parameters for one of the quick start templates in the default `openshift` project:
+    <div class="note">
+
+    You can redirect the JSON output to a file, or apply it directly without uploading the template by piping it to the `oc create` command.
+
+    </div>
+
+  - If you have a large number of parameters, you can store them in a file and then pass this file to `oc process` by running the following commands:
 
     ``` terminal
-    $ oc process --parameters -n openshift rails-postgresql-example
+    $ cat postgres.env
+    ```
+
+    ``` terminal
+    $ oc process -f my-rails-postgresql --param-file=postgres.env
     ```
 
     <div class="formalpara-title">
@@ -108,97 +199,21 @@ The list of parameters that you can override are listed in the `parameters` sect
     </div>
 
     ``` terminal
-    NAME                         DESCRIPTION                                                                                              GENERATOR           VALUE
-    SOURCE_REPOSITORY_URL        The URL of the repository with your application source code                                                                  https://github.com/sclorg/rails-ex.git
-    SOURCE_REPOSITORY_REF        Set this to a branch name, tag or other ref of your repository if you are not using the default branch
-    CONTEXT_DIR                  Set this to the relative path to your project if it is not in the root of your repository
-    APPLICATION_DOMAIN           The exposed hostname that will route to the Rails service                                                                    rails-postgresql-example.openshiftapps.com
-    GITHUB_WEBHOOK_SECRET        A secret string used to configure the GitHub webhook                                                     expression          [a-zA-Z0-9]{40}
-    SECRET_KEY_BASE              Your secret key for verifying the integrity of signed cookies                                            expression          [a-z0-9]{127}
-    APPLICATION_USER             The application user that is used within the sample application to authorize access on pages                                 openshift
-    APPLICATION_PASSWORD         The application password that is used within the sample application to authorize access on pages                             secret
-    DATABASE_SERVICE_NAME        Database service name                                                                                                        postgresql
-    POSTGRESQL_USER              database username                                                                                        expression          user[A-Z0-9]{3}
-    POSTGRESQL_PASSWORD          database password                                                                                        expression          [a-zA-Z0-9]{8}
-    POSTGRESQL_DATABASE          database name                                                                                                                root
-    POSTGRESQL_MAX_CONNECTIONS   database max connections                                                                                                     10
-    POSTGRESQL_SHARED_BUFFERS    database shared buffers                                                                                                      12MB
+    POSTGRESQL_USER=bob
+    POSTGRESQL_DATABASE=mydatabase
     ```
 
-    The output identifies several parameters that are generated with a regular expression-like generator when the template is processed.
-
-## Generating a list of objects
-
-Using the CLI, you can process a file defining a template to return the list of objects to standard output.
-
-1.  Process a file defining a template to return the list of objects to standard output:
+  - You can also read parameter values from standard input by specifying "-" as the value of the `--param-file` option by running the following command:
 
     ``` terminal
-    $ oc process -f <filename>
+    $ sed s/bob/alice/ postgres.env | oc process -f my-rails-postgresql --param-file=-
     ```
-
-    Alternatively, if the template has already been uploaded to the current project:
-
-    ``` terminal
-    $ oc process <template_name>
-    ```
-
-2.  Create objects from a template by processing the template and piping the output to `oc create`:
-
-    ``` terminal
-    $ oc process -f <filename> | oc create -f -
-    ```
-
-    Alternatively, if the template has already been uploaded to the current project:
-
-    ``` terminal
-    $ oc process <template> | oc create -f -
-    ```
-
-3.  You can override any parameter values defined in the file by adding the `-p` option for each `<name>=<value>` pair you want to override. A parameter reference appears in any text field inside the template items.
-
-    For example, in the following the `POSTGRESQL_USER` and `POSTGRESQL_DATABASE` parameters of a template are overridden to output a configuration with customized environment variables:
-
-    1.  Creating a List of objects from a template
-
-        ``` terminal
-        $ oc process -f my-rails-postgresql \
-            -p POSTGRESQL_USER=bob \
-            -p POSTGRESQL_DATABASE=mydatabase
-        ```
-
-    2.  The JSON file can either be redirected to a file or applied directly without uploading the template by piping the processed output to the `oc create` command:
-
-        ``` terminal
-        $ oc process -f my-rails-postgresql \
-            -p POSTGRESQL_USER=bob \
-            -p POSTGRESQL_DATABASE=mydatabase \
-            | oc create -f -
-        ```
-
-    3.  If you have large number of parameters, you can store them in a file and then pass this file to `oc process`:
-
-        ``` terminal
-        $ cat postgres.env
-        POSTGRESQL_USER=bob
-        POSTGRESQL_DATABASE=mydatabase
-        ```
-
-        ``` terminal
-        $ oc process -f my-rails-postgresql --param-file=postgres.env
-        ```
-
-    4.  You can also read the environment from standard input by using `"-"` as the argument to `--param-file`:
-
-        ``` terminal
-        $ sed s/bob/alice/ postgres.env | oc process -f my-rails-postgresql --param-file=-
-        ```
 
 # Modifying uploaded templates
 
-You can edit a template that has already been uploaded to your project.
+To update a template already stored in your OpenShift Container Platform project, edit the template object and replace the existing version. Updated templates remain available in the project template library for reuse.
 
-- Modify a template that has already been uploaded:
+- Modify a template that has already been uploaded by running the following command:
 
   ``` terminal
   $ oc edit template <template>
@@ -206,35 +221,39 @@ You can edit a template that has already been uploaded to your project.
 
 # Using instant app and quick start templates
 
-OpenShift Container Platform provides a number of default instant app and quick start templates to make it easy to quickly get started creating a new application for different languages. Templates are provided for Rails (Ruby), Django (Python), Node.js, CakePHP (PHP), and Dancer (Perl). Your cluster administrator must create these templates in the default, global `openshift` project so you have access to them.
+To try a sample application from an instant-app template on your OpenShift Container Platform cluster, create the application from the template and optionally fork the source repository of the template. Customize the build configuration to test changes and rebuild the application.
+
+OpenShift Container Platform provides several default instant app and quick start templates to help you get started quickly creating a new application for different languages. Templates are provided for Rails (Ruby), Django (Python), Node.js, CakePHP (PHP), and Dancer (Perl). Your cluster administrator must create these templates in the default, global `openshift` project so you have access to them.
 
 By default, the templates build using a public source repository on GitHub that contains the necessary application code.
 
-1.  You can list the available default instant app and quick start templates with:
+1.  List the available default instant app and quick start templates by running the following command:
 
     ``` terminal
     $ oc get templates -n openshift
     ```
 
-2.  To modify the source and build your own version of the application:
+2.  Modify the source to build your own version of the application:
 
-    1.  Fork the repository referenced by the template’s default `SOURCE_REPOSITORY_URL` parameter.
+    1.  Fork the repository referenced by the default `SOURCE_REPOSITORY_URL` parameter of the template.
 
     2.  Override the value of the `SOURCE_REPOSITORY_URL` parameter when creating from the template, specifying your fork instead of the default value.
 
-        By doing this, the build configuration created by the template now points to your fork of the application code, and you can modify the code and rebuild the application at will.
+        By doing this, the build configuration created by the template now points to your fork of the application code. You can then modify the code and rebuild the application as needed.
 
-<div class="note">
+        <div class="note">
 
-Some of the instant app and quick start templates define a database deployment configuration. The configuration they define uses ephemeral storage for the database content. These templates should be used for demonstration purposes only as all database data is lost if the database pod restarts for any reason.
+        Some of the instant app and quick start templates define a database `DeploymentConfig` object. The configuration they define uses ephemeral storage for the database content. These templates should be used for demonstration purposes only as all database data is lost if the database pod restarts for any reason.
 
-</div>
+        </div>
 
 ## Quick start templates
 
-A quick start template is a basic example of an application running on OpenShift Container Platform. Quick starts come in a variety of languages and frameworks, and are defined in a template, which is constructed from a set of services, build configurations, and deployment configurations. This template references the necessary images and source repositories to build and deploy the application.
+To browse sample instant app and quick start templates on your OpenShift Container Platform cluster, review the default templates in the `openshift` project. Use these templates to deploy example applications for common languages and frameworks.
 
-To explore a quick start, create an application from a template. Your administrator must have already installed these templates in your OpenShift Container Platform cluster, in which case you can simply select it from the web console.
+A quick start template is a basic example of an application running on OpenShift Container Platform. Quick starts come in a variety of languages and frameworks, and are defined in a template, which is constructed from a set of `Service`, `BuildConfig`, and `DeploymentConfig` objects. This template references the necessary images and source repositories to build and deploy the application.
+
+Your administrator must have already installed these templates in your OpenShift Container Platform cluster, in which case you can select it from the web console.
 
 Quick starts refer to a source repository that contains the application source code. To customize the quick start, fork the repository and, when creating an application from the template, substitute the default source repository name with your forked repository. This results in builds that are performed using your source code instead of the provided example source. You can then update the code in your source repository and launch a new build to see the changes reflected in the deployed application.
 
@@ -254,9 +273,9 @@ These quick start templates provide a basic application of the indicated framewo
 
 # Writing templates
 
-You can define new templates to make it easy to recreate all the objects of your application. The template defines the objects it creates along with some metadata to guide the creation of those objects.
+To define reusable application templates on your OpenShift Container Platform cluster, create a `Template` object that lists the resources to deploy and metadata that guides their creation.
 
-The following is an example of a simple template object definition (YAML):
+Use the following sample YAML to review the structure before you author your own template.
 
 ``` yaml
 apiVersion: template.openshift.io/v1
@@ -293,7 +312,7 @@ labels:
 
 ## Writing the template description
 
-The template description informs you what the template does and helps you find it when searching in the web console. Additional metadata beyond the template name is optional, but useful to have. In addition to general descriptive information, the metadata also includes a set of tags. Useful tags include the name of the language the template is related to for example, Java, PHP, Ruby, and so on.
+To help users find and understand your template in the web console, add description metadata such as display name, tags, and icon class. Use the annotations in this reference to document purpose, caveats, and support links.
 
 The following is an example of template description metadata:
 
@@ -325,217 +344,235 @@ metadata:
 message: "Your admin credentials are ${ADMIN_USERNAME}:${ADMIN_PASSWORD}"
 ```
 
-- The unique name of the template.
+where:
 
-- A brief, user-friendly name, which can be employed by user interfaces.
+`metadata.name`
+Specifies the unique name of the template.
 
-- A description of the template. Include enough detail that users understand what is being deployed and any caveats they must know before deploying. It should also provide links to additional information, such as a README file. Newlines can be included to create paragraphs.
+`metadata.annotations.openshift.io/display-name`
+Specifies a brief, user-friendly name, which can be employed by user interfaces.
 
-- Additional template description. This may be displayed by the service catalog, for example.
+`metadata.annotations.description`
+Specifies a description of the template. Include enough detail that users understand what is being deployed and any caveats they must know before deploying. It should also provide links to additional information, such as a README file. You can include line breaks to create paragraphs.
 
-- Tags to be associated with the template for searching and grouping. Add tags that include it into one of the provided catalog categories. Refer to the `id` and `categoryAliases` in `CATALOG_CATEGORIES` in the console constants file. The categories can also be customized for the whole cluster.
+`metadata.annotations.openshift.io/long-description`
+Specifies an additional template description. This might be displayed by the service catalog.
 
-- An icon to be displayed with your template in the web console.
+`metadata.annotations.tags`
+Specifies the tags to be associated with the template for searching and grouping. Add tags that group the template into one of the provided catalog categories. Refer to the `id` and `categoryAliases` in `CATALOG_CATEGORIES` in the console constants file. The categories can also be customized for the whole cluster.
 
-  - `icon-3scale`
+`metadata.annotations.iconClass`
+Specifies an icon to be displayed with your template in the web console.
 
-  - `icon-aerogear`
+The following is a list of available icons.
 
-  - `icon-amq`
+<div class="informalexample">
 
-  - `icon-angularjs`
+- `icon-3scale`
 
-  - `icon-ansible`
+- `icon-aerogear`
 
-  - `icon-apache`
+- `icon-amq`
 
-  - `icon-beaker`
+- `icon-angularjs`
 
-  - `icon-camel`
+- `icon-ansible`
 
-  - `icon-capedwarf`
+- `icon-apache`
 
-  - `icon-cassandra`
+- `icon-beaker`
 
-  - `icon-catalog-icon`
+- `icon-camel`
 
-  - `icon-clojure`
+- `icon-capedwarf`
 
-  - `icon-codeigniter`
+- `icon-cassandra`
 
-  - `icon-cordova`
+- `icon-catalog-icon`
 
-  - `icon-datagrid`
+- `icon-clojure`
 
-  - `icon-datavirt`
+- `icon-codeigniter`
 
-  - `icon-debian`
+- `icon-cordova`
 
-  - `icon-decisionserver`
+- `icon-datagrid`
 
-  - `icon-django`
+- `icon-datavirt`
 
-  - `icon-dotnet`
+- `icon-debian`
 
-  - `icon-drupal`
+- `icon-decisionserver`
 
-  - `icon-eap`
+- `icon-django`
 
-  - `icon-elastic`
+- `icon-dotnet`
 
-  - `icon-erlang`
+- `icon-drupal`
 
-  - `icon-fedora`
+- `icon-eap`
 
-  - `icon-freebsd`
+- `icon-elastic`
 
-  - `icon-git`
+- `icon-erlang`
 
-  - `icon-github`
+- `icon-fedora`
 
-  - `icon-gitlab`
+- `icon-freebsd`
 
-  - `icon-glassfish`
+- `icon-git`
 
-  - `icon-go-gopher`
+- `icon-github`
 
-  - `icon-golang`
+- `icon-gitlab`
 
-  - `icon-grails`
+- `icon-glassfish`
 
-  - `icon-hadoop`
+- `icon-go-gopher`
 
-  - `icon-haproxy`
+- `icon-golang`
 
-  - `icon-helm`
+- `icon-grails`
 
-  - `icon-infinispan`
+- `icon-hadoop`
 
-  - `icon-jboss`
+- `icon-haproxy`
 
-  - `icon-jenkins`
+- `icon-helm`
 
-  - `icon-jetty`
+- `icon-infinispan`
 
-  - `icon-joomla`
+- `icon-jboss`
 
-  - `icon-jruby`
+- `icon-jenkins`
 
-  - `icon-js`
+- `icon-jetty`
 
-  - `icon-knative`
+- `icon-joomla`
 
-  - `icon-kubevirt`
+- `icon-jruby`
 
-  - `icon-laravel`
+- `icon-js`
 
-  - `icon-load-balancer`
+- `icon-knative`
 
-  - `icon-mariadb`
+- `icon-kubevirt`
 
-  - `icon-mediawiki`
+- `icon-laravel`
 
-  - `icon-memcached`
+- `icon-load-balancer`
 
-  - `icon-mongodb`
+- `icon-mariadb`
 
-  - `icon-mssql`
+- `icon-mediawiki`
 
-  - `icon-mysql-database`
+- `icon-memcached`
 
-  - `icon-nginx`
+- `icon-mongodb`
 
-  - `icon-nodejs`
+- `icon-mssql`
 
-  - `icon-openjdk`
+- `icon-mysql-database`
 
-  - `icon-openliberty`
+- `icon-nginx`
 
-  - `icon-openshift`
+- `icon-nodejs`
 
-  - `icon-openstack`
+- `icon-openjdk`
 
-  - `icon-other-linux`
+- `icon-openliberty`
 
-  - `icon-other-unknown`
+- `icon-openshift`
 
-  - `icon-perl`
+- `icon-openstack`
 
-  - `icon-phalcon`
+- `icon-other-linux`
 
-  - `icon-php`
+- `icon-other-unknown`
 
-  - `icon-play`
+- `icon-perl`
 
-  - `iconpostgresql`
+- `icon-phalcon`
 
-  - `icon-processserver`
+- `icon-php`
 
-  - `icon-python`
+- `icon-play`
 
-  - `icon-quarkus`
+- `iconpostgresql`
 
-  - `icon-rabbitmq`
+- `icon-processserver`
 
-  - `icon-rails`
+- `icon-python`
 
-  - `icon-redhat`
+- `icon-quarkus`
 
-  - `icon-redis`
+- `icon-rabbitmq`
 
-  - `icon-rh-integration`
+- `icon-rails`
 
-  - `icon-rh-spring-boot`
+- `icon-redhat`
 
-  - `icon-rh-tomcat`
+- `icon-redis`
 
-  - `icon-ruby`
+- `icon-rh-integration`
 
-  - `icon-scala`
+- `icon-rh-spring-boot`
 
-  - `icon-serverlessfx`
+- `icon-rh-tomcat`
 
-  - `icon-shadowman`
+- `icon-ruby`
 
-  - `icon-spring-boot`
+- `icon-scala`
 
-  - `icon-spring`
+- `icon-serverlessfx`
 
-  - `icon-sso`
+- `icon-shadowman`
 
-  - `icon-stackoverflow`
+- `icon-spring-boot`
 
-  - `icon-suse`
+- `icon-spring`
 
-  - `icon-symfony`
+- `icon-sso`
 
-  - `icon-tomcat`
+- `icon-stackoverflow`
 
-  - `icon-ubuntu`
+- `icon-suse`
 
-  - `icon-vertx`
+- `icon-symfony`
 
-  - `icon-wildfly`
+- `icon-tomcat`
 
-  - `icon-windows`
+- `icon-ubuntu`
 
-  - `icon-wordpress`
+- `icon-vertx`
 
-  - `icon-xamarin`
+- `icon-wildfly`
 
-  - `icon-zend`
+- `icon-windows`
 
-- The name of the person or organization providing the template.
+- `icon-wordpress`
 
-- A URL referencing further documentation for the template.
+- `icon-xamarin`
 
-- A URL where support can be obtained for the template.
+- `icon-zend`
 
-- An instructional message that is displayed when this template is instantiated. This field should inform the user how to use the newly created resources. Parameter substitution is performed on the message before being displayed so that generated credentials and other parameters can be included in the output. Include links to any next-steps documentation that users should follow.
+</div>
+
+`metadata.annotations.openshift.io/provider-display-name`
+Specifies the name of the person or organization providing the template.
+
+`metadata.annotations.openshift.io/documentation-url`
+Specifies a URL referencing further documentation for the template.
+
+`metadata.annotations.openshift.io/support-url`
+Specifies a URL where support can be obtained for the template.
+
+`message`
+Specifies an instructional message that is displayed when this template is instantiated. This field should inform the user how to use the newly created resources. Parameter substitution is performed on the message before being displayed so that generated credentials and other parameters can be included in the output. Include links to any next-steps documentation that users should follow.
 
 ## Writing template labels
 
-Templates can include a set of labels. These labels are added to each object created when the template is instantiated. Defining a label in this way makes it easy for users to find and manage all the objects created from a particular template.
+To label every object created from a template, add a `labels` section to the template definition. Use parameterized labels so users can identify and manage resources created from your template.
 
 The following is an example of template object labels:
 
@@ -548,13 +585,19 @@ labels:
   app: "${NAME}"
 ```
 
-- A label that is applied to all objects created from this template.
+where:
 
-- A parameterized label that is also applied to all objects created from this template. Parameter expansion is carried out on both label keys and values.
+`labels.template`
+Specifies a label that is applied to all objects created from this template.
+
+`labels.app`
+Specifies a parameterized label that is also applied to all objects created from this template. Parameter expansion is carried out on both label keys and values.
 
 ## Writing template parameters
 
-Parameters allow a value to be supplied by you or generated when the template is instantiated. Then, that value is substituted wherever the parameter is referenced. References can be defined in any field in the objects list field. This is useful for generating random passwords or allowing you to supply a hostname or other user-specific value that is required to customize the template. Parameters can be referenced in two ways:
+To customize a template when you process it, define parameters with default or generated values and reference them in template fields. Use string or JSON substitution syntax to pass user-specific values into created objects.
+
+Parameters allow a value to be supplied by you or generated when you process the template. Then, that value is substituted wherever the parameter is referenced. References can be defined in any field in the objects list field. This is useful for generating random passwords or allowing you to supply a hostname or other user-specific value that is required to customize the template. Parameters can be referenced in two ways:
 
 - As a string value by placing values in the form `${PARAMETER_NAME}` in any string field in the template.
 
@@ -562,7 +605,7 @@ Parameters allow a value to be supplied by you or generated when the template is
 
 When using the `${PARAMETER_NAME}` syntax, multiple parameter references can be combined in a single field and the reference can be embedded within fixed data, such as `"http://${PARAMETER_1}${PARAMETER_2}"`. Both parameter values are substituted and the resulting value is a quoted string.
 
-When using the `${{PARAMETER_NAME}}` syntax only a single parameter reference is allowed and leading and trailing characters are not permitted. The resulting value is unquoted unless, after substitution is performed, the result is not a valid JSON object. If the result is not a valid JSON value, the resulting value is quoted and treated as a standard string.
+When using the `${{PARAMETER_NAME}}` syntax, only a single parameter reference is allowed and leading and trailing characters are not permitted. The resulting value is unquoted unless, after substitution is performed, the result is not a valid JSON object. If the result is not a valid JSON value, the resulting value is quoted and treated as a standard string.
 
 A single parameter can be referenced multiple times within a template and it can be referenced using both substitution syntaxes within a single template.
 
@@ -577,7 +620,7 @@ parameters:
     value: joe
 ```
 
-Parameter values can also be generated based on rules specified in the parameter definition, for example generating a parameter value:
+Parameter values can also be generated based on rules specified in the parameter definition:
 
 ``` yaml
 parameters:
@@ -601,7 +644,7 @@ The syntax available is not a full regular expression syntax. However, you can u
 
 <div class="note">
 
-Depending on if the template is written in YAML or JSON, and the type of string that the modifier is embedded within, you might need to escape the backslash with a second backslash. The following examples are equivalent:
+Depending on whether the template is written in YAML or JSON, you might need to escape the backslash with a second backslash. This also depends on the type of string in which the modifier is embedded. The following examples are equivalent:
 
 <div class="formalpara-title">
 
@@ -683,29 +726,41 @@ parameters:
 message: "... The GitHub webhook secret is ${GITHUB_WEBHOOK_SECRET} ..."
 ```
 
-- This value is replaced with the value of the `SOURCE_REPOSITORY_URL` parameter when the template is instantiated.
+where:
 
-- This value is replaced with the unquoted value of the `REPLICA_COUNT` parameter when the template is instantiated.
+`spec.git.uri`
+Specifies the value to be replaced with the value of the `SOURCE_REPOSITORY_URL` parameter when you process the template.
 
-- The name of the parameter. This value is used to reference the parameter within the template.
+`spec.replicas`
+Specifies the value to be replaced with the unquoted value of the `REPLICA_COUNT` parameter when you process the template.
 
-- The user-friendly name for the parameter. This is displayed to users.
+`parameters.name`
+Specifies the name of the parameter. This value is used to reference the parameter within the template.
 
-- A description of the parameter. Provide more detailed information for the purpose of the parameter, including any constraints on the expected value. Descriptions should use complete sentences to follow the console’s text standards. Do not make this a duplicate of the display name.
+`parameters.displayName`
+Specifies the user-friendly name for the parameter. This is displayed to users.
 
-- A default value for the parameter which is used if you do not override the value when instantiating the template. Avoid using default values for things like passwords, instead use generated parameters in combination with secrets.
+`parameters.description`
+Specifies a description of the parameter. Provide more detailed information for the purpose of the parameter, including any constraints on the expected value. Descriptions should use complete sentences to follow the console text standards. Do not make this a duplicate of the display name.
 
-- Indicates this parameter is required, meaning you cannot override it with an empty value. If the parameter does not provide a default or generated value, you must supply a value.
+`parameters.value`
+Specifies a default value for the parameter which is used if you do not override the value when you process the template. Avoid using default values for things like passwords, instead use generated parameters in combination with secrets.
 
-- A parameter which has its value generated.
+`parameters.required`
+Specifies that this parameter is required, meaning you cannot override it with an empty value. If the parameter does not provide a default or generated value, you must supply a value.
 
-- The input to the generator. In this case, the generator produces a 40 character alphanumeric value including upper and lowercase characters.
+`parameters.generate`
+Specifies that the parameter value is generated.
 
-- Parameters can be included in the template message. This informs you about generated values.
+`parameters.from`
+Specifies the input to the generator. In this case, the generator produces a 40 character alphanumeric value including upper and lowercase characters.
+
+`message`
+Specifies that parameters can be included in the template message. This field informs you about generated values.
 
 ## Writing the template object list
 
-The main portion of the template is the list of objects which is created when the template is instantiated. This can be any valid API object, such as a build configuration, deployment configuration, or service. The object is created exactly as defined here, with any parameter values substituted in prior to creation. The definition of these objects can reference parameters defined earlier.
+To specify what a template creates when processed, define an `objects` list with the API resources to deploy. Parameter values are substituted into each object definition before creation.
 
 The following is an example of an object list:
 
@@ -730,51 +785,38 @@ objects:
         name: "cakephp-mysql-example"
 ```
 
-- The definition of a service, which is created by this template.
+where:
+
+`objects.kind`
+Specifies the definition of a service, which is created by this template.
 
 <div class="note">
 
-If an object definition metadata includes a fixed `namespace` field value, the field is stripped out of the definition during template instantiation. If the `namespace` field contains a parameter reference, normal parameter substitution is performed and the object is created in whatever namespace the parameter substitution resolved the value to, assuming the user has permission to create objects in that namespace.
+If an object definition metadata includes a fixed `namespace` field value, the field is stripped out of the definition during template instantiation. If the `namespace` field contains a parameter reference, normal parameter substitution is performed, and the object is created in the resulting namespace. This requires that the user has permission to create objects in that namespace.
 
 </div>
 
 ## Marking a template as bindable
 
-The Template Service Broker advertises one service in its catalog for each template object of which it is aware. By default, each of these services is advertised as being bindable, meaning an end user is permitted to bind against the provisioned service.
+To prevent end users from binding to services provisioned from your template, add the `template.openshift.io/bindable: "false"` annotation to the template object. By default, the Template Service Broker advertises each template service as bindable in the service catalog.
 
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-Template authors can prevent end users from binding against services provisioned from a given template.
-
-- Prevent end user from binding against services provisioned from a given template by adding the annotation `template.openshift.io/bindable: "false"` to the template.
+- Prevent end users from binding against services provisioned from a given template by adding the annotation `template.openshift.io/bindable: "false"` to the template.
 
 ## Exposing template object fields
 
-Template authors can indicate that fields of particular objects in a template should be exposed. The Template Service Broker recognizes exposed fields on `ConfigMap`, `Secret`, `Service`, and `Route` objects, and returns the values of the exposed fields when a user binds a service backed by the broker.
+To return connection details when users bind to your template service, add `template.openshift.io/expose-` or `template.openshift.io/base64-expose-` annotations to `ConfigMap`, `Secret`, `Service`, or `Route` objects. Binding clients then receive the needed credentials and endpoints directly.
 
-To expose one or more fields of an object, add annotations prefixed by `template.openshift.io/expose-` or `template.openshift.io/base64-expose-` to the object in the template.
-
-Each annotation key, with its prefix removed, is passed through to become a key in a `bind` response.
+Each annotation key, with the prefix removed, is passed through to become a key in a `bind` response.
 
 Each annotation value is a Kubernetes JSONPath expression, which is resolved at bind time to indicate the object field whose value should be returned in the `bind` response.
 
 <div class="note">
 
-`Bind` response key-value pairs can be used in other parts of the system as environment variables. Therefore, it is recommended that every annotation key with its prefix removed should be a valid environment variable name — beginning with a character `A-Z`, `a-z`, or `_`, and being followed by zero or more characters `A-Z`, `a-z`, `0-9`, or `_`.
+Unless escaped with a backslash, the JSONPath implementation of Kubernetes interprets characters such as `.`, `@`, and others as metacharacters, regardless of their position in the expression. Therefore, for example, to refer to a `ConfigMap` data named `my.key`, the required JSONPath expression is `{.data['my\.key']}`. Depending on how the JSONPath expression is then written in YAML, an additional backslash might be required, for example `"{.data['my\\.key']}"`.
 
 </div>
 
-<div class="note">
-
-Unless escaped with a backslash, Kubernetes' JSONPath implementation interprets characters such as `.`, `@`, and others as metacharacters, regardless of their position in the expression. Therefore, for example, to refer to a `ConfigMap` datum named `my.key`, the required JSONPath expression would be `{.data['my\.key']}`. Depending on how the JSONPath expression is then written in YAML, an additional backslash might be required, for example `"{.data['my\\.key']}"`.
-
-</div>
-
-The following is an example of different objects' fields being exposed:
+The following is an example of fields of different objects being exposed:
 
 ``` yaml
 kind: Template
@@ -818,7 +860,13 @@ objects:
     path: mypath
 ```
 
-An example response to a `bind` operation given the above partial template follows:
+<div class="note">
+
+`Bind` response key-value pairs can be used in other parts of the system as environment variables. Therefore, each annotation key, with the prefix removed, should be a valid environment variable name. Valid names begin with a character `A-Z`, `a-z`, or `_`, followed by zero or more characters `A-Z`, `a-z`, `0-9`, or `_`.
+
+</div>
+
+An example response to a `bind` operation given the previous partial template:
 
 ``` json
 {
@@ -831,17 +879,17 @@ An example response to a `bind` operation given the above partial template follo
 }
 ```
 
-- Use the `template.openshift.io/expose-` annotation to return the field value as a string. This is convenient, although it does not handle arbitrary binary data.
+- Use the `template.openshift.io/expose-` annotation to return the field value as a string. This approach does not handle arbitrary binary data.
 
-- If you want to return binary data, use the `template.openshift.io/base64-expose-` annotation instead to base64 encode the data before it is returned.
+- If you want to return binary data, use the `template.openshift.io/base64-expose-` annotation instead to Base64 encode the data before it is returned.
 
 ## Waiting for template readiness
 
-Template authors can indicate that certain objects within a template should be waited for before a template instantiation by the service catalog, Template Service Broker, or `TemplateInstance` API is considered complete.
+To delay creating resources from a template until key resources are ready, add the `template.alpha.openshift.io/wait-for-ready: "true"` annotation to supported object kinds. The service catalog, Template Service Broker, and `TemplateInstance` API wait for annotated objects to report ready.
 
 Before starting the procedure, read the following considerations:
 
-- Set memory, CPU, and storage default sizes to make sure your application is given enough resources to run smoothly.
+- Set memory, CPU, and storage default sizes to ensure your application is given enough resources to run smoothly.
 
 - Avoid referencing the `latest` tag from images if that tag is used across major versions. This can cause running applications to break when new images are pushed to that tag.
 
@@ -855,9 +903,9 @@ Before starting the procedure, read the following considerations:
   "template.alpha.openshift.io/wait-for-ready": "true"
   ```
 
-  Template instantiation is not complete until all objects marked with the annotation report ready. Similarly, if any of the annotated objects report failed, or if the template fails to become ready within a fixed timeout of one hour, the template instantiation fails.
+  Creating resources from the template is not complete until all objects marked with the annotation report ready. Similarly, if any of the annotated objects report failed, or if the template fails to become ready within a fixed timeout of one hour, creating resources from the template fails.
 
-  For the purposes of instantiation, readiness and failure of each object kind are defined as follows:
+  When you create resources from a template, readiness and failure of each object kind are defined as follows:
 
   | Kind               | Readiness                                                                                                               | Failure                                                                  |
   |--------------------|-------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|
@@ -881,8 +929,8 @@ Before starting the procedure, read the following considerations:
     metadata:
       name: ...
       annotations:
-        # wait-for-ready used on BuildConfig ensures that template instantiation
-        # will fail immediately if build fails
+        # wait-for-ready used on BuildConfig ensures that creating resources from the template
+        # fails immediately if the build fails
         template.alpha.openshift.io/wait-for-ready: "true"
     spec:
       ...
@@ -904,9 +952,9 @@ Before starting the procedure, read the following considerations:
 
 ## Creating a template from existing objects
 
-Rather than writing an entire template from scratch, you can export existing objects from your project in YAML form, and then modify the YAML from there by adding parameters and other customizations as template form.
+To create a template from existing objects in your project, export those objects and add parameters and other template customizations. Reusing deployed resources helps you capture a working configuration that others can deploy consistently from the template.
 
-- Export objects in a project in YAML form:
+- Export objects in a project by running the following command:
 
   ``` terminal
   $ oc get -o yaml all > <yaml_filename>
@@ -932,8 +980,8 @@ Rather than writing an entire template from scratch, you can export existing obj
 
   - `Service`
 
-<div class="note">
+    <div class="note">
 
-Using the `all` alias is not recommended because the contents might vary across different clusters and versions. Instead, specify all required resources.
+    Using the `all` alias is not recommended because the contents might vary across different clusters and versions. Instead, specify all required resources.
 
-</div>
+    </div>

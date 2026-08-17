@@ -2,6 +2,10 @@ In OpenShift Container Platform version 4.17, you can install a cluster on Amazo
 
 # Prerequisites
 
+Before you install a cluster on Amazon Web Services (AWS) that uses the default configuration options, you must meet several prerequisites.
+
+The following prerequisites must be met:
+
 - You reviewed details about the [OpenShift Container Platform installation and update](../../../architecture/architecture-installation.xml#architecture-installation) processes.
 
 - You read the documentation on [selecting a cluster installation method and preparing it for users](../../../installing/overview/installing-preparing.xml#installing-preparing).
@@ -215,14 +219,14 @@ The `kubeadmin` user exists by default after an OpenShift Container Platform ins
 
 3.  Navigate to the route detailed in the output of the preceding command in a web browser and log in as the `kubeadmin` user.
 
+# Additional resources
+
 - [Accessing the web console](../../../web_console/web-console.xml#web-console)
 
-# Next steps
+- [Validating an installation](../../../installing/validation_and_troubleshooting/validating-an-installation.xml#validating-an-installation)
 
-- [Validating an installation](../../../installing/validation_and_troubleshooting/validating-an-installation.xml#validating-an-installation).
+- [Available cluster customizations](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
 
-- [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations).
+- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
-- If necessary, you can [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting).
-
-- If necessary, you can [remove cloud provider credentials](../../../post_installation_configuration/changing-cloud-credentials-configuration.xml#manually-removing-cloud-creds_changing-cloud-credentials-configuration).
+- [Removing cloud provider credentials](../../../post_installation_configuration/changing-cloud-credentials-configuration.xml#manually-removing-cloud-creds_changing-cloud-credentials-configuration)

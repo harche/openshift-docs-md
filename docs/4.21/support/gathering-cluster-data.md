@@ -1,12 +1,6 @@
 When opening a support case, it is helpful to provide debugging information about your cluster to Red Hat Support. You can use tools such as `must-gather`, `sosreport`, and cluster node journal logs to collect diagnostic data.
 
-When opening a support case, it is helpful to provide debugging information about your cluster to Red Hat Support.
-
-It is recommended to provide:
-
-- [Data gathered using the `oc adm must-gather` command](../support/gathering-cluster-data.xml#support_gathering_data_gathering-cluster-data)
-
-- The [unique cluster ID](../support/gathering-cluster-data.xml#support-get-cluster-id_gathering-cluster-data)
+You can gather debugging information about your OpenShift Container Platform cluster to provide to Red Hat Support when opening a support case.
 
 # About the must-gather tool
 
@@ -26,7 +20,7 @@ Alternatively, you can collect specific information by running the command with 
 
   ``` terminal
   $ oc adm must-gather \
-    --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.21.13
+    --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.21.16
   ```
 
 - To collect the audit logs, use the `-- /usr/bin/gather_audit_logs` argument, as described in a following section.
@@ -63,7 +57,7 @@ For example:
 
 ``` terminal
 $ oc adm must-gather --run-namespace <namespace> \
-  --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.21.13
+  --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.21.16
 ```
 
 ## Gathering data about your cluster for Red Hat Support
@@ -199,7 +193,7 @@ You can gather debugging information about specific features by using the `oc ad
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><p><code>registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.21.13</code></p></td>
+<td style="text-align: left;"><p><code>registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.21.16</code></p></td>
 <td style="text-align: left;"><p>Data collection for OpenShift Virtualization.</p></td>
 </tr>
 <tr class="even">
@@ -247,7 +241,7 @@ You can gather debugging information about specific features by using the `oc ad
 <p>For more information, see the "Gathering data" section for the specific Operator in <a href="https://docs.redhat.com/en/documentation/workload_availability_for_red_hat_openshift/latest/html/remediation_fencing_and_maintenance/index">Remediation, fencing, and maintenance</a> (Workload Availability for Red Hat OpenShift documentation).</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>registry.redhat.io/numaresources/numaresources-must-gather-rhel9:v&lt;installed-version-nro&gt;</code></p></td>
+<td style="text-align: left;"><p><code>registry.redhat.io/openshift4/numaresources-must-gather-rhel9:v&lt;installed-version-nro&gt;</code></p></td>
 <td style="text-align: left;"><p>Data collection for the NUMA Resources Operator (NRO).</p></td>
 </tr>
 <tr class="odd">
@@ -302,7 +296,7 @@ To determine the latest version for an OpenShift Container Platform component’
     ``` terminal
     $ oc adm must-gather \
       --image-stream=openshift/must-gather \
-      --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.21.13
+      --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.21.16
     ```
 
     You can use the `must-gather` tool with additional arguments to gather data that is specifically related to OpenShift Logging and the Red Hat OpenShift Logging Operator in your cluster. For OpenShift Logging, run the following command:

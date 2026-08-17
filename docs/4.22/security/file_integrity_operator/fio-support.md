@@ -6,19 +6,19 @@ For more information about Operator lifecycle policies, see Additional resources
 
 # Getting support
 
-If you experience difficulty with a procedure described in this documentation, or with OpenShift Container Platform in general, visit the Red Hat Customer Portal.
+Red Hat offers several support channels to help you troubleshoot issues and get the most from OpenShift Container Platform.
 
-From the Red Hat Customer Portal, you can:
+From the Red Hat Customer Portal, you can:
 
-- Search or browse through the Red Hat Knowledgebase of articles and solutions relating to Red Hat products.
+- Search or browse through the Red Hat Knowledgebase of articles and solutions about Red Hat products.
 
-- Submit a support case to Red Hat Support.
+- Submit a support case to Red Hat Support.
 
 - Access other product documentation.
 
-To identify issues with your cluster, you can use Red Hat Lightspeed in [OpenShift Cluster Manager](https://console.redhat.com/openshift). Red Hat Lightspeed provides details about issues and, if available, information on how to solve a problem.
+To identify issues with your cluster, you can use Red Hat Lightspeed in [OpenShift Cluster Manager](https://console.redhat.com/openshift). Red Hat Lightspeed provides details about issues and, if available, information about how to solve a problem.
 
-To suggest improvements or report errors, provide specific details such as the section name and OpenShift Container Platform version.
+To suggest improvements or report errors, give specific details such as the section name and OpenShift Container Platform version.
 
 # Additional resources
 

@@ -112,7 +112,7 @@ Now a `ComplianceSuite` object is created. The flow continues to reconcile the n
 
 ## ComplianceSuite custom resource lifecycle and debugging
 
-The `ComplianceSuite` CR is a wrapper around `ComplianceScan` CRs. The `ComplianceSuite` CR is handled by controller tagged with `logger=suitectrl`. This controller handles creating scans from a suite, reconciling and aggregating individual Scan statuses into a single Suite status. If a suite is set to execute periodically, the `suitectrl` also handles creating a `CronJob` CR that re-runs the scans in the suite after the initial run is done:
+The `ComplianceSuite` CR is a wrapper around `ComplianceScan` CRs. The `ComplianceSuite` CR is handled by controller tagged with `logger=suitectrl`. This controller handles creating scans from a suite, reconciling and aggregating individual Scan statuses into a single Suite status. If a suite is set to run periodically, the `suitectrl` also handles creating a `CronJob` CR that re-runs the scans in the suite after the initial run is done:
 
 ``` terminal
 $ oc get cronjobs
@@ -135,11 +135,11 @@ For the most important issues, events are emitted. View them with `oc describe c
 
 The `ComplianceScan` CRs are handled by the `scanctrl` controller. This is also where the actual scans happen and the scan results are created. Each scan goes through several phases:
 
-### Pending phase
+## Pending phase
 
 The scan is validated for correctness in this phase. If some parameters such as storage size are invalid, the scan transitions to DONE with ERROR result, otherwise proceeds to the Launching phase.
 
-### Launching phase
+## Launching phase
 
 In this phase, several config maps that contain either environment for the scanner pods or directly the script that the scanner pods will be evaluating. List the config maps:
 
@@ -175,13 +175,13 @@ rhcos4-e8-worker-ip-10-0-169-90.eu-north-1.compute.internal-pod   0/2     Comple
 
 The scan then proceeds to the Running phase.
 
-### Running phase
+## Running phase
 
 The running phase waits until the scanner pods finish. The following terms and processes are in use in the running phase:
 
 - **init container**: There is one init container called `content-container`. It runs the **contentImage** container and executes a single command that copies the **contentFile** to the `/content` directory shared with the other containers in this pod.
 
-- **scanner**: This container runs the scan. For node scans, the container mounts the node filesystem as `/host` and mounts the content delivered by the init container. The container also mounts the `entrypoint` `ConfigMap` created in the Launching phase and executes it. The default script in the entrypoint `ConfigMap` executes OpenSCAP and stores the result files in the `/results` directory shared between the pod’s containers. Logs from this pod can be viewed to determine what the OpenSCAP scanner checked. More verbose output can be viewed with the `debug` flag.
+- **scanner**: This container runs the scan. For node scans, the container mounts the node filesystem as `/host` and mounts the content delivered by the init container. The container also mounts the `entrypoint` `ConfigMap` created in the Launching phase and executes it. The default script in the entrypoint `ConfigMap` executes OpenSCAP and stores the result files in the `/results` directory shared between the containers in the pod. Logs from this pod can be viewed to determine what the OpenSCAP scanner checked. More verbose output can be viewed with the `debug` flag.
 
 - **logcollector**: The logcollector container waits until the scanner container finishes. Then, it uploads the full ARF results to the `ResultServer` and separately uploads the XCCDF results along with scan result and OpenSCAP result code as a `ConfigMap.` These result config maps are labeled with the scan name (`compliance.openshift.io/scan-name=rhcos4-e8-worker`):
 
@@ -224,9 +224,9 @@ Scanner pods for `Platform` scans are similar, except:
 
 When the scanner pods are done, the scans move on to the Aggregating phase.
 
-### Aggregating phase
+## Aggregating phase
 
-In the aggregating phase, the scan controller spawns yet another pod called the aggregator pod. Its purpose it to take the result `ConfigMap` objects, read the results and for each check result create the corresponding Kubernetes object. If the check failure can be automatically remediated, a `ComplianceRemediation` object is created. To provide human-readable metadata for the checks and remediations, the aggregator pod also mounts the OpenSCAP content using an init container.
+In the aggregating phase, the scan controller spawns yet another pod called the aggregator pod. Its purpose is to take the result `ConfigMap` objects, read the results and for each check result create the corresponding Kubernetes object. If the check failure can be automatically remediated, a `ComplianceRemediation` object is created. To provide human-readable metadata for the checks and remediations, the aggregator pod also mounts the OpenSCAP content by using an init container.
 
 When a config map is processed by an aggregator pod, it is labeled the `compliance-remediations/processed` label. The result of this phase are `ComplianceCheckResult` objects:
 
@@ -270,9 +270,9 @@ rhcos4-e8-worker-audit-rules-execution-setfiles            NotApplied
 
 After these CRs are created, the aggregator pod exits and the scan moves on to the Done phase.
 
-### Done phase
+## Done phase
 
-In the final scan phase, the scan resources are cleaned up if needed and the `ResultServer` deployment is either scaled down (if the scan was one-time) or deleted if the scan is continuous; the next scan instance would then recreate the deployment again.
+In the final scan phase, the scan resources are cleaned up if needed and the `ResultServer` deployment is either scaled down (if the scan was one-time) or deleted if the scan is continuous; the next scan instance would then re-create the deployment again.
 
 It is also possible to trigger a re-run of a scan in the Done phase by annotating it:
 
@@ -309,7 +309,7 @@ $ oc get mc | grep 75-
 75-rhcos4-e8-worker-my-companys-compliance-requirements                                                3.2.0             2m46s
 ```
 
-The remediations the `mc` currently consists of are listed in the machine config’s annotations:
+The remediations the `mc` currently consists of are listed in the annotations of the machine config:
 
 ``` terminal
 $ oc describe mc/75-rhcos4-e8-worker-my-companys-compliance-requirements
@@ -327,7 +327,7 @@ Labels:       machineconfiguration.openshift.io/role=worker
 Annotations:  remediation/rhcos4-e8-worker-audit-rules-dac-modification-chmod:
 ```
 
-The `ComplianceRemediation` controller’s algorithm works like this:
+The `ComplianceRemediation` controller algorithm works like this:
 
 - All currently applied remediations are read into an initial remediation set.
 
@@ -392,7 +392,7 @@ In some cases, the Compliance Operator might require more memory than the defaul
 
 To increase the default memory and CPU limits of scanner pods, see *\`ScanSetting\` Custom resource*.
 
-1.  To increase the Operator’s memory limits to 500 Mi, create the following patch file named `co-memlimit-patch.yaml`:
+1.  To increase the Operator memory limits to 500 Mi, create the following patch file named `co-memlimit-patch.yaml`:
 
     ``` yaml
     spec:
@@ -410,7 +410,7 @@ To increase the default memory and CPU limits of scanner pods, see *\`ScanSettin
 
 # Configuring Operator resource constraints
 
-You can configure the `resources` field in the `compliance-operator` subscription object to define resource constraints for all the containers in the pod created by the Operator Lifecycle Manager (OLM).
+You can configure the `resources` field in the `compliance-operator` subscription object to define resource constraints for all the containers in the pod created by the Operator Lifecycle Manager (OLM), so the Operator pods have enough CPU and memory.
 
 <div class="note">
 
@@ -558,16 +558,16 @@ The `ScanSetting` object has a timeout option that you can specify in the `Compl
 
 # Getting support
 
-If you experience difficulty with a procedure described in this documentation, or with OpenShift Container Platform in general, visit the Red Hat Customer Portal.
+Red Hat offers several support channels to help you troubleshoot issues and get the most from OpenShift Container Platform.
 
-From the Red Hat Customer Portal, you can:
+From the Red Hat Customer Portal, you can:
 
-- Search or browse through the Red Hat Knowledgebase of articles and solutions relating to Red Hat products.
+- Search or browse through the Red Hat Knowledgebase of articles and solutions about Red Hat products.
 
-- Submit a support case to Red Hat Support.
+- Submit a support case to Red Hat Support.
 
 - Access other product documentation.
 
-To identify issues with your cluster, you can use Red Hat Lightspeed in [OpenShift Cluster Manager](https://console.redhat.com/openshift). Red Hat Lightspeed provides details about issues and, if available, information on how to solve a problem.
+To identify issues with your cluster, you can use Red Hat Lightspeed in [OpenShift Cluster Manager](https://console.redhat.com/openshift). Red Hat Lightspeed provides details about issues and, if available, information about how to solve a problem.
 
-To suggest improvements or report errors, provide specific details such as the section name and OpenShift Container Platform version.
+To suggest improvements or report errors, give specific details such as the section name and OpenShift Container Platform version.

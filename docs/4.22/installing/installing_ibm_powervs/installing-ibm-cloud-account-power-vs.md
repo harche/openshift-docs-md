@@ -1,4 +1,4 @@
-Before you can install OpenShift Container Platform, you must configure an IBM Cloud® account.
+To install OpenShift Container Platform on IBM Power® Virtual Server, you must configure an IBM Cloud® account with the correct quotas, DNS resolution, and IAM policies.
 
 # Prerequisites
 
@@ -6,13 +6,11 @@ Before you can install OpenShift Container Platform, you must configure an IBM C
 
 # Quotas and limits on IBM Power Virtual Server
 
-The OpenShift Container Platform cluster uses several IBM Cloud® and IBM Power® Virtual Server components, and the default quotas and limits affect your ability to install OpenShift Container Platform clusters. If you use certain cluster configurations, deploy your cluster in certain regions, or run multiple clusters from your account, you might need to request additional resources for your IBM Cloud® account.
+The OpenShift Container Platform cluster uses several IBM Cloud® and IBM Power® Virtual Server components. Default quotas and limits affect your ability to install clusters, so you might need to request additional resources for your IBM Cloud® account depending on your configuration, region, or number of clusters.
 
-For a comprehensive list of the default IBM Cloud® quotas and service limits, see the IBM Cloud® documentation for [Quotas and service limits](https://cloud.ibm.com/docs/vpc?topic=vpc-quotas).
+## Virtual private cloud
 
-## Virtual Private Cloud
-
-Each OpenShift Container Platform cluster creates its own Virtual Private Cloud (VPC). The default quota of VPCs per region is 10. If you have 10 VPCs created, you will need to increase your quota before attempting an installation.
+Each OpenShift Container Platform cluster creates its own Virtual Private Cloud (VPC). The default quota of VPC instances per region is 10. If you have 10 VPC instances created, you must increase your quota before attempting an installation.
 
 ## Application load balancer
 
@@ -26,17 +24,17 @@ You can create additional `LoadBalancer` service objects to create additional AL
 
 VPC ALBs are supported. Classic ALBs are not supported for IBM Power® Virtual Server.
 
-## Transit Gateways
+## Transit gateways
 
-Each OpenShift Container Platform cluster creates its own Transit Gateway to enable communication with a VPC. The default quota of transit gateways per account is 10. If you have 10 transit gateways created, you will need to increase your quota before attempting an installation.
+Each OpenShift Container Platform cluster creates its own transit gateway to enable communication with a VPC. The default quota of transit gateways per IBM Cloud® account is 10. If you have 10 transit gateways created, you must increase your quota before attempting an installation.
 
-## Dynamic Host Configuration Protocol Service
+## Dynamic host configuration protocol (DHCP) service
 
 There is a limit of one Dynamic Host Configuration Protocol (DHCP) service per IBM Power® Virtual Server instance.
 
-## Virtual Server Instances
+## Virtual server instances
 
-By default, a cluster creates server instances with the following resources :
+By default, a cluster creates server instances with the following resources:
 
 - 0.5 CPUs
 
@@ -48,19 +46,23 @@ By default, a cluster creates server instances with the following resources :
 
 - Storage Tier: `Tier-3`
 
-The following nodes are created:
+The installation program creates the following nodes:
 
-- One bootstrap machine, which is removed after the installation is complete
+- One bootstrap machine, which the installation process removes after the installation is complete
 
 - Three control plane nodes
 
 - Three compute nodes
 
-For more information, see [Creating a Power Systems Virtual Server](https://cloud.ibm.com/docs/power-iaas?topic=power-iaas-creating-power-virtual-server) in the IBM Cloud® documentation.
+<!-- -->
+
+- [Quotas and service limits](https://cloud.ibm.com/docs/vpc?topic=vpc-quotas)
+
+- [Creating an IBM Power Virtual Server](https://cloud.ibm.com/docs/power-iaas?topic=power-iaas-creating-power-virtual-server)
 
 # Configuring DNS resolution
 
-How you configure DNS resolution depends on the type of OpenShift Container Platform cluster you are installing:
+DNS resolution configuration for OpenShift Container Platform on IBM Power® Virtual Server depends on whether you are installing a public or private cluster. Public clusters use IBM Cloud® Internet Services (CIS) and private clusters use IBM Cloud® DNS Services.
 
 - If you are installing a public cluster, you use IBM Cloud® Internet Services (CIS).
 
@@ -146,13 +148,13 @@ You must create a domain zone in CIS in the same account as your cluster. You mu
 
 - [IBM Cloud® documentation for configuring name servers](https://cloud.ibm.com/docs/cis?topic=cis-getting-started#configure-your-name-servers-with-the-registrar-or-existing-dns-provider)
 
-# IBM Cloud IAM Policies and API Key
+# IBM Cloud IAM policies and API key
 
 To install OpenShift Container Platform into your IBM Cloud® account, the installation program requires an IAM API key, which provides authentication and authorization to access IBM Cloud® service APIs. You can use an existing IAM API key that contains the required policies or create a new one.
 
 For an IBM Cloud® IAM overview, see the "IBM Cloud® IAM overview" documentation.
 
-## Pre-requisite permissions
+## Prerequisite permissions
 
 | Role                                                                                    | Access                                                                                                                                                   |
 |-----------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -161,7 +163,7 @@ For an IBM Cloud® IAM overview, see the "IBM Cloud® IAM overview" documentatio
 | Viewer, Operator, Administrator, Editor, Reader, Writer, Manager, Console Administrator | VPC Infrastructure Services service in \<resource_group\> resource group                                                                                 |
 | Viewer                                                                                  | Resource Group: Access to view the resource group itself. The resource type should equal `Resource group`, with a value of \<your_resource_group_name\>. |
 
-Pre-requisite permissions
+Prerequisite permissions
 
 ## Cluster-creation permissions
 
@@ -319,6 +321,6 @@ IBM Cloud® supports the following regions:
 
 - `jp-tok`
 
-# Next steps
+# Additional resources
 
 - [Creating an IBM Power® Virtual Server workspace](../../installing/installing_ibm_powervs/creating-ibm-power-vs-workspace.xml#creating-ibm-power-vs-workspace)

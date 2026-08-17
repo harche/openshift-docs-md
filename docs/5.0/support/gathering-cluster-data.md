@@ -1,14 +1,4 @@
-When opening a support case, it is helpful to provide debugging information about your cluster to Red Hat Support. You can use tools such as `must-gather`, `sosreport`, and cluster node journal logs to collect diagnostic data.
-
-When opening a support case, it is helpful to provide debugging information about your cluster to Red Hat Support.
-
-It is recommended to provide:
-
-- [Data gathered using the `oc adm must-gather` command](../support/gathering-cluster-data.xml#support_gathering_data_gathering-cluster-data)
-
-- The [unique cluster ID](../support/gathering-cluster-data.xml#support-get-cluster-id_gathering-cluster-data)
-
-- The results of a self-service [Technical Supportability Review (TSR)](../support/gathering-cluster-data.xml#about-self-service-tsr_gathering-cluster-data) analysis of your `must-gather` data
+You can gather debugging information about your OpenShift Container Platform cluster to provide to Red Hat Support when opening a support case.
 
 # About the must-gather tool
 
@@ -255,7 +245,7 @@ You can gather debugging information about specific features by using the `oc ad
 <p>For more information, see the "Gathering data" section for the specific Operator in <a href="https://docs.redhat.com/en/documentation/workload_availability_for_red_hat_openshift/latest/html/remediation_fencing_and_maintenance/index">Remediation, fencing, and maintenance</a> (Workload Availability for Red Hat OpenShift documentation).</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>registry.redhat.io/numaresources/numaresources-must-gather-rhel9:v&lt;installed-version-nro&gt;</code></p></td>
+<td style="text-align: left;"><p><code>registry.redhat.io/openshift4/numaresources-must-gather-rhel9:v&lt;installed-version-nro&gt;</code></p></td>
 <td style="text-align: left;"><p>Data collection for the NUMA Resources Operator (NRO).</p></td>
 </tr>
 <tr class="odd">
@@ -1737,3 +1727,11 @@ You can start an alternative image by creating a `.toolboxrc` file and specifyin
     If an existing `toolbox` pod is already running, the `toolbox` command outputs `'toolbox-' already exists. Trying to start…​`. To avoid issues with `sosreport` plugins, remove the running toolbox container with `podman rm toolbox-` and then spawn a new toolbox container.
 
     </div>
+
+# Additional resources
+
+- [Gathering data about your cluster for Red Hat Support](../support/gathering-cluster-data.xml#support_gathering_data_gathering-cluster-data)
+
+- [Obtaining your cluster ID](../support/gathering-cluster-data.xml#support-get-cluster-id_gathering-cluster-data)
+
+- [Self-service Technical Supportability Review](../support/gathering-cluster-data.xml#about-self-service-tsr_gathering-cluster-data)

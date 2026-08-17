@@ -88,8 +88,9 @@ For IBM Power and IBM Z, the following exceptions apply:
 | Hosted control planes for OpenShift Container Platform on RHOSP                            | Technology Preview | Technology Preview   | Technology Preview   |
 | Custom taints and tolerations                                                              | Technology Preview | Technology Preview   | Technology Preview   |
 | NVIDIA GPU devices on hosted control planes for OpenShift Virtualization                   | Technology Preview | Technology Preview   | Technology Preview   |
-| Hosted control planes for OpenShift Virtualization on IBM Z                                | \-                 | \-                   | Technology Preview   |
+| Hosted control planes for OpenShift Virtualization on IBM Z                                | Not available      | Not available        | Technology Preview   |
 | Hosted control planes on IBM Z in a disconnected environment                               | Technology Preview | General Availability | General Availability |
+| Restoring a hosted cluster to a new management cluster by using OADP                       | Technology Preview | Technology Preview   | Technology Preview   |
 
 Hosted control planes GA and TP tracker
 

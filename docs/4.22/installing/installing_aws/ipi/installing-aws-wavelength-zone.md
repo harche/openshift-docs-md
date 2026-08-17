@@ -8,6 +8,10 @@ A Wavelength Zone embeds AWS compute and storage services within the 5G network 
 
 # Infrastructure prerequisites
 
+Before you install an OpenShift Container Platform cluster on Amazon Web Services (AWS) Wavelength Zones, you must meet several prerequisites.
+
+The following prerequisites must be met:
+
 - You reviewed details about [OpenShift Container Platform installation and update](../../../architecture/architecture-installation.xml#architecture-installation) processes.
 
 - You are familiar with [Selecting a cluster installation method and preparing it for users](../../../installing/overview/installing-preparing.xml#installing-preparing).
@@ -61,11 +65,7 @@ A Wavelength Zone embeds AWS compute and storage services within the 5G network 
   }
   ```
 
-# About AWS Wavelength Zones and edge compute pool
-
-Read the following sections to understand infrastructure behaviors and cluster limitations in an AWS Wavelength Zones environment.
-
-## Cluster limitations in AWS Wavelength Zones
+# Cluster limitations in AWS Wavelength Zones
 
 Some limitations exist when you try to deploy a cluster with a default installation configuration in an Amazon Web Services (AWS) Wavelength Zone.
 
@@ -93,7 +93,7 @@ The following configuration limitation applies when you set the installation pro
 
 </div>
 
-## About edge compute pools
+# About edge compute pools
 
 The edge compute pool configuration is common between Amazon Web Services (AWS) Wavelength Zones locations. You can use the edge compute pool to create new labels to deploy applications onto Amazon Web Services (AWS) Wavelength Zones nodes. Edge compute nodes are tainted compute nodes that run in AWS Wavelength Zones locations.
 
@@ -137,11 +137,7 @@ By default, the machine sets for the edge compute pool define the taint of `NoSc
 
 - [How AWS Wavelength works (AWS documentation)](https://docs.aws.amazon.com/wavelength/latest/developerguide/how-wavelengths-work.html)
 
-# Installation prerequisites
-
-Before you install a cluster in an AWS Wavelength Zones environment, you must configure your infrastructure so that it can adopt Wavelength Zone capabilities.
-
-## Opting in to an AWS Wavelength Zones
+# Opting in to an AWS Wavelength Zones
 
 Create a subnet in an Amazon Web Services (AWS) Wavelength Zones when you need workloads to run physically closer to users or data sources than a standard AWS Wavelength Zones. If you plan to create subnets in AWS Wavelength Zones, you must opt in to each zone group separately.
 
@@ -188,7 +184,7 @@ Create a subnet in an Amazon Web Services (AWS) Wavelength Zones when you need w
     `<value_of_GroupName>`
     Replace with the name of the group of the Wavelength Zones where you want to create subnets. As an example for Wavelength Zones, specify `us-east-1-wl1` to use the zone `us-east-1-wl1-nyc-wlz-1` (US East New York).
 
-## Obtaining an AWS Marketplace image
+# Obtaining an AWS Marketplace image
 
 If you are deploying an OpenShift Container Platform cluster using an AWS Marketplace image, you must first subscribe through AWS. Subscribing to the offer provides you with the AMI ID that the installation program uses to deploy compute nodes.
 
@@ -230,15 +226,15 @@ You should only modify the RHCOS image for compute machines to use an AWS Market
     pullSecret: '{"auths": ...}'
     ```
 
-    - The AMI ID from your AWS Marketplace subscription.
+    where:
 
-    - Your AMI ID is associated with a specific AWS Region. When creating the installation configuration file, ensure that you select the same AWS Region that you specified when configuring your subscription.
+    `compute.platform.aws.amiID`
+    Specifies the AMI ID from your AWS Marketplace subscription.
 
-# Preparing for the installation
+    `platform.aws.region`
+    Specifies the `platform.aws.region` parameter. Your AMI ID is associated with a specific AWS Region. When creating the installation configuration file, ensure that you select the same AWS Region that you specified when configuring your subscription.
 
-Before you extend nodes to Wavelength Zones, you must prepare certain resources for the cluster installation environment.
-
-## Minimum resource requirements for cluster installation
+# Minimum resource requirements for cluster installation
 
 Each created cluster must meet minimum requirements so that the cluster runs as expected.
 
@@ -276,9 +272,11 @@ If an instance type for your platform meets the minimum requirements for cluster
 
 - [Architectures (RHEL documentation)](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures)
 
-## Tested instance types for AWS
+# Tested instance types for AWS
 
-The following Amazon Web Services (AWS) instance types have been tested with OpenShift Container Platform for use with AWS Wavelength Zones.
+There are several Amazon Web Services (AWS) instance types tested with OpenShift Container Platform.
+
+The following AWS instance types have been tested with OpenShift Container Platform for use with AWS Wavelength Zones.
 
 <div class="note">
 
@@ -294,7 +292,7 @@ Use the machine types included in the following charts for your AWS instances. I
 
 - [AWS Wavelength features(AWS documentation)](https://aws.amazon.com/wavelength/features/)
 
-## Creating the installation configuration file
+# Creating the installation configuration file
 
 Generate and customize the installation configuration file that the installation program needs to deploy your cluster.
 
@@ -354,7 +352,9 @@ Generate and customize the installation configuration file that the installation
 
     </div>
 
-## Examples of installation configuration files with edge compute pools
+# Examples of installation configuration files with edge compute pools
+
+See an example `install-config.yaml` file to better understand configurations for edge compute pools.
 
 The following examples show `install-config.yaml` files that contain an edge machine pool configuration.
 
@@ -408,31 +408,23 @@ pullSecret: '{"auths": ...}'
 sshKey: ssh-ed25519 AAAA...
 ```
 
-- Specify the name of the security group as it is displayed on the Amazon EC2 console. Ensure that you include the `sg` prefix.
+For the `additionalSecurityGroupIDs` parameter, specify the name of the security group as it is displayed on the Amazon EC2 console. Ensure that you include the `sg` prefix.
 
 # Cluster installation options for an AWS Wavelength Zones environment
 
-Choose one of the following installation options to install an OpenShift Container Platform cluster on AWS with edge compute nodes defined in Wavelength Zones:
+You can install an OpenShift Container Platform cluster on AWS with edge compute nodes defined in Wavelength Zones.
+
+Choose one of the following installation options:
 
 - Fully automated option: Installing a cluster to quickly extend compute nodes to edge compute pools, where the installation program automatically creates infrastructure resources for the OpenShift Container Platform cluster.
 
 - Existing VPC option: Installing a cluster on AWS into an existing VPC, where you supply Wavelength Zones subnets to the `install-config.yaml` file.
 
-<div class="formalpara-title">
-
-**Next steps**
-
-</div>
-
-Choose one of the following options to install an OpenShift Container Platform cluster in an AWS Wavelength Zones environment:
-
-- [Installing a cluster quickly in AWS Wavelength Zones](../../../installing/installing_aws/ipi/installing-aws-wavelength-zone.xml#installation-cluster-quickly-extend-compute-nodes_installing-aws-wavelength-zone)
-
-- [Modifying an installation configuration file to use AWS Wavelength Zones](../../../installing/installing_aws/ipi/installing-aws-wavelength-zone.xml#install-creating-install-config-aws-edge-zones_installing-aws-wavelength-zone)
-
 # Install a cluster quickly in AWS Wavelength Zones
 
-For OpenShift Container Platform 4.17, you can quickly install a cluster on Amazon Web Services (AWS) to extend compute nodes to Wavelength Zones locations. By using this installation route, the installation program automatically creates network resources and Wavelength Zones subnets for each zone that you defined in your configuration file. To customize the installation, you must modify parameters in the `install-config.yaml` file before you deploy the cluster.
+You can quickly install a cluster on Amazon Web Services (AWS) to extend compute nodes to Wavelength Zones locations.
+
+By using this installation route, the installation program automatically creates network resources and Wavelength Zones subnets for each zone that you defined in your configuration file. To customize the installation, you must modify parameters in the `install-config.yaml` file before you deploy the cluster.
 
 ## Modifying an installation configuration file to use AWS Wavelength Zones
 
@@ -500,13 +492,13 @@ Modify an `install-config.yaml` file to include AWS Wavelength Zones.
 
 - [Cluster limitations in AWS Wavelength Zones](../../../installing/installing_aws/ipi/installing-aws-wavelength-zone.xml#cluster-limitations-aws-zone_installing-aws-wavelength-zone)
 
-<!-- -->
-
 - [Deploying the cluster](../../../installing/installing_aws/ipi/installing-aws-wavelength-zone.xml#installation-launching-installer_installing-aws-wavelength-zone)
 
 # Installing a cluster in an existing VPC that has Wavelength Zone subnets
 
-You can install a cluster into an existing Amazon Virtual Private Cloud (VPC) on Amazon Web Services (AWS). The installation program provisions the rest of the required infrastructure, which you can further customize. To customize the installation, modify parameters in the `install-config.yaml` file before you install the cluster.
+You can install a cluster into an existing Amazon Virtual Private Cloud (VPC) on Amazon Web Services (AWS). The installation program provisions the rest of the required infrastructure, which you can further customize.
+
+To customize the installation, modify parameters in the `install-config.yaml` file before you install the cluster.
 
 Installing a cluster on AWS into an existing VPC requires extending compute nodes to the edge of the Cloud Infrastructure by using AWS Wavelength Zones.
 
@@ -520,7 +512,9 @@ The steps for performing an installer-provisioned infrastructure installation ar
 
 ## Creating a VPC in AWS
 
-You can create a Virtual Private Cloud (VPC), and subnets for all Wavelength Zones locations, in Amazon Web Services (AWS) for your OpenShift Container Platform cluster to extend compute nodes to edge locations. You can further customize your VPC to meet your requirements, including a VPN and route tables. You can also add new Wavelength Zones subnets not included at initial deployment.
+You can create a Virtual Private Cloud (VPC), and subnets for all Wavelength Zones locations, in Amazon Web Services (AWS) for your OpenShift Container Platform cluster to extend compute nodes to edge locations.
+
+You can further customize your VPC to meet your requirements, including a VPN and route tables. You can also add new Wavelength Zones subnets not included at initial deployment.
 
 You can use the provided CloudFormation template and a custom parameter file to create a stack of AWS resources that represent the VPC.
 
@@ -616,7 +610,9 @@ If you do not use the provided CloudFormation template to create your AWS infras
 
 ## CloudFormation template for the VPC
 
-You can use the following CloudFormation template to deploy the VPC that you need for your OpenShift Container Platform cluster.
+You can use a CloudFormation template to deploy the VPC that you need for your OpenShift Container Platform cluster.
+
+See the following template:
 
 ``` yaml
 AWSTemplateFormatVersion: 2010-09-09
@@ -1330,8 +1326,6 @@ Modify your `install-config.yaml` file to include Wavelength Zones subnets.
 
 - [Configuration and credential file settings in the AWS CLI (AWS documentation)](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
 
-<!-- -->
-
 - [Deploying the cluster](../../../installing/installing_aws/ipi/installing-aws-wavelength-zone.xml#installation-launching-installer_installing-aws-wavelength-zone)
 
 # Optional: Assign public IP addresses to edge compute nodes
@@ -1474,11 +1468,7 @@ When the cluster deployment completes successfully:
 
   </div>
 
-# Verifying the status of the deployed cluster
-
-Verify that your OpenShift Container Platform successfully deployed on AWS Wavelength Zones.
-
-## Logging in to the cluster by using the CLI
+# Logging in to the cluster by using the CLI
 
 To log in to your cluster as the default system user, export the `kubeconfig` file. This configuration enables the CLI to authenticate and connect to the specific API server created during OpenShift Container Platform installation.
 
@@ -1519,7 +1509,7 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 - "Remote health reporting"
 
-## Logging in to the cluster by using the web console
+# Logging in to the cluster by using the web console
 
 The `kubeadmin` user exists by default after an OpenShift Container Platform installation. You can log in to your cluster as the `kubeadmin` user by using the OpenShift Container Platform web console.
 
@@ -1565,7 +1555,7 @@ The `kubeadmin` user exists by default after an OpenShift Container Platform ins
 
 - [Accessing the web console](../../../web_console/web-console.xml#web-console)
 
-## Verifying nodes that were created with edge compute pool
+# Verifying nodes that were created with edge compute pool
 
 After you install a cluster that uses AWS Wavelength Zones infrastructure, check the status of the machine that was created by the machine set manifests created during installation.
 
@@ -1626,6 +1616,8 @@ After you install a cluster that uses AWS Wavelength Zones infrastructure, check
     NAME                           STATUS   ROLES         AGE    VERSION
     ip-10-0-207-188.ec2.internal   Ready    edge,worker   172m   v1.25.2+d2e245f
     ```
+
+# Additional resources
 
 - [Validating an installation](../../../installing/validation_and_troubleshooting/validating-an-installation.xml#validating-an-installation).
 

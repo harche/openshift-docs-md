@@ -1,34 +1,192 @@
 Use the release notes to learn what is new or changed in Kernel Module Management (KMM).
 
-# Release notes for Kernel Module Management Operator 2.2
+# Release notes for Kernel Module Management Operator 2.6
 
-## New features
+Review what is new, changed, or fixed in Kernel Module Management Operator 2.6 on OpenShift Container Platform.
 
-- KMM is now using the CRI-O container engine to pull container images in the worker pod instead of using HTTP calls directly from the worker container. For more information, see [Example Module CR](../hardware_enablement/kmm-kernel-module-management.xml#kmm-example-cr_kernel-module-management-operator).
+The following new features and enhancements are included in this release:
 
-<!-- -->
+- In this release, wildcard and glob pattern support for the `filesToSign` field has been added for signing kernel modules in a specific folder. Previously, you had to specify the exact path to each `.ko` file you wanted to sign. Now, you can add the full path to explicit files, as previously required, or any glob patterns supported by the `Ash` shell.
 
-- The Kernel Module Management (KMM) Operator images are now based on `rhel-els-minimal` container images instead of the `rhel-els` images. This change results in a greatly reduced image footprint, while still maintaining FIPS compliance.
+  The `DirName` value from `moduleLoader.container.modprobe` is propagated into the sign image. The validation webhook also verifies that all `filesToSign` entries fall under the configured `DirName`.
 
-- In this release, the firmware search path has been updated to copy the contents of the specified path into the path specified in worker.setFirmwareClassPath (default: /var/lib/firmware). For more information, see [Example Module CR](../hardware_enablement/kmm-kernel-module-management.xml#kmm-example-cr_kernel-module-management-operator).
-
-<!-- -->
-
-- For each node running a kernel matching the regular expression, KMM now checks if you have included a tag or a digest. If you have not specified a tag or digest in the container image, then the validation webhook returns an error and does not apply the module. For more information, see [Example Module CR](../hardware_enablement/kmm-kernel-module-management.xml#kmm-example-cr_kernel-module-management-operator).
-
-# Release notes for Kernel Module Management Operator 2.3
-
-## New features
-
-- In this release, KMM uses version 1.23 of the Golang programming language to ensure test continuity for partners.
+  For more information, see [Specifying files to sign](../hardware_enablement/kmm-kernel-module-management.xml#kmm-specifying-files-to-sign_kernel-module-management-operator).
 
 <!-- -->
 
-- You can now schedule KMM pods by defining taints and tolerations. For more information, see [Using tolerations for kernel module scheduling](../hardware_enablement/kmm-kernel-module-management.xml#kmm-using-tolerations-for-kernel-module-scheduling_kernel-module-management-operator).
+- In this release, you can use the `AutomountServiceAccountToken` parameter to disable the auto-mounting of the projected volume. You can set `AutomountServiceAccountToken` to `false` to disable auto-mounting and mount the configmaps and tokens necessary for the `DevicePlugin` application.
+
+  Kubernetes automatically mounts the service account token and root Certificate Authoritys (CAs) into the `/var/run/secrets/kubernetes.io/serviceaccount` of the device-plugin pods using projected volumes. In some cases, you may want to use additional custom CAs or tokens for the device-plugin but Kubernetes does not allow mounting them to the same path unless the auto-mount is disabled.
+
+<!-- -->
+
+- In this release, new security settings have been added to prevent filesystem tampering and remove privileged kernel operations. The new settings enhance container security by restricting system capabilities and enabling read-only root filesystems across manager, webhook-server, and Operator components to strengthen security posture and reduce attack surface. For more information, see [KMM RapiDAST "Root file system is not read-only" while checking DAST](https://redhat.atlassian.net/browse/MGMT-20929).
+
+<!-- -->
+
+- In this release, when installing KMM using OLM, you can add additional tolerations to the Operator where worker nodes have custom taints or no accessible control-plane nodes.
+
+  By default, the KMM Operator is installed on control plane nodes when possible and includes tolerations that allow for the KMM Operator to be scheduled on the nodes. In environments where the control plane is not accessible, the KMM Operator is installed on worker nodes.
+
+<!-- -->
+
+- In this release, a new optional `imageRebuildTriggerGeneration` counter field has been added in the `Module`, `ManagedClusterModule`, and `ModuleImagesConfig` CRDs that allows you to force Kernel Module Management (KMM) to reverify and rebuild module images when using ephemeral image registries. When this counter’s value changes, the system automatically clears cached image statuses and reverifies the image existence, potentially triggering rebuilds.
+
+The following bug fixes are included in this release:
+
+- Unwarranted kernel module removal due to memory and disk limitations.
+
+  - **Cause**: Memory and disk limitations can cause the removal of kernel modules.
+
+  - **Consequence**: The kernel module is removed.
+
+  - **Fix**: This release contains a new set of internal tolerations such as `DiskPressure`, `MemoryPressure`, and `PIDPressure` that are propagated through the module loader data flow and node selection process. These internal tolerations are appended to module-specific tolerations when handling module scheduling.
+
+  - **Result**: The internal tolerations improve module scheduling to account for additional system resource pressure conditions. Modules can now be deployed across a broader range of cluster nodes, enhancing resource utilization and deployment flexibility.
+
+<!-- -->
+
+- Kernel Module Management (KMM) cannot delete module names that contain a `.`.
+
+  - **Cause**: The Kernel Module Management (KMM) Operator cannot delete modules that contain a `.` in their name.
+
+  - **Consequence**: The module intended for deletion hangs indefinitely.
+
+  - **Fix**: The finalizer `regexp` used to remove the node label has been modified to complete deletion.
+
+  - **Result**: When the node label has been correctly deleted, the module deletes successfully.
+
+    For more information, see [MGMT-19647](https://redhat.atlassian.net/browse/MGMT-19647).
+
+<!-- -->
+
+- Build and sign pods do not inherit Module tolerations.
+
+  - **Cause**: Build and sign pods created through the `ModuleImagesConfig` (MIC) and `ModuleBuildSignConfig` (MBSC) flows do not inherit tolerations from the parent Module.
+
+  - **Consequence**: Build pods fail scheduling on nodes with custom taints. Build pods should have the same tolerations as defined in the `Module.spec.tolerations` parameter, allowing them to schedule on tainted nodes where kernel headers are available.
+
+  - **Fix**: Added a `Tolerations` field to module build and image configurations that specifies the tolerations for build and sign pods.
+
+  - **Result**: You can now specify tolerations for build and sign pods, enabling control over pod scheduling on nodes with taints. This fix supports standard toleration properties including effect, key, operator, and duration settings.
+
+The following known issues apply to this release:
+
+- Issues have been encountered when loading out-of-tree (OOT) drivers for QDU x100 DU PCIe cards from v4.14. For more information, see [Case 04245147](https://access.redhat.com/support/cases/#/case/04245147).
+
+# Release notes for Kernel Module Management Operator 2.5.1
+
+Review what is new, changed, or fixed in Kernel Module Management Operator 2.5.1 on OpenShift Container Platform.
+
+The following known issues apply to this release:
+
+- Kernel Module Management (KMM) version 2.5 does not run on Red Hat OpenShift Service on AWS (ROSA) clusters or any other cluster that doesn’t install the `MachineConfig` CRD.
+
+  - **Cause**: This happens because the BMC controller that monitors `MachineConfig` objects on clusters cannot find these objects on ROSA clusters because they do not exist.
+
+  - **Consequence**: Causes the BMC controller to fail and the KMM controller pods to continually restart.
+
+  - **Fix**: In this version, the Operator verifies that the `MachineConfig` CRD is present on a cluster and runs the BMC controller on a cluster only when the `MachineConfig` CRD is present.
+
+  - **Result**: ROSA controller pods start successfully.
+
+# Release notes for Kernel Module Management Operator 2.5
+
+Review what is new, changed, or fixed in Kernel Module Management Operator 2.5 on OpenShift Container Platform.
+
+The following new features and enhancements are included in this release:
+
+- Starting with this version, you can use the KMM Operator to manage the lifecycle of kmod images that you installed by using the Day 1 utility. When a Day 1 kmod image is transitioned to the KMM Operator by using a `Module`, a `BootMachineConfig` (BMC) CRD is also created in the cluster. The BMC CRD fixes sudden reboot issues by ensuring that the `MachineConfig` gets updated with the correct values without triggering a node reboot. For more information, see [Managing Day 1 kmod images](../hardware_enablement/kmm-kernel-module-management.xml#kmm-customizing-upgrades-for-kernel-modules_kernel-module-management-operator).
+
+<!-- -->
+
+- The Kernel Module Management Operator (KMMO) 2.5 provides a `version.ready` label to indicate that the new version of the kernel module is loaded and is ready to use. For more information, see [Customizing upgrades for kernel modules](../hardware_enablement/kmm-kernel-module-management.xml#kmm-customizing-upgrades-for-kernel-modules_kernel-module-management-operator).
+
+<!-- -->
+
+- KMM Operator support on IBM Power architecture
+
+  RHEL does not provide a real-time Kernel for IBM Power, so do not deploy or validate any real-time features for KMM 2.5 on IBM Power compute nodes.
+
+<!-- -->
+
+- KMM Operator support on IBM Z architecture
+
+  Kernel Module Management (KMM) 2.5 is now supported on IBM Z architecture. However, RHEL does not provide a real-time Kernel for IBM Z. Therefore, you should not deploy or validate any real-time features for KMM 2.5 on IBM Z worker nodes.
+
+The following bug fixes are included in this release:
+
+- `PreflightValidationOCP` from KMM 2.4 does not synchronize status between v1beta1 and v1beta2.
+
+  - **Cause**: This happens because the `v1beta1` -→ `v1beta2` conversion webhook was not well defined in the CRD.
+
+  - **Consequence**: The status only shows in v1beta2 and not in v1beta1.
+
+  - **Fix**: A conversion between v1beta1 and v1beta2 has been added into the `PreflightValidationOCP` CRD.
+
+  - **Result**: The `PreflightValidationOCP` status is now shown in v1beta1 and v1beta2.
+
+<!-- -->
+
+- `PreflightValidationOCP` in KMM 2.4 incorrectly pushes images to registry.
+
+  - **Cause**: `PreflightValidationOCP` in KMM 2.4 version is pushing images to the registry despite the `pushBuiltImage: false` setting.
+
+  - **Consequence**: The new `PreflightValidationOCP` for KMM 2.4 ignores the `pushBuiltImage: false` and pushes it to registry.
+
+  - **Fix**: The internal logic has been updated to ensure the push behavior for built images is correctly propagated across all relevant workflows.
+
+  - **Result**: Built images are no longer incorrectly pushed to the registry when `pushBuiltImage: false`.
+
+<!-- -->
+
+- The `kmm-operator-controller` pod encounters `OOMKilled` errors.
+
+  - **Cause**: The `kmm-operator-controller` pod repeatedly encounters `OOMKilled` errors despite having a 1Gi memory limit. This issue occurs during cycles of installing and uninstalling the x100 Operator and associated kernel modules, suggesting a potential memory leak related to module management.
+
+  - **Consequence**: This issue occurs even though the container has both `resources.limits.memory` and `resources.requests.memory` set to 1Gi. After several cycles, the manager container is repeatedly terminated by `OOMKilled`, despite having a 1Gi memory limit. The pod status shows `Running` with a 0/1 `ready` state, and the restart count grows continuously.
+
+  - **Fix**: A fix that completely removes all code and configuration related to managing Cluster and Service CA ConfigMaps has been implemented. Update to KMM 2.4 or higher.
+
+  - **Result**: Installing and uninstalling the x100 operator and associated kernel modules runs as expected.
+
+<!-- -->
+
+- OpenShift 4.20 includes Kernel Module Management (KMM) Operator version 2.3.0
+
+  - **Cause**: The OpenShift 4.20 catalog includes Kernel Module Management (KMM) Operator version 2.3.0 as the latest version instead of the required KMM versions 2.4.0 and 2.4.1.
+
+  - **Consequence**: The documentation was outdated and required an update.
+
+  - **Fix**: The 4.20 catalogues have been updated to include KMM Operator versions 2.4.0 and 2.4.1.
+
+  - **Result**: The catalogues are now up-to-date.
+
+<!-- -->
+
+- `HashAnnotationDiffer` function could produce unexpected results
+
+  - **Cause**: A potential bug in the `HashAnnotationDiffer` function within the Kernel Module Management (KMM) could be exposed by a change in implementation.
+
+  - **Consequence**: While this potential bug is currently mitigated by the NMC logic, a change in implementation could expose this bug in real-time.
+
+  - **Fix**: The `HashAnnotationDiffer` method in `internal/pod/workerpodmanager.go` was updated to correctly handle cases where both input pods are nil or only one is nil. The logic now returns `false` (no difference) when both are nil, and `true` (difference) when only one is nil.
+
+  - **Result**: The `HashAnnotationDiffer` function runs as expected.
+
+# Release notes for Kernel Module Management Operator 2.4.1
+
+Review what is new, changed, or fixed in Kernel Module Management Operator 2.4.1 on OpenShift Container Platform.
+
+The following known issues apply to this release:
+
+If you are running KMM-hub version 2.3.0 or earlier and you are not running KMM, the upgrade to KMM-hub 2.4.0 is not reliable. Instead, you must upgrade to KMM-hub 2.4.1. KMM is not affected by this issue. For more information, see [RHEA-2025:10778 - Product Enhancement Advisory](https://access.redhat.com/errata/RHEA-2025:10778).
 
 # Release notes for Kernel Module Management Operator 2.4
 
-## New features and enhancements
+Review what is new, changed, or fixed in Kernel Module Management Operator 2.4 on OpenShift Container Platform.
+
+The following new features and enhancements are included in this release:
 
 - In this release, you now have the option to configure the Kernel Module Management (KMM) module to not load an out-of-tree kernel driver and use the in-tree driver instead, and run only the device plugin. For more information, see [Using in-tree modules with the device plugin](../hardware_enablement/kmm-kernel-module-management.xml#kmm-using-intree-modules_kernel-module-management-operator).
 
@@ -68,7 +226,7 @@ Use the release notes to learn what is new or changed in Kernel Module Managemen
 
   - `status.conditions[]` (`NodeReady` only) and still filtering heartbeats
 
-## Notable technical changes
+The following notable technical changes are included in this release:
 
 - In this release, the preflight validation resource in the cluster has been modified. You can use the preflight validation to verify kernel modules to be installed on the nodes after cluster upgrades and possible kernel upgrades. Preflight validation also reports on the status and progress of each module in the cluster that it attempts or has attempted to validate. For more information, see [Preflight validation for Kernel Module Management (KMM) Modules](../updating/preparing_for_updates/kmm-preflight-validation.xml#kmm-validation-kickoff_kmm-preflight-validation).
 
@@ -80,7 +238,7 @@ Use the release notes to learn what is new or changed in Kernel Module Managemen
 
 - The `capabilities` field that refers to the Operator maturity level has been changed from `Basic Install` to `Seamless upgrades`. `Basic Install` indicates that the Operator does not have an upgrade option. This is not the case for KMM, where seamless upgrades are supported.
 
-## Bug fixes
+The following bug fixes are included in this release:
 
 - Webhook deployment has been renamed from `webhook-server` to `webhook`.
 
@@ -320,7 +478,7 @@ Use the release notes to learn what is new or changed in Kernel Module Managemen
 
   - **Result:** The KMM preflight feature is documented as expected.
 
-## Known issues
+The following known issues apply to this release:
 
 - The `ModuleUnloaded` event does not appear when a module is `Unloaded`.
 
@@ -332,176 +490,32 @@ Use the release notes to learn what is new or changed in Kernel Module Managemen
 
   - **Result:** Not yet available.
 
-# Release notes for Kernel Module Management Operator 2.4.1
+# Release notes for Kernel Module Management Operator 2.3
 
-## Known issues
+Review what is new, changed, or fixed in Kernel Module Management Operator 2.3 on OpenShift Container Platform.
 
-If you are running KMM-hub version 2.3.0 or earlier and you are not running KMM, the upgrade to KMM-hub 2.4.0 is not reliable. Instead, you must upgrade to KMM-hub 2.4.1. KMM is not affected by this issue. For more information, see [RHEA-2025:10778 - Product Enhancement Advisory](https://access.redhat.com/errata/RHEA-2025:10778).
+The following new features are included in this release:
 
-# Release notes for Kernel Module Management Operator 2.5
-
-## New features and enhancements
-
-- Starting with this version, you can use the KMM Operator to manage the lifecycle of kmod images that you installed by using the Day 1 utility. When a Day 1 kmod image is transitioned to the KMM Operator by using a `Module`, a `BootMachineConfig` (BMC) CRD is also created in the cluster. The BMC CRD fixes sudden reboot issues by ensuring that the `MachineConfig` gets updated with the correct values without triggering a node reboot. For more information, see [Managing Day 1 kmod images](../hardware_enablement/kmm-kernel-module-management.xml#kmm-customizing-upgrades-for-kernel-modules_kernel-module-management-operator).
+- In this release, KMM uses version 1.23 of the Golang programming language to ensure test continuity for partners.
 
 <!-- -->
 
-- The Kernel Module Management Operator (KMMO) 2.5 provides a `version.ready` label to indicate that the new version of the kernel module is loaded and is ready to use. For more information, see [Customizing upgrades for kernel modules](../hardware_enablement/kmm-kernel-module-management.xml#kmm-customizing-upgrades-for-kernel-modules_kernel-module-management-operator).
+- You can now schedule KMM pods by defining taints and tolerations. For more information, see [Using tolerations for kernel module scheduling](../hardware_enablement/kmm-kernel-module-management.xml#kmm-using-tolerations-for-kernel-module-scheduling_kernel-module-management-operator).
+
+# Release notes for Kernel Module Management Operator 2.2
+
+Review what is new, changed, or fixed in Kernel Module Management Operator 2.2 on OpenShift Container Platform.
+
+The following new features are included in this release:
+
+- KMM is now using the CRI-O container engine to pull container images in the worker pod instead of using HTTP calls directly from the worker container. For more information, see [Example Module CR](../hardware_enablement/kmm-kernel-module-management.xml#kmm-example-cr_kernel-module-management-operator).
 
 <!-- -->
 
-- KMM Operator support on IBM Power architecture
+- The Kernel Module Management (KMM) Operator images are now based on `rhel-els-minimal` container images instead of the `rhel-els` images. This change results in a greatly reduced image footprint, while still maintaining FIPS compliance.
 
-  RHEL does not provide a real-time Kernel for IBM Power, so do not deploy or validate any real-time features for KMM 2.5 on IBM Power compute nodes.
-
-<!-- -->
-
-- KMM Operator support on IBM Z architecture
-
-  Kernel Module Management (KMM) 2.5 is now supported on IBM Z architecture. However, RHEL does not provide a real-time Kernel for IBM Z. Therefore, you should not deploy or validate any real-time features for KMM 2.5 on IBM Z worker nodes.
-
-## Bug fixes
-
-- `PreflightValidationOCP` from KMM 2.4 does not synchronize status between v1beta1 and v1beta2.
-
-  - **Cause**: This happens because the `v1beta1` -→ `v1beta2` conversion webhook was not well defined in the CRD.
-
-  - **Consequence**: The status only shows in v1beta2 and not in v1beta1.
-
-  - **Fix**: A conversion between v1beta1 and v1beta2 has been added into the `PreflightValidationOCP` CRD.
-
-  - **Result**: The `PreflightValidationOCP` status is now shown in v1beta1 and v1beta2.
+- In this release, the firmware search path has been updated to copy the contents of the specified path into the path specified in worker.setFirmwareClassPath (default: /var/lib/firmware). For more information, see [Example Module CR](../hardware_enablement/kmm-kernel-module-management.xml#kmm-example-cr_kernel-module-management-operator).
 
 <!-- -->
 
-- `PreflightValidationOCP` in KMM 2.4 incorrectly pushes images to registry.
-
-  - **Cause**: `PreflightValidationOCP` in KMM 2.4 version is pushing images to the registry despite the `pushBuiltImage: false` setting.
-
-  - **Consequence**: The new `PreflightValidationOCP` for KMM 2.4 ignores the `pushBuiltImage: false` and pushes it to registry.
-
-  - **Fix**: The internal logic has been updated to ensure the push behavior for built images is correctly propagated across all relevant workflows.
-
-  - **Result**: Built images are no longer incorrectly pushed to the registry when `pushBuiltImage: false`.
-
-<!-- -->
-
-- The `kmm-operator-controller` pod encounters `OOMKilled` errors.
-
-  - **Cause**: The `kmm-operator-controller` pod repeatedly encounters `OOMKilled` errors despite having a 1Gi memory limit. This issue occurs during cycles of installing and uninstalling the x100 Operator and associated kernel modules, suggesting a potential memory leak related to module management.
-
-  - **Consequence**: This issue occurs even though the container has both `resources.limits.memory` and `resources.requests.memory` set to 1Gi. After several cycles, the manager container is repeatedly terminated by `OOMKilled`, despite having a 1Gi memory limit. The pod status shows `Running` with a 0/1 `ready` state, and the restart count grows continuously.
-
-  - **Fix**: A fix that completely removes all code and configuration related to managing Cluster and Service CA ConfigMaps has been implemented. Update to KMM 2.4 or higher.
-
-  - **Result**: Installing and uninstalling the x100 operator and associated kernel modules runs as expected.
-
-<!-- -->
-
-- OpenShift 4.20 includes Kernel Module Management (KMM) Operator version 2.3.0
-
-  - **Cause**: The OpenShift 4.20 catalog includes Kernel Module Management (KMM) Operator version 2.3.0 as the latest version instead of the required KMM versions 2.4.0 and 2.4.1.
-
-  - **Consequence**: The documentation was outdated and required an update.
-
-  - **Fix**: The 4.20 catalogues have been updated to include KMM Operator versions 2.4.0 and 2.4.1.
-
-  - **Result**: The catalogues are now up-to-date.
-
-<!-- -->
-
-- `HashAnnotationDiffer` function could produce unexpected results
-
-  - **Cause**: A potential bug in the `HashAnnotationDiffer` function within the Kernel Module Management (KMM) could be exposed by a change in implementation.
-
-  - **Consequence**: While this potential bug is currently mitigated by the NMC logic, a change in implementation could expose this bug in real-time.
-
-  - **Fix**: The `HashAnnotationDiffer` method in `internal/pod/workerpodmanager.go` was updated to correctly handle cases where both input pods are nil or only one is nil. The logic now returns `false` (no difference) when both are nil, and `true` (difference) when only one is nil.
-
-  - **Result**: The `HashAnnotationDiffer` function runs as expected.
-
-# Release notes for Kernel Module Management Operator 2.5.1
-
-## Known issues
-
-- Kernel Module Management (KMM) version 2.5 does not run on Red Hat OpenShift Service on AWS (ROSA) clusters or any other cluster that doesn’t install the `MachineConfig` CRD.
-
-  - **Cause**: This happens because the BMC controller that monitors `MachineConfig` objects on clusters cannot find these objects on ROSA clusters because they do not exist.
-
-  - **Consequence**: Causes the BMC controller to fail and the KMM controller pods to continually restart.
-
-  - **Fix**: In this version, the Operator verifies that the `MachineConfig` CRD is present on a cluster and runs the BMC controller on a cluster only when the `MachineConfig` CRD is present.
-
-  - **Result**: ROSA controller pods start successfully.
-
-# Release notes for Kernel Module Management Operator 2.6
-
-## New features and enhancements
-
-- In this release, wildcard and glob pattern support for the `filesToSign` field has been added for signing kernel modules in a specific folder. Previously, you had to specify the exact path to each `.ko` file you wanted to sign. Now, you can add the full path to explicit files, as previously required, or any glob patterns supported by the `Ash` shell.
-
-  The `DirName` value from `moduleLoader.container.modprobe` is propagated into the sign image. The validation webhook also verifies that all `filesToSign` entries fall under the configured `DirName`.
-
-  For more information, see [Specifying files to sign](../hardware_enablement/kmm-kernel-module-management.xml#kmm-specifying-files-to-sign_kernel-module-management-operator).
-
-<!-- -->
-
-- In this release, you can use the `AutomountServiceAccountToken` parameter to disable the auto-mounting of the projected volume. You can set `AutomountServiceAccountToken` to `false` to disable auto-mounting and mount the configmaps and tokens necessary for the `DevicePlugin` application.
-
-  Kubernetes automatically mounts the service account token and root Certificate Authoritys (CAs) into the `/var/run/secrets/kubernetes.io/serviceaccount` of the device-plugin pods using projected volumes. In some cases, you may want to use additional custom CAs or tokens for the device-plugin but Kubernetes does not allow mounting them to the same path unless the auto-mount is disabled.
-
-<!-- -->
-
-- In this release, new security settings have been added to prevent filesystem tampering and remove privileged kernel operations. The new settings enhance container security by restricting system capabilities and enabling read-only root filesystems across manager, webhook-server, and Operator components to strengthen security posture and reduce attack surface. For more information, see [KMM RapiDAST "Root file system is not read-only" while checking DAST](https://redhat.atlassian.net/browse/MGMT-20929).
-
-<!-- -->
-
-- In this release, when installing KMM using OLM, you can add additional tolerations to the Operator where worker nodes have custom taints or no accessible control-plane nodes.
-
-  By default, the KMM Operator is installed on control plane nodes when possible and includes tolerations that allow for the KMM Operator to be scheduled on the nodes. In environments where the control plane is not accessible, the KMM Operator is installed on worker nodes.
-
-<!-- -->
-
-- In this release, a new optional `imageRebuildTriggerGeneration` counter field has been added in the `Module`, `ManagedClusterModule`, and `ModuleImagesConfig` CRDs that allows you to force Kernel Module Management (KMM) to reverify and rebuild module images when using ephemeral image registries. When this counter’s value changes, the system automatically clears cached image statuses and reverifies the image existence, potentially triggering rebuilds.
-
-## Bug fixes
-
-- Unwarranted kernel module removal due to memory and disk limitations.
-
-  - **Cause**: Memory and disk limitations can cause the removal of kernel modules.
-
-  - **Consequence**: The kernel module is removed.
-
-  - **Fix**: This release contains a new set of internal tolerations such as `DiskPressure`, `MemoryPressure`, and `PIDPressure` that are propagated through the module loader data flow and node selection process. These internal tolerations are appended to module-specific tolerations when handling module scheduling.
-
-  - **Result**: The internal tolerations improve module scheduling to account for additional system resource pressure conditions. Modules can now be deployed across a broader range of cluster nodes, enhancing resource utilization and deployment flexibility.
-
-<!-- -->
-
-- Kernel Module Management (KMM) cannot delete module names that contain a `.`.
-
-  - **Cause**: The Kernel Module Management (KMM) Operator cannot delete modules that contain a `.` in their name.
-
-  - **Consequence**: The module intended for deletion hangs indefinitely.
-
-  - **Fix**: The finalizer `regexp` used to remove the node label has been modified to complete deletion.
-
-  - **Result**: When the node label has been correctly deleted, the module deletes successfully.
-
-    For more information, see [MGMT-19647](https://redhat.atlassian.net/browse/MGMT-19647).
-
-<!-- -->
-
-- Build and sign pods do not inherit Module tolerations.
-
-  - **Cause**: Build and sign pods created through the `ModuleImagesConfig` (MIC) and `ModuleBuildSignConfig` (MBSC) flows do not inherit tolerations from the parent Module.
-
-  - **Consequence**: Build pods fail scheduling on nodes with custom taints. Build pods should have the same tolerations as defined in the `Module.spec.tolerations` parameter, allowing them to schedule on tainted nodes where kernel headers are available.
-
-  - **Fix**: Added a `Tolerations` field to module build and image configurations that specifies the tolerations for build and sign pods.
-
-  - **Result**: You can now specify tolerations for build and sign pods, enabling control over pod scheduling on nodes with taints. This fix supports standard toleration properties including effect, key, operator, and duration settings.
-
-## Known issues
-
-- Issues have been encountered when loading out-of-tree (OOT) drivers for QDU x100 DU PCIe cards from v4.14. For more information, see [Case 04245147](https://access.redhat.com/support/cases/#/case/04245147).
+- For each node running a kernel matching the regular expression, KMM now checks if you have included a tag or a digest. If you have not specified a tag or digest in the container image, then the validation webhook returns an error and does not apply the module. For more information, see [Example Module CR](../hardware_enablement/kmm-kernel-module-management.xml#kmm-example-cr_kernel-module-management-operator).

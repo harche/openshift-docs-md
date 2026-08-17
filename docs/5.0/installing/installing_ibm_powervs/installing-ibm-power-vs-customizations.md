@@ -1,16 +1,30 @@
-In OpenShift Container Platform version 4.17, you can install a customized cluster on infrastructure that the installation program provisions on IBM Power Virtual Server. To customize the installation, you modify parameters in the `install-config.yaml` file before you install the cluster.
+To install a customized OpenShift Container Platform cluster on IBM Power® Virtual Server, use installer-provisioned infrastructure and adjust the `install-config.yaml` parameters before you run the installation program.
 
 # Prerequisites
 
-- You reviewed details about the [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation) processes.
+Before you install a OpenShift Container Platform cluster on IBM Power® Virtual Server, complete the prerequisite tasks to configure your IBM Cloud® account, firewall, and credential utility.
 
-- You read the documentation on [selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing).
+- You reviewed details about the OpenShift Container Platform installation and update processes.
 
-- You [configured an IBM Cloud® account](../../installing/installing_ibm_powervs/installing-ibm-cloud-account-power-vs.xml#installing-ibm-cloud-account-power-vs) to host the cluster.
+- You read the documentation on selecting a cluster installation method and preparing it for users.
 
-- If you use a firewall, you [configured it to allow the sites](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
+- You configured an IBM Cloud® account to host the cluster.
 
-- You configured the `ccoctl` utility before you installed the cluster. For more information, see [Configuring the Cloud Credential Operator utility](../../installing/installing_ibm_powervs/preparing-to-install-on-ibm-power-vs.xml#cco-ccoctl-configuring_preparing-to-install-on-ibm-power-vs).
+- If you use a firewall, you configured it to allow the sites that your cluster requires access to.
+
+- You configured the `ccoctl` utility before you installed the cluster.
+
+<!-- -->
+
+- [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation)
+
+- [Selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing)
+
+- [Configuring an IBM Cloud® account](../../installing/installing_ibm_powervs/installing-ibm-cloud-account-power-vs.xml#installing-ibm-cloud-account-power-vs)
+
+- [Configuring your firewall](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
+
+- [Configuring the Cloud Credential Operator utility](../../installing/installing_ibm_powervs/preparing-to-install-on-ibm-power-vs.xml#cco-ccoctl-configuring_preparing-to-install-on-ibm-power-vs)
 
 # Internet access for OpenShift Container Platform
 
@@ -240,11 +254,11 @@ You can customize the OpenShift Container Platform cluster you install on
 
 ## Sample customized install-config.yaml file for IBM Power Virtual Server
 
-You can customize the `install-config.yaml` file to specify more details about your OpenShift Container Platform cluster’s platform or modify the values of the required parameters.
+You can customize the `install-config.yaml` file to specify more details about your OpenShift Container Platform cluster’s platform or change the values of the required parameters.
 
 <div class="important">
 
-This sample YAML file is provided for reference only. You must obtain your `install-config.yaml` file by using the installation program and modify it.
+This sample YAML file is for reference only. You must obtain your `install-config.yaml` file by using the installation program and change it.
 
 </div>
 
@@ -286,43 +300,58 @@ platform:
     zone: powervs-zone
     powervsResourceGroup: "ibmcloud-resource-group"
     serviceInstanceGUID: "powervs-region-service-instance-guid"
-    vpcRegion : vpc-region
+    vpcRegion: vpc-region
 publish: External
 pullSecret: '{"auths": ...}'
 sshKey: ssh-ed25519 AAAA...
 ```
 
-- If you do not provide these parameters and values, the installation program provides the default value.
+where:
 
-- The `controlPlane` section is a single mapping, but the compute section is a sequence of mappings. To meet the requirements of the different data structures, the first line of the `compute` section must begin with a hyphen, `-`, and the first line of the `controlPlane` section must not. Although both sections currently define a single machine pool, it is possible that OpenShift Container Platform will support defining multiple compute pools during installation. Only one control plane pool is used.
+`compute`
+Specifies parameters where, if you do not provide values, the installation program provides the default value. The first line of the `compute` section must begin with a hyphen, `-`. Although both sections currently define a single machine pool, it is possible that OpenShift Container Platform will support defining multiple compute pools during installation.
 
-- Whether to enable or disable simultaneous multithreading, or `hyperthreading`. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores. You can disable it by setting the parameter value to `Disabled`. If you disable simultaneous multithreading in some cluster machines, you must disable it in all cluster machines.
+`compute.hyperthreading`
+Specifies whether to enable or disable simultaneous multithreading, or `hyperthreading`. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores. You can disable it by setting the parameter value to `Disabled`. If you disable simultaneous multithreading in some cluster machines, you must disable it in all cluster machines.
 
-  <div class="important">
+`compute.platform.powervs.smtLevel`
+Specifies the level of SMT to set to the compute machines. The supported values are 1, 2, 4, 8, `'off'`, and `'on'`. The default value is 8. The smtLevel `'off'` sets SMT to off, and smtLevel `'on'` sets SMT to the default value 8 on the cluster nodes.
 
-  If you disable simultaneous multithreading, ensure that your capacity planning accounts for the dramatically decreased machine performance.
+`controlPlane`
+Specifies parameters where, if you do not provide values, the installation program provides the default value. The `controlPlane` section is a single mapping, and its first line must not begin with a hyphen. Only one control plane pool is used.
 
-  </div>
+`controlPlane.hyperthreading`
+Specifies whether to enable or disable simultaneous multithreading, or `hyperthreading`. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores. You can disable it by setting the parameter value to `Disabled`. If you disable simultaneous multithreading in some cluster machines, you must disable it in all cluster machines.
 
-- The smtLevel specifies the level of SMT to set to the control plane and compute machines. The supported values are 1, 2, 4, 8, `'off'` and `'on'`. The default value is 8. The smtLevel `'off'` sets SMT to off and smtlevel `'on'` sets SMT to the default value 8 on the cluster nodes.
+<div class="important">
 
-  <div class="note">
+When multithreading (SMT) is disabled, each vCPU is equivalent to one physical core. Disable SMT only if you have specific requirements.
 
-  When simultaneous multithreading (SMT), or hyperthreading is not enabled, one vCPU is equivalent to one physical core. When enabled, total vCPUs is computed as: (Thread(s) per core \* Core(s) per socket) \* Socket(s). The smtLevel controls the threads per core. Lower SMT levels may require additional assigned cores when deploying the cluster nodes. You can do this by setting the `'processors'` parameter in the `install-config.yaml` file to an appropriate value to meet the requirements for deploying OpenShift Container Platform successfully.
+</div>
 
-  </div>
+`controlPlane.platform.powervs.smtLevel`
+Specifies the level of SMT to set to the control plane. The supported values are 1, 2, 4, 8, `'off'`, and `'on'`. The default value is 8. The smtLevel `'off'` sets SMT to off, and smtLevel `'on'` sets SMT to the default value 8 on the cluster nodes.
 
-- The cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
+<div class="note">
 
-- The name of an existing resource group.
+When simultaneous multithreading (SMT) is not enabled, one vCPU is equivalent to one physical core. When enabled, total vCPUs is computed as: (Thread(s) per core \* Core(s) per socket) \* Socket(s). The smtLevel controls the threads per core. Lower SMT levels may require additional assigned cores when deploying the cluster nodes. You can do this by setting the `'processors'` parameter in the `install-config.yaml` file to an appropriate value to meet the requirements for deploying OpenShift Container Platform successfully.
 
-- Required. The installation program prompts you for this value.
+</div>
 
-  <div class="note">
+`networking.networkType`
+Specifies the cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
 
-  For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+`platform.powervs.powervsResourceGroup`
+Specifies the name of an existing resource group.
 
-  </div>
+`pullSecret`
+Specifies your pull secret. The installation program prompts you for this value. This value is required.
+
+<div class="note">
+
+For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+
+</div>
 
 ## Configuring the cluster-wide proxy during installation
 
@@ -767,10 +796,10 @@ To provide metrics about cluster health and the success of updates, the Telemetr
 
 After you confirm that your [OpenShift Cluster Manager](https://console.redhat.com/openshift) inventory is correct, either maintained automatically by Telemetry or manually by using OpenShift Cluster Manager,use subscription watch to track your OpenShift Container Platform subscriptions at the account or multi-cluster level. For more information about subscription watch, see "Data Gathered and Used by Red Hat’s subscription services" in the *Additional resources* section.
 
-- [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+# Additional resources
 
-# Next steps
+- [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
 - [Customize your cluster](../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
 
-- If necessary, you can [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)

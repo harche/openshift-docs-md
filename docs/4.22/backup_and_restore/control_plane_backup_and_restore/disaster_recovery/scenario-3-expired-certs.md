@@ -37,10 +37,7 @@ You can restore kubelet certificates by manually approving pending `node-bootstr
     $ oc describe csr <csr_name>
     ```
 
-    where:
-
-    `<csr_name>`
-    Specifies the name of a CSR from the list of current CSRs.
+    `<csr_name>` is the name of a CSR from the list of current CSRs.
 
 3.  Approve each valid `node-bootstrapper` CSR by running the following command:
 

@@ -96,7 +96,7 @@ Clusters in restricted networks have the following additional limitations and re
 
 # About using a custom VPC
 
-In OpenShift Container Platform 4.17, you can deploy a cluster into the subnets of an existing IBM® Virtual Private Cloud (VPC). Deploying OpenShift Container Platform into an existing VPC can help you avoid limit constraints in new accounts or more easily abide by the operational constraints that your company’s guidelines set. If you cannot obtain the infrastructure creation permissions that are required to create the VPC yourself, use this installation option.
+You can deploy OpenShift Container Platform into the subnets of an existing IBM® Virtual Private Cloud (VPC) to avoid account limit constraints or comply with your company’s infrastructure guidelines.
 
 Because the installation program cannot know what other components are in your existing subnets, it cannot choose subnet CIDRs and so forth. You must configure networking for the subnets to which you will install the cluster.
 
@@ -326,9 +326,7 @@ You must set the variable name exactly as specified; the installation program ex
 
 # Downloading the RHCOS cluster image
 
-The installation program requires the Red Hat Enterprise Linux CoreOS (RHCOS) image to install the cluster. While optional, downloading the Red Hat Enterprise Linux CoreOS (RHCOS) before deploying removes the need for internet access when creating the cluster.
-
-Use the installation program to locate and download the Red Hat Enterprise Linux CoreOS (RHCOS) image.
+The installation program requires the Red Hat Enterprise Linux CoreOS (RHCOS) image to install the cluster. While optional, downloading the Red Hat Enterprise Linux CoreOS (RHCOS) image before deploying removes the need for internet access when creating the cluster.
 
 - The host running the installation program has internet access.
 
@@ -600,17 +598,17 @@ If an instance type for your platform meets the minimum requirements for cluster
 
 ## Tested instance types for IBM Cloud
 
-The following IBM Cloud® instance types have been tested with OpenShift Container Platform.
+Use these tested IBM Cloud® instance types to ensure compatibility when selecting machine types for your OpenShift Container Platform cluster.
 
 <https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/ibmcloud/tested_instance_types_x86_64.md>
 
 ## Sample customized install-config.yaml file for IBM Cloud
 
-You can customize the `install-config.yaml` file to specify more details about your OpenShift Container Platform cluster’s platform or modify the values of the required parameters.
+You can customize the `install-config.yaml` file to specify more details about your OpenShift Container Platform cluster’s platform or change the values of the required parameters.
 
 <div class="important">
 
-This sample YAML file is provided for reference only. You must obtain your `install-config.yaml` file by using the installation program and then modify it.
+This sample YAML file is for reference only. You must obtain your `install-config.yaml` file by using the installation program and then change it.
 
 </div>
 
@@ -621,7 +619,7 @@ controlPlane:
   hyperthreading: Enabled
   name: master
   platform:
-    ibm-cloud: {}
+    ibmcloud: {}
   replicas: 3
 compute:
 - hyperthreading: Enabled
@@ -688,59 +686,88 @@ imageContentSources:
   source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
 ```
 
-- Required.
+where:
 
-- If you do not provide these parameters and values, the installation program provides the default value.
+`baseDomain`
+Specifies the base domain of your cluster. This value is required.
 
-- The `controlPlane` section is a single mapping, but the `compute` section is a sequence of mappings. To meet the requirements of the different data structures, the first line of the `compute` section must begin with a hyphen, `-`, and the first line of the `controlPlane` section must not. Only one control plane pool is used.
+`metadata.name`
+Specifies the name of your cluster. This value is required.
 
-- Enables or disables simultaneous multithreading, also known as Hyper-Threading. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores. You can disable it by setting the parameter value to `Disabled`. If you disable simultaneous multithreading in some cluster machines, you must disable it in all cluster machines.
+`platform.ibmcloud.region`
+Specifies the IBM Cloud® region to deploy the cluster to. This value is required.
 
-  <div class="important">
+`pullSecret`
+Specifies the pull secret for your mirror registry. For `<local_registry>`, specify the registry domain name, and optionally the port, that your mirror registry uses to serve content. For example, `registry.example.com` or `registry.example.com:5000`. For `<credentials>`, specify the base64-encoded user name and password for your mirror registry.
 
-  If you disable simultaneous multithreading, ensure that your capacity planning accounts for the dramatically decreased machine performance. Use larger machine types, such as `n1-standard-8`, for your machines if you disable simultaneous multithreading.
+`compute`
+Specifies parameters where, if you do not supply values, the installation program uses the default value. The first line of the `compute` section must begin with a hyphen, `-`. Both sections currently define a single machine pool.
 
-  </div>
+`compute.hyperthreading`
+Specifies whether to enable or disable simultaneous multithreading, also known as Hyper-Threading. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores. You can disable it by setting the parameter value to `Disabled`. If you disable simultaneous multithreading in some cluster machines, you must disable it in all cluster machines.
 
-- The machine CIDR must contain the subnets for the compute machines and control plane machines.
+`controlPlane`
+Specifies parameters where, if you do not supply values, the installation program uses the default value. The `controlPlane` section is a single mapping, and its first line must not begin with a hyphen. Only one control plane pool is used.
 
-- The CIDR must contain the subnets defined in `platform.ibmcloud.controlPlaneSubnets` and `platform.ibmcloud.computeSubnets`.
+`controlPlane.hyperthreading`
+Specifies whether to enable or disable simultaneous multithreading, also known as Hyper-Threading. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores. You can disable it by setting the parameter value to `Disabled`. If you disable simultaneous multithreading in some cluster machines, you must disable it in all cluster machines.
 
-- The cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
+<div class="important">
 
-- The name of an existing resource group. All installer-provisioned cluster resources are deployed to this resource group. If undefined, a new resource group is created for the cluster.
+If you disable simultaneous multithreading, ensure that your capacity planning accounts for the dramatically decreased machine performance. Use larger machine types, such as `n1-standard-8`, for your machines if you disable simultaneous multithreading.
 
-- Based on the network restrictions of the VPC, specify alternate service endpoints as needed. This overrides the default public endpoint for the service.
+</div>
 
-- Specify the name of the resource group that contains the existing virtual private cloud (VPC). The existing VPC and subnets should be in this resource group. The cluster will be installed to this VPC.
+`networking.clusterNetwork.cidr`
+Specifies the CIDR. The machine CIDR must contain the subnets for the compute machines and control plane machines.
 
-- Specify the name of an existing VPC.
+`networking.machineNetwork.cidr`
+Specifies the CIDR. The CIDR must contain the subnets defined in `platform.ibmcloud.controlPlaneSubnets` and `platform.ibmcloud.computeSubnets`.
 
-- Specify the name of the existing subnets to which to deploy the control plane machines. The subnets must belong to the VPC that you specified. Specify a subnet for each availability zone in the region.
+`networking.networkType`
+Specifies the cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
 
-- Specify the name of the existing subnets to which to deploy the compute machines. The subnets must belong to the VPC that you specified. Specify a subnet for each availability zone in the region.
+`platform.ibmcloud.resourceGroupName`
+Specifies the name of an existing resource group. All installer-provisioned cluster resources are deployed to this resource group. If undefined, a new resource group is created for the cluster.
 
-- For `<local_registry>`, specify the registry domain name, and optionally the port, that your mirror registry uses to serve content. For example, registry.example.com or registry.example.com:5000. For `<credentials>`, specify the base64-encoded user name and password for your mirror registry.
+`platform.ibmcloud.serviceEndpoints`
+Specifies alternate service endpoints based on the network restrictions of the VPC. This overrides the default public endpoint for the service.
 
-- Enables or disables FIPS mode. By default, FIPS mode is not enabled. If FIPS mode is enabled, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that are provided with RHCOS instead.
+`platform.ibmcloud.networkResourceGroupName`
+Specifies the name of the resource group that contains the existing virtual private cloud (VPC). The existing VPC and subnets must be in this resource group. The cluster is installed to this VPC.
 
-  <div class="important">
+`platform.ibmcloud.vpcName`
+Specifies the name of an existing VPC.
 
-  The use of FIPS Validated or Modules in Process cryptographic libraries is only supported on OpenShift Container Platform deployments on the `x86_64` architecture.
+`platform.ibmcloud.controlPlaneSubnets`
+Specifies the name of the existing subnets to which to deploy the control plane machines. The subnets must belong to the VPC that you specified. Specify a subnet for each availability zone in the region.
 
-  </div>
+`platform.ibmcloud.computeSubnets`
+Specifies the name of the existing subnets to which to deploy the compute machines. The subnets must belong to the VPC that you specified. Specify a subnet for each availability zone in the region.
 
-- Optional: provide the `sshKey` value that you use to access the machines in your cluster.
+`fips`
+Specifies whether to enable or disable FIPS mode. By default, FIPS mode is not enabled. If FIPS mode is enabled, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that are provided with RHCOS instead.
 
-- Provide the contents of the certificate file that you used for your mirror registry.
+<div class="important">
 
-- Provide these values from the `metadata.name: release-0` section of the `imageContentSourcePolicy.yaml` file that was created when you mirrored the registry.
+The use of FIPS Validated or Modules in Process cryptographic libraries is only supported on OpenShift Container Platform deployments on the `x86_64` architecture.
 
-  <div class="note">
+</div>
 
-  For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+`sshKey`
+Specifies the SSH key to use to access the machines in your cluster. This value is optional.
 
-  </div>
+`additionalTrustBundle`
+Specifies the contents of the certificate file that you used for your mirror registry.
+
+`imageContentSources`
+Specifies the values from the `metadata.name: release-0` section of the `imageContentSourcePolicy.yaml` file that was created when you mirrored the registry.
+
+<div class="note">
+
+For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+
+</div>
 
 # Installing the OpenShift CLI on Linux
 

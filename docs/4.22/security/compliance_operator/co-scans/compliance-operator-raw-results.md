@@ -1,4 +1,4 @@
-When proving compliance for your OpenShift Container Platform cluster, you might need to give the scan results for auditing purposes.
+When proving compliance for your OpenShift Container Platform cluster, you might need to provide the scan results for auditing purposes.
 
 # Obtaining Compliance Operator raw results from a persistent volume
 

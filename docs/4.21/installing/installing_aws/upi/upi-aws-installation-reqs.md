@@ -76,7 +76,9 @@ If an instance type for your platform meets the minimum requirements for cluster
 
 ## Tested instance types for AWS
 
-The following Amazon Web Services (AWS) instance types have been tested with OpenShift Container Platform.
+There are several Amazon Web Services (AWS) instance types tested with OpenShift Container Platform.
+
+The following AWS instance types have been tested with OpenShift Container Platform.
 
 <div class="note">
 
@@ -88,7 +90,9 @@ Use the machine types included in the following charts for your AWS instances. I
 
 ## Tested instance types for AWS on 64-bit ARM infrastructures
 
-The following Amazon Web Services (AWS) 64-bit ARM instance types have been tested with OpenShift Container Platform.
+There are several Amazon Web Services (AWS) 64-bit ARM instance types tested with OpenShift Container Platform.
+
+The following AWS 64-bit ARM instance types have been tested with OpenShift Container Platform.
 
 <div class="note">
 

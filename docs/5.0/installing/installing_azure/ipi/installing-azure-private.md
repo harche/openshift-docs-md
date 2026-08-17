@@ -50,11 +50,11 @@ Private clusters on Azure are subject to only the limitations that are associate
 
 ## User-defined outbound routing
 
-In OpenShift Container Platform, you can choose your own outbound routing for a cluster to connect to the internet. This allows you to skip the creation of public IP addresses and the public load balancer.
+You can configure user-defined outbound routing for a OpenShift Container Platform cluster to reach the internet without public IP addresses or a public load balancer.
 
-You can configure user-defined routing by modifying parameters in the `install-config.yaml` file before installing your cluster. A pre-existing VNet is required to use outbound routing when installing a cluster; the installation program is not responsible for configuring this.
+You must use a pre-existing `VNet` for outbound routing when you install a cluster. The installation program does not configure this network.
 
-When configuring a cluster to use user-defined routing, the installation program does not create the following resources:
+When you configure a cluster to use user-defined routing, the installation program does not create the following resources:
 
 - Outbound rules for access to the internet.
 
@@ -62,43 +62,49 @@ When configuring a cluster to use user-defined routing, the installation program
 
 - Kubernetes Service object to add the cluster machines to the public load balancer for outbound requests.
 
-You must ensure the following items are available before setting user-defined routing:
+Before you set user-defined routing, ensure that the following items are available:
 
-- Egress to the internet is possible to pull container images, unless using an OpenShift image registry mirror.
+- Egress to the internet so that you can pull container images, unless you use an OpenShift image registry mirror.
 
-- The cluster can access Azure APIs.
+- Access from the cluster to Azure APIs.
 
-- Various allowlist endpoints are configured. You can reference these endpoints in the *Configuring your firewall* section.
+- Access to the required allowlist endpoints.
 
-There are several pre-existing networking setups that are supported for internet access using user-defined routing.
+Several pre-existing networking setups support internet access by using user-defined routing.
 
 ### Private cluster with network address translation
 
-You can use [Azure VNET network address translation (NAT)](https://docs.microsoft.com/en-us/azure/virtual-network/nat-overview) to provide outbound internet access for the subnets in your cluster. You can reference [Create a NAT gateway using Azure CLI](https://docs.microsoft.com/en-us/azure/virtual-network/quickstart-create-nat-gateway-cli) in the Azure documentation for configuration instructions.
+You can use Azure Virtual Network (`VNet`) network address translation (NAT) to provide outbound internet access for the subnets in your cluster.
 
-When using a VNet setup with Azure NAT and user-defined routing configured, you can create a private cluster with no public endpoints.
+When you use a `VNet` setup with Azure NAT and user-defined routing configured, you can create a private cluster with no public endpoints.
 
 ### Private cluster with Azure Firewall
 
-You can use Azure Firewall to provide outbound routing for the VNet used to install the cluster. You can learn more about [providing user-defined routing with Azure Firewall](https://docs.microsoft.com/en-us/azure/aks/egress-outboundtype#deploy-a-cluster-with-outbound-type-of-udr-and-azure-firewall) in the Azure documentation.
+You can use Azure Firewall to provide outbound routing for the `VNet` used to install the cluster.
 
-When using a VNet setup with Azure Firewall and user-defined routing configured, you can create a private cluster with no public endpoints.
+When you use a `VNet` setup with Azure Firewall and user-defined routing configured, you can create a private cluster with no public endpoints.
 
 ### Private cluster with a proxy configuration
 
-You can use a proxy with user-defined routing to allow egress to the internet. You must ensure that cluster Operators do not access Azure APIs using a proxy; Operators must have access to Azure APIs outside of the proxy.
+You can use a proxy with user-defined routing to allow egress to the internet. You must ensure that cluster Operators do not access Azure APIs by using a proxy; Operators must have access to Azure APIs outside of the proxy.
 
-When using the default route table for subnets, with `0.0.0.0/0` populated automatically by Azure, all Azure API requests are routed over Azure’s internal network even though the IP addresses are public. As long as the Network Security Group rules allow egress to Azure API endpoints, proxies with user-defined routing configured allow you to create private clusters with no public endpoints.
+When you use the default route table for subnets, with `0.0.0.0/0` populated automatically by Azure, all Azure API requests are routed over Azure’s internal network even though the IP addresses are public. As long as the Network Security Group rules allow egress to Azure API endpoints, proxies with user-defined routing configured allow you to create private clusters with no public endpoints.
 
 ### Private cluster with no internet access
 
-You can install a private network that restricts all access to the internet, except the Azure API. This is accomplished by mirroring the release image registry locally. Your cluster must have access to the following:
+You can install a private network that restricts all access to the internet, except the Azure API. Mirror the release image registry locally. Your cluster must have access to the following:
 
 - An OpenShift image registry mirror that allows for pulling container images
 
 - Access to Azure APIs
 
 With these requirements available, you can use user-defined routing to create private clusters with no public endpoints.
+
+- [Azure VNet network address translation (NAT)](https://docs.microsoft.com/en-us/azure/virtual-network/nat-overview)
+
+- [Create a NAT gateway by using Azure CLI](https://docs.microsoft.com/en-us/azure/virtual-network/quickstart-create-nat-gateway-cli)
+
+- [Providing user-defined routing with Azure Firewall](https://docs.microsoft.com/en-us/azure/aks/egress-outboundtype#deploy-a-cluster-with-outbound-type-of-udr-and-azure-firewall)
 
 # About reusing a VNet for your OpenShift Container Platform cluster
 

@@ -1,7 +1,5 @@
 Although the Compliance Operator automates many of the checks and remediations for the cluster, an administrator can use the `oc-compliance` plugin to perform the full process of bringing a cluster into compliance by interacting with the Compliance Operator API and other components.
 
-- [Understanding the Compliance Operator](../../../security/compliance_operator/co-concepts/compliance-operator-understanding.xml#understanding-compliance-operator)
-
 # Installing the oc-compliance plugin
 
 You can install the `oc-compliance` plugin to simplify compliance operations from the command line.
@@ -279,6 +277,12 @@ The Compliance Operator provides remediation objects that are used to automate t
 
 The `fetch-fixes` extracts the remediation objects from a profile, rule, or `ComplianceRemediation` object into a directory for you to inspect.
 
+<div class="warning">
+
+Use caution before applying remediations directly. Some remediations might not be applicable in bulk, such as the usbguard rules in the moderate profile. In these cases, allow the Compliance Operator to apply the rules because it addresses the dependencies and ensures that the cluster remains in a good state.
+
+</div>
+
 1.  View the remediations for a profile:
 
     ``` terminal
@@ -388,12 +392,6 @@ The `fetch-fixes` extracts the remediation objects from a profile, rule, or `Com
         type: aescbc
     ```
 
-<div class="warning">
-
-Use caution before applying remediations directly. Some remediations might not be applicable in bulk, such as the usbguard rules in the moderate profile. In these cases, allow the Compliance Operator to apply the rules because it addresses the dependencies and ensures that the cluster remains in a good state.
-
-</div>
-
 # Viewing ComplianceCheckResult object details
 
 When scans are finished running, `ComplianceCheckResult` objects are created for the individual scan rules. You can use the `view-result` subcommand to provide a human-readable output of the `ComplianceCheckResult` object details.
@@ -403,3 +401,7 @@ When scans are finished running, `ComplianceCheckResult` objects are created for
   ``` terminal
   $ oc compliance view-result ocp4-cis-scheduler-no-bind-address
   ```
+
+# Additional resources
+
+- [Understanding the Compliance Operator](../../../security/compliance_operator/co-concepts/compliance-operator-understanding.xml#understanding-compliance-operator)

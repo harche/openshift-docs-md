@@ -1,8 +1,8 @@
-You can summarize your cluster specifications by querying the `clusterversion` resource to view cluster version information and component status.
+To verify the version, update history, and component status of your OpenShift Container Platform cluster, query the `clusterversion` resource.
 
 # Summarizing cluster specifications by using a cluster version object
 
-You can obtain a summary of OpenShift Container Platform cluster specifications by querying the `clusterversion` resource.
+To verify your cluster version, check update history, and confirm component status, query the `clusterversion` resource.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 

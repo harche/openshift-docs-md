@@ -43,7 +43,7 @@ The following table shows failure tolerance for clusters of different sizes:
 
 Failure tolerances by cluster size
 
-For more information about recovering from quorum loss, see "Restoring to a previous cluster state".
+For more information about recovering from quorum loss, see "Restoring to an earlier cluster state".
 
 - [Adding hosts](https://docs.redhat.com/en/documentation/assisted_installer_for_openshift_container_platform/2026/html/installing_openshift_container_platform_with_the_assisted_installer/installing-with-api#adding-hosts_installing-with-api)
 
@@ -51,7 +51,7 @@ For more information about recovering from quorum loss, see "Restoring to a prev
 
 - [Expanding the cluster](https://docs.redhat.com/en/documentation/assisted_installer_for_openshift_container_platform/2026/html/installing_openshift_container_platform_with_the_assisted_installer/expanding-the-cluster)
 
-- [Restoring to a previous cluster state](../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
+- [Restoring to an earlier cluster state](../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
 
 # Managing etcd size by limiting the duration of Kubernetes events
 

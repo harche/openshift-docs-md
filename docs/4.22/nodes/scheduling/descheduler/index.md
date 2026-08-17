@@ -128,8 +128,6 @@ Do not enable `CompactAndScale` with any of the following profiles: `LifecycleAn
 </div>
 
 `KubeVirtRelieveAndMigrate`
-This profile is an enhanced version of the `LongLifeCycle` profile.
-
 The `KubeVirtRelieveAndMigrate` profile evicts pods from high-cost nodes to reduce overall resource expenses and enable workload migration. It also periodically rebalances workloads to help maintain similar spare capacity across nodes, which supports better handling of sudden workload spikes. Nodes can experience the following costs:
 
 - **Resource utilization**: Increased resource pressure raises the overhead for running applications.
@@ -152,11 +150,7 @@ The profile also exposes the following customization fields:
 
 - `devEnableSoftTainter`: Enables the soft-tainting component to dynamically apply or remove soft taints as scheduling hints.
 
-<div class="formalpara-title">
-
-**Example configuration**
-
-</div>
+Example configuration:
 
 ``` yaml
 apiVersion: operator.openshift.io/v1
@@ -178,11 +172,7 @@ spec:
 
 The `KubeVirtRelieveAndMigrate` profile requires PSI metrics to be enabled on all worker nodes. You can enable this by applying the following `MachineConfig` custom resource (CR):
 
-<div class="formalpara-title">
-
-**Example `MachineConfig` CR**
-
-</div>
+Example `MachineConfig` CR:
 
 ``` yaml
 apiVersion: machineconfiguration.openshift.io/v1
@@ -203,8 +193,6 @@ The name of the `MachineConfig` object is significant because machine configs ar
 </div>
 
 You can use this profile with the `SoftTopologyAndDuplicates` profile to also rebalance pods based on soft topology constraints, which can be useful in hosted control plane environments.
-
-<!-- -->
 
 `LongLifecycle`
 This profile balances resource usage between nodes and enables the following strategies:

@@ -250,6 +250,11 @@ You can enable a user-provisioned domain name server (DNS) instead of the defaul
 
 For more information, see [Enabling a user-managed DNS](../installing/installing_azure/ipi/installing-restricted-networks-azure-installer-provisioned.xml#installation-azure-enabling-user-managed-DNS_installing-restricted-networks-azure-installer-provisioned) and [Provisioning your own DNS records](../installing/installing_azure/ipi/installing-azure-customizations.xml#installation-azure-provisioning-own-dns-records_installing-azure-customizations).
 
+Updated minimum version requirements for Nutanix AOS and Prism Central
+With this release, the minimum supported versions for Nutanix AOS and Prism Central are updated to version 7.3 or later. Ensure that your Nutanix environment meets these requirements before installing OpenShift Container Platform.
+
+For more information, see [Nutanix version requirements](../installing/installing_nutanix/preparing-to-install-on-nutanix.xml#installation-nutanix-infrastructure_preparing-to-install-on-nutanix).
+
 ## Machine Config Operator
 
 Boot image management for Azure and vSphere clusters promoted to GA
@@ -960,6 +965,28 @@ This section will continue to be updated over time to provide notes on enhanceme
 For any OpenShift Container Platform release, always review the instructions on [updating your cluster](../updating/updating_a_cluster/updating-cluster-web-console.xml#updating-cluster-web-console) properly.
 
 </div>
+
+## RHSA-2026:51025 - OpenShift Container Platform 4.17.28 bug fix and security update
+
+Issued: 11 August 2026
+
+OpenShift Container Platform release 4.17.28 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:51025](https://access.redhat.com/errata/RHSA-2026:51025) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:51020](https://access.redhat.com/errata/RHBA-2026:51020) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.28 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, gateway pods used by layered products such as Red Hat OpenShift AI and Red Hat Connectivity Link did not respect the cluster-wide egress proxy configuration when attempting to pull `Wasm` plugins. As a consequence, in disconnected environments behind an enterprise HTTP proxy, the Gateway pods could not download the required `Wasm` plugins. This situation resulted in HTTP 403 role-based access control (RBAC) errors and failed inference requests. With this release, the Ingress Operator configures the Istio control plane to respect the cluster-wide egress proxy configuration (`proxies.config.openshift.io/cluster`). As a result, Gateway pods successfully pull `Wasm` plugins in proxied environments without requiring manual configuration. ([OCPBUGS-99453](https://redhat.atlassian.net/browse/OCPBUGS-99453))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
 
 ## RHSA-2026:48670 - OpenShift Container Platform 4.17.27 bug fix and security update
 

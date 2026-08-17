@@ -66,7 +66,7 @@ You can activate the following feature set by using the `FeatureGate` CR:
 
   - `ClusterAPIMachineManagementGCP`
 
-  - \`ClusterAPIMachineManagementOpenStack
+  - `ClusterAPIMachineManagementOpenStack`
 
   - `ClusterAPIMachineManagementPowerVS`
 
@@ -215,8 +215,6 @@ You can activate the following feature set by using the `FeatureGate` CR:
   - `VSphereMultiDisk`
 
   - `VSphereMultiNetworks`
-
-See the *Additional resources* sections for information on some of these features.
 
 # Enabling feature sets at installation
 

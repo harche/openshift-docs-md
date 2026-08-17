@@ -10,6 +10,8 @@ You can use an etcd backup to restore your cluster to a previous state. This can
 
 - An administrator has deleted something critical and must restore to recover the cluster.
 
+If applicable, you might also need to recover from expired control plane certificates.
+
 <div class="warning">
 
 Restoring to an earlier cluster state is a destructive and destabilizing action to take on a running cluster. This should only be used as a last resort.

@@ -4,6 +4,10 @@ AWS Local Zones is an infrastructure that place Cloud Resources close to metropo
 
 # Infrastructure prerequisites
 
+Before you install an OpenShift Container Platform cluster on Amazon Web Services (AWS) Local Zones, you must meet several prerequisites.
+
+The following prerequisites must be met:
+
 - You reviewed details about [OpenShift Container Platform installation and update](../../../architecture/architecture-installation.xml#architecture-installation) processes.
 
 - You are familiar with [Selecting a cluster installation method and preparing it for users](../../../installing/overview/installing-preparing.xml#installing-preparing).
@@ -47,11 +51,7 @@ AWS Local Zones is an infrastructure that place Cloud Resources close to metropo
   }
   ```
 
-# About AWS Local Zones and edge compute pool
-
-Read the following sections to understand infrastructure behaviors and cluster limitations in an AWS Local Zones environment.
-
-## Cluster limitations in AWS Local Zones
+# Cluster limitations in AWS Local Zones
 
 Some limitations exist when you try to deploy a cluster with a default installation configuration in an Amazon Web Services (AWS) Local Zone.
 
@@ -79,7 +79,7 @@ The following configuration limitation applies when you set the installation pro
 
 </div>
 
-## About edge compute pools
+# About edge compute pools
 
 The edge compute pool configuration is common between Amazon Web Services (AWS) Local Zones locations. You can use the edge compute pool to create new labels to deploy applications onto Amazon Web Services (AWS) Local Zones nodes. Edge compute nodes are tainted compute nodes that run in AWS Local Zones locations.
 
@@ -123,11 +123,7 @@ By default, the machine sets for the edge compute pool define the taint of `NoSc
 
 - [How Local Zones work (AWS documentation)](https://docs.aws.amazon.com/local-zones/latest/ug/how-local-zones-work.html)
 
-# Installation prerequisites
-
-Before you install a cluster in an AWS Local Zones environment, you must configure your infrastructure so that it can adopt Local Zone capabilities.
-
-## Opting in to an AWS Local Zones
+# Opting in to an AWS Local Zones
 
 Create a subnet in an Amazon Web Services (AWS) Local Zones when you need workloads to run physically closer to users or data sources than a standard AWS Local Zones. If you plan to create subnets in AWS Local Zones, you must opt in to each zone group separately.
 
@@ -174,7 +170,7 @@ Create a subnet in an Amazon Web Services (AWS) Local Zones when you need worklo
     `<value_of_GroupName>`
     Replace with the name of the group of the Local Zones where you want to create subnets. For example, specify `us-east-1-nyc-1` to use the zone `us-east-1-nyc-1a` (US East New York).
 
-## Obtaining an AWS Marketplace image
+# Obtaining an AWS Marketplace image
 
 If you are deploying an OpenShift Container Platform cluster using an AWS Marketplace image, you must first subscribe through AWS. Subscribing to the offer provides you with the AMI ID that the installation program uses to deploy compute nodes.
 
@@ -216,15 +212,15 @@ You should only modify the RHCOS image for compute machines to use an AWS Market
     pullSecret: '{"auths": ...}'
     ```
 
-    - The AMI ID from your AWS Marketplace subscription.
+    where:
 
-    - Your AMI ID is associated with a specific AWS Region. When creating the installation configuration file, ensure that you select the same AWS Region that you specified when configuring your subscription.
+    `compute.platform.aws.amiID`
+    Specifies the AMI ID from your AWS Marketplace subscription.
 
-# Preparing for the installation
+    `platform.aws.region`
+    Specifies the `platform.aws.region` parameter. Your AMI ID is associated with a specific AWS Region. When creating the installation configuration file, ensure that you select the same AWS Region that you specified when configuring your subscription.
 
-Before you extend nodes to Local Zones, you must prepare certain resources for the cluster installation environment.
-
-## Minimum resource requirements for cluster installation
+# Minimum resource requirements for cluster installation
 
 Each created cluster must meet minimum requirements so that the cluster runs as expected.
 
@@ -262,9 +258,11 @@ If an instance type for your platform meets the minimum requirements for cluster
 
 - [Architectures (RHEL documentation)](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures)
 
-## Tested instance types for AWS
+# Tested instance types for AWS
 
-The following Amazon Web Services (AWS) instance types have been tested with OpenShift Container Platform for use with AWS Local Zones.
+There are several Amazon Web Services (AWS) instance types tested with OpenShift Container Platform.
+
+The following AWS instance types have been tested with OpenShift Container Platform for use with AWS Local Zones.
 
 <div class="note">
 
@@ -288,7 +286,7 @@ Use the machine types included in the following charts for your AWS instances. I
 
 - [AWS Local Zones features (AWS documentation)](https://aws.amazon.com/about-aws/global-infrastructure/localzones/features/)
 
-## Creating the installation configuration file
+# Creating the installation configuration file
 
 Generate and customize the installation configuration file that the installation program needs to deploy your cluster.
 
@@ -348,7 +346,9 @@ Generate and customize the installation configuration file that the installation
 
     </div>
 
-## Examples of installation configuration files with edge compute pools
+# Examples of installation configuration files with edge compute pools
+
+See an example `install-config.yaml` file to better understand configurations for edge compute pools.
 
 The following examples show `install-config.yaml` files that contain an edge machine pool configuration.
 
@@ -433,9 +433,9 @@ pullSecret: '{"auths": ...}'
 sshKey: ssh-ed25519 AAAA...
 ```
 
-- Specify the name of the security group as it is displayed on the Amazon EC2 console. Ensure that you include the `sg` prefix.
+For the `additionalSecurityGroupIDs` parameter, specify the name of the security group as it is displayed on the Amazon EC2 console. Ensure that you include the `sg` prefix.
 
-## Customizing the cluster network MTU
+# Customizing the cluster network MTU
 
 Before you deploy a cluster on AWS, you can customize the cluster network maximum transmission unit (MTU) for your cluster network to meet the needs of your infrastructure.
 
@@ -488,27 +488,19 @@ sshKey: ssh-ed25519 AAAA...
 
 # Cluster installation options for an AWS Local Zones environment
 
-Choose one of the following installation options to install an OpenShift Container Platform cluster on AWS with edge compute nodes defined in Local Zones:
+You can install an OpenShift Container Platform cluster on AWS with edge compute nodes defined in Local Zones.
+
+Choose one of the following installation options:
 
 - Fully automated option: Installing a cluster to quickly extend compute nodes to edge compute pools, where the installation program automatically creates infrastructure resources for the OpenShift Container Platform cluster.
 
 - Existing VPC option: Installing a cluster on AWS into an existing VPC, where you supply Local Zones subnets to the `install-config.yaml` file.
 
-<div class="formalpara-title">
-
-**Next steps**
-
-</div>
-
-Choose one of the following options to install an OpenShift Container Platform cluster in an AWS Local Zones environment:
-
-- [Installing a cluster quickly in AWS Local Zones](../../../installing/installing_aws/ipi/installing-aws-localzone.xml#installation-cluster-quickly-extend-compute-nodes_installing-aws-localzone)
-
-- [Installing a cluster in an existing VPC with defined AWS Local Zone subnets](../../../installing/installing_aws/ipi/installing-aws-localzone.xml#creating-aws-local-zone-environment-existing_installing-aws-localzone)
-
 # Install a cluster quickly in AWS Local Zones
 
-For OpenShift Container Platform 4.17, you can quickly install a cluster on Amazon Web Services (AWS) to extend compute nodes to Local Zones locations. By using this installation route, the installation program automatically creates network resources and Local Zones subnets for each zone that you defined in your configuration file. To customize the installation, you must modify parameters in the `install-config.yaml` file before you deploy the cluster.
+You can quickly install a cluster on Amazon Web Services (AWS) to extend compute nodes to Local Zones locations.
+
+By using this installation route, the installation program automatically creates network resources and Local Zones subnets for each zone that you defined in your configuration file. To customize the installation, you must modify parameters in the `install-config.yaml` file before you deploy the cluster.
 
 ## Modifying an installation configuration file to use AWS Local Zones
 
@@ -577,13 +569,13 @@ Modify an `install-config.yaml` file to include AWS Local Zones.
 
 - [Cluster limitations in AWS Local Zones](../../../installing/installing_aws/ipi/installing-aws-localzone.xml#cluster-limitations-aws-zone_installing-aws-localzone)
 
-<!-- -->
-
 - [Deploying the cluster](../../../installing/installing_aws/ipi/installing-aws-localzone.xml#installation-launching-installer_installing-aws-localzone)
 
 # Installing a cluster in an existing VPC that has Local Zone subnets
 
-You can install a cluster into an existing Amazon Virtual Private Cloud (VPC) on Amazon Web Services (AWS). The installation program provisions the rest of the required infrastructure, which you can further customize. To customize the installation, change parameters in the `install-config.yaml` file before you install the cluster.
+You can install a cluster into an existing Amazon Virtual Private Cloud (VPC) on Amazon Web Services (AWS). The installation program provisions the rest of the required infrastructure, which you can further customize.
+
+To customize the installation, change parameters in the `install-config.yaml` file before you install the cluster.
 
 Installing a cluster on AWS into an existing VPC requires extending compute nodes to the edge of the Cloud Infrastructure by using AWS Local Zones.
 
@@ -605,7 +597,9 @@ The documentation provides the steps for performing an installer-provisioned inf
 
 ## Creating a VPC in AWS
 
-You can create a Virtual Private Cloud (VPC), and subnets for all Local Zones locations, in Amazon Web Services (AWS) for your OpenShift Container Platform cluster to extend compute nodes to edge locations. You can further customize your VPC to meet your requirements, including a VPN and route tables. You can also add new Local Zones subnets not included at initial deployment.
+You can create a Virtual Private Cloud (VPC), and subnets for all Local Zones locations, in Amazon Web Services (AWS) for your OpenShift Container Platform cluster to extend compute nodes to edge locations.
+
+You can further customize your VPC to meet your requirements, including a VPN and route tables. You can also add new Local Zones subnets not included at initial deployment.
 
 You can use the provided CloudFormation template and a custom parameter file to create a stack of AWS resources that represent the VPC.
 
@@ -701,7 +695,9 @@ If you do not use the provided CloudFormation template to create your AWS infras
 
 ## CloudFormation template for the VPC
 
-You can use the following CloudFormation template to deploy the VPC that you need for your OpenShift Container Platform cluster.
+You can use a CloudFormation template to deploy the VPC that you need for your OpenShift Container Platform cluster.
+
+See the following template:
 
 ``` yaml
 AWSTemplateFormatVersion: 2010-09-09
@@ -1019,7 +1015,9 @@ Outputs:
 
 ## Creating subnets in Local Zones
 
-Before you configure a machine set for edge compute nodes in your OpenShift Container Platform cluster, you must create the subnets in Local Zones. Complete the following procedure for each Local Zone that you want to deploy compute nodes to.
+Before you configure a machine set for edge compute nodes in your OpenShift Container Platform cluster, you must create the subnets in Local Zones.
+
+Complete the following procedure for each Local Zone that you want to deploy compute nodes to.
 
 You can use the provided CloudFormation template and create a CloudFormation stack. You can then use this stack to custom provision a subnet.
 
@@ -1234,8 +1232,6 @@ Modify your `install-config.yaml` file to include Local Zones subnets.
 
 - [Configuration and credential file settings in the AWS CLI (AWS documentation)](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
 
-<!-- -->
-
 - [Deploying the cluster](../../../installing/installing_aws/ipi/installing-aws-localzone.xml#installation-launching-installer_installing-aws-localzone)
 
 # Optional: AWS security groups
@@ -1388,11 +1384,7 @@ When the cluster deployment completes successfully:
 
   </div>
 
-# Verifying the status of the deployed cluster
-
-Verify that your OpenShift Container Platform successfully deployed on AWS Local Zones.
-
-## Logging in to the cluster by using the CLI
+# Logging in to the cluster by using the CLI
 
 To log in to your cluster as the default system user, export the `kubeconfig` file. This configuration enables the CLI to authenticate and connect to the specific API server created during OpenShift Container Platform installation.
 
@@ -1433,7 +1425,7 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 - "Remote health reporting"
 
-## Logging in to the cluster by using the web console
+# Logging in to the cluster by using the web console
 
 The `kubeadmin` user exists by default after an OpenShift Container Platform installation. You can log in to your cluster as the `kubeadmin` user by using the OpenShift Container Platform web console.
 
@@ -1479,7 +1471,7 @@ The `kubeadmin` user exists by default after an OpenShift Container Platform ins
 
 - [Accessing the web console](../../../web_console/web-console.xml#web-console)
 
-## Verifying nodes that were created with edge compute pool
+# Verifying nodes that were created with edge compute pool
 
 After you install a cluster that uses AWS Local Zones infrastructure, check the status of the machine that was created by the machine set manifests created during installation.
 
@@ -1541,6 +1533,8 @@ After you install a cluster that uses AWS Local Zones infrastructure, check the 
     ip-10-0-207-188.ec2.internal   Ready    edge,worker   172m   v1.25.2+d2e245f
     ```
 
-- [Validating an installation](../../../installing/validation_and_troubleshooting/validating-an-installation.xml#validating-an-installation).
+# Additional resources
 
-- If necessary, you can [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting).
+- [Validating an installation](../../../installing/validation_and_troubleshooting/validating-an-installation.xml#validating-an-installation)
+
+- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)

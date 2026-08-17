@@ -1,4 +1,4 @@
-In OpenShift Container Platform version 4.17, you can install a cluster in a logical partition (LPAR) on IBM Z® or IBM® LinuxONE infrastructure that you provision.
+In OpenShift Container Platform version 4.17, you can install a cluster directly in a logical partition (LPAR) on IBM Z® or IBM® LinuxONE infrastructure that you provision, without using a hypervisor layer.
 
 <div class="note">
 
@@ -6,25 +6,39 @@ While this document refers only to IBM Z®, all information in it also applies t
 
 </div>
 
-# Prerequisites
+# Prerequisites for installing a cluster on IBM Z
 
-- You have completed the tasks in [Preparing to install a cluster on IBM Z using user-provisioned infrastructure](../../../installing/installing_ibm_z/upi/upi-ibm-z-preparing-to-install.xml#upi-ibm-z-preparing-to-install).
+Before you install OpenShift Container Platform on IBM Z® using user-provisioned infrastructure, you must complete prerequisite tasks that prepare your hardware, storage, and network environment.
 
-- You reviewed details about the [OpenShift Container Platform installation and update](../../../architecture/architecture-installation.xml#architecture-installation) processes.
+- You have completed the tasks in preparing to install a cluster on IBM Z® using user-provisioned infrastructure.
 
-- You read the documentation on [selecting a cluster installation method and preparing it for users](../../../installing/overview/installing-preparing.xml#installing-preparing).
+- You reviewed details about the OpenShift Container Platform installation and update processes.
+
+- You read the documentation on selecting a cluster installation method and preparing it for users.
 
 - Before you begin the installation process, you must clean the installation directory. This ensures that the required installation files are created and updated during the installation process.
 
-- You provisioned [persistent storage using OpenShift Data Foundation](../../../storage/persistent_storage/persistent-storage-ocs.xml#persistent-storage-ocs) or other supported storage protocols for your cluster. To deploy a private image registry, you must set up persistent storage with `ReadWriteMany` access.
+- You provisioned persistent storage by using OpenShift Data Foundation or other supported storage protocols for your cluster. To deploy a private image registry, you must set up persistent storage with `ReadWriteMany` access.
 
-- If you use a firewall, you [configured it to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
+- If you use a firewall, you configured it to allow the sites that your cluster requires access to.
 
-<div class="note">
+  <div class="note">
 
-Be sure to also review this site list if you are configuring a proxy.
+  Be sure to also review this site list if you are configuring a proxy.
 
-</div>
+  </div>
+
+<!-- -->
+
+- [Preparing to install a cluster on IBM Z using user-provisioned infrastructure](../../../installing/installing_ibm_z/upi/upi-ibm-z-preparing-to-install.xml#upi-ibm-z-preparing-to-install)
+
+- [OpenShift Container Platform installation and update](../../../architecture/architecture-installation.xml#architecture-installation)
+
+- [Selecting a cluster installation method and preparing it for users](../../../installing/overview/installing-preparing.xml#installing-preparing)
+
+- [Persistent storage using OpenShift Data Foundation](../../../storage/persistent_storage/persistent-storage-ocs.xml#persistent-storage-ocs)
+
+- [Configuring your firewall](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
 
 # Preparing the user-provisioned infrastructure
 
@@ -1017,7 +1031,7 @@ The installation program that generates the manifest and Ignition files is archi
 
 # Configuring boot volume encryption in an IBM Z or IBM LinuxONE environment
 
-You can choose between two methods to optionally encrypt the boot volumes of your OpenShift Container Platform control plane and compute nodes on IBM Z® or IBM® LinuxONE:
+You can optionally encrypt the boot volumes of your OpenShift Container Platform control plane and compute nodes on IBM Z® or IBM® LinuxONE by using LUKS encryption via IBM® Crypto Express (CEX) or Network Bound Disk Encryption (NBDE).
 
 - Linux Unified Key Setup (LUKS) encryption via IBM® Crypto Express (CEX)
 
@@ -2279,13 +2293,13 @@ To provide metrics about cluster health and the success of updates, the Telemetr
 
 After you confirm that your [OpenShift Cluster Manager](https://console.redhat.com/openshift) inventory is correct, either maintained automatically by Telemetry or manually by using OpenShift Cluster Manager,use subscription watch to track your OpenShift Container Platform subscriptions at the account or multi-cluster level. For more information about subscription watch, see "Data Gathered and Used by Red Hat’s subscription services" in the *Additional resources* section.
 
+# Additional resources
+
 - [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
 - [How to generate SOSREPORT within OpenShift Container Platform version 4 nodes without SSH](https://access.redhat.com/solutions/4387261)
 
 - [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
-
-# Next steps
 
 - [Enabling multipathing with kernel arguments on RHCOS](../../../machine_configuration/machine-configs-configure.xml#rhcos-enabling-multipath-day-2_machine-configs-configure)
 

@@ -1,4 +1,4 @@
-The disaster recovery documentation provides information for administrators on how to recover from several disaster situations that might occur with their OpenShift Container Platform cluster. As an administrator, you might need to follow one or more of the following procedures to return your cluster to a working state.
+To return your cluster to a working state after quorum loss, control plane failure, or expired certificates, follow the disaster recovery procedures for your situation. You can restore etcd quorum, restore the cluster from an etcd snapshot, or recover from expired control plane certificates.
 
 <div class="important">
 
@@ -6,17 +6,13 @@ Disaster recovery requires you to have at least one healthy control plane host.
 
 </div>
 
-# Quorum restoration
+# Restoring etcd quorum for high availability clusters
 
-You can use the `quorum-restore.sh` script to restore etcd quorum on clusters that are offline due to quorum loss. When quorum is lost, the OpenShift Container Platform API becomes read-only. After quorum is restored, the OpenShift Container Platform API returns to read/write mode.
+You can restore etcd quorum on high availability (HA) clusters by running the `quorum-restore.sh` script on a recovery host. Restored quorum returns the OpenShift Container Platform API to read/write mode when quorum loss takes the cluster offline.
 
-## Restoring etcd quorum for high availability clusters
+The `quorum-restore.sh` script creates a new single-member etcd cluster from the local data directory on the recovery host. No prior backup is required.
 
-You can use the `quorum-restore.sh` script to restore etcd quorum on clusters that are offline due to quorum loss. When quorum is lost, the OpenShift Container Platform API becomes read-only. After quorum is restored, the OpenShift Container Platform API returns to read/write mode.
-
-The `quorum-restore.sh` script instantly brings back a new single-member etcd cluster based on its local data directory and marks all other members as invalid by retiring the previous cluster identifier. No prior backup is required to restore the control plane from.
-
-For high availability (HA) clusters, a three-node HA cluster requires you to shut down etcd on two hosts to avoid a cluster split. On four-node and five-node HA clusters, you must shut down three hosts. Quorum requires a simple majority of nodes. The minimum number of nodes required for quorum on a three-node HA cluster is two. On four-node and five-node HA clusters, the minimum number of nodes required for quorum is three. If you start a new cluster from backup on your recovery host, the other etcd members might still be able to form quorum and continue service.
+For high availability (HA) clusters, a three-node HA cluster requires you to shut down etcd on two hosts to avoid a cluster split. On four-node and five-node HA clusters, you must shut down three hosts. Quorum requires a majority of nodes. The minimum number of nodes required for quorum on a three-node HA cluster is two. On four-node and five-node HA clusters, the minimum number of nodes required for quorum is three. If you start a new cluster from backup on your recovery host, the other etcd members might still be able to form quorum and continue service.
 
 <div class="warning">
 
@@ -48,11 +44,13 @@ Quorum restoration should not be used to decrease the number of nodes outside of
 
         Note the IP address of a member that is not a learner and has the highest Raft index.
 
-    3.  Run the following command and note the node name that corresponds to the IP address of the chosen etcd member:
+    3.  List nodes by running the following command:
 
         ``` terminal
         $ oc get nodes -o jsonpath='{range .items[*]}[{.metadata.name},{.status.addresses[?(@.type=="InternalIP")].address}]{end}'
         ```
+
+        Note the node name that corresponds to the IP address of the chosen etcd member.
 
 2.  Using SSH, connect to the chosen recovery node and run the following command to restore etcd quorum:
 
@@ -84,9 +82,7 @@ Quorum restoration should not be used to decrease the number of nodes outside of
 
       </div>
 
-      1.  Obtain the machine for one of the offline nodes.
-
-          In a terminal that has access to the cluster as a `cluster-admin` user, run the following command:
+      1.  In a terminal that has access to the cluster as a `cluster-admin` user, obtain the machine for one of the offline nodes by running the following command:
 
           ``` terminal
           $ oc get machines -n openshift-machine-api -o wide
@@ -108,19 +104,19 @@ Quorum restoration should not be used to decrease the number of nodes outside of
           clustername-8qw5l-worker-us-east-1c-pkg26   Running   m4.large    us-east-1   us-east-1c   3h28m   ip-10-0-170-181.ec2.internal   aws:///us-east-1c/i-06861c00007751b0a   running
           ```
 
-          - This is the control plane machine for the offline node, `ip-10-0-131-183.ec2.internal`.
+          In the example output, `clustername-8qw5l-master-0` is the control plane machine for the offline node, `ip-10-0-131-183.ec2.internal`.
 
-      2.  Delete the machine of the offline node by running:
+      2.  Delete the machine of the offline node by running the following command:
 
           ``` terminal
           $ oc delete machine -n openshift-machine-api clustername-8qw5l-master-0
           ```
 
-          - Specify the name of the control plane machine for the offline node.
+          Specify the name of the control plane machine for the offline node.
 
-            A new machine is automatically provisioned after deleting the machine of the offline node.
+          A new machine is automatically provisioned after deleting the machine of the offline node.
 
-5.  Verify that a new machine has been created by running:
+5.  Verify that a new machine has been created by running the following command:
 
     ``` terminal
     $ oc get machines -n openshift-machine-api -o wide
@@ -142,13 +138,13 @@ Quorum restoration should not be used to decrease the number of nodes outside of
     clustername-8qw5l-worker-us-east-1c-pkg26   Running        m4.large    us-east-1   us-east-1c   3h28m   ip-10-0-170-181.ec2.internal   aws:///us-east-1c/i-06861c00007751b0a   running
     ```
 
-    - The new machine, `clustername-8qw5l-master-3` is being created and is ready after the phase changes from `Provisioning` to `Running`.
+    In the example output, `clustername-8qw5l-master-3` is being created and is ready after the phase changes from `Provisioning` to `Running`.
 
-      It might take a few minutes for the new machine to be created. The etcd cluster Operator will automatically synchronize when the machine or node returns to a healthy state.
+    It might take a few minutes for the new machine to be created. The etcd cluster Operator automatically synchronizes when the machine or node returns to a healthy state.
 
-      1.  Repeat these steps for each node that is offline.
+6.  For each node that is offline, repeat the previous steps to delete and re-create the node.
 
-6.  Wait until the control plane recovers by running the following command:
+7.  Wait until the control plane recovers by running the following command:
 
     ``` terminal
     $ oc adm wait-for-stable-cluster
@@ -172,27 +168,9 @@ Quorum restoration should not be used to decrease the number of nodes outside of
 
 - [Replacing a bare-metal control plane node](../../installing/installing_bare_metal/bare-metal-expanding-the-cluster.xml#replacing-a-bare-metal-control-plane-node_bare-metal-expanding)
 
-<div class="note">
+- [Replacing an unhealthy etcd member](../../backup_and_restore/control_plane_backup_and_restore/replacing-unhealthy-etcd-member.xml#replacing-unhealthy-etcd-member)
 
-If you have a majority of your control plane nodes still available and have an etcd quorum, [replace a single unhealthy etcd member](../../backup_and_restore/control_plane_backup_and_restore/replacing-unhealthy-etcd-member.xml#replacing-unhealthy-etcd-member).
-
-</div>
-
-# Restoring to a previous cluster state
-
-To restore the cluster to a previous state, you must have previously backed up the `etcd` data by creating a snapshot. You will use this snapshot to restore the cluster state. For more information, see "Backing up etcd data".
-
-If applicable, you might also need to [recover from expired control plane certificates](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-3-expired-certs.xml#dr-recovering-expired-certs).
-
-<div class="warning">
-
-Restoring to a previous cluster state is a destructive and destablizing action to take on a running cluster. This procedure should only be used as a last resort.
-
-Before performing a restore, see "About restoring to a previous cluster state" for more information on the impact to the cluster.
-
-</div>
-
-## About restoring to a previous cluster state
+# About restoring to a previous cluster state
 
 To assess restore risks before you choose rollback as a last resort, review how an etcd snapshot restore affects your OpenShift Container Platform cluster, including Operators, workloads, and persistent storage.
 
@@ -201,6 +179,8 @@ You can use an etcd backup to restore your cluster to a previous state. This can
 - The cluster has lost the majority of control plane hosts and quorum.
 
 - An administrator has deleted something critical and must restore to recover the cluster.
+
+If applicable, you might also need to recover from expired control plane certificates.
 
 <div class="warning">
 
@@ -216,7 +196,9 @@ It can cause Operator churn when the content in etcd does not match the actual c
 
 In extreme cases, the cluster can lose track of persistent volumes, delete critical workloads that no longer exist, reimage machines, and rewrite CA bundles with expired certificates.
 
-## Restoring to a previous cluster state for a single node
+- [Recovering from expired control plane certificates](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-3-expired-certs.xml#dr-recovering-expired-certs)
+
+# Restoring to a previous cluster state for a single node
 
 To restore your OpenShift Container Platform cluster on a single node, use a saved etcd snapshot to roll back to an earlier state after quorum loss or critical data deletion.
 
@@ -258,7 +240,7 @@ When you restore your cluster, you must use an etcd backup that was taken from t
 
     </div>
 
-## Restoring to a previous cluster state for more than one node
+# Restoring to a previous cluster state for more than one node
 
 To restore your OpenShift Container Platform cluster with more than one control plane node to an earlier state, use a saved etcd snapshot after quorum loss or critical data deletion.
 
@@ -360,7 +342,7 @@ $ oc patch etcd cluster -p='{"spec": {"forceRedeploymentReason": "recovery-'"$(d
 
 - [Recovering a degraded etcd Operator](../../machine_management/control_plane_machine_management/cpmso-troubleshooting.xml#cpmso-ts-etcd-degraded_cpmso-troubleshooting)
 
-## Issues and workarounds for restoring a persistent storage state
+# Issues and workarounds for restoring a persistent storage state
 
 To restore workloads safely after an etcd snapshot restore, identify and resolve outdated persistent storage references, including volumes, credentials, attachments, and devices on your OpenShift Container Platform cluster.
 
@@ -427,10 +409,7 @@ You can restore kubelet certificates by manually approving pending `node-bootstr
     $ oc describe csr <csr_name>
     ```
 
-    where:
-
-    `<csr_name>`
-    Specifies the name of a CSR from the list of current CSRs.
+    `<csr_name>` is the name of a CSR from the list of current CSRs.
 
 3.  Approve each valid `node-bootstrapper` CSR by running the following command:
 
@@ -508,4 +487,4 @@ You must have SSH access to the cluster. Without SSH access, you cannot disable 
     $ oc get pods -n openshift-etcd
     ```
 
-- [Restoring to a previous cluster state](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
+- [Restoring to an earlier cluster state](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)

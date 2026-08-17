@@ -12,7 +12,7 @@ You can use Kubernetes persistent volumes to make existing storage available to 
 
 # Dynamic provisioning
 
-Dynamic Provisioning allows you to create storage volumes on-demand, eliminating the need for cluster administrators to pre-provision storage. See [Dynamic provisioning](../storage/dynamic-provisioning.xml#dynamic-provisioning).
+Dynamic provisioning allows you to create storage volumes on-demand, eliminating the need for cluster administrators to pre-provision storage.
 
 # Recommended configurable storage technology
 
@@ -62,11 +62,13 @@ A scaled registry is an OpenShift image registry where two or more pod replicas 
 
 # Deploy Red Hat OpenShift Data Foundation
 
-Red Hat OpenShift Data Foundation is a provider of agnostic persistent storage for OpenShift Container Platform supporting file, block, and object storage, either in-house or in hybrid clouds. As a Red Hat storage solution, Red Hat OpenShift Data Foundation is completely integrated with OpenShift Container Platform for deployment, management, and monitoring. For more information, see the [Red Hat OpenShift Data Foundation documentation](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation).
+Red Hat OpenShift Data Foundation is a provider of agnostic persistent storage for OpenShift Container Platform supporting file, block, and object storage, either in-house or in hybrid clouds.
+
+As a Red Hat storage solution, Red Hat OpenShift Data Foundation is completely integrated with OpenShift Container Platform for deployment, management, and monitoring.
 
 <div class="important">
 
-OpenShift Data Foundation on top of Red Hat Hyperconverged Infrastructure (RHHI) for Virtualization, which uses hyperconverged nodes that host virtual machines installed with OpenShift Container Platform, is not a supported configuration. For more information about supported platforms, see the [Red Hat OpenShift Data Foundation Supportability and Interoperability Guide](https://access.redhat.com/articles/4731161).
+OpenShift Data Foundation on top of Red Hat Hyperconverged Infrastructure (RHHI) for Virtualization, which uses hyperconverged nodes that host virtual machines installed with OpenShift Container Platform, is not a supported configuration. For more information about supported platforms, see the Red Hat OpenShift Data Foundation Supportability and Interoperability Guide.
 
 </div>
 
@@ -90,3 +92,17 @@ OpenShift Data Foundation on top of Red Hat Hyperconverged Infrastructure (RHHI)
 | Monitoring a Red Hat OpenShift Data Foundation 4.12 cluster                                                                             | [Monitoring Red Hat OpenShift Data Foundation 4.12](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/4.12/html/monitoring_openshift_data_foundation)                                                       |
 | Resolve issues encountered during operations                                                                                            | [Troubleshooting OpenShift Data Foundation 4.12](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/4.12/html/troubleshooting_openshift_data_foundation)                                                     |
 | Migrating your OpenShift Container Platform cluster from version 3 to version 4                                                         | [Migration](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.12/html/migrating_from_version_3_to_4/index)                                                                                                     |
+
+# Additional resources
+
+- [Dynamic provisioning](../storage/dynamic-provisioning.xml#dynamic-provisioning)
+
+- [Red Hat OpenShift Data Foundation documentation](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation)
+
+- [Red Hat OpenShift Data Foundation Supportability and Interoperability Guide](https://access.redhat.com/articles/4731161)
+
+- [Red Hat Gluster Storage installation guide](https://access.redhat.com/documentation/en-us/red_hat_gluster_storage/3.3/html/installation_guide/)
+
+- [Red Hat Gluster Storage administration guide](https://access.redhat.com/documentation/en-us/red_hat_gluster_storage/3.3/html/administration_guide/)
+
+- [Container-Native Storage for OpenShift Container Platform](https://access.redhat.com/documentation/en-us/red_hat_gluster_storage/3.3/html/container-native_storage_for_openshift_container_platform/)

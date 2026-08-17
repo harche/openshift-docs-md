@@ -239,9 +239,11 @@ Perform the following steps to prepare the provisioner node.
 
 # Configuring the public subnet
 
-All of the OpenShift Container Platform cluster nodes must be on the public subnet. IBM Cloud® Bare Metal (Classic) does not provide a DHCP server on the subnet. Set it up separately on the provisioner node.
+To offer DHCP services for OpenShift Container Platform cluster nodes on the public subnet in IBM Cloud® Bare Metal (Classic), you can install and configure `dnsmasq` on the provisioner node.
 
-You must reset the BASH variables defined when preparing the provisioner node. Rebooting the provisioner node after preparing it will delete the BASH variables previously set.
+All of the OpenShift Container Platform cluster nodes must be on the public subnet. IBM Cloud® Bare Metal (Classic) does not offer a DHCP server on the subnet. Set it up separately on the provisioner node.
+
+You must reset the BASH variables defined when preparing the provisioner node. Rebooting the provisioner node after preparing it will delete the BASH variables set before.
 
 1.  Install `dnsmasq`:
 
@@ -269,42 +271,46 @@ You must reset the BASH variables defined when preparing the provisioner node. R
     dhcp-hostsfile=/var/lib/dnsmasq/dnsmasq.hostsfile
     ```
 
-    - Set the DHCP range. Replace both instances of `<ip_addr>` with one unused IP address from the public subnet so that the `dhcp-range` for the `baremetal` network begins and ends with the same the IP address. Replace `<pub_cidr>` with the CIDR of the public subnet.
+    where:
 
-    - Set the DHCP option. Replace `<pub_gateway>` with the IP address of the gateway for the `baremetal` network. Replace `<prvn_priv_ip>` with the IP address of the provisioner node’s private IP address on the `provisioning` network. Replace `<prvn_pub_ip>` with the IP address of the provisioner node’s public IP address on the `baremetal` network.
+    `dhcp-range`
+    Specifies the DHCP range for the `baremetal` network. Replace both instances of `<ip_addr>` with one unused IP address from the public subnet so that the range begins and ends with the same IP address. Replace `<pub_cidr>` with the CIDR of the public subnet.
 
-      To retrieve the value for `<pub_cidr>`, execute:
+    `dhcp-option`
+    Specifies the DHCP option for the `baremetal` network. Replace `<pub_gateway>` with the IP address of the gateway for the `baremetal` network. Replace `<prvn_priv_ip>` with the private IP address of the provisioner node on the `provisioning` network. Replace `<prvn_pub_ip>` with the public IP address of the provisioner node on the `baremetal` network.
 
-      ``` terminal
-      $ ibmcloud sl subnet detail <publicsubnetid> --output JSON | jq .cidr
-      ```
+    1.  To retrieve the value for `<pub_cidr>`, run the following command:
 
-      Replace `<publicsubnetid>` with the ID of the public subnet.
+        ``` terminal
+        $ ibmcloud sl subnet detail <publicsubnetid> --output JSON | jq .cidr
+        ```
 
-      To retrieve the value for `<pub_gateway>`, execute:
+        Replace `<publicsubnetid>` with the ID of the public subnet.
 
-      ``` terminal
-      $ ibmcloud sl subnet detail <publicsubnetid> --output JSON | jq .gateway -r
-      ```
+    2.  To retrieve the value for `<pub_gateway>`, run the following command:
 
-      Replace `<publicsubnetid>` with the ID of the public subnet.
+        ``` terminal
+        $ ibmcloud sl subnet detail <publicsubnetid> --output JSON | jq .gateway -r
+        ```
 
-      To retrieve the value for `<prvn_priv_ip>`, execute:
+        Replace `<publicsubnetid>` with the ID of the public subnet.
 
-      ``` terminal
-      $ ibmcloud  sl hardware detail <id> --output JSON | \
-                  jq .primaryBackendIpAddress -r
-      ```
+    3.  To retrieve the value for `<prvn_priv_ip>`, run the following command:
 
-      Replace `<id>` with the ID of the provisioner node.
+        ``` terminal
+        $ ibmcloud  sl hardware detail <id> --output JSON | \
+                    jq .primaryBackendIpAddress -r
+        ```
 
-      To retrieve the value for `<prvn_pub_ip>`, execute:
+        Replace `<id>` with the ID of the provisioner node.
 
-      ``` terminal
-      $ ibmcloud sl hardware detail <id> --output JSON | jq .primaryIpAddress -r
-      ```
+    4.  To retrieve the value for `<prvn_pub_ip>`, run the following command:
 
-      Replace `<id>` with the ID of the provisioner node.
+        ``` terminal
+        $ ibmcloud sl hardware detail <id> --output JSON | jq .primaryIpAddress -r
+        ```
+
+        Replace `<id>` with the ID of the provisioner node.
 
 4.  Obtain the list of hardware for the cluster:
 
@@ -419,23 +425,25 @@ You must reset the BASH variables defined when preparing the provisioner node. R
 
 # Retrieving the OpenShift Container Platform installer
 
-Use the `stable-4.x` version of the installation program and your selected architecture to deploy the generally available stable version of OpenShift Container Platform:
+Use the `stable-4.x` version of the installation program and your selected architecture to deploy the generally available stable version of OpenShift Container Platform.
 
-``` terminal
-$ export VERSION=stable-4.17
-```
+- Retrieve the installation program by running one of the following commands:
 
-``` terminal
-$ export RELEASE_ARCH=<architecture>
-```
+  ``` terminal
+  $ export VERSION=stable-4.17
+  ```
 
-``` terminal
-$ export RELEASE_IMAGE=$(curl -s https://mirror.openshift.com/pub/openshift-v4/$RELEASE_ARCH/clients/ocp/$VERSION/release.txt | grep 'Pull From: quay.io' | awk -F ' ' '{print $3}')
-```
+  ``` terminal
+  $ export RELEASE_ARCH=<architecture>
+  ```
+
+  ``` terminal
+  $ export RELEASE_IMAGE=$(curl -s https://mirror.openshift.com/pub/openshift-v4/$RELEASE_ARCH/clients/ocp/$VERSION/release.txt | grep 'Pull From: quay.io' | awk -F ' ' '{print $3}')
+  ```
 
 # Extracting the OpenShift Container Platform installer
 
-After retrieving the installer, the next step is to extract it.
+Extract the OpenShift Container Platform installer after retrieving it to prepare for the installation of the cluster.
 
 1.  Set the environment variables:
 
@@ -473,7 +481,9 @@ After retrieving the installer, the next step is to extract it.
 
 # Configuring the install-config.yaml file
 
-The `install-config.yaml` file requires some additional details. Most of the information is teaching the installer and the resulting cluster enough about the available IBM Cloud® Bare Metal (Classic) hardware so that it is able to fully manage it. The material difference between installing on bare metal and installing on IBM Cloud® Bare Metal (Classic) is that you must explicitly set the privilege level for IPMI in the BMC section of the `install-config.yaml` file.
+To configure OpenShift Container Platform for IBM Cloud® Bare Metal (Classic) infrastructure, you can edit the `install-config.yaml` file to set the required IPMI privilege level and hardware parameters for your bare-metal nodes.
+
+The `install-config.yaml` file requires some additional details. Most of the information is teaching the installation program and the resulting cluster enough about the available IBM Cloud® Bare Metal (Classic) hardware so that it is able to fully manage it. The material difference between installing on bare metal and installing on IBM Cloud® Bare Metal (Classic) is that you must explicitly set the privilege level for IPMI in the BMC section of the `install-config.yaml` file.
 
 1.  Configure `install-config.yaml`. Change the appropriate variables to match the environment, including `pullSecret` and `sshKey`.
 
@@ -523,22 +533,26 @@ The `install-config.yaml` file requires some additional details. Most of the inf
     sshKey: '<ssh_pub_key>'
     ```
 
-    - The `bmc.address` provides a `privilegelevel` configuration setting with the value set to `OPERATOR`. This is required for IBM Cloud® Bare Metal (Classic) infrastructure.
+    where:
 
-    - Add the MAC address of the private `provisioning` network NIC for the corresponding node.
+    `bmc.address`
+    Specifies the IPMI address with `privilegelevel=OPERATOR`. IBM Cloud® Bare Metal (Classic) infrastructure requires this privilege level.
 
-      <div class="note">
+    `bootMACAddress`
+    Specifies the MAC address of the private `provisioning` network NIC for the corresponding node.
 
-      You can use the `ibmcloud` command-line utility to retrieve the password.
+    <div class="note">
 
-      ``` terminal
-      $ ibmcloud sl hardware detail <id> --output JSON | \
-        jq '"(.networkManagementIpAddress) (.remoteManagementAccounts[0].password)"'
-      ```
+    You can use the `ibmcloud` command-line utility to retrieve the password.
 
-      Replace `<id>` with the ID of the node.
+    ``` terminal
+    $ ibmcloud sl hardware detail <id> --output JSON | \
+      jq '"(.networkManagementIpAddress) (.remoteManagementAccounts[0].password)"'
+    ```
 
-      </div>
+    Replace `<id>` with the ID of the node.
+
+    </div>
 
 2.  Create a directory to store the cluster configuration:
 
@@ -552,13 +566,13 @@ The `install-config.yaml` file requires some additional details. Most of the inf
     $ cp install-config.yaml ~/clusterconfigs
     ```
 
-4.  Ensure all bare metal nodes are powered off prior to installing the OpenShift Container Platform cluster:
+4.  Power off all bare-metal nodes before installing the OpenShift Container Platform cluster:
 
     ``` terminal
     $ ipmitool -I lanplus -U <user> -P <password> -H <management_server_ip> power off
     ```
 
-5.  Remove old bootstrap resources if any are left over from a previous deployment attempt:
+5.  Remove old bootstrap resources if any remain from an earlier deployment try:
 
     ``` bash
     for i in $(sudo virsh list | tail -n +3 | grep bootstrap | awk {'print $2'});
@@ -975,30 +989,42 @@ Subfields
 
 # Creating the OpenShift Container Platform manifests
 
-1.  Create the OpenShift Container Platform manifests.
+Create manifest files to begin customizing your cluster installation.
 
-    ``` terminal
-    $ ./openshift-baremetal-install --dir ~/clusterconfigs create manifests
-    ```
+- Create the OpenShift Container Platform manifests by running the following command:
 
-    ``` terminal
-    INFO Consuming Install Config from target directory
-    WARNING Making control-plane schedulable by setting MastersSchedulable to true for Scheduler cluster settings
-    WARNING Discarding the OpenShift Manifest that was provided in the target directory because its dependencies are dirty and it needs to be regenerated
-    ```
+  ``` terminal
+  $ ./openshift-baremetal-install --dir ~/clusterconfigs create manifests
+  ```
+
+  <div class="formalpara-title">
+
+  **Example output**
+
+  </div>
+
+  ``` terminal
+  INFO Consuming Install Config from target directory
+  WARNING Making control-plane schedulable by setting MastersSchedulable to true for Scheduler cluster settings
+  WARNING Discarding the OpenShift Manifest that was provided in the target directory because its dependencies are dirty and it needs to be regenerated
+  ```
 
 # Deploying the cluster via the OpenShift Container Platform installer
 
-Run the OpenShift Container Platform installer:
+You can deploy the cluster by running the OpenShift Container Platform installer.
 
-``` terminal
-$ ./openshift-baremetal-install --dir ~/clusterconfigs --log-level debug create cluster
-```
+- Run the OpenShift Container Platform installer:
+
+  ``` terminal
+  $ ./openshift-baremetal-install --dir ~/clusterconfigs --log-level debug create cluster
+  ```
 
 # Following the progress of the installation
 
-During the deployment process, you can check the installation’s overall status by issuing the `tail` command to the `.openshift_install.log` log file in the install directory folder:
+During the deployment process, you can check the installation’s overall status by issuing the `tail` command to the `.openshift_install.log` log file in the install directory folder.
 
-``` terminal
-$ tail -f /path/to/install-dir/.openshift_install.log
-```
+- Track installation progress by running the following command:
+
+  ``` terminal
+  $ tail -f /path/to/install-dir/.openshift_install.log
+  ```

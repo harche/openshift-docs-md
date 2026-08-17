@@ -1349,8 +1349,6 @@
   - [About the Red Hat build of OpenTelemetry](observability/otel/otel-architecture.md)
 - **Network Observability**
   - [Network Observability Operator release notes](observability/network_observability/network-observability-operator-release-notes.md)
-  - **Network Observability Operator release notes archive**
-    - [Network Observability Operator release notes archive](observability/network_observability/release_notes_archive/network-observability-operator-release-notes-archive.md)
   - [Network observability overview](observability/network_observability/network-observability-overview.md)
   - [Installing the Network Observability Operator](observability/network_observability/installing-operators.md)
   - [Scaling network flow collection with Kafka](observability/network_observability/network-observability-kafka-operator-scaling-network-flow-collection.md)
@@ -1605,7 +1603,7 @@
   - **Disaster recovery**
     - [About disaster recovery](backup_and_restore/control_plane_backup_and_restore/disaster_recovery/about-disaster-recovery.md)
     - [Quorum restoration](backup_and_restore/control_plane_backup_and_restore/disaster_recovery/quorum-restoration.md)
-    - [Restoring to a previous cluster state](backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.md)
+    - [Restoring to an earlier cluster state](backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.md)
     - [Recovering from expired control plane certificates](backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-3-expired-certs.md)
 
 ### Migrating from version 3 to 4

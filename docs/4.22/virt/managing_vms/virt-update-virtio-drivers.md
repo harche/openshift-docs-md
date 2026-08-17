@@ -52,6 +52,12 @@ If you restrict the WUS to only allow drivers explicitly signed and published by
 
 4.  Click **Driver Details** and confirm that the `virtio` driver details displays the correct version.
 
+<div class="tip">
+
+To view the individual driver versions included in the `virtio-win` container disk, open the `release-drivers-versions.txt` file at the root of the `virtio-win` CD drive.
+
+</div>
+
 # Additional resources
 
 - [Allow signed updates from an intranet Microsoft update service location](https://learn.microsoft.com/en-us/windows/deployment/update/waas-wu-settings#allow-signed-updates-from-an-intranet-microsoft-update-service-location)

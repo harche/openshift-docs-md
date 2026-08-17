@@ -4,7 +4,7 @@ After installing OpenShift Container Platform, you can further expand and custom
 
 # Available cluster customizations
 
-You complete most of the cluster configuration and customization after you deploy your OpenShift Container Platform cluster. A number of *configuration resources* are available.
+You complete most of the cluster configuration and customization after you deploy your OpenShift Container Platform cluster. Several *configuration resources* are available.
 
 <div class="note">
 
@@ -17,6 +17,8 @@ You modify the configuration resources to configure the major features of the cl
 For current documentation of the settings that you control by using these resources, use the `oc explain` command, for example `oc explain builds --api-version=config.openshift.io/v1`
 
 ## Cluster configuration resources
+
+Review the globally scoped cluster configuration resources that control major features of an OpenShift Container Platform cluster.
 
 All cluster configuration resources are globally scoped (not namespaced) and named `cluster`.
 
@@ -36,6 +38,8 @@ All cluster configuration resources are globally scoped (not namespaced) and nam
 
 ## Operator configuration resources
 
+Review the cluster-scoped Operator configuration resources that control the behavior of specific OpenShift Container Platform components.
+
 These configuration resources are cluster-scoped instances, named `cluster`, which control the behavior of a specific component as owned by a particular Operator.
 
 | Resource name                                | Description                                                                                                                                                                                                                                                                               |
@@ -46,6 +50,8 @@ These configuration resources are cluster-scoped instances, named `cluster`, whi
 
 ## Additional configuration resources
 
+Review the additional configuration resources that represent a single instance of a particular OpenShift Container Platform component.
+
 These configuration resources represent a single instance of a particular component. In some cases, you can request multiple instances by creating multiple instances of the resource. In other cases, the Operator can use only a specific resource instance name in a specific namespace. Reference the component-specific documentation for details on how and when you can create additional resource instances.
 
 | Resource name                             | Instance name | Namespace                    | Description                                                                                                                                                                                                               |
@@ -53,7 +59,9 @@ These configuration resources represent a single instance of a particular compon
 | `alertmanager.monitoring.coreos.com`      | `main`        | `openshift-monitoring`       | Controls the [Alertmanager](https://docs.redhat.com/en/documentation/monitoring_stack_for_red_hat_openshift/latest/html/configuring_core_platform_monitoring/configuring-alerts-and-notifications) deployment parameters. |
 | `ingresscontroller.operator.openshift.io` | `default`     | `openshift-ingress-operator` | Configures [Ingress Operator](../networking/networking_operators/ingress-operator.xml#configuring-ingress-controller) behavior such as domain, number of replicas, certificates, and controller placement.                |
 
-## Informational Resources
+## Informational resources
+
+Review the informational resources that you can use to retrieve information about an OpenShift Container Platform cluster.
 
 You use these resources to retrieve information about the cluster. Some configurations might require you to edit these resources directly.
 
@@ -66,9 +74,13 @@ You use these resources to retrieve information about the cluster. Some configur
 
 # Adding worker nodes
 
+After you deploy your OpenShift Container Platform cluster, you can add worker nodes to scale cluster resources using the method that matches your installation type and environment.
+
 After you deploy your OpenShift Container Platform cluster, you can add worker nodes to scale cluster resources. There are different ways you can add worker nodes depending on the installation method and the environment of your cluster.
 
 ## Adding worker nodes to an on-premise cluster
+
+Add worker nodes to an on-premise OpenShift Container Platform cluster by using the OpenShift CLI to generate an ISO image.
 
 For on-premise clusters, you can add worker nodes by using the OpenShift Container Platform CLI (`oc`) to generate an ISO image, which can then be used to boot one or more nodes in your target cluster. This process can be used regardless of how you installed your cluster.
 
@@ -76,9 +88,11 @@ You can add one or more nodes at a time while customizing each node with more co
 
 Preflight validation checks are also performed when booting the ISO image to inform you of failure-causing issues before you attempt to boot each node.
 
-[Adding worker nodes to an on-premise cluster](../nodes/nodes/nodes-nodes-adding-node-iso.xml#adding-node-iso)
+- [Adding worker nodes to an on-premise cluster](../nodes/nodes/nodes-nodes-adding-node-iso.xml#adding-node-iso)
 
 ## Adding worker nodes to installer-provisioned infrastructure clusters
+
+Add worker nodes to installer-provisioned infrastructure clusters by scaling machine sets or provisioning bare-metal hosts.
 
 For installer-provisioned infrastructure clusters, you can manually or automatically scale the `MachineSet` object to match the number of available bare-metal hosts.
 
@@ -92,27 +106,35 @@ To add a bare-metal host, you must configure all network prerequisites, configur
 
 ## Adding worker nodes to user-provisioned infrastructure clusters
 
+Add worker nodes to user-provisioned infrastructure clusters by using an ISO image and Ignition config files.
+
 For user-provisioned infrastructure clusters, you can add worker nodes by using a RHEL or RHCOS ISO image and connecting it to your cluster using cluster Ignition config files. For RHEL worker nodes, the following example uses Ansible playbooks to add worker nodes to the cluster. For RHCOS worker nodes, the following example uses an ISO image and network booting to add worker nodes to the cluster.
 
 - [Adding RHCOS worker nodes to a user-provisioned infrastructure cluster](../post_installation_configuration/node-tasks.xml#post-install-config-adding-fcos-compute)
 
 ## Adding worker nodes to clusters managed by the Assisted Installer
 
+Add worker nodes to Assisted Installer clusters by using Red Hat OpenShift Cluster Manager, the REST API, or a manual ISO process.
+
 For clusters managed by the Assisted Installer, you can add worker nodes by using the Red Hat OpenShift Cluster Manager console, the Assisted Installer REST API or you can manually add worker nodes using an ISO image and cluster Ignition config files.
 
-- [Adding worker nodes using the OpenShift Cluster Manager](../nodes/nodes/nodes-sno-worker-nodes.xml#sno-adding-worker-nodes-to-sno-clusters_add-workers)
+- [Adding worker nodes using OpenShift Cluster Manager](../nodes/nodes/nodes-sno-worker-nodes.xml#sno-adding-worker-nodes-to-sno-clusters_add-workers)
 
 - [Adding worker nodes using the Assisted Installer REST API](../nodes/nodes/nodes-sno-worker-nodes.xml#adding-worker-nodes-using-the-assisted-installer-api)
 
-- [Manually adding worker nodes to a SNO cluster](../nodes/nodes/nodes-sno-worker-nodes.xml#sno-adding-worker-nodes-to-single-node-clusters-manually_add-workers)
+- [Manually adding worker nodes to a single-node OpenShift cluster](../nodes/nodes/nodes-sno-worker-nodes.xml#sno-adding-worker-nodes-to-single-node-clusters-manually_add-workers)
 
 ## Adding worker nodes to clusters managed by the multicluster engine for Kubernetes
+
+Add worker nodes to multicluster engine for Kubernetes clusters by using the dedicated console.
 
 For clusters managed by the multicluster engine for Kubernetes, you can add worker nodes by using the dedicated multicluster engine console.
 
 - [Creating your cluster with the console](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.9/html/clusters/cluster_mce_overview#on-prem-creating-your-cluster-with-the-console)
 
 # Adjust worker nodes
+
+Resize worker nodes by creating new compute machine sets, scaling them up, and scaling down the original machine set before removal.
 
 If you incorrectly sized the worker nodes during deployment, adjust them by creating one or more new compute machine sets, scale them up, then scale the original compute machine set down before removing them.
 
@@ -434,6 +456,8 @@ The following procedure adds a default cluster-wide node selector.
 
 # Improving cluster stability in high latency environments using worker latency profiles
 
+Configure worker latency profiles to improve cluster stability in high latency environments.
+
 If as a cluster administrator, you performed latency tests for platform verification, you might discover the need to adjust the operation of the cluster to ensure stability in cases of high latency.
 
 As a cluster administrator, you need to change only one parameter, recorded in a file, which controls four parameters affecting how supervisory processes read status and interpret the health of the cluster. Changing only the one parameter provides cluster tuning in an easy, supportable manner.
@@ -685,7 +709,13 @@ You can also configure worker latency profiles upon installing an OpenShift Cont
 
 # Managing control plane machines
 
-[Control plane machine sets](../machine_management/control_plane_machine_management/cpmso-about.xml#cpmso-about) provide management capabilities for control plane machines that are similar to what compute machine sets provide for compute machines. The availability and initial status of control plane machine sets on your cluster depend on your cloud provider and the version of OpenShift Container Platform that you installed. For more information, see [Getting started with control plane machine sets](../machine_management/control_plane_machine_management/cpmso-getting-started.xml#cpmso-getting-started).
+Use control plane machine sets to manage control plane machines with capabilities similar to compute machine sets.
+
+Control plane machine sets provide management capabilities for control plane machines that are similar to what compute machine sets provide for compute machines. The availability and initial status of control plane machine sets on your cluster depend on your cloud provider and the version of OpenShift Container Platform that you installed.
+
+- [Control plane machine sets](../machine_management/control_plane_machine_management/cpmso-about.xml#cpmso-about)
+
+- [Getting started with control plane machine sets](../machine_management/control_plane_machine_management/cpmso-getting-started.xml#cpmso-getting-started)
 
 ## Adding a control plane node to your cluster
 
@@ -1052,15 +1082,29 @@ Add a control plane node to recover from a degraded state, perform deep-level de
 
 # Creating infrastructure machine sets for production environments
 
+Create infrastructure machine sets to host cluster infrastructure components without counting those machines toward subscription limits.
+
 You can create a compute machine set to create machines that host only infrastructure components, such as the default router, the integrated container image registry, and components for cluster metrics and monitoring. These infrastructure machines are not counted toward the total number of subscriptions that are required to run the environment.
 
-For information on infrastructure nodes and which components can run on infrastructure nodes, see [Creating infrastructure machine sets](../machine_management/creating-infrastructure-machinesets.xml#creating-infrastructure-machinesets).
+For information on infrastructure nodes and which components can run on infrastructure nodes, see "Creating infrastructure machine sets".
 
-To create an infrastructure node, you can [use a machine set](../post_installation_configuration/cluster-tasks.xml#machineset-creating_post-install-cluster-tasks), [assign a label to the nodes](../post_installation_configuration/cluster-tasks.xml#creating-an-infra-node_post-install-cluster-tasks), or [use a machine config pool](../post_installation_configuration/cluster-tasks.xml#creating-infra-machines_post-install-cluster-tasks).
+To create an infrastructure node, see "Use a machine set to create an infrastructure node", "Assign a label to infrastructure nodes", or "Use a machine config pool for infrastructure nodes".
 
-For sample machine sets that you can use with these procedures, see [Creating machine sets for different clouds](../machine_management/creating-infrastructure-machinesets.xml#creating-infrastructure-machinesets-clouds).
+For sample machine sets that you can use with these procedures, see "Creating machine sets for different clouds".
 
-Applying a specific node selector to all infrastructure components causes OpenShift Container Platform to [schedule those workloads on nodes with that label](../post_installation_configuration/cluster-tasks.xml#moving-resources-to-infrastructure-machinesets).
+Applying a specific node selector to all infrastructure components causes OpenShift Container Platform to schedule those workloads on nodes with that label; see "Schedule infrastructure workloads using node selectors".
+
+- [Creating infrastructure machine sets](../machine_management/creating-infrastructure-machinesets.xml#creating-infrastructure-machinesets)
+
+- [Use a machine set to create an infrastructure node](../post_installation_configuration/cluster-tasks.xml#machineset-creating_post-install-cluster-tasks)
+
+- [Assign a label to infrastructure nodes](../post_installation_configuration/cluster-tasks.xml#creating-an-infra-node_post-install-cluster-tasks)
+
+- [Use a machine config pool for infrastructure nodes](../post_installation_configuration/cluster-tasks.xml#creating-infra-machines_post-install-cluster-tasks)
+
+- [Creating machine sets for different clouds](../machine_management/creating-infrastructure-machinesets.xml#creating-infrastructure-machinesets-clouds)
+
+- [Schedule infrastructure workloads using node selectors](../post_installation_configuration/cluster-tasks.xml#moving-resources-to-infrastructure-machinesets_post-install-cluster-tasks)
 
 ## Creating a compute machine set
 
@@ -1385,6 +1429,8 @@ Creating a custom machine configuration pool overrides default worker pool confi
 
 # Assigning machine set resources to infrastructure nodes
 
+Apply taints and tolerations to infrastructure nodes so user workloads are not scheduled inadvertently to those nodes.
+
 After creating an infrastructure machine set, the `worker` and `infra` roles are applied to new infra nodes. Nodes with the `infra` role are not counted toward the total number of subscriptions that are required to run the environment, even when the `worker` role is also applied.
 
 However, when an infra node is assigned the worker role, there is a chance that user workloads can get assigned inadvertently to the infra node. To avoid this, you can apply a taint to the infra node and tolerations for the pods that you want to control.
@@ -1515,6 +1561,8 @@ It is recommended that you preserve the dual `infra,worker` label that is create
 - [Controlling pod placement using the scheduler](../nodes/scheduling/nodes-scheduler-about.xml#nodes-scheduler-about)
 
 # Moving resources to infrastructure machine sets
+
+Move default infrastructure resources to the infrastructure machine sets that you created.
 
 Some of the infrastructure resources are deployed in your cluster by default. You can move them to the infrastructure machine sets that you created.
 
@@ -2065,11 +2113,15 @@ To deploy a cluster autoscaler, you create an instance of the `ClusterAutoscaler
 
 # Applying autoscaling to your cluster
 
+Deploy a cluster autoscaler and machine autoscalers to apply autoscaling across machine types in your cluster.
+
 Applying autoscaling to an OpenShift Container Platform cluster involves deploying a cluster autoscaler and then deploying machine autoscalers for each machine type in your cluster.
 
-For more information, see [Applying autoscaling to an OpenShift Container Platform cluster](../machine_management/applying-autoscaling.xml#applying-autoscaling).
+- [Applying autoscaling to an OpenShift Container Platform cluster](../machine_management/applying-autoscaling.xml#applying-autoscaling)
 
 # Enabling Technology Preview features using FeatureGates
+
+Enable Technology Preview features cluster-wide by editing the `FeatureGate` custom resource.
 
 You can turn on a subset of the current Technology Preview features on for all nodes in the cluster by editing the `FeatureGate` custom resource (CR).
 
@@ -2139,7 +2191,7 @@ You can activate the following feature set by using the `FeatureGate` CR:
 
   - `ClusterAPIMachineManagementGCP`
 
-  - \`ClusterAPIMachineManagementOpenStack
+  - `ClusterAPIMachineManagementOpenStack`
 
   - `ClusterAPIMachineManagementPowerVS`
 
@@ -2288,8 +2340,6 @@ You can activate the following feature set by using the `FeatureGate` CR:
   - `VSphereMultiDisk`
 
   - `VSphereMultiNetworks`
-
-See the *Additional resources* sections for information on some of these features.
 
 ## Enabling feature sets using the web console
 
@@ -2489,9 +2539,11 @@ Back up etcd, enable or disable etcd encryption, or defragment etcd data.
 
 <div class="note">
 
-If you deployed a bare-metal cluster, you can scale the cluster up to 5 nodes as part of your post-installation tasks. For more information, see [Node scaling for etcd](../etcd/etcd-performance.xml#etcd-node-scaling_etcd-performance).
+If you deployed a bare-metal cluster, you can scale the cluster up to 5 nodes as part of your post-installation tasks.
 
 </div>
+
+- [Node scaling for etcd](../etcd/etcd-performance.xml#etcd-node-scaling_etcd-performance)
 
 ## etcd encryption
 
@@ -3146,7 +3198,7 @@ The following are some example scenarios that produce an out-of-date status:
 
 # Pod disruption budgets
 
-Understand and configure pod disruption budgets.
+Understand and configure pod disruption budgets to control voluntary disruptions during cluster operations.
 
 ## Understanding how to use pod disruption budgets to specify the number of pods that must be up
 

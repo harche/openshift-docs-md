@@ -1,4 +1,6 @@
-Before you deploy an OpenShift Container Platform on IBM Power® Virtual Server, you provide parameters to customize your cluster and the platform that hosts it. When you create the `install-config.yaml` file, you provide values for the required parameters through the command line. You can then modify the `install-config.yaml` file to customize your cluster further.
+Before you deploy an OpenShift Container Platform cluster on IBM Power® Virtual Server, you supply parameters to customize your cluster and the platform that hosts it.
+
+When you create the `install-config.yaml` file, you provide values for the required parameters through the command line. You can then modify the `install-config.yaml` file to customize your cluster further.
 
 # Available installation configuration parameters for IBM Power Virtual Server
 

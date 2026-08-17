@@ -1,4 +1,4 @@
-You can remove a cluster that you deployed to IBM Cloud®.
+You can remove an OpenShift Container Platform cluster that you deployed to IBM Cloud®. The uninstall process removes all cluster resources and infrastructure components that the installation program provisioned.
 
 # Removing a cluster that uses installer-provisioned infrastructure
 

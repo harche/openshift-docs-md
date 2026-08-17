@@ -1,4 +1,4 @@
-An OpenShift Container Platform cluster with multi-architecture compute machines supports compute machines with different architectures.
+You can install an OpenShift Container Platform cluster on Amazon Web Services (AWS) with support for configuring multi-architecture compute machines.
 
 <div class="note">
 
@@ -6,7 +6,7 @@ When you have nodes with multiple architectures in your cluster, the architectur
 
 </div>
 
-You can install an Amazon Web Services (AWS) cluster with the support for configuring multi-architecture compute machines. After installing the cluster, you can add multi-architecture compute machines to the cluster in the following ways:
+After installing the cluster, you can add multi-architecture compute machines to the cluster in the following ways:
 
 - Adding 64-bit x86 compute machines to a cluster that uses 64-bit ARM control plane machines and already includes 64-bit ARM compute machines. In this case, 64-bit x86 is considered the secondary architecture.
 
@@ -84,7 +84,5 @@ You can install a cluster with multi-architecture support to use compute machine
     Specifies the control plane node architecture. You can set this field to either `arm64` or `amd64`.
 
 - [Deploying the cluster](../../../installing/installing_aws/ipi/installing-aws-customizations.xml#installation-launching-installer_installing-aws-customizations)
-
-<!-- -->
 
 - [Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator](../../../post_installation_configuration/configuring-multi-arch-compute-machines/multiarch-tuning-operator.xml#multiarch-tuning-operator)

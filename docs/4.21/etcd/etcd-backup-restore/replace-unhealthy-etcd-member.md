@@ -1,10 +1,10 @@
-The process to replace a single unhealthy etcd member depends on whether the etcd member is unhealthy because the machine is not running or the node is not ready, or because the etcd pod is crashlooping.
+To restore etcd quorum when a single member is unhealthy, identify the member and determine whether its machine is stopped, its node is not ready, or its pod is crashlooping. You can then follow the replacement procedure that matches that state.
 
 <div class="note">
 
-If you have lost the majority of your control plane hosts, follow the disaster recovery procedure to [restore to a previous cluster state](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state) instead of this procedure.
+If you have lost the majority of your control plane hosts, follow the steps in "Restoring to an earlier cluster state" instead of this procedure.
 
-If the control plane certificates are not valid on the member being replaced, then you must follow the procedure to [recover from expired control plane certificates](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-3-expired-certs.xml#dr-recovering-expired-certs) instead of this procedure.
+If the control plane certificates are not valid on the member being replaced, then you must follow the steps in "Recovering from expired control plane certificates" instead of this procedure.
 
 If a control plane node is lost and a new one is created, the etcd cluster Operator handles generating the new TLS certificates and adding the node as an etcd member.
 
@@ -12,7 +12,7 @@ If a control plane node is lost and a new one is created, the etcd cluster Opera
 
 # Identifying an unhealthy etcd member
 
-You can identify if your cluster has an unhealthy etcd member.
+Identify an unhealthy etcd member by checking the `EtcdMembersAvailable` status condition so you can proceed with the correct replacement procedure.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
@@ -34,13 +34,13 @@ You can identify if your cluster has an unhealthy etcd member.
 
 # Determining the state of the unhealthy etcd member
 
+Determine whether an unhealthy etcd member has a stopped machine or not-ready node, or a crashlooping pod, so you can follow the correct replacement procedure.
+
 The steps to replace an unhealthy etcd member depend on which of the following states your etcd member is in:
 
 - The machine is not running or the node is not ready
 
 - The etcd pod is crashlooping
-
-This procedure determines which state your etcd member is in. This enables you to know which procedure to follow to replace the unhealthy etcd member.
 
 <div class="note">
 
@@ -68,9 +68,9 @@ If you are aware that the machine is not running or the node is not ready, but y
     ip-10-0-131-183.ec2.internal  stopped
     ```
 
-    - This output lists the node and the status of the node’s machine. If the status is anything other than `running`, then the **machine is not running**.
+    This output lists the node and the status of the node’s machine. If the status is anything other than `running`, then the **machine is not running**.
 
-      If the **machine is not running**, then follow the *Replacing an unhealthy etcd member whose machine is not running or whose node is not ready* procedure.
+    If the **machine is not running**, then follow the steps in "Replacing an unhealthy etcd member whose machine is not running or whose node is not ready".
 
 2.  Determine if the **node is not ready**.
 
@@ -92,7 +92,7 @@ If you are aware that the machine is not running or the node is not ready, but y
       ip-10-0-131-183.ec2.internal node-role.kubernetes.io/master node.kubernetes.io/unreachable node.kubernetes.io/unreachable
       ```
 
-      - If the node is listed with an `unreachable` taint, then the **node is not ready**.
+      If the node is listed with an `unreachable` taint, then the **node is not ready**.
 
     - If the node is still reachable, then check whether the node is listed as `NotReady`:
 
@@ -110,9 +110,9 @@ If you are aware that the machine is not running or the node is not ready, but y
       ip-10-0-131-183.ec2.internal   NotReady   master   122m   v1.34.2
       ```
 
-      - If the node is listed as `NotReady`, then the **node is not ready**.
+      If the node is listed as `NotReady`, then the **node is not ready**.
 
-    If the **node is not ready**, then follow the *Replacing an unhealthy etcd member whose machine is not running or whose node is not ready* procedure.
+    If the **node is not ready**, then follow the "Replacing an unhealthy etcd member whose machine is not running or whose node is not ready" procedure.
 
 3.  Determine if the **etcd pod is crashlooping**.
 
@@ -155,25 +155,13 @@ If you are aware that the machine is not running or the node is not ready, but y
         etcd-ip-10-0-154-204.ec2.internal                3/3     Running     0          6h6m
         ```
 
-        - Since this status of this pod is `Error`, then the **etcd pod is crashlooping**.
+        Since the status of the `etcd-ip-10-0-131-183.ec2.internal` pod is `Error`, then the **etcd pod is crashlooping**.
 
-    If the **etcd pod is crashlooping**, then follow the *Replacing an unhealthy etcd member whose etcd pod is crashlooping* procedure.
-
-# Replacing the unhealthy etcd member
-
-Depending on the state of your unhealthy etcd member, use one of the following procedures:
-
-- Replacing an unhealthy etcd member whose machine is not running or whose node is not ready
-
-- Replacing a control plane node on an unhealthy cluster
-
-- Replacing an unhealthy etcd member whose etcd pod is crashlooping
-
-- Replacing an unhealthy stopped baremetal etcd member
+    If the **etcd pod is crashlooping**, then follow the steps in "Replacing an unhealthy etcd member whose etcd pod is crashlooping".
 
 ## Replacing an unhealthy etcd member whose machine is not running or whose node is not ready
 
-This procedure details the steps to replace an etcd member that is unhealthy either because the machine is not running or because the node is not ready.
+Replace an etcd member whose machine is not running or whose node is not ready by removing it from the cluster and provisioning a replacement control plane machine.
 
 <div class="note">
 
@@ -258,7 +246,7 @@ If your cluster uses a control plane machine set, see "Recovering a degraded etc
     4.  Remove the unhealthy etcd member by providing the ID to the `etcdctl member remove` command:
 
         ``` terminal
-        sh-4.2# etcdctl member remove 6fc1e7c9db35841d
+        sh-4.2# etcdctl member remove <etcd_member_id>
         ```
 
         <div class="formalpara-title">
@@ -335,24 +323,24 @@ If your cluster uses a control plane machine set, see "Recovering a degraded etc
     1.  List the secrets for the unhealthy etcd member that was removed.
 
         ``` terminal
-        $ oc get secrets -n openshift-etcd | grep ip-10-0-131-183.ec2.internal
+        $ oc get secrets -n openshift-etcd | grep <unhealthy_node>
         ```
 
-        - Pass in the name of the unhealthy etcd member that you took note of earlier in this procedure.
+        Replace `<unhealthy_node>` with the name of the unhealthy etcd member that you took note of earlier in this procedure. The examples throughout this procedure use `ip-10-0-131-183.ec2.interal` as the name of the unhealthy etcd member.
 
-          There is a peer, serving, and metrics secret as shown in the following output:
+        There is a peer, serving, and metrics secret as shown in the following output:
 
-          <div class="formalpara-title">
+        <div class="formalpara-title">
 
-          **Example output**
+        **Example output**
 
-          </div>
+        </div>
 
-          ``` terminal
-          etcd-peer-ip-10-0-131-183.ec2.internal              kubernetes.io/tls                     2      47m
-          etcd-serving-ip-10-0-131-183.ec2.internal           kubernetes.io/tls                     2      47m
-          etcd-serving-metrics-ip-10-0-131-183.ec2.internal   kubernetes.io/tls                     2      47m
-          ```
+        ``` terminal
+        etcd-peer-ip-10-0-131-183.ec2.internal              kubernetes.io/tls                     2      47m
+        etcd-serving-ip-10-0-131-183.ec2.internal           kubernetes.io/tls                     2      47m
+        etcd-serving-metrics-ip-10-0-131-183.ec2.internal   kubernetes.io/tls                     2      47m
+        ```
 
     2.  Delete the secrets for the unhealthy etcd member that was removed.
 
@@ -408,7 +396,7 @@ If your cluster uses a control plane machine set, see "Recovering a degraded etc
           clustername-8qw5l-worker-us-east-1c-pkg26   Running   m4.large    us-east-1   us-east-1c   3h28m   ip-10-0-170-181.ec2.internal   aws:///us-east-1c/i-06861c00007751b0a   running
           ```
 
-          - This is the control plane machine for the unhealthy node, `ip-10-0-131-183.ec2.internal`.
+          `clustername-8qw5l-master-0` is the control plane machine for the unhealthy node, `ip-10-0-131-183.ec2.internal`.
 
       2.  Delete the machine of the unhealthy member:
 
@@ -416,9 +404,9 @@ If your cluster uses a control plane machine set, see "Recovering a degraded etc
           $ oc delete machine -n openshift-machine-api clustername-8qw5l-master-0
           ```
 
-          - Specify the name of the control plane machine for the unhealthy node.
+          Replace `clustername-8qw5l-master-0` with the name of the control plane machine for the unhealthy node.
 
-            A new machine is automatically provisioned after deleting the machine of the unhealthy member.
+          A new machine is automatically provisioned after deleting the machine of the unhealthy member.
 
       3.  Verify that a new machine was created:
 
@@ -442,15 +430,15 @@ If your cluster uses a control plane machine set, see "Recovering a degraded etc
           clustername-8qw5l-worker-us-east-1c-pkg26   Running        m4.large    us-east-1   us-east-1c   3h28m   ip-10-0-170-181.ec2.internal   aws:///us-east-1c/i-06861c00007751b0a   running
           ```
 
-          - The new machine, `clustername-8qw5l-master-3` is being created and is ready once the phase changes from `Provisioning` to `Running`.
+          The new machine, `clustername-8qw5l-master-3`, is being created and is ready once the phase changes from `Provisioning` to `Running`.
 
-            It might take a few minutes for the new machine to be created. The etcd cluster Operator automatically syncs when the machine or node returns to a healthy state.
+          It might take a few minutes for the new machine to be created. The etcd cluster Operator automatically syncs when the machine or node returns to a healthy state.
 
-            <div class="note">
+          <div class="note">
 
-            Verify the subnet IDs that you are using for your machine sets to ensure that they end up in the correct availability zone.
+          Verify the subnet IDs that you are using for your machine sets to ensure that they end up in the correct availability zone.
 
-            </div>
+          </div>
 
     - If the control plane machine set does not exist, delete and re-create the control plane machine. After this machine is re-created, a new revision is forced and etcd scales up automatically.
 
@@ -480,7 +468,7 @@ If your cluster uses a control plane machine set, see "Recovering a degraded etc
           clustername-8qw5l-worker-us-east-1c-pkg26   Running   m4.large    us-east-1   us-east-1c   3h28m   ip-10-0-170-181.ec2.internal   aws:///us-east-1c/i-06861c00007751b0a   running
           ```
 
-          - This is the control plane machine for the unhealthy node, `ip-10-0-131-183.ec2.internal`.
+          `clustername-8qw5l-master-0` is the control plane machine for the unhealthy node, `ip-10-0-131-183.ec2.internal`.
 
       2.  Save the machine configuration to a file on your file system:
 
@@ -491,7 +479,7 @@ If your cluster uses a control plane machine set, see "Recovering a degraded etc
               > new-master-machine.yaml
           ```
 
-          - Specify the name of the control plane machine for the unhealthy node.
+          Replace `clustername-8qw5l-master-0` with the name of the control plane machine for the unhealthy node.
 
       3.  Edit the `new-master-machine.yaml` file that was created in the previous step to assign a new name and remove unnecessary fields.
 
@@ -553,7 +541,7 @@ If your cluster uses a control plane machine set, see "Recovering a degraded etc
           $ oc delete machine -n openshift-machine-api clustername-8qw5l-master-0
           ```
 
-          - Specify the name of the control plane machine for the unhealthy node.
+          Replace `clustername-8qw5l-master-0` with the name of the control plane machine for the unhealthy node.
 
       5.  Verify that the machine was deleted:
 
@@ -604,9 +592,9 @@ If your cluster uses a control plane machine set, see "Recovering a degraded etc
           clustername-8qw5l-worker-us-east-1c-pkg26   Running        m4.large    us-east-1   us-east-1c   3h28m   ip-10-0-170-181.ec2.internal   aws:///us-east-1c/i-06861c00007751b0a   running
           ```
 
-          - The new machine, `clustername-8qw5l-master-3` is being created and is ready once the phase changes from `Provisioning` to `Running`.
+          The new machine, `clustername-8qw5l-master-3`, is being created and is ready once the phase changes from `Provisioning` to `Running`.
 
-            It might take a few minutes for the new machine to be created. The etcd cluster Operator automatically syncs when the machine or node returns to a healthy state.
+          It might take a few minutes for the new machine to be created. The etcd cluster Operator automatically syncs when the machine or node returns to a healthy state.
 
 6.  Turn the quorum guard back on by entering the following command:
 
@@ -660,7 +648,7 @@ If your cluster uses a control plane machine set, see "Recovering a degraded etc
     $ oc patch etcd cluster -p='{"spec": {"forceRedeploymentReason": "recovery-'"$( date --rfc-3339=ns )"'"}}' --type=merge
     ```
 
-    - The `forceRedeploymentReason` value must be unique, which is why a timestamp is appended.
+    The `forceRedeploymentReason` value must be unique, which is why a timestamp is appended.
 
 2.  Verify that there are exactly three etcd members.
 
@@ -708,7 +696,7 @@ If your cluster uses a control plane machine set, see "Recovering a degraded etc
 
 ## Replacing an unhealthy etcd member whose etcd pod is crashlooping
 
-This procedure details the steps to replace an etcd member that is unhealthy because the etcd pod is crashlooping.
+Replace a crashlooping etcd member by removing it from the cluster and creating a healthy replacement so the control plane can regain quorum.
 
 - You have identified the unhealthy etcd member.
 
@@ -731,10 +719,10 @@ This procedure details the steps to replace an etcd member that is unhealthy bec
         In a terminal that has access to the cluster as a `cluster-admin` user, run the following command:
 
         ``` terminal
-        $ oc debug node/ip-10-0-131-183.ec2.internal
+        $ oc debug node/<unhealthy_node>
         ```
 
-        - Replace this with the name of the unhealthy node.
+        Replace `<unhealthy_node>` with the name of the unhealthy etcd member.
 
     2.  Change your root directory to `/host`:
 
@@ -866,24 +854,24 @@ This procedure details the steps to replace an etcd member that is unhealthy bec
     1.  List the secrets for the unhealthy etcd member that was removed.
 
         ``` terminal
-        $ oc get secrets -n openshift-etcd | grep ip-10-0-131-183.ec2.internal
+        $ oc get secrets -n openshift-etcd | grep <unhealthy_node>
         ```
 
-        - Pass in the name of the unhealthy etcd member that you took note of earlier in this procedure.
+        Replace `<unhealthy_node>` with the name of the unhealthy etcd member.
 
-          There is a peer, serving, and metrics secret as shown in the following output:
+        There is a peer, serving, and metrics secret as shown in the following output:
 
-          <div class="formalpara-title">
+        <div class="formalpara-title">
 
-          **Example output**
+        **Example output**
 
-          </div>
+        </div>
 
-          ``` terminal
-          etcd-peer-ip-10-0-131-183.ec2.internal              kubernetes.io/tls                     2      47m
-          etcd-serving-ip-10-0-131-183.ec2.internal           kubernetes.io/tls                     2      47m
-          etcd-serving-metrics-ip-10-0-131-183.ec2.internal   kubernetes.io/tls                     2      47m
-          ```
+        ``` terminal
+        etcd-peer-ip-10-0-131-183.ec2.internal              kubernetes.io/tls                     2      47m
+        etcd-serving-ip-10-0-131-183.ec2.internal           kubernetes.io/tls                     2      47m
+        etcd-serving-metrics-ip-10-0-131-183.ec2.internal   kubernetes.io/tls                     2      47m
+        ```
 
     2.  Delete the secrets for the unhealthy etcd member that was removed.
 
@@ -913,9 +901,9 @@ This procedure details the steps to replace an etcd member that is unhealthy bec
     $ oc patch etcd cluster -p='{"spec": {"forceRedeploymentReason": "single-master-recovery-'"$( date --rfc-3339=ns )"'"}}' --type=merge
     ```
 
-    - The `forceRedeploymentReason` value must be unique, which is why a timestamp is appended.
+    The `forceRedeploymentReason` value must be unique, which is why a timestamp is appended.
 
-      When the etcd cluster Operator performs a redeployment, it ensures that all control plane nodes have a functioning etcd pod.
+    When the etcd cluster Operator performs a redeployment, it ensures that all control plane nodes have a functioning etcd pod.
 
 6.  Turn the quorum guard back on by entering the following command:
 
@@ -971,7 +959,7 @@ This procedure details the steps to replace an etcd member that is unhealthy bec
 
 ## Replacing an unhealthy bare metal etcd member whose machine is not running or whose node is not ready
 
-This procedure details the steps to replace a bare metal etcd member that is unhealthy either because the machine is not running or because the node is not ready.
+Replace a bare metal etcd member whose machine is not running or whose node is not ready by removing it from the cluster and provisioning a replacement control plane machine.
 
 If you are running installer-provisioned infrastructure or you used the Machine API to create your machines, follow these steps. Otherwise you must create the new control plane node using the same method that was used to originally create it.
 
@@ -1126,7 +1114,15 @@ If you are running installer-provisioned infrastructure or you used the Machine 
 
             ``` terminal
             $ oc delete secret etcd-peer-openshift-control-plane-2 -n openshift-etcd
+            ```
 
+            <div class="formalpara-title">
+
+            **Example output**
+
+            </div>
+
+            ``` terminal
             secret "etcd-peer-openshift-control-plane-2" deleted
             ```
 
@@ -1134,7 +1130,15 @@ If you are running installer-provisioned infrastructure or you used the Machine 
 
             ``` terminal
             $ oc delete secret etcd-serving-metrics-openshift-control-plane-2 -n openshift-etcd
+            ```
 
+            <div class="formalpara-title">
+
+            **Example output**
+
+            </div>
+
+            ``` terminal
             secret "etcd-serving-metrics-openshift-control-plane-2" deleted
             ```
 
@@ -1142,7 +1146,15 @@ If you are running installer-provisioned infrastructure or you used the Machine 
 
             ``` terminal
             $ oc delete secret etcd-serving-openshift-control-plane-2 -n openshift-etcd
+            ```
 
+            <div class="formalpara-title">
+
+            **Example output**
+
+            </div>
+
+            ``` terminal
             secret "etcd-serving-openshift-control-plane-2" deleted
             ```
 
@@ -1169,7 +1181,7 @@ If you are running installer-provisioned infrastructure or you used the Machine 
     examplecluster-compute-1          Running                          165m    openshift-compute-1         baremetalhost:///openshift-machine-api/openshift-compute-1/0fdae6eb-2066-4241-91dc-e7ea72ab13b9         provisioned
     ```
 
-    - This is the control plane machine for the unhealthy node, `examplecluster-control-plane-2`.
+    `examplecluster-control-plane-0` is the control plane machine for the unhealthy node, `examplecluster-control-plane-2`.
 
 5.  Ensure that the Bare Metal Operator is available by running the following command:
 
@@ -1269,7 +1281,15 @@ If you are running installer-provisioned infrastructure or you used the Machine 
 
     ``` terminal
     $ oc get nodes
+    ```
 
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
     NAME                     STATUS ROLES   AGE   VERSION
     openshift-control-plane-0 Ready master 3h24m v1.34.2
     openshift-control-plane-1 Ready master 3h24m v1.34.2
@@ -1334,7 +1354,15 @@ If you are running installer-provisioned infrastructure or you used the Machine 
 
     ``` terminal
     $ oc get bmh -n openshift-machine-api
+    ```
 
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
     NAME                      STATE                  CONSUMER                      ONLINE ERROR   AGE
     openshift-control-plane-0 externally provisioned examplecluster-control-plane-0 true         4h48m
     openshift-control-plane-1 externally provisioned examplecluster-control-plane-1 true         4h48m
@@ -1364,9 +1392,9 @@ If you are running installer-provisioned infrastructure or you used the Machine 
         examplecluster-compute-1               Running                          165m    openshift-compute-1         baremetalhost:///openshift-machine-api/openshift-compute-1/0fdae6eb-2066-4241-91dc-e7ea72ab13b9         provisioned
         ```
 
-        - The new machine, `clustername-8qw5l-master-3` is being created and is ready after the phase changes from `Provisioning` to `Running`.
+        The new machine is being created and is ready after the phase changes from `Provisioning` to `Running`.
 
-          It should take a few minutes for the new machine to be created. The etcd cluster Operator will automatically sync when the machine or node returns to a healthy state.
+        It should take a few minutes for the new machine to be created. The etcd cluster Operator will automatically sync when the machine or node returns to a healthy state.
 
     2.  Verify that the bare metal host becomes provisioned and no error reported by running the following command:
 
@@ -1381,7 +1409,6 @@ If you are running installer-provisioned infrastructure or you used the Machine 
         </div>
 
         ``` terminal
-        $ oc get bmh -n openshift-machine-api
         NAME                      STATE                  CONSUMER                       ONLINE ERROR AGE
         openshift-control-plane-0 externally provisioned examplecluster-control-plane-0 true         4h48m
         openshift-control-plane-1 externally provisioned examplecluster-control-plane-1 true         4h48m
@@ -1403,7 +1430,6 @@ If you are running installer-provisioned infrastructure or you used the Machine 
         </div>
 
         ``` terminal
-        $ oc get nodes
         NAME                     STATUS ROLES   AGE   VERSION
         openshift-control-plane-0 Ready master 4h26m v1.34.2
         openshift-control-plane-1 Ready master 4h26m v1.34.2
@@ -1464,13 +1490,13 @@ If you are running installer-provisioned infrastructure or you used the Machine 
     $ oc patch etcd cluster -p='{"spec": {"forceRedeploymentReason": "recovery-'"$( date --rfc-3339=ns )"'"}}' --type=merge
     ```
 
-    - The `forceRedeploymentReason` value must be unique, which is why a timestamp is appended.
+    The `forceRedeploymentReason` value must be unique, which is why a timestamp is appended.
 
-      To verify there are exactly three etcd members, connect to the running etcd container, passing in the name of a pod that was not on the affected node. In a terminal that has access to the cluster as a `cluster-admin` user, run the following command:
+    To verify there are exactly three etcd members, connect to the running etcd container, passing in the name of a pod that was not on the affected node. In a terminal that has access to the cluster as a `cluster-admin` user, run the following command:
 
-      ``` terminal
-      $ oc rsh -n openshift-etcd etcd-openshift-control-plane-0
-      ```
+    ``` terminal
+    $ oc rsh -n openshift-etcd etcd-openshift-control-plane-0
+    ```
 
 2.  View the member list:
 
@@ -1525,5 +1551,9 @@ If you are running installer-provisioned infrastructure or you used the Machine 
     ```
 
         AllNodesAtLatestRevision
+
+- [Restoring to an earlier cluster state](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
+
+- [Recovering from expired control plane certificates](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-3-expired-certs.xml#dr-recovering-expired-certs)
 
 - [Quorum protection with machine lifecycle hooks](../../machine_management/deleting-machine.xml#machine-lifecycle-hook-deletion-etcd_deleting-machine)

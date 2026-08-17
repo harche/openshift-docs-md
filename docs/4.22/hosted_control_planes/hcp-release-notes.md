@@ -19,6 +19,9 @@ As an alternative for the default volume snapshot approach, you can use the etcd
 Deploy self-managed hosted control planes on Microsoft Azure (Technology Preview)
 In this release, you can create public or private hosted clusters on Azure as a Technology Preview feature. For more information, see [Deploying hosted control planes on Azure](../hosted_control_planes/hcp-deploy/hcp-deploy-azure.xml#hcp-deploy-azure).
 
+Control which optional capabilities are enabled in a hosted cluster
+Typically, most optional capabilities in a hosted cluster are enabled by default. In this release, you can control which optional capabilities are enabled to reduce resource consumption and prevent unnecessary Operators and operands from being deployed. For more information, see [Capabilities for hosted clusters](../hosted_control_planes/hcp-deploy/hcp-deploy-aws.xml#hcp-cluster-capabilities_hcp-deploy-aws).
+
 # Fixed issues
 
 The following issues are fixed for this release:
@@ -109,6 +112,7 @@ For IBM Power and IBM Z, the following exceptions apply:
 | Hosted control planes on IBM Z in a disconnected environment                               | General Availability | General Availability | General Availability |
 | Hosted control planes for OpenShift Container Platform on Microsoft Azure                  | Not Available        | Not Available        | Technology Preview   |
 | Backup and restore with the etcd snapshot method                                           | Not Available        | Not Available        | Technology Preview   |
+| Restoring a hosted cluster to a new management cluster by using OADP                       | Technology Preview   | Technology Preview   | Technology Preview   |
 
 Hosted control planes GA and TP tracker
 

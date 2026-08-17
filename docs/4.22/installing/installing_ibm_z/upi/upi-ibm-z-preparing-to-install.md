@@ -1,4 +1,4 @@
-You prepare to install an OpenShift Container Platform cluster on IBM Z® and IBM® LinuxONE by completing the following steps:
+Before installing OpenShift Container Platform on IBM Z® or IBM® LinuxONE with user-provisioned infrastructure, you must verify connectivity, download the installation program, and prepare your pull secret and SSH key.
 
 - Verifying internet connectivity for your cluster.
 
@@ -6,7 +6,7 @@ You prepare to install an OpenShift Container Platform cluster on IBM Z® and IB
 
   <div class="note">
 
-  If you are installing in a disconnected environment, you extract the installation program from the mirrored content. For more information, see [Mirroring images for a disconnected installation](../../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images).
+  If you are installing in a disconnected environment, you extract the installation program from the mirrored content. For more information, see Mirroring images for a disconnected installation in the Additional resources section.
 
   </div>
 
@@ -445,4 +445,8 @@ The validation steps detailed in this section must succeed before you install yo
 
     3.  Use this method to perform reverse lookups against the IP addresses for the control plane and compute nodes. Check that the results correspond to the DNS record names of each node.
 
-- See [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring) for more information about the Telemetry service.
+# Additional resources
+
+- [Mirroring images for a disconnected installation](../../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images)
+
+- [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)

@@ -1,6 +1,8 @@
+You can install a cluster after setting up the environment for an OpenShift Container Platform installation. Ensure you have completed the prerequisites before installing a cluster.
+
 # Cleaning up previous installations
 
-In case of an earlier failed deployment, remove the artifacts from the failed attempt before trying to deploy OpenShift Container Platform again.
+You must remove the artifacts from any failed deployment attempt before trying to deploy OpenShift Container Platform again.
 
 1.  Power off all bare-metal nodes before installing the OpenShift Container Platform cluster by using the following command:
 
@@ -37,31 +39,37 @@ In case of an earlier failed deployment, remove the artifacts from the failed at
 
 # Deploying the cluster via the OpenShift Container Platform installer
 
-Run the OpenShift Container Platform installer:
+You can deploy the cluster by running the OpenShift Container Platform installer.
 
-``` terminal
-$ ./openshift-baremetal-install --dir ~/clusterconfigs --log-level debug create cluster
-```
+- Run the OpenShift Container Platform installer:
+
+  ``` terminal
+  $ ./openshift-baremetal-install --dir ~/clusterconfigs --log-level debug create cluster
+  ```
 
 # Following the progress of the installation
 
-During the deployment process, you can check the installation’s overall status by issuing the `tail` command to the `.openshift_install.log` log file in the install directory folder:
+During the deployment process, you can check the installation’s overall status by issuing the `tail` command to the `.openshift_install.log` log file in the install directory folder.
 
-``` terminal
-$ tail -f /path/to/install-dir/.openshift_install.log
-```
+- Track installation progress by running the following command:
+
+  ``` terminal
+  $ tail -f /path/to/install-dir/.openshift_install.log
+  ```
 
 # Verifying static IP address configuration
 
-If the DHCP reservation for a cluster node specifies an infinite lease, after the installer successfully provisions the node, the dispatcher script checks the node’s network configuration. If the script determines that the network configuration contains an infinite DHCP lease, it creates a new connection using the IP address of the DHCP lease as a static IP address.
+Ensure that all required steps are complete and verify the network configuration is working properly.
+
+If the DHCP reservation for a cluster node specifies an infinite lease, after the installer successfully provisions the node, the dispatcher script checks the node’s network configuration.
+
+If the script determines that the network configuration contains an infinite DHCP lease, it creates a new connection by using the IP address of the DHCP lease as a static IP address.
 
 <div class="note">
 
 The dispatcher script might run on successfully provisioned nodes while the provisioning of other nodes in the cluster is ongoing.
 
 </div>
-
-Verify the network configuration is working properly.
 
 1.  Check the network interface configuration on the node.
 

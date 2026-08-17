@@ -1,4 +1,4 @@
-Configure the `github` identity provider to validate user names and passwords against GitHub or GitHub Enterprise’s OAuth authentication server. OAuth facilitates a token exchange flow between OpenShift Container Platform and GitHub or GitHub Enterprise.
+Configure the `github` identity provider so users can log in to OpenShift Container Platform with GitHub or GitHub Enterprise accounts through OAuth. Use this integration when you want cluster users to authenticate with existing GitHub credentials instead of managing separate cluster passwords.
 
 You can use the GitHub integration to connect to either GitHub or GitHub Enterprise. For GitHub Enterprise integrations, you must provide the `hostname` of your instance and can optionally provide a `ca` certificate bundle to use in requests to the server.
 
@@ -20,25 +20,29 @@ OpenShift Container Platform usernames containing `/`, `:`, and `%` are not supp
 
 # About GitHub authentication
 
-Configuring [GitHub authentication](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/authorizing-oauth-apps) allows users to log in to OpenShift Container Platform with their GitHub credentials. To prevent anyone with any GitHub user ID from logging in to your OpenShift Container Platform cluster, you can restrict access to only those in specific GitHub organizations.
+Configure GitHub authentication so users can log in with GitHub or GitHub Enterprise credentials. Separate OpenShift Container Platform user accounts are not required.
+
+To prevent anyone with any GitHub user ID from logging in to your OpenShift Container Platform cluster, you can restrict access to only those in specific GitHub organizations.
 
 # Registering a GitHub application
 
-To use GitHub or GitHub Enterprise as an identity provider, you must register an application to use.
+Register an OAuth application on GitHub or GitHub Enterprise to obtain the client ID and client secret for the identity provider configuration.
 
-1.  Register an application on GitHub:
+1.  Start the registration process by navigating to the appropriate page in GitHub or GitHub Enterprise:
 
-    - For GitHub, click [**Settings**](https://github.com/settings/profile) → [**Developer settings**](https://github.com/settings/apps) → [**OAuth Apps**](https://github.com/settings/developers) → [**Register a new OAuth application**](https://github.com/settings/applications/new).
+    - For GitHub, click your profile picture in the upper right corner and select **Settings** → **Developer settings** → **OAuth Apps**.
 
-    - For GitHub Enterprise, go to your GitHub Enterprise home page and then click **Settings → Developer settings → Register a new application**.
+    - For GitHub Enterprise, go to your GitHub Enterprise home page and then select **Settings → Developer settings → Register a new application**.
 
-2.  Enter an application name, for example `My OpenShift Install`.
+2.  Click **New OAuth app**.
 
-3.  Enter a homepage URL, such as `https://oauth-openshift.apps.<cluster-name>.<cluster-domain>`.
+3.  Enter an application name, for example `My OpenShift Install`.
 
-4.  Optional: Enter an application description.
+4.  Enter a homepage URL, such as `https://oauth-openshift.apps.<cluster-name>.<cluster-domain>`.
 
-5.  Enter the authorization callback URL, where the end of the URL contains the identity provider `name`:
+5.  Optional: Enter an application description.
+
+6.  Enter the authorization callback URL, where the end of the URL contains the identity provider `name`:
 
         https://oauth-openshift.apps.<cluster-name>.<cluster-domain>/oauth2callback/<idp-provider-name>
 
@@ -46,11 +50,11 @@ To use GitHub or GitHub Enterprise as an identity provider, you must register an
 
         https://oauth-openshift.apps.openshift-cluster.example.com/oauth2callback/github
 
-6.  Click **Register application**. GitHub provides a client ID and a client secret. You need these values to complete the identity provider configuration.
+7.  Click **Register application**. GitHub provides a client ID and a client secret. You need these values to complete the identity provider configuration.
 
 # Creating the secret
 
-Create a Secret in the `openshift-config` namespace to store identity provider client secrets, certificates, or keys, so the OAuth custom resource (CR) can reference them.
+Create a `Secret` object in the `openshift-config` namespace to store the client secret and related credentials for the identity provider configuration.
 
 1.  Create a `Secret` object containing the client secret by running the following command:
 
@@ -83,7 +87,7 @@ Create a `ConfigMap` object in the `openshift-config` namespace to store the cer
 
 <div class="note">
 
-This procedure is only required for GitHub Enterprise.
+This procedure is required only for GitHub Enterprise.
 
 </div>
 
@@ -110,13 +114,7 @@ This procedure is only required for GitHub Enterprise.
 
 # Sample GitHub CR
 
-The following custom resource (CR) shows the parameters and acceptable values for a GitHub identity provider.
-
-<div class="formalpara-title">
-
-**GitHub CR**
-
-</div>
+Review the custom resource fields and acceptable values for configuring a GitHub identity provider in OpenShift Container Platform. Use these definitions to set client credentials and access restrictions before applying the configuration to the cluster.
 
 ``` yaml
 apiVersion: config.openshift.io/v1
@@ -143,29 +141,39 @@ spec:
       - myorganization2/team-b
 ```
 
-- This provider name is prefixed to the GitHub numeric user ID to form an identity name. It is also used to build the callback URL.
+where:
 
-- Controls how mappings are established between this provider’s identities and `User` objects.
+`spec.identityProviders.name`
+Specifies the provider name, which is prefixed to the GitHub numeric user ID to form an identity name. It is also used to build the callback URL.
 
-- Optional: Reference to an OpenShift Container Platform `ConfigMap` object containing the PEM-encoded certificate authority bundle to use in validating server certificates for the configured URL. Only for use in GitHub Enterprise with a non-publicly trusted root certificate.
+`spec.identityProviders.mappingMethod`
+Specifies how mappings are established between identities from this provider and `User` objects.
 
-- The client ID of a [registered GitHub OAuth application](https://github.com/settings/applications/new). The application must be configured with a callback URL of `https://oauth-openshift.apps.<cluster-name>.<cluster-domain>/oauth2callback/<idp-provider-name>`.
+`spec.identityProviders.github.ca`
+Specifies an optional reference to an OpenShift Container Platform `ConfigMap` object containing the PEM-encoded certificate authority bundle to use in validating server certificates for the configured URL. Only for use in GitHub Enterprise with a non-publicly trusted root certificate.
 
-- Reference to an OpenShift Container Platform `Secret` object containing the client secret issued by GitHub.
+`spec.identityProviders.github.clientID`
+Specifies the client ID issued when you register a GitHub OAuth application. The application must be configured with a callback URL of `https://oauth-openshift.apps.<cluster-name>.<cluster-domain>/oauth2callback/<idp-provider-name>`.
 
-- For GitHub Enterprise, you must provide the hostname of your instance, such as `example.com`. This value must match the GitHub Enterprise `hostname` value in in the `/setup/settings` file and cannot include a port number. If this value is not set, then either `teams` or `organizations` must be defined. For GitHub, omit this parameter.
+`spec.identityProviders.github.clientSecret`
+Specifies a reference to an OpenShift Container Platform `Secret` object containing the client secret issued by GitHub.
 
-- The list of organizations. Either the `organizations` or `teams` field must be set unless the `hostname` field is set, or if `mappingMethod` is set to `lookup`. Cannot be used in combination with the `teams` field.
+`spec.identityProviders.github.hostname`
+Specifies the hostname of your GitHub Enterprise instance, such as `example.com`. This value must match the GitHub Enterprise `hostname` value in the `/setup/settings` file and cannot include a port number. If this value is not set, then either `teams` or `organizations` must be defined. For GitHub, omit this parameter.
 
-- The list of teams. Either the `teams` or `organizations` field must be set unless the `hostname` field is set, or if `mappingMethod` is set to `lookup`. Cannot be used in combination with the `organizations` field.
+`spec.identityProviders.github.organizations`
+Specifies the list of organizations. Either the `organizations` or `teams` field must be set unless the `hostname` field is set, or if `mappingMethod` is set to `lookup`. Cannot be used in combination with the `teams` field.
+
+`spec.identityProviders.github.teams`
+Specifies the list of teams. Either the `teams` or `organizations` field must be set unless the `hostname` field is set, or if `mappingMethod` is set to `lookup`. Cannot be used in combination with the `organizations` field.
 
 <div class="note">
 
-If `organizations` or `teams` is specified, only GitHub users that are members of at least one of the listed organizations will be allowed to log in. If the GitHub OAuth application configured in `clientID` is not owned by the organization, an organization owner must grant third-party access to use this option. This can be done during the first GitHub login by the organization’s administrator, or from the GitHub organization settings.
+If `organizations` or `teams` is specified, only GitHub users that are members of at least one of the listed organizations are allowed to log in. If the GitHub OAuth application configured in `clientID` is not owned by the organization, an organization owner must grant third-party access to use this option. This can be done during the first GitHub login by the administrator of the organization, or from the GitHub organization settings.
 
 </div>
 
-- See [Identity provider parameters](../../authentication/understanding-identity-provider.xml#identity-provider-parameters_understanding-identity-provider) for information on parameters, such as `mappingMethod`, that are common to all identity providers.
+- [Identity provider parameters](../../authentication/understanding-identity-provider.xml#identity-provider-parameters_understanding-identity-provider)
 
 # Adding an identity provider to your cluster
 
@@ -195,7 +203,7 @@ Apply the identity provider custom resource (CR) to your cluster so users can au
 
     You can also access this page from the web console by navigating to **(?) Help** → **Command Line Tools** → **Copy Login Command**.
 
-3.  Log in to the cluster by running the following command and pass in the token to authenticate:
+3.  Log in to the cluster, passing in the token to authenticate, by running the following command:
 
     ``` terminal
     $ oc login --token=<token>
@@ -212,3 +220,5 @@ Apply the identity provider custom resource (CR) to your cluster so users can au
     ``` terminal
     $ oc whoami
     ```
+
+- [GitHub authentication (GitHub documentation)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/authorizing-oauth-apps)

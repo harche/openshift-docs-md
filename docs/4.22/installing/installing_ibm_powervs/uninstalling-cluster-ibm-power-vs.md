@@ -1,4 +1,4 @@
-You can remove a cluster that you deployed to IBM Power® Virtual Server.
+To remove a OpenShift Container Platform cluster that you deployed on IBM Power® Virtual Server, run the delete cluster command to remove all associated cloud resources.
 
 # Removing a cluster that uses installer-provisioned infrastructure
 

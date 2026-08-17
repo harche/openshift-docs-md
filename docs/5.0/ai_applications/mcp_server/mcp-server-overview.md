@@ -1,8 +1,8 @@
-When a problem occurs on your OpenShift Container Platform cluster, you want to determine exactly what is happening, so that you can fix the issue as soon as possible. The MCP server for Red Hat OpenShift Container Platform feature provides an AI tool for this purpose to quickly and easily diagnose your OpenShift Container Platform cluster.
+When problems occur on your OpenShift Container Platform cluster, you want to determine exactly what is happening, so that you can fix the issue as soon as possible. The MCP server for Red Hat OpenShift feature provides an AI tool to quickly and easily diagnose your OpenShift Container Platform cluster.
 
 <div class="important">
 
-MCP server for Red Hat OpenShift Container Platform is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+MCP server for Red Hat OpenShift is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
 For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
 
@@ -10,7 +10,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 # AI safety
 
-When using MCP (Model Context Protocol) server for Red Hat OpenShift Container Platform, it is advised that you adhere to the following AI safety processes and best practices.
+Because MCP server for Red Hat OpenShift grants AI agents access to cluster resources, you must follow safety practices to protect your cluster from unauthorized actions, data exposure, and prompt injection risks.
 
 <div class="important">
 
@@ -20,11 +20,11 @@ This feature uses AI technology. Do not include any personal information or othe
 
 ## Data ownership
 
-The MCP server for Red Hat OpenShift Container Platform does not store any information or state of the cluster. If you opt in, there are several telemetry metrics that are collected to understand the overall usage levels of the MCP server for Red Hat OpenShift Container Platform:
+The MCP server for Red Hat OpenShift does not store any information or state of the cluster. If you opt in, there are several telemetry metrics that are collected to understand the overall usage levels of the MCP server for Red Hat OpenShift:
 
 - Cluster:k8s_mcp_tool_calls:sum:
 
-- Total count of all MCP tool invocations across the cluster
+- Total count of all Model Context Protocol (MCP) tool invocations across the cluster
 
 - Cluster:k8s_mcp_tool_errors:sum:
 
@@ -60,15 +60,15 @@ enabled = false
 
 ## Data privacy and redaction
 
-The MCP server for Red Hat OpenShift Container Platform has no internal mechanisms for PII and data redaction. To ensure that cluster information within allowed Custom Resources (CRs) complies with data privacy standards, deploy TrustyAI to monitor and sanitize outgoing payloads. For how to scope and limit MCP access to specific CRs, see Section *Revoke access to Custom Resources*.
+The MCP server for Red Hat OpenShift has no internal mechanisms for PII and data redaction. To ensure that cluster information within allowed Custom Resources (CRs) complies with data privacy standards, deploy TrustyAI to monitor and sanitize outgoing payloads. For how to scope and limit MCP access to specific CRs, see "Revoke access to Custom Resources".
 
 ## Audit trail recommendation
 
-The MCP server for Red Hat OpenShift Container Platform is configured to append a user-agent string in audit logs to identify that requests were made by an AI agent through the MCP server. Ensure that authorization is enabled via OAuth or MCP gateway. For more information, see Section *Install MCP server for Red Hat OpenShift Container Platform*.
+The MCP server for Red Hat OpenShift is configured to append a user-agent string in audit logs to identify that requests were made by an AI agent through the MCP server. Ensure that authorization is enabled via OAuth or MCP gateway. For more information, see "Install MCP server for Red Hat OpenShift".
 
 ## Recommendations regarding 3rd-party MCP servers
 
-For better security and control, it is recommended that third-party MCP hosts implement a HITL requirement to approve any "write" operations performed via the MCP server for Red Hat OpenShift Container Platform.
+For better security and control, it is recommended that third-party MCP hosts implement a HITL requirement to approve any "write" operations performed via the MCP server for Red Hat OpenShift.
 
 ## AI governance and guardrails
 
@@ -116,7 +116,7 @@ In an emergency, you can use any of the following possible actions to revoke acc
 
 - **RBAC revocation**:
 
-  Remove the user’s rolebinding or clusterrolebinding. For more information, see Section *Install MCP server for Red Hat OpenShift Container Platform*.
+  Remove the user’s rolebinding or clusterrolebinding. For more information, see "Install MCP server for Red Hat OpenShift".
 
 - **Remove access through the MCP gateway**
 
@@ -126,9 +126,17 @@ In an emergency, you can use any of the following possible actions to revoke acc
   $ oc delete mcpsr <name of registration>
   ```
 
+<!-- -->
+
+- [Revoke access to Custom Resources](../../ai_applications/mcp_server/mcp-server-overview.xml#ai-app-mcp-server-revoke-cr-access_mcp-server-overview)
+
+- [Install the MCP server](../../ai_applications/mcp_server/mcp-server-overview.xml#ai-app-mcp-server-install-helm_mcp-server-overview)
+
 # Model Context Protocol overview
 
-MCP (Model Context Protocol) is an open source standard for connecting AI applications to external systems.
+Model Context Protocol (MCP) is an open source standard that enables AI applications to securely connect to external data sources, tools, and workflows without custom integrations.
+
+MCP is an open source standard for connecting AI applications to external systems.
 
 Using MCP, AI applications, such as Claude Code or Cursor, can connect to the following items, enabling them to access key information and perform tasks:
 
@@ -142,7 +150,7 @@ MCP works similarly to a USB-C port for AI applications. Just as USB-C provides 
 
 # MCP server overview
 
-In the Model Context Protocol (MCP) ecosystem, the server’s goal is to turn a specific data source or service into something an AI can understand and use.
+A Model Context Protocol (MCP) server exposes cluster data and operations to AI models in a structured, secure way, so that AI agents can diagnose and act on your cluster without needing direct access to APIs or databases.
 
 ## The Goals of an MCP server
 
@@ -190,11 +198,11 @@ The gateway ensures that the communication between the AI model and the servers 
 
 By decoupling the AI model from the data sources, you can add, remove, or update MCP servers without ever needing to change the core configuration of your AI application.
 
-# MCP server for Red Hat OpenShift Container Platform Prompting workflow
+# MCP server for Red Hat OpenShift Prompting workflow
 
-Prompting in the Model Context Protocol (MCP) server for OpenShift Container Platform follows a specific workflow.
+By understanding the Model Context Protocol (MCP) prompting workflow you can better troubleshoot issues and optimize how your prompts reach cluster resources through the MCP server, gateway, and a Large Language Model (LLM).
 
-When you prompt a Large Language Model (LLM), the execution happens according to the following steps:
+When you prompt an LLM, the execution happens according to the following steps:
 
 1.  User types a prompt: "Are there any pods that keep restarting?".
 
@@ -206,17 +214,19 @@ When you prompt a Large Language Model (LLM), the execution happens according to
 
 5.  LLM: Receives that raw data, "reads" it, and gives you the final summary.
 
-# Install MCP server for Red Hat OpenShift Container Platform
+# Install MCP server for Red Hat OpenShift
 
-To install the Model Context Protocol (MCP) server for Red Hat OpenShift Container Platform feature, complete the following procedures.
+Install and configure the MCP server for Red Hat OpenShift to enable AI agents to securely diagnose and inspect your cluster.
+
+To install the MCP server for Red Hat OpenShift feature, complete the following procedures.
 
 - Access to OpenShift console with admin rights.
 
 - Installed MCP-compatible client, such as Claude Code, Visual Studio Code (VS Code), Cursor, or OpenShift LightSpeed (OLS).
 
-1.  Install the MCP server for Red Hat OpenShift Container Platform Helm chart.
+1.  Install the MCP server for Red Hat OpenShift Helm chart.
 
-2.  Connect an MCP-compatible client, such as Claude Code, to the MCP server.
+2.  Connect a compatible with Model Context Protocol (MCP) client, such as Claude Code, to the MCP server.
 
 3.  Install the MCP gateway.
 
@@ -234,11 +244,11 @@ To install the Model Context Protocol (MCP) server for Red Hat OpenShift Contain
 
 ## Install the MCP server Helm chart
 
-To install the Model Context Protocol (MCP) server for Red Hat OpenShift Container Platform feature, install the MCP server for Red Hat OpenShift Container Platform Helm chart.
+Install the Model Context Protocol (MCP) server Helm chart to deploy the MCP server for Red Hat OpenShift on your cluster, enabling AI agents to diagnose and inspect cluster resources.
 
 - Access to OpenShift console with admin rights.
 
-1.  Install the MCP server for Red Hat OpenShift Container Platform Helm chart by running one of the following commands:
+1.  Install the MCP server for Red Hat OpenShift Helm chart by running one of the following commands:
 
     - For read-only access (recommended for most use cases):
 
@@ -262,9 +272,9 @@ To install the Model Context Protocol (MCP) server for Red Hat OpenShift Contain
           --set-json 'rbac.extraClusterRoleBindings=[{"name":"admin-access","roleRef":{"name":"cluster-admin","external":true}}]'
       ```
 
-    - Where `<hostname>` is a fully qualified domain name (FQDN) that serves as the entry point for the OpenShift Container Platform MCP server. This host address is used by the Ingress controller to route external traffic to the MCP server service. This should be a URL such as `mcp-server.apps.cluster-name.domain.com`.
+    - `<hostname>` is a fully qualified domain name (FQDN) that serves as the entry point for the MCP server for Red Hat OpenShift. This host address is used by the Ingress controller to route external traffic to the MCP server service. This should be a URL such as `mcp-server.apps.cluster-name.domain.com`.
 
-    - Where `<toolset-names>` can include toolsets from the following table.
+    - `<toolset-names>` can include toolsets from the following table.
 
       | Toolset    | Description                                                                         | Default | Status             |
       |------------|-------------------------------------------------------------------------------------|---------|--------------------|
@@ -279,33 +289,27 @@ To install the Model Context Protocol (MCP) server for Red Hat OpenShift Contain
 
       Available toolsets
 
-<div class="formalpara-title">
+- Check that the command returns output similar to the following:
 
-**Verification**
+  <div class="formalpara-title">
 
-</div>
+  **Example output**
 
-The command returns output similar to the following:
+  </div>
 
-<div class="formalpara-title">
-
-**Example**
-
-</div>
-
-``` terminal
-Release "openshift-mcp-server" does not exist. Installing it now.
-NAME: openshift-mcp-server
-LAST DEPLOYED: Mon Apr 20 09:28:13 2026
-NAMESPACE: openshift-mcp-server
-STATUS: deployed
-REVISION: 1
-TEST SUITE: None
-```
+  ``` terminal
+  Release "openshift-mcp-server" does not exist. Installing it now.
+  NAME: openshift-mcp-server
+  LAST DEPLOYED: Mon Apr 20 09:28:13 2026
+  NAMESPACE: openshift-mcp-server
+  STATUS: deployed
+  REVISION: 1
+  TEST SUITE: None
+  ```
 
 ## Connect a client to the MCP server
 
-To install the Model Context Protocol (MCP) server for Red Hat OpenShift Container Platform feature, connect an MCP-compatible client, such as Claude Code, to the MCP server.
+Connect a client that is compatible with the Model Context Protocol (MCP) to the MCP server so that an AI agent can interact with your cluster.
 
 - Access to OpenShift console with admin rights.
 
@@ -328,13 +332,13 @@ To install the Model Context Protocol (MCP) server for Red Hat OpenShift Contain
       }
       ```
 
-      Where `<url of the route created in the Helm chart>` is the hostname you configured during Helm installation.
+      `<url of the route created in the Helm chart>` is the hostname you configured during Helm installation.
 
 2.  Accept the CA certificate when prompted by the client.
 
 ## Install the MCP gateway
 
-To install the Model Context Protocol (MCP) server for Red Hat OpenShift Container Platform feature, install the MCP gateway to route traffic through security guardrails and authorization features.
+Install the Model Context Protocol (MCP) gateway to provide a secure, centralized entry point that enforces authentication, authorization, and rate limiting for all MCP server traffic.
 
 - Access to OpenShift console with admin rights.
 
@@ -344,13 +348,15 @@ To install the Model Context Protocol (MCP) server for Red Hat OpenShift Contain
 
 1.  Install the MCP gateway.
 
-    For information about how to install the MCP gateway, see the *Red Hat Connectivity Link* documentation, Section *Installing the MCP gateway*.
+    For information about how to install the MCP gateway, see "Install the MCP gateway (Red Hat Connectivity Link)".
 
     After installation, the controller automatically creates the HTTPRoute for gateway access. The MCP gateway acts as a reverse proxy that aggregates multiple MCP servers into a single endpoint and provides a layer for authentication and rate limiting.
 
+- [Install the MCP gateway (Red Hat Connectivity Link)](https://docs.redhat.com/en/documentation/red_hat_connectivity_link/1.4/html/install_the_mcp_gateway/index)
+
 ## Verify the MCP gateway deployment
 
-To install the Model Context Protocol (MCP) server for Red Hat OpenShift Container Platform feature, verify that the MCP gateway is deployed and running correctly.
+Verify that the Model Context Protocol (MCP) gateway is deployed and running correctly before configuring routing, authentication, and authorization.
 
 - Access to OpenShift console with admin rights.
 
@@ -414,7 +420,7 @@ To install the Model Context Protocol (MCP) server for Red Hat OpenShift Contain
 
 ## Configure the MCP gateway
 
-To install the Model Context Protocol (MCP) server for Red Hat OpenShift Container Platform feature, configure the MCP gateway by creating HTTPRoute and MCPServerRegistration resources.
+Configure the Model Context Protocol (MCP) gateway so that it can route client traffic to your MCP server and discover the tools the server exposes.
 
 - Access to OpenShift console with admin rights.
 
@@ -453,7 +459,7 @@ To install the Model Context Protocol (MCP) server for Red Hat OpenShift Contain
     EOF
     ```
 
-    Where `${MCP_SERVER_HOST}` is the hostname you configured during Helm installation.
+    `${MCP_SERVER_HOST}` is the hostname you configured during Helm installation.
 
     This HTTPRoute enables the MCP gateway to route traffic to your MCP server instance and is referenced in the MCPServerRegistration resource.
 
@@ -493,7 +499,7 @@ To install the Model Context Protocol (MCP) server for Red Hat OpenShift Contain
 
     <div class="formalpara-title">
 
-    **Example**
+    **Example output**
 
     </div>
 
@@ -532,7 +538,7 @@ To install the Model Context Protocol (MCP) server for Red Hat OpenShift Contain
           -d '{"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2025-06-18", "capabilities": {}, "clientInfo": {"name": "test-client", "version": "1.0.0"}}}'
         ```
 
-        Where \<cluster-name\>.\<domain-name\> is the name and domain of your cluster.
+        `<cluster-name>.<domain-name>` is the name and domain of your cluster.
 
     2.  Extract the MCP session ID from response headers by running the following commands:
 
@@ -551,7 +557,7 @@ To install the Model Context Protocol (MCP) server for Red Hat OpenShift Contain
           -d '{"jsonrpc": "2.0", "id": 2, "method": "tools/list"}'
         ```
 
-        Where \<cluster-name\>.\<domain-name\> is the name and domain of your cluster.
+        `<cluster-name>.<domain-name>` is the name and domain of your cluster.
 
     4.  Clean up by running the following command:
 
@@ -563,7 +569,9 @@ To install the Model Context Protocol (MCP) server for Red Hat OpenShift Contain
 
 ## Configure RBAC enforcement
 
-To install the Model Context Protocol (MCP) server for Red Hat OpenShift Container Platform feature, configure role-based access control (RBAC) to control access to cluster resources through the MCP server. By default, RBAC is enabled, and you can extend the ClusterRoles, ClusterRoleBindings, Roles, and Rolebindings.
+To control which cluster resources the Model Context Protocol (MCP) server can access, configure role-based access control (RBAC) so that AI agents are limited to only the resources they need.
+
+By default, RBAC is enabled, and you can extend the ClusterRoles, ClusterRoleBindings, Roles, and Rolebindings.
 
 - Access to OpenShift console with admin rights.
 
@@ -628,7 +636,7 @@ To install the Model Context Protocol (MCP) server for Red Hat OpenShift Contain
 
 ## Revoke access to Custom Resources
 
-To install the Model Context Protocol (MCP) server for Red Hat OpenShift Container Platform feature, revoke access to specific Custom Resource (CR) level resources to enhance security. It is highly recommended that you limit access to Secrets, ConfigMaps, and RBAC resources (RoleBindings, ClusterRoles).
+To prevent AI agents from reading or exposing confidential cluster data, you can revoke Model Context Protocol (MCP) server access to sensitive Custom Resources (CRs), such as Secrets and ConfigMaps, .
 
 - Access to OpenShift console with admin rights.
 
@@ -707,7 +715,7 @@ To install the Model Context Protocol (MCP) server for Red Hat OpenShift Contain
 
 ## Set up MCP gateway authentication
 
-To install the Model Context Protocol (MCP) server for Red Hat OpenShift Container Platform feature, set up OAuth-based authentication for the MCP gateway, including OAuth discovery.
+To ensure that only verified users can access MCP server for Red Hat OpenShift tools and cluster resources, set up OAuth-based authentication for the Model Context Protocol (MCP) gateway.
 
 - Access to OpenShift console with admin rights.
 
@@ -765,7 +773,7 @@ To install the Model Context Protocol (MCP) server for Red Hat OpenShift Contain
     EOF
     ```
 
-    Where `${MCP_GATEWAY_HOST}` is the fully qualified domain name for your MCP gateway (for example, `mcp.127-0-0-1.sslip.io`).
+    `${MCP_GATEWAY_HOST}` is the fully qualified domain name for your MCP gateway (for example, `mcp.127-0-0-1.sslip.io`).
 
     This route enables clients to discover OAuth metadata, which is required for the authentication flow. Without this route, clients receive a 404 error when attempting OAuth discovery.
 
@@ -779,7 +787,7 @@ To install the Model Context Protocol (MCP) server for Red Hat OpenShift Contain
 
     4.  If required by your organization, grant admin consent for these scopes.
 
-        For more information about configuring Entra ID, see the Microsoft Entra ID documentation about configuring app registrations.
+        For more information about configuring Entra ID app registrations, see "Microsoft Entra ID".
 
 4.  Configure certificate trust for JWT validation by mounting the Entra ID CA certificate into the Authorino deployment by running the following commands:
 
@@ -898,9 +906,11 @@ To install the Model Context Protocol (MCP) server for Red Hat OpenShift Contain
     }
     ```
 
+- [Microsoft Entra ID](https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-id)
+
 ## Set up MCP gateway authorization
 
-To install the Model Context Protocol (MCP) server for Red Hat OpenShift Container Platform feature, set up tool-level authorization for the MCP gateway to control which users can access specific MCP tools.
+Set up tool-level authorization for the Model Context Protocol (MCP) gateway to control which users can access specific MCP server tools, ensuring that each user can only use the operations permitted by their role.
 
 - Access to OpenShift console with admin rights.
 
@@ -992,8 +1002,6 @@ To install the Model Context Protocol (MCP) server for Red Hat OpenShift Contain
     EOF
     ```
 
-    Where:
-
     - `spec.sectionName` targets the MCP server Listener.
 
     - `<cluster-name>.<domain-name>` is the name and domain of your cluster.
@@ -1017,7 +1025,7 @@ To install the Model Context Protocol (MCP) server for Red Hat OpenShift Contain
 
     3.  Open MCP Inspector by going to the following URL: [http://localhost:6274/?transport=streamable-http&serverUrl=http://mcp-gateway.apps.\<cluster-name\>.\<domain-name\>:8001/mcp](http://localhost:6274/?transport=streamable-http&serverUrl=http://mcp-gateway.apps.<cluster-name>.<domain-name>:8001/mcp).
 
-        Where \<cluster-name\>.\<domain-name\> is the name and domain of your cluster.
+        `<cluster-name>.<domain-name>` is the name and domain of your cluster.
 
 2.  To stop the services later, run the following command:
 
@@ -1055,9 +1063,9 @@ To install the Model Context Protocol (MCP) server for Red Hat OpenShift Contain
         $ oc logs -n kuadrant-system -l authorino-resource=authorino
         ```
 
-# MCP server for Red Hat OpenShift Container Platform prompting
+# MCP server for Red Hat OpenShift prompting
 
-With MCP server for OpenShift Container Platform installed, you can now prompt the Large Language Model (LLM) to learn more about your cluster.
+Use Model Context Protocol (MCP) server prompts to query a Large Language Model (LLM) to identify and diagnose issues across your OpenShift Container Platform cluster.
 
 <div class="note">
 
@@ -1134,7 +1142,7 @@ Configuration reference
 
 ## Built-in prompts
 
-The MCP server for Red Hat OpenShift Container Platform includes several built-in prompts that are always available:
+The MCP server for Red Hat OpenShift includes several built-in prompts that are always available:
 
 `Cluster-health-check` performs a comprehensive health assessment of your OpenShift cluster.
 

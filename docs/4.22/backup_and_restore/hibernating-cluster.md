@@ -131,7 +131,7 @@ Hibernate your cluster by verifying node and Operator health, then stopping the 
 
 - [Backing up etcd](../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd)
 
-- [Restoring to a previous cluster state](../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
+- [Restoring to an earlier cluster state](../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
 
 # Resuming a hibernated cluster
 

@@ -1,4 +1,4 @@
-In OpenShift Container Platform version 4.17, you can install a cluster on IBM Z® or IBM® LinuxONE infrastructure that you provision in a disconnected environment.
+You can install OpenShift Container Platform on IBM Z® or IBM® LinuxONE by using RHEL KVM on infrastructure that you provision in a disconnected environment, using an internal mirror of the installation release content.
 
 <div class="note">
 
@@ -6,17 +6,19 @@ While this document refers to only IBM Z®, all information in it also applies t
 
 </div>
 
-# Prerequisites
+# Prerequisites for installing a cluster on IBM Z with RHEL in a disconnected environment
 
-- You have completed the tasks in [Preparing to install a cluster on IBM Z using user-provisioned infrastructure](../../../installing/installing_ibm_z/upi/upi-ibm-z-preparing-to-install.xml#upi-ibm-z-preparing-to-install).
+Before you install OpenShift Container Platform on IBM Z® with RHEL KVM by using user-provisioned infrastructure in a disconnected environment, you must complete prerequisite tasks that prepare your KVM host, mirrored registry, storage, and network environment.
 
-- You reviewed details about the [OpenShift Container Platform installation and update](../../../architecture/architecture-installation.xml#architecture-installation) processes.
+- You have completed the tasks in preparing to install a cluster on IBM Z® using user-provisioned infrastructure.
 
-- You read the documentation on [selecting a cluster installation method and preparing it for users](../../../installing/overview/installing-preparing.xml#installing-preparing).
+- You reviewed details about the OpenShift Container Platform installation and update processes.
 
-- You [mirrored the images for a disconnected installation](../../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images) to your registry and obtained the `imageContentSources` data for your version of OpenShift Container Platform.
+- You read the documentation on selecting a cluster installation method and preparing it for users.
 
-- You must move or remove any existing installation files, before you begin the installation process. This ensures that the required installation files are created and updated during the installation process.
+- You mirrored the images for a disconnected installation to your registry and obtained the `imageContentSources` data for your version of OpenShift Container Platform.
+
+- Before you begin the installation process, you must move or remove any existing installation files. This ensures that the required installation files are created and updated during the installation process.
 
   <div class="important">
 
@@ -24,9 +26,9 @@ While this document refers to only IBM Z®, all information in it also applies t
 
   </div>
 
-- You provisioned [persistent storage using OpenShift Data Foundation](../../../storage/persistent_storage/persistent-storage-ocs.xml#persistent-storage-ocs) or other supported storage protocols for your cluster. To deploy a private image registry, you must set up persistent storage with `ReadWriteMany` access.
+- You provisioned persistent storage by using OpenShift Data Foundation or other supported storage protocols for your cluster. To deploy a private image registry, you must set up persistent storage with `ReadWriteMany` access.
 
-- If you use a firewall, you [configured it to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
+- If you use a firewall, you configured it to allow the sites that your cluster requires access to.
 
   <div class="note">
 
@@ -35,6 +37,20 @@ While this document refers to only IBM Z®, all information in it also applies t
   </div>
 
 - You provisioned a RHEL Kernel Virtual Machine (KVM) system that is hosted on the logical partition (LPAR) and based on RHEL 8.6 or later. See [Red Hat Enterprise Linux 8 and 9 Life Cycle](https://access.redhat.com/support/policy/updates/errata#RHEL8_and_9_Life_Cycle).
+
+<!-- -->
+
+- [Preparing to install a cluster on IBM Z using user-provisioned infrastructure](../../../installing/installing_ibm_z/upi/upi-ibm-z-preparing-to-install.xml#upi-ibm-z-preparing-to-install)
+
+- [OpenShift Container Platform installation and update](../../../architecture/architecture-installation.xml#architecture-installation)
+
+- [Selecting a cluster installation method and preparing it for users](../../../installing/overview/installing-preparing.xml#installing-preparing)
+
+- [Mirroring images for a disconnected installation](../../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images)
+
+- [Persistent storage using OpenShift Data Foundation](../../../storage/persistent_storage/persistent-storage-ocs.xml#persistent-storage-ocs)
+
+- [Configuring your firewall](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
 
 # About installations in restricted networks
 
@@ -1094,7 +1110,9 @@ The installation program that generates the manifest and Ignition files is archi
 
 # Installing RHCOS and starting the OpenShift Container Platform bootstrap process
 
-To install OpenShift Container Platform on IBM Z® infrastructure that you provision, you must install Red Hat Enterprise Linux CoreOS (RHCOS) as Red Hat Enterprise Linux (RHEL) guest virtual machines. When you install RHCOS, you must provide the Ignition config file that was generated by the OpenShift Container Platform installation program for the type of machine you are installing. If you have configured suitable networking, DNS, and load balancing infrastructure, the OpenShift Container Platform bootstrap process begins automatically after the RHCOS machines have rebooted.
+To install OpenShift Container Platform on IBM Z® infrastructure that you provision, you install Red Hat Enterprise Linux CoreOS (RHCOS) as Red Hat Enterprise Linux (RHEL) guest virtual machines by using either a prepackaged QCOW2 image or a full installation on a new disk image.
+
+When you install RHCOS, you must provide the Ignition config file that was generated by the OpenShift Container Platform installation program for the type of machine you are installing. If you have configured suitable networking, DNS, and load balancing infrastructure, the OpenShift Container Platform bootstrap process begins automatically after the RHCOS machines have rebooted.
 
 You can perform a fast-track installation of RHCOS that uses a prepackaged QEMU copy-on-write (QCOW2) disk image. Alternatively, you can perform a full installation on a new QCOW2 disk image.
 
@@ -1102,7 +1120,7 @@ To add further security to your system, you can optionally install RHCOS using I
 
 ## Configuring encryption for nodes in an IBM Z or IBM LinuxONE environment
 
-You can choose between three methods to optionally secure your OpenShift Container Platform control plane and compute nodes on IBM Z® or IBM® LinuxONE:
+When installing OpenShift Container Platform on IBM Z® or IBM® LinuxONE with RHEL KVM, you can optionally encrypt the boot volumes of your control plane and compute nodes by using one of the following methods.
 
 - IBM® Secure Execution
 
@@ -1112,7 +1130,7 @@ You can choose between three methods to optionally secure your OpenShift Contain
 
 ### Installing RHCOS using IBM Secure Execution
 
-Before you install RHCOS using IBM® Secure Execution, you must prepare the underlying infrastructure.
+You can install RHCOS using IBM® Secure Execution to run nodes as protected guests, isolating workloads from the host system. Before you begin, you must prepare the underlying infrastructure and verify hardware and software prerequisites.
 
 - IBM® z15 or later, or IBM® LinuxONE III or later.
 
@@ -1128,7 +1146,7 @@ Before you install RHCOS using IBM® Secure Execution, you must prepare the unde
 
     - By default, KVM hosts do not support guests in IBM® Secure Execution mode. To support guests in IBM® Secure Execution mode, KVM hosts must boot in LPAR mode with the kernel parameter specification `prot_virt=1`. To enable `prot_virt=1` on RHEL 8, follow these steps:
 
-      1.  Navigate to `/boot/loader/entries/` to modify your bootloader configuration file `*.conf`.
+      1.  Navigate to `/boot/loader/entries/` to modify your boot loader configuration file `*.conf`.
 
       2.  Add the kernel command line parameter `prot_virt=1`.
 
@@ -1146,11 +1164,7 @@ Before you install RHCOS using IBM® Secure Execution, you must prepare the unde
           # cat /sys/firmware/uv/prot_virt_host
           ```
 
-          <div class="formalpara-title">
-
-          **Example output**
-
-          </div>
+          For example:
 
           ``` terminal
           1
@@ -1178,14 +1192,14 @@ Before you install RHCOS using IBM® Secure Execution, you must prepare the unde
           {
             "path": "/etc/se-hostkeys/ibm-z-hostkey-<your-hostkey>.crt",
             "contents": {
-              "source": "data:;base64,<base64 encoded hostkey document>"
+              "source": "<base64_data_uri>"
             },
             "mode": 420
           },
           {
             "path": "/etc/se-hostkeys/ibm-z-hostkey-<your-hostkey>.crt",
             "contents": {
-              "source": "data:;base64,<base64 encoded hostkey document>"
+              "source": "<base64_data_uri>"
             },
             "mode": 420
           }
@@ -1195,9 +1209,11 @@ Before you install RHCOS using IBM® Secure Execution, you must prepare the unde
     ```
     ````
 
+    Replace `<base64_data_uri>` with an Ignition data URI containing the Base64 encoded host key document.
+
     <div class="note">
 
-    You can add as many host keys as required if you want your node to be able to run on multiple IBM Z® machines.
+    You can add as many host keys as needed if you want your node to be able to run on multiple IBM Z® machines.
 
     </div>
 
@@ -1243,12 +1259,6 @@ When you have completed the fast-track installation of RHCOS and Ignition runs a
 
 - If the decryption is successful, you can expect an output similar to the following example:
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
-
   ``` terminal
   [    2.801433] systemd[1]: Starting coreos-ignition-setup-user.service - CoreOS Ignition User Config Setup...
 
@@ -1258,12 +1268,6 @@ When you have completed the fast-track installation of RHCOS and Ignition runs a
   ```
 
 - If the decryption fails, you can expect an output similar to the following example:
-
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
 
   ``` terminal
   Starting coreos-ignition-s…reOS Ignition User Config Setup...
@@ -2310,12 +2314,12 @@ To finalize the installation on user-provisioned infrastructure, complete the cl
 
 4.  Register your cluster on the [Cluster registration](https://console.redhat.com/openshift/register) page.
 
+# Additional resources
+
 - [How to generate SOSREPORT within OpenShift Container Platform version 4 nodes without SSH](https://access.redhat.com/solutions/4387261)
 
 - [Image configuration resources (Classic)](../../../openshift_images/image-configuration.xml#images-configuration-cas_image-configuration)
 
 - [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
-
-# Next steps
 
 - [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)

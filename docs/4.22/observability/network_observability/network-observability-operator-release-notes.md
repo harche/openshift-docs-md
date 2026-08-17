@@ -2,7 +2,7 @@ Review new features, enhancements, fixed issues, and known issues for the Networ
 
 The Network Observability Operator enables administrators to observe and analyze network traffic flows for OpenShift Container Platform clusters.
 
-These release notes track the development of the Network Observability Operator in the OpenShift Container Platform.
+These release notes track the development of the Network Observability Operator in the OpenShift Container Platform. It follows a rolling-stream release methodology, and customers are expected to continuously upgrade to new versions as they become available on the cluster.
 
 # Network Observability Operator 1.12.1 advisory
 
@@ -147,3 +147,7 @@ When you configure custom product logos in the `Console.operator.openshift.io` r
 To work around this problem, manually enable the Network Observability Operator OpenShift Container Platform web console plugin by adding `netobserv-plugin-static` to the `spec.plugins` list in the `Console` cluster resource, or by enabling the plugin through the web console under **Administration** → **Cluster Settings** → **Configuration** → **Console** → **Console plugins**.
 
 [NETOBSERV-2767](https://issues.redhat.com/browse/NETOBSERV-2767)
+
+# Additional resources
+
+- [Release notes archive](https://github.com/netobserv/documents/blob/main/archives/downstream-release-notes-archive.adoc)

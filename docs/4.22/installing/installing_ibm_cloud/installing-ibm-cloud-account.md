@@ -8,7 +8,7 @@ Default IBM Cloud® quotas and limits affect OpenShift Container Platform cluste
 
 For a comprehensive list of the default IBM Cloud® quotas and service limits, see the IBM Cloud® documentation for "Quotas and service limits".
 
-## Virtual Private Cloud (VPC)
+## Virtual Private Cloud
 
 Each OpenShift Container Platform cluster creates its own VPC. The default quota of VPCs per region is 10 and allows 10 clusters. To have more than 10 clusters in a single region, you must increase this quota.
 
@@ -26,13 +26,13 @@ You can create additional `LoadBalancer` service objects to create additional AL
 
 VPC ALBs are supported. Classic ALBs are not supported for IBM Cloud®.
 
-## Floating IP address
+## Floating IP addresses
 
-By default, the installation program distributes control plane and compute machines across all availability zones within a region to provision the cluster in a highly available configuration. In each availability zone, a public gateway is created and requires a separate floating IP address.
+By default, the installation program distributes control plane and compute machines across all availability zones within a region to provision the cluster in a highly available configuration. In each availability zone, the installation program creates a public gateway that requires a separate floating IP address.
 
 The default quota for a floating IP address is 20 addresses per availability zone. The default cluster configuration yields three floating IP addresses:
 
-- Two floating IP addresses in the `us-east-1` primary zone. The IP address associated with the bootstrap node is removed after installation.
+- Two floating IP addresses in the `us-east-1` primary zone. The IP address associated with the bootstrap node is deleted after installation.
 
 - One floating IP address in the `us-east-2` secondary zone.
 
@@ -40,9 +40,9 @@ The default quota for a floating IP address is 20 addresses per availability zon
 
 IBM Cloud® can support up to 19 clusters per region in an account. If you plan to have more than 19 default clusters, you must increase this quota.
 
-## Virtual Server Instances (VSI)
+## Virtual Server Instances (VSIs)
 
-By default, a cluster creates VSIs using `bx2-4x16` profiles, which includes the following resources by default:
+By default, a cluster creates VSIs by using `bx2-4x16` profiles, which include the following resources by default:
 
 - 4 vCPUs
 
@@ -50,7 +50,7 @@ By default, a cluster creates VSIs using `bx2-4x16` profiles, which includes the
 
 The following nodes are created:
 
-- One `bx2-4x16` bootstrap machine, which is removed after the installation is complete
+- One `bx2-4x16` bootstrap machine, which is deleted after the installation is complete
 
 - Three `bx2-4x16` control plane nodes
 
@@ -68,7 +68,7 @@ VSI component quotas and limits
 
 If you plan to exceed the resources stated in the table, you must increase your IBM Cloud® account quota.
 
-## Block Storage Volumes
+## Block storage volumes
 
 For each VPC machine, a block storage device is attached for its boot volume. The default cluster configuration creates seven VPC machines, resulting in seven block storage volumes. Additional Kubernetes persistent volume claims (PVCs) of the IBM Cloud® storage class create additional block storage volumes. The default quota of VPC block storage volumes is 300 per region. To have more than 300 volumes, you must increase this quota.
 
@@ -226,7 +226,7 @@ You do not have to manage permitted networks or configure an "A" DNS resource re
 
 - [IBM® DNS documentation](https://cloud.ibm.com/docs/dns?topic=dns-getting-started)
 
-# IBM Cloud IAM Policies and API Key
+# IBM Cloud IAM policies and API key
 
 To install OpenShift Container Platform into your IBM Cloud® account, the installation program requires an IAM API key, which provides authentication and authorization to access IBM Cloud® service APIs. You can use an existing IAM API key that contains the required policies or create a new one.
 
@@ -236,21 +236,25 @@ For an IBM Cloud® IAM overview, see the "IBM Cloud® IAM overview" documentatio
 
 You must assign the required access policies to your IBM Cloud® account.
 
-| Service type                        | Service                        | Access policy scope                                     | Platform access                         | Service access                                                        |
-|-------------------------------------|--------------------------------|---------------------------------------------------------|-----------------------------------------|-----------------------------------------------------------------------|
-| Account management                  | IAM Identity Service           | All resources or a subset of resources <sup>\[1\]</sup> | Editor, Operator, Viewer, Administrator | Service ID creator                                                    |
-| Account management <sup>\[2\]</sup> | Identity and Access Management | All resources                                           | Editor, Operator, Viewer, Administrator |                                                                       |
-| Account management                  | Resource group only            | All resource groups in the account                      | Administrator                           |                                                                       |
-| IAM services                        | Cloud Object Storage           | All resources or a subset of resources <sup>\[1\]</sup> | Editor, Operator, Viewer, Administrator | Reader, Writer, Manager, Content Reader, Object Reader, Object Writer |
-| IAM services                        | Internet Services              | All resources or a subset of resources <sup>\[1\]</sup> | Editor, Operator, Viewer, Administrator | Reader, Writer, Manager                                               |
-| IAM services                        | DNS Services                   | All resources or a subset of resources <sup>\[1\]</sup> | Editor, Operator, Viewer, Administrator | Reader, Writer, Manager                                               |
-| IAM services                        | VPC Infrastructure Services    | All resources or a subset of resources <sup>\[1\]</sup> | Editor, Operator, Viewer, Administrator | Reader, Writer, Manager                                               |
+| Service type       | Service                        | Access policy scope                    | Platform access                         | Service access                                                        |
+|--------------------|--------------------------------|----------------------------------------|-----------------------------------------|-----------------------------------------------------------------------|
+| Account management | IAM Identity Service           | All resources or a subset of resources | Editor, Operator, Viewer, Administrator | Service ID creator                                                    |
+| Account management | Identity and Access Management | All resources                          | Editor, Operator, Viewer, Administrator |                                                                       |
+| Account management | Resource group only            | All resource groups in the account     | Administrator                           |                                                                       |
+| IAM services       | Cloud Object Storage           | All resources or a subset of resources | Editor, Operator, Viewer, Administrator | Reader, Writer, Manager, Content Reader, Object Reader, Object Writer |
+| IAM services       | Internet Services              | All resources or a subset of resources | Editor, Operator, Viewer, Administrator | Reader, Writer, Manager                                               |
+| IAM services       | DNS Services                   | All resources or a subset of resources | Editor, Operator, Viewer, Administrator | Reader, Writer, Manager                                               |
+| IAM services       | VPC Infrastructure Services    | All resources or a subset of resources | Editor, Operator, Viewer, Administrator | Reader, Writer, Manager                                               |
 
 Required access policies
 
-1.  The policy access scope should be set based on how granular you want to assign access. The scope can be set to **All resources** or **Resources based on selected attributes**.
+where:
 
-2.  Optional: This access policy is only required if you want the installation program to create a resource group. For more information about resource groups, see the "IBM® resource groups documentation".
+`All resources or a subset of resources`
+The policy access scope should be set based on how granular you want to assign access. The scope can be set to **All resources** or **Resources based on selected attributes**.
+
+`Identity and Access Management`
+This access policy is optional. It is only required if you want the installation program to create a resource group. For more information about resource groups, see the "IBM® resource groups documentation".
 
 ## Access policy assignment
 
@@ -269,14 +273,6 @@ The recommended method is to define IAM access policies in an access group. This
 For more information, see "Access groups" and "Users and service IDs".
 
 </div>
-
-- [IBM Cloud® IAM overview](https://cloud.ibm.com/docs/account?topic=account-iamoverview)
-
-- [IBM® resource groups documentation](https://cloud.ibm.com/docs/account?topic=account-rgs)
-
-- [Access groups (IBM Cloud® documentation)](https://cloud.ibm.com/docs/account?topic=account-groups)
-
-- [Users and service IDs (IBM Cloud® documentation)](https://cloud.ibm.com/docs/account?topic=account-assign-access-resources)
 
 ## Creating an API key
 

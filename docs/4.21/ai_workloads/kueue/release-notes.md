@@ -30,6 +30,27 @@ Currently, Red Hat build of Kueue is not supported on Red Hat build of MicroSh
 
 </div>
 
+# Release notes for Red Hat build of Kueue version 1.4.1
+
+Red Hat build of Kueue version 1.4.1 is a generally available release that is supported on OpenShift Container Platform versions 4.18 and later. Red Hat build of Kueue version 1.4.1 uses [Kueue](https://kueue.sigs.k8s.io/docs/overview/) version 0.18.
+
+## Fixed issues
+
+Red Hat build of Kueue no longer accepts invalid webhook configurations at admission time
+Before this update, Red Hat build of Kueue filtered out core validating webhooks during reconciliation. As a consequence, the Operator silently accepted invalid webhook configurations for the following resources:
+
+- `Cohort`
+
+- `ClusterQueue`
+
+- `Workload`
+
+- `ResourceFlavor`
+
+With this release, the Operator always registers validating webhooks. As a result, Red Hat build of Kueue rejects invalid configurations at admission time.
+
+([OCPBUGS-99316](https://redhat.atlassian.net/browse/OCPBUGS-99316))
+
 # Release notes for Red Hat build of Kueue version 1.4
 
 Red Hat build of Kueue version 1.4 is a generally available release that is supported on OpenShift Container Platform versions 4.18 and later. Red Hat build of Kueue version 1.4 uses [Kueue](https://kueue.sigs.k8s.io/docs/overview/) version 0.18.
@@ -215,7 +236,7 @@ After you uninstall the Red Hat Build of Kueue Operator using the **Delete all o
 
 Red Hat build of Kueue version 1.0.1 is a patch release that is supported on OpenShift Container Platform versions 4.18 and 4.19 on the 64-bit x86 architecture.
 
-Red Hat build of Kueue version 1.0.1 uses [Kueue](https://kueue.sigs.k8s.io/docs/overview/) version 0.11.
+Red Hat build of Kueue version 1.0.1 uses Kueue version 0.11.
 
 ## Bug fixes in Red Hat build of Kueue version 1.0.1
 
@@ -256,3 +277,7 @@ You cannot create a `Kueue` custom resource by using the OpenShift Container Pla
 If you try to use the OpenShift Container Platform web console to create a `Kueue` custom resource (CR) by using the form view, the web console shows an error and the resource cannot be created. As a workaround, use the YAML view to create a `Kueue` CR instead.
 
 ([OCPBUGS-58118](https://issues.redhat.com/browse/OCPBUGS-58118))
+
+# Additional resources
+
+- [Kueue (upstream documentation)](https://kueue.sigs.k8s.io/docs/overview/)

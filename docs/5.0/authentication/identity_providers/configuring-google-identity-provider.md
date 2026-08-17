@@ -24,7 +24,7 @@ Using Google as an identity provider requires users to get a token using `<names
 
 # Creating the secret
 
-Create a Secret in the `openshift-config` namespace to store identity provider client secrets, certificates, or keys, so the OAuth custom resource (CR) can reference them.
+Create a `Secret` object in the `openshift-config` namespace to store the client secret and related credentials for the identity provider configuration.
 
 1.  Create a `Secret` object containing the client secret by running the following command:
 
@@ -119,7 +119,7 @@ Apply the identity provider custom resource (CR) to your cluster so users can au
 
     You can also access this page from the web console by navigating to **(?) Help** → **Command Line Tools** → **Copy Login Command**.
 
-3.  Log in to the cluster by running the following command and pass in the token to authenticate:
+3.  Log in to the cluster, passing in the token to authenticate, by running the following command:
 
     ``` terminal
     $ oc login --token=<token>

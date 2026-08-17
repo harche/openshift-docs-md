@@ -14,7 +14,9 @@ During resolution, bundles that are not deprecated are preferred over deprecated
 
 # Catalog selection by name
 
-When a catalog is added to a cluster, a label is created by using the value of the `metadata.name` field of the catalog custom resource (CR). In the CR of an extension, you can specify the catalog name by using the `spec.source.catalog.selector.matchLabels` field. The value of the `matchLabels` field uses the following format:
+When a catalog is added to a cluster, a label is created by using the value of the `metadata.name` field of the catalog custom resource (CR). In the CR of an extension, you can specify the catalog name by using the `spec.source.catalog.selector.matchLabels` field.
+
+The value of the `matchLabels` field uses the following format:
 
 <div class="formalpara-title">
 
@@ -32,7 +34,7 @@ metadata:
 ...
 ```
 
-- A label derived from the `metadata.name` field and automatically added when the catalog is applied.
+The `<example_extension>` value is the label derived from the `metadata.name` field and automatically added when the catalog is applied.
 
 The following example resolves the `<example_extension>-operator` package from a catalog with the `openshift-redhat-operators` label:
 
@@ -152,7 +154,7 @@ If you use both the `matchLabels` and `matchExpressions` fields, the selected ca
 
 You can exclude catalogs by using match expressions on metadata with the `NotIn` or `DoesNotExist` operators.
 
-The following CRs add an `example.com/testing` label to the `unwanted-catalog-1` and `unwanted-catalog-2` cluster catalogs:
+The following custom resources (CRs) add an `example.com/testing` label to the `unwanted-catalog-1` and `unwanted-catalog-2` cluster catalogs:
 
 <div class="formalpara-title">
 

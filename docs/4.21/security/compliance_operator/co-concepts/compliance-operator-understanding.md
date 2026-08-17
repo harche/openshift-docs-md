@@ -1,6 +1,6 @@
-You can use Compliance Operator profiles to select the appropriate compliance benchmarks for your OpenShift Container Platform environment. Profiles target platform components, node configurations, or both depending on the compliance standard you need to meet.
+The Compliance Operator evaluates your OpenShift Container Platform cluster against compliance benchmarks and identifies gaps so you can remediate them. The Operator uses profiles that target platform components, node configurations, or both depending on the compliance standard you need to meet.
 
-The Compliance Operator lets OpenShift Container Platform administrators describe the required compliance state of a cluster and provides them with an overview of gaps and ways to remediate them. The Compliance Operator assesses compliance of both the Kubernetes API resources of OpenShift Container Platform, as well as the nodes running the cluster. The Compliance Operator uses OpenSCAP, a NIST-certified tool, to scan and enforce security policies provided by the content.
+The Compliance Operator lets OpenShift Container Platform administrators describe the required compliance state of a cluster and provides them with an overview of gaps and ways to remediate them. The Compliance Operator assesses compliance of both the Kubernetes API resources of OpenShift Container Platform, and the nodes running the cluster. The Compliance Operator uses OpenSCAP, a NIST-certified tool, to scan and enforce security policies provided by the content.
 
 <div class="important">
 
@@ -61,13 +61,19 @@ There are several profiles available as part of the Compliance Operator installa
   rhcos4-stig-v2r3           3h49m   V2R3
   ```
 
-  These profiles represent different compliance benchmarks. Each profile has the product name that it applies to added as a prefix to the profile’s name. `ocp4-e8` applies the Essential 8 benchmark to the OpenShift Container Platform product, while `rhcos4-e8` applies the Essential 8 benchmark to the Red Hat Enterprise Linux CoreOS (RHCOS) product.
+  These profiles represent different compliance benchmarks. Each profile has the product name that it applies to added as a prefix to the name of the profile. `ocp4-e8` applies the Essential 8 benchmark to the OpenShift Container Platform product, while `rhcos4-e8` applies the Essential 8 benchmark to the Red Hat Enterprise Linux CoreOS (RHCOS) product.
 
 - Run the following command to view the details of the `rhcos4-e8` profile:
 
   ``` terminal
   $ oc get -n openshift-compliance -oyaml profiles.compliance rhcos4-e8
   ```
+
+  <div class="formalpara-title">
+
+  **Example output**
+
+  </div>
 
   ``` yaml
   apiVersion: compliance.openshift.io/v1alpha1
@@ -158,7 +164,11 @@ There are several profiles available as part of the Compliance Operator installa
   $ oc get -n openshift-compliance -oyaml rules rhcos4-audit-rules-login-events
   ```
 
-  <div class="informalexample">
+  <div class="formalpara-title">
+
+  **Example output**
+
+  </div>
 
   ``` yaml
   apiVersion: compliance.openshift.io/v1alpha1
@@ -208,16 +218,6 @@ There are several profiles available as part of the Compliance Operator installa
     attacker attempting to remove evidence of an intrusion.
   ```
 
-  </div>
-
-<!-- -->
-
-- [ACSC Essential Eight - Hardening Linux Workstations and Servers](https://www.cyber.gov.au/acsc/view-all-content/publications/hardening-linux-workstations-and-servers)
-
-- [OpenSCAP project](https://www.open-scap.org/)
-
-- [NIST Security Content Automation Protocol (SCAP)](https://csrc.nist.gov/projects/security-content-automation-protocol)
-
 # Compliance Operator profile types
 
 To assess both platform and node compliance for your required benchmarks, you can select from different Compliance Operator profile types.
@@ -241,3 +241,11 @@ For benchmarks that have `ocp4` Platform, `ocp4` Node, and `rhcos4` node profile
 In a cluster with many Nodes, both `ocp4` Node and `rhcos4` Node scans might take a long time to complete.
 
 </div>
+
+# Additional resources
+
+- [ACSC Essential Eight - Hardening Linux Workstations and Servers](https://www.cyber.gov.au/acsc/view-all-content/publications/hardening-linux-workstations-and-servers)
+
+- [OpenSCAP project](https://www.open-scap.org/)
+
+- [NIST Security Content Automation Protocol (SCAP)](https://csrc.nist.gov/projects/security-content-automation-protocol)

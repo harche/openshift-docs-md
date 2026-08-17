@@ -66,41 +66,41 @@ If an instance type for your platform meets the minimum requirements for cluster
 
 - [Architectures (RHEL documentation)](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures)
 
-<!-- -->
+# Additional resources
 
-- See [Bridging a HiperSockets LAN with a z/VM Virtual Switch](https://www.ibm.com/docs/en/zvm/latest?topic=networks-bridging-hipersockets-lan-zvm-virtual-switch) in IBM® Documentation.
+- [Bridging a HiperSockets LAN with a z/VM Virtual Switch (IBM® Documentation)](https://www.ibm.com/docs/en/zvm/latest?topic=networks-bridging-hipersockets-lan-zvm-virtual-switch)
 
-- See [Scaling HyperPAV alias devices on Linux guests on z/VM](https://public.dhe.ibm.com/software/dw/linux390/perf/zvm_hpav00.pdf) for performance optimization.
+- [Scaling HyperPAV alias devices on Linux guests on z/VM](https://public.dhe.ibm.com/software/dw/linux390/perf/zvm_hpav00.pdf)
 
-- [Processors Resource/Systems Manager Planning Guide](https://www.ibm.com/docs/en/systems-hardware/zsystems/3932-A02?topic=library-prsm-planning-guide) in IBM® Documentation for PR/SM mode considerations.
+- [Processors Resource/Systems Manager Planning Guide (IBM® Documentation)](https://www.ibm.com/docs/en/systems-hardware/zsystems/3932-A02?topic=library-prsm-planning-guide)
 
-- [IBM Dynamic Partition Manager (DPM) Guide](https://www.ibm.com/docs/en/systems-hardware/zsystems/3932-A02?topic=library-dynamic-partition-manager-dpm-guide) in IBM® Documentation for DPM mode considerations.
+- [IBM Dynamic Partition Manager (DPM) Guide (IBM® Documentation)](https://www.ibm.com/docs/en/systems-hardware/zsystems/3932-A02?topic=library-dynamic-partition-manager-dpm-guide)
 
-- [Topics in LPAR performance](https://www.vm.ibm.com/library/presentations/lparperf.pdf) for LPAR weight management and entitlements.
+- [Topics in LPAR performance](https://www.vm.ibm.com/library/presentations/lparperf.pdf)
 
 - [Recommended host practices for IBM Z® & IBM® LinuxONE environments](../../../scalability_and_performance/ibm-z-recommended-host-practices.xml#ibm-z-recommended-host-practices)
 
 ## Minimum IBM Z system environment
 
-The following IBM® hardware is supported with OpenShift Container Platform version 4.17.
+To install OpenShift Container Platform on IBM Z® or IBM® LinuxONE, your environment must meet minimum hardware, operating system, network, and storage requirements.
 
-|                                | z/VM      | LPAR <sup>\[1\]</sup> | RHEL KVM <sup>\[2\]</sup> |
-|--------------------------------|-----------|-----------------------|---------------------------|
-| IBM® z17 (all models)          | supported | supported             | supported                 |
-| IBM® z16 (all models)          | supported | supported             | supported                 |
-| IBM® z15 (all models)          | supported | supported             | supported                 |
-| IBM® z14 (all models)          | supported | supported             | supported                 |
-| IBM® LinuxONE 4 (all models)   | supported | supported             | supported                 |
-| IBM® LinuxONE 5 (all models)   | supported | supported             | supported                 |
-| IBM® LinuxONE III (all models) | supported | supported             | supported                 |
-| IBM® LinuxONE Emperor II       | supported | supported             | supported                 |
-| IBM® LinuxONE Rockhopper II    | supported | supported             | supported                 |
+|                                | z/VM      | LPAR      | RHEL KVM  |
+|--------------------------------|-----------|-----------|-----------|
+| IBM® z17 (all models)          | supported | supported | supported |
+| IBM® z16 (all models)          | supported | supported | supported |
+| IBM® z15 (all models)          | supported | supported | supported |
+| IBM® z14 (all models)          | supported | supported | supported |
+| IBM® LinuxONE 4 (all models)   | supported | supported | supported |
+| IBM® LinuxONE 5 (all models)   | supported | supported | supported |
+| IBM® LinuxONE III (all models) | supported | supported | supported |
+| IBM® LinuxONE Emperor II       | supported | supported | supported |
+| IBM® LinuxONE Rockhopper II    | supported | supported | supported |
 
 Supported IBM® hardware
 
-1.  When running OpenShift Container Platform on IBM Z® without a hypervisor use the Dynamic Partition Manager (DPM) to manage your machine.
+When running OpenShift Container Platform on IBM Z® in an LPAR without a hypervisor, use the Dynamic Partition Manager (DPM) to manage your machine.
 
-2.  The RHEL KVM host in your environment must meet certain requirements to host the virtual machines that you plan for the OpenShift Container Platform environment. See [Enabling virtualization on IBM Z®](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/configuring_and_managing_virtualization/assembly_enabling-virtualization-in-rhel-9_configuring-and-managing-virtualization#enabling-virtualization-on-ibm-z_assembly_enabling-virtualization-in-rhel-9).
+The RHEL KVM host in your environment must meet certain requirements to host the virtual machines that you plan for the OpenShift Container Platform environment. See [Enabling virtualization on IBM Z®](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/configuring_and_managing_virtualization/assembly_enabling-virtualization-in-rhel-9_configuring-and-managing-virtualization#enabling-virtualization-on-ibm-z_assembly_enabling-virtualization-in-rhel-9).
 
 <div class="note">
 
@@ -177,7 +177,7 @@ Operating system requirements
 
 Network connectivity requirements
 
-#### Disk storage
+### Disk storage
 
 |                              | z/VM                                                                                                                                                                                                                                                                                                                       | LPAR                                                                                                                                                                                                                                                                       | RHEL KVM             |
 |------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------|
@@ -190,7 +190,7 @@ Disk storage requirements
 
 ## Preferred IBM Z system environment
 
-The preferred system environment for running OpenShift Container Platform version 4.17 on IBM Z® hardware is as follows:
+While OpenShift Container Platform runs on the minimum IBM Z® hardware requirements, using the preferred system environment improves performance and supports production workloads.
 
 ### Hardware requirements
 
@@ -208,7 +208,7 @@ The preferred system environment for running OpenShift Container Platform versio
 
 ### IBM Z operating system requirements
 
-|                                                          | z/VM <sup>\[1\]</sup>             | LPAR                               | RHEL KVM                                                                    |
+|                                                          | z/VM                              | LPAR                               | RHEL KVM                                                                    |
 |----------------------------------------------------------|-----------------------------------|------------------------------------|-----------------------------------------------------------------------------|
 | Hypervisor                                               | One instance of z/VM 7.2 or later | IBM® z14 or later with DPM or PR/S | One LPAR running on RHEL 8.6 or later with KVM, which is managed by libvirt |
 | OpenShift Container Platform control plane machines      | Three guest virtual machines      | Three LPARs                        | Three guest virtual machines                                                |
@@ -217,7 +217,13 @@ The preferred system environment for running OpenShift Container Platform versio
 
 Operating system requirements
 
-1.  To ensure the availability of integral components in an overcommitted environment, increase the priority of the control plane by using the CP command `SET SHARE`. Do the same for infrastructure nodes, if they exist. See [SET SHARE](https://www.ibm.com/docs/en/zvm/latest?topic=commands-set-share) (IBM® Documentation).
+<div class="note">
+
+When working in a z/VM environment, to ensure the availability of integral components in an overcommitted environment, increase the priority of the control plane by using the CP command `SET SHARE`. Do the same for infrastructure nodes, if they exist. See [SET SHARE](https://www.ibm.com/docs/en/zvm/latest?topic=commands-set-share) (IBM® Documentation).
+
+</div>
+
+# Additional resources
 
 - [Optimizing storage](../../../scalability_and_performance/optimization/optimizing-storage.xml#optimizing-storage)
 
@@ -295,6 +301,8 @@ Ports used for control plane machine to control plane machine communications
 OpenShift Container Platform clusters are configured to use a public Network Time Protocol (NTP) server by default. If you want to use a local enterprise NTP server, or if your cluster is being deployed in a disconnected network, you can configure the cluster to use a specific time server. For more information, see the documentation for *Configuring chrony time service*.
 
 If a DHCP server provides NTP server information, the chrony time service on the Red Hat Enterprise Linux CoreOS (RHCOS) machines read the information and can sync the clock with the NTP servers.
+
+# Additional resources
 
 - [Configuring chrony time service](../../../installing/install_config/installing-customizing.xml#installation-special-config-chrony_installing-customizing)
 

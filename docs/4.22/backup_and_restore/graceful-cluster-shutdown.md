@@ -135,6 +135,6 @@ If the cluster does not recover after restart, follow the steps to restore to a 
 
 - [Backing up etcd](../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd)
 
-- [Restoring to a previous cluster state](../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
+- [Restoring to an earlier cluster state](../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
 
 - [Restarting the cluster gracefully](../backup_and_restore/graceful-cluster-restart.xml#graceful-restart-cluster)

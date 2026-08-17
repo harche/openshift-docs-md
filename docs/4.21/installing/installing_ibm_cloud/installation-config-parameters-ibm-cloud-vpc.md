@@ -1,6 +1,6 @@
-Before you deploy an OpenShift Container Platform cluster on IBM Cloud®, you provide parameters to customize your cluster and the platform that hosts it.
+Before you deploy an OpenShift Container Platform cluster on IBM Cloud®, you give values for parameters to customize your cluster and the platform that hosts it.
 
-When you create the `install-config.yaml` file, you provide values for the required parameters through the command line. You can then modify the `install-config.yaml` file to customize your cluster further.
+When you create the `install-config.yaml` file, you give values for the required parameters through the command line. You can then change the `install-config.yaml` file to customize your cluster further.
 
 # Available installation configuration parameters for IBM Cloud
 

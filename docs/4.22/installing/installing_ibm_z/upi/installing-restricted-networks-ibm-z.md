@@ -1,4 +1,4 @@
-In OpenShift Container Platform version 4.17, you can install a cluster on IBM Z® or IBM® LinuxONE infrastructure that you provision in a disconnected environment.
+You can install OpenShift Container Platform on IBM Z® or IBM® LinuxONE by using z/VM on infrastructure that you provision in a disconnected environment, using an internal mirror of the installation release content.
 
 <div class="note">
 
@@ -6,15 +6,17 @@ While this document refers to only IBM Z®, all information in it also applies t
 
 </div>
 
-# Prerequisites
+# Prerequisites for installing a cluster on IBM Z in a disconnected environment
 
-- You have completed the tasks in [Preparing to install a cluster on IBM Z using user-provisioned infrastructure](../../../installing/installing_ibm_z/upi/upi-ibm-z-preparing-to-install.xml#upi-ibm-z-preparing-to-install).
+Before you install OpenShift Container Platform on IBM Z® using user-provisioned infrastructure in a disconnected environment, you must complete prerequisite tasks that prepare your mirrored registry, storage, and network environment.
 
-- You reviewed details about the [OpenShift Container Platform installation and update](../../../architecture/architecture-installation.xml#architecture-installation) processes.
+- You have completed the tasks in preparing to install a cluster on IBM Z® using user-provisioned infrastructure.
 
-- You read the documentation on [selecting a cluster installation method and preparing it for users](../../../installing/overview/installing-preparing.xml#installing-preparing).
+- You reviewed details about the OpenShift Container Platform installation and update processes.
 
-- You [mirrored the images for a disconnected installation](../../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images) to your registry and obtained the `imageContentSources` data for your version of OpenShift Container Platform.
+- You read the documentation on selecting a cluster installation method and preparing it for users.
+
+- You mirrored the images for a disconnected installation to your registry and obtained the `imageContentSources` data for your version of OpenShift Container Platform.
 
 - Before you begin the installation process, you must move or remove any existing installation files. This ensures that the required installation files are created and updated during the installation process.
 
@@ -24,15 +26,29 @@ While this document refers to only IBM Z®, all information in it also applies t
 
   </div>
 
-- You provisioned [persistent storage using OpenShift Data Foundation](../../../storage/persistent_storage/persistent-storage-ocs.xml#persistent-storage-ocs) or other supported storage protocols for your cluster. To deploy a private image registry, you must set up persistent storage with `ReadWriteMany` access.
+- You provisioned persistent storage by using OpenShift Data Foundation or other supported storage protocols for your cluster. To deploy a private image registry, you must set up persistent storage with `ReadWriteMany` access.
 
-- If you use a firewall and plan to use the Telemetry service, you [configured the firewall to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
+- If you use a firewall and plan to use the Telemetry service, you configured the firewall to allow the sites that your cluster requires access to.
 
   <div class="note">
 
   Be sure to also review this site list if you are configuring a proxy.
 
   </div>
+
+<!-- -->
+
+- [Preparing to install a cluster on IBM Z using user-provisioned infrastructure](../../../installing/installing_ibm_z/upi/upi-ibm-z-preparing-to-install.xml#upi-ibm-z-preparing-to-install)
+
+- [OpenShift Container Platform installation and update](../../../architecture/architecture-installation.xml#architecture-installation)
+
+- [Selecting a cluster installation method and preparing it for users](../../../installing/overview/installing-preparing.xml#installing-preparing)
+
+- [Mirroring images for a disconnected installation](../../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images)
+
+- [Persistent storage using OpenShift Data Foundation](../../../storage/persistent_storage/persistent-storage-ocs.xml#persistent-storage-ocs)
+
+- [Configuring your firewall](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
 
 # About installations in restricted networks
 
@@ -1074,7 +1090,7 @@ The installation program that generates the manifest and Ignition files is archi
 
 # Configuring boot volume encryption in an IBM Z or IBM LinuxONE environment
 
-You can choose between two methods to optionally encrypt the boot volumes of your OpenShift Container Platform control plane and compute nodes on IBM Z® or IBM® LinuxONE:
+You can optionally encrypt the boot volumes of your OpenShift Container Platform control plane and compute nodes on IBM Z® or IBM® LinuxONE by using LUKS encryption via IBM® Crypto Express (CEX) or Network Bound Disk Encryption (NBDE).
 
 - Linux Unified Key Setup (LUKS) encryption via IBM® Crypto Express (CEX)
 
@@ -2320,12 +2336,12 @@ If you have enabled secure boot during the OpenShift Container Platform bootstra
     $ cat /sys/firmware/ipl/secure
     ```
 
+# Additional resources
+
 - [How to generate SOSREPORT within OpenShift Container Platform version 4 nodes without SSH](https://access.redhat.com/solutions/4387261)
 
 - [Image configuration resources (Classic)](../../../openshift_images/image-configuration.xml#images-configuration-cas_image-configuration)
 
 - [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
-
-# Next steps
 
 - [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)

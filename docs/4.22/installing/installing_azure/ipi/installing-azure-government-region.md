@@ -70,11 +70,11 @@ Private clusters on Azure are subject to only the limitations that are associate
 
 ## User-defined outbound routing
 
-In OpenShift Container Platform, you can choose your own outbound routing for a cluster to connect to the internet. This allows you to skip the creation of public IP addresses and the public load balancer.
+You can configure user-defined outbound routing for a OpenShift Container Platform cluster to reach the internet without public IP addresses or a public load balancer.
 
-You can configure user-defined routing by modifying parameters in the `install-config.yaml` file before installing your cluster. A pre-existing VNet is required to use outbound routing when installing a cluster; the installation program is not responsible for configuring this.
+You must use a pre-existing `VNet` for outbound routing when you install a cluster. The installation program does not configure this network.
 
-When configuring a cluster to use user-defined routing, the installation program does not create the following resources:
+When you configure a cluster to use user-defined routing, the installation program does not create the following resources:
 
 - Outbound rules for access to the internet.
 
@@ -82,15 +82,15 @@ When configuring a cluster to use user-defined routing, the installation program
 
 - Kubernetes Service object to add the cluster machines to the public load balancer for outbound requests.
 
-You must ensure the following items are available before setting user-defined routing:
+Before you set user-defined routing, ensure that the following items are available:
 
-- Egress to the internet is possible to pull container images, unless using an OpenShift image registry mirror.
+- Egress to the internet so that you can pull container images, unless you use an OpenShift image registry mirror.
 
-- The cluster can access Azure APIs.
+- Access from the cluster to Azure APIs.
 
-- Various allowlist endpoints are configured. You can reference these endpoints in the *Configuring your firewall* section.
+- Access to the required allowlist endpoints.
 
-There are several pre-existing networking setups that are supported for internet access using user-defined routing.
+Several pre-existing networking setups support internet access by using user-defined routing.
 
 # About reusing a VNet for your OpenShift Container Platform cluster
 

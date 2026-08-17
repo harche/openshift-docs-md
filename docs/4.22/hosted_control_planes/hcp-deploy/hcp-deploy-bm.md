@@ -690,6 +690,10 @@ After you enable the Assisted Installer as an add-on to multicluster engine Oper
 
     - `--enable-cluster-capabilities` specifies that you want to enable optional capabilities in the hosted cluster. This flag is optional. For more information, see "Capabilities for hosted clusters".
 
+    - `--render` renders the output as YAML to stdout instead of applying the resources to the cluster. By default, secrets are not included in the rendered output.
+
+    - `--render-sensitive` includes secrets in the rendered output when used with the `--render` flag.
+
 3.  Configure the service publishing strategy. By default, hosted clusters use the `NodePort` service publishing strategy because node ports are always available without additional infrastructure. However, you can configure the service publishing strategy to use a load balancer.
 
     - If you are using the default `NodePort` strategy, configure the DNS to point to the hosted cluster compute nodes, not the management cluster nodes. For more information, see "DNS configurations on bare metal".

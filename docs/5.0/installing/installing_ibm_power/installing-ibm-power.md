@@ -1,28 +1,40 @@
-In OpenShift Container Platform version 4.17, you can install a cluster on IBM Power® infrastructure that you provision.
+To install a cluster on IBM Power® infrastructure that you provision, review the prerequisites and complete the installation steps.
 
 <div class="important">
 
-Additional considerations exist for non-bare metal platforms. Review the information in the [guidelines for deploying OpenShift Container Platform on non-tested platforms](https://access.redhat.com/articles/4207611) before you install an OpenShift Container Platform cluster.
+Additional considerations exist for non-bare metal platforms. Review the guidelines for deploying OpenShift Container Platform on non-tested platforms before you install an OpenShift Container Platform cluster.
 
 </div>
 
-# Prerequisites
+# Prerequisites for installing a cluster on IBM Power
 
-- You reviewed details about the [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation) processes.
+Before you install a OpenShift Container Platform cluster on IBM Power®, complete the prerequisite tasks to review installation details, provision storage, and configure your firewall.
 
-- You read the documentation on [selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing).
+- You reviewed details about the OpenShift Container Platform installation and update processes.
 
-- Before you begin the installation process, you must clean the installation directory. This ensures that the required installation files are created and updated during the installation process.
+- You read the documentation on selecting a cluster installation method and preparing it for users.
 
-- You provisioned [persistent storage using OpenShift Data Foundation](../../storage/persistent_storage/persistent-storage-ocs.xml#persistent-storage-ocs) or other supported storage protocols for your cluster. To deploy a private image registry, you must set up persistent storage with `ReadWriteMany` access.
+- Before you begin the installation process, you must clean the installation directory. This ensures that the installation program creates and updates the required installation files.
 
-- If you use a firewall, you [configured it to allow the sites](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
+- You provisioned persistent storage using OpenShift Data Foundation or other supported storage providers for your cluster. To deploy a private image registry, you must set up persistent storage with `ReadWriteMany` access.
+
+- If you use a firewall, you configured it to allow the sites that your cluster requires access to.
 
   <div class="note">
 
   Be sure to also review this site list if you are configuring a proxy.
 
   </div>
+
+<!-- -->
+
+- [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation)
+
+- [Selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing)
+
+- [Persistent storage using OpenShift Data Foundation](../../storage/persistent_storage/persistent-storage-ocs.xml#persistent-storage-ocs)
+
+- [Configuring your firewall](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
 
 # Internet access for OpenShift Container Platform
 
@@ -44,9 +56,7 @@ If your cluster cannot have direct internet access, you can perform a restricted
 
 # Requirements for a cluster with user-provisioned infrastructure
 
-For a cluster that contains user-provisioned infrastructure, you must deploy all of the required machines.
-
-This section describes the requirements for deploying OpenShift Container Platform on user-provisioned infrastructure.
+For a OpenShift Container Platform cluster with user-provisioned infrastructure on IBM Power®, you must deploy all required machines meeting the hardware, network, DNS, and load balancing requirements.
 
 ## Required machines for cluster installation
 
@@ -120,7 +130,7 @@ If an instance type for your platform meets the minimum requirements for cluster
 
 ## Minimum IBM Power requirements
 
-You can install OpenShift Container Platform version 4.17 on the following IBM® hardware:
+Before you install OpenShift Container Platform on IBM Power®, verify that your hardware meets the minimum system requirements for processor, disk storage, network, and memory.
 
 - IBM Power®9, IBM Power®10 or IBM Power®11 processor-based systems
 
@@ -142,7 +152,7 @@ On your IBM Power® instance, set up:
 
 ### Disk storage for the IBM Power guest virtual machines
 
-- Local storage, or storage provisioned by the Virtual I/O Server using vSCSI, NPIV (N-Port ID Virtualization), Fibre Channel, Multi-Path, or SSP (shared storage pools)
+- Local storage, or storage provisioned by the Virtual I/O Server using vSCSI, NPIV (N-Port ID Virtualization), Fibre Channel, multipath, or SSP (shared storage pools)
 
 ### Network for the PowerVM guest virtual machines
 
@@ -150,7 +160,7 @@ On your IBM Power® instance, set up:
 
 - Available by the Virtual I/O Server using Shared Ethernet Adapter
 
-- Virtualized by the Virtual I/O Server using IBM® vNIC
+- Virtualized by the Virtual I/O Server using IBM® virtual NIC (vNIC)
 
 ### Storage / main memory
 
@@ -161,6 +171,8 @@ On your IBM Power® instance, set up:
 - 500 GB / 16 GB for the temporary OpenShift Container Platform bootstrap machine
 
 ## Recommended IBM Power system requirements
+
+OpenShift Container Platform on IBM Power® requires a minimum of six LPARs across multiple PowerVM servers, with specific hardware, storage, and network configuration for each node type.
 
 ### Hardware requirements
 
@@ -188,7 +200,7 @@ On your IBM Power® instance, set up:
 
 - Virtualized by the Virtual I/O Server using Shared Ethernet Adapter
 
-- Virtualized by the Virtual I/O Server using IBM® vNIC
+- Virtualized by the Virtual I/O Server using IBM® virtual NIC (vNIC)
 
 ### Storage / main memory
 
@@ -1952,7 +1964,9 @@ The installation program that generates the manifest and Ignition files is archi
 
 # Installing RHCOS and starting the OpenShift Container Platform bootstrap process
 
-To install OpenShift Container Platform on IBM Power® infrastructure that you provision, you must install Red Hat Enterprise Linux CoreOS (RHCOS) on the machines. When you install RHCOS, you must provide the Ignition config file that was generated by the OpenShift Container Platform installation program for the type of machine you are installing. If you have configured suitable networking, DNS, and load balancing infrastructure, the OpenShift Container Platform bootstrap process begins automatically after the RHCOS machines have rebooted.
+To install OpenShift Container Platform on IBM Power® infrastructure that you provision, you must install Red Hat Enterprise Linux CoreOS (RHCOS) on the machines by using an ISO image or network PXE booting.
+
+To install RHCOS, you must give the Ignition config file generated by the OpenShift Container Platform installation program for the type of machine you are installing. If you have configured suitable networking, DNS, and load balancing infrastructure, the OpenShift Container Platform bootstrap process begins automatically after the RHCOS machines have rebooted.
 
 Follow either the steps to use an ISO image or network PXE booting to install RHCOS on the machines.
 
@@ -2489,9 +2503,9 @@ You can use PXE booting to install RHCOS on the machines.
 
 ## Enabling multipathing with kernel arguments on RHCOS
 
-In OpenShift Container Platform version 4.17, during installation, you can enable multipathing for provisioned nodes. RHCOS supports multipathing on the primary disk. Multipathing provides added benefits of stronger resilience to hardware failure to achieve higher host availability.
+During installation, you can enable multipathing for provisioned nodes on IBM Power®. RHCOS supports multipathing on the primary disk, providing stronger resilience to hardware failure.
 
-During the initial cluster creation, you might want to add kernel arguments to all master or worker nodes. To add kernel arguments to master or worker nodes, you can create a `MachineConfig` object and inject that object into the set of manifest files used by Ignition during cluster setup.
+During the initial cluster creation, you might want to add kernel arguments to all control plane or worker nodes. To add kernel arguments to control plane or worker nodes, you can create a `MachineConfig` object and inject that object into the set of manifest files used by Ignition during cluster setup.
 
 1.  Change to the directory that contains the installation program and generate the Kubernetes manifests for the cluster:
 
@@ -2501,7 +2515,7 @@ During the initial cluster creation, you might want to add kernel arguments to a
 
 2.  Decide if you want to add kernel arguments to worker or control plane nodes.
 
-    - Create a machine config file. For example, create a `99-master-kargs-mpath.yaml` that instructs the cluster to add the `master` label and identify the multipath kernel argument:
+    - Create a machine config file. For example, create a `99-master-kargs-mpath.yaml` that instructs the cluster to add the control plane label and identify the multipath kernel argument:
 
       ``` yaml
       apiVersion: machineconfiguration.openshift.io/v1
@@ -2518,7 +2532,7 @@ During the initial cluster creation, you might want to add kernel arguments to a
 
 3.  To enable multipathing on worker nodes:
 
-    - Create a machine config file. For example, create a `99-worker-kargs-mpath.yaml` that instructs the cluster to add the `worker` label and identify the multipath kernel argument:
+    - Create a machine config file. For example, create a `99-worker-kargs-mpath.yaml` that instructs the cluster to add the compute label and identify the multipath kernel argument:
 
       ``` yaml
       apiVersion: machineconfiguration.openshift.io/v1
@@ -2537,11 +2551,11 @@ During the initial cluster creation, you might want to add kernel arguments to a
 
 <div class="important">
 
-Additional postinstallation steps are required to fully enable multipathing. For more information, see “Enabling multipathing with kernel arguments on RHCOS" in *Postinstallation machine configuration tasks*.
+Additional postinstallation steps are required to fully enable multipathing. For more information, see "Enabling multipathing with kernel arguments on RHCOS" in *Postinstallation machine configuration tasks*.
 
 </div>
 
-In case of MPIO failure, use the bootlist command to update the boot device list with alternate logical device names. The command displays a boot list and it designates the possible boot devices for when the system is booted in normal mode.
+In case of MPIO failure, use the `bootlist` command to update the boot device list with alternate logical device names. The command displays a boot list and designates the possible boot devices for when the system is booted in normal mode.
 
 1.  To display a boot list and specify the possible boot devices if the system is booted in normal mode, enter the following command:
 
@@ -3128,12 +3142,14 @@ To provide metrics about cluster health and the success of updates, the Telemetr
 
 After you confirm that your [OpenShift Cluster Manager](https://console.redhat.com/openshift) inventory is correct, either maintained automatically by Telemetry or manually by using OpenShift Cluster Manager,use subscription watch to track your OpenShift Container Platform subscriptions at the account or multi-cluster level. For more information about subscription watch, see "Data Gathered and Used by Red Hat’s subscription services" in the *Additional resources* section.
 
-- See [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring) for more information about the Telemetry service
+# Additional resources
 
-# Next steps
+- [Guidelines for deploying OpenShift Container Platform on non-tested platforms](https://access.redhat.com/articles/4207611)
 
-- [Enabling multipathing with kernel arguments on RHCOS](../../machine_configuration/machine-configs-configure.xml#rhcos-enabling-multipath-day-2_machine-configs-configure).
+- [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
-- [Customize your cluster](../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations).
+- [Enabling multipathing with kernel arguments on RHCOS](../../machine_configuration/machine-configs-configure.xml#rhcos-enabling-multipath-day-2_machine-configs-configure)
 
-- If necessary, you can [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting).
+- [Customize your cluster](../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
+
+- [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)

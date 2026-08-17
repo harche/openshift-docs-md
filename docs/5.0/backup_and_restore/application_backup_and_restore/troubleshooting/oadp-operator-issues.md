@@ -6,7 +6,7 @@ Resolve the silent failure issue where the OADP Operator reports a `Running` sta
 
 To fix this issue, retrieve a list of backup storage locations (BSLs) and check the manifest of each BSL for credential issues.
 
-1.  Retrieve a list of BSLs by using either the OpenShift or Velero command-line interface (CLI):
+1.  Retrieve a list of BSLs by using either the OpenShift CLI or the OADP CLI:
 
     1.  Retrieve a list of BSLs by using the OpenShift CLI (`oc`):
 
@@ -14,10 +14,10 @@ To fix this issue, retrieve a list of backup storage locations (BSLs) and check 
         $ oc get backupstoragelocations.velero.io -A
         ```
 
-    2.  Retrieve a list of BSLs by using the `velero` CLI:
+    2.  Retrieve a list of BSLs by using the OADP CLI:
 
         ``` terminal
-        $ velero backup-location get -n <oadp_operator_namespace>
+        $ oc oadp backup-location get -n <oadp_operator_namespace>
         ```
 
 2.  Use the list of BSLs from the previous step and run the following command to examine the manifest of each BSL for an error:

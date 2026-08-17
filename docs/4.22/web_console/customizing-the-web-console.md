@@ -244,7 +244,9 @@ You can customize the download route by setting the custom hostname and TLS cert
 
 # Customizing the login page
 
-Customize the login page to display Terms of Service information or a branded page for a third-party login provider, such as GitHub or Google, before users are redirected to authenticate. You can also customize error pages shown during authentication.
+You can customize the login page to display Terms of Service information or apply custom branding for third-party login providers.
+
+Custom login pages can also be helpful if you use a third-party login provider, such as GitHub or Google, to show users a branded page that they trust and expect before being redirected to the authentication provider. You can also render custom error pages during the authentication process.
 
 <div class="note">
 
@@ -314,9 +316,9 @@ If you are connected to a service that helps you browse your logs, but you need 
 
 - You must have administrator privileges.
 
-1.  From **Administration** → **Custom Resource Definitions**, click on **ConsoleExternalLogLink**.
+1.  From **Administration** → **Custom Resource Definitions**, click **ConsoleExternalLogLink**.
 
-2.  Select **Instances** tab
+2.  Select the **Instances** tab.
 
 3.  Click **Create Console External Log Link** and edit the file:
 
@@ -400,7 +402,7 @@ You can dynamically add YAML examples to any Kubernetes resources at any time.
 
 - You must have cluster administrator privileges.
 
-1.  From **Administration** → **Custom Resource Definitions**, click on **ConsoleYAMLSample**.
+1.  From **Administration** → **Custom Resource Definitions**, click **ConsoleYAMLSample**.
 
 2.  Click **YAML** and edit the file:
 

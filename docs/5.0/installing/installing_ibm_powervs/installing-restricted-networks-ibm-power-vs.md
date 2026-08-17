@@ -1,18 +1,20 @@
-In OpenShift Container Platform 4.17, you can install a cluster on IBM Cloud® in a restricted network by creating an internal mirror of the installation release content on an existing Virtual Private Cloud (VPC) on IBM Cloud®.
+To install a OpenShift Container Platform cluster on IBM Power® Virtual Server in a disconnected environment, mirror the required release content and deploy into an existing Virtual Private Cloud (VPC) on IBM Cloud®.
 
 # Prerequisites
 
-- You reviewed details about the [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation) processes.
+Before you install a OpenShift Container Platform cluster on IBM Power® Virtual Server in a restricted network, complete the prerequisite tasks to mirror images, configure an IBM Cloud® account, and prepare an existing Virtual Private Cloud (VPC).
 
-- You read the documentation on [selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing).
+- You reviewed details about the OpenShift Container Platform installation and update processes.
 
-- You [configured an IBM Cloud® account](../../installing/installing_ibm_powervs/installing-ibm-cloud-account-power-vs.xml#installing-ibm-cloud-account-power-vs) to host the cluster.
+- You read the documentation on selecting a cluster installation method and preparing it for users.
 
-- You [mirrored the images for a disconnected installation](../../disconnected/installing-mirroring-installation-images.xml#installation-about-mirror-registry_installing-mirroring-installation-images) to your registry and obtained the `imageContentSources` data for your version of OpenShift Container Platform.
+- You configured an IBM Cloud® account to host the cluster.
+
+- You mirrored the images for a disconnected installation to your registry and obtained the `imageContentSources` data for your version of OpenShift Container Platform.
 
   <div class="important">
 
-  Because the installation media is on the mirror host, you can use that computer to complete all installation steps.
+  Because the installation media is on the mirror host, you can use that machine to complete all installation steps.
 
   </div>
 
@@ -22,9 +24,23 @@ In OpenShift Container Platform 4.17, you can install a cluster on IBM Cloud® i
 
   - Has firewall rules or a peering connection to access the mirror registry hosted elsewhere
 
-- If you use a firewall, you [configured it to allow the sites](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
+- If you use a firewall, you configured it to allow the sites that your cluster requires access to.
 
-- You configured the `ccoctl` utility before you installed the cluster. For more information, see [Configuring the Cloud Credential Operator utility](../../installing/installing_ibm_powervs/preparing-to-install-on-ibm-power-vs.xml#cco-ccoctl-configuring_preparing-to-install-on-ibm-power-vs).
+- You configured the `ccoctl` utility before you installed the cluster.
+
+<!-- -->
+
+- [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation)
+
+- [Selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing)
+
+- [Configuring an IBM Cloud® account](../../installing/installing_ibm_powervs/installing-ibm-cloud-account-power-vs.xml#installing-ibm-cloud-account-power-vs)
+
+- [Mirroring images for a disconnected installation](../../disconnected/installing-mirroring-installation-images.xml#installation-about-mirror-registry_installing-mirroring-installation-images)
+
+- [Configuring your firewall](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
+
+- [Configuring the Cloud Credential Operator utility](../../installing/installing_ibm_powervs/preparing-to-install-on-ibm-power-vs.xml#cco-ccoctl-configuring_preparing-to-install-on-ibm-power-vs)
 
 # About installations in restricted networks
 
@@ -42,11 +58,11 @@ Clusters in restricted networks have the following additional limitations and re
 
 - By default, you cannot use the contents of the Developer Catalog because you cannot access the required image stream tags.
 
-# About using a custom VPC
+# About using a custom Virtual Private Cloud (VPC)
 
 In OpenShift Container Platform 4.17, you can deploy a cluster into the subnets of an existing IBM® Virtual Private Cloud (VPC).
 
-## Requirements for using your VPC
+## Requirements for using your Virtual Private Cloud (VPC)
 
 You must correctly configure the existing VPC and its subnets before you install the cluster. The installation program does not create a VPC or VPC subnet in this scenario.
 
@@ -56,7 +72,7 @@ The installation program cannot:
 
 - Set route tables for the subnets
 
-- Set VPC options like DHCP
+- Set VPC options such as DHCP
 
 <div class="note">
 
@@ -64,7 +80,7 @@ The installation program requires that you use the cloud-provided DNS server. Us
 
 </div>
 
-## VPC validation
+## Virtual Private Cloud (VPC) validation
 
 The VPC and all of the subnets must be in an existing resource group. The cluster is deployed to this resource group.
 
@@ -76,7 +92,7 @@ As part of the installation, specify the following in the `install-config.yaml` 
 
 - The name of the VPC subnet
 
-To ensure that the subnets that you provide are suitable, the installation program confirms that all of the subnets you specify exists.
+To ensure that the subnets that you give are suitable, the installation program confirms that all of the subnets you specify exist.
 
 <div class="note">
 
@@ -86,7 +102,7 @@ Subnet IDs are not supported.
 
 ## Isolation between clusters
 
-If you deploy OpenShift Container Platform to an existing network, the isolation of cluster services is reduced in the following ways:
+If you deploy OpenShift Container Platform to an existing network, cluster service isolation decreases in the following ways:
 
 - ICMP Ingress is allowed to the entire network.
 
@@ -375,11 +391,11 @@ If an instance type for your platform meets the minimum requirements for cluster
 
 ## Sample customized install-config.yaml file for IBM Power Virtual Server
 
-You can customize the `install-config.yaml` file to specify more details about your OpenShift Container Platform cluster’s platform or modify the values of the required parameters.
+You can customize the `install-config.yaml` file to specify more details about your OpenShift Container Platform cluster’s platform or change the values of the required parameters.
 
 <div class="important">
 
-This sample YAML file is provided for reference only. You must obtain your `install-config.yaml` file by using the installation program and modify it.
+This sample YAML file is for reference only. You must obtain your `install-config.yaml` file by using the installation program and change it.
 
 </div>
 
@@ -438,51 +454,76 @@ imageContentSources:
   source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
 ```
 
-- Required.
+where:
 
-- If you do not provide these parameters and values, the installation program provides the default value.
+`baseDomain`
+Specifies the base domain of the cluster. This value is required.
 
-- The `controlPlane` section is a single mapping, but the `compute` section is a sequence of mappings. To meet the requirements of the different data structures, the first line of the `compute` section must begin with a hyphen, `-`, and the first line of the `controlPlane` section must not. Only one control plane pool is used.
+`metadata.name`
+Specifies the name of the cluster. This value is required.
 
-- Enables or disables simultaneous multithreading, also known as Hyper-Threading. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores. You can disable it by setting the parameter value to `Disabled`. If you disable simultaneous multithreading in some cluster machines, you must disable it in all cluster machines.
+`compute`
+Specifies parameters where, if you do not provide values, the installation program provides the default value. The first line of the `compute` section must begin with a hyphen, `-`.
 
-  <div class="important">
+`compute.hyperthreading`
+Specifies whether to enable or disable simultaneous multithreading, or `hyperthreading`. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores. You can disable it by setting the parameter value to `Disabled`. If you disable simultaneous multithreading in some cluster machines, you must disable it in all cluster machines.
 
-  If you disable simultaneous multithreading, ensure that your capacity planning accounts for the dramatically decreased machine performance. Use larger machine types, such as `n1-standard-8`, for your machines if you disable simultaneous multithreading.
+`compute.platform.powervs.smtLevel`
+Specifies the level of SMT to set to the compute machines. The supported values are 1, 2, 4, 8, `'off'`, and `'on'`. The default value is 8. The smtLevel `'off'` sets SMT to off, and smtLevel `'on'` sets SMT to the default value 8 on the cluster nodes.
 
-  </div>
+`controlPlane`
+Specifies parameters where, if you do not provide values, the installation program provides the default value. The `controlPlane` section is a single mapping, and its first line must not begin with a hyphen. Only one control plane pool is used.
 
-- The smtLevel specifies the level of SMT to set to the control plane and compute machines. The supported values are 1, 2, 4, 8, `'off'` and `'on'`. The default value is 8. The smtLevel `'off'` sets SMT to off and smtlevel `'on'` sets SMT to the default value 8 on the cluster nodes.
+`controlPlane.hyperthreading`
+Specifies whether to enable or disable simultaneous multithreading, or `hyperthreading`. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores. You can disable it by setting the parameter value to `Disabled`. If you disable simultaneous multithreading in some cluster machines, you must disable it in all cluster machines.
 
-  <div class="note">
+<div class="important">
 
-  When simultaneous multithreading (SMT), or hyperthreading is not enabled, one vCPU is equivalent to one physical core. When enabled, total vCPUs is computed as (Thread(s) per core \* Core(s) per socket) \* Socket(s). The smtLevel controls the threads per core. Lower SMT levels may require additional assigned cores when deploying the cluster nodes. You can do this by setting the `'processors'` parameter in the `install-config.yaml` file to an appropriate value to meet the requirements for deploying OpenShift Container Platform successfully.
+When multithreading (SMT) is disabled, each vCPU is equivalent to one physical core. Disable SMT only if you have specific requirements.
 
-  </div>
+</div>
 
-- The machine CIDR must contain the subnets for the compute machines and control plane machines.
+`controlPlane.platform.powervs.smtLevel`
+Specifies the level of SMT to set to the control plane. The supported values are 1, 2, 4, 8, `'off'`, and `'on'`. The default value is 8. The smtLevel `'off'` sets SMT to off, and smtLevel `'on'` sets SMT to the default value 8 on the cluster nodes.
 
-- The CIDR must contain the subnets defined in `platform.ibmcloud.controlPlaneSubnets` and `platform.ibmcloud.computeSubnets`.
+<div class="note">
 
-- The cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
+When simultaneous multithreading (SMT) is not enabled, one vCPU is equivalent to one physical core. When enabled, total vCPUs is computed as (Thread(s) per core \* Core(s) per socket) \* Socket(s). The smtLevel controls the threads per core. Lower SMT levels may require additional assigned cores when deploying the cluster nodes. You can do this by setting the `'processors'` parameter in the `install-config.yaml` file to an appropriate value to meet the requirements for deploying OpenShift Container Platform successfully.
 
-- The name of an existing resource group. The existing VPC and subnets should be in this resource group. The cluster is deployed to this resource group.
+</div>
 
-- Specify the name of an existing VPC.
+`networking.clusterNetwork.cidr`
+Specifies the CIDR. The machine CIDR must contain the subnets for the compute machines and control plane machines.
 
-- For `<local_registry>`, specify the registry domain name, and optionally the port, that your mirror registry uses to serve content. For example, registry.example.com or registry.example.com:5000. For `<credentials>`, specify the base64-encoded user name and password for your mirror registry.
+`networking.machineNetwork.cidr`
+Specifies the CIDR. The CIDR must contain the subnets defined in `platform.ibmcloud.controlPlaneSubnets` and `platform.ibmcloud.computeSubnets`.
 
-- You can optionally provide the `sshKey` value that you use to access the machines in your cluster.
+`networking.networkType`
+Specifies the cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
 
-- Provide the contents of the certificate file that you used for your mirror registry.
+`platform.powervs.powervsResourceGroup`
+Specifies the name of an existing resource group. The existing VPC and subnets should be in this resource group. The cluster is deployed to this resource group.
 
-- Provide the `imageContentSources` section from the output of the command to mirror the repository.
+`platform.powervs.vpcName`
+Specifies the name of an existing VPC.
 
-  <div class="note">
+`pullSecret`
+Specifies the pull secret for your mirror registry. For `<local_registry>`, specify the registry domain name, and optionally the port, that your mirror registry uses to serve content. For example, registry.example.com or registry.example.com:5000. For `<credentials>`, specify the base64-encoded user name and password for your mirror registry.
 
-  For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+`sshKey`
+Specifies the SSH key to use to access the machines in your cluster. This value is optional.
 
-  </div>
+<div class="note">
+
+For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+
+</div>
+
+`additionalTrustBundle`
+Specifies the contents of the certificate file that you used for your mirror registry.
+
+`imageContentSources`
+Specifies the `imageContentSources` section from the output of the command to mirror the repository.
 
 ## Configuring the cluster-wide proxy during installation
 
@@ -946,12 +987,12 @@ To provide metrics about cluster health and the success of updates, the Telemetr
 
 After you confirm that your [OpenShift Cluster Manager](https://console.redhat.com/openshift) inventory is correct, either maintained automatically by Telemetry or manually by using OpenShift Cluster Manager,use subscription watch to track your OpenShift Container Platform subscriptions at the account or multi-cluster level. For more information about subscription watch, see "Data Gathered and Used by Red Hat’s subscription services" in the *Additional resources* section.
 
-- [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+# Additional resources
 
-# Next steps
+- [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
 - [Customize your cluster](../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
 
-- Optional: [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
+- [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
-- Optional: [Registering your disconnected cluster](../../support/remote_health_monitoring/remote-health-reporting.xml#insights-operator-register-disconnected-cluster_remote-health-reporting)
+- [Registering your disconnected cluster](../../support/remote_health_monitoring/remote-health-reporting.xml#insights-operator-register-disconnected-cluster_remote-health-reporting)

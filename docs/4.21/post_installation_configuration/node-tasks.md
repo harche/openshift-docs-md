@@ -8,7 +8,7 @@ You can add more Red Hat Enterprise Linux CoreOS (RHCOS) compute machines to yo
 
 Before you add more compute machines to a cluster that you installed on bare metal infrastructure, you must create RHCOS machines for it to use. You can either use an ISO image or network PXE booting to create the machines.
 
-## Prerequisites
+**Prerequisites**
 
 - You installed a cluster on bare metal.
 
@@ -447,19 +447,28 @@ The procedure in this section shows how to add a new Red Hat Enterprise Linux C
         }
         ```
 
-        - Specifies an absolute path to the AWS block device.
+        where:
 
-        - Specifies the size of the data partition in Mebibytes.
+        `device` (under `disks`)
+        Specifies an absolute path to the AWS block device.
 
-        - Specifies the start of the partition in Mebibytes. When adding a data partition to the boot disk, a minimum value of 25000 MB (Mebibytes) is recommended. The root file system is automatically resized to fill all available space up to the specified offset. If no value is specified, or if the specified value is smaller than the recommended minimum, the resulting root file system will be too small, and future reinstalls of RHCOS might overwrite the beginning of the data partition.
+        `sizeMiB`
+        Specifies the size of the data partition in Mebibytes.
 
-        - Specifies an absolute path to the `/var` partition.
+        `startMiB`
+        Specifies the start of the partition in Mebibytes. When adding a data partition to the boot disk, a minimum value of 25000 MB (Mebibytes) is recommended. The root file system is automatically resized to fill all available space up to the specified offset. If no value is specified, or if the specified value is smaller than the recommended minimum, the resulting root file system will be too small, and future reinstalls of RHCOS might overwrite the beginning of the data partition.
 
-        - Specifies the filesystem format.
+        `device` (under `filesystems`)
+        Specifies an absolute path to the `/var` partition.
 
-        - Specifies the mount-point of the filesystem while Ignition is running relative to where the root filesystem will be mounted. This is not necessarily the same as where it should be mounted in the real root, but it is encouraged to make it the same.
+        `format`
+        Specifies the filesystem format.
 
-        - Defines a systemd mount unit that mounts the `/dev/disk/by-partlabel/var` device to the `/var` partition.
+        `path`
+        Specifies the mount-point of the filesystem while Ignition is running relative to where the root filesystem will be mounted. This is not necessarily the same as where it should be mounted in the real root, but it is encouraged to make it the same.
+
+        `units`
+        Defines a systemd mount unit that mounts the `/dev/disk/by-partlabel/var` device to the `/var` partition.
 
     3.  Extract the `disableTemplating` section from the `work-user-data` secret to a text file:
 
@@ -550,13 +559,19 @@ The procedure in this section shows how to add a new Red Hat Enterprise Linux C
                     name: worker-user-data-x5
         ```
 
-        - Specifies a name for the new node.
+        where:
 
-        - Specifies an absolute path to the AWS block device, here an encrypted EBS volume.
+        `name`
+        Specifies a name for the new node.
 
-        - Optional. Specifies an additional EBS volume.
+        `DeviceName: /dev/nvme1n1`
+        Specifies an absolute path to the AWS block device, here an encrypted EBS volume.
 
-        - Specifies the user data secret file.
+        `DeviceName: /dev/nvme1n2`
+        Optional. Specifies an additional EBS volume.
+
+        `userDataSecret.name`
+        Specifies the user data secret file.
 
     2.  Create the compute machine set:
 
@@ -587,7 +602,7 @@ The procedure in this section shows how to add a new Red Hat Enterprise Linux C
         worker-us-east-2-nvme1n1                           1         1         1       1           2m35s
         ```
 
-        - This is the new compute machine set.
+        The `worker-us-east-2-nvme1n1` compute machine set is the new compute machine set.
 
     2.  Verify that the new node is created:
 
@@ -612,7 +627,7 @@ The procedure in this section shows how to add a new Red Hat Enterprise Linux C
         ip-10-0-245-59.ec2.internal    Ready    worker   116m    v1.34.2
         ```
 
-        - This is new new node.
+        The `ip-10-0-217-135.ec2.internal` node is the new node.
 
     3.  Verify that the custom `/var` partition is created on the new node:
 
@@ -643,13 +658,9 @@ The procedure in this section shows how to add a new Red Hat Enterprise Linux C
         `-nvme1n1p1 202:17   0  48.8G  0 part /var
         ```
 
-        - The `nvme1n1` device is mounted to the `/var` partition.
+        The `nvme1n1` device is mounted to the `/var` partition.
 
 - [Disk partitioning for OpenShift Container Platform](../installing/installing_bare_metal/upi/installing-bare-metal.xml#installation-user-infra-machines-advanced_disk_installing-bare-metal)
-
-# Deploying machine health checks
-
-Understand and deploy machine health checks.
 
 <div class="important">
 
@@ -664,6 +675,10 @@ $ oc get infrastructure cluster -o jsonpath='{.status.platform}'
 ```
 
 </div>
+
+# Deploying machine health checks
+
+Understand and deploy machine health checks to detect and remediate unhealthy machines in your cluster.
 
 ## About machine health checks
 
@@ -1692,7 +1707,7 @@ To configure CPU manager, create a `KubeletConfig` custom resource (CR) and appl
 
 # Huge pages
 
-Understand and configure huge pages.
+Understand and configure huge pages to optimize memory mapping efficiency on cluster nodes.
 
 ## What huge pages do
 
@@ -2044,7 +2059,7 @@ Device Manager provides a mechanism for advertising specialized node hardware re
 
 # Taints and tolerations
 
-Understand and work with taints and tolerations.
+Understand and work with taints and tolerations to control which pods can be scheduled on specific nodes.
 
 ## Understanding taints and tolerations
 
@@ -2623,7 +2638,7 @@ Use the following procedure to remove taints and tolerations.
 
 # Topology Manager
 
-Understand and work with Topology Manager.
+Understand and work with Topology Manager to align CPU and device resources for latency-sensitive workloads.
 
 ## Topology Manager policies
 
@@ -3453,7 +3468,7 @@ If overcommitment is enabled on a project, you can disable overcommitment for th
 
 # Freeing node resources using garbage collection
 
-Understand and use garbage collection.
+Understand and use garbage collection to free node resources by removing unused containers and images.
 
 ## Understanding how terminated containers are removed through garbage collection
 
@@ -3735,7 +3750,7 @@ Container garbage collection removes terminated containers. Image garbage collec
 
 # Using the Node Tuning Operator
 
-Understand and use the Node Tuning Operator.
+Understand and use the Node Tuning Operator to manage node-level performance tuning on your cluster.
 
 The Node Tuning Operator helps you manage node-level tuning by orchestrating the TuneD daemon and achieves low latency performance by using the Performance Profile controller. The majority of high-performance applications require some level of kernel tuning. The Node Tuning Operator provides a unified management interface to users of node-level sysctls and more flexibility to add custom tuning specified by user needs.
 
@@ -4196,23 +4211,17 @@ For example, if `podsPerCore` is set to `10` on a node with 4 processor cores, t
 
 After you deployed your cluster to run nodes with static IP addresses, you can scale an instance of a machine or a machine set to use one of these static IP addresses.
 
-- [Static IP addresses for vSphere nodes](../installing/installing_vsphere/ipi/ipi-vsphere-installation-reqs.xml#installation-vsphere-installer-infra-requirements_ipi-vsphere-installation-reqs)
-
 ## Scaling machines to use static IP addresses
 
-You can add machines with pre-defined static IP addresses by creating machine resources that specify static network configuration in the machine YAML file.
+You can add machines with predefined static IP addresses by creating machine resources that specify static network configuration in the machine YAML file.
 
-You can scale additional machine sets to use pre-defined static IP addresses on your cluster. For this configuration, you need to create a machine resource YAML file and then define static IP addresses in this file.
+You can scale additional machine sets to use predefined static IP addresses on your cluster. For this configuration, you need to create a machine resource YAML file and then define static IP addresses in this file.
 
 - You deployed a cluster that runs at least one node with a configured static IP address.
 
 1.  Create a machine resource YAML file and define static IP address network information in the `network` parameter.
 
-    <div class="formalpara-title">
-
-    **Example of a machine resource YAML file with static IP address information defined in the `network` parameter.**
-
-    </div>
+    Example of a machine resource YAML file with static IP address information defined in the `network` parameter:
 
     ``` yaml
     apiVersion: machine.openshift.io/v1beta1
@@ -4262,17 +4271,22 @@ You can scale additional machine sets to use pre-defined static IP addresses on 
     status: {}
     ```
 
-    - The IP address for the default gateway for the network interface.
+    where:
 
-    - Lists IPv4, IPv6, or both IP addresses that installation program passes to the network interface. Both IP families must use the same network interface for the default network.
+    `gateway`
+    Specifies an IP address for the default gateway for the network interface.
 
-    - Lists a DNS nameserver. You can define up to 3 DNS nameservers. Consider defining more than one DNS nameserver to take advantage of DNS resolution if that one DNS nameserver becomes unreachable.
+    `ipAddrs`
+    Specifies a list of IPv4, IPv6, or both IP addresses that installation program passes to the network interface. Both IP families must use the same network interface for the default network.
 
-      - Create a `machine` custom resource (CR) by entering the following command in your terminal:
+    `nameservers`
+    Specifies a DNS name server. You can define up to 3 DNS name servers. Consider defining more than one DNS name server to take advantage of DNS resolution if that one DNS name server becomes unreachable.
 
-        ``` terminal
-        $ oc create -f <file_name>.yaml
-        ```
+    - Create a `machine` custom resource (CR) by entering the following command in your terminal:
+
+      ``` terminal
+      $ oc create -f <file_name>.yaml
+      ```
 
 ## Machine set scaling of machines with configured static IP addresses
 
@@ -4383,9 +4397,13 @@ The example in the procedure demonstrates the use of controllers for scaling mac
                 server: vcenter.ibmc.devcluster.openshift.com
     ```
 
-    - Specifies an IP pool, which lists a static IP address or a range of static IP addresses. The IP Pool can either be a reference to a custom resource definition (CRD) or a resource supported by the `IPAddressClaims` resource handler. The machine controller accesses static IP addresses listed in the machine set’s configuration and then allocates each address to each machine.
+    where:
 
-    - Lists a nameserver. You must specify a nameserver for nodes that receive static IP address, because the Dynamic Host Configuration Protocol (DHCP) network configuration does not support static IP addresses.
+    `addressesFromPools`
+    Specifies an IP pool, which lists a static IP address or a range of static IP addresses. The IP Pool can either be a reference to a custom resource definition (CRD) or a resource supported by the `IPAddressClaims` resource handler. The machine controller accesses static IP addresses listed in the machine set’s configuration and then allocates each address to each machine.
+
+    `nameservers`
+    Lists a name server. You must specify a name server for nodes that receive static IP address, because the Dynamic Host Configuration Protocol (DHCP) network configuration does not support static IP addresses.
 
 2.  Scale the machine set by entering the following commands in your `oc` CLI:
 
@@ -4445,18 +4463,24 @@ The example in the procedure demonstrates the use of controllers for scaling mac
       prefix: 23
     ```
 
-    - The name of the target `IPAddressClaim` resource.
+    where:
 
-    - Details information about the static IP address or addresses from your nodes.
+    `claimRef`
+    The name of the target `IPAddressClaim` resource.
 
-      <div class="note">
+    `poolRef`
+    Details information about the static IP address or addresses from your nodes.
 
-      By default, the external controller automatically scans any resources in the machine set for recognizable address pool types. When the external controller finds `kind: IPPool` defined in the `IPAddress` resource, the controller binds any static IP addresses to the `IPAddressClaim` resource.
+    <div class="note">
 
-      </div>
+    By default, the external controller automatically scans any resources in the machine set for recognizable address pool types. When the external controller finds `kind: IPPool` defined in the `IPAddress` resource, the controller binds any static IP addresses to the `IPAddressClaim` resource.
+
+    </div>
 
 5.  Update the `IPAddressClaim` status with a reference to the `IPAddress` resource:
 
     ``` terminal
     $ oc --type=merge patch IPAddressClaim cluster-dev-9n5wg-worker-0-m7529-claim-0-0 -p='{"status":{"addressRef": {"name": "cluster-dev-9n5wg-worker-0-m7529-ipaddress-0-0"}}}' -n openshift-machine-api --subresource=status
     ```
+
+- [Static IP addresses for vSphere nodes](../installing/installing_vsphere/ipi/ipi-vsphere-installation-reqs.xml#installation-vsphere-installer-infra-requirements_ipi-vsphere-installation-reqs)

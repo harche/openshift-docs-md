@@ -771,7 +771,7 @@ If your mirror registry is on a completely disconnected, or airgapped, host, tak
 
     </div>
 
-After you mirror the catalog, you can continue with the remainder of your cluster installation. After your cluster installation has finished successfully, you must specify the manifests directory from this procedure to create the `ImageContentSourcePolicy` and `CatalogSource` objects. These objects are required to enable installation of Operators from the software catalog.
+    After you mirror the catalog, you can continue with the remainder of your cluster installation. After your cluster installation has finished successfully, you must specify the manifests directory from this procedure to create the `ImageContentSourcePolicy` and `CatalogSource` objects. These objects are required to enable installation of Operators from the software catalog.
 
 - [Unauthorized error thrown while using catalog mirror command with Quay registry](https://access.redhat.com/solutions/5440741)
 
@@ -827,7 +827,7 @@ The manifests directory contains the following files, some of which might requir
 
 After you mirror the catalog, you can continue with the remainder of your cluster installation. After your cluster installation has finished successfully, you must specify the manifests directory from this procedure to create the `ImageContentSourcePolicy` and `CatalogSource` objects. These objects are required to populate and enable installation of Operators from the software catalog.
 
-- [Populating the software catalog from mirrored Operator catalogs](../post_installation_configuration/preparing-for-users.xml#post-install-mirrored-catalogs)
+- [Populating the software catalog from mirrored Operator catalogs](../post_installation_configuration/preparing-for-users.xml#post-install-mirrored-catalogs_post-install-preparing-for-users)
 
 - [Updating or filtering a file-based catalog image](../operators/admin/olm-managing-custom-catalogs.xml#olm-filtering-fbc_olm-managing-custom-catalogs)
 

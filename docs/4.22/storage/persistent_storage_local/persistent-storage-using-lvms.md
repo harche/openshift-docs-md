@@ -1,6 +1,4 @@
-Logical Volume Manager (LVM) Storage uses LVM2 through the `TopoLVM CSI` driver to dynamically provision local storage on a cluster with limited resources.
-
-You can create volume groups, persistent volume claims (PVCs), volume snapshots, and volume clones by using LVM Storage.
+Logical Volume Manager (LVM) Storage uses LVM2 through the `TopoLVM CSI` driver to dynamically provision local storage on a cluster with limited resources. With LVM Storage, you can create volume groups, persistent volume claims (PVCs), snapshots, and clones.
 
 # Logical Volume Manager Storage installation
 
@@ -31,10 +29,6 @@ The prerequisites to install LVM Storage are as follows:
   </div>
 
 - If you want to install LVM Storage by using Red Hat Advanced Cluster Management (RHACM), ensure that you have installed RHACM on an OpenShift Container Platform cluster. For more information, see "Installing LVM Storage by using RHACM".
-
-<!-- -->
-
-- [Red Hat Advanced Cluster Management for Kubernetes: Installing while connected online](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html/install/installing#installing-while-connected-online)
 
 ## Installing LVM Storage by using the CLI
 
@@ -258,8 +252,6 @@ Install LVM Storage in a disconnected environment where your cluster has no inte
 
 - [About disconnected installation mirroring](../../disconnected/index.xml#installing-mirroring-disconnected-about)
 
-- [Creating a mirror registry with mirror registry for Red Hat OpenShift](../../disconnected/installing-mirroring-creating-registry.xml#installing-mirroring-creating-registry)
-
 - [Mirroring the OpenShift Container Platform image repository](../../disconnected/installing-mirroring-installation-images.xml#installation-mirror-repository_installing-mirroring-installation-images)
 
 - [Creating the image set configuration](../../disconnected/about-installing-oc-mirror-v2.xml#oc-mirror-building-image-set-config-v2_about-installing-oc-mirror-v2)
@@ -269,6 +261,8 @@ Install LVM Storage in a disconnected environment where your cluster has no inte
 - [Configuring image registry repository mirroring](../../openshift_images/image-configuration.xml#images-configuration-registry-mirror_image-configuration)
 
 - [Why use imagestreams](../../openshift_images/image-streams-manage.xml#images-imagestream-use_image-configuration)
+
+- [About the OpenShift Update Service](../../updating/understanding_updates/intro-to-updates.xml#update-service-overview_understanding-openshift-updates)
 
 ## Installing LVM Storage by using RHACM
 
@@ -414,8 +408,6 @@ The `Policy` CR that is created to install LVM Storage is also applied to the cl
       The default namespace for the LVM Storage Operator is `openshift-lvm-storage`.
 
       </div>
-
-- [Red Hat Advanced Cluster Management for Kubernetes: Installing while connected online](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html/install/installing#installing-while-connected-online)
 
 - [About the `LVMCluster` custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
 
@@ -931,6 +923,14 @@ It is not recommended to add the devices to the VG through dynamic device discov
 
 </div>
 
+- [RHEL documentation](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/managing_file_systems/assembly_overview-of-persistent-naming-attributes_managing-file-systems)
+
+- [Creating a software RAID on an installed system](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/managing_storage_devices/managing-raid_managing-storage-devices#creating-a-software-raid-on-an-installed-system_managing-raid)
+
+- [Replacing a failed disk in RAID](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/managing_storage_devices/managing-raid_managing-storage-devices#replacing-a-failed-disk-in-raid_managing-raid)
+
+- [Repairing RAID disks](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/managing_storage_devices/managing-raid_managing-storage-devices#repairing-raid-disks_managing-raid)
+
 - [Configuring a RAID-enabled data volume](../../installing/install_config/installing-customizing.xml#installation-special-config-raid_installing-customizing)
 
 - [About disk encryption](../../installing/install_config/installing-customizing.xml#installation-special-config-storage_installing-customizing)
@@ -1142,6 +1142,8 @@ $ pvs -S vgname=<vg_name>
 ```
 
 Replace `<vg_name>` with the name of the volume group.
+
+- [Grouping LVM objects with tags](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/configuring_and_managing_logical_volumes/grouping-lvm-objects-with-tags_configuring-and-managing-logical-volumes#doc-wrapper)
 
 ## Creating an LVMCluster CR by using the CLI
 
@@ -1430,8 +1432,6 @@ After installing Logical Volume Manager (LVM) Storage by using RHACM, create an 
     ```
 
     `<cluster_namespace>` is the namespace of the OpenShift Container Platform cluster on which LVM Storage is installed.
-
-- [Red Hat Advanced Cluster Management for Kubernetes: Installing while connected online](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html/install/installing#installing-while-connected-online)
 
 - [About the `LVMCluster` custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
 
@@ -1785,9 +1785,9 @@ When you delete an `LVMCluster` custom resource (CR), the Operator enforces dele
   $ oc get lvmcluster -A
   ```
 
-# Provisioning storage
+# Provisioning storage by using LVM Storage
 
-After you have created the LVM volume groups using the `LVMCluster` custom resource (CR), you can provision the storage by creating persistent volume claims (PVCs).
+After you have created the LVM volume groups by using the `LVMCluster` custom resource (CR), you can provision storage for your workloads by creating persistent volume claims (PVCs) that dynamically allocate local storage from the volume groups.
 
 The following are the minimum storage sizes that you can request for each file system type:
 
@@ -1829,15 +1829,17 @@ To create a PVC, you must create a `PersistentVolumeClaim` object.
       storageClassName: lvms-vg1
     ```
 
-    - Specify a name for the PVC.
+    - `metadata.name`: Specifies a name for the PVC.
 
-    - To create a file PVC, set this field to `Filesystem`. To create a block PVC, set this field to `Block`.
+    - `spec.volumeMode`: To create a file PVC, set this field to `Filesystem`. To create a block PVC, set this field to `Block`.
 
-    - Specify the storage size. If the value is less than the minimum storage size, the requested storage size is rounded to the minimum storage size. The total storage size you can provision is limited by the size of the Logical Volume Manager (LVM) thin pool and the over-provisioning factor.
+    - `spec.resources.requests.storage`: Specifies the storage size. If the value is less than the minimum storage size, the requested storage size is rounded to the minimum storage size. The total storage size you can provision is limited by the size of the Logical Volume Manager (LVM) thin pool and the over-provisioning factor.
 
-    - Optional: Specify the storage limit. Set this field to a value that is greater than or equal to the minimum storage size. Otherwise, PVC creation fails with an error.
+    - `spec.resources.limits.storage`: (optional) Specifies the storage limit. Set this field to a value that is greater than or equal to the minimum storage size. Otherwise, PVC creation fails with an error.
 
-    - The value of the `storageClassName` field must be in the format `lvms-<device_class_name>` where `<device_class_name>` is the value of the `deviceClasses.name` field in the `LVMCluster` CR. For example, if the `deviceClasses.name` field is set to `vg1`, you must set the `storageClassName` field to `lvms-vg1`.
+    - `spec.storageClassName`: The value of the `storageClassName` field must be in the format `lvms-<device_class_name>` where `<device_class_name>` is the value of the `deviceClasses.name` field in the `LVMCluster` CR.
+
+      For example, if the `deviceClasses.name` field is set to `vg1`, you must set the `storageClassName` field to `lvms-vg1`.
 
       <div class="note">
 
@@ -1876,7 +1878,7 @@ To create a PVC, you must create a `PersistentVolumeClaim` object.
 
 # StorageClass customization for LVMS device classes
 
-You can customize the StorageClass for each device class by using the optional storageClassOptions field in the `LVMCluster` custom resource (CR).
+You can customize the StorageClass for each device class by specifying reclaim policy, volume binding mode, parameters, and labels in the LVMCluster custom resource (CR).
 
 Before, Logical Volume Manager Storage (LVMS) automatically created a StorageClass for each device class without allowing modification. If you attempted to manually edit a generated StorageClass, the Operator overwrote your changes during the next reconciliation loop.
 
@@ -1898,9 +1900,9 @@ No user action is required after upgrading. The `storageClassOptions` field is o
 
 </div>
 
-## StorageClass options
+## StorageClass options for LVMS device classes
 
-You can configure custom StorageClass behaviors by defining the `storageClassOptions` field in your device class specification.
+You can configure custom StorageClass behaviors for each device class, including reclaim policy, volume binding mode, and custom parameters and labels, by defining the storageClassOptions field in the LVMCluster custom resource.
 
 If you set an empty configuration (storageClassOptions: {}) or omit the field entirely, the Operator uses the following default settings:
 
@@ -1991,7 +1993,7 @@ StorageClass Options Reference
 
 ## Updating LVM cluster labels
 
-To organize and categorize your storage resources, you can update, remove, or clear custom storage class labels by patching the `LVMCluster` custom resource. Labels are the only configuration field that you can modify after cluster creation.
+To organize and categorize your storage resources, you can update, remove, or clear custom StorageClass labels by patching the additionalLabels field in the LVMCluster custom resource.
 
 1.  Patch the `LVMCluster` resource to update `additionalLabels` by running the following command:
 
@@ -2191,7 +2193,9 @@ The `StorageClass` name always follows the convention `lvms-<device_class_name>`
 
 ## Immutable fields of the storage class options
 
-After you create the `LVMCluster`, you cannot change the value of the some of the `storageClassOptions` fields such as `reclaimPolicy`, `volumeBindingMode`, and `additionalParameters`. This mirrors the behavior of Kubernetes StorageClasses, which do not allow changes to these fields after creation.
+After you create the LVMCluster custom resource, you cannot change certain `storageClassOptions` fields, such as `reclaimPolicy`, `volumeBindingMode`, and `additionalParameters`. To change an immutable field, you must delete and recreate the LVMCluster with the new values.
+
+This mirrors the behavior of Kubernetes `StorageClasses`, which do not allow changes to these fields after creation.
 
 If you attempt to modify an immutable field, the API server rejects the request:
 
@@ -2236,7 +2240,9 @@ Setting `default: true` does not guarantee that the LVMS StorageClass becomes th
 
 # Ways to scale up the storage of clusters
 
-OpenShift Container Platform supports additional worker nodes for clusters on bare metal user-provisioned infrastructure. You can scale up the storage of clusters either by adding new worker nodes with available storage or by adding new devices to the existing worker nodes.
+Scale up worker node storage capacity when running out of space, adding new applications, or expanding cluster capacity by using the OpenShift CLI (`oc`) to add new devices or worker nodes.
+
+OpenShift Container Platform supports additional worker nodes for clusters on bare metal user-provisioned infrastructure.
 
 Logical Volume Manager (LVM) Storage detects and uses additional worker nodes when the nodes become active.
 
@@ -2262,7 +2268,7 @@ LVM Storage adds only the supported devices. For information about unsupported d
 
 ## Scaling up the storage of clusters by using the CLI
 
-You can scale up the storage capacity of the worker nodes on a cluster by using the OpenShift CLI (`oc`).
+Scale up worker node storage capacity when running out of space, adding new applications, or expanding cluster capacity by using the OpenShift CLI (`oc`) to add new devices or worker nodes.
 
 - You have additional unused devices on each cluster to be used by Logical Volume Manager (LVM) Storage.
 
@@ -2303,15 +2309,15 @@ You can scale up the storage capacity of the worker nodes on a cluster by using 
     # ...
     ```
 
-    - Contains the configuration to specify the paths to the devices that you want to add to the LVM volume group. You can specify the device paths in the `paths` field, the `optionalPaths` field, or both. If you do not specify the device paths in both `paths` and `optionalPaths`, Logical Volume Manager (LVM) Storage adds the supported unused devices to the LVM volume group. LVM Storage adds the devices to the LVM volume group only if the following conditions are met:
+    - `spec…​deviceSelector`: Contains the configuration to specify the paths to the devices that you want to add to the LVM volume group. You can specify the device paths in the `paths` field, the `optionalPaths` field, or both. If you do not specify the device paths in both `paths` and `optionalPaths`, Logical Volume Manager (LVM) Storage adds the supported unused devices to the LVM volume group. LVM Storage adds the devices to the LVM volume group only if the following conditions are met:
 
       - The device path exists.
 
       - The device is supported by LVM Storage. For information about unsupported devices, see "Devices not supported by LVM Storage".
 
-    - Specify the device paths. If the device path specified in this field does not exist, or the device is not supported by LVM Storage, the `LVMCluster` CR moves to the `Failed` state.
+    - `spec…​deviceSelector.paths`: Specifies the device paths. If the device path specified in this field does not exist, or the device is not supported by LVM Storage, the `LVMCluster` CR moves to the `Failed` state.
 
-    - Specify the optional device paths. If the device path specified in this field does not exist, or the device is not supported by LVM Storage, LVM Storage ignores the device without causing an error.
+    - `spec…​deviceSelector.optionalPaths`: Specifies the optional device paths. If the device path specified in this field does not exist, or the device is not supported by LVM Storage, LVM Storage ignores the device without causing an error.
 
       <div class="important">
 
@@ -2329,7 +2335,7 @@ You can scale up the storage capacity of the worker nodes on a cluster by using 
 
 ## Scaling up the storage of clusters by using the web console
 
-You can scale up the storage capacity of the worker nodes on a cluster by using the OpenShift Container Platform web console.
+Scale up worker node storage capacity when running out of space, adding new applications, or expanding cluster capacity by using the OpenShift Container Platform web console to add new devices or worker nodes.
 
 - You have additional unused devices on each cluster to be used by Logical Volume Manager (LVM) Storage.
 
@@ -2374,15 +2380,15 @@ You can scale up the storage capacity of the worker nodes on a cluster by using 
     # ...
     ```
 
-    - Contains the configuration to specify the paths to the devices that you want to add to the LVM volume group. You can specify the device paths in the `paths` field, the `optionalPaths` field, or both. If you do not specify the device paths in both `paths` and `optionalPaths`, Logical Volume Manager (LVM) Storage adds the supported unused devices to the LVM volume group. LVM Storage adds the devices to the LVM volume group only if the following conditions are met:
+    - `spec…​deviceSelector`: Contains the configuration to specify the paths to the devices that you want to add to the LVM volume group. You can specify the device paths in the `paths` field, the `optionalPaths` field, or both. If you do not specify the device paths in both `paths` and `optionalPaths`, Logical Volume Manager (LVM) Storage adds the supported unused devices to the LVM volume group. LVM Storage adds the devices to the LVM volume group only if the following conditions are met:
 
       - The device path exists.
 
       - The device is supported by LVM Storage. For information about unsupported devices, see "Devices not supported by LVM Storage".
 
-    - Specify the device paths. If the device path specified in this field does not exist, or the device is not supported by LVM Storage, the `LVMCluster` CR moves to the `Failed` state.
+    - `spec…​deviceSelector.paths`: Specifies the device paths. If the device path specified in this field does not exist, or the device is not supported by LVM Storage, the `LVMCluster` CR moves to the `Failed` state.
 
-    - Specify the optional device paths. If the device path specified in this field does not exist, or the device is not supported by LVM Storage, LVM Storage ignores the device without causing an error.
+    - `spec…​deviceSelector.optionalPaths`: Specifies the optional device paths. If the device path specified in this field does not exist, or the device is not supported by LVM Storage, LVM Storage ignores the device without causing an error.
 
       <div class="important">
 
@@ -2400,7 +2406,7 @@ You can scale up the storage capacity of the worker nodes on a cluster by using 
 
 ## Scaling up the storage of clusters by using RHACM
 
-You can scale up the storage capacity of worker nodes on the clusters by using RHACM.
+Scale up worker node storage capacity when running out of space, adding new applications, or expanding cluster capacity by using RHACM to add new devices or worker nodes.
 
 - You have access to the RHACM cluster using an account with `cluster-admin` privileges.
 
@@ -2416,7 +2422,7 @@ You can scale up the storage capacity of worker nodes on the clusters by using R
     $ oc edit -f <file_name> -n <namespace>
     ```
 
-    - Replace `<file_name>` with the name of the `LVMCluster` CR.
+    Replace `<file_name>` with the name of the `LVMCluster` CR.
 
 3.  In the `LVMCluster` CR, add the path to the new device in the `deviceSelector` field.
 
@@ -2452,15 +2458,15 @@ You can scale up the storage capacity of worker nodes on the clusters by using R
     # ...
     ```
 
-    - Contains the configuration to specify the paths to the devices that you want to add to the LVM volume group. You can specify the device paths in the `paths` field, the `optionalPaths` field, or both. If you do not specify the device paths in both `paths` and `optionalPaths`, Logical Volume Manager (LVM) Storage adds the supported unused devices to the LVM volume group. LVM Storage adds the devices to the LVM volume group only if the following conditions are met:
+    - `deviceSelector`: Contains the configuration to specify the paths to the devices that you want to add to the LVM volume group. You can specify the device paths in the `paths` field, the `optionalPaths` field, or both. If you do not specify the device paths in both `paths` and `optionalPaths`, Logical Volume Manager (LVM) Storage adds the supported unused devices to the LVM volume group. LVM Storage adds the devices to the LVM volume group only if the following conditions are met:
 
       - The device path exists.
 
       - The device is supported by LVM Storage. For information about unsupported devices, see "Devices not supported by LVM Storage".
 
-    - Specify the device paths. If the device path specified in this field does not exist, or the device is not supported by LVM Storage, the `LVMCluster` CR moves to the `Failed` state.
+    - `paths`: Specifies the device paths. If the device path specified in this field does not exist, or the device is not supported by LVM Storage, the `LVMCluster` CR moves to the `Failed` state.
 
-    - Specify the optional device paths. If the device path specified in this field does not exist, or the device is not supported by LVM Storage, LVM Storage ignores the device without causing an error.
+    - `optionalPaths`: Specifies the optional device paths. If the device path specified in this field does not exist, or the device is not supported by LVM Storage, LVM Storage ignores the device without causing an error.
 
       <div class="important">
 
@@ -2470,8 +2476,6 @@ You can scale up the storage capacity of worker nodes on the clusters by using R
 
 4.  Save the `LVMCluster` CR.
 
-- [Red Hat Advanced Cluster Management for Kubernetes: Installing while connected online](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#installing-while-connected-online)
-
 - [About the `LVMCluster` custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
 
 - [Devices not supported by LVM Storage](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#lvms-unsupported-devices_logical-volume-manager-storage)
@@ -2480,9 +2484,7 @@ You can scale up the storage capacity of worker nodes on the clusters by using R
 
 # Expanding a persistent volume claim
 
-After scaling up the storage of a cluster, you can expand the existing persistent volume claims (PVCs).
-
-To expand a PVC, you must update the `storage` field in the PVC.
+After scaling up cluster storage, you can expand existing persistent volume claims (PVCs) to increase their storage capacity by updating the `storage` field in the PVC.
 
 - Dynamic provisioning is used.
 
@@ -2517,7 +2519,7 @@ To expand a PVC, you must update the `storage` field in the PVC.
 
 # Deleting a persistent volume claim
 
-You can delete a persistent volume claim (PVC) by using the OpenShift CLI (`oc`).
+You can delete a persistent volume claim (PVC) when it is no longer needed to free up storage resources or when decommissioning an application by using the OpenShift CLI (`oc`).
 
 - You have access to OpenShift Container Platform as a user with `cluster-admin` permissions.
 
@@ -2946,6 +2948,54 @@ For information about enabling cluster monitoring in RHACM, see "Observability" 
 <!-- -->
 
     openshift.io/cluster-monitoring=true
+
+- [Observability](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/observability/index)
+
+- [Adding custom metrics](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html-single/observability/index#adding-custom-metrics)
+
+# Metrics and alerts overview
+
+You can monitor thin pool and volume group usage through LVM Storage metrics, and receive alerts at 75% (near full) and 85% (critical) capacity thresholds to take corrective action before storage operations fail.
+
+## Metrics
+
+You can monitor LVM Storage by viewing the metrics.
+
+The following table describes the `topolvm` metrics:
+
+| Alert                                        | Description                                                                  |
+|----------------------------------------------|------------------------------------------------------------------------------|
+| `topolvm_thinpool_data_percent`              | Indicates the percentage of data space used in the LVM thinpool.             |
+| `topolvm_thinpool_metadata_percent`          | Indicates the percentage of metadata space used in the LVM thinpool.         |
+| `topolvm_thinpool_size_bytes`                | Indicates the size of the LVM thin pool in bytes.                            |
+| `topolvm_volumegroup_available_bytes`        | Indicates the available space in the LVM volume group in bytes.              |
+| `topolvm_volumegroup_size_bytes`             | Indicates the size of the LVM volume group in bytes.                         |
+| `topolvm_thinpool_overprovisioned_available` | Indicates the available over-provisioned size of the LVM thin pool in bytes. |
+
+`topolvm` metrics
+
+<div class="note">
+
+Metrics are updated every 10 minutes or when there is a change, such as a new logical volume creation, in the thin pool.
+
+</div>
+
+## Alerts
+
+When the thin pool and volume group reach maximum storage capacity, further operations fail. This can lead to data loss.
+
+LVM Storage sends the following alerts when the usage of the thin pool and volume group exceeds a certain value:
+
+| Alert                                      | Description                                                                                                                                                                                          |
+|--------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `VolumeGroupUsageAtThresholdNearFull`      | This alert is triggered when both the volume group and thin pool usage exceeds 75% on nodes. Data deletion or volume group expansion is required.                                                    |
+| `VolumeGroupUsageAtThresholdCritical`      | This alert is triggered when both the volume group and thin pool usage exceeds 85% on nodes. In this case, the volume group is critically full. Data deletion or volume group expansion is required. |
+| `ThinPoolDataUsageAtThresholdNearFull`     | This alert is triggered when the thin pool data uusage in the volume group exceeds 75% on nodes. Data deletion or thin pool expansion is required.                                                   |
+| `ThinPoolDataUsageAtThresholdCritical`     | This alert is triggered when the thin pool data usage in the volume group exceeds 85% on nodes. Data deletion or thin pool expansion is required.                                                    |
+| `ThinPoolMetaDataUsageAtThresholdNearFull` | This alert is triggered when the thin pool metadata usage in the volume group exceeds 75% on nodes. Data deletion or thin pool expansion is required.                                                |
+| `ThinPoolMetaDataUsageAtThresholdCritical` | This alert is triggered when the thin pool metadata usage in the volume group exceeds 85% on nodes. Data deletion or thin pool expansion is required.                                                |
+
+LVM Storage alerts
 
 # Uninstalling LVM Storage by using the CLI
 
@@ -3491,3 +3541,7 @@ If the disk or node-related problems persist even after you have completed the t
         ```
 
         Replace `<name>` with the name of the `LVMCluster` CR.
+
+# Additional resources
+
+- [Red Hat Advanced Cluster Management for Kubernetes: Installing while connected online](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.17/html/install/installing#installing-while-connected-online)

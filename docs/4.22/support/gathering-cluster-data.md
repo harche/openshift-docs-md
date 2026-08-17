@@ -18,7 +18,7 @@ Alternatively, you can collect specific information by running the command with 
 
   ``` terminal
   $ oc adm must-gather \
-    --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.2
+    --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.6
   ```
 
 - To collect the audit logs, use the `-- /usr/bin/gather_audit_logs` argument, as described in a following section.
@@ -55,7 +55,7 @@ For example:
 
 ``` terminal
 $ oc adm must-gather --run-namespace <namespace> \
-  --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.2
+  --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.6
 ```
 
 ## Gathering data about your cluster for Red Hat Support
@@ -197,7 +197,7 @@ You can gather debugging information about specific features by using the `oc ad
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><p><code>registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.2</code></p></td>
+<td style="text-align: left;"><p><code>registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.6</code></p></td>
 <td style="text-align: left;"><p>Data collection for OpenShift Virtualization.</p></td>
 </tr>
 <tr class="even">
@@ -245,7 +245,7 @@ You can gather debugging information about specific features by using the `oc ad
 <p>For more information, see the "Gathering data" section for the specific Operator in <a href="https://docs.redhat.com/en/documentation/workload_availability_for_red_hat_openshift/latest/html/remediation_fencing_and_maintenance/index">Remediation, fencing, and maintenance</a> (Workload Availability for Red Hat OpenShift documentation).</p></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><p><code>registry.redhat.io/numaresources/numaresources-must-gather-rhel9:v&lt;installed-version-nro&gt;</code></p></td>
+<td style="text-align: left;"><p><code>registry.redhat.io/openshift4/numaresources-must-gather-rhel9:v&lt;installed-version-nro&gt;</code></p></td>
 <td style="text-align: left;"><p>Data collection for the NUMA Resources Operator (NRO).</p></td>
 </tr>
 <tr class="odd">
@@ -300,7 +300,7 @@ To determine the latest version for an OpenShift Container Platform component’
     ``` terminal
     $ oc adm must-gather \
       --image-stream=openshift/must-gather \
-      --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.2
+      --image=registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel9:v4.22.6
     ```
 
     You can use the `must-gather` tool with additional arguments to gather data that is specifically related to OpenShift Logging and the Red Hat OpenShift Logging Operator in your cluster. For OpenShift Logging, run the following command:

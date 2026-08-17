@@ -190,7 +190,7 @@ A catalog contains a database of pointers to Operator manifest content that can 
 
 - See [CLI tools](../../cli_reference/opm/cli-opm-install.xml#cli-opm-install) for steps on installing the `opm` CLI.
 
-# Highlights
+# Introduction to file-based catalogs
 
 File-based catalogs are the latest plain text (JSON or YAML) catalog format for Operator Lifecycle Manager (OLM). This format enables catalog editing, composability, and extensibility while remaining compatible with earlier SQLite-based catalogs.
 
@@ -260,7 +260,7 @@ Non-catalog files can be ignored using `.indexignore` files, which have the same
 **/objects/*.yaml
 ```
 
-Catalog maintainers have the flexibility to choose their desired layout, but it is recommended to store each package’s file-based catalog blobs in separate subdirectories. Each individual file can be either JSON or YAML; it is not necessary for every file in a catalog to use the same format.
+Catalog maintainers have the flexibility to choose their layout, but it is recommended to store each package’s file-based catalog blobs in separate subdirectories. Each individual file can be either JSON or YAML; it is not necessary for every file in a catalog to use the same format.
 
 <div class="formalpara-title">
 
@@ -475,7 +475,15 @@ entries:
     install my-operator.v1.72.0 for support.
 ```
 
-\+ \* Each deprecation schema must have a `package` value, and that package reference must be unique across the catalog. There must not be an associated `name` field. \* The `olm.package` schema must not include a `name` field, because it is determined by the `package` field defined earlier in the schema. \* All `message` fields, for any `reference` type, must be a non-zero length and represented as an opaque text blob. \* The `name` field for the `olm.channel` schema is required. \* The `name` field for the `olm.bundle` schema is required.
+- Each deprecation schema must have a `package` value, and that package reference must be unique across the catalog. There must not be an associated `name` field.
+
+- The `olm.package` schema must not include a `name` field, because it is determined by the `package` field defined earlier in the schema.
+
+- All `message` fields, for any `reference` type, must be a non-zero length and represented as an opaque text blob.
+
+- The `name` field for the `olm.channel` schema is required.
+
+- The `name` field for the `olm.bundle` schema is required.
 
 <div class="note">
 
@@ -590,7 +598,9 @@ The `olm.gvk.required` property defines the group/version/kind (GVK) of a Kubern
 
 ## Example catalog
 
-With file-based catalogs, catalog maintainers can focus on Operator curation and compatibility. Because Operator authors have already produced Operator-specific catalogs for their Operators, catalog maintainers can build their catalog by rendering each Operator catalog into a subdirectory of the root catalog directory.
+With file-based catalogs, catalog maintainers can focus on Operator curation and compatibility.
+
+Because Operator authors have already produced Operator-specific catalogs for their Operators, catalog maintainers can build their catalog by rendering each Operator catalog into a subdirectory of the catalog’s root directory.
 
 There are many possible ways to build a file-based catalog; the following steps outline a simple approach:
 
@@ -638,7 +648,7 @@ There are many possible ways to build a file-based catalog; the following steps 
 
 ## Guidelines
 
-Follow these guidelines when maintaining file-based Operator catalogs. Treat bundle images and metadata as immutable. Store catalog metadata in source control as the source of truth.
+Follow the guidelines to maintain file-based Operator catalogs. Treat bundle images and metadata as immutable. Store catalog metadata in source control as the source of truth.
 
 ### Immutable bundles
 
@@ -648,7 +658,7 @@ If a broken bundle has been pushed to a catalog, you must assume that at least o
 
 However, there are some cases where a change in the catalog metadata is preferred:
 
-- Channel promotion: If you already released a bundle and later decide that you would like to add it to another channel, you can add an entry for your bundle in another `olm.channel` blob.
+- Channel promotion: If you already released a bundle and later decide that you want to add it to another channel, you can add an entry for your bundle in another `olm.channel` blob.
 
 - New upgrade paths: If you release a new `1.2.z` bundle version, for example `1.2.4`, but `1.3.0` is already released, you can update the catalog metadata for `1.3.0` to skip `1.2.4`.
 
@@ -662,7 +672,7 @@ Catalog metadata should be stored in source control and treated as the source of
 
 <div class="note">
 
-For more information about creating file-based catalogs by using the `opm` CLI, see "Managing custom catalogs".
+For more information about creating file-based catalogs by using the `opm` CLI, see "Creating a file-based catalog image".
 
 </div>
 

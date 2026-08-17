@@ -1,10 +1,16 @@
-To prepare for installation of an OpenShift Container Platform cluster on Azure, complete the following steps:
+Before you install an OpenShift Container Platform cluster on Azure with installer-provisioned infrastructure, you must configure your account, obtain the installation program and `oc` CLI, and optionally prepare disk encryption sets.
 
-- You have [selected a cluster installation method](../../../installing/overview/installing-preparing.xml#installing-preparing).
+# Prerequisites for installing a cluster on Azure
 
-- You [configured an Azure account](../../../installing/installing_azure/installing-azure-account.xml#installing-azure-account) to host the cluster and determined the tested and validated region to deploy the cluster to.
+Before you install an OpenShift Container Platform cluster on Azure, ensure that you have selected a cluster installation method and configured an Azure account to host the cluster and determine the tested and validated region to deploy the cluster to.
 
-- If you use a firewall, you have [configured it to allow the sites](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
+If you use a firewall, you must configure it to allow the sites that your cluster requires access to.
+
+- [Select a cluster installation method](../../../installing/overview/installing-preparing.xml#installing-preparing)
+
+- [Configure an Azure account](../../../installing/installing_azure/installing-azure-account.xml#installing-azure-account)
+
+- [Configure your firewall](../../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
 
 # Internet access for OpenShift Container Platform
 
@@ -284,7 +290,7 @@ To provide metrics about cluster health and the success of updates, the Telemetr
 
 After you confirm that your [OpenShift Cluster Manager](https://console.redhat.com/openshift) inventory is correct, either maintained automatically by Telemetry or manually by using OpenShift Cluster Manager,use subscription watch to track your OpenShift Container Platform subscriptions at the account or multi-cluster level. For more information about subscription watch, see "Data Gathered and Used by Red Hat’s subscription services" in the *Additional resources* section.
 
-- For more information about the Telemetry service, see [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
+- [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
 # Preparing an Azure Disk Encryption Set for Day2 Operator
 
@@ -352,7 +358,7 @@ If you want to enable encryption for your host during cluster installation, spec
 
 # Preparing an Azure Disk Encryption Set
 
-The OpenShift Container Platform installer can use an existing Disk Encryption Set with a user-managed key. To enable this feature, you can create a Disk Encryption Set in Azure and provide the key to the installer.
+To use an existing Disk Encryption Set with a user-managed key in OpenShift Container Platform on Azure, you must create a Disk Encryption Set in Azure and provide the key to the installation program.
 
 1.  Set the environment variables for the Azure resource group by running the following command:
 
@@ -361,9 +367,13 @@ The OpenShift Container Platform installer can use an existing Disk Encryption S
         LOCATION="<location>"
     ```
 
-    - Specifies the name of the Azure resource group where the Disk Encryption Set and encryption key are to be created. To prevent losing access to your keys when you destroy the cluster, create the Disk Encryption Set in a separate resource group from the one where you install the cluster.
+    where:
 
-    - Specifies the Azure location where the resource group is to be created.
+    `<resource_group>`
+    Specifies the name of the Azure resource group where you create the Disk Encryption Set and encryption key. To prevent losing access to your keys when you delete the cluster, create the Disk Encryption Set in a separate resource group from the one where you install the cluster.
+
+    `<location>`
+    Specifies the Azure location where you create the resource group.
 
 2.  Set the environment variables for the Azure Key Vault and Disk Encryption Set by running the following command:
 
@@ -373,11 +383,16 @@ The OpenShift Container Platform installer can use an existing Disk Encryption S
         DISK_ENCRYPTION_SET_NAME="<disk_encryption_set_name>"
     ```
 
-    - Specifies the name of the Azure Key Vault to be created.
+    where:
 
-    - Specifies the name of the encryption key to be created.
+    `<keyvault_name>`
+    Specifies the name of the Azure Key Vault that you create.
 
-    - Specifies the name of the disk encryption set to be created.
+    `<keyvault_key_name>`
+    Specifies the name of the encryption key that you create.
+
+    `<disk_encryption_set_name>`
+    Specifies the name of the disk encryption set that you create.
 
 3.  Set the environment variable for the ID of your Azure service principal by running the following command:
 
@@ -385,7 +400,8 @@ The OpenShift Container Platform installer can use an existing Disk Encryption S
     $ export CLUSTER_SP_ID="<service_principal_id>"
     ```
 
-    - Specifies the ID of the service principal to be used for installation.
+    `<service_principal_id>`
+    Specifies the ID of the service principal that you use for installation.
 
 4.  Enable host-level encryption in Azure by running the following command:
 
@@ -465,14 +481,13 @@ The OpenShift Container Platform installer can use an existing Disk Encryption S
         --scope $DES_RESOURCE_ID -o jsonc
     ```
 
-    - Specifies an Azure role with read permissions to the disk encryption set. You can use the `Owner` role or a custom role with the necessary permissions.
+    `<reader_role>`
+    Specifies an Azure role with read permissions to the disk encryption set. You can use the `Owner` role or a custom role with the necessary permissions.
 
-- Install an OpenShift Container Platform cluster:
+- [Install a cluster with customizations on installer-provisioned infrastructure](../../../installing/installing_azure/ipi/installing-azure-customizations.xml#installing-azure-customizations)
 
-  - [Install a cluster with customizations on installer-provisioned infrastructure](../../../installing/installing_azure/ipi/installing-azure-customizations.xml#installing-azure-customizations)
+- [Install a cluster into an existing VNet on installer-provisioned infrastructure](../../../installing/installing_azure/ipi/installing-azure-vnet.xml#installing-azure-vnet)
 
-  - [Install a cluster into an existing VNet on installer-provisioned infrastructure](../../../installing/installing_azure/ipi/installing-azure-vnet.xml#installing-azure-vnet)
+- [Install a private cluster on installer-provisioned infrastructure](../../../installing/installing_azure/ipi/installing-azure-private.xml#installing-azure-private)
 
-  - [Install a private cluster on installer-provisioned infrastructure](../../../installing/installing_azure/ipi/installing-azure-private.xml#installing-azure-private)
-
-  - [Install a cluster into an government region on installer-provisioned infrastructure](../../../installing/installing_azure/ipi/installing-azure-government-region.xml#installing-azure-government-region)
+- [Install a cluster into an government region on installer-provisioned infrastructure](../../../installing/installing_azure/ipi/installing-azure-government-region.xml#installing-azure-government-region)

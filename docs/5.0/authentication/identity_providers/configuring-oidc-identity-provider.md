@@ -77,7 +77,7 @@ Red Hat tests and supports specific OpenID Connect (OIDC) providers with OpenShi
 
 # Creating the secret
 
-Create a Secret in the `openshift-config` namespace to store identity provider client secrets, certificates, or keys, so the OAuth custom resource (CR) can reference them.
+Create a `Secret` object in the `openshift-config` namespace to store the client secret and related credentials for the identity provider configuration.
 
 1.  Create a `Secret` object containing the client secret by running the following command:
 
@@ -268,7 +268,7 @@ Apply the identity provider custom resource (CR) to your cluster so users can au
 
     You can also access this page from the web console by navigating to **(?) Help** → **Command Line Tools** → **Copy Login Command**.
 
-3.  Log in to the cluster by running the following command and pass in the token to authenticate:
+3.  Log in to the cluster, passing in the token to authenticate, by running the following command:
 
     ``` terminal
     $ oc login --token=<token>
@@ -276,13 +276,13 @@ Apply the identity provider custom resource (CR) to your cluster so users can au
 
     <div class="note">
 
-    If your OpenID Connect identity provider supports the resource owner password credentials (ROPC) grant flow, you can log in with a username and password. You might need to take steps to enable the ROPC grant flow for your identity provider.
-
-    After the OIDC identity provider is configured in OpenShift Container Platform, you can log in by using the following command, which prompts for your username and password:
+    After the OIDC identity provider is configured in OpenShift Container Platform, you can also log in by running the following command, which prompts for your username and password:
 
     ``` terminal
     $ oc login -u <identity_provider_username> --server=<api_server_url_and_port>
     ```
+
+    If your OpenID Connect identity provider supports the resource owner password credentials (ROPC) grant flow, you might need to take steps to enable the ROPC grant flow for your identity provider.
 
     </div>
 

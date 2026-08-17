@@ -105,11 +105,11 @@ Due to their high consequences, etcd restorations are not intended to be used as
 
 </div>
 
-There are several factors that affect the viability of an etcd restoration. For more information, see "Backing up etcd data" and "Restoring to a previous cluster state".
+There are several factors that affect the viability of an etcd restoration. For more information, see "Backing up etcd data" and "Restoring to an earlier cluster state".
 
 - [Backing up etcd](../../backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.xml#backup-etcd)
 
-- [Restoring to a previous cluster state](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
+- [Restoring to an earlier cluster state](../../backup_and_restore/control_plane_backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.xml#dr-restoring-cluster-state)
 
 # Using the oc adm upgrade recommend command to identify update risks
 

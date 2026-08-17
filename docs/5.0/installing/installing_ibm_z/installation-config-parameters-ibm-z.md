@@ -1,4 +1,4 @@
-Before you deploy an OpenShift Container Platform cluster, you provide a customized `install-config.yaml` installation configuration file that describes the details for your environment.
+Before you deploy an OpenShift Container Platform cluster on IBM Z® or IBM® LinuxONE, you provide a customized `install-config.yaml` file. This reference describes the required and optional parameters for that file.
 
 <div class="note">
 

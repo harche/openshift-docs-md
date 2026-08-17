@@ -1,4 +1,52 @@
-Update VirtIO drivers in guest operating systems. Using the latest VirtIO drivers increases performance and stability.
+Update VirtIO drivers and the QEMU guest agent in guest operating systems. Using the latest VirtIO drivers increases performance and stability.
+
+# Downloading the VirtIO drivers ISO from the web console
+
+You can download the `virtio-win` ISO file from the OpenShift Container Platform web console. The ISO file includes the VirtIO drivers and the QEMU guest agent installer for Microsoft Windows virtual machines (VMs).
+
+<div class="note">
+
+If your cluster has Windows VMs, a notification on the **Virtualization** → **VirtualMachines** page provides a link to the **Downloads** tab where you can download the ISO file.
+
+</div>
+
+1.  In the OpenShift Container Platform web console, navigate to **Virtualization** → **Settings**.
+
+2.  Click the **Downloads** tab.
+
+3.  In the **Windows drivers** section, click **Download ISO**.
+
+    The `virtio-win` ISO file downloads to your local machine.
+
+# Update VirtIO drivers and the guest agent on a Windows VM
+
+You can update the VirtIO drivers and the QEMU guest agent on a Windows virtual machine (VM) by using the `virtio-win` guest tools installer. This method updates both the drivers and the guest agent in one step.
+
+- The `container-native-virtualization/virtio-win` container disk must be attached to the VM as a SATA CD drive. You can mount the disk from the web console by selecting the **Mount Windows drivers disk** checkbox on the **Configuration** → **Storage** tab.
+
+1.  Start the VM and connect to a graphical console.
+
+2.  Log in to the Windows guest operating system.
+
+3.  Open **File Explorer** and navigate to the `virtio-win` CD drive.
+
+4.  Double-click the `virtio-win-gt-x64` installer to launch the guest tools setup wizard.
+
+5.  Follow the prompts in the setup wizard. The default options update the VirtIO drivers and the QEMU guest agent.
+
+6.  After the update is complete, click **Finish**.
+
+7.  Reboot the VM.
+
+<!-- -->
+
+1.  On the Windows VM, navigate to **Device Manager**.
+
+2.  Select a device.
+
+3.  Select the **Driver** tab.
+
+4.  Click **Driver Details** and confirm that the `virtio` driver details displays the correct version.
 
 # Enable automatic updates for Red Hat virtio-win drivers
 
@@ -51,6 +99,12 @@ If you restrict the WUS to only allow drivers explicitly signed and published by
 3.  Select the **Driver** tab.
 
 4.  Click **Driver Details** and confirm that the `virtio` driver details displays the correct version.
+
+<div class="tip">
+
+To view the individual driver versions included in the `virtio-win` container disk, open the `release-drivers-versions.txt` file at the root of the `virtio-win` CD drive.
+
+</div>
 
 # Additional resources
 

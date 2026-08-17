@@ -516,7 +516,7 @@ In most cases, the web console method of this procedure is preferred because it 
 
 <div class="formalpara-title">
 
-**Results**
+**Verification**
 
 </div>
 

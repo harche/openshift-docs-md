@@ -1,4 +1,6 @@
-After installing OpenShift Container Platform, you can configure additional devices for your cluster in an IBM Z® or IBM® LinuxONE environment, which is installed with z/VM. The following devices can be configured:
+After installing OpenShift Container Platform, you can configure additional devices for your cluster in an IBM Z® or IBM® LinuxONE environment, which is installed with z/VM.
+
+The following devices can be configured:
 
 - Fibre Channel Protocol (FCP) host
 
@@ -8,7 +10,7 @@ After installing OpenShift Container Platform, you can configure additional devi
 
 - qeth
 
-You can configure devices by adding udev rules using the Machine Config Operator (MCO) or you can configure devices manually.
+You can configure devices by adding udev rules by using the Machine Config Operator (MCO) or you can configure devices manually.
 
 <div class="note">
 
@@ -283,7 +285,7 @@ You can use the Machine Config Operator (MCO) to configure additional devices in
 
 # Configuring additional devices manually
 
-Tasks in this section describe how to manually configure additional devices in an IBM Z® or IBM® LinuxONE environment. This configuration method is persistent over node restarts but not OpenShift Container Platform native and you need to redo the steps if you replace the node.
+After installation, you can manually configure additional devices on IBM Z® or IBM® LinuxONE nodes. This configuration persists across node restarts, but you must redo the steps if you replace the node.
 
 - You are logged in to the cluster as a user with administrative privileges.
 
@@ -309,17 +311,17 @@ Tasks in this section describe how to manually configure additional devices in a
     $ sudo chzdev -e <device>
     ```
 
-- [chzdev - Configure IBM Z® devices](https://www.ibm.com/docs/en/linux-on-systems?topic=commands-chzdev) (IBM® Documentation)
+- [chzdev - Configure IBM Z® devices (IBM® Documentation)](https://www.ibm.com/docs/en/linux-on-systems?topic=commands-chzdev)
 
-- [Persistent device configuration](https://www.ibm.com/docs/en/linux-on-systems?topic=linuxonibm/com.ibm.linux.z.ludd/ludd_c_perscfg.html) (IBM® Documentation)
+- [Persistent device configuration (IBM® Documentation)](https://www.ibm.com/docs/en/linux-on-systems?topic=linuxonibm/com.ibm.linux.z.ludd/ludd_c_perscfg.html)
 
-# RoCE network Cards
+# RoCE network cards
 
-RoCE (RDMA over Converged Ethernet) network cards do not need to be enabled and their interfaces can be configured with the Kubernetes NMState Operator whenever they are available in the node. For example, RoCE network cards are available if they are attached in a z/VM environment or passed through in a RHEL KVM environment.
+You can configure RoCE (RDMA over Converged Ethernet) interfaces with the Kubernetes NMState Operator when RoCE network cards are available on a node. For example, the cards are available if they are attached in a z/VM environment or passed through in a RHEL KVM environment.
 
 # Enabling multipathing for FCP LUNs
 
-Tasks in this section describe how to manually configure additional devices in an IBM Z® or IBM® LinuxONE environment. This configuration method is persistent over node restarts but not OpenShift Container Platform native and you need to redo the steps if you replace the node.
+After installation, you can enable multipathing for Fibre Channel Protocol (FCP) logical unit numbers (LUNs) on IBM Z® or IBM® LinuxONE nodes. This configuration persists across node restarts, but you must redo the steps if you replace the node.
 
 <div class="important">
 
@@ -367,11 +369,7 @@ On IBM Z® and IBM® LinuxONE, you can enable multipathing only if you configure
   $ sudo multipath -ll
   ```
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
+  For example:
 
   ``` terminal
   mpatha (20017380030290197) dm-1 IBM,2810XIV

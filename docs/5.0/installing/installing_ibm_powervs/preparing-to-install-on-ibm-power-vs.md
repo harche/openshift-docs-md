@@ -1,18 +1,22 @@
-You can install OpenShift Container Platform on IBM Power® Virtual Server using installer-provisioned infrastructure. This process involves using an installation program to provision the underlying infrastructure for your cluster. Installing OpenShift Container Platform on IBM Power® Virtual Server using user-provisioned infrastructure is not supported at this time.
-
-See [Installation process](../../architecture/architecture-installation.xml#installation-process_architecture-installation) for more information about installer-provisioned installation processes.
+Before you install OpenShift Container Platform on IBM Power® Virtual Server, review the available installer-provisioned infrastructure methods and configure the Cloud Credential Operator utility.
 
 # Installing a cluster on installer-provisioned infrastructure
 
-You can install a cluster on IBM Power® Virtual Server infrastructure that is provisioned by the OpenShift Container Platform installation program by using one of the following methods:
+Review the available installer-provisioned methods for installing a OpenShift Container Platform cluster on IBM Power® Virtual Server, including customized, VPC-based, private, and disconnected network options.
 
-- **[Installing a customized cluster on IBM Power® Virtual Server](../../installing/installing_ibm_powervs/installing-ibm-power-vs-customizations.xml#installing-ibm-power-vs-customizations)**: You can install a customized cluster on IBM Power® Virtual Server infrastructure that the installation program provisions. The installation program allows for some customization to be applied at the installation stage. Many other customization options are available [post-installation](../../post_installation_configuration/cluster-tasks.xml#post-install-cluster-tasks).
+- **Installing a customized cluster on IBM Power® Virtual Server**: You can install a customized cluster on IBM Power® Virtual Server infrastructure that the installation program provisions. The installation program supports some customization at the installation stage. Many other customization options are available postinstallation.
 
-- **[Installing a cluster on IBM Power® Virtual Server into an existing VPC](../../installing/installing_ibm_powervs/installing-ibm-powervs-vpc.xml#installing-ibm-powervs-vpc)**: You can install OpenShift Container Platform on IBM Power® Virtual Server into an existing Virtual Private Cloud (VPC). You can use this installation method if you have constraints set by the guidelines of your company, such as limits when creating new accounts or infrastructure.
+- **Installing a cluster on IBM Power® Virtual Server into an existing VPC**: You can install OpenShift Container Platform on IBM Power® Virtual Server into an existing Virtual Private Cloud (VPC). You can use this installation method if you have constraints set by the guidelines of your company, such as limits when creating new accounts or infrastructure.
 
-- **[Installing a private cluster on IBM Power® Virtual Server](../../installing/installing_ibm_powervs/installing-ibm-power-vs-private-cluster.xml#installing-ibm-power-vs-private-cluster)**: You can install a private cluster on IBM Power® Virtual Server. You can use this method to deploy OpenShift Container Platform on an internal network that is not visible to the internet.
+- **Installing a private cluster on IBM Power® Virtual Server**: You can install a private cluster on IBM Power® Virtual Server. You can use this method to deploy OpenShift Container Platform on an internal network that is not visible to the internet.
 
-- **[Installing a cluster on IBM Power® Virtual Server in a restricted network](../../installing/installing_ibm_powervs/installing-restricted-networks-ibm-power-vs.xml#installing-restricted-networks-ibm-power-vs)**: You can install OpenShift Container Platform on IBM Power® Virtual Server on installer-provisioned infrastructure by using an internal mirror of the installation release content. You can use this method to install a cluster that does not require an active internet connection to obtain the software components.
+- **Installing a cluster on IBM Power® Virtual Server in a restricted network**: You can install OpenShift Container Platform on installer-provisioned IBM Power® Virtual Server infrastructure by using an internal mirror of the installation release content. You can use this method to install a cluster that does not require an active internet connection to obtain the software components.
+
+<div class="note">
+
+Installing OpenShift Container Platform on IBM Power® Virtual Server using user-provisioned infrastructure is the same as for IBM Power®.
+
+</div>
 
 # Configuring the Cloud Credential Operator utility
 
@@ -106,10 +110,20 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
   Use "ccoctl [command] --help" for more information about a command.
   ```
 
-<!-- -->
+# Additional resources
+
+- [Installing a cluster on IBM Power®](../../installing/installing_ibm_power/installing-ibm-power.xml#installing-ibm-power)
 
 - [Rotating API keys](../../post_installation_configuration/changing-cloud-credentials-configuration.xml#refreshing-service-ids-ibm-cloud_changing-cloud-credentials-configuration)
 
-# Next steps
+- [Installation process](../../architecture/architecture-installation.xml#installation-process_architecture-installation)
+
+- [Installing a customized cluster on IBM Power® Virtual Server](../../installing/installing_ibm_powervs/installing-ibm-power-vs-customizations.xml#installing-ibm-power-vs-customizations)
+
+- [Installing a cluster on IBM Power® Virtual Server into an existing VPC](../../installing/installing_ibm_powervs/installing-ibm-powervs-vpc.xml#installing-ibm-powervs-vpc)
+
+- [Installing a private cluster on IBM Power® Virtual Server](../../installing/installing_ibm_powervs/installing-ibm-power-vs-private-cluster.xml#installing-ibm-power-vs-private-cluster)
+
+- [Installing a cluster on IBM Power® Virtual Server in a restricted network](../../installing/installing_ibm_powervs/installing-restricted-networks-ibm-power-vs.xml#installing-restricted-networks-ibm-power-vs)
 
 - [Configuring an IBM Cloud® account](../../installing/installing_ibm_powervs/installing-ibm-cloud-account-power-vs.xml#installing-ibm-cloud-account-power-vs)

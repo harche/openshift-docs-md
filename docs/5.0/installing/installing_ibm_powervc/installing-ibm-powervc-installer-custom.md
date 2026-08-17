@@ -1,14 +1,22 @@
-In OpenShift Container Platform version 4.17, you can install a customized cluster on IBM PowerVC. To customize the installation, modify parameters in the `install-config.yaml` before you install the cluster.
+To install a customized OpenShift Container Platform cluster on IBM PowerVC, change the parameters in the `install-config.yaml` file before you run the installation program.
 
-# Prerequisites
+# Prerequisites for installing a cluster on IBM® Power® Virtualization Center
 
-- You reviewed details about the [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation) processes.
+Before you install a OpenShift Container Platform cluster on IBM PowerVC, verify that you have a load balancer and a DHCP server available on the target network.
 
-- You read the documentation on [selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing).
+- You reviewed details about the OpenShift Container Platform installation and update processes.
+
+- You read the documentation on selecting a cluster installation method and preparing it for users.
 
 - You have a load balancing service you can use with the IBM PowerVC network you intend to use.
 
 - You have a DHCP server backing the IBM PowerVC network you intend to use.
+
+<!-- -->
+
+- [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation)
+
+- [Selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing)
 
 # Infrastructure requirements for installing OpenShift Container Platform on IBM PowerVC
 

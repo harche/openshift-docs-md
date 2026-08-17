@@ -38,11 +38,11 @@ When you interact with an existing quick start tutorial, this is the expected wo
 
 2.  Click a quick start card.
 
-3.  In the panel that appears, click **Start**.
+3.  In the panel that is displayed, click **Start**.
 
 4.  Complete the on-screen instructions, then click **Next**.
 
-5.  In the **Check your work** module that appears, answer the question to confirm that you successfully completed the task.
+5.  In the **Check your work** module that is displayed, answer the question to confirm that you successfully completed the task.
 
     1.  If you select **Yes**, click **Next** to continue to the next task.
 
@@ -462,7 +462,7 @@ If the `execute` syntax is used, the **Copy to clipboard** action is present whe
 
 # Quick start content guidelines
 
-Follow these guidelines when writing card copy, introductions, task steps, verification steps, and UI element formatting for a quick start.
+Follow these content guidelines when writing quick starts for the OpenShift Container Platform web console.
 
 ## Card copy
 
@@ -506,13 +506,13 @@ After clicking a quick start card, a side panel slides in that introduces the qu
 
 ## Task steps
 
-After the user clicks **Start**, a series of steps appears that they must perform to complete the quick start.
+After the user clicks **Start**, a series of steps is displayed that they must perform to complete the quick start.
 
 Follow these general guidelines when writing task steps:
 
 - Use "Click" for buttons and labels. Use "Select" for checkboxes, radio buttons, and drop-down menus.
 
-- Use "Click" instead of "Click on"
+- Use "Click" by itself. Do not add "on" after it.
 
   - **Correct example**:
 
@@ -553,7 +553,7 @@ Follow these general guidelines when writing task steps:
 
         To look at data in a specific time frame, you can change the time range of the dashboard.
 
-- Avoid directional language, like "In the upper-right corner, click the icon". Directional language becomes outdated every time UI layouts change. Also, a direction for desktop users might not be accurate for users with a different screen size. Instead, identify something using its name.
+- Avoid directional language, such as "In the upper-right corner, click the icon". Directional language becomes outdated every time UI layouts change. Also, a direction for desktop users might not be accurate for users with a different screen size. Instead, identify something using its name.
 
   - **Correct example**:
 
@@ -563,7 +563,7 @@ Follow these general guidelines when writing task steps:
 
         In the left-hand menu, click Settings.
 
-- Do not identify items by color alone, like "Click the gray circle". Color identifiers are not useful for sight-limited users, especially colorblind users. Instead, identify an item using its name or copy, like button copy.
+- Do not identify items by color alone, such as "Click the gray circle". Color identifiers are not useful for sight-limited users, especially colorblind users. Instead, identify an item using its name or copy, such as button copy.
 
   - **Correct example**:
 
@@ -585,19 +585,19 @@ Follow these general guidelines when writing task steps:
 
 ## Check your work module
 
-- After a user completes a step, a **Check your work** module appears. This module prompts the user to answer a yes or no question about the step results, which gives them the opportunity to review their work. For this module, you only need to write a single yes or no question.
+- After a user completes a step, a **Check your work** module displays. This module prompts the user to answer a yes or no question about the step results, which gives them the opportunity to review their work. For this module, you only need to write a single yes or no question.
 
-  - If the user answers **Yes**, a checkmark will appear.
+  - If the user answers **Yes**, a checkmark displays.
 
-  - If the user answers **No**, an error message appears with a link to relevant documentation, if necessary. The user then has the opportunity to go back and try again.
+  - If the user answers **No**, an error message displays with a link to relevant documentation, if necessary. The user then has the opportunity to go back and try again.
 
 ## Formatting UI elements
 
-Format UI elements using these guidelines:
+Format UI elements by using these guidelines:
 
-- Copy for buttons, dropdowns, tabs, fields, and other UI controls: Write the copy as it appears in the UI and bold it.
+- Copy for buttons, dropdowns, tabs, fields, and other UI controls: Write the copy as it is displayed in the UI and bold it.
 
-- All other UI elements—including page, window, and panel names: Write the copy as it appears in the UI and bold it.
+- All other UI elements (including page, window, and panel names): Write the copy as it is displayed in the UI and bold it.
 
 - Code or user-entered text: Use monospaced font.
 

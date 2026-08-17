@@ -1,4 +1,6 @@
-You can use the Run Once Duration Override Operator to specify a maximum time limit that run-once pods can be active for. By enabling the run-once duration override on a namespace, all future run-once pods created or updated in that namespace have their `activeDeadlineSeconds` field set to the value specified by the Run Once Duration Override Operator.
+You can use the Run Once Duration Override Operator to set a maximum active deadline for run-once pods in your cluster.
+
+By enabling the run-once duration override on a namespace, all future run-once pods created or updated in that namespace have their `activeDeadlineSeconds` field set to the value specified by the Run Once Duration Override Operator.
 
 <div class="note">
 

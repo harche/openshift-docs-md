@@ -1,4 +1,4 @@
-Before you deploy an OpenShift Container Platform cluster, you provide a customized `install-config.yaml` installation configuration file that describes the details for your environment.
+Before you deploy an OpenShift Container Platform cluster, you create a customized `install-config.yaml` installation configuration file that describes the details for your environment.
 
 # Available installation configuration parameters for IBM Power
 

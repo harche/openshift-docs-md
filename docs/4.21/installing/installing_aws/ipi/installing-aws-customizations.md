@@ -1,4 +1,8 @@
-In OpenShift Container Platform version 4.17, you can install a cluster on Amazon Web Services (AWS) by using installer-provisioned infrastructure with customizations, including network configuration options. In each, you modify parameters in the `install-config.yaml` file before you install the cluster. By customizing your network configuration, your cluster can coexist with existing IP address allocations in your environment and integrate with existing MTU and VXLAN configurations. You must set most of the network configuration parameters during installation, and you can modify only `kubeProxy` configuration parameters in a running cluster.
+In OpenShift Container Platform version 4.17, you can install a cluster on Amazon Web Services (AWS) by using installer-provisioned infrastructure with customizations, including network configuration options.
+
+In each, you modify parameters in the `install-config.yaml` file before you install the cluster. By customizing your network configuration, your cluster can coexist with existing IP address allocations in your environment and integrate with existing MTU and VXLAN configurations.
+
+You must set most of the network configuration parameters during installation, and you can modify only `kubeProxy` configuration parameters in a running cluster.
 
 <div class="note">
 
@@ -7,6 +11,10 @@ The scope of the OpenShift Container Platform installation configurations is int
 </div>
 
 # Prerequisites
+
+Before you install a cluster on Amazon Web Services (AWS) by using installer-provisioned infrastructure with customizations, you must meet several prerequisites.
+
+The following prerequisites must be met:
 
 - You reviewed details about the [OpenShift Container Platform installation and update](../../../architecture/architecture-installation.xml#architecture-installation) processes.
 
@@ -64,9 +72,13 @@ You should only modify the RHCOS image for compute machines to use an AWS Market
     pullSecret: '{"auths": ...}'
     ```
 
-    - The AMI ID from your AWS Marketplace subscription.
+    where:
 
-    - Your AMI ID is associated with a specific AWS Region. When creating the installation configuration file, ensure that you select the same AWS Region that you specified when configuring your subscription.
+    `compute.platform.aws.amiID`
+    Specifies the AMI ID from your AWS Marketplace subscription.
+
+    `platform.aws.region`
+    Specifies the `platform.aws.region` parameter. Your AMI ID is associated with a specific AWS Region. When creating the installation configuration file, ensure that you select the same AWS Region that you specified when configuring your subscription.
 
 # Network configuration phases
 
@@ -208,7 +220,9 @@ If an instance type for your platform meets the minimum requirements for cluster
 
 ## Tested instance types for AWS
 
-The following Amazon Web Services (AWS) instance types have been tested with OpenShift Container Platform.
+There are several Amazon Web Services (AWS) instance types tested with OpenShift Container Platform.
+
+The following AWS instance types have been tested with OpenShift Container Platform.
 
 <div class="note">
 
@@ -220,7 +234,9 @@ Use the machine types included in the following charts for your AWS instances. I
 
 ## Tested instance types for AWS on 64-bit ARM infrastructures
 
-The following Amazon Web Services (AWS) 64-bit ARM instance types have been tested with OpenShift Container Platform.
+There are several Amazon Web Services (AWS) 64-bit ARM instance types tested with OpenShift Container Platform.
+
+The following AWS 64-bit ARM instance types have been tested with OpenShift Container Platform.
 
 <div class="note">
 
@@ -410,11 +426,13 @@ Production environments can deny direct access to the internet and instead have 
 
 # Alternatives to storing administrator-level secrets in the kube-system project
 
-By default, administrator secrets are stored in the `kube-system` project. If you configured the `credentialsMode` parameter in the `install-config.yaml` file to `Manual`, you must use one of the following alternatives:
+By default, administrator secrets are stored in the `kube-system` project.
 
-- To manage long-term cloud credentials manually, follow the procedure in [Manually creating long-term credentials](../../../installing/installing_aws/ipi/installing-aws-customizations.xml#manually-create-iam_installing-aws-customizations).
+If you configured the `credentialsMode` parameter in the `install-config.yaml` file to `Manual`, you must use one of the following alternatives:
 
-- To implement short-term credentials that are managed outside the cluster for individual components, follow the procedures in [Configuring an AWS cluster to use short-term credentials](../../../installing/installing_aws/ipi/installing-aws-customizations.xml#installing-aws-with-short-term-creds_installing-aws-customizations).
+- To manage long-term cloud credentials manually, follow the procedure in "Manually creating long-term credentials".
+
+- To implement short-term credentials that are managed outside the cluster for individual components, follow the procedures in "Configuring an AWS cluster to use short-term credentials".
 
 ## Manually creating long-term credentials
 
@@ -751,15 +769,7 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
   Use "ccoctl [command] --help" for more information about a command.
   ```
 
-### Creating AWS resources with the Cloud Credential Operator utility
-
-You have the following options when creating AWS resources:
-
-- You can use the `ccoctl aws create-all` command to create the AWS resources automatically. This is the quickest way to create the resources. See [Creating AWS resources with a single command](../../../installing/installing_aws/ipi/installing-aws-customizations.xml#cco-ccoctl-creating-at-once_installing-aws-customizations).
-
-- If you need to review the JSON files that the `ccoctl` tool creates before modifying AWS resources, or if the process the `ccoctl` tool uses to create AWS resources automatically does not meet the requirements of your organization, you can create the AWS resources individually. See [Creating AWS resources individually](../../../installing/installing_aws/ipi/installing-aws-customizations.xml#cco-ccoctl-creating-individually_installing-aws-customizations).
-
-#### Creating AWS resources with a single command
+### Creating AWS resources with a single command
 
 If the process the `ccoctl` tool uses to create AWS resources automatically meets the requirements of your organization, you can use the `ccoctl aws create-all` command to automate the creation of AWS resources.
 
@@ -878,9 +888,11 @@ You must have:
 
   You can verify that the IAM roles are created by querying AWS. For more information, refer to AWS documentation on listing IAM roles.
 
-#### Creating AWS resources individually
+### Creating AWS resources individually
 
-You can use the `ccoctl` tool to create AWS resources individually. This option might be useful for an organization that shares the responsibility for creating these resources among different users or departments.
+If you need to review the JSON files that the `ccoctl` tool creates before modifying AWS resources, or if the process the `ccoctl` tool uses to create AWS resources automatically does not meet the requirements of your organization, you can create the AWS resources individually.
+
+This option might be useful for an organization that shares the responsibility for creating these resources among different users or departments.
 
 Otherwise, you can use the `ccoctl aws create-all` command to create the AWS resources automatically. For more information, see "Creating AWS resources with a single command".
 
@@ -926,29 +938,34 @@ Some `ccoctl` commands make AWS API calls to create or modify AWS resources. You
       --public-key-file=<path_to_ccoctl_output_dir>/serviceaccount-signer.public
     ```
 
-    - `<name>` is the name used to tag any cloud resources that are created for tracking.
+    where:
 
-    - `<aws-region>` is the AWS region in which cloud resources will be created.
+    `<name>`
+    Specifies the name used to tag any cloud resources that are created for tracking.
 
-    - `<path_to_ccoctl_output_dir>` is the path to the public key file that the `ccoctl aws create-key-pair` command generated.
+    `<aws_region>`
+    Specifies the AWS region in which cloud resources will be created.
 
-      <div class="formalpara-title">
+    `<path_to_ccoctl_output_dir>`
+    Specifies the path to the public key file that the `ccoctl aws create-key-pair` command generated.
 
-      **Example output**
+    <div class="formalpara-title">
 
-      </div>
+    **Example output**
 
-      ``` text
-      2021/04/13 11:16:09 Bucket <name>-oidc created
-      2021/04/13 11:16:10 OpenID Connect discovery document in the S3 bucket <name>-oidc at .well-known/openid-configuration updated
-      2021/04/13 11:16:10 Reading public key
-      2021/04/13 11:16:10 JSON web key set (JWKS) in the S3 bucket <name>-oidc at keys.json updated
-      2021/04/13 11:16:18 Identity Provider created with ARN: arn:aws:iam::<aws_account_id>:oidc-provider/<name>-oidc.s3.<aws_region>.amazonaws.com
-      ```
+    </div>
 
-      where `openid-configuration` is a discovery document and `keys.json` is a JSON web key set file.
+    ``` text
+    2021/04/13 11:16:09 Bucket <name>-oidc created
+    2021/04/13 11:16:10 OpenID Connect discovery document in the S3 bucket <name>-oidc at .well-known/openid-configuration updated
+    2021/04/13 11:16:10 Reading public key
+    2021/04/13 11:16:10 JSON web key set (JWKS) in the S3 bucket <name>-oidc at keys.json updated
+    2021/04/13 11:16:18 Identity Provider created with ARN: arn:aws:iam::<aws_account_id>:oidc-provider/<name>-oidc.s3.<aws_region>.amazonaws.com
+    ```
 
-      This command also creates a YAML configuration file in `/<path_to_ccoctl_output_dir>/manifests/cluster-authentication-02-config.yaml`. This file sets the issuer URL field for the service account tokens that the cluster generates, so that the AWS IAM identity provider trusts the tokens.
+    where `openid-configuration` is a discovery document and `keys.json` is a JSON web key set file.
+
+    This command also creates a YAML configuration file in `/<path_to_ccoctl_output_dir>/manifests/cluster-authentication-02-config.yaml`. This file sets the issuer URL field for the service account tokens that the cluster generates, so that the AWS IAM identity provider trusts the tokens.
 
 3.  Create IAM roles for each component in the cluster:
 
@@ -969,11 +986,16 @@ Some `ccoctl` commands make AWS API calls to create or modify AWS resources. You
           --to=<path_to_directory_for_credentials_requests>
         ```
 
-        - The `--included` parameter includes only the manifests that your specific cluster configuration requires.
+        where:
 
-        - Specify the location of the `install-config.yaml` file.
+        `--included`
+        Specifies the `--included` parameter, which includes only the manifests that your specific cluster configuration requires.
 
-        - Specify the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
+        `--install-config`
+        Specifies the location of the `install-config.yaml` file.
+
+        `-to`
+        Specifies the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
 
     3.  Use the `ccoctl` tool to process all `CredentialsRequest` objects by running the following command:
 
@@ -1599,11 +1621,7 @@ Customizing your network configuration by modifying the OpenShift Container Plat
 
     - You can preserve the `MachineSet` files to create compute machines by using the machine API, but you must update references to them to match your environment.
 
-<div class="note">
-
-For more information on using a Network Load Balancer (NLB) on AWS, see [Configuring Ingress cluster traffic on AWS using a Network Load Balancer](../../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-aws.xml#nw-configuring-ingress-cluster-traffic-aws-network-load-balancer_configuring-ingress-cluster-traffic-aws).
-
-</div>
+- [Configuring Ingress cluster traffic on AWS using a Network Load Balancer](../../../networking/ingress_load_balancing/configuring_ingress_cluster_traffic/configuring-ingress-cluster-traffic-aws.xml#nw-configuring-ingress-cluster-traffic-aws-network-load-balancer_configuring-ingress-cluster-traffic-aws)
 
 # Configuring an Ingress Controller Network Load Balancer on a new AWS cluster
 
@@ -1736,6 +1754,8 @@ This configuration is necessary to run both Linux and Windows nodes in the same 
 4.  Save the `cluster-network-03-config.yml` file and quit the text editor.
 
 5.  Optional: Back up the `manifests/cluster-network-03-config.yml` file. The installation program deletes the `manifests/` directory when creating the cluster.
+
+- [Understanding Windows container workloads](../../../windows_containers/understanding-windows-container-workloads.xml#understanding-windows-container-workloads)
 
 # Deploying the cluster
 
@@ -1950,14 +1970,14 @@ The `kubeadmin` user exists by default after an OpenShift Container Platform ins
 
 3.  Navigate to the route detailed in the output of the preceding command in a web browser and log in as the `kubeadmin` user.
 
+# Additional resources
+
 - [Accessing the web console](../../../web_console/web-console.xml#web-console)
 
-# Next steps
+- [Validating an installation](../../../installing/validation_and_troubleshooting/validating-an-installation.xml#validating-an-installation)
 
-- [Validating an installation](../../../installing/validation_and_troubleshooting/validating-an-installation.xml#validating-an-installation).
+- [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
 
-- [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations).
+- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
-- If necessary, you can [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting).
-
-- If necessary, you can [remove cloud provider credentials](../../../post_installation_configuration/changing-cloud-credentials-configuration.xml#manually-removing-cloud-creds_changing-cloud-credentials-configuration).
+- [Removing cloud provider credentials](../../../post_installation_configuration/changing-cloud-credentials-configuration.xml#manually-removing-cloud-creds_changing-cloud-credentials-configuration)

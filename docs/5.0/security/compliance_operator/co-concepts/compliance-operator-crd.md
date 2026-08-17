@@ -2,25 +2,17 @@ You can use the Custom Resource Definitions (CRDs) provided by the Compliance Op
 
 The Compliance Operator in the OpenShift Container Platform provides you with several Custom Resource Definitions (CRDs) to run the compliance scans. The Compliance Operator converts security policies into CRDs, which you can use.
 
-# Defining the compliance scan requirements
+The CRD workflow uses these objects:
 
-You can define and set the rules for your compliance scan requirements in the Compliance Operator CRDs, which include `ProfileBundle` and `Profile` objects. You can also customize the default profiles by using a `TailoredProfile` object.
+- `ProfileBundle`, `Profile`, and `TailoredProfile` to define scan requirements
 
-# Configuring the compliance scan settings
+- `ScanSetting` to configure the scan type, occurrence, and location
 
-After you have defined the requirements of the compliance scan, you can use a `ScanSetting` object to configure the scan by specifying the type, occurrence, and location of the scan.
+- `ScanSettingBinding` to process requirements with those settings
 
-# Processing the compliance scan requirements with compliance scans settings
+- `ComplianceSuite` to monitor deployed scans
 
-When you have defined the compliance scan requirements and configured the settings to run the scans, the Compliance Operator processes these settings by using the `ScanSettingBinding` object.
-
-# Tracking the compliance scans
-
-After the creation of compliance suite, you can monitor the status of the deployed scans by using the `ComplianceSuite` object.
-
-# Viewing the compliance results
-
-When the compliance suite reaches the `DONE` phase, you can view the scan results and possible remediation.
+- Scan results and remediation after the suite reaches the `DONE` phase
 
 # Compliance Operator custom resource definition workflow
 
@@ -68,13 +60,11 @@ When the `contentFile` fails, an `errorMessage` attribute is displayed, which pr
 
 </div>
 
-<div class="formalpara-title">
-
-**Troubleshooting**
-
-</div>
+<div class="note">
 
 When you roll back to a known content image from an invalid image, the `ProfileBundle` object stops responding and displays `PENDING` state. As a workaround, you can move to a different image than the earlier one or you can delete and re-create the `ProfileBundle` object to return to the working state.
+
+</div>
 
 # Profile object
 
@@ -541,7 +531,7 @@ If you delete a `ComplianceSuite` object, then all the associated scans get dele
 When the scan is complete, it generates the result as Custom Resources of the `ComplianceCheckResult` object. However, the raw results are available in ARF format. These results are stored in a Persistent Volume (PV), which has a Persistent Volume Claim (PVC) associated with the name of the scan. You can programmatically fetch the `ComplianceScans` events. To generate events for the suite, run the following command:
 
 ``` terminal
-oc get events --field-selector involvedObject.kind=ComplianceScan,involvedObject.name=<name_of_the_compliance_scan>
+$ oc get events --field-selector involvedObject.kind=ComplianceScan,involvedObject.name=<name_of_the_compliance_scan>
 ```
 
 ## ComplianceCheckResult object
@@ -603,7 +593,7 @@ Specifies the result of the check. The possible values are:
   To get all the check results from a suite, run the following command:
 
 ``` terminal
-oc get compliancecheckresults \
+$ oc get compliancecheckresults \
 -l compliance.openshift.io/suite=workers-compliancesuite
 ```
 
@@ -670,22 +660,20 @@ Specifies remediation that was before parsed from an earlier version of the cont
 To get all the remediations from a suite, run the following command:
 
 ``` terminal
-oc get complianceremediations \
+$ oc get complianceremediations \
 -l compliance.openshift.io/suite=workers-compliancesuite
 ```
 
 To list all failing checks that can be remediated automatically, run the following command:
 
 ``` terminal
-oc get compliancecheckresults \
+$ oc get compliancecheckresults \
 -l 'compliance.openshift.io/check-status in (FAIL),compliance.openshift.io/automated-remediation'
 ```
 
 To list all failing checks that can be remediated manually, run the following command:
 
 ``` terminal
-oc get compliancecheckresults \
+$ oc get compliancecheckresults \
 -l 'compliance.openshift.io/check-status in (FAIL),!compliance.openshift.io/automated-remediation'
 ```
-
-- [ComplianceAsCode community project](https://github.com/ComplianceAsCode/content)

@@ -756,7 +756,7 @@ These records must be resolvable from all the nodes within the cluster.
 
 # Cleaning up previous installations
 
-In case of an earlier failed deployment, remove the artifacts from the failed attempt before trying to deploy OpenShift Container Platform again.
+You must remove the artifacts from any failed deployment attempt before trying to deploy OpenShift Container Platform again.
 
 1.  Power off all bare-metal nodes before installing the OpenShift Container Platform cluster by using the following command:
 

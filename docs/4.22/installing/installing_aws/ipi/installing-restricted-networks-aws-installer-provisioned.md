@@ -2,6 +2,10 @@ You can install a cluster on Amazon Web Services (AWS) in a restricted network b
 
 # Prerequisites
 
+Before you install a cluster on Amazon Web Services (AWS) in a restricted network by using installer-provisioned infrastructure, you must meet several prerequisites.
+
+The following prerequisites must be met:
+
 - You reviewed details about the [OpenShift Container Platform installation and update](../../../architecture/architecture-installation.xml#architecture-installation) processes.
 
 - You read the documentation on [selecting a cluster installation method and preparing it for users](../../../installing/overview/installing-preparing.xml#installing-preparing).
@@ -56,11 +60,11 @@ Clusters in restricted networks have the following additional limitations and re
 
 # About using a custom VPC
 
-In OpenShift Container Platform 4.17, you can deploy a cluster into existing subnets in an existing Amazon Virtual Private Cloud (VPC) in Amazon Web Services (AWS). By deploying OpenShift Container Platform into an existing AWS VPC, you might be able to avoid limit constraints in new accounts or more easily abide by the operational constraints that your company’s guidelines set. If you cannot obtain the infrastructure creation permissions that are required to create the VPC yourself, use this installation option.
+You can deploy a cluster into existing subnets in an existing Amazon Virtual Private Cloud (VPC) in Amazon Web Services (AWS).
+
+By deploying OpenShift Container Platform into an existing AWS VPC, you might be able to avoid limit constraints in new accounts or more easily abide by the operational constraints that your company’s guidelines set. If you cannot obtain the infrastructure creation permissions that are required to create the VPC yourself, use this installation option.
 
 Because the installation program cannot know what other components are also in your existing subnets, it cannot choose subnet CIDRs and so forth on your behalf. You must configure networking for the subnets that you install your cluster to yourself.
-
-## Requirements for using your VPC
 
 The installation program no longer creates the following components:
 
@@ -84,7 +88,7 @@ The installation program requires that you use the cloud-provided DNS server. Us
 
 </div>
 
-If you use a custom VPC, you must correctly configure it and its subnets for the installation program and the cluster to use. See [Create a VPC](https://docs.aws.amazon.com/vpc/latest/userguide/working-with-vpcs.html) in the Amazon Web Services documentation for more information about AWS VPC console wizard configurations and creating and managing an AWS VPC.
+If you use a custom VPC, you must correctly configure it and its subnets for the installation program and the cluster to use. See "Create a VPC" in the Amazon Web Services documentation for more information about AWS VPC console wizard configurations and creating and managing an AWS VPC.
 
 The installation program cannot:
 
@@ -94,23 +98,23 @@ The installation program cannot:
 
 - Set VPC options like DHCP.
 
-You must complete these tasks before you install the cluster. See [VPC networking components](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Networking.html) and [Route tables for your VPC](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html) for more information on configuring networking in an AWS VPC.
+You must complete these tasks before you install the cluster. See "VPC networking components" and "Route tables for your VPC" for more information on configuring networking in an AWS VPC.
 
 Your VPC must meet the following characteristics:
 
 - The VPC must not use the `kubernetes.io/cluster/.*: owned`, `Name`, and `openshift.io/cluster` tags.
 
-  The installation program modifies your subnets to add the `kubernetes.io/cluster/.*: shared` tag, so your subnets must have at least one free tag slot available for it. See [Tag Restrictions](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Tags.html#tag-restrictions) in the AWS documentation to confirm that the installation program can add a tag to each subnet that you specify. You cannot use a `Name` tag, because it overlaps with the EC2 `Name` field and the installation fails.
+  The installation program modifies your subnets to add the `kubernetes.io/cluster/.*: shared` tag, so your subnets must have at least one free tag slot available for it. See "Tag Restrictions" in the AWS documentation to confirm that the installation program can add a tag to each subnet that you specify. You cannot use a `Name` tag, because it overlaps with the EC2 `Name` field and the installation fails.
 
 - If you want to extend your OpenShift Container Platform cluster into an AWS Outpost and have an existing Outpost subnet, the existing subnet must use the `kubernetes.io/cluster/unmanaged: true` tag. If you do not apply this tag, the installation might fail due to the Cloud Controller Manager creating a service load balancer in the Outpost subnet, which is an unsupported configuration.
 
-- You must enable the `enableDnsSupport` and `enableDnsHostnames` attributes in your VPC, so that the cluster can use the Route 53 zones that are attached to the VPC to resolve cluster’s internal DNS records. See [DNS Support in Your VPC](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html#vpc-dns-support) in the AWS documentation.
+- You must enable the `enableDnsSupport` and `enableDnsHostnames` attributes in your VPC, so that the cluster can use the Route 53 zones that are attached to the VPC to resolve cluster’s internal DNS records. See "DNS Support in Your VPC" in the AWS documentation.
 
   If you prefer to use your own Route 53 hosted private zone, you must associate the existing hosted zone with your VPC prior to installing a cluster. You can define your hosted zone using the `platform.aws.hostedZone` and `platform.aws.hostedZoneRole` fields in the `install-config.yaml` file. You can use a private hosted zone from another account by sharing it with the account where you install the cluster. If you use a private hosted zone from another account, you must use the `Passthrough` or `Manual` credentials mode.
 
 If you are working in a disconnected environment, you are unable to reach the public IP addresses for EC2, ELB, and S3 endpoints. Depending on the level to which you want to restrict internet traffic during the installation, the following configuration options are available:
 
-### Option 1: Create VPC endpoints
+## Option 1: Create VPC endpoints
 
 Create a VPC endpoint and attach it to the subnets that the clusters are using. Name the endpoints as follows:
 
@@ -122,11 +126,11 @@ Create a VPC endpoint and attach it to the subnets that the clusters are using. 
 
 With this option, network traffic remains private between your VPC and the required AWS services.
 
-### Option 2: Create a proxy without VPC endpoints
+## Option 2: Create a proxy without VPC endpoints
 
 As part of the installation process, you can configure an HTTP or HTTPS proxy. With this option, internet traffic goes through the proxy to reach the required AWS services.
 
-### Option 3: Create a proxy with VPC endpoints
+## Option 3: Create a proxy with VPC endpoints
 
 As part of the installation process, you can configure an HTTP or HTTPS proxy with VPC endpoints. Create a VPC endpoint and attach it to the subnets that the clusters are using. Name the endpoints as follows:
 
@@ -138,15 +142,10 @@ As part of the installation process, you can configure an HTTP or HTTPS proxy wi
 
 When configuring the proxy in the `install-config.yaml` file, add these endpoints to the `noProxy` field. With this option, the proxy prevents the cluster from accessing the internet directly. However, network traffic remains private between your VPC and the required AWS services.
 
-<div class="formalpara-title">
-
-**Required VPC components**
-
-</div>
-
 You must provide a suitable VPC and subnets that allow communication to your machines.
 
 <table>
+<caption>Required VPC components</caption>
 <colgroup>
 <col style="width: 13%" />
 <col style="width: 46%" />
@@ -246,6 +245,8 @@ You must provide a suitable VPC and subnets that allow communication to your mac
 </tbody>
 </table>
 
+Required VPC components
+
 ## VPC validation
 
 To ensure that the subnets that you provide are suitable, the installation program confirms the following data:
@@ -281,6 +282,18 @@ If you deploy OpenShift Container Platform to an existing network, the isolation
 - Control plane TCP 6443 ingress (Kubernetes API) is allowed to the entire network.
 
 - Control plane TCP 22623 ingress (MCS) is allowed to the entire network.
+
+<!-- -->
+
+- [Create a VPC (Amazon Web Services documentation)](https://docs.aws.amazon.com/vpc/latest/userguide/working-with-vpcs.html)
+
+- [VPC networking components (Amazon Web Services documentation)](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Networking.html)
+
+- [Route tables for your VPC (Amazon Web Services documentation)](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html)
+
+- [Tag Restrictions (Amazon Web Services documentation)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Tags.html#tag-restrictions)
+
+- [DNS Support in Your VPC (Amazon Web Services documentation)](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html#vpc-dns-support)
 
 # Creating the installation configuration file
 
@@ -619,11 +632,13 @@ Production environments can deny direct access to the internet and instead have 
 
 # Alternatives to storing administrator-level secrets in the kube-system project
 
-By default, administrator secrets are stored in the `kube-system` project. If you configured the `credentialsMode` parameter in the `install-config.yaml` file to `Manual`, you must use one of the following alternatives:
+By default, administrator secrets are stored in the `kube-system` project.
 
-- To manage long-term cloud credentials manually, follow the procedure in [Manually creating long-term credentials](../../../installing/installing_aws/ipi/installing-restricted-networks-aws-installer-provisioned.xml#manually-create-iam_installing-restricted-networks-aws-installer-provisioned).
+If you configured the `credentialsMode` parameter in the `install-config.yaml` file to `Manual`, you must use one of the following alternatives:
 
-- To implement short-term credentials that are managed outside the cluster for individual components, follow the procedures in [Configuring an AWS cluster to use short-term credentials](../../../installing/installing_aws/ipi/installing-restricted-networks-aws-installer-provisioned.xml#installing-aws-with-short-term-creds_installing-restricted-networks-aws-installer-provisioned).
+- To manage long-term cloud credentials manually, follow the procedure in "Manually creating long-term credentials".
+
+- To implement short-term credentials that are managed outside the cluster for individual components, follow the procedures in "Configuring an AWS cluster to use short-term credentials".
 
 ## Manually creating long-term credentials
 
@@ -960,15 +975,7 @@ The `ccoctl` utility is a Linux binary that must run in a Linux environment.
   Use "ccoctl [command] --help" for more information about a command.
   ```
 
-### Creating AWS resources with the Cloud Credential Operator utility
-
-You have the following options when creating AWS resources:
-
-- You can use the `ccoctl aws create-all` command to create the AWS resources automatically. This is the quickest way to create the resources. See [Creating AWS resources with a single command](../../../installing/installing_aws/ipi/installing-restricted-networks-aws-installer-provisioned.xml#cco-ccoctl-creating-at-once_installing-restricted-networks-aws-installer-provisioned).
-
-- If you need to review the JSON files that the `ccoctl` tool creates before modifying AWS resources, or if the process the `ccoctl` tool uses to create AWS resources automatically does not meet the requirements of your organization, you can create the AWS resources individually. See [Creating AWS resources individually](../../../installing/installing_aws/ipi/installing-restricted-networks-aws-installer-provisioned.xml#cco-ccoctl-creating-individually_installing-restricted-networks-aws-installer-provisioned).
-
-#### Creating AWS resources with a single command
+### Creating AWS resources with a single command
 
 If the process the `ccoctl` tool uses to create AWS resources automatically meets the requirements of your organization, you can use the `ccoctl aws create-all` command to automate the creation of AWS resources.
 
@@ -1087,9 +1094,11 @@ You must have:
 
   You can verify that the IAM roles are created by querying AWS. For more information, refer to AWS documentation on listing IAM roles.
 
-#### Creating AWS resources individually
+### Creating AWS resources individually
 
-You can use the `ccoctl` tool to create AWS resources individually. This option might be useful for an organization that shares the responsibility for creating these resources among different users or departments.
+If you need to review the JSON files that the `ccoctl` tool creates before modifying AWS resources, or if the process the `ccoctl` tool uses to create AWS resources automatically does not meet the requirements of your organization, you can create the AWS resources individually.
+
+This option might be useful for an organization that shares the responsibility for creating these resources among different users or departments.
 
 Otherwise, you can use the `ccoctl aws create-all` command to create the AWS resources automatically. For more information, see "Creating AWS resources with a single command".
 
@@ -1135,29 +1144,34 @@ Some `ccoctl` commands make AWS API calls to create or modify AWS resources. You
       --public-key-file=<path_to_ccoctl_output_dir>/serviceaccount-signer.public
     ```
 
-    - `<name>` is the name used to tag any cloud resources that are created for tracking.
+    where:
 
-    - `<aws-region>` is the AWS region in which cloud resources will be created.
+    `<name>`
+    Specifies the name used to tag any cloud resources that are created for tracking.
 
-    - `<path_to_ccoctl_output_dir>` is the path to the public key file that the `ccoctl aws create-key-pair` command generated.
+    `<aws_region>`
+    Specifies the AWS region in which cloud resources will be created.
 
-      <div class="formalpara-title">
+    `<path_to_ccoctl_output_dir>`
+    Specifies the path to the public key file that the `ccoctl aws create-key-pair` command generated.
 
-      **Example output**
+    <div class="formalpara-title">
 
-      </div>
+    **Example output**
 
-      ``` text
-      2021/04/13 11:16:09 Bucket <name>-oidc created
-      2021/04/13 11:16:10 OpenID Connect discovery document in the S3 bucket <name>-oidc at .well-known/openid-configuration updated
-      2021/04/13 11:16:10 Reading public key
-      2021/04/13 11:16:10 JSON web key set (JWKS) in the S3 bucket <name>-oidc at keys.json updated
-      2021/04/13 11:16:18 Identity Provider created with ARN: arn:aws:iam::<aws_account_id>:oidc-provider/<name>-oidc.s3.<aws_region>.amazonaws.com
-      ```
+    </div>
 
-      where `openid-configuration` is a discovery document and `keys.json` is a JSON web key set file.
+    ``` text
+    2021/04/13 11:16:09 Bucket <name>-oidc created
+    2021/04/13 11:16:10 OpenID Connect discovery document in the S3 bucket <name>-oidc at .well-known/openid-configuration updated
+    2021/04/13 11:16:10 Reading public key
+    2021/04/13 11:16:10 JSON web key set (JWKS) in the S3 bucket <name>-oidc at keys.json updated
+    2021/04/13 11:16:18 Identity Provider created with ARN: arn:aws:iam::<aws_account_id>:oidc-provider/<name>-oidc.s3.<aws_region>.amazonaws.com
+    ```
 
-      This command also creates a YAML configuration file in `/<path_to_ccoctl_output_dir>/manifests/cluster-authentication-02-config.yaml`. This file sets the issuer URL field for the service account tokens that the cluster generates, so that the AWS IAM identity provider trusts the tokens.
+    where `openid-configuration` is a discovery document and `keys.json` is a JSON web key set file.
+
+    This command also creates a YAML configuration file in `/<path_to_ccoctl_output_dir>/manifests/cluster-authentication-02-config.yaml`. This file sets the issuer URL field for the service account tokens that the cluster generates, so that the AWS IAM identity provider trusts the tokens.
 
 3.  Create IAM roles for each component in the cluster:
 
@@ -1178,11 +1192,16 @@ Some `ccoctl` commands make AWS API calls to create or modify AWS resources. You
           --to=<path_to_directory_for_credentials_requests>
         ```
 
-        - The `--included` parameter includes only the manifests that your specific cluster configuration requires.
+        where:
 
-        - Specify the location of the `install-config.yaml` file.
+        `--included`
+        Specifies the `--included` parameter, which includes only the manifests that your specific cluster configuration requires.
 
-        - Specify the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
+        `--install-config`
+        Specifies the location of the `install-config.yaml` file.
+
+        `-to`
+        Specifies the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
 
     3.  Use the `ccoctl` tool to process all `CredentialsRequest` objects by running the following command:
 
@@ -1462,16 +1481,16 @@ Operator catalogs that source content provided by Red Hat and community projects
 
   </div>
 
-# Next steps
+# Additional resources
 
-- [Validate an installation](../../../installing/validation_and_troubleshooting/validating-an-installation.xml#validating-an-installation).
+- [Validating an installation](../../../installing/validation_and_troubleshooting/validating-an-installation.xml#validating-an-installation)
 
-- [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations).
+- [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
 
-- [Configure image streams](../../../post_installation_configuration/cluster-tasks.xml#post-install-must-gather-disconnected) for the Cluster Samples Operator and the `must-gather` tool.
+- [Configure image streams](../../../post_installation_configuration/cluster-tasks.xml#post-install-must-gather-disconnected)
 
-- Learn how to [use Operator Lifecycle Manager in disconnected environments](../../../disconnected/using-olm.xml#olm-restricted-networks).
+- [Using Operator Lifecycle Manager in disconnected environments](../../../disconnected/using-olm.xml#olm-restricted-networks)
 
-- If the mirror registry that you used to install your cluster has a trusted CA, add it to the cluster by [configuring additional trust stores](../../../openshift_images/image-configuration.xml#images-configuration-cas_image-configuration).
+- [Configuring additional trust stores](../../../openshift_images/image-configuration.xml#images-configuration-cas_image-configuration)
 
-- If necessary, you can [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting).
+- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)

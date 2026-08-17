@@ -34,7 +34,9 @@ You can manage the resources on your AWS Outpost similarly to those on a cloud-b
 
 # Obtaining information about your environment
 
-To extend an AWS VPC cluster to your Outpost, you must provide information about your OpenShift Container Platform cluster and your Outpost environment. You use this information to complete network configuration tasks and configure a compute machine set that creates compute machines in your Outpost. You can use command-line tools to gather the required details.
+To extend an AWS VPC cluster to your Outpost, you must provide information about your OpenShift Container Platform cluster and your Outpost environment. You use this information to complete network configuration tasks and configure a compute machine set that creates compute machines in your Outpost.
+
+You can use command-line tools to gather the required details.
 
 ## Obtaining information from your OpenShift Container Platform cluster
 
@@ -146,7 +148,9 @@ You might find it convenient to store some or all of these values as environment
 
 # Configuring your network for your Outpost
 
-To extend your VPC cluster into an Outpost, you must complete the following network configuration tasks:
+To extend your VPC cluster into an Outpost, you must complete two network configuration tasks.
+
+The following network configuration tasks must be completed:
 
 - Change the Cluster Network MTU.
 
@@ -926,11 +930,13 @@ After you extend an OpenShift Container Platform in an AWS VPC cluster into an O
 
 # Scheduling workloads on edge and cloud-based AWS compute resources
 
-When you extend an AWS VPC cluster into an Outpost, the Outpost uses edge compute nodes and the VPC uses cloud-based compute nodes. The following load balancer considerations apply to an AWS VPC cluster extended into an Outpost:
+When you extend an AWS VPC cluster into an Outpost, the Outpost uses edge compute nodes and the VPC uses cloud-based compute nodes.
 
-- Outposts cannot run AWS Network Load Balancers or AWS Classic Load Balancers, but a Classic Load Balancer for a VPC cluster extended into an Outpost can attach to the Outpost edge compute nodes. For more information, see [Using AWS Classic Load Balancers in an AWS VPC cluster extended into an Outpost](../../../installing/installing_aws/ipi/installing-aws-outposts.xml#aws-outposts-load-balancer-clb_installing-aws-outposts).
+The following load balancer considerations apply to an AWS VPC cluster extended into an Outpost:
 
-- To run a load balancer on an Outpost instance, you must use an AWS Application Load Balancer. You can use the AWS Load Balancer Operator to deploy an instance of the AWS Load Balancer Controller. The controller provisions AWS Application Load Balancers for Kubernetes Ingress resources. For more information, see [Using the AWS Load Balancer Operator in an AWS VPC cluster extended into an Outpost](../../../installing/installing_aws/ipi/installing-aws-outposts.xml#nw-aws-load-balancer-with-outposts_installing-aws-outposts).
+- Outposts cannot run AWS Network Load Balancers or AWS Classic Load Balancers, but a Classic Load Balancer for a VPC cluster extended into an Outpost can attach to the Outpost edge compute nodes. For more information, see "Using AWS Classic Load Balancers in an AWS VPC cluster extended into an Outpost".
+
+- To run a load balancer on an Outpost instance, you must use an AWS Application Load Balancer. You can use the AWS Load Balancer Operator to deploy an instance of the AWS Load Balancer Controller. The controller provisions AWS Application Load Balancers for Kubernetes Ingress resources. For more information, see "Using the AWS Load Balancer Operator in an AWS VPC cluster extended into an Outpost".
 
 ## Using AWS Classic Load Balancers in an AWS VPC cluster extended into an Outpost
 

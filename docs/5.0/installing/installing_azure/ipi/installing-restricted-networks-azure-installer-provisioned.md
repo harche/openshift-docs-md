@@ -8,7 +8,7 @@ You can install an OpenShift Container Platform cluster by using mirrored instal
 
 # Prerequisites
 
-- You [mirrored the images for a disconnected installation](../../../disconnected/installing-mirroring-installation-images.xml#installation-about-mirror-registry_installing-mirroring-installation-images) to your registry and obtained the `imageContentSources` data for your version of OpenShift Container Platform.
+- You have mirrored the images for a disconnected installation to your registry and obtained the `imageContentSources` data for your version of OpenShift Container Platform. For more information, see "Mirroring images for a disconnected installation by using the oc adm command".
 
   <div class="important">
 
@@ -40,11 +40,11 @@ Clusters in restricted networks have the following additional limitations and re
 
 ## User-defined outbound routing
 
-In OpenShift Container Platform, you can choose your own outbound routing for a cluster to connect to the internet. This allows you to skip the creation of public IP addresses and the public load balancer.
+You can configure user-defined outbound routing for a OpenShift Container Platform cluster to reach the internet without public IP addresses or a public load balancer.
 
-You can configure user-defined routing by modifying parameters in the `install-config.yaml` file before installing your cluster. A pre-existing VNet is required to use outbound routing when installing a cluster; the installation program is not responsible for configuring this.
+You must use a pre-existing `VNet` for outbound routing when you install a cluster. The installation program does not configure this network.
 
-When configuring a cluster to use user-defined routing, the installation program does not create the following resources:
+When you configure a cluster to use user-defined routing, the installation program does not create the following resources:
 
 - Outbound rules for access to the internet.
 
@@ -52,25 +52,29 @@ When configuring a cluster to use user-defined routing, the installation program
 
 - Kubernetes Service object to add the cluster machines to the public load balancer for outbound requests.
 
-You must ensure the following items are available before setting user-defined routing:
+Before you set user-defined routing, ensure that the following items are available:
 
-- Egress to the internet is possible to pull container images, unless using an OpenShift image registry mirror.
+- Egress to the internet so that you can pull container images, unless you use an OpenShift image registry mirror.
 
-- The cluster can access Azure APIs.
+- Access from the cluster to Azure APIs.
 
-- Various allowlist endpoints are configured. You can reference these endpoints in the *Configuring your firewall* section.
+- Access to the required allowlist endpoints.
 
-There are several pre-existing networking setups that are supported for internet access using user-defined routing.
+Several pre-existing networking setups support internet access by using user-defined routing.
 
 ### Restricted cluster with Azure Firewall
 
-You can use Azure Firewall to restrict the outbound routing for the Virtual Network (VNet) that is used to install the OpenShift Container Platform cluster. For more information, see [providing user-defined routing with Azure Firewall](https://learn.microsoft.com/en-us/azure/aks/egress-outboundtype#deploy-a-cluster-with-outbound-type-of-udr-and-azure-firewall). You can create a OpenShift Container Platform cluster in a restricted network by using VNet with Azure Firewall and configuring the user-defined routing.
+You can use Azure Firewall to restrict the outbound routing for the Virtual Network (`VNet`) that is used to install the OpenShift Container Platform cluster. You can create a OpenShift Container Platform cluster in a restricted network by using a `VNet` with Azure Firewall and configuring user-defined routing.
 
 <div class="important">
 
-If you are using Azure Firewall for restricting internet access, you must set the `publish` field to `Internal` in the `install-config.yaml` file. This is because [Azure Firewall does not work properly with Azure public load balancers](https://learn.microsoft.com/en-us/azure/firewall/integrate-lb).
+If you use Azure Firewall to restrict internet access, you must set the `publish` field to `Internal` in the `install-config.yaml` file. Azure Firewall does not work properly with Azure public load balancers.
 
 </div>
+
+- [Providing user-defined routing with Azure Firewall](https://learn.microsoft.com/en-us/azure/aks/egress-outboundtype#deploy-a-cluster-with-outbound-type-of-udr-and-azure-firewall)
+
+- [Azure Firewall does not work properly with Azure public load balancers](https://learn.microsoft.com/en-us/azure/firewall/integrate-lb)
 
 # About reusing a VNet for your OpenShift Container Platform cluster
 
@@ -841,11 +845,19 @@ Production environments can deny direct access to the internet and instead have 
 
 # Alternatives to storing administrator-level secrets in the kube-system project
 
-By default, administrator secrets are stored in the `kube-system` project. If you configured the `credentialsMode` parameter in the `install-config.yaml` file to `Manual`, you must use one of the following alternatives:
+To avoid storing administrator-level secrets in the `kube-system` project, you can configure your cluster to use manually managed long-term cloud credentials or short-term credentials that are managed outside the cluster.
 
-- To manage long-term cloud credentials manually, follow the procedure in [Manually creating long-term credentials](../../../installing/installing_azure/ipi/installing-restricted-networks-azure-installer-provisioned.xml#manually-create-iam_installing-restricted-networks-azure-installer-provisioned).
+By default, administrator-level secrets are stored in the `kube-system` project. If you set the `credentialsMode` parameter in the `install-config.yaml` file to `Manual`, choose one of the following credential management options:
 
-- To implement short-term credentials that are managed outside the cluster for individual components, follow the procedures in [Configuring an Azure cluster to use short-term credentials](../../../installing/installing_azure/ipi/installing-restricted-networks-azure-installer-provisioned.xml#installing-azure-with-short-term-creds_installing-restricted-networks-azure-installer-provisioned).
+- To manage long-term cloud credentials manually, follow the procedure in "Manually creating long-term credentials".
+
+- To use short-term credentials that are managed outside the cluster for individual components, follow the procedures in "Configuring an Azure cluster to use short-term credentials".
+
+<!-- -->
+
+- [Manually creating long-term credentials](../../../installing/installing_azure/ipi/installing-restricted-networks-azure-installer-provisioned.xml#manually-create-iam_installing-restricted-networks-azure-installer-provisioned)
+
+- [Configuring an Azure cluster to use short-term credentials](../../../installing/installing_azure/ipi/installing-restricted-networks-azure-installer-provisioned.xml#installing-azure-with-short-term-creds_installing-restricted-networks-azure-installer-provisioned)
 
 ## Manually creating long-term credentials
 
@@ -1567,8 +1579,10 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 - "Remote health reporting"
 
-# Next steps
+# Additional resources
 
-- [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations).
+- [Mirroring images for a disconnected installation by using the oc adm command](../../../disconnected/installing-mirroring-installation-images.xml#installation-about-mirror-registry_installing-mirroring-installation-images)
 
-- If necessary, you can [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting).
+- [Customize your cluster](../../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
+
+- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)

@@ -32,7 +32,7 @@ You can always recover from a disaster situation by [restoring your cluster to i
 
 As a cluster administrator, you can back up and restore applications running on OpenShift Container Platform by using the OpenShift API for Data Protection (OADP).
 
-OADP backs up and restores Kubernetes resources and internal images, at the granularity of a namespace, by using the version of Velero that is appropriate for the version of OADP you install, according to the table in [Downloading the Velero CLI tool](../backup_and_restore/application_backup_and_restore/troubleshooting/velero-cli-tool.xml#velero-obtaining-by-downloading_velero-cli-tool). OADP backs up and restores persistent volumes (PVs) by using snapshots or Restic. For details, see [OADP features](../backup_and_restore/application_backup_and_restore/oadp-features-plugins.xml#oadp-features_oadp-features-plugins).
+OADP backs up and restores Kubernetes resources and internal images, at the granularity of a namespace, by using the version of Velero that is appropriate for the version of OADP you install, according to the table in [OADP-Velero-OpenShift Container Platform version relationship](../backup_and_restore/application_backup_and_restore/troubleshooting/oadp-cli-tool.xml#velero-oadp-version-relationship_oadp-cli-tool). OADP backs up and restores persistent volumes (PVs) by using snapshots or Restic. For details, see [OADP features](../backup_and_restore/application_backup_and_restore/oadp-features-plugins.xml#oadp-features_oadp-features-plugins).
 
 ## OADP requirements
 

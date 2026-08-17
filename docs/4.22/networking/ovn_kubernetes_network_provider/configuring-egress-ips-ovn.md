@@ -20,7 +20,7 @@ Egress IP addresses must not be configured in any Linux network configuration fi
 
 <div class="important">
 
-The assignment of egress IP addresses to control plane nodes with the EgressIP feature is not supported on a cluster provisioned on Amazon Web Services (AWS). For more information, see "BZ#2039656" in the *Additional resources* section.
+The assignment of egress IP addresses to control plane nodes with the EgressIP feature is not supported on a cluster provisioned on Amazon Web Services (AWS). For more information, see "BZ#2039656".
 
 </div>
 
@@ -45,7 +45,7 @@ cloud.network.openshift.io/egress-ipconfig: [
 The following sections describe the IP address capacity for supported public cloud environments for use in your capacity calculation.
 
 Amazon Web Services (AWS) IP address capacity limits
-On AWS, constraints on IP address assignments depend on the instance type configured. For more information, see "IP addresses per network interface per instance type" in the *Additional resources* section.
+On AWS, constraints on IP address assignments depend on the instance type configured. For more information, see "IP addresses per network interface per instance type".
 
 Google Cloud IP address capacity limits
 On Google Cloud, the networking model implements additional node IP addresses through IP address aliasing, rather than IP address assignments. However, IP address capacity maps directly to IP aliasing capacity.
@@ -56,7 +56,7 @@ The following capacity limits exist for IP aliasing assignment:
 
 - Per VPC, the maximum number of IP aliases is unspecified, but OpenShift Container Platform scalability testing reveals the maximum to be approximately 15,000.
 
-For more information, see "Per instance" quotas and "Alias IP ranges overview" in the *Additional resources* section.
+For more information, see "Per instance" quotas and "Alias IP ranges overview".
 
 Microsoft Azure IP address capacity limits
 On Azure, the following capacity limits exist for IP address assignment:
@@ -65,9 +65,7 @@ On Azure, the following capacity limits exist for IP address assignment:
 
 - Per virtual network, the maximum number of assigned IP addresses cannot exceed 65,536.
 
-For more information, see "Networking limits" in the *Additional resources* section.
-
-# Additional resources
+For more information, see "Networking limits".
 
 - [BZ#2039656 (Red Hat Bugzilla)](https://bugzilla.redhat.com/show_bug.cgi?id=2039656)
 

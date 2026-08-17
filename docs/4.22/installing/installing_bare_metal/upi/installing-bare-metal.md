@@ -845,7 +845,7 @@ The following list of interface names are reserved and you cannot use the names 
     # ...
     ```
 
-- Scaling compute nodes to apply the manifest object that includes a customized `br-ex` bridge to each compute node that exists in your cluster. For more information, see "Expanding the cluster" in the *Additional resources* section.
+- Scaling compute nodes to apply the manifest object that includes a customized `br-ex` bridge to each compute node that exists in your cluster. For more information, see "Expanding the cluster".
 
 <!-- -->
 
@@ -912,7 +912,13 @@ Additionally, you must create a `BareMetalHost` CR that defines information for 
     $ oc scale machineset <machineset_name> --replicas=<n>
     ```
 
-    - \<n\>: Where `<machineset_name>` is the name of the machine set and `<n>` is the number of compute nodes.
+    where:
+
+    `<machineset_name>`
+    Specifies the name of the machine set.
+
+    `<n>`
+    Specifies the number of compute nodes.
 
 # Enabling OVS balance-slb mode for your cluster
 
