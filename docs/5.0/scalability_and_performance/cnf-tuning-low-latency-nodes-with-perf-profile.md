@@ -213,11 +213,7 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
     $ oc get mcp
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following output lists the available machine config pools:
 
     ``` terminal
     NAME         CONFIG                                                 UPDATED   UPDATING   DEGRADED   MACHINECOUNT   READYMACHINECOUNT   UPDATEDMACHINECOUNT   DEGRADEDMACHINECOUNT   AGE
@@ -243,11 +239,7 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
     $ podman run --rm --entrypoint performance-profile-creator registry.redhat.io/openshift4/ose-cluster-node-tuning-rhel9-operator:v4.17 -h
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following output shows the available flags and commands for the PPC tool:
 
     ``` terminal
     A tool that automates creation of Performance Profiles
@@ -259,7 +251,7 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
 
     Usage:
       performance-profile-creator [flags]
-    performance-profile-creator [command]
+      performance-profile-creator [command]
 
     Flags:
           --disable-ht                        Disable Hyperthreading
@@ -280,7 +272,7 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
     Use "performance-profile-creator [command] --help" for more information about a command.
     ```
 
-4.  To display information about the cluster, run the PPC tool with the `log` argument by running the following command:
+4.  To display information about the cluster, run the PPC tool with the `info` command by running the following command:
 
     ``` terminal
     $ podman run --entrypoint performance-profile-creator -v <path_to_must_gather>:/must-gather:z registry.redhat.io/openshift4/ose-cluster-node-tuning-rhel9-operator:v4.17 info --must-gather-dir-path /must-gather
@@ -294,38 +286,34 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
 
       - An existing directory containing the `must-gather` decompressed .tar file.
 
-        <div class="formalpara-title">
-
-        **Example output**
-
-        </div>
+        The following output is generated from running the command:
 
         ``` terminal
-        level=info msg="Nodes names targeted by master pool are: "
-        level=info msg="Nodes names targeted by worker-cnf pool are: host2.example.com "
-        level=info msg="Nodes names targeted by worker pool are: host.example.com host1.example.com "
-        level=info msg="Cluster info:"
-        level=info msg="MCP 'master' nodes:"
-        level=info msg=---
-        level=info msg="MCP 'worker' nodes:"
-        level=info msg="Node: host.example.com (NUMA cells: 1, HT: true)"
-        level=info msg="NUMA cell 0 : [0 1 2 3]"
-        level=info msg="CPU(s): 4"
-        level=info msg="Node: host1.example.com (NUMA cells: 1, HT: true)"
-        level=info msg="NUMA cell 0 : [0 1 2 3]"
-        level=info msg="CPU(s): 4"
-        level=info msg=---
-        level=info msg="MCP 'worker-cnf' nodes:"
-        level=info msg="Node: host2.example.com (NUMA cells: 1, HT: true)"
-        level=info msg="NUMA cell 0 : [0 1 2 3]"
-        level=info msg="CPU(s): 4"
-        level=info msg=---
+        PPC: Nodes names targeted by master pool are:
+        PPC: Nodes names targeted by worker-cnf pool are: host2.example.com
+        PPC: Nodes names targeted by worker pool are: host.example.com host1.example.com
+        PPC: Cluster info:
+        MCP 'master' nodes:
+        ---
+        MCP 'worker' nodes:
+        Node: host.example.com (NUMA cells: 1, HT: true)
+        NUMA cell 0 : [0 1 2 3]
+        CPU(s): 4
+        Node: host1.example.com (NUMA cells: 1, HT: true)
+        NUMA cell 0 : [0 1 2 3]
+        CPU(s): 4
+        ---
+        MCP 'worker-cnf' nodes:
+        Node: host2.example.com (NUMA cells: 1, HT: true)
+        NUMA cell 0 : [0 1 2 3]
+        CPU(s): 4
+        ---
         ```
 
 5.  Create a performance profile by running the following command. The example uses sample PPC arguments and values:
 
     ``` terminal
-    $ podman run --entrypoint performance-profile-creator -v <path_to_must_gather>:/must-gather:z registry.redhat.io/openshift4/ose-cluster-node-tuning-rhel9-operator:v4.17 --mcp-name=worker-cnf --reserved-cpu-count=1 --rt-kernel=true --split-reserved-cpus-across-numa=false --must-gather-dir-path /must-gather --power-consumption-mode=ultra-low-latency --offlined-cpu-count=1 > my-performance-profile.yaml
+    $ podman run --entrypoint performance-profile-creator -v <path_to_must_gather>:/must-gather:z registry.redhat.io/openshift4/ose-cluster-node-tuning-rhel9-operator:v4.17 --mcp-name=worker-cnf --reserved-cpu-count=2 --rt-kernel=true --split-reserved-cpus-across-numa=false --must-gather-dir-path /must-gather --power-consumption-mode=ultra-low-latency > my-performance-profile.yaml
     ```
 
     - `-v <path_to_must_gather>` specifies the path to either of the following components:
@@ -336,7 +324,7 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
 
     - `--mcp-name=worker-cnf` specifies the `worker-cnf` machine config pool.
 
-    - `--reserved-cpu-count=1` specifies one reserved CPU.
+    - `--reserved-cpu-count=2` specifies two reserved CPUs.
 
     - `--rt-kernel=true` enables the real-time kernel.
 
@@ -344,28 +332,22 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
 
     - `--power-consumption-mode=ultra-low-latency` specifies minimal latency at the cost of increased power consumption.
 
-    - `--offlined-cpu-count=1` specifies one offlined CPU.
-
       <div class="note">
 
       The `mcp-name` argument in this example is set to `worker-cnf` based on the output of the command `oc get mcp`. For single-node OpenShift use `--mcp-name=master`.
 
       </div>
 
-      <div class="formalpara-title">
-
-      **Example output**
-
-      </div>
+      The following output shows the CPU and NUMA allocation for the performance profile:
 
       ``` terminal
-      level=info msg="Nodes targeted by worker-cnf MCP are: [worker-2]"
-      level=info msg="NUMA cell(s): 1"
-      level=info msg="NUMA cell 0 : [0 1 2 3]"
-      level=info msg="CPU(s): 4"
-      level=info msg="1 reserved CPUs allocated: 0 "
-      level=info msg="2 isolated CPUs allocated: 2-3"
-      level=info msg="Additional Kernel Args based on configuration: []"
+      PPC: Nodes targeted by worker-cnf MCP are: [worker-2]
+      PPC: NUMA cell(s): 1
+      PPC: NUMA cell 0 : [0 1 2 3]
+      PPC: CPU(s): 4
+      PPC: 2 reserved CPUs allocated: 0-1
+      PPC: 2 isolated CPUs allocated: 2-3
+      PPC: Additional Kernel Args based on configuration: []
       ```
 
 6.  Review the created YAML file by running the following command:
@@ -374,11 +356,7 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
     $ cat my-performance-profile.yaml
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following example shows the contents of the generated performance profile:
 
     ``` yaml
     ---
@@ -389,8 +367,7 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
     spec:
       cpu:
         isolated: 2-3
-        offlined: "1"
-        reserved: "0"
+        reserved: "0-1"
       machineConfigPoolSelector:
         machineconfiguration.openshift.io/role: worker-cnf
       net:
@@ -413,11 +390,7 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
     $ oc apply -f my-performance-profile.yaml
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The following output confirms that the performance profile is created:
 
     ``` terminal
     performanceprofile.performance.openshift.io/performance created
@@ -572,13 +545,19 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
        -t                 path to a must-gather tarball
     A tool that automates creation of Performance Profiles
 
+    Available Commands:
+      completion  Generate the autocompletion script for the specified shell
+      help        Help about any command
+      info        requires --must-gather-dir-path, ignores other arguments. [Valid values: log,json]
+
     Usage:
       performance-profile-creator [flags]
+      performance-profile-creator [command]
 
     Flags:
           --disable-ht                        Disable Hyperthreading
+          --enable-hardware-tuning            Enable setting maximum cpu frequencies
       -h, --help                              help for performance-profile-creator
-          --info string                       Show cluster information; requires --must-gather-dir-path, ignore the other arguments. [Valid values: log, json] (default "log")
           --mcp-name string                   MCP name corresponding to the target machines (required)
           --must-gather-dir-path string       Must gather directory path (default "must-gather")
           --offlined-cpu-count int            Number of offlined CPUs
@@ -590,7 +569,8 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
           --split-reserved-cpus-across-numa   Split the Reserved CPUs across NUMA nodes
           --topology-manager-policy string    Kubelet Topology Manager Policy of the performance profile to be created. [Valid values: single-numa-node, best-effort, restricted] (default "restricted")
           --user-level-networking             Run with User level Networking(DPDK) enabled
-          --enable-hardware-tuning            Enable setting maximum CPU frequencies
+
+    Use "performance-profile-creator [command] --help" for more information about a command.
     ```
 
     <div class="note">
@@ -599,56 +579,50 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
 
     </div>
 
-6.  To display information about the cluster, run the PPC tool with the `log` argument by running the following command:
+6.  To display information about the cluster, run the PPC tool with the `info` command by running the following command:
 
     ``` terminal
-    $ ./run-perf-profile-creator.sh -t /<path_to_must_gather_dir>/must-gather.tar.gz -- --info=log
+    $ ./run-perf-profile-creator.sh -t /<path_to_must_gather_dir>/must-gather.tar.gz -- info
     ```
 
     - `-t /<path_to_must_gather_dir>/must-gather.tar.gz`: Specifies the path to directory containing the must-gather tarball. This is a required argument for the wrapper script.
 
-      <div class="formalpara-title">
-
-      **Example output**
-
-      </div>
+      The following example shows the cluster information output:
 
       ``` terminal
-      level=info msg="Cluster info:"
-      level=info msg="MCP 'master' nodes:"
-      level=info msg=---
-      level=info msg="MCP 'worker' nodes:"
-      level=info msg="Node: host.example.com (NUMA cells: 1, HT: true)"
-      level=info msg="NUMA cell 0 : [0 1 2 3]"
-      level=info msg="CPU(s): 4"
-      level=info msg="Node: host1.example.com (NUMA cells: 1, HT: true)"
-      level=info msg="NUMA cell 0 : [0 1 2 3]"
-      level=info msg="CPU(s): 4"
-      level=info msg=---
-      level=info msg="MCP 'worker-cnf' nodes:"
-      level=info msg="Node: host2.example.com (NUMA cells: 1, HT: true)"
-      level=info msg="NUMA cell 0 : [0 1 2 3]"
-      level=info msg="CPU(s): 4"
-      level=info msg=---
+      PPC: Cluster info:
+      MCP 'master' nodes:
+      ---
+      MCP 'worker' nodes:
+      Node: host.example.com (NUMA cells: 1, HT: true)
+      NUMA cell 0 : [0 1 2 3]
+      CPU(s): 4
+      Node: host1.example.com (NUMA cells: 1, HT: true)
+      NUMA cell 0 : [0 1 2 3]
+      CPU(s): 4
+      ---
+      MCP 'worker-cnf' nodes:
+      Node: host2.example.com (NUMA cells: 1, HT: true)
+      NUMA cell 0 : [0 1 2 3]
+      CPU(s): 4
+      ---
       ```
 
 7.  Create a performance profile by running the following command. The example command uses sample PPC arguments and values.
 
     ``` terminal
-    $ ./run-perf-profile-creator.sh -t /path-to-must-gather/must-gather.tar.gz -- --mcp-name=worker-cnf --reserved-cpu-count=1 --rt-kernel=true --split-reserved-cpus-across-numa=false --power-consumption-mode=ultra-low-latency --offlined-cpu-count=1 > my-performance-profile.yaml
+    $ ./run-perf-profile-creator.sh -t /path-to-must-gather/must-gather.tar.gz -- --mcp-name=worker-cnf --reserved-cpu-count=2 --rt-kernel=true --split-reserved-cpus-across-numa=false --power-consumption-mode=ultra-low-latency > my-performance-profile.yaml
     ```
 
     - `--mcp-name=worker-cnf` specifies the `worker-cnf` machine config pool.
 
-    - `--reserved-cpu-count=1` specifies one reserved CPU.
+    - `--reserved-cpu-count=2` specifies two reserved CPUs.
 
     - `--rt-kernel=true` enables the real-time kernel.
 
     - `--split-reserved-cpus-across-numa=false` disables reserved CPUs splitting across NUMA nodes.
 
     - `--power-consumption-mode=ultra-low-latency` specifies minimal latency at the cost of increased power consumption.
-
-    - `--offlined-cpu-count=1` specifies one offlined CPUs.
 
       <div class="note">
 
@@ -662,11 +636,7 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
     $ cat my-performance-profile.yaml
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The generated YAML file should contain the following output:
 
     ``` yaml
     apiVersion: performance.openshift.io/v2
@@ -676,8 +646,7 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
     spec:
       cpu:
         isolated: 2-3
-        offlined: "1"
-        reserved: "0"
+        reserved: "0-1"
       machineConfigPoolSelector:
         machineconfiguration.openshift.io/role: worker-cnf
       nodeSelector:
@@ -698,11 +667,7 @@ The PPC uses the `must-gather` data from your cluster to create the performance 
     $ oc apply -f my-performance-profile.yaml
     ```
 
-    <div class="formalpara-title">
-
-    **Example output**
-
-    </div>
+    The performance profile is successfully applied and created as shown in the following output:
 
     ``` terminal
     performanceprofile.performance.openshift.io/performance created

@@ -4,7 +4,9 @@ Cluster administrators can use *Operator groups* to allow regular users to insta
 
 # Understanding Operator installation policy
 
-Operators can require wide privileges to run, and the required privileges can change between versions. Operator Lifecycle Manager (OLM) runs with `cluster-admin` privileges. By default, Operator authors can specify any set of permissions in the cluster service version (CSV), and OLM consequently grants it to the Operator.
+By default, Operator Lifecycle Manager (OLM) runs with `cluster-admin` privileges and grants any permissions that an Operator author specifies in its cluster service version (CSV).
+
+Operator authors can specify any set of permissions in the cluster service version (CSV), and OLM consequently grants it to the Operator.
 
 To ensure that an Operator cannot achieve cluster-scoped privileges and that users cannot escalate privileges using OLM, Cluster administrators can manually audit Operators before they are added to the cluster. Cluster administrators are also provided tools for determining and constraining which actions are allowed during an Operator installation or upgrade using service accounts.
 
@@ -26,7 +28,9 @@ Keep the following points in mind when associating an Operator group with a serv
 
 ## Installation scenarios
 
-When determining whether an Operator can be installed or upgraded on a cluster, Operator Lifecycle Manager (OLM) considers the following scenarios:
+To predict the success of an installation or update operation, review the scenarios Operator Lifecycle Manager (OLM) considers when installing or upgrading an Operator.
+
+OLM considers the following Operator group scenarios When installing or upgrading an Operator:
 
 - A cluster administrator creates a new Operator group and specifies a service account. All Operator(s) associated with this Operator group are installed and run against the privileges granted to the service account.
 
@@ -42,17 +46,19 @@ When determining whether an Operator can be installed or upgraded on a cluster, 
 
 ## Installation workflow
 
-When an Operator group is tied to a service account and an Operator is installed or upgraded, Operator Lifecycle Manager (OLM) uses the following workflow:
+To troubleshoot installation or update issues, review the workflow Operator Lifecycle Manager (OLM) follows during the installation process.
 
-1.  The given `Subscription` object is picked up by OLM.
+When an Operator group specifies a service account, OLM completes the following steps:
 
-2.  OLM fetches the Operator group tied to this subscription.
+1.  OLM picks up the `Subscription` object.
 
-3.  OLM determines that the Operator group has a service account specified.
+2.  OLM fetches the Operator group linked to the subscription.
 
-4.  OLM creates a client scoped to the service account and uses the scoped client to install the Operator. This ensures that any permission requested by the Operator is always confined to that of the service account in the Operator group.
+3.  OLM checks if the Operator group specifies a service account.
 
-5.  OLM creates a new service account with the set of permissions specified in the CSV and assigns it to the Operator. The Operator runs as the assigned service account.
+4.  OLM creates a client scoped to the service account and uses it to install the Operator, ensuring permissions remain confined to that service account.
+
+5.  OLM creates a new service account with the permissions specified in the CSV and assigns it to the Operator. The Operator then runs using this assigned service account.
 
 # Scoping Operator installations
 
@@ -65,6 +71,12 @@ Using this example, a cluster administrator can confine a set of Operators to a 
 - You have installed the OpenShift CLI (`oc`).
 
 1.  Create a new namespace:
+
+    <div class="formalpara-title">
+
+    **Example command that creates a `Namespace` object**
+
+    </div>
 
     ``` terminal
     $ cat <<EOF | oc create -f -
@@ -79,6 +91,12 @@ Using this example, a cluster administrator can confine a set of Operators to a 
 
     1.  Create a service account by running the following command:
 
+        <div class="formalpara-title">
+
+        **Example command that creates a `ServiceAccount` object**
+
+        </div>
+
         ``` terminal
         $ cat <<EOF | oc create -f -
         apiVersion: v1
@@ -90,6 +108,12 @@ Using this example, a cluster administrator can confine a set of Operators to a 
         ```
 
     2.  Create a secret by running the following command:
+
+        <div class="formalpara-title">
+
+        **Example command that creates a long-lived API token `Secret` object**
+
+        </div>
 
         ``` terminal
         $ cat <<EOF | oc create -f -
@@ -104,13 +128,19 @@ Using this example, a cluster administrator can confine a set of Operators to a 
         EOF
         ```
 
-        - The secret must be a long-lived API token, which is used by the service account.
+        The secret must be a long-lived API token, which is used by the service account.
 
     3.  Create a role by running the following command.
 
         <div class="warning">
 
         In this example, the role grants the service account permissions to do anything in the designated namespace for demonostration purposes only. In a production environment, you should create a more fine-grained set of permissions. For more information, see "Fine-grained permissions".
+
+        </div>
+
+        <div class="formalpara-title">
+
+        **Example command that creates `Role` and `RoleBinding` objects**
 
         </div>
 
@@ -144,6 +174,12 @@ Using this example, a cluster administrator can confine a set of Operators to a 
 
 3.  Create an `OperatorGroup` object in the designated namespace by running the following command. This Operator group targets the designated namespace to ensure that its tenancy is confined to it. In addition, Operator groups allow a user to specify a service account.
 
+    <div class="formalpara-title">
+
+    **Example command that creates an `OperatorGroup` object**
+
+    </div>
+
     ``` terminal
     $ cat <<EOF | oc create -f -
     apiVersion: operators.coreos.com/v1
@@ -158,9 +194,15 @@ Using this example, a cluster administrator can confine a set of Operators to a 
     EOF
     ```
 
-    - Specify the service account created in the previous step. Any Operator installed in the designated namespace is tied to this Operator group and therefore to the service account specified.
+    Specify the service account created in the previous step. Any Operator installed in the designated namespace is tied to this Operator group and therefore to the service account specified.
 
 4.  Create a `Subscription` object in the designated namespace to install an Operator:
+
+    <div class="formalpara-title">
+
+    **Example command that creates a `Subscription` object**
+
+    </div>
 
     ``` terminal
     $ cat <<EOF | oc create -f -
@@ -177,15 +219,21 @@ Using this example, a cluster administrator can confine a set of Operators to a 
     EOF
     ```
 
-    - Specify a catalog source that already exists in the designated namespace or one that is in the global catalog namespace, for example `redhat-operators`.
+    where:
 
-    - Specify a namespace where the catalog source was created, for example `openshift-marketplace` for the `redhat-operators` catalog.
+    `<catalog_source_name>`
+    Specifies a catalog source that already exists in the designated namespace or one that is in the global catalog namespace, for example `redhat-operators`.
+
+    `<catalog_source_namespace>`
+    Specifies a namespace where the catalog source was created, for example `openshift-marketplace` for the `redhat-operators` catalog.
 
     Any Operator tied to this Operator group is confined to the permissions granted to the specified service account. If the Operator requests permissions that are outside the scope of the service account, the installation fails with relevant errors.
 
 ## Fine-grained permissions
 
-Operator Lifecycle Manager (OLM) uses the service account specified in an Operator group to create or update the following resources related to the Operator being installed:
+Operator Lifecycle Manager (OLM) uses the service account specified in the Operator group to restrict an Operator to a designated namespace. During Operator installation and updates, OLM uses this service account to manage cluster resources.
+
+To restrict Operators to a designated namespace, grant the following permissions to the service account:
 
 - `ClusterServiceVersion`
 
@@ -201,11 +249,9 @@ Operator Lifecycle Manager (OLM) uses the service account specified in an Operat
 
 - `Role` and `RoleBinding`
 
-To confine Operators to a designated namespace, cluster administrators can start by granting the following permissions to the service account:
-
 <div class="note">
 
-The following role is a generic example and additional rules might be required based on the specific Operator.
+The following role configuration is a generic example. Your Operator might require additional rules.
 
 </div>
 
@@ -229,9 +275,9 @@ rules:
   verbs: ["list", "watch", "get", "create", "update", "patch", "delete"]
 ```
 
-- Add permissions to create other resources, such as deployments and pods shown here.
+Set permissions in the `rules.apiGroups` fields for `apps` and core `""` resources so the service account can create deployments and pods.
 
-In addition, if any Operator specifies a pull secret, the following permissions must also be added:
+If an Operator specifies a pull secret, add the following permissions:
 
 ``` yaml
 kind: ClusterRole
@@ -247,11 +293,11 @@ rules:
   verbs: ["create", "update", "patch"]
 ```
 
-- Required to get the secret from the OLM namespace.
+The `ClusterRole` object allows the service account to retrieve secrets from the OLM namespace.
 
 # Operator catalog access control
 
-When an Operator catalog is created in the global catalog namespace `openshift-marketplace`, the catalog’s Operators are made available cluster-wide to all namespaces. A catalog created in other namespaces only makes its Operators available in that same namespace of the catalog.
+The Operators in a catalog created in the global catalog `openshift-marketplace` namespace are available cluster-wide to all namespaces. The Operators in a catalog created in other namespaces are available in the same namespace as the catalog.
 
 On clusters where non-cluster administrator users have been delegated Operator installation privileges, cluster administrators might want to further control or restrict the set of Operators those users are allowed to install. This can be achieved with the following actions:
 
@@ -265,7 +311,7 @@ On clusters where non-cluster administrator users have been delegated Operator i
 
 # Troubleshooting permission failures
 
-If an Operator installation fails due to lack of permissions, identify the errors using the following procedure.
+If an Operator installation fails due to a lack of permissions, identify which specific permissions are missing.
 
 1.  Review the `Subscription` object. Its status has an object reference `installPlanRef` that points to the `InstallPlan` object that attempted to create the necessary `[Cluster]Role[Binding]` object(s) for the Operator:
 

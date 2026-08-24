@@ -44,7 +44,7 @@ The smallest OpenShift Container Platform clusters require the following hosts:
 
 <div class="important">
 
-For a cluster that contains user-provisioned infrastructure, you must deploy all of the required machines.
+For a cluster that has user-provisioned infrastructure, you must deploy all of the required machines.
 
 </div>
 
@@ -64,61 +64,57 @@ As an exception, you can run zero compute machines in a bare metal cluster that 
 
 <div class="important">
 
-To maintain high availability of your cluster, use separate physical hosts for these cluster machines.
+To keep high availability of your cluster, use separate physical hosts for these cluster machines.
 
 </div>
 
-The bootstrap and control plane machines must use Red Hat Enterprise Linux CoreOS (RHCOS) as the operating system. However, the compute machines can choose between Red Hat Enterprise Linux CoreOS (RHCOS), Red Hat Enterprise Linux (RHEL) 8.6 and later.
+The bootstrap and control plane machines must use Red Hat Enterprise Linux CoreOS (RHCOS) as the operating system. However, the compute machines can use Red Hat Enterprise Linux CoreOS (RHCOS), Red Hat Enterprise Linux (RHEL) 8.6 and later.
 
-Note that RHCOS is based on Red Hat Enterprise Linux (RHEL) 9.2 and inherits all of its hardware certifications and requirements. See [Red Hat Enterprise Linux technology capabilities and limits](https://access.redhat.com/articles/rhel-limits).
+RHCOS is based on Red Hat Enterprise Linux (RHEL) 9.2 and inherits all of its hardware certifications and requirements. See [Red Hat Enterprise Linux technology capabilities and limits](https://access.redhat.com/articles/rhel-limits).
 
 ## Minimum resource requirements for cluster installation
 
-Each created cluster must meet minimum requirements so that the cluster runs as expected.
+To ensure that your OpenShift Container Platform cluster runs as expected, each cluster machine must meet minimum CPU, memory, and storage requirements.
 
-| Machine       | Operating System | CPU <sup>\[1\]</sup> | RAM   | Storage | Input/Output Per Second (IOPS)<sup>\[2\]</sup> |
-|---------------|------------------|----------------------|-------|---------|------------------------------------------------|
-| Bootstrap     | RHCOS            | 4                    | 16 GB | 100 GB  | 300                                            |
-| Control plane | RHCOS            | 4                    | 16 GB | 100 GB  | 300                                            |
-| Compute       | RHCOS            | 2                    | 8 GB  | 100 GB  | 300                                            |
+| Machine       | Operating system | CPU | RAM   | Storage | Input/Output Per Second (IOPS) |
+|---------------|------------------|-----|-------|---------|--------------------------------|
+| Bootstrap     | RHCOS            | 4   | 16 GB | 100 GB  | 300                            |
+| Control plane | RHCOS            | 4   | 16 GB | 100 GB  | 300                            |
+| Compute       | RHCOS            | 2   | 8 GB  | 100 GB  | 300                            |
 
 Minimum resource requirements
 
-1.  One CPU is equivalent to one physical core when simultaneous multithreading (SMT), or Hyper-Threading, is not enabled. When enabled, use the following formula to calculate the corresponding ratio: (threads per core × cores) × sockets = CPUs.
+- One CPU is equal to one physical core when simultaneous multithreading (SMT), or Hyper-Threading, is not enabled. When enabled, use the following formula to calculate the corresponding ratio: (threads per core × cores) × sockets = CPUs.
 
-2.  OpenShift Container Platform and Kubernetes are sensitive to disk performance, and faster storage is recommended, particularly for etcd on the control plane nodes which require a 10 ms p99 fsync duration. Note that on many cloud platforms, storage size and IOPS scale together, so you might need to over-allocate storage volume to obtain sufficient performance.
+- OpenShift Container Platform and Kubernetes are sensitive to disk performance, and Red Hat recommends faster storage, particularly for etcd on the control plane nodes which require a 10 ms p99 fsync duration. On many cloud platforms, storage size and IOPS scale together, so you might need to provision more storage to get enough performance.
 
-3.  As with all user-provisioned installations, if you choose to use RHEL compute machines in your cluster, you take responsibility for all operating system life cycle management and maintenance, including performing system updates, applying patches, and completing all other required tasks. Use of RHEL 7 compute machines is deprecated and has been removed in OpenShift Container Platform 4.10 and later.
+- As with all user-provisioned installations, if you choose to use RHEL compute machines in your cluster, you take responsibility for all operating system life cycle management and maintenance, including performing system updates, applying patches, and completing all other required tasks. OpenShift Container Platform 4.10 and later do not support RHEL 7 compute machines.
 
 <div class="note">
 
-For OpenShift Container Platform version 4.19, RHCOS is based on RHEL version 9.6, which updates the micro-architecture requirements. The following list contains the minimum instruction set architectures (ISA) that each architecture requires:
+In OpenShift Container Platform version 4.19, RHCOS uses RHEL version 9.6, which updates the micro-architecture requirements. Each architecture requires the following minimum instruction set architectures (ISA):
 
 - x86-64 architecture requires x86-64-v2 ISA
 
 - ARM64 architecture requires ARMv8.0-A ISA
 
-- IBM Power architecture requires Power 9 ISA
+- ppc64le architecture requires IBM® Power9 ISA
 
-- s390x architecture requires z14 ISA
+- s390x architecture requires IBM® z14 ISA
 
-For more information, see "Architectures" in the RHEL documentation.
+For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.8_release_notes/index#architectures) in the RHEL documentation.
 
 </div>
 
 If an instance type for your platform meets the minimum requirements for cluster machines, it is supported to use in OpenShift Container Platform.
 
-- [Architectures (RHEL documentation)](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures)
-
-<!-- -->
-
 - [Optimizing storage](../../../scalability_and_performance/optimization/optimizing-storage.xml#optimizing-storage)
 
 ## Certificate signing requests management
 
-On user-provisioned infrastructure, you must provide a mechanism for approving cluster certificate signing requests (CSRs) after installation when your cluster has limited access to automatic machine management.
+On user-provisioned infrastructure, you must implement a mechanism for approving cluster certificate signing requests (CSRs) after installation when your cluster has limited access to automatic machine management.
 
-The `kube-controller-manager` only approves the kubelet client CSRs. The `machine-approver` cannot guarantee the validity of a serving certificate that is requested by using kubelet credentials because it cannot confirm that the correct machine issued the request. You must determine and implement a method of verifying the validity of the kubelet serving certificate requests and approving them.
+The `kube-controller-manager` only approves the kubelet client CSRs. The `machine-approver` cannot guarantee the validity of a serving certificate that kubelet credentials request because it cannot confirm that the correct machine issued the request. You must find and implement a method of verifying the validity of the kubelet serving certificate requests and approving them.
 
 - See [Configuring a three-node cluster](../../../installing/installing_bare_metal/upi/installing-bare-metal.xml#installation-three-node-cluster_installing-bare-metal) for details about deploying three-node clusters in bare metal environments.
 
@@ -4093,7 +4089,8 @@ OpenShift Container Platform does not support enabling multipathing as a day-2 a
 
       where:
 
-    - `<wwn_ID>`:: Indicates the WWN ID of the target multipathed device. For example, `0xx194e957fcedb4841`.
+      `<wwn_ID>`
+      Indicates the WWN ID of the target multipathed device. For example, `0xx194e957fcedb4841`.
 
       This symlink can also be used as the `coreos.inst.install_dev` kernel argument when using special `coreos.inst.*` arguments to direct the live installer. For more information, see "Installing RHCOS and starting the OpenShift Container Platform bootstrap process".
 
@@ -4414,7 +4411,7 @@ The OpenShift Container Platform bootstrap process begins after the cluster node
 
 To log in to your cluster as the default system user, export the `kubeconfig` file. This configuration enables the CLI to authenticate and connect to the specific API server created during OpenShift Container Platform installation.
 
-The `kubeconfig` file is specific to a cluster and is created during OpenShift Container Platform installation.
+The `kubeconfig` file is specific to a cluster and OpenShift Container Platform generates it during installation.
 
 - You deployed an OpenShift Container Platform cluster.
 
@@ -4453,7 +4450,7 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 # Approving the certificate signing requests for your machines
 
-To allow newly added machines to join your OpenShift Container Platform cluster, you can confirm that pending certificate signing requests (CSRs) are approved or approve them yourself. Approve client requests first, then server requests.
+To allow newly added machines to join your OpenShift Container Platform cluster, confirm that the cluster approves pending certificate signing requests (CSRs), or approve them yourself. Approve client requests first, then server requests.
 
 - You added machines to your cluster.
 
@@ -4480,7 +4477,7 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     <div class="note">
 
-    The preceding output might not include the compute nodes until some CSRs are approved.
+    The preceding output might not include the compute nodes until you approve some CSRs.
 
     </div>
 
@@ -4509,13 +4506,13 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     <div class="note">
 
-    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After the client CSR is approved, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The subsequent serving certificate renewal requests are then automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After you approve the client CSR, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The `machine-approver` then automatically approves later serving certificate renewal requests if the kubelet requests a new certificate with the same parameters.
 
     </div>
 
     <div class="note">
 
-    For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If a request is not approved, then the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because a serving certificate is required when the API server connects to the kubelet. Any operation that contacts the Kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the CSR was submitted by the `node-bootstrapper` service account in the `system:node` or `system:admin` groups, and confirm the identity of the node.
+    For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If you do not approve a request, the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because the API server requires a serving certificate when it connects to the kubelet. Any operation that contacts the kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the `node-bootstrapper` service account in the `system:node` or `system:admin` groups submitted the CSR, and confirm the identity of the node.
 
     </div>
 
@@ -4538,11 +4535,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
       <div class="note">
 
-      Some Operators might not become available until some CSRs are approved.
+      Some Operators might not become available until you approve some CSRs.
 
       </div>
 
-4.  Now that your client requests are approved, you must review the server requests for each machine that you added to the cluster:
+4.  After you approve your client requests, review the server requests for each machine that you added to the cluster:
 
     ``` terminal
     $ oc get csr
@@ -4580,7 +4577,7 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
       $ oc get csr -o go-template='{{range .items}}{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}}{{end}}' | xargs oc adm certificate approve
       ```
 
-6.  After all client and server CSRs have been approved, the machines have the `Ready` status. Verify this by running the following command:
+6.  After you approve all client and server CSRs, the machines have the `Ready` status. Verify this by running the following command:
 
     ``` terminal
     $ oc get nodes
@@ -4603,7 +4600,7 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     <div class="note">
 
-    You might need to wait a few minutes after approval of the server CSRs for the machines to transition to the `Ready` status.
+    You might need to wait a few minutes after approval of the server CSRs for the machines to change to the `Ready` status.
 
     </div>
 

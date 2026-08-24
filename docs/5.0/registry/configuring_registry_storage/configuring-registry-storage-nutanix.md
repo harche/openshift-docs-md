@@ -111,7 +111,7 @@ As a cluster administrator, following installation you must configure your regis
 
 ## Configuring storage for the image registry in non-production clusters
 
-You must configure storage for the Image Registry Operator. For non-production clusters, you can set the image registry to an empty directory. If you do so, all images are lost if you restart the registry.
+You must configure storage for the Image Registry Operator. For non-production clusters, you can set the image registry to an empty directory, but you lose all images if you restart the registry.
 
 - To set the image registry storage to an empty directory:
 
@@ -126,6 +126,12 @@ You must configure storage for the Image Registry Operator. For non-production c
   </div>
 
   If you run this command before the Image Registry Operator initializes its components, the `oc patch` command fails with the following error:
+
+  <div class="formalpara-title">
+
+  **Example output**
+
+  </div>
 
   ``` terminal
   Error from server (NotFound): configs.imageregistry.operator.openshift.io "cluster" not found

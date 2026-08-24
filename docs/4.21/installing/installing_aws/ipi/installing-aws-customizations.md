@@ -32,7 +32,7 @@ The following prerequisites must be met:
 
 # Obtaining an AWS Marketplace image
 
-If you are deploying an OpenShift Container Platform cluster using an AWS Marketplace image, you must first subscribe through AWS. Subscribing to the offer provides you with the AMI ID that the installation program uses to deploy compute nodes.
+If you are deploying an OpenShift Container Platform cluster by using an Amazon Web Services (AWS) Marketplace image, you must first subscribe through AWS. Subscribing to the offer provides you with the Amazon Machine Image (AMI) ID that the installation program uses to deploy compute nodes.
 
 <div class="note">
 
@@ -40,11 +40,11 @@ You should only modify the RHCOS image for compute machines to use an AWS Market
 
 </div>
 
-- You have an AWS account to purchase the offer. This account does not have to be the same account that is used to install the cluster.
+- You have an AWS account to buy the offer. This account does not have to be the same account that you use to install the cluster.
 
 1.  Complete the OpenShift Container Platform subscription from the [AWS Marketplace](https://aws.amazon.com/marketplace/fulfillment?productId=59ead7de-2540-4653-a8b0-fa7926d5c845).
 
-2.  Record the AMI ID for your specific AWS Region. As part of the installation process, you must update the `install-config.yaml` file with this value before deploying the cluster.
+2.  Record the AMI ID for your specific AWS region. As part of the installation process, you must update the `install-config.yaml` file with this value before deploying the cluster.
 
     <div class="formalpara-title">
 
@@ -78,7 +78,7 @@ You should only modify the RHCOS image for compute machines to use an AWS Market
     Specifies the AMI ID from your AWS Marketplace subscription.
 
     `platform.aws.region`
-    Specifies the `platform.aws.region` parameter. Your AMI ID is associated with a specific AWS Region. When creating the installation configuration file, ensure that you select the same AWS Region that you specified when configuring your subscription.
+    Specifies the `platform.aws.region` parameter. Your AMI ID is associated with a specific AWS region. When creating the installation configuration file, ensure that you select the same AWS region that you specified when configuring your subscription.
 
 # Network configuration phases
 
@@ -178,71 +178,71 @@ You can customize the OpenShift Container Platform cluster you install on Amazon
 
 ## Minimum resource requirements for cluster installation
 
-Each created cluster must meet minimum requirements so that the cluster runs as expected.
+To ensure that your OpenShift Container Platform cluster runs as expected, each cluster machine must meet minimum CPU, memory, and storage requirements.
 
-| Machine       | Operating System | vCPU <sup>\[1\]</sup> | Virtual RAM | Storage | Input/Output Per Second (IOPS)<sup>\[2\]</sup> |
-|---------------|------------------|-----------------------|-------------|---------|------------------------------------------------|
-| Bootstrap     | RHCOS            | 4                     | 16 GB       | 100 GB  | 300                                            |
-| Control plane | RHCOS            | 4                     | 16 GB       | 100 GB  | 300                                            |
-| Compute       | RHCOS            | 2                     | 8 GB        | 100 GB  | 300                                            |
+| Machine       | Operating system | vCPU | Virtual RAM | Storage | Input/Output Per Second (IOPS) |
+|---------------|------------------|------|-------------|---------|--------------------------------|
+| Bootstrap     | RHCOS            | 4    | 16 GB       | 100 GB  | 300                            |
+| Control plane | RHCOS            | 4    | 16 GB       | 100 GB  | 300                            |
+| Compute       | RHCOS            | 2    | 8 GB        | 100 GB  | 300                            |
 
 Minimum resource requirements
 
-1.  One vCPU is equivalent to one physical core when simultaneous multithreading (SMT), or Hyper-Threading, is not enabled. When enabled, use the following formula to calculate the corresponding ratio: (threads per core × cores) × sockets = vCPUs.
+- One vCPU is equal to one physical core when simultaneous multithreading (SMT), or Hyper-Threading, is not enabled. When enabled, use the following formula to calculate the corresponding ratio: (threads per core × cores) × sockets = vCPUs.
 
-2.  OpenShift Container Platform and Kubernetes are sensitive to disk performance, and faster storage is recommended, particularly for etcd on the control plane nodes which require a 10 ms p99 fsync duration. Note that on many cloud platforms, storage size and IOPS scale together, so you might need to over-allocate storage volume to obtain sufficient performance.
+- OpenShift Container Platform and Kubernetes are sensitive to disk performance, and Red Hat recommends faster storage, particularly for etcd on the control plane nodes which require a 10 ms p99 fsync duration. On many cloud platforms, storage size and IOPS scale together, so you might need to provision more storage to get enough performance.
 
-3.  As with all user-provisioned installations, if you choose to use RHEL compute machines in your cluster, you take responsibility for all operating system life cycle management and maintenance, including performing system updates, applying patches, and completing all other required tasks. Use of RHEL 7 compute machines is deprecated and has been removed in OpenShift Container Platform 4.10 and later.
+- As with all user-provisioned installations, if you choose to use RHEL compute machines in your cluster, you take responsibility for all operating system life cycle management and maintenance, including performing system updates, applying patches, and completing all other required tasks. OpenShift Container Platform 4.10 and later do not support RHEL 7 compute machines.
 
 <div class="note">
 
-For OpenShift Container Platform version 4.19, RHCOS is based on RHEL version 9.6, which updates the micro-architecture requirements. The following list contains the minimum instruction set architectures (ISA) that each architecture requires:
+In OpenShift Container Platform version 4.19, RHCOS uses RHEL version 9.6, which updates the micro-architecture requirements. Each architecture requires the following minimum instruction set architectures (ISA):
 
 - x86-64 architecture requires x86-64-v2 ISA
 
 - ARM64 architecture requires ARMv8.0-A ISA
 
-- IBM Power architecture requires Power 9 ISA
+- ppc64le architecture requires IBM® Power9 ISA
 
-- s390x architecture requires z14 ISA
+- s390x architecture requires IBM® z14 ISA
 
-For more information, see "Architectures" in the RHEL documentation.
+For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.8_release_notes/index#architectures) in the RHEL documentation.
 
 </div>
 
 If an instance type for your platform meets the minimum requirements for cluster machines, it is supported to use in OpenShift Container Platform.
 
-- [Architectures (RHEL documentation)](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures)
-
-<!-- -->
-
 - [Optimizing storage](../../../scalability_and_performance/optimization/optimizing-storage.xml#optimizing-storage)
 
 ## Tested instance types for AWS
 
-There are several Amazon Web Services (AWS) instance types tested with OpenShift Container Platform.
+To ensure cluster stability and performance, use one of the tested Amazon Web Services (AWS) instance types for your OpenShift Container Platform machines.
 
 The following AWS instance types have been tested with OpenShift Container Platform.
 
 <div class="note">
 
-Use the machine types included in the following charts for your AWS instances. If you use an instance type that is not listed in the chart, ensure that the instance size you use matches the minimum resource requirements that are listed in the section named "Minimum resource requirements for cluster installation".
+Use the machine types included in the following charts for your AWS instances. If you use an instance type that is not listed in the chart, ensure that the instance size you use matches the minimum resource requirements in "Minimum resource requirements for cluster installation".
 
 </div>
+
+**Machine types based on 64-bit x86 architecture**
 
 <https://raw.githubusercontent.com/openshift/installer/release-4.21/docs/user/aws/tested_instance_types_x86_64.md>
 
 ## Tested instance types for AWS on 64-bit ARM infrastructures
 
-There are several Amazon Web Services (AWS) 64-bit ARM instance types tested with OpenShift Container Platform.
+To ensure cluster stability and performance, use one of the tested Amazon Web Services (AWS) 64-bit ARM instance types for your OpenShift Container Platform machines.
 
 The following AWS 64-bit ARM instance types have been tested with OpenShift Container Platform.
 
 <div class="note">
 
-Use the machine types included in the following charts for your AWS ARM instances. If you use an instance type that is not listed in the chart, ensure that the instance size you use matches the minimum resource requirements that are listed in "Minimum resource requirements for cluster installation".
+Use the machine types included in the following charts for your AWS ARM instances. If you use an instance type that is not listed in the chart, ensure that the instance size you use matches the minimum resource requirements listed in "Minimum resource requirements for cluster installation".
 
 </div>
+
+**Machine types based on 64-bit ARM architecture**
 
 <https://raw.githubusercontent.com/openshift/installer/release-4.21/docs/user/aws/tested_instance_types_aarch64.md>
 
@@ -354,13 +354,13 @@ Production environments can deny direct access to the internet and instead have 
 
 - You have an existing `install-config.yaml` file.
 
-- You have reviewed the sites that your cluster requires access to and determined whether any of them need to bypass the proxy. By default, all cluster egress traffic is proxied, including calls to hosting cloud provider APIs. You added sites to the `Proxy` object’s `spec.noProxy` field to bypass the proxy if necessary.
+- You have reviewed the sites that your cluster requires access to and determined whether any of them need to bypass the proxy. By default, the proxy handles all cluster egress traffic, including calls to hosting cloud provider APIs. You added sites to the `Proxy` object’s `spec.noProxy` field to bypass the proxy if necessary.
 
   <div class="note">
 
-  The `Proxy` object `status.noProxy` field is populated with the values of the `networking.machineNetwork[].cidr`, `networking.clusterNetwork[].cidr`, and `networking.serviceNetwork[]` fields from your installation configuration.
+  The `Proxy` object `status.noProxy` field includes the values of the `networking.machineNetwork[].cidr`, `networking.clusterNetwork[].cidr`, and `networking.serviceNetwork[]` fields from your installation configuration.
 
-  For installations on Amazon Web Services (AWS), Google Cloud, Microsoft Azure, and Red Hat OpenStack Platform (RHOSP), the `Proxy` object `status.noProxy` field is also populated with the instance metadata endpoint (`169.254.169.254`).
+  For installations on Amazon Web Services (AWS), Google Cloud, Microsoft Azure, and Red Hat OpenStack Platform (RHOSP), the `Proxy` object `status.noProxy` field also includes the instance metadata endpoint (`169.254.169.254`).
 
   </div>
 
@@ -393,10 +393,10 @@ Production environments can deny direct access to the internet and instead have 
     Specifies a comma-separated list of destination domain names, IP addresses, or other network CIDRs to exclude from proxying. Preface a domain with `.` to match subdomains only. For example, `.y.com` matches `x.y.com`, but not `y.com`. Use `*` to bypass the proxy for all destinations. If you have added the Amazon `EC2`, `Elastic Load Balancing`, and `S3` VPC endpoints to your VPC, you must add these endpoints to the `noProxy` field.
 
     `additionalTrustBundle`
-    If provided, the installation program generates a config map that is named `user-ca-bundle` in the `openshift-config` namespace to hold the additional CA certificates. If you provide `additionalTrustBundle` and at least one proxy setting, the `Proxy` object is configured to reference the `user-ca-bundle` config map in the `trustedCA` field. The Cluster Network Operator then creates a `trusted-ca-bundle` config map that merges the contents specified for the `trustedCA` parameter with the RHCOS trust bundle. The `additionalTrustBundle` field is required unless the proxy’s identity certificate is signed by an authority from the RHCOS trust bundle.
+    If you specify this value, the installation program generates a config map named `user-ca-bundle` in the `openshift-config` namespace to hold the additional CA certificates. If you specify `additionalTrustBundle` and at least one proxy setting, the `Proxy` object references the `user-ca-bundle` config map in the `trustedCA` field. The Cluster Network Operator then creates a `trusted-ca-bundle` config map that merges the contents specified for the `trustedCA` parameter with the RHCOS trust bundle. You must set the `additionalTrustBundle` field unless an authority from the RHCOS trust bundle signs the proxy’s identity certificate.
 
     `additionalTrustBundlePolicy`
-    Specifies the policy that determines the configuration of the `Proxy` object to reference the `user-ca-bundle` config map in the `trustedCA` field. The allowed values are `Proxyonly` and `Always`. Use `Proxyonly` to reference the `user-ca-bundle` config map only when `http/https` proxy is configured. Use `Always` to always reference the `user-ca-bundle` config map. The default value is `Proxyonly`. Optional parameter.
+    Specifies the policy that determines the configuration of the `Proxy` object to reference the `user-ca-bundle` config map in the `trustedCA` field. The allowed values are `Proxyonly` and `Always`. Use `Proxyonly` to reference the `user-ca-bundle` config map only when you configure an `http/https` proxy. Use `Always` to always reference the `user-ca-bundle` config map. The default value is `Proxyonly`. Optional parameter.
 
     <div class="note">
 
@@ -416,11 +416,11 @@ Production environments can deny direct access to the internet and instead have 
 
 2.  Save the file and reference it when installing OpenShift Container Platform.
 
-    The installation program creates a cluster-wide proxy that is named `cluster` that uses the proxy settings in the provided `install-config.yaml` file. If no proxy settings are provided, a `cluster` `Proxy` object is still created, but it will have a nil `spec`.
+    The installation program creates a cluster-wide proxy named `cluster` that uses the proxy settings in the `install-config.yaml` file. If you do not give proxy settings, the installation program still creates a `cluster` `Proxy` object, but it has a nil `spec`.
 
     <div class="note">
 
-    Only the `Proxy` object named `cluster` is supported, and no additional proxies can be created.
+    Only the `Proxy` object named `cluster` is supported, and you cannot create additional proxies.
 
     </div>
 
@@ -1889,7 +1889,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 To log in to your cluster as the default system user, export the `kubeconfig` file. This configuration enables the CLI to authenticate and connect to the specific API server created during OpenShift Container Platform installation.
 
-The `kubeconfig` file is specific to a cluster and is created during OpenShift Container Platform installation.
+The `kubeconfig` file is specific to a cluster and OpenShift Container Platform generates it during installation.
 
 - You deployed an OpenShift Container Platform cluster.
 
@@ -1928,7 +1928,7 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 # Logging in to the cluster by using the web console
 
-The `kubeadmin` user exists by default after an OpenShift Container Platform installation. You can log in to your cluster as the `kubeadmin` user by using the OpenShift Container Platform web console.
+To verify that your cluster deployed successfully and access its features, log in to the OpenShift Container Platform web console as the `kubeadmin` user.
 
 - You have access to the installation host.
 
@@ -1942,7 +1942,7 @@ The `kubeadmin` user exists by default after an OpenShift Container Platform ins
 
     <div class="note">
 
-    Alternatively, you can obtain the `kubeadmin` password from the `<installation_directory>/.openshift_install.log` log file on the installation host.
+    Or, you can obtain the `kubeadmin` password from the `<installation_directory>/.openshift_install.log` log file on the installation host.
 
     </div>
 
@@ -1954,7 +1954,7 @@ The `kubeadmin` user exists by default after an OpenShift Container Platform ins
 
     <div class="note">
 
-    Alternatively, you can obtain the OpenShift Container Platform route from the `<installation_directory>/.openshift_install.log` log file on the installation host.
+    Or, you can obtain the OpenShift Container Platform route from the `<installation_directory>/.openshift_install.log` log file on the installation host.
 
     </div>
 

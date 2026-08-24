@@ -12,41 +12,55 @@ To successfully manage your incoming traffic with gateway listeners, complete th
 
 To ensure that your applications receive only authenticated and authorized traffic, you must specify the allowed protocols and ports for your gateway. If you are routing secure traffic, you must also configure TLS settings. You can define these parameters by configuring the `spec.listeners` field in your `Gateway` custom resource (CR).
 
-1.  Create or edit a `Gateway` YAML file to include your desired listener configuration.
+<div class="important">
 
-    The following example demonstrates a `Gateway` CR with two listeners, one for HTTP and one for HTTPS. For detailed descriptions of the listener fields, see [Gateway listener configuration reference](#gateway-listener-configuration-reference_controlling-incoming-traffic-gateway-listeners).
+If your gateway is accessible from other namespaces, always configure the `spec.listeners[].allowedRoutes[].namespaces.selector` field with a selector for the permitted namespaces. By specifying a namespace selector, you prevent possible misuse or hijacking of the gateway from other namespaces.
+
+If nothing is listed in the `spec.listeners[].allowedRoutes[]` field, the gateway is accessible only from the same namespace.
+
+</div>
+
+1.  Create or edit a `Gateway` YAML file to include your listener configuration.
+
+    The following example demonstrates a `Gateway` CR with two listeners, one for HTTP and one for HTTPS. For detailed descriptions of the listener fields, see "Gateway listener configuration reference".
 
     ``` yaml
     kind: Gateway
     apiVersion: gateway.networking.k8s.io/v1
     metadata:
-      name: <example_gateway>
-      namespace: openshift-ingress
+      name: <example_gateway>
+      namespace: openshift-ingress
     spec:
-      gatewayClassName: openshift-default
-      listeners:
-      - protocol: HTTP
-        port: 80
-        name: http
-        allowedRoutes:
-          namespaces:
-            from: Selector
-            selector:
-              matchLabels:
-                env: "dev"
-      - protocol: HTTPS
-        port: 443
-        name: https
-        hostname: "*.<example_domain.tld>"
-        tls:
-          mode: Terminate
-          certificateRefs:
-            - name: <listener_cert>
-              kind: Secret
-        allowedRoutes:
-          namespaces:
-            from: All
+      gatewayClassName: openshift-default
+      listeners:
+      - protocol: HTTP
+        port: 80
+        name: http
+        hostname: "*.<example_domain.tld>"
+        allowedRoutes:
+          namespaces:
+            from: Selector
+            selector:
+              matchLabels:
+                env: "dev"
+      - protocol: HTTPS
+        port: 443
+        name: https
+        hostname: "*.<example_domain.tld>"
+        tls:
+          mode: Terminate
+          certificateRefs:
+            - name: <listener_cert>
+              kind: Secret
+        allowedRoutes:
+          namespaces:
+            from: Selector
+            selector:
+              matchLabels:
+                env: "dev"
     ```
+
+    \+ With this configuration, only `HTTPRoute` resources in namespaces that have the `env: "dev"` label can attach to these listeners.
 
 2.  Apply the `Gateway` CR by running the following command:
 
@@ -67,13 +81,13 @@ Defines the list of listeners for the gateway. You can customize this field with
 Defines the network port and protocol. For example, `protocol: HTTP` accepts HTTP traffic on port `80`, and `protocol: HTTPS` accepts HTTPS traffic on port `443`.
 
 `listeners.hostname`
-Defines the hostnames that the listener matches for incoming requests. For example, it can match only requests for hostnames ending in `<example_domain.tld>` (such as `www.<example_domain.tld>`). If no hostname is specified, the gateway routes any traffic that can attach to it.
+Defines the hostnames that the listener matches for incoming requests. For example, it can match only requests for hostnames ending in `<example_domain.tld>` (such as `www.<example_domain.tld>`). Always set a hostname on each listener, unless you are defining a catch-all route. If no hostname is specified, any route that can attach to the listener can claim arbitrary hostnames.
 
 `listeners.tls`
 Specifies the TLS settings for secure communication, including the mode (currently, only `Terminate` is supported on OpenShift Container Platform) and the Kubernetes secret containing the certificate keypair. For example, TLS is terminated at the gateway using a certificate stored in a Kubernetes `Secret` called `<listener_cert>`. You must ensure that the specified Kubernetes secret exists before you create the `Gateway` CR.
 
 `listeners.allowedRoutes`
-Controls which `Route` resources can attach to this listener. For example, an HTTP listener might only allow `HTTPRoute` resources from namespaces that have the `env: "dev"` label (using `Selector`), while an HTTPS listener might allow `HTTPRoute` resources from any namespace to attach (using `All`). Setting `allowedRoutes.namespaces.from: Same` is not supported; routes from the same namespace as the gateway are always allowed.
+Controls which route resources can attach to this listener. If you omit this field, or set `namespaces.from: Same`, only routes in the same namespace as the `Gateway` can attach. To allow routes from other namespaces, set `namespaces.from: Selector` and a label selector for trusted namespaces. For example, an HTTP listener might allow `HTTPRoute` resources only from namespaces that have the `env: "dev"` label. Do not set `namespaces.from: All`; that setting allows routes from every namespace and can enable hostname or domain hijacking.
 
 # Understand listener routing conflicts
 

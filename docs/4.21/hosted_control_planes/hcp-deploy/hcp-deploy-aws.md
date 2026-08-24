@@ -111,29 +111,23 @@ Before you can create and manage a hosted cluster on Amazon Web Services (AWS), 
 
         </div>
 
-2.  Create an OIDC S3 secret named `hypershift-operator-oidc-provider-s3-credentials` for the HyperShift Operator.
-
-3.  Save the secret in the `local-cluster` namespace.
-
-4.  See the following table to verify that the secret contains the following fields:
-
-    | Field name    | Description                                                                                                                                                                              |
-    |---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-    | `bucket`      | Contains an S3 bucket with public access to host OIDC discovery documents for your hosted clusters.                                                                                      |
-    | `credentials` | A reference to a file that contains the credentials of the `default` profile that can access the bucket. By default, HyperShift only uses the `default` profile to operate the `bucket`. |
-    | `region`      | Specifies the region of the S3 bucket.                                                                                                                                                   |
-
-    Required fields for the AWS secret
-
-5.  To create an AWS secret, run the following command:
+2.  Create an OIDC S3 secret named `hypershift-operator-oidc-provider-s3-credentials` for the HyperShift Operator by running the following command:
 
     ``` terminal
-    $ oc create secret generic <secret_name> \
+    $ oc create secret generic hypershift-operator-oidc-provider-s3-credentials \
       --from-file=credentials=<path>/.aws/credentials \
       --from-literal=bucket=<s3_bucket> \
       --from-literal=region=<region> \
       -n local-cluster
     ```
+
+    - Save the secret in the `local-cluster` namespace.
+
+    - The `bucket` field specifies an S3 bucket with public access to host OIDC discovery documents for your hosted clusters.
+
+    - The `credentials` field specifies reference to a file that contains the credentials of the `default` profile that can access the bucket. By default, the HyperShift Operator only uses the `default` profile to operate the `bucket`.
+
+    - The `region` field specifies the region of the S3 bucket.
 
     <div class="note">
 
@@ -803,42 +797,36 @@ To create a hosted cluster on Amazon Web Services (AWS), you can use the hosted 
         --node-pool-replicas <node_pool_replica_count> \
         --namespace <hosted_cluster_namespace> \
         --role-arn <role_name> \
-        --render-into <file_name>.yaml
+        --release-image=quay.io/openshift-release-dev/ocp-release:<ocp_release_image> \
+        --render-into <file_name>.yaml \
+        --render-sensitive
     ```
 
-    where:
+    - `--name` specifies the name of your hosted cluster.
 
-    `<hosted_cluster_name>`
-    Specifies the name of your hosted cluster.
+    - `--infra-id` specifies your infrastructure name. You must provide the same value for `<hosted_cluster_name>` and `<infra_id>`. Otherwise, the cluster might not appear correctly in the multicluster engine for Kubernetes Operator console.
 
-    `<infra_id>`
-    Specifies your infrastructure name. You must provide the same value for `<hosted_cluster_name>` and `<infra_id>`. Otherwise the cluster might not appear correctly in the multicluster engine for Kubernetes Operator console.
+    - `--base-domain` specifies your base domain, for example, `example.com`.
 
-    `<basedomain>`
-    Specifies your base domain, for example, `example.com`.
+    - `--sts-creds` specifies the path to your AWS STS credentials file, for example, `/home/user/sts-creds/sts-creds.json`.
 
-    `<path_to_sts_credential_file>`
-    Specifies the path to your AWS STS credentials file, for example, `/home/user/sts-creds/sts-creds.json`.
+    - `--pull-secret` specifies the path to your pull secret, for example, `/user/name/pullsecret`.
 
-    `<path_to_pull_secret>`
-    Specifies the path to your pull secret, for example, `/user/name/pullsecret`.
+    - `--region` specifies the AWS region name, for example, `us-east-1`.
 
-    `<region>`
-    Specifies the AWS region name, for example, `us-east-1`.
+    - `--node-pool-replicas` specifies the node pool replica count, for example, `3`.
 
-    `<node_pool_replica_count>`
-    Specifies the node pool replica count, for example, `3`.
+    - `--namespace` specifies that you want to create the `HostedCluster` and `NodePool` custom resource in a specific namespace. Otherwise, by default, all `HostedCluster` and `NodePool` custom resources are created in the `clusters` namespace.
 
-    `<hosted_cluster_namespace>`
-    Specifies that you want to create the `HostedCluster` and `NodePool` custom resource in a specific namespace. Otherwise, by default, all `HostedCluster` and `NodePool` custom resources are created in the `clusters` namespace.
+    - `--role-arn` specifies the Amazon Resource Name (ARN), for example, `arn:aws:iam::820196288204:role/myrole`.
 
-    `<role_name>`
-    Specifies the Amazon Resource Name (ARN), for example, `arn:aws:iam::820196288204:role/myrole`.
+    - `--release-image` specifies the supported OpenShift Container Platform version that you want to use, for example, `4.21.0-multi`.
 
-    `<file_name>`
-    Specifies whether the EC2 instance runs on shared or single tenant hardware. The `--render-into` flag renders Kubernetes resources into the YAML file that you specify in this field. Continue to the next step to edit the YAML file.
+    - `--render-into` specifies whether the EC2 instance runs on shared or single tenant hardware. The `--render-into` flag renders Kubernetes resources into the YAML file that you specify in this field. Continue to the next step to edit the YAML file.
 
-2.  If you included the `--render-into` flag in the previous command, edit the specified YAML file. Edit the `NodePool` specification in the YAML file to indicate whether the EC2 instance should run on shared or single-tenant hardware, similar to the following example:
+    - `--render-sensitive` specifies that you want sensitive secrets to be rendered into the file that is specified by the `--render-into` flag. If you include the `--render-into` flag in the `hcp create cluster` command, you must also include the `--render-sensitive` flag, or cluster creation fails.
+
+2.  If you included the `--render-into` flag in the `hcp create cluster` command, edit the specified YAML file. Edit the `NodePool` specification in the YAML file to indicate whether the EC2 instance should run on shared or single-tenant hardware, similar to the following example:
 
     <div class="formalpara-title">
 
@@ -860,7 +848,7 @@ To create a hosted cluster on Amazon Web Services (AWS), you can use the hosted 
 
     where:
 
-    `<nodepool_name>`
+    `metadata.name`
     Specifies the name of the `NodePool` resource.
 
     `spec.platform.aws.placement.tenancy`
@@ -881,6 +869,12 @@ To create a hosted cluster on Amazon Web Services (AWS), you can use the hosted 
     ```
 
     The `spec.operatorConfiguration.ingressOperator.endPointPublishingStrategy.type` parameter specifies the endpoint for the load balancer. For AWS, use the `LoadBalancerService` type.
+
+4.  Enter the following command:
+
+    ``` terminal
+    $ oc create -f <file_name>.yaml
+    ```
 
 <!-- -->
 

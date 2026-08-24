@@ -289,7 +289,7 @@ Use the `SpireAgent` custom resource to configure the SPIRE Agent `DaemonSet` on
 - Verify that the daemon set of the SPIRE Agent is ready and available by running the following command:
 
   ``` terminal
-  $ oc get daemonset -l app.kubernetes.io/name=agent -n zero-trust-workload-identity-manager
+  $ oc get daemonset -l app.kubernetes.io/name=spire-agent -n zero-trust-workload-identity-manager
   ```
 
   <div class="formalpara-title">
@@ -306,7 +306,7 @@ Use the `SpireAgent` custom resource to configure the SPIRE Agent `DaemonSet` on
 - Verify that the status of SPIRE Agent pods is `Running` by running the following command:
 
   ``` terminal
-  $ oc get po -l app.kubernetes.io/name=agent -n zero-trust-workload-identity-manager
+  $ oc get po -l app.kubernetes.io/name=spire-agent -n zero-trust-workload-identity-manager
   ```
 
   <div class="formalpara-title">

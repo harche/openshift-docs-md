@@ -1,4 +1,4 @@
-Operators use the Kubernetes extension mechanism, custom resource definitions (CRDs), so that custom objects managed by the Operator look and act just like the built-in, native Kubernetes objects. This guide describes how cluster administrators can extend their OpenShift Container Platform cluster by creating and managing CRDs.
+To extend the Kubernetes API with custom object types that behave like built-in Kubernetes objects, cluster administrators can create and manage custom resource definitions (CRDs) on their OpenShift Container Platform cluster.
 
 # Custom resource definitions
 
@@ -25,14 +25,6 @@ While only cluster administrators can create CRDs, developers can create the CR 
 To create custom resource (CR) objects, cluster administrators must first create a custom resource definition (CRD).
 
 - Access to an OpenShift Container Platform cluster with `cluster-admin` user privileges.
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-To create a CRD:
 
 1.  Create a YAML file that contains the following field types:
 
@@ -75,29 +67,40 @@ To create a CRD:
         - ct
     ```
 
-    - Use the `apiextensions.k8s.io/v1` API.
+    where:
 
-    - Specify a name for the definition. This must be in the `<plural-name>.<group>` format using the values from the `group` and `plural` fields.
+    `apiVersion`
+    Specifies the `apiextensions.k8s.io/v1` API parameter.
 
-    - Specify a group name for the API. An API group is a collection of objects that are logically related. For example, all batch objects like `Job` or `ScheduledJob` could be in the batch API group (such as `batch.api.example.com`). A good practice is to use a fully-qualified-domain name (FQDN) of your organization.
+    `metadata.name`
+    Specifies a name for the definition. This must be in the `<plural-name>.<group>` format using the values from the `group` and `plural` fields.
 
-    - Specify a version name to be used in the URL. Each API group can exist in multiple versions, for example `v1alpha`, `v1beta`, `v1`.
+    `spec.group`
+    Specifies a group name for the API. An API group is a collection of objects that are logically related. For example, all batch objects like `Job` or `ScheduledJob` could be in the batch API group (such as `batch.api.example.com`). A good practice is to use a fully-qualified-domain name (FQDN) of your organization.
 
-    - Specify whether the custom objects are available to a project (`Namespaced`) or all projects in the cluster (`Cluster`).
+    `spec.versions.name`
+    Specifies a version name to be used in the URL. Each API group can exist in multiple versions, for example `v1alpha`, `v1beta`, `v1`.
 
-    - Specify the plural name to use in the URL. The `plural` field is the same as a resource in an API URL.
+    `spec.scope`
+    Specifies whether the custom objects are available to a project (`Namespaced`) or all projects in the cluster (`Cluster`).
 
-    - Specify a singular name to use as an alias on the CLI and for display.
+    `spec.names.plural`
+    Specifies the plural name to use in the URL. The `plural` field is the same as a resource in an API URL.
 
-    - Specify the kind of objects that can be created. The type can be in CamelCase.
+    `spec.names.singular`
+    Specifies a singular name to use as an alias on the CLI and for display.
 
-    - Specify a shorter string to match your resource on the CLI.
+    `spec.names.kind`
+    Specifies the kind of objects that can be created. The type can be in camel case.
 
-      <div class="note">
+    `spec.names.shortNames`
+    Specifies a shorter string to match your resource on the CLI.
 
-      By default, a CRD is cluster-scoped and available to all projects.
+    <div class="note">
 
-      </div>
+    By default, a CRD is cluster-scoped and available to all projects.
+
+    </div>
 
 2.  Create the CRD object:
 
@@ -166,23 +169,34 @@ You must explicitly assign permissions to each of these roles. The roles with mo
       verbs: ["get", "list", "watch"]
     ```
 
-    - Use the `rbac.authorization.k8s.io/v1` API.
+    where:
 
-    - Specify a name for the definition.
+    `apiVersion`
+    Specifies the `rbac.authorization.k8s.io/v1` API.
 
-    - Specify this label to grant permissions to the admin default role.
+    `metadata.name`
+    Specifies a name for the definition.
 
-    - Specify this label to grant permissions to the edit default role.
+    `metadata.labels.rbac.authorization.k8s.io/aggregate-to-admin`
+    Specifies `"true"` to enable cluster role aggregation to the admin role.
 
-    - Specify the group name of the CRD.
+    `metadata.labels.rbac.authorization.k8s.io/aggregate-to-edit`
+    Specifies `"true"` to grant permissions to the edit default role.
 
-    - Specify the plural name of the CRD that these rules apply to.
+    `rules.apiGroups`
+    Specifies the group name of the CRD.
 
-    - Specify the verbs that represent the permissions that are granted to the role. For example, apply read and write permissions to the `admin` and `edit` roles and only read permission to the `view` role.
+    `rules.resources`
+    Specifies the plural name of the CRD that these rules apply to.
 
-    - Specify this label to grant permissions to the `view` default role.
+    `rules.verbs`
+    Specifies the verbs that represent the permissions that are granted to the role. For example, apply read and write permissions to the `admin` and `edit` roles and only read permission to the `view` role.
 
-    - Specify this label to grant permissions to the `cluster-reader` default role.
+    `metadata.labels.rbac.authorization.k8s.io/aggregate-to-view`
+    Specifies `"true"` to grant permissions to the `view` default role.
+
+    `metadata.labels."rbac.authorization.k8s.io/aggregate-to-cluster-reader"`
+    Specifies `"true"` to grant permissions to the `cluster-reader` default role.
 
 2.  Create the cluster role:
 
@@ -192,7 +206,7 @@ You must explicitly assign permissions to each of these roles. The roles with mo
 
 # Creating custom resources from a file
 
-After a custom resource definition (CRD) has been added to the cluster, custom resources (CRs) can be created with the CLI from a file using the CR specification.
+After you add a custom resource definition (CRD) to the cluster, you can create custom resources (CRs) from a file by using the CLI.
 
 - CRD added to the cluster by a cluster administrator.
 
@@ -216,15 +230,22 @@ After a custom resource definition (CRD) has been added to the cluster, custom r
       image: my-awesome-cron-image
     ```
 
-    - Specify the group name and API version (name/version) from the CRD.
+    where:
 
-    - Specify the type in the CRD.
+    `apiVersion`
+    Specifies the group name and API version (name/version) from the CRD.
 
-    - Specify a name for the object.
+    `kind`
+    Specifies the type in the CRD.
 
-    - Specify the [finalizers](https://kubernetes.io/docs/tasks/access-kubernetes-api/extend-api-custom-resource-definitions/#finalizers) for the object, if any. Finalizers allow controllers to implement conditions that must be completed before the object can be deleted.
+    `metadata.name`
+    Specifies a name for the object.
 
-    - Specify conditions specific to the type of object.
+    `metadata.finalizers`
+    Specifies the finalizers for the object, if any. Finalizers allow controllers to implement conditions that must be completed before the object can be deleted.
+
+    `spec`
+    Specifies conditions specific to the type of object.
 
 2.  After you create the file, create the object:
 
@@ -313,4 +334,4 @@ You can inspect custom resource (CR) objects that exist in your cluster using th
         image: my-awesome-cron-image
     ```
 
-    - Custom data from the YAML that you used to create the object displays.
+    The `spec` section in the output displays the custom configuration settings, such as `cronSpec` and `image`, that you defined when creating the object.

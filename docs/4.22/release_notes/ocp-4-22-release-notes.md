@@ -1,10 +1,12 @@
+OpenShift Container Platform ([RHEA-2026:0449](https://access.redhat.com/errata/RHEA-2026:0449)) is now available. Before working with this release, familiarize yourself with the new features, changes, and known issues that pertain to OpenShift Container Platform 4.17 are included in this topic.
+
 Red Hat OpenShift Container Platform provides developers and IT organizations with a hybrid cloud application platform for deploying both new and existing applications on secure, scalable resources with minimal configuration and management. OpenShift Container Platform supports a wide selection of programming languages and frameworks, such as Java, JavaScript, Python, Ruby, and PHP.
 
 Built on Red Hat Enterprise Linux (RHEL) and Kubernetes, OpenShift Container Platform provides a more secure and scalable multitenant operating system for today’s enterprise-class applications, while delivering integrated application runtimes and libraries. OpenShift Container Platform enables organizations to meet security, privacy, compliance, and governance requirements.
 
 # About this release
 
-OpenShift Container Platform ([RHEA-2026:0449](https://access.redhat.com/errata/RHEA-2026:0449)) is now available. This release uses [Kubernetes 1.35](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.35.md) with CRI-O runtime. New features, changes, and known issues that pertain to OpenShift Container Platform 4.17 are included in this topic.
+OpenShift Container Platform 4.17 release uses [Kubernetes 1.35](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.35.md) with CRI-O runtime. New features, changes, and known issues that pertain to OpenShift Container Platform 4.17 are included in this topic.
 
 OpenShift Container Platform 4.17 clusters are available at <https://console.redhat.com/openshift>. From the Red Hat Hybrid Cloud Console, you can deploy OpenShift Container Platform clusters to either on-premises or cloud environments.
 
@@ -26,13 +28,13 @@ For more information about NIST post-quantum cryptography standards, see [Post-Q
 
 # OpenShift Container Platform layered and dependent component support and compatibility
 
-The scope of support for layered and dependent components of OpenShift Container Platform changes independently of the OpenShift Container Platform version.
+You can familiarize yourself with the scope of support for layered and dependent components of OpenShift Container Platform, which changes independently of the OpenShift Container Platform version.
 
 To determine the current support status and compatibility for an add-on, refer to its release notes. For more information, see the [Red Hat OpenShift Container Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift).
 
 # New features and enhancements
 
-This release adds improvements related to the following components and concepts:
+Before working with this release, familiarize yourself with the new features included in the OpenShift Container Platform4.17 release.
 
 ## AI applications
 
@@ -520,7 +522,7 @@ The creation form for namespace-scoped `ProjectHelmChartRepository` objects in t
 
 # Notable technical changes
 
-This section includes several technical changes for OpenShift Container Platform 4.17.
+You can review the list of technical changes for OpenShift Container Platform 4.17 to see if any of the changes affect your clusters or environments.
 
 Platform components and Operators now use dedicated service accounts
 Most OpenShift Container Platform platform components and Operators have been updated to use dedicated service accounts instead of the `default` service account. This change follows the principle of least privilege, simplifies security audits, and reduces the risk of accidental permission elevation by ensuring that platform identities are isolated from user workloads.
@@ -667,7 +669,7 @@ For more information on DRA, see [Allocating GPUs to pods by using DRA](../nodes
 
 # Fixed issues
 
-Review the list of issues resolved in this OpenShift Container Platform release. You can see if issues affecting your clusters or environments are fixed.
+You can review the list of issues resolved for OpenShift Container Platform 4.17 to see if any of the issues affect your clusters or environments are fixed.
 
 ## API Server and Authentication
 
@@ -1007,7 +1009,9 @@ Review the list of issues resolved in this OpenShift Container Platform release.
 
 # Technology Preview features status
 
-Some features in this release are currently in Technology Preview. These experimental features are not intended for production use. Note the following scope of support on the Red Hat Customer Portal for these features:
+You can determine if a new feature in OpenShift Container Platform4.17 is currently in Technology Preview before deciding to install the feature. These experimental features are not intended for production use.
+
+Note the following scope of support on the Red Hat Customer Portal for these features:
 
 [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview)
 
@@ -1078,10 +1082,10 @@ Extensions Technology Preview tracker
 | Enabling a user-provisioned DNS on Amazon Web Services (AWS)                              | Not Available        | Technology Preview   | Technology Preview                                           |
 | Installing a cluster using Google Cloud private and restricted API endpoints              | Not Available        | General Availability | General Availability                                         |
 | Installing a cluster on VMware vSphere with multiple network interface controllers        | General Availability | General Availability | General Availability                                         |
-| Red Hat Bare Metal as a Service for OpenShift (formerly known as bare metal as a service) | Technology Preview   | Technology Preview   | General Availability                                         |
+| Red Hat Bare Metal as a Service for OpenShift (formerly known as bare-metal as a service) | Technology Preview   | Technology Preview   | General Availability                                         |
 | Installing a cluster on Amazon Web Services (AWS) European Sovereign Cloud                | Not Available        | Not Available        | Technology Preview                                           |
 | Installing a cluster on Amazon Web Services (AWS) with dual-stack networking              | Not Available        | Not Available        | Technology Preview                                           |
-| Running firmware upgrades for hosts in deployed bare metal clusters                       | Technology Preview   | General Availability | General Availability                                         |
+| Running firmware upgrades for hosts in deployed bare-metal clusters                       | Technology Preview   | General Availability | General Availability                                         |
 | Changing the CVO log level                                                                | Technology Preview   | Technology Preview   | Technology Preview                                           |
 | Deploying virtualized control planes with KubeVirt Redfish                                | Not Available        | Not Available        | Technology Preview                                           |
 
@@ -1114,7 +1118,7 @@ Machine Config Operator Technology Preview tracker
 | Managing machines with the Cluster API for Microsoft Azure                                  | Technology Preview | Technology Preview | Technology Preview |
 | Managing machines with the Cluster API for RHOSP                                            | Technology Preview | Technology Preview | Technology Preview |
 | Managing machines with the Cluster API for VMware vSphere                                   | Technology Preview | Technology Preview | Technology Preview |
-| Managing machines with the Cluster API for bare metal                                       | Technology Preview | Technology Preview | Technology Preview |
+| Managing machines with the Cluster API for bare-metal                                       | Technology Preview | Technology Preview | Technology Preview |
 | Cloud controller manager for IBM Power® Virtual Server                                      | Technology Preview | Technology Preview | Technology Preview |
 | Adding multiple subnets to an existing VMware vSphere cluster by using compute machine sets | Technology Preview | Technology Preview | Technology Preview |
 | Bare-metal nodes on VMware vSphere clusters                                                 | Not Available      | Technology Preview | Technology Preview |
@@ -1176,7 +1180,7 @@ Nodes Technology Preview tracker
 
 | Feature                                                         | 4.20          | 4.21          | 4.22               |
 |-----------------------------------------------------------------|---------------|---------------|--------------------|
-| Expanding a bare metal cluster using images from OCI registries | Not Available | Not Available | Technology Preview |
+| Expanding a bare-metal cluster using images from OCI registries | Not Available | Not Available | Technology Preview |
 
 Postinstallation configuration Technology Preview tracker
 
@@ -1234,7 +1238,7 @@ Web console Technology Preview tracker
 
 # Known issues
 
-This section includes several known issues for OpenShift Container Platform 4.17.
+You can review the list of known issues in OpenShift Container Platform 4.17 to see if any issues affect your clusters or environments.
 
 - Currently, the `topo-aware-scheduler` provided by the NUMA Resources Operator (NRO) does not support Kubernetes priority-based preemption. When all NUMA zones on available nodes are fully consumed by lower-priority pods, a high-priority pod with a `PreemptLowerPriority` policy remains in `Pending` state indefinitely instead of preempting the lower-priority pods. As a consequence, workloads that depend on priority-based preemption for scheduling recovery do not function correctly when using the `topo-aware-scheduler`. ([OCPBUGS-77930](https://issues.redhat.com/browse/OCPBUGS-77930))
 

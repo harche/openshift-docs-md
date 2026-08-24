@@ -168,7 +168,7 @@ To install the External Secrets operand, create an instance of the `ExternalSecr
 
     <div class="formalpara-title">
 
-    **Example `externalsecretsconfig.yaml` file.**
+    **Example `externalsecretsconfig.yaml` file**
 
     </div>
 

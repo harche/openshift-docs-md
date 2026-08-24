@@ -9,7 +9,7 @@ The following table lists the platforms on which boot image management is availa
 | Microsoft Azure           | Disabled by default | Disabled by default        |
 | VMware vSphere            | Disabled by default | Not supported              |
 
-For all other platforms, the MCO does not update the boot image with each cluster update.
+For all other platforms, the MCO does not update the boot image with each cluster update. Images from the Google Cloud Marketplace or AWS Marketplace are not automatically updated.
 
 <div class="important">
 
@@ -36,7 +36,7 @@ The following table lists the platforms on which boot image management is availa
 | Microsoft Azure           | Disabled by default | Disabled by default        |
 | VMware vSphere            | Disabled by default | Not supported              |
 
-For all other platforms, the MCO does not update the boot image with each cluster update.
+For all other platforms, the MCO does not update the boot image with each cluster update. Images from the Google Cloud Marketplace or AWS Marketplace are not automatically updated.
 
 </div>
 
@@ -146,7 +146,7 @@ The following table lists the platforms on which boot image management is availa
 | Microsoft Azure           | Disabled by default | Disabled by default        |
 | VMware vSphere            | Disabled by default | Not supported              |
 
-For all other platforms, the MCO does not update the boot image with each cluster update.
+For all other platforms, the MCO does not update the boot image with each cluster update. Images from the Google Cloud Marketplace or AWS Marketplace are not automatically updated.
 
 </div>
 
@@ -286,7 +286,7 @@ The following table lists the platforms on which boot image management is availa
 | Microsoft Azure           | Disabled by default | Disabled by default        |
 | VMware vSphere            | Disabled by default | Not supported              |
 
-For all other platforms, the MCO does not update the boot image with each cluster update.
+For all other platforms, the MCO does not update the boot image with each cluster update. Images from the Google Cloud Marketplace or AWS Marketplace are not automatically updated.
 
 </div>
 

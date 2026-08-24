@@ -55,6 +55,56 @@ By using cluster role aggregation, OpenShift Virtualization extends the default 
 
 OpenShift Virtualization cluster roles
 
+## About role aggregation
+
+By default, OpenShift Virtualization uses role aggregation to grant users virtualization-related roles automatically.
+
+<div class="important">
+
+Configuring role aggregation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
+
+When role aggregation is enabled, OpenShift Virtualization extends the default OpenShift Container Platform cluster roles with permissions for accessing virtualization objects. For example, a user with the `edit` cluster role automatically receives the `kubevirt.io:edit` role, which allows them to create and modify VMs.
+
+When role aggregation is disabled, users do not receive virtualization-related roles by default. You must explicitly grant virtualization roles to users who need access to virtualization resources. Disabling role aggregation provides more granular control over which users can access virtualization resources in your cluster.
+
+You can re-enable role aggregation at any time to restore the default behavior.
+
+## Configuring role aggregation by using the web console
+
+You can configure virtualization role aggregation by using the OpenShift Container Platform web console.
+
+<div class="important">
+
+Configuring role aggregation is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
+
+- You have access to the cluster as a user with `cluster-admin` permissions.
+
+1.  Navigate to **Virtualization** → **Settings** in the web console.
+
+2.  Click the **Preview features** tab.
+
+3.  Toggle **Control default Virtualization permissions** to on to enable control over default virtualization role assignments.
+
+4.  Click the **Cluster** tab.
+
+5.  Under **General settings**, expand **Automatically grant Virtualization roles**.
+
+6.  Choose the appropriate option:
+
+    - To disable role aggregation, toggle **Automatically grant Virtualization roles** to off. Users no longer receive virtualization-related roles by default.
+
+    - To re-enable role aggregation, toggle **Automatically grant Virtualization roles** to on. Users receive virtualization-related roles by default.
+
+- Navigate to **Virtualization** → **Settings** and click the **Cluster** tab. Under **General settings**, verify that **Automatically grant Virtualization roles** reflects the expected state.
+
 ## RBAC roles for storage features in OpenShift Virtualization
 
 Cluster-wide and namespaced RBAC roles enable the Containerized Data Importer (CDI) to manage storage resources, data volumes, and virtual machine disk operations.

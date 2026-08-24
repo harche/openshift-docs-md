@@ -1036,9 +1036,46 @@ Consider the following limitations when deciding whether to use Accelerated Netw
 
 - When this feature is enabled on an existing Azure cluster, only newly provisioned nodes are affected. Currently running nodes are not reconciled. To enable the feature on all nodes, you must replace each existing machine. This can be done for each machine individually, or by scaling the replicas down to zero, and then scaling back up to your desired number of replicas.
 
-# Configuring Capacity Reservation by using machine sets
+## Enabling Accelerated Networking on an existing Microsoft Azure cluster
 
-OpenShift Container Platform version 4.17 and later supports on-demand Capacity Reservation with Capacity Reservation groups on Microsoft Azure clusters.
+You can enable Accelerated Networking on Microsoft Azure by adding `acceleratedNetworking` to your machine set YAML file. Accelerated Networking uses SR-IOV to help improve network performance for new nodes.
+
+- Have an existing Azure cluster where the Machine API is operational.
+
+<!-- -->
+
+- Add the following to the `providerSpec` field:
+
+  ``` yaml
+  providerSpec:
+    value:
+      acceleratedNetworking: true
+      vmSize: <azure-vm-size>
+  ```
+
+  where:
+
+  `providerSpec.value.acceleratedNetworking`
+  Enables Accelerated Networking.
+
+  `providerSpec.value.vmSize`
+  Specifies an Azure VM size that includes at least four vCPUs. For information about VM sizes, see the Microsoft Azure documentation [Sizes for virtual machines in Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes).
+
+<!-- -->
+
+- To enable the feature on currently running nodes, you must replace each existing machine. This can be done for each machine individually, or by scaling the replicas down to zero, and then scaling back up to your desired number of replicas.
+
+<!-- -->
+
+- On the Microsoft Azure portal, review the **Networking** settings page for a machine provisioned by the machine set, and verify that the `Accelerated networking` field is set to `Enabled`.
+
+<!-- -->
+
+- [Enabling Accelerated Networking during installation](../../installing/installing_azure/ipi/installing-azure-customizations.xml#machineset-azure-enabling-accelerated-networking-new-install_installing-azure-customizations)
+
+# Configuring Capacity Reservations by using machine sets
+
+You can configure a machine set to deploy machines on any available resources that match the parameters of a capacity request that you define by using on-demand Capacity Reservation with Capacity Reservation groups on Microsoft Azure clusters.
 
 You can configure a machine set to deploy machines on any available resources that match the parameters of a capacity request that you define.
 
@@ -1056,11 +1093,11 @@ You cannot change an existing Capacity Reservation configuration for a machine s
 
 - You installed the OpenShift CLI (`oc`).
 
-- You created a Capacity Reservation group. For more information, see [Create a Capacity Reservation](https://learn.microsoft.com/en-us/azure/virtual-machines/capacity-reservation-create) in the Microsoft Azure documentation.
+- You have created a Capacity Reservation group. For more information, see [Create a Capacity Reservation](https://learn.microsoft.com/en-us/azure/virtual-machines/capacity-reservation-create) in the Microsoft Azure documentation.
 
-1.  In a text editor, open the YAML file for an existing machine set or create a new one.
+1.  In a text editor, open an existing machine set custom resource (CR) or create a new one.
 
-2.  Edit the following section under the `providerSpec` field:
+2.  Update the CR to implement your configuration changes:
 
     <div class="formalpara-title">
 
@@ -1085,6 +1122,8 @@ You cannot change an existing Capacity Reservation configuration for a machine s
 
     `<capacity_reservation_group>`
     Specifies the ID of the Capacity Reservation group that you want the machine set to deploy machines on.
+
+3.  Save your changes and exit the object specification.
 
 - To verify machine deployment, list the machines that the machine set created by running the following command:
 
@@ -1610,42 +1649,5 @@ The NFD Operator identifies hardware device features in nodes. It solves the gen
     ```
 
     `10de` appears in the node feature list for the GPU-enabled node. This mean the NFD Operator correctly identified the node from the GPU-enabled MachineSet.
-
-- [Enabling Accelerated Networking during installation](../../installing/installing_azure/ipi/installing-azure-customizations.xml#machineset-azure-enabling-accelerated-networking-new-install_installing-azure-customizations)
-
-## Enabling Accelerated Networking on an existing Microsoft Azure cluster
-
-You can enable Accelerated Networking on Microsoft Azure by adding `acceleratedNetworking` to your machine set YAML file. Accelerated Networking uses SR-IOV to help improve network performance for new nodes.
-
-- Have an existing Azure cluster where the Machine API is operational.
-
-<!-- -->
-
-- Add the following to the `providerSpec` field:
-
-  ``` yaml
-  providerSpec:
-    value:
-      acceleratedNetworking: true
-      vmSize: <azure-vm-size>
-  ```
-
-  where:
-
-  `providerSpec.value.acceleratedNetworking`
-  Enables Accelerated Networking.
-
-  `providerSpec.value.vmSize`
-  Specifies an Azure VM size that includes at least four vCPUs. For information about VM sizes, see the Microsoft Azure documentation [Sizes for virtual machines in Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes).
-
-<!-- -->
-
-- To enable the feature on currently running nodes, you must replace each existing machine. This can be done for each machine individually, or by scaling the replicas down to zero, and then scaling back up to your desired number of replicas.
-
-<!-- -->
-
-- On the Microsoft Azure portal, review the **Networking** settings page for a machine provisioned by the machine set, and verify that the `Accelerated networking` field is set to `Enabled`.
-
-<!-- -->
 
 - [Manually scaling a compute machine set](../../machine_management/manually-scaling-machineset.xml#manually-scaling-machineset)

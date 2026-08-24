@@ -172,7 +172,7 @@ Create a subnet in an Amazon Web Services (AWS) Local Zones when you need worklo
 
 # Obtaining an AWS Marketplace image
 
-If you are deploying an OpenShift Container Platform cluster using an AWS Marketplace image, you must first subscribe through AWS. Subscribing to the offer provides you with the AMI ID that the installation program uses to deploy compute nodes.
+If you are deploying an OpenShift Container Platform cluster by using an Amazon Web Services (AWS) Marketplace image, you must first subscribe through AWS. Subscribing to the offer provides you with the Amazon Machine Image (AMI) ID that the installation program uses to deploy compute nodes.
 
 <div class="note">
 
@@ -180,11 +180,11 @@ You should only modify the RHCOS image for compute machines to use an AWS Market
 
 </div>
 
-- You have an AWS account to purchase the offer. This account does not have to be the same account that is used to install the cluster.
+- You have an AWS account to buy the offer. This account does not have to be the same account that you use to install the cluster.
 
 1.  Complete the OpenShift Container Platform subscription from the [AWS Marketplace](https://aws.amazon.com/marketplace/fulfillment?productId=59ead7de-2540-4653-a8b0-fa7926d5c845).
 
-2.  Record the AMI ID for your specific AWS Region. As part of the installation process, you must update the `install-config.yaml` file with this value before deploying the cluster.
+2.  Record the AMI ID for your specific AWS region. As part of the installation process, you must update the `install-config.yaml` file with this value before deploying the cluster.
 
     <div class="formalpara-title">
 
@@ -218,57 +218,57 @@ You should only modify the RHCOS image for compute machines to use an AWS Market
     Specifies the AMI ID from your AWS Marketplace subscription.
 
     `platform.aws.region`
-    Specifies the `platform.aws.region` parameter. Your AMI ID is associated with a specific AWS Region. When creating the installation configuration file, ensure that you select the same AWS Region that you specified when configuring your subscription.
+    Specifies the `platform.aws.region` parameter. Your AMI ID is associated with a specific AWS region. When creating the installation configuration file, ensure that you select the same AWS region that you specified when configuring your subscription.
 
 # Minimum resource requirements for cluster installation
 
-Each created cluster must meet minimum requirements so that the cluster runs as expected.
+To ensure that your OpenShift Container Platform cluster runs as expected, each cluster machine must meet minimum CPU, memory, and storage requirements.
 
-| Machine       | Operating System | vCPU <sup>\[1\]</sup> | Virtual RAM | Storage | Input/Output Per Second (IOPS)<sup>\[2\]</sup> |
-|---------------|------------------|-----------------------|-------------|---------|------------------------------------------------|
-| Bootstrap     | RHCOS            | 4                     | 16 GB       | 100 GB  | 300                                            |
-| Control plane | RHCOS            | 4                     | 16 GB       | 100 GB  | 300                                            |
-| Compute       | RHCOS            | 2                     | 8 GB        | 100 GB  | 300                                            |
+| Machine       | Operating system | vCPU | Virtual RAM | Storage | Input/Output Per Second (IOPS) |
+|---------------|------------------|------|-------------|---------|--------------------------------|
+| Bootstrap     | RHCOS            | 4    | 16 GB       | 100 GB  | 300                            |
+| Control plane | RHCOS            | 4    | 16 GB       | 100 GB  | 300                            |
+| Compute       | RHCOS            | 2    | 8 GB        | 100 GB  | 300                            |
 
 Minimum resource requirements
 
-1.  One vCPU is equivalent to one physical core when simultaneous multithreading (SMT), or Hyper-Threading, is not enabled. When enabled, use the following formula to calculate the corresponding ratio: (threads per core × cores) × sockets = vCPUs.
+- One vCPU is equal to one physical core when simultaneous multithreading (SMT), or Hyper-Threading, is not enabled. When enabled, use the following formula to calculate the corresponding ratio: (threads per core × cores) × sockets = vCPUs.
 
-2.  OpenShift Container Platform and Kubernetes are sensitive to disk performance, and faster storage is recommended, particularly for etcd on the control plane nodes which require a 10 ms p99 fsync duration. Note that on many cloud platforms, storage size and IOPS scale together, so you might need to over-allocate storage volume to obtain sufficient performance.
+- OpenShift Container Platform and Kubernetes are sensitive to disk performance, and Red Hat recommends faster storage, particularly for etcd on the control plane nodes which require a 10 ms p99 fsync duration. On many cloud platforms, storage size and IOPS scale together, so you might need to provision more storage to get enough performance.
 
-3.  As with all user-provisioned installations, if you choose to use RHEL compute machines in your cluster, you take responsibility for all operating system life cycle management and maintenance, including performing system updates, applying patches, and completing all other required tasks. Use of RHEL 7 compute machines is deprecated and has been removed in OpenShift Container Platform 4.10 and later.
+- As with all user-provisioned installations, if you choose to use RHEL compute machines in your cluster, you take responsibility for all operating system life cycle management and maintenance, including performing system updates, applying patches, and completing all other required tasks. OpenShift Container Platform 4.10 and later do not support RHEL 7 compute machines.
 
 <div class="note">
 
-For OpenShift Container Platform version 4.19, RHCOS is based on RHEL version 9.6, which updates the micro-architecture requirements. The following list contains the minimum instruction set architectures (ISA) that each architecture requires:
+In OpenShift Container Platform version 4.19, RHCOS uses RHEL version 9.6, which updates the micro-architecture requirements. Each architecture requires the following minimum instruction set architectures (ISA):
 
 - x86-64 architecture requires x86-64-v2 ISA
 
 - ARM64 architecture requires ARMv8.0-A ISA
 
-- IBM Power architecture requires Power 9 ISA
+- ppc64le architecture requires IBM® Power9 ISA
 
-- s390x architecture requires z14 ISA
+- s390x architecture requires IBM® z14 ISA
 
-For more information, see "Architectures" in the RHEL documentation.
+For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.8_release_notes/index#architectures) in the RHEL documentation.
 
 </div>
 
 If an instance type for your platform meets the minimum requirements for cluster machines, it is supported to use in OpenShift Container Platform.
 
-- [Architectures (RHEL documentation)](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures)
-
 # Tested instance types for AWS
 
-There are several Amazon Web Services (AWS) instance types tested with OpenShift Container Platform.
+To ensure cluster stability and performance, use one of the tested Amazon Web Services (AWS) instance types for your OpenShift Container Platform machines.
 
 The following AWS instance types have been tested with OpenShift Container Platform for use with AWS Local Zones.
 
 <div class="note">
 
-Use the machine types included in the following charts for your AWS instances. If you use an instance type that is not listed in the chart, ensure that the instance size you use matches the minimum resource requirements that are listed in the section named "Minimum resource requirements for cluster installation".
+Use the machine types included in the following charts for your AWS instances. If you use an instance type that is not listed in the chart, ensure that the instance size you use matches the minimum resource requirements in "Minimum resource requirements for cluster installation".
 
 </div>
+
+**Machine types based on 64-bit x86 architecture for AWS Local Zones**
 
 - `c5.*`
 
@@ -292,7 +292,7 @@ Generate and customize the installation configuration file that the installation
 
 - You obtained the OpenShift Container Platform installation program for user-provisioned infrastructure and the pull secret for your cluster.
 
-- You checked that you are deploying your cluster to an AWS Region with an accompanying Red Hat Enterprise Linux CoreOS (RHCOS) AMI published by Red Hat. If you are deploying to an AWS Region that requires a custom AMI, such as an AWS GovCloud Region, you must create the `install-config.yaml` file manually.
+- You checked that you are deploying your cluster to an Amazon Web Services (AWS) Region with an accompanying Red Hat Enterprise Linux CoreOS (RHCOS) AMI published by Red Hat. If you are deploying to an AWS Region that requires a custom AMI, such as an AWS GovCloud Region, you must create the `install-config.yaml` file manually.
 
 1.  Create the `install-config.yaml` file.
 
@@ -302,13 +302,13 @@ Generate and customize the installation configuration file that the installation
         $ ./openshift-install create install-config --dir <installation_directory>
         ```
 
-        - For `<installation_directory>`, specify the directory name to store the files that the installation program creates.
+        For `<installation_directory>`, specify the directory name to store the files that the installation program creates.
 
-          <div class="important">
+        <div class="important">
 
-          Specify an empty directory. Some installation assets, like bootstrap X.509 certificates have short expiration intervals, so you must not reuse an installation directory. If you want to reuse individual files from another cluster installation, you can copy them into your directory. However, the file names for the installation assets might change between releases. Use caution when copying installation files from an earlier OpenShift Container Platform version.
+        Specify an empty directory. Some installation assets, such as bootstrap X.509 certificates have short expiration intervals, so you must not reuse an installation directory. If you want to reuse individual files from another cluster installation, you can copy them into your directory. However, the file names for the installation assets might change between releases. Use caution when copying installation files from an earlier OpenShift Container Platform version.
 
-          </div>
+        </div>
 
     2.  At the prompts, provide the configuration details for your cloud:
 
@@ -595,9 +595,9 @@ The documentation provides the steps for performing an installer-provisioned inf
 
 </div>
 
-## Creating a VPC in AWS
+## Creating a VPC in Amazon Web Services (AWS)
 
-You can create a Virtual Private Cloud (VPC), and subnets for all Local Zones locations, in Amazon Web Services (AWS) for your OpenShift Container Platform cluster to extend compute nodes to edge locations.
+You can create a Virtual Private Cloud (VPC), and subnets for all Local Zones locations, in AWS for your OpenShift Container Platform cluster to extend compute nodes to edge locations.
 
 You can further customize your VPC to meet your requirements, including a VPN and route tables. You can also add new Local Zones subnets not included at initial deployment.
 
@@ -634,17 +634,16 @@ If you do not use the provided CloudFormation template to create your AWS infras
     ]
     ```
 
-    - The CIDR block for the VPC.
+    where:
 
-    - Specify a CIDR block in the format `x.x.x.x/16-24`.
+    `VpcCidr`
+    Specifies the CIDR block for the VPC. Use a CIDR block in the format `x.x.x.x/16-24`.
 
-    - The number of availability zones to deploy the VPC in.
+    `AvailabilityZoneCount`
+    Specifies the number of availability zones to deploy the VPC in. Use an integer between `1` and `3`.
 
-    - Specify an integer between `1` and `3`.
-
-    - The size of each subnet in each availability zone.
-
-    - Specify an integer between `5` and `13`, where `5` is `/27` and `13` is `/19`.
+    `SubnetBits`
+    Specifies the size of each subnet in each availability zone. Use an integer between `5` and `13`, where `5` is `/27` and `13` is `/19`.
 
 2.  Go to the section of the documentation named "CloudFormation template for the VPC", and then copy the syntax from the provided template. Save the copied template syntax as a YAML file on your local system. This template describes the VPC that your cluster requires.
 
@@ -657,26 +656,31 @@ If you do not use the provided CloudFormation template to create your AWS infras
     </div>
 
     ``` terminal
-    $ aws cloudformation create-stack --stack-name <name> \
-         --template-body file://<template>.yaml \
+    $ aws cloudformation create-stack --stack-name <name> \//
+         --template-body file://<template>.yaml \//
          --parameters file://<parameters>.json
     ```
 
-    - `<name>` is the name for the CloudFormation stack, such as `cluster-vpc`. You need the name of this stack if you remove the cluster.
+    where:
 
-    - `<template>` is the relative path to and name of the CloudFormation template YAML file that you saved.
+    `--stack-name <name>`
+    Specifies the name for the CloudFormation stack, such as `cluster-vpc`. You need the name of this stack if you remove the cluster.
 
-    - `<parameters>` is the relative path and the name of the CloudFormation parameters JSON file.
+    `--template-body file://<template>.yaml`
+    Specifies the relative path to and name of the CloudFormation template YAML file that you saved.
 
-      <div class="formalpara-title">
+    `--parameters file://<parameters>.json`
+    Specifies the relative path to and name of the CloudFormation parameters JSON file.
 
-      **Example output**
+    <div class="formalpara-title">
 
-      </div>
+    **Example output**
 
-      ``` terminal
-      arn:aws:cloudformation:us-east-1:123456789012:stack/cluster-vpc/dbedae40-2fd3-11eb-820e-12a48460849f
-      ```
+    </div>
+
+    ``` terminal
+    arn:aws:cloudformation:us-east-1:123456789012:stack/cluster-vpc/dbedae40-2fd3-11eb-820e-12a48460849f
+    ```
 
 4.  Confirm that the template components exist by running the following command:
 
@@ -1023,7 +1027,7 @@ You can use the provided CloudFormation template and create a CloudFormation sta
 
 <div class="note">
 
-If you do not use the provided CloudFormation template to create your AWS infrastructure, you must review the provided information and manually create the infrastructure. If your cluster does not initialize correctly, you might have to contact Red Hat support with your installation logs.
+If you do not use the provided CloudFormation template to create your Amazon Web Services (AWS) infrastructure, you must review the provided information and manually create the infrastructure. If your cluster does not initialize correctly, you might have to contact Red Hat support with your installation logs.
 
 </div>
 
@@ -1038,34 +1042,47 @@ If you do not use the provided CloudFormation template to create your AWS infras
 2.  Run the following command to deploy the CloudFormation template, which creates a stack of AWS resources that represent the VPC:
 
     ``` terminal
-    $ aws cloudformation create-stack --stack-name <stack_name> \
+    $ aws cloudformation create-stack --stack-name <stack_name> \//
       --region ${CLUSTER_REGION} \
-      --template-body file://<template>.yaml \
+      --template-body file://<template>.yaml \//
       --parameters \
-        ParameterKey=VpcId,ParameterValue="${VPC_ID}" \
-        ParameterKey=ClusterName,ParameterValue="${CLUSTER_NAME}" \
-        ParameterKey=ZoneName,ParameterValue="${ZONE_NAME}" \
-        ParameterKey=PublicRouteTableId,ParameterValue="${ROUTE_TABLE_PUB}" \
-        ParameterKey=PublicSubnetCidr,ParameterValue="${SUBNET_CIDR_PUB}" \
-        ParameterKey=PrivateRouteTableId,ParameterValue="${ROUTE_TABLE_PVT}" \
+        ParameterKey=VpcId,ParameterValue="${VPC_ID}" \//
+        ParameterKey=ClusterName,ParameterValue="${CLUSTER_NAME}" \//
+        ParameterKey=ZoneName,ParameterValue="${ZONE_NAME}" \//
+        ParameterKey=PublicRouteTableId,ParameterValue="${ROUTE_TABLE_PUB}" \//
+        ParameterKey=PublicSubnetCidr,ParameterValue="${SUBNET_CIDR_PUB}" \//
+        ParameterKey=PrivateRouteTableId,ParameterValue="${ROUTE_TABLE_PVT}" \//
         ParameterKey=PrivateSubnetCidr,ParameterValue="${SUBNET_CIDR_PVT}"
     ```
 
-    - `<stack_name>` is the name for the CloudFormation stack, such as `cluster-wl-<local_zone_shortname>`. You need the name of this stack if you remove the cluster.
+    where:
 
-    - `<template>` is the relative path and the name of the CloudFormation template YAML file that you saved.
+    `<stack_name>`
+    Specifies the name for the CloudFormation stack, such as `cluster-wl-<local_zone_shortname>`. You need the name of this stack if you remove the cluster.
 
-    - `${VPC_ID}` is the VPC ID, which is the value `VpcID` in the output of the CloudFormation template for the VPC.
+    `<template>`
+    Specifies the relative path and the name of the CloudFormation template YAML file that you saved.
 
-    - `${ZONE_NAME}` is the value of Local Zones name to create the subnets.
+    `${VPC_ID}`
+    Specifies the VPC ID, which is the value `VpcID` in the output of the CloudFormation template for the VPC.
 
-    - `${CLUSTER_NAME}` is the value of **ClusterName** to be used as a prefix of the new AWS resource names.
+    `${CLUSTER_NAME}`
+    Specifies the value of `ClusterName` to be used as a prefix of the new AWS resource names.
 
-    - `${SUBNET_CIDR_PUB}` is a valid CIDR block that is used to create the public subnet. This block must be part of the VPC CIDR block `VpcCidr`.
+    `${ZONE_NAME}`
+    Specifies the value of the Local Zones name to create the subnets.
 
-    - `${ROUTE_TABLE_PVT}` is the **PrivateRouteTableId** extracted from the output of the VPC’s CloudFormation stack.
+    `${ROUTE_TABLE_PUB}`
+    Specifies the `PublicRouteTableId` extracted from the output of the VPC’s CloudFormation stack.
 
-    - `${SUBNET_CIDR_PVT}` is a valid CIDR block that is used to create the private subnet. This block must be part of the VPC CIDR block `VpcCidr`.
+    `${SUBNET_CIDR_PUB}`
+    Specifies a valid CIDR block that is used to create the public subnet. This block must be part of the VPC CIDR block `VpcCidr`.
+
+    `${ROUTE_TABLE_PVT}`
+    Specifies the `PrivateRouteTableId` extracted from the output of the VPC’s CloudFormation stack.
+
+    `${SUBNET_CIDR_PVT}`
+    Specifies a valid CIDR block that is used to create the private subnet. This block must be part of the VPC CIDR block `VpcCidr`.
 
 <div class="formalpara-title">
 
@@ -1388,7 +1405,7 @@ When the cluster deployment completes successfully:
 
 To log in to your cluster as the default system user, export the `kubeconfig` file. This configuration enables the CLI to authenticate and connect to the specific API server created during OpenShift Container Platform installation.
 
-The `kubeconfig` file is specific to a cluster and is created during OpenShift Container Platform installation.
+The `kubeconfig` file is specific to a cluster and OpenShift Container Platform generates it during installation.
 
 - You deployed an OpenShift Container Platform cluster.
 
@@ -1427,7 +1444,7 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 # Logging in to the cluster by using the web console
 
-The `kubeadmin` user exists by default after an OpenShift Container Platform installation. You can log in to your cluster as the `kubeadmin` user by using the OpenShift Container Platform web console.
+To verify that your cluster deployed successfully and access its features, log in to the OpenShift Container Platform web console as the `kubeadmin` user.
 
 - You have access to the installation host.
 
@@ -1441,7 +1458,7 @@ The `kubeadmin` user exists by default after an OpenShift Container Platform ins
 
     <div class="note">
 
-    Alternatively, you can obtain the `kubeadmin` password from the `<installation_directory>/.openshift_install.log` log file on the installation host.
+    Or, you can obtain the `kubeadmin` password from the `<installation_directory>/.openshift_install.log` log file on the installation host.
 
     </div>
 
@@ -1453,7 +1470,7 @@ The `kubeadmin` user exists by default after an OpenShift Container Platform ins
 
     <div class="note">
 
-    Alternatively, you can obtain the OpenShift Container Platform route from the `<installation_directory>/.openshift_install.log` log file on the installation host.
+    Or, you can obtain the OpenShift Container Platform route from the `<installation_directory>/.openshift_install.log` log file on the installation host.
 
     </div>
 

@@ -1,10 +1,12 @@
+After you complete the prerequisites, set up the environment for an OpenShift Container Platform installation on IBM Cloud® Bare Metal (Classic) by preparing the provisioner node, configuring the network, and deploying the cluster.
+
 # Preparing the provisioner node on IBM Cloud® Bare Metal (Classic) infrastructure
 
-Perform the following steps to prepare the provisioner node.
+Before you install OpenShift Container Platform on IBM Cloud® Bare Metal (Classic) infrastructure, prepare the provisioner node by creating a non-root user, configuring network bridges, registering the node, installing required packages, and downloading the pull secret.
 
 1.  Log in to the provisioner node via `ssh`.
 
-2.  Create a non-root user (`kni`) and provide that user with `sudo` privileges:
+2.  Create a non-root user (`kni`) and give that user `sudo` privileges:
 
     ``` terminal
     # useradd kni
@@ -57,7 +59,7 @@ Perform the following steps to prepare the provisioner node.
     $ sudo dnf install -y libvirt qemu-kvm mkisofs python3-devel jq ipmitool
     ```
 
-7.  Modify the user to add the `libvirt` group to the newly created user:
+7.  Change the user to add the `libvirt` group to the newly created user:
 
     ``` terminal
     $ sudo usermod --append --groups libvirt kni
@@ -205,7 +207,7 @@ Perform the following steps to prepare the provisioner node.
 24. If required, SSH back into the `provisioner` node:
 
     ``` terminal
-    # ssh kni@provisioner.<cluster-name>.<domain>
+    # ssh kni@provisioner.<cluster_name>.<domain>
     ```
 
 25. Verify the connection bridges have been properly created:
@@ -235,7 +237,7 @@ Perform the following steps to prepare the provisioner node.
     $ vim pull-secret.txt
     ```
 
-    In a web browser, navigate to [Install on Bare Metal with user-provisioned infrastructure](https://console.redhat.com/openshift/install/metal/user-provisioned). In step 1, click **Download pull secret**. Paste the contents into the `pull-secret.txt` file and save the contents in the `kni` user’s home directory.
+    Go to [Install on Bare Metal with user-provisioned infrastructure](https://console.redhat.com/openshift/install/metal/user-provisioned). In step 1, click **Download pull secret**. Paste the contents into the `pull-secret.txt` file and save the contents in the `kni` user’s home directory.
 
 # Configuring the public subnet
 

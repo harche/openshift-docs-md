@@ -211,13 +211,13 @@ Production environments can deny direct access to the internet and instead have 
 
 - You have an existing `install-config.yaml` file.
 
-- You have reviewed the sites that your cluster requires access to and determined whether any of them need to bypass the proxy. By default, all cluster egress traffic is proxied, including calls to hosting cloud provider APIs. You added sites to the `Proxy` object’s `spec.noProxy` field to bypass the proxy if necessary.
+- You have reviewed the sites that your cluster requires access to and determined whether any of them need to bypass the proxy. By default, the proxy handles all cluster egress traffic, including calls to hosting cloud provider APIs. You added sites to the `Proxy` object’s `spec.noProxy` field to bypass the proxy if necessary.
 
   <div class="note">
 
-  The `Proxy` object `status.noProxy` field is populated with the values of the `networking.machineNetwork[].cidr`, `networking.clusterNetwork[].cidr`, and `networking.serviceNetwork[]` fields from your installation configuration.
+  The `Proxy` object `status.noProxy` field includes the values of the `networking.machineNetwork[].cidr`, `networking.clusterNetwork[].cidr`, and `networking.serviceNetwork[]` fields from your installation configuration.
 
-  For installations on Amazon Web Services (AWS), Google Cloud, Microsoft Azure, and Red Hat OpenStack Platform (RHOSP), the `Proxy` object `status.noProxy` field is also populated with the instance metadata endpoint (`169.254.169.254`).
+  For installations on Amazon Web Services (AWS), Google Cloud, Microsoft Azure, and Red Hat OpenStack Platform (RHOSP), the `Proxy` object `status.noProxy` field also includes the instance metadata endpoint (`169.254.169.254`).
 
   </div>
 
@@ -250,10 +250,10 @@ Production environments can deny direct access to the internet and instead have 
     Specifies a comma-separated list of destination domain names, IP addresses, or other network CIDRs to exclude from proxying. Preface a domain with `.` to match subdomains only. For example, `.y.com` matches `x.y.com`, but not `y.com`. Use `*` to bypass the proxy for all destinations. You must include vCenter’s IP address and the IP range that you use for its machines.
 
     `additionalTrustBundle`
-    If provided, the installation program generates a config map that is named `user-ca-bundle` in the `openshift-config` namespace to hold the additional CA certificates. If you provide `additionalTrustBundle` and at least one proxy setting, the `Proxy` object is configured to reference the `user-ca-bundle` config map in the `trustedCA` field. The Cluster Network Operator then creates a `trusted-ca-bundle` config map that merges the contents specified for the `trustedCA` parameter with the RHCOS trust bundle. The `additionalTrustBundle` field is required unless the proxy’s identity certificate is signed by an authority from the RHCOS trust bundle.
+    If you specify this value, the installation program generates a config map named `user-ca-bundle` in the `openshift-config` namespace to hold the additional CA certificates. If you specify `additionalTrustBundle` and at least one proxy setting, the `Proxy` object references the `user-ca-bundle` config map in the `trustedCA` field. The Cluster Network Operator then creates a `trusted-ca-bundle` config map that merges the contents specified for the `trustedCA` parameter with the RHCOS trust bundle. You must set the `additionalTrustBundle` field unless an authority from the RHCOS trust bundle signs the proxy’s identity certificate.
 
     `additionalTrustBundlePolicy`
-    Specifies the policy that determines the configuration of the `Proxy` object to reference the `user-ca-bundle` config map in the `trustedCA` field. The allowed values are `Proxyonly` and `Always`. Use `Proxyonly` to reference the `user-ca-bundle` config map only when `http/https` proxy is configured. Use `Always` to always reference the `user-ca-bundle` config map. The default value is `Proxyonly`. Optional parameter.
+    Specifies the policy that determines the configuration of the `Proxy` object to reference the `user-ca-bundle` config map in the `trustedCA` field. The allowed values are `Proxyonly` and `Always`. Use `Proxyonly` to reference the `user-ca-bundle` config map only when you configure an `http/https` proxy. Use `Always` to always reference the `user-ca-bundle` config map. The default value is `Proxyonly`. Optional parameter.
 
     <div class="note">
 
@@ -273,11 +273,11 @@ Production environments can deny direct access to the internet and instead have 
 
 2.  Save the file and reference it when installing OpenShift Container Platform.
 
-    The installation program creates a cluster-wide proxy that is named `cluster` that uses the proxy settings in the provided `install-config.yaml` file. If no proxy settings are provided, a `cluster` `Proxy` object is still created, but it will have a nil `spec`.
+    The installation program creates a cluster-wide proxy named `cluster` that uses the proxy settings in the `install-config.yaml` file. If you do not give proxy settings, the installation program still creates a `cluster` `Proxy` object, but it has a nil `spec`.
 
     <div class="note">
 
-    Only the `Proxy` object named `cluster` is supported, and no additional proxies can be created.
+    Only the `Proxy` object named `cluster` is supported, and you cannot create additional proxies.
 
     </div>
 
@@ -1084,7 +1084,9 @@ Because you must manually start the cluster machines, you must generate the Igni
 
 # Extracting the infrastructure name
 
-The Ignition config files contain a unique cluster identifier that you can use to uniquely identify your cluster in VMware vSphere. If you plan to use the cluster identifier as the name of your virtual machine folder, you must extract it.
+To identify your cluster resources in VMware vSphere, extract the unique infrastructure name from the Ignition config files.
+
+If you plan to use the cluster identifier as the name of your virtual machine folder, you must extract it.
 
 <div class="warning">
 
@@ -1106,7 +1108,7 @@ Do not run the `openshift-install create manifests` command again after creating
   $ jq -r .infraID <installation_directory>/metadata.json
   ```
 
-  For `<installation_directory>`, specify the path to the directory that you stored the installation files in.
+  where `<installation_directory>` is the path to the directory that you stored the installation files in.
 
   <div class="formalpara-title">
 
@@ -1115,7 +1117,7 @@ Do not run the `openshift-install create manifests` command again after creating
   </div>
 
   ``` terminal
-  $ openshift-vw9j6
+  openshift-vw9j6
   ```
 
   The output of this command is your cluster name and a random string.
@@ -1576,7 +1578,7 @@ The OpenShift Container Platform bootstrap process begins after the cluster node
 
 To log in to your cluster as the default system user, export the `kubeconfig` file. This configuration enables the CLI to authenticate and connect to the specific API server created during OpenShift Container Platform installation.
 
-The `kubeconfig` file is specific to a cluster and is created during OpenShift Container Platform installation.
+The `kubeconfig` file is specific to a cluster and OpenShift Container Platform generates it during installation.
 
 - You deployed an OpenShift Container Platform cluster.
 
@@ -1615,7 +1617,7 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 # Approving the certificate signing requests for your machines
 
-To allow newly added machines to join your OpenShift Container Platform cluster, you can confirm that pending certificate signing requests (CSRs) are approved or approve them yourself. Approve client requests first, then server requests.
+To allow newly added machines to join your OpenShift Container Platform cluster, confirm that the cluster approves pending certificate signing requests (CSRs), or approve them yourself. Approve client requests first, then server requests.
 
 - You added machines to your cluster.
 
@@ -1642,7 +1644,7 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     <div class="note">
 
-    The preceding output might not include the compute nodes until some CSRs are approved.
+    The preceding output might not include the compute nodes until you approve some CSRs.
 
     </div>
 
@@ -1671,13 +1673,13 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     <div class="note">
 
-    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After the client CSR is approved, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The subsequent serving certificate renewal requests are then automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After you approve the client CSR, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The `machine-approver` then automatically approves later serving certificate renewal requests if the kubelet requests a new certificate with the same parameters.
 
     </div>
 
     <div class="note">
 
-    For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If a request is not approved, then the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because a serving certificate is required when the API server connects to the kubelet. Any operation that contacts the Kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the CSR was submitted by the `node-bootstrapper` service account in the `system:node` or `system:admin` groups, and confirm the identity of the node.
+    For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If you do not approve a request, the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because the API server requires a serving certificate when it connects to the kubelet. Any operation that contacts the kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the `node-bootstrapper` service account in the `system:node` or `system:admin` groups submitted the CSR, and confirm the identity of the node.
 
     </div>
 
@@ -1700,11 +1702,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
       <div class="note">
 
-      Some Operators might not become available until some CSRs are approved. Each node submits two CSRs, so you might need to run the command to approve CSRs multiple times.
+      Some Operators might not become available until you approve some CSRs. Each node submits two CSRs, so you might need to run the command to approve CSRs many times.
 
       </div>
 
-4.  Now that your client requests are approved, you must review the server requests for each machine that you added to the cluster:
+4.  After you approve your client requests, review the server requests for each machine that you added to the cluster:
 
     ``` terminal
     $ oc get csr
@@ -1742,7 +1744,7 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
       $ oc get csr -o go-template='{{range .items}}{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}}{{end}}' | xargs oc adm certificate approve
       ```
 
-6.  After all client and server CSRs have been approved, the machines have the `Ready` status. Verify this by running the following command:
+6.  After you approve all client and server CSRs, the machines have the `Ready` status. Verify this by running the following command:
 
     ``` terminal
     $ oc get nodes
@@ -1765,7 +1767,7 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     <div class="note">
 
-    You might need to wait a few minutes after approval of the server CSRs for the machines to transition to the `Ready` status.
+    You might need to wait a few minutes after approval of the server CSRs for the machines to change to the `Ready` status.
 
     </div>
 

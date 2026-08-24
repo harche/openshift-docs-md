@@ -149,6 +149,7 @@
   - [Installing a cluster on IBM Cloud into an existing VPC](installing/installing_ibm_cloud/installing-ibm-cloud-vpc.md)
   - [Installing a private cluster on IBM Cloud](installing/installing_ibm_cloud/installing-ibm-cloud-private.md)
   - [Installing a cluster on IBM Cloud in a disconnected environment](installing/installing_ibm_cloud/installing-ibm-cloud-restricted.md)
+  - [Postinstallation configuration for a disconnected IBM Cloud cluster](installing/installing_ibm_cloud/installing-ibm-cloud-restricted-postinstallation-configuration.md)
   - [Installation configuration parameters for IBM Cloud](installing/installing_ibm_cloud/installation-config-parameters-ibm-cloud-vpc.md)
   - [Uninstalling a cluster on IBM Cloud](installing/installing_ibm_cloud/uninstalling-cluster-ibm-cloud.md)
 - **Installing on Nutanix**

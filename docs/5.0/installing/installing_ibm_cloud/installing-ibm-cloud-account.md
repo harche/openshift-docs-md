@@ -1,6 +1,6 @@
-Before you can install OpenShift Container Platform, you must configure an IBM Cloud® account.
+Before you can install OpenShift Container Platform on IBM Cloud®, you must configure your account by setting up DNS, IAM policies, and an API key.
 
-You must have an account with a subscription. You cannot install OpenShift Container Platform on a free or trial IBM Cloud® account.
+You must have a subscription account; free or trial accounts are not supported.
 
 # Quotas and limits on IBM Cloud
 
@@ -148,7 +148,7 @@ You must create a domain zone in CIS in the same account as your cluster. You mu
 
         </div>
 
-3.  Open the CIS web console, navigate to the **Overview** page, and note your CIS name servers. These name servers will be used in the next step. For more information, see "CIS web console".
+3.  Open the CIS web console, navigate to the **Overview** page, and note your CIS name servers. These name servers are used in the next step. For more information, see "CIS web console".
 
 4.  Configure the name servers for your domains or subdomains at the domain’s registrar or DNS provider. For more information, see the IBM Cloud® documentation for "Configuring name servers".
 

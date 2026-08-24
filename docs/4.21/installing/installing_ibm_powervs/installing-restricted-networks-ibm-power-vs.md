@@ -46,7 +46,7 @@ Before you install a OpenShift Container Platform cluster on IBM Power® Virtual
 
 You can install OpenShift Container Platform 4.17 in a restricted network without an active internet connection to obtain software components. Restricted network installations can use installer-provisioned or user-provisioned infrastructure, depending on the cloud platform to which you are installing the cluster.
 
-If you choose to perform a restricted network installation on a cloud platform, you still require access to its cloud APIs. Some cloud functions, like Amazon Web Service’s Route 53 DNS and IAM services, require internet access. Depending on your network, you might require less internet access for an installation on bare metal hardware, Nutanix, or on VMware vSphere.
+If you choose to perform a restricted network installation on a cloud platform, you still require access to its cloud APIs. Some cloud functions, such as Amazon Web Service’s Route 53 DNS and IAM services, require internet access. Depending on your network, you might require less internet access for an installation on bare-metal hardware, Nutanix, or on VMware vSphere.
 
 To complete a restricted network installation, you must create a registry that mirrors the contents of the OpenShift image registry and contains the installation media. You can create this registry on a mirror host, which can access both the internet and your closed network, or by using other methods that meet your restrictions.
 
@@ -351,41 +351,37 @@ You can customize the OpenShift Container Platform cluster you install on
 
 ## Minimum resource requirements for cluster installation
 
-Each created cluster must meet minimum requirements so that the cluster runs as expected.
+To ensure that your OpenShift Container Platform cluster runs as expected, each cluster machine must meet minimum CPU, memory, and storage requirements.
 
-| Machine       | Operating System | vCPU <sup>\[1\]</sup> | Virtual RAM | Storage | Input/Output Per Second (IOPS)<sup>\[2\]</sup> |
-|---------------|------------------|-----------------------|-------------|---------|------------------------------------------------|
-| Bootstrap     | RHCOS            | 2                     | 16 GB       | 100 GB  | 300                                            |
-| Control plane | RHCOS            | 2                     | 16 GB       | 100 GB  | 300                                            |
-| Compute       | RHCOS            | 2                     | 8 GB        | 100 GB  | 300                                            |
+| Machine       | Operating system | vCPU | Virtual RAM | Storage | Input/Output Per Second (IOPS) |
+|---------------|------------------|------|-------------|---------|--------------------------------|
+| Bootstrap     | RHCOS            | 2    | 16 GB       | 100 GB  | 300                            |
+| Control plane | RHCOS            | 2    | 16 GB       | 100 GB  | 300                            |
+| Compute       | RHCOS            | 2    | 8 GB        | 100 GB  | 300                            |
 
 Minimum resource requirements
 
-1.  One vCPU is equivalent to one physical core when simultaneous multithreading (SMT), or Hyper-Threading, is not enabled. When enabled, use the following formula to calculate the corresponding ratio: (threads per core × cores) × sockets = vCPUs.
+- One vCPU is equal to one physical core when simultaneous multithreading (SMT), or Hyper-Threading, is not enabled. When enabled, use the following formula to calculate the corresponding ratio: (threads per core × cores) × sockets = vCPUs.
 
-2.  OpenShift Container Platform and Kubernetes are sensitive to disk performance, and faster storage is recommended, particularly for etcd on the control plane nodes. Note that on many cloud platforms, storage size and IOPS scale together, so you might need to over-allocate storage volume to obtain sufficient performance.
+- OpenShift Container Platform and Kubernetes are sensitive to disk performance, and Red Hat recommends faster storage, particularly for etcd on the control plane nodes. On many cloud platforms, storage size and IOPS scale together, so you might need to provision more storage to get enough performance.
 
 <div class="note">
 
-For OpenShift Container Platform version 4.19, RHCOS is based on RHEL version 9.6, which updates the micro-architecture requirements. The following list contains the minimum instruction set architectures (ISA) that each architecture requires:
+In OpenShift Container Platform version 4.19, RHCOS uses RHEL version 9.6, which updates the micro-architecture requirements. Each architecture requires the following minimum instruction set architectures (ISA):
 
 - x86-64 architecture requires x86-64-v2 ISA
 
 - ARM64 architecture requires ARMv8.0-A ISA
 
-- IBM Power architecture requires Power 9 ISA
+- ppc64le architecture requires IBM® Power9 ISA
 
-- s390x architecture requires z14 ISA
+- s390x architecture requires IBM® z14 ISA
 
-For more information, see "Architectures" in the RHEL documentation.
+For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.8_release_notes/index#architectures) in the RHEL documentation.
 
 </div>
 
 If an instance type for your platform meets the minimum requirements for cluster machines, it is supported to use in OpenShift Container Platform.
-
-- [Architectures (RHEL documentation)](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures)
-
-<!-- -->
 
 - [Optimizing storage](../../scalability_and_performance/optimization/optimizing-storage.xml#optimizing-storage)
 
@@ -531,13 +527,13 @@ Production environments can deny direct access to the internet and instead have 
 
 - You have an existing `install-config.yaml` file.
 
-- You have reviewed the sites that your cluster requires access to and determined whether any of them need to bypass the proxy. By default, all cluster egress traffic is proxied, including calls to hosting cloud provider APIs. You added sites to the `Proxy` object’s `spec.noProxy` field to bypass the proxy if necessary.
+- You have reviewed the sites that your cluster requires access to and determined whether any of them need to bypass the proxy. By default, the proxy handles all cluster egress traffic, including calls to hosting cloud provider APIs. You added sites to the `Proxy` object’s `spec.noProxy` field to bypass the proxy if necessary.
 
   <div class="note">
 
-  The `Proxy` object `status.noProxy` field is populated with the values of the `networking.machineNetwork[].cidr`, `networking.clusterNetwork[].cidr`, and `networking.serviceNetwork[]` fields from your installation configuration.
+  The `Proxy` object `status.noProxy` field includes the values of the `networking.machineNetwork[].cidr`, `networking.clusterNetwork[].cidr`, and `networking.serviceNetwork[]` fields from your installation configuration.
 
-  For installations on Amazon Web Services (AWS), Google Cloud, Microsoft Azure, and Red Hat OpenStack Platform (RHOSP), the `Proxy` object `status.noProxy` field is also populated with the instance metadata endpoint (`169.254.169.254`).
+  For installations on Amazon Web Services (AWS), Google Cloud, Microsoft Azure, and Red Hat OpenStack Platform (RHOSP), the `Proxy` object `status.noProxy` field also includes the instance metadata endpoint (`169.254.169.254`).
 
   </div>
 
@@ -570,10 +566,10 @@ Production environments can deny direct access to the internet and instead have 
     Specifies a comma-separated list of destination domain names, IP addresses, or other network CIDRs to exclude from proxying. Preface a domain with `.` to match subdomains only. For example, `.y.com` matches `x.y.com`, but not `y.com`. Use `*` to bypass the proxy for all destinations.
 
     `additionalTrustBundle`
-    If provided, the installation program generates a config map that is named `user-ca-bundle` in the `openshift-config` namespace to hold the additional CA certificates. If you provide `additionalTrustBundle` and at least one proxy setting, the `Proxy` object is configured to reference the `user-ca-bundle` config map in the `trustedCA` field. The Cluster Network Operator then creates a `trusted-ca-bundle` config map that merges the contents specified for the `trustedCA` parameter with the RHCOS trust bundle. The `additionalTrustBundle` field is required unless the proxy’s identity certificate is signed by an authority from the RHCOS trust bundle.
+    If you specify this value, the installation program generates a config map named `user-ca-bundle` in the `openshift-config` namespace to hold the additional CA certificates. If you specify `additionalTrustBundle` and at least one proxy setting, the `Proxy` object references the `user-ca-bundle` config map in the `trustedCA` field. The Cluster Network Operator then creates a `trusted-ca-bundle` config map that merges the contents specified for the `trustedCA` parameter with the RHCOS trust bundle. You must set the `additionalTrustBundle` field unless an authority from the RHCOS trust bundle signs the proxy’s identity certificate.
 
     `additionalTrustBundlePolicy`
-    Specifies the policy that determines the configuration of the `Proxy` object to reference the `user-ca-bundle` config map in the `trustedCA` field. The allowed values are `Proxyonly` and `Always`. Use `Proxyonly` to reference the `user-ca-bundle` config map only when `http/https` proxy is configured. Use `Always` to always reference the `user-ca-bundle` config map. The default value is `Proxyonly`. Optional parameter.
+    Specifies the policy that determines the configuration of the `Proxy` object to reference the `user-ca-bundle` config map in the `trustedCA` field. The allowed values are `Proxyonly` and `Always`. Use `Proxyonly` to reference the `user-ca-bundle` config map only when you configure an `http/https` proxy. Use `Always` to always reference the `user-ca-bundle` config map. The default value is `Proxyonly`. Optional parameter.
 
     <div class="note">
 
@@ -593,17 +589,17 @@ Production environments can deny direct access to the internet and instead have 
 
 2.  Save the file and reference it when installing OpenShift Container Platform.
 
-    The installation program creates a cluster-wide proxy that is named `cluster` that uses the proxy settings in the provided `install-config.yaml` file. If no proxy settings are provided, a `cluster` `Proxy` object is still created, but it will have a nil `spec`.
+    The installation program creates a cluster-wide proxy named `cluster` that uses the proxy settings in the `install-config.yaml` file. If you do not give proxy settings, the installation program still creates a `cluster` `Proxy` object, but it has a nil `spec`.
 
     <div class="note">
 
-    Only the `Proxy` object named `cluster` is supported, and no additional proxies can be created.
+    Only the `Proxy` object named `cluster` is supported, and you cannot create additional proxies.
 
     </div>
 
 # Manually creating IAM
 
-Installing the cluster requires that the Cloud Credential Operator (CCO) operate in manual mode. While the installation program configures the CCO for manual mode, you must specify the identity and access management secrets for you cloud provider.
+To install OpenShift Container Platform, the Cloud Credential Operator (CCO) must operate in manual mode. While the installation program configures the CCO for manual mode, you must specify the identity and access management secrets for your cloud provider.
 
 You can use the Cloud Credential Operator (CCO) utility (`ccoctl`) to create the required IBM Cloud® resources.
 
@@ -628,7 +624,10 @@ You can use the Cloud Credential Operator (CCO) utility (`ccoctl`) to create the
       hyperthreading: Enabled
     ```
 
-    - `credentialsMode`: Set the `credentialsMode` parameter to `Manual`.
+    where:
+
+    `credentialsMode`
+    Specifies the CCO credentials mode. Set the value to `Manual`.
 
 2.  To generate the manifests, run the following command from the directory that includes the installation program:
 
@@ -653,51 +652,56 @@ You can use the Cloud Credential Operator (CCO) utility (`ccoctl`) to create the
       --to=<path_to_directory_for_credentials_requests>
     ```
 
-    - `--included`: Includes only the manifests that your specific cluster configuration requires.
+    where:
 
-    - `<path_to_directory_with_installation_configuration>`: Specify the location of the `install-config.yaml` file.
+    `--included`
+    Specifies that only the manifests that your specific cluster configuration requires are included.
 
-    - `<path_to_directory_for_credentials_requests>`: Specify the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
+    `--install-config`
+    Specifies the location of the `install-config.yaml` file.
 
-      This command creates a YAML file for each `CredentialsRequest` object.
+    `--to`
+    Specifies the path to the directory where you want to store the `CredentialsRequest` objects. If the specified directory does not exist, this command creates it.
 
-      <div class="formalpara-title">
+    This command creates a YAML file for each `CredentialsRequest` object.
 
-      **Sample `CredentialsRequest` object**
+    <div class="formalpara-title">
 
-      </div>
+    **Sample `CredentialsRequest` object**
 
-      ``` yaml
-        apiVersion: cloudcredential.openshift.io/v1
-        kind: CredentialsRequest
-        metadata:
-          labels:
-            controller-tools.k8s.io: "1.0"
-          name: openshift-image-registry-ibmcos
-          namespace: openshift-cloud-credential-operator
-        spec:
-          secretRef:
-            name: installer-cloud-credentials
-            namespace: openshift-image-registry
-          providerSpec:
-            apiVersion: cloudcredential.openshift.io/v1
-            kind: IBMCloudProviderSpec
-            policies:
-            - attributes:
-              - name: serviceName
-                value: cloud-object-storage
-              roles:
-              - crn:v1:bluemix:public:iam::::role:Viewer
-              - crn:v1:bluemix:public:iam::::role:Operator
-              - crn:v1:bluemix:public:iam::::role:Editor
-              - crn:v1:bluemix:public:iam::::serviceRole:Reader
-              - crn:v1:bluemix:public:iam::::serviceRole:Writer
-            - attributes:
-              - name: resourceType
-                value: resource-group
-              roles:
-              - crn:v1:bluemix:public:iam::::role:Viewer
-      ```
+    </div>
+
+    ``` yaml
+      apiVersion: cloudcredential.openshift.io/v1
+      kind: CredentialsRequest
+      metadata:
+        labels:
+          controller-tools.k8s.io: "1.0"
+        name: openshift-image-registry-ibmcos
+        namespace: openshift-cloud-credential-operator
+      spec:
+        secretRef:
+          name: installer-cloud-credentials
+          namespace: openshift-image-registry
+        providerSpec:
+          apiVersion: cloudcredential.openshift.io/v1
+          kind: IBMCloudProviderSpec
+          policies:
+          - attributes:
+            - name: serviceName
+              value: cloud-object-storage
+            roles:
+            - crn:v1:bluemix:public:iam::::role:Viewer
+            - crn:v1:bluemix:public:iam::::role:Operator
+            - crn:v1:bluemix:public:iam::::role:Editor
+            - crn:v1:bluemix:public:iam::::serviceRole:Reader
+            - crn:v1:bluemix:public:iam::::serviceRole:Writer
+          - attributes:
+            - name: resourceType
+              value: resource-group
+            roles:
+            - crn:v1:bluemix:public:iam::::role:Viewer
+    ```
 
 5.  Create the service ID for each credential request, assign the policies defined, create an API key, and generate the secret:
 
@@ -709,25 +713,31 @@ You can use the Cloud Credential Operator (CCO) utility (`ccoctl`) to create the
       --resource-group-name=<resource_group_name>
     ```
 
-    - `<path_to_credential_requests_directory>`: Specify the directory containing the files for the `CredentialsRequest` objects.
+    where:
 
-    - `<cluster_name>`: Specify the name of the OpenShift Container Platform cluster.
+    `<path_to_credential_requests_directory>`
+    Specifies the directory that has the files for the `CredentialsRequest` objects.
 
-    - `<installation_directory>`: Optional parameter. Specify the directory in which you want the `ccoctl` utility to create objects. By default, the utility creates objects in the directory in which you run the commands.
+    `<cluster_name>`
+    Specifies the name of the OpenShift Container Platform cluster.
 
-    - `<resource_group_name>`: Optional parameter. Specify the name of the resource group used for scoping the access policies.
+    `<installation_directory>`
+    Specifies the directory in which you want the `ccoctl` utility to create objects. By default, the utility creates objects in the directory in which you run the commands. This parameter is optional.
 
-      <div class="note">
+    `<resource_group_name>`
+    Specifies the name of the resource group used for scoping the access policies. This parameter is optional.
 
-      If you enabled Technology Preview features by using the `TechPreviewNoUpgrade` feature set for your cluster, you must include the `--enable-tech-preview` parameter in the configuration for the `CredentialsRequest` object.
+    <div class="note">
 
-      If you provided a wrong resource group name, the installation fails during the bootstrap phase. To find the correct resource group name, run the following command:
+    If you enabled Technology Preview features by using the `TechPreviewNoUpgrade` feature set for your cluster, you must include the `--enable-tech-preview` parameter in the configuration for the `CredentialsRequest` object.
 
-      ``` terminal
-      $ grep resourceGroup <installation_directory>/manifests/cluster-infrastructure-02-config.yml
-      ```
+    If you provided a wrong resource group name, the installation fails during the bootstrap phase. To find the correct resource group name, run the following command:
 
-      </div>
+    ``` terminal
+    $ grep resourceGroup <installation_directory>/manifests/cluster-infrastructure-02-config.yml
+    ```
+
+    </div>
 
 - Check that the appropriate secrets exist in the `manifests` directory of your cluster.
 
@@ -921,7 +931,7 @@ Download and install the new version of `oc`.
 
 To log in to your cluster as the default system user, export the `kubeconfig` file. This configuration enables the CLI to authenticate and connect to the specific API server created during OpenShift Container Platform installation.
 
-The `kubeconfig` file is specific to a cluster and is created during OpenShift Container Platform installation.
+The `kubeconfig` file is specific to a cluster and OpenShift Container Platform generates it during installation.
 
 - You deployed an OpenShift Container Platform cluster.
 
@@ -964,9 +974,7 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 # Disabling the default software catalog sources
 
-Operator catalogs that source content provided by Red Hat and community projects are configured for the software catalog by default during an OpenShift Container Platform installation. In a restricted network environment, you must disable the default catalogs as a cluster administrator.
-
-Operator catalogs that source content provided by Red Hat and community projects are configured for the software catalog by default during an OpenShift Container Platform installation.
+To use only trusted or locally available Operator catalogs, disable the default software catalog sources that OpenShift Container Platform configures during installation. In a restricted network environment, you must disable the default catalogs as a cluster administrator.
 
 - Disable the sources for the default catalogs by adding `disableAllDefaultSources: true` to the `OperatorHub` object:
 
@@ -977,7 +985,7 @@ Operator catalogs that source content provided by Red Hat and community projects
 
   <div class="tip">
 
-  Alternatively, you can use the web console to manage catalog sources. From the **Administration** → **Cluster Settings** → **Configuration** → **OperatorHub** page, click the **Sources** tab, where you can create, update, delete, disable, and enable individual sources.
+  Or, you can use the web console to manage catalog sources. From the **Administration** → **Cluster Settings** → **Configuration** → **OperatorHub** page, click the **Sources** tab, where you can create, update, delete, disable, and enable individual sources.
 
   </div>
 

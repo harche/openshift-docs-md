@@ -256,12 +256,15 @@ To manage the consumption of extended resources, such as `nvidia.com/gpu`, defin
 
 To restrict the set of resources that a quota applies to, add associated scopes. This configuration limits usage measurement to the intersection of the enumerated scopes, ensuring that specifying a resource outside the allowed set results in a validation error.
 
-| Scope            | Description                                                                        |
-|------------------|------------------------------------------------------------------------------------|
-| `Terminating`    | Match pods where `spec.activeDeadlineSeconds >= 0`.                                |
-| `NotTerminating` | Match pods where `spec.activeDeadlineSeconds` is `nil`.                            |
-| `BestEffort`     | Match pods that have best effort quality of service for either `cpu` or `memory`.  |
-| `NotBestEffort`  | Match pods that do not have best effort quality of service for `cpu` and `memory`. |
+| Scope                       | Description                                                                            |
+|-----------------------------|----------------------------------------------------------------------------------------|
+| `Terminating`               | Match pods where `spec.activeDeadlineSeconds >= 0`.                                    |
+| `NotTerminating`            | Match pods where `spec.activeDeadlineSeconds` is `nil`.                                |
+| `BestEffort`                | Match pods that have best effort quality of service for either `cpu` or `memory`.      |
+| `NotBestEffort`             | Match pods that do not have best effort quality of service for `cpu` and `memory`.     |
+| `CrossNamespacePodAffinity` | Match all pod objects that have cross-namespace pod (anti)affinity mentioned.          |
+| `PriorityClass`             | Match all pod objects that have priority class mentioned.                              |
+| `VolumeAttributesClass`     | Match all persistent volume claims (PVCs) that have volume attributes class mentioned. |
 
 A `BestEffort` scope restricts a quota to limiting the following resources:
 
@@ -294,6 +297,44 @@ A `Terminating`, `NotTerminating`, and `NotBestEffort` scope restricts a quota t
 Ephemeral storage requests and limits apply only if you enabled the ephemeral storage technology preview. This feature is disabled by default.
 
 </div>
+
+You can also limit a quota with the optional `scopeSelector` field. In `scopeSelector.matchExpressions`, set a `scopeName`, an `operator`, and, when required, a `values` array. Scopes such as `PriorityClass` and `VolumeAttributesClass` match resources when the selector selects them.
+
+The `operator` field supports the following values:
+
+- `In`
+
+- `NotIn`
+
+- `Exists`
+
+- `DoesNotExist`
+
+If the `operator` is `In` or `NotIn`, the `values` field must include at least one value. If the `operator` is `Exists` or `DoesNotExist`, do not set `values`.
+
+<div class="formalpara-title">
+
+**Example ResourceQuota scoped to a PriorityClass**
+
+</div>
+
+``` yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: pods-high-priority
+spec:
+  hard:
+    pods: "10"
+    requests.cpu: "1"
+    requests.memory: 1Gi
+  scopeSelector:
+    matchExpressions:
+    - scopeName: PriorityClass
+      operator: In
+      values:
+      - high-priority
+```
 
 # Additional resources
 

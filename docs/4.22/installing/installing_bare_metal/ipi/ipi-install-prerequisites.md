@@ -72,39 +72,37 @@ Installer-provisioned installation involves a number of hardware node requiremen
 
 # Minimum resource requirements for cluster installation
 
-Each created cluster must meet minimum requirements so that the cluster runs as expected.
+To ensure that your OpenShift Container Platform cluster runs as expected, each cluster machine must meet minimum CPU, memory, and storage requirements.
 
-| Machine       | Operating System | CPU <sup>\[1\]</sup> | RAM   | Storage | Input/Output Per Second (IOPS)<sup>\[2\]</sup> |
-|---------------|------------------|----------------------|-------|---------|------------------------------------------------|
-| Bootstrap     | RHEL             | 4                    | 16 GB | 100 GB  | 300                                            |
-| Control plane | RHCOS            | 4                    | 16 GB | 100 GB  | 300                                            |
-| Compute       | RHCOS            | 2                    | 8 GB  | 100 GB  | 300                                            |
+| Machine       | Operating system | CPU | RAM   | Storage | Input/Output Per Second (IOPS) |
+|---------------|------------------|-----|-------|---------|--------------------------------|
+| Bootstrap     | RHEL             | 4   | 16 GB | 100 GB  | 300                            |
+| Control plane | RHCOS            | 4   | 16 GB | 100 GB  | 300                            |
+| Compute       | RHCOS            | 2   | 8 GB  | 100 GB  | 300                            |
 
 Minimum resource requirements
 
-1.  One CPU is equivalent to one physical core when simultaneous multithreading (SMT), or Hyper-Threading, is not enabled. When enabled, use the following formula to calculate the corresponding ratio: (threads per core × cores) × sockets = CPUs.
+- One CPU is equal to one physical core when simultaneous multithreading (SMT), or Hyper-Threading, is not enabled. When enabled, use the following formula to calculate the corresponding ratio: (threads per core × cores) × sockets = CPUs.
 
-2.  OpenShift Container Platform and Kubernetes are sensitive to disk performance, and faster storage is recommended, particularly for etcd on the control plane nodes. Note that on many cloud platforms, storage size and IOPS scale together, so you might need to over-allocate storage volume to obtain sufficient performance.
+- OpenShift Container Platform and Kubernetes are sensitive to disk performance, and Red Hat recommends faster storage, particularly for etcd on the control plane nodes. On many cloud platforms, storage size and IOPS scale together, so you might need to provision more storage to get enough performance.
 
 <div class="note">
 
-For OpenShift Container Platform version 4.22, RHCOS is based on RHEL version 9.8, which has the micro-architecture requirements. The following list contains the minimum instruction set architectures (ISA) that each architecture requires:
+In OpenShift Container Platform version 4.22, RHCOS uses RHEL version 9.8, which updates the micro-architecture requirements. Each architecture requires the following minimum instruction set architectures (ISA):
 
 - x86-64 architecture requires x86-64-v2 ISA
 
 - ARM64 architecture requires ARMv8.0-A ISA
 
-- IBM Power architecture requires Power 9 ISA
+- ppc64le architecture requires IBM® Power9 ISA
 
-- s390x architecture requires z14 ISA
+- s390x architecture requires IBM® z14 ISA
 
-For more information, see "Architectures" in the RHEL documentation.
+For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.8_release_notes/index#architectures) in the RHEL documentation.
 
 </div>
 
 If an instance type for your platform meets the minimum requirements for cluster machines, it is supported to use in OpenShift Container Platform.
-
-- [Architectures (RHEL documentation)](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures)
 
 # Bare-metal cluster installation requirements for OpenShift Virtualization
 
@@ -152,7 +150,7 @@ The following tables list the firmware versions tested and verified to work for 
 
 <div class="note">
 
-Red Hat does not test every combination of firmware, hardware, or other third-party components. For further information about third-party support, see [Red Hat third-party support policy](https://access.redhat.com/third-party-software-support). For information about updating the firmware, see the hardware documentation for the nodes or contact the hardware vendor.
+Red Hat does not test every combination of firmware, hardware, or other third-party components. For further information about third-party support, see "Red Hat third-party support policy". For information about updating the firmware, see the hardware documentation for the nodes or contact the hardware vendor.
 
 </div>
 
@@ -182,17 +180,15 @@ Firmware compatibility for Cisco UCS hardware with Redfish virtual media
 
 <div class="note">
 
-Always confirm that your server supports Red Hat Enterprise Linux CoreOS (RHCOS) on [UCSHCL](https://ucshcltool.cloudapps.cisco.com/public/).
+Always confirm that your server supports Red Hat Enterprise Linux CoreOS (RHCOS) on UCS Hardware and Software Compatibility. For more information, see "UCSHCL".
 
 </div>
 
-<div class="formalpara-title">
+- [Red Hat third-party support policy](https://access.redhat.com/third-party-software-support)
 
-**Additional resources**
+- [UCSHCL](https://ucshcltool.cloudapps.cisco.com/public/)
 
-</div>
-
-[Unable to discover new bare-metal hosts by using the BMC](../../../installing/installing_bare_metal/ipi/ipi-install-troubleshooting.xml#unable-to-discover-new-bare-metal-hosts-using-the-bmc_ipi-install-troubleshooting)
+- [Unable to discover new bare-metal hosts by using the BMC](../../../installing/installing_bare_metal/ipi/ipi-install-troubleshooting.xml#unable-to-discover-new-bare-metal-hosts-using-the-bmc_ipi-install-troubleshooting)
 
 # NC-SI hardware requirements for bare metal
 
@@ -564,49 +560,51 @@ Prior to the installation of the OpenShift Container Platform cluster, gather th
 
     - Fujitsu (iRMC) IP
 
-<!-- -->
+- When using the `provisioning` network
 
-- NIC (`provisioning`) MAC address
+  - NIC (`provisioning`) MAC address
 
-- NIC (`baremetal`) MAC address
+  - NIC (`baremetal`) MAC address
 
-<!-- -->
+- When omitting the `provisioning` network
 
-- NIC (`baremetal`) MAC address
+  - NIC (`baremetal`) MAC address
 
 # Validation checklist for nodes
 
-- [ ] NIC1 VLAN is configured for the `provisioning` network.
+- When using the `provisioning` network
 
-- [ ] NIC1 for the `provisioning` network is PXE-enabled on the provisioner, control plane, and worker nodes.
+  - [ ] NIC1 VLAN is configured for the `provisioning` network.
 
-- [ ] NIC2 VLAN is configured for the `baremetal` network.
+  - [ ] NIC1 for the `provisioning` network is PXE-enabled on the provisioner, control plane, and worker nodes.
 
-- [ ] PXE has been disabled on all other NICs.
+  - [ ] NIC2 VLAN is configured for the `baremetal` network.
 
-- [ ] DNS is configured with API and Ingress endpoints.
+  - [ ] PXE has been disabled on all other NICs.
 
-- [ ] Control plane and worker nodes are configured.
+  - [ ] DNS is configured with API and Ingress endpoints.
 
-- [ ] All nodes accessible via out-of-band management.
+  - [ ] Control plane and worker nodes are configured.
 
-- [ ] (Optional) A separate management network has been created.
+  - [ ] All nodes accessible via out-of-band management.
 
-- [ ] Required data for installation.
+  - [ ] (Optional) A separate management network has been created.
 
-<!-- -->
+  - [ ] Required data for installation.
 
-- [ ] NIC1 VLAN is configured for the `baremetal` network.
+- When omitting the `provisioning` network
 
-- [ ] DNS is configured with API and Ingress endpoints.
+  - [ ] NIC1 VLAN is configured for the `baremetal` network.
 
-- [ ] Control plane and worker nodes are configured.
+  - [ ] DNS is configured with API and Ingress endpoints.
 
-- [ ] All nodes accessible via out-of-band management.
+  - [ ] Control plane and worker nodes are configured.
 
-- [ ] (Optional) A separate management network has been created.
+  - [ ] All nodes accessible via out-of-band management.
 
-- [ ] Required data for installation.
+  - [ ] (Optional) A separate management network has been created.
+
+  - [ ] Required data for installation.
 
 # Installation overview
 

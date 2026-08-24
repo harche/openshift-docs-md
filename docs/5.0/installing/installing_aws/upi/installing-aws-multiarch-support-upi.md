@@ -1,8 +1,8 @@
-An OpenShift Container Platform cluster with multi-architecture compute machines supports compute machines with different architectures.
+To run workloads across `x86_64` and ARM nodes, you can install an OpenShift Container Platform cluster on Amazon Web Services (AWS) with multi-architecture compute machine support.
 
 <div class="note">
 
-When you have nodes with multiple architectures in your cluster, the architecture of your image must be consistent with the architecture of the node. You must ensure that the pod is assigned to the node with the appropriate architecture and that it matches the image architecture. For more information on assigning pods to nodes, see [Scheduling workloads on clusters with multi-architecture compute machines](../../../post_installation_configuration/configuring-multi-arch-compute-machines/multi-architecture-compute-managing.xml#scheduling-workloads-on-clusters-with-multi-architecture-compute-machines).
+When you have nodes with multiple architectures in your cluster, the architecture of your image must be consistent with the architecture of the node. You must ensure that the pod is assigned to the node with the appropriate architecture and that it matches the image architecture.
 
 </div>
 
@@ -85,6 +85,6 @@ You can install a cluster with multi-architecture support to use compute machine
 
 - [Deploying the cluster](../../../installing/installing_aws/ipi/installing-aws-localzone.xml#installation-launching-installer_installing-aws-localzone)
 
-<!-- -->
+- [Scheduling workloads on clusters with multi-architecture compute machines](../../../post_installation_configuration/configuring-multi-arch-compute-machines/multi-architecture-compute-managing.xml#scheduling-workloads-on-clusters-with-multi-architecture-compute-machines)
 
 - [Managing workloads on multi-architecture clusters by using the Multiarch Tuning Operator](../../../post_installation_configuration/configuring-multi-arch-compute-machines/multiarch-tuning-operator.xml#multiarch-tuning-operator)

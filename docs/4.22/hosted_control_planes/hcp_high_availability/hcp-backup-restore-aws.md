@@ -4,12 +4,6 @@ You can back up and restore etcd on the management cluster to fix failures.
 
 To back up etcd for a hosted cluster, you must take a snapshot of etcd. Later, you can restore etcd by using the snapshot.
 
-<div class="important">
-
-This procedure requires API downtime.
-
-</div>
-
 1.  Stop all etcd-writer deployments by entering the following command:
 
     ``` terminal

@@ -805,7 +805,7 @@ The smallest OpenShift Container Platform clusters require the following hosts:
 
 <div class="important">
 
-For a cluster that contains user-provisioned infrastructure, you must deploy all of the required machines.
+For a cluster that has user-provisioned infrastructure, you must deploy all of the required machines.
 
 </div>
 
@@ -819,43 +819,43 @@ Minimum required hosts
 
 <div class="important">
 
-To maintain high availability of your cluster, use separate physical hosts for these cluster machines.
+To keep high availability of your cluster, use separate physical hosts for these cluster machines.
 
 </div>
 
-The bootstrap and control plane machines must use Red Hat Enterprise Linux CoreOS (RHCOS) as the operating system. However, the compute machines can choose between Red Hat Enterprise Linux CoreOS (RHCOS), Red Hat Enterprise Linux (RHEL) 8.6 and later.
+The bootstrap and control plane machines must use Red Hat Enterprise Linux CoreOS (RHCOS) as the operating system. However, the compute machines can use Red Hat Enterprise Linux CoreOS (RHCOS), Red Hat Enterprise Linux (RHEL) 8.6 and later.
 
-Note that RHCOS is based on Red Hat Enterprise Linux (RHEL) 9.8 and inherits all of its hardware certifications and requirements. See [Red Hat Enterprise Linux technology capabilities and limits](https://access.redhat.com/articles/rhel-limits).
+RHCOS is based on Red Hat Enterprise Linux (RHEL) 9.8 and inherits all of its hardware certifications and requirements. See [Red Hat Enterprise Linux technology capabilities and limits](https://access.redhat.com/articles/rhel-limits).
 
 ## Minimum resource requirements for cluster installation
 
-Each created cluster must meet minimum requirements so that the cluster runs as expected.
+To ensure that your OpenShift Container Platform cluster runs as expected, each cluster machine must meet minimum CPU, memory, and storage requirements.
 
-| Machine       | Operating System | vCPU | Virtual RAM | Storage | Input/Output Per Second (IOPS)<sup>\[1\]</sup> |
-|---------------|------------------|------|-------------|---------|------------------------------------------------|
-| Bootstrap     | RHCOS            | 4    | 16 GB       | 100 GB  | 300                                            |
-| Control plane | RHCOS            | 4    | 16 GB       | 100 GB  | 300                                            |
-| Compute       | RHCOS            | 2    | 8 GB        | 100 GB  | 300                                            |
+| Machine       | Operating system | vCPU | Virtual RAM | Storage | Input/Output Per Second (IOPS) |
+|---------------|------------------|------|-------------|---------|--------------------------------|
+| Bootstrap     | RHCOS            | 4    | 16 GB       | 100 GB  | 300                            |
+| Control plane | RHCOS            | 4    | 16 GB       | 100 GB  | 300                            |
+| Compute       | RHCOS            | 2    | 8 GB        | 100 GB  | 300                            |
 
 Minimum resource requirements
 
-1.  OpenShift Container Platform and Kubernetes are sensitive to disk performance, and faster storage is recommended, particularly for etcd on the control plane nodes which require a 10 ms p99 fsync duration. Note that on many cloud platforms, storage size and IOPS scale together, so you might need to over-allocate storage volume to obtain sufficient performance.
+- OpenShift Container Platform and Kubernetes are sensitive to disk performance, and Red Hat recommends faster storage, particularly for etcd on the control plane nodes which require a 10 ms p99 fsync duration. On many cloud platforms, storage size and IOPS scale together, so you might need to provision more storage to get enough performance.
 
-2.  As with all user-provisioned installations, if you choose to use RHEL compute machines in your cluster, you take responsibility for all operating system life cycle management and maintenance, including performing system updates, applying patches, and completing all other required tasks. Use of RHEL 7 compute machines is deprecated and has been removed in OpenShift Container Platform 4.10 and later.
+- As with all user-provisioned installations, if you choose to use RHEL compute machines in your cluster, you take responsibility for all operating system life cycle management and maintenance, including performing system updates, applying patches, and completing all other required tasks. OpenShift Container Platform 4.10 and later do not support RHEL 7 compute machines.
 
 <div class="note">
 
-For OpenShift Container Platform version 4.22, RHCOS is based on RHEL version 9.8, which has the micro-architecture requirements. The following list contains the minimum instruction set architectures (ISA) that each architecture requires:
+In OpenShift Container Platform version 4.22, RHCOS uses RHEL version 9.8, which updates the micro-architecture requirements. Each architecture requires the following minimum instruction set architectures (ISA):
 
 - x86-64 architecture requires x86-64-v2 ISA
 
 - ARM64 architecture requires ARMv8.0-A ISA
 
-- IBM Power architecture requires Power 9 ISA
+- ppc64le architecture requires IBM® Power9 ISA
 
-- s390x architecture requires z14 ISA
+- s390x architecture requires IBM® z14 ISA
 
-For more information, see "Architectures" in the RHEL documentation.
+For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.8_release_notes/index#architectures) in the RHEL documentation.
 
 </div>
 
@@ -865,21 +865,15 @@ If an instance type for your platform meets the minimum requirements for cluster
 
 Do not use memory ballooning in OpenShift Container Platform clusters. Memory ballooning can cause cluster-wide instabilities, service degradation, or other undefined behaviors.
 
-- Control plane machines should have committed memory equal to or greater than the published minimum resource requirements for a cluster installation.
+- Control plane machines must have committed memory equal to or greater than the published minimum resource requirements for a cluster installation.
 
-- Compute machines should have a minimum reservation equal to or greater than the published minimum resource requirements for a cluster installation.
+- Compute machines must have a minimum reservation equal to or greater than the published minimum resource requirements for a cluster installation.
 
 These minimum CPU and memory requirements do not account for resources required by user workloads.
 
-For more information, see "Memory Ballooning and OpenShift".
+For more information, see the Red Hat Knowledgebase article [Memory Ballooning and OpenShift](https://access.redhat.com/articles/7074533).
 
 </div>
-
-- [Architectures (RHEL documentation)](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures)
-
-- [Memory Ballooning and OpenShift (Red Hat Knowledgebase article)](https://access.redhat.com/articles/7074533)
-
-<!-- -->
 
 - [Optimizing storage](../../../scalability_and_performance/optimization/optimizing-storage.xml#optimizing-storage)
 
@@ -905,9 +899,9 @@ When you deploy the OVF template in the section titled "Installing RHCOS and sta
 
 ## Certificate signing requests management
 
-On user-provisioned infrastructure, you must provide a mechanism for approving cluster certificate signing requests (CSRs) after installation when your cluster has limited access to automatic machine management.
+On user-provisioned infrastructure, you must implement a mechanism for approving cluster certificate signing requests (CSRs) after installation when your cluster has limited access to automatic machine management.
 
-The `kube-controller-manager` only approves the kubelet client CSRs. The `machine-approver` cannot guarantee the validity of a serving certificate that is requested by using kubelet credentials because it cannot confirm that the correct machine issued the request. You must determine and implement a method of verifying the validity of the kubelet serving certificate requests and approving them.
+The `kube-controller-manager` only approves the kubelet client CSRs. The `machine-approver` cannot guarantee the validity of a serving certificate that kubelet credentials request because it cannot confirm that the correct machine issued the request. You must find and implement a method of verifying the validity of the kubelet serving certificate requests and approving them.
 
 ## Networking requirements for user-provisioned infrastructure
 

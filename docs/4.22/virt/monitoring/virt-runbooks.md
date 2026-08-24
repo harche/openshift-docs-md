@@ -16,6 +16,7 @@ Runbooks for the OpenShift Virtualization Operator are maintained in the [opensh
 | `CDINotReady`                                     | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/CDINotReady.md)                                     |
 | `CDIOperatorDown`                                 | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/CDIOperatorDown.md)                                 |
 | `CDIStorageProfilesIncomplete`                    | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/CDIStorageProfilesIncomplete.md)                    |
+| `ClusterVMPanicDetected`                          | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/ClusterVMPanicDetected.md)                          |
 | `CnaoDown`                                        | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/CnaoDown.md)                                        |
 | `CnaoNMstateMigration`                            | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/CnaoNmstateMigration.md)                            |
 | `DeprecatedMachineType`                           | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/DeprecatedMachineType.md)                           |
@@ -74,6 +75,7 @@ Runbooks for the OpenShift Virtualization Operator are maintained in the [opensh
 | `VirtualMachineStuckInUnhealthyState`             | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/VirtualMachineStuckInUnhealthyState.md)             |
 | `VirtualMachineStuckOnNode`                       | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/VirtualMachineStuckOnNode.md)                       |
 | `VMCannotBeEvicted`                               | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/VMCannotBeEvicted.md)                               |
+| `VMNonRecoverableOSPanic`                         | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/VMNonRecoverableOSPanic.md)                         |
 | `VMStorageClassWarning`                           | [Runbook](https://github.com/openshift/runbooks/blob/master/alerts/openshift-virtualization-operator/VMStorageClassWarning.md)                           |
 
 Runbooks for OpenShift Virtualization alerts

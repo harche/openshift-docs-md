@@ -1,6 +1,8 @@
-When determining *update paths*, also known as upgrade edges or upgrade constraints, for an installed cluster extension, Operator Lifecycle Manager (OLM) v1 supports OLM (Classic) semantics starting in OpenShift Container Platform 4.16. This support follows the behavior from OLM (Classic), including `replaces`, `skips`, and `skipRange` directives, with a few noted differences.
+Operator Lifecycle Manager (OLM) v1 supports OLM (Classic) semantics for update paths, also known as upgrade edges or upgrade constraints. Support includes `replaces`, `skips`, and `skipRange` directives, with a few noted differences.
 
 By supporting OLM (Classic) semantics, OLM v1 accurately reflects the update graph from catalogs.
+
+OLM v1 differs from the original OLM (Classic) implementation in the following ways:
 
 - If there are multiple possible successors, OLM v1 behavior differs in the following ways:
 
@@ -32,6 +34,8 @@ By supporting OLM (Classic) semantics, OLM v1 accurately reflects the update gra
 
 In Operator Lifecycle Manager (OLM) v1, you can specify a version range by using a comparison string in an Operator or extension’s custom resource (CR). If you specify a version range in the CR, OLM v1 installs or updates to the latest version of the Operator that can be resolved within the version range.
 
+The resolved version workflow includes the following steps:
+
 - The resolved version is the latest version of the Operator that satisfies the constraints of the Operator and the environment.
 
 - An Operator update within the specified range is automatically installed if it is resolved successfully.
@@ -40,7 +44,9 @@ In Operator Lifecycle Manager (OLM) v1, you can specify a version range by using
 
 # Version comparison strings
 
-You can define a version range by adding a comparison string to the `spec.version` field in an Operator or extension’s custom resource (CR). A comparison string is a list of space- or comma-separated values and one or more comparison operators enclosed in double quotation marks (`"`). You can add another comparison string by including an `OR`, or double vertical bar (`||`), comparison operator between the strings.
+To define a version range for a cluster extension, add a comparison string to the custom resource (CR) of the extension.
+
+A comparison string is a list of space- or comma-separated values and one or more comparison operators enclosed in double quotation marks (`"`). You can add another comparison string by including an `OR`, or double vertical bar (`||`), comparison operator between the strings.
 
 | Comparison operator | Definition               |
 |---------------------|--------------------------|
@@ -153,7 +159,7 @@ apiVersion: olm.operatorframework.io/v1
           - latest
 ```
 
-- Optional: Installs the latest release that can be resolved from the specified channel. Updates to the channel are automatically installed. Specify the value of the `channels` parameter as an array.
+Installs the latest release that can be resolved from the specified channel. Updates to the channel are automatically installed. Specify the value of the `channels` parameter as an array. This field is optional
 
 If you specify the Operator or extension’s target version in the CR, OLM v1 installs the specified version. When the target version is specified in the CR, OLM v1 does not change the target version when updates are published to the catalog.
 
@@ -181,7 +187,7 @@ apiVersion: olm.operatorframework.io/v1
         version: "1.11.1"
 ```
 
-- Optional: Specifies the target version. If you want to update the version of the Operator or extension that is installed, you must manually update this field the CR to the desired target version.
+Specifies the target version. If you want to update the version of the Operator or extension that is installed, you must manually update this field the CR to the desired target version. This field is optional.
 
 If you want to define a range of acceptable versions for an Operator or extension, you can specify a version range by using a comparison string. When you specify a version range, OLM v1 installs the latest version of an Operator or extension that can be resolved by the Operator Controller.
 
@@ -207,7 +213,7 @@ apiVersion: olm.operatorframework.io/v1
         version: ">1.11.1"
 ```
 
-- Optional: Specifies that the desired version range is greater than version `1.11.1`. For more information, see "Support for version ranges".
+Specifies that the desired version range is greater than version `1.11.1`. This field is optional.
 
 After you create or update a CR, apply the configuration file by running the following command:
 
@@ -264,15 +270,22 @@ You must verify the consequences of forcing a manual update or rollback. Failure
             upgradeConstraintPolicy: SelfCertified
     ```
 
-    - Specifies the namespace where you want the bundle installed, such as `pipelines` or `my-extension`. Extensions are still cluster-scoped and might contain resources that are installed in different namespaces.
+    where:
 
-    - Specifies the name of the service account you created to install, update, and manage your extension.
+    `spec.namespace`
+    Specifies the namespace where you want the bundle installed, such as `pipelines` or `my-extension`. Extensions are still cluster-scoped and might contain resources that are installed in different namespaces.
 
-    - Optional: Specifies channel names as an array, such as `pipelines-1.14` or `latest`.
+    `spec.serviceAccount.name`
+    Specifies the name of the service account you created to install, update, and manage your extension.
 
-    - Optional: Specifies the version or version range, such as `1.14.0`, `1.14.x`, or `>=1.16`, of the package you want to install or update. For more information, see "Example custom resources (CRs) that specify a target version" and "Support for version ranges".
+    `spec.source.catalog.channels`
+    Specifies channel names as an array, such as `pipelines-1.14` or `latest`. This field is optional.
 
-    - Optional: Specifies the upgrade constraint policy. To force an update or rollback, set the field to `SelfCertified`. If unspecified, the default setting is `CatalogProvided`. The `CatalogProvided` setting only updates if the new version satisfies the upgrade constraints set by the package author.
+    `spec.source.catalog.version`
+    Specifies the version or version range, such as `1.14.0`, `1.14.x`, or `>=1.16`, of the package you want to install or update. This field is optional.
+
+    `spec.source.catalog.upgradeConstraintPolicy`
+    Specifies the upgrade constraint policy. To force an update or rollback, set the field to `SelfCertified`. If unspecified, the default setting is `CatalogProvided`. The `CatalogProvided` setting only updates if the new version satisfies the upgrade constraints set by the package author. This field is optional.
 
 2.  Apply the changes to your Operator or extensions CR by running the following command:
 
@@ -306,9 +319,9 @@ metadata:
     "olm.properties": '[{"type": "olm.maxOpenShiftVersion", "value": "<cluster_version>"}]'
 ```
 
-- Specifies the latest minor version of OpenShift Container Platform (4.y) that an Operator is compatible with. For example, setting `value` to `4.17` prevents cluster updates to minor versions later than 4.17 when this bundle is installed on a cluster.
+\+ Replace `<cluster_version>` with the latest minor version of OpenShift Container Platform (4.y) that an Operator is compatible with. For example, setting `value` to `4.17` prevents cluster updates to minor versions later than 4.17 when this bundle is installed on a cluster.
 
-  If the `olm.maxOpenShiftVersion` field is omitted, cluster updates are not blocked by this Operator.
+If the `olm.maxOpenShiftVersion` field is omitted, cluster updates are not blocked by this Operator.
 
 <div class="note">
 
@@ -318,7 +331,7 @@ For example, if the cluster’s current version is `4.17.0`, the next minor vers
 
 </div>
 
-- [Deprecated API Migration Guide](https://kubernetes.io/docs/reference/using-api/deprecation-guide/) (Kubernetes documentation)
+- [Deprecated API Migration Guide (Kubernetes documentation)](https://kubernetes.io/docs/reference/using-api/deprecation-guide/)
 
 ## Cluster updates blocked by olm cluster Operator
 

@@ -618,9 +618,9 @@ For more information about related features and functionality, see the Microsoft
 
 - On the Microsoft Azure portal, review the details for a machine deployed by the machine set and verify that the confidential VM options match the values that you configured.
 
-# Configuring Capacity Reservation by using machine sets
+# Configuring Capacity Reservations by using machine sets
 
-OpenShift Container Platform version 4.17 and later supports on-demand Capacity Reservation with Capacity Reservation groups on Microsoft Azure clusters.
+You can configure a machine set to deploy machines on any available resources that match the parameters of a capacity request that you define by using on-demand Capacity Reservation with Capacity Reservation groups on Microsoft Azure clusters.
 
 You can configure a machine set to deploy machines on any available resources that match the parameters of a capacity request that you define.
 
@@ -638,11 +638,15 @@ You cannot change an existing Capacity Reservation configuration for a machine s
 
 - You installed the OpenShift CLI (`oc`).
 
-- You created a Capacity Reservation group. For more information, see [Create a Capacity Reservation](https://learn.microsoft.com/en-us/azure/virtual-machines/capacity-reservation-create) in the Microsoft Azure documentation.
+- You have created a Capacity Reservation group. For more information, see [Create a Capacity Reservation](https://learn.microsoft.com/en-us/azure/virtual-machines/capacity-reservation-create) in the Microsoft Azure documentation.
 
-1.  In a text editor, open the YAML file for an existing machine set or create a new one.
+1.  Edit your control plane machine set custom resource (CR) by running the following command:
 
-2.  Edit the following section under the `providerSpec` field:
+    ``` terminal
+    $ oc edit controlplanemachineset.machine.openshift.io cluster --namespace openshift-machine-api
+    ```
+
+2.  Update the CR to implement your configuration changes:
 
     <div class="formalpara-title">
 
@@ -668,6 +672,14 @@ You cannot change an existing Capacity Reservation configuration for a machine s
 
     `<capacity_reservation_group>`
     Specifies the ID of the Capacity Reservation group that you want the machine set to deploy machines on.
+
+3.  Save your changes and exit the object specification.
+
+    When you save an update to the control plane machine set, the Control Plane Machine Set Operator updates the control plane machines according to your configured update strategy.
+
+    - For clusters that use the default `RollingUpdate` update strategy, the Operator automatically propagates the changes to your control plane configuration.
+
+    - For clusters that are configured to use the `OnDelete` update strategy, you must replace your control plane machines manually.
 
 - To verify machine deployment, list the machines that the machine set created by running the following command:
 

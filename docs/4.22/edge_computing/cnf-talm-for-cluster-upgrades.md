@@ -1701,7 +1701,7 @@ For pre-caching, TALM uses the `spec.remediationStrategy.timeout` value from the
     }
     ```
 
-    Displays the list of identified clusters.
+    The output lists the identified clusters. The `platformImage` value in `status.precaching.spec` is derived by TALM from the `ClusterVersion` object in the managed policies.
 
 3.  Check the status of the pre-caching job by running the following command on the spoke cluster:
 

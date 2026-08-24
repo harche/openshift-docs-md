@@ -136,17 +136,9 @@ You must create a domain zone in CIS in the same account as your cluster. You mu
 
         </div>
 
-3.  Open the CIS web console, navigate to the **Overview** page, and note your CIS name servers. These name servers will be used in the next step. For more information, see "CIS web console".
+3.  Open the CIS web console, navigate to the **Overview** page, and note your CIS name servers. These name servers are used in the next step. For more information, see "CIS web console".
 
 4.  Configure the name servers for your domains or subdomains at the domain’s registrar or DNS provider. For more information, see the IBM Cloud® documentation for "Configuring name servers".
-
-- [IBM Cloud® CLI (IBM Cloud® documentation)](https://www.ibm.com/cloud/cli)
-
-- [IBM® DNS documentation](https://cloud.ibm.com/docs/dns?topic=dns-getting-started)
-
-- [CIS web console (IBM Cloud® documentation)](https://cloud.ibm.com/catalog/services/internet-services)
-
-- [IBM Cloud® documentation for configuring name servers](https://cloud.ibm.com/docs/cis?topic=cis-getting-started#configure-your-name-servers-with-the-registrar-or-existing-dns-provider)
 
 # IBM Cloud IAM policies and API key
 

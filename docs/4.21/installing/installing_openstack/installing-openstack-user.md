@@ -1132,15 +1132,15 @@ After you deploy your cluster, you can attach pods to additional networks. For m
 
 # Creating the Kubernetes manifest and Ignition config files
 
-To customize cluster definitions and manually start machines, generate the Kubernetes manifest and Ignition config files.
+Because you manually provision infrastructure, you must generate the Kubernetes manifest and Ignition config files that the cluster requires.
 
-The installation configuration file transforms into the Kubernetes manifests. The manifests wrap into the Ignition configuration files, which are later used to configure the cluster machines.
+The installation program converts the installation configuration into Kubernetes manifests and then wraps them into Ignition configuration files. You use these Ignition files to configure the cluster machines.
 
 <div class="important">
 
-- The Ignition config files that the OpenShift Container Platform installation program generates contain certificates that expire after 24 hours, which are then renewed at that time. If the cluster is shut down before renewing the certificates and the cluster is later restarted after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
+- The Ignition config files that the OpenShift Container Platform installation program generates contain certificates that expire after 24 hours, which the system then renews. If you shut down the cluster before the system renews the certificates and you later restart the cluster after the 24 hours have elapsed, the cluster automatically recovers the expired certificates. The exception is that you must manually approve the pending `node-bootstrapper` certificate signing requests (CSRs) to recover kubelet certificates. See the documentation for *Recovering from expired control plane certificates* for more information.
 
-- It is recommended that you use Ignition config files within 12 hours after they are generated because the 24-hour certificate rotates from 16 to 22 hours after the cluster is installed. By using the Ignition config files within 12 hours, you can avoid installation failure if the certificate update runs during installation.
+- Use Ignition config files within 12 hours after you generate them, because the 24-hour certificate rotates from 16 to 22 hours after you install the cluster. By using the Ignition config files within 12 hours, you can avoid installation failure if the certificate update runs during installation.
 
 </div>
 
@@ -1154,7 +1154,7 @@ The installation configuration file transforms into the Kubernetes manifests. Th
     $ ./openshift-install create manifests --dir <installation_directory>
     ```
 
-    where
+    where:
 
     `<installation_directory>`
     Specifies the installation directory that contains the `install-config.yaml` file you created.
@@ -1167,11 +1167,11 @@ The installation configuration file transforms into the Kubernetes manifests. Th
 
     Because you create and manage these resources yourself, you do not have to initialize them. You can preserve the compute machine set files to create compute machines by using the machine API, but you must update references to them to match your environment.
 
-3.  Check that the `mastersSchedulable` parameter in the `<installation_directory>/manifests/cluster-scheduler-02-config.yml` Kubernetes manifest file is set to `false`. This setting prevents pods from being scheduled on the control plane machines:
+3.  Verify that the `mastersSchedulable` parameter in the `<installation_directory>/manifests/cluster-scheduler-02-config.yml` Kubernetes manifest file is set to `false`. This setting prevents pods from being scheduled on the control plane machines:
 
     1.  Open the `<installation_directory>/manifests/cluster-scheduler-02-config.yml` file.
 
-    2.  Locate the `mastersSchedulable` parameter and ensure that it is set to `false`.
+    2.  Locate the `mastersSchedulable` parameter and verify that it is set to `false`.
 
     3.  Save and exit the file.
 
@@ -1186,7 +1186,7 @@ The installation configuration file transforms into the Kubernetes manifests. Th
     `<installation_directory>`
     Specifies the same installation directory.
 
-    Ignition config files are created for the bootstrap, control plane, and compute nodes in the installation directory. The `kubeadmin-password` and `kubeconfig` files are created in the `./<installation_directory>/auth` directory:
+    The installation program creates Ignition config files for the bootstrap, control plane, and compute nodes in the installation directory. The program also creates the `kubeadmin-password` and `kubeconfig` files in the `./<installation_directory>/auth` directory:
 
         .
         ├── auth
@@ -1622,7 +1622,7 @@ Create three control plane machines by using the Ignition config files that you 
 
 To log in to your cluster as the default system user, export the `kubeconfig` file. This configuration enables the CLI to authenticate and connect to the specific API server created during OpenShift Container Platform installation.
 
-The `kubeconfig` file is specific to a cluster and is created during OpenShift Container Platform installation.
+The `kubeconfig` file is specific to a cluster and OpenShift Container Platform generates it during installation.
 
 - You deployed an OpenShift Container Platform cluster.
 
@@ -1715,7 +1715,7 @@ After standing up the control plane, create compute machines. Red Hat provides a
 
 # Approving the certificate signing requests for your machines
 
-To allow newly added machines to join your OpenShift Container Platform cluster, you can confirm that pending certificate signing requests (CSRs) are approved or approve them yourself. Approve client requests first, then server requests.
+To allow newly added machines to join your OpenShift Container Platform cluster, confirm that the cluster approves pending certificate signing requests (CSRs), or approve them yourself. Approve client requests first, then server requests.
 
 - You added machines to your cluster.
 
@@ -1742,7 +1742,7 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     <div class="note">
 
-    The preceding output might not include the compute nodes until some CSRs are approved.
+    The preceding output might not include the compute nodes until you approve some CSRs.
 
     </div>
 
@@ -1771,13 +1771,13 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     <div class="note">
 
-    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After the client CSR is approved, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The subsequent serving certificate renewal requests are then automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After you approve the client CSR, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The `machine-approver` then automatically approves later serving certificate renewal requests if the kubelet requests a new certificate with the same parameters.
 
     </div>
 
     <div class="note">
 
-    For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If a request is not approved, then the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because a serving certificate is required when the API server connects to the kubelet. Any operation that contacts the Kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the CSR was submitted by the `node-bootstrapper` service account in the `system:node` or `system:admin` groups, and confirm the identity of the node.
+    For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If you do not approve a request, the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because the API server requires a serving certificate when it connects to the kubelet. Any operation that contacts the kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the `node-bootstrapper` service account in the `system:node` or `system:admin` groups submitted the CSR, and confirm the identity of the node.
 
     </div>
 
@@ -1800,11 +1800,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
       <div class="note">
 
-      Some Operators might not become available until some CSRs are approved.
+      Some Operators might not become available until you approve some CSRs.
 
       </div>
 
-4.  Now that your client requests are approved, you must review the server requests for each machine that you added to the cluster:
+4.  After you approve your client requests, review the server requests for each machine that you added to the cluster:
 
     ``` terminal
     $ oc get csr
@@ -1842,7 +1842,7 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
       $ oc get csr -o go-template='{{range .items}}{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}}{{end}}' | xargs oc adm certificate approve
       ```
 
-6.  After all client and server CSRs have been approved, the machines have the `Ready` status. Verify this by running the following command:
+6.  After you approve all client and server CSRs, the machines have the `Ready` status. Verify this by running the following command:
 
     ``` terminal
     $ oc get nodes
@@ -1865,7 +1865,7 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     <div class="note">
 
-    You might need to wait a few minutes after approval of the server CSRs for the machines to transition to the `Ready` status.
+    You might need to wait a few minutes after approval of the server CSRs for the machines to change to the `Ready` status.
 
     </div>
 

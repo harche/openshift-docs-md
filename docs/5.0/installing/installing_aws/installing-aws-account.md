@@ -187,7 +187,7 @@ The following table summarizes the AWS components whose limits can impact your a
 
 # Required AWS permissions for the IAM user
 
-To deploy all components of an OpenShift Container Platform cluster, you must grant the all the required permissions to the IAM user that you create in Amazon Web Services (AWS).
+To deploy all components of an OpenShift Container Platform cluster, you must grant all the required permissions to the IAM user that you create in Amazon Web Services (AWS).
 
 <div class="note">
 
@@ -195,7 +195,9 @@ Your IAM user must have the permission `tag:GetResources` in the region `us-east
 
 </div>
 
-When you attach the `AdministratorAccess` policy to the IAM user that you create in Amazon Web Services (AWS), you grant that user all of the required permissions. To deploy all components of an OpenShift Container Platform cluster, the IAM user requires the following permissions:
+When you attach the `AdministratorAccess` policy to the IAM user that you create in AWS, you grant that user all of the required permissions. To deploy all components of an OpenShift Container Platform cluster, the IAM user requires the following permissions:
+
+**Required EC2 permissions for installation**
 
 - `ec2:AttachNetworkInterface`
 
@@ -253,7 +255,7 @@ When you attach the `AdministratorAccess` policy to the IAM user that you create
 
 - `ec2:DescribePrefixLists`
 
-- `ec2:DescribePublicIpv4Pools` (only required if `publicIpv4Pool` is specified in `install-config.yaml`)
+- `ec2:DescribePublicIpv4Pools` (only required if you specify `publicIpv4Pool` in `install-config.yaml`)
 
 - `ec2:DescribeRegions`
 
@@ -279,7 +281,7 @@ When you attach the `AdministratorAccess` policy to the IAM user that you create
 
 - `ec2:DescribeVpcs`
 
-- `ec2:DisassociateAddress` (only required if `publicIpv4Pool` is specified in `install-config.yaml`)
+- `ec2:DisassociateAddress` (only required if you specify `publicIpv4Pool` in `install-config.yaml`)
 
 - `ec2:GetEbsDefaultKmsKeyId`
 
@@ -295,7 +297,7 @@ When you attach the `AdministratorAccess` policy to the IAM user that you create
 
 - `ec2:TerminateInstances`
 
-<!-- -->
+**Required permissions for creating network resources during installation**
 
 - `ec2:AllocateAddress`
 
@@ -332,6 +334,8 @@ When you attach the `AdministratorAccess` policy to the IAM user that you create
 If you use an existing Virtual Private Cloud (VPC), your account does not require these permissions for creating network resources.
 
 </div>
+
+**Required Elastic Load Balancing permissions (ELB) for installation**
 
 - `elasticloadbalancing:AddTags`
 
@@ -389,6 +393,8 @@ OpenShift Container Platform uses both the ELB and ELBv2 API services to provisi
 
 </div>
 
+**Required IAM permissions for installation**
+
 - `iam:AddRoleToInstanceProfile`
 
 - `iam:CreateInstanceProfile`
@@ -435,6 +441,8 @@ OpenShift Container Platform uses both the ELB and ELBv2 API services to provisi
 
 </div>
 
+**Required Route 53 permissions for installation**
+
 - `route53:ChangeResourceRecordSets`
 
 - `route53:ChangeTagsForResource`
@@ -457,7 +465,7 @@ OpenShift Container Platform uses both the ELB and ELBv2 API services to provisi
 
 - `route53:UpdateHostedZoneComment`
 
-<!-- -->
+**Required Amazon Simple Storage Service (S3) permissions for installation**
 
 - `s3:CreateBucket`
 
@@ -501,7 +509,7 @@ OpenShift Container Platform uses both the ELB and ELBv2 API services to provisi
 
 - `s3:PutEncryptionConfiguration`
 
-<!-- -->
+**S3 permissions that cluster Operators require**
 
 - `s3:DeleteObject`
 
@@ -519,7 +527,7 @@ OpenShift Container Platform uses both the ELB and ELBv2 API services to provisi
 
 - `s3:PutObjectTagging`
 
-<!-- -->
+**Required permissions to delete base cluster resources**
 
 - `autoscaling:DescribeAutoScalingGroups`
 
@@ -553,7 +561,7 @@ OpenShift Container Platform uses both the ELB and ELBv2 API services to provisi
 
 - `tag:GetResources`
 
-<!-- -->
+**Required permissions to delete network resources**
 
 - `ec2:DeleteDhcpOptions`
 
@@ -585,6 +593,8 @@ If you use an existing VPC, your account does not require these permissions to d
 
 </div>
 
+**Optional permissions for installing a cluster with a custom Key Management Service (KMS) key**
+
 - `kms:CreateGrant`
 
 - `kms:Decrypt`
@@ -603,17 +613,19 @@ If you use an existing VPC, your account does not require these permissions to d
 
 <div class="note">
 
-If you provide an Amazon Machine Image (AMI) that is encrypted with a customer-managed key, you must provide the `kms:ReEncrypt*` permissions in addition to these permissions.
+If you use an Amazon Machine Image (AMI) encrypted with a customer-managed key, you must grant the `kms:ReEncrypt*` permissions in addition to these permissions.
 
 </div>
 
+**Required permissions to delete a cluster with shared instance roles**
+
 - `iam:UntagRole`
 
-<!-- -->
+**Required permissions to delete a cluster with shared instance profiles**
 
 - `tag:UntagResources`
 
-<!-- -->
+**Additional IAM and S3 permissions required to create manifests**
 
 - `iam:GetUserPolicy`
 
@@ -641,25 +653,27 @@ If you are managing your cloud provider credentials with mint mode, the IAM user
 
 </div>
 
+**Optional permissions for instance and quota checks for installation**
+
 - `servicequotas:ListAWSDefaultServiceQuotas`
 
-<!-- -->
+**Optional permissions for the cluster owner account when installing a cluster on a shared VPC**
 
 - `sts:AssumeRole`
 
-<!-- -->
+**Required permissions for enabling Bring your own public IPv4 addresses (BYOIP) feature for installation**
 
 - `ec2:DescribePublicIpv4Pools`
 
 - `ec2:DisassociateAddress`
 
-<!-- -->
+**Required permissions to install a cluster with dual-stack networking**
 
 - `ec2:DescribeEgressOnlyInternetGateways`
 
 - `ec2:CreateEgressOnlyInternetGateway`
 
-<!-- -->
+**Required permissions to delete a cluster with dual-stack networking**
 
 - `ec2:DeleteEgressOnlyInternetGateway`
 

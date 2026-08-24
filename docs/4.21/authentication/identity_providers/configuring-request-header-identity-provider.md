@@ -173,7 +173,7 @@ Apply the identity provider custom resource (CR) to your cluster so users can au
 
     </div>
 
-2.  Log in to the cluster as a user from your identity provider by running the following command, entering the password when prompted:
+2.  Log in to the cluster as a user from your identity provider, entering the password when prompted. Run the following command:
 
     ``` terminal
     $ oc login -u <username>

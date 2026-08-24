@@ -1,6 +1,6 @@
-Before you begin an installation on infrastructure that you provision, be sure that your AWS environment meets the following installation requirements.
+Before you install OpenShift Container Platform on infrastructure that you provision, ensure that your Amazon Web Services (AWS) environment meets the installation requirements.
 
-For a cluster that contains user-provisioned infrastructure, you must deploy all of the required machines.
+For a cluster that has user-provisioned infrastructure, you must deploy all of the required machines.
 
 # Required machines for cluster installation
 
@@ -10,7 +10,7 @@ The smallest OpenShift Container Platform clusters require the following hosts:
 
 <div class="important">
 
-For a cluster that contains user-provisioned infrastructure, you must deploy all of the required machines.
+For a cluster that has user-provisioned infrastructure, you must deploy all of the required machines.
 
 </div>
 
@@ -24,89 +24,89 @@ Minimum required hosts
 
 <div class="important">
 
-To maintain high availability of your cluster, use separate physical hosts for these cluster machines.
+To keep high availability of your cluster, use separate physical hosts for these cluster machines.
 
 </div>
 
-The bootstrap and control plane machines must use Red Hat Enterprise Linux CoreOS (RHCOS) as the operating system. However, the compute machines can choose between Red Hat Enterprise Linux CoreOS (RHCOS), Red Hat Enterprise Linux (RHEL) 8.6 and later.
+The bootstrap and control plane machines must use Red Hat Enterprise Linux CoreOS (RHCOS) as the operating system. However, the compute machines can use Red Hat Enterprise Linux CoreOS (RHCOS), Red Hat Enterprise Linux (RHEL) 8.6 and later.
 
-Note that RHCOS is based on Red Hat Enterprise Linux (RHEL) 9.8 and inherits all of its hardware certifications and requirements. See [Red Hat Enterprise Linux technology capabilities and limits](https://access.redhat.com/articles/rhel-limits).
+RHCOS is based on Red Hat Enterprise Linux (RHEL) 9.8 and inherits all of its hardware certifications and requirements. See [Red Hat Enterprise Linux technology capabilities and limits](https://access.redhat.com/articles/rhel-limits).
 
 ## Minimum resource requirements for cluster installation
 
-Each created cluster must meet minimum requirements so that the cluster runs as expected.
+To ensure that your OpenShift Container Platform cluster runs as expected, each cluster machine must meet minimum CPU, memory, and storage requirements.
 
-| Machine       | Operating System | vCPU <sup>\[1\]</sup> | Virtual RAM | Storage | Input/Output Per Second (IOPS)<sup>\[2\]</sup> |
-|---------------|------------------|-----------------------|-------------|---------|------------------------------------------------|
-| Bootstrap     | RHCOS            | 4                     | 16 GB       | 100 GB  | 300                                            |
-| Control plane | RHCOS            | 4                     | 16 GB       | 100 GB  | 300                                            |
-| Compute       | RHCOS            | 2                     | 8 GB        | 100 GB  | 300                                            |
+| Machine       | Operating system | vCPU | Virtual RAM | Storage | Input/Output Per Second (IOPS) |
+|---------------|------------------|------|-------------|---------|--------------------------------|
+| Bootstrap     | RHCOS            | 4    | 16 GB       | 100 GB  | 300                            |
+| Control plane | RHCOS            | 4    | 16 GB       | 100 GB  | 300                            |
+| Compute       | RHCOS            | 2    | 8 GB        | 100 GB  | 300                            |
 
 Minimum resource requirements
 
-1.  One vCPU is equivalent to one physical core when simultaneous multithreading (SMT), or Hyper-Threading, is not enabled. When enabled, use the following formula to calculate the corresponding ratio: (threads per core × cores) × sockets = vCPUs.
+- One vCPU is equal to one physical core when simultaneous multithreading (SMT), or Hyper-Threading, is not enabled. When enabled, use the following formula to calculate the corresponding ratio: (threads per core × cores) × sockets = vCPUs.
 
-2.  OpenShift Container Platform and Kubernetes are sensitive to disk performance, and faster storage is recommended, particularly for etcd on the control plane nodes which require a 10 ms p99 fsync duration. Note that on many cloud platforms, storage size and IOPS scale together, so you might need to over-allocate storage volume to obtain sufficient performance.
+- OpenShift Container Platform and Kubernetes are sensitive to disk performance, and Red Hat recommends faster storage, particularly for etcd on the control plane nodes which require a 10 ms p99 fsync duration. On many cloud platforms, storage size and IOPS scale together, so you might need to provision more storage to get enough performance.
 
-3.  As with all user-provisioned installations, if you choose to use RHEL compute machines in your cluster, you take responsibility for all operating system life cycle management and maintenance, including performing system updates, applying patches, and completing all other required tasks. Use of RHEL 7 compute machines is deprecated and has been removed in OpenShift Container Platform 4.10 and later.
+- As with all user-provisioned installations, if you choose to use RHEL compute machines in your cluster, you take responsibility for all operating system life cycle management and maintenance, including performing system updates, applying patches, and completing all other required tasks. OpenShift Container Platform 4.10 and later do not support RHEL 7 compute machines.
 
 <div class="note">
 
-For OpenShift Container Platform version 4.22, RHCOS is based on RHEL version 9.8, which has the micro-architecture requirements. The following list contains the minimum instruction set architectures (ISA) that each architecture requires:
+In OpenShift Container Platform version 4.22, RHCOS uses RHEL version 9.8, which updates the micro-architecture requirements. Each architecture requires the following minimum instruction set architectures (ISA):
 
 - x86-64 architecture requires x86-64-v2 ISA
 
 - ARM64 architecture requires ARMv8.0-A ISA
 
-- IBM Power architecture requires Power 9 ISA
+- ppc64le architecture requires IBM® Power9 ISA
 
-- s390x architecture requires z14 ISA
+- s390x architecture requires IBM® z14 ISA
 
-For more information, see "Architectures" in the RHEL documentation.
+For more information, see [Architectures](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.8_release_notes/index#architectures) in the RHEL documentation.
 
 </div>
 
 If an instance type for your platform meets the minimum requirements for cluster machines, it is supported to use in OpenShift Container Platform.
 
-- [Architectures (RHEL documentation)](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/9.2_release_notes/index#architectures)
-
-<!-- -->
-
 - [Optimizing storage](../../../scalability_and_performance/optimization/optimizing-storage.xml#optimizing-storage)
 
 ## Tested instance types for AWS
 
-There are several Amazon Web Services (AWS) instance types tested with OpenShift Container Platform.
+To ensure cluster stability and performance, use one of the tested Amazon Web Services (AWS) instance types for your OpenShift Container Platform machines.
 
 The following AWS instance types have been tested with OpenShift Container Platform.
 
 <div class="note">
 
-Use the machine types included in the following charts for your AWS instances. If you use an instance type that is not listed in the chart, ensure that the instance size you use matches the minimum resource requirements that are listed in the section named "Minimum resource requirements for cluster installation".
+Use the machine types included in the following charts for your AWS instances. If you use an instance type that is not listed in the chart, ensure that the instance size you use matches the minimum resource requirements in "Minimum resource requirements for cluster installation".
 
 </div>
+
+**Machine types based on 64-bit x86 architecture**
 
 <https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/aws/tested_instance_types_x86_64.md>
 
 ## Tested instance types for AWS on 64-bit ARM infrastructures
 
-There are several Amazon Web Services (AWS) 64-bit ARM instance types tested with OpenShift Container Platform.
+To ensure cluster stability and performance, use one of the tested Amazon Web Services (AWS) 64-bit ARM instance types for your OpenShift Container Platform machines.
 
 The following AWS 64-bit ARM instance types have been tested with OpenShift Container Platform.
 
 <div class="note">
 
-Use the machine types included in the following charts for your AWS ARM instances. If you use an instance type that is not listed in the chart, ensure that the instance size you use matches the minimum resource requirements that are listed in "Minimum resource requirements for cluster installation".
+Use the machine types included in the following charts for your AWS ARM instances. If you use an instance type that is not listed in the chart, ensure that the instance size you use matches the minimum resource requirements listed in "Minimum resource requirements for cluster installation".
 
 </div>
+
+**Machine types based on 64-bit ARM architecture**
 
 <https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/aws/tested_instance_types_aarch64.md>
 
 # Certificate signing requests management
 
-On user-provisioned infrastructure, you must provide a mechanism for approving cluster certificate signing requests (CSRs) after installation when your cluster has limited access to automatic machine management.
+On user-provisioned infrastructure, you must implement a mechanism for approving cluster certificate signing requests (CSRs) after installation when your cluster has limited access to automatic machine management.
 
-The `kube-controller-manager` only approves the kubelet client CSRs. The `machine-approver` cannot guarantee the validity of a serving certificate that is requested by using kubelet credentials because it cannot confirm that the correct machine issued the request. You must determine and implement a method of verifying the validity of the kubelet serving certificate requests and approving them.
+The `kube-controller-manager` only approves the kubelet client CSRs. The `machine-approver` cannot guarantee the validity of a serving certificate that kubelet credentials request because it cannot confirm that the correct machine issued the request. You must find and implement a method of verifying the validity of the kubelet serving certificate requests and approving them.
 
 # Required AWS infrastructure components
 
@@ -128,9 +128,11 @@ By using the provided CloudFormation templates, you can create stacks of AWS res
 
 - An OpenShift Container Platform compute node
 
-Alternatively, you can manually create the components or you can reuse existing infrastructure that meets the cluster requirements. Review the CloudFormation templates for more details about how the components interrelate.
+Or, you can manually create the components or you can reuse existing infrastructure that meets the cluster requirements. Review the CloudFormation templates for more details about how the components interrelate.
 
 ## Other infrastructure components
+
+Your OpenShift Container Platform cluster on user-provisioned infrastructure in Amazon Web Services (AWS) requires additional infrastructure components, including a VPC, DNS entries, load balancers, security groups, and IAM roles.
 
 - A VPC
 
@@ -146,7 +148,7 @@ Alternatively, you can manually create the components or you can reuse existing 
 
 - S3 buckets
 
-If you are working in a disconnected environment, you are unable to reach the public IP addresses for EC2, ELB, and S3 endpoints. Depending on the level to which you want to restrict internet traffic during the installation, the following configuration options are available:
+If you are working in a disconnected environment, you cannot reach the public IP addresses for EC2, ELB, and S3 endpoints. Depending on the level to which you want to restrict internet traffic during the installation, the following configuration options are available:
 
 ### Option 1: Create VPC endpoints
 
@@ -176,15 +178,10 @@ As part of the installation process, you can configure an HTTP or HTTPS proxy wi
 
 When configuring the proxy in the `install-config.yaml` file, add these endpoints to the `noProxy` field. With this option, the proxy prevents the cluster from accessing the internet directly. However, network traffic remains private between your VPC and the required AWS services.
 
-<div class="formalpara-title">
-
-**Required VPC components**
-
-</div>
-
 You must provide a suitable VPC and subnets that allow communication to your machines.
 
 <table>
+<caption>Required VPC components</caption>
 <colgroup>
 <col style="width: 13%" />
 <col style="width: 46%" />
@@ -226,7 +223,7 @@ You must provide a suitable VPC and subnets that allow communication to your mac
 <li><p><code>AWS::EC2::NatGateway</code></p></li>
 <li><p><code>AWS::EC2::EIP</code></p></li>
 </ul></td>
-<td colspan="2" style="text-align: left;"><p>You must have a public internet gateway, with public routes, attached to the VPC. In the provided templates, each public subnet has a NAT gateway with an EIP address. These NAT gateways allow cluster resources, like private subnet instances, to reach the internet and are not required for some restricted network or proxy scenarios.</p></td>
+<td colspan="2" style="text-align: left;"><p>You must have a public internet gateway, with public routes, attached to the VPC. In the provided templates, each public subnet has a NAT gateway with an EIP address. These NAT gateways allow cluster resources, such as private subnet instances, to reach the internet and are not required for some restricted network or proxy scenarios.</p></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><p>Network access control</p></td>
@@ -284,15 +281,11 @@ You must provide a suitable VPC and subnets that allow communication to your mac
 </tbody>
 </table>
 
-<div class="formalpara-title">
+Required VPC components
 
-**Required DNS and load balancing components**
+Your DNS and load balancer configuration must use a public hosted zone and can use a private hosted zone similar to the one that the installation program uses if it provisions the cluster’s infrastructure. You must create a DNS entry that resolves to your load balancer. An entry for `api.<cluster_name>.<domain>` must point to the external load balancer, and an entry for `api-int.<cluster_name>.<domain>` must point to the internal load balancer.
 
-</div>
-
-Your DNS and load balancer configuration needs to use a public hosted zone and can use a private hosted zone similar to the one that the installation program uses if it provisions the cluster’s infrastructure. You must create a DNS entry that resolves to your load balancer. An entry for `api.<cluster_name>.<domain>` must point to the external load balancer, and an entry for `api-int.<cluster_name>.<domain>` must point to the internal load balancer.
-
-The cluster also requires load balancers and listeners for port 6443, which are required for the Kubernetes API and its extensions, and port 22623, which are required for the Ignition config files for new machines. The targets will be the control plane nodes. Port 6443 must be accessible to both clients external to the cluster and nodes within the cluster. Port 22623 must be accessible to nodes within the cluster.
+The cluster also requires load balancers and listeners for port 6443, which the Kubernetes API and its extensions require, and port 22623, which the Ignition config files for new machines require. The targets are the control plane nodes. Port 6443 must be accessible to both clients external to the cluster and nodes within the cluster. Port 22623 must be accessible to nodes within the cluster.
 
 | Component                  | AWS type                                    | Description                                              |
 |----------------------------|---------------------------------------------|----------------------------------------------------------|
@@ -308,11 +301,7 @@ The cluster also requires load balancers and listeners for port 6443, which are 
 | Internal listener          | `AWS::ElasticLoadBalancingV2::Listener`     | A listener on port 6443 for the internal load balancer.  |
 | Internal target group      | `AWS::ElasticLoadBalancingV2::TargetGroup`  | The target group for the internal load balancer.         |
 
-<div class="formalpara-title">
-
-**Security groups**
-
-</div>
+Required DNS and load balancing components
 
 The control plane and worker machines require access to the following ports:
 
@@ -327,13 +316,9 @@ The control plane and worker machines require access to the following ports:
 | `BootstrapSecurityGroup` | `AWS::EC2::SecurityGroup` | `tcp`       | `22`       |
 | `tcp`                    | `19531`                   |             |            |
 
-<div class="formalpara-title">
+Security groups
 
-**Control plane Ingress**
-
-</div>
-
-The control plane machines require the following Ingress groups. Each Ingress group is a `AWS::EC2::SecurityGroupIngress` resource.
+The control plane machines require the following Ingress groups. Each Ingress group is an `AWS::EC2::SecurityGroupIngress` resource.
 
 | Ingress group                           | Description                                                 | IP protocol | Port range        |
 |-----------------------------------------|-------------------------------------------------------------|-------------|-------------------|
@@ -359,13 +344,9 @@ The control plane machines require the following Ingress groups. Each Ingress gr
 | `MasterIngressIngressServicesUDP`       | Kubernetes Ingress services                                 | `udp`       | `30000` - `32767` |
 | `MasterIngressWorkerIngressServicesUDP` | Kubernetes Ingress services                                 | `udp`       | `30000` - `32767` |
 
-<div class="formalpara-title">
+Control plane Ingress
 
-**Worker Ingress**
-
-</div>
-
-The worker machines require the following Ingress groups. Each Ingress group is a `AWS::EC2::SecurityGroupIngress` resource.
+The worker machines require the following Ingress groups. Each Ingress group is an `AWS::EC2::SecurityGroupIngress` resource.
 
 | Ingress group                           | Description                                           | IP protocol | Port range        |
 |-----------------------------------------|-------------------------------------------------------|-------------|-------------------|
@@ -390,38 +371,38 @@ The worker machines require the following Ingress groups. Each Ingress group is 
 | `WorkerIngressIngressServicesUDP`       | Kubernetes Ingress services                           | `udp`       | `30000` - `32767` |
 | `WorkerIngressMasterIngressServicesUDP` | Kubernetes Ingress services                           | `udp`       | `30000` - `32767` |
 
-<div class="formalpara-title">
+Worker Ingress
 
-**Roles and instance profiles**
+You must grant the machines permissions in AWS. The provided CloudFormation templates grant the machines `Allow` permissions for the following `AWS::IAM::Role` objects and provide an `AWS::IAM::InstanceProfile` for each set of roles. If you do not use the templates, you can grant the machines the following broad permissions or the following individual permissions.
 
-</div>
+| Role          | Effect                   | Action          | Resource |
+|---------------|--------------------------|-----------------|----------|
+| Control plane | `Allow`                  | `ec2:*`         | `*`      |
+| `Allow`       | `elasticloadbalancing:*` | `*`             |          |
+| `Allow`       | `iam:PassRole`           | `*`             |          |
+| `Allow`       | `s3:GetObject`           | `*`             |          |
+| Worker        | `Allow`                  | `ec2:Describe*` | `*`      |
+| Bootstrap     | `Allow`                  | `ec2:Describe*` | `*`      |
+| `Allow`       | `ec2:AttachVolume`       | `*`             |          |
+| `Allow`       | `ec2:DetachVolume`       | `*`             |          |
 
-You must grant the machines permissions in AWS. The provided CloudFormation templates grant the machines `Allow` permissions for the following `AWS::IAM::Role` objects and provide a `AWS::IAM::InstanceProfile` for each set of roles. If you do not use the templates, you can grant the machines the following broad permissions or the following individual permissions.
-
-| Role      | Effect                   | Action          | Resource |
-|-----------|--------------------------|-----------------|----------|
-| Master    | `Allow`                  | `ec2:*`         | `*`      |
-| `Allow`   | `elasticloadbalancing:*` | `*`             |          |
-| `Allow`   | `iam:PassRole`           | `*`             |          |
-| `Allow`   | `s3:GetObject`           | `*`             |          |
-| Worker    | `Allow`                  | `ec2:Describe*` | `*`      |
-| Bootstrap | `Allow`                  | `ec2:Describe*` | `*`      |
-| `Allow`   | `ec2:AttachVolume`       | `*`             |          |
-| `Allow`   | `ec2:DetachVolume`       | `*`             |          |
+Roles and instance profiles
 
 ## Cluster machines
+
+Your OpenShift Container Platform cluster on user-provisioned infrastructure requires `AWS::EC2::Instance` objects for bootstrap, control plane, and compute machines.
 
 You need `AWS::EC2::Instance` objects for the following machines:
 
 - A bootstrap machine. This machine is required during installation, but you can remove it after your cluster deploys.
 
-- Three control plane machines. The control plane machines are not governed by a control plane machine set.
+- Three control plane machines. A control plane machine set does not govern the control plane machines.
 
-- Compute machines. You must create at least two compute machines, which are also known as worker machines, during installation. These machines are not governed by a compute machine set.
+- Compute machines. You must create at least two compute machines, which are also known as worker machines, during installation. A compute machine set does not govern these machines.
 
 # Required AWS permissions for the IAM user
 
-To deploy all components of an OpenShift Container Platform cluster, you must grant the all the required permissions to the IAM user that you create in Amazon Web Services (AWS).
+To deploy all components of an OpenShift Container Platform cluster, you must grant all the required permissions to the IAM user that you create in Amazon Web Services (AWS).
 
 <div class="note">
 
@@ -429,7 +410,9 @@ Your IAM user must have the permission `tag:GetResources` in the region `us-east
 
 </div>
 
-When you attach the `AdministratorAccess` policy to the IAM user that you create in Amazon Web Services (AWS), you grant that user all of the required permissions. To deploy all components of an OpenShift Container Platform cluster, the IAM user requires the following permissions:
+When you attach the `AdministratorAccess` policy to the IAM user that you create in AWS, you grant that user all of the required permissions. To deploy all components of an OpenShift Container Platform cluster, the IAM user requires the following permissions:
+
+**Required EC2 permissions for installation**
 
 - `ec2:AttachNetworkInterface`
 
@@ -487,7 +470,7 @@ When you attach the `AdministratorAccess` policy to the IAM user that you create
 
 - `ec2:DescribePrefixLists`
 
-- `ec2:DescribePublicIpv4Pools` (only required if `publicIpv4Pool` is specified in `install-config.yaml`)
+- `ec2:DescribePublicIpv4Pools` (only required if you specify `publicIpv4Pool` in `install-config.yaml`)
 
 - `ec2:DescribeRegions`
 
@@ -513,7 +496,7 @@ When you attach the `AdministratorAccess` policy to the IAM user that you create
 
 - `ec2:DescribeVpcs`
 
-- `ec2:DisassociateAddress` (only required if `publicIpv4Pool` is specified in `install-config.yaml`)
+- `ec2:DisassociateAddress` (only required if you specify `publicIpv4Pool` in `install-config.yaml`)
 
 - `ec2:GetEbsDefaultKmsKeyId`
 
@@ -529,7 +512,7 @@ When you attach the `AdministratorAccess` policy to the IAM user that you create
 
 - `ec2:TerminateInstances`
 
-<!-- -->
+**Required permissions for creating network resources during installation**
 
 - `ec2:AllocateAddress`
 
@@ -566,6 +549,8 @@ When you attach the `AdministratorAccess` policy to the IAM user that you create
 If you use an existing Virtual Private Cloud (VPC), your account does not require these permissions for creating network resources.
 
 </div>
+
+**Required Elastic Load Balancing permissions (ELB) for installation**
 
 - `elasticloadbalancing:AddTags`
 
@@ -623,6 +608,8 @@ OpenShift Container Platform uses both the ELB and ELBv2 API services to provisi
 
 </div>
 
+**Required IAM permissions for installation**
+
 - `iam:AddRoleToInstanceProfile`
 
 - `iam:CreateInstanceProfile`
@@ -669,6 +656,8 @@ OpenShift Container Platform uses both the ELB and ELBv2 API services to provisi
 
 </div>
 
+**Required Route 53 permissions for installation**
+
 - `route53:ChangeResourceRecordSets`
 
 - `route53:ChangeTagsForResource`
@@ -691,7 +680,7 @@ OpenShift Container Platform uses both the ELB and ELBv2 API services to provisi
 
 - `route53:UpdateHostedZoneComment`
 
-<!-- -->
+**Required Amazon Simple Storage Service (S3) permissions for installation**
 
 - `s3:CreateBucket`
 
@@ -735,7 +724,7 @@ OpenShift Container Platform uses both the ELB and ELBv2 API services to provisi
 
 - `s3:PutEncryptionConfiguration`
 
-<!-- -->
+**S3 permissions that cluster Operators require**
 
 - `s3:DeleteObject`
 
@@ -753,7 +742,7 @@ OpenShift Container Platform uses both the ELB and ELBv2 API services to provisi
 
 - `s3:PutObjectTagging`
 
-<!-- -->
+**Required permissions to delete base cluster resources**
 
 - `autoscaling:DescribeAutoScalingGroups`
 
@@ -787,7 +776,7 @@ OpenShift Container Platform uses both the ELB and ELBv2 API services to provisi
 
 - `tag:GetResources`
 
-<!-- -->
+**Required permissions to delete network resources**
 
 - `ec2:DeleteDhcpOptions`
 
@@ -819,6 +808,8 @@ If you use an existing VPC, your account does not require these permissions to d
 
 </div>
 
+**Optional permissions for installing a cluster with a custom Key Management Service (KMS) key**
+
 - `kms:CreateGrant`
 
 - `kms:Decrypt`
@@ -837,17 +828,19 @@ If you use an existing VPC, your account does not require these permissions to d
 
 <div class="note">
 
-If you provide an Amazon Machine Image (AMI) that is encrypted with a customer-managed key, you must provide the `kms:ReEncrypt*` permissions in addition to these permissions.
+If you use an Amazon Machine Image (AMI) encrypted with a customer-managed key, you must grant the `kms:ReEncrypt*` permissions in addition to these permissions.
 
 </div>
 
+**Required permissions to delete a cluster with shared instance roles**
+
 - `iam:UntagRole`
 
-<!-- -->
+**Required permissions to delete a cluster with shared instance profiles**
 
 - `tag:UntagResources`
 
-<!-- -->
+**Additional IAM and S3 permissions required to create manifests**
 
 - `iam:GetUserPolicy`
 
@@ -875,31 +868,33 @@ If you are managing your cloud provider credentials with mint mode, the IAM user
 
 </div>
 
+**Optional permissions for instance and quota checks for installation**
+
 - `servicequotas:ListAWSDefaultServiceQuotas`
 
-<!-- -->
+**Optional permissions for the cluster owner account when installing a cluster on a shared VPC**
 
 - `sts:AssumeRole`
 
-<!-- -->
+**Required permissions for enabling Bring your own public IPv4 addresses (BYOIP) feature for installation**
 
 - `ec2:DescribePublicIpv4Pools`
 
 - `ec2:DisassociateAddress`
 
-<!-- -->
+**Required permissions to install a cluster with dual-stack networking**
 
 - `ec2:DescribeEgressOnlyInternetGateways`
 
 - `ec2:CreateEgressOnlyInternetGateway`
 
-<!-- -->
+**Required permissions to delete a cluster with dual-stack networking**
 
 - `ec2:DeleteEgressOnlyInternetGateway`
 
 # Obtaining an AWS Marketplace image
 
-If you are deploying an OpenShift Container Platform cluster using an AWS Marketplace image, you must first subscribe through AWS. Subscribing to the offer provides you with the AMI ID that the installation program uses to deploy compute nodes.
+If you are deploying an OpenShift Container Platform cluster by using an Amazon Web Services (AWS) Marketplace image, you must first subscribe through AWS. Subscribing to the offer provides you with the Amazon Machine Image (AMI) ID that the installation program uses to deploy compute nodes.
 
 <div class="note">
 
@@ -907,6 +902,6 @@ You should only modify the RHCOS image for compute machines to use an AWS Market
 
 </div>
 
-- You have an AWS account to purchase the offer. This account does not have to be the same account that is used to install the cluster.
+- You have an AWS account to buy the offer. This account does not have to be the same account that you use to install the cluster.
 
 1.  Complete the OpenShift Container Platform subscription from the [AWS Marketplace](https://aws.amazon.com/marketplace/fulfillment?productId=59ead7de-2540-4653-a8b0-fa7926d5c845).

@@ -1,4 +1,12 @@
-Power monitoring for Red Hat OpenShift enables you to monitor the power usage of workloads and identify the most power-consuming namespaces running in an OpenShift Container Platform cluster with key power consumption metrics, such as CPU or DRAM, measured at container level.
+With Power monitoring for Red Hat OpenShift, you can track energy consumption across your cluster infrastructure. It provides granular power metrics for pods and namespaces to help you identify and optimize workload energy usage.
+
+<div class="important">
+
+Power monitoring for Red Hat OpenShift is deprecated and will have no further releases or support.
+
+</div>
+
+You can use power monitoring for Red Hat OpenShift to monitor the power usage and identify power-consuming containers running in an OpenShift Container Platform cluster. Power monitoring collects and exports energy-related system statistics from various components, such as CPU and DRAM. It provides estimates and granular power consumption data for Kubernetes pods and namespaces, and reads the power consumption of nodes.
 
 <div class="note">
 

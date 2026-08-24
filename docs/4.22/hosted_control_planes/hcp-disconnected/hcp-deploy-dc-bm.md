@@ -735,7 +735,7 @@ To add the registry CA to the management cluster, complete the following steps.
     ``` yaml
     spec:
       additionalTrustedCA:
-        - name: registry-config
+        name: registry-config
     ```
 
     As a result of this patch, the control plane nodes can retrieve images from the private registry and the HyperShift Operator can extract the OpenShift Container Platform payload for hosted cluster deployments.

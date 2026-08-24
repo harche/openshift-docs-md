@@ -64,9 +64,9 @@ When you create a gateway resource, you must configure it for automatic address 
 
 - You have installed the OpenShift CLI (`oc`).
 
-- You have an existing `GatewayClass` resource, such as `openshift-default`.
+- You have an existing `GatewayClass` custom resource, such as `openshift-default`.
 
-1.  Create a YAML file, such as `hello-gateway.yaml`, that defines your `Gateway` object without the addresses field:
+1.  Create a YAML file, such as `hello-gateway.yaml`, that defines your `Gateway` object.
 
     ``` yaml
     apiVersion: gateway.networking.k8s.io/v1
@@ -83,16 +83,19 @@ When you create a gateway resource, you must configure it for automatic address 
         protocol: HTTP
         allowedRoutes:
           namespaces:
-            from: All
+            from: Selector
+            selector:
+              matchLabels:
+                shared-gateway-access: "true"
     ```
 
-    - `metadata.name`: The name of your `Gateway` object. The name must consist of a maximum of 63 lowercase alphanumeric characters or hyphens (`-`). The name must also start and end with an alphanumeric character.
+    - `metadata.name`: Specify the name of your `Gateway` object. The name must consist of a maximum of 63 lowercase alphanumeric characters or hyphens (`-`). The name must also start and end with an alphanumeric character.
 
-    - Replace `<cluster_domain>` with your actual cluster ingress domain (for example, `example.com`).
+    - `spec.gatewayClassName`: Specify the `GatewayClass` object whose controller provisions the address and populates the `status.addresses` field.
 
-    - The `spec.addresses` field is omitted from this configuration to ensure automatic assignment.
+    - `spec.listeners[].hostname`: Specify the listener hostname. Replace `<cluster_domain>` with your actual cluster ingress domain (for example, `example.com`). Setting a hostname limits which route hostnames can match this listener.
 
-    - The `gatewayClassName` dictates which controller provisions the address and populates the `status.addresses` field.
+    - `spec.listeners[].allowedRoutes.namespaces`: Allow route attachment only from namespaces that have the `shared-gateway-access: "true"` label.
 
 2.  Apply the `Gateway` configuration by running the following command:
 

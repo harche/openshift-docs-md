@@ -1,4 +1,4 @@
-This guide outlines how Operator Lifecycle Manager (OLM) uses Operator conditions.
+Operator Lifecycle Manager (OLM) uses Operator conditions to communicate additional lifecycle information about an Operator that OLM cannot infer on its own.
 
 # About Operator conditions
 
@@ -12,7 +12,7 @@ By default, the `Spec.Conditions` array is not present in an `OperatorCondition`
 
 # Supported conditions
 
-Operator Lifecycle Manager (OLM) supports the following Operator conditions.
+Operator Lifecycle Manager (OLM) supports a specific set of Operator conditions that communicate the state of an Operator.
 
 ## Upgradeable condition
 
@@ -49,9 +49,9 @@ spec:
     lastTransitionTime: "2020-08-24T23:15:55Z"
 ```
 
-- Name of the condition.
+- The `type` field sets the name of the condition.
 
-- A `False` value indicates the Operator is not ready to be upgraded. OLM prevents a CSV that replaces the existing CSV of the Operator from leaving the `Pending` phase. A `False` value does not block cluster upgrades.
+- A `False` value in the `status` field indicates the Operator is not ready to be upgraded. OLM prevents a CSV that replaces the existing CSV of the Operator from leaving the `Pending` phase. A `False` value does not block cluster upgrades.
 
 # Additional resources
 

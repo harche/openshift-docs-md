@@ -107,7 +107,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 # Approving the certificate signing requests for your machines
 
-To allow newly added machines to join your OpenShift Container Platform cluster, you can confirm that pending certificate signing requests (CSRs) are approved or approve them yourself. Approve client requests first, then server requests.
+To allow newly added machines to join your OpenShift Container Platform cluster, confirm that the cluster approves pending certificate signing requests (CSRs), or approve them yourself. Approve client requests first, then server requests.
 
 - You added machines to your cluster.
 
@@ -134,7 +134,7 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     <div class="note">
 
-    The preceding output might not include the compute nodes until some CSRs are approved.
+    The preceding output might not include the compute nodes until you approve some CSRs.
 
     </div>
 
@@ -163,13 +163,13 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     <div class="note">
 
-    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After the client CSR is approved, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The subsequent serving certificate renewal requests are then automatically approved by the `machine-approver` if the Kubelet requests a new certificate with identical parameters.
+    You must approve your CSRs within an hour of adding the machines to the cluster. If you do not approve them within an hour, the certificates rotate, and more than two certificates are present for each node. You must approve all of these certificates. After you approve the client CSR, the kubelet creates a secondary CSR for the serving certificate, which requires manual approval. The `machine-approver` then automatically approves later serving certificate renewal requests if the kubelet requests a new certificate with the same parameters.
 
     </div>
 
     <div class="note">
 
-    For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If a request is not approved, then the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because a serving certificate is required when the API server connects to the kubelet. Any operation that contacts the Kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the CSR was submitted by the `node-bootstrapper` service account in the `system:node` or `system:admin` groups, and confirm the identity of the node.
+    For clusters running on platforms that are not machine API enabled, such as bare metal and other user-provisioned infrastructure, you must implement a method of automatically approving the kubelet serving certificate requests (CSRs). If you do not approve a request, the `oc exec`, `oc rsh`, and `oc logs` commands cannot succeed, because the API server requires a serving certificate when it connects to the kubelet. Any operation that contacts the kubelet endpoint requires this certificate approval to be in place. The method must watch for new CSRs, confirm that the `node-bootstrapper` service account in the `system:node` or `system:admin` groups submitted the CSR, and confirm the identity of the node.
 
     </div>
 
@@ -192,11 +192,11 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
       <div class="note">
 
-      Some Operators might not become available until some CSRs are approved. Each node submits two CSRs, so you might need to run the command to approve CSRs multiple times.
+      Some Operators might not become available until you approve some CSRs. Each node submits two CSRs, so you might need to run the command to approve CSRs many times.
 
       </div>
 
-4.  Now that your client requests are approved, you must review the server requests for each machine that you added to the cluster:
+4.  After you approve your client requests, review the server requests for each machine that you added to the cluster:
 
     ``` terminal
     $ oc get csr
@@ -234,7 +234,7 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
       $ oc get csr -o go-template='{{range .items}}{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}}{{end}}' | xargs oc adm certificate approve
       ```
 
-6.  After all client and server CSRs have been approved, the machines have the `Ready` status. Verify this by running the following command:
+6.  After you approve all client and server CSRs, the machines have the `Ready` status. Verify this by running the following command:
 
     ``` terminal
     $ oc get nodes
@@ -257,6 +257,44 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     <div class="note">
 
-    You might need to wait a few minutes after approval of the server CSRs for the machines to transition to the `Ready` status.
+    You might need to wait a few minutes after approval of the server CSRs for the machines to change to the `Ready` status.
 
     </div>
+
+# Remove the cloud provider uninitialized taint from bare-metal nodes
+
+After a bare-metal node joins a VMware vSphere cluster, the vSphere Cloud Controller Manager (CCM) cannot remove the `node.cloudprovider.kubernetes.io/uninitialized` taint automatically. You must manually remove this taint so that workloads can be scheduled on the node.
+
+The vSphere CCM attempts to initialize each node by searching vCenter for a matching virtual machine. Because a bare-metal node is physical hardware and not a VM in vCenter, the CCM cannot find a match and never removes the taint automatically.
+
+<div class="note">
+
+The CCM logs errors similar to `No VM found` for bare-metal nodes. These errors are expected and do not indicate a problem with the node or the cluster.
+
+</div>
+
+- The bare-metal node has joined the cluster and its certificate signing requests (CSRs) have been approved.
+
+- You have installed the OpenShift CLI (`oc`).
+
+- You have cluster administrator privileges.
+
+<!-- -->
+
+- Remove the `node.cloudprovider.kubernetes.io/uninitialized` taint from each bare-metal node by running the following command:
+
+  ``` terminal
+  $ oc adm taint nodes <node_name> node.cloudprovider.kubernetes.io/uninitialized:NoSchedule-
+  ```
+
+  Replace `<node_name>` with the name of the bare-metal node as shown in the output of `oc get nodes`.
+
+<!-- -->
+
+- Verify that the taint has been removed by running the following command and confirming that `node.cloudprovider.kubernetes.io/uninitialized` does not appear in the output:
+
+  ``` terminal
+  $ oc describe node <node_name> | grep Taint
+  ```
+
+  Replace `<node_name>` with the name of the bare-metal node as shown in the output of `oc get nodes`.

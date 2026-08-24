@@ -1,10 +1,12 @@
+OpenShift Container Platform ([RHBA-2026:1481](https://access.redhat.com/errata/RHBA-2026:1481)) is now available. Before working with this release, familiarize yourself with the new features, changes, and known issues that pertain to OpenShift Container Platform 4.17 are included in this topic.
+
 Red Hat OpenShift Container Platform provides developers and IT organizations with a hybrid cloud application platform for deploying both new and existing applications on secure, scalable resources with minimal configuration and management. OpenShift Container Platform supports a wide selection of programming languages and frameworks, such as Java, JavaScript, Python, Ruby, and PHP.
 
 Built on Red Hat Enterprise Linux (RHEL) and Kubernetes, OpenShift Container Platform provides a more secure and scalable multitenant operating system for today’s enterprise-class applications, while delivering integrated application runtimes and libraries. OpenShift Container Platform enables organizations to meet security, privacy, compliance, and governance requirements.
 
 # About this release
 
-OpenShift Container Platform ([RHBA-2026:1481](https://access.redhat.com/errata/RHBA-2026:1481)) is now available. This release uses [Kubernetes 1.34](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.34.md) with CRI-O runtime. New features, changes, and known issues that pertain to OpenShift Container Platform 4.17 are included in this topic.
+OpenShift Container Platform 4.17 release uses [Kubernetes 1.34](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.34.md) with CRI-O runtime. New features, changes, and known issues that pertain to OpenShift Container Platform 4.17 are included in this topic.
 
 OpenShift Container Platform 4.17 clusters are available at <https://console.redhat.com/openshift>. From the Red Hat Hybrid Cloud Console, you can deploy OpenShift Container Platform clusters to either on-premises or cloud environments.
 
@@ -18,13 +20,13 @@ For more information about the NIST validation program, see [Cryptographic Modul
 
 # OpenShift Container Platform layered and dependent component support and compatibility
 
-The scope of support for layered and dependent components of OpenShift Container Platform changes independently of the OpenShift Container Platform version.
+You can familiarize yourself with the scope of support for layered and dependent components of OpenShift Container Platform, which changes independently of the OpenShift Container Platform version.
 
 To determine the current support status and compatibility for an add-on, refer to its release notes. For more information, see the [Red Hat OpenShift Container Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift).
 
 # New features and enhancements
 
-You can take advantage of the latest platform improvements by reviewing the new features and enhancements in OpenShift Container Platform4.17.
+Before working with this release, familiarize yourself with the new features included in the OpenShift Container Platform4.17 release.
 
 ## API server
 
@@ -481,7 +483,7 @@ With this update, you can preview the Operator Lifecycle Manager (OLM) v1 softwa
 
 # Notable technical changes
 
-This section includes several technical changes for OpenShift Container Platform 4.17.
+You can review the list of technical changes for OpenShift Container Platform 4.17 to see if any of the changes affect your clusters or environments.
 
 VMware vSphere 7 and VMware Cloud Foundation 4 end of general support
 Broadcom has ended general support for VMware vSphere 7 and VMware Cloud Foundation (VCF) 4. If your existing OpenShift Container Platform cluster is running on either of these platforms, you must plan to migrate or upgrade your VMware infrastructure to a supported version. OpenShift Container Platform supports installation on vSphere 8 Update 1 or later, or VCF 5 or later.
@@ -497,7 +499,7 @@ With this update, the Dynamic Resource Allocation (DRA) is disabled so that the 
 
 # Deprecated and removed features
 
-You must plan to migrate from deprecated features, because they are scheduled for removal in a future release.
+You can plan your cluster maintenance and upgrades effectively based on the features that are deprecated or removed in OpenShift Container Platform.
 
 Review the following tables to identify features that are deprecated or removed in OpenShift Container Platform 4.17.
 
@@ -620,7 +622,7 @@ The ability to configure swap memory is no longer available in OpenShift Contain
 
 # Fixed issues
 
-Review the list of issues resolved in this OpenShift Container Platform release. You can see if issues affecting your clusters or environments are fixed.
+You can review the list of issues resolved for OpenShift Container Platform 4.17 to see if any of the issues affect your clusters or environments are fixed.
 
 ## Installer
 
@@ -656,7 +658,7 @@ Review the list of issues resolved in this OpenShift Container Platform release.
 
 # Technology Preview features status
 
-Some features in this release are currently in Technology Preview. These experimental features are not intended for production use.
+You can determine if a new feature in OpenShift Container Platform4.17 is currently in Technology Preview before deciding to install the feature. These experimental features are not intended for production use.
 
 Note the following scope of support on the Red Hat Customer Portal for these features:
 
@@ -901,7 +903,7 @@ Web console Technology Preview tracker
 
 # Known issues
 
-This section includes several known issues for OpenShift Container Platform 4.17.
+You can review the list of known issues in OpenShift Container Platform 4.17 to see if any issues affect your clusters or environments.
 
 - Currently, due to a known issue, the OpenShift Container Platform 4.21 versions of the Cluster Resource Override Operator and the DPU Operator will be available in an upcoming 4.21 maintenance release. ([OCPBUGS-74224](https://issues.redhat.com/browse/OCPBUGS-74224))
 
@@ -966,6 +968,32 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHSA-2026:54602 - OpenShift Container Platform 4.17.29 bug fix and security update
+
+Issued: 18 August 2026
+
+OpenShift Container Platform release 4.17.29 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:54602](https://access.redhat.com/errata/RHSA-2026:54602) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:54598](https://access.redhat.com/errata/RHBA-2026:54598) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.29 --pullspecs
+```
+
+### Fixed issues
+
+- Before this update, when you opened the **Quick Starts** page in the OpenShift Container Platform web console with the language set to Chinese (zh-CN), Quick Starts chrome strings loaded the console-app resource bundle using the full locale code (`zh-CN`) instead of the language-only bundle (`zh`) used by the rest of the console. As a consequence, filter labels, status text, and item counts on the **Quick Starts** page could remain in English even though other console UI was translated. With this release, Quick Starts load the console-app bundle using `i18next` resolved language (falling back to `en`) and guard against missing bundles. As a result, Quick Starts chrome text displays correctly in Chinese and other locale variants. ([OCPBUGS-100058](https://redhat.atlassian.net/browse/OCPBUGS-100058))
+
+- Before this update, on a Telecom Boundary Clock (T-BC) PTP configuration, `ts2phc` could start before the upstream PTP source was stable enough and before `phc2sys` was ready. As a consequence, the T-BC took a long time to converge, and `phc2sys` could adjust the system clock too early based on an irrelevant `ts2phc` offset. With this release, `ts2phc` start on T-BC is delayed until the upstream source is qualified and `phc2sys` is ready; T-GM behavior is unchanged. As a result, T-BC no longer starts `ts2phc` against an unqualified upstream source. ([OCPBUGS-105275](https://redhat.atlassian.net/browse/OCPBUGS-105275))
+
+- Before this update, when you added a new vSphere failure domain that used a MachineSet with a custom `providerSpec.Template` name, the Machine Config Operator boot image controller looked up the VM template only by its own computed name and ignored `providerSpec.Template` name. As a consequence, reconciliation for that failure domain could fail, and a customer-managed VM with the same computed name outside the MCO workspace folder could be mistaken for the MCO template and overwritten. With this release, the controller checks `providerSpec.Template` first, falls back to the computed name only when the template is not found, creates the template from the OVA when needed, and leaves name matches outside `providerSpec.Workspace.Folder` untouched. As a result, new vSphere failure domains with custom template names reconcile successfully, and customer-managed VMs outside the MCO workspace folder are no longer at risk of being overwritten. ([OCPBUGS-105303](https://redhat.atlassian.net/browse/OCPBUGS-105303))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHSA-2026:51025 - OpenShift Container Platform 4.17.28 bug fix and security update
 
 Issued: 11 August 2026
@@ -1001,6 +1029,13 @@ You can view the container images in this release by running the following comma
 ``` terminal
 $ oc adm release info 4.21.27 --pullspecs
 ```
+
+### Enhancements
+
+OpenShift Container Platform 4.21 support for installing a cluster without an external registry (Technology Preview)
+As a Technology Preview feature, you can deploy a 4.21 cluster without an external registry, using self-contained installation media that also provides a simplified user interface similar to the Assisted Installer during on-premise installations.
+
+For more information, see [Installing a cluster without an external registry](../installing/installing_with_agent_based_installer/installing-ove.xml#installing-ove).
 
 ### Fixed issues
 

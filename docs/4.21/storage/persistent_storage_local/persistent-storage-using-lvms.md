@@ -1,6 +1,4 @@
-Logical Volume Manager (LVM) Storage uses LVM2 through the TopoLVM CSI driver to dynamically provision local storage on a cluster with limited resources.
-
-You can create volume groups, persistent volume claims (PVCs), volume snapshots, and volume clones by using LVM Storage.
+Logical Volume Manager (LVM) Storage uses LVM2 through the `TopoLVM CSI` driver to dynamically provision local storage on a cluster with limited resources. With LVM Storage, you can create volume groups, persistent volume claims (PVCs), snapshots, and clones.
 
 # Logical Volume Manager Storage installation
 
@@ -258,8 +256,6 @@ Install LVM Storage in a disconnected environment where your cluster has no inte
 
 - [About disconnected installation mirroring](../../disconnected/index.xml#installing-mirroring-disconnected-about)
 
-- [Creating a mirror registry with mirror registry for Red Hat OpenShift](../../disconnected/installing-mirroring-creating-registry.xml#installing-mirroring-creating-registry)
-
 - [Mirroring the OpenShift Container Platform image repository](../../disconnected/installing-mirroring-installation-images.xml#installation-mirror-repository_installing-mirroring-installation-images)
 
 - [Creating the image set configuration](../../disconnected/about-installing-oc-mirror-v2.xml#oc-mirror-building-image-set-config-v2_about-installing-oc-mirror-v2)
@@ -269,6 +265,8 @@ Install LVM Storage in a disconnected environment where your cluster has no inte
 - [Configuring image registry repository mirroring](../../openshift_images/image-configuration.xml#images-configuration-registry-mirror_image-configuration)
 
 - [Why use imagestreams](../../openshift_images/image-streams-manage.xml#images-imagestream-use_image-configuration)
+
+- [About the OpenShift Update Service](../../updating/understanding_updates/intro-to-updates.xml#update-service-overview_understanding-openshift-updates)
 
 ## Installing LVM Storage by using RHACM
 
@@ -415,9 +413,7 @@ The `Policy` CR that is created to install LVM Storage is also applied to the cl
 
       </div>
 
-- [Red Hat Advanced Cluster Management for Kubernetes: Installing while connected online](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/install/installing#installing-while-connected-online)
-
-- [About the LVMCluster custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
+- [About the `LVMCluster` custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
 
 # About the LVMCluster custom resource
 
@@ -656,7 +652,7 @@ The `LVMCluster` CR fields are described in the following table:
 
 - [About adding devices to a volume group](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-adding-devices-to-a-vg_logical-volume-manager-storage)
 
-- [Adding worker nodes to single-node OpenShift clusters](../../nodes/nodes/nodes-sno-worker-nodes.xml)
+- [Adding worker nodes to single-node OpenShift clusters](../../nodes/nodes/nodes-sno-worker-nodes.xml#nodes-sno-worker-nodes)
 
 ## Limitations to configure the size of the devices used in LVM Storage
 
@@ -757,6 +753,14 @@ It is not recommended to add the devices to the VG through dynamic device discov
 - If LVM Storage adds a device to the VG through dynamic device discovery, LVM Storage does not restrict you from removing the device from the node. Removing or updating the devices that are already added to the VG can disrupt the VG. This can also lead to data loss and necessitate manual node remediation.
 
 </div>
+
+- [RHEL documentation](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/managing_file_systems/assembly_overview-of-persistent-naming-attributes_managing-file-systems)
+
+- [Creating a software RAID on an installed system](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/managing_storage_devices/managing-raid_managing-storage-devices#creating-a-software-raid-on-an-installed-system_managing-raid)
+
+- [Replacing a failed disk in RAID](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/managing_storage_devices/managing-raid_managing-storage-devices#replacing-a-failed-disk-in-raid_managing-raid)
+
+- [Repairing RAID disks](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/managing_storage_devices/managing-raid_managing-storage-devices#repairing-raid-disks_managing-raid)
 
 - [Configuring a RAID-enabled data volume](../../installing/install_config/installing-customizing.xml#installation-special-config-raid_installing-customizing)
 
@@ -970,6 +974,8 @@ $ pvs -S vgname=<vg_name>
 
 Replace `<vg_name>` with the name of the volume group.
 
+- [Grouping LVM objects with tags](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/configuring_and_managing_logical_volumes/grouping-lvm-objects-with-tags_configuring-and-managing-logical-volumes#doc-wrapper)
+
 ## Creating an LVMCluster CR by using the CLI
 
 You can create an `LVMCluster` custom resource (CR) on a worker node by using the OpenShift CLI (`oc`) to configure storage deployment and provision local storage for your workloads.
@@ -1141,7 +1147,7 @@ You can only create a single instance of the `LVMCluster` custom resource (CR) o
     lvms-vg1      topolvm.io           Delete           24h
     ```
 
-- [About the LVMCluster custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
+- [About the `LVMCluster` custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
 
 ## Creating an LVMCluster CR by using the web console
 
@@ -1191,7 +1197,7 @@ You can only create a single instance of the `LVMCluster` custom resource (CR) o
 
 3.  Optional: To view the available volume snapshot classes created by LVM Storage for each device class, click **Storage** → **VolumeSnapshotClasses**.
 
-- [About the LVMCluster custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
+- [About the `LVMCluster` custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
 
 ## Creating an LVMCluster CR by using RHACM
 
@@ -1260,7 +1266,7 @@ After installing Logical Volume Manager (LVM) Storage by using RHACM, create an 
 
 - [Red Hat Advanced Cluster Management for Kubernetes: Installing while connected online](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/install/installing#installing-while-connected-online)
 
-- [About the LVMCluster custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
+- [About the `LVMCluster` custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
 
 # Ways to delete an LVMCluster custom resource
 
@@ -1647,7 +1653,7 @@ LVM Storage adds only the supported devices. For information about unsupported d
 
 </div>
 
-- [Adding worker nodes to single-node OpenShift clusters](../../nodes/nodes/nodes-sno-worker-nodes.xml)
+- [Adding worker nodes to single-node OpenShift clusters](../../nodes/nodes/nodes-sno-worker-nodes.xml#nodes-sno-worker-nodes)
 
 - [Devices not supported by LVM Storage](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#lvms-unsupported-devices_logical-volume-manager-storage)
 
@@ -1712,7 +1718,7 @@ Scale up worker node storage capacity when running out of space, adding new appl
 
 3.  Save the `LVMCluster` CR.
 
-- [About the LVMCluster custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
+- [About the `LVMCluster` custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
 
 - [Devices not supported by LVM Storage](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#lvms-unsupported-devices_logical-volume-manager-storage)
 
@@ -1783,7 +1789,7 @@ Scale up worker node storage capacity when running out of space, adding new appl
 
 8.  Click **Save**.
 
-- [About the LVMCluster custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
+- [About the `LVMCluster` custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
 
 - [Devices not supported by LVM Storage](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#lvms-unsupported-devices_logical-volume-manager-storage)
 
@@ -1863,7 +1869,7 @@ Scale up worker node storage capacity when running out of space, adding new appl
 
 - [Red Hat Advanced Cluster Management for Kubernetes: Installing while connected online](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#installing-while-connected-online)
 
-- [About the LVMCluster custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
+- [About the `LVMCluster` custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
 
 - [Devices not supported by LVM Storage](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#lvms-unsupported-devices_logical-volume-manager-storage)
 
@@ -2342,6 +2348,54 @@ For information about enabling cluster monitoring in RHACM, see "Observability" 
 
     openshift.io/cluster-monitoring=true
 
+- [Observability](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/observability/index)
+
+- [Adding custom metrics](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.15/html-single/observability/index#adding-custom-metrics)
+
+# Metrics and alerts overview
+
+You can monitor thin pool and volume group usage through LVM Storage metrics, and receive alerts at 75% (near full) and 85% (critical) capacity thresholds to take corrective action before storage operations fail.
+
+## Metrics
+
+You can monitor LVM Storage by viewing the metrics.
+
+The following table describes the `topolvm` metrics:
+
+| Alert                                        | Description                                                                  |
+|----------------------------------------------|------------------------------------------------------------------------------|
+| `topolvm_thinpool_data_percent`              | Indicates the percentage of data space used in the LVM thinpool.             |
+| `topolvm_thinpool_metadata_percent`          | Indicates the percentage of metadata space used in the LVM thinpool.         |
+| `topolvm_thinpool_size_bytes`                | Indicates the size of the LVM thin pool in bytes.                            |
+| `topolvm_volumegroup_available_bytes`        | Indicates the available space in the LVM volume group in bytes.              |
+| `topolvm_volumegroup_size_bytes`             | Indicates the size of the LVM volume group in bytes.                         |
+| `topolvm_thinpool_overprovisioned_available` | Indicates the available over-provisioned size of the LVM thin pool in bytes. |
+
+`topolvm` metrics
+
+<div class="note">
+
+Metrics are updated every 10 minutes or when there is a change, such as a new logical volume creation, in the thin pool.
+
+</div>
+
+## Alerts
+
+When the thin pool and volume group reach maximum storage capacity, further operations fail. This can lead to data loss.
+
+LVM Storage sends the following alerts when the usage of the thin pool and volume group exceeds a certain value:
+
+| Alert                                      | Description                                                                                                                                                                                          |
+|--------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `VolumeGroupUsageAtThresholdNearFull`      | This alert is triggered when both the volume group and thin pool usage exceeds 75% on nodes. Data deletion or volume group expansion is required.                                                    |
+| `VolumeGroupUsageAtThresholdCritical`      | This alert is triggered when both the volume group and thin pool usage exceeds 85% on nodes. In this case, the volume group is critically full. Data deletion or volume group expansion is required. |
+| `ThinPoolDataUsageAtThresholdNearFull`     | This alert is triggered when the thin pool data uusage in the volume group exceeds 75% on nodes. Data deletion or thin pool expansion is required.                                                   |
+| `ThinPoolDataUsageAtThresholdCritical`     | This alert is triggered when the thin pool data usage in the volume group exceeds 85% on nodes. Data deletion or thin pool expansion is required.                                                    |
+| `ThinPoolMetaDataUsageAtThresholdNearFull` | This alert is triggered when the thin pool metadata usage in the volume group exceeds 75% on nodes. Data deletion or thin pool expansion is required.                                                |
+| `ThinPoolMetaDataUsageAtThresholdCritical` | This alert is triggered when the thin pool metadata usage in the volume group exceeds 85% on nodes. Data deletion or thin pool expansion is required.                                                |
+
+LVM Storage alerts
+
 # Uninstalling LVM Storage by using the CLI
 
 Uninstall LVM Storage when it is no longer needed or before upgrading to a different storage solution by using the OpenShift CLI (`oc`) after removing all provisioned storage resources.
@@ -2711,9 +2765,9 @@ Resolve the "storage class not found" error by verifying that the LVMCluster cus
       $ oc logs -l app.kubernetes.io/component=vg-manager -n <namespace>
       ```
 
-- [About the LVMCluster custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
+- [About the `LVMCluster` custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-lvmcluster_logical-volume-manager-storage)
 
-- [Ways to create an LVMCluster custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-creating-lvmcluster-cr_logical-volume-manager-storage)
+- [Ways to create an `LVMCluster` custom resource](../../storage/persistent_storage_local/persistent-storage-using-lvms.xml#about-creating-lvmcluster-cr_logical-volume-manager-storage)
 
 ## Recovering from node failure
 
@@ -2886,3 +2940,7 @@ If the disk or node-related problems persist even after you have completed the t
         ```
 
         Replace `<name>` with the name of the `LVMCluster` CR.
+
+# Additional resources
+
+- [Red Hat Advanced Cluster Management for Kubernetes: Installing while connected online](https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/install/installing#installing-while-connected-online)

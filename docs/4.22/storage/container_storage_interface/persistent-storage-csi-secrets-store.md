@@ -240,7 +240,7 @@ The Secrets Store CSI driver is typically installed in the namespace `openshift-
 
 <!-- -->
 
-- [Mounting secrets from an external secrets store to a CSI volume](../../nodes/pods/nodes-pods-secrets-store.xml#mounting-secrets-external-secrets-store)
+- [Mounting secrets from an external secrets store to a CSI volume](../../nodes/pods/nodes-pods-secrets-store.xml#mounting-secrets-external-secrets-store_nodes-pods-secrets-store)
 
 # Uninstalling the Secrets Store CSI Driver Operator
 

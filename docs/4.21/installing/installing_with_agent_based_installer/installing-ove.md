@@ -53,7 +53,13 @@ The size of the ISO image can vary depending on the release you select.
 
 7.  Click **Next**.
 
-8.  Click **Download ISO**.
+8.  Optional: Preconfigure the ISO on the **Optional configurations** page:
+
+    1.  Upload a SSH public key in the **SSH public key** field.
+
+9.  Click **Next**.
+
+10. Click **Download ISO**.
 
 # Mounting the ISO and booting the rendezvous node
 

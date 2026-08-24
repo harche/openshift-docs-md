@@ -68,6 +68,12 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
 
     1.  Ensure your Operator has RBAC permission to create `CredentialsRequests` objects:
 
+        <div class="formalpara-title">
+
+        **Example `clusterPermissions` list**
+
+        </div>
+
         ``` yaml
         # ...
         install:
@@ -119,6 +125,12 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
 
     3.  Add the Azure credentials information and web identity token path to the credentials request and apply it during Operator initialization:
 
+        <div class="formalpara-title">
+
+        **Example applying `CredentialsRequest` object during Operator initialization**
+
+        </div>
+
         ``` go
         // apply CredentialsRequest on install
         credReqTemplate.Spec.AzureProviderSpec.AzureClientID = clientID
@@ -137,6 +149,12 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         ```
 
     4.  Ensure your Operator can wait for a `Secret` object to show up from the CCO, as shown in the following example, which is called along with the other items you are reconciling in your Operator:
+
+        <div class="formalpara-title">
+
+        **Example wait for `Secret` object**
+
+        </div>
 
         ``` go
         // WaitForSecret is a function that takes a Kubernetes client, a namespace, and a v1 "k8s.io/api/core/v1" name as arguments
@@ -176,6 +194,6 @@ By default, pods related to the Operator deployment mount a `serviceAccountToken
         }
         ```
 
-        - The `timeout` value is based on an estimate of how fast the CCO might detect an added `CredentialsRequest` object and generate a `Secret` object. You might consider lowering the time or creating custom feedback for cluster administrators that could be wondering why the Operator is not yet accessing the cloud resources.
+        The `timeout` value is based on an estimate of how fast the CCO might detect an added `CredentialsRequest` object and generate a `Secret` object. You might consider lowering the time or creating custom feedback for cluster administrators that could be wondering why the Operator is not yet accessing the cloud resources.
 
     5.  Read the secret created by the CCO from the `CredentialsRequest` object to authenticate with Azure and receive the necessary credentials.

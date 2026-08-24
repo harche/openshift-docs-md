@@ -138,7 +138,7 @@ When the cluster deployment completes successfully:
 
 To log in to your cluster as the default system user, export the `kubeconfig` file. This configuration enables the CLI to authenticate and connect to the specific API server created during OpenShift Container Platform installation.
 
-The `kubeconfig` file is specific to a cluster and is created during OpenShift Container Platform installation.
+The `kubeconfig` file is specific to a cluster and OpenShift Container Platform generates it during installation.
 
 - You deployed an OpenShift Container Platform cluster.
 
@@ -177,7 +177,7 @@ The `kubeconfig` file is specific to a cluster and is created during OpenShift C
 
 # Logging in to the cluster by using the web console
 
-The `kubeadmin` user exists by default after an OpenShift Container Platform installation. You can log in to your cluster as the `kubeadmin` user by using the OpenShift Container Platform web console.
+To verify that your cluster deployed successfully and access its features, log in to the OpenShift Container Platform web console as the `kubeadmin` user.
 
 - You have access to the installation host.
 
@@ -191,7 +191,7 @@ The `kubeadmin` user exists by default after an OpenShift Container Platform ins
 
     <div class="note">
 
-    Alternatively, you can obtain the `kubeadmin` password from the `<installation_directory>/.openshift_install.log` log file on the installation host.
+    Or, you can obtain the `kubeadmin` password from the `<installation_directory>/.openshift_install.log` log file on the installation host.
 
     </div>
 
@@ -203,7 +203,7 @@ The `kubeadmin` user exists by default after an OpenShift Container Platform ins
 
     <div class="note">
 
-    Alternatively, you can obtain the OpenShift Container Platform route from the `<installation_directory>/.openshift_install.log` log file on the installation host.
+    Or, you can obtain the OpenShift Container Platform route from the `<installation_directory>/.openshift_install.log` log file on the installation host.
 
     </div>
 

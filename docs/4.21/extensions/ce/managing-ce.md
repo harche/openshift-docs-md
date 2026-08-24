@@ -36,6 +36,12 @@ Currently in Operator Lifecycle Manager (OLM) v1, you cannot query on-cluster ca
     `tag`
     Specifies the tag or version of the catalog, such as `v4.17` or `latest`.
 
+    <div class="formalpara-title">
+
+    **Example command**
+
+    </div>
+
     ``` terminal
     $ opm render \
       registry.redhat.io/redhat/redhat-operator-index:v4.17 \
@@ -44,6 +50,12 @@ Currently in Operator Lifecycle Manager (OLM) v1, you cannot query on-cluster ca
       | select(.type == "AllNamespaces" and .supported == true)) \
       and .spec.webhookdefinitions == null) | .package] | unique[]'
     ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
 
     ``` text
     "3scale-operator"
@@ -77,12 +89,24 @@ Currently in Operator Lifecycle Manager (OLM) v1, you cannot query on-cluster ca
       | select( .name == "<package_name>")'
     ```
 
+    <div class="formalpara-title">
+
+    **Example command**
+
+    </div>
+
     ``` terminal
     $ opm render \
       registry.redhat.io/redhat/redhat-operator-index:v4.17 \
       | jq -s '.[] | select( .schema == "olm.package") \
       | select( .name == "openshift-pipelines-operator-rh")'
     ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
 
     ``` text
     {
@@ -98,7 +122,9 @@ Currently in Operator Lifecycle Manager (OLM) v1, you cannot query on-cluster ca
 
 ## Common catalog queries
 
-You can query catalogs by using the `opm` and `jq` CLI tools. The following tables show common catalog queries that you can use when installing, updating, and managing the lifecycle of extensions.
+You can query catalogs by using the `opm` and `jq` CLI tools to help you install, update, and manage the lifecycle of extensions.
+
+The following examples show common catalog queries for extensions:
 
 <div class="formalpara-title">
 
@@ -298,6 +324,12 @@ You must create a service account to install, manage, and update a cluster exten
       namespace: <namespace>
     ```
 
+    <div class="formalpara-title">
+
+    **Example `extension-service-account.yaml` file**
+
+    </div>
+
     ``` yaml
     apiVersion: v1
     kind: ServiceAccount
@@ -331,12 +363,24 @@ Use the `opm` CLI tool to download the bundle manifests of the extension that yo
       {"name":.name, "image":.image}'
     ```
 
+    <div class="formalpara-title">
+
+    **Example command**
+
+    </div>
+
     ``` terminal
     $ opm render registry.redhat.io/redhat/redhat-operator-index:v4.17 | \
       jq -cs '.[] | select( .schema == "olm.bundle" ) | \
       select( .package == "openshift-pipelines-operator-rh") | \
       {"name":.name, "image":.image}'
     ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
 
     ``` text
     {"name":"openshift-pipelines-operator-rh.v1.14.3","image":"registry.redhat.io/openshift-pipelines/pipelines-operator-bundle@sha256:3f64b29f6903981470d0917b2557f49d84067bccdba0544bfe874ec4412f45b0"}
@@ -391,6 +435,12 @@ Use the `opm` CLI tool to download the bundle manifests of the extension that yo
     $ tree
     ```
 
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
     ``` text
     .
     ├── manifests
@@ -439,13 +489,15 @@ Use the `opm` CLI tool to download the bundle manifests of the extension that yo
 
 ## Required permissions to install and manage a cluster extension
 
-You must inspect the manifests included in the bundle image of a cluster extension to assign the necessary permissions. The service account requires enough role-based access controls (RBAC) to create and manage the following resources.
+To assign the necessary permissions for a cluster extension, inspect the manifests in its bundle image and grant the service account sufficient role-based access control (RBAC).
 
 <div class="important">
 
 Follow the principle of least privilege and scope permissions to specific resource names with the least RBAC required to run.
 
 </div>
+
+Grant the service account permissions to create and manage the following extension resources:
 
 Admission plugins
 Because OpenShift Container Platform clusters use the `OwnerReferencesPermissionEnforcement` admission plugin, cluster extensions must have permissions to update the `blockOwnerDeletion` and `ownerReferences` finalizers.
@@ -481,7 +533,7 @@ You must define RBAC so that the installation service account can create and man
 
 ## Creating a cluster role for an extension
 
-You must review the `install.spec.clusterpermissions` stanza of the cluster service version (CSV) and the manifests of an extension carefully to define the required role-based access controls (RBAC) of the extension that you want to install. You must create a cluster role by copying the required RBAC from the CSV to the new manifest.
+To set up access controls for an extension, review the `install.spec.clusterpermissions` section of the cluster service version (CSV) and the extension manifests. Then, create a cluster role by copying the required role-based access control (RBAC) rules from the CSV into a new manifest.
 
 <div class="tip">
 
@@ -552,7 +604,7 @@ To simply the following procedure and improve readability, the following example
       - <metadata_name>
     ```
 
-    - Specifies the value from the `metadata.name` field from the custom resource (CR) of the extension.
+    Replace `<metadata_name>` with the value of the metadata.name field from the custom resource (CR) of the extension.
 
 3.  Search for the `clusterrole` and `clusterrolebindings` values in the `rules.resources` field in the extension’s CSV file.
 
@@ -613,9 +665,9 @@ To simply the following procedure and improve readability, the following example
       # ...
       ```
 
-      - You cannot scope `create`, `list`, and `watch` permissions to specific resource names (the `resourceNames` field). You must scope these permissions to their resources (the `resources` field).
+      - You cannot scope the `create`, `list`, and `watch` verbs to specific resource names (the `resourceNames` field). You must scope these permissions to their resources (the `resources` field).
 
-      - Some resource names are generated by using the following format: `<package_name>.<hash>`. After you install the extension, look up the resource names for the cluster roles and cluster role bindings for the controller of the extension. Replace the wildcard characters in this example with the generated names and follow the principle of least privilege.
+      - The resource names in the `resourceNames` field for the `get`, `update`, `patch`, and `delete` verbs are generated by using the following format: `<package_name>.<hash>`. After you install the extension, look up the resource names for the cluster roles and cluster role bindings for the controller of the extension. Replace the wildcard characters in this example with the generated names and follow the principle of least privilege.
 
 4.  Search for the `customresourcedefinitions` value in the `rules.resources` field in the extension’s CSV file.
 
@@ -836,7 +888,7 @@ To simply the following procedure and improve readability, the following example
 
 ## Example cluster role for the Red Hat OpenShift Pipelines Operator
 
-See the following example for a complete cluster role manifest for the OpenShift Pipelines Operator.
+Review the complete cluster role manifest for the OpenShift Pipelines Operator, including all of the RBAC required to install and manage the extension.
 
 ``` yaml
 ---
@@ -1422,6 +1474,12 @@ After you have created a service account and cluster role, you must bind the clu
       namespace: <namespace>
     ```
 
+    <div class="formalpara-title">
+
+    **Example `pipelines-cluster-role-binding.yaml` file**
+
+    </div>
+
     ``` yaml
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
@@ -1445,7 +1503,7 @@ After you have created a service account and cluster role, you must bind the clu
 
 # Installing a cluster extension in all namespaces
 
-You can install an extension from a catalog by creating a custom resource (CR) and applying it to the cluster. Operator Lifecycle Manager (OLM) v1 supports installing cluster extensions, including OLM (Classic) Operators in the `registry+v1` bundle format, that are scoped to the cluster. For more information, see *Supported extensions*.
+You can install an extension from a catalog by creating a custom resource (CR) and applying it to the cluster. Operator Lifecycle Manager (OLM) v1 supports installing cluster extensions, including OLM (Classic) Operators in the `registry+v1` bundle format, that are scoped to the cluster.
 
 <div class="note">
 
@@ -1476,39 +1534,46 @@ For OpenShift Container Platform 4.17, documented procedures for OLM v1 are CLI-
             upgradeConstraintPolicy: CatalogProvided
     ```
 
-    - Specifies the namespace where you want the bundle installed, such as `pipelines` or `my-extension`. Extensions are still cluster-scoped and might contain resources that are installed in different namespaces.
+    where:
 
-    - Specifies the name of the service account you created to install, update, and manage your extension.
+    `spec.namespace`
+    Specifies the namespace where you want the bundle installed, such as `pipelines` or `my-extension`. Extensions are still cluster-scoped and might contain resources that are installed in different namespaces.
 
-    - Optional: Specifies channel names as an array, such as `pipelines-1.14` or `latest`.
+    `spec.serviceAccount.name`
+    Specifies the name of the service account you created to install, update, and manage your extension.
 
-    - Optional: Specifies the version or version range, such as `1.14.0`, `1.14.x`, or `>=1.16`, of the package you want to install or update. For more information, see "Example custom resources (CRs) that specify a target version" and "Support for version ranges".
+    `spec.source.catalog.channels`
+    Specifies channel names as an array, such as `pipelines-1.14` or `latest`. This field is optional.
 
-    - Optional: Specifies the upgrade constraint policy. If unspecified, the default setting is `CatalogProvided`. The `CatalogProvided` setting only updates if the new version satisfies the upgrade constraints set by the package author. To force an update or rollback, set the field to `SelfCertified`. For more information, see "Forcing an update or rollback".
+    `spec.source.catalog.version`
+    Specifies the version or version range, such as `1.14.0`, `1.14.x`, or `>=1.16`, of the package you want to install or update. This field is optional.
 
-<div class="formalpara-title">
+    `spec.source.catalog.upgradeConstraintPolicy`
+    Specifies the upgrade constraint policy. If unspecified, the default setting is `CatalogProvided`. The `CatalogProvided` setting only updates if the new version satisfies the upgrade constraints set by the package author. To force an update or rollback, set the field to `SelfCertified`. This field is optional.
 
-**Example `pipelines-operator.yaml` CR**
+    <div class="formalpara-title">
 
-</div>
+    **Example `pipelines-operator.yaml` CR**
 
-``` yaml
-apiVersion: olm.operatorframework.io/v1
-kind: ClusterExtension
-metadata:
-  name: pipelines-operator
-spec:
-  namespace: pipelines
-  serviceAccount:
-    name: pipelines-installer
-  source:
-    sourceType: Catalog
-    catalog:
-      packageName: openshift-pipelines-operator-rh
-      version: "1.14.x"
-```
+    </div>
 
-1.  Apply the CR to the cluster by running the following command:
+    ``` yaml
+    apiVersion: olm.operatorframework.io/v1
+    kind: ClusterExtension
+    metadata:
+      name: pipelines-operator
+    spec:
+      namespace: pipelines
+      serviceAccount:
+        name: pipelines-installer
+      source:
+        sourceType: Catalog
+        catalog:
+          packageName: openshift-pipelines-operator-rh
+          version: "1.14.x"
+    ```
+
+2.  Apply the CR to the cluster by running the following command:
 
     ``` terminal
     $ oc apply -f pipeline-operator.yaml
@@ -1531,6 +1596,12 @@ spec:
     ``` terminal
     $ oc get clusterextension pipelines-operator -o yaml
     ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
 
     ``` text
     apiVersion: v1
@@ -1761,7 +1832,7 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 # Preflight permissions check for cluster extensions (Technology Preview)
 
-When you try to install an extension, the Operator Controller performs a dry run of the installation process. This dry run verifies that the specified service account can perform all the actions required to install the extension. This includes creating all the Kubernetes objects in the bundle and the role-based access control (RBAC) rules for the roles and bindings defined by the bundle.
+Before installing an extension, the Operator Controller performs a dry run to verify service account access. This process confirms that the service account can create all required Kubernetes resources and RBAC rules defined by the extension bundle.
 
 <div class="important">
 
@@ -1861,11 +1932,23 @@ You can update your cluster extension or Operator by manually editing the custom
           | select( .package == "openshift-pipelines-operator-rh") | .name'
         ```
 
+        <div class="formalpara-title">
+
+        **Example command**
+
+        </div>
+
         ``` terminal
         $ opm render registry.redhat.io/redhat/redhat-operator-index:v4.17 \
           | jq -s '.[] | select( .schema == "olm.channel" ) \
           | select( .package == "openshift-pipelines-operator-rh") | .name'
         ```
+
+        <div class="formalpara-title">
+
+        **Example output**
+
+        </div>
 
         ``` text
         "latest"
@@ -1885,12 +1968,24 @@ You can update your cluster extension or Operator by manually editing the custom
           | .[] | .name'
         ```
 
+        <div class="formalpara-title">
+
+        **Example command**
+
+        </div>
+
         ``` terminal
         $ opm render registry.redhat.io/redhat/redhat-operator-index:v4.17 \
           | jq -s '.[] | select( .package == "openshift-pipelines-operator-rh" ) \
           | select( .schema == "olm.channel" ) | select( .name == "latest" ) \
           | .entries | .[] | .name'
         ```
+
+        <div class="formalpara-title">
+
+        **Example output**
+
+        </div>
 
         ``` text
         "openshift-pipelines-operator-rh.v1.15.0"
@@ -1914,6 +2009,12 @@ You can update your cluster extension or Operator by manually editing the custom
     ``` terminal
     $ oc get clusterextension pipelines-operator -o yaml
     ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
 
     ``` text
     apiVersion: v1
@@ -2016,7 +2117,7 @@ You can update your cluster extension or Operator by manually editing the custom
             version: "1.15.0"
       ```
 
-      - Update the version from `1.14.x` to `1.15.0`
+      This example updates the version from `1.14.x` to `1.15.0`.
 
     - If you want to define a range of acceptable update versions, edit your CR similar to the following example:
 
@@ -2042,7 +2143,7 @@ You can update your cluster extension or Operator by manually editing the custom
             version: ">1.15, <1.17"
       ```
 
-      - Specifies that the desired version range is greater than version `1.15` and less than `1.17`. For more information, see "Support for version ranges" and "Version comparison strings".
+      The `spec.source.catalog.version` value specifies that the desired version range is greater than version `1.15` and less than `1.17`.
 
     - If you want to update to the latest version that can be resolved from a channel, edit your CR similar to the following example:
 
@@ -2069,7 +2170,7 @@ You can update your cluster extension or Operator by manually editing the custom
               - latest
       ```
 
-      - Installs the latest release that can be resolved from the specified channel. Updates to the channel are automatically installed. Enter values as an array.
+      The `spec.source.catalog.channels` value installs the latest release that can be resolved from the specified channel. Updates to the channel are automatically installed. Enter values as an array.
 
     - If you want to specify a channel and version or version range, edit your CR similar to the following example:
 
@@ -2120,6 +2221,12 @@ You can update your cluster extension or Operator by manually editing the custom
   ``` terminal
   $ oc get clusterextension pipelines-operator -o yaml
   ```
+
+  <div class="formalpara-title">
+
+  **Example output**
+
+  </div>
 
   ``` yaml
   apiVersion: olm.operatorframework.io/v1
@@ -2198,6 +2305,12 @@ You can update your cluster extension or Operator by manually editing the custom
   ``` terminal
   $ oc get clusterextension <operator_name> -o yaml
   ```
+
+  <div class="formalpara-title">
+
+  **Example output for a version that does not exist**
+
+  </div>
 
   ``` text
   apiVersion: olm.operatorframework.io/v1
