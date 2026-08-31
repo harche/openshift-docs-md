@@ -4,7 +4,7 @@ The File Integrity Operator is a "Rolling Stream" Operator, meaning that updates
 
 For more information about Operator lifecycle policies, see Additional resources.
 
-# Getting support
+# Get support
 
 Red Hat offers several support channels to help you troubleshoot issues and get the most from OpenShift Container Platform.
 

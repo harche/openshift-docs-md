@@ -926,14 +926,6 @@ As a cluster administrator, you can edit the cluster-wide `CRIOCredentialProvide
 
 By default, if your cluster uses an `ImageDigestMirrorSet`, `ImageTagMirrorSet`, or `ImageContentSourcePolicy` object to configure repository mirroring, you must use a global pull secret for mirrored registries. You cannot add an image pull secret to a project. However, you can use the cluster-wide `CRIOCredentialProviderConfig` object to configure the kubelet to trigger the CRI-O credential provider, which enables project-scoped image pull secrets.
 
-<div class="important">
-
-Project-scoped image pull secrets for mirrored registries is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
 An administrator edits the `CRIOCredentialProviderConfig` object named `cluster`, to list the registries that a developer can pull from by using a project-scoped secret. The administrator then creates an image pull secret in each namespace where it is needed and configures role-based access control (RBAC) permissions that allow the pod’s service account within that namespace to access the secret. The admin can create a different pull secret with different credentials for each namespace or use the same pull secret in multiple namespaces.
 
 When a developer uses a pod spec in one of those namespaces to pull an image from a listed registry, the `CRIOCredentialProviderConfig` object triggers the CRI-O credential provider. The credential provider resolves mirror configurations, discovers namespace-scoped secrets, and generates short-lived authentication files for CRI-O consumption. This process maintains credential isolation between namespaces while preserving existing mirror configuration methods.
@@ -941,7 +933,7 @@ When a developer uses a pod spec in one of those namespaces to pull an image fro
 The following is an example `CRIOCredentialProviderConfig` object:
 
 ``` terminal
-apiVersion: config.openshift.io/v1alpha1
+apiVersion: config.openshift.io/v1
 kind: CRIOCredentialProviderConfig
 metadata:
   name: cluster
@@ -1004,8 +996,6 @@ Only the `matchImages` parameter is configurable by using the `CRIOCredentialPro
 In this example, the `crio-credential-provider` configuration was generated from the `CRIOCredentialProviderConfig` object. The `gcr-credential-provider` configuration is a default configuration.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
-
-- You have enabled the `TechPreviewNoUpgrade` feature set in your cluster’s `FeatureGate` custom resource (CR). For more information, see "Understanding feature gates".
 
 1.  Create a namespace for the pod by running the following command:
 
@@ -1090,7 +1080,7 @@ In this example, the `crio-credential-provider` configuration was generated from
     4.  Add the `spec.matchImages` stanza with a list of registries similar to the following example:
 
         ``` terminal
-        apiVersion: config.openshift.io/v1alpha1
+        apiVersion: config.openshift.io/v1
         kind: CRIOCredentialProviderConfig
         metadata:
           name: cluster

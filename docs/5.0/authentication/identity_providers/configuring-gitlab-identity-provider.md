@@ -1,4 +1,4 @@
-Configure the `gitlab` identity provider using [GitLab.com](https://gitlab.com/) or any other GitLab instance as an identity provider.
+Configure the `gitlab` identity provider so users can log in to OpenShift Container Platform with GitLab account credentials through OAuth.
 
 # Identity providers in OpenShift Container Platform
 
@@ -12,9 +12,13 @@ OpenShift Container Platform usernames containing `/`, `:`, and `%` are not supp
 
 # About GitLab authentication
 
-Configuring GitLab authentication allows users to log in to OpenShift Container Platform with their GitLab credentials.
+Review GitLab authentication options for OpenShift Container Platform. Use this integration when you want users to log in with GitLab account credentials through OAuth or OpenID Connect.
 
-If you use GitLab version 7.7.0 to 11.0, you connect using the [OAuth integration](https://docs.gitlab.com/ce/integration/oauth_provider.html). If you use GitLab version 11.1 or later, you can use [OpenID Connect](https://docs.gitlab.com/ce/integration/openid_connect_provider.html) (OIDC) to connect instead of OAuth.
+If you use GitLab version 7.7.0 to 11.0, you connect using OAuth integration. If you use GitLab version 11.1 or later, you can use OpenID Connect (OIDC) to connect instead of OAuth.
+
+- [OAuth integration](https://docs.gitlab.com/ce/integration/oauth_provider.html)
+
+- [OpenID Connect](https://docs.gitlab.com/ce/integration/openid_connect_provider.html)
 
 # Creating the secret
 
@@ -70,15 +74,9 @@ Create a `ConfigMap` object in the `openshift-config` namespace to store the cer
 
     The certificate authority must be stored in the `ca.crt` key of the `ConfigMap` object.
 
-# Sample GitLab CR
+# Sample GitLab custom resource
 
-The following custom resource (CR) shows the parameters and acceptable values for a GitLab identity provider.
-
-<div class="formalpara-title">
-
-**GitLab CR**
-
-</div>
+Review the sample GitLab `OAuth` custom resource (CR) to understand provider parameters and acceptable values before you configure the identity provider in your cluster.
 
 ``` yaml
 apiVersion: config.openshift.io/v1
@@ -99,21 +97,27 @@ spec:
         name: ca-config-map
 ```
 
-- This provider name is prefixed to the GitLab numeric user ID to form an identity name. It is also used to build the callback URL.
+where:
 
-- Controls how mappings are established between this provider’s identities and `User` objects.
+`spec.identityProviders.name`
+Specifies that the provider name is prefixed to the GitLab numeric user ID to form an identity name. It is also used to build the callback URL.
 
-- The client ID of a [registered GitLab OAuth application](https://docs.gitlab.com/ce/api/oauth2.html). The application must be configured with a callback URL of `https://oauth-openshift.apps.<cluster-name>.<cluster-domain>/oauth2callback/<idp-provider-name>`.
+`spec.identityProviders.mappingMethod`
+Specifies how mappings are established between identities from this provider and `User` objects.
 
-- Reference to an OpenShift Container Platform `Secret` object containing the client secret issued by GitLab.
+`spec.identityProviders.gitlab.clientID`
+Specifies the client ID of a registered GitLab OAuth application. The application must be configured with a callback URL of `https://oauth-openshift.apps.<cluster-name>.<cluster-domain>/oauth2callback/<idp-provider-name>`.
 
-- The host URL of a GitLab provider. This could either be `https://gitlab.com/` or any other self hosted instance of GitLab.
+`spec.identityProviders.gitlab.clientSecret`
+Specifies a reference to an OpenShift Container Platform `Secret` object containing the client secret issued by GitLab.
 
-- Optional: Reference to an OpenShift Container Platform `ConfigMap` object containing the PEM-encoded certificate authority bundle to use in validating server certificates for the configured URL.
+`spec.identityProviders.gitlab.url`
+Specifies the host URL of a GitLab provider. This could either be `https://gitlab.com/` or any other self-hosted instance of GitLab.
 
-<!-- -->
+`spec.identityProviders.gitlab.ca`
+Specifies a reference to an OpenShift Container Platform `ConfigMap` object containing the PEM-encoded certificate authority bundle to use in validating server certificates for the configured URL. This value is optional.
 
-- See [Identity provider parameters](../../authentication/understanding-identity-provider.xml#identity-provider-parameters_understanding-identity-provider) for information on parameters, such as `mappingMethod`, that are common to all identity providers.
+- [Identity provider parameters](../../authentication/understanding-identity-provider.xml#identity-provider-parameters_understanding-identity-provider)
 
 # Adding an identity provider to your cluster
 
@@ -148,3 +152,7 @@ Apply the identity provider custom resource (CR) to your cluster so users can au
     ``` terminal
     $ oc whoami
     ```
+
+# Additional resources
+
+- [GitLab.com](https://gitlab.com/)

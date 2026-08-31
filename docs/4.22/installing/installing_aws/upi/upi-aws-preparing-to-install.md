@@ -1,14 +1,16 @@
+To install an OpenShift Container Platform cluster on Amazon Web Services (AWS), you must complete several tasks in order to prepare your environment.
+
 You prepare to install an OpenShift Container Platform cluster on AWS by completing the following steps:
 
 - Verifying internet connectivity for your cluster.
 
-- [Configuring an AWS account](../../../installing/installing_aws/installing-aws-account.xml#installing-aws-account).
+- Configuring an AWS account. For more information, see "Configuring an AWS account".
 
 - Downloading the installation program.
 
   <div class="note">
 
-  If you are installing in a disconnected environment, you extract the installation program from the mirrored content. For more information, see [Mirroring images for a disconnected installation](../../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images).
+  If you are installing in a disconnected environment, you extract the installation program from the mirrored content. For more information, see "Mirroring images for a disconnected installation".
 
   </div>
 
@@ -22,9 +24,9 @@ You prepare to install an OpenShift Container Platform cluster on AWS by complet
 
 - Generating an SSH key pair. You can use this key pair to authenticate into the OpenShift Container Platform cluster’s nodes after it is deployed.
 
-- [Preparing the user-provisioned infrastructure.](../../../installing/installing_aws/upi/upi-aws-installation-reqs.xml#upi-aws-installation-reqs)
+- Preparing the user-provisioned infrastructure. For more information, see "Installation requirements for user-provisioned infrastructure on AWS".
 
-- If the cloud identity and access management (IAM) APIs are not accessible in your environment, or if you do not want to store an administrator-level credential secret in the `kube-system` namespace, [manually creating long-term credentials for AWS](../../../installing/installing_aws/ipi/installing-aws-customizations.xml#manually-create-iam_installing-aws-customizations) or [configuring an AWS cluster to use short-term credentials](../../../installing/installing_aws/ipi/installing-aws-customizations.xml#installing-aws-with-short-term-creds_installing-aws-customizations) with Amazon Web Services Security Token Service (AWS STS).
+- If the cloud identity and access management (IAM) APIs are not accessible in your environment, or if you do not want to store an administrator-level credential secret in the `kube-system` namespace, manually creating long-term credentials for AWS or configuring an AWS cluster to use short-term credentials with (AWS STS). For more information, see "Manually creating long-term credentials" and "Configuring an AWS cluster to use short-term credentials".
 
 # Internet access for OpenShift Container Platform
 
@@ -304,4 +306,16 @@ To provide metrics about cluster health and the success of updates, the Telemetr
 
 After you confirm that your [OpenShift Cluster Manager](https://console.redhat.com/openshift) inventory is correct, either maintained automatically by Telemetry or manually by using OpenShift Cluster Manager,use subscription watch to track your OpenShift Container Platform subscriptions at the account or multi-cluster level. For more information about subscription watch, see "Data Gathered and Used by Red Hat’s subscription services" in the *Additional resources* section.
 
-- See [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring) for more information about the Telemetry service.
+# Additional resources
+
+- [Configuring an AWS account](../../../installing/installing_aws/installing-aws-account.xml#installing-aws-account)
+
+- [Mirroring images for a disconnected installation](../../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images)
+
+- [Installation requirements for user-provisioned infrastructure on AWS](../../../installing/installing_aws/upi/upi-aws-installation-reqs.xml#upi-aws-installation-reqs)
+
+- [Manually creating long-term credentials for AWS](../../../installing/installing_aws/ipi/installing-aws-customizations.xml#manually-create-iam_installing-aws-customizations)
+
+- [Configuring an AWS cluster to use short-term credentials](../../../installing/installing_aws/ipi/installing-aws-customizations.xml#installing-aws-with-short-term-creds_installing-aws-customizations)
+
+- [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)

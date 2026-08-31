@@ -209,11 +209,11 @@ You can use the command line to configure disk sharing by using LUN.
 
 2.  Save the `VirtualMachine` manifest file to apply your changes.
 
-# Enabling the PersistentReservation feature gate
+# Enable the PersistentReservation feature
 
-You can enable the SCSI `persistentReservation` feature gate and allow a LUN-backed block mode virtual machine (VM) disk to be shared among multiple virtual machines.
+You can enable the SCSI `persistentReservation` feature and allow a logical unit number (LUN)-backed block mode virtual machine (VM) disk to be shared among many virtual machines.
 
-The `persistentReservation` feature gate is disabled by default. You can enable the `persistentReservation` feature gate by using the web console or the command line.
+The `persistentReservation` feature is disabled by default. You can enable the `persistentReservation` feature by using the web console or the command line.
 
 ## Prerequisites
 
@@ -223,9 +223,9 @@ The `persistentReservation` feature gate is disabled by default. You can enable 
 
 - The storage provider must support a Container Storage Interface (CSI) driver that uses Fibre Channel (FC), Fibre Channel over Ethernet (FCoE), or iSCSI storage protocols.
 
-## Enabling the PersistentReservation feature gate by using the web console
+## Enable the PersistentReservation feature by using the web console
 
-You must enable the PersistentReservation feature gate to allow a LUN-backed block mode virtual machine (VM) disk to be shared among multiple virtual machines. Enabling the feature gate requires cluster administrator privileges.
+You must enable the PersistentReservation feature to allow a logical unit number (LUN)-backed block mode virtual machine (VM) disk to be shared among many virtual machines. Enabling the feature requires cluster administrator privileges.
 
 1.  Click **Virtualization** → **Settings** in the web console.
 
@@ -233,18 +233,17 @@ You must enable the PersistentReservation feature gate to allow a LUN-backed blo
 
 3.  Expand **SCSI persistent reservation** and set **Enable persistent reservation** to on.
 
-## Enabling the PersistentReservation feature gate by using the CLI
+## Enable the PersistentReservation feature by using the CLI
 
-You can enable the `persistentReservation` feature gate by using the command line. Enabling the feature gate requires cluster administrator privileges.
+You can enable the `persistentReservation` feature by using the command line. Enabling the feature requires cluster administrator privileges.
 
 - You have installed the OpenShift CLI (`oc`).
 
-1.  Enable the `persistentReservation` feature gate by running the following command:
+1.  Enable the `persistentReservation` feature by running the following command:
 
     ``` terminal
-    $ oc patch hco kubevirt-hyperconverged -n openshift-cnv \
-      --type json -p '[{"op": "add", "path": "/spec/featureGates/-", \
-      "value": {"name": "persistentReservation"}}]'
+    $ oc patch hco kubevirt-hyperconverged -n openshift-cnv --type merge \
+      -p '{"spec":{"storage":{"persistentReservationConfiguration":{"enabled":true}}}}'
     ```
 
 # Additional resources

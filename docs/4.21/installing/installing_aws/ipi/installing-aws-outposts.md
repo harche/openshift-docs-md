@@ -1,10 +1,14 @@
-In OpenShift Container Platform version 4.14, you could install a cluster on Amazon Web Services (AWS) with compute nodes running in AWS Outposts as a Technology Preview. As of OpenShift Container Platform version 4.15, this installation method is no longer supported. Instead, you can install a cluster on AWS into an existing VPC, and provision compute nodes on AWS Outposts as a postinstallation configuration task.
+In OpenShift Container Platform version 4.14, you could install a cluster on Amazon Web Services (AWS) with compute nodes running in AWS Outposts as a Technology Preview. As of OpenShift Container Platform version 4.15, this installation method is no longer supported.
 
-After [installing a cluster on Amazon Web Services (AWS) into an existing Amazon Virtual Private Cloud (VPC)](../../../installing/installing_aws/ipi/installing-aws-vpc.xml#installing-aws-vpc), you can create a compute machine set that deploys compute machines in AWS Outposts. AWS Outposts is an AWS edge compute service that enables using many features of a cloud-based AWS deployment with the reduced latency of an on-premise environment. For more information, see the [AWS Outposts documentation](https://docs.aws.amazon.com/outposts/).
+Instead, you can install a cluster on AWS into an existing VPC, and provision compute nodes on AWS Outposts as a postinstallation configuration task.
+
+After following the instructions in "Installing a cluster on Amazon Web Services (AWS) into an existing Amazon Virtual Private Cloud (VPC)", you can create a compute machine set that deploys compute machines in AWS Outposts. AWS Outposts is an AWS edge compute service that enables using many features of a cloud-based AWS deployment with the reduced latency of an on-premise environment. For more information, see the "AWS Outposts documentation".
 
 # AWS Outposts on OpenShift Container Platform requirements and limitations
 
-You can manage the resources on your AWS Outpost similarly to those on a cloud-based AWS cluster if you configure your OpenShift Container Platform cluster to accommodate the following requirements and limitations:
+You can manage the resources on your AWS Outpost similarly to those on a cloud-based AWS cluster if you configure your OpenShift Container Platform cluster to accommodate several requirements and limitations.
+
+You must accommodate the following requirements and limitations:
 
 - To extend an OpenShift Container Platform cluster on AWS into an Outpost, you must have installed the cluster into an existing Amazon Virtual Private Cloud (VPC).
 
@@ -564,7 +568,7 @@ You must include the `kubernetes.io/cluster/unmanaged` tag in the private subnet
 
 # Creating a compute machine set that deploys edge compute machines on an Outpost
 
-To create edge compute machines on AWS Outposts, you must create a new compute machine set with a compatible configuration.
+To deploy edge compute machines on Amazon Web Services (AWS) Outposts, you must create a compute machine set with a configuration compatible with the Outpost environment.
 
 - You have an AWS Outposts site.
 
@@ -646,11 +650,16 @@ To create edge compute machines on AWS Outposts, you must create a new compute m
       # ...
       ```
 
-      - The cluster infrastructure ID.
+      where:
 
-      - A default node label. For AWS Outposts, you use the `outposts` role.
+      `machine.openshift.io/cluster-api-cluster`
+      Specifies the cluster infrastructure ID.
 
-      - The omitted `providerSpec` section includes values that must be configured for your Outpost.
+      `metadata.name`
+      Specifies a default node label. For AWS Outposts, you use the `outposts` role.
+
+      `spec.providerSpec`
+      Specifies the `providerSpec` section, which is omitted here but includes values that must be configured for your Outpost.
 
 4.  Configure the new compute machine set to create edge compute machines in the Outpost by editing the `<new_machine_set_name_1>.yaml` file:
 
@@ -722,21 +731,31 @@ To create edge compute machines on AWS Outposts, you must create a new compute m
               effect: NoSchedule
     ```
 
-    - Specifies the cluster infrastructure ID.
+    where:
 
-    - Specifies the name of the compute machine set. The name is composed of the cluster infrastructure ID, the `outposts` role name, and the Outpost availability zone.
+    `machine.openshift.io/cluster-api-cluster`
+    Specifies the cluster infrastructure ID.
 
-    - Specifies the Amazon Machine Image (AMI) ID.
+    `metadata.name`
+    Specifies the name of the compute machine set. The name is composed of the cluster infrastructure ID, the `outposts` role name, and the Outpost availability zone.
 
-    - Specifies the EBS volume type. AWS Outposts requires gp2 volumes.
+    `spec.providerSpec.value.ami.id`
+    Specifies the Amazon Machine Image (AMI) ID.
 
-    - Specifies the AWS instance type. You must use an instance type that is configured in your Outpost.
+    `spec.providerSpec.value.blockDevices.ebs.volumeType`
+    Specifies the EBS volume type. AWS Outposts requires gp2 volumes.
 
-    - Specifies the AWS region in which the Outpost availability zone exists.
+    `spec.providerSpec.value.instanceType`
+    Specifies the AWS instance type. You must use an instance type that is configured in your Outpost.
 
-    - Specifies the dedicated subnet for your Outpost.
+    `spec.providerSpec.value.placement.region`
+    Specifies the AWS region in which the Outpost availability zone exists.
 
-    - Specifies a taint to prevent workloads from being scheduled on nodes that have the `node-role.kubernetes.io/outposts` label. To schedule user workloads in the Outpost, you must specify a corresponding toleration in the `Deployment` resource for your application.
+    `spec.providerSpec.value.subnet.id`
+    Specifies the dedicated subnet for your Outpost.
+
+    `spec.template.spec.taints`
+    Specifies a taint to prevent workloads from being scheduled on nodes that have the `node-role.kubernetes.io/outposts` label. To schedule user workloads in the Outpost, you must specify a corresponding toleration in the `Deployment` resource for your application.
 
 5.  Save your changes.
 
@@ -792,7 +811,7 @@ To create edge compute machines on AWS Outposts, you must create a new compute m
 
 # Creating user workloads in an Outpost
 
-After you extend an OpenShift Container Platform in an AWS VPC cluster into an Outpost, you can use edge compute nodes with the label `node-role.kubernetes.io/outposts` to create user workloads in the Outpost.
+After you extend a OpenShift Container Platform VPC cluster into an Amazon Web Services (AWS) Outpost, you can deploy user workloads to edge compute nodes that carry the `node-role.kubernetes.io/outposts` label.
 
 - You have extended an AWS VPC cluster into an Outpost.
 
@@ -876,17 +895,25 @@ After you extend an OpenShift Container Platform in an AWS VPC cluster into an O
               claimName: <application_name>
     ```
 
-    - Specify a name for your application.
+    where:
 
-    - Specify a namespace for your application. The application namespace can be the same as the application name.
+    `metadata.name`
+    Specifies a name for your application.
 
-    - Specify the storage class name. For an edge compute configuration, you must use the `gp2-csi` storage class.
+    `metadata.namespace`
+    Specifies a namespace for your application. The application namespace can be the same as the application name.
 
-    - Specify a label to identify workloads deployed in the Outpost.
+    `spec.storageClassName`
+    Specifies the storage class name. For an edge compute configuration, you must use the `gp2-csi` storage class.
 
-    - Specify the node selector label that targets edge compute nodes.
+    `spec.template.metadata.labels.location`
+    Specifies a label to identify workloads deployed in the Outpost.
 
-    - Specify tolerations that match the `key` and `effects` taints in the compute machine set for your edge compute machines. Set the `value` and `operator` tolerations as shown.
+    `spec.template.spec.nodeSelector`
+    Specifies the node selector label that targets edge compute nodes.
+
+    `spec.template.spec.tolerations`
+    Specifies tolerations that match the `key` and `effects` taints in the compute machine set for your edge compute machines. Set the `value` and `operator` tolerations as shown.
 
 2.  Create the `Deployment` resource by running the following command:
 
@@ -918,9 +945,13 @@ After you extend an OpenShift Container Platform in an AWS VPC cluster into an O
         app: <application_name>
     ```
 
-    - Defines the `service` resource.
+    where:
 
-    - Specify the label type to apply to managed pods.
+    `kind`
+    Specifies the `Service` resource type.
+
+    `spec.selector`
+    Specifies the label type to apply to managed pods.
 
 4.  Create the `Service` CR by running the following command:
 
@@ -938,7 +969,9 @@ The following load balancer considerations apply to an AWS VPC cluster extended 
 
 - To run a load balancer on an Outpost instance, you must use an AWS Application Load Balancer. You can use the AWS Load Balancer Operator to deploy an instance of the AWS Load Balancer Controller. The controller provisions AWS Application Load Balancers for Kubernetes Ingress resources. For more information, see "Using the AWS Load Balancer Operator in an AWS VPC cluster extended into an Outpost".
 
-## Using AWS Classic Load Balancers in an AWS VPC cluster extended into an Outpost
+## Using Amazon Web Services (AWS) Classic Load Balancers in an AWS VPC cluster extended into an Outpost
+
+To prevent Classic Load Balancers in your AWS VPC cluster from scheduling pods on Outpost edge compute nodes, you can label cloud-based compute nodes and configure the load balancer to target only those labeled nodes.
 
 AWS Outposts infrastructure cannot run AWS Classic Load Balancers, but Classic Load Balancers in the AWS VPC cluster can target edge compute nodes in the Outpost if edge and cloud-based subnets are in the same availability zone. As a result, Classic Load Balancers on the VPC cluster might schedule pods on either of these node types.
 
@@ -1033,9 +1066,13 @@ If you do not need to prevent a Classic Load Balancer in the VPC cluster from ta
       type: LoadBalancer
     ```
 
-    - Specify the subnet ID for the AWS VPC cluster.
+    where:
 
-    - Specify the key-value pair that matches the pair in the node label.
+    `service.beta.kubernetes.io/aws-load-balancer-subnets`
+    Specifies the subnet ID for the AWS VPC cluster.
+
+    `service.beta.kubernetes.io/aws-load-balancer-target-node-labels`
+    Specifies the key-value pair that matches the pair in the node label.
 
 5.  Create the `Service` CR by running the following command:
 
@@ -1111,10 +1148,10 @@ You must annotate Ingress resources with the Outpost subnet or the VPC subnet, b
   `<subnet_id>`
   Specifies the subnet to use. To use the Application Load Balancer in an Outpost, specify the Outpost subnet ID. To use the Application Load Balancer in the cloud, you must specify at least two subnets in different availability zones.
 
-<!-- -->
-
-- [Creating the AWS Load Balancer Controller](../../../networking/networking_operators/aws_load_balancer_operator/install-aws-load-balancer-operator.xml#nw-creating-instance-aws-load-balancer-controller_aws-load-balancer-operator)
-
 # Additional resources
 
 - [Installing a cluster on AWS into an existing VPC](../../../installing/installing_aws/ipi/installing-aws-vpc.xml#installing-aws-vpc)
+
+- [AWS Outposts documentation](https://docs.aws.amazon.com/outposts/)
+
+- [Creating the AWS Load Balancer Controller](../../../networking/networking_operators/aws_load_balancer_operator/install-aws-load-balancer-operator.xml#nw-creating-instance-aws-load-balancer-controller_aws-load-balancer-operator)

@@ -322,7 +322,7 @@ HSTS works only with secure routes, either edge-terminated or re-encrypt. The co
 
 </div>
 
-## Enabling HTTP Strict Transport Security per-route
+## Enable HTTP Strict Transport Security per-route
 
 To enforce secure HTTPS connections for specific applications, enable HTTP Strict Transport Security (HSTS) on a per-route basis. Applying the `haproxy.router.openshift.io/hsts_header` annotation to edge and re-encrypt routes ensures that browsers reject unencrypted traffic.
 
@@ -378,7 +378,7 @@ To enforce secure HTTPS connections for specific applications, enable HTTP Stric
   `preload`
   Specifies that the site is included in the HSTS preload list when `max-age` is greater than `0`. For example, sites such as Google can construct a list of sites that have `preload` set. Browsers can then use these lists to determine which sites they can communicate with over HTTPS, even before they have interacted with the site. Without `preload` set, browsers must have interacted with the site over HTTPS, at least once, to get the header. Optional parameter.
 
-## Disabling HTTP Strict Transport Security per-route
+## Disable HTTP Strict Transport Security per-route
 
 To allow unencrypted connections or troubleshoot access issues, disable HTTP Strict Transport Security (HSTS) for a specific route. Setting the `max-age` route annotation to `0` instructs browsers to stop enforcing HTTPS requirements on the route host.
 

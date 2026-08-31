@@ -566,9 +566,9 @@ Do not run the `openshift-install create manifests` command again after creating
 
 # Creating a VPC in AWS
 
-You must create a Virtual Private Cloud (VPC) in Amazon Web Services (AWS) for your OpenShift Container Platform cluster to use. You can customize the VPC to meet your requirements, including VPN and route tables.
+To provide the network foundation for your OpenShift Container Platform cluster, create a Virtual Private Cloud (VPC) in Amazon Web Services (AWS) by using the provided CloudFormation template.
 
-You can use the provided CloudFormation template and a custom parameter file to create a stack of AWS resources that represent the VPC.
+You can customize the VPC to meet your requirements, including VPN and route tables. You can use the provided CloudFormation template and a custom parameter file to create a stack of AWS resources that represent the VPC.
 
 <div class="note">
 
@@ -597,17 +597,16 @@ If you do not use the provided CloudFormation template to create your AWS infras
     ]
     ```
 
-    - The CIDR block for the VPC.
+    where:
 
-    - Specify a CIDR block in the format `x.x.x.x/16-24`.
+    `VpcCidr`
+    Specifies the CIDR block for the VPC in the format `x.x.x.x/16-24`.
 
-    - The number of availability zones to deploy the VPC in.
+    `AvailabilityZoneCount`
+    Specifies the number of availability zones to deploy the VPC in. Set the value to an integer between `1` and `3`.
 
-    - Specify an integer between `1` and `3`.
-
-    - The size of each subnet in each availability zone.
-
-    - Specify an integer between `5` and `13`, where `5` is `/27` and `13` is `/19`.
+    `SubnetBits`
+    Specifies the size of each subnet in each availability zone. Set the value to an integer between `5` and `13`, where `5` is `/27` and `13` is `/19`.
 
 2.  Copy the template from the **CloudFormation template for the VPC** section of this topic and save it as a YAML file on your computer. This template describes the VPC that your cluster requires.
 
@@ -620,26 +619,31 @@ If you do not use the provided CloudFormation template to create your AWS infras
     </div>
 
     ``` terminal
-    $ aws cloudformation create-stack --stack-name <name>
-         --template-body file://<template>.yaml
+    $ aws cloudformation create-stack --stack-name <name> \
+         --template-body file://<template>.yaml \
          --parameters file://<parameters>.json
     ```
 
-    - `<name>` is the name for the CloudFormation stack, such as `cluster-vpc`. You need the name of this stack if you remove the cluster.
+    where:
 
-    - `<template>` is the relative path to and name of the CloudFormation template YAML file that you saved.
+    `<name>`
+    Specifies the name for the CloudFormation stack, such as `cluster-vpc`. You need the name of this stack if you remove the cluster.
 
-    - `<parameters>` is the relative path to and name of the CloudFormation parameters JSON file.
+    `<template>`
+    Specifies the relative path to and name of the CloudFormation template YAML file that you saved.
 
-      <div class="formalpara-title">
+    `<parameters>`
+    Specifies the relative path to and name of the CloudFormation parameters JSON file.
 
-      **Example output**
+    <div class="formalpara-title">
 
-      </div>
+    **Example output**
 
-      ``` terminal
-      arn:aws:cloudformation:us-east-1:269333783861:stack/cluster-vpc/dbedae40-2fd3-11eb-820e-12a48460849f
-      ```
+    </div>
+
+    ``` terminal
+    arn:aws:cloudformation:us-east-1:269333783861:stack/cluster-vpc/dbedae40-2fd3-11eb-820e-12a48460849f
+    ```
 
 4.  Confirm that the template components exist:
 
@@ -1568,7 +1572,7 @@ link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/aws/
 
 # Creating the worker nodes in AWS
 
-You can create worker nodes in Amazon Web Services (AWS) for your cluster to use.
+To run application workloads on your OpenShift Container Platform cluster, create worker nodes in Amazon Web Services (AWS) by using the provided CloudFormation template.
 
 You can use the provided CloudFormation template and a custom parameter file to create a stack of AWS resources that represent a worker node.
 
@@ -1625,39 +1629,33 @@ If you do not use the provided CloudFormation template to create your worker nod
     ]
     ```
 
-    - The name for your cluster infrastructure that is encoded in your Ignition config files for the cluster.
+    where:
 
-    - Specify the infrastructure name that you extracted from the Ignition config file metadata, which has the format `<cluster-name>-<random-string>`.
+    `InfrastructureName`
+    Specifies the name for your cluster infrastructure that is encoded in your Ignition config files for the cluster. Set the value to the infrastructure name that you extracted from the Ignition config file metadata, which has the format `<cluster-name>-<random-string>`.
 
-    - Current Red Hat Enterprise Linux CoreOS (RHCOS) AMI to use for the worker nodes based on your selected architecture.
+    `RhcosAmi`
+    Specifies the current Red Hat Enterprise Linux CoreOS (RHCOS) AMI to use for the worker nodes based on your selected architecture. Set the value to a valid `AWS::EC2::Image::Id` value.
 
-    - Specify an `AWS::EC2::Image::Id` value.
+    `Subnet`
+    Specifies a subnet, preferably private, to start the worker nodes on. Set the value to a subnet from the `PrivateSubnets` value from the output of the CloudFormation template for DNS and load balancing.
 
-    - A subnet, preferably private, to start the worker nodes on.
+    `WorkerSecurityGroupId`
+    Specifies the worker security group ID to associate with worker nodes. Set the value to the `WorkerSecurityGroupId` value from the output of the CloudFormation template for the security group and roles.
 
-    - Specify a subnet from the `PrivateSubnets` value from the output of the CloudFormation template for DNS and load balancing.
+    `IgnitionLocation`
+    Specifies the location to fetch the bootstrap Ignition config file from. Set the value to the generated Ignition config location, `https://api-int.<cluster_name>.<domain_name>:22623/config/worker`.
 
-    - The worker security group ID to associate with worker nodes.
+    `CertificateAuthorities`
+    Specifies the base64 encoded certificate authority string to use. Set the value to the value from the `worker.ign` file that is in the installation directory. This value is the long string with the format `data:text/plain;charset=utf-8;base64,ABC…​xYz==`.
 
-    - Specify the `WorkerSecurityGroupId` value from the output of the CloudFormation template for the security group and roles.
+    `WorkerInstanceProfileName`
+    Specifies the IAM profile to associate with worker nodes. Set the value to the `WorkerInstanceProfile` parameter value from the output of the CloudFormation template for the security group and roles.
 
-    - The location to fetch the bootstrap Ignition config file from.
+    `WorkerInstanceType`
+    Specifies the type of AWS instance to use for the compute machines based on your selected architecture. The instance type value corresponds to the minimum resource requirements for compute machines. For example `m6i.large` is a type for AMD64 and `m6g.large` is a type for ARM64.
 
-    - Specify the generated Ignition config location, `https://api-int.<cluster_name>.<domain_name>:22623/config/worker`.
-
-    - Base64 encoded certificate authority string to use.
-
-    - Specify the value from the `worker.ign` file that is in the installation directory. This value is the long string with the format `data:text/plain;charset=utf-8;base64,ABC…​xYz==`.
-
-    - The IAM profile to associate with worker nodes.
-
-    - Specify the `WorkerInstanceProfile` parameter value from the output of the CloudFormation template for the security group and roles.
-
-    - The type of AWS instance to use for the compute machines based on your selected architecture.
-
-    - The instance type value corresponds to the minimum resource requirements for compute machines. For example `m6i.large` is a type for AMD64 and `m6g.large` is a type for ARM64.
-
-2.  Copy the template from the **CloudFormation template for worker machines** section of this topic and save it as a YAML file on your computer. This template describes the networking objects and load balancers that your cluster requires.
+2.  Copy the template from the **CloudFormation template for compute machines** section of this topic and save it as a YAML file on your computer. This template describes the compute machines that your cluster requires.
 
 3.  Optional: If you specified an `m5` instance type as the value for `WorkerInstanceType`, add that instance type to the `WorkerInstanceType.AllowedValues` parameter in the CloudFormation template.
 
@@ -1672,32 +1670,37 @@ If you do not use the provided CloudFormation template to create your worker nod
     </div>
 
     ``` terminal
-    $ aws cloudformation create-stack --stack-name <name>
+    $ aws cloudformation create-stack --stack-name <name> \
          --template-body file://<template>.yaml \
          --parameters file://<parameters>.json
     ```
 
-    - `<name>` is the name for the CloudFormation stack, such as `cluster-worker-1`. You need the name of this stack if you remove the cluster.
+    where:
 
-    - `<template>` is the relative path to and name of the CloudFormation template YAML file that you saved.
+    `<name>`
+    Specifies the name for the CloudFormation stack, such as `cluster-worker-1`. You need the name of this stack if you remove the cluster.
 
-    - `<parameters>` is the relative path to and name of the CloudFormation parameters JSON file.
+    `<template>`
+    Specifies the relative path to and name of the CloudFormation template YAML file that you saved.
 
-      <div class="formalpara-title">
+    `<parameters>`
+    Specifies the relative path to and name of the CloudFormation parameters JSON file.
 
-      **Example output**
+    <div class="formalpara-title">
 
-      </div>
+    **Example output**
 
-      ``` terminal
-      arn:aws:cloudformation:us-east-1:269333783861:stack/cluster-worker-1/729ee301-1c2a-11eb-348f-sd9888c65b59
-      ```
+    </div>
 
-      <div class="note">
+    ``` terminal
+    arn:aws:cloudformation:us-east-1:269333783861:stack/cluster-worker-1/729ee301-1c2a-11eb-348f-sd9888c65b59
+    ```
 
-      The CloudFormation template creates a stack that represents one worker node.
+    <div class="note">
 
-      </div>
+    The CloudFormation template creates a stack that represents one worker node.
+
+    </div>
 
 6.  Confirm that the template components exist:
 
@@ -1775,7 +1778,7 @@ After creating all required infrastructure in AWS, you can start the bootstrap s
 1.  Change to the directory that has the installation program and start the bootstrap process that initializes the OpenShift Container Platform control plane:
 
     ``` terminal
-    $ ./openshift-install wait-for bootstrap-complete --dir <installation_directory>
+    $ ./openshift-install wait-for bootstrap-complete --dir <installation_directory> \
         --log-level=info
     ```
 
@@ -2139,9 +2142,9 @@ After completing the initial Operator configuration for your OpenShift Container
 
 # Creating the Ingress DNS records
 
-If you removed the DNS Zone configuration, you must manually create DNS records that point to the Ingress load balancer.
+If you removed the DNS zone configuration during installation, you must manually create DNS records that point to the Ingress load balancer so that your OpenShift Container Platform cluster routes are reachable.
 
-You can create either a wildcard record or specific records. Although the following procedure uses A records, you can use other record types that you require, such as CNAME or alias.
+You can create either a wildcard record or specific records. While the following procedure uses A records, you can use other record types that you require, such as CNAME or alias.
 
 - You deployed an OpenShift Container Platform cluster on Amazon Web Services (AWS) that uses infrastructure that you provisioned.
 
@@ -2149,7 +2152,7 @@ You can create either a wildcard record or specific records. Although the follow
 
 - You installed the `jq` package.
 
-- You downloaded the AWS CLI and installed it on your computer. See [Install the AWS CLI Using the Bundled Installer (Linux, macOS, or UNIX)](https://docs.aws.amazon.com/cli/latest/userguide/install-bundle.html).
+- You downloaded the AWS CLI and installed it on your computer. See [Install the AWS CLI Using the Bundled Installer (Linux, macOS, or Unix)](https://docs.aws.amazon.com/cli/latest/userguide/install-bundle.html).
 
 1.  Find the routes to create.
 
@@ -2198,7 +2201,7 @@ You can create either a wildcard record or specific records. Although the follow
     $ aws elb describe-load-balancers | jq -r '.LoadBalancerDescriptions[] | select(.DNSName == "<external_ip>").CanonicalHostedZoneNameID'
     ```
 
-    where `<external_ip>` is the value of the external IP address of the Ingress Operator load balancer that you obtained.
+    For `<external_ip>`, specify the value of the external IP address of the Ingress Operator load balancer that you obtained.
 
     <div class="formalpara-title">
 
@@ -2221,7 +2224,7 @@ You can create either a wildcard record or specific records. Although the follow
                 --output text
     ```
 
-    where `<domain_name>` is the Route 53 base domain for your OpenShift Container Platform cluster.
+    For `<domain_name>`, specify the Route 53 base domain for your OpenShift Container Platform cluster.
 
     <div class="formalpara-title">
 
@@ -2259,7 +2262,7 @@ You can create either a wildcard record or specific records. Although the follow
     where:
 
     `<private_hosted_zone_id>`
-    Specifies the value from the output of the `CloudFormation` template for DNS and load balancing.
+    Specifies the value from the output of the CloudFormation template for DNS and load balancing.
 
     `<cluster_domain>`
     Specifies the domain or subdomain that you use with your OpenShift Container Platform cluster.
@@ -2291,19 +2294,7 @@ You can create either a wildcard record or specific records. Although the follow
     > }'
     ```
 
-    where:
-
-    `<public_hosted_zone_id>`
-    Specifies the public hosted zone for your domain.
-
-    `<cluster_domain>`
-    Specifies the domain or subdomain that you use with your OpenShift Container Platform cluster.
-
-    `<hosted_zone_id>`
-    Specifies the public hosted zone ID for the load balancer that you obtained.
-
-    `<external_ip>`
-    Specifies the value of the external IP address of the Ingress Operator load balancer. Ensure that you include the trailing period (`.`) in this parameter value.
+    where: `<public_hosted_zone_id>`:: Specifies the public hosted zone for your domain. `<cluster_domain>`:: Specifies the domain or subdomain that you use with your OpenShift Container Platform cluster. `<hosted_zone_id>`:: Specifies the public hosted zone ID for the load balancer that you obtained. `<external_ip>`:: Specifies the value of the external IP address of the Ingress Operator load balancer. Ensure that you include the trailing period (`.`) in this parameter value.
 
 # Completing an Amazon Web Services (AWS) installation on user-provisioned infrastructure
 

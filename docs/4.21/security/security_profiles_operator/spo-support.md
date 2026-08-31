@@ -1,6 +1,6 @@
 The Security Profiles Operator is a "Rolling Stream" Operator, meaning updates are available asynchronously of OpenShift Container Platform releases.
 
-# Getting support
+# Get support
 
 Red Hat offers several support channels to help you troubleshoot issues and get the most from OpenShift Container Platform.
 

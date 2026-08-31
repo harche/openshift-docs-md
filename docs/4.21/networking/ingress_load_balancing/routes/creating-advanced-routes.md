@@ -190,7 +190,7 @@ To send encrypted traffic directly to the destination without decryption at the 
 
   The destination pod is responsible for serving certificates for the traffic at the endpoint. This is currently the only method that can support requiring client certificates, also known as two-way authentication.
 
-# Creating a route using the destination CA certificate in the Ingress annotation
+# Create a route using the destination CA certificate in the Ingress annotation
 
 To define a route with a custom destination CA certificate, apply the `route.openshift.io/destination-ca-certificate-secret` annotation to an Ingress object. This configuration ensures the Ingress Controller uses the specified secret to verify the identity of the destination service.
 
@@ -341,7 +341,7 @@ By using the externally managed certificate, you can reduce errors to ensure a s
 
       </div>
 
-# Creating a route using the default certificate through an Ingress object
+# Create a route using the default certificate through an Ingress object
 
 To generate a secure, edge-terminated route that uses the default ingress certificate, specify an empty TLS configuration in the Ingress object. This configuration overrides the default behavior, preventing the creation of an insecure route.
 

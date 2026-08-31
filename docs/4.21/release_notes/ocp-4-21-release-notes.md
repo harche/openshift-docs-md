@@ -968,6 +968,32 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHSA-2026:57801 - OpenShift Container Platform 4.17.30 bug fix and security update
+
+Issued: 25 August 2026
+
+OpenShift Container Platform release 4.17.30 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:57801](https://access.redhat.com/errata/RHSA-2026:57801) advisory. The RPM packages that are included in the update are provided by the [RHSA-2026:57456](https://access.redhat.com/errata/RHSA-2026:57456) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.21.30 --pullspecs
+```
+
+### Enhancements
+
+- Clusters that report telemetry will now report the number and the kind of `UserDefinedNetwork` and `ClusterUserDefinedNetwork` resources in use. ([OCPBUGS-54806](https://redhat.atlassian.net/browse/OCPBUGS-54806))
+
+### Fixed issues
+
+- Before this update, when you viewed Quick Start `{{execute}}` code snippets in the OpenShift Container Platform web console, leading whitespace in the code block could render as an empty line before the command text. As a consequence, execute snippets across Quick Starts could display an extra blank line above the command, making the content harder to read. With this release, leading whitespace rendering in Quick Start execute code snippets is corrected. As a result, execute code blocks display the command text without a spurious empty line above it. ([OCPBUGS-105864](https://redhat.atlassian.net/browse/OCPBUGS-105864))
+
+### Updating
+
+To update an OpenShift Container Platform 4.21 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHSA-2026:54602 - OpenShift Container Platform 4.17.29 bug fix and security update
 
 Issued: 18 August 2026

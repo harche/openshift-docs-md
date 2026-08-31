@@ -286,7 +286,7 @@ For non-recovery control plane nodes, it is not required to establish SSH connec
 
     </div>
 
-3.  Using SSH, connect to each control plane node to disbale etcd by running the following command:
+3.  Using SSH, connect to each control plane node to disable etcd by running the following command:
 
     ``` terminal
     $ sudo -E /usr/local/bin/disable-etcd.sh

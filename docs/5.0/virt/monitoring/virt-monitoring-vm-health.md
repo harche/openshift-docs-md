@@ -357,6 +357,76 @@ You can define a guest agent ping probe by setting the `spec.readinessProbe.gues
     $ oc create -f <file_name>.yaml
     ```
 
+## About pausing guest agent ping probes
+
+During maintenance operations such as guest OS updates, the QEMU guest agent might become temporarily unavailable. If a `GuestAgentPing` liveness probe is configured, probe failures cause the kubelet to restart the pod, which destroys the running virtual machine (VM).
+
+You can prevent unwanted pod restarts by temporarily pausing `GuestAgentPing` probes. Setting the `kubevirt.io/pause-guest-agent-probes` annotation on a `VirtualMachineInstance` (VMI) resource causes `virt-launcher` to return immediate success for `GuestAgentPing` probes without contacting the QEMU guest agent.
+
+This is a manual, temporary measure. You must set the annotation yourself before maintenance and remove it yourself when maintenance is complete. The annotation is not set or removed automatically. If the `GuestAgentPing` probe is no longer needed, update the VM spec to remove the probe instead of relying on the annotation.
+
+Consider pausing probes in the following scenarios:
+
+- Guest OS updates that require one or more reboots, such as Windows updates
+
+- Any planned maintenance where the guest agent will be temporarily unavailable
+
+<div class="important">
+
+- This annotation only affects `GuestAgentPing` probes. HTTP, TCP, and exec probes are not affected.
+
+- The annotation takes effect within seconds on the next `virt-launcher` sync cycle.
+
+- You must manually remove the annotation after maintenance to resume normal probe behavior. Probes remain paused indefinitely while the annotation is set.
+
+- If you no longer require the `GuestAgentPing` probe, remove it from the VM spec rather than keeping the annotation set permanently.
+
+</div>
+
+## Pausing and resuming guest agent ping probes
+
+You can temporarily pause `GuestAgentPing` probes on a virtual machine instance (VMI) by adding an annotation. This prevents the kubelet from restarting the pod during maintenance operations when the guest agent is temporarily unavailable.
+
+- A running VMI with a `GuestAgentPing` liveness / readiness probe configured.
+
+- You have installed the OpenShift CLI (`oc`).
+
+1.  Pause probes by annotating the VMI:
+
+    ``` terminal
+    $ oc annotate vmi <vmi_name> kubevirt.io/pause-guest-agent-probes=true
+    ```
+
+2.  Verify that the annotation is set:
+
+    ``` terminal
+    $ oc get vmi <vmi_name> -o jsonpath='{.metadata.annotations.kubevirt\.io/pause-guest-agent-probes}'
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    true
+    ```
+
+3.  Optional: Verify that `virt-launcher` has picked up the annotation by checking its logs:
+
+    ``` terminal
+    $ oc logs -n <namespace> virt-launcher-<vmi_name>-<id> -c compute | grep "probe pause state"
+    ```
+
+4.  Perform your maintenance operations, such as guest OS updates.
+
+5.  Resume probes by removing the annotation:
+
+    ``` terminal
+    $ oc annotate vmi <vmi_name> kubevirt.io/pause-guest-agent-probes-
+    ```
+
 # Additional resources
 
 - [Monitoring application health by using health checks](../../applications/application-health.xml#application-health)

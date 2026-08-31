@@ -111,7 +111,7 @@ Deploy the SPIRE Server by configuring the `SpireServer` custom resource (CR). T
         `spec.defaultJWTValidity`
         Specifies thedefault validity period (TTL) for JWT SVIDs issued to workloads. This value is used if a specific TTL is not configured for a registration entry.
 
-        `spec.wtKeyType`
+        `spec.jwtKeyType`
         Specifies the key type used for JWT signing. The valid options are `rsa-2048`, `rsa-4096`, `ec-p256`, and `ec-p384`. This field is optional.
 
         `spec.caSubject.country`
@@ -162,7 +162,7 @@ Deploy the SPIRE Server by configuring the `SpireServer` custom resource (CR). T
 - Verify that the stateful set of SPIRE Server is ready and available by running the following command:
 
   ``` terminal
-  $ oc get statefulset -l app.kubernetes.io/name=server -n zero-trust-workload-identity-manager
+  $ oc get statefulset -l app.kubernetes.io/name=spire-server -n zero-trust-workload-identity-manager
   ```
 
   <div class="formalpara-title">
@@ -179,7 +179,7 @@ Deploy the SPIRE Server by configuring the `SpireServer` custom resource (CR). T
 - Verify that the status of the SPIRE Server pod is `Running` by running the following command:
 
   ``` terminal
-  $ oc get po -l app.kubernetes.io/name=server -n zero-trust-workload-identity-manager
+  $ oc get po -l app.kubernetes.io/name=spire-server -n zero-trust-workload-identity-manager
   ```
 
   <div class="formalpara-title">
@@ -196,7 +196,7 @@ Deploy the SPIRE Server by configuring the `SpireServer` custom resource (CR). T
 - Verify that the persistent volume claim (PVC) is bound, by running the following command:
 
   ``` terminal
-  $ oc get pvc -l app.kubernetes.io/name=server -n zero-trust-workload-identity-manager
+  $ oc get pvc -l app.kubernetes.io/name=spire-server -n zero-trust-workload-identity-manager
   ```
 
   <div class="formalpara-title">
@@ -422,7 +422,7 @@ Deploy the SPIRE OpenID Connect (OIDC) Discovery Provider by configuring the `Sp
         </div>
 
         ``` yaml
-        aapiVersion: operator.openshift.io/v1alpha1
+        apiVersion: operator.openshift.io/v1alpha1
         kind: SpireOIDCDiscoveryProvider
         metadata:
          name: cluster

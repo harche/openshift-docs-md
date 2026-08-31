@@ -242,7 +242,7 @@ The following procedure describes how to create a route for Ingress Controller s
   `routerName`
   Specifies the name of the Ingress Controller. In this example, the Ingress Controller has the name `sharded`.
 
-# Creating a route through an Ingress object
+# Create a route through an Ingress object
 
 To integrate ecosystem components that require Ingress resources, configure an Ingress object. OpenShift Container Platform automatically manages the lifecycle of the corresponding route objects, creating and deleting them to ensure seamless connectivity.
 

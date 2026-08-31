@@ -111,7 +111,7 @@ In an emergency, you can use any of the following possible actions to revoke acc
 - **Uninstall the MCP server completely** by running the following command:
 
   ``` terminal
-  $ helm uninstall openshift-mcp-server
+  $ oc delete mcpserver --all --all-namespaces
   ```
 
 - **RBAC revocation**:
@@ -130,7 +130,7 @@ In an emergency, you can use any of the following possible actions to revoke acc
 
 - [Revoke access to Custom Resources](../../ai_applications/mcp_server/mcp-server-overview.xml#ai-app-mcp-server-revoke-cr-access_mcp-server-overview)
 
-- [Install the MCP server](../../ai_applications/mcp_server/mcp-server-overview.xml#ai-app-mcp-server-install-helm_mcp-server-overview)
+- [Install the MCP server](../../ai_applications/mcp_server/mcp-server-overview.xml#ai-app-mcp-server-install-lifecycle-operator_mcp-server-overview)
 
 # Model Context Protocol overview
 
@@ -224,127 +224,31 @@ To install the MCP server for Red Hat OpenShift feature, complete the following 
 
 - Installed MCP-compatible client, such as Claude Code, Visual Studio Code (VS Code), Cursor, or OpenShift LightSpeed (OLS).
 
-1.  Install the MCP server for Red Hat OpenShift Helm chart.
+- Red Hat OpenShift AI v3.5 installed on an OpenShift Container Platform v4.22 cluster.
 
-2.  Connect a compatible with Model Context Protocol (MCP) client, such as Claude Code, to the MCP server.
+1.  Install the MCP gateway.
 
-3.  Install the MCP gateway.
+2.  Enable the MCP Lifecycle Operator.
+
+3.  Deploy the MCP server from the MCP Catalog.
 
 4.  Verify the MCP gateway deployment.
 
 5.  Configure the MCP gateway.
 
-6.  Configure RBAC enforcement.
+6.  Connect a Model Context Protocol (MCP)-compatible client, such as Claude Code, to the MCP server.
 
-7.  Revoke access to Custom Resources.
+7.  Configure RBAC enforcement.
 
-8.  Set up the MCP gateway authentication.
+8.  Revoke access to Custom Resources.
 
-9.  Set up MCP gateway authorization.
+9.  Set up the MCP gateway authentication.
 
-## Install the MCP server Helm chart
-
-Install the Model Context Protocol (MCP) server Helm chart to deploy the MCP server for Red Hat OpenShift on your cluster, enabling AI agents to diagnose and inspect cluster resources.
-
-- Access to OpenShift console with admin rights.
-
-1.  Install the MCP server for Red Hat OpenShift Helm chart by running one of the following commands:
-
-    - For read-only access (recommended for most use cases):
-
-      ``` terminal
-      $ helm upgrade -i -n openshift-mcp-server --create-namespace openshift-mcp-server \
-          openshift-helm-charts/redhat-openshift-mcp-server \
-          --set config.toolsets=<toolset-names> \
-          --set ingress.host=<hostname> \
-          --set openshift=true \
-          --set-json 'rbac.extraClusterRoleBindings=[{"name":"use-view-role","roleRef":{"name":"view","external":true}}]'
-      ```
-
-    - For full cluster access:
-
-      ``` terminal
-      $ helm upgrade -i -n openshift-mcp-server --create-namespace openshift-mcp-server \
-          openshift-helm-charts/redhat-openshift-mcp-server \
-          --set config.toolsets=<toolset-names> \
-          --set ingress.host=<hostname> \
-          --set openshift=true \
-          --set-json 'rbac.extraClusterRoleBindings=[{"name":"admin-access","roleRef":{"name":"cluster-admin","external":true}}]'
-      ```
-
-    - `<hostname>` is a fully qualified domain name (FQDN) that serves as the entry point for the MCP server for Red Hat OpenShift. This host address is used by the Ingress controller to route external traffic to the MCP server service. This should be a URL such as `mcp-server.apps.cluster-name.domain.com`.
-
-    - `<toolset-names>` can include toolsets from the following table.
-
-      | Toolset    | Description                                                                         | Default | Status             |
-      |------------|-------------------------------------------------------------------------------------|---------|--------------------|
-      | `core`     | Most common tools for Kubernetes management (Pods, Generic Resources, Events, etc.) | Yes     | Technology Preview |
-      | `config`   | View and manage the current local Kubernetes configuration (kubeconfig)             | Yes     | Technology Preview |
-      | `netedge`  | NetEdge troubleshooting tools for OpenShift Container Platform                      | No      | Technology Preview |
-      | `helm`     | Tools for managing Helm charts and releases                                         | No      | Technology Preview |
-      | `metrics`  | Toolset for querying Prometheus and Alertmanager endpoints in efficient ways        | No      | Technology Preview |
-      | `ossm`     | Most common tools for managing OSSM                                                 | No      | Technology Preview |
-      | `kubevirt` | KubeVirt virtual machine management tools                                           | No      | Developer Preview  |
-      | `tekton`   | Tekton pipeline management tools for Pipelines, PipelineRuns, Tasks, and TaskRuns   | No      | Developer Preview  |
-
-      Available toolsets
-
-- Check that the command returns output similar to the following:
-
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
-
-  ``` terminal
-  Release "openshift-mcp-server" does not exist. Installing it now.
-  NAME: openshift-mcp-server
-  LAST DEPLOYED: Mon Apr 20 09:28:13 2026
-  NAMESPACE: openshift-mcp-server
-  STATUS: deployed
-  REVISION: 1
-  TEST SUITE: None
-  ```
-
-## Connect a client to the MCP server
-
-Connect a client that is compatible with the Model Context Protocol (MCP) to the MCP server so that an AI agent can interact with your cluster.
-
-- Access to OpenShift console with admin rights.
-
-- The MCP server Helm chart is installed.
-
-1.  Add the following lines to your client configuration file:
-
-    - For Claude Desktop: `claude_desktop_config.json` file
-
-    - For Claude Code (CLI): `.mcp.json` file
-
-      ``` json
-      {
-        "mcpServers": {
-          "openshift": {
-            "type": "http",
-            "url": "<url of the route created in the Helm chart>/mcp"
-          }
-        }
-      }
-      ```
-
-      `<url of the route created in the Helm chart>` is the hostname you configured during Helm installation.
-
-2.  Accept the CA certificate when prompted by the client.
+10. Set up MCP gateway authorization.
 
 ## Install the MCP gateway
 
 Install the Model Context Protocol (MCP) gateway to provide a secure, centralized entry point that enforces authentication, authorization, and rate limiting for all MCP server traffic.
-
-- Access to OpenShift console with admin rights.
-
-- The MCP server Helm chart is installed.
-
-- MCP-compatible client connected.
 
 1.  Install the MCP gateway.
 
@@ -354,17 +258,53 @@ Install the Model Context Protocol (MCP) gateway to provide a secure, centralize
 
 - [Install the MCP gateway (Red Hat Connectivity Link)](https://docs.redhat.com/en/documentation/red_hat_connectivity_link/1.4/html/install_the_mcp_gateway/index)
 
+## Enable the MCP Lifecycle Operator
+
+To install the MCP server for Red Hat OpenShift feature, install the Model Context Protocol (MCP) server by using the MCP Lifecycle Operator.
+
+- MCP gateway is installed.
+
+<!-- -->
+
+- For information about installing by using MCP Lifecycle Operator, see "Enable MCP server lifecycle management (Red Hat OpenShift AI documentation)".
+
+<div class="important">
+
+MCP Lifecycle Operator is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+
+</div>
+
+- [Enable MCP server lifecycle management (Red Hat OpenShift AI documentation)](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.5/html/working_with_the_mcp_catalog/enabling-mcp-lifecycle-management)
+
+## Deploy the MCP server from the MCP Catalog
+
+Deploy the MCP server for Red Hat OpenShift from the Model Context Protocol (MCP) Catalog in Red Hat OpenShift AI. The MCP Catalog creates the MCP server custom resource (CR), which the MCP Lifecycle Operator reconciles, configuring the deployment, service, and network policy automatically.
+
+- MCP gateway is installed.
+
+- MCP Lifecycle Operator is enabled.
+
+<!-- -->
+
+- For information about deploying the MCP server from the MCP Catalog, see "Deploy MCP servers from the MCP Catalog (Red Hat OpenShift AI documentation)".
+
+<!-- -->
+
+- [Deploy MCP servers from the MCP Catalog (Red Hat OpenShift AI documentation)](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.5/html/working_with_the_mcp_catalog/deploying-and-managing-mcp-servers#deploying-mcp-servers-from-the-mcp-catalog_deploying-mcp-servers)
+
 ## Verify the MCP gateway deployment
 
 Verify that the Model Context Protocol (MCP) gateway is deployed and running correctly before configuring routing, authentication, and authorization.
 
 - Access to OpenShift console with admin rights.
 
-- The MCP server Helm chart is installed.
-
-- MCP-compatible client connected.
-
 - MCP gateway is installed.
+
+- MCP Lifecycle Operator is enabled.
+
+- The MCP server is installed.
 
 1.  Check the status of your deployment by running the following command:
 
@@ -424,11 +364,13 @@ Configure the Model Context Protocol (MCP) gateway so that it can route client t
 
 - Access to OpenShift console with admin rights.
 
-- The MCP server Helm chart is installed.
+- MCP gateway is installed.
 
-- MCP-compatible client connected.
+- MCP Lifecycle Operator is enabled.
 
-- MCP gateway is installed and verified.
+- The MCP server is installed.
+
+- The MCP gateway deployment is verified.
 
 1.  Create the HTTPRoute for the MCP server by running the following command:
 
@@ -459,7 +401,7 @@ Configure the Model Context Protocol (MCP) gateway so that it can route client t
     EOF
     ```
 
-    `${MCP_SERVER_HOST}` is the hostname you configured during Helm installation.
+    `${MCP_SERVER_HOST}` is the hostname of your MCP gateway route (for example, mcp-gateway.apps.\<cluster-name\>.\<domain-name\>).
 
     This HTTPRoute enables the MCP gateway to route traffic to your MCP server instance and is referenced in the MCPServerRegistration resource.
 
@@ -567,6 +509,41 @@ Configure the Model Context Protocol (MCP) gateway so that it can route client t
 
         You should now see your MCP server tools in the response, prefixed with your configured toolPrefix (for example, myserver\_).
 
+## Connect a client to the MCP server
+
+Connect a client that is compatible with the Model Context Protocol (MCP) to the MCP server so that an AI agent can interact with your cluster.
+
+- Access to OpenShift console with admin rights.
+
+- MCP gateway is installed.
+
+- MCP Lifecycle Operator is enabled.
+
+- The MCP server is installed.
+
+- MCP gateway is configured and verified.
+
+1.  Add the following lines to your client configuration file:
+
+    - For Claude Desktop: `claude_desktop_config.json` file
+
+    - For Claude Code (CLI): `.mcp.json` file
+
+      ``` json
+      {
+        "mcpServers": {
+          "openshift": {
+            "type": "http",
+            "url": "<url of the mcp gateway>/mcp"
+          }
+        }
+      }
+      ```
+
+      `<url of the mcp gateway>` is the hostname you configured during MCP gateway installation.
+
+2.  Accept the CA certificate when prompted by the client.
+
 ## Configure RBAC enforcement
 
 To control which cluster resources the Model Context Protocol (MCP) server can access, configure role-based access control (RBAC) so that AI agents are limited to only the resources they need.
@@ -575,13 +552,15 @@ By default, RBAC is enabled, and you can extend the ClusterRoles, ClusterRoleBin
 
 - Access to OpenShift console with admin rights.
 
-- The MCP server Helm chart is installed.
+- MCP gateway is installed.
+
+- MCP Lifecycle Operator is enabled.
+
+- The MCP server is installed.
+
+- MCP gateway is configured and verified.
 
 - MCP-compatible client connected.
-
-- MCP gateway is installed and verified.
-
-- The MCP gateway is configured.
 
 1.  Configure RBAC enforcement by extending ClusterRoles, ClusterRoleBindings, Roles, and Rolebindings.
 
@@ -594,124 +573,108 @@ By default, RBAC is enabled, and you can extend the ClusterRoles, ClusterRoleBin
     </div>
 
     ``` yaml
-    extraClusterRoles:
-      - name: acm-managed-clusters
-        rules:
-          # Required for discovering and watching managed clusters
-          - apiGroups: ["cluster.open-cluster-management.io"]
-            resources: ["managedclusters"]
-            verbs: ["list", "watch"]
-
-    # -- ClusterRoleBinding for the ACM managed clusters role
-    extraClusterRoleBindings:
-      - name: acm-managed-clusters
-        roleRef:
-          name: acm-managed-clusters
-
-    # -- Role for accessing cluster-proxy-addon service in multicluster-engine namespace
-    extraRoles:
-      - name: acm-cluster-proxy-discovery
+      apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRole
+      metadata:
+        name: acm-managed-clusters
+      rules:
+        ...
+      ---
+      apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRoleBinding
+      metadata:
+        name: acm-managed-clusters
+        ...
+      ---
+      apiVersion: rbac.authorization.k8s.io/v1
+      kind: Role
+      metadata:
+        name: acm-cluster-proxy-discovery
         namespace: multicluster-engine
-        rules:
-          # Required for auto-discovering cluster-proxy-addon service
-          - apiGroups: [""]
-            resources: ["services"]
-            verbs: ["get"]
-
-    # -- RoleBinding for the cluster-proxy-discovery role
-    extraRoleBindings:
-      - name: acm-cluster-proxy-discovery
+        ...
+      ---
+      apiVersion: rbac.authorization.k8s.io/v1
+      kind: RoleBinding
+      metadata:
+        name: acm-cluster-proxy-discovery
         namespace: multicluster-engine
-        roleRef:
-          name: acm-cluster-proxy-discovery
+        ...
     ```
 
 2.  Apply the RBAC configuration by saving the preceding example to a file (for example, `rbac-values.yaml`), and then run the following command:
 
     ``` terminal
-    $ helm upgrade openshift-mcp-server openshift-helm-charts/redhat-openshift-mcp-server \
-        -n openshift-mcp-server \
-        -f rbac-values.yaml
+    $ oc apply -f rbac-values.yaml
     ```
 
 ## Revoke access to Custom Resources
 
-To prevent AI agents from reading or exposing confidential cluster data, you can revoke Model Context Protocol (MCP) server access to sensitive Custom Resources (CRs), such as Secrets and ConfigMaps, .
+To prevent AI agents from reading or exposing confidential cluster data, you can revoke Model Context Protocol (MCP) server access to sensitive Custom Resources (CRs), such as Secrets and ConfigMaps.
 
 - Access to OpenShift console with admin rights.
 
-- The MCP server Helm chart is installed.
+- MCP gateway is installed.
+
+- MCP Lifecycle Operator is enabled.
+
+- The MCP server is installed.
+
+- MCP gateway is configured and verified.
 
 - MCP-compatible client connected.
 
-- MCP gateway is installed and verified.
-
-- The MCP gateway is configured.
-
 - RBAC is configured.
 
-1.  Configure denied resources to limit access to sensitive CRs.
+<!-- -->
 
-    Use the following example file to revoke access to Secrets, ConfigMaps, and RBAC resources:
+- Edit the openshift-mcp-server ConfigMap to add the denied resource values by running the following command:
 
-    <div class="formalpara-title">
+  ``` terminal
+  $ oc edit cm openshift-mcp-server
+  ```
 
-    **Example**
+  Use the following example file to revoke access to Secrets, ConfigMaps, and RBAC resources:
 
-    </div>
+  <div class="formalpara-title">
 
-    ``` toml
-    # Deny access to Secrets
-    [[denied_resources]]
-    group = ""
-    version = "v1"
-    kind = "Secret"
+  **Example**
 
-    # Deny access to ConfigMaps
-    [[denied_resources]]
-    group = ""
-    version = "v1"
-    kind = "ConfigMap"
+  </div>
 
-    # Deny access to RBAC resources for additional security
-    [[denied_resources]]
-    group = "rbac.authorization.k8s.io"
-    version = "v1"
-    kind = "Role"
+  ``` toml
+  # Deny access to Secrets
+  [[denied_resources]]
+  group = ""
+  version = "v1"
+  kind = "Secret"
 
-    [[denied_resources]]
-    group = "rbac.authorization.k8s.io"
-    version = "v1"
-    kind = "RoleBinding"
+  # Deny access to ConfigMaps
+  [[denied_resources]]
+  group = ""
+  version = "v1"
+  kind = "ConfigMap"
 
-    [[denied_resources]]
-    group = "rbac.authorization.k8s.io"
-    version = "v1"
-    kind = "ClusterRole"
+  # Deny access to RBAC resources for additional security
+  [[denied_resources]]
+  group = "rbac.authorization.k8s.io"
+  version = "v1"
+  kind = "Role"
 
-    [[denied_resources]]
-    group = "rbac.authorization.k8s.io"
-    version = "v1"
-    kind = "ClusterRoleBinding"
-    ```
+  [[denied_resources]]
+  group = "rbac.authorization.k8s.io"
+  version = "v1"
+  kind = "RoleBinding"
 
-2.  Apply this configuration by doing one of the following:
+  [[denied_resources]]
+  group = "rbac.authorization.k8s.io"
+  version = "v1"
+  kind = "ClusterRole"
 
-    - Save the configuration to a file (for example, `deny-resources.toml`) and pass it using a Helm values file:
-
-      ``` terminal
-      $ helm upgrade openshift-mcp-server openshift-helm-charts/redhat-openshift-mcp-server \
-          -n openshift-mcp-server \
-          --set-file config.deniedResources=deny-resources.toml
-      ```
-
-    - Or use `--set-json` to pass the configuration inline:
-
-      ``` terminal
-      $ helm upgrade openshift-mcp-server openshift-helm-charts/redhat-openshift-mcp-server \
-          -n openshift-mcp-server \
-          --set-json 'config.deniedResources=[{"group":"","version":"v1","kind":"Secret"},{"group":"","version":"v1","kind":"ConfigMap"}]'
-      ```
+  [[denied_resources]]
+  group = "rbac.authorization.k8s.io"
+  version = "v1"
+  kind = "ClusterRoleBinding"
+  ```
 
 ## Set up MCP gateway authentication
 
@@ -719,11 +682,15 @@ To ensure that only verified users can access MCP server for Red Hat OpenShift t
 
 - Access to OpenShift console with admin rights.
 
-- The MCP server Helm chart is installed.
+- MCP gateway is installed.
+
+- MCP Lifecycle Operator is enabled.
+
+- The MCP server is installed.
+
+- MCP gateway is configured and verified.
 
 - MCP-compatible client connected.
-
-- MCP gateway is installed and verified.
 
 - RBAC is configured.
 
@@ -914,19 +881,21 @@ Set up tool-level authorization for the Model Context Protocol (MCP) gateway to 
 
 - Access to OpenShift console with admin rights.
 
-- The MCP server Helm chart is installed.
+- MCP gateway is installed.
+
+- MCP Lifecycle Operator is enabled.
+
+- The MCP server is installed.
+
+- MCP gateway is configured and verified.
 
 - MCP-compatible client connected.
-
-- MCP gateway is installed and verified.
 
 - RBAC is configured.
 
 - You have revoked access to specific Custom Resources (CRs) as needed.
 
 - MCP gateway authentication is configured.
-
-- Your identity provider is configured to include group/role claims in JWT tokens.
 
 1.  Ensure that your identity provider includes necessary group/role claims in the issued JWT tokens.
 

@@ -1,8 +1,8 @@
-You can remove a cluster that you deployed to Google Cloud.
+You can remove a cluster that you deployed to Google Cloud and delete the associated cloud provider resources when you no longer need the cluster, to free up cloud resources and stop incurring costs.
 
 # Removing a cluster that uses installer-provisioned infrastructure
 
-To remove an OpenShift Container Platform cluster that uses installer-provisioned infrastructure, you can run the installation program destroy command. Use the installation files from your original deployment to uninstall the cluster from your cloud platform.
+To remove an OpenShift Container Platform cluster that uses installer-provisioned infrastructure, you can use the installation program and the installation files from your original deployment to uninstall the cluster from your cloud platform.
 
 <div class="note">
 

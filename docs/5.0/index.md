@@ -1159,6 +1159,7 @@
 - [Ensuring reliable etcd performance and scalability](etcd/etcd-performance.md)
 - **Backing up and restoring etcd data**
   - [Backing up etcd](etcd/etcd-backup-restore/etcd-backup.md)
+  - [Replacing a healthy etcd member](etcd/etcd-backup-restore/replace-healthy-etcd-member.md)
   - [Replacing an unhealthy etcd member](etcd/etcd-backup-restore/replace-unhealthy-etcd-member.md)
   - [Disaster recovery](etcd/etcd-backup-restore/etcd-disaster-recovery.md)
 - [Enabling etcd encryption](etcd/etcd-encrypt.md)
@@ -1589,6 +1590,7 @@
     - [OADP monitoring](backup_and_restore/application_backup_and_restore/troubleshooting/oadp-monitoring.md)
 - **Control plane backup and restore**
   - [Backing up etcd data](backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.md)
+  - [Replacing a healthy etcd member](backup_and_restore/control_plane_backup_and_restore/replacing-healthy-etcd-member.md)
   - [Replacing an unhealthy etcd member](backup_and_restore/control_plane_backup_and_restore/replacing-unhealthy-etcd-member.md)
   - **Disaster recovery**
     - [About disaster recovery](backup_and_restore/control_plane_backup_and_restore/disaster_recovery/about-disaster-recovery.md)
@@ -2011,6 +2013,7 @@
   - [Creating VMs from instance types](virt/creating_vm/virt-creating-vms-from-instance-types.md)
   - [Creating VMs from templates](virt/creating_vm/virt-creating-vms-from-templates.md)
   - [Creating virtual machines from Red Hat images](virt/creating_vm/virt-creating-vms-from-rh-images-overview.md)
+  - [Import a virtual machine image using the DataVolume API](virt/creating_vm/virt-import-dv-vms.md)
   - [Cloning VMs](virt/creating_vm/virt-cloning-vms.md)
 - **Managing VMs**
   - [Listing virtual machines](virt/managing_vms/virt-list-vms.md)
@@ -2127,6 +2130,7 @@
   - [Backing up and restoring virtual machines](virt/backup_restore/virt-backup-restore-overview.md)
   - [Recover individual files from virtual machine backups](virt/backup_restore/virt-recovering-individual-files-from-vm-backups.md)
   - [Use virtual machine file restore](virt/backup_restore/virt-using-vm-file-restore.md)
+  - [File Restore Operator](virt/backup_restore/virt-file-restore-operator.md)
   - [Disaster recovery](virt/backup_restore/virt-disaster-recovery.md)
 
 ### AI applications

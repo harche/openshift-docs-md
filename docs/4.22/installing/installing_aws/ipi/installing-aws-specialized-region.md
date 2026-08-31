@@ -45,7 +45,7 @@ Specialized regions
 
 In OpenShift Container Platform 4.17, the installation program uses Cluster API instead of Terraform to provision cluster infrastructure during installations on AWS. Installing a cluster on AWS into a secret or top-secret region by using the Cluster API implementation has not been tested as of the release of OpenShift Container Platform 4.17. This document will be updated when installation into a secret region has been tested.
 
-There is a known issue with Network Load Balancers' support for security groups in secret or top secret regions that causes installations in these regions to fail. For more information, see [OCPBUGS-33311](https://issues.redhat.com/browse/OCPBUGS-33311).
+There is a known issue with Network Load Balancers' support for security groups in secret or top secret regions that causes installations in these regions to fail. For more information, see "OCPBUGS-33311".
 
 The maximum supported MTU in the AWS SC2S and C2S regions is not the same as the public regions. For more information about configuring MTU during installation, see the *Cluster Network Operator configuration object* section in *Installing a cluster on AWS with network customizations*
 
@@ -470,47 +470,47 @@ You must increase the quota of security groups per network interface to a number
 
 # Uploading a custom RHCOS AMI in AWS
 
-If you are deploying to a custom Amazon Web Services (AWS) region, you must upload a custom Red Hat Enterprise Linux CoreOS (RHCOS) Amazon Machine Image (AMI) that belongs to that region.
+If you are deploying to a custom AWS region, you must upload a custom Red Hat Enterprise Linux CoreOS (RHCOS) Amazon Machine Image (AMI) that belongs to that region.
 
 - You configured an AWS account.
 
 - You created an Amazon S3 bucket with the required IAM [service role](https://docs.aws.amazon.com/vm-import/latest/userguide/vmie_prereqs.html#vmimport-role).
 
-- You uploaded your RHCOS Virtual Machine Disk (VMDK) file to Amazon S3. The RHCOS VMDK file must be the highest version that is less than or equal to the OpenShift Container Platform version you are installing.
+- You uploaded your RHCOS VMDK file to Amazon S3. The RHCOS VMDK file must be the highest version that is less than or equal to the OpenShift Container Platform version you are installing.
 
-- You downloaded the AWS CLI and installed it on your computer. See [Install the AWS CLI using the bundled installer](https://docs.aws.amazon.com/cli/latest/userguide/install-bundle.html).
+- You downloaded the AWS CLI and installed it on your computer. See [Install the AWS CLI Using the Bundled Installer](https://docs.aws.amazon.com/cli/latest/userguide/install-bundle.html).
 
-1.  Export your AWS profile as an environment variable:
+1.  Export your AWS profile as an environment variable by running the following command:
 
     ``` terminal
     $ export AWS_PROFILE=<aws_profile>
     ```
 
-    where `<aws_profile>` is the AWS profile name that holds your AWS credentials, such as `govcloud` or `beijingadmin`.
+    Replace `<aws_profile>` with the AWS profile name that holds your AWS credentials, such as `govcloud` or `beijingadmin`.
 
-2.  Export the region to associate with your custom AMI as an environment variable:
+2.  Export the region to associate with your custom AMI as an environment variable by running the following command:
 
     ``` terminal
     $ export AWS_DEFAULT_REGION=<aws_region>
     ```
 
-    where `<aws_region>` is the AWS region, such as `us-gov-east-1` or `cn-north-1`.
+    Replace `<aws_region>` with the AWS region, such as `us-gov-east-1` or `cn-north-1`.
 
-3.  Export the version of RHCOS you uploaded to Amazon S3 as an environment variable:
+3.  Export the version of RHCOS you uploaded to Amazon S3 as an environment variable by running the following command:
 
     ``` terminal
     $ export RHCOS_VERSION=<version>
     ```
 
-    where `<version>` is the RHCOS VMDK version, such as `4.17.0`.
+    Replace `<version>` with the RHCOS VMDK version, such as `4.17.0`.
 
-4.  Export the Amazon S3 bucket name as an environment variable:
+4.  Export the Amazon S3 bucket name as an environment variable by running the following command:
 
     ``` terminal
     $ export VMIMPORT_BUCKET_NAME=<s3_bucket_name>
     ```
 
-5.  Create the `containers.json` file and define your RHCOS VMDK file:
+5.  Create the `containers.json` file and define your RHCOS VMDK file by running the following command:
 
     ``` terminal
     $ cat <<EOF > containers.json
@@ -525,7 +525,7 @@ If you are deploying to a custom Amazon Web Services (AWS) region, you must uplo
     EOF
     ```
 
-6.  Import the RHCOS disk as an Amazon Elastic Block Store (EBS) snapshot:
+6.  Import the RHCOS disk as an Amazon EBS snapshot by running the following command:
 
     ``` terminal
     $ aws ec2 import-snapshot --region ${AWS_DEFAULT_REGION} \
@@ -535,13 +535,13 @@ If you are deploying to a custom Amazon Web Services (AWS) region, you must uplo
 
     where:
 
-    `<description>`
-    The description of your RHCOS disk being imported, such as `rhcos-${RHCOS_VERSION}-x86_64-aws.x86_64`.
+    `--description`
+    Specifies the description of your RHCOS disk being imported, like `rhcos-${RHCOS_VERSION}-x86_64-aws.x86_64`.
 
-    `<file_path>`
-    The file path to the JSON file describing your RHCOS disk. The JSON file should contain your Amazon S3 bucket name and key.
+    `--disk-container`
+    Specifies the file path to the JSON file describing your RHCOS disk. The JSON file should contain your Amazon S3 bucket name and key.
 
-7.  Check the status of the image import:
+7.  Check the status of the image import by running the following command::
 
     ``` terminal
     $ watch -n 5 aws ec2 describe-import-snapshot-tasks --region ${AWS_DEFAULT_REGION}
@@ -577,7 +577,7 @@ If you are deploying to a custom Amazon Web Services (AWS) region, you must uplo
 
     Copy the `SnapshotId` to register the image.
 
-8.  Create a custom RHCOS AMI from the RHCOS snapshot:
+8.  Create a custom RHCOS AMI from the RHCOS snapshot by running the following command:
 
     ``` terminal
     $ aws ec2 register-image \
@@ -593,18 +593,21 @@ If you are deploying to a custom Amazon Web Services (AWS) region, you must uplo
 
     where:
 
-    `x86_64`
-    The RHCOS VMDK architecture type, such as `x86_64`, `aarch64`, `s390x`, or `ppc64le`.
+    `--architecture`
+    Specifies the RHCOS VMDK architecture type, such as `x86_64`, `aarch64`, `s390x`, or `ppc64le`.
 
-    `rhcos-${RHCOS_VERSION}-x86_64-aws.x86_64`
-    The `Description` from the imported snapshot.
+    `--description`
+    Specifies the `Description` from the imported snapshot.
 
-    `<snapshot_ID>`
-    The `SnapshotID` from the imported snapshot.
+    `--name`
+    Specifies the name of the RHCOS AMI.
 
-- [Importing snapshots (AWS documentation)](https://docs.aws.amazon.com/vm-import/latest/userguide/vmimport-import-snapshot.html)
+    `--block-device-mappings`
+    Specifies the `SnapshotID` from the imported snapshot.
 
-- [Creating EBS-backed AMIs (AWS documentation)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/creating-an-ami-ebs.html#creating-launching-ami-from-snapshot)
+- [Import a disk as an EBS snapshot using VM Import/Export (AWS documentation)](https://docs.aws.amazon.com/vm-import/latest/userguide/vmimport-import-snapshot.html)
+
+- [Create an AMI from a snapshot (AWS documentation)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/creating-an-ami-ebs.html#creating-launching-ami-from-snapshot)
 
 # Manually creating the installation configuration file
 
@@ -752,7 +755,7 @@ Use the machine types included in the following charts for your AWS instances. I
 
 </div>
 
-**Machine types based on 64-bit x86 architecture**
+See the following machine types based on 64-bit x86 architecture:
 
 <https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/aws/tested_instance_types_x86_64.md>
 
@@ -768,7 +771,7 @@ Use the machine types included in the following charts for your AWS ARM instance
 
 </div>
 
-**Machine types based on 64-bit ARM architecture**
+See the following machine types based on 64-bit ARM architecture:
 
 <https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/aws/tested_instance_types_aarch64.md>
 
@@ -848,7 +851,7 @@ Production environments can deny direct access to the internet and instead have 
 
     </div>
 
-## Applying existing AWS security groups to the cluster
+## Applying existing Amazon Web Services (AWS) security groups to the cluster
 
 Applying existing AWS security groups to your control plane and compute machines can help you meet the security needs of your organization, in such cases where you need to control the incoming or outgoing traffic of these machines.
 
@@ -864,44 +867,48 @@ Applying existing AWS security groups to your control plane and compute machines
 
 3.  Save the file and reference it when deploying the cluster.
 
-<div class="formalpara-title">
+    <div class="formalpara-title">
 
-**Sample `install-config.yaml` file that specifies custom security groups**
+    **Sample `install-config.yaml` file that specifies custom security groups**
 
-</div>
+    </div>
 
-``` yaml
-# ...
-compute:
-- hyperthreading: Enabled
-  name: worker
-  platform:
-    aws:
-      additionalSecurityGroupIDs:
-        - sg-1
-        - sg-2
-  replicas: 3
-controlPlane:
-  hyperthreading: Enabled
-  name: master
-  platform:
-    aws:
-      additionalSecurityGroupIDs:
-        - sg-3
-        - sg-4
-  replicas: 3
-platform:
-  aws:
-    region: us-east-1
-    subnets:
-      - subnet-1
-      - subnet-2
-      - subnet-3
-```
+    ``` yaml
+    # ...
+    compute:
+    - hyperthreading: Enabled
+      name: worker
+      platform:
+        aws:
+          additionalSecurityGroupIDs:
+            - sg-1
+            - sg-2
+      replicas: 3
+    controlPlane:
+      hyperthreading: Enabled
+      name: master
+      platform:
+        aws:
+          additionalSecurityGroupIDs:
+            - sg-3
+            - sg-4
+      replicas: 3
+    platform:
+      aws:
+        region: us-east-1
+        subnets:
+          - subnet-1
+          - subnet-2
+          - subnet-3
+    ```
 
-- Specify the name of the security group as it appears in the Amazon EC2 console, including the `sg` prefix.
+    where:
 
-- Specify subnets for each availability zone that your cluster uses.
+    `compute.platform.aws.additionalSecurityGroupIDs`
+    Specifies the name of the security group as it appears in the Amazon EC2 console, including the `sg` prefix.
+
+    `platform.aws.subnets`
+    Specifies subnets for each availability zone that your cluster uses.
 
 # Alternatives to storing administrator-level secrets in the kube-system project
 
@@ -1728,6 +1735,8 @@ To verify that your cluster deployed successfully and access its features, log i
 3.  Navigate to the route detailed in the output of the preceding command in a web browser and log in as the `kubeadmin` user.
 
 # Additional resources
+
+- [OCPBUGS-33311](https://issues.redhat.com/browse/OCPBUGS-33311)
 
 - [Accessing the web console](../../../web_console/web-console.xml#web-console)
 

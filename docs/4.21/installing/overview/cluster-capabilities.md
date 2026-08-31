@@ -74,7 +74,7 @@ The following sections summarize the features provided by each capability and wh
 
 - [Cluster Operators reference](../../operators/operator-reference.xml#cluster-operator-reference)
 
-## Bare-metal capability
+## Cluster Baremetal Operator
 
 The Cluster Baremetal Operator provides the features for the `baremetal` capability.
 
@@ -116,7 +116,7 @@ Disable the `Build` capability only if you do not require `Build` and `BuildConf
 
 </div>
 
-## Cloud controller manager capability
+## Cloud Controller Manager Operator
 
 The Cloud Controller Manager Operator provides features for the `CloudControllerManager` capability.
 
@@ -162,7 +162,7 @@ By default, the Operator exposes Prometheus metrics through the `metrics` servic
 
 - [`cluster-cloud-controller-manager-operator`](https://github.com/openshift/cluster-cloud-controller-manager-operator)
 
-## Cloud credential capability
+## Cloud Credential Operator
 
 The Cloud Credential Operator provides features for the `CloudCredential` capability.
 
@@ -180,7 +180,7 @@ By setting different values for the `credentialsMode` parameter in the `install-
 
 - [`openshift-cloud-credential-operator`](https://github.com/openshift/cloud-credential-operator)
 
-## Cluster Image Registry capability
+## Cluster Image Registry Operator
 
 The Cluster Image Registry Operator provides features for the `ImageRegistry` capability.
 
@@ -202,16 +202,13 @@ If you disable the `ImageRegistry` capability or if you disable the integrated O
 
 If you disable the `ImageRegistry` capability, you can reduce the overall resource footprint of OpenShift Container Platform in Telco environments. Depending on your deployment, you can disable this component if you do not need it.
 
-Project
-See "cluster-image-registry-operator".
-
 - [Image Registry Operator in OpenShift Container Platform](../../registry/configuring-registry-operator.xml#configuring-registry-operator)
 
 - [Automatically generated secrets](../../nodes/pods/nodes-pods-secrets.xml#auto-generated-sa-token-secrets_nodes-pods-secrets)
 
 - [cluster-image-registry-operator](https://github.com/openshift/cluster-image-registry-operator)
 
-## Cluster storage capability
+## Cluster Storage Operator
 
 The Cluster Storage Operator provides the features for the `Storage` capability.
 
@@ -224,11 +221,11 @@ If the cluster storage capability is disabled, the cluster will not have a defau
 </div>
 
 Notes
-The storage class that the Operator creates can be made non-default by editing its annotation, but this storage class cannot be deleted as long as the Operator runs.
+The storage class that the Operator creates can be made non-default by editing its annotation, but this storage class cannot be deleted if the Operator runs.
 
 - [cluster-storage-operator](https://github.com/openshift/cluster-storage-operator)
 
-## Console capability
+## Console Operator
 
 The Console Operator provides the features for the `Console` capability.
 
@@ -238,7 +235,7 @@ The Console Operator installs and maintains the OpenShift Container Platform web
 
 - [console-operator](https://github.com/openshift/console-operator)
 
-## CSI snapshot controller capability
+## Cluster CSI Snapshot Controller Operator
 
 The Cluster CSI Snapshot Controller Operator provides the features for the `CSISnapshot` capability.
 
@@ -264,14 +261,11 @@ Disable the `DeploymentConfig` capability only if you do not require `Deployment
 
 </div>
 
-## Ingress Capability
+## Ingress Operator
 
 The Ingress Operator provides the features for the `Ingress` capability.
 
 The Ingress Operator configures and manages the OpenShift Container Platform router.
-
-Project
-`openshift-ingress-operator`
 
 CRDs
 - `clusteringresses.ingress.openshift.io`
@@ -322,7 +316,7 @@ map[cidr:10.128.0.0/14 hostPrefix:23]
 
 - [openshift-ingress-operator](https://github.com/openshift/cluster-ingress-operator)
 
-## Insights capability
+## Insights Operator
 
 The Insights Operator provides the features for the `Insights` capability.
 
@@ -351,7 +345,7 @@ The Machine API capability is responsible for all machine configuration and mana
 
 - [Control Plane Machine Set Operator](../../operators/operator-reference.xml#control-plane-machine-set-operator_operator-reference)
 
-## Marketplace capability
+## Marketplace Operator
 
 The Marketplace Operator provides the features for the `marketplace` capability.
 
@@ -365,7 +359,7 @@ If you enable the `marketplace` capability, you can enable and disable individua
 
 - [operator-marketplace](https://github.com/operator-framework/operator-marketplace)
 
-## Node Tuning capability
+## Node Tuning Operator
 
 The Node Tuning Operator provides features for the `NodeTuning` capability.
 
@@ -377,7 +371,7 @@ If you disable the NodeTuning capability, some default tuning settings will not 
 
 - [cluster-node-tuning-operator](https://github.com/openshift/cluster-node-tuning-operator)
 
-## OpenShift samples capability
+## Cluster Samples Operator
 
 The Cluster Samples Operator provides the features for the `openshift-samples` capability.
 
@@ -393,7 +387,7 @@ If you disable the samples capability, users cannot access the image streams, sa
 
 - [cluster-samples-operator](https://github.com/openshift/cluster-samples-operator)
 
-## Operator Lifecycle Manager (OLM) Classic capability
+## About Operator Lifecycle Manager (OLM) Classic
 
 OLM (Classic) provides the features for the `OperatorLifecycleManager` capability.
 
@@ -421,7 +415,7 @@ The `marketplace` capability depends on the `OperatorLifecycleManager` capabilit
 
 - [Operator Framework](https://operatorframework.io/)
 
-## Operator Lifecycle Manager (OLM) v1 capability
+## Operator Lifecycle Manager (OLM) v1 Operator
 
 OLM v1 provides the features for the `OperatorLifecycleManagerV1` capability.
 

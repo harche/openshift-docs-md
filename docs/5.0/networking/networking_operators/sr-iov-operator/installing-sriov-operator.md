@@ -74,6 +74,28 @@ You can use the CLI to install the SR-IOV Network Operator. By using the CLI, yo
     EOF
     ```
 
+    <div class="important">
+
+    The following configuration applies only to IBM Z `s390x` systems and is required: The Mellanox firmware plugin is not supported on `s390x` because `mstflint` is not available on this architecture. On `s390x`, disable the Mellanox plugin so that the SR-IOV Network Operator uses the generic plugin for VF configuration. The network adapter must be supplied with SR-IOV already enabled in firmware.
+
+    **Option 1** — Add the following to the `spec` block of the `SriovOperatorConfig` create command above before running it:
+
+    ``` yaml
+    disablePlugins:
+      - mellanox
+    ```
+
+    **Option 2** — If the `SriovOperatorConfig` resource is already created, patch it by entering the following command:
+
+    ``` terminal
+    $ oc patch sriovoperatorconfig default \
+      -n openshift-sriov-network-operator \
+      --type=merge \
+      -p '{"spec":{"disablePlugins":["mellanox"]}}'
+    ```
+
+    </div>
+
 - To verify that the Operator is installed, enter the following command and then check that the output shows `Succeeded` for the Operator:
 
   ``` terminal
@@ -98,6 +120,23 @@ You can use the web console to install the SR-IOV Network Operator. By using the
     3.  On the **Install Operator** page, under **Installed Namespace**, select **Operator recommended Namespace**.
 
     4.  Click **Install**.
+
+        <div class="important">
+
+        The following configuration applies only to IBM Z `s390x` systems and is required:
+
+        The Mellanox firmware plugin is not supported on `s390x` because `mstflint` is not available on this architecture. On `s390x`, disable the Mellanox plugin so that the SR-IOV Network Operator uses the generic plugin for VF configuration. The network adapter must be supplied with SR-IOV already enabled in firmware.
+
+        To disable the Mellanox plugin, patch the `SriovOperatorConfig` resource by entering the following command:
+
+        ``` terminal
+        $ oc patch sriovoperatorconfig default \
+          -n openshift-sriov-network-operator \
+          --type=merge \
+          -p '{"spec":{"disablePlugins":["mellanox"]}}'
+        ```
+
+        </div>
 
 <!-- -->
 

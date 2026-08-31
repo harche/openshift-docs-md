@@ -114,11 +114,16 @@ policies:
         - path: source-crs/StorageOperatorStatus.yaml
 ```
 
-- Applies the policies to all clusters with this label.
+where:
 
-- The `DefaultCatsrc.yaml` file contains the catalog source for the disconnected registry and related registry configuration details.
+`name: common-latest-placement-binding`
+Applies the policies to all clusters with this label.
 
-- Files listed under `policies.manifests` create the Operator policies for installed clusters.
+`DefaultCatsrc.yaml`
+The `DefaultCatsrc.yaml` file contains the catalog source for the disconnected registry and related registry configuration details.
+
+`manifests`
+Files listed under `policies.manifests` create the Operator policies for installed clusters.
 
 A `PolicyGenerator` CR can be constructed with any number of included CRs. Apply the following example CR in the hub cluster to generate a policy containing a single CR:
 
@@ -517,9 +522,13 @@ The ArgoCD pipeline uses `PolicyGenerator` CRs in Git to generate the RHACM poli
 
         2.  Click on a cluster policy to check its status.
 
+<div class="note">
+
 When all of the cluster policies become compliant, GitOps ZTP installation and configuration for the cluster is complete. The `ztp-done` label is added to the cluster.
 
 In the reference configuration, the final policy that becomes compliant is the one defined in the `*-du-validator-policy` policy. This policy, when compliant on a cluster, ensures that all cluster configuration, Operator installation, and Operator configuration is complete.
+
+</div>
 
 # Coordinating reboots for configuration changes
 
@@ -572,11 +581,16 @@ Instead of rebooting nodes after each individual change, you can apply all confi
     # ...
     ```
 
-    - Configure the labels that match the clusters you want to reboot.
+    where:
 
-    - Add all required configuration policies before the reboot policy. TALM applies the configuration changes as specified in the policies, in the order they are listed.
+    `matchLabels`
+    Configure the labels that match the clusters you want to reboot.
 
-    - Specify the timeout in seconds for the entire upgrade across all selected clusters. Set this field by considering the worst-case scenario.
+    `managedPolicies`
+    Add all required configuration policies before the reboot policy. TALM applies the configuration changes as specified in the policies, in the order they are listed.
+
+    `timeout`
+    Specify the timeout in seconds for the entire upgrade across all selected clusters. Set this field by considering the worst-case scenario.
 
 5.  After you apply the CGU custom resource, TALM rolls out the configuration policies in order. Once all policies are compliant, it applies the reboot policy and triggers a reboot of all nodes in the specified `MachineConfigPool`.
 
@@ -749,9 +763,13 @@ You can restart policy reconciliation when unexpected compliance issues occur, f
     $ oc delete clustergroupupgrades -n ztp-install $CLUSTER
     ```
 
-Note that when the `ClusterGroupUpgrade` CR completes with status `UpgradeCompleted` and the managed cluster has the label `ztp-done` applied, you can make additional configuration changes by using `PolicyGenerator`. Deleting the existing `ClusterGroupUpgrade` CR will not make the TALM generate a new CR.
+<div class="note">
+
+When the `ClusterGroupUpgrade` CR completes with status `UpgradeCompleted` and the managed cluster has the label `ztp-done` applied, you can make additional configuration changes by using `PolicyGenerator`. Deleting the existing `ClusterGroupUpgrade` CR will not make the TALM generate a new CR.
 
 At this point, GitOps ZTP has completed its interaction with the cluster and any further interactions should be treated as an update and a new `ClusterGroupUpgrade` CR created for remediation of the policies.
+
+</div>
 
 - For information about using Topology Aware Lifecycle Manager (TALM) to construct your own `ClusterGroupUpgrade` CR, see [About the ClusterGroupUpgrade CR](../../edge_computing/cnf-talm-for-cluster-upgrades.xml#talo-about-cgu-crs_cnf-topology-aware-lifecycle-manager).
 

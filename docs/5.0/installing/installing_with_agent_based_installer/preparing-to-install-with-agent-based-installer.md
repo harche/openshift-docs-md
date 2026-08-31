@@ -933,19 +933,13 @@ If you are using HAProxy as a load balancer, you can check that the `haproxy` pr
 
 - [Deploying OpenShift 4.x on non-tested platforms using the bare metal install method (Red Hat Knowledgebase article)](https://access.redhat.com/articles/4207611)
 
-# About a local arbiter node
+# About an arbiter node
 
-You can configure an OpenShift Container Platform cluster with two control plane nodes and one local arbiter node so as to retain high availability (HA) while reducing infrastructure costs for your cluster.
+You can configure an OpenShift Container Platform cluster with two control plane nodes and one arbiter node so as to retain high availability (HA) while reducing infrastructure costs for your cluster.
 
-A local arbiter node is a lower-cost, co-located machine that participates in control plane quorum decisions. Unlike a standard control plane node, the arbiter node does not run the full set of control plane services. You can use this configuration to maintain HA in your cluster with only two fully provisioned control plane nodes instead of three.
+An arbiter node is a lower-cost, co-located machine that participates in control plane quorum decisions. Unlike a standard control plane node, the arbiter node does not run the full set of control plane services. You can use this configuration to maintain HA in your cluster with only two fully provisioned control plane nodes instead of three.
 
-<div class="important">
-
-You can configure a local arbiter node only. Remote arbiter nodes are not supported.
-
-</div>
-
-To deploy a cluster with two control plane nodes and one local arbiter node, you must define the following nodes in the `install-config.yaml` file:
+To deploy a cluster with two control plane nodes and one arbiter node, you must define the following nodes in the `install-config.yaml` file:
 
 - 2 control plane nodes
 
@@ -959,7 +953,7 @@ The arbiter node must meet the following minimum system requirements:
 
 - 50 GB of SSD or equivalent storage
 
-The arbiter node must be located in a network environment with an end-to-end latency of less than 500 milliseconds, including disk I/O. In high-latency environments, you might need to apply the `etcd` slow profile.
+- The arbiter node must be located in a network environment with an end-to-end latency of less than 100 milliseconds, including disk I/O. In high-latency environments, you might need to apply the `etcd` slow profile.
 
 The control plane nodes must meet the following minimum system requirements:
 
@@ -1002,7 +996,6 @@ controlPlane:
   replicas: 2
 platform:
   baremetal:
-# ...
     hosts:
       - name: cluster-master-0
         role: master

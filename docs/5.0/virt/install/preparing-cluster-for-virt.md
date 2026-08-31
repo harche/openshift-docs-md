@@ -148,8 +148,6 @@ The following features are currently not available on `s390x` architecture:
 
 - Node Health Check Operator
 
-- SR-IOV Operator
-
 - PCI passthrough
 
 - OpenShift Virtualization cluster checkup framework

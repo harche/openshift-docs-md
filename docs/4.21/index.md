@@ -1135,6 +1135,7 @@
 - [Ensuring reliable etcd performance and scalability](etcd/etcd-performance.md)
 - **Backing up and restoring etcd data**
   - [Backing up etcd](etcd/etcd-backup-restore/etcd-backup.md)
+  - [Replacing a healthy etcd member](etcd/etcd-backup-restore/replace-healthy-etcd-member.md)
   - [Replacing an unhealthy etcd member](etcd/etcd-backup-restore/replace-unhealthy-etcd-member.md)
   - [Disaster recovery](etcd/etcd-backup-restore/etcd-disaster-recovery.md)
 - [Enabling etcd encryption](etcd/etcd-encrypt.md)
@@ -1181,7 +1182,7 @@
 - **High availability for hosted control planes**
   - [About high availability for hosted control planes](hosted_control_planes/hcp_high_availability/about-hcp-ha.md)
   - [Recovering a failing etcd cluster](hosted_control_planes/hcp_high_availability/hcp-recovering-etcd-cluster.md)
-  - [Backing up and restoring etcd in an on-premise environment](hosted_control_planes/hcp_high_availability/hcp-backup-restore-on-premise.md)
+  - [Backing up and restoring etcd on a hosted cluster](hosted_control_planes/hcp_high_availability/hcp-backup-restore-on-premise.md)
   - [Backing up and restoring etcd on the management cluster](hosted_control_planes/hcp_high_availability/hcp-backup-restore-aws.md)
   - [Backing up and restoring a hosted cluster on OpenShift Virtualization](hosted_control_planes/hcp_high_availability/hcp-backup-restore-virt.md)
   - [Disaster recovery for a hosted cluster in AWS](hosted_control_planes/hcp_high_availability/hcp-disaster-recovery-aws.md)
@@ -1600,6 +1601,7 @@
     - [OADP monitoring](backup_and_restore/application_backup_and_restore/troubleshooting/oadp-monitoring.md)
 - **Control plane backup and restore**
   - [Backing up etcd data](backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.md)
+  - [Replacing a healthy etcd member](backup_and_restore/control_plane_backup_and_restore/replacing-healthy-etcd-member.md)
   - [Replacing an unhealthy etcd member](backup_and_restore/control_plane_backup_and_restore/replacing-unhealthy-etcd-member.md)
   - **Disaster recovery**
     - [About disaster recovery](backup_and_restore/control_plane_backup_and_restore/disaster_recovery/about-disaster-recovery.md)

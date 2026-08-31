@@ -30,7 +30,7 @@ It includes articles, product documentation, and videos that outline best practi
 
 - [Red Hat Knowledgebase](https://access.redhat.com/knowledgebase)
 
-## Searching the Red Hat Knowledgebase
+## Search the Red Hat Knowledgebase
 
 Search the Red Hat Knowledgebase to find solutions to known issues and resolve problems quickly without opening a support case.
 

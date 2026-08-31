@@ -556,7 +556,7 @@ The `ScanSetting` object has a timeout option that you can specify in the `Compl
   `maxRetryOnTimeout`
   Specifies the `maxRetryOnTimeout` variable defines how many times a retry is attempted. The default value is `3`.
 
-# Getting support
+# Get support
 
 Red Hat offers several support channels to help you troubleshoot issues and get the most from OpenShift Container Platform.
 

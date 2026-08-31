@@ -2,7 +2,11 @@ To share a single physical device with multiple pods, implement the Single Root 
 
 <div class="note">
 
-As of OpenShift Container Platform 4.21, the SR-IOV Operator can support ARM hardware.
+The SR-IOV Operator supports the following additional architectures:
+
+- As of OpenShift Container Platform 4.21, ARM hardware
+
+- As of OpenShift Container Platform 5.0, IBM Z and IBM LinuxONE (`s390x`)
 
 </div>
 

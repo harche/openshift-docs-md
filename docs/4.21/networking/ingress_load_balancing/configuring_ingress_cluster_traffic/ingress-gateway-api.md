@@ -190,7 +190,10 @@ Before enabling Gateway API by creating a `GatewayClass`, verify that you do not
               - name: gwapi-wildcard
             allowedRoutes:
               namespaces:
-                from: All
+                from: Selector
+                selector:
+                  matchLabels:
+                    shared-gateway-access: "true"
         ```
 
         where:
@@ -209,6 +212,9 @@ Before enabling Gateway API by creating a `GatewayClass`, verify that you do not
 
         `tls.name`
         The name of the previously created secret.
+
+        `listeners.allowedRoutes.namespaces`
+        Allow route attachment only from namespaces that have the `shared-gateway-access: "true"` label. Do not set `namespaces.from: All`; that setting allows routes from every namespace and can enable hostname or domain hijacking.
 
     2.  Apply the resource by running the following command:
 

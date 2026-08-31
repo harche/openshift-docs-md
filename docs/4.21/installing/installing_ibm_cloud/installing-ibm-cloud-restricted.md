@@ -614,6 +614,8 @@ If an instance type for your platform meets the minimum requirements for cluster
 
 Use these tested IBM Cloud® instance types to ensure compatibility when selecting machine types for your OpenShift Container Platform cluster.
 
+See the following machine series:
+
 <https://raw.githubusercontent.com/openshift/installer/release-4.21/docs/user/ibmcloud/tested_instance_types_x86_64.md>
 
 ## Sample customized install-config.yaml file for IBM Cloud

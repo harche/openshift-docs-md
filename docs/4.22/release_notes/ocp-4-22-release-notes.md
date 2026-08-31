@@ -89,6 +89,10 @@ New features on IBM Power® include:
 
 - Harden the destroy logic for Installer-provisioned infrastructure on IBM Power® Virtual Server to simplify removing a cluster.
 
+- Add DAL14 region to the Installer-provisioned infrastructure on IBM Power® Virtual Server.
+
+- Add S1122 system type to DAL14 region in the Installer-provisioned infrastructure on IBM Power® Virtual Server.
+
 ## IBM Z and IBM LinuxONE
 
 The IBM Z® and IBM® LinuxONE release on OpenShift Container Platform 4.17 adds improvements and new capabilities to OpenShift Container Platform components

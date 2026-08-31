@@ -232,11 +232,11 @@ You can see recommendations for workloads at **OpenShift** \> **Advisor** \> **W
 
 - [Excluding objects from workload recommendations in your clusters](https://docs.redhat.com/en/documentation/red_hat_lightspeed/1-latest/html-single/monitoring_your_openshift_cluster_health_with_red_hat_lightspeed_advisor/index#excluding-objects-from-workload-recommendations_using-insights-advisor)
 
-# Displaying the Red Hat Lightspeed status in the web console
+# Display the Red Hat Lightspeed advisor status in the web console
 
-Red Hat Lightspeed repeatedly analyzes your cluster and you can display the status of identified potential issues of your cluster in the OpenShift Container Platform web console. This status shows the number of issues in the different categories and, for further details, links to the reports in [OpenShift Cluster Manager](https://console.redhat.com/openshift).
+View the health status of your cluster and potential issues identified by the Red Hat Lightspeed advisor service in the OpenShift Container Platform web console. Issues are grouped by risk category with links to detailed reports in the Hybrid Cloud Console.
 
-- Your cluster is registered in [OpenShift Cluster Manager](https://console.redhat.com/openshift).
+- Your cluster is registered with OpenShift Cluster Manager.
 
 - Remote health reporting is enabled, which is the default.
 
@@ -244,6 +244,10 @@ Red Hat Lightspeed repeatedly analyzes your cluster and you can display the sta
 
 1.  Navigate to **Home** → **Overview** in the OpenShift Container Platform web console.
 
-2.  Click **Red Hat Lightspeed** on the **Status** card.
+2.  Click **Insights** on the **Status** card.
 
-    The pop-up window lists potential issues grouped by risk. Click the individual categories or **View all recommendations in Red Hat Lightspeed Advisor** to display more details.
+    A list of potential issues that are grouped by risk is displayed.
+
+3.  Click **View all recommendations in Red Hat Lightspeed Advisor** or click a specific category to view detailed reports in the Hybrid Cloud Console.
+
+- [Red Hat Lightspeed Advisor recommendations](https://console.redhat.com/openshift/insights/advisor/recommendations)

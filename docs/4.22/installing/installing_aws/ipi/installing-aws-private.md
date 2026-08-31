@@ -419,7 +419,7 @@ Use the machine types included in the following charts for your AWS instances. I
 
 </div>
 
-**Machine types based on 64-bit x86 architecture**
+See the following machine types based on 64-bit x86 architecture:
 
 <https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/aws/tested_instance_types_x86_64.md>
 
@@ -435,7 +435,7 @@ Use the machine types included in the following charts for your AWS ARM instance
 
 </div>
 
-**Machine types based on 64-bit ARM architecture**
+See the following machine types based on 64-bit ARM architecture:
 
 <https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/aws/tested_instance_types_aarch64.md>
 
@@ -617,7 +617,7 @@ Production environments can deny direct access to the internet and instead have 
 
     </div>
 
-## Applying existing AWS security groups to the cluster
+## Applying existing Amazon Web Services (AWS) security groups to the cluster
 
 Applying existing AWS security groups to your control plane and compute machines can help you meet the security needs of your organization, in such cases where you need to control the incoming or outgoing traffic of these machines.
 
@@ -633,44 +633,48 @@ Applying existing AWS security groups to your control plane and compute machines
 
 3.  Save the file and reference it when deploying the cluster.
 
-<div class="formalpara-title">
+    <div class="formalpara-title">
 
-**Sample `install-config.yaml` file that specifies custom security groups**
+    **Sample `install-config.yaml` file that specifies custom security groups**
 
-</div>
+    </div>
 
-``` yaml
-# ...
-compute:
-- hyperthreading: Enabled
-  name: worker
-  platform:
-    aws:
-      additionalSecurityGroupIDs:
-        - sg-1
-        - sg-2
-  replicas: 3
-controlPlane:
-  hyperthreading: Enabled
-  name: master
-  platform:
-    aws:
-      additionalSecurityGroupIDs:
-        - sg-3
-        - sg-4
-  replicas: 3
-platform:
-  aws:
-    region: us-east-1
-    subnets:
-      - subnet-1
-      - subnet-2
-      - subnet-3
-```
+    ``` yaml
+    # ...
+    compute:
+    - hyperthreading: Enabled
+      name: worker
+      platform:
+        aws:
+          additionalSecurityGroupIDs:
+            - sg-1
+            - sg-2
+      replicas: 3
+    controlPlane:
+      hyperthreading: Enabled
+      name: master
+      platform:
+        aws:
+          additionalSecurityGroupIDs:
+            - sg-3
+            - sg-4
+      replicas: 3
+    platform:
+      aws:
+        region: us-east-1
+        subnets:
+          - subnet-1
+          - subnet-2
+          - subnet-3
+    ```
 
-- Specify the name of the security group as it appears in the Amazon EC2 console, including the `sg` prefix.
+    where:
 
-- Specify subnets for each availability zone that your cluster uses.
+    `compute.platform.aws.additionalSecurityGroupIDs`
+    Specifies the name of the security group as it appears in the Amazon EC2 console, including the `sg` prefix.
+
+    `platform.aws.subnets`
+    Specifies subnets for each availability zone that your cluster uses.
 
 # Alternatives to storing administrator-level secrets in the kube-system project
 

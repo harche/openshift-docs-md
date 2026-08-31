@@ -173,7 +173,7 @@ The following headers are either prevented entirely from being set or deleted, o
 
 Special case header configuration options
 
-# Setting or deleting HTTP request and response headers in a route
+# Set or delete HTTP request and response headers in a route
 
 You can set or delete certain HTTP request and response headers for compliance purposes or other reasons. You can set or delete these headers either for all routes served by an Ingress Controller or for specific routes.
 
@@ -242,7 +242,7 @@ The following procedure creates a route that sets the Content-Location HTTP requ
 
     For HTTP request headers, the actions specified in the route definitions are executed after any actions performed on HTTP request headers in the Ingress Controller. This means that any values set for those request headers in a route will take precedence over the ones set in the Ingress Controller. For more information on the processing order of HTTP headers, see *HTTP header configuration*.
 
-# Using cookies to keep route statefulness
+# Use cookies to keep route statefulness
 
 To maintain stateful application traffic during pod restarts or scaling events, configure sticky sessions by using cookies. By using this method, you ensure that all incoming traffic reaches the same endpoint, preventing state loss even if the specific endpoint pod changes.
 
@@ -256,7 +256,7 @@ If backends change, the traffic can be directed to the wrong server, making it l
 
 </div>
 
-## Annotating a route with a cookie
+## Annotate a route with a cookie
 
 To enable applications to manage session persistence and load distribution, annotate the route with a custom cookie name. Overwriting the default cookie allows the backend application to identify and delete the specific cookie, forcing endpoint re-selection when necessary.
 

@@ -226,7 +226,7 @@ Use the machine types included in the following charts for your AWS instances. I
 
 </div>
 
-**Machine types based on 64-bit x86 architecture**
+See the following machine types based on 64-bit x86 architecture:
 
 <https://raw.githubusercontent.com/openshift/installer/release-4.21/docs/user/aws/tested_instance_types_x86_64.md>
 
@@ -242,7 +242,7 @@ Use the machine types included in the following charts for your AWS ARM instance
 
 </div>
 
-**Machine types based on 64-bit ARM architecture**
+See the following machine types based on 64-bit ARM architecture:
 
 <https://raw.githubusercontent.com/openshift/installer/release-4.21/docs/user/aws/tested_instance_types_aarch64.md>
 

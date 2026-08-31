@@ -1,40 +1,58 @@
 A heterogeneous cluster is a cluster where nodes have differing architectures. Heterogeneous clusters promote optimal compute resource usage by mixing different types of hardware in one cluster.
 
-<div class="important">
-
-Boot source image support for heterogeneous clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
-
-With heterogeneous clusters, you can match workloads to hardware intended for the workload task instead of general purpose compute platforms. For example, GPU and general purpose compute resources could be combined and workloads assigned to the appropriate hardware.
-
-<div class="important">
-
-If boot source image support is disabled in a heterogeneous cluster, you can encounter inconsistencies between node and image architectures. This happens when images are used for virtual machine creation that do not match the node architecture. This can lead to the failure of virtual machine boot up or virtual machines that do not run as expected. The warning level alert `HCOMultiArchGoldenImagesDisabled` is produced when this feature is not enabled in a heterogeneous cluster.
-
-</div>
+With heterogeneous clusters, you can match workloads to hardware intended for the workload task instead of general purpose compute platforms. For example, you can combine GPU and general purpose compute resources and assign workloads to the appropriate hardware.
 
 If you have a heterogeneous cluster but do not want to enable multiple architecture support, you can modify the workloads node placement in the `HyperConverged` custom resource (CR) to include only nodes with a specific architecture.
 
-Boot source image support in heterogeneous clusters enables VM creators to deploy persistent VMs with specific architectures, and to define custom boot images that support heterogeneous clusters.
+With boot source image support, you can deploy persistent VMs with specific architectures and define custom boot images that support heterogeneous clusters.
+
+<div class="important">
+
+If you do not enable boot source image support in a heterogeneous cluster, images might not match the node architecture. As a result, virtual machines might fail to start or might not run as expected. OpenShift Virtualization raises the `HCOMultiArchGoldenImagesDisabled` alert when this feature is not enabled.
+
+</div>
 
 The same image can be used with nodes of different architectures if the boot image supports the required architectures. For example, a boot image that supports both ARM and AMD architectures can be used with both types of nodes.
 
 Boot source image support for heterogeneous clusters is not enabled by default. You can enable heterogeneous cluster support by setting the feature gate in the `HyperConverged` CR.
 
-# Enabling heterogeneous cluster support
+# Default architecture behavior in heterogeneous clusters
 
-You can enable boot source image support for heterogeneous clusters by setting the `enableMultiArchBootImageImport` feature gate to `true` in the `HyperConverged` custom resource (CR).
+In a heterogeneous cluster, worker nodes run different CPU architectures, such as amd64 and arm64. A boot source image built for one architecture cannot start on a node with a different architecture.
+
+To prevent architecture mismatches, OpenShift Virtualization creates a separate boot source for each supported architecture, each represented by a `DataSource` object.
 
 <div class="important">
 
-Boot source image support for heterogeneous clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+If you have a heterogeneous cluster and do not enable the `enableMultiArchBootImageImport` feature gate, VMs might fail to start on nodes with a different architecture than the boot source image.
 
 </div>
+
+## How data sources for boot source images work in heterogeneous clusters
+
+After you enable the `enableMultiArchBootImageImport` feature gate, the Scheduling, Scale, and Performance (SSP) Operator creates a new separate boot source for each supported architecture, represented by a `DataSource` object. For example, the `rhel9` boot source image gets the following data sources:
+
+- `rhel9-amd64`
+
+- `rhel9-arm64`
+
+The original name, such as `rhel9`, defaults to the boot source that matches the control-plane architecture. For example, if the control-plane nodes use `amd64`, then `rhel9` resolves to `rhel9-amd64`.
+
+Existing VM manifests and templates that use the original name, without an architecture suffix, continue to work without changes.
+
+For common boot sources that are provided by OpenShift Virtualization, the SSP Operator determines the supported architectures automatically. For custom boot sources that you add through the `HyperConverged` CR, you must specify the supported architectures by using the `ssp.kubevirt.io/dict.architectures` annotation.
+
+## Default architecture for standalone VMs
+
+A VM that is not based on a boot source image, for example a VM from a container disk, HTTP source, upload, or clone, defaults to the control-plane architecture. The `spec.template.spec.architecture` field in the `VirtualMachine` manifest controls which architecture the VM uses.
+
+## Default architecture for standalone data volumes
+
+A `DataVolume` created directly from a registry source does not have a default architecture. Without an explicit architecture, CDI pulls whichever image variant the registry returns. The `spec.source.registry.platform.architecture` field in the `DataVolume` manifest controls which architecture to pull.
+
+# Enabling heterogeneous cluster support
+
+You can enable boot source image support for heterogeneous clusters by setting the `enableMultiArchBootImageImport` feature gate to `true` in the `HyperConverged` custom resource (CR).
 
 - You have access to the cluster as a user with `cluster-admin` permissions.
 
@@ -49,19 +67,26 @@ For more information about the support scope of Red Hat Technology Preview featu
     --type json -p '[{"op":"replace","path":"/spec/featureGates/enableMultiArchBootImageImport", "value": true}]'
   ```
 
+<!-- -->
+
+- Verify that the feature gate is enabled by running the following command:
+
+  ``` terminal
+  $ oc get hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv \
+    -o jsonpath='{.spec.featureGates[*].name}'
+  ```
+
+  The output must include `enableMultiArchBootImageImport`.
+
 # Modifying a common boot source image in a heterogeneous cluster
 
 You can modify the source of a common boot source image in a heterogeneous cluster by specifying the supported architectures in the `ssp.kubevirt.io/dict.architectures` annotation in the `HyperConverged` custom resource (CR).
 
-<div class="important">
-
-Boot source image support for heterogeneous clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+- You have access to the cluster as a user with `cluster-admin` permissions.
 
 - You have installed the OpenShift CLI (`oc`).
+
+- You have enabled the `enableMultiArchBootImageImport` feature gate in the `HyperConverged` CR.
 
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
@@ -69,7 +94,7 @@ For more information about the support scope of Red Hat Technology Preview featu
     $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
     ```
 
-2.  Edit the `HyperConverged` CR, adding the appropriate values for `ssp.kubevirt.io/dict.architectures` annotation in the `dataImportCronTemplates` section. For example:
+2.  Edit the `HyperConverged` CR to add the appropriate values for the `ssp.kubevirt.io/dict.architectures` annotation in the `dataImportCronTemplates` section. For example:
 
     ``` yaml
     #...
@@ -97,19 +122,23 @@ For more information about the support scope of Red Hat Technology Preview featu
 
 3.  Save and exit the editor to update the `HyperConverged` CR.
 
+- Verify that architecture-suffixed data sources are created by running the following command:
+
+  ``` terminal
+  $ oc get datasources -n openshift-virtualization-os-images
+  ```
+
+  Architecture-suffixed data sources, such as `centos-stream8-amd64` and `centos-stream8-arm64`, should appear in the output.
+
 # Adding a custom boot source image in a heterogeneous cluster
 
 Add a custom boot source image in a heterogeneous cluster by editing the `HyperConverged` custom resource (CR).
 
-<div class="important">
-
-Boot source image support for heterogeneous clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
-
-</div>
+- You have access to the cluster as a user with `cluster-admin` permissions.
 
 - You have installed the OpenShift CLI (`oc`).
+
+- You have enabled the `enableMultiArchBootImageImport` feature gate in the `HyperConverged` CR.
 
 1.  Open the `HyperConverged` CR in your default editor by running the following command:
 
@@ -117,7 +146,7 @@ For more information about the support scope of Red Hat Technology Preview featu
     $ oc edit hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv
     ```
 
-2.  Edit the `HyperConverged` CR, to add the custom boot source image. You must add the appropriate values for the `ssp.kubevirt.io/dict.architectures` annotation in the `dataImportCronTemplates` section. For example:
+2.  Edit the `HyperConverged` CR to add the custom boot source image. You must add the appropriate values for the `ssp.kubevirt.io/dict.architectures` annotation in the `dataImportCronTemplates` section. For example:
 
     ``` yaml
     apiVersion: hco.kubevirt.io/v1beta1
@@ -147,25 +176,129 @@ For more information about the support scope of Red Hat Technology Preview featu
     `<architecture_list>`
     Specifies a comma-separated list of supported architectures for this image. For example, if the image supports `amd64` and `arm64` architectures, the value would be `"amd64,arm64"`.
 
-    <div class="note">
+    <div class="important">
 
-    An image may support more architectures than you want to use in your cluster. You do not have to list all of the architectures an image supports, only those for which you want to create a boot source image.
+    Only include architectures that are present on your worker nodes and supported by your registry image. You do not need to list every architecture an image supports. OpenShift Virtualization does not validate the declared architectures.
+
+    The annotation is optional but strongly recommended. Without it, only one boot source is created, and missing annotations trigger `HCOGoldenImageWithNoArchitectureAnnotation`.
 
     </div>
 
 3.  Save and exit the editor to update the `HyperConverged` CR.
 
-# Modifying workloads node placement in a heterogeneous cluster
+- Verify that architecture-suffixed data sources are created for the custom image by running the following command:
 
-<div class="important">
+  ``` terminal
+  $ oc get datasources -n openshift-virtualization-os-images
+  ```
 
-Boot source image support for heterogeneous clusters is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+  Architecture-suffixed data sources for the custom image should appear in the output.
 
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+# Creating a data volume from a registry source in a heterogeneous cluster
+
+To pull the correct architecture-specific image in a heterogeneous cluster, specify the architecture in the `DataVolume` manifest. This step is only required for data volumes that you create outside the boot source image pipeline.
+
+<div class="note">
+
+Boot source images managed through the `HyperConverged` custom resource (CR) select the correct architecture automatically. You do not need to specify the architecture for those images.
 
 </div>
 
+- You have installed the OpenShift CLI (`oc`).
+
+1.  Create a `DataVolume` manifest and save it as a YAML file:
+
+    ``` yaml
+    apiVersion: cdi.kubevirt.io/v1beta1
+    kind: DataVolume
+    metadata:
+      name: <datavolume_name>
+    spec:
+      source:
+        registry:
+          url: <image_url>
+          platform:
+            architecture: <architecture>
+      storage:
+        resources:
+          requests:
+            storage: <storage_size>
+    ```
+
+    where:
+
+    `<datavolume_name>`
+    Specifies the name of the data volume.
+
+    `<image_url>`
+    Specifies the URL of the container image, for example `docker://quay.io/containerdisks/centos-stream:9`.
+
+    `<architecture>`
+    Specifies the architecture of the image to pull, for example `amd64`, `arm64`, or `s390x`.
+
+    `<storage_size>`
+    Specifies the size of the storage requested, for example `10Gi`.
+
+2.  Create the data volume:
+
+    ``` terminal
+    $ oc create -f <datavolume_manifest>.yaml
+    ```
+
+- Verify that the data volume was created and is importing by running the following command:
+
+  ``` terminal
+  $ oc get dv <datavolume_name>
+  ```
+
+  The `PHASE` column should show `ImportScheduled`, `ImportInProgress`, or `Succeeded`.
+
+# Architecture field for standalone virtual machines
+
+To run a standalone VM on a specific architecture in a heterogeneous cluster, set the `spec.template.spec.architecture` field in the `VirtualMachine` manifest. If you do not set this field, the VM defaults to the control-plane architecture.
+
+This field applies to VMs created from container disks, HTTP sources, uploads, or clones. For VMs based on boot source images, the `DataSource` object resolves the architecture automatically.
+
+<div class="formalpara-title">
+
+**Example `VirtualMachine` manifest with the `architecture` field**
+
+</div>
+
+``` yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: my-vm
+spec:
+  template:
+    spec:
+      architecture: <architecture>
+      domain:
+        devices: {}
+        memory:
+          guest: 512Mi
+        resources: {}
+      volumes:
+      - name: my-volume
+        containerDisk:
+          image: <container_disk_image>
+# ...
+```
+
+where:
+
+`<architecture>`
+Specifies the target architecture for the VM, for example `arm64`. If not specified, defaults to the control-plane architecture.
+
+`<container_disk_image>`
+Specifies the container disk image to use for the VM.
+
+# Modifying workloads node placement in a heterogeneous cluster
+
 If you have a heterogeneous cluster but do not want to enable multiple architecture support, you can modify the workloads node placement in the `HyperConverged` custom resource (CR) to include only nodes with a specific architecture.
+
+- You have access to the cluster as a user with `cluster-admin` permissions.
 
 - You have installed the OpenShift CLI (`oc`).
 
@@ -203,3 +336,12 @@ If you have a heterogeneous cluster but do not want to enable multiple architect
     Specifies the target architecture. For example, to limit placement to AMD nodes, use `amd64`.
 
 3.  Save and exit the editor to update the `HyperConverged` CR.
+
+- Verify that the node affinity is applied by running the following command:
+
+  ``` terminal
+  $ oc get hyperconvergeds.v1beta1.hco.kubevirt.io kubevirt-hyperconverged -n openshift-cnv \
+    -o jsonpath='{.spec.deployment.nodePlacements.workload}'
+  ```
+
+  The output should show the node affinity configuration with the architecture you specified.

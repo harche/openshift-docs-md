@@ -520,7 +520,7 @@ To enable access logging for all istio-proxy containers, edit the `ServiceMeshCo
 
 For more information about troubleshooting pod issues, see [Investigating pod issues](../../support/troubleshooting/investigating-pod-issues.xml)
 
-# Getting support
+# Get support
 
 Red Hat offers several support channels to help you troubleshoot issues and get the most from OpenShift Container Platform.
 
@@ -544,7 +544,7 @@ It includes articles, product documentation, and videos that outline best practi
 
 - [Red Hat Knowledgebase](https://access.redhat.com/knowledgebase)
 
-## Searching the Red Hat Knowledgebase
+## Search the Red Hat Knowledgebase
 
 Search the Red Hat Knowledgebase to find solutions to known issues and resolve problems quickly without opening a support case.
 

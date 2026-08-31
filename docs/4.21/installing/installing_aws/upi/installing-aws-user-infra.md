@@ -489,9 +489,9 @@ The infrastructure name is also used to locate the appropriate AWS resources dur
 
 # Creating a VPC in AWS
 
-You must create a Virtual Private Cloud (VPC) in Amazon Web Services (AWS) for your OpenShift Container Platform cluster to use. You can customize the VPC to meet your requirements, including VPN and route tables.
+To provide the network foundation for your OpenShift Container Platform cluster, create a Virtual Private Cloud (VPC) in Amazon Web Services (AWS) by using the provided CloudFormation template.
 
-You can use the provided CloudFormation template and a custom parameter file to create a stack of AWS resources that represent the VPC.
+You can customize the VPC to meet your requirements, including VPN and route tables. You can use the provided CloudFormation template and a custom parameter file to create a stack of AWS resources that represent the VPC.
 
 <div class="note">
 
@@ -520,17 +520,16 @@ If you do not use the provided CloudFormation template to create your AWS infras
     ]
     ```
 
-    - The CIDR block for the VPC.
+    where:
 
-    - Specify a CIDR block in the format `x.x.x.x/16-24`.
+    `VpcCidr`
+    Specifies the CIDR block for the VPC in the format `x.x.x.x/16-24`.
 
-    - The number of availability zones to deploy the VPC in.
+    `AvailabilityZoneCount`
+    Specifies the number of availability zones to deploy the VPC in. Set the value to an integer between `1` and `3`.
 
-    - Specify an integer between `1` and `3`.
-
-    - The size of each subnet in each availability zone.
-
-    - Specify an integer between `5` and `13`, where `5` is `/27` and `13` is `/19`.
+    `SubnetBits`
+    Specifies the size of each subnet in each availability zone. Set the value to an integer between `5` and `13`, where `5` is `/27` and `13` is `/19`.
 
 2.  Copy the template from the **CloudFormation template for the VPC** section of this topic and save it as a YAML file on your computer. This template describes the VPC that your cluster requires.
 
@@ -543,26 +542,31 @@ If you do not use the provided CloudFormation template to create your AWS infras
     </div>
 
     ``` terminal
-    $ aws cloudformation create-stack --stack-name <name>
-         --template-body file://<template>.yaml
+    $ aws cloudformation create-stack --stack-name <name> \
+         --template-body file://<template>.yaml \
          --parameters file://<parameters>.json
     ```
 
-    - `<name>` is the name for the CloudFormation stack, such as `cluster-vpc`. You need the name of this stack if you remove the cluster.
+    where:
 
-    - `<template>` is the relative path to and name of the CloudFormation template YAML file that you saved.
+    `<name>`
+    Specifies the name for the CloudFormation stack, such as `cluster-vpc`. You need the name of this stack if you remove the cluster.
 
-    - `<parameters>` is the relative path to and name of the CloudFormation parameters JSON file.
+    `<template>`
+    Specifies the relative path to and name of the CloudFormation template YAML file that you saved.
 
-      <div class="formalpara-title">
+    `<parameters>`
+    Specifies the relative path to and name of the CloudFormation parameters JSON file.
 
-      **Example output**
+    <div class="formalpara-title">
 
-      </div>
+    **Example output**
 
-      ``` terminal
-      arn:aws:cloudformation:us-east-1:269333783861:stack/cluster-vpc/dbedae40-2fd3-11eb-820e-12a48460849f
-      ```
+    </div>
+
+    ``` terminal
+    arn:aws:cloudformation:us-east-1:269333783861:stack/cluster-vpc/dbedae40-2fd3-11eb-820e-12a48460849f
+    ```
 
 4.  Confirm that the template components exist:
 
@@ -616,20 +620,20 @@ If you do not use the provided `CloudFormation` template to create your AWS infr
     $ aws route53 list-hosted-zones-by-name --dns-name <route53_domain>
     ```
 
-    - For the `<route53_domain>`, specify the Route 53 base domain that you used when you generated the `install-config.yaml` file for the cluster.
+    where `<route53_domain>` is the Route 53 base domain that you used when you generated the `install-config.yaml` file for the cluster.
 
-      <div class="formalpara-title">
+    <div class="formalpara-title">
 
-      **Example output**
+    **Example output**
 
-      </div>
+    </div>
 
-      ``` terminal
-      mycluster.example.com.   False   100
-      HOSTEDZONES 65F8F38E-2268-B835-E15C-AB55336FCBFA    /hostedzone/Z21IXYZABCZ2A4  mycluster.example.com.  10
-      ```
+    ``` terminal
+    mycluster.example.com.   False   100
+    HOSTEDZONES 65F8F38E-2268-B835-E15C-AB55336FCBFA    /hostedzone/Z21IXYZABCZ2A4  mycluster.example.com.  10
+    ```
 
-      In the example output, the hosted zone ID is `Z21IXYZABCZ2A4`.
+    In the example output, the hosted zone ID is `Z21IXYZABCZ2A4`.
 
 2.  Create a JSON file that has the parameter values that the template requires:
 
@@ -666,33 +670,28 @@ If you do not use the provided `CloudFormation` template to create your AWS infr
     ]
     ```
 
-    - A short, representative cluster name to use for hostnames, etc.
+    where:
 
-    - Specify the cluster name that you used when you generated the `install-config.yaml` file for the cluster.
+    `ClusterName`
+    Specifies a short, representative cluster name to use for hostnames, and so on. Set the value to the cluster name that you used when you generated the `install-config.yaml` file for the cluster.
 
-    - The name for your cluster infrastructure that your Ignition config files encode for the cluster.
+    `InfrastructureName`
+    Specifies the name for your cluster infrastructure that your Ignition config files encode for the cluster. Set the value to the infrastructure name that you extracted from the Ignition config file metadata, which has the format `<cluster_name>-<random_string>`.
 
-    - Specify the infrastructure name that you extracted from the Ignition config file metadata, which has the format `<cluster_name>-<random_string>`.
+    `HostedZoneId`
+    Specifies the Route 53 public zone ID to register the targets with. Set the value to the Route 53 public zone ID, which has a format similar to `Z21IXYZABCZ2A4`. You can obtain this value from the AWS console.
 
-    - The Route 53 public zone ID to register the targets with.
+    `HostedZoneName`
+    Specifies the Route 53 zone to register the targets with. Set the value to the Route 53 base domain that you used when you generated the `install-config.yaml` file for the cluster. Do not include the trailing period (.) that is displayed in the AWS console.
 
-    - Specify the Route 53 public zone ID, which has a format similar to `Z21IXYZABCZ2A4`. You can obtain this value from the AWS console.
+    `PublicSubnets`
+    Specifies the public subnets that you created for your VPC. Set the value to the `PublicSubnetIds` value from the output of the `CloudFormation` template for the VPC.
 
-    - The Route 53 zone to register the targets with.
+    `PrivateSubnets`
+    Specifies the private subnets that you created for your VPC. Set the value to the `PrivateSubnetIds` value from the output of the `CloudFormation` template for the VPC.
 
-    - Specify the Route 53 base domain that you used when you generated the `install-config.yaml` file for the cluster. Do not include the trailing period (.) that is displayed in the AWS console.
-
-    - The public subnets that you created for your VPC.
-
-    - Specify the `PublicSubnetIds` value from the output of the `CloudFormation` template for the VPC.
-
-    - The private subnets that you created for your VPC.
-
-    - Specify the `PrivateSubnetIds` value from the output of the `CloudFormation` template for the VPC.
-
-    - The VPC that you created for the cluster.
-
-    - Specify the `VpcId` value from the output of the `CloudFormation` template for the VPC.
+    `VpcId`
+    Specifies the VPC that you created for the cluster. Set the value to the `VpcId` value from the output of the `CloudFormation` template for the VPC.
 
 3.  Copy the template from the **`CloudFormation` template for the network and load balancers** section and save it as a YAML file on your computer. This template describes the networking and load balancing objects that your cluster requires.
 
@@ -711,29 +710,35 @@ If you do not use the provided `CloudFormation` template to create your AWS infr
     </div>
 
     ``` terminal
-    $ aws cloudformation create-stack --stack-name <name>
-         --template-body file://<template>.yaml
-         --parameters file://<parameters>.json
+    $ aws cloudformation create-stack --stack-name <name> \
+         --template-body file://<template>.yaml \
+         --parameters file://<parameters>.json \
          --capabilities CAPABILITY_NAMED_IAM
     ```
 
-    - `<name>` is the name for the `CloudFormation` stack, such as `cluster-dns`. You need the name of this stack if you remove the cluster.
+    where:
 
-    - `<template>` is the relative path to and name of the `CloudFormation` template YAML file that you saved.
+    `<name>`
+    Specifies the name for the `CloudFormation` stack, such as `cluster-dns`. You need the name of this stack if you remove the cluster.
 
-    - `<parameters>` is the relative path to and name of the `CloudFormation` parameters JSON file.
+    `<template>`
+    Specifies the relative path to and name of the `CloudFormation` template YAML file that you saved.
 
-    - You must explicitly declare the `CAPABILITY_NAMED_IAM` capability because the provided template creates some `AWS::IAM::Role` resources.
+    `<parameters>`
+    Specifies the relative path to and name of the `CloudFormation` parameters JSON file.
 
-      <div class="formalpara-title">
+    `CAPABILITY_NAMED_IAM`
+    You must explicitly declare this capability because the provided template creates some `AWS::IAM::Role` resources.
 
-      **Example output**
+    <div class="formalpara-title">
 
-      </div>
+    **Example output**
 
-      ``` terminal
-      arn:aws:cloudformation:us-east-1:269333783861:stack/cluster-dns/cd3e5de0-2fd4-11eb-5cf0-12be5c33a183
-      ```
+    </div>
+
+    ``` terminal
+    arn:aws:cloudformation:us-east-1:269333783861:stack/cluster-dns/cd3e5de0-2fd4-11eb-5cf0-12be5c33a183
+    ```
 
 5.  Confirm that the template components exist:
 
@@ -743,16 +748,16 @@ If you do not use the provided `CloudFormation` template to create your AWS infr
 
     After the `StackStatus` displays `CREATE_COMPLETE`, the output displays values for the following parameters. You must give these parameter values to the other `CloudFormation` templates that you run to create your cluster:
 
-    |                                 |                                                                                    |
-    |---------------------------------|------------------------------------------------------------------------------------|
-    | `PrivateHostedZoneId`           | Hosted zone ID for the private DNS.                                                |
-    | `ExternalApiLoadBalancerName`   | Full name of the external API load balancer.                                       |
-    | `InternalApiLoadBalancerName`   | Full name of the internal API load balancer.                                       |
-    | `ApiServerDnsName`              | Full hostname of the API server.                                                   |
-    | `RegisterNlbIpTargetsLambda`    | Lambda ARN useful to help register/deregister IP targets for these load balancers. |
-    | `ExternalApiTargetGroupArn`     | ARN of external API target group.                                                  |
-    | `InternalApiTargetGroupArn`     | ARN of internal API target group.                                                  |
-    | `InternalServiceTargetGroupArn` | ARN of internal service target group.                                              |
+    |                                 |                                                                                        |
+    |---------------------------------|----------------------------------------------------------------------------------------|
+    | `PrivateHostedZoneId`           | Hosted zone ID for the private DNS.                                                    |
+    | `ExternalApiLoadBalancerName`   | Full name of the external API load balancer.                                           |
+    | `InternalApiLoadBalancerName`   | Full name of the internal API load balancer.                                           |
+    | `ApiServerDnsName`              | Full hostname of the API server.                                                       |
+    | `RegisterNlbIpTargetsLambda`    | Lambda ARN useful to help register and unregister IP targets for these load balancers. |
+    | `ExternalApiTargetGroupArn`     | ARN of external API target group.                                                      |
+    | `InternalApiTargetGroupArn`     | ARN of internal API target group.                                                      |
+    | `InternalServiceTargetGroupArn` | ARN of internal service target group.                                                  |
 
 ## CloudFormation template for the network and load balancers
 
@@ -822,21 +827,19 @@ If you do not use the provided `CloudFormation` template to create your AWS infr
     ]
     ```
 
-    - The name for your cluster infrastructure that your Ignition config files encode for the cluster.
+    where:
 
-    - Specify the infrastructure name that you extracted from the Ignition config file metadata, which has the format `<cluster_name>-<random_string>`.
+    `InfrastructureName`
+    Specifies the name for your cluster infrastructure that your Ignition config files encode for the cluster. Set the value to the infrastructure name that you extracted from the Ignition config file metadata, which has the format `<cluster_name>-<random_string>`.
 
-    - The CIDR block for the VPC.
+    `VpcCidr`
+    Specifies the CIDR block for the VPC. Set the value to the CIDR block parameter that you used for the VPC that you defined in the form `x.x.x.x/16-24`.
 
-    - Specify the CIDR block parameter that you used for the VPC that you defined in the form `x.x.x.x/16-24`.
+    `PrivateSubnets`
+    Specifies the private subnets that you created for your VPC. Set the value to the `PrivateSubnetIds` value from the output of the `CloudFormation` template for the VPC.
 
-    - The private subnets that you created for your VPC.
-
-    - Specify the `PrivateSubnetIds` value from the output of the `CloudFormation` template for the VPC.
-
-    - The VPC that you created for the cluster.
-
-    - Specify the `VpcId` value from the output of the `CloudFormation` template for the VPC.
+    `VpcId`
+    Specifies the VPC that you created for the cluster. Set the value to the `VpcId` value from the output of the `CloudFormation` template for the VPC.
 
 2.  Copy the template from the **`CloudFormation` template for security objects** section and save it as a YAML file on your computer. This template describes the security groups and roles that your cluster requires.
 
@@ -849,29 +852,35 @@ If you do not use the provided `CloudFormation` template to create your AWS infr
     </div>
 
     ``` terminal
-    $ aws cloudformation create-stack --stack-name <name>
-         --template-body file://<template>.yaml
-         --parameters file://<parameters>.json
+    $ aws cloudformation create-stack --stack-name <name> \
+         --template-body file://<template>.yaml \
+         --parameters file://<parameters>.json \
          --capabilities CAPABILITY_NAMED_IAM
     ```
 
-    - `<name>` is the name for the `CloudFormation` stack, such as `cluster-sec`. You need the name of this stack if you remove the cluster.
+    where:
 
-    - `<template>` is the relative path to and name of the `CloudFormation` template YAML file that you saved.
+    `<name>`
+    Specifies the name for the `CloudFormation` stack, such as `cluster-sec`. You need the name of this stack if you remove the cluster.
 
-    - `<parameters>` is the relative path to and name of the `CloudFormation` parameters JSON file.
+    `<template>`
+    Specifies the relative path to and name of the `CloudFormation` template YAML file that you saved.
 
-    - You must explicitly declare the `CAPABILITY_NAMED_IAM` capability because the provided template creates some `AWS::IAM::Role` and `AWS::IAM::InstanceProfile` resources.
+    `<parameters>`
+    Specifies the relative path to and name of the `CloudFormation` parameters JSON file.
 
-      <div class="formalpara-title">
+    `CAPABILITY_NAMED_IAM`
+    You must explicitly declare this capability because the provided template creates some `AWS::IAM::Role` and `AWS::IAM::InstanceProfile` resources.
 
-      **Example output**
+    <div class="formalpara-title">
 
-      </div>
+    **Example output**
 
-      ``` terminal
-      arn:aws:cloudformation:us-east-1:269333783861:stack/cluster-sec/03bd4210-2ed7-11eb-6d7a-13fc0b61e9db
-      ```
+    </div>
+
+    ``` terminal
+    arn:aws:cloudformation:us-east-1:269333783861:stack/cluster-sec/03bd4210-2ed7-11eb-6d7a-13fc0b61e9db
+    ```
 
 4.  Confirm that the template components exist:
 
@@ -1066,47 +1075,47 @@ A region without native support for an RHCOS AMI is not available to select from
 
 ## Uploading a custom RHCOS AMI in AWS
 
-If you are deploying to a custom Amazon Web Services (AWS) region, you must upload a custom Red Hat Enterprise Linux CoreOS (RHCOS) Amazon Machine Image (AMI) that belongs to that region.
+If you are deploying to a custom AWS region, you must upload a custom Red Hat Enterprise Linux CoreOS (RHCOS) Amazon Machine Image (AMI) that belongs to that region.
 
 - You configured an AWS account.
 
 - You created an Amazon S3 bucket with the required IAM [service role](https://docs.aws.amazon.com/vm-import/latest/userguide/vmie_prereqs.html#vmimport-role).
 
-- You uploaded your RHCOS Virtual Machine Disk (VMDK) file to Amazon S3. The RHCOS VMDK file must be the highest version that is less than or equal to the OpenShift Container Platform version you are installing.
+- You uploaded your RHCOS VMDK file to Amazon S3. The RHCOS VMDK file must be the highest version that is less than or equal to the OpenShift Container Platform version you are installing.
 
-- You downloaded the AWS CLI and installed it on your computer. See [Install the AWS CLI using the bundled installer](https://docs.aws.amazon.com/cli/latest/userguide/install-bundle.html).
+- You downloaded the AWS CLI and installed it on your computer. See [Install the AWS CLI Using the Bundled Installer](https://docs.aws.amazon.com/cli/latest/userguide/install-bundle.html).
 
-1.  Export your AWS profile as an environment variable:
+1.  Export your AWS profile as an environment variable by running the following command:
 
     ``` terminal
     $ export AWS_PROFILE=<aws_profile>
     ```
 
-    where `<aws_profile>` is the AWS profile name that holds your AWS credentials, such as `govcloud` or `beijingadmin`.
+    Replace `<aws_profile>` with the AWS profile name that holds your AWS credentials, such as `govcloud` or `beijingadmin`.
 
-2.  Export the region to associate with your custom AMI as an environment variable:
+2.  Export the region to associate with your custom AMI as an environment variable by running the following command:
 
     ``` terminal
     $ export AWS_DEFAULT_REGION=<aws_region>
     ```
 
-    where `<aws_region>` is the AWS region, such as `us-gov-east-1` or `cn-north-1`.
+    Replace `<aws_region>` with the AWS region, such as `us-gov-east-1` or `cn-north-1`.
 
-3.  Export the version of RHCOS you uploaded to Amazon S3 as an environment variable:
+3.  Export the version of RHCOS you uploaded to Amazon S3 as an environment variable by running the following command:
 
     ``` terminal
     $ export RHCOS_VERSION=<version>
     ```
 
-    where `<version>` is the RHCOS VMDK version, such as `4.17.0`.
+    Replace `<version>` with the RHCOS VMDK version, such as `4.17.0`.
 
-4.  Export the Amazon S3 bucket name as an environment variable:
+4.  Export the Amazon S3 bucket name as an environment variable by running the following command:
 
     ``` terminal
     $ export VMIMPORT_BUCKET_NAME=<s3_bucket_name>
     ```
 
-5.  Create the `containers.json` file and define your RHCOS VMDK file:
+5.  Create the `containers.json` file and define your RHCOS VMDK file by running the following command:
 
     ``` terminal
     $ cat <<EOF > containers.json
@@ -1121,7 +1130,7 @@ If you are deploying to a custom Amazon Web Services (AWS) region, you must uplo
     EOF
     ```
 
-6.  Import the RHCOS disk as an Amazon Elastic Block Store (EBS) snapshot:
+6.  Import the RHCOS disk as an Amazon EBS snapshot by running the following command:
 
     ``` terminal
     $ aws ec2 import-snapshot --region ${AWS_DEFAULT_REGION} \
@@ -1131,13 +1140,13 @@ If you are deploying to a custom Amazon Web Services (AWS) region, you must uplo
 
     where:
 
-    `<description>`
-    The description of your RHCOS disk being imported, such as `rhcos-${RHCOS_VERSION}-x86_64-aws.x86_64`.
+    `--description`
+    Specifies the description of your RHCOS disk being imported, like `rhcos-${RHCOS_VERSION}-x86_64-aws.x86_64`.
 
-    `<file_path>`
-    The file path to the JSON file describing your RHCOS disk. The JSON file should contain your Amazon S3 bucket name and key.
+    `--disk-container`
+    Specifies the file path to the JSON file describing your RHCOS disk. The JSON file should contain your Amazon S3 bucket name and key.
 
-7.  Check the status of the image import:
+7.  Check the status of the image import by running the following command::
 
     ``` terminal
     $ watch -n 5 aws ec2 describe-import-snapshot-tasks --region ${AWS_DEFAULT_REGION}
@@ -1173,7 +1182,7 @@ If you are deploying to a custom Amazon Web Services (AWS) region, you must uplo
 
     Copy the `SnapshotId` to register the image.
 
-8.  Create a custom RHCOS AMI from the RHCOS snapshot:
+8.  Create a custom RHCOS AMI from the RHCOS snapshot by running the following command:
 
     ``` terminal
     $ aws ec2 register-image \
@@ -1189,24 +1198,23 @@ If you are deploying to a custom Amazon Web Services (AWS) region, you must uplo
 
     where:
 
-    `x86_64`
-    The RHCOS VMDK architecture type, such as `x86_64`, `aarch64`, `s390x`, or `ppc64le`.
+    `--architecture`
+    Specifies the RHCOS VMDK architecture type, such as `x86_64`, `aarch64`, `s390x`, or `ppc64le`.
 
-    `rhcos-${RHCOS_VERSION}-x86_64-aws.x86_64`
-    The `Description` from the imported snapshot.
+    `--description`
+    Specifies the `Description` from the imported snapshot.
 
-    `<snapshot_ID>`
-    The `SnapshotID` from the imported snapshot.
+    `--name`
+    Specifies the name of the RHCOS AMI.
 
-- [Importing snapshots (AWS documentation)](https://docs.aws.amazon.com/vm-import/latest/userguide/vmimport-import-snapshot.html)
-
-- [Creating EBS-backed AMIs (AWS documentation)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/creating-an-ami-ebs.html#creating-launching-ami-from-snapshot)
+    `--block-device-mappings`
+    Specifies the `SnapshotID` from the imported snapshot.
 
 # Creating the bootstrap node in AWS
 
 To initialize the OpenShift Container Platform control plane, create the bootstrap node in Amazon Web Services (AWS) by uploading the Ignition config to an S3 bucket and launching the `CloudFormation` template.
 
-- Providing a location to serve the `bootstrap.ign` Ignition config file to your cluster. This file is located in your installation directory. The provided `CloudFormation` template assumes that the Ignition config files for your cluster are served from an S3 bucket. If you choose to serve the files from another location, you must modify the templates.
+- Providing a location to serve the `bootstrap.ign` Ignition config file to your cluster. This file is in your installation directory. The provided `CloudFormation` template assumes that you serve the Ignition config files for your cluster from an S3 bucket. If you choose to serve the files from another location, you must change the templates.
 
 - Using the provided `CloudFormation` template and a custom parameter file to create a stack of AWS resources. The stack represents the bootstrap node that your OpenShift Container Platform installation requires.
 
@@ -1226,9 +1234,15 @@ If you do not use the provided `CloudFormation` template to create your bootstra
     $ aws s3 mb s3://<cluster_name>-infra
     ```
 
-    - `<cluster_name>-infra` is the bucket name. When creating the `install-config.yaml` file, replace `<cluster_name>` with the name specified for the cluster.
+    where `<cluster_name>-infra` is the bucket name. When creating the `install-config.yaml` file, replace `<cluster_name>` with the name specified for the cluster.
 
-      You must use a presigned URL for your S3 bucket, instead of the `s3://` schema, if you are: **Deploying to a region that has endpoints that differ from the AWS SDK.** Deploying a proxy. \*\* Providing your own custom endpoints.
+    You must use a presigned URL for your S3 bucket, instead of the `s3://` schema, if you are:
+
+    - Deploying to a region that has endpoints that differ from the AWS SDK.
+
+    - Deploying a proxy.
+
+    - Providing your own custom endpoints.
 
 2.  Upload the `bootstrap.ign` Ignition config file to the bucket by running the following command:
 
@@ -1236,7 +1250,7 @@ If you do not use the provided `CloudFormation` template to create your bootstra
     $ aws s3 cp <installation_directory>/bootstrap.ign s3://<cluster_name>-infra/bootstrap.ign
     ```
 
-    - For `<installation_directory>`, specify the path to the directory that you stored the installation files in.
+    where `<installation_directory>` is the path to the directory that you stored the installation files in.
 
 3.  Verify that the file uploaded by running the following command:
 
@@ -1315,53 +1329,43 @@ If you do not use the provided `CloudFormation` template to create your bootstra
     ]
     ```
 
-    - The name for your cluster infrastructure that your Ignition config files encode for the cluster.
+    where:
 
-    - Specify the infrastructure name that you extracted from the Ignition config file metadata, which has the format `<cluster_name>-<random_string>`.
+    `InfrastructureName`
+    Specifies the name for your cluster infrastructure that your Ignition config files encode for the cluster. Specify the infrastructure name that you extracted from the Ignition config file metadata, which has the format `<cluster_name>-<random_string>`.
 
-    - Current Red Hat Enterprise Linux CoreOS (RHCOS) AMI to use for the bootstrap node based on your selected architecture.
+    `RhcosAmi`
+    Specifies the current Red Hat Enterprise Linux CoreOS (RHCOS) AMI to use for the bootstrap node based on your selected architecture. Specify a valid `AWS::EC2::Image::Id` value.
 
-    - Specify a valid `AWS::EC2::Image::Id` value.
+    `AllowedBootstrapSshCidr`
+    Specifies the CIDR block to allow SSH access to the bootstrap node. Specify a CIDR block in the format `x.x.x.x/16-24`.
 
-    - CIDR block to allow SSH access to the bootstrap node.
+    `PublicSubnet`
+    Specifies the public subnet in your VPC to launch the bootstrap node into. Specify the `PublicSubnetIds` value from the output of the `CloudFormation` template for the VPC.
 
-    - Specify a CIDR block in the format `x.x.x.x/16-24`.
+    `MasterSecurityGroupId`
+    Specifies the control plane security group ID for registering temporary rules. Specify the `MasterSecurityGroupId` value from the output of the `CloudFormation` template for the security group and roles.
 
-    - The public subnet that is associated with your VPC to launch the bootstrap node into.
+    `VpcId`
+    Specifies the VPC that the created resources will belong to. Specify the `VpcId` value from the output of the `CloudFormation` template for the VPC.
 
-    - Specify the `PublicSubnetIds` value from the output of the `CloudFormation` template for the VPC.
+    `BootstrapIgnitionLocation`
+    Specifies the location to fetch the bootstrap Ignition config file from. Specify the S3 bucket and file name in the form `s3://<bucket_name>/bootstrap.ign`.
 
-    - The control plane security group ID for registering temporary rules.
+    `AutoRegisterELB`
+    Specifies whether to register a network load balancer (NLB). Specify `yes` or `no`. If you specify `yes`, you must give a Lambda Amazon Resource Name (ARN) value.
 
-    - Specify the `MasterSecurityGroupId` value from the output of the `CloudFormation` template for the security group and roles.
+    `RegisterNlbIpTargetsLambdaArn`
+    Specifies the ARN for NLB IP target registration lambda group. Specify the `RegisterNlbIpTargetsLambda` value from the output of the `CloudFormation` template for DNS and load balancing. Use `arn:aws-us-gov` if deploying the cluster to an AWS `GovCloud` region.
 
-    - The VPC created resources will belong to.
+    `ExternalApiTargetGroupArn`
+    Specifies the ARN for external API load balancer target group. Specify the `ExternalApiTargetGroupArn` value from the output of the `CloudFormation` template for DNS and load balancing. Use `arn:aws-us-gov` if deploying the cluster to an AWS `GovCloud` region.
 
-    - Specify the `VpcId` value from the output of the `CloudFormation` template for the VPC.
+    `InternalApiTargetGroupArn`
+    Specifies the ARN for internal API load balancer target group. Specify the `InternalApiTargetGroupArn` value from the output of the `CloudFormation` template for DNS and load balancing. Use `arn:aws-us-gov` if deploying the cluster to an AWS `GovCloud` region.
 
-    - Location to fetch bootstrap Ignition config file from.
-
-    - Specify the S3 bucket and file name in the form `s3://<bucket_name>/bootstrap.ign`.
-
-    - Whether or not to register a network load balancer (NLB).
-
-    - Specify `yes` or `no`. If you specify `yes`, you must give a Lambda Amazon Resource Name (ARN) value.
-
-    - The ARN for NLB IP target registration lambda group.
-
-    - Specify the `RegisterNlbIpTargetsLambda` value from the output of the `CloudFormation` template for DNS and load balancing. Use `arn:aws-us-gov` if deploying the cluster to an AWS `GovCloud` region.
-
-    - The ARN for external API load balancer target group.
-
-    - Specify the `ExternalApiTargetGroupArn` value from the output of the `CloudFormation` template for DNS and load balancing. Use `arn:aws-us-gov` if deploying the cluster to an AWS `GovCloud` region.
-
-    - The ARN for internal API load balancer target group.
-
-    - Specify the `InternalApiTargetGroupArn` value from the output of the `CloudFormation` template for DNS and load balancing. Use `arn:aws-us-gov` if deploying the cluster to an AWS `GovCloud` region.
-
-    - The ARN for internal service load balancer target group.
-
-    - Specify the `InternalServiceTargetGroupArn` value from the output of the `CloudFormation` template for DNS and load balancing. Use `arn:aws-us-gov` if deploying the cluster to an AWS `GovCloud` region.
+    `InternalServiceTargetGroupArn`
+    Specifies the ARN for internal service load balancer target group. Specify the `InternalServiceTargetGroupArn` value from the output of the `CloudFormation` template for DNS and load balancing. Use `arn:aws-us-gov` if deploying the cluster to an AWS `GovCloud` region.
 
 5.  Copy the template from the **`CloudFormation` template for the bootstrap machine** section and save it as a YAML file on your computer. This template describes the bootstrap machine that your cluster requires.
 
@@ -1376,29 +1380,35 @@ If you do not use the provided `CloudFormation` template to create your bootstra
     </div>
 
     ``` terminal
-    $ aws cloudformation create-stack --stack-name <name>
-         --template-body file://<template>.yaml
-         --parameters file://<parameters>.json
+    $ aws cloudformation create-stack --stack-name <name> \
+         --template-body file://<template>.yaml \
+         --parameters file://<parameters>.json \
          --capabilities CAPABILITY_NAMED_IAM
     ```
 
-    - `<name>` is the name for the `CloudFormation` stack, such as `cluster-bootstrap`. You need the name of this stack if you remove the cluster.
+    where:
 
-    - `<template>` is the relative path to and name of the `CloudFormation` template YAML file that you saved.
+    `<name>`
+    Specifies the name for the `CloudFormation` stack, such as `cluster-bootstrap`. You need the name of this stack if you remove the cluster.
 
-    - `<parameters>` is the relative path to and name of the `CloudFormation` parameters JSON file.
+    `<template>`
+    Specifies the relative path to and name of the `CloudFormation` template YAML file that you saved.
 
-    - You must explicitly declare the `CAPABILITY_NAMED_IAM` capability because the provided template creates some `AWS::IAM::Role` and `AWS::IAM::InstanceProfile` resources.
+    `<parameters>`
+    Specifies the relative path to and name of the `CloudFormation` parameters JSON file.
 
-      <div class="formalpara-title">
+    `CAPABILITY_NAMED_IAM`
+    You must explicitly declare this capability because the provided template creates some `AWS::IAM::Role` and `AWS::IAM::InstanceProfile` resources.
 
-      **Example output**
+    <div class="formalpara-title">
 
-      </div>
+    **Example output**
 
-      ``` terminal
-      arn:aws:cloudformation:us-east-1:269333783861:stack/cluster-bootstrap/12944486-2add-11eb-9dee-12dace8e3a83
-      ```
+    </div>
+
+    ``` terminal
+    arn:aws:cloudformation:us-east-1:269333783861:stack/cluster-bootstrap/12944486-2add-11eb-9dee-12dace8e3a83
+    ```
 
 8.  Confirm that the template components exist:
 
@@ -1529,69 +1539,55 @@ If you do not use the provided `CloudFormation` template to create your control 
     ]
     ```
 
-    - The name for your cluster infrastructure that your Ignition config files encode for the cluster.
+    where:
 
-    - Specify the infrastructure name that you extracted from the Ignition config file metadata, which has the format `<cluster_name>-<random_string>`.
+    `InfrastructureName`
+    Specifies the name for your cluster infrastructure that your Ignition config files encode for the cluster. Specify the infrastructure name that you extracted from the Ignition config file metadata, which has the format `<cluster_name>-<random_string>`.
 
-    - Current Red Hat Enterprise Linux CoreOS (RHCOS) AMI to use for the control plane machines based on your selected architecture.
+    `RhcosAmi`
+    Specifies the current Red Hat Enterprise Linux CoreOS (RHCOS) AMI to use for the control plane machines based on your selected architecture. Specify an `AWS::EC2::Image::Id` value.
 
-    - Specify an `AWS::EC2::Image::Id` value.
+    `AutoRegisterDNS`
+    Specifies whether to perform DNS etcd registration. Specify `yes` or `no`. If you specify `yes`, you must give hosted zone information.
 
-    - Whether or not to perform DNS etcd registration.
+    `PrivateHostedZoneId`
+    Specifies the Route 53 private zone ID to register the etcd targets with. Specify the `PrivateHostedZoneId` value from the output of the `CloudFormation` template for DNS and load balancing.
 
-    - Specify `yes` or `no`. If you specify `yes`, you must give hosted zone information.
+    `PrivateHostedZoneName`
+    Specifies the Route 53 zone to register the targets with. Specify `<cluster_name>.<domain_name>` where `<domain_name>` is the Route 53 base domain that you used when you generated the `install-config.yaml` file for the cluster. Do not include the trailing period (.) that is displayed in the AWS console.
 
-    - The Route 53 private zone ID to register the etcd targets with.
+    `Master0Subnet`, `Master1Subnet`, `Master2Subnet`
+    Specifies a subnet, preferably private, to launch the control plane machines on. Specify a subnet from the `PrivateSubnets` value from the output of the `CloudFormation` template for DNS and load balancing.
 
-    - Specify the `PrivateHostedZoneId` value from the output of the `CloudFormation` template for DNS and load balancing.
+    `MasterSecurityGroupId`
+    Specifies the control plane security group ID to associate with control plane nodes. Specify the `MasterSecurityGroupId` value from the output of the `CloudFormation` template for the security group and roles.
 
-    - The Route 53 zone to register the targets with.
+    `IgnitionLocation`
+    Specifies the location to fetch the control plane Ignition config file from. Specify the generated Ignition config file location, `https://api-int.<cluster_name>.<domain_name>:22623/config/master`.
 
-    - Specify `<cluster_name>.<domain_name>` where `<domain_name>` is the Route 53 base domain that you used when you generated `install-config.yaml` file for the cluster. Do not include the trailing period (.) that is displayed in the AWS console.
+    `CertificateAuthorities`
+    Specifies the base64 encoded certificate authority string to use. Specify the value from the `master.ign` file that is in the installation directory. This value is the long string with the format `data:text/plain;charset=utf-8;base64,ABC…​xYz==`.
 
-    - A subnet, preferably private, to launch the control plane machines on.
+    `MasterInstanceProfileName`
+    Specifies the IAM profile to associate with control plane nodes. Specify the `MasterInstanceProfile` parameter value from the output of the `CloudFormation` template for the security group and roles.
 
-    - Specify a subnet from the `PrivateSubnets` value from the output of the `CloudFormation` template for DNS and load balancing.
+    `MasterInstanceType`
+    Specifies the type of AWS instance to use for the control plane machines based on your selected architecture. The instance type value corresponds to the minimum resource requirements for control plane machines. For example `m6i.xlarge` is a type for AMD64 and `m6g.xlarge` is a type for ARM64.
 
-    - The control plane security group ID to associate with control plane nodes.
+    `AutoRegisterELB`
+    Specifies whether to register a network load balancer (NLB). Specify `yes` or `no`. If you specify `yes`, you must give a Lambda Amazon Resource Name (ARN) value.
 
-    - Specify the `MasterSecurityGroupId` value from the output of the `CloudFormation` template for the security group and roles.
+    `RegisterNlbIpTargetsLambdaArn`
+    Specifies the ARN for NLB IP target registration lambda group. Specify the `RegisterNlbIpTargetsLambda` value from the output of the `CloudFormation` template for DNS and load balancing. Use `arn:aws-us-gov` if deploying the cluster to an AWS `GovCloud` region.
 
-    - The location to fetch control plane Ignition config file from.
+    `ExternalApiTargetGroupArn`
+    Specifies the ARN for external API load balancer target group. Specify the `ExternalApiTargetGroupArn` value from the output of the `CloudFormation` template for DNS and load balancing. Use `arn:aws-us-gov` if deploying the cluster to an AWS `GovCloud` region.
 
-    - Specify the generated Ignition config file location, `https://api-int.<cluster_name>.<domain_name>:22623/config/master`.
+    `InternalApiTargetGroupArn`
+    Specifies the ARN for internal API load balancer target group. Specify the `InternalApiTargetGroupArn` value from the output of the `CloudFormation` template for DNS and load balancing. Use `arn:aws-us-gov` if deploying the cluster to an AWS `GovCloud` region.
 
-    - The base64 encoded certificate authority string to use.
-
-    - Specify the value from the `master.ign` file that is in the installation directory. This value is the long string with the format `data:text/plain;charset=utf-8;base64,ABC…​xYz==`.
-
-    - The IAM profile to associate with control plane nodes.
-
-    - Specify the `MasterInstanceProfile` parameter value from the output of the `CloudFormation` template for the security group and roles.
-
-    - The type of AWS instance to use for the control plane machines based on your selected architecture.
-
-    - The instance type value corresponds to the minimum resource requirements for control plane machines. For example `m6i.xlarge` is a type for AMD64 and `m6g.xlarge` is a type for ARM64.
-
-    - Whether or not to register a network load balancer (NLB).
-
-    - Specify `yes` or `no`. If you specify `yes`, you must give a Lambda Amazon Resource Name (ARN) value.
-
-    - The ARN for NLB IP target registration lambda group.
-
-    - Specify the `RegisterNlbIpTargetsLambda` value from the output of the `CloudFormation` template for DNS and load balancing. Use `arn:aws-us-gov` if deploying the cluster to an AWS `GovCloud` region.
-
-    - The ARN for external API load balancer target group.
-
-    - Specify the `ExternalApiTargetGroupArn` value from the output of the `CloudFormation` template for DNS and load balancing. Use `arn:aws-us-gov` if deploying the cluster to an AWS `GovCloud` region.
-
-    - The ARN for internal API load balancer target group.
-
-    - Specify the `InternalApiTargetGroupArn` value from the output of the `CloudFormation` template for DNS and load balancing. Use `arn:aws-us-gov` if deploying the cluster to an AWS `GovCloud` region.
-
-    - The ARN for internal service load balancer target group.
-
-    - Specify the `InternalServiceTargetGroupArn` value from the output of the `CloudFormation` template for DNS and load balancing. Use `arn:aws-us-gov` if deploying the cluster to an AWS `GovCloud` region.
+    `InternalServiceTargetGroupArn`
+    Specifies the ARN for internal service load balancer target group. Specify the `InternalServiceTargetGroupArn` value from the output of the `CloudFormation` template for DNS and load balancing. Use `arn:aws-us-gov` if deploying the cluster to an AWS `GovCloud` region.
 
 2.  Copy the template from the **`CloudFormation` template for control plane machines** section and save it as a YAML file on your computer. This template describes the control plane machines that your cluster requires.
 
@@ -1606,32 +1602,37 @@ If you do not use the provided `CloudFormation` template to create your control 
     </div>
 
     ``` terminal
-    $ aws cloudformation create-stack --stack-name <name>
-         --template-body file://<template>.yaml
+    $ aws cloudformation create-stack --stack-name <name> \
+         --template-body file://<template>.yaml \
          --parameters file://<parameters>.json
     ```
 
-    - `<name>` is the name for the `CloudFormation` stack, such as `cluster-control-plane`. You need the name of this stack if you remove the cluster.
+    where:
 
-    - `<template>` is the relative path to and name of the `CloudFormation` template YAML file that you saved.
+    `<name>`
+    Specifies the name for the `CloudFormation` stack, such as `cluster-control-plane`. You need the name of this stack if you remove the cluster.
 
-    - `<parameters>` is the relative path to and name of the `CloudFormation` parameters JSON file.
+    `<template>`
+    Specifies the relative path to and name of the `CloudFormation` template YAML file that you saved.
 
-      <div class="formalpara-title">
+    `<parameters>`
+    Specifies the relative path to and name of the `CloudFormation` parameters JSON file.
 
-      **Example output**
+    <div class="formalpara-title">
 
-      </div>
+    **Example output**
 
-      ``` terminal
-      arn:aws:cloudformation:us-east-1:269333783861:stack/cluster-control-plane/21c7e2b0-2ee2-11eb-c6f6-0aa34627df4b
-      ```
+    </div>
 
-      <div class="note">
+    ``` terminal
+    arn:aws:cloudformation:us-east-1:269333783861:stack/cluster-control-plane/21c7e2b0-2ee2-11eb-c6f6-0aa34627df4b
+    ```
 
-      The `CloudFormation` template creates a stack that represents three control plane nodes.
+    <div class="note">
 
-      </div>
+    The `CloudFormation` template creates a stack that represents three control plane nodes.
+
+    </div>
 
 5.  Confirm that the template components exist:
 
@@ -1657,7 +1658,7 @@ link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/aws/
 
 # Creating the worker nodes in AWS
 
-You can create worker nodes in Amazon Web Services (AWS) for your cluster to use.
+To run application workloads on your OpenShift Container Platform cluster, create worker nodes in Amazon Web Services (AWS) by using the provided CloudFormation template.
 
 <div class="note">
 
@@ -1720,39 +1721,33 @@ If you do not use the provided CloudFormation template to create your worker nod
     ]
     ```
 
-    - The name for your cluster infrastructure that is encoded in your Ignition config files for the cluster.
+    where:
 
-    - Specify the infrastructure name that you extracted from the Ignition config file metadata, which has the format `<cluster-name>-<random-string>`.
+    `InfrastructureName`
+    Specifies the name for your cluster infrastructure that is encoded in your Ignition config files for the cluster. Set the value to the infrastructure name that you extracted from the Ignition config file metadata, which has the format `<cluster-name>-<random-string>`.
 
-    - Current Red Hat Enterprise Linux CoreOS (RHCOS) AMI to use for the worker nodes based on your selected architecture.
+    `RhcosAmi`
+    Specifies the current Red Hat Enterprise Linux CoreOS (RHCOS) AMI to use for the worker nodes based on your selected architecture. Set the value to a valid `AWS::EC2::Image::Id` value.
 
-    - Specify an `AWS::EC2::Image::Id` value.
+    `Subnet`
+    Specifies a subnet, preferably private, to start the worker nodes on. Set the value to a subnet from the `PrivateSubnets` value from the output of the CloudFormation template for DNS and load balancing.
 
-    - A subnet, preferably private, to start the worker nodes on.
+    `WorkerSecurityGroupId`
+    Specifies the worker security group ID to associate with worker nodes. Set the value to the `WorkerSecurityGroupId` value from the output of the CloudFormation template for the security group and roles.
 
-    - Specify a subnet from the `PrivateSubnets` value from the output of the CloudFormation template for DNS and load balancing.
+    `IgnitionLocation`
+    Specifies the location to fetch the bootstrap Ignition config file from. Set the value to the generated Ignition config location, `https://api-int.<cluster_name>.<domain_name>:22623/config/worker`.
 
-    - The worker security group ID to associate with worker nodes.
+    `CertificateAuthorities`
+    Specifies the base64 encoded certificate authority string to use. Set the value to the value from the `worker.ign` file that is in the installation directory. This value is the long string with the format `data:text/plain;charset=utf-8;base64,ABC…​xYz==`.
 
-    - Specify the `WorkerSecurityGroupId` value from the output of the CloudFormation template for the security group and roles.
+    `WorkerInstanceProfileName`
+    Specifies the IAM profile to associate with worker nodes. Set the value to the `WorkerInstanceProfile` parameter value from the output of the CloudFormation template for the security group and roles.
 
-    - The location to fetch the bootstrap Ignition config file from.
+    `WorkerInstanceType`
+    Specifies the type of AWS instance to use for the compute machines based on your selected architecture. The instance type value corresponds to the minimum resource requirements for compute machines. For example `m6i.large` is a type for AMD64 and `m6g.large` is a type for ARM64.
 
-    - Specify the generated Ignition config location, `https://api-int.<cluster_name>.<domain_name>:22623/config/worker`.
-
-    - Base64 encoded certificate authority string to use.
-
-    - Specify the value from the `worker.ign` file that is in the installation directory. This value is the long string with the format `data:text/plain;charset=utf-8;base64,ABC…​xYz==`.
-
-    - The IAM profile to associate with worker nodes.
-
-    - Specify the `WorkerInstanceProfile` parameter value from the output of the CloudFormation template for the security group and roles.
-
-    - The type of AWS instance to use for the compute machines based on your selected architecture.
-
-    - The instance type value corresponds to the minimum resource requirements for compute machines. For example `m6i.large` is a type for AMD64 and `m6g.large` is a type for ARM64.
-
-2.  Copy the template from the **CloudFormation template for worker machines** section of this topic and save it as a YAML file on your computer. This template describes the networking objects and load balancers that your cluster requires.
+2.  Copy the template from the **CloudFormation template for compute machines** section of this topic and save it as a YAML file on your computer. This template describes the compute machines that your cluster requires.
 
 3.  Optional: If you specified an `m5` instance type as the value for `WorkerInstanceType`, add that instance type to the `WorkerInstanceType.AllowedValues` parameter in the CloudFormation template.
 
@@ -1767,32 +1762,37 @@ If you do not use the provided CloudFormation template to create your worker nod
     </div>
 
     ``` terminal
-    $ aws cloudformation create-stack --stack-name <name>
+    $ aws cloudformation create-stack --stack-name <name> \
          --template-body file://<template>.yaml \
          --parameters file://<parameters>.json
     ```
 
-    - `<name>` is the name for the CloudFormation stack, such as `cluster-worker-1`. You need the name of this stack if you remove the cluster.
+    where:
 
-    - `<template>` is the relative path to and name of the CloudFormation template YAML file that you saved.
+    `<name>`
+    Specifies the name for the CloudFormation stack, such as `cluster-worker-1`. You need the name of this stack if you remove the cluster.
 
-    - `<parameters>` is the relative path to and name of the CloudFormation parameters JSON file.
+    `<template>`
+    Specifies the relative path to and name of the CloudFormation template YAML file that you saved.
 
-      <div class="formalpara-title">
+    `<parameters>`
+    Specifies the relative path to and name of the CloudFormation parameters JSON file.
 
-      **Example output**
+    <div class="formalpara-title">
 
-      </div>
+    **Example output**
 
-      ``` terminal
-      arn:aws:cloudformation:us-east-1:269333783861:stack/cluster-worker-1/729ee301-1c2a-11eb-348f-sd9888c65b59
-      ```
+    </div>
 
-      <div class="note">
+    ``` terminal
+    arn:aws:cloudformation:us-east-1:269333783861:stack/cluster-worker-1/729ee301-1c2a-11eb-348f-sd9888c65b59
+    ```
 
-      The CloudFormation template creates a stack that represents one worker node.
+    <div class="note">
 
-      </div>
+    The CloudFormation template creates a stack that represents one worker node.
+
+    </div>
 
 6.  Confirm that the template components exist:
 
@@ -1824,7 +1824,7 @@ link:https://raw.githubusercontent.com/openshift/installer/release-4.21/upi/aws/
 
 - [AWS `CloudFormation` console](https://console.aws.amazon.com/cloudformation/)
 
-## Creating the `CloudFormation` stack for compute machines
+## Creating the CloudFormation stack for compute machines
 
 You can create a stack of Amazon Web Services (AWS) resources for the compute machines by using the provided `CloudFormation` template.
 
@@ -1863,7 +1863,7 @@ When you use the `CloudFormation` template for the control plane machines, the t
   arn:aws:cloudformation:us-east-1:269333783861:stack/cluster-worker-1/729ee301-1c2a-11eb-348f-sd9888c65b59
   ```
 
-# Initializing the bootstrap sequence on Amazon Web Services (AWS) with user-provisioned infrastructure
+# Initializing the bootstrap sequence on AWS with user-provisioned infrastructure
 
 After creating all required infrastructure in AWS, you can start the bootstrap sequence that initializes the OpenShift Container Platform control plane. Run the installation program to monitor the bootstrap process until the control plane is ready.
 
@@ -1872,7 +1872,7 @@ After creating all required infrastructure in AWS, you can start the bootstrap s
 1.  Change to the directory that has the installation program and start the bootstrap process that initializes the OpenShift Container Platform control plane:
 
     ``` terminal
-    $ ./openshift-install wait-for bootstrap-complete --dir <installation_directory>
+    $ ./openshift-install wait-for bootstrap-complete --dir <installation_directory> \
         --log-level=info
     ```
 
@@ -2264,9 +2264,9 @@ After completing the initial Operator configuration for your OpenShift Container
 
 # Creating the Ingress DNS records
 
-If you removed the DNS Zone configuration, you must manually create DNS records that point to the Ingress load balancer.
+If you removed the DNS zone configuration during installation, you must manually create DNS records that point to the Ingress load balancer so that your OpenShift Container Platform cluster routes are reachable.
 
-You can create either a wildcard record or specific records. Although the following procedure uses A records, you can use other record types that you require, such as CNAME or alias.
+You can create either a wildcard record or specific records. While the following procedure uses A records, you can use other record types that you require, such as CNAME or alias.
 
 - You deployed an OpenShift Container Platform cluster on Amazon Web Services (AWS) that uses infrastructure that you provisioned.
 
@@ -2274,7 +2274,7 @@ You can create either a wildcard record or specific records. Although the follow
 
 - You installed the `jq` package.
 
-- You downloaded the AWS CLI and installed it on your computer. See [Install the AWS CLI Using the Bundled Installer (Linux, macOS, or UNIX)](https://docs.aws.amazon.com/cli/latest/userguide/install-bundle.html).
+- You downloaded the AWS CLI and installed it on your computer. See [Install the AWS CLI Using the Bundled Installer (Linux, macOS, or Unix)](https://docs.aws.amazon.com/cli/latest/userguide/install-bundle.html).
 
 1.  Find the routes to create.
 
@@ -2323,7 +2323,7 @@ You can create either a wildcard record or specific records. Although the follow
     $ aws elb describe-load-balancers | jq -r '.LoadBalancerDescriptions[] | select(.DNSName == "<external_ip>").CanonicalHostedZoneNameID'
     ```
 
-    where `<external_ip>` is the value of the external IP address of the Ingress Operator load balancer that you obtained.
+    For `<external_ip>`, specify the value of the external IP address of the Ingress Operator load balancer that you obtained.
 
     <div class="formalpara-title">
 
@@ -2346,7 +2346,7 @@ You can create either a wildcard record or specific records. Although the follow
                 --output text
     ```
 
-    where `<domain_name>` is the Route 53 base domain for your OpenShift Container Platform cluster.
+    For `<domain_name>`, specify the Route 53 base domain for your OpenShift Container Platform cluster.
 
     <div class="formalpara-title">
 
@@ -2384,7 +2384,7 @@ You can create either a wildcard record or specific records. Although the follow
     where:
 
     `<private_hosted_zone_id>`
-    Specifies the value from the output of the `CloudFormation` template for DNS and load balancing.
+    Specifies the value from the output of the CloudFormation template for DNS and load balancing.
 
     `<cluster_domain>`
     Specifies the domain or subdomain that you use with your OpenShift Container Platform cluster.
@@ -2416,21 +2416,9 @@ You can create either a wildcard record or specific records. Although the follow
     > }'
     ```
 
-    where:
+    where: `<public_hosted_zone_id>`:: Specifies the public hosted zone for your domain. `<cluster_domain>`:: Specifies the domain or subdomain that you use with your OpenShift Container Platform cluster. `<hosted_zone_id>`:: Specifies the public hosted zone ID for the load balancer that you obtained. `<external_ip>`:: Specifies the value of the external IP address of the Ingress Operator load balancer. Ensure that you include the trailing period (`.`) in this parameter value.
 
-    `<public_hosted_zone_id>`
-    Specifies the public hosted zone for your domain.
-
-    `<cluster_domain>`
-    Specifies the domain or subdomain that you use with your OpenShift Container Platform cluster.
-
-    `<hosted_zone_id>`
-    Specifies the public hosted zone ID for the load balancer that you obtained.
-
-    `<external_ip>`
-    Specifies the value of the external IP address of the Ingress Operator load balancer. Ensure that you include the trailing period (`.`) in this parameter value.
-
-# Completing an Amazon Web Services (AWS) installation on user-provisioned infrastructure
+# Completing an AWS installation on user-provisioned infrastructure
 
 To finish installing OpenShift Container Platform on user-provisioned AWS infrastructure, monitor the deployment until it completes successfully.
 

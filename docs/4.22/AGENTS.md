@@ -247,7 +247,7 @@ Root: ./
 ### etcd
 
 |etcd:{etcd-overview.md,etcd-practices.md,etcd-performance.md,etcd-encrypt.md,etcd-guidance-span.md}
-|etcd/etcd-backup-restore:{etcd-backup.md,replace-unhealthy-etcd-member.md,etcd-disaster-recovery.md}
+|etcd/etcd-backup-restore:{etcd-backup.md,replace-healthy-etcd-member.md,replace-unhealthy-etcd-member.md,etcd-disaster-recovery.md}
 |etcd/KMS_v2:{index.md,kms-configuring.md,kms-disabling.md}
 
 ### Hosted control planes
@@ -366,7 +366,7 @@ Root: ./
 |backup_and_restore/application_backup_and_restore/installing:{about-oadp-data-mover.md,oadp-backup-restore-csi-snapshots.md,configuring-backup-restore-pvc-datamover.md,overriding-kopia-algorithms.md}
 |backup_and_restore/application_backup_and_restore/oadp-advanced-topics:{oadp-different-kubernetes-api-versions.md,oadp-backing-up-data-one-cluster-restoring-another-cluster.md,oadp-storage-class-mapping-main.md}
 |backup_and_restore/application_backup_and_restore/troubleshooting:{troubleshooting.md,oadp-cli-tool.md,pods-crash-or-restart-due-to-lack-of-memory-or-cpu.md,restoring-workarounds-for-velero-backups-that-use-admission-webhooks.md,oadp-installation-issues.md,oadp-operator-issues.md,oadp-timeouts.md,backup-and-restore-cr-issues.md,restic-issues.md,oadp-data-protection-test.md,using-the-must-gather-tool.md,oadp-monitoring.md}
-|backup_and_restore/control_plane_backup_and_restore:{backing-up-etcd.md,replacing-unhealthy-etcd-member.md}
+|backup_and_restore/control_plane_backup_and_restore:{backing-up-etcd.md,replacing-healthy-etcd-member.md,replacing-unhealthy-etcd-member.md}
 |backup_and_restore/control_plane_backup_and_restore/disaster_recovery:{about-disaster-recovery.md,quorum-restoration.md,scenario-2-restoring-cluster-state.md,scenario-3-expired-certs.md}
 
 ### Migrating from version 3 to 4
@@ -420,7 +420,7 @@ Root: ./
 |virt/install:{preparing-cluster-for-virt.md,virt-requirements.md,installing-virt.md,uninstalling-virt.md,virt-install-ibm-cloud-bm-nodes.md}
 |virt/post_installation_configuration:{virt-post-install-config.md,virt-node-placement-virt-components.md,virt-post-install-network-config.md,virt-post-install-storage-config.md,virt-self-validation-checkups.md,virt-physical-cores-allocation-vms.md,virt-configuring-higher-vm-workload-density.md,virt-vm-recovery-from-node-failures.md,virt-configuring-certificate-rotation.md,virt-kubevirt-redfish.md}
 |virt/updating:{upgrading-virt.md}
-|virt/creating_vm:{virt-creating-vms-from-cli.md,virt-creating-vms-from-web-images.md,virt-creating-vms-uploading-images.md,virt-creating-vms-from-container-disks.md,virt-creating-vms-by-cloning-pvcs.md,virt-configuring-ibm-secure-execution-vms-ibm-z.md,virt-creating-vms-aws-li-windows.md,virt-creating-vms-from-instance-types.md,virt-creating-vms-from-templates.md,virt-creating-vms-from-rh-images-overview.md,virt-cloning-vms.md}
+|virt/creating_vm:{virt-creating-vms-from-cli.md,virt-creating-vms-from-web-images.md,virt-creating-vms-uploading-images.md,virt-creating-vms-from-container-disks.md,virt-creating-vms-by-cloning-pvcs.md,virt-configuring-ibm-secure-execution-vms-ibm-z.md,virt-creating-vms-aws-li-windows.md,virt-creating-vms-from-instance-types.md,virt-creating-vms-from-templates.md,virt-creating-vms-from-rh-images-overview.md,virt-import-dv-vms.md,virt-cloning-vms.md}
 |virt/managing_vms:{virt-list-vms.md,virt-installing-qemu-guest-agent.md,virt-install-virtio-drivers-on-windows-vms.md,virt-update-virtio-drivers.md,virt-accessing-vm-consoles.md,virt-customize-web-console.md,virt-edit-vms.md,virt-edit-boot-order.md,virt-delete-vms.md,virt-enabling-disabling-vm-delete-protection.md,virt-exporting-vms.md,virt-manage-vmis.md,virt-controlling-vm-states.md,virt-using-vtpm-devices.md,virt-managing-vms-openshift-pipelines.md,virt-migrating-vms-in-single-cluster-to-different-storage-class.md}
 |virt/managing_vms/ssh:{virt-accessing-vm-ssh.md,virt-using-virtctl-ssh.md,virt-using-secondary-networks-ssh.md,virt-using-services.md}
 |virt/managing_vms/advanced_vm_management:{virt-working-with-resource-quotas-for-vms.md,virt-understanding-aaq-operator.md,virt-specifying-nodes-for-vms.md,virt-uefi-mode-for-vms.md,virt-configuring-pxe-booting.md,virt-using-huge-pages-with-vms.md,virt-dedicated-resources-vm.md,virt-configuring-pci-passthrough.md,virt-configuring-virtual-gpus.md,virt-configuring-usb-host-passthrough.md,virt-enabling-descheduler-evictions.md,virt-high-availability-for-vms.md,virt-vm-control-plane-tuning.md,virt-assigning-compute-resources.md,virt-about-multi-queue.md,virt-managing-virtual-machines-by-using-openshift-gitops.md,virt-NUMA-topology.md}

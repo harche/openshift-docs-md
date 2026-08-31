@@ -6,13 +6,13 @@ The following list outlines in detail the steps to prepare to install an OpenShi
 
 - Verifying internet connectivity for your cluster.
 
-- [Configuring an AWS account](../../../installing/installing_aws/installing-aws-account.xml#installing-aws-account).
+- Configuring an AWS account. For more information, see "Configuring an AWS account".
 
 - Downloading the installation program.
 
   <div class="note">
 
-  If you are installing in a disconnected environment, you extract the installation program from the mirrored content. For more information, see [Mirroring images for a disconnected installation](../../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images).
+  If you are installing in a disconnected environment, you extract the installation program from the mirrored content. For more information, see "Mirroring images for a disconnected installation".
 
   </div>
 
@@ -26,7 +26,7 @@ The following list outlines in detail the steps to prepare to install an OpenShi
 
 - Generating an SSH key pair. You can use this key pair to authenticate into the OpenShift Container Platform cluster’s nodes after it is deployed.
 
-- If the cloud identity and access management (IAM) APIs are not accessible in your environment, or if you do not want to store an administrator-level credential secret in the `kube-system` namespace, [manually creating long-term credentials for AWS](../../../installing/installing_aws/ipi/installing-aws-customizations.xml#manually-create-iam_installing-aws-customizations) or [configuring an AWS cluster to use short-term credentials](../../../installing/installing_aws/ipi/installing-aws-customizations.xml#installing-aws-with-short-term-creds_installing-aws-customizations) with (AWS STS).
+- If the cloud identity and access management (IAM) APIs are not accessible in your environment, or if you do not want to store an administrator-level credential secret in the `kube-system` namespace, manually creating long-term credentials for AWS or configuring an AWS cluster to use short-term credentials with (AWS STS). For more information, see "Manually creating long-term credentials" and "Configuring an AWS cluster to use short-term credentials".
 
 # Internet access for OpenShift Container Platform
 
@@ -305,5 +305,15 @@ You must use a local key, not one that you configured with platform-specific app
 To provide metrics about cluster health and the success of updates, the Telemetry service requires internet access. When connected, this service runs automatically by default and registers your cluster to [OpenShift Cluster Manager](https://console.redhat.com/openshift).
 
 After you confirm that your [OpenShift Cluster Manager](https://console.redhat.com/openshift) inventory is correct, either maintained automatically by Telemetry or manually by using OpenShift Cluster Manager,use subscription watch to track your OpenShift Container Platform subscriptions at the account or multi-cluster level. For more information about subscription watch, see "Data Gathered and Used by Red Hat’s subscription services" in the *Additional resources* section.
+
+# Additional resources
+
+- [Configuring an AWS account](../../../installing/installing_aws/installing-aws-account.xml#installing-aws-account)
+
+- [Mirroring images for a disconnected installation](../../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images)
+
+- [Manually creating long-term credentials](../../../installing/installing_aws/ipi/installing-aws-customizations.xml#manually-create-iam_installing-aws-customizations)
+
+- [Configuring an AWS cluster to use short-term credentials](../../../installing/installing_aws/ipi/installing-aws-customizations.xml#installing-aws-with-short-term-creds_installing-aws-customizations)
 
 - [About remote health monitoring](../../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)

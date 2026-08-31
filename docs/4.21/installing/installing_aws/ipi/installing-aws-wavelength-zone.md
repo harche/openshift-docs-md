@@ -282,7 +282,7 @@ Use the machine types included in the following charts for your AWS instances. I
 
 </div>
 
-**Machine types based on 64-bit x86 architecture for AWS Wavelength Zones**
+See the following machine types based on 64-bit x86 architecture for AWS Wavelength Zones:
 
 - `r5.*`
 
@@ -426,7 +426,7 @@ You can quickly install a cluster on Amazon Web Services (AWS) to extend compute
 
 By using this installation route, the installation program automatically creates network resources and Wavelength Zones subnets for each zone that you defined in your configuration file. To customize the installation, you must modify parameters in the `install-config.yaml` file before you deploy the cluster.
 
-## Modifying an installation configuration file to use AWS Wavelength Zones
+## Modifying an installation configuration file to use Amazon Web Services (AWS) Wavelength Zones
 
 Modify an `install-config.yaml` file to include AWS Wavelength Zones.
 
@@ -456,35 +456,35 @@ Modify an `install-config.yaml` file to include AWS Wavelength Zones.
     #...
     ```
 
-    - The AWS Region name.
+    where:
 
-    - The list of Wavelength Zones names that you use must exist in the same AWS Region specified in the `platform.aws.region` field.
+    `platform.aws.region`
+    Specifies the AWS Region name.
 
-      <div class="formalpara-title">
+    `compute.platform.aws.zones`
+    Specifies the list of Wavelength Zones names to use. The zones must exist in the same AWS Region specified in the `platform.aws.region` field.
 
-      **Example of a configuration to install a cluster in the `us-west-2` AWS Region that extends edge nodes to Wavelength Zones in `Los Angeles` and `Las Vegas` locations**
+    The following example shows a configuration for installing a cluster in the `us-west-2` AWS Region that extends edge nodes to Wavelength Zones in `Los Angeles` and `Las Vegas` locations:
 
-      </div>
-
-      ``` yaml
-      apiVersion: v1
-      baseDomain: example.com
-      metadata:
-        name: cluster-name
+    ``` yaml
+    apiVersion: v1
+    baseDomain: example.com
+    metadata:
+      name: cluster-name
+    platform:
+      aws:
+        region: us-west-2
+    compute:
+    - name: edge
       platform:
         aws:
-          region: us-west-2
-      compute:
-      - name: edge
-        platform:
-          aws:
-            zones:
-            - us-west-2-wl1-lax-wlz-1
-            - us-west-2-wl1-las-wlz-1
-      pullSecret: '{"auths": ...}'
-      sshKey: 'ssh-ed25519 AAAA...'
-      #...
-      ```
+          zones:
+          - us-west-2-wl1-lax-wlz-1
+          - us-west-2-wl1-las-wlz-1
+    pullSecret: '{"auths": ...}'
+    sshKey: 'ssh-ed25519 AAAA...'
+    #...
+    ```
 
 2.  Deploy your cluster.
 
@@ -571,8 +571,8 @@ If you do not use the provided CloudFormation template to create your AWS infras
     </div>
 
     ``` terminal
-    $ aws cloudformation create-stack --stack-name <name> \//
-         --template-body file://<template>.yaml \//
+    $ aws cloudformation create-stack --stack-name <name> \
+         --template-body file://<template>.yaml \
          --parameters file://<parameters>.json
     ```
 
@@ -1178,15 +1178,15 @@ If you do not use the provided CloudFormation template to create your Amazon Web
     `${SUBNET_CIDR_PVT}`
     Specifies a valid CIDR block that is used to create the private subnet. This block must be part of the VPC CIDR block `VpcCidr`.
 
-<div class="formalpara-title">
+    <div class="formalpara-title">
 
-**Example output**
+    **Example output**
 
-</div>
+    </div>
 
-``` terminal
-arn:aws:cloudformation:us-east-1:123456789012:stack/<stack_name>/dbedae40-820e-11eb-2fd3-12a48460849f
-```
+    ``` terminal
+    arn:aws:cloudformation:us-east-1:123456789012:stack/<stack_name>/dbedae40-820e-11eb-2fd3-12a48460849f
+    ```
 
 - Confirm that the template components exist by running the following command:
 
@@ -1299,7 +1299,7 @@ Outputs:
       !Join ["", [!Ref PrivateSubnet]]
 ```
 
-## Modifying an installation configuration file to use AWS Wavelength Zones subnets
+## Modifying an installation configuration file to use Amazon Web Services (AWS) Wavelength Zones subnets
 
 Modify your `install-config.yaml` file to include Wavelength Zones subnets.
 
@@ -1333,7 +1333,7 @@ Modify your `install-config.yaml` file to include Wavelength Zones subnets.
   # ...
   ```
 
-  - List of subnet IDs created in the zones: Availability and Wavelength Zones.
+  `platform.aws.subnets` specifies the list of subnet IDs created in the zones: Availability and Wavelength Zones.
 
 <!-- -->
 
@@ -1606,14 +1606,16 @@ After you install a cluster that uses AWS Wavelength Zones infrastructure, check
 
     </div>
 
-        NAME                                        PHASE     TYPE          REGION      ZONE               AGE
-        cluster-7xw5g-edge-us-east-1-wl1-nyc-wlz-1-wbclh  Running   c5d.2xlarge   us-east-1   us-east-1-wl1-nyc-wlz-1  3h
-        cluster-7xw5g-master-0                            Running   m6i.xlarge    us-east-1   us-east-1a               3h4m
-        cluster-7xw5g-master-1                            Running   m6i.xlarge    us-east-1   us-east-1b               3h4m
-        cluster-7xw5g-master-2                            Running   m6i.xlarge    us-east-1   us-east-1c               3h4m
-        cluster-7xw5g-worker-us-east-1a-rtp45             Running   m6i.xlarge    us-east-1   us-east-1a               3h
-        cluster-7xw5g-worker-us-east-1b-glm7c             Running   m6i.xlarge    us-east-1   us-east-1b               3h
-        cluster-7xw5g-worker-us-east-1c-qfvz4             Running   m6i.xlarge    us-east-1   us-east-1c               3h
+    ``` terminal
+    NAME                                        PHASE     TYPE          REGION      ZONE               AGE
+    cluster-7xw5g-edge-us-east-1-wl1-nyc-wlz-1-wbclh  Running   c5d.2xlarge   us-east-1   us-east-1-wl1-nyc-wlz-1  3h
+    cluster-7xw5g-master-0                            Running   m6i.xlarge    us-east-1   us-east-1a               3h4m
+    cluster-7xw5g-master-1                            Running   m6i.xlarge    us-east-1   us-east-1b               3h4m
+    cluster-7xw5g-master-2                            Running   m6i.xlarge    us-east-1   us-east-1c               3h4m
+    cluster-7xw5g-worker-us-east-1a-rtp45             Running   m6i.xlarge    us-east-1   us-east-1a               3h
+    cluster-7xw5g-worker-us-east-1b-glm7c             Running   m6i.xlarge    us-east-1   us-east-1b               3h
+    cluster-7xw5g-worker-us-east-1c-qfvz4             Running   m6i.xlarge    us-east-1   us-east-1c               3h
+    ```
 
 3.  To check nodes with edge roles, run the following command:
 
@@ -1634,6 +1636,6 @@ After you install a cluster that uses AWS Wavelength Zones infrastructure, check
 
 # Additional resources
 
-- [Validating an installation](../../../installing/validation_and_troubleshooting/validating-an-installation.xml#validating-an-installation).
+- [Validating an installation](../../../installing/validation_and_troubleshooting/validating-an-installation.xml#validating-an-installation)
 
-- If necessary, you can [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting).
+- [Remote health reporting](../../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)

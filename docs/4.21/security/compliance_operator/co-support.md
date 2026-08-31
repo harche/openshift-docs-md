@@ -4,7 +4,7 @@ You can find support resources for the Compliance Operator, including lifecycle 
 
 The Compliance Operator is a "Rolling Stream" Operator, meaning updates are available asynchronously of OpenShift Container Platform releases. For more information, see "OpenShift Operator Life Cycles" on the Red Hat Customer Portal.
 
-# Getting support
+# Get support
 
 Red Hat offers several support channels to help you troubleshoot issues and get the most from OpenShift Container Platform.
 

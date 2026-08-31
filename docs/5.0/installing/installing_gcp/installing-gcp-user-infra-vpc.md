@@ -425,6 +425,8 @@ Some instance types require the use of Hyperdisk storage. If you use an instance
 
 </div>
 
+See the following machine series:
+
 <https://raw.githubusercontent.com/openshift/installer/release-4.22/docs/user/gcp/tested_instance_types.md>
 
 ## Using custom machine types

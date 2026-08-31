@@ -217,9 +217,15 @@ In OpenShift Container Platform, consider these two supported limits for process
 
   The default value depends on node resources. In OpenShift Container Platform, this value is controlled by the `systemReserved` parameter in a kubelet configuration, which reserves PIDs on each node based on the total resources of the node. For more information, see "Allocating resources for nodes in an OpenShift Container Platform cluster".
 
-When a pod exceeds the allowed maximum number of PIDs per pod, the pod might stop functioning correctly and might be evicted from the node. See [the Kubernetes documentation for eviction signals and thresholds](https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals-and-thresholds) for more information.
+When a pod exceeds the allowed maximum number of PIDs per pod, the pod might stop functioning correctly and might be evicted from the node. For more information about eviction signals and thresholds, see *Additional resources*.
 
 When a node exceeds the allowed maximum number of PIDs per node, the node can become unstable because new processes cannot have PIDs assigned. If existing processes cannot complete without creating additional processes, the entire node can become unusable and require reboot. This situation can result in data loss, depending on the processes and applications being run. Customer administrators and Red Hat Site Reliability Engineering are notified when this threshold is reached, and a `Worker node is experiencing PIDPressure` warning will appear in the cluster logs.
+
+- [Configuring node resources](https://access.redhat.com/documentation/en-us/openshift_container_platform/latest/html-single/nodes/index#nodes-nodes-resources-configuring)
+
+- [Kubernetes system-reserved parameter](https://kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/#system-reserved)
+
+- [Kubernetes eviction signals and thresholds](https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals-and-thresholds)
 
 ## Risks of setting higher process ID limits for OpenShift Container Platform pods
 
