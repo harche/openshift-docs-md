@@ -230,7 +230,7 @@ Specifies the certificate trust bundle. If the Azure Stack Hub environment is us
 
 # Manually manage cloud credentials
 
-The Cloud Credential Operator (CCO) only supports your cloud provider in manual mode. As a result, you must specify the identity and access management (IAM) secrets for your cloud provider.
+You must manually create and configure the identity and access management (IAM) secrets for your OpenShift Container Platform cluster because the Cloud Credential Operator (CCO) only supports manual mode for your cloud provider.
 
 1.  If you have not previously created installation manifest files, do so by running the following command:
 
@@ -384,7 +384,7 @@ If the Azure Stack Hub environment is using an internal Certificate Authority (C
 
 # Deploying the cluster
 
-To deploy your OpenShift Container Platform cluster, you can initialize installation by running the `openshift-install create cluster` command from the directory that contains the installation program. The installation program provisions infrastructure and completes cluster setup.
+To deploy your OpenShift Container Platform cluster, you initialize installation by running the `openshift-install create cluster` command from the directory that contains the installation program. The installation program provisions the required infrastructure and completes the cluster setup.
 
 <div class="important">
 
@@ -407,9 +407,11 @@ You can run the `create cluster` command of the installation program only once, 
       --log-level=info
   ```
 
-  - For `<installation_directory>`, specify the location of your customized `./install-config.yaml` file.
+  where:
 
-  - To view different installation details, specify `warn`, `debug`, or `error` instead of `info`.
+  - `<installation_directory>`: Specifies the location of your customized `./install-config.yaml` file.
+
+  - `--log-level`: Specifies the log level. To view different installation details, specify `warn`, `debug`, or `error` instead of `info`.
 
 <div class="formalpara-title">
 
@@ -429,11 +431,7 @@ When the cluster deployment completes successfully:
 
   </div>
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
+  The following example shows the expected output:
 
   ``` terminal
   ...

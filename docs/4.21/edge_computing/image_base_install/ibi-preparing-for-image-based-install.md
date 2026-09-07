@@ -496,4 +496,10 @@ Use the Lifecycle Agent to generate a seed image from a managed cluster. The Ope
 
   The `SeedGenCompleted` type indicates that the seed image generation is complete.
 
-  If you want to generate more seed images, you must provision a new seed cluster with the version that you want to generate a seed image from.
+  <div class="important">
+
+  After the seed image generation completes, do not use the seed cluster. Do not continue to run `oc` commands against the seed cluster or use it to manage managed clusters.
+
+  If you access the seed cluster after generating the seed image, you can meet TLS certificate validation errors because the seed cluster certificates expire during seed image generation. If you need to generate another seed image, provision a new seed cluster.
+
+  </div>

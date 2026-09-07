@@ -44,7 +44,7 @@ If your cluster cannot have direct internet access, you can perform a restricted
 
 # Deploying the cluster
 
-To deploy your OpenShift Container Platform cluster, you can initialize installation by running the `openshift-install create cluster` command from the directory that contains the installation program. The installation program provisions infrastructure and completes cluster setup.
+To deploy your OpenShift Container Platform cluster, you initialize installation by running the `openshift-install create cluster` command from the directory that contains the installation program. The installation program provisions the required infrastructure and completes the cluster setup.
 
 <div class="important">
 
@@ -71,15 +71,13 @@ You can run the `create cluster` command of the installation program only once, 
         --log-level=info
     ```
 
-    - For `<installation_directory>`, specify the directory name to store the files that the installation program creates.
+    where:
 
-    - To view different installation details, specify `warn`, `debug`, or `error` instead of `info`.
+    - `<installation_directory>`: Specifies the directory name to store the files that the installation program creates.
 
-    When specifying the directory:
+    - `--log-level`: Specifies the log level. To view different installation details, specify `warn`, `debug`, or `error` instead of `info`.
 
-    - Verify that the directory has the `execute` permission. This permission is required to run Terraform binaries under the installation directory.
-
-    - Use an empty directory. Some installation assets, such as bootstrap X.509 certificates, have short expiration intervals, therefore you must not reuse an installation directory. If you want to reuse individual files from another cluster installation, you can copy them into your directory. However, the file names for the installation assets might change between releases. Use caution when copying installation files from an earlier OpenShift Container Platform version.
+    When specifying the directory: \* Verify that the directory has the `execute` permission. This permission is required to run Terraform binaries under the installation directory. \* Use an empty directory. Some installation assets, such as bootstrap X.509 certificates, have short expiration intervals, therefore you must not reuse an installation directory. If you want to reuse individual files from another cluster installation, you can copy them into your directory. However, the file names for the installation assets might change between releases. Use caution when copying installation files from an earlier OpenShift Container Platform version.
 
 2.  Provide values at the prompts:
 
@@ -155,11 +153,7 @@ When the cluster deployment completes successfully:
 
   </div>
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
+  The following example shows the expected output:
 
   ``` terminal
   ...

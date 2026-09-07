@@ -60,7 +60,7 @@ To install OpenShift Container Platform on Amazon Web Services by using user-pro
 
 You generate and customize the `install-config.yaml` file, Kubernetes manifests, and Ignition config files. You also have the option to first set up a separate `var` partition during the preparation phases of installation.
 
-## Optional: Creating a separate `/var` partition
+## Creating a separate `/var` partition
 
 To isolate growing storage for containers, etcd, or logs, you can optionally create a separate `/var` partition on worker nodes before you generate Ignition configs.
 
@@ -457,11 +457,11 @@ The installation program converts the installation configuration into Kubernetes
 
 To identify your cluster resources in Amazon Web Services, extract the unique infrastructure name from the Ignition config files.
 
-The infrastructure name is also used to locate the appropriate AWS resources during an OpenShift Container Platform installation. The provided CloudFormation templates contain references to this infrastructure name, so you must extract it.
+The Ignition config files contain a unique cluster identifier that you can use to uniquely identify your cluster in Amazon Web Services. The infrastructure name is also used to locate the appropriate AWS resources during an OpenShift Container Platform installation. The provided CloudFormation templates contain references to this infrastructure name, so you must extract it.
 
 <div class="warning">
 
-Do not run the `openshift-install create manifests` command again after creating any Google Cloud resources. Running the command again generates a new cluster identifier, which will cause errors in existing resources. If you need to regenerate the manifests because you modified the `install-config.yaml` file, delete any Google Cloud resources you created and recreate them with the new cluster identifier.
+Do not run the `openshift-install create manifests` command again after creating any Google Cloud resources. Running the command again generates a new cluster identifier, which will cause errors in existing resources. If you need to regenerate the manifests because you modified the `install-config.yaml` file, delete any Google Cloud resources you created and re-create them with the new cluster identifier.
 
 </div>
 
@@ -1895,6 +1895,8 @@ After creating all required infrastructure in AWS, you can start the bootstrap s
       INFO It is now safe to remove the bootstrap resources
       INFO Time elapsed: 1s
       ```
+
+      The bootstrapping completion wait time varies per platform.
 
       If the command exits without a `FATAL` warning, your OpenShift Container Platform control plane has initialized.
 

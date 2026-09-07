@@ -54,7 +54,7 @@ To complete a restricted network installation, you must create a registry that m
 
 <div class="important">
 
-Because of the complexity of the configuration for user-provisioned installations, consider completing a standard user-provisioned infrastructure installation before you attempt a restricted network installation using user-provisioned infrastructure. Completing this test installation might make it easier to isolate and troubleshoot any issues that might arise during your installation in a restricted network.
+Because of the complexity of the configuration for user-provisioned installations, consider completing a standard user-provisioned infrastructure installation before you try a restricted network installation using user-provisioned infrastructure. Completing this test installation might make it easier to isolate and troubleshoot any issues that might arise during your installation in a restricted network.
 
 </div>
 
@@ -988,7 +988,7 @@ You must use a local key, not one that you configured with platform-specific app
     $ ssh-add <path>/<file_name>
     ```
 
-    Specifies the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`
+    Specify the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`.
 
     <div class="formalpara-title">
 
@@ -1602,7 +1602,7 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 </dd>
 <dt><code>unix:&lt;file&gt;</code></dt>
 <dd>
-<p>A Unix Domain Socket file specified by <code>&lt;file&gt;</code>.</p>
+<p>A UNIX Domain Socket file specified by <code>&lt;file&gt;</code>.</p>
 </dd>
 <dt><code>null</code></dt>
 <dd>
@@ -1682,7 +1682,7 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <tr class="odd">
 <td style="text-align: left;"><p><code>internalMasqueradeSubnet</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>The masquerade IPv4 addresses that are used internally to enable host to service traffic. The host is configured with these IP addresses as well as the shared gateway bridge interface. The default value is <code>169.254.169.0/29</code>.</p>
+<td style="text-align: left;"><p>The masquerade IPv4 addresses that are used internally to enable host to service traffic. The host is configured with these IP addresses and the shared gateway bridge interface. The default value is <code>169.254.169.0/29</code>.</p>
 <div class="important">
 <p>For OpenShift Container Platform 4.17 and later versions, clusters use <code>169.254.0.0/17</code> as the default masquerade subnet. For upgraded clusters, there is no change to the default masquerade subnet.</p>
 </div></td>
@@ -1710,7 +1710,7 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <tr class="odd">
 <td style="text-align: left;"><p><code>internalMasqueradeSubnet</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>The masquerade IPv6 addresses that are used internally to enable host to service traffic. The host is configured with these IP addresses as well as the shared gateway bridge interface. The default value is <code>fd69::/125</code>.</p>
+<td style="text-align: left;"><p>The masquerade IPv6 addresses that are used internally to enable host to service traffic. The host is configured with these IP addresses and the shared gateway bridge interface. The default value is <code>fd69::/125</code>.</p>
 <div class="important">
 <p>For OpenShift Container Platform 4.17 and later versions, clusters use <code>fd69::/112</code> as the default masquerade subnet. For upgraded clusters, there is no change to the default masquerade subnet.</p>
 </div></td>
@@ -1752,7 +1752,7 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 
 <div class="formalpara-title">
 
-**Example OVN-Kubernetes configuration with IPSec enabled**
+**Example OVN-Kubernetes configuration with IPsec enabled**
 
 </div>
 
@@ -2497,6 +2497,8 @@ The OpenShift Container Platform bootstrap process begins after the cluster node
     INFO Waiting up to 1h0m0s for bootstrapping to complete...
     INFO It is now safe to remove the bootstrap resources
     ```
+
+    The bootstrapping completion wait time varies per platform.
 
     The command succeeds when the Kubernetes API server signals that it has been bootstrapped on the control plane machines.
 

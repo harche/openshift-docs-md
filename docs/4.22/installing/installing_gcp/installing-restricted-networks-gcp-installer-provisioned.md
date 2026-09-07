@@ -8,13 +8,13 @@ You can install an OpenShift Container Platform cluster by using mirrored instal
 
 # Prerequisites
 
-- You reviewed details about the [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation) processes.
+- You reviewed details about the OpenShift Container Platform installation and update processes. For more information, see "Installation and update".
 
-- You read the documentation on [selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing).
+- You read the documentation on selecting a cluster installation method and preparing it for users. For more information, see "Selecting a cluster installation method and preparing it for users".
 
-- You [configured a Google Cloud project](../../installing/installing_gcp/installing-gcp-account.xml#installing-gcp-account) to host the cluster.
+- You configured a Google Cloud project to host the cluster. For more information, see "Configuring a Google Cloud project".
 
-- You [mirrored the images for a disconnected installation](../../disconnected/installing-mirroring-installation-images.xml#installation-about-mirror-registry_installing-mirroring-installation-images) to your registry and obtained the `imageContentSources` data for your version of OpenShift Container Platform.
+- You mirrored the images for a disconnected installation to your registry and obtained the `imageContentSources` data for your version of OpenShift Container Platform. For more information, see "Mirroring images for a disconnected installation".
 
   <div class="important">
 
@@ -22,15 +22,31 @@ You can install an OpenShift Container Platform cluster by using mirrored instal
 
   </div>
 
-- You have an existing VPC in Google Cloud. While installing a cluster in a restricted network that uses installer-provisioned infrastructure, you cannot use the installer-provisioned VPC. You must use a user-provisioned VPC that satisfies one of the following requirements:
+- You have an existing VPC in Google Cloud. When you install a cluster in a restricted network by using installer-provisioned infrastructure, you cannot use the VPC that the installation program creates. You must use a user-provisioned VPC that satisfies one of the following requirements:
 
   - Contains the mirror registry
 
   - Has firewall rules or a peering connection to access the mirror registry hosted elsewhere
 
-- If you use a firewall, you [configured it to allow the sites](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to. While you might need to grant access to more sites, you must grant access to `*.googleapis.com` and `accounts.google.com`.
+- If you use a firewall, you configured it to allow the sites that your cluster requires access to. You might need to grant access to more sites, but you must grant access to `*.googleapis.com` and `accounts.google.com`. For more information, see "Configuring your firewall for OpenShift Container Platform".
 
-- If you are installing using a [Private Service Connect (PSC) endpoint](https://cloud.google.com/vpc/docs/private-service-connect), you must configure the endpoint in the same Virtual Private Cloud (VPC) where you install the cluster, specified in the `install-config.yaml` file, as described in [Installing a cluster on Google Cloud into an existing VPC](../../installing/installing_gcp/installing-gcp-vpc.xml#installing-gcp-vpc).
+- If you are installing by using a Private Service Connect (PSC) endpoint, you must configure the endpoint in the same VPC where you install the cluster, as specified in the `install-config.yaml` file. For more information, see "Installing a cluster on Google Cloud into an existing VPC".
+
+<!-- -->
+
+- [Installation and update](../../architecture/architecture-installation.xml#architecture-installation)
+
+- [Selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing)
+
+- [Configuring a Google Cloud project](../../installing/installing_gcp/installing-gcp-account.xml#installing-gcp-account)
+
+- [Mirroring images for a disconnected installation](../../disconnected/installing-mirroring-installation-images.xml#installing-mirroring-installation-images)
+
+- [Configuring your firewall for OpenShift Container Platform](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
+
+- [Private Service Connect](https://cloud.google.com/vpc/docs/private-service-connect)
+
+- [Installing a cluster on Google Cloud into an existing VPC](../../installing/installing_gcp/installing-gcp-vpc.xml#installing-gcp-vpc)
 
 # About installations in restricted networks
 
@@ -142,7 +158,7 @@ You must use a local key, not one that you configured with platform-specific app
     $ ssh-add <path>/<file_name>
     ```
 
-    Specifies the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`
+    Specify the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`.
 
     <div class="formalpara-title">
 
@@ -315,7 +331,7 @@ If an instance type for your platform meets the minimum requirements for cluster
 
 ## Tested instance types for Google Cloud
 
-The following Google Cloud instance types have been tested with OpenShift Container Platform.
+OpenShift Container Platform supports specific Google Cloud instance types that have been validated for cluster deployment.
 
 <div class="note">
 
@@ -331,7 +347,7 @@ See the following machine series:
 
 ## Tested instance types for Google Cloud on 64-bit ARM infrastructures
 
-The following Google Cloud 64-bit ARM instance types have been tested with OpenShift Container Platform.
+OpenShift Container Platform supports specific Google Cloud 64-bit ARM instance types that have been validated for cluster deployment.
 
 See the following machine series for 64-bit ARM machines:
 
@@ -339,7 +355,7 @@ See the following machine series for 64-bit ARM machines:
 
 ## Using custom machine types
 
-Using a custom machine type to install a OpenShift Container Platform cluster is supported.
+If the predefined Google Cloud machine types do not meet your workload requirements, you can configure a custom machine type in the `install-config.yaml` file during OpenShift Container Platform installation.
 
 Consider the following when using a custom machine type:
 
@@ -380,7 +396,9 @@ controlPlane:
 
 ## Enabling Shielded VMs
 
-You can use Shielded VMs when installing your cluster. Shielded VMs have extra security features including secure boot, firmware and integrity monitoring, and rootkit detection. For more information, see Google’s documentation on [Shielded VMs](https://cloud.google.com/shielded-vm).
+You can use Shielded VMs when installing your OpenShift Container Platform cluster. Shielded VMs have extra security features including secure boot, firmware and integrity monitoring, and rootkit detection.
+
+For more information, see Google’s documentation on [Shielded VMs](https://cloud.google.com/shielded-vm).
 
 <div class="note">
 
@@ -388,7 +406,7 @@ Shielded VMs are currently not supported on clusters with 64-bit ARM infrastruct
 
 </div>
 
-- Use a text editor to edit the `install-config.yaml` file prior to deploying your cluster and add one of the following stanzas:
+- Use a text editor to edit the `install-config.yaml` file before deploying your cluster and add one of the following stanzas:
 
   1.  To use shielded VMs for only control plane machines:
 
@@ -419,7 +437,9 @@ Shielded VMs are currently not supported on clusters with 64-bit ARM infrastruct
 
 ## Enabling Confidential VMs
 
-You can use Confidential VMs when installing your cluster. Confidential VMs encrypt data while it is being processed. For more information, see Google’s documentation on [Confidential Computing](https://cloud.google.com/confidential-computing). You can enable Confidential VMs and Shielded VMs at the same time, although they are not dependent on each other.
+You can use Confidential VMs when installing your OpenShift Container Platform cluster. Confidential VMs encrypt data during processing.
+
+For more information, see Google’s documentation on [Confidential Computing](https://cloud.google.com/confidential-computing). You can enable Confidential VMs and Shielded VMs at the same time, although they are not dependent on each other.
 
 <div class="note">
 
@@ -427,7 +447,7 @@ Confidential VMs are currently not supported on 64-bit ARM architectures.
 
 </div>
 
-- Use a text editor to edit the `install-config.yaml` file prior to deploying your cluster and add one of the following stanzas:
+- Use a text editor to edit the `install-config.yaml` file before deploying your cluster and add one of the following stanzas:
 
   1.  To use confidential VMs for only control plane machines:
 
@@ -440,11 +460,16 @@ Confidential VMs are currently not supported on 64-bit ARM architectures.
              onHostMaintenance: Terminate
       ```
 
-      - Enable confidential VMs with AMD Secure Encrypted Virtualization Secure Nested Paging (AMD SEV-SNP). For more information about available options, see "Additional Google Cloud configuration parameters".
+      where:
 
-      - Specify a machine type that supports Confidential VMs. Confidential VMs require the N2D, C2D, C3D, or C3 series of machine types. For more information on supported machine types, see [Supported operating systems and machine types](https://cloud.google.com/compute/confidential-vm/docs/os-and-machine-type#machine-type).
+      `confidentialCompute`
+      Enables confidential VMs with AMD Secure Encrypted Virtualization Secure Nested Paging (AMD SEV-SNP). For more information about available options, see "Additional Google Cloud configuration parameters".
 
-      - Specify the behavior of the VM during a host maintenance event, such as a hardware or software update. For a machine that uses Confidential VM, this value must be set to `Terminate`, which stops the VM. Confidential VMs do not support live VM migration.
+      `type`
+      Specifies a machine type that supports Confidential VMs. Confidential VMs require the N2D, C2D, C3D, or C3 series of machine types. For more information on supported machine types, see [Supported operating systems and machine types](https://cloud.google.com/compute/confidential-vm/docs/os-and-machine-type#machine-type).
+
+      `onHostMaintenance`
+      Specifies the behavior of the VM during a host maintenance event, such as a hardware or software update. For a machine that uses Confidential VM, this value must be set to `Terminate`, which stops the VM. Confidential VMs do not support live VM migration.
 
   2.  To use confidential VMs for only compute machines:
 
@@ -480,6 +505,8 @@ For example, your organization’s security policies might not allow the use of 
 
 If you enable user-managed DNS during installation, the installation program provisions DNS records for the API and Ingress services only within the cluster. To ensure access from outside the cluster, you must provision the DNS records in an external DNS service of your choice for the API and Ingress services after installation.
 
+For information about provisioning your DNS records for the API server and the Ingress services, see "Provisioning your own DNS records".
+
 - You installed the `jq` package.
 
 <!-- -->
@@ -499,7 +526,7 @@ If you enable user-managed DNS during installation, the installation program pro
     `Enabled`
     Enables user-provisioned DNS management.
 
-For information about provisioning your DNS records for the API server and the Ingress services, see "Provisioning your own DNS records".
+<!-- -->
 
 - [Installation configuration parameters for Google Cloud](../../installing/installing_gcp/installation-config-parameters-gcp.xml#installation-config-parameters-gcp)
 
@@ -559,17 +586,9 @@ Specifies parameters that apply to the infrastructure platform that hosts the cl
 
 ## Create an Ingress Controller with global access on Google Cloud
 
-You can create an Ingress Controller that has global access to a Google Cloud cluster. Global access is only available to Ingress Controllers using internal load balancers.
+You can create an Ingress Controller that has global access to a Google Cloud cluster, which allows clients from any region to reach your cluster’s internal load balancer. Global access is available only to Ingress Controllers that use internal load balancers.
 
 - You created the `install-config.yaml` and complete any modifications to it.
-
-<div class="formalpara-title">
-
-**Procedure**
-
-</div>
-
-Create an Ingress Controller with global access on a new Google Cloud cluster.
 
 1.  Change to the directory that contains the installation program and create a manifest file:
 
@@ -577,7 +596,7 @@ Create an Ingress Controller with global access on a new Google Cloud cluster.
     $ ./openshift-install create manifests --dir <installation_directory>
     ```
 
-    - For `<installation_directory>`, specify the name of the directory that contains the `install-config.yaml` file for your cluster.
+    For `<installation_directory>`, specify the name of the directory that contains the `install-config.yaml` file for your cluster.
 
 2.  Create a file that is named `cluster-ingress-default-ingresscontroller.yaml` in the `<installation_directory>/manifests/` directory:
 
@@ -585,23 +604,23 @@ Create an Ingress Controller with global access on a new Google Cloud cluster.
     $ touch <installation_directory>/manifests/cluster-ingress-default-ingresscontroller.yaml
     ```
 
-    - For `<installation_directory>`, specify the directory name that contains the `manifests/` directory for your cluster.
+    For `<installation_directory>`, specify the directory name that contains the `manifests/` directory for your cluster.
 
-      After creating the file, several network configuration files are in the `manifests/` directory, as shown:
+    After creating the file, several network configuration files are in the `manifests/` directory, as shown:
 
-      ``` terminal
-      $ ls <installation_directory>/manifests/cluster-ingress-default-ingresscontroller.yaml
-      ```
+    ``` terminal
+    $ ls <installation_directory>/manifests/cluster-ingress-default-ingresscontroller.yaml
+    ```
 
-      <div class="formalpara-title">
+    <div class="formalpara-title">
 
-      **Example output**
+    **Example output**
 
-      </div>
+    </div>
 
-      ``` terminal
-      cluster-ingress-default-ingresscontroller.yaml
-      ```
+    ``` terminal
+    cluster-ingress-default-ingresscontroller.yaml
+    ```
 
 3.  Open the `cluster-ingress-default-ingresscontroller.yaml` file in an editor and enter a custom resource (CR) that describes the Operator configuration you want:
 
@@ -628,9 +647,9 @@ Create an Ingress Controller with global access on a new Google Cloud cluster.
           type: LoadBalancerService
     ```
 
-    - Set `gcp.clientAccess` to `Global`.
+    - `gcp.clientAccess` is set to `Global` to provide global access for the Ingress Controller.
 
-    - Global access is only available to Ingress Controllers using internal load balancers.
+    - `scope` is set to `Internal` because global access is available only to Ingress Controllers that use internal load balancers.
 
 ## Configuring the cluster-wide proxy during installation
 
@@ -736,7 +755,7 @@ Download and install the new version of `oc`.
 
 6.  Place the `oc` binary in a directory that is on your `PATH`.
 
-    To check your `PATH`, execute the following command:
+    To check your `PATH`, run the following command:
 
     ``` terminal
     $ echo $PATH
@@ -770,7 +789,7 @@ Download and install the new version of `oc`.
 
 5.  Move the `oc` binary to a directory that is on your `PATH` variable.
 
-    To check your `PATH` variable, open the command prompt and execute the following command:
+    To check your `PATH` variable, open the Command Prompt and run the following command:
 
     ``` terminal
     C:\> path
@@ -808,11 +827,11 @@ Download and install the new version of `oc`.
 
     </div>
 
-5.  Unpack and unzip the archive.
+5.  Extract the archive.
 
 6.  Move the `oc` binary to a directory on your `PATH` variable.
 
-    To check your `PATH` variable, open a terminal and execute the following command:
+    To check your `PATH` variable, open a terminal and run the following command:
 
     ``` terminal
     $ echo $PATH
@@ -826,15 +845,15 @@ Download and install the new version of `oc`.
 
 # Alternatives to storing administrator-level secrets in the kube-system project
 
-By default, administrator secrets are stored in the `kube-system` project. If you configured the `credentialsMode` parameter in the `install-config.yaml` file to `Manual`, you must use one of the following alternatives:
+By default, OpenShift Container Platform stores administrator secrets in the `kube-system` project. If you configured the `credentialsMode` parameter in the `install-config.yaml` file to `Manual`, you must configure an alternative credential management strategy by using either long-term manual credentials or short-term credentials that are managed outside the cluster.
 
-- To manage long-term cloud credentials manually, follow the procedure in [Manually creating long-term credentials](../../installing/installing_gcp/installing-restricted-networks-gcp-installer-provisioned.xml#manually-create-iam_installing-restricted-networks-gcp-installer-provisioned).
+- To manage long-term cloud credentials manually, follow the procedure in "Manually creating long-term credentials".
 
-- To implement short-term credentials that are managed outside the cluster for individual components, follow the procedures in [Configuring a Google Cloud cluster to use short-term credentials](../../installing/installing_gcp/installing-restricted-networks-gcp-installer-provisioned.xml#installing-gcp-with-short-term-creds_installing-restricted-networks-gcp-installer-provisioned).
+- To implement short-term credentials that are managed outside the cluster for individual components, follow the procedures in "Short-term credential configuration for a Google Cloud cluster".
 
 ## Manually creating long-term credentials
 
-The Cloud Credential Operator (CCO) can be put into manual mode prior to installation in environments where the cloud identity and access management (IAM) APIs are not reachable, or the administrator prefers not to store an administrator-level credential secret in the cluster `kube-system` namespace.
+You can put the Cloud Credential Operator (CCO) into manual mode before OpenShift Container Platform installation if the cloud identity and access management (IAM) APIs are not reachable, or if you prefer not to store an administrator-level credential secret in the cluster `kube-system` namespace.
 
 1.  Add the following granular permissions to the Google Cloud account that the installation program uses:
 
@@ -988,9 +1007,11 @@ The Cloud Credential Operator (CCO) can be put into manual mode prior to install
 
     </div>
 
-## Configuring a Google Cloud cluster to use short-term credentials
+## Short-term credential configuration for a Google Cloud cluster
 
-To install a cluster that is configured to use Google Cloud Workload Identity, you must configure the CCO utility and create the required Google Cloud resources for your cluster.
+To install an OpenShift Container Platform cluster that is configured to use Google Cloud Workload Identity, you must configure the Cloud Credential Operator (CCO) utility and create the required Google Cloud resources for your cluster.
+
+Cluster Operators use the credentials created by the CCO. The installation program does not use these credentials.
 
 ### Configuring the Cloud Credential Operator utility
 
@@ -1442,7 +1463,7 @@ When the `ccoctl` utility assigns custom and Google Cloud predefined roles to Op
 
 ### Incorporating the Cloud Credential Operator utility manifests
 
-To implement short-term security credentials managed outside the cluster for individual components, you must move the manifest files that the Cloud Credential Operator utility (`ccoctl`) created to the correct directories for the installation program.
+To implement short-term security credentials managed outside the cluster for individual OpenShift Container Platform components, you must move the manifest files that the Cloud Credential Operator utility (`ccoctl`) created to the correct directories for the installation program.
 
 - You have configured an account with the cloud platform that hosts your cluster.
 
@@ -1515,7 +1536,7 @@ To implement short-term security credentials managed outside the cluster for ind
 
 # Deploying the cluster
 
-To deploy your OpenShift Container Platform cluster, you can initialize installation by running the `openshift-install create cluster` command from the directory that contains the installation program. The installation program provisions infrastructure and completes cluster setup.
+To deploy your OpenShift Container Platform cluster, you initialize installation by running the `openshift-install create cluster` command from the directory that contains the installation program. The installation program provisions the required infrastructure and completes the cluster setup.
 
 <div class="important">
 
@@ -1544,9 +1565,11 @@ You can run the `create cluster` command of the installation program only once, 
         --log-level=info
     ```
 
-    - For `<installation_directory>`, specify the location of your customized `./install-config.yaml` file.
+    where:
 
-    - To view different installation details, specify `warn`, `debug`, or `error` instead of `info`.
+    - `<installation_directory>`: Specifies the location of your customized `./install-config.yaml` file.
+
+    - `--log-level`: Specifies the log level. To view different installation details, specify `warn`, `debug`, or `error` instead of `info`.
 
 3.  Optional: You can reduce the number of permissions for the service account that you used to install the cluster.
 
@@ -1572,11 +1595,7 @@ When the cluster deployment completes successfully:
 
   </div>
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
+  The following example shows the expected output:
 
   ``` terminal
   ...
@@ -1750,20 +1769,20 @@ To provide metrics about cluster health and the success of updates, the Telemetr
 
 After you confirm that your [OpenShift Cluster Manager](https://console.redhat.com/openshift) inventory is correct, either maintained automatically by Telemetry or manually by using OpenShift Cluster Manager,use subscription watch to track your OpenShift Container Platform subscriptions at the account or multi-cluster level. For more information about subscription watch, see "Data Gathered and Used by Red Hat’s subscription services" in the *Additional resources* section.
 
-- See [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring) for more information about the Telemetry service
+# Additional resources
 
-# Next steps
+- [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
-- [Validate an installation](../../installing/validation_and_troubleshooting/validating-an-installation.xml#validating-an-installation).
+- [Validating an installation](../../installing/validation_and_troubleshooting/validating-an-installation.xml#validating-an-installation)
 
-- [Customize your cluster](../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations).
+- [Customizing your cluster](../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
 
-- [Configure image streams](../../post_installation_configuration/cluster-tasks.xml#post-install-must-gather-disconnected) for the Cluster Samples Operator and the `must-gather` tool.
+- [Configuring image streams for a disconnected cluster](../../post_installation_configuration/cluster-tasks.xml#post-install-must-gather-disconnected)
 
-- Learn how to [use Operator Lifecycle Manager in disconnected environments](../../disconnected/using-olm.xml#olm-restricted-networks).
+- [Using Operator Lifecycle Manager in disconnected environments](../../disconnected/using-olm.xml#olm-restricted-networks)
 
-- If the mirror registry that you used to install your cluster has a trusted CA, add it to the cluster by [configuring additional trust stores](../../openshift_images/image-configuration.xml#images-configuration-cas_image-configuration).
+- [Configuring additional trust stores](../../openshift_images/image-configuration.xml#images-configuration-cas_image-configuration)
 
-- If necessary, you can [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting).
+- [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)
 
-- If necessary, see [Registering your disconnected cluster](../../support/remote_health_monitoring/remote-health-reporting.xml#insights-operator-register-disconnected-cluster_remote-health-reporting)
+- [Registering your disconnected cluster](../../support/remote_health_monitoring/remote-health-reporting.xml#insights-operator-register-disconnected-cluster_remote-health-reporting)

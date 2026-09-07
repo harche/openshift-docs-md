@@ -1,6 +1,6 @@
 In OpenShift Container Platform version 4.17, you can install a cluster into a shared Virtual Private Cloud (VPC) on Google Cloud that uses infrastructure that you provide. In this context, a cluster installed into a shared VPC is a cluster that is configured to use a VPC from a project different from where the cluster is being deployed.
 
-A shared VPC enables an organization to connect resources from multiple projects to a common VPC network. You can communicate within the organization securely and efficiently by using internal IPs from that network. For more information about shared VPC, see [Shared VPC overview](https://cloud.google.com/vpc/docs/shared-vpc) in the Google Cloud documentation.
+A shared VPC enables an organization to connect resources from multiple projects to a common VPC network. You can communicate within the organization securely and efficiently by using internal IPs from that network. For more information about shared VPC, see "Shared VPC overview" in the Google Cloud documentation
 
 The steps for performing a user-provided infrastructure installation into a shared VPC are outlined here. Several Infrastructure Manager templates are provided to assist in completing these steps or to help model your own. You are also free to create the required resources through other methods.
 
@@ -12,21 +12,33 @@ The steps for performing a user-provisioned infrastructure installation are prov
 
 # Prerequisites
 
-- You reviewed details about the [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation) processes.
+- You reviewed details about the OpenShift Container Platform installation and update processes. For more information, see "Installation and update".
 
-- You read the documentation on [selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing).
+- You read the documentation on selecting a cluster installation method and preparing it for users. For more information, see "Selecting a cluster installation method and preparing it for users".
 
-- If you use a firewall and plan to use the Telemetry service, you [configured the firewall to allow the sites](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
+- If you use a firewall and plan to use the Telemetry service, you configured the firewall to allow the sites that your cluster requires access to. For more information, see "Configuring your firewall for OpenShift Container Platform".
 
-- If the cloud identity and access management (IAM) APIs are not accessible in your environment, or if you do not want to store an administrator-level credential secret in the `kube-system` namespace, you can [manually create and maintain long-term credentials](../../installing/installing_gcp/installing-gcp-customizations.xml#manually-create-iam_installing-gcp-customizations).
+- If the cloud identity and access management (IAM) APIs are not accessible in your environment, or if you do not want to store an administrator-level credential secret in the `kube-system` namespace, you can manually create and maintain long-term credentials. For more information, see "Manually creating long-term credentials".
 
-- If you want to provide your own private hosted zone, you must have created one in the service project with the DNS pattern `cluster-name.baseDomain.`, for example `testCluster.example.com.`. The private hosted zone must be bound to the VPC in the host project. For more information about cross-project binding, see [Create a zone with cross-project binding](https://cloud.google.com/dns/docs/zones/cross-project-binding) (Google documentation). If you do not provide a private hosted zone, the installation program will provision one automatically.
+- If you want to provide your own private hosted zone, you must have created one in the service project with the DNS pattern `cluster-name.baseDomain.`, for example `testCluster.example.com.`. The private hosted zone must be bound to the VPC in the host project. For more information about cross-project binding, see "Create a zone with cross-project binding". If you do not provide a private hosted zone, the installation program will provision one automatically.
 
   <div class="note">
 
   Be sure to also review this site list if you are configuring a proxy.
 
   </div>
+
+<!-- -->
+
+- [Installation and update](../../architecture/architecture-installation.xml#architecture-installation)
+
+- [Selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing)
+
+- [Configuring your firewall for OpenShift Container Platform](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
+
+- [Manually creating long-term credentials](../../installing/installing_gcp/installing-gcp-customizations.xml#manually-create-iam_installing-gcp-customizations)
+
+- [Create a zone with cross-project binding (Google Cloud documentation)](https://cloud.google.com/dns/docs/zones/cross-project-binding)
 
 # Certificate signing requests management
 
@@ -54,7 +66,7 @@ If your cluster cannot have direct internet access, you can perform a restricted
 
 # Configuring the Google Cloud project that hosts your cluster
 
-Before you can install OpenShift Container Platform, you must configure a Google Cloud project to host it.
+Before you can install OpenShift Container Platform, you must configure a Google Cloud project to host it. Proper project configuration provides the API services, service account, and permissions that the installation requires.
 
 ## Creating a Google Cloud project
 
@@ -70,13 +82,13 @@ To install OpenShift Container Platform, you must create a project in your Googl
 
 ## Enabling API services in Google Cloud
 
-Your Google Cloud project requires access to several API services to complete OpenShift Container Platform installation.
+You must enable several API services in your Google Cloud project to complete OpenShift Container Platform installation.
 
 - You created a project to host your cluster.
 
 <!-- -->
 
-- Enable the following required API services in the project that hosts your cluster. You may also enable optional API services which are not required for installation. See [Enabling services](https://cloud.google.com/service-usage/docs/enable-disable#enabling) in the Google Cloud documentation.
+- Enable the following required API services in the project that hosts your cluster. You can also enable optional API services which are not required for installation. See [Enabling services](https://cloud.google.com/service-usage/docs/enable-disable#enabling) in the Google Cloud documentation.
 
   | API service                              | Console service name                  |
   |------------------------------------------|---------------------------------------|
@@ -101,7 +113,7 @@ Your Google Cloud project requires access to several API services to complete Op
 
 ## Google Cloud account limits
 
-The OpenShift Container Platform cluster uses a number of Google Cloud components, but the default [Quotas](https://cloud.google.com/docs/quota) do not affect your ability to install a default OpenShift Container Platform cluster.
+A default OpenShift Container Platform cluster consumes specific Google Cloud resource quotas that you might need to increase before installation, depending on your region and cluster size.
 
 A default cluster, which contains three compute and three control plane machines, uses the following resources. Note that some resources are required only during the bootstrap process and are removed after the cluster deploys.
 
@@ -152,7 +164,11 @@ If you plan to deploy your cluster in one of the following regions, you will exc
 
 - `us-west2`
 
-You can increase resource quotas from the [Google Cloud console](https://console.cloud.google.com/iam-admin/quotas), but you might need to file a support ticket. Be sure to plan your cluster size early so that you can allow time to resolve the support ticket before you install your OpenShift Container Platform cluster.
+You can increase resource quotas from the Google Cloud console, but you might need to file a support ticket. Be sure to plan your cluster size early so that you can allow time to resolve the support ticket before you install your OpenShift Container Platform cluster.
+
+- [Manage your quotas using the console (Google Cloud documentation)](https://cloud.google.com/docs/quota)
+
+- [Google Cloud console](https://console.cloud.google.com/iam-admin/quotas)
 
 ## Creating a service account in Google Cloud
 
@@ -186,7 +202,11 @@ To reduce the scope of permissions granted to the main service account in your G
 
 ### Required Google Cloud roles
 
+Your Google Cloud service account requires specific roles to install and manage an OpenShift Container Platform cluster, which you can scope based on your organization’s security requirements.
+
 When you attach the `Owner` role to the service account that you create, you grant that service account all permissions, including those that are required to install OpenShift Container Platform. If your organization’s security policies require a more restrictive set of permissions, you can create a service account with the following permissions. If you deploy your cluster into an existing virtual private cloud (VPC), the service account does not require certain networking permissions, which are noted in the following lists:
+
+The installation program requires the following roles:
 
 - Compute Admin
 
@@ -202,17 +222,17 @@ When you attach the `Owner` role to the service account that you create, you gra
 
 - Storage Admin
 
-<!-- -->
+Creating network resources during installation requires the following role:
 
 - DNS Administrator
 
-<!-- -->
+Using the Cloud Credential Operator in passthrough mode requires the following roles:
 
 - Compute Load Balancer Admin
 
 - Tag User
 
-<!-- -->
+User-provisioned Google Cloud infrastructure requires the following role:
 
 - Cloud Infrastructure Manager Admin
 
@@ -233,7 +253,9 @@ Google Cloud service account roles
 
 ## Supported Google Cloud regions
 
-You can deploy an OpenShift Container Platform cluster to the following Google Cloud regions:
+You can deploy an OpenShift Container Platform cluster to specific Google Cloud regions, which determine the physical location and available machine types for your cluster infrastructure.
+
+You can deploy to the following Google Cloud regions:
 
 - `africa-south1` (Johannesburg, South Africa)
 
@@ -341,9 +363,7 @@ To install OpenShift Container Platform on Google Cloud using user-provisioned i
 
 # Requirements for a cluster with user-provisioned infrastructure
 
-For a cluster that contains user-provisioned infrastructure, you must deploy all of the required machines.
-
-This section describes the requirements for deploying OpenShift Container Platform on user-provisioned infrastructure.
+For a cluster that contains user-provisioned infrastructure, you must deploy all of the required machines. Reviewing these requirements before deployment helps you provision machines that meet the minimum resource needs of the cluster.
 
 ## Required machines for cluster installation
 
@@ -415,7 +435,7 @@ If an instance type for your platform meets the minimum requirements for cluster
 
 ## Tested instance types for Google Cloud
 
-The following Google Cloud instance types have been tested with OpenShift Container Platform.
+OpenShift Container Platform supports specific Google Cloud instance types that have been validated for cluster deployment.
 
 <div class="note">
 
@@ -431,7 +451,7 @@ See the following machine series:
 
 ## Using custom machine types
 
-Using a custom machine type to install a OpenShift Container Platform cluster is supported.
+If the predefined Google Cloud machine types do not meet your workload requirements, you can configure a custom machine type in the `install-config.yaml` file during OpenShift Container Platform installation.
 
 Consider the following when using a custom machine type:
 
@@ -445,7 +465,7 @@ Consider the following when using a custom machine type:
 
 # Configuring the Google Cloud project that hosts your shared VPC network
 
-If you use a shared Virtual Private Cloud (VPC) to host your OpenShift Container Platform cluster in Google Cloud, you must configure the project that hosts it.
+If you use a shared Virtual Private Cloud (VPC) to host your OpenShift Container Platform cluster in Google Cloud, you must configure the host project with the service account and permissions that are required to install a cluster into the shared VPC network.
 
 <div class="note">
 
@@ -480,6 +500,8 @@ If you already have a project that hosts the shared VPC network, review this sec
     </div>
 
 ## Configuring DNS for Google Cloud
+
+Configure a public hosted zone in your Google Cloud account to provide DNS resolution and name lookup for your OpenShift Container Platform cluster.
 
 To install OpenShift Container Platform, the Google Cloud account you use must have a dedicated public hosted zone in the project that hosts the shared VPC that you install the cluster into. This zone must be authoritative for the domain. The DNS service provides cluster DNS resolution and name lookup for external connections to the cluster.
 
@@ -551,7 +573,9 @@ Installing the cluster requires that you manually create the installation config
 
 ## Enabling Shielded VMs
 
-You can use Shielded VMs when installing your cluster. Shielded VMs have extra security features including secure boot, firmware and integrity monitoring, and rootkit detection. For more information, see Google’s documentation on [Shielded VMs](https://cloud.google.com/shielded-vm).
+You can use Shielded VMs when installing your OpenShift Container Platform cluster. Shielded VMs have extra security features including secure boot, firmware and integrity monitoring, and rootkit detection.
+
+For more information, see Google’s documentation on [Shielded VMs](https://cloud.google.com/shielded-vm).
 
 <div class="note">
 
@@ -559,7 +583,7 @@ Shielded VMs are currently not supported on clusters with 64-bit ARM infrastruct
 
 </div>
 
-- Use a text editor to edit the `install-config.yaml` file prior to deploying your cluster and add one of the following stanzas:
+- Use a text editor to edit the `install-config.yaml` file before deploying your cluster and add one of the following stanzas:
 
   1.  To use shielded VMs for only control plane machines:
 
@@ -590,7 +614,9 @@ Shielded VMs are currently not supported on clusters with 64-bit ARM infrastruct
 
 ## Enabling Confidential VMs
 
-You can use Confidential VMs when installing your cluster. Confidential VMs encrypt data while it is being processed. For more information, see Google’s documentation on [Confidential Computing](https://cloud.google.com/confidential-computing). You can enable Confidential VMs and Shielded VMs at the same time, although they are not dependent on each other.
+You can use Confidential VMs when installing your OpenShift Container Platform cluster. Confidential VMs encrypt data during processing.
+
+For more information, see Google’s documentation on [Confidential Computing](https://cloud.google.com/confidential-computing). You can enable Confidential VMs and Shielded VMs at the same time, although they are not dependent on each other.
 
 <div class="note">
 
@@ -598,7 +624,7 @@ Confidential VMs are currently not supported on 64-bit ARM architectures.
 
 </div>
 
-- Use a text editor to edit the `install-config.yaml` file prior to deploying your cluster and add one of the following stanzas:
+- Use a text editor to edit the `install-config.yaml` file before deploying your cluster and add one of the following stanzas:
 
   1.  To use confidential VMs for only control plane machines:
 
@@ -611,11 +637,16 @@ Confidential VMs are currently not supported on 64-bit ARM architectures.
              onHostMaintenance: Terminate
       ```
 
-      - Enable confidential VMs with AMD Secure Encrypted Virtualization Secure Nested Paging (AMD SEV-SNP). For more information about available options, see "Additional Google Cloud configuration parameters".
+      where:
 
-      - Specify a machine type that supports Confidential VMs. Confidential VMs require the N2D, C2D, C3D, or C3 series of machine types. For more information on supported machine types, see [Supported operating systems and machine types](https://cloud.google.com/compute/confidential-vm/docs/os-and-machine-type#machine-type).
+      `confidentialCompute`
+      Enables confidential VMs with AMD Secure Encrypted Virtualization Secure Nested Paging (AMD SEV-SNP). For more information about available options, see "Additional Google Cloud configuration parameters".
 
-      - Specify the behavior of the VM during a host maintenance event, such as a hardware or software update. For a machine that uses Confidential VM, this value must be set to `Terminate`, which stops the VM. Confidential VMs do not support live VM migration.
+      `type`
+      Specifies a machine type that supports Confidential VMs. Confidential VMs require the N2D, C2D, C3D, or C3 series of machine types. For more information on supported machine types, see [Supported operating systems and machine types](https://cloud.google.com/compute/confidential-vm/docs/os-and-machine-type#machine-type).
+
+      `onHostMaintenance`
+      Specifies the behavior of the VM during a host maintenance event, such as a hardware or software update. For a machine that uses Confidential VM, this value must be set to `Terminate`, which stops the VM. Confidential VMs do not support live VM migration.
 
   2.  To use confidential VMs for only compute machines:
 
@@ -707,47 +738,60 @@ sshKey: ssh-ed25519 AAAA...
 publish: Internal
 ```
 
-- Specify the public DNS on the host project.
+where:
 
-- If you do not provide these parameters and values, the installation program provides the default value.
+`baseDomain`
+Specifies the public DNS on the host project.
 
-- The `controlPlane` section is a single mapping, but the compute section is a sequence of mappings. To meet the requirements of the different data structures, the first line of the `compute` section must begin with a hyphen, `-`, and the first line of the `controlPlane` section must not. Although both sections currently define a single machine pool, it is possible that future versions of OpenShift Container Platform will support defining multiple compute pools during installation. Only one control plane pool is used.
+`controlPlane`
+Specifies the parameters that apply to control plane machines. The `controlPlane` section is a single mapping. To meet the requirements of the different data structures, the first line of the `compute` section must begin with a hyphen, `-`, and the first line of the `controlPlane` section must not. Only one control plane pool is used. If you do not provide these parameters and values, the installation program provides the default value.
 
-- Whether to enable or disable simultaneous multithreading, or `hyperthreading`. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores. You can disable it by setting the parameter value to `Disabled`. If you disable simultaneous multithreading in some cluster machines, you must disable it in all cluster machines.
+`compute`
+Specifies the parameters that apply to compute machines. The `compute` section is a sequence of mappings. To meet the requirements of the different data structures, the first line of the `compute` section must begin with a hyphen, `-`, and the first line of the `controlPlane` section must not. Although both sections currently define a single machine pool, it is possible that future versions of OpenShift Container Platform will support defining multiple compute pools during installation. If you do not provide these parameters and values, the installation program provides the default value.
 
-  <div class="important">
+`hyperthreading`
+Specifies whether to enable or disable simultaneous multithreading, or `hyperthreading`. By default, simultaneous multithreading is enabled to increase the performance of your machines' cores. You can disable it by setting the parameter value to `Disabled`. If you disable simultaneous multithreading in some cluster machines, you must disable it in all cluster machines.
 
-  If you disable simultaneous multithreading, ensure that your capacity planning accounts for the dramatically decreased machine performance. Use larger machine types, such as `n1-standard-8`, for your machines if you disable simultaneous multithreading.
+<div class="important">
 
-  </div>
+If you disable simultaneous multithreading, ensure that your capacity planning accounts for the dramatically decreased machine performance. Use larger machine types, such as `n1-standard-8`, for your machines if you disable simultaneous multithreading.
 
-- Optional: A set of network tags to apply to the control plane or compute machine sets. The `platform.gcp.defaultMachinePlatform.tags` parameter applies to both control plane and compute machines. If the `compute.platform.gcp.tags` or `controlPlane.platform.gcp.tags` parameters are set, they override the `platform.gcp.defaultMachinePlatform.tags` parameter.
+</div>
 
-- The cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
+`tags`
+Specifies a set of network tags to apply to the control plane or compute machine sets. The `platform.gcp.defaultMachinePlatform.tags` parameter applies to both control plane and compute machines. If the `compute.platform.gcp.tags` or `controlPlane.platform.gcp.tags` parameters are set, they override the `platform.gcp.defaultMachinePlatform.tags` parameter. This parameter is optional.
 
-- Specify the main project where the VM instances reside.
+`networkType`
+Specifies the cluster network plugin to install. The default value `OVNKubernetes` is the only supported value.
 
-- Specify the region that your VPC network is in.
+`projectID`
+Specifies the main project where the VM instances reside.
 
-- Whether to enable or disable FIPS mode. By default, FIPS mode is not enabled. If FIPS mode is enabled, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that are provided with RHCOS instead.
+`region`
+Specifies the region that your VPC network is in.
 
-  <div class="important">
+`fips`
+Specifies whether to enable or disable FIPS mode. By default, FIPS mode is not enabled. If FIPS mode is enabled, the Red Hat Enterprise Linux CoreOS (RHCOS) machines that OpenShift Container Platform runs on bypass the default Kubernetes cryptography suite and use the cryptography modules that are provided with RHCOS instead.
 
-  To enable FIPS mode for your cluster, you must run the installation program from a Red Hat Enterprise Linux (RHEL) computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see [Switching RHEL to FIPS mode](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/security_hardening/switching-rhel-to-fips-mode_security-hardening).
+<div class="important">
 
-  When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
+To enable FIPS mode for your cluster, you must run the installation program from a Red Hat Enterprise Linux (RHEL) computer configured to operate in FIPS mode. For more information about configuring FIPS mode on RHEL, see [Switching RHEL to FIPS mode](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/security_hardening/switching-rhel-to-fips-mode_security-hardening).
 
-  </div>
+When running Red Hat Enterprise Linux (RHEL) or Red Hat Enterprise Linux CoreOS (RHCOS) booted in FIPS mode, OpenShift Container Platform core components use the RHEL cryptographic libraries that have been submitted to NIST for FIPS 140-2/140-3 Validation on only the x86_64, ppc64le, and s390x architectures.
 
-- You can optionally provide the `sshKey` value that you use to access the machines in your cluster.
+</div>
 
-  <div class="note">
+`sshKey`
+Specifies the `sshKey` value that you use to access the machines in your cluster. This parameter is optional.
 
-  For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
+<div class="note">
 
-  </div>
+For production OpenShift Container Platform clusters on which you want to perform installation debugging or disaster recovery, specify an SSH key that your `ssh-agent` process uses.
 
-- How to publish the user-facing endpoints of your cluster. Set `publish` to `Internal` to deploy a private cluster, which cannot be accessed from the internet. The default value is `External`. To use a shared VPC in a cluster that uses infrastructure that you provision, you must set `publish` to `Internal`. The installation program will no longer be able to access the public DNS zone for the base domain in the host project.
+</div>
+
+`publish`
+Specifies how to publish the user-facing endpoints of your cluster. Set `publish` to `Internal` to deploy a private cluster, which cannot be accessed from the internet. The default value is `External`. To use a shared VPC in a cluster that uses infrastructure that you provision, you must set `publish` to `Internal`. The installation program can no longer access the public DNS zone for the base domain in the host project.
 
 ## Configuring the cluster-wide proxy during installation
 
@@ -964,17 +1008,15 @@ The installation program converts the installation configuration into Kubernetes
         ├── metadata.json
         └── worker.ign
 
-# Exporting common variables
-
-## Extracting the infrastructure name
+# Extracting the infrastructure name
 
 To identify your cluster resources in Google Cloud, extract the unique infrastructure name from the Ignition config files.
 
-The infrastructure name is also used to locate the appropriate Google Cloud resources during an OpenShift Container Platform installation. The provided Infrastructure Manager templates contain references to this infrastructure name, so you must extract it.
+The Ignition config files contain a unique cluster identifier that you can use to uniquely identify your cluster in Google Cloud. The infrastructure name is also used to locate the appropriate Google Cloud resources during an OpenShift Container Platform installation. The provided Infrastructure Manager templates contain references to this infrastructure name, so you must extract it.
 
 <div class="warning">
 
-Do not run the `openshift-install create manifests` command again after creating any Google Cloud resources. Running the command again generates a new cluster identifier, which will cause errors in existing resources. If you need to regenerate the manifests because you modified the `install-config.yaml` file, delete any Google Cloud resources you created and recreate them with the new cluster identifier.
+Do not run the `openshift-install create manifests` command again after creating any Google Cloud resources. Running the command again generates a new cluster identifier, which will cause errors in existing resources. If you need to regenerate the manifests because you modified the `install-config.yaml` file, delete any Google Cloud resources you created and re-create them with the new cluster identifier.
 
 </div>
 
@@ -1002,7 +1044,7 @@ Do not run the `openshift-install create manifests` command again after creating
 
   The output of this command is your cluster name and a random string.
 
-## Exporting common variables for Infrastructure Manager templates
+# Exporting common variables for Infrastructure Manager templates
 
 You must export a common set of variables that are used with the provided Infrastructure Manager templates used to assist in installing a cluster with user-provisioned infrastructure on Google Cloud.
 
@@ -1305,7 +1347,7 @@ If you do not use the provided template to create your Google Cloud infrastructu
 
 ## Infrastructure Manager template for the external load balancer
 
-You can use the following Infrastructure Manager template to deploy the external load balancer that you need for your OpenShift Container Platform cluster:
+You can use the following `02_lb_ext.tf` Infrastructure Manager template to deploy the external load balancer that you need for your OpenShift Container Platform cluster:
 
 ``` terraform
 link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/gcp/02_lb_ext/02_lb_ext.tf[role=include]
@@ -1313,7 +1355,7 @@ link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/gcp/
 
 ## Infrastructure Manager template for the internal load balancer
 
-You can use the following Infrastructure Manager template to deploy the internal load balancer that you need for your OpenShift Container Platform cluster:
+You can use the following `02_lb_int.tf` Infrastructure Manager template to deploy the internal load balancer that you need for your OpenShift Container Platform cluster:
 
 ``` terraform
 link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/gcp/02_lb_int/02_lb_int.tf[role=include]
@@ -1410,7 +1452,7 @@ If you do not use the provided template to create your Google Cloud infrastructu
 
 ## Infrastructure Manager template for the private DNS
 
-You can use the following Infrastructure Manager template to deploy the private DNS that you need for your OpenShift Container Platform cluster:
+You can use the following `02_dns.tf` Infrastructure Manager template to deploy the private DNS that you need for your OpenShift Container Platform cluster:
 
 ``` terraform
 link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/gcp/02_dns/02_dns.tf[role=include]
@@ -1475,7 +1517,7 @@ If you do not use the provided Infrastructure Manager template to create your Go
 
 ## Infrastructure Manager template for firewall rules and IAM roles
 
-You can use the following Infrastructure Manager template to deploy the firewall rules and IAM roles that you need for your OpenShift Container Platform cluster:
+You can use the following `03_security.tf` Infrastructure Manager template to deploy the firewall rules and IAM roles that you need for your OpenShift Container Platform cluster:
 
 ``` terraform
 link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/gcp/03_security/03_security.tf[role=include]
@@ -1691,7 +1733,7 @@ If you need to redeploy the bootstrap machine for any reason, delete the existin
 
 ## Infrastructure Manager template for the bootstrap machine
 
-You can use the following Infrastructure Manager template to deploy the bootstrap machine that you need for your OpenShift Container Platform cluster:
+You can use the following `04_bootstrap.tf` Infrastructure Manager template to deploy the bootstrap machine that you need for your OpenShift Container Platform cluster:
 
 ``` terraform
 link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/gcp/04_bootstrap/04_bootstrap.tf[role=include]
@@ -1817,7 +1859,7 @@ If you do not use the provided template to create your control plane machines, y
 
 ## Infrastructure Manager template for control plane machines
 
-You can use the following Infrastructure Manager template to deploy the control plane machines that you need for your OpenShift Container Platform cluster:
+You can use the following `05_control_plane.tf` Infrastructure Manager template to deploy the control plane machines that you need for your OpenShift Container Platform cluster:
 
 ``` terraform
 link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/gcp/05_control_plane/05_control_plane.tf[role=include]
@@ -1905,7 +1947,7 @@ If you are installing a three-node cluster, skip this step. A three-node cluster
 
 ## Infrastructure Manager template for worker machines
 
-You can use the following Infrastructure Manager template to deploy the worker machines that you need for your OpenShift Container Platform cluster:
+You can use the following `06_worker.tf` Infrastructure Manager template to deploy the worker machines that you need for your OpenShift Container Platform cluster:
 
 ``` terraform
 link:https://raw.githubusercontent.com/openshift/installer/release-4.22/upi/gcp/06_worker/06_worker.tf[role=include]
@@ -2001,7 +2043,7 @@ Download and install the new version of `oc`.
 
 6.  Place the `oc` binary in a directory that is on your `PATH`.
 
-    To check your `PATH`, execute the following command:
+    To check your `PATH`, run the following command:
 
     ``` terminal
     $ echo $PATH
@@ -2035,7 +2077,7 @@ Download and install the new version of `oc`.
 
 5.  Move the `oc` binary to a directory that is on your `PATH` variable.
 
-    To check your `PATH` variable, open the command prompt and execute the following command:
+    To check your `PATH` variable, open the Command Prompt and run the following command:
 
     ``` terminal
     C:\> path
@@ -2073,11 +2115,11 @@ Download and install the new version of `oc`.
 
     </div>
 
-5.  Unpack and unzip the archive.
+5.  Extract the archive.
 
 6.  Move the `oc` binary to a directory on your `PATH` variable.
 
-    To check your `PATH` variable, open a terminal and execute the following command:
+    To check your `PATH` variable, open a terminal and run the following command:
 
     ``` terminal
     $ echo $PATH
@@ -2397,7 +2439,9 @@ $ gcloud dns record-sets transaction execute --zone ${BASE_DOMAIN_ZONE_NAME} --p
 
 # Adding ingress firewall rules
 
-The cluster requires several firewall rules. If you do not use a shared VPC, these rules are created by the Ingress Controller via the Google Cloud cloud provider. When you use a shared VPC, you can either create cluster-wide firewall rules for all services now or create each rule based on events, when the cluster requests access. By creating each rule when the cluster requests access, you know exactly which firewall rules are required. By creating cluster-wide firewall rules, you can apply the same rule set across multiple clusters.
+The cluster requires several firewall rules. If you do not use a shared VPC, the Ingress Controller creates these rules by using the Google Cloud cloud provider. When you use a shared VPC, you must create the rules yourself so that traffic can reach the cluster services.
+
+You can either create cluster-wide firewall rules for all services now or create each rule based on events, when the cluster requests access. By creating each rule when the cluster requests access, you know exactly which firewall rules are required. By creating cluster-wide firewall rules, you can apply the same rule set across multiple clusters.
 
 If you choose to create each rule based on events, you must create firewall rules after you provision the cluster and during the life of the cluster when the console notifies you that rules are missing. Events that are similar to the following event are displayed, and you must add the firewall rules that are required:
 
@@ -2588,10 +2632,12 @@ To provide metrics about cluster health and the success of updates, the Telemetr
 
 After you confirm that your [OpenShift Cluster Manager](https://console.redhat.com/openshift) inventory is correct, either maintained automatically by Telemetry or manually by using OpenShift Cluster Manager,use subscription watch to track your OpenShift Container Platform subscriptions at the account or multi-cluster level. For more information about subscription watch, see "Data Gathered and Used by Red Hat’s subscription services" in the *Additional resources* section.
 
-- See [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring) for more information about the Telemetry service
+# Additional resources
 
-# Next steps
+- [Shared VPC overview (Google Cloud documentation)](https://cloud.google.com/vpc/docs/shared-vpc)
 
-- [Customize your cluster](../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations).
+- [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
-- If necessary, you can [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting).
+- [Customizing your cluster](../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
+
+- [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)

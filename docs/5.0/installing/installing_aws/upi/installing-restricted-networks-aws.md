@@ -6,11 +6,11 @@ While you can install an OpenShift Container Platform cluster by using mirrored 
 
 </div>
 
-One way to create this infrastructure is to use the provided CloudFormation templates. You can modify the templates to customize your infrastructure or use the information that they contain to create AWS objects according to your company’s policies.
+One way to create this infrastructure is to use the provided CloudFormation templates. You can change the templates to customize your infrastructure or use the information that they contain to create AWS objects according to your company’s policies.
 
 <div class="important">
 
-The steps for performing a user-provisioned infrastructure installation are provided as an example only. Installing a cluster with infrastructure you provide requires knowledge of the cloud provider and the installation process of OpenShift Container Platform. Several CloudFormation templates are provided to assist in completing these steps or to help model your own. You are also free to create the required resources through other methods; the templates are just an example.
+The steps for performing a user-provisioned infrastructure installation are an example only. Installing a cluster with infrastructure you provide requires knowledge of the cloud provider and the installation process of OpenShift Container Platform. Several CloudFormation templates help you complete these steps or model your own. You are also free to create the required resources through other methods; the templates are just an example.
 
 </div>
 
@@ -84,7 +84,7 @@ To complete a restricted network installation, you must create a registry that m
 
 <div class="important">
 
-Because of the complexity of the configuration for user-provisioned installations, consider completing a standard user-provisioned infrastructure installation before you attempt a restricted network installation using user-provisioned infrastructure. Completing this test installation might make it easier to isolate and troubleshoot any issues that might arise during your installation in a restricted network.
+Because of the complexity of the configuration for user-provisioned installations, consider completing a standard user-provisioned infrastructure installation before you try a restricted network installation using user-provisioned infrastructure. Completing this test installation might make it easier to isolate and troubleshoot any issues that might arise during your installation in a restricted network.
 
 </div>
 
@@ -102,7 +102,7 @@ To install OpenShift Container Platform on Amazon Web Services by using user-pro
 
 You generate and customize the `install-config.yaml` file, Kubernetes manifests, and Ignition config files. You also have the option to first set up a separate `var` partition during the preparation phases of installation.
 
-## Optional: Creating a separate `/var` partition
+## Creating a separate `/var` partition
 
 To isolate growing storage for containers, etcd, or logs, you can optionally create a separate `/var` partition on worker nodes before you generate Ignition configs.
 
@@ -528,11 +528,11 @@ The installation program converts the installation configuration into Kubernetes
 
 To identify your cluster resources in Amazon Web Services, extract the unique infrastructure name from the Ignition config files.
 
-The infrastructure name is also used to locate the appropriate AWS resources during an OpenShift Container Platform installation. The provided CloudFormation templates contain references to this infrastructure name, so you must extract it.
+The Ignition config files contain a unique cluster identifier that you can use to uniquely identify your cluster in Amazon Web Services. The infrastructure name is also used to locate the appropriate AWS resources during an OpenShift Container Platform installation. The provided CloudFormation templates contain references to this infrastructure name, so you must extract it.
 
 <div class="warning">
 
-Do not run the `openshift-install create manifests` command again after creating any Google Cloud resources. Running the command again generates a new cluster identifier, which will cause errors in existing resources. If you need to regenerate the manifests because you modified the `install-config.yaml` file, delete any Google Cloud resources you created and recreate them with the new cluster identifier.
+Do not run the `openshift-install create manifests` command again after creating any Google Cloud resources. Running the command again generates a new cluster identifier, which will cause errors in existing resources. If you need to regenerate the manifests because you modified the `install-config.yaml` file, delete any Google Cloud resources you created and re-create them with the new cluster identifier.
 
 </div>
 
@@ -1769,7 +1769,7 @@ When you use the `CloudFormation` template for the control plane machines, the t
   arn:aws:cloudformation:us-east-1:269333783861:stack/cluster-worker-1/729ee301-1c2a-11eb-348f-sd9888c65b59
   ```
 
-# Initializing the bootstrap sequence on Amazon Web Services (AWS) with user-provisioned infrastructure
+# Initializing the bootstrap sequence on AWS with user-provisioned infrastructure
 
 After creating all required infrastructure in AWS, you can start the bootstrap sequence that initializes the OpenShift Container Platform control plane. Run the installation program to monitor the bootstrap process until the control plane is ready.
 
@@ -1799,6 +1799,8 @@ After creating all required infrastructure in AWS, you can start the bootstrap s
       INFO It is now safe to remove the bootstrap resources
       INFO Time elapsed: 1s
       ```
+
+      The bootstrapping completion wait time varies per platform.
 
       If the command exits without a `FATAL` warning, your OpenShift Container Platform control plane has initialized.
 
@@ -1964,7 +1966,7 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     <div class="note">
 
-    You might need to wait a few minutes after approval of the server CSRs for the machines to change to the `Ready` status.
+    You might need to wait a few minutes after approval of the server CSRs for the machines to reach the `Ready` status.
 
     </div>
 
@@ -2296,7 +2298,7 @@ You can create either a wildcard record or specific records. While the following
 
     where: `<public_hosted_zone_id>`:: Specifies the public hosted zone for your domain. `<cluster_domain>`:: Specifies the domain or subdomain that you use with your OpenShift Container Platform cluster. `<hosted_zone_id>`:: Specifies the public hosted zone ID for the load balancer that you obtained. `<external_ip>`:: Specifies the value of the external IP address of the Ingress Operator load balancer. Ensure that you include the trailing period (`.`) in this parameter value.
 
-# Completing an Amazon Web Services (AWS) installation on user-provisioned infrastructure
+# Completing an AWS installation on user-provisioned infrastructure
 
 To finish installing OpenShift Container Platform on user-provisioned AWS infrastructure, monitor the deployment until it completes successfully.
 

@@ -200,7 +200,7 @@ Globalnet is not supported with Red Hat OpenShift Data Foundation disaster recov
 <p><strong>Value:</strong> An IP network block in CIDR notation.</p>
 <p>For example, <code>10.0.0.0/16</code>.</p>
 <div class="note">
-<p>Set the <code>networking.machineNetwork</code> to match the CIDR that the preferred NIC resides in.</p>
+<p>Set the <code>networking.machineNetwork</code> to match the CIDR of the preferred NIC.</p>
 </div></td>
 </tr>
 <tr class="odd">

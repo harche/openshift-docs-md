@@ -92,11 +92,11 @@ To support an OpenShift Container Platform installation, your Red Hat OpenStack
 
 Recommended resources for a default OpenShift Container Platform cluster on RHOSP
 
-A cluster might function with fewer than recommended resources, but its performance is not guaranteed.
+A cluster might function with fewer than recommended resources, but cluster performance is not guaranteed.
 
 <div class="important">
 
-If RHOSP object storage (Swift) is available and operated by a user account with the `swiftoperator` role, it is used as the default backend for the OpenShift Container Platform image registry. In this case, the volume storage requirement is 175 GB. Swift space requirements vary depending on the size of the image registry.
+If RHOSP object storage (Swift) is available and operated by a user account with the `swiftoperator` role, Swift is used as the default backend for the OpenShift Container Platform image registry. In this case, the volume storage requirement is 175 GB. Swift space requirements vary depending on the size of the image registry.
 
 </div>
 
@@ -726,7 +726,7 @@ You must use a local key, not one that you configured with platform-specific app
     $ ssh-add <path>/<file_name>
     ```
 
-    Specifies the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`
+    Specify the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`.
 
     <div class="formalpara-title">
 
@@ -832,7 +832,7 @@ You can install OpenShift Container Platform on Red Hat OpenStack Platform (RHO
 
 # Deploying the cluster
 
-To deploy your OpenShift Container Platform cluster, you can initialize installation by running the `openshift-install create cluster` command from the directory that contains the installation program. The installation program provisions infrastructure and completes cluster setup.
+To deploy your OpenShift Container Platform cluster, you initialize installation by running the `openshift-install create cluster` command from the directory that contains the installation program. The installation program provisions the required infrastructure and completes the cluster setup.
 
 <div class="important">
 
@@ -853,9 +853,11 @@ You can run the `create cluster` command of the installation program only once, 
       --log-level=info
   ```
 
-  - For `<installation_directory>`, specify the location of your customized `./install-config.yaml` file.
+  where:
 
-  - To view different installation details, specify `warn`, `debug`, or `error` instead of `info`.
+  - `<installation_directory>`: Specifies the location of your customized `./install-config.yaml` file.
+
+  - `--log-level`: Specifies the log level. To view different installation details, specify `warn`, `debug`, or `error` instead of `info`.
 
 <div class="formalpara-title">
 
@@ -875,11 +877,7 @@ When the cluster deployment completes successfully:
 
   </div>
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
+  The following example shows the expected output:
 
   ``` terminal
   ...

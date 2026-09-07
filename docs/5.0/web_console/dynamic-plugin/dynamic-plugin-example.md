@@ -1,4 +1,4 @@
-Before working through the example, verify that the plugin is working by following the steps in [Dynamic plugin development](../../web_console/dynamic-plugin/dynamic-plugins-get-started.xml#dynamic-plugin-development_dynamic-plugins-get-started)
+Before working through the example, verify that the plugin is working by following the steps in the Dynamic plugin development documentation.
 
 # Adding a tab to the pods page
 
@@ -109,3 +109,7 @@ The OpenShift Container Platform web console runs in a container connected to th
     </div>
 
 - Visit a **Pod** page to view the added tab.
+
+# Additional resources
+
+- [Dynamic plugin development](../../web_console/dynamic-plugin/dynamic-plugins-get-started.xml#dynamic-plugin-development_dynamic-plugins-get-started)

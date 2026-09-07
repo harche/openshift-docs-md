@@ -2,15 +2,29 @@ In OpenShift Container Platform version 4.17, you can install a cluster on Googl
 
 # Prerequisites
 
-- You reviewed details about the [OpenShift Container Platform installation and update](../../architecture/architecture-installation.xml#architecture-installation) processes.
+- You reviewed details about the OpenShift Container Platform installation and update processes. For more information, see "Installation and update".
 
-- You read the documentation on [selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing).
+- You read the documentation on selecting a cluster installation method and preparing it for users. For more information, see "Selecting a cluster installation method and preparing it for users".
 
-- You [configured a Google Cloud project](../../installing/installing_gcp/installing-gcp-account.xml#installing-gcp-account) to host the cluster.
+- You configured a Google Cloud project to host the cluster. For more information, see "Configuring a Google Cloud project".
 
-- If you use a firewall, you [configured it to allow the sites](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall) that your cluster requires access to.
+- If you use a firewall, you configured it to allow the sites that your cluster requires access to. For more information, see "Configuring your firewall for OpenShift Container Platform".
 
-- If you are installing using a [Private Service Connect (PSC) endpoint](https://cloud.google.com/vpc/docs/private-service-connect), you must configure the endpoint in the same Virtual Private Cloud (VPC) where you install the cluster, specified in the `install-config.yaml` file, as described in [Installing a cluster on Google Cloud into an existing VPC](../../installing/installing_gcp/installing-gcp-vpc.xml#installing-gcp-vpc).
+- If you are installing by using a Private Service Connect (PSC) endpoint, you must configure the endpoint in the same VPC where you install the cluster, as specified in the `install-config.yaml` file. For more information, see "Installing a cluster on Google Cloud into an existing VPC".
+
+<!-- -->
+
+- [Installation and update](../../architecture/architecture-installation.xml#architecture-installation)
+
+- [Selecting a cluster installation method and preparing it for users](../../installing/overview/installing-preparing.xml#installing-preparing)
+
+- [Configuring a Google Cloud project](../../installing/installing_gcp/installing-gcp-account.xml#installing-gcp-account)
+
+- [Configuring your firewall for OpenShift Container Platform](../../installing/install_config/configuring-firewall.xml#configuring-firewall-module_configuring-firewall)
+
+- [Private Service Connect](https://cloud.google.com/vpc/docs/private-service-connect)
+
+- [Installing a cluster on Google Cloud into an existing VPC](../../installing/installing_gcp/installing-gcp-vpc.xml#installing-gcp-vpc)
 
 # Internet access for OpenShift Container Platform
 
@@ -112,7 +126,7 @@ You must use a local key, not one that you configured with platform-specific app
     $ ssh-add <path>/<file_name>
     ```
 
-    Specifies the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`
+    Specify the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`.
 
     <div class="formalpara-title">
 
@@ -128,7 +142,7 @@ You must use a local key, not one that you configured with platform-specific app
 
 # Obtaining the installation program
 
-Before you install OpenShift Container Platform, download the installation file on the host you are using for installation.
+Before you install OpenShift Container Platform, download the installation file on the host you are using for installation, so that installation assets exist for deployment in your environment.
 
 - You have a computer that runs Linux or macOS, with 500 MB of local disk space.
 
@@ -170,7 +184,7 @@ Before you install OpenShift Container Platform, download the installation file 
 
 # Deploying the cluster
 
-To deploy your OpenShift Container Platform cluster, you can initialize installation by running the `openshift-install create cluster` command from the directory that contains the installation program. The installation program provisions infrastructure and completes cluster setup.
+To deploy your OpenShift Container Platform cluster, you initialize installation by running the `openshift-install create cluster` command from the directory that contains the installation program. The installation program provisions the required infrastructure and completes the cluster setup.
 
 <div class="important">
 
@@ -199,15 +213,13 @@ You can run the `create cluster` command of the installation program only once, 
         --log-level=info
     ```
 
-    - For `<installation_directory>`, specify the directory name to store the files that the installation program creates.
+    where:
 
-    - To view different installation details, specify `warn`, `debug`, or `error` instead of `info`.
+    - `<installation_directory>`: Specifies the directory name to store the files that the installation program creates.
 
-    When specifying the directory:
+    - `--log-level`: Specifies the log level. To view different installation details, specify `warn`, `debug`, or `error` instead of `info`.
 
-    - Verify that the directory has the `execute` permission. This permission is required to run Terraform binaries under the installation directory.
-
-    - Use an empty directory. Some installation assets, such as bootstrap X.509 certificates, have short expiration intervals, therefore you must not reuse an installation directory. If you want to reuse individual files from another cluster installation, you can copy them into your directory. However, the file names for the installation assets might change between releases. Use caution when copying installation files from an earlier OpenShift Container Platform version.
+    When specifying the directory: \* Verify that the directory has the `execute` permission. This permission is required to run Terraform binaries under the installation directory. \* Use an empty directory. Some installation assets, such as bootstrap X.509 certificates, have short expiration intervals, therefore you must not reuse an installation directory. If you want to reuse individual files from another cluster installation, you can copy them into your directory. However, the file names for the installation assets might change between releases. Use caution when copying installation files from an earlier OpenShift Container Platform version.
 
 3.  Provide values at the prompts:
 
@@ -257,11 +269,7 @@ When the cluster deployment completes successfully:
 
   </div>
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
+  The following example shows the expected output:
 
   ``` terminal
   ...
@@ -308,7 +316,7 @@ Download and install the new version of `oc`.
 
 6.  Place the `oc` binary in a directory that is on your `PATH`.
 
-    To check your `PATH`, execute the following command:
+    To check your `PATH`, run the following command:
 
     ``` terminal
     $ echo $PATH
@@ -342,7 +350,7 @@ Download and install the new version of `oc`.
 
 5.  Move the `oc` binary to a directory that is on your `PATH` variable.
 
-    To check your `PATH` variable, open the command prompt and execute the following command:
+    To check your `PATH` variable, open the Command Prompt and run the following command:
 
     ``` terminal
     C:\> path
@@ -380,11 +388,11 @@ Download and install the new version of `oc`.
 
     </div>
 
-5.  Unpack and unzip the archive.
+5.  Extract the archive.
 
 6.  Move the `oc` binary to a directory on your `PATH` variable.
 
-    To check your `PATH` variable, open a terminal and execute the following command:
+    To check your `PATH` variable, open a terminal and run the following command:
 
     ``` terminal
     $ echo $PATH
@@ -439,7 +447,7 @@ The `kubeconfig` file is specific to a cluster and OpenShift Container Platform 
 
 <!-- -->
 
-- See [Accessing the web console](../../web_console/web-console.xml#web-console) for more details about accessing and understanding the OpenShift Container Platform web console.
+- [Accessing the web console](../../web_console/web-console.xml#web-console)
 
 # Telemetry access for OpenShift Container Platform
 
@@ -447,10 +455,10 @@ To provide metrics about cluster health and the success of updates, the Telemetr
 
 After you confirm that your [OpenShift Cluster Manager](https://console.redhat.com/openshift) inventory is correct, either maintained automatically by Telemetry or manually by using OpenShift Cluster Manager,use subscription watch to track your OpenShift Container Platform subscriptions at the account or multi-cluster level. For more information about subscription watch, see "Data Gathered and Used by Red Hat’s subscription services" in the *Additional resources* section.
 
-- See [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring) for more information about the Telemetry service
+# Additional resources
 
-# Next steps
+- [About remote health monitoring](../../support/remote_health_monitoring/about-remote-health-monitoring.xml#about-remote-health-monitoring)
 
-- [Customize your cluster](../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations).
+- [Customizing your cluster](../../post_installation_configuration/cluster-tasks.xml#available_cluster_customizations)
 
-- If necessary, you can [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting).
+- [Remote health reporting](../../support/remote_health_monitoring/remote-health-reporting.xml#remote-health-reporting)

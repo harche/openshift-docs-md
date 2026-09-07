@@ -2541,7 +2541,7 @@ You can delete a persistent volume claim (PVC) when it is no longer needed to fr
 
 # About volume snapshots
 
-You can create snapshots of persistent volume claims (PVCs) that are provisioned by LVM Storage.
+You can create volume snapshots of persistent volume claims (PVCs) provisioned by LVM Storage to back up application data or revert to a previous state, providing data protection and recovery capabilities.
 
 You can perform the following actions using the volume snapshots:
 
@@ -2579,7 +2579,9 @@ LVM Storage has the following limitations for creating volume snapshots in multi
 
 ## Creating volume snapshots
 
-You can create volume snapshots based on the available capacity of the thin pool and the over-provisioning limits. To create a volume snapshot, you must create a `VolumeSnapshotClass` object.
+Create volume snapshots to capture point-in-time copies of persistent volume claims (PVCs) for data backup or recovery purposes by creating a `VolumeSnapshot` object, based on the available thin pool capacity and over-provisioning limits.
+
+To create a volume snapshot, you must create a `VolumeSnapshotClass` object.
 
 - You have access to OpenShift Container Platform as a user with `cluster-admin` permissions.
 
@@ -2608,11 +2610,11 @@ You can create volume snapshots based on the available capacity of the thin pool
       volumeSnapshotClassName: lvms-vg1
     ```
 
-    - Specify a name for the volume snapshot.
+    - `metadata.name`: Specifies a name for the volume snapshot.
 
-    - Specify the name of the source PVC. LVM Storage creates a snapshot of this PVC.
+    - `spec.source.persistentVolumeClaimName`: Specifies the name of the source PVC. LVM Storage creates a snapshot of this PVC.
 
-    - Set this field to the name of a volume snapshot class.
+    - `spec.volumeSnapshotClassName`: Specifies the name of a volume snapshot class.
 
       <div class="note">
 
@@ -2653,6 +2655,8 @@ You can create volume snapshots based on the available capacity of the thin pool
 
 ## Restoring volume snapshots
 
+Restore volume snapshots to recover data from a previous point in time by creating a persistent volume claim (PVC) that references the snapshot, producing an independent copy separate from the original snapshot and source PVC.
+
 To restore a volume snapshot, you must create a persistent volume claim (PVC) with the `dataSource.name` field set to the name of the volume snapshot.
 
 The restored PVC is independent of the volume snapshot and the source PVC.
@@ -2690,11 +2694,11 @@ The restored PVC is independent of the volume snapshot and the source PVC.
         apiGroup: snapshot.storage.k8s.io
     ```
 
-    - Specify the storage size of the restored PVC. The storage size of the requested PVC must be greater than or equal to the stoage size of the volume snapshot that you want to restore. If a larger PVC is required, you can also resize the PVC after restoring the volume snapshot.
+    - `spec.Resources.Requests.storage`: Specifies the storage size of the restored PVC. The storage size of the requested PVC must be greater than or equal to the storage size of the volume snapshot that you want to restore. If a larger PVC is required, you can also resize the PVC after restoring the volume snapshot.
 
-    - Set this field to the value of the `storageClassName` field in the source PVC of the volume snapshot that you want to restore.
+    - `spec.storageClassName`: Set this field to the value of the `storageClassName` field in the source PVC of the volume snapshot that you want to restore.
 
-    - Set this field to the name of the volume snapshot that you want to restore.
+    - `spec.dataSource.name`: Set this field to the name of the volume snapshot that you want to restore.
 
 3.  Create the PVC in the namespace where you created the volume snapshot by running the following command:
 
@@ -2721,7 +2725,7 @@ The restored PVC is independent of the volume snapshot and the source PVC.
 
 ## Deleting volume snapshots
 
-You can delete the volume snapshots of the persistent volume claims (PVCs).
+Delete volume snapshots when they are no longer needed to free up storage resources and prevent orphaned snapshots, since LVM Storage does not automatically delete snapshots when you delete the source persistent volume claim (PVC).
 
 <div class="important">
 
@@ -2731,7 +2735,7 @@ When you delete a persistent volume claim (PVC), LVM Storage deletes only the PV
 
 - You have access to OpenShift Container Platform as a user with `cluster-admin` permissions.
 
-- You have ensured that the volume snpashot that you want to delete is not in use.
+- You have ensured that the volume snapshot that you want to delete is not in use.
 
 1.  Log in to the OpenShift CLI (`oc`).
 
@@ -2751,7 +2755,7 @@ When you delete a persistent volume claim (PVC), LVM Storage deletes only the PV
 
 # About volume clones
 
-A volume clone is a duplicate of an existing persistent volume claim (PVC). You can create a volume clone to make a point-in-time copy of the data.
+A volume clone is a duplicate of an existing persistent volume claim (PVC) that creates a point-in-time copy of data more efficiently than snapshots, useful for testing, development, or creating independent copies of application data.
 
 ## Limitations for creating volume clones in multi-node topology
 
@@ -2767,7 +2771,9 @@ LVM Storage has the following limitations for creating volume clones in multi-no
 
 ## Creating volume clones
 
-To create a clone of a persistent volume claim (PVC), you must create a `PersistentVolumeClaim` object in the namespace where you created the source PVC.
+Create volume clones to duplicate persistent volume claim (PVC) data for testing, development, or creating independent writable copies by creating a `PersistentVolumeClaim` object that references the source PVC.
+
+You must create a `PersistentVolumeClaim` object in the namespace where you created the source PVC.
 
 <div class="important">
 
@@ -2805,13 +2811,13 @@ The cloned PVC has write access.
           storage: 1Gi
     ```
 
-    - Set this field to the value of the `storageClassName` field in the source PVC.
+    - `spec.storageClassName`: Set this field to the value of the `storageClassName` field in the source PVC.
 
-    - Set this field to the `volumeMode` field in the source PVC.
+    - `spec.volumeMode`: Set this field to the `volumeMode` field in the source PVC.
 
-    - Specify the name of the source PVC.
+    - `spec.dataSource.name`: Specifies the name of the source PVC.
 
-    - Specify the storage size for the cloned PVC. The storage size of the cloned PVC must be greater than or equal to the storage size of the source PVC.
+    - `spec.resources.requests.storage`: Specifies the storage size for the cloned PVC. The storage size of the cloned PVC must be greater than or equal to the storage size of the source PVC.
 
 3.  Create the PVC in the namespace where you created the source PVC by running the following command:
 
@@ -2838,7 +2844,7 @@ The cloned PVC has write access.
 
 ## Deleting volume clones
 
-You can delete volume clones.
+Delete volume clones when they are no longer needed to free up storage resources, since LVM Storage does not automatically delete clones when you delete the source persistent volume claim (PVC).
 
 <div class="important">
 
@@ -2853,7 +2859,7 @@ When you delete a persistent volume claim (PVC), LVM Storage deletes only the so
 2.  Delete the cloned PVC by running the following command:
 
     ``` terminal
-    # oc delete pvc <clone_pvc_name> -n <namespace>
+    $ oc delete pvc <clone_pvc_name> -n <namespace>
     ```
 
 - To verify that the volume clone is deleted, run the following command:

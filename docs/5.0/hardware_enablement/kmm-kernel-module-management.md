@@ -354,7 +354,7 @@ To adapt the Kernel Module Management (KMM) Operator to your OpenShift Container
 
 <!-- -->
 
-- For more information, see [Installing the Kernel Module Management Operator](../hardware_enablement/kmm-kernel-module-management.xml#kmm-install_kernel-module-management-operator).
+- [Installing the Kernel Module Management Operator](../hardware_enablement/kmm-kernel-module-management.xml#kmm-install_kernel-module-management-operator)
 
 ## Unloading the kernel module
 
@@ -382,7 +382,7 @@ The Linux kernel accepts the `firmware_class.path` parameter as a search path fo
 
 <!-- -->
 
-- For more information about the `worker.setFirmwareClassPath` path, see [Configuring the Kernel Module Management Operator](../hardware_enablement/kmm-kernel-module-management.xml#kmm-configuring-kmmo_kernel-module-management-operator).
+- [Configuring the Kernel Module Management Operator](../hardware_enablement/kmm-kernel-module-management.xml#kmm-configuring-kmmo_kernel-module-management-operator)
 
 # Uninstalling the Kernel Module Management Operator
 
@@ -794,6 +794,8 @@ In addition to the `.ko` files, the kmod image also requires the `cp` binary to 
 
 Run the `depmod` utlity at the end of the build process to generate `modules.dep` and `.map` files. This is especially useful if your kmod image contains several kernel modules and if one of the modules depends on another module.
 
+If you are building your image on OpenShift Container Platform, consider using the Driver Toolkit (DTK). For further information, see [How to use entitled image builds to build DriverContainers with UBI on OpenShift](https://cloud.redhat.com/blog/how-to-use-entitled-image-builds-to-build-drivercontainers-with-ubi-on-openshift).
+
 <div class="note">
 
 You must have a Red Hat subscription to download the `kernel-devel` package.
@@ -806,15 +808,7 @@ You must have a Red Hat subscription to download the `kernel-devel` package.
   $ depmod -b /opt ${KERNEL_FULL_VERSION}+`.
   ```
 
-  <div class="formalpara-title">
-
-  **Example Dockerfile**
-
-  </div>
-
-  If you are building your image on OpenShift Container Platform, consider using the Driver Toolkit (DTK).
-
-  For further information, see [using an entitled build](https://cloud.redhat.com/blog/how-to-use-entitled-image-builds-to-build-drivercontainers-with-ubi-on-openshift).
+  The following example Dockerfile shows how to run `depmod` at the end of the build:
 
   ``` yaml
   apiVersion: v1
@@ -940,7 +934,7 @@ To build kernel module loader images in OpenShift Container Platform, you can us
 
 On Secure Boot-enabled OpenShift Container Platform systems, out-of-tree kernel modules must be signed with keys enrolled in the Machine Owner’s Key (MOK) database. For kernel modules built out of tree, KMM supports signing kmods through the `sign` section of the kernel mapping in a `Module` custom resource.
 
-For more details on using Secure Boot, see [Generating a public and private key pair](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/managing_monitoring_and_updating_the_kernel/signing-a-kernel-and-modules-for-secure-boot_managing-monitoring-and-updating-the-kernel#generating-a-public-and-private-key-pair_signing-a-kernel-and-modules-for-secure-boot)
+For more details on using Secure Boot, see "Generating a public and private key pair".
 
 ## Prerequisites
 
@@ -949,6 +943,10 @@ For more details on using Secure Boot, see [Generating a public and private key 
 - At least one secure-boot enabled node with the public key enrolled in its MOK database.
 
 - Either a pre-built driver container image, or the source code and Dockerfile needed to build one in-cluster.
+
+<!-- -->
+
+- [Generating a public and private key pair](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/managing_monitoring_and_updating_the_kernel/signing-a-kernel-and-modules-for-secure-boot_managing-monitoring-and-updating-the-kernel#generating-a-public-and-private-key-pair_signing-a-kernel-and-modules-for-secure-boot)
 
 # Adding the keys for secureboot
 
@@ -1368,6 +1366,8 @@ To deploy KMM-Hub for multi-cluster kernel module management on OpenShift Contai
 ### Installing KMM-Hub using the Operator Lifecycle Manager
 
 To install KMM-Hub on OpenShift Container Platform using Operator Lifecycle Manager, you can use the **Operators** section of the OpenShift web console.
+
+- Use the **Operators** section of the OpenShift console to install KMM-Hub.
 
 ### Installing KMM-Hub by creating KMM resources
 
@@ -1837,7 +1837,7 @@ On OpenShift Container Platform nodes, the set of default lookup paths for firmw
 
 2.  By applying the `MachineConfig` CR, the nodes are automatically rebooted.
 
-- [Machine Config Operator](../machine_configuration/index.xml#machine-config-operator_machine-config-overview).
+- [Machine Config Operator](../machine_configuration/index.xml#machine-config-operator_machine-config-overview)
 
 ## Building a kmod image
 

@@ -42,6 +42,7 @@ You can list all of the virtual machines (VMs) in your cluster by using the web 
         |--------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
         | Name                           | The virtual machine name.                                                                                                                               |
         | Project                        | A project that is part of your deployment.                                                                                                              |
+        | Group                          | The group (folder) that the virtual machine belongs to.                                                                                                 |
         | Description                    | Text in the description of the virtual machine.                                                                                                         |
         | Status                         | The status of the virtual machine.                                                                                                                      |
         | Operating system               | The operating system of the virtual machine.                                                                                                            |
@@ -66,17 +67,19 @@ You can list all of the virtual machines (VMs) in your cluster by using the web 
 
 9.  Optional: Filter the list of virtual machines by project or cluster by using the **Project** or **Cluster** list.
 
-10. Optional: Filter the list of virtual machines by status using the **Status** list.
+10. Optional: Filter the list of virtual machines by group by using the **Group** list.
 
-11. Optional: Filter the list of virtual machines by operating system using the **Operating system** list.
+11. Optional: Filter the list of virtual machines by status using the **Status** list.
 
-12. Optional: Filter the list of virtual machines by name using the **Search by name** field.
+12. Optional: Filter the list of virtual machines by operating system using the **Operating system** list.
 
-13. Optional: Use the **Selection** list to quickly select or deselect a group of virtual machines.
+13. Optional: Filter the list of virtual machines by name using the **Search by name** field.
 
-14. Optional: Use the **Actions** list to perform an action on all selected virtual machines.
+14. Optional: Use the **Selection** list to quickly select or deselect a group of virtual machines.
 
-15. Optional: Click the **More actions** icon beside an individual virtual machine listing to perform an action on that virtual machine.
+15. Optional: Use the **Actions** list to perform an action on all selected virtual machines.
+
+16. Optional: Click the **More actions** icon beside an individual virtual machine listing to perform an action on that virtual machine.
 
 # Organize virtual machines by using the web console
 

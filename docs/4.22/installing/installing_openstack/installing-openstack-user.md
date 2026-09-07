@@ -277,7 +277,7 @@ Download Ansible playbooks that you can use to install OpenShift Container Platf
 
 # Obtaining the installation program
 
-Before you install OpenShift Container Platform, download the installation file on the host you are using for installation.
+Before you install OpenShift Container Platform, download the installation file on the host you are using for installation, so that installation assets exist for deployment in your environment.
 
 - You have a computer that runs Linux or macOS, with 500 MB of local disk space.
 
@@ -399,7 +399,7 @@ You must use a local key, not one that you configured with platform-specific app
     $ ssh-add <path>/<file_name>
     ```
 
-    Specifies the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`
+    Specify the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`.
 
     <div class="formalpara-title">
 
@@ -1609,7 +1609,7 @@ Create three control plane machines by using the Ignition config files that you 
     $ openshift-install wait-for bootstrap-complete
     ```
 
-    You will see messages that confirm that the control plane machines are running and have joined the cluster:
+    You will see messages that confirm that the control plane machines are running and have joined the cluster.
 
     ``` terminal
     INFO API v1.35.4 up
@@ -1617,6 +1617,8 @@ Create three control plane machines by using the Ignition config files that you 
     ...
     INFO It is now safe to remove the bootstrap resources
     ```
+
+    The bootstrapping completion wait time varies per platform.
 
 # Logging in to the cluster by using the CLI
 

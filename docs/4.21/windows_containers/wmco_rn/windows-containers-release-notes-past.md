@@ -2,6 +2,16 @@ You can review the following release notes to learn about changes in previous ve
 
 For the current Red Hat OpenShift support for Windows Containers release notes, see "Red Hat OpenShift support for Windows Containers release notes".
 
+# Release notes for Red Hat Windows Machine Config Operator 10.21.1
+
+Issued: 3 March 2026
+
+The components of the Red Hat Windows Machine Config Operator (WMCO) 10.21.1 were released in [RHBA-2026:3684](https://access.redhat.com/errata/RHBA-2026:3684).
+
+## Bug fixes
+
+- Before this update, the `hybridOverlay` service was not using the trusted CA bundle when connecting to Kubernetes, because the `--k8s-cacert` option was missing from the service command. Because of this, users could encounter trust issues or failures when the `hybridOverlay` service attempted to communicate securely with Kubernetes clusters using custom or internal CAs. With this release, the `hybridOverlay` service command now includes the `--k8s-cacert flag` pointing to the trusted CA bundle. As a result, the `hybridOverlay` service uses the trusted CA bundle for secure communication, preventing trust issues and ensuring compatibility with the cluster. ([OCPBUGS-64719](https://issues.redhat.com/browse/OCPBUGS-64719))
+
 # Release notes for Red Hat Windows Machine Config Operator 10.21.0
 
 Issued: 03 February 2026

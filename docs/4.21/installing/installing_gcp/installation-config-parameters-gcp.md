@@ -1,4 +1,4 @@
-Before you deploy an OpenShift Container Platform cluster on Google Cloud, you provide parameters to customize your cluster and the platform that hosts it. When you create the `install-config.yaml` file, you provide values for the required parameters through the command line. You can then modify the `install-config.yaml` file to customize your cluster further.
+Before you deploy an OpenShift Container Platform cluster on Google Cloud, you create the `install-config.yaml` file and provide parameters to customize your cluster and the platform that hosts it. You can then modify the `install-config.yaml` file to customize your cluster further.
 
 # Available installation configuration parameters for Google Cloud
 
@@ -166,7 +166,7 @@ Only IPv4 addresses are supported.
 <p><strong>Value:</strong> An IP network block in CIDR notation.</p>
 <p>For example, <code>10.0.0.0/16</code>.</p>
 <div class="note">
-<p>Set the <code>networking.machineNetwork</code> to match the CIDR that the preferred NIC resides in.</p>
+<p>Set the <code>networking.machineNetwork</code> to match the CIDR of the preferred NIC.</p>
 </div></td>
 </tr>
 <tr class="odd">

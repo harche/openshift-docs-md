@@ -119,7 +119,7 @@ As a cluster administrator or as a user with view permissions for all projects, 
 
 Monitor user-defined workloads by using the OpenShift Container Platform metrics query browser. The query browser uses Prometheus Query Language (PromQL) queries to examine metrics visualized on a plot.
 
-As a developer, you must specify a project name when querying metrics. You must have the required privileges to view metrics for the selected project.
+To query metrics in the **Developer** perspective, you must specify a project name that represents the namespace. You must have the required privileges to view metrics for the selected project.
 
 - You have access to the cluster as a developer or as a user with view permissions for the project that you are viewing metrics for.
 

@@ -724,7 +724,7 @@ Production environments can deny direct access to the internet and instead have 
 
 # Network configuration phases
 
-There are two phases prior to OpenShift Container Platform installation where you can customize the network configuration. Customize settings in the `install-config.yaml` file and in the Cluster Network Operator manifest across two configuration phases.
+You can customize your OpenShift Container Platform network plugin configuration, such as cluster network CIDR and service network ranges, during two phases before installation to integrate with your existing network environment.
 
 Phase 1
 You can customize the following network-related fields in the `install-config.yaml` file before you create the manifest files:
@@ -760,7 +760,9 @@ During phase 2, you cannot override the values that you specified in phase 1 in 
 
 # Specifying advanced network configuration
 
-To integrate your OpenShift Container Platform cluster with your existing network environment, you can specify advanced network configuration in a manifest before you install the cluster. Advanced network configuration can be configured only during cluster installation.
+You can use advanced network configuration for your OpenShift Container Platform network plugin to integrate your cluster into your existing network environment.
+
+You can specify advanced network configuration only before you install the cluster.
 
 <div class="important">
 
@@ -776,7 +778,7 @@ Customizing your network configuration by modifying the OpenShift Container Plat
     $ ./openshift-install create manifests --dir <installation_directory>
     ```
 
-    The `<installation_directory>` specifies the name of the directory that contains the `install-config.yaml` file for your cluster.
+    where `<installation_directory>` specifies the name of the directory that contains the `install-config.yaml` file for your cluster.
 
 2.  Create a stub manifest file for the advanced network configuration that is named `cluster-network-03-config.yml` in the `<installation_directory>/manifests/` directory:
 
@@ -790,11 +792,7 @@ Customizing your network configuration by modifying the OpenShift Container Plat
 
 3.  Specify the advanced network configuration for your cluster in the `cluster-network-03-config.yml` file, such as in the following example:
 
-    <div class="formalpara-title">
-
-    **Enable IPsec for the OVN-Kubernetes network provider**
-
-    </div>
+    The following example enables IPsec for the OVN-Kubernetes network provider:
 
     ``` yaml
     apiVersion: operator.openshift.io/v1
@@ -1128,7 +1126,7 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 </dd>
 <dt><code>unix:&lt;file&gt;</code></dt>
 <dd>
-<p>A Unix Domain Socket file specified by <code>&lt;file&gt;</code>.</p>
+<p>A UNIX Domain Socket file specified by <code>&lt;file&gt;</code>.</p>
 </dd>
 <dt><code>null</code></dt>
 <dd>
@@ -1208,7 +1206,7 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <tr class="odd">
 <td style="text-align: left;"><p><code>internalMasqueradeSubnet</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>The masquerade IPv4 addresses that are used internally to enable host to service traffic. The host is configured with these IP addresses as well as the shared gateway bridge interface. The default value is <code>169.254.169.0/29</code>.</p>
+<td style="text-align: left;"><p>The masquerade IPv4 addresses that are used internally to enable host to service traffic. The host is configured with these IP addresses and the shared gateway bridge interface. The default value is <code>169.254.169.0/29</code>.</p>
 <div class="important">
 <p>For OpenShift Container Platform 4.17 and later versions, clusters use <code>169.254.0.0/17</code> as the default masquerade subnet. For upgraded clusters, there is no change to the default masquerade subnet.</p>
 </div></td>
@@ -1236,7 +1234,7 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <tr class="odd">
 <td style="text-align: left;"><p><code>internalMasqueradeSubnet</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>The masquerade IPv6 addresses that are used internally to enable host to service traffic. The host is configured with these IP addresses as well as the shared gateway bridge interface. The default value is <code>fd69::/125</code>.</p>
+<td style="text-align: left;"><p>The masquerade IPv6 addresses that are used internally to enable host to service traffic. The host is configured with these IP addresses and the shared gateway bridge interface. The default value is <code>fd69::/125</code>.</p>
 <div class="important">
 <p>For OpenShift Container Platform 4.17 and later versions, clusters use <code>fd69::/112</code> as the default masquerade subnet. For upgraded clusters, there is no change to the default masquerade subnet.</p>
 </div></td>
@@ -1278,7 +1276,7 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 
 <div class="formalpara-title">
 
-**Example OVN-Kubernetes configuration with IPSec enabled**
+**Example OVN-Kubernetes configuration with IPsec enabled**
 
 </div>
 
@@ -1493,7 +1491,7 @@ By default, administrator secrets are stored in the `kube-system` project. If yo
 
 ## Manually creating long-term credentials
 
-The Cloud Credential Operator (CCO) can be put into manual mode prior to installation in environments where the cloud identity and access management (IAM) APIs are not reachable, or the administrator prefers not to store an administrator-level credential secret in the cluster `kube-system` namespace.
+You can put the Cloud Credential Operator (CCO) into manual mode before OpenShift Container Platform installation if the cloud identity and access management (IAM) APIs are not reachable, or if you prefer not to store an administrator-level credential secret in the cluster `kube-system` namespace.
 
 1.  If you did not set the `credentialsMode` parameter in the `install-config.yaml` configuration file to `Manual`, modify the value as shown:
 
@@ -1915,7 +1913,7 @@ You must have:
 
 ### Incorporating the Cloud Credential Operator utility manifests
 
-To implement short-term security credentials managed outside the cluster for individual components, you must move the manifest files that the Cloud Credential Operator utility (`ccoctl`) created to the correct directories for the installation program.
+To implement short-term security credentials managed outside the cluster for individual OpenShift Container Platform components, you must move the manifest files that the Cloud Credential Operator utility (`ccoctl`) created to the correct directories for the installation program.
 
 - You have configured an account with the cloud platform that hosts your cluster.
 
@@ -1980,7 +1978,7 @@ To implement short-term security credentials managed outside the cluster for ind
 
 # Deploying the cluster
 
-To deploy your OpenShift Container Platform cluster, you can initialize installation by running the `openshift-install create cluster` command from the directory that contains the installation program. The installation program provisions infrastructure and completes cluster setup.
+To deploy your OpenShift Container Platform cluster, you initialize installation by running the `openshift-install create cluster` command from the directory that contains the installation program. The installation program provisions the required infrastructure and completes the cluster setup.
 
 <div class="important">
 
@@ -2003,9 +2001,11 @@ You can run the `create cluster` command of the installation program only once, 
       --log-level=info
   ```
 
-  - For `<installation_directory>`, specify the location of your customized `./install-config.yaml` file.
+  where:
 
-  - To view different installation details, specify `warn`, `debug`, or `error` instead of `info`.
+  - `<installation_directory>`: Specifies the location of your customized `./install-config.yaml` file.
+
+  - `--log-level`: Specifies the log level. To view different installation details, specify `warn`, `debug`, or `error` instead of `info`.
 
 <div class="formalpara-title">
 
@@ -2025,11 +2025,7 @@ When the cluster deployment completes successfully:
 
   </div>
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
+  The following example shows the expected output:
 
   ``` terminal
   ...

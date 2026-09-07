@@ -496,7 +496,7 @@ Engineering considerations
 
 - Hierarchical event subscription as described in the O-RAN specification is not supported for PTP events.
 
-- Cluster Node(s) must have proper NTP configuration to ensure correct time prior to PTP operator taking ownership of node timing.
+- Cluster nodes must have valid NTP configurations to establish accurate time before the PTP Operator takes ownership of node timing.
 
 ## SR-IOV Operator
 

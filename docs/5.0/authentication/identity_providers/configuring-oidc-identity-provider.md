@@ -1,4 +1,4 @@
-Configure the `oidc` identity provider to integrate with an OpenID Connect identity provider using an [Authorization Code Flow](http://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth).
+To integrate OpenShift Container Platform with an external OpenID Connect (OIDC) identity provider, configure the `oidc` identity provider by using the Authorization Code Flow. Use this integration when your organization already uses OIDC for single sign-on.
 
 # Identity providers in OpenShift Container Platform
 
@@ -12,7 +12,9 @@ OpenShift Container Platform usernames containing `/`, `:`, and `%` are not supp
 
 # About OpenID Connect authentication
 
-The Authentication Operator in OpenShift Container Platform requires that the configured OpenID Connect identity provider implements the [OpenID Connect Discovery](https://openid.net/specs/openid-connect-discovery-1_0.html) specification.
+Review OpenID Connect (OIDC) discovery, scopes, and claim mapping before you configure the `oidc` identity provider. OIDC support and correctly mapped claims are required for the Authentication Operator to authenticate users in OpenShift Container Platform.
+
+The Authentication Operator in OpenShift Container Platform requires that the configured OIDC identity provider implements the OIDC discovery specification. For more information, see "OpenID Connect Discovery".
 
 <div class="note">
 
@@ -24,18 +26,18 @@ By default, the `openid` scope is requested. If required, extra scopes can be sp
 
 Claims are read from the JWT `id_token` returned from the OpenID identity provider and, if specified, from the JSON returned by the `UserInfo` URL.
 
-At least one claim must be configured to use as the user’s identity. The standard identity claim is `sub`.
+At least one claim must be configured to use as the identity of the user. The standard identity claim is `sub`.
 
-You can also indicate which claims to use as the user’s preferred user name, display name, and email address. If multiple claims are specified, the first one with a non-empty value is used. The following table lists the standard claims:
+You can also indicate which claims to use as the preferred username, display name, and email address of the user. If multiple claims are specified, the first one with a non-empty value is used. The following table lists the standard claims:
 
-| Claim                | Description                                                                                                                                                                                                                                                   |
-|----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `sub`                | Short for "subject identifier." The remote identity for the user at the issuer.                                                                                                                                                                               |
-| `preferred_username` | The preferred user name when provisioning a user. A shorthand name that the user wants to be referred to as, such as `janedoe`. Typically a value that corresponding to the user’s login or username in the authentication system, such as username or email. |
-| `email`              | Email address.                                                                                                                                                                                                                                                |
-| `name`               | Display name.                                                                                                                                                                                                                                                 |
+| Claim                | Description                                                                                                                                                                                                                                                  |
+|----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `sub`                | Short for "subject identifier." The remote identity for the user at the issuer.                                                                                                                                                                              |
+| `preferred_username` | The preferred username when provisioning a user. A shorthand name that the user wants to be referred to, such as `janedoe`. Typically a value that corresponds to the login or username of the user in the authentication system, such as username or email. |
+| `email`              | Email address.                                                                                                                                                                                                                                               |
+| `name`               | Display name.                                                                                                                                                                                                                                                |
 
-See the [OpenID claims documentation](http://openid.net/specs/openid-connect-core-1_0.html#StandardClaims) for more information.
+For more information, see "OpenID claims documentation".
 
 <div class="note">
 
@@ -43,9 +45,15 @@ Unless your OpenID Connect identity provider supports the resource owner passwor
 
 </div>
 
-# Supported OIDC providers
+- [OpenID Connect Discovery (OpenID documentation)](https://openid.net/specs/openid-connect-discovery-1_0.html)
 
-Red Hat tests and supports specific OpenID Connect (OIDC) providers with OpenShift Container Platform. The following OpenID Connect (OIDC) providers are tested and supported with OpenShift Container Platform. Using an OIDC provider that is not on the following list might work with OpenShift Container Platform, but the provider was not tested by Red Hat and therefore is not supported by Red Hat.
+- [OpenID claims documentation](https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims)
+
+# Supported OpenID Connect providers
+
+Review the OpenID Connect (OIDC) providers that Red Hat tests and supports with OpenShift Container Platform. Choose a provider from this list if you need a Red Hat-tested OIDC integration with OpenShift Container Platform.
+
+The following OIDC providers are tested and supported with OpenShift Container Platform. Using an OIDC provider that is not on the following list might work with OpenShift Container Platform, but the provider was not tested by Red Hat and therefore is not supported by Red Hat.
 
 - Active Directory Federation Services for Windows Server
 
@@ -77,7 +85,7 @@ Red Hat tests and supports specific OpenID Connect (OIDC) providers with OpenShi
 
 # Creating the secret
 
-Create a `Secret` object in the `openshift-config` namespace to store the client secret and related credentials for the identity provider configuration.
+Create a `Secret` object in the `openshift-config` namespace to store the client secret for your identity provider. The identity provider custom resource (CR) references this secret during configuration.
 
 1.  Create a `Secret` object containing the client secret by running the following command:
 
@@ -104,11 +112,11 @@ Create a `Secret` object in the `openshift-config` namespace to store the client
     $ oc create secret generic <secret_name> --from-file=<path_to_file> -n openshift-config
     ```
 
-# Creating a 'ConfigMap'
+# Creating a ConfigMap
 
-Create a `ConfigMap` object in the `openshift-config` namespace to store the certificate authority bundle that identity providers use to validate secure connections to the remote authentication service.
+Create a `ConfigMap` object in the `openshift-config` namespace that contains the certificate authority bundle for the identity provider. OpenShift Container Platform uses this bundle to validate Transport Layer Security (TLS) connections to the identity provider.
 
-1.  Define an OpenShift Container Platform `ConfigMap` object containing the certificate authority by running the following command:
+1.  Define an OpenShift Container Platform `ConfigMap` object containing the CA by running the following command:
 
     ``` terminal
     $ oc create configmap ca-config-map --from-file=ca.crt=/path/to/ca -n openshift-config
@@ -127,19 +135,17 @@ Create a `ConfigMap` object in the `openshift-config` namespace to store the cer
         <CA_certificate_PEM>
     ```
 
-    The certificate authority must be stored in the `ca.crt` key of the `ConfigMap` object.
+    The CA must be stored in the `ca.crt` key of the `ConfigMap` object.
 
 # Sample OpenID Connect CRs
 
-The following custom resources (CRs) show the parameters and acceptable values for an OpenID Connect identity provider.
+Review the sample OpenID Connect (OIDC) custom resources (CRs) before you configure the `oidc` identity provider. These examples show required parameters, acceptable values, and optional fields such as custom certificate bundles and extra scopes.
 
-If you must specify a custom certificate bundle, extra scopes, extra authorization request parameters, or a `userInfo` URL, use the full OpenID Connect CR.
+If you must specify a custom certificate bundle, extra scopes, extra authorization request parameters, or a `userInfo` URL, use the full OIDC CR.
 
-<div class="formalpara-title">
+## Standard OIDC CR
 
-**Standard OpenID Connect CR**
-
-</div>
+The following is an example of a standard OIDC CR.
 
 ``` yaml
 apiVersion: config.openshift.io/v1
@@ -167,23 +173,29 @@ spec:
       issuer: https://www.idp-issuer.com
 ```
 
-- This provider name is prefixed to the value of the identity claim to form an identity name. It is also used to build the redirect URL.
+where:
 
-- Controls how mappings are established between this provider’s identities and `User` objects.
+`spec.identityProviders.name`
+Specifies that this provider name is prefixed to the value of the identity claim to form an identity name. It is also used to build the redirect URL.
 
-- The client ID of a client registered with the OpenID provider. The client must be allowed to redirect to `https://oauth-openshift.apps.<cluster_name>.<cluster_domain>/oauth2callback/<idp_provider_name>`.
+`spec.identityProviders.mappingMethod`
+Specifies how mappings are established between identities from this provider and `User` objects.
 
-- A reference to an OpenShift Container Platform `Secret` object containing the client secret.
+`spec.identityProviders.openID.clientID`
+Specifies the client ID of a client registered with the OpenID provider. The client must be allowed to redirect to `https://oauth-openshift.apps.<cluster_name>.<cluster_domain>/oauth2callback/<idp_provider_name>`.
 
-- The list of claims to use as the identity. The first non-empty claim is used.
+`spec.identityProviders.openID.clientSecret`
+Specifies a reference to an OpenShift Container Platform `Secret` object containing the client secret.
 
-- The [Issuer Identifier](https://openid.net/specs/openid-connect-core-1_0.html#IssuerIdentifier) described in the OpenID spec. Must use `https` without query or fragment component.
+`spec.identityProviders.openID.claims`
+Specifies the list of claims to use as the identity. The first non-empty claim is used.
 
-<div class="formalpara-title">
+`spec.identityProviders.openID.issuer`
+Specifies the Issuer Identifier described in the OpenID spec. Must use `https` without query or fragment component. For more information, see "Issuer Identifier".
 
-**Full OpenID Connect CR**
+## Full OpenID CR
 
-</div>
+The following is an example of a full OpenID Connect CR.
 
 ``` yaml
 apiVersion: config.openshift.io/v1
@@ -222,31 +234,38 @@ spec:
       issuer: https://www.idp-issuer.com
 ```
 
-- Optional: Reference to an OpenShift Container Platform config map containing the PEM-encoded certificate authority bundle to use in validating server certificates for the configured URL.
+where:
 
-- Optional: The list of scopes to request, in addition to the `openid` scope, during the authorization token request.
+`spec.identityProviders.openID.ca`
+Specifies a reference to an OpenShift Container Platform config map containing the PEM-encoded certificate authority bundle to use in validating server certificates for the configured URL. This value is optional.
 
-- Optional: A map of extra parameters to add to the authorization token request.
+`spec.identityProviders.openID.extraScopes`
+Specifies the list of scopes to request, in addition to the `openid` scope, during the authorization token request. This value is optional.
 
-- The list of claims to use as the preferred user name when provisioning a user for this identity. The first non-empty claim is used.
+`spec.identityProviders.openID.extraAuthorizeParameters`
+Specifies a map of extra parameters to add to the authorization token request. This value is optional.
 
-- The list of claims to use as the display name. The first non-empty claim is used.
+`spec.identityProviders.openID.claims.preferredUsername`
+Specifies the list of claims to use as the preferred username when provisioning a user for this identity. The first non-empty claim is used.
 
-- The list of claims to use as the email address. The first non-empty claim is used.
+`spec.identityProviders.openID.claims.name`
+Specifies the list of claims to use as the display name. The first non-empty claim is used.
 
-- The list of claims to use to synchronize groups from the OpenID Connect provider to OpenShift Container Platform upon user login. The first non-empty claim is used.
+`spec.identityProviders.openID.claims.email`
+Specifies the list of claims to use as the email address. The first non-empty claim is used.
 
-<!-- -->
+`spec.identityProviders.openID.claims.groups`
+Specifies the list of claims to use to synchronize groups from the OpenID Connect provider to OpenShift Container Platform upon user login. The first non-empty claim is used.
 
-- See [Identity provider parameters](../../authentication/understanding-identity-provider.xml#identity-provider-parameters_understanding-identity-provider) for information on parameters, such as `mappingMethod`, that are common to all identity providers.
+- [Identity provider parameters](../../authentication/understanding-identity-provider.xml#identity-provider-parameters_understanding-identity-provider)
 
 # Adding an identity provider to your cluster
 
-Apply the identity provider custom resource (CR) to your cluster so users can authenticate with the configured identity provider.
+Apply the identity provider custom resource (CR) to your cluster after you define it. With this configuration, you can authenticate with the configured identity provider.
 
-- You installed an OpenShift Container Platform cluster.
+- You have access to a OpenShift Container Platform cluster.
 
-- You defined the CR for your identity provider.
+- You have created the CR for your identity providers.
 
 - You are logged in as an administrator.
 
@@ -268,7 +287,7 @@ Apply the identity provider custom resource (CR) to your cluster so users can au
 
     You can also access this page from the web console by navigating to **(?) Help** → **Command Line Tools** → **Copy Login Command**.
 
-3.  Log in to the cluster, passing in the token to authenticate, by running the following command:
+3.  Log in to the cluster by running the following command, passing in the token to authenticate:
 
     ``` terminal
     $ oc login --token=<token>
@@ -276,7 +295,11 @@ Apply the identity provider custom resource (CR) to your cluster so users can au
 
     <div class="note">
 
-    After the OIDC identity provider is configured in OpenShift Container Platform, you can also log in by running the following command, which prompts for your username and password:
+    If your OpenID Connect identity provider supports the resource owner password credentials (ROPC) grant flow, you can log in with a username and password. You might need to take steps to enable the ROPC grant flow for your identity provider.
+
+    </div>
+
+4.  After the OIDC identity provider is configured in OpenShift Container Platform, log in by running the following command. The command prompts you for your username and password:
 
     ``` terminal
     $ oc login -u <identity_provider_username> --server=<api_server_url_and_port>
@@ -284,9 +307,7 @@ Apply the identity provider custom resource (CR) to your cluster so users can au
 
     If your OpenID Connect identity provider supports the resource owner password credentials (ROPC) grant flow, you might need to take steps to enable the ROPC grant flow for your identity provider.
 
-    </div>
-
-4.  Confirm that the user logged in successfully and that the username displays by running the following command:
+5.  Confirm that the user logged in successfully and that the username displays by running the following command:
 
     ``` terminal
     $ oc whoami
@@ -294,18 +315,24 @@ Apply the identity provider custom resource (CR) to your cluster so users can au
 
 # Configuring identity providers using the web console
 
-Configure your identity provider (IDP) through the web console instead of the CLI.
+You can configure identity providers on your OpenShift Container Platform cluster through the web console by updating the **OAuth** settings in the **Cluster Settings**.
 
-- You must be logged in to the web console as a cluster administrator.
+- You are logged in to the web console as a cluster administrator.
 
 1.  Navigate to **Administration** → **Cluster Settings**.
 
 2.  Under the **Configuration** tab, click **OAuth**.
 
-3.  Under the **Identity Providers** section, select your identity provider from the **Add** drop-down menu.
+3.  Under the **Identity Providers** section, select your identity provider from the **Add** drop-down list.
 
-<div class="note">
+    <div class="note">
 
-You can specify multiple IDPs through the web console without overwriting existing IDPs.
+    You can specify multiple identity providers through the web console without overwriting existing identity providers.
 
-</div>
+    </div>
+
+# Additional resources
+
+- [Authorization Code Flow](https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth)
+
+- [Issuer Identifier](https://openid.net/specs/openid-connect-core-1_0.html#IssuerIdentifier)

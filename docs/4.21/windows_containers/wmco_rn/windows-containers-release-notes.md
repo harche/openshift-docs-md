@@ -1,11 +1,11 @@
 This release of the Windows Machine Config Operator (WMCO) provides bug fixes for running Windows compute nodes in an OpenShift Container Platform cluster.
 
-# Release notes for Red Hat Windows Machine Config Operator 10.21.1
+# Release notes for Red Hat Windows Machine Config Operator 10.21.2
 
-Issued: 3 March 2026
+Issued: 31 August 2026
 
-The components of the Red Hat Windows Machine Config Operator (WMCO) 10.21.1 were released in [RHBA-2026:3684](https://access.redhat.com/errata/RHBA-2026:3684).
+The components of the Red Hat Windows Machine Config Operator (WMCO) 10.21.2 were released in [RHSA-2026:61780](https://access.redhat.com/errata/RHSA-2026:61780).
 
 ## Bug fixes
 
-- Before this update, the `hybridOverlay` service was not using the trusted CA bundle when connecting to Kubernetes, because the `--k8s-cacert` option was missing from the service command. Because of this, users could encounter trust issues or failures when the `hybridOverlay` service attempted to communicate securely with Kubernetes clusters using custom or internal CAs. With this release, the `hybridOverlay` service command now includes the `--k8s-cacert flag` pointing to the trusted CA bundle. As a result, the `hybridOverlay` service uses the trusted CA bundle for secure communication, preventing trust issues and ensuring compatibility with the cluster. ([OCPBUGS-64719](https://issues.redhat.com/browse/OCPBUGS-64719))
+- Before this update, the SSH connection between the WMCO and a Windows node would terminate when the WMCO rebooted the node after a configuration update. As a consequence, the WMCO incorrectly treated the SSH disconnection as a reboot failure, preventing the Windows node from completing required reboots. With this release, the reboot validation process is modified to ignore SSH termination errors and instead verify a successful reboot by using explicit node reachability checks and the SSH reconnection. As a result, Windows nodes successfully reboot upon node configuration changes. ([OCPBUGS-98229](https://issues.redhat.com/browse/OCPBUGS-98229))

@@ -103,7 +103,7 @@ Required OpenShift Container Platform versions for platforms
 
 ## Multi-architecture support
 
-The following tables indicate the supported architectures for hosted control planes, organized by platform. If an architecture is not listed, it is not yet fully supported.
+The following table indicates the supported architectures for hosted control planes, organized by platform. If an architecture is not listed, it is not yet fully supported.
 
 | Platform                                                | Control planes | Compute nodes | OpenShift Container Platform version support |
 |---------------------------------------------------------|----------------|---------------|----------------------------------------------|

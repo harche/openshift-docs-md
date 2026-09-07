@@ -94,7 +94,7 @@ Download and install the new version of `oc`.
 
 6.  Place the `oc` binary in a directory that is on your `PATH`.
 
-    To check your `PATH`, execute the following command:
+    To check your `PATH`, run the following command:
 
     ``` terminal
     $ echo $PATH
@@ -128,7 +128,7 @@ Download and install the new version of `oc`.
 
 5.  Move the `oc` binary to a directory that is on your `PATH` variable.
 
-    To check your `PATH` variable, open the command prompt and execute the following command:
+    To check your `PATH` variable, open the Command Prompt and run the following command:
 
     ``` terminal
     C:\> path
@@ -166,11 +166,11 @@ Download and install the new version of `oc`.
 
     </div>
 
-5.  Unpack and unzip the archive.
+5.  Extract the archive.
 
 6.  Move the `oc` binary to a directory on your `PATH` variable.
 
-    To check your `PATH` variable, open a terminal and execute the following command:
+    To check your `PATH` variable, open a terminal and run the following command:
 
     ``` terminal
     $ echo $PATH

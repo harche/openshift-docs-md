@@ -1071,7 +1071,7 @@ You can create node pools for a hosted cluster by specifying a name, number of r
 
     Replace `<4.x.0>` with the supported OpenShift Container Platform version that you want to use.
 
-- [Scaling down the data plane to zero](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.15/html/hosted_control_planes/troubleshooting-hosted-control-planes#scale-down-data-plane_hcp-troubleshooting)
+- [Scaling down the data plane to zero](../../hosted_control_planes/hcp-machine-config.xml#scale-down-data-plane_hcp-machine-config)
 
 # Verifying hosted cluster creation on OpenShift Virtualization
 

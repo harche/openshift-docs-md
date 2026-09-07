@@ -747,8 +747,6 @@ The GPU Operator automates the management of the NVIDIA drivers, device plugins 
       name: gpu-cluster-policy
     spec:
       vgpuDeviceManager:
-        config:
-          default: default
         enabled: true
       migManager:
         config:

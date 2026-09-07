@@ -40,7 +40,7 @@ To complete a restricted network installation, you must create a registry that m
 
 <div class="important">
 
-Because of the complexity of the configuration for user-provisioned installations, consider completing a standard user-provisioned infrastructure installation before you attempt a restricted network installation using user-provisioned infrastructure. Completing this test installation might make it easier to isolate and troubleshoot any issues that might arise during your installation in a restricted network.
+Because of the complexity of the configuration for user-provisioned installations, consider completing a standard user-provisioned infrastructure installation before you try a restricted network installation using user-provisioned infrastructure. Completing this test installation might make it easier to isolate and troubleshoot any issues that might arise during your installation in a restricted network.
 
 </div>
 
@@ -98,7 +98,7 @@ As an exception, you can run zero compute machines in a bare metal cluster that 
 
 <div class="important">
 
-To keep high availability of your cluster, use separate physical hosts for these cluster machines.
+To maintain high availability of your cluster, use separate physical hosts for these cluster machines.
 
 </div>
 
@@ -172,7 +172,7 @@ The Kubernetes API server must be able to resolve the node names of the cluster 
 
 ### Setting the cluster node hostnames through DHCP
 
-On Red Hat Enterprise Linux CoreOS (RHCOS) machines, the hostname is set through NetworkManager. By default, the machines obtain their hostname through DHCP. If the hostname is not provided by DHCP, set statically through kernel arguments, or another method, it is obtained through a reverse DNS lookup. Reverse DNS lookup occurs after the network has been initialized on a node and can take time to resolve. Other system services can start prior to this and detect the hostname as `localhost` or similar. You can avoid this by using DHCP to provide the hostname for each cluster node.
+On Red Hat Enterprise Linux CoreOS (RHCOS) machines, the hostname is set through NetworkManager. By default, the machines obtain their hostname through DHCP. If the hostname is not provided by DHCP, set statically through kernel arguments, or another method, it is obtained through a reverse DNS lookup. Reverse DNS lookup occurs after the network has been initialized on a node and can take time to resolve. Other system services can start before this and detect the hostname as `localhost` or similar. You can avoid this by using DHCP to provide the hostname for each cluster node.
 
 Additionally, setting the hostnames through DHCP can bypass any manual DNS record name configuration errors in environments that have a DNS split-horizon implementation.
 
@@ -1265,7 +1265,7 @@ You must use a local key, not one that you configured with platform-specific app
     $ ssh-add <path>/<file_name>
     ```
 
-    Specifies the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`
+    Specify the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`.
 
     <div class="formalpara-title">
 
@@ -3975,6 +3975,8 @@ The OpenShift Container Platform bootstrap process begins after the cluster node
     INFO It is now safe to remove the bootstrap resources
     ```
 
+    The bootstrapping completion wait time varies per platform.
+
     The command succeeds when the Kubernetes API server signals that it has been bootstrapped on the control plane machines.
 
 2.  After the bootstrap process is complete, remove the bootstrap machine from the load balancer.
@@ -4180,7 +4182,7 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     <div class="note">
 
-    You might need to wait a few minutes after approval of the server CSRs for the machines to change to the `Ready` status.
+    You might need to wait a few minutes after approval of the server CSRs for the machines to reach the `Ready` status.
 
     </div>
 

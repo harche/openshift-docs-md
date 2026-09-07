@@ -88,11 +88,11 @@ To support an OpenShift Container Platform installation, your Red Hat OpenStack
 
 Recommended resources for a default OpenShift Container Platform cluster on RHOSP
 
-A cluster might function with fewer than recommended resources, but its performance is not guaranteed.
+A cluster might function with fewer than recommended resources, but cluster performance is not guaranteed.
 
 <div class="important">
 
-If RHOSP object storage (Swift) is available and operated by a user account with the `swiftoperator` role, it is used as the default backend for the OpenShift Container Platform image registry. In this case, the volume storage requirement is 175 GB. Swift space requirements vary depending on the size of the image registry.
+If RHOSP object storage (Swift) is available and operated by a user account with the `swiftoperator` role, Swift is used as the default backend for the OpenShift Container Platform image registry. In this case, the volume storage requirement is 175 GB. Swift space requirements vary depending on the size of the image registry.
 
 </div>
 
@@ -277,7 +277,7 @@ Download Ansible playbooks that you can use to install OpenShift Container Platf
 
 # Obtaining the installation program
 
-Before you install OpenShift Container Platform, download the installation file on the host you are using for installation.
+Before you install OpenShift Container Platform, download the installation file on the host you are using for installation, so that installation assets exist for deployment in your environment.
 
 - You have a computer that runs Linux or macOS, with 500 MB of local disk space.
 
@@ -399,7 +399,7 @@ You must use a local key, not one that you configured with platform-specific app
     $ ssh-add <path>/<file_name>
     ```
 
-    Specifies the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`
+    Specify the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`.
 
     <div class="formalpara-title">
 
@@ -491,13 +491,13 @@ The OpenShift Container Platform installation process requires external network 
   +--------------------------------------+----------------+-------------+
   ```
 
-A network with an external router type appears in the network list. If at least one does not, see [Creating a default floating IP network](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html/director_installation_and_usage/performing-overcloud-post-installation-tasks#creating-a-default-floating-ip-network) and [Creating a default provider network](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html/director_installation_and_usage/performing-overcloud-post-installation-tasks#creating-a-default-provider-network).
+  A network with an external router type appears in the network list. If at least one does not, see [Creating a default floating IP network](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html/director_installation_and_usage/performing-overcloud-post-installation-tasks#creating-a-default-floating-ip-network) and [Creating a default provider network](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/16.0/html/director_installation_and_usage/performing-overcloud-post-installation-tasks#creating-a-default-provider-network).
 
-<div class="note">
+  <div class="note">
 
-If the Neutron trunk service plugin is enabled, a trunk port is created by default. For more information, see [Neutron trunk port](https://wiki.openstack.org/wiki/Neutron/TrunkPort).
+  If the Neutron trunk service plugin is enabled, a trunk port is created by default. For more information, see [Neutron trunk port](https://wiki.openstack.org/wiki/Neutron/TrunkPort).
 
-</div>
+  </div>
 
 # Access to the environment
 
@@ -811,7 +811,7 @@ The CIDR ranges for networks are not adjustable after cluster installation. Red 
 
 ## Sample customized install-config.yaml file for RHOSP
 
-The following example `install-config.yaml` files demonstrate all of the possible Red Hat OpenStack Platform (RHOSP) customization options.
+The example `install-config.yaml` files demonstrate all of the possible Red Hat OpenStack Platform (RHOSP) customization options.
 
 <div class="important">
 
@@ -1073,6 +1073,14 @@ To learn more about creating networks on RHOSP, read the provider networks docum
 
 You can deploy an OpenShift Container Platform cluster that has its primary network interface on an Red Hat OpenStack Platform (RHOSP) provider network.
 
+<div class="tip">
+
+You can add additional networks, including provider networks, to the `platform.openstack.additionalNetworkIDs` list.
+
+After you deploy your cluster, you can attach pods to additional networks. For more information, see "Understanding multiple networks".
+
+</div>
+
 - Your Red Hat OpenStack Platform (RHOSP) deployment is configured as described by "RHOSP provider network requirements for cluster installation".
 
 1.  In a text editor, open the `install-config.yaml` file.
@@ -1085,42 +1093,42 @@ You can deploy an OpenShift Container Platform cluster that has its primary netw
 
 5.  Set the value of the `networking.machineNetwork.cidr` property to the CIDR block of the provider network subnet.
 
-<div class="important">
+    <div class="important">
 
-The `platform.openstack.apiVIPs` and `platform.openstack.ingressVIPs` properties must both be unassigned IP addresses from the `networking.machineNetwork.cidr` block.
+    The `platform.openstack.apiVIPs` and `platform.openstack.ingressVIPs` properties must both be unassigned IP addresses from the `networking.machineNetwork.cidr` block.
 
-</div>
+    </div>
 
-<div class="formalpara-title">
+    <div class="formalpara-title">
 
-**Section of an installation configuration file for a cluster that relies on a RHOSP provider network**
+    **Section of an installation configuration file for a cluster that relies on a RHOSP provider network**
 
-</div>
+    </div>
 
-``` yaml
-        ...
-        platform:
-          openstack:
-            apiVIPs:
-              - 192.0.2.13
-            ingressVIPs:
-              - 192.0.2.23
-            machinesSubnet: fa806b2f-ac49-4bce-b9db-124bc64209bf
-            # ...
-        networking:
-          machineNetwork:
-          - cidr: 192.0.2.0/24
-```
+    ``` yaml
+            ...
+            platform:
+              openstack:
+                apiVIPs:
+                  - 192.0.2.13
+                ingressVIPs:
+                  - 192.0.2.23
+                machinesSubnet: fa806b2f-ac49-4bce-b9db-124bc64209bf
+                # ...
+            networking:
+              machineNetwork:
+              - cidr: 192.0.2.0/24
+    ```
 
-- In OpenShift Container Platform 4.12 and later, the `apiVIP` and `ingressVIP` configuration settings are deprecated. Instead, use a list format to enter values in the `apiVIPs` and `ingressVIPs` configuration settings.
+    - In OpenShift Container Platform 4.12 and later, the `apiVIP` and `ingressVIP` configuration settings are deprecated. Instead, use a list format to enter values in the `apiVIPs` and `ingressVIPs` configuration settings.
 
-<div class="warning">
+      <div class="warning">
 
-You cannot set the `platform.openstack.externalNetwork` or `platform.openstack.externalDNS` parameters while using a provider network for the primary network interface.
+      You cannot set the `platform.openstack.externalNetwork` or `platform.openstack.externalDNS` parameters while using a provider network for the primary network interface.
 
-</div>
+      </div>
 
-When you deploy the cluster, the installer uses the `install-config.yaml` file to deploy the cluster on the provider network.
+      When you deploy the cluster, the installer uses the `install-config.yaml` file to deploy the cluster on the provider network.
 
 # Creating the Kubernetes manifest and Ignition config files
 
@@ -1601,7 +1609,7 @@ Create three control plane machines by using the Ignition config files that you 
     $ openshift-install wait-for bootstrap-complete
     ```
 
-    You will see messages that confirm that the control plane machines are running and have joined the cluster:
+    You will see messages that confirm that the control plane machines are running and have joined the cluster.
 
     ``` terminal
     INFO API v1.35.4 up
@@ -1609,6 +1617,8 @@ Create three control plane machines by using the Ignition config files that you 
     ...
     INFO It is now safe to remove the bootstrap resources
     ```
+
+    The bootstrapping completion wait time varies per platform.
 
 # Logging in to the cluster by using the CLI
 
@@ -1857,7 +1867,7 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     <div class="note">
 
-    You might need to wait a few minutes after approval of the server CSRs for the machines to change to the `Ready` status.
+    You might need to wait a few minutes after approval of the server CSRs for the machines to reach the `Ready` status.
 
     </div>
 

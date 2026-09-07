@@ -1062,7 +1062,7 @@
   - [Resource quotas per project](applications/quotas/quotas-setting-per-project.md)
   - [Resource quotas across multiple projects](applications/quotas/quotas-setting-across-multiple-projects.md)
 - [Using config maps with applications](applications/config-maps.md)
-- [Monitoring project and application metrics using the Developer perspective](applications/odc-monitoring-project-and-application-metrics-using-developer-perspective.md)
+- [Monitoring project and application metrics by using the Developer perspective](applications/odc-monitoring-project-and-application-metrics-using-developer-perspective.md)
 - [Monitoring application health](applications/application-health.md)
 - [Editing applications](applications/odc-editing-applications.md)
 - [Pruning objects to reclaim resources](applications/pruning-objects.md)
@@ -1991,6 +1991,7 @@
   - [Uninstalling OpenShift Virtualization](virt/install/uninstalling-virt.md)
   - [Installing OpenShift Virtualization on IBM Cloud bare-metal nodes](virt/install/virt-install-ibm-cloud-bm-nodes.md)
 - **Postinstallation configuration**
+  - [Run automated postinstallation configuration](virt/post_installation_configuration/virt-platform-autopilot.md)
   - [Postinstallation configuration](virt/post_installation_configuration/virt-post-install-config.md)
   - [Node placement rules](virt/post_installation_configuration/virt-node-placement-virt-components.md)
   - [Network configuration](virt/post_installation_configuration/virt-post-install-network-config.md)

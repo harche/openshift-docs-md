@@ -130,6 +130,8 @@ All users can interact with all OpenShift Container Platform web console feature
 
 You can still enable the **Developer** perspective. On the **Getting Started** pane in the web console, you can take a tour of the console, find information on setting up your cluster, view a quick start for enabling the **Developer** perspective, and follow links to explore new features and capabilities.
 
+See also, "Enabling the **Developer** perspective in the web console".
+
 </div>
 
 - If you are logged in as an administrator, complete the following steps:

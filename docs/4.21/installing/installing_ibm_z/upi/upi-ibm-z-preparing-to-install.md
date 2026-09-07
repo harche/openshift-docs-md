@@ -44,7 +44,7 @@ If your cluster cannot have direct internet access, you can perform a restricted
 
 # Obtaining the installation program
 
-Before you install OpenShift Container Platform, download the installation file on your provisioning machine.
+Before you install OpenShift Container Platform, download the installation file on your provisioning machine, so that installation assets exist for deployment in your environment.
 
 - You have a machine that runs Linux, for example Red Hat Enterprise Linux 8, with 500 MB of local disk space.
 
@@ -112,7 +112,7 @@ Download and install the new version of `oc`.
 
 6.  Place the `oc` binary in a directory that is on your `PATH`.
 
-    To check your `PATH`, execute the following command:
+    To check your `PATH`, run the following command:
 
     ``` terminal
     $ echo $PATH
@@ -146,7 +146,7 @@ Download and install the new version of `oc`.
 
 5.  Move the `oc` binary to a directory that is on your `PATH` variable.
 
-    To check your `PATH` variable, open the command prompt and execute the following command:
+    To check your `PATH` variable, open the Command Prompt and run the following command:
 
     ``` terminal
     C:\> path
@@ -184,11 +184,11 @@ Download and install the new version of `oc`.
 
     </div>
 
-5.  Unpack and unzip the archive.
+5.  Extract the archive.
 
 6.  Move the `oc` binary to a directory on your `PATH` variable.
 
-    To check your `PATH` variable, open a terminal and execute the following command:
+    To check your `PATH` variable, open a terminal and run the following command:
 
     ``` terminal
     $ echo $PATH
@@ -276,7 +276,7 @@ Do not skip this procedure in production environments, where disaster recovery a
     $ ssh-add <path>/<file_name>
     ```
 
-    Specifies the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`
+    Specify the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`.
 
     <div class="formalpara-title">
 

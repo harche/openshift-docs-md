@@ -117,117 +117,117 @@ If your environment has a dedicated load balancer in front of your OpenShift Con
     <td></td>
     </tr>
     <tr class="odd">
+    <td style="text-align: left;"><p><code>ec2.us-east-1.amazonaws.com</code></p></td>
+    <td style="text-align: left;"><p>443</p></td>
+    <td style="text-align: left;"><p>Used to get the list of available regions when interactively generating the <code>install-config.yaml</code> file.</p></td>
+    <td></td>
+    </tr>
+    <tr class="even">
     <td style="text-align: left;"><p><code>events.amazonaws.com</code></p></td>
     <td style="text-align: left;"><p>443</p></td>
     <td style="text-align: left;"><p>Used to install and manage clusters in an AWS environment.</p></td>
     <td></td>
     </tr>
-    <tr class="even">
+    <tr class="odd">
     <td style="text-align: left;"><p><code>iam.amazonaws.com</code></p></td>
     <td style="text-align: left;"><p>443</p></td>
     <td style="text-align: left;"><p>Used to install and manage clusters in an AWS environment.</p></td>
     <td></td>
     </tr>
-    <tr class="odd">
+    <tr class="even">
     <td style="text-align: left;"><p><code>route53.amazonaws.com</code></p></td>
     <td style="text-align: left;"><p>443</p></td>
     <td style="text-align: left;"><p>Used to install and manage clusters in an AWS environment.</p></td>
     <td></td>
     </tr>
-    <tr class="even">
+    <tr class="odd">
     <td style="text-align: left;"><p><code>*.s3.amazonaws.com</code></p></td>
     <td style="text-align: left;"><p>443</p></td>
     <td style="text-align: left;"><p>Used to install and manage clusters in an AWS environment.</p></td>
     <td></td>
     </tr>
-    <tr class="odd">
+    <tr class="even">
     <td style="text-align: left;"><p><code>*.s3.&lt;aws_region&gt;.amazonaws.com</code></p></td>
     <td style="text-align: left;"><p>443</p></td>
     <td style="text-align: left;"><p>Used to install and manage clusters in an AWS environment.</p></td>
     <td></td>
     </tr>
-    <tr class="even">
+    <tr class="odd">
     <td style="text-align: left;"><p><code>*.s3.dualstack.&lt;aws_region&gt;.amazonaws.com</code></p></td>
     <td style="text-align: left;"><p>443</p></td>
     <td style="text-align: left;"><p>Used to install and manage clusters in an AWS environment.</p></td>
     <td></td>
     </tr>
-    <tr class="odd">
+    <tr class="even">
     <td style="text-align: left;"><p><code>sts.amazonaws.com</code></p></td>
     <td style="text-align: left;"><p>443</p></td>
     <td style="text-align: left;"><p>Used to install and manage clusters in an AWS environment.</p></td>
     <td></td>
     </tr>
-    <tr class="even">
+    <tr class="odd">
     <td style="text-align: left;"><p><code>sts.&lt;aws_region&gt;.amazonaws.com</code></p></td>
     <td style="text-align: left;"><p>443</p></td>
     <td style="text-align: left;"><p>Used to install and manage clusters in an AWS environment.</p></td>
     <td></td>
     </tr>
-    <tr class="odd">
+    <tr class="even">
     <td style="text-align: left;"><p><code>tagging.us-east-1.amazonaws.com</code></p></td>
     <td style="text-align: left;"><p>443</p></td>
     <td style="text-align: left;"><p>Used to install and manage clusters in an AWS environment. This endpoint is always <code>us-east-1</code>, regardless of the region the cluster is deployed in.</p></td>
     <td></td>
     </tr>
-    <tr class="even">
+    <tr class="odd">
     <td style="text-align: left;"><p><code>ec2.&lt;aws_region&gt;.amazonaws.com</code></p></td>
     <td style="text-align: left;"><p>443</p></td>
     <td style="text-align: left;"><p>Used to install and manage clusters in an AWS environment.</p></td>
     <td></td>
     </tr>
-    <tr class="odd">
+    <tr class="even">
     <td style="text-align: left;"><p><code>elasticloadbalancing.&lt;aws_region&gt;.amazonaws.com</code></p></td>
     <td style="text-align: left;"><p>443</p></td>
     <td style="text-align: left;"><p>Used to install and manage clusters in an AWS environment.</p></td>
     <td></td>
     </tr>
-    <tr class="even">
+    <tr class="odd">
     <td style="text-align: left;"><p><code>servicequotas.&lt;aws_region&gt;.amazonaws.com</code></p></td>
     <td style="text-align: left;"><p>443</p></td>
     <td style="text-align: left;"><p>Required. Used to confirm quotas for deploying the service.</p></td>
     <td></td>
     </tr>
-    <tr class="odd">
+    <tr class="even">
     <td style="text-align: left;"><p><code>tagging.&lt;aws_region&gt;.amazonaws.com</code></p></td>
     <td style="text-align: left;"><p>443</p></td>
     <td style="text-align: left;"><p>Allows the assignment of metadata about AWS resources in the form of tags.</p></td>
     <td></td>
     </tr>
-    <tr class="even">
+    <tr class="odd">
     <td style="text-align: left;"><p><code>*.cloudfront.net</code></p></td>
     <td style="text-align: left;"><p>443</p></td>
     <td style="text-align: left;"><p>Used to provide access to CloudFront. If you use the AWS Security Token Service (STS) and the private S3 bucket, you must provide access to CloudFront.</p></td>
-    <td></td>
-    </tr>
-    <tr class="odd">
     <td style="text-align: left;"><p>GCP</p></td>
+    </tr>
+    <tr class="even">
     <td style="text-align: left;"><p><code>*.googleapis.com</code></p></td>
     <td style="text-align: left;"><p>443</p></td>
     <td style="text-align: left;"><p>Required to access Google Cloud services and resources. Review <a href="https://cloud.google.com/endpoints/">Cloud Endpoints</a> in the Google Cloud documentation to find the endpoints to allow for your APIs.</p></td>
+    <td></td>
     </tr>
-    <tr class="even">
+    <tr class="odd">
     <td style="text-align: left;"><p><code>accounts.google.com</code></p></td>
     <td style="text-align: left;"><p>443</p></td>
     <td style="text-align: left;"><p>Required to access your Google Cloud account.</p></td>
-    <td></td>
-    </tr>
-    <tr class="odd">
     <td style="text-align: left;"><p>Microsoft Azure</p></td>
+    </tr>
+    <tr class="even">
     <td style="text-align: left;"><p><code>management.azure.com</code></p></td>
     <td style="text-align: left;"><p>443</p></td>
     <td style="text-align: left;"><p>Required to access Microsoft Azure services and resources. Review the <a href="https://docs.microsoft.com/en-us/rest/api/azure/">Microsoft Azure REST API reference</a> in the Microsoft Azure documentation to find the endpoints to allow for your APIs.</p></td>
-    </tr>
-    <tr class="even">
-    <td style="text-align: left;"><p><code>*.blob.core.windows.net</code></p></td>
-    <td style="text-align: left;"><p>443</p></td>
-    <td style="text-align: left;"><p>Required to download Ignition files.</p></td>
     <td></td>
     </tr>
     <tr class="odd">
-    <td style="text-align: left;"><p><code>login.microsoftonline.com</code></p></td>
+    <td style="text-align: left;"><p><code>*.blob.core.windows.net</code></p></td>
     <td style="text-align: left;"><p>443</p></td>
-    <td style="text-align: left;"><p>Required to access Microsoft Azure services and resources. Review the <a href="https://docs.microsoft.com/en-us/rest/api/azure/">Azure REST API reference</a> in the Microsoft Azure documentation to find the endpoints to allow for your APIs.</p></td>
+    <td style="text-align: left;"><p>Required to download Ignition files.</p></td>
     <td></td>
     </tr>
     </tbody>

@@ -1062,7 +1062,7 @@
   - [Resource quotas per project](applications/quotas/quotas-setting-per-project.md)
   - [Resource quotas across multiple projects](applications/quotas/quotas-setting-across-multiple-projects.md)
 - [Using config maps with applications](applications/config-maps.md)
-- [Monitoring project and application metrics using the Developer perspective](applications/odc-monitoring-project-and-application-metrics-using-developer-perspective.md)
+- [Monitoring project and application metrics by using the Developer perspective](applications/odc-monitoring-project-and-application-metrics-using-developer-perspective.md)
 - [Monitoring application health](applications/application-health.md)
 - [Editing applications](applications/odc-editing-applications.md)
 - [Pruning objects to reclaim resources](applications/pruning-objects.md)

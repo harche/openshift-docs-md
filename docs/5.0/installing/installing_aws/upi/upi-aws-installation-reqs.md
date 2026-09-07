@@ -24,7 +24,7 @@ Minimum required hosts
 
 <div class="important">
 
-To keep high availability of your cluster, use separate physical hosts for these cluster machines.
+To maintain high availability of your cluster, use separate physical hosts for these cluster machines.
 
 </div>
 

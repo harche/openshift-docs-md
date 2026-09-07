@@ -96,13 +96,13 @@ Remove the community External Secrets Operator that was installed using Helm. Th
 
     </div>
 
-## Uninstalling an Operator Lifecylce Manager installed community External Secrets Operator
+## Uninstalling an Operator Lifecycle Manager installed community External Secrets Operator
 
 Remove the community External Secrets Operator that was installed by an Operator Lifecycle Manager (OLM) subscription. This helps you free up resources and maintain a clean environment for your cluster.
 
 - You must be logged in as a user with the `cluster-admin` role.
 
-- You must have deleted the `operatorconfig` CR.
+- You must have deleted the `operatorconfig` custom resource (CR).
 
 1.  Find the subscription name by running the following command:
 

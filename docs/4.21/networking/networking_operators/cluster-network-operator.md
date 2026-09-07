@@ -498,7 +498,7 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 </dd>
 <dt><code>unix:&lt;file&gt;</code></dt>
 <dd>
-<p>A Unix Domain Socket file specified by <code>&lt;file&gt;</code>.</p>
+<p>A UNIX Domain Socket file specified by <code>&lt;file&gt;</code>.</p>
 </dd>
 <dt><code>null</code></dt>
 <dd>
@@ -578,7 +578,7 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <tr class="odd">
 <td style="text-align: left;"><p><code>internalMasqueradeSubnet</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>The masquerade IPv4 addresses that are used internally to enable host to service traffic. The host is configured with these IP addresses as well as the shared gateway bridge interface. The default value is <code>169.254.169.0/29</code>.</p>
+<td style="text-align: left;"><p>The masquerade IPv4 addresses that are used internally to enable host to service traffic. The host is configured with these IP addresses and the shared gateway bridge interface. The default value is <code>169.254.169.0/29</code>.</p>
 <div class="important">
 <p>For OpenShift Container Platform 4.17 and later versions, clusters use <code>169.254.0.0/17</code> as the default masquerade subnet. For upgraded clusters, there is no change to the default masquerade subnet.</p>
 </div></td>
@@ -606,7 +606,7 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <tr class="odd">
 <td style="text-align: left;"><p><code>internalMasqueradeSubnet</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>The masquerade IPv6 addresses that are used internally to enable host to service traffic. The host is configured with these IP addresses as well as the shared gateway bridge interface. The default value is <code>fd69::/125</code>.</p>
+<td style="text-align: left;"><p>The masquerade IPv6 addresses that are used internally to enable host to service traffic. The host is configured with these IP addresses and the shared gateway bridge interface. The default value is <code>fd69::/125</code>.</p>
 <div class="important">
 <p>For OpenShift Container Platform 4.17 and later versions, clusters use <code>fd69::/112</code> as the default masquerade subnet. For upgraded clusters, there is no change to the default masquerade subnet.</p>
 </div></td>
@@ -654,7 +654,7 @@ You can only change the configuration for your cluster network plugin during clu
 
 <div class="formalpara-title">
 
-**Example OVN-Kubernetes configuration with IPSec enabled**
+**Example OVN-Kubernetes configuration with IPsec enabled**
 
 </div>
 

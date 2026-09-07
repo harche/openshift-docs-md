@@ -24,7 +24,7 @@ To deploy your plugin on a cluster, you need to build an image and push it to an
 
 # Deploy your plugin on a cluster
 
-After pushing an image with your changes to a registry, you can deploy the plugin to a cluster using a Helm chart.
+After pushing an image with your changes to a registry, you can deploy the plugin to a cluster by using a Helm chart.
 
 - You must have the location of the image containing the plugin that was previously pushed.
 
@@ -281,7 +281,7 @@ You can enable a dynamic plugin to extend the core web console with more feature
 
 # Disabling your plugin in the browser
 
-Console users can use the `disable-plugins` query parameter to disable specific or all dynamic plugins that would normally get loaded at run-time.
+Console users can use the `disable-plugins` query parameter to disable specific or all dynamic plugins that would normally get loaded at runtime.
 
 - To disable a specific plugin(s), remove the plugin you want to disable from the comma-separated list of plugin names.
 

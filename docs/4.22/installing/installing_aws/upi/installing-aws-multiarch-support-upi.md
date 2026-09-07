@@ -8,9 +8,9 @@ When you have nodes with multiple architectures in your cluster, the architectur
 
 You can install an AWS cluster with the support for configuring multi-architecture compute machines. After installing the AWS cluster, you can add multi-architecture compute machines to the cluster in the following ways:
 
-- Adding 64-bit x86 compute machines to a cluster that uses 64-bit ARM control plane machines and already includes 64-bit ARM compute machines. In this case, 64-bit x86 is considered the secondary architecture.
+- Adding 64-bit x86 compute machines to a cluster that uses 64-bit ARM control plane machines and already includes 64-bit ARM compute machines. In this case, 64-bit x86 is the secondary architecture.
 
-- Adding 64-bit ARM compute machines to a cluster that uses 64-bit x86 control plane machines and already includes 64-bit x86 compute machines. In this case, 64-bit ARM is considered the secondary architecture.
+- Adding 64-bit ARM compute machines to a cluster that uses 64-bit x86 control plane machines and already includes 64-bit x86 compute machines. In this case, 64-bit ARM is the secondary architecture.
 
 <div class="note">
 

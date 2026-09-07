@@ -243,3 +243,9 @@ If you no longer need memory overcommitment, you can disable higher VM workload 
   ```
 
   Ensure that the `Swap:` row shows `0` or that no swap space is provisioned.
+
+# Additional resources
+
+- [Run automated postinstallation configuration](../../virt/post_installation_configuration/virt-platform-autopilot.xml#virt-platform-autopilot)
+
+- [Configure Quality of Service for Pods](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/)

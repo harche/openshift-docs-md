@@ -201,7 +201,7 @@ If you configure your cluster to use both IP address families, review the follow
 <p><strong>Value:</strong> An IP network block in CIDR notation.</p>
 <p>For example, <code>10.0.0.0/16</code>.</p>
 <div class="note">
-<p>Set the <code>networking.machineNetwork</code> to match the CIDR that the preferred NIC resides in.</p>
+<p>Set the <code>networking.machineNetwork</code> to match the CIDR of the preferred NIC.</p>
 <p>If you are installing a cluster on AWS with dual-stack networking, consider the following distinction:</p>
 <ul>
 <li><p>If the installation program creates the VPC, do not specify an IPv6 entry in <code>networking.machineNetwork</code>. The installation program will assign an IPv6 address to the VPC.</p></li>

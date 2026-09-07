@@ -243,4 +243,4 @@ The `NodePool` object is created when you create a hosted cluster. By scaling th
 
 - [Initial Operator configuration](../../installing/installing_ibm_power/installing-ibm-power.xml#installation-operators-config)
 
-- [Scaling down the data plane to zero](../../hosted_control_planes/hcp-troubleshooting.xml#scale-down-data-plane_hcp-troubleshooting)
+- [Scaling down the data plane to zero](../../hosted_control_planes/hcp-machine-config.xml#scale-down-data-plane_hcp-machine-config)

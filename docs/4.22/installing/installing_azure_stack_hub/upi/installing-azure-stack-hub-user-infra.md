@@ -980,7 +980,7 @@ The installation program converts the installation configuration into Kubernetes
 
 - [Manually manage cloud credentials](../../../installing/installing_azure_stack_hub/ipi/installing-azure-stack-hub-default.xml#manually-create-iam_installing-azure-stack-hub-default)
 
-## Optional: Creating a separate `/var` partition
+## Creating a separate `/var` partition
 
 To isolate growing storage for containers, etcd, or logs, you can optionally create a separate `/var` partition on worker nodes before you generate Ignition configs.
 

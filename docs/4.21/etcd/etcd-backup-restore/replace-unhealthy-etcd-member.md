@@ -12,47 +12,53 @@ If a control plane node is lost and a new one is created, the etcd cluster Opera
 
 # Identifying an unhealthy etcd member
 
-Identify an unhealthy etcd member by checking the `EtcdMembersAvailable` status condition so you can proceed with the correct replacement procedure.
+You can identify an unhealthy etcd member by checking the `EtcdMembersAvailable` status condition to see how many members are available and which member is unhealthy.
 
 - You have access to the cluster as a user with the `cluster-admin` role.
 
-- You have taken an etcd backup. For more information, see "Backing up etcd data".
+- You created an etcd backup.
 
-1.  Check the status of the `EtcdMembersAvailable` status condition using the following command:
+<!-- -->
 
-    ``` terminal
-    $ oc get etcd -o=jsonpath='{range .items[0].status.conditions[?(@.type=="EtcdMembersAvailable")]}{"\n"}{end}'
-    ```
+- Check the status of the `EtcdMembersAvailable` status condition by running the following command:
 
-2.  Review the output:
+  ``` terminal
+  $ oc get etcd -o=jsonpath='{range .items[0].status.conditions[?(@.type=="EtcdMembersAvailable")]}{"\n"}{end}'
+  ```
 
-    ``` terminal
-    2 of 3 members are available, ip-10-0-131-183.ec2.internal is unhealthy
-    ```
+  <div class="formalpara-title">
 
-    This example output shows that the `ip-10-0-131-183.ec2.internal` etcd member is unhealthy.
+  **Example output**
+
+  </div>
+
+  ``` terminal
+  2 of 3 members are available, ip-10-0-131-183.ec2.internal is unhealthy
+  ```
 
 # Determining the state of the unhealthy etcd member
 
-Determine whether an unhealthy etcd member has a stopped machine or not-ready node, or a crashlooping pod, so you can follow the correct replacement procedure.
+Determine whether the unhealthy etcd member has a stopped machine, an unready node, or a crashlooping etcd pod. Knowing the failure state enables you to follow the correct replacement procedure.
 
-The steps to replace an unhealthy etcd member depend on which of the following states your etcd member is in:
+Depending on the state of your unhealthy etcd member, use one of the following procedures:
 
-- The machine is not running or the node is not ready
+- Machine not running or node not ready. For more information, see "Replacing an unhealthy etcd member whose machine is not running or whose node is not ready".
 
-- The etcd pod is crashlooping
+- Bare-metal machine not running or node not ready on installer-provisioned bare metal. For more information, see "Replacing an unhealthy bare metal etcd member whose machine is not running or whose node is not ready".
+
+- Crashlooping etcd pod. For more information, see "Replacing an unhealthy etcd member whose etcd pod is crashlooping".
 
 <div class="note">
 
-If you are aware that the machine is not running or the node is not ready, but you expect it to return to a healthy state soon, then you do not need to perform a procedure to replace the etcd member. The etcd cluster Operator will automatically sync when the machine or node returns to a healthy state.
+If the machine is not running or the node is not ready, you might expect either to recover soon. In that case, you do not need to replace the etcd member. The etcd cluster Operator automatically syncs when the machine or node returns to a healthy state.
 
 </div>
 
-- You have access to the cluster as a user with the `cluster-admin` role.
+- You confirmed access to the cluster as a user with the `cluster-admin` role.
 
-- You have identified an unhealthy etcd member.
+- You identified an unhealthy etcd member.
 
-1.  Determine if the **machine is not running**:
+1.  Determine if the machine is not running by running the following command:
 
     ``` terminal
     $ oc get machines -A -ojsonpath='{range .items[*]}{@.status.nodeRef.name}{"\t"}{@.status.providerStatus.instanceState}{"\n"}' | grep -v running
@@ -68,57 +74,55 @@ If you are aware that the machine is not running or the node is not ready, but y
     ip-10-0-131-183.ec2.internal  stopped
     ```
 
-    This output lists the node and the status of the node’s machine. If the status is anything other than `running`, then the **machine is not running**.
+    This output lists the node and the status of the machine of the node. If the status is anything other than `running`, then the machine is not running.
 
-    If the **machine is not running**, then follow the steps in "Replacing an unhealthy etcd member whose machine is not running or whose node is not ready".
+2.  Determine if the status of the node is `NotReady`.
 
-2.  Determine if the **node is not ready**.
+    If either of the following scenarios are true, then the node is not ready.
 
-    If either of the following scenarios are true, then the **node is not ready**.
+    1.  If the machine is running, then check whether the node has an `unreachable` taint by running the following command:
 
-    - If the machine is running, then check whether the node is unreachable:
+        ``` terminal
+        $ oc get nodes -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{"\t"}{range .spec.taints[*]}{" "}' | grep unreachable
+        ```
 
-      ``` terminal
-      $ oc get nodes -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{"\t"}{range .spec.taints[*]}{" "}' | grep unreachable
-      ```
+        <div class="formalpara-title">
 
-      <div class="formalpara-title">
+        **Example output**
 
-      **Example output**
+        </div>
 
-      </div>
+        ``` terminal
+        ip-10-0-131-183.ec2.internal node-role.kubernetes.io/master node.kubernetes.io/unreachable node.kubernetes.io/unreachable
+        ```
 
-      ``` terminal
-      ip-10-0-131-183.ec2.internal node-role.kubernetes.io/master node.kubernetes.io/unreachable node.kubernetes.io/unreachable
-      ```
+        If the node is listed with an `unreachable` taint, then the node is not ready.
 
-      If the node is listed with an `unreachable` taint, then the **node is not ready**.
+    2.  If the node is still reachable, then check whether the node is listed as `NotReady` by running the following command:
 
-    - If the node is still reachable, then check whether the node is listed as `NotReady`:
+        ``` terminal
+        $ oc get nodes -l node-role.kubernetes.io/master | grep "NotReady"
+        ```
 
-      ``` terminal
-      $ oc get nodes -l node-role.kubernetes.io/master | grep "NotReady"
-      ```
+        <div class="formalpara-title">
 
-      <div class="formalpara-title">
+        **Example output**
 
-      **Example output**
+        </div>
 
-      </div>
+        ``` terminal
+        ip-10-0-131-183.ec2.internal   NotReady   master   122m   v1.34.2
+        ```
 
-      ``` terminal
-      ip-10-0-131-183.ec2.internal   NotReady   master   122m   v1.34.2
-      ```
+        If the node is listed as `NotReady`, then the node is not ready.
 
-      If the node is listed as `NotReady`, then the **node is not ready**.
+        If the **node is not ready**, then follow the "Replacing an unhealthy etcd member whose machine is not running or whose node is not ready" procedure.
 
-    If the **node is not ready**, then follow the "Replacing an unhealthy etcd member whose machine is not running or whose node is not ready" procedure.
+3.  Determine if the etcd pod is crashlooping.
 
-3.  Determine if the **etcd pod is crashlooping**.
+    If the machine is running and the node status is `Ready`, check the status of the etcd pod.
 
-    If the machine is running and the node is ready, then check whether the etcd pod is crashlooping.
-
-    1.  Verify that all control plane nodes are listed as `Ready`:
+    1.  Verify that all control plane nodes are listed as `Ready` by running the following command:
 
         ``` terminal
         $ oc get nodes -l node-role.kubernetes.io/master
@@ -137,7 +141,7 @@ If you are aware that the machine is not running or the node is not ready, but y
         ip-10-0-154-204.ec2.internal   Ready    master   6h13m   v1.34.2
         ```
 
-    2.  Check whether the status of an etcd pod is either `Error` or `CrashloopBackoff`:
+    2.  Check whether the status of an etcd pod is either `Error` or `CrashloopBackoff` by running the following command:
 
         ``` terminal
         $ oc -n openshift-etcd get pods -l k8s-app=etcd
@@ -155,13 +159,13 @@ If you are aware that the machine is not running or the node is not ready, but y
         etcd-ip-10-0-154-204.ec2.internal                3/3     Running     0          6h6m
         ```
 
-        Since the status of the `etcd-ip-10-0-131-183.ec2.internal` pod is `Error`, then the **etcd pod is crashlooping**.
+        The etcd pod crashloops because the `etcd-ip-10-0-131-183.ec2.internal` is `Error`.
 
-    If the **etcd pod is crashlooping**, then follow the steps in "Replacing an unhealthy etcd member whose etcd pod is crashlooping".
+        If the **etcd pod is crashlooping**, then follow the steps in "Replacing an unhealthy etcd member whose etcd pod is crashlooping".
 
 ## Replacing an unhealthy etcd member whose machine is not running or whose node is not ready
 
-Replace an etcd member whose machine is not running or whose node is not ready by removing it from the cluster and provisioning a replacement control plane machine.
+Replace an unhealthy etcd member when the member machine is stopped or the node is not ready. Restoring the member returns the control plane to a healthy state.
 
 <div class="note">
 
@@ -169,31 +173,25 @@ If your cluster uses a control plane machine set, see "Recovering a degraded etc
 
 </div>
 
-- You have identified the unhealthy etcd member.
+- You identified the unhealthy etcd member.
 
-- You have verified that either the machine is not running or the node is not ready.
+- You verified that either the machine is not running or the node is not ready.
 
-  <div class="important">
+- Do not power on other control plane nodes until the unhealthy etcd member replacement is complete.
 
-  You must wait if you power off other control plane nodes. The control plane nodes must remain powered off until the replacement of an unhealthy etcd member is complete.
+- You confirmed access to the cluster as a user with the `cluster-admin` role.
 
-  </div>
-
-- You have access to the cluster as a user with the `cluster-admin` role.
-
-- You have taken an etcd backup.
+- You created an etcd backup before replacing the unhealthy etcd member.
 
   <div class="important">
 
-  Before you perform this procedure, take an etcd backup so that you can restore your cluster if you experience any issues.
+  Without a recent etcd backup, you might not be able to restore the cluster if replacement fails.
 
   </div>
 
 1.  Remove the unhealthy member.
 
-    1.  Choose a pod that is not on the affected node:
-
-        In a terminal that has access to the cluster as a `cluster-admin` user, run the following command:
+    1.  List etcd pods and choose one that is not on the affected node by running the following command:
 
         ``` terminal
         $ oc -n openshift-etcd get pods -l k8s-app=etcd
@@ -211,15 +209,15 @@ If your cluster uses a control plane machine set, see "Recovering a degraded etc
         etcd-ip-10-0-154-204.ec2.internal                3/3     Running     0          124m
         ```
 
-    2.  Connect to the running etcd container, passing in the name of a pod that is not on the affected node:
+        From the output, note a pod that is not on the affected node. In this example, the unhealthy member is `ip-10-0-131-183.ec2.internal`, so you could use `etcd-ip-10-0-154-204.ec2.internal`.
 
-        In a terminal that has access to the cluster as a `cluster-admin` user, run the following command:
+    2.  Connect to the running etcd container on the pod you chose by running the following command:
 
         ``` terminal
         $ oc rsh -n openshift-etcd etcd-ip-10-0-154-204.ec2.internal
         ```
 
-    3.  View the member list:
+    3.  View the member list by running the following command:
 
         ``` terminal
         sh-4.2# etcdctl member list -w table
@@ -241,9 +239,9 @@ If your cluster uses a control plane machine set, see "Recovering a degraded etc
         +------------------+---------+------------------------------+---------------------------+---------------------------+
         ```
 
-        Take note of the ID and the name of the unhealthy etcd member because these values are needed later in the procedure. The `$ etcdctl endpoint health` command will list the removed member until the procedure of replacement is finished and a new member is added.
+        Take note of the ID and the name of the unhealthy etcd member because you need these values later in the procedure. The `etcdctl endpoint health` command continues to list the removed member until replacement is complete and a new member is added.
 
-    4.  Remove the unhealthy etcd member by providing the ID to the `etcdctl member remove` command:
+    4.  Remove the unhealthy etcd member by providing the ID to the `etcdctl member remove` command by running the following command:
 
         ``` terminal
         sh-4.2# etcdctl member remove <etcd_member_id>
@@ -259,7 +257,7 @@ If your cluster uses a control plane machine set, see "Recovering a degraded etc
         Member 6fc1e7c9db35841d removed from cluster ead669ce1fbfb346
         ```
 
-    5.  View the member list again and verify that the member was removed:
+    5.  View the member list again and verify that the member was removed by running the following command:
 
         ``` terminal
         sh-4.2# etcdctl member list -w table
@@ -282,7 +280,7 @@ If your cluster uses a control plane machine set, see "Recovering a degraded etc
 
         You can now exit the node shell.
 
-2.  Turn off the quorum guard by entering the following command:
+2.  Turn off the quorum guard by running the following command:
 
     ``` terminal
     $ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides": {"useUnsupportedUnsafeNonHANonProductionUnstableEtcd": true}}}'
@@ -292,7 +290,7 @@ If your cluster uses a control plane machine set, see "Recovering a degraded etc
 
     <div class="important">
 
-    After you turn off the quorum guard, the cluster might be unreachable for a short time while the remaining etcd instances reboot to reflect the configuration change.
+    After you turn off the quorum guard, the cluster might be unreachable for a short period of time while the remaining etcd instances reboot to reflect the configuration change.
 
     </div>
 
@@ -320,13 +318,13 @@ If your cluster uses a control plane machine set, see "Recovering a degraded etc
 
 4.  Remove the old secrets for the unhealthy etcd member that was removed.
 
-    1.  List the secrets for the unhealthy etcd member that was removed.
+    1.  List the secrets for the unhealthy etcd member that was removed by running the following command:
 
         ``` terminal
-        $ oc get secrets -n openshift-etcd | grep <unhealthy_node>
+        $ oc get secrets -n openshift-etcd | grep ip-10-0-131-183.ec2.internal
         ```
 
-        Replace `<unhealthy_node>` with the name of the unhealthy etcd member that you took note of earlier in this procedure. The examples throughout this procedure use `ip-10-0-131-183.ec2.interal` as the name of the unhealthy etcd member.
+        Replace `ip-10-0-131-183.ec2.internal` in the command with the name of the unhealthy etcd member that you noted earlier in this procedure.
 
         There is a peer, serving, and metrics secret as shown in the following output:
 
@@ -342,273 +340,267 @@ If your cluster uses a control plane machine set, see "Recovering a degraded etc
         etcd-serving-metrics-ip-10-0-131-183.ec2.internal   kubernetes.io/tls                     2      47m
         ```
 
-    2.  Delete the secrets for the unhealthy etcd member that was removed.
+    2.  Delete the peer secret by running the following command:
 
-        1.  Delete the peer secret:
+        ``` terminal
+        $ oc delete secret -n openshift-etcd etcd-peer-ip-10-0-131-183.ec2.internal
+        ```
 
-            ``` terminal
-            $ oc delete secret -n openshift-etcd etcd-peer-ip-10-0-131-183.ec2.internal
-            ```
+    3.  Delete the serving secret by running the following command:
 
-        2.  Delete the serving secret:
+        ``` terminal
+        $ oc delete secret -n openshift-etcd etcd-serving-ip-10-0-131-183.ec2.internal
+        ```
 
-            ``` terminal
-            $ oc delete secret -n openshift-etcd etcd-serving-ip-10-0-131-183.ec2.internal
-            ```
+    4.  Delete the metrics secret by running the following command:
 
-        3.  Delete the metrics secret:
+        ``` terminal
+        $ oc delete secret -n openshift-etcd etcd-serving-metrics-ip-10-0-131-183.ec2.internal
+        ```
 
-            ``` terminal
-            $ oc delete secret -n openshift-etcd etcd-serving-metrics-ip-10-0-131-183.ec2.internal
-            ```
-
-5.  Check whether a control plane machine set exists by entering the following command:
+5.  Check whether a control plane machine set exists by running the following command:
 
     ``` terminal
     $ oc -n openshift-machine-api get controlplanemachineset
     ```
 
-    - If the control plane machine set exists, delete and re-create the control plane machine. After this machine is re-created, a new revision is forced and etcd scales up automatically. For more information, see "Replacing an unhealthy etcd member whose machine is not running or whose node is not ready".
+    If the control plane machine set exists, delete and re-create the control plane machine. After this machine is re-created, a new revision is forced and etcd scales up automatically. For more information, see "Replacing an unhealthy etcd member whose machine is not running or whose node is not ready".
 
-      If you are running installer-provisioned infrastructure, or you used the Machine API to create your machines, follow these steps. Otherwise, you must create the new control plane by using the same method that was used to originally create it.
+    If you are running installer-provisioned infrastructure, or you used the Machine API to create your machines, follow these steps. Otherwise, you must create the new control plane by using the same method that was used to originally create it.
 
-      1.  Obtain the machine for the unhealthy member.
+    1.  Obtain the machine for the unhealthy member by running the following command.
 
-          In a terminal that has access to the cluster as a `cluster-admin` user, run the following command:
+        ``` terminal
+        $ oc get machines -n openshift-machine-api -o wide
+        ```
 
-          ``` terminal
-          $ oc get machines -n openshift-machine-api -o wide
-          ```
+        <div class="formalpara-title">
 
-          <div class="formalpara-title">
+        **Example output**
 
-          **Example output**
+        </div>
 
-          </div>
+        ``` terminal
+        NAME                                        PHASE     TYPE        REGION      ZONE         AGE     NODE                           PROVIDERID                              STATE
+        clustername-8qw5l-master-0                  Running   m4.xlarge   us-east-1   us-east-1a   3h37m   ip-10-0-131-183.ec2.internal   aws:///us-east-1a/i-0ec2782f8287dfb7e   stopped
+        clustername-8qw5l-master-1                  Running   m4.xlarge   us-east-1   us-east-1b   3h37m   ip-10-0-154-204.ec2.internal   aws:///us-east-1b/i-096c349b700a19631   running
+        clustername-8qw5l-master-2                  Running   m4.xlarge   us-east-1   us-east-1c   3h37m   ip-10-0-164-97.ec2.internal    aws:///us-east-1c/i-02626f1dba9ed5bba   running
+        clustername-8qw5l-worker-us-east-1a-wbtgd   Running   m4.large    us-east-1   us-east-1a   3h28m   ip-10-0-129-226.ec2.internal   aws:///us-east-1a/i-010ef6279b4662ced   running
+        clustername-8qw5l-worker-us-east-1b-lrdxb   Running   m4.large    us-east-1   us-east-1b   3h28m   ip-10-0-144-248.ec2.internal   aws:///us-east-1b/i-0cb45ac45a166173b   running
+        clustername-8qw5l-worker-us-east-1c-pkg26   Running   m4.large    us-east-1   us-east-1c   3h28m   ip-10-0-170-181.ec2.internal   aws:///us-east-1c/i-06861c00007751b0a   running
+        ```
 
-          ``` terminal
-          NAME                                        PHASE     TYPE        REGION      ZONE         AGE     NODE                           PROVIDERID                              STATE
-          clustername-8qw5l-master-0                  Running   m4.xlarge   us-east-1   us-east-1a   3h37m   ip-10-0-131-183.ec2.internal   aws:///us-east-1a/i-0ec2782f8287dfb7e   stopped
-          clustername-8qw5l-master-1                  Running   m4.xlarge   us-east-1   us-east-1b   3h37m   ip-10-0-154-204.ec2.internal   aws:///us-east-1b/i-096c349b700a19631   running
-          clustername-8qw5l-master-2                  Running   m4.xlarge   us-east-1   us-east-1c   3h37m   ip-10-0-164-97.ec2.internal    aws:///us-east-1c/i-02626f1dba9ed5bba   running
-          clustername-8qw5l-worker-us-east-1a-wbtgd   Running   m4.large    us-east-1   us-east-1a   3h28m   ip-10-0-129-226.ec2.internal   aws:///us-east-1a/i-010ef6279b4662ced   running
-          clustername-8qw5l-worker-us-east-1b-lrdxb   Running   m4.large    us-east-1   us-east-1b   3h28m   ip-10-0-144-248.ec2.internal   aws:///us-east-1b/i-0cb45ac45a166173b   running
-          clustername-8qw5l-worker-us-east-1c-pkg26   Running   m4.large    us-east-1   us-east-1c   3h28m   ip-10-0-170-181.ec2.internal   aws:///us-east-1c/i-06861c00007751b0a   running
-          ```
+        In the example output, `clustername-8qw5l-master-0` is the control plane machine for the unhealthy node `ip-10-0-131-183.ec2.internal`. Its `STATE` is `stopped`.
 
-          `clustername-8qw5l-master-0` is the control plane machine for the unhealthy node, `ip-10-0-131-183.ec2.internal`.
+    2.  Delete the machine of the unhealthy member by running the following command:
 
-      2.  Delete the machine of the unhealthy member:
+        ``` terminal
+        $ oc delete machine -n openshift-machine-api clustername-8qw5l-master-0
+        ```
 
-          ``` terminal
-          $ oc delete machine -n openshift-machine-api clustername-8qw5l-master-0
-          ```
+        Replace `clustername-8qw5l-master-0` with the name of the control plane machine for the unhealthy node.
 
-          Replace `clustername-8qw5l-master-0` with the name of the control plane machine for the unhealthy node.
+        A new machine is automatically provisioned after deleting the machine of the unhealthy member.
 
-          A new machine is automatically provisioned after deleting the machine of the unhealthy member.
+    3.  Verify that a new machine was created by running the following command:
 
-      3.  Verify that a new machine was created:
+        ``` terminal
+        $ oc get machines -n openshift-machine-api -o wide
+        ```
 
-          ``` terminal
-          $ oc get machines -n openshift-machine-api -o wide
-          ```
+        <div class="formalpara-title">
 
-          <div class="formalpara-title">
+        **Example output**
 
-          **Example output**
+        </div>
 
-          </div>
+        ``` terminal
+        NAME                                        PHASE          TYPE        REGION      ZONE         AGE     NODE                           PROVIDERID                              STATE
+        clustername-8qw5l-master-1                  Running        m4.xlarge   us-east-1   us-east-1b   3h37m   ip-10-0-154-204.ec2.internal   aws:///us-east-1b/i-096c349b700a19631   running
+        clustername-8qw5l-master-2                  Running        m4.xlarge   us-east-1   us-east-1c   3h37m   ip-10-0-164-97.ec2.internal    aws:///us-east-1c/i-02626f1dba9ed5bba   running
+        clustername-8qw5l-master-3                  Provisioning   m4.xlarge   us-east-1   us-east-1a   85s     ip-10-0-133-53.ec2.internal    aws:///us-east-1a/i-015b0888fe17bc2c8   running
+        clustername-8qw5l-worker-us-east-1a-wbtgd   Running        m4.large    us-east-1   us-east-1a   3h28m   ip-10-0-129-226.ec2.internal   aws:///us-east-1a/i-010ef6279b4662ced   running
+        clustername-8qw5l-worker-us-east-1b-lrdxb   Running        m4.large    us-east-1   us-east-1b   3h28m   ip-10-0-144-248.ec2.internal   aws:///us-east-1b/i-0cb45ac45a166173b   running
+        clustername-8qw5l-worker-us-east-1c-pkg26   Running        m4.large    us-east-1   us-east-1c   3h28m   ip-10-0-170-181.ec2.internal   aws:///us-east-1c/i-06861c00007751b0a   running
+        ```
 
-          ``` terminal
-          NAME                                        PHASE          TYPE        REGION      ZONE         AGE     NODE                           PROVIDERID                              STATE
-          clustername-8qw5l-master-1                  Running        m4.xlarge   us-east-1   us-east-1b   3h37m   ip-10-0-154-204.ec2.internal   aws:///us-east-1b/i-096c349b700a19631   running
-          clustername-8qw5l-master-2                  Running        m4.xlarge   us-east-1   us-east-1c   3h37m   ip-10-0-164-97.ec2.internal    aws:///us-east-1c/i-02626f1dba9ed5bba   running
-          clustername-8qw5l-master-3                  Provisioning   m4.xlarge   us-east-1   us-east-1a   85s     ip-10-0-133-53.ec2.internal    aws:///us-east-1a/i-015b0888fe17bc2c8   running
-          clustername-8qw5l-worker-us-east-1a-wbtgd   Running        m4.large    us-east-1   us-east-1a   3h28m   ip-10-0-129-226.ec2.internal   aws:///us-east-1a/i-010ef6279b4662ced   running
-          clustername-8qw5l-worker-us-east-1b-lrdxb   Running        m4.large    us-east-1   us-east-1b   3h28m   ip-10-0-144-248.ec2.internal   aws:///us-east-1b/i-0cb45ac45a166173b   running
-          clustername-8qw5l-worker-us-east-1c-pkg26   Running        m4.large    us-east-1   us-east-1c   3h28m   ip-10-0-170-181.ec2.internal   aws:///us-east-1c/i-06861c00007751b0a   running
-          ```
+        In the example output, `clustername-8qw5l-master-3` is the new control plane machine. The machine is ready when the `PHASE` changes from `Provisioning` to `Running`.
 
-          The new machine, `clustername-8qw5l-master-3`, is being created and is ready once the phase changes from `Provisioning` to `Running`.
+        It might take a few minutes for the new machine to be created. The etcd cluster Operator automatically syncs when the machine or node returns to a healthy state.
 
-          It might take a few minutes for the new machine to be created. The etcd cluster Operator automatically syncs when the machine or node returns to a healthy state.
+        <div class="note">
 
-          <div class="note">
+        Verify the subnet IDs that you are using for your machine sets to ensure that they end up in the correct availability zone.
 
-          Verify the subnet IDs that you are using for your machine sets to ensure that they end up in the correct availability zone.
+        </div>
 
-          </div>
+        If the control plane machine set does not exist, delete and re-create the control plane machine. After this machine is re-created, a new revision is forced and etcd scales up automatically.
 
-    - If the control plane machine set does not exist, delete and re-create the control plane machine. After this machine is re-created, a new revision is forced and etcd scales up automatically.
+        If you are running installer-provisioned infrastructure, or you used the Machine API to create your machines, follow these steps. Otherwise, you must create the new control plane by using the same method that was used to originally create it.
 
-      If you are running installer-provisioned infrastructure, or you used the Machine API to create your machines, follow these steps. Otherwise, you must create the new control plane by using the same method that was used to originally create it.
+    4.  Obtain the machine for the unhealthy member by running the following command:
 
-      1.  Obtain the machine for the unhealthy member.
+        ``` terminal
+        $ oc get machines -n openshift-machine-api -o wide
+        ```
 
-          In a terminal that has access to the cluster as a `cluster-admin` user, run the following command:
+        <div class="formalpara-title">
 
-          ``` terminal
-          $ oc get machines -n openshift-machine-api -o wide
-          ```
+        **Example output**
 
-          <div class="formalpara-title">
+        </div>
 
-          **Example output**
+        ``` terminal
+        NAME                                        PHASE     TYPE        REGION      ZONE         AGE     NODE                           PROVIDERID                              STATE
+        clustername-8qw5l-master-0                  Running   m4.xlarge   us-east-1   us-east-1a   3h37m   ip-10-0-131-183.ec2.internal   aws:///us-east-1a/i-0ec2782f8287dfb7e   stopped
+        clustername-8qw5l-master-1                  Running   m4.xlarge   us-east-1   us-east-1b   3h37m   ip-10-0-154-204.ec2.internal   aws:///us-east-1b/i-096c349b700a19631   running
+        clustername-8qw5l-master-2                  Running   m4.xlarge   us-east-1   us-east-1c   3h37m   ip-10-0-164-97.ec2.internal    aws:///us-east-1c/i-02626f1dba9ed5bba   running
+        clustername-8qw5l-worker-us-east-1a-wbtgd   Running   m4.large    us-east-1   us-east-1a   3h28m   ip-10-0-129-226.ec2.internal   aws:///us-east-1a/i-010ef6279b4662ced   running
+        clustername-8qw5l-worker-us-east-1b-lrdxb   Running   m4.large    us-east-1   us-east-1b   3h28m   ip-10-0-144-248.ec2.internal   aws:///us-east-1b/i-0cb45ac45a166173b   running
+        clustername-8qw5l-worker-us-east-1c-pkg26   Running   m4.large    us-east-1   us-east-1c   3h28m   ip-10-0-170-181.ec2.internal   aws:///us-east-1c/i-06861c00007751b0a   running
+        ```
 
-          </div>
+        In the example output, `clustername-8qw5l-master-0` is the control plane machine for the unhealthy node `ip-10-0-131-183.ec2.internal`. Its `STATE` is `stopped`.
 
-          ``` terminal
-          NAME                                        PHASE     TYPE        REGION      ZONE         AGE     NODE                           PROVIDERID                              STATE
-          clustername-8qw5l-master-0                  Running   m4.xlarge   us-east-1   us-east-1a   3h37m   ip-10-0-131-183.ec2.internal   aws:///us-east-1a/i-0ec2782f8287dfb7e   stopped
-          clustername-8qw5l-master-1                  Running   m4.xlarge   us-east-1   us-east-1b   3h37m   ip-10-0-154-204.ec2.internal   aws:///us-east-1b/i-096c349b700a19631   running
-          clustername-8qw5l-master-2                  Running   m4.xlarge   us-east-1   us-east-1c   3h37m   ip-10-0-164-97.ec2.internal    aws:///us-east-1c/i-02626f1dba9ed5bba   running
-          clustername-8qw5l-worker-us-east-1a-wbtgd   Running   m4.large    us-east-1   us-east-1a   3h28m   ip-10-0-129-226.ec2.internal   aws:///us-east-1a/i-010ef6279b4662ced   running
-          clustername-8qw5l-worker-us-east-1b-lrdxb   Running   m4.large    us-east-1   us-east-1b   3h28m   ip-10-0-144-248.ec2.internal   aws:///us-east-1b/i-0cb45ac45a166173b   running
-          clustername-8qw5l-worker-us-east-1c-pkg26   Running   m4.large    us-east-1   us-east-1c   3h28m   ip-10-0-170-181.ec2.internal   aws:///us-east-1c/i-06861c00007751b0a   running
-          ```
+    5.  Save the machine configuration to a file on your file system by running the following command:
 
-          `clustername-8qw5l-master-0` is the control plane machine for the unhealthy node, `ip-10-0-131-183.ec2.internal`.
-
-      2.  Save the machine configuration to a file on your file system:
-
-          ``` terminal
-          $ oc get machine clustername-8qw5l-master-0 \
-              -n openshift-machine-api \
-              -o yaml \
-              > new-master-machine.yaml
-          ```
-
-          Replace `clustername-8qw5l-master-0` with the name of the control plane machine for the unhealthy node.
-
-      3.  Edit the `new-master-machine.yaml` file that was created in the previous step to assign a new name and remove unnecessary fields.
-
-          1.  Remove the entire `status` section:
-
-              ``` yaml
-              status:
-                addresses:
-                - address: 10.0.131.183
-                  type: InternalIP
-                - address: ip-10-0-131-183.ec2.internal
-                  type: InternalDNS
-                - address: ip-10-0-131-183.ec2.internal
-                  type: Hostname
-                lastUpdated: "2020-04-20T17:44:29Z"
-                nodeRef:
-                  kind: Node
-                  name: ip-10-0-131-183.ec2.internal
-                  uid: acca4411-af0d-4387-b73e-52b2484295ad
-                phase: Running
-                providerStatus:
-                  apiVersion: awsproviderconfig.openshift.io/v1beta1
-                  conditions:
-                  - lastProbeTime: "2020-04-20T16:53:50Z"
-                    lastTransitionTime: "2020-04-20T16:53:50Z"
-                    message: machine successfully created
-                    reason: MachineCreationSucceeded
-                    status: "True"
-                    type: MachineCreation
-                  instanceId: i-0fdb85790d76d0c3f
-                  instanceState: stopped
-                  kind: AWSMachineProviderStatus
-              ```
-
-          2.  Change the `metadata.name` field to a new name.
-
-              Keep the same base name as the old machine and change the ending number to the next available number. In this example, `clustername-8qw5l-master-0` is changed to `clustername-8qw5l-master-3`.
-
-              For example:
-
-              ``` yaml
-              apiVersion: machine.openshift.io/v1beta1
-              kind: Machine
-              metadata:
-                ...
-                name: clustername-8qw5l-master-3
-                ...
-              ```
-
-          3.  Remove the `spec.providerID` field:
-
-              ``` yaml
-                providerID: aws:///us-east-1a/i-0fdb85790d76d0c3f
-              ```
-
-      4.  Delete the machine of the unhealthy member:
-
-          ``` terminal
-          $ oc delete machine -n openshift-machine-api clustername-8qw5l-master-0
-          ```
-
-          Replace `clustername-8qw5l-master-0` with the name of the control plane machine for the unhealthy node.
-
-      5.  Verify that the machine was deleted:
-
-          ``` terminal
-          $ oc get machines -n openshift-machine-api -o wide
-          ```
-
-          <div class="formalpara-title">
-
-          **Example output**
-
-          </div>
-
-          ``` terminal
-          NAME                                        PHASE     TYPE        REGION      ZONE         AGE     NODE                           PROVIDERID                              STATE
-          clustername-8qw5l-master-1                  Running   m4.xlarge   us-east-1   us-east-1b   3h37m   ip-10-0-154-204.ec2.internal   aws:///us-east-1b/i-096c349b700a19631   running
-          clustername-8qw5l-master-2                  Running   m4.xlarge   us-east-1   us-east-1c   3h37m   ip-10-0-164-97.ec2.internal    aws:///us-east-1c/i-02626f1dba9ed5bba   running
-          clustername-8qw5l-worker-us-east-1a-wbtgd   Running   m4.large    us-east-1   us-east-1a   3h28m   ip-10-0-129-226.ec2.internal   aws:///us-east-1a/i-010ef6279b4662ced   running
-          clustername-8qw5l-worker-us-east-1b-lrdxb   Running   m4.large    us-east-1   us-east-1b   3h28m   ip-10-0-144-248.ec2.internal   aws:///us-east-1b/i-0cb45ac45a166173b   running
-          clustername-8qw5l-worker-us-east-1c-pkg26   Running   m4.large    us-east-1   us-east-1c   3h28m   ip-10-0-170-181.ec2.internal   aws:///us-east-1c/i-06861c00007751b0a   running
-          ```
-
-      6.  Create the new machine by using the `new-master-machine.yaml` file:
-
-          ``` terminal
-          $ oc apply -f new-master-machine.yaml
-          ```
-
-      7.  Verify that the new machine was created:
-
-          ``` terminal
-          $ oc get machines -n openshift-machine-api -o wide
-          ```
-
-          <div class="formalpara-title">
-
-          **Example output**
-
-          </div>
-
-          ``` terminal
-          NAME                                        PHASE          TYPE        REGION      ZONE         AGE     NODE                           PROVIDERID                              STATE
-          clustername-8qw5l-master-1                  Running        m4.xlarge   us-east-1   us-east-1b   3h37m   ip-10-0-154-204.ec2.internal   aws:///us-east-1b/i-096c349b700a19631   running
-          clustername-8qw5l-master-2                  Running        m4.xlarge   us-east-1   us-east-1c   3h37m   ip-10-0-164-97.ec2.internal    aws:///us-east-1c/i-02626f1dba9ed5bba   running
-          clustername-8qw5l-master-3                  Provisioning   m4.xlarge   us-east-1   us-east-1a   85s     ip-10-0-133-53.ec2.internal    aws:///us-east-1a/i-015b0888fe17bc2c8   running
-          clustername-8qw5l-worker-us-east-1a-wbtgd   Running        m4.large    us-east-1   us-east-1a   3h28m   ip-10-0-129-226.ec2.internal   aws:///us-east-1a/i-010ef6279b4662ced   running
-          clustername-8qw5l-worker-us-east-1b-lrdxb   Running        m4.large    us-east-1   us-east-1b   3h28m   ip-10-0-144-248.ec2.internal   aws:///us-east-1b/i-0cb45ac45a166173b   running
-          clustername-8qw5l-worker-us-east-1c-pkg26   Running        m4.large    us-east-1   us-east-1c   3h28m   ip-10-0-170-181.ec2.internal   aws:///us-east-1c/i-06861c00007751b0a   running
-          ```
-
-          The new machine, `clustername-8qw5l-master-3`, is being created and is ready once the phase changes from `Provisioning` to `Running`.
-
-          It might take a few minutes for the new machine to be created. The etcd cluster Operator automatically syncs when the machine or node returns to a healthy state.
-
-6.  Turn the quorum guard back on by entering the following command:
+        ``` terminal
+        $ oc get machine clustername-8qw5l-master-0 \
+            -n openshift-machine-api \
+            -o yaml \
+            > new-master-machine.yaml
+        ```
+
+        Replace `clustername-8qw5l-master-0` with the name of the control plane machine for the unhealthy node.
+
+6.  Edit the `new-master-machine.yaml` file that was created in the previous step to assign a new name and remove unnecessary fields:
+
+    1.  Remove the entire `status` section:
+
+        ``` yaml
+        status:
+          addresses:
+          - address: 10.0.131.183
+            type: InternalIP
+          - address: ip-10-0-131-183.ec2.internal
+            type: InternalDNS
+          - address: ip-10-0-131-183.ec2.internal
+            type: Hostname
+          lastUpdated: "2020-04-20T17:44:29Z"
+          nodeRef:
+            kind: Node
+            name: ip-10-0-131-183.ec2.internal
+            uid: acca4411-af0d-4387-b73e-52b2484295ad
+          phase: Running
+          providerStatus:
+            apiVersion: awsproviderconfig.openshift.io/v1beta1
+            conditions:
+            - lastProbeTime: "2020-04-20T16:53:50Z"
+              lastTransitionTime: "2020-04-20T16:53:50Z"
+              message: machine successfully created
+              reason: MachineCreationSucceeded
+              status: "True"
+              type: MachineCreation
+            instanceId: i-0fdb85790d76d0c3f
+            instanceState: stopped
+            kind: AWSMachineProviderStatus
+        ```
+
+    2.  Change the `metadata.name` field to a new name.
+
+        For example:
+
+        ``` yaml
+        apiVersion: machine.openshift.io/v1beta1
+        kind: Machine
+        metadata:
+          ...
+          name: clustername-8qw5l-master-3
+          ...
+        ```
+
+        Keep the same base name as the old machine and change the ending number to the next available number. In this example, `clustername-8qw5l-master-0` is changed to `clustername-8qw5l-master-3`
+
+    3.  Remove the `spec.providerID` field:
+
+        ``` yaml
+          providerID: aws:///us-east-1a/i-0fdb85790d76d0c3f
+        ```
+
+7.  Delete the machine of the unhealthy member by running the following command:
+
+    ``` terminal
+    $ oc delete machine -n openshift-machine-api clustername-8qw5l-master-0
+    ```
+
+    In the command, replace `clustername-8qw5l-master-0` with the control plane machine name for the unhealthy node that you identified in the example output above.
+
+8.  Verify that the machine was deleted by running the following command:
+
+    ``` terminal
+    $ oc get machines -n openshift-machine-api -o wide
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    NAME                                        PHASE     TYPE        REGION      ZONE         AGE     NODE                           PROVIDERID                              STATE
+    clustername-8qw5l-master-1                  Running   m4.xlarge   us-east-1   us-east-1b   3h37m   ip-10-0-154-204.ec2.internal   aws:///us-east-1b/i-096c349b700a19631   running
+    clustername-8qw5l-master-2                  Running   m4.xlarge   us-east-1   us-east-1c   3h37m   ip-10-0-164-97.ec2.internal    aws:///us-east-1c/i-02626f1dba9ed5bba   running
+    clustername-8qw5l-worker-us-east-1a-wbtgd   Running   m4.large    us-east-1   us-east-1a   3h28m   ip-10-0-129-226.ec2.internal   aws:///us-east-1a/i-010ef6279b4662ced   running
+    clustername-8qw5l-worker-us-east-1b-lrdxb   Running   m4.large    us-east-1   us-east-1b   3h28m   ip-10-0-144-248.ec2.internal   aws:///us-east-1b/i-0cb45ac45a166173b   running
+    clustername-8qw5l-worker-us-east-1c-pkg26   Running   m4.large    us-east-1   us-east-1c   3h28m   ip-10-0-170-181.ec2.internal   aws:///us-east-1c/i-06861c00007751b0a   running
+    ```
+
+9.  Create the new machine by using the `new-master-machine.yaml` file by running the following command:
+
+    ``` terminal
+    $ oc apply -f new-master-machine.yaml
+    ```
+
+10. Verify that the new machine was created by running the following command:
+
+    ``` terminal
+    $ oc get machines -n openshift-machine-api -o wide
+    ```
+
+    <div class="formalpara-title">
+
+    **Example output**
+
+    </div>
+
+    ``` terminal
+    NAME                                        PHASE          TYPE        REGION      ZONE         AGE     NODE                           PROVIDERID                              STATE
+    clustername-8qw5l-master-1                  Running        m4.xlarge   us-east-1   us-east-1b   3h37m   ip-10-0-154-204.ec2.internal   aws:///us-east-1b/i-096c349b700a19631   running
+    clustername-8qw5l-master-2                  Running        m4.xlarge   us-east-1   us-east-1c   3h37m   ip-10-0-164-97.ec2.internal    aws:///us-east-1c/i-02626f1dba9ed5bba   running
+    clustername-8qw5l-master-3                  Provisioning   m4.xlarge   us-east-1   us-east-1a   85s     ip-10-0-133-53.ec2.internal    aws:///us-east-1a/i-015b0888fe17bc2c8   running
+    clustername-8qw5l-worker-us-east-1a-wbtgd   Running        m4.large    us-east-1   us-east-1a   3h28m   ip-10-0-129-226.ec2.internal   aws:///us-east-1a/i-010ef6279b4662ced   running
+    clustername-8qw5l-worker-us-east-1b-lrdxb   Running        m4.large    us-east-1   us-east-1b   3h28m   ip-10-0-144-248.ec2.internal   aws:///us-east-1b/i-0cb45ac45a166173b   running
+    clustername-8qw5l-worker-us-east-1c-pkg26   Running        m4.large    us-east-1   us-east-1c   3h28m   ip-10-0-170-181.ec2.internal   aws:///us-east-1c/i-06861c00007751b0a   running
+    ```
+
+    In the example output, `clustername-8qw5l-master-3` is the new control plane machine. The machine is ready when the `PHASE` changes from `Provisioning` to `Running`.
+
+    It might take a few minutes for the new machine to be created. The etcd cluster Operator automatically syncs when the machine or node returns to a healthy state.
+
+11. Turn the quorum guard back on by running the following command:
 
     ``` terminal
     $ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides": null}}'
     ```
 
-7.  You can verify that the `unsupportedConfigOverrides` section is removed from the object by entering this command:
+12. You can verify that the `unsupportedConfigOverrides` section is removed from the object by running the following command:
 
     ``` terminal
     $ oc get etcd/cluster -oyaml
     ```
 
-8.  If you are using single-node OpenShift, restart the node. Otherwise, you might experience the following error in the etcd cluster Operator:
+13. If you are using single-node OpenShift, restart the node. Otherwise, you might experience the following error in the etcd cluster Operator:
 
     <div class="formalpara-title">
 
@@ -622,9 +614,7 @@ If your cluster uses a control plane machine set, see "Recovering a degraded etc
 
 <!-- -->
 
-1.  Verify that all etcd pods are running properly.
-
-    In a terminal that has access to the cluster as a `cluster-admin` user, run the following command:
+1.  Verify that all etcd pods are running properly by running the following command:
 
     ``` terminal
     $ oc -n openshift-etcd get pods -l k8s-app=etcd
@@ -642,25 +632,23 @@ If your cluster uses a control plane machine set, see "Recovering a degraded etc
     etcd-ip-10-0-154-204.ec2.internal                3/3     Running     0          124m
     ```
 
-    If the output from the previous command only lists two pods, you can manually force an etcd redeployment. In a terminal that has access to the cluster as a `cluster-admin` user, run the following command:
+2.  If the output from the previous command lists only two pods, force an etcd redeployment by running the following command:
 
     ``` terminal
     $ oc patch etcd cluster -p='{"spec": {"forceRedeploymentReason": "recovery-'"$( date --rfc-3339=ns )"'"}}' --type=merge
     ```
 
-    The `forceRedeploymentReason` value must be unique, which is why a timestamp is appended.
+    The `forceRedeploymentReason` value must be unique, which is why a timestamp is appended in the example.
 
-2.  Verify that there are exactly three etcd members.
+3.  Verify that there are exactly three etcd members.
 
-    1.  Connect to the running etcd container, passing in the name of a pod that was not on the affected node:
-
-        In a terminal that has access to the cluster as a `cluster-admin` user, run the following command:
+    1.  Connect to the running etcd container, passing in the name of a pod that was not on the affected node by running the following command:
 
         ``` terminal
         $ oc rsh -n openshift-etcd etcd-ip-10-0-154-204.ec2.internal
         ```
 
-    2.  View the member list:
+    2.  View the member list by running the following command:
 
         ``` terminal
         sh-4.2# etcdctl member list -w table
@@ -696,15 +684,15 @@ If your cluster uses a control plane machine set, see "Recovering a degraded etc
 
 ## Replacing an unhealthy etcd member whose etcd pod is crashlooping
 
-Replace a crashlooping etcd member by removing it from the cluster and creating a healthy replacement so the control plane can regain quorum.
+Replace an unhealthy etcd member when the etcd pod is crashlooping. Restoring the member returns the control plane to a healthy state.
 
-- You have identified the unhealthy etcd member.
+- You identified the unhealthy etcd member.
 
-- You have verified that the etcd pod is crashlooping.
+- You verified that the etcd pod is crashlooping.
 
-- You have access to the cluster as a user with the `cluster-admin` role.
+- You confirmed access to the cluster as a user with the `cluster-admin` role.
 
-- You have taken an etcd backup.
+- You created an etcd backup before replacing the unhealthy etcd member.
 
   <div class="important">
 
@@ -714,9 +702,7 @@ Replace a crashlooping etcd member by removing it from the cluster and creating 
 
 1.  Stop the crashlooping etcd pod.
 
-    1.  Debug the node that is crashlooping.
-
-        In a terminal that has access to the cluster as a `cluster-admin` user, run the following command:
+    1.  Debug the node that is crashlooping by running the following command:
 
         ``` terminal
         $ oc debug node/<unhealthy_node>
@@ -724,23 +710,25 @@ Replace a crashlooping etcd member by removing it from the cluster and creating 
 
         Replace `<unhealthy_node>` with the name of the unhealthy etcd member.
 
-    2.  Change your root directory to `/host`:
+    2.  Change your root directory to `/host` by running the following command:
 
         ``` terminal
         sh-4.2# chroot /host
         ```
 
-    3.  Move the existing etcd pod file out of the kubelet manifest directory:
+    3.  Create a backup directory by running the following command:
 
         ``` terminal
         sh-4.2# mkdir /var/lib/etcd-backup
         ```
 
-        ``` terminal
-        sh-4.2# mv /etc/kubernetes/manifests/etcd-pod.yaml /var/lib/etcd-backup/
-        ```
+2.  Move the existing etcd pod file out of the kubelet manifest directory by running the following commands:
 
-    4.  Move the etcd data directory to a different location:
+    ``` terminal
+    sh-4.2# mv /etc/kubernetes/manifests/etcd-pod.yaml /var/lib/etcd-backup/
+    ```
+
+    1.  Move the etcd data directory to a different location by running the following command:
 
         ``` terminal
         sh-4.2# mv /var/lib/etcd/ /tmp
@@ -748,11 +736,9 @@ Replace a crashlooping etcd member by removing it from the cluster and creating 
 
         You can now exit the node shell.
 
-2.  Remove the unhealthy member.
+3.  Remove the unhealthy member.
 
-    1.  Choose a pod that is *not* on the affected node.
-
-        In a terminal that has access to the cluster as a `cluster-admin` user, run the following command:
+    1.  Choose a pod that is *not* on the affected node by running the following command:
 
         ``` terminal
         $ oc -n openshift-etcd get pods -l k8s-app=etcd
@@ -770,15 +756,13 @@ Replace a crashlooping etcd member by removing it from the cluster and creating 
         etcd-ip-10-0-154-204.ec2.internal                3/3     Running     0          6h6m
         ```
 
-    2.  Connect to the running etcd container, passing in the name of a pod that is not on the affected node.
-
-        In a terminal that has access to the cluster as a `cluster-admin` user, run the following command:
+    2.  Connect to the running etcd container, passing in the name of a pod that is not on the affected node by running the following command:
 
         ``` terminal
         $ oc rsh -n openshift-etcd etcd-ip-10-0-154-204.ec2.internal
         ```
 
-    3.  View the member list:
+    3.  View the member list by running the following command:
 
         ``` terminal
         sh-4.2# etcdctl member list -w table
@@ -818,7 +802,7 @@ Replace a crashlooping etcd member by removing it from the cluster and creating 
         Member 62bcf33650a7170a removed from cluster ead669ce1fbfb346
         ```
 
-    5.  View the member list again and verify that the member was removed:
+    5.  View the member list again and verify that the member was removed by running the following command:
 
         ``` terminal
         sh-4.2# etcdctl member list -w table
@@ -841,7 +825,7 @@ Replace a crashlooping etcd member by removing it from the cluster and creating 
 
         You can now exit the node shell.
 
-3.  Turn off the quorum guard by entering the following command:
+4.  Turn off the quorum guard by running the following command:
 
     ``` terminal
     $ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides": {"useUnsupportedUnsafeNonHANonProductionUnstableEtcd": true}}}'
@@ -849,15 +833,15 @@ Replace a crashlooping etcd member by removing it from the cluster and creating 
 
     This command ensures that you can successfully re-create secrets and roll out the static pods.
 
-4.  Remove the old secrets for the unhealthy etcd member that was removed.
+5.  Remove the old secrets for the unhealthy etcd member that was removed.
 
-    1.  List the secrets for the unhealthy etcd member that was removed.
+    1.  List the secrets for the unhealthy etcd member that was removed by running the following command:
 
         ``` terminal
         $ oc get secrets -n openshift-etcd | grep <unhealthy_node>
         ```
 
-        Replace `<unhealthy_node>` with the name of the unhealthy etcd member.
+        Replace `<unhealthy_node>` in the command with the name of the unhealthy etcd member that you noted earlier in this procedure.
 
         There is a peer, serving, and metrics secret as shown in the following output:
 
@@ -873,29 +857,25 @@ Replace a crashlooping etcd member by removing it from the cluster and creating 
         etcd-serving-metrics-ip-10-0-131-183.ec2.internal   kubernetes.io/tls                     2      47m
         ```
 
-    2.  Delete the secrets for the unhealthy etcd member that was removed.
+    2.  Delete the peer secret for the unhealthy etcd member that was removed by running the following command:
 
-        1.  Delete the peer secret:
+        ``` terminal
+        $ oc delete secret -n openshift-etcd etcd-peer-ip-10-0-131-183.ec2.internal
+        ```
 
-            ``` terminal
-            $ oc delete secret -n openshift-etcd etcd-peer-ip-10-0-131-183.ec2.internal
-            ```
+    3.  Delete the serving secret by running the following command:
 
-        2.  Delete the serving secret:
+        ``` terminal
+        $ oc delete secret -n openshift-etcd etcd-serving-ip-10-0-131-183.ec2.internal
+        ```
 
-            ``` terminal
-            $ oc delete secret -n openshift-etcd etcd-serving-ip-10-0-131-183.ec2.internal
-            ```
+    4.  Delete the metrics secret by running the following command:
 
-        3.  Delete the metrics secret:
+        ``` terminal
+        $ oc delete secret -n openshift-etcd etcd-serving-metrics-ip-10-0-131-183.ec2.internal
+        ```
 
-            ``` terminal
-            $ oc delete secret -n openshift-etcd etcd-serving-metrics-ip-10-0-131-183.ec2.internal
-            ```
-
-5.  Force etcd redeployment.
-
-    In a terminal that has access to the cluster as a `cluster-admin` user, run the following command:
+6.  Force etcd redeployment by running the following command:
 
     ``` terminal
     $ oc patch etcd cluster -p='{"spec": {"forceRedeploymentReason": "single-master-recovery-'"$( date --rfc-3339=ns )"'"}}' --type=merge
@@ -905,19 +885,19 @@ Replace a crashlooping etcd member by removing it from the cluster and creating 
 
     When the etcd cluster Operator performs a redeployment, it ensures that all control plane nodes have a functioning etcd pod.
 
-6.  Turn the quorum guard back on by entering the following command:
+7.  Turn the quorum guard back on by running the following command:
 
     ``` terminal
     $ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides": null}}'
     ```
 
-7.  You can verify that the `unsupportedConfigOverrides` section is removed from the object by entering this command:
+8.  Verify that the `unsupportedConfigOverrides` section is removed from the object by running the following command:
 
     ``` terminal
     $ oc get etcd/cluster -oyaml
     ```
 
-8.  If you are using single-node OpenShift, restart the node. Otherwise, you might encounter the following error in the etcd cluster Operator:
+9.  If you are using single-node OpenShift, restart the node. Otherwise, you might encounter the following error in the etcd cluster Operator:
 
     <div class="formalpara-title">
 
@@ -931,45 +911,43 @@ Replace a crashlooping etcd member by removing it from the cluster and creating 
 
 - Verify that the new member is available and healthy.
 
-  1.  Connect to the running etcd container again.
+  - Connect to the running etcd container by running the following command:
 
-      In a terminal that has access to the cluster as a cluster-admin user, run the following command:
+    ``` terminal
+    $ oc rsh -n openshift-etcd etcd-ip-10-0-154-204.ec2.internal
+    ```
 
-      ``` terminal
-      $ oc rsh -n openshift-etcd etcd-ip-10-0-154-204.ec2.internal
-      ```
+  - Verify that all members are healthy by running the following command:
 
-  2.  Verify that all members are healthy:
+    ``` terminal
+    sh-4.2# etcdctl endpoint health
+    ```
 
-      ``` terminal
-      sh-4.2# etcdctl endpoint health
-      ```
+    <div class="formalpara-title">
 
-      <div class="formalpara-title">
+    **Example output**
 
-      **Example output**
+    </div>
 
-      </div>
-
-      ``` terminal
-      https://10.0.131.183:2379 is healthy: successfully committed proposal: took = 16.671434ms
-      https://10.0.154.204:2379 is healthy: successfully committed proposal: took = 16.698331ms
-      https://10.0.164.97:2379 is healthy: successfully committed proposal: took = 16.621645ms
-      ```
+    ``` terminal
+    https://10.0.131.183:2379 is healthy: successfully committed proposal: took = 16.671434ms
+    https://10.0.154.204:2379 is healthy: successfully committed proposal: took = 16.698331ms
+    https://10.0.164.97:2379 is healthy: successfully committed proposal: took = 16.621645ms
+    ```
 
 ## Replacing an unhealthy bare metal etcd member whose machine is not running or whose node is not ready
 
-Replace a bare metal etcd member whose machine is not running or whose node is not ready by removing it from the cluster and provisioning a replacement control plane machine.
+Replace an unhealthy bare metal etcd member when the machine is not running or the node is not ready. Restoring the member returns the control plane to a healthy state.
 
 If you are running installer-provisioned infrastructure or you used the Machine API to create your machines, follow these steps. Otherwise you must create the new control plane node using the same method that was used to originally create it.
 
-- You have identified the unhealthy bare metal etcd member.
+- You identified the unhealthy bare metal etcd member.
 
-- You have verified that either the machine is not running or the node is not ready.
+- You verified that either the machine is not running or the node is not ready.
 
-- You have access to the cluster as a user with the `cluster-admin` role.
+- You confirmed access to the cluster as a user with the `cluster-admin` role.
 
-- You have taken an etcd backup.
+- You created an etcd backup.
 
   <div class="important">
 
@@ -979,9 +957,7 @@ If you are running installer-provisioned infrastructure or you used the Machine 
 
 1.  Verify and remove the unhealthy member.
 
-    1.  Choose a pod that is *not* on the affected node:
-
-        In a terminal that has access to the cluster as a `cluster-admin` user, run the following command:
+    1.  Choose a pod that is not on the affected node by running the following command:
 
         ``` terminal
         $ oc -n openshift-etcd get pods -l k8s-app=etcd -o wide
@@ -999,15 +975,13 @@ If you are running installer-provisioned infrastructure or you used the Machine 
         etcd-openshift-control-plane-2   5/5   Running   0    3h58m   192.168.10.11   openshift-control-plane-2   <none>           <none>
         ```
 
-    2.  Connect to the running etcd container, passing in the name of a pod that is not on the affected node:
-
-        In a terminal that has access to the cluster as a `cluster-admin` user, run the following command:
+    2.  Connect to the running etcd container, passing in the name of a pod that is not on the affected node by running the following command:
 
         ``` terminal
         $ oc rsh -n openshift-etcd etcd-openshift-control-plane-0
         ```
 
-    3.  View the member list:
+    3.  View the member list by running the following command:
 
         ``` terminal
         sh-4.2# etcdctl member list -w table
@@ -1029,15 +1003,15 @@ If you are running installer-provisioned infrastructure or you used the Machine 
         +------------------+---------+--------------------+---------------------------+---------------------------+---------------------+
         ```
 
-        Take note of the ID and the name of the unhealthy etcd member, because these values are required later in the procedure. The `etcdctl endpoint health` command will list the removed member until the replacement procedure is completed and the new member is added.
-
-    4.  Remove the unhealthy etcd member by providing the ID to the `etcdctl member remove` command:
+        Take note of the ID and the name of the unhealthy etcd member, because these values are required later in the procedure. The `etcdctl endpoint health` command lists the removed member until the replacement procedure is completed and the new member is added.
 
         <div class="warning">
 
-        Be sure to remove the correct etcd member; removing a good etcd member might lead to quorum loss.
+        Be sure to remove the correct etcd member. Removing a good etcd member might lead to quorum loss.
 
         </div>
+
+    4.  Remove the unhealthy etcd member by providing the ID to the `etcdctl member remove` command:
 
         ``` terminal
         sh-4.2# etcdctl member remove 7a8197040a5126c8
@@ -1053,7 +1027,7 @@ If you are running installer-provisioned infrastructure or you used the Machine 
         Member 7a8197040a5126c8 removed from cluster b23536c33f2cdd1b
         ```
 
-    5.  View the member list again and verify that the member was removed:
+    5.  View the member list again and verify that the member was removed by running the following command:
 
         ``` terminal
         sh-4.2# etcdctl member list -w table
@@ -1082,7 +1056,7 @@ If you are running installer-provisioned infrastructure or you used the Machine 
 
         </div>
 
-2.  Turn off the quorum guard by entering the following command:
+2.  Turn off the quorum guard by running the following command:
 
     ``` terminal
     $ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides": {"useUnsupportedUnsafeNonHANonProductionUnstableEtcd": true}}}'
@@ -1090,9 +1064,9 @@ If you are running installer-provisioned infrastructure or you used the Machine 
 
     This command ensures that you can successfully re-create secrets and roll out the static pods.
 
-3.  Remove the old secrets for the unhealthy etcd member that was removed by running the following commands.
+3.  Remove the old secrets for the unhealthy etcd member that was removed.
 
-    1.  List the secrets for the unhealthy etcd member that was removed.
+    1.  List the secrets for the unhealthy etcd member that was removed by running the following command:
 
         ``` terminal
         $ oc get secrets -n openshift-etcd | grep openshift-control-plane-2
@@ -1108,59 +1082,55 @@ If you are running installer-provisioned infrastructure or you used the Machine 
         etcd-serving-openshift-control-plane-2          kubernetes.io/tls   2   134m
         ```
 
-    2.  Delete the secrets for the unhealthy etcd member that was removed.
+    2.  Delete the secrets for the unhealthy etcd member by running the following command:
 
-        1.  Delete the peer secret:
+        ``` terminal
+        $ oc delete secret etcd-peer-openshift-control-plane-2 -n openshift-etcd
+        ```
 
-            ``` terminal
-            $ oc delete secret etcd-peer-openshift-control-plane-2 -n openshift-etcd
-            ```
+        <div class="formalpara-title">
 
-            <div class="formalpara-title">
+        **Example output**
 
-            **Example output**
+        </div>
 
-            </div>
+        ``` terminal
+        secret "etcd-peer-openshift-control-plane-2" deleted
+        ```
 
-            ``` terminal
-            secret "etcd-peer-openshift-control-plane-2" deleted
-            ```
+    3.  Delete the serving secret by running the following command:
 
-        2.  Delete the serving secret:
+        ``` terminal
+        $ oc delete secret etcd-serving-metrics-openshift-control-plane-2 -n openshift-etcd
+        ```
 
-            ``` terminal
-            $ oc delete secret etcd-serving-metrics-openshift-control-plane-2 -n openshift-etcd
-            ```
+        <div class="formalpara-title">
 
-            <div class="formalpara-title">
+        **Example output**
 
-            **Example output**
+        </div>
 
-            </div>
+        ``` terminal
+        secret "etcd-serving-metrics-openshift-control-plane-2" deleted
+        ```
 
-            ``` terminal
-            secret "etcd-serving-metrics-openshift-control-plane-2" deleted
-            ```
+    4.  Delete the metrics secret by running the following command:
 
-        3.  Delete the metrics secret:
+        ``` terminal
+        $ oc delete secret etcd-serving-openshift-control-plane-2 -n openshift-etcd
+        ```
 
-            ``` terminal
-            $ oc delete secret etcd-serving-openshift-control-plane-2 -n openshift-etcd
-            ```
+        <div class="formalpara-title">
 
-            <div class="formalpara-title">
+        **Example output**
 
-            **Example output**
+        </div>
 
-            </div>
+        ``` terminal
+        secret "etcd-serving-openshift-control-plane-2" deleted
+        ```
 
-            ``` terminal
-            secret "etcd-serving-openshift-control-plane-2" deleted
-            ```
-
-4.  Obtain the machine for the unhealthy member.
-
-    In a terminal that has access to the cluster as a `cluster-admin` user, run the following command:
+4.  Obtain the machine for the unhealthy member by running the following command:
 
     ``` terminal
     $ oc get machines -n openshift-machine-api -o wide
@@ -1181,7 +1151,7 @@ If you are running installer-provisioned infrastructure or you used the Machine 
     examplecluster-compute-1          Running                          165m    openshift-compute-1         baremetalhost:///openshift-machine-api/openshift-compute-1/0fdae6eb-2066-4241-91dc-e7ea72ab13b9         provisioned
     ```
 
-    `examplecluster-control-plane-0` is the control plane machine for the unhealthy node, `examplecluster-control-plane-2`.
+    `examplecluster-control-plane-2` is the control plane machine for the unhealthy node `openshift-control-plane-2`.
 
 5.  Ensure that the Bare Metal Operator is available by running the following command:
 
@@ -1297,7 +1267,7 @@ If you are running installer-provisioned infrastructure or you used the Machine 
     openshift-compute-1       Ready worker 176m v1.34.2
     ```
 
-10. Create the new `BareMetalHost` object and the secret to store the BMC credentials:
+10. Create the new `BareMetalHost` object and the secret to store the Baseboard Management Controller (BMC) credentials by running the following command:
 
     ``` terminal
     $ cat <<EOF | oc apply -f -
@@ -1336,7 +1306,7 @@ If you are running installer-provisioned infrastructure or you used the Machine 
 
     <div class="note">
 
-    The username and password can be found from the other bare metal host’s secrets. The protocol to use in `bmc:address` can be taken from other bmh objects.
+    The username and password can be found from the secrets of the other bare-metal host. The protocol to use in `bmc:address` can be taken from other bmh objects.
 
     </div>
 
@@ -1350,7 +1320,7 @@ If you are running installer-provisioned infrastructure or you used the Machine 
 
     After the inspection is complete, the `BareMetalHost` object is created and available to be provisioned.
 
-11. Verify the creation process using available `BareMetalHost` objects:
+11. Verify the creation process using available `BareMetalHost` objects by running the following command:
 
     ``` terminal
     $ oc get bmh -n openshift-machine-api
@@ -1371,7 +1341,7 @@ If you are running installer-provisioned infrastructure or you used the Machine 
     openshift-compute-1       provisioned            examplecluster-compute-1       true         4h48m
     ```
 
-    1.  Verify that a new machine has been created:
+    1.  Verify that a new machine has been created by running the following command:
 
         ``` terminal
         $ oc get machines -n openshift-machine-api -o wide
@@ -1392,9 +1362,9 @@ If you are running installer-provisioned infrastructure or you used the Machine 
         examplecluster-compute-1               Running                          165m    openshift-compute-1         baremetalhost:///openshift-machine-api/openshift-compute-1/0fdae6eb-2066-4241-91dc-e7ea72ab13b9         provisioned
         ```
 
-        The new machine is being created and is ready after the phase changes from `Provisioning` to `Running`.
+        The new machine is ready when the phase changes from `Provisioning` to `Running`.
 
-        It should take a few minutes for the new machine to be created. The etcd cluster Operator will automatically sync when the machine or node returns to a healthy state.
+        It should take a few minutes for the new machine to be created. The etcd cluster Operator automatically syncs when the machine or node returns to a healthy state.
 
     2.  Verify that the bare metal host becomes provisioned and no error reported by running the following command:
 
@@ -1417,7 +1387,7 @@ If you are running installer-provisioned infrastructure or you used the Machine 
         openshift-compute-1       provisioned            examplecluster-compute-1       true         4h48m
         ```
 
-    3.  Verify that the new node is added and in a ready state by running this command:
+    3.  Verify that the new node is added and in a ready state by running the following command:
 
         ``` terminal
         $ oc get nodes
@@ -1438,13 +1408,13 @@ If you are running installer-provisioned infrastructure or you used the Machine 
         openshift-compute-1       Ready worker 3h58m v1.34.2
         ```
 
-12. Turn the quorum guard back on by entering the following command:
+12. Turn the quorum guard back on by running the following command:
 
     ``` terminal
     $ oc patch etcd/cluster --type=merge -p '{"spec": {"unsupportedConfigOverrides": null}}'
     ```
 
-13. You can verify that the `unsupportedConfigOverrides` section is removed from the object by entering this command:
+13. You can verify that the `unsupportedConfigOverrides` section is removed from the object by running the following command:
 
     ``` terminal
     $ oc get etcd/cluster -oyaml
@@ -1464,9 +1434,7 @@ If you are running installer-provisioned infrastructure or you used the Machine 
 
 <!-- -->
 
-1.  Verify that all etcd pods are running properly.
-
-    In a terminal that has access to the cluster as a `cluster-admin` user, run the following command:
+1.  Verify that all etcd pods are running properly by running the following command:
 
     ``` terminal
     $ oc -n openshift-etcd get pods -l k8s-app=etcd
@@ -1498,7 +1466,7 @@ If you are running installer-provisioned infrastructure or you used the Machine 
     $ oc rsh -n openshift-etcd etcd-openshift-control-plane-0
     ```
 
-2.  View the member list:
+2.  View the member list by running the following command:
 
     ``` terminal
     sh-4.2# etcdctl member list -w table

@@ -1445,7 +1445,15 @@ spec:
       # ...
 ```
 
-- `spec.autoScaling.min` must be greater than or equal to `1`. Scaling from zero (`autoScaling.min: 0`) is not supported on Azure.
+- `spec.autoScaling.min` must be greater than or equal to `1` on platforms that do not support scale-from-zero.
+
+  On Amazon Web Services (AWS) and Azure hosted clusters running OpenShift Container Platform 4.18 or later, you can set `spec.autoScaling.min` to `0` for eligible tainted workload pools. For more information, see "Configuring autoscaling to and from zero on hosted control planes node pools".
+
+  <div class="note">
+
+  Earlier versions of this example stated that scaling from zero (`autoScaling.min: 0`) is not supported on Azure. OpenShift Container Platform 4.18 and later support `min: 0` on Amazon Web Services (AWS) and Azure when the HyperShift Operator backport is available.
+
+  </div>
 
 # Deleting an Azure hosted cluster and its resources
 

@@ -63,7 +63,7 @@ The following example configures a secondary network named `bridge-net`:
 
 # Configuration for a Bond CNI secondary network
 
-The Bond Container Network Interface (Bond CNI) enables the aggregation of multiple network interfaces into a single logical bonded interface within a container, which enhanches network redundancy and fault tolerance. Only SR-IOV Virtual Functions (VFs) are supported for bonding with this plugin.
+The Bond Container Network Interface (Bond CNI) combines multiple network interfaces into a single logical interface inside a container, improving redundancy and fault tolerance. OpenShift Container Platform supports Bond CNI only when using kernel-mode SR-IOV virtual functions (VFs).
 
 The following table describes the configuration parameters for the Bond CNI plugin:
 
@@ -75,8 +75,8 @@ The following table describes the configuration parameters for the Bond CNI plug
 | `miimon`           | `string`  | Specifies the address resolution protocol (ARP) link monitoring frequency in milliseconds. This parameter defines how often the bond interface sends ARP requests to check the availability of its aggregated interfaces.                                                                                                             |
 | `mtu`              | `integer` | Optional: Specifies the maximum transmission unit (MTU) of the bond. The default is `1500`.                                                                                                                                                                                                                                           |
 | `failOverMac`      | `integer` | Optional: Specifies the `failOverMac` setting for the bond. Default is `0`.                                                                                                                                                                                                                                                           |
-| `mode`             | `string`  | Specifies the bonding policy.                                                                                                                                                                                                                                                                                                         |
-| `xmitHashPolicy`   | `string`  | Specifies the transmit hash policy for load balancing across the aggregated interfaces. This parameter defaults to `layer2` and supports the following values: `layer2`, `layer2+3` and `layer3+4`.                                                                                                                                   |
+| `mode`             | `string`  | Specifies the bonding policy. The supported values are `balance-rr`, `active-backup`, and `balance-xor`.                                                                                                                                                                                                                              |
+| `xmitHashPolicy`   | `string`  | Specifies the transmit hash policy that the `balance-xor` mode uses for load balancing across the aggregated interfaces. This parameter defaults to `layer2` and supports the following values: `layer2`, `layer2+3`, and `layer3+4`.                                                                                                 |
 | `linksInContainer` | `boolean` | Optional: Specifies whether the network interfaces intended for bonding are expected to be created and available directly within the network namespace of the container when the bond starts. If `false` which is the default, the CNI plugin looks for these interfaces on the host system first before attempting to form the bond. |
 | `links`            | `object`  | Specifies the interfaces to be bonded.                                                                                                                                                                                                                                                                                                |
 | `ipam`             | `object`  | The configuration object for the IPAM CNI plugin. The plugin manages IP address assignment for the attachment definition.                                                                                                                                                                                                             |
@@ -85,9 +85,11 @@ Bond CNI plugin JSON configuration object
 
 <div class="important">
 
-xmitHashPolicy is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+When you use SR-IOV virtual functions (VFs) from multiple physical functions (PFs) in an active-active bond (such as `balance-rr` or `balance-xor`), you must configure the upstream network switch with a link aggregation group (LAG) that spans all participating PFs.
 
-For more information about the support scope of Red Hat Technology Preview features, see [Technology Preview Features Support Scope](https://access.redhat.com/support/offerings/techpreview/).
+When you configure a switch LAG across multiple PFs, every workload using VFs from those PFs must use an active-active bonding policy. You cannot mix active-active bonds, active-backup bonds, or single-VF workloads on PFs participating in a switch LAG.
+
+When using an active-active bond across multiple PFs without an upstream switch LAG, traffic drops occur. Configurations using active-backup or single-VF workloads can only receive traffic on a single designated PF, so any frames routed by the switch to an alternate PF are silently dropped.
 
 </div>
 
@@ -120,14 +122,14 @@ The following example configures a secondary network named `bond-net1`:
 }
 ```
 
-The following example configures a secondary network named `bond-tlb-net` with the `xmitHashPolicy` feature enabled:
+The following example configures a secondary network named `bond-xor-net` that uses the `balance-xor` mode with the `xmitHashPolicy` parameter enabled:
 
 ``` json
 {
  "type": "bond",
  "cniVersion": "0.3.1",
- "name": "bond-tlb-net",
- "mode": "tlb",
+ "name": "bond-xor-net",
+ "mode": "balance-xor",
  "xmitHashPolicy": "layer2+3",
  "failOverMac": 0,
  "linksInContainer": true,

@@ -980,7 +980,7 @@ The installation program converts the installation configuration into Kubernetes
 
 - [Manually manage cloud credentials](../../../installing/installing_azure_stack_hub/ipi/installing-azure-stack-hub-default.xml#manually-create-iam_installing-azure-stack-hub-default)
 
-## Optional: Creating a separate `/var` partition
+## Creating a separate `/var` partition
 
 To isolate growing storage for containers, etcd, or logs, you can optionally create a separate `/var` partition on worker nodes before you generate Ignition configs.
 
@@ -1846,7 +1846,7 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     <div class="note">
 
-    You might need to wait a few minutes after approval of the server CSRs for the machines to change to the `Ready` status.
+    You might need to wait a few minutes after approval of the server CSRs for the machines to reach the `Ready` status.
 
     </div>
 

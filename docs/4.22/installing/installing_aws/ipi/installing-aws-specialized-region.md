@@ -145,11 +145,11 @@ You can use any machine that meets these access requirements and follows your co
 
 <div class="note">
 
-AWS China does not support a VPN connection between the VPC and your network. For more information about the Amazon VPC service in the Beijing and Ningxia regions, see "Amazon Virtual Private Cloud" in the AWS China documentation.
+AWS China does not support a VPN connection between the VPC and your network.
 
 </div>
 
-- [Amazon Virtual Private Cloud](https://docs.amazonaws.cn/en_us/aws/latest/userguide/vpc.html)
+- [Amazon Virtual Private Cloud (AWS China documentation)](https://docs.amazonaws.cn/en_us/aws/latest/userguide/vpc.html)
 
 ## Private clusters in AWS
 
@@ -922,7 +922,7 @@ If you configured the `credentialsMode` parameter in the `install-config.yaml` f
 
 ## Manually creating long-term credentials
 
-The Cloud Credential Operator (CCO) can be put into manual mode prior to installation in environments where the cloud identity and access management (IAM) APIs are not reachable, or the administrator prefers not to store an administrator-level credential secret in the cluster `kube-system` namespace.
+You can put the Cloud Credential Operator (CCO) into manual mode before OpenShift Container Platform installation if the cloud identity and access management (IAM) APIs are not reachable, or if you prefer not to store an administrator-level credential secret in the cluster `kube-system` namespace.
 
 1.  If you did not set the `credentialsMode` parameter in the `install-config.yaml` configuration file to `Manual`, modify the value as shown:
 
@@ -1530,7 +1530,7 @@ Some `ccoctl` commands make AWS API calls to create or modify AWS resources. You
 
 ### Incorporating the Cloud Credential Operator utility manifests
 
-To implement short-term security credentials managed outside the cluster for individual components, you must move the manifest files that the Cloud Credential Operator utility (`ccoctl`) created to the correct directories for the installation program.
+To implement short-term security credentials managed outside the cluster for individual OpenShift Container Platform components, you must move the manifest files that the Cloud Credential Operator utility (`ccoctl`) created to the correct directories for the installation program.
 
 - You have configured an account with the cloud platform that hosts your cluster.
 
@@ -1575,7 +1575,7 @@ To implement short-term security credentials managed outside the cluster for ind
 
 # Deploying the cluster
 
-To deploy your OpenShift Container Platform cluster, you can initialize installation by running the `openshift-install create cluster` command from the directory that contains the installation program. The installation program provisions infrastructure and completes cluster setup.
+To deploy your OpenShift Container Platform cluster, you initialize installation by running the `openshift-install create cluster` command from the directory that contains the installation program. The installation program provisions the required infrastructure and completes the cluster setup.
 
 <div class="important">
 
@@ -1596,9 +1596,11 @@ You can run the `create cluster` command of the installation program only once, 
         --log-level=info
     ```
 
-    - For `<installation_directory>`, specify the location of your customized `./install-config.yaml` file.
+    where:
 
-    - To view different installation details, specify `warn`, `debug`, or `error` instead of `info`.
+    - `<installation_directory>`: Specifies the location of your customized `./install-config.yaml` file.
+
+    - `--log-level`: Specifies the log level. To view different installation details, specify `warn`, `debug`, or `error` instead of `info`.
 
 2.  Optional: Remove or disable the `AdministratorAccess` policy from the IAM account that you used to install the cluster.
 
@@ -1626,11 +1628,7 @@ When the cluster deployment completes successfully:
 
   </div>
 
-  <div class="formalpara-title">
-
-  **Example output**
-
-  </div>
+  The following example shows the expected output:
 
   ``` terminal
   ...

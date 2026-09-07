@@ -152,9 +152,6 @@ You can get support for the NVIDIA GPU Operator through NVIDIA. For more informa
       vfioManager:
         enabled: true
       vgpuDeviceManager:
-        config:
-          default: default
-          name: vgpu-devices-config
         enabled: true
       vgpuManager:
         enabled: true

@@ -1466,7 +1466,7 @@ The following table lists the available parameters for the \`ImageSetConfigurati
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><p><code>kubeVirtContainer</code></p></td>
-<td style="text-align: left;"><p>When set to <code>true</code>, includes images from the HyperShift KubeVirt CoreOS container.</p></td>
+<td style="text-align: left;"><p>When set to <code>true</code>, includes images from the hosted control planes KubeVirt CoreOS container.</p></td>
 <td style="text-align: left;"><p>Boolean Example <code>ImageSetConfiguration</code> file:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> mirror.openshift.io/v2alpha1</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> ImageSetConfiguration</span></span>

@@ -358,7 +358,7 @@ If needed, you can disable node auto-scaling.
 
 <!-- -->
 
-- [Scaling down the data plane to zero](../../hosted_control_planes/hcp-troubleshooting.xml#scale-down-data-plane_hcp-troubleshooting)
+- [Scaling down the data plane to zero](../../hosted_control_planes/hcp-machine-config.xml#scale-down-data-plane_hcp-machine-config)
 
 - [Scaling up and down workloads in a hosted cluster](../../hosted_control_planes/hcp-machine-config.xml#scale-up-down-autoscaler-hcp_hcp-machine-config)
 

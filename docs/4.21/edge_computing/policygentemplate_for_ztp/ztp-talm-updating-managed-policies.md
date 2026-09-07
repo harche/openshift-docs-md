@@ -770,13 +770,15 @@ If you install Performance Addon Operator 4.10.3-5 or later on OpenShift Contain
 
 # Precaching user-specified images with TALM on single-node OpenShift clusters
 
-You can precache application-specific workload images on single-node OpenShift clusters before upgrading your applications.
+You can precache application-specific workload images on single-node OpenShift clusters before updating your applications.
 
 You can specify the configuration options for the precaching jobs by using the following custom resources (CR):
 
 - `PreCachingConfig` CR
 
 - `ClusterGroupUpgrade` CR
+
+TALM derives the platform image from the `ClusterVersion` object in the managed policies. TALM derives Operator index images from `CatalogSource` objects that the managed policies reference.
 
 <div class="note">
 
@@ -794,9 +796,6 @@ metadata:
   namespace: exampleconfig-ns
 spec:
   overrides:
-    platformImage: quay.io/openshift-release-dev/ocp-release@sha256:3d5800990dee7cd4727d3fe238a97e2d2976d3808fc925ada29c559a47e2e1ef
-    operatorsIndexes:
-      - registry.example.com:5000/custom-redhat-operators:1.0.0
     operatorsPackagesAndChannels:
       - local-storage-operator: stable
       - ptp-operator: stable
@@ -811,7 +810,7 @@ spec:
     - quay.io/exampleconfig/applicationN@sha256:4fe1334adfafadsf987123adfffdaf1243340adfafdedga0991234afdadfsa09
 ```
 
-- `overrides` - By default, TALM automatically populates the `platformImage`, `operatorsIndexes`, and the `operatorsPackagesAndChannels` fields from the policies of the managed clusters. You can specify values to override the default TALM-derived values for these fields.
+- `overrides` - Specifies Operator packages and channels to precache instead of the values that TALM derives from the managed policies. The only supported override is `operatorsPackagesAndChannels`. TALM ignores the deprecated `platformImage` and `operatorsIndexes` override fields if they are present.
 
 - `spaceRequired` - Specifies the minimum required disk space on the cluster. If unspecified, TALM defines a default value for OpenShift Container Platform images. The disk space field must include an integer value and the storage unit. For example: `40 GiB`, `200 MB`, `1 TiB`.
 
@@ -852,7 +851,7 @@ You must create the `PreCachingConfig` CR before or concurrently with the `Clust
       name: exampleconfig
       namespace: default
     spec:
-    [...]
+    # ...
       spaceRequired: 30Gi
       additionalImages:
         - quay.io/exampleconfig/application1@sha256:3d5800990dee7cd4727d3fe238a97e2d2976d3808fc925ada29c559a47e2e1ef
@@ -910,13 +909,13 @@ You must create the `PreCachingConfig` CR before or concurrently with the `Clust
 
 <!-- -->
 
-1.  Check the precaching status on the hub cluster where the `ClusterUpgradeGroup` CR is applied by running the following command:
+1.  Check the precaching status on the hub cluster where the `ClusterGroupUpgrade` CR is applied by running the following command:
 
     ``` terminal
     $ oc get cgu <cgu_name> -n <cgu_namespace> -oyaml
     ```
 
-    The following is example output:
+    The following example shows the derived precaching specification. The `platformImage` and `operatorsIndexes` values come from the managed policies, not from `PreCachingConfig` overrides.
 
     ``` yaml
       precaching:

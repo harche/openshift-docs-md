@@ -80,7 +80,7 @@ Minimum required hosts
 
 <div class="important">
 
-To keep high availability of your cluster, use separate physical hosts for these cluster machines.
+To maintain high availability of your cluster, use separate physical hosts for these cluster machines.
 
 </div>
 
@@ -230,7 +230,7 @@ The Kubernetes API server must be able to resolve the node names of the cluster 
 
 ### Setting the cluster node hostnames through DHCP
 
-On Red Hat Enterprise Linux CoreOS (RHCOS) machines, the hostname is set through NetworkManager. By default, the machines obtain their hostname through DHCP. If the hostname is not provided by DHCP, set statically through kernel arguments, or another method, it is obtained through a reverse DNS lookup. Reverse DNS lookup occurs after the network has been initialized on a node and can take time to resolve. Other system services can start prior to this and detect the hostname as `localhost` or similar. You can avoid this by using DHCP to provide the hostname for each cluster node.
+On Red Hat Enterprise Linux CoreOS (RHCOS) machines, the hostname is set through NetworkManager. By default, the machines obtain their hostname through DHCP. If the hostname is not provided by DHCP, set statically through kernel arguments, or another method, it is obtained through a reverse DNS lookup. Reverse DNS lookup occurs after the network has been initialized on a node and can take time to resolve. Other system services can start before this and detect the hostname as `localhost` or similar. You can avoid this by using DHCP to provide the hostname for each cluster node.
 
 Additionally, setting the hostnames through DHCP can bypass any manual DNS record name configuration errors in environments that have a DNS split-horizon implementation.
 
@@ -970,7 +970,7 @@ You must use a local key, not one that you configured with platform-specific app
     $ ssh-add <path>/<file_name>
     ```
 
-    Specifies the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`
+    Specify the path and file name for your SSH private key, such as `~/.ssh/id_ed25519`.
 
     <div class="formalpara-title">
 
@@ -986,7 +986,7 @@ You must use a local key, not one that you configured with platform-specific app
 
 # Obtaining the installation program
 
-Before you install OpenShift Container Platform, download the installation file on the host you are using for installation.
+Before you install OpenShift Container Platform, download the installation file on the host you are using for installation, so that installation assets exist for deployment in your environment.
 
 - You have a computer that runs Linux or macOS, with 500 MB of local disk space.
 
@@ -1054,7 +1054,7 @@ Download and install the new version of `oc`.
 
 6.  Place the `oc` binary in a directory that is on your `PATH`.
 
-    To check your `PATH`, execute the following command:
+    To check your `PATH`, run the following command:
 
     ``` terminal
     $ echo $PATH
@@ -1088,7 +1088,7 @@ Download and install the new version of `oc`.
 
 5.  Move the `oc` binary to a directory that is on your `PATH` variable.
 
-    To check your `PATH` variable, open the command prompt and execute the following command:
+    To check your `PATH` variable, open the Command Prompt and run the following command:
 
     ``` terminal
     C:\> path
@@ -1126,11 +1126,11 @@ Download and install the new version of `oc`.
 
     </div>
 
-5.  Unpack and unzip the archive.
+5.  Extract the archive.
 
 6.  Move the `oc` binary to a directory on your `PATH` variable.
 
-    To check your `PATH` variable, open a terminal and execute the following command:
+    To check your `PATH` variable, open a terminal and run the following command:
 
     ``` terminal
     $ echo $PATH
@@ -1715,7 +1715,7 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 </dd>
 <dt><code>unix:&lt;file&gt;</code></dt>
 <dd>
-<p>A Unix Domain Socket file specified by <code>&lt;file&gt;</code>.</p>
+<p>A UNIX Domain Socket file specified by <code>&lt;file&gt;</code>.</p>
 </dd>
 <dt><code>null</code></dt>
 <dd>
@@ -1795,7 +1795,7 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <tr class="odd">
 <td style="text-align: left;"><p><code>internalMasqueradeSubnet</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>The masquerade IPv4 addresses that are used internally to enable host to service traffic. The host is configured with these IP addresses as well as the shared gateway bridge interface. The default value is <code>169.254.169.0/29</code>.</p>
+<td style="text-align: left;"><p>The masquerade IPv4 addresses that are used internally to enable host to service traffic. The host is configured with these IP addresses and the shared gateway bridge interface. The default value is <code>169.254.169.0/29</code>.</p>
 <div class="important">
 <p>For OpenShift Container Platform 4.17 and later versions, clusters use <code>169.254.0.0/17</code> as the default masquerade subnet. For upgraded clusters, there is no change to the default masquerade subnet.</p>
 </div></td>
@@ -1823,7 +1823,7 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 <tr class="odd">
 <td style="text-align: left;"><p><code>internalMasqueradeSubnet</code></p></td>
 <td style="text-align: left;"><p><code>string</code></p></td>
-<td style="text-align: left;"><p>The masquerade IPv6 addresses that are used internally to enable host to service traffic. The host is configured with these IP addresses as well as the shared gateway bridge interface. The default value is <code>fd69::/125</code>.</p>
+<td style="text-align: left;"><p>The masquerade IPv6 addresses that are used internally to enable host to service traffic. The host is configured with these IP addresses and the shared gateway bridge interface. The default value is <code>fd69::/125</code>.</p>
 <div class="important">
 <p>For OpenShift Container Platform 4.17 and later versions, clusters use <code>fd69::/112</code> as the default masquerade subnet. For upgraded clusters, there is no change to the default masquerade subnet.</p>
 </div></td>
@@ -1865,7 +1865,7 @@ The following table describes the configuration fields for the OVN-Kubernetes ne
 
 <div class="formalpara-title">
 
-**Example OVN-Kubernetes configuration with IPSec enabled**
+**Example OVN-Kubernetes configuration with IPsec enabled**
 
 </div>
 
@@ -2613,6 +2613,8 @@ The OpenShift Container Platform bootstrap process begins after the cluster node
     INFO It is now safe to remove the bootstrap resources
     ```
 
+    The bootstrapping completion wait time varies per platform.
+
     The command succeeds when the Kubernetes API server signals that it has been bootstrapped on the control plane machines.
 
 2.  After the bootstrap process is complete, remove the bootstrap machine from the load balancer.
@@ -2816,7 +2818,7 @@ To allow newly added machines to join your OpenShift Container Platform cluster,
 
     <div class="note">
 
-    You might need to wait a few minutes after approval of the server CSRs for the machines to change to the `Ready` status.
+    You might need to wait a few minutes after approval of the server CSRs for the machines to reach the `Ready` status.
 
     </div>
 

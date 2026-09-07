@@ -88,15 +88,19 @@ In a Kubernetes cluster, worker nodes run and manage the actual workloads reques
 Cluster control planes
 In a Kubernetes cluster, the *master* nodes run services that are required to control the Kubernetes cluster. In OpenShift Container Platform, the control plane consists of control plane machines that have a `master` machine role. They contain more than just the Kubernetes services for managing the OpenShift Container Platform cluster.
 
-For most OpenShift Container Platform clusters, control plane machines are defined by a series of standalone machine API resources. For supported cloud provider and OpenShift Container Platform version combinations, control planes can be managed with control plane machine sets. Extra controls apply to control plane machines to prevent you from deleting all of the control plane machines and making the cluster inoperable.
+For most OpenShift Container Platform clusters, control plane machines are defined by a series of standalone machine API resources. For supported cloud provider and OpenShift Container Platform version combinations, control planes can be managed with control plane machine sets. Extra controls apply to control plane machines to prevent you from deleting all of the control plane machines and making the cluster inoperable. Exactly three control plane nodes must be used for all production deployments.
 
 <div class="note">
 
-Exactly three control plane nodes must be used for all production deployments. However, on bare metal platforms, clusters can be scaled up to five control plane nodes.
+On a bare-metal platform, you can scale a cluster to three, four, or five control plane nodes. For best results, use odd size control plane nodes, such as three or five, on a cluster. A four-node control plane has the same etcd one failure tolerance as three nodes. Only a five-node control plane can tolerate two simultaneous failures.
+
+Adding a fourth control plane node means etcd needs three healthy members instead of two. Until the fourth node is healthy, losing one of the original nodes breaks quorum and takes the cluster down.
 
 </div>
 
-Services that fall under the Kubernetes category on the control plane include the Kubernetes API server, etcd, the Kubernetes controller manager, and the Kubernetes scheduler.
+\+ Services that fall under the Kubernetes category on the control plane include the Kubernetes API server, etcd, the Kubernetes controller manager, and the Kubernetes scheduler.
+
+\+ .Kubernetes services that run on the control plane
 
 | Component                     | Description                                                                                                                                                                                                                                                                   |
 |-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -105,12 +109,11 @@ Services that fall under the Kubernetes category on the control plane include th
 | Kubernetes controller manager | The Kubernetes controller manager watches etcd for changes to objects such as replication, namespace, and service account controller objects, and then uses the API to enforce the specified state. Several such processes create a cluster with one active leader at a time. |
 | Kubernetes scheduler          | The Kubernetes scheduler watches for newly created pods without an assigned node and selects the best node to host the pod.                                                                                                                                                   |
 
-Kubernetes services that run on the control plane
+\+ There are also OpenShift services that run on the control plane, which include the OpenShift API server, OpenShift controller manager, OpenShift OAuth API server, and OpenShift OAuth server.
 
-There are also OpenShift services that run on the control plane, which include the OpenShift API server, OpenShift controller manager, OpenShift OAuth API server, and OpenShift OAuth server.
+\+ .OpenShift services that run on the control plane
 
 <table>
-<caption>OpenShift services that run on the control plane</caption>
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 66%" />
@@ -145,19 +148,15 @@ There are also OpenShift services that run on the control plane, which include t
 </tbody>
 </table>
 
-OpenShift services that run on the control plane
+\+ Some of these services on the control plane machines run as systemd services, while others run as static pods.
 
-Some of these services on the control plane machines run as systemd services, while others run as static pods.
+\+ Systemd services are appropriate for services that must always start on that particular system shortly after it starts. For control plane machines, such as those include sshd, that allow remote login. It also includes services such as:
 
-Systemd services are appropriate for services that must always start on that particular system shortly after it starts. For control plane machines, such as those include sshd, that allow remote login. It also includes services such as:
+\+ \* The CRI-O container engine (crio), which runs and manages the containers. OpenShift Container Platform 4.17 uses CRI-O instead of the Docker Container Engine. \* Kubelet (kubelet), which accepts requests for managing containers on the machine from control plane services.
 
-- The CRI-O container engine (crio), which runs and manages the containers. OpenShift Container Platform 4.17 uses CRI-O instead of the Docker Container Engine.
+\+ CRI-O and Kubelet must run directly on the host as systemd services because they need to be running before you can run other containers.
 
-- Kubelet (kubelet), which accepts requests for managing containers on the machine from control plane services.
-
-  CRI-O and Kubelet must run directly on the host as systemd services because they need to be running before you can run other containers.
-
-  The `installer-*` and `revision-pruner-*` control plane pods must run with root permissions because they write to the `/etc/kubernetes` directory, which is owned by the root user. These pods are in the following namespaces:
+\+ The `installer-*` and `revision-pruner-*` control plane pods must run with root permissions because they write to the `/etc/kubernetes` directory, which is owned by the root user. These pods are in the following namespaces:
 
 - `openshift-etcd`
 
@@ -166,6 +165,8 @@ Systemd services are appropriate for services that must always start on that par
 - `openshift-kube-controller-manager`
 
 - `openshift-kube-scheduler`
+
+<!-- -->
 
 - [Hosted control planes overview](../hosted_control_planes/index.xml#hcp-overview)
 

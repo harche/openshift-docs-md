@@ -59,7 +59,7 @@ When creating your plugin, follow these guidelines for using PatternFly:
 
 ## Translating messages with react-i18next
 
-The [plugin template](https://github.com/openshift/console-plugin-template) demonstrates how you can translate messages with [react-i18next](https://www.i18next.com/).
+The `console-plugin-template` plugin template demonstrates how you can translate messages with react-i18next.
 
 - You must have the plugin template cloned locally.
 
@@ -114,7 +114,7 @@ The [plugin template](https://github.com/openshift/console-plugin-template) demo
       }
     ```
 
-4.  Include a comment in a TypeScript file for [i18next-parser](https://github.com/i18next/i18next-parser) to add the message from `console-extensions.json` to your message catalog. For example:
+4.  Include a comment in a TypeScript file for the `i18next-parser` tool to add the message from `console-extensions.json` to your message catalog. For example:
 
     ``` tsx
     // t('plugin__console-demo-plugin~Demo Plugin')
@@ -125,6 +125,10 @@ The [plugin template](https://github.com/openshift/console-plugin-template) demo
     ``` terminal
     $ yarn i18n
     ```
+
+- [react-i18next](https://www.i18next.com/)
+
+<!-- -->
 
 - [Node.js](https://nodejs.org/en/)
 

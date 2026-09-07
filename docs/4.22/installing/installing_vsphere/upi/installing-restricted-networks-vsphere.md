@@ -48,7 +48,7 @@ To complete a restricted network installation, you must create a registry that m
 
 <div class="important">
 
-Because of the complexity of the configuration for user-provisioned installations, consider completing a standard user-provisioned infrastructure installation before you attempt a restricted network installation using user-provisioned infrastructure. Completing this test installation might make it easier to isolate and troubleshoot any issues that might arise during your installation in a restricted network.
+Because of the complexity of the configuration for user-provisioned installations, consider completing a standard user-provisioned infrastructure installation before you try a restricted network installation using user-provisioned infrastructure. Completing this test installation might make it easier to isolate and troubleshoot any issues that might arise during your installation in a restricted network.
 
 </div>
 
@@ -592,11 +592,11 @@ For more information on chrony best practices, see the following resources:
 
 To identify your cluster resources in VMware vSphere, extract the unique infrastructure name from the Ignition config files.
 
-If you plan to use the cluster identifier as the name of your virtual machine folder, you must extract it.
+The Ignition config files contain a unique cluster identifier that you can use to uniquely identify your cluster in VMware vSphere. If you plan to use the cluster identifier as the name of your virtual machine folder, you must extract it.
 
 <div class="warning">
 
-Do not run the `openshift-install create manifests` command again after creating any Google Cloud resources. Running the command again generates a new cluster identifier, which will cause errors in existing resources. If you need to regenerate the manifests because you modified the `install-config.yaml` file, delete any Google Cloud resources you created and recreate them with the new cluster identifier.
+Do not run the `openshift-install create manifests` command again after creating any Google Cloud resources. Running the command again generates a new cluster identifier, which will cause errors in existing resources. If you need to regenerate the manifests because you modified the `install-config.yaml` file, delete any Google Cloud resources you created and re-create them with the new cluster identifier.
 
 </div>
 
@@ -1067,6 +1067,8 @@ The OpenShift Container Platform bootstrap process begins after the cluster node
     INFO Waiting up to 1h0m0s for bootstrapping to complete...
     INFO It is now safe to remove the bootstrap resources
     ```
+
+    The bootstrapping completion wait time varies per platform.
 
     The command succeeds when the Kubernetes API server signals that it has been bootstrapped on the control plane machines.
 

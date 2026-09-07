@@ -1300,6 +1300,44 @@ For any OpenShift Container Platform release, always review the instructions on 
 
 </div>
 
+## RHSA-2026:54770 - OpenShift Container Platform 4.17.10 bug fix and security update
+
+Issued: 18 August 2026
+
+OpenShift Container Platform release 4.17.10 is now available. The list of fixed issues that are included in the update is documented in the [RHSA-2026:54770](https://access.redhat.com/errata/RHSA-2026:54770) advisory. The RPM packages that are included in the update are provided by the [RHBA-2026:54768](https://access.redhat.com/errata/RHBA-2026:54768) advisory.
+
+Space precluded documenting all of the container images for this release in the advisory.
+
+You can view the container images in this release by running the following command:
+
+``` terminal
+$ oc adm release info 4.22.10 --pullspecs
+```
+
+### Enhancements
+
+- Azure OpenShift Container Platform hosted control planes clusters can now authenticate to Azure Container Registry (ACR) by using managed identities through a new optional `containerRegistry` field in the `AzurePlatformSpec` specification. When you configure ACR credentials with a user-assigned managed identity, worker nodes can authenticate to ACR by using managed identities without requiring manual configuration of image pull secrets in every namespace. ([OCPBUGS-94518](https://redhat.atlassian.net/browse/OCPBUGS-94518))
+
+### Fixed issues
+
+- Before this update, changing non-hardware fields such as `clusterInstance` labels, annotations, or policy parameters in a `ProvisioningRequest` spec triggered an unnecessary `NodeAllocationRequest` reconfiguration. As a consequence, the `ProvisioningRequest` could remain stuck in `Hardware provisioning completed: Created` state with the message `Waiting for NodeAllocationRequest to be configured`. With this release, the controller no longer reconfigures `NodeAllocationRequest` for non-hardware spec changes. As a result, day-2 `ProvisioningRequest` spec updates that do not affect hardware provisioning complete successfully. ([OCPBUGS-90659](https://redhat.atlassian.net/browse/OCPBUGS-90659))
+
+- Before this update, the `NetworkPolicy` object in the `openshift-apiserver` namespace blocked traffic on the port used by the `check-endpoints` service. As a consequence, Prometheus could not scrape those metrics, and the `TargetDown` warning alert could fire when all `check-endpoints` targets were unreachable for more than 15 minutes. With this release, the `NetworkPolicy` object allows traffic on the designated port for the `check-endpoints` service. As a result, Prometheus can reach the endpoints successfully, and the `TargetDown` alert no longer fires for this target. ([OCPBUGS-100168](https://redhat.atlassian.net/browse/OCPBUGS-100168))
+
+- Before this update, on a single-stack IPv4 hosted control planes KubeVirt hosted cluster running on a dual-stack management cluster, the konnectivity proxy could resolve external host names to IPv6 addresses. As a consequence, external requests from the hosted control planes could be sent over IPv6 and time out because the single-stack IPv4 data plane could not reach those addresses. With this release, konnectivity proxy DNS resolution prefers IPv4 addresses on single-stack IPv4 hosted control planes. As a result, external requests use reachable IPv4 addresses and complete successfully. ([OCPBUGS-100332](https://redhat.atlassian.net/browse/OCPBUGS-100332))
+
+- Before this update, when a HostedCluster `spec.configuration.proxy` setting was scoped to data-plane components in 4.18, the Cluster Version Operator (CVO) was not updated to ignore that proxy configuration on hosted control planes. As a consequence, when a proxy setting did not work in the management cluster control-plane network, CVO egress to the OpenShift Update Service and PromQL services could fail and block update advice retrieval. With this release, the CVO ignores the hosted Proxy resource on hosted control planes and assumes no proxy configuration is needed for control-plane egress. As a result, CVO can reach update services in environments where the data-plane proxy setting is incompatible with the management cluster control-plane network. ([OCPBUGS-104545](https://redhat.atlassian.net/browse/OCPBUGS-104545))
+
+- Before this update, when you added a new vSphere failure domain that used a MachineSet with a custom `providerSpec.Template` name, the Machine Config Operator boot image controller looked up the VM template only by its own computed name and ignored `providerSpec.Template`. As a consequence, reconciliation for that failure domain could fail, and a customer-managed VM with the same computed name outside the MCO workspace folder could be mistaken for the MCO template and overwritten. With this release, the controller checks `providerSpec.Template` first, falls back to the computed name only when the template is not found, creates the template from the OVA when needed, and leaves name matches outside `providerSpec.Workspace.Folder` untouched. As a result, new vSphere failure domains with custom template names reconcile successfully, and customer-managed VMs outside the MCO workspace folder are no longer at risk of being overwritten. ([OCPBUGS-104563](https://redhat.atlassian.net/browse/OCPBUGS-104563))
+
+- Before this update, on a Telecom Boundary Clock (T-BC) PTP configuration, the `ts2phc` system daemon could start before the upstream PTP source was stable enough and before `phc2sys` system clock sync was ready. As a consequence, the T-BC took a long time to converge, and `phc2sys` system clock sync could adjust the system clock too early based on an irrelevant `ts2phc` system daemon offset. With this release, the `ts2phc` system daemon start on T-BC is delayed until the upstream source is qualified and the `phc2sys` system clock is ready; Telecom Grandmaster (T-GM) behavior is unchanged. As a result, T-BC no longer starts the `ts2phc` system daemon against an unqualified upstream source. ([OCPBUGS-104578](https://redhat.atlassian.net/browse/OCPBUGS-104578))
+
+- Before this update, when you viewed **Quick Start** `{{execute}}` code snippets in the OpenShift Container Platform web console, leading whitespace in the code block could render as an empty line before the command text. As a consequence, execute snippets across **Quick Starts** could display an extra blank line above the command, making the content harder to read. With this release, leading whitespace rendering in **Quick Start** execute code snippets is corrected. As a result, execute code blocks display the command text without an empty line above it. ([OCPBUGS-105611](https://redhat.atlassian.net/browse/OCPBUGS-105611))
+
+### Updating
+
+To update an OpenShift Container Platform 4.22 cluster to this latest release, see [Updating a cluster using the CLI](../updating/updating_a_cluster/updating-cluster-cli.xml#updating-cluster-cli).
+
 ## RHSA-2026:51038 - OpenShift Container Platform 4.17.9 bug fix and security update
 
 Issued: 11 August 2026
